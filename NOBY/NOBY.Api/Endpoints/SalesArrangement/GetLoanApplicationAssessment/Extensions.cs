@@ -245,17 +245,13 @@ internal static class Extensions
                 var degreeBeforeId = c.NaturalPerson?.DegreeBeforeId;
                 var academicTitlePrefix = degreeBeforeId.HasValue ? (data.AcademicDegreesBeforeById.ContainsKey(degreeBeforeId.Value) ? data.AcademicDegreesBeforeById[degreeBeforeId.Value].Name : null) : null;
 
-                var taxResidencyCountryId = c.NaturalPerson?.TaxResidence?.ResidenceCountries?.FirstOrDefault()?.CountryId;
-                var taxResidencyCountryCode = taxResidencyCountryId.HasValue ? (data.CountriesById.ContainsKey(taxResidencyCountryId.Value) ? data.CountriesById[taxResidencyCountryId.Value].ShortName : null) : null;
-
                 var cGenderId = c.NaturalPerson?.GenderId;
-
+                
                 return new cLA.LoanApplicationCustomer
                 {
                     InternalCustomerId = cOnSA.CustomerOnSAId,
                     PrimaryCustomerId = identityKb!.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                    IsGroupEmployee = kbRelationshipCodeUpper == "A" || kbRelationshipCodeUpper == "E", //TRUE IF: Customer.NaturalPerson.KbRelationshipCode = A nebo Customer.NaturalPerson.KbRelationshipCode = E, V CM customerKbRelationship.code = "A" nebo "E"
-                    SpecialRelationsWithKB = kbRelationshipCodeUpper == "R" || kbRelationshipCodeUpper == "D", // TRUE IF: Customer.NaturalPerson.KbRelationshipCode = R nebo Customer.NaturalPerson.KbRelationshipCode = D, V CM customerKbRelationship.code = "R" nebo "D"
+                    SpecialRelationsWithKB = cOnSA.CustomerAdditionalData.HasRelationshipWithKB,
                     BirthNumber = c.NaturalPerson?.BirthNumber,
                     CustomerRoleId = cOnSA.CustomerRoleId,
                     Firstname = c.NaturalPerson?.FirstName,
@@ -270,7 +266,7 @@ internal static class Extensions
                     MobilePhoneNumber = contactMobilePhone?.Value,
                     HasEmail = !String.IsNullOrEmpty(contactEmail?.Value),
                     IsPartner = isPartner,
-                    Taxpayer = taxResidencyCountryCode?.ToUpperInvariant() == "CZ",      //Customer.NaturalPerson.TaxResidencyCountryId = "CZ", V CM taxResidence.countryCode = "CZ"
+                    Taxpayer = c.NaturalPerson?.TaxResidence?.ResidenceCountries?.Any(t => t.CountryId == 16) ?? false,
                     Address = (addressPermanent is null) ? null : MapAddress(addressPermanent),
                     IdentificationDocument = MapIdentificationDocument(c.IdentificationDocument),
                     Obligations = cOnSA.Obligations.Where(i => i.Creditor?.IsExternal == true).Select(i => MapObligation(i)).ToList(), //WHERE podmínka - pouze ty závazky, kde: Obligation.Creditor.IsExternal = true
@@ -350,7 +346,7 @@ internal static class Extensions
                 InvestmentAmount = investmentAmount,
                 OwnResourcesAmount = financialResourcesOwn,
                 ForeignResourcesAmount = financialResourcesOther,
-                MarketingActions = data.Offer.AdditionalSimulationResults?.MarketingActions?.Where(i => i.MarketingActionId.HasValue).Select(i => i.MarketingActionId!.Value).ToList(),
+                MarketingActions = data.Offer.AdditionalSimulationResults?.MarketingActions?.Where(i => i.MarketingActionId.HasValue && i.Applied == 1).Select(i => i.MarketingActionId!.Value).ToList(),
                 Purposes = data.Offer.SimulationInputs.LoanPurposes?.Select(i => MapLoanPurpose(i)).ToList(),
                 Collaterals = new List<cLA.LoanApplicationProductCollateral> { productCollateral },
             };
