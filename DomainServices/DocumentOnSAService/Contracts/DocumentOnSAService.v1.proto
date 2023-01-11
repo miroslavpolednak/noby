@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentOnSAService.v1;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts.v1";
+
+import "google/protobuf/empty.proto";
+import "GenerateFormId.proto";
+
+//DocumentOnSAService
+service DocumentOnSAService{
+	rpc GenerateFormId(DomainServices.DocumentOnSAService.GenerateFormId.GenerateFormIdRequest) returns (DomainServices.DocumentOnSAService.GenerateFormId.GenerateFormIdResponse);
+}

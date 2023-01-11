@@ -1,0 +1,16 @@
+{
+  "CustomKestrel": {
+    "Endpoints": [
+      {
+        "Port": 30019,
+        "Protocol": 2
+      }
+    ],
+    "Certificate": {
+      "Location": "CertStore",
+      "CertStoreName": "My",
+      "CertStoreLocation": "LocalMachine",
+      "Thumbprint": "2694C47172A2BB49985259915B747C2A2B3B8C1F"
+    }
+  }
+}

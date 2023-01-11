@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentOnSAService.GenerateFormId;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message GenerateFormIdRequest{
+	// Id householdu, přes které se určuje, zda další FormId je jen další verze nebo nová řada. Pokud není na vstupu, jedná se vždy o novou řadu
+	google.protobuf.Int32Value HouseholdId = 1;
+	// Příznak, zda má být číslo verze 99 pro odeslání do SB
+	bool IsFormIdFinal = 2;
+}
+
+message GenerateFormIdResponse{
+	string FormId =1;
+}
