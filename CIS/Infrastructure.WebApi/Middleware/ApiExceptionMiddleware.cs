@@ -78,7 +78,7 @@ public class ApiExceptionMiddleware
 
 
     private static IEnumerable<Types.ApiErrorItem> singleErrorResult(BaseCisException exception)
-        => singleErrorResult(exception.ExceptionCode, exception.Message);
+        => singleErrorResult("", $"{exception.ExceptionCode} - {exception.Message}");
 
     private static IEnumerable<Types.ApiErrorItem> singleErrorResult(string errorCode, string message)
     {
