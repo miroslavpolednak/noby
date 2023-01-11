@@ -47,9 +47,9 @@ internal static class NobyAppBuilder
             appBuilder.UseHttpLogging();
 
             // error middlewares
-            if (app.Environment.IsDevelopment())
+            /*if (app.Environment.IsDevelopment())
                 appBuilder.UseDeveloperExceptionPage();
-            else
+            else*/
                 // exception handling
                 appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middlewares.ApiExceptionMiddleware>();
 

@@ -12,4 +12,8 @@
     <ProjectReference Include="..\Foms.Types\CIS.Foms.Types.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="$(AssemblyName).Tests" />
+	</ItemGroup>
+	
 </Project>

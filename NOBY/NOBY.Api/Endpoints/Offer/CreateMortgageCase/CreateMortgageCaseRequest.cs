@@ -1,7 +1,7 @@
 ﻿namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
 public sealed class CreateMortgageCaseRequest
-    : IRequest<CreateMortgageCaseResponse>//, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
+    : IRequest<CreateMortgageCaseResponse>, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 {
     /// <summary>
     /// ID simulace ze ktere se ma vytvorit Case.
