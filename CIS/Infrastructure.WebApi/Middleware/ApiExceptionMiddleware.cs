@@ -39,7 +39,7 @@ public class ApiExceptionMiddleware
         catch (NotImplementedException ex)
         {
             logger.WebApiNotImplementedException(ex.Message, ex);
-            await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.NotImplemented).ExecuteAsync(context);
+            await Results.Json(singleErrorResult("", ex.Message), statusCode: 500).ExecuteAsync(context);
         }
         // DS neni dostupna
         catch (CisServiceUnavailableException ex)
@@ -72,7 +72,7 @@ public class ApiExceptionMiddleware
         catch (Exception ex)
         {
             logger.WebApiUncoughtException(ex);
-            await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.InternalServerError).ExecuteAsync(context);
+            await Results.Json(singleErrorResult("", ex.Message), statusCode: 500).ExecuteAsync(context);
         }
     }
 
