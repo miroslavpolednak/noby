@@ -10,7 +10,7 @@ public static class StartupExtensions
     public static TConfiguration CreateAndCheckExternalServiceConfiguration<TConfiguration>(this WebApplicationBuilder builder, string serviceName)
         where TConfiguration : class, Configuration.IExternalServiceConfiguration
     {
-        var configuration = readConfiguration<TConfiguration>(builder, serviceName);
+        var configuration = readConfiguration<TConfiguration>(builder.Configuration, serviceName);
 
         if (configuration.UseServiceDiscovery)
         {
@@ -32,7 +32,7 @@ public static class StartupExtensions
     public static List<TConfiguration> CreateAndCheckExternalServiceConfigurationsList<TConfiguration>(this WebApplicationBuilder builder, string serviceName)
         where TConfiguration : class, Configuration.IExternalServiceConfiguration
     {
-        var configurations = readConfigurations<TConfiguration>(builder, serviceName);
+        var configurations = readConfigurations<TConfiguration>(builder.Configuration, serviceName);
 
         builder.Services.AddSingleton(provider =>
         {
@@ -50,7 +50,7 @@ public static class StartupExtensions
         return configurations;
     }
 
-    private static List<TConfiguration> readConfigurations<TConfiguration>(WebApplicationBuilder builder, string serviceName)
+    internal static List<TConfiguration> readConfigurations<TConfiguration>(IConfiguration configurationManager, string serviceName)
         where TConfiguration : class, Configuration.IExternalServiceConfiguration
     {
         var listType = typeof(List<>);
@@ -58,7 +58,7 @@ public static class StartupExtensions
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         List<TConfiguration> configurations = (List<TConfiguration>)Activator.CreateInstance(constructedListType);
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-        builder.Configuration.GetSection(getSectionName(serviceName)).Bind(configurations);
+        configurationManager.GetSection(getSectionName(serviceName)).Bind(configurations);
 
         if (configurations == null)
             throw new CisConfigurationNotFound(getSectionName(serviceName));
@@ -76,13 +76,13 @@ public static class StartupExtensions
         return configurations;
     }
 
-    private static TConfiguration readConfiguration<TConfiguration>(WebApplicationBuilder builder, string serviceName)
+    internal static TConfiguration readConfiguration<TConfiguration>(IConfiguration configurationManager, string serviceName)
         where TConfiguration : class, Configuration.IExternalServiceConfiguration
     {
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         TConfiguration configuration = (TConfiguration)Activator.CreateInstance(typeof(TConfiguration));
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-        builder.Configuration.GetSection(getSectionName(serviceName)).Bind(configuration);
+        configurationManager.GetSection(getSectionName(serviceName)).Bind(configuration);
 
         if (configuration == null)
             throw new CisConfigurationNotFound(getSectionName(serviceName));
