@@ -1,8 +1,6 @@
-﻿using System.Net;
-using System.Security.Authentication;
+﻿using System.Security.Authentication;
 using CIS.Infrastructure.Logging;
 using CIS.Core.Exceptions;
-using System.Globalization;
 using CIS.Infrastructure.WebApi.Types;
 
 namespace CIS.Infrastructure.WebApi.Middlewares;
