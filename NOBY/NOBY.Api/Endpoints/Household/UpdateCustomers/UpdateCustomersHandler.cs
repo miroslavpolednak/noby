@@ -4,7 +4,7 @@ using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
-internal class UpdateCustomersHandler
+internal sealed class UpdateCustomersHandler
     : IRequestHandler<UpdateCustomersRequest, UpdateCustomersResponse>
 {
     public async Task<UpdateCustomersResponse> Handle(UpdateCustomersRequest request, CancellationToken cancellationToken)
