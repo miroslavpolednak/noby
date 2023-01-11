@@ -1,9 +1,9 @@
-﻿using CIS.Core;
-using CIS.Core.Attributes;
+﻿using CIS.Core.Attributes;
 using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using Result = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction.Result;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories;
 
@@ -11,78 +11,43 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories;
 public class NotificationRepository
 {
     private readonly NotificationDbContext _dbContext;
-    private readonly IDateTime _dateTime;
 
-    public NotificationRepository(NotificationDbContext dbContext, IDateTime dateTime)
+    public NotificationRepository(NotificationDbContext dbContext)
     {
         _dbContext = dbContext;
-        _dateTime = dateTime;
-    }
-
-    public async Task<Entities.SmsResult> CreateSmsResult(
-        string? identity,
-        string? identityScheme,
-        string? customId,
-        string? documentId,
-        string text,
-        string countryCode,
-        string phoneNumber,
-        CancellationToken token = default)
-    {
-        var result = new Entities.SmsResult
-        {
-            Channel = NotificationChannel.Sms, 
-            State = NotificationState.InProgress,
-            Identity = identity,
-            IdentityScheme = identityScheme,
-            CustomId = customId,
-            DocumentId  = documentId,
-            RequestTimestamp = _dateTime.Now,
-            HandoverToMcsTimestamp = null,
-            ErrorSet = new HashSet<string>(),
-            Text = text,
-            CountryCode = countryCode,
-            PhoneNumber = phoneNumber
-        };
-
-        await _dbContext.AddAsync(result, token);
-        await _dbContext.SaveChangesAsync(token);
-        return result;
-    }
-
-    public async Task<Entities.EmailResult> CreateEmailResult(
-        string? identity,
-        string? identityScheme,
-        string? customId,
-        string? documentId,
-        CancellationToken token = default)
-    {
-        var result = new Entities.EmailResult
-        {
-            Channel = NotificationChannel.Email, 
-            State = NotificationState.InProgress,
-            Identity = identity,
-            IdentityScheme = identityScheme,
-            CustomId = customId,
-            DocumentId  = documentId,
-            RequestTimestamp = _dateTime.Now,
-            HandoverToMcsTimestamp = null,
-            ErrorSet = new HashSet<string>(),
-        };
-        
-        await _dbContext.AddAsync(result, token);
-        await _dbContext.SaveChangesAsync(token);
-        return result; 
     }
     
-    public async Task<Entities.Abstraction.Result> GetResult(Guid notificationId, CancellationToken token = default)
+    public Entities.EmailResult NewEmailResult() => new ()
+    {
+        Id = Guid.NewGuid(),
+        Channel = NotificationChannel.Email, 
+        State = NotificationState.InProgress,
+        HandoverToMcsTimestamp = null,
+        ErrorSet = new HashSet<string>(),
+    };
+
+    public Entities.SmsResult NewSmsResult() => new()
+    {
+        Id = Guid.NewGuid(),
+        Channel = NotificationChannel.Sms,
+        State = NotificationState.InProgress,
+        HandoverToMcsTimestamp = null,
+        ErrorSet = new HashSet<string>()
+    };
+
+    public async Task AddResult(Result result, CancellationToken token = default)
+    {
+        await _dbContext.AddAsync(result, token);
+    }
+    
+    public async Task<Result> GetResult(Guid id, CancellationToken token = default)
     {
         // todo: Cis Exception code 300-399
-        return await _dbContext.Results.FindAsync(new object?[] { notificationId }, token) ??
-               throw new CisNotFoundException(300, $"Results #{notificationId} not found");
+        return await _dbContext.Results.FindAsync(new object?[] { id }, token)
+            ?? throw new CisNotFoundException(399, $"Result with id = '{id}' not found.");
     }
 
-    public async Task<IEnumerable<Entities.Abstraction.Result>> SearchResultsBy(string identity, string identityScheme, string customId, string documentId)
+    public async Task<IEnumerable<Result>> SearchResultsBy(string? identity, string? identityScheme, string? customId, string? documentId)
     {
         return await _dbContext.Results
             .Where(r => string.IsNullOrEmpty(identity) || r.Identity == identity)
@@ -92,34 +57,8 @@ public class NotificationRepository
             .ToListAsync();
     }
     
-    public async Task<Entities.Abstraction.Result> UpdateResult(
-        Guid notificationId,
-        NotificationState? state = null,
-        DateTime? handoverToMcsTimestamp = null,
-        HashSet<string>? newErrors = null,
-        CancellationToken token = default)
+    public async Task<int> SaveChanges(CancellationToken token = default)
     {
-        var result = await GetResult(notificationId, token);
-
-        if (state.HasValue)
-        {
-            result.State = state.Value;
-        }
-
-        if (handoverToMcsTimestamp.HasValue)
-        {
-            result.HandoverToMcsTimestamp = handoverToMcsTimestamp.Value;
-        }
-
-        if (!newErrors.IsNullOrEmpty())
-        {
-            var errorSet = new HashSet<string>();
-            errorSet.UnionWith(result.ErrorSet);
-            errorSet.UnionWith(newErrors!);
-            result.ErrorSet = errorSet;
-        }
-        
-        await _dbContext.SaveChangesAsync(token);
-        return result;
+        return await _dbContext.SaveChangesAsync(token);
     }
 }

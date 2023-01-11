@@ -3,25 +3,25 @@ package DomainServices.HouseholdService.v1;
 option csharp_namespace = "DomainServices.HouseholdService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
-import "CustomerOnSA.proto";
-import "CreateCustomer.proto";
-import "GetCustomer.proto";
-import "GetCustomerList.proto";
-import "UpdateCustomer.proto";
-import "CreateIncome.proto";
-import "GetIncome.proto";
-import "GetIncomeList.proto";
-import "Income.proto";
-import "UpdateIncome.proto";
-import "UpdateIncomeBaseData.proto";
-import "Obligation.proto";
-import "CreateObligation.proto";
-import "GetObligationList.proto";
-import "DeleteCustomer.proto";
-import "DeleteObligation.proto";
-import "GetObligation.proto";
-import "DeleteIncome.proto";
-import "UpdateCustomerDetail.proto";
+import "Messages/CustomerOnSA.proto";
+import "Messages/CreateCustomer.proto";
+import "Messages/GetCustomer.proto";
+import "Messages/GetCustomerList.proto";
+import "Messages/UpdateCustomer.proto";
+import "Messages/CreateIncome.proto";
+import "Messages/GetIncome.proto";
+import "Messages/GetIncomeList.proto";
+import "Messages/Income.proto";
+import "Messages/UpdateIncome.proto";
+import "Messages/UpdateIncomeBaseData.proto";
+import "Messages/Obligation.proto";
+import "Messages/CreateObligation.proto";
+import "Messages/GetObligationList.proto";
+import "Messages/DeleteCustomer.proto";
+import "Messages/DeleteObligation.proto";
+import "Messages/GetObligation.proto";
+import "Messages/DeleteIncome.proto";
+import "Messages/UpdateCustomerDetail.proto";
 
 service CustomerOnSAService {
     // zalozeni noveho customera

@@ -24,7 +24,7 @@ public sealed class GrpcServiceUriSettingsServiceDiscovery<TService>
     public GrpcServiceUriSettingsServiceDiscovery(in string? serviceName)
     {
         if (string.IsNullOrEmpty(serviceName))
-            throw new Core.Exceptions.CisArgumentNullException(12, "ServiceName is empty or null", nameof(serviceName));
+            throw new ArgumentNullException(nameof(serviceName), $"ServiceName in GrpcServiceUriSettingsServiceDiscovery for {typeof(TService)} is empty or null");
 
         ServiceName = serviceName;
     }

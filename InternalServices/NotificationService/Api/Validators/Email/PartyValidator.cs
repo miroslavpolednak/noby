@@ -10,7 +10,9 @@ public class PartyValidator : AbstractValidator<Party>
         RuleFor(party => party)
             .Must(party =>
                 (party.LegalPerson is not null && party.NaturalPerson is null) ||
-                (party.LegalPerson is null && party.NaturalPerson is not null));
+                (party.LegalPerson is null && party.NaturalPerson is not null))
+            .WithErrorCode(ErrorCodes.EmailParty.EitherLegalOrNaturalPersonRequired)
+            .WithMessage($"{nameof(Party)} must contain either {nameof(LegalPerson)} or {nameof(NaturalPerson)}.");
 
         When(party => party.LegalPerson is not null, () =>
         {

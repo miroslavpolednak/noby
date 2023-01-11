@@ -19,10 +19,8 @@ public class EmailAddressValidator : AbstractValidator<EmailAddress>
             .NotEmpty()
                 .WithErrorCode(ErrorCodes.EmailAddress.PartyRequired)
                 .WithMessage($"{nameof(EmailAddress.Party)} required.")
-            .Must(party =>
-                    (party.LegalPerson is not null && party.NaturalPerson is null) ||
-                    (party.LegalPerson is null && party.NaturalPerson is not null))
+            .SetValidator(new PartyValidator())
                 .WithErrorCode(ErrorCodes.EmailAddress.PartyInvalid)
-                .WithMessage($"{nameof(EmailAddress.Party)} must contain either {nameof(LegalPerson)} or {nameof(NaturalPerson)}.");
+                .WithMessage($"Invalid {nameof(EmailAddress.Party)}");
     }
 }

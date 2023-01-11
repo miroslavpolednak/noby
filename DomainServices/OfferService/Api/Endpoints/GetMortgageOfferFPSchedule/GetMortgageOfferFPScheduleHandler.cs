@@ -37,14 +37,6 @@ internal sealed class GetMortgageOfferFPScheduleHandler
         return model;
     }
 
-    private static EasSimulationHT.EasSimulationHTWrapper.SimulationHTResponse resolveRunSimulationHT(IServiceCallResult result) =>
-      result switch
-      {
-          SuccessfulServiceCallResult<EasSimulationHT.EasSimulationHTWrapper.SimulationHTResponse> r => r.Model,
-          ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key),
-          _ => throw new NotImplementedException("RunSimulationHT")
-      };
-
     private readonly Database.OfferServiceDbContext _dbContext;
     private readonly ICodebookServiceClients _codebookService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;

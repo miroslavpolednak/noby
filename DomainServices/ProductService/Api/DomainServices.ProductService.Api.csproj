@@ -20,8 +20,8 @@
 		<PackageReference Include="MediatR" Version="11.1.0" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
-		<PackageReference Include="Grpc.AspNetCore" Version="2.50.0" />
-		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.50.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.51.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.51.0" />
 		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
 	</ItemGroup>
 
@@ -36,5 +36,13 @@
 		<ProjectReference Include="..\..\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.ProductService.Contracts.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="kestrel.development.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
 	</ItemGroup>
 </Project>

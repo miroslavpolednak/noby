@@ -46,12 +46,16 @@ internal sealed class RealCustomerManagementClient
             { "idDocumentNumber", searchRequest.IdDocumentNumber },
             { "idDocumentIssuingCountryCode", searchRequest.IdDocumentIssuingCountryCode },
             { "email", searchRequest.Email },
-            { "phoneNumber", searchRequest.PhoneNumber },
-            { "isInKbi", searchRequest.IsInKbi.ToQuery() },
-            { "includeArchived", searchRequest.IncludeArchived.ToQuery() },
-            { "showSegment", searchRequest.ShowSegment.ToQuery() },
-            { "showOnlyIdentified", searchRequest.ShowOnlyIdentified.ToQuery() }
+            { "phoneNumber", searchRequest.PhoneNumber }
         };
+        if (searchRequest.IsInKbi.HasValue)
+            query.Add("isInKbi", searchRequest.IsInKbi.Value.ToQuery());
+        if (searchRequest.IncludeArchived.HasValue)
+            query.Add("includeArchived", searchRequest.IncludeArchived.Value.ToQuery());
+        if (searchRequest.ShowSegment.HasValue)
+            query.Add("showSegment", searchRequest.ShowSegment.Value.ToQuery());
+        if (searchRequest.ShowOnlyIdentified.HasValue)
+            query.Add("showOnlyIdentified", searchRequest.ShowOnlyIdentified.Value.ToQuery());
         if (searchRequest.LegalStatusCode is not null)
             query.Add("legalStatusCode", searchRequest.LegalStatusCode.First().ToString());
 

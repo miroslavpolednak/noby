@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Api.Handlers.Email.Requests;
+﻿using CIS.Core;
+using CIS.InternalServices.NotificationService.Api.Handlers.Email.Requests;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Api.Services.Smtp;
@@ -9,15 +10,18 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
 
 public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, SendEmailConsumeResponse>
 {
+    private readonly IDateTime _dateTime;
     private readonly NotificationRepository _repository;
     private readonly SmtpAdapterService _smtpAdapterService;
     private readonly S3AdapterService _s3AdapterService;
 
     public SendEmailConsumeHandler(
+        IDateTime dateTime,
         NotificationRepository repository,
         SmtpAdapterService smtpAdapterService,
         S3AdapterService s3AdapterService)
     {
+        _dateTime = dateTime;
         _repository = repository;
         _smtpAdapterService = smtpAdapterService;
         _s3AdapterService = s3AdapterService;
@@ -32,7 +36,7 @@ public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, 
             var fileContent = await _s3AdapterService.GetFile(attachment.S3Key, Buckets.Mpss);
             smtpAttachments.Add(new SmtpAttachment{ Filename = attachment.Filename, Binary = fileContent });
         }
-        
+
         await _smtpAdapterService.SendEmail(
             request.From,
             request.ReplyTo,
@@ -45,9 +49,11 @@ public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, 
             );
         
         // todo: error handling
-        var resultId = request.Id;
-        await _repository.UpdateResult(resultId, NotificationState.Sent, token: cancellationToken);
+        var result = await _repository.GetResult(request.Id, cancellationToken);
+        result.State = NotificationState.Sent;
         
+        await _repository.SaveChanges(cancellationToken);
+
         return new SendEmailConsumeResponse();
     }
 }

@@ -44,7 +44,7 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.1" />
     <PackageReference Include="Scrutor" Version="4.2.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
@@ -76,8 +76,10 @@
 
   <ItemGroup>
     <Folder Include="Endpoints\DocumentArchive\_Shared\" />
+    <Folder Include="Endpoints\Document\Offer\" />
     <Folder Include="Endpoints\Document\PaymentSchedule\" />
     <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
+    <Folder Include="Endpoints\Document\Shared\DocumentIdManager\" />
   </ItemGroup>
 
 </Project>

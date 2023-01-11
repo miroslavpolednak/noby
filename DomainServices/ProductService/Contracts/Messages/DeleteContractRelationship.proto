@@ -1,0 +1,8 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+message DeleteContractRelationshipRequest {
+    int64 ProductId = 1;
+    int64 PartnerId = 2;
+}

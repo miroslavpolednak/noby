@@ -1,6 +1,8 @@
-﻿namespace DomainServices.CustomerService.Api.Endpoints.UpdateCustomer;
+﻿using FluentValidation;
 
-public class UpdateCustomerRequestValidator
+namespace DomainServices.CustomerService.Api.Endpoints.UpdateCustomer;
+
+public class UpdateCustomerRequestValidator : AbstractValidator<UpdateCustomerRequest>
 {
     
 }

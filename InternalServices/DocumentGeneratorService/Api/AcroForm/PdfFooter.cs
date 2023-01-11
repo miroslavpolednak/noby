@@ -95,7 +95,7 @@ public class PdfFooter
         {
             GetCaseIdIdentifier(footer.CaseId),
             GetOfferIdIdentifier(footer.OfferId),
-            GetArchiveIdIdentifier(footer.DocumentId),
+            footer.DocumentId,
             GetDocumentNameIdentifier(request.TemplateTypeId, request.TemplateVersion),
             GetDocumentDate()
         };
@@ -115,8 +115,6 @@ public class PdfFooter
 
     private string? GetOfferIdIdentifier(int? offerId) =>
         offerId is null ? default : $"{PdfTextConstants.OfferIdIdentifierText}:{offerId.Value.ToString(_cultureInfo)}";
-
-    private static string? GetArchiveIdIdentifier(int? archiveId) => archiveId.ToString();
 
     private string GetDocumentDate() => DateTime.Now.ToString("G", _cultureInfo);
 }

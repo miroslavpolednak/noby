@@ -1,24 +1,24 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
-using _Pr = DomainServices.ProductService.Contracts;
+﻿using __SA = DomainServices.SalesArrangementService.Contracts;
+using __Pr = DomainServices.ProductService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
-internal class DrawingBuilder
+internal sealed class DrawingBuilder
         : BaseBuilder, ICreateSalesArrangementParametersBuilder
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public DrawingBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, _SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
+    public DrawingBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
         : base(logger, request)
     {
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<_SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
-        _request.Drawing = new _SA.SalesArrangementParametersDrawing
+        _request.Drawing = new __SA.SalesArrangementParametersDrawing
         {
-            RepaymentAccount = new _SA.SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingRepaymentAccount
+            RepaymentAccount = new __SA.SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingRepaymentAccount
             {
                 IsAccountNumberMissing = true
             }
@@ -28,7 +28,7 @@ internal class DrawingBuilder
         var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         try
         {
-            var mortgageInstance = ServiceCallResult.ResolveAndThrowIfError<_Pr.GetMortgageResponse>(await productService.GetMortgage(_request.CaseId, cancellationToken));
+            var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
 
             if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.BankCode))
             {

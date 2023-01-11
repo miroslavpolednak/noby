@@ -30,6 +30,10 @@ var serviceProvider = new ServiceCollection()
 
 var client = serviceProvider.GetRequiredService<INotificationClient>();
 
+var searchRequest = new SearchResultsRequest();
+
+var searchResponse = await client.SearchResults(searchRequest, CancellationToken.None);
+
 var token = CancellationToken.None;
 var text = "Text";
 var type = "Test type";
@@ -37,8 +41,8 @@ var priority = 5;
 
 var phone = new Phone
 {
-    CountryCode = "Code",
-    NationalNumber = "Phone"
+    CountryCode = "420",
+    NationalNumber = "777001001"
 };
 
 var smsSendRequest = new SendSmsRequest

@@ -3,53 +3,54 @@ package DomainServices.SalesArrangementService.v1;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
-import "CreateSalesArrangement.proto";
-import "SalesArrangement.proto";
-import "LinkModelationToSalesArrangement.proto";
-import "UpdateSalesArrangementState.proto";
-import "GetSalesArrangementList.proto";
-import "GetSalesArrangementByOfferId.proto";
-import "UpdateSalesArrangement.proto";
-import "SalesArrangementIdRequest.proto";
-import "ValidateSalesArrangement.proto";
-import "UpdateLoanAssessmentParameters.proto";
-import "UpdateSalesArrangementParameters.proto";
-import "DeleteSalesArrangement.proto";
-import "UpdateOfferDocumentId.proto";
+import "Messages/CreateSalesArrangement.proto";
+import "Messages/SalesArrangement.proto";
+import "Messages/LinkModelationToSalesArrangement.proto";
+import "Messages/UpdateSalesArrangementState.proto";
+import "Messages/GetSalesArrangementList.proto";
+import "Messages/GetSalesArrangementByOfferId.proto";
+import "Messages/UpdateSalesArrangement.proto";
+import "Messages/ValidateSalesArrangement.proto";
+import "Messages/UpdateLoanAssessmentParameters.proto";
+import "Messages/UpdateSalesArrangementParameters.proto";
+import "Messages/DeleteSalesArrangement.proto";
+import "Messages/UpdateOfferDocumentId.proto";
+import "Messages/GetSalesArrangement.proto";
+import "Messages/SendToCmp.proto";
 
 service SalesArrangementService {
 	// zalozeni noveho SA
-	rpc CreateSalesArrangement (DomainServices.SalesArrangementService.CreateSalesArrangementRequest) returns (DomainServices.SalesArrangementService.CreateSalesArrangementResponse);
+	rpc CreateSalesArrangement (CreateSalesArrangementRequest) returns (CreateSalesArrangementResponse);
    
 	// zakladni informace o SA
-	rpc GetSalesArrangement (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (DomainServices.SalesArrangementService.SalesArrangement);
+	rpc GetSalesArrangement (GetSalesArrangementRequest) returns (SalesArrangement);
 	
 	// vrait SA pro danou modelaci
-    rpc GetSalesArrangementByOfferId (DomainServices.SalesArrangementService.GetSalesArrangementByOfferIdRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementByOfferIdResponse);
+    rpc GetSalesArrangementByOfferId (GetSalesArrangementByOfferIdRequest) returns (GetSalesArrangementByOfferIdResponse);
 
 	// update stavu SA
-	rpc UpdateSalesArrangementState (DomainServices.SalesArrangementService.UpdateSalesArrangementStateRequest) returns (google.protobuf.Empty);
+	rpc UpdateSalesArrangementState (UpdateSalesArrangementStateRequest) returns (google.protobuf.Empty);
 
 	// nalinkovani nove modelace na existujici SA
 	rpc LinkModelationToSalesArrangement (LinkModelationToSalesArrangementRequest) returns (google.protobuf.Empty);
 
 	// vraci vsechny SA pro dane CaseId
-	rpc GetSalesArrangementList (DomainServices.SalesArrangementService.GetSalesArrangementListRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementListResponse);
+	rpc GetSalesArrangementList (GetSalesArrangementListRequest) returns (GetSalesArrangementListResponse);
    
     // updatuje SA - cislo smlouvy
-	rpc UpdateSalesArrangement (DomainServices.SalesArrangementService.UpdateSalesArrangementRequest) returns (google.protobuf.Empty);
+	rpc UpdateSalesArrangement (UpdateSalesArrangementRequest) returns (google.protobuf.Empty);
 
 	// predani ke zpracovani
-	rpc SendToCmp (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (google.protobuf.Empty);
+	rpc SendToCmp (SendToCmpRequest) returns (google.protobuf.Empty);
 
 	// validace SA (CheckForm)
-	rpc ValidateSalesArrangement (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (ValidateSalesArrangementResponse);
+	rpc ValidateSalesArrangement (ValidateSalesArrangementRequest) returns (ValidateSalesArrangementResponse);
 
-	rpc UpdateSalesArrangementParameters (DomainServices.SalesArrangementService.UpdateSalesArrangementParametersRequest) returns (google.protobuf.Empty);
+	rpc UpdateSalesArrangementParameters (UpdateSalesArrangementParametersRequest) returns (google.protobuf.Empty);
 
-	rpc UpdateLoanAssessmentParameters (DomainServices.SalesArrangementService.UpdateLoanAssessmentParametersRequest) returns (google.protobuf.Empty);
+	rpc UpdateLoanAssessmentParameters (UpdateLoanAssessmentParametersRequest) returns (google.protobuf.Empty);
 
-	rpc DeleteSalesArrangement (DomainServices.SalesArrangementService.DeleteSalesArrangementRequest) returns (google.protobuf.Empty);
+	rpc DeleteSalesArrangement (DeleteSalesArrangementRequest) returns (google.protobuf.Empty);
 
 	rpc UpdateOfferDocumentId (UpdateOfferDocumentIdRequest) returns (google.protobuf.Empty);
 }

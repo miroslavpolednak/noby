@@ -2,7 +2,7 @@
 
 namespace CIS.InternalServices.NotificationService.Contracts.Email;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class SendEmailFromTemplateResponse
 {
     [ProtoMember(1)]

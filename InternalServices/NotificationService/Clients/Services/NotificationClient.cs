@@ -43,6 +43,12 @@ public class NotificationClient : INotificationClient
         return await _notificationService.SendEmailFromTemplate(request, token);
     }
 
+    public async Task<SearchResultsResponse> SearchResults(SearchResultsRequest request, CancellationToken token)
+    {
+        _logger.RequestHandlerStarted(nameof(SearchResults));
+        return await _notificationService.SearchResults(request, token);
+    }
+
     public async Task<GetResultResponse> GetResult(GetResultRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(GetResult));

@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "Identity.proto";
+import "Messages/NaturalPerson.proto";
+import "Messages/IdentificationDocument.proto";
+import "GrpcAddress.proto";
+import "Messages/Contact.proto";
+import "Mandants.proto";
+
+message UpdateCustomerRequest {
+	repeated cis.types.Identity Identities = 1;
+
+	bool HardCreate = 2;
+
+	NaturalPerson NaturalPerson = 3;
+
+	IdentificationDocument IdentificationDocument = 4;
+
+	repeated cis.types.GrpcAddress Addresses = 5;
+
+	repeated Contact Contacts = 6;
+
+	cis.types.Mandants Mandant = 7;
+}
+
+message UpdateCustomerResponse {
+}

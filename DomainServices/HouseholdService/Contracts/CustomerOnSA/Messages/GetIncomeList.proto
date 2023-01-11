@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+import "Messages/IncomeInList.proto";
+
+message GetIncomeListRequest {
+    int32 CustomerOnSAId = 1;
+}
+
+message GetIncomeListResponse {
+    repeated IncomeInList Incomes = 1;
+}

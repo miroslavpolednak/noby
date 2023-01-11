@@ -5,5 +5,5 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Ent
 
 public class EmailResult : Result
 {
-    public override Contracts.Result.Dto.Abstraction.Result ToDto() => this.Map();
+    public override Contracts.Result.Dto.Result ToDto() => this.Map();
 }

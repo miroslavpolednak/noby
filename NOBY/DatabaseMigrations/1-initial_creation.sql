@@ -22,18 +22,6 @@ CREATE TABLE [dbo].[FormInstanceInterface](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-CREATE TABLE [dbo].[DataProtectionKeys](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[FriendlyName] [nvarchar](max) NULL,
-	[Xml] [nvarchar](max) NULL,
- CONSTRAINT [PK_DataProtectionKey] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-
 DROP TABLE IF EXISTS [DataProtectionKeys]
 GO
 CREATE TABLE [dbo].[DataProtectionKeys](

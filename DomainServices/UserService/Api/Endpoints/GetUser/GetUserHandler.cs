@@ -11,7 +11,7 @@ internal class GetUserHandler
         // vytahnout info o uzivateli z DB
         var userInstance = await _repository.GetUser(request.UserId);
         if (userInstance is null)
-            throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.NotFound, $"User #{request.UserId} not found", 1);
+            throw new CIS.Core.Exceptions.CisNotFoundException(0, "User", request.UserId);
 
         // vytvorit finalni model
         var model = new Contracts.User

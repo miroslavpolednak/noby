@@ -1,13 +1,11 @@
 ﻿using System.ComponentModel;
 using CIS.Core.Exceptions;
-using CIS.Infrastructure.gRPC;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
-using Grpc.Core;
 
 namespace DomainServices.CustomerService.Api.Extensions;
 
 [SingletonService, SelfService]
-internal class CustomerManagementErrorMap
+internal sealed class CustomerManagementErrorMap
 {
     private readonly Dictionary<string, Error> _errors = new();
 
@@ -26,20 +24,20 @@ internal class CustomerManagementErrorMap
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED when response.IdentifiedSubjects.Count == 1:
                 {
                     // nemame jak vratit ID (nevracime Result object), takze do zpravy...
-                    throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, response.IdentifiedSubjects.First().CustomerId.ToString(), 11023);
+                    throw new CisValidationException(11023, response.IdentifiedSubjects.First().CustomerId.ToString());
                 }
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED:
                 {
                     var message = $"KB CM: Duplicity already exist. List of customerIds = {string.Join(", ", response.IdentifiedSubjects.Select(x => x.CustomerId))}";
-                    throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, message, 11024);
+                    throw new CisValidationException(11024, message);
                 }
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.NOT_FOUND_IN_BR:
-                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "KB CM: Unable to identify customer in state registry ", 11025);
+                throw new CisValidationException(11024, "KB CM: Unable to identify customer in state registry ");
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.UNAVAILABLE_BR:
-                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Unavailable, "KB CM: State registry is unavailable", 11026);
+                throw new CisValidationException(11026, "KB CM: State registry is unavailable");
 
             default:
                 throw new InvalidEnumArgumentException(nameof(response.ResponseCode), (int)response.ResponseCode, typeof(__Contracts.CreateIdentifiedSubjectResponseResponseCode));

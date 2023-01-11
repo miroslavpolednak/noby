@@ -46,12 +46,13 @@ internal class GetCustomersHandler
                     saDetail.Mortgage?.Agent.GetValueOrDefault() == t.CustomerOnSAId,
                     false
                 ))
+                .OrderBy(t => t.CustomerRoleId).ThenBy(t => t.Item2!.Name)
                 .ToList();
         }
         else
         {
             // vsichni customeri v KonsDB
-            var customers = ServiceCallResult.ResolveAndThrowIfError<DomainServices.ProductService.Contracts.GetCustomersOnProductResponse>(await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken));
+            var customers = await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken);
 
             // vybrat a transformovat jen vlastnik, spoludluznik
             customerIdentities = customers

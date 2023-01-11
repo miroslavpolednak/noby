@@ -4,12 +4,10 @@
 /// Chyba validace názvu aplikace - vyvoláno z konstruktoru value type ApplicationKey
 /// </summary>
 public sealed class CisInvalidApplicationKeyException 
-    : BaseCisArgumentException
+    : BaseCisException
 {
-    public new const int ExceptionCode = 3;
-
     /// <param name="key">Název aplikace</param>
     public CisInvalidApplicationKeyException(string key) 
-        : base(ExceptionCode, $"Application key '{key}' is invalid", nameof(key))
+        : base(3, $"Application key '{key}' is invalid")
     { }
 }

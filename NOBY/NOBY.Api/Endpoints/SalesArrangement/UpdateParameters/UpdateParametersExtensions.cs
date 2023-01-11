@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-using NOBY.Api.Endpoints.SalesArrangement.Dto;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
@@ -69,6 +67,138 @@ internal static class UpdateParametersExtensions
                 VariableSymbol = x.VariableSymbol,
                 PayoutTypeId = x.PayoutTypeId ?? 0,
                 PrefixAccount = x.PrefixAccount
+            }));
+
+        return model;
+    }
+
+    public static _SA.SalesArrangementParametersGeneralChange ToDomainService(this Dto.ParametersGeneralChange parameters)
+    {
+        var model = new _SA.SalesArrangementParametersGeneralChange()
+        {
+            Applicant = parameters.Applicant,
+            Collateral = new()
+            {
+                IsActive = parameters.Collateral.IsActive,
+                AddLoanRealEstateCollateral = parameters.Collateral.AddLoanRealEstateCollateral,
+                ReleaseLoanRealEstateCollateral = parameters.Collateral.ReleaseLoanRealEstateCollateral
+            },
+            PaymentDay = new()
+            {
+                IsActive = parameters.PaymentDay.IsActive,
+                AgreedPaymentDay = parameters.PaymentDay.AgreedPaymentDay,
+                NewPaymentDay = parameters.PaymentDay.NewPaymentDay
+            },
+            DrawingDateTo = new()
+            {
+                IsActive = parameters.DrawingDateTo.IsActive,
+                AgreedDrawingDateTo = parameters.DrawingDateTo.AgreedDrawingDateTo,
+                CommentToDrawingDateTo = parameters.DrawingDateTo.CommentToDrawingDateTo,
+                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths
+            },
+            PaymentAccount = new()
+            {
+                IsActive = parameters.PaymentAccount.IsActive,
+                AgreedBankCode = parameters.PaymentAccount.AgreedBankCode,
+                AgreedNumber = parameters.PaymentAccount.AgreedNumber,
+                AgreedPrefix = parameters.PaymentAccount.AgreedPrefix,
+                BankCode = parameters.PaymentAccount.BankCode,
+                Number = parameters.PaymentAccount.Number,
+                OwnerDateOfBirth = parameters.PaymentAccount.OwnerDateOfBirth,
+                OwnerFirstName = parameters.PaymentAccount.OwnerFirstName,
+                OwnerLastName = parameters.PaymentAccount.OwnerLastName,
+                Prefix = parameters.PaymentAccount.Prefix
+            },
+            LoanPaymentAmount = new()
+            {
+                IsActive = parameters.LoanPaymentAmount.IsActive,
+                NewLoanPaymentAmount = parameters.LoanPaymentAmount.NewLoanPaymentAmount,
+                ActualLoanPaymentAmount = parameters.LoanPaymentAmount.ActualLoanPaymentAmount,
+                ConnectionExtraordinaryPayment = parameters.LoanPaymentAmount.ConnectionExtraordinaryPayment
+            },
+            DueDate = new()
+            {
+                IsActive = parameters.DueDate.IsActive,
+                ActualLoanDueDate = parameters.DueDate.ActualLoanDueDate,
+                ConnectionExtraordinaryPayment = parameters.DueDate.ConnectionExtraordinaryPayment,
+                NewLoanDueDate = parameters.DueDate.NewLoanDueDate
+            },
+            LoanRealEstate = new _SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstateObject
+            {
+                IsActive = parameters.LoanRealEstate.IsActive
+            },
+            LoanPurpose = new()
+            {
+                IsActive = parameters.LoanPurpose.IsActive,
+                LoanPurposesComment = parameters.LoanPurpose.LoanPurposesComment
+            },
+            DrawingAndOtherConditions = new()
+            {
+                IsActive = parameters.DrawingAndOtherConditions.IsActive,
+                CommentToChangeContractConditions = parameters.DrawingAndOtherConditions.CommentToChangeContractConditions
+            },
+            CommentToChangeRequest = new()
+            {
+                IsActive = parameters.CommentToChangeRequest.IsActive,
+                GeneralComment = parameters.CommentToChangeRequest.GeneralComment
+            }
+        };
+
+        if (parameters.LoanRealEstate?.LoanRealEstates != null)
+            model.LoanRealEstate.LoanRealEstates.AddRange(parameters.LoanRealEstate.LoanRealEstates.Select(t => new _SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstatesItem
+            {
+                RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
+                RealEstateTypeId = t.RealEstateTypeId
+            }));
+
+        return model;
+    }
+
+    public static _SA.SalesArrangementParametersHUBN ToDomainService(this Dto.ParametersHUBN parameters)
+    {
+        var model = new _SA.SalesArrangementParametersHUBN()
+        {
+            Applicant = parameters.Applicant,
+            CollateralIdentification = new()
+            {
+                RealEstateIdentification = parameters.CollateralIdentification.RealEstateIdentification
+            },
+            LoanAmount = new()
+            {
+                ChangeAgreedLoanAmount = parameters.LoanAmount.ChangeAgreedLoanAmount,
+                PreserveAgreedLoanDueDate = parameters.LoanAmount.PreserveLoanDueDate,
+                PreserveAgreedLoanPaymentAmount = parameters.LoanAmount.PreserveAgreedPaymentAmount,
+                RequiredLoanAmount = parameters.LoanAmount.RequiredLoanAmount
+            },
+            ExpectedDateOfDrawing = new()
+            {
+                IsActive = parameters.ExpectedDateOfDrawing.IsActive,
+                NewExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing.NewExpectedDateOfDrawing
+            },
+            DrawingDateTo = new()
+            {
+                IsActive = parameters.DrawingDateTo.IsActive,
+                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths
+            },
+            CommentToChangeRequest = new()
+            {
+                IsActive = parameters.CommentToChangeRequest.IsActive,
+                GeneralComment = parameters.CommentToChangeRequest.GeneralComment
+            }
+        };
+
+        if (parameters.LoanPurposes != null)
+            model.LoanPurposes.AddRange(parameters.LoanPurposes.Select(t => new _SA.SalesArrangementParametersHUBN.Types.LoanPurposeItem
+            {
+                LoanPurposeId = t.Id,
+                Sum = t.Sum
+            }));
+        if (parameters.LoanRealEstates != null)
+            model.LoanRealEstates.AddRange(parameters.LoanRealEstates.Select(t => new _SA.SalesArrangementParametersHUBN.Types.LoanRealEstateItem
+            {
+                IsCollateral = t.IsCollateral,
+                RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
+                RealEstateTypeId = t.RealEstateTypeId
             }));
 
         return model;

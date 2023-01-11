@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "Messages/CaseData.proto";
+
+message UpdateCaseDataRequest {
+	int64 CaseId = 1;
+	
+	// nove nastaveni vlastnosti Case
+	CaseData Data = 2;
+}

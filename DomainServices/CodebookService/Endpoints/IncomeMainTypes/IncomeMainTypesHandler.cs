@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts;
+﻿using DomainServices.CodebookService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.IncomeMainTypes;
 
 namespace DomainServices.CodebookService.Endpoints.IncomeMainTypes;

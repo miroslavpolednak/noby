@@ -4,7 +4,7 @@ using ProtoBuf;
 
 namespace CIS.InternalServices.NotificationService.Contracts.Result;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class GetResultRequest : IRequest<GetResultResponse>, IValidatableRequest
 {
     [ProtoMember(1)]

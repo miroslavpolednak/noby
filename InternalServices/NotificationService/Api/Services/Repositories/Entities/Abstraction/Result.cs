@@ -34,5 +34,5 @@ public abstract class Result
         set => Errors = JsonSerializer.Serialize(value);
     }
 
-    public abstract Contracts.Result.Dto.Abstraction.Result ToDto();
+    public abstract Contracts.Result.Dto.Result ToDto();
 }

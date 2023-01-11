@@ -19,9 +19,7 @@ internal sealed class GetProductObligationListHandler : IRequestHandler<GetProdu
         GetProductObligationListRequest request,
         CancellationToken cancellationToken)
     {
-        var response = ServiceCallResult.ResolveAndThrowIfError<GetProductObligationListResponse>(
-            await _productService.GetProductObligationList(
-                new Contracts.GetProductObligationListRequest { ProductId =  request.ProductId }, cancellationToken));
+        var response = await _productService.GetProductObligationList(new Contracts.GetProductObligationListRequest { ProductId = request.ProductId }, cancellationToken);
 
         return response.ProductObligations
             .Select(p => new Dto.ProductObligation

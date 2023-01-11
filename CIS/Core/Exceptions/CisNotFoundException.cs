@@ -13,13 +13,13 @@ public sealed class CisNotFoundException
     /// Název entity
     /// </summary>
     /// <example>DomainServices.Api.TestClass</example>
-    public string? EntityName { get; private set; }
+    public string? EntityName { get; init; }
 
     /// <summary>
     /// Id entity, která vyvolala vyjímku
     /// </summary>
     /// <example>111</example>
-    public object? EntityId { get; private set; }
+    public object? EntityId { get; init; }
 
     /// <param name="exceptionCode">CIS kód chyby</param>
     /// <param name="message">Text chyby</param>

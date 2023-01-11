@@ -1,0 +1,70 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "NullableGrpcDate.proto";
+import "NullableGrpcDecimal.proto";
+import "GrpcDecimal.proto";
+import "GrpcDate.proto";
+import "Identity.proto";
+
+message SalesArrangementParametersHUBN {
+	cis.types.Identity Applicant = 1;
+	PaymentAccountObject PaymentAccount = 2;
+	LoanAmountObject LoanAmount = 3;
+	repeated LoanPurposeItem LoanPurposes = 4;
+	repeated LoanRealEstateItem LoanRealEstates = 5;
+	CollateralIdentificationObject CollateralIdentification = 6;
+	ExpectedDateOfDrawingObject ExpectedDateOfDrawing = 7;
+	DrawingDateToObject DrawingDateTo = 8;
+	CommentToChangeRequestObject CommentToChangeRequest = 9;
+
+	message PaymentAccountObject {
+		string AgreedPrefix = 1;
+		string AgreedNumber = 2;
+		string AgreedBankCode = 3;
+	}
+
+	message LoanAmountObject {
+		bool ChangeAgreedLoanAmount = 1;
+		cis.types.GrpcDecimal AgreedLoanAmount = 2;
+		cis.types.NullableGrpcDecimal RequiredLoanAmount = 3;
+		bool PreserveAgreedLoanDueDate = 4;
+		cis.types.GrpcDate AgreedLoanDueDate = 5;
+		bool PreserveAgreedLoanPaymentAmount = 6;
+		cis.types.GrpcDecimal AgreedLoanPaymentAmount = 7;
+	}
+
+	message LoanPurposeItem {
+		int32 LoanPurposeId = 1;
+		cis.types.GrpcDecimal Sum = 2;
+	}
+
+	message LoanRealEstateItem {
+		int32 RealEstateTypeId = 1;
+		int32 RealEstatePurchaseTypeId = 2;
+		bool IsCollateral = 3;
+	}
+
+	message CollateralIdentificationObject {
+		string RealEstateIdentification = 1;
+	}
+
+	message ExpectedDateOfDrawingObject {
+		bool IsActive = 1;
+		cis.types.NullableGrpcDate NewExpectedDateOfDrawing = 2;
+		cis.types.GrpcDate AgreedExpectedDateOfDrawing = 3;
+	}
+
+	message DrawingDateToObject {
+		bool IsActive = 1;
+		cis.types.GrpcDate AgreedDrawingDateTo = 2;
+		google.protobuf.Int32Value ExtensionDrawingDateToByMonths = 3;
+	}
+
+	message CommentToChangeRequestObject {
+		bool IsActive = 1;
+		google.protobuf.StringValue GeneralComment = 2;
+	}
+}

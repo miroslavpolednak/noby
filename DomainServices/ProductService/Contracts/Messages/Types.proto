@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+import "GrpcDecimal.proto";
+
+message Relationship {
+    int64 PartnerId = 1;
+    int32 ContractRelationshipTypeId = 2;
+}
+
+message LoanPurpose {
+    int32 LoanPurposeId = 1;
+    cis.types.GrpcDecimal Sum = 2;
+}
+
+message PaymentAccount {
+    string Number = 1;
+    string Prefix = 2;
+    string BankCode = 3;
+}
+
+message PaymentSymbols {
+    string VariableSymbol = 1;
+    string ConstantSymbol = 2;
+    string SpecificSymbol = 3;
+}

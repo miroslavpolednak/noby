@@ -81,11 +81,7 @@ internal class C4mHttpHandler : DelegatingHandler
             }
             else
             {
-                throw new CisExtServiceValidationException(new List<(string Key, string Message)>
-                {
-                    (result.Code ?? "", result.Message ?? "")
-                },
-                $"C4M error: HttpStatusCode: {statusCode}, Category: {result.Category}; Code: {result.Code};");
+                throw new CisExtServiceValidationException(result.Code ?? "", result.Message ?? "");
             }
         }
         else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)

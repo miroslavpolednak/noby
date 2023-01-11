@@ -22,8 +22,8 @@
 		<PackageReference Include="MediatR" Version="11.1.0" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
-		<PackageReference Include="Grpc.AspNetCore" Version="2.50.0" />
-		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.50.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.51.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.51.0" />
 		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
 	</ItemGroup>
 
@@ -45,7 +45,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Handlers\Forms\" />
+	  <Folder Include="Services\Forms\" />
 	</ItemGroup>
 
 </Project>
