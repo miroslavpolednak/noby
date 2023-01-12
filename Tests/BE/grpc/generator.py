@@ -95,7 +95,7 @@ def generate():
         generate_folder(ds, [protos_CIS[0]])
 
 
-generate()
+# generate()
 
 
 # # get current directory
