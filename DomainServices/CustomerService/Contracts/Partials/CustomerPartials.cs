@@ -19,3 +19,7 @@ public partial class CustomerListRequest
 public partial class SearchCustomersRequest
     : MediatR.IRequest<SearchCustomersResponse>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class UpdateCustomerRequest
+    : MediatR.IRequest<UpdateCustomerResponse>, CIS.Core.Validation.IValidatableRequest 
+{ }

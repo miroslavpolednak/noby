@@ -37,7 +37,7 @@ internal class IdentifiedSubjectService
         return new Identity(_errorMap.ResolveAndThrowIfError(response), IdentitySchemes.Kb);
     }
 
-    public async Task UpdateSubject(CancellationToken cancellationToken)
+    public async Task UpdateSubject(UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
         await InitializeCodebooks(cancellationToken);
     }

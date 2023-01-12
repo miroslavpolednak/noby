@@ -7,9 +7,9 @@ namespace DomainServices.CustomerService.Api.Endpoints.CreateCustomer;
 internal class CreateCustomerHandler : IRequestHandler<CreateCustomerRequest, CreateCustomerResponse>
 {
     private readonly IdentifiedSubjectService _identifiedSubjectService;
-    private readonly MpDigiCreateClient _mpDigiClient;
+    private readonly MpDigiClient _mpDigiClient;
     
-    public CreateCustomerHandler(IdentifiedSubjectService identifiedSubjectService, MpDigiCreateClient mpDigiClient)
+    public CreateCustomerHandler(IdentifiedSubjectService identifiedSubjectService, MpDigiClient mpDigiClient)
     {
         _identifiedSubjectService = identifiedSubjectService;
         _mpDigiClient = mpDigiClient;

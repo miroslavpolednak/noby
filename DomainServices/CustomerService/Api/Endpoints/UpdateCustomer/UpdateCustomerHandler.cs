@@ -1,9 +1,37 @@
-﻿namespace DomainServices.CustomerService.Api.Endpoints.UpdateCustomer;
+﻿using System.ComponentModel;
+using DomainServices.CustomerService.Api.Services.CustomerManagement;
+using DomainServices.CustomerService.Api.Services.KonsDb;
 
-public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerRequest, UpdateCustomerResponse>
+namespace DomainServices.CustomerService.Api.Endpoints.UpdateCustomer;
+
+internal class UpdateCustomerHandler : IRequestHandler<UpdateCustomerRequest, UpdateCustomerResponse>
 {
-    public Task<UpdateCustomerResponse> Handle(UpdateCustomerRequest request, CancellationToken cancellationToken)
+    private readonly IdentifiedSubjectService _identifiedSubjectService;
+    private readonly MpDigiClient _mpDigiClient;
+
+    public UpdateCustomerHandler(
+        IdentifiedSubjectService identifiedSubjectService,
+        MpDigiClient mpDigiClient)
     {
-        throw new NotImplementedException();
+        _identifiedSubjectService = identifiedSubjectService;
+        _mpDigiClient = mpDigiClient;
+    }
+    
+    public async Task<UpdateCustomerResponse> Handle(UpdateCustomerRequest request, CancellationToken cancellationToken)
+    {
+        if (request.Mandant == Mandants.Kb)
+        {
+            await _identifiedSubjectService.UpdateSubject(request, cancellationToken);
+        }
+        else if (request.Mandant == Mandants.Mp)
+        {
+            await _mpDigiClient.UpdatePartner(request, cancellationToken);
+        }
+        else
+        {
+            throw new InvalidEnumArgumentException();
+        }
+        
+        return new UpdateCustomerResponse();
     }
 }
