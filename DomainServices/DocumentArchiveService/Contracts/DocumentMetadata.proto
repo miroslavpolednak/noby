@@ -49,7 +49,5 @@ message DocumentMetadata {
     google.protobuf.Int32Value Completeness = 18;
     // Vedlejší heslo jen archiv TCP
     repeated int32 MinorCodes = 19;
-
-    google.protobuf.Timestamp testtime = 20;
 }
 

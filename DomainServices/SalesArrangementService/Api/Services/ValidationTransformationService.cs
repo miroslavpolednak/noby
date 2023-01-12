@@ -57,8 +57,7 @@ internal sealed partial class ValidationTransformationServiceFactory
             var matches = _arrayIndexesRegex.Matches(item.Parameter);
             if (matches.Any())
             {
-                string key = _arrayIndexesRegex.Replace(item.Parameter, _parameterReplaceEvaluator);
-                titem = getTransformationItem(key);
+                titem = getTransformationItem(_arrayIndexesRegex.Replace(item.Parameter, _parameterReplaceEvaluator));
                 string[] arguments = matches.Select(m =>
                 {
                     switch (m.Groups["par"].Value)
@@ -92,7 +91,7 @@ internal sealed partial class ValidationTransformationServiceFactory
 
             TransformationItem getTransformationItem(string key)
             {
-                if (_transformationMatrix.Any(t => t.Key == item.Parameter))
+                if (_transformationMatrix.Any(t => t.Key == key))
                 {
                     return _transformationMatrix[key];
                 }

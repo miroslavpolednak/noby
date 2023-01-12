@@ -1,0 +1,77 @@
+{
+    "ResourceProcessId": "11111111-1111-1111-1111-111111111111",
+    "BasicParameters": {
+        "FinancialResourcesOwn": {
+            "units": 1000000,
+            "nanos": 0
+        },
+        "FinancialResourcesOther":null,
+        "GuaranteeDateTo":null,
+        "StatementTypeId": 1
+    },
+    "SimulationInputs": {
+        "ExpectedDateOfDrawing": {
+            "year": 2023,
+            "month": 1,
+            "day": 3
+        },
+        "ProductTypeId": 20001,
+        "LoanKindId": 2000,
+        "LoanAmount": {
+            "units": 1000000,
+            "nanos": 0
+        },
+        "LoanDuration": 144,
+        "GuaranteeDateFrom": {
+            "year": 2023,
+            "month": 1,
+            "day": 2
+        },
+        "InterestRateDiscount": {
+            "units": 0,
+            "nanos": 0
+        },
+        "FixedRatePeriod": 12,
+        "CollateralAmount": {
+            "units": 2000000,
+            "nanos": 0
+        },
+        "DrawingTypeId": 2,
+        "DrawingDurationId":null,
+        "PaymentDay": 15,
+        "IsEmployeeBonusRequested":false,
+        "Developer": {
+            "DeveloperId":null,
+            "ProjectId":null,
+            "NewDeveloperName": "",
+            "NewDeveloperProjectName": "",
+            "NewDeveloperCin": ""
+        },
+        "LoanPurposes": [
+            {
+                "LoanPurposeId": 202,
+                "Sum": {
+                    "units": 1000000,
+                    "nanos": 0
+                }
+            }
+        ],
+        "FeeSettings":null,
+        "MarketingActions": {
+            "Domicile":true,
+            "HealthRiskInsurance":true,
+            "RealEstateInsurance":false,
+            "IncomeLoanRatioDiscount":false,
+            "UserVip":false
+        },
+        "Fees": [],
+        "RiskLifeInsurance": {
+            "Sum":null,
+            "Frequency":null
+        },
+        "RealEstateInsurance": {
+            "Sum":null,
+            "Frequency":null
+        }
+    }
+}
