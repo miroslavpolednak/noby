@@ -63,7 +63,7 @@ internal class CustomerManagementSearchProvider
             BirthEstablishedDate = searchRequest.NaturalPerson?.DateOfBirth,
             Email = searchRequest.Email.ToCMString(),
             PhoneNumber = searchRequest.PhoneNumber.ToCMString(),
-            ShowOnlyIdentified = searchRequest.ShowOnlyIdentified ?? true
+            ShowOnlyIdentified = searchRequest.SearchOnlyIdentified ?? true
         };
 
         if (!string.IsNullOrEmpty(searchRequest.NaturalPerson?.BirthNumber))

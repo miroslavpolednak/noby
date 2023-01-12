@@ -224,7 +224,7 @@ CREATE TABLE [dbo].[IdentificationDocumentTypeExtension](
 	(1, 'IDCard'),
 	(2, 'Passport'),
 	(3, 'ResidencePermit'),
-	(4, 'Undefined');
+	(4, 'Foreign');
 GO
 
 
@@ -351,3 +351,37 @@ CREATE TABLE [dbo].[SmsNotificationType](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
+
+
+-- table 'DocumentTypes'
+DROP TABLE IF EXISTS [dbo].[DocumentTypes];
+CREATE TABLE [dbo].[DocumentTypes](
+	[Id] [int] NOT NULL,
+	[ShortName] [varchar](20) NOT NULL,
+	[Name] [varchar](200) NOT NULL,
+	[FileName] [varchar](200) NOT NULL,
+	[SalesArrangementTypeId] [int] NULL,
+	[FormTypeId] [bigint] NULL,
+	[ValidFrom] [datetime] NOT NULL,
+	[ValidTo] [datetime] NULL,
+ CONSTRAINT [PK_DocumentTypes] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+
+	INSERT INTO [dbo].[DocumentTypes]([Id], [ShortName], [Name], [FileName], [SalesArrangementTypeId], [FormTypeId], [ValidFrom], [ValidTo])
+    VALUES
+    (1, 'NABIDKA', 'Nabídka hypotečního úvěru', 'Nabidka_hypotecniho_uveru', NULL, NULL, '2022-01-01', NULL),
+	(2, 'KALKULHU', 'Hypoteční úvěr - kalkulace', 'Kalkulace_hypotecniho_uveru', NULL, NULL, '2022-01-01', NULL),
+	(3, 'SPLKALHU', 'Simulace splátkového kalendáře', 'Simulace_splatkoveho_kalendare', NULL, NULL, '2022-01-01', NULL),
+	(4, 'ZADOSTHU', 'Žádost o poskytnutí hypotečního úvěru - první domácnost', 'Zadost_o_poskytnuti_hypotecniho_uveru_d1', NULL, 3601001, '2022-01-01', NULL),
+	(5, 'ZADOSTHD', 'Žádost o poskytnutí hypotečního úvěru - druhá domácnost', 'Zadost_o_poskytnuti_hypotecniho_uveru_d2', NULL, 3602001, '2022-01-01', NULL),
+	(6, 'ZADOCERP', 'Žádost o čerpání hypotečního úvěru', 'Zadost_o_cerpani_hypotecniho_uveru', 6, 3700001, '2022-01-01', NULL),
+	(7, 'SDELUCET', 'Sdělení čísla účtu pro čerpání', 'Sdeleni_cisla_uctu_pro_cerpani', NULL, NULL, '2022-01-01', NULL),
+	(8, 'ZAOZMPAR', 'Žádost o změnu obecná', 'Zadost_o_zmenu_obecna', NULL, NULL, '2022-01-01', NULL),
+	(9, 'ZAOZMDLU', 'Žádost o změnu dlužníka', 'Zadost_o_zmenu_dluznika', NULL, 3602001, '2022-01-01', NULL),
+	(10, 'ZAODHUBN', 'Žádost o změnu - HÚ bez nemovitosti', 'Zadost_o_zmena_hu_bez_nemovitosti', NULL, NULL, '2022-01-01', NULL),
+	(11, 'ZADOOPCI', 'Žádost o změnu Flexi', 'Zadost_o_zmena_Flexi', NULL, NULL, '2022-01-01', NULL);
+GO
+
