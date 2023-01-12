@@ -70,6 +70,7 @@ public class MpDigiClient
 
         if (!exists)
         {
+            // todo: error code
             throw new CisAlreadyExistsException(9999999, "Partner does not exist in KonsDB."); 
         }
         

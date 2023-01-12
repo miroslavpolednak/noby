@@ -28,6 +28,7 @@ internal sealed class RealIdentifiedSubjectBrClient : IIdentifiedSubjectBrClient
             throw response.StatusCode switch
             {
                 HttpStatusCode.BadRequest => new CisExtServiceValidationException($"{error?.Message}: {error?.Detail}"),
+                // todo: error code
                 HttpStatusCode.NotFound => new CisNotFoundException(9999999, "customer", customerId),
                 _ => new CisExtServiceValidationException(
                     $"{StartupExtensions.ServiceName} unknown error {response?.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}")
