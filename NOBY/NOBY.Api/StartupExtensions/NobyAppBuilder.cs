@@ -51,7 +51,7 @@ internal static class NobyAppBuilder
                 appBuilder.UseDeveloperExceptionPage();
             else*/
                 // exception handling
-                appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middlewares.ApiExceptionMiddleware>();
+                appBuilder.UseMiddleware<NOBY.Infrastructure.ErrorHandling.NobyApiExceptionMiddleware>();
 
             if (app.Environment.IsProduction())
                 appBuilder.UseHsts();

@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.WebApi;
 
-internal static class LoggerExtensions
+public static class LoggerExtensions
 {
     private static readonly Action<ILogger, Exception> _webApiUncoughtException;
     private static readonly Action<ILogger, string, Exception> _webApiAuthenticationException;
