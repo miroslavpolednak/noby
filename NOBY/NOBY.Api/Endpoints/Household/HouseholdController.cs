@@ -12,10 +12,10 @@ namespace NOBY.Api.Endpoints.Household;
 public class HouseholdController : ControllerBase
 {
     /// <summary>
-    /// Seznam domacnosti
+    /// Seznam domácností
     /// </summary>
     /// <remarks>
-    /// Vraci zakladni seznam domacnosti pro dany Sales Arrangement bez detailu.<br/>
+    /// Vraci zakladni seznam domacností pro daný Sales Arrangement bez detailu.<br/>
     /// <i>DS:</i> SalesArrangementService/GetHouseholdList
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
@@ -50,7 +50,7 @@ public class HouseholdController : ControllerBase
     /// <i>DS:</i> SalesArrangementService/DeleteHousehold
     /// </remarks>
     /// <param name="householdId">ID domacnosti</param>
-    /// <returns>ID smazane domacnosti</returns>
+    /// <returns>ID smazané domacnosti</returns>
     [HttpDelete("{householdId:int}")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
@@ -59,7 +59,7 @@ public class HouseholdController : ControllerBase
         => await _mediator.Send(new DeleteHousehold.DeleteHouseholdRequest(householdId));
 
     /// <summary>
-    /// Vytvoreni nove domacnosti
+    /// Vytvořeni nové domacnosti
     /// </summary>
     /// <remarks>
     /// Vytvoří nový household zavoláním DS: SalesArrangementService/CreateHousehold a zároveň vytvoří prvního CustomerOnSA s rolí odpovídající vytvářené domácnosti (Spolužadatel na spolužadatelské a ručitel na ručitelské domácnosti) pomocí volání DS: SalesArrangementService/CreateCustomer.<br/>
@@ -74,12 +74,12 @@ public class HouseholdController : ControllerBase
         => await _mediator.Send(request ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 
     /// <summary>
-    /// Update existujici domacnosti
+    /// Update existující domácnosti
     /// </summary>
     /// <remarks>
     /// <i>DS:</i> SalesArrangementService/UpdateHousehold
     /// </remarks>
-    /// <param name="householdId">ID domacnosti</param>
+    /// <param name="householdId">ID domácnosti</param>
     [HttpPut("{householdId:int}")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
@@ -88,7 +88,7 @@ public class HouseholdController : ControllerBase
         => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 
     /// <summary>
-    /// Update customeru na domacnosti
+    /// Update customeru na domácnosti
     /// </summary>
     /// <remarks>
     /// Založí, případně updatuje CustomerOnSAId1 a CustomerOnSAId2 podle objektu v requestu Customer1 a Customer2.
@@ -100,7 +100,7 @@ public class HouseholdController : ControllerBase
     /// Pokud je pri update nebo create klient identifikovan, rezervuje se mu modre ID a pousti se flow identifikovaneho klienta.<br/>
     /// při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp
     /// </remarks>
-    /// <param name="householdId">ID domacnosti</param>
+    /// <param name="householdId">ID domácnosti</param>
     /// <returns>CustomerOnSAId nalinkovanych customeru</returns>
     [HttpPut("{householdId:int}/customers")]
     [Consumes("application/json")]

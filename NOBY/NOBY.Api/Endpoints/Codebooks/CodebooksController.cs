@@ -101,10 +101,10 @@ public class CodebooksController : ControllerBase
     }
 
     /// <summary>
-    /// Ciselnik fixace uveru.
+    /// Číselník fixace úvěru.
     /// </summary>
-    /// <returns>Kolekce dob fixaci v mesicich.</returns>
-    /// <param name="productTypeId">ID typu produktu, pro ktery se maji vratit fixace.</param>
+    /// <returns>Kolekce dob fixací v měsících.</returns>
+    /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit fixace.</param>
     [HttpGet("fixation-period-length")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<int>), StatusCodes.Status200OK)]
@@ -116,9 +116,9 @@ public class CodebooksController : ControllerBase
             .ToList();
 
     /// <summary>
-    /// Ciselnik druhu uveru.
+    /// Číselník druhu úveru.
     /// </summary>
-    /// <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
+    /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
     [HttpGet("product-loan-kinds")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<LoanKindsItem>), StatusCodes.Status200OK)]
@@ -136,7 +136,7 @@ public class CodebooksController : ControllerBase
     }
 
     /// <summary>
-    /// FixedRatePeriod s filtraci na product
+    /// FixedRatePeriod s filtrací na product
     /// </summary>
     /// <param name="productTypeId">ID typu produktu</param>
     [HttpGet("fixed-rate-periods")]

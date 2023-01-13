@@ -27,16 +27,16 @@ public class CustomerController : ControllerBase
         => await _mediator.Send(resquest, cancellationToken);
 
     /// <summary>
-    /// Vyhledavani klientu
+    /// Vyhledávání klientů
     /// </summary>
     /// <remarks>
-    /// Endpoint umoznuje:
-    /// - hledat podle zadanych kriterii
-    /// - nastavit strankovani
-    /// - nastavit razeni [lastName]
+    /// Endpoint umožňuje:
+    /// - hledat podle zadaných kriterií
+    /// - nastavit stránkovaní
+    /// - nastavit řazení [lastName]
     /// <i>DS:</i> CustomerService/SearchCustomers
     /// </remarks>
-    /// <returns>Seznam nalezenych klientu. BE sluzba neni strankovatelna, takze strankovani je jen jako fake na FE.</returns>
+    /// <returns>Seznam nalezených klientů. BE služba není stránkovatelná, takže stránkovaní je jen jako fake na FE.</returns>
     [HttpPost("customer/search")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -51,7 +51,7 @@ public class CustomerController : ControllerBase
     /// <remarks>
     /// <i>DS:</i> CustomerService/GetCustomer
     /// </remarks>
-    /// <returns>Kompletni detail klienta vraceny z KB CM nebo KonsDb.</returns>
+    /// <returns>Kompletní detail klienta vrácený z KB CM nebo KonsDb.</returns>
     [HttpPost("customer/get")]
     [Consumes("application/json")]
     [Produces("application/json")]
@@ -64,7 +64,7 @@ public class CustomerController : ControllerBase
     /// Identifikace klienta
     /// </summary>
     /// <remarks>
-    /// Slouzi pro idenfifikaci klienta.<br />Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br/>
+    /// Slouží pro idenfifikaci klienta.<br />Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer-on-sa/{customerOnSAId:int}/identify-by-identity")]

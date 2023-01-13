@@ -10,12 +10,12 @@ public class UsersController : ControllerBase
     public UsersController(IMediator mediator) =>  _mediator = mediator;
     
     /// <summary>
-    /// Informace o prihlasenem uzivateli.
+    /// Informace o prihlašeném uživateli.
     /// </summary>
     /// <remarks>
-    /// Pokud je uzivatel prihlasen (existuje platna auth cookie), vraci zakladni informace o uzivateli.
+    /// Pokud je uživatel přihlášen (existuje platná auth cookie), vrací základní informace o uživateli.
     /// </remarks>
-    /// <returns>Instance prihlaseneho uzivatele.</returns>
+    /// <returns>Instance přihlášeného uživatele.</returns>
     [HttpGet("")]
     [ProducesResponseType(typeof(GetCurrentUser.GetCurrentUserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -27,7 +27,7 @@ public class UsersController : ControllerBase
     /// Endpoint pro Simple Authentication provider.
     /// </summary>
     /// <remarks>
-    /// Slouzi pro vytvoreni auth cookie v pripade, ze aplikace neni napojena na CAAS.
+    /// Slouží pro vytvoření auth cookie v případe, že aplikace není napojena na CAAS.
     /// </remarks>
     [HttpPost("signin")]
     [AllowAnonymous]

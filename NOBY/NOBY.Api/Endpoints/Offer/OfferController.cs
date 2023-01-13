@@ -10,7 +10,7 @@ public class OfferController : ControllerBase
     public OfferController(IMediator mediator) =>  _mediator = mediator;
     
     /// <summary>
-    /// Simulace KB hypoteky.
+    /// Simulace KB hypotéky.
     /// </summary>
     /// <remarks>
     /// <i>DS:</i> OfferService/SimulateMortgage
@@ -27,12 +27,12 @@ public class OfferController : ControllerBase
         => await _mediator.Send(request, cancellationToken);
     
     /// <summary>
-    /// Detail provedene simulace dle ID simulace.
+    /// Detail provedené simulace dle ID simulace.
     /// </summary>
     /// <remarks>
     /// <i>DS:</i> OfferService/GetMortgageData
     /// </remarks>
-    /// <returns>Vstupy a vystupy ulozene simulace.</returns>
+    /// <returns>Vstupy a výstupy uložené simulace.</returns>
     [HttpGet("mortgage/{offerId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
@@ -41,14 +41,14 @@ public class OfferController : ControllerBase
         => await _mediator.Send(new GetMortgageByOfferId.GetMortgageByOfferIdRequest(offerId), cancellationToken);
     
     /// <summary>
-    /// Detail provedene simulace dle ID Sales Arrangement.
+    /// Detail provedené simulace dle ID Sales Arrangement.
     /// </summary>
     /// <remarks>
-    /// Stejny endpoint jako GetMortgageByOfferId, jen podle jineho ID.<br/>
+    /// Stejný endpoint jako GetMortgageByOfferId, jen podle jiného ID.<br/>
     /// <i>DS:</i> SalesArrangementService/GetSalesArrangement (to get OfferId)<br/>
     /// <i>DS:</i> OfferService/GetMortgageData
     /// </remarks>
-    /// <returns>Vstupy a vystupy ulozene simulace.</returns>
+    /// <returns>Vstupy a výstupy uložené simulace.</returns>
     [HttpGet("mortgage/sales-arrangement/{salesArrangementId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
@@ -57,13 +57,13 @@ public class OfferController : ControllerBase
         => await _mediator.Send(new GetMortgageBySalesArrangement.GetMortgageBySalesArrangementRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
-    /// Vytvoreni noveho pripadu (hypoteky) ze simulace.
+    /// Vytvoření nového případu (hypotéky) ze simulace.
     /// </summary>
     /// <remarks>
-    /// Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA.<br/>
-    /// V pripade identifikovaneho klienta navic vytvorit Product, RiskBusinessCaseId.<br/>
-    /// Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.<br/>
-    /// Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/><br/>
+    /// Vytvoří nový Case, Sales Arrangement, Household, CustomerOnSA.<br/>
+    /// V případe identifikovaného klienta navíc vytvořit Product, RiskBusinessCaseId.<br/>
+    /// Pokud je identifikován klient, v request modelu musí být naplněna vlastnost customer.<br/>
+    /// Pokud se jedná o anonymní případ, musi být vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/><br/>
     /// <i>DS:</i> OfferService/GetMortgageData<br/>
     /// <i>DS:</i> SalesArrangement/GetSalesArrangementByOfferId<br/>
     /// <i>DS:</i> CaseService/CreateCase<br/>
@@ -73,7 +73,7 @@ public class OfferController : ControllerBase
     /// <i>DS:</i> SalesArrangement/CreateCustomerOnSA
     /// </remarks>
     /// <param name="request">Identifikace klienta a ID simulace.</param>
-    /// <returns>ID nove vytvoreneho Case</returns>
+    /// <returns>ID nově vytvořeného Case</returns>
     [HttpPost("mortgage/create-case")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -84,7 +84,7 @@ public class OfferController : ControllerBase
         => await _mediator.Send(request);
 
     /// <summary>
-    /// Nalinkuje novou modelaci na stavajici SA.
+    /// Nalinkuje novou modelaci na stávající SA.
     /// </summary>
     /// <remarks>
     /// Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />

@@ -62,13 +62,13 @@ public class CasesController : ControllerBase
         => await _mediator.Send(new GetById.GetByIdRequest(caseId), cancellationToken);
     
     /// <summary>
-    /// Pocty Cases pro prihlaseneho uzivatele zgrupovane podle nastavenych filtru.
+    /// Počty Cases pro přihlášeného uživatele zgrupované podle nastavených filtrů.
     /// </summary>
     /// <remarks>
     /// <i>DS:</i> CseService/GetCaseCounts<br/>
     /// https://wiki.kb.cz/confluence/display/HT/getCaseCounts
     /// </remarks>
-    /// <returns>Kolekce ID stavu s poctem Cases.</returns>
+    /// <returns>Kolekce ID stavu s počtem Cases.</returns>
     [HttpGet("dashboard-filters")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Case" })]
@@ -77,19 +77,19 @@ public class CasesController : ControllerBase
         => await _mediator.Send(new GetTotalsByStates.GetDashboardFiltersRequest(), cancellationToken);
 
     /// <summary>
-    /// Seznam Cases pro prihlaseneho uzivatele.
+    /// Seznam Cases pro přihlášeného uživatele.
     /// </summary>
     /// <remarks>
-    /// Endpoint umoznuje:
-    /// - vyhledat Case podle retezce
-    /// - zobrazit pouze Cases v pozadovanem stavu
-    /// - nastavit strankovani
-    /// - nastavit razeni [povolene: stateUpdated, customerName]
+    /// Endpoint umožnuje:
+    /// - vyhledat Case podle řetězce
+    /// - zobrazit pouze Cases v požadovaném stavu
+    /// - nastavit stránkovaní
+    /// - nastavit řazení [povolené: stateUpdated, customerName]
     /// <i>DS:</i> CaseService/SearchCases<br/>
     /// https://wiki.kb.cz/confluence/display/HT/searchCases
     /// </remarks>
-    /// <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
-    /// <returns>Seznam Cases + informace o pouzitem strankovani/razeni.</returns>
+    /// <param name="request">Nastavení možnosti filtrovaní, strankovaní a řazení.</param>
+    /// <returns>Seznam Cases + informace o použitém stránkovaní/řazení.</returns>
     [HttpPost("search")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -99,7 +99,7 @@ public class CasesController : ControllerBase
         => await _mediator.Send(request, cancellationToken);
 
     /// <summary>
-    /// Seznam workflow tasku dotazeny z SB.
+    /// Seznam workflow tasku dotažený z SB.
     /// </summary>
     /// <remarks>
     /// <i>DS:</i> CaseService/GetTaskList<br/>
