@@ -1,5 +1,5 @@
 ﻿namespace CIS.InternalServices.DataAggregatorService.Contracts;
 
-public partial class DocumentFieldData : ICommonDocumentFieldValue
+public partial class GenericTableRowValue : ICommonDocumentFieldValue
 {
 }
