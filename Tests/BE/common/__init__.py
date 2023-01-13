@@ -11,4 +11,6 @@ from .sqlite.DbManager import DbManager as SqliteDbManager
 from .enums.EService import EService
 from .enums.EServiceType import EServiceType
 
+from .helpers.Convertor import Convertor
+
 config:IConfig = ConfigDefault()

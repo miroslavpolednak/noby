@@ -2,8 +2,14 @@ import pytest
 
 from domain_services.ds_offer.wrappers import *
 from domain_services.ds_offer.OfferSvc import OfferSvc
+from domain_services.ds_offer.model import build_models
 
-from domain_services.ds_offer import db_provider, fs_provider
+from domain_services.ds_offer import db_provider, fs_provider#, Offer
+
+m = build_models()
+print(m)
+# offer = Offer(dict())
+# print(offer)
 
 service = OfferSvc()
 

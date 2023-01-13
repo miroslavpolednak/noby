@@ -24,6 +24,8 @@ CREATE TABLE InputFee (InputFeePk INTEGER PRIMARY KEY, MortgageSimulationInputsP
 CREATE TABLE RiskLifeInsurance (RiskLifeInsurancePk INTEGER PRIMARY KEY, Sum REAL NOT NULL /*GrpcDecimal*/, Frequency INTEGER NULL /*Int32Value*/);
 CREATE TABLE RealEstateInsurance (RealEstateInsurancePk INTEGER PRIMARY KEY, Sum REAL NOT NULL /*GrpcDecimal*/, Frequency INTEGER NULL /*Int32Value*/);
 
+-- JSONs
+CREATE TABLE OfferMortgage (OfferMortgageId INTEGER PRIMARY KEY, Request TEXT NOT NULL, Response TEXT NULL)
 
 -- SET foreign keys To ON
 PRAGMA foreign_keys = ON;
