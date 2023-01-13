@@ -84,17 +84,17 @@ internal static class GetDetailExtensions
                 CommentToDrawingDateTo = model.DrawingDateTo.CommentToDrawingDateTo,
                 ExtensionDrawingDateToByMonths = model.DrawingDateTo.ExtensionDrawingDateToByMonths
             },
-            PaymentAccount = new PaymentAccountObject
+            RepaymentAccount = new PaymentAccountObject
             {
-                IsActive = model.PaymentAccount.IsActive,
-                AgreedBankCode = model.PaymentAccount.AgreedBankCode,
-                AgreedNumber = model.PaymentAccount.AgreedNumber,
-                AgreedPrefix = model.PaymentAccount.AgreedPrefix,
-                BankCode = model.PaymentAccount.BankCode,
-                Number = model.PaymentAccount.Number,
-                OwnerDateOfBirth = model.PaymentAccount.OwnerDateOfBirth,
-                OwnerFirstName = model.PaymentAccount.OwnerFirstName,
-                OwnerLastName = model.PaymentAccount.OwnerLastName
+                IsActive = model.RepaymentAccount.IsActive,
+                AgreedBankCode = model.RepaymentAccount.AgreedBankCode,
+                AgreedNumber = model.RepaymentAccount.AgreedNumber,
+                AgreedPrefix = model.RepaymentAccount.AgreedPrefix,
+                BankCode = model.RepaymentAccount.BankCode,
+                Number = model.RepaymentAccount.Number,
+                OwnerDateOfBirth = model.RepaymentAccount.OwnerDateOfBirth,
+                OwnerFirstName = model.RepaymentAccount.OwnerFirstName,
+                OwnerLastName = model.RepaymentAccount.OwnerLastName
             },
             LoanPaymentAmount = new LoanPaymentAmountObject
             {

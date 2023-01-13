@@ -18,7 +18,6 @@ internal sealed class HUBNBuilder
         _request.HUBN = new __SA.SalesArrangementParametersHUBN
         {
             DrawingDateTo = new(),
-            PaymentAccount = new(),
             CommentToChangeRequest = new()
         };
 
@@ -28,12 +27,6 @@ internal sealed class HUBNBuilder
         {
             var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
 
-            if (mortgageInstance.Mortgage?.PaymentAccount != null)
-            {
-                _request.HUBN.PaymentAccount.AgreedPrefix = mortgageInstance.Mortgage.PaymentAccount.Prefix;
-                _request.HUBN.PaymentAccount.AgreedNumber = mortgageInstance.Mortgage.PaymentAccount.Number;
-                _request.HUBN.PaymentAccount.AgreedBankCode = mortgageInstance.Mortgage.PaymentAccount.BankCode;
-            }
             _request.HUBN.LoanAmount.AgreedLoanAmount = (decimal?)mortgageInstance.Mortgage?.LoanAmount ?? 0M;
             _request.HUBN.LoanAmount.AgreedLoanDueDate = (DateTime?)mortgageInstance.Mortgage?.LoanDueDate ?? DateTime.Now;
             _request.HUBN.LoanAmount.AgreedLoanPaymentAmount = (decimal?)mortgageInstance.Mortgage?.LoanPaymentAmount ?? 0M;

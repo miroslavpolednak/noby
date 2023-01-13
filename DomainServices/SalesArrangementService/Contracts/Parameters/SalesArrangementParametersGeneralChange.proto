@@ -14,7 +14,7 @@ message SalesArrangementParametersGeneralChange {
 	CollateralObject Collateral = 2;
 	PaymentDayObject PaymentDay = 3;
 	DrawingDateToObject DrawingDateTo = 4;
-	PaymentAccountObject PaymentAccount = 5;
+	PaymentAccountObject RepaymentAccount = 5;
 	LoanPaymentAmountObject LoanPaymentAmount = 6;
 	DueDateObject DueDate = 7;
 	LoanRealEstateObject LoanRealEstate = 8;

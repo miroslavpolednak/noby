@@ -20,7 +20,7 @@ internal sealed class GeneralChangeBuilder
             Collateral = new(),
             PaymentDay = new(),
             DrawingDateTo = new(),
-            PaymentAccount = new(),
+            RepaymentAccount = new(),
             LoanPaymentAmount = new(),
             DueDate = new(),
             LoanRealEstate = new(),
@@ -39,9 +39,9 @@ internal sealed class GeneralChangeBuilder
             _request.GeneralChange.DrawingDateTo.AgreedDrawingDateTo = (DateTime?)mortgageInstance.Mortgage?.DrawingDateTo ?? DateTime.Now;
             if (mortgageInstance.Mortgage?.PaymentAccount != null)
             {
-                _request.GeneralChange.PaymentAccount.AgreedPrefix = mortgageInstance.Mortgage.PaymentAccount.Prefix;
-                _request.GeneralChange.PaymentAccount.AgreedNumber = mortgageInstance.Mortgage.PaymentAccount.Number;
-                _request.GeneralChange.PaymentAccount.AgreedBankCode = mortgageInstance.Mortgage.PaymentAccount.BankCode;
+                _request.GeneralChange.RepaymentAccount.AgreedPrefix = mortgageInstance.Mortgage.PaymentAccount.Prefix;
+                _request.GeneralChange.RepaymentAccount.AgreedNumber = mortgageInstance.Mortgage.PaymentAccount.Number;
+                _request.GeneralChange.RepaymentAccount.AgreedBankCode = mortgageInstance.Mortgage.PaymentAccount.BankCode;
             }
             _request.GeneralChange.LoanPaymentAmount.ActualLoanPaymentAmount = (decimal?)mortgageInstance.Mortgage?.LoanPaymentAmount ?? 0M;
             _request.GeneralChange.DueDate.ActualLoanDueDate = (DateTime?)mortgageInstance.Mortgage?.LoanDueDate ?? DateTime.Now;

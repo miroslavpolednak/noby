@@ -2272,7 +2272,7 @@
             Lhůta ukončení čerpání
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersGeneralChange.PaymentAccount">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersGeneralChange.RepaymentAccount">
             <summary>
             Účet pro splácení
             </summary>
@@ -2580,26 +2580,6 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersHUBN.CommentToChangeRequest">
             <summary>
             Komentář k žádosti o změnu
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.SalesArrangement.Dto.PaymentAccountObject2">
-            <summary>
-            Účet pro splácení
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.PaymentAccountObject2.AgreedPrefix">
-            <summary>
-            Předčíslí účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.PaymentAccountObject2.AgreedNumber">
-            <summary>
-            Číslo účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.PaymentAccountObject2.AgreedBankCode">
-            <summary>
-            Kód banky
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanAmountObject.ChangeAgreedLoanAmount">

@@ -96,18 +96,18 @@ internal static class UpdateParametersExtensions
                 CommentToDrawingDateTo = parameters.DrawingDateTo.CommentToDrawingDateTo,
                 ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths
             },
-            PaymentAccount = new()
+            RepaymentAccount = new()
             {
-                IsActive = parameters.PaymentAccount.IsActive,
-                AgreedBankCode = parameters.PaymentAccount.AgreedBankCode,
-                AgreedNumber = parameters.PaymentAccount.AgreedNumber,
-                AgreedPrefix = parameters.PaymentAccount.AgreedPrefix,
-                BankCode = parameters.PaymentAccount.BankCode,
-                Number = parameters.PaymentAccount.Number,
-                OwnerDateOfBirth = parameters.PaymentAccount.OwnerDateOfBirth,
-                OwnerFirstName = parameters.PaymentAccount.OwnerFirstName,
-                OwnerLastName = parameters.PaymentAccount.OwnerLastName,
-                Prefix = parameters.PaymentAccount.Prefix
+                IsActive = parameters.RepaymentAccount.IsActive,
+                AgreedBankCode = parameters.RepaymentAccount.AgreedBankCode,
+                AgreedNumber = parameters.RepaymentAccount.AgreedNumber,
+                AgreedPrefix = parameters.RepaymentAccount.AgreedPrefix,
+                BankCode = parameters.RepaymentAccount.BankCode,
+                Number = parameters.RepaymentAccount.Number,
+                OwnerDateOfBirth = parameters.RepaymentAccount.OwnerDateOfBirth,
+                OwnerFirstName = parameters.RepaymentAccount.OwnerFirstName,
+                OwnerLastName = parameters.RepaymentAccount.OwnerLastName,
+                Prefix = parameters.RepaymentAccount.Prefix
             },
             LoanPaymentAmount = new()
             {
