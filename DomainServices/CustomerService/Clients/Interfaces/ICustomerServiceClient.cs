@@ -33,7 +33,6 @@ public interface ICustomerServiceClient
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="UpdateCustomerResponse"/> - OK;</returns>
     /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
-    /// todo: doc
     Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default);
     
     /// <summary>

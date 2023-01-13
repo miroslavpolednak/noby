@@ -1,4 +1,5 @@
-﻿using CIS.Foms.Enums;
+﻿using CIS.Core.Exceptions;
+using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
@@ -30,9 +31,9 @@ internal class IdentifiedSubjectService
     {
         await InitializeCodebooks(cancellationToken);
 
-        var createRequest = BuildCreateRequest(request);
+        var identifiedSubject = BuildCreateRequest(request);
 
-        var response = await _identifiedSubjectClient.CreateIdentifiedSubject(createRequest, request.HardCreate, cancellationToken);
+        var response = await _identifiedSubjectClient.CreateIdentifiedSubject(identifiedSubject, request.HardCreate, cancellationToken);
 
         return new Identity(_errorMap.ResolveAndThrowIfError(response), IdentitySchemes.Kb);
     }
@@ -40,6 +41,18 @@ internal class IdentifiedSubjectService
     public async Task UpdateSubject(UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
         await InitializeCodebooks(cancellationToken);
+
+        var customerId = request.Identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+
+        if (customerId is null)
+        {
+            // todo: error_code
+            throw new CisArgumentException(9999999, "Customer does not have KB Identity", "IdentityId");
+        }
+        
+        var identifiedSubject = BuildUpdateRequest(request);
+
+        await _identifiedSubjectClient.UpdateIdentifiedSubject(customerId.IdentityId, identifiedSubject, cancellationToken);
     }
     
     private Task InitializeCodebooks(CancellationToken cancellationToken)
@@ -72,7 +85,19 @@ internal class IdentifiedSubjectService
 
     private __Contracts.IdentifiedSubject BuildUpdateRequest(UpdateCustomerRequest request)
     {
-        return default;
+        return new()
+        {
+            Party = new __Contracts.Party
+            {
+                LegalStatus = __Contracts.PartyLegalStatus.P,
+                NaturalPersonAttributes = CreateNaturalPersonAttributes(request.NaturalPerson)
+            },
+            PrimaryAddress = CreatePrimaryAddress(request.Addresses),
+            ContactAddress = CreateContactAddress(request.Addresses),
+            PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
+            PrimaryPhone = CreatePrimaryPhone(request.Contacts),
+            PrimaryEmail = CreatePrimaryEmail(request.Contacts)
+        };
     }
     
     private __Contracts.NaturalPersonAttributes CreateNaturalPersonAttributes(NaturalPerson naturalPerson)

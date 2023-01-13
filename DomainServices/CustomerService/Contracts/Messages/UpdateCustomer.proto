@@ -12,17 +12,15 @@ import "Mandants.proto";
 message UpdateCustomerRequest {
 	repeated cis.types.Identity Identities = 1;
 
-	bool HardCreate = 2;
+	NaturalPerson NaturalPerson = 2;
 
-	NaturalPerson NaturalPerson = 3;
+	IdentificationDocument IdentificationDocument = 3;
 
-	IdentificationDocument IdentificationDocument = 4;
+	repeated cis.types.GrpcAddress Addresses = 4;
 
-	repeated cis.types.GrpcAddress Addresses = 5;
+	repeated Contact Contacts = 5;
 
-	repeated Contact Contacts = 6;
-
-	cis.types.Mandants Mandant = 7;
+	cis.types.Mandants Mandant = 6;
 }
 
 message UpdateCustomerResponse {
