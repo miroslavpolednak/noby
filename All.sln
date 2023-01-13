@@ -308,6 +308,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
 	ProjectSection(SolutionItems) = preProject
 		InternalServices\ServiceDiscovery\DatabaseMigrations\1-initial_creation.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\1-initial_creation.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\2-seed.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\2-seed.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7}"
