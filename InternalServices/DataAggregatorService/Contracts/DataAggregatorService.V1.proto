@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DataAggregatorService.V1;
+option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts.V1";
+
+import "Document/GetDocumentData.proto";
+import "EasForm/GetEasFormRequest.proto";
+import "EasForm/GetEasFormResponse.proto";
+
+service DataAggregatorService {
+	rpc GetDocumentData(GetDocumentDataRequest) returns(GetDocumentDataResponse);
+
+	rpc GetEasForm(GetEasFormRequest) returns(GetEasFormResponse);
+}

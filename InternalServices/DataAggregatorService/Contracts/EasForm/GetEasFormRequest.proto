@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DataAggregatorService;
+option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts";
+
+import "EasForm/DynamicFormValues.proto";
+
+enum EasFormRequestType {
+	EasFormRequestType_Unknown = 0;
+	EasFormRequestType_Service = 1;
+	EasFormRequestType_Product = 2;
+}
+
+message GetEasFormRequest {
+	EasFormRequestType EasFormRequestType = 1;
+
+	int32 SalesArrangementId = 2;
+
+	repeated DynamicFormValues DynamicFormValues = 3;
+}

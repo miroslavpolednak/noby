@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DataAggregatorService;
+option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Identity.proto";
+
+message InputParameters {
+	google.protobuf.Int32Value SalesArrangementId = 1;
+
+	google.protobuf.Int64Value CaseId = 2;
+
+	google.protobuf.Int32Value OfferId = 3;
+
+	google.protobuf.Int32Value UserId = 4;
+
+	cis.types.Identity CustomerIdentity = 5;
+}
