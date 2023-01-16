@@ -19,6 +19,31 @@ class MarketingActions(Base):
     def from_json(js_dict: dict):
         return MarketingActions(js_dict = js_dict)
 
+    @staticmethod
+    def to_grpc(value: object):
+        if (value is None):
+            return None
+        assert isinstance(value, MarketingActions)
+        return value.to_grpc()
+
+    def to_grpc(self) -> dict:
+
+        # message InputMarketingAction {
+        #     bool Domicile = 1;
+        #     bool HealthRiskInsurance = 2;
+        #     bool RealEstateInsurance = 3;
+        #     bool IncomeLoanRatioDiscount = 4;
+        #     bool UserVip = 5;
+        # }
+
+        return dict(
+            Domicile = Convertor.to_grpc(self.get_value('domicile')),
+            HealthRiskInsurance = Convertor.to_grpc(self.get_value('health_risk_insurance')),
+            RealEstateInsurance = Convertor.to_grpc(self.get_value('real_estate_insurance')),
+            IncomeLoanRatioDiscount = Convertor.to_grpc(self.get_value('income_loan_ratio_discount')),
+            UserVip = Convertor.to_grpc(self.get_value('user_vip')),
+        )        
+
 
 # --------------------------------------------------------------------------------------------
 

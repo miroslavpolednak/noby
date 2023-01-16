@@ -3,6 +3,7 @@ print("Package: ds_offer.models")
 from .Base import Base
 from .Offer import Offer
 from .Developer import Developer
+from .Fee import Fee
 from .Insurance import Insurance
 from .LoanPurpose import LoanPurpose
 from .MarketingActions import MarketingActions
@@ -16,21 +17,38 @@ def build_models():
 
     developer = Developer.from_json(js_dict['developer'])
     print(developer)
+    print(developer.to_grpc())
+    print(Developer.to_grpc(developer))
+
+    fee = Fee.from_json(json.loads('{"FeeId": 1, "DiscountPercentage": 1.1}'))
+    print(fee)
+    print(fee.to_grpc())
+    print(Fee.to_grpc(fee))
 
     insurance_re = Insurance(js_dict['realEstateInsurance'])
     print(insurance_re)
+    print(insurance_re.to_grpc())
+    print(Insurance.to_grpc(insurance_re))
 
     insurance_rl = Insurance(js_dict['riskLifeInsurance'])
     print(insurance_rl)
+    print(insurance_rl.to_grpc())
+    print(Insurance.to_grpc(insurance_rl))
  
     loanPurpose = LoanPurpose(js_dict['loanPurposes'][0])
     print(loanPurpose)
+    print(loanPurpose.to_grpc())
+    print(LoanPurpose.to_grpc(loanPurpose))
 
     marketingActions = MarketingActions(js_dict['marketingActions'])
     print(marketingActions)
+    print(marketingActions.to_grpc())
+    print(MarketingActions.to_grpc(marketingActions))
 
     offer = Offer.from_json(js_dict)
     print(offer)
-    # print(offer.product_type_id)
+    print(offer.to_grpc())
+    print(Offer.to_grpc(offer))
+    # print(offer.get_value('loanKindId'))
 
     return dict(offer=offer, developer=developer)

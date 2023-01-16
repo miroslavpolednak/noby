@@ -20,4 +20,23 @@ class Fee(Base):
 
     @staticmethod
     def from_json_list(js_dict_list: List[dict]):
-        return list(map(lambda d: Fee.from_json(d), js_dict_list))
+        return list(map(lambda i: Fee.from_json(i), js_dict_list))
+
+    @staticmethod
+    def to_grpc(value: object):
+        if (value is None):
+            return None
+        assert isinstance(value, Fee)
+        return value.to_grpc()
+
+    def to_grpc(self) -> dict:
+
+        # message InputFee {
+        #     int32 FeeId = 1;
+        #     cis.types.GrpcDecimal DiscountPercentage = 2;
+        # }
+
+        return dict(
+            FeeId = Convertor.to_grpc(self.get_value('fee_id')),
+            DiscountPercentage = Convertor.to_grpc(self.get_value('discount_percentage')),
+        )

@@ -74,3 +74,11 @@ class Base():
     @property
     def class_name(self) -> object:
         return self.__class__.__name__
+
+    def get_value(self, key: str) -> object:
+        k_next = key.replace('_', '').lower()
+        assert k_next in self.__dispatches, f"Invalid attribute '{key}'"
+        dispatch = self.__dispatches[k_next]
+        dispatch_key = dispatch['key']
+        attr = f'_{self.__class__.__name__}__{dispatch_key}'
+        return getattr(self, attr)        
