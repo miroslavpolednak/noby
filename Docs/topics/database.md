@@ -29,7 +29,7 @@ builder.Services.AddDapper<INobyDatabase>(builder.Configuration.GetConnectionStr
 ```
 
 Následně je možné z DI získat instanci connection objektu:
-```
+```csharp
 class T {
 	// jeden connection string / instance Dapper connection v aplikaci
 	public ctr(IConnectionProvider conn) { }
@@ -43,7 +43,7 @@ V projektu `CIS.Infrastructure` jsou v namespace `CIS.Infrastructure.Data` exten
 - ExecuteDapperRawSqlToList()
 - ExecuteDapperRawSqlFirstOrDefault()
 - ExecuteDapperQuery()
-```
+```csharp
 // načtení celého recordsetu 
 await _connectionProvider.ExecuteDapperRawSqlToList<MyItem>("SELECT * FROM Table", cancellationToken);
 
@@ -53,14 +53,14 @@ long x = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<long>("SELE
 
 ## Entity Framework
 *Entity Framework* **DbContext** se registruje při startupu aplikace extension metodou `AddEntityFramework<TDbContext>()` v namespace `CIS.Infrastructure.StartupExtensions`.
-```
+```csharp
 builder.AddEntityFramework<CaseServiceDbContext>();
 ```
 
 ### DbContext
 Každý EF *DbContext* musí dědit z bázové třídy `CIS.Infrastructure.Data.BaseDbContext<>` z projektu `CIS.Infrastructure`.
 Příklad implementace *DbContextu*:
-```
+```csharp
 internal sealed class CaseServiceDbContext
     : BaseDbContext<CaseServiceDbContext>
 {

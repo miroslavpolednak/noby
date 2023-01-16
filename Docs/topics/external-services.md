@@ -15,12 +15,12 @@ Projekt bude založen v adresáři dané služby, v namespace `{název DS}.Exter
 ## Registrace proxy projektu v aplikaci konzumenta
 Proxy projekt vystavuje vždy jeden public interface pro každou verzi implementace. Tento interface musí dědit z `CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient`.  
 Dále vystavuje extension metodu, kterou zajišťuje vložení proxy do DI konzumenta. Tato metoda má vždy stejnou signaturu:
-```
+```csharp
 public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
     where TClient : class, IExternalServiceClient
 ```
 TClient je interface proxy projektu pro danou verzi implementace. Tj. např.:
-```
+```csharp
 builder.AddExternalService<IEasClient>();
 ```
 Pokud je konzument správně nakonfigurován (tj. má správně sekci `ExternalServices` v *appsettings.json*), proxy projekt si sám dle aktuálního aplikačního prostředí zjistít adresu služby, na kterou se má připojovat (ze *ServiceDiscovery*).
@@ -32,7 +32,7 @@ C# reprezentace konfigurace je interface v namespace `CIS.Infrastructure.Externa
 
 Proxy projekt je v konfiguraci vždy ve dvou úrovních.
 Na první je název proxy projektu, na druhé jsou jednotlivé verze implementace.
-```
+```json
     "nazev_projektu": {
         "verze_implementace_1": { ... },
         "verze_implementace_2": { ... }
@@ -44,7 +44,7 @@ Adresa / URL služby třetí strany může být zadaná přímo v konfigurační
 Preferovanou variantou je *ServiceDiscovery*.
 
 ### Příklad konfigurace v appsettings.json
-```
+```json
 "ExternalServices": {
     "AddressWhisperer": {
         "V1": {
@@ -91,7 +91,7 @@ Pro vlastní implementaci máme připravenou společnou infrastrukturu v projekt
 ### Metoda AddExternalServiceConfiguration()
 Tato metoda načte konfigurace pro příslušnou službu z *appsettings.json*, vloží instanci konfigurace do DI a vrátí ji jako výsledek.
 Pokud je konfigurace nastavena na zjištění adresy služby ze *ServiceDiscovery*, vlastní proces zjištění URL nastává až později v pipeline WebApplicationBuilder-u.
-```
+```csharp
 static IExternalServiceConfiguration<TClient> AddExternalServiceConfiguration<TClient>(
     this WebApplicationBuilder builder,
     string serviceName,
@@ -108,7 +108,7 @@ Zásadní pro implementaci REST služeb jsou dvě extension metody:
 - `AddExternalServiceRestClient()`, která vytváří *HttpClient*-a pro volání RESTových služeb, registruje vybrané middleware/HttpHandler-y atd.
 
 ### Metoda AddExternalServiceRestClient()
-```
+```csharp
 static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation>(
     this WebApplicationBuilder builder)
         where TClient : class, IExternalServiceClient
@@ -127,7 +127,7 @@ static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation>
 
 Metoda vrací instanci `IHttpClientBuilder`, takže je možné ji použít ve formě fluent syntaxe např. k přidání dalších HttpHandlerů.
 Její volání tedy může v implementaci vypadat takto:
-```
+```csharp
 builder
     .AddExternalServiceRestClient<V1.IEasClient, V1.RealEasClient>()
     .AddExternalServicesCorrelationIdForwarding()
@@ -159,7 +159,7 @@ Přidává logování request a response payloadu a hlavičky.
 
 ### Příklad implementace
 Ukázka nastavení služby v `StartupExtensions.cs`
-```
+```csharp
 public static class StartupExtensions
 {
     internal const string ServiceName = "Eas";
@@ -201,7 +201,7 @@ public static class StartupExtensions
 ```
 
 A následně registrace proxy projektu, např. v doménové službě:
-```
+```csharp
 builder.AddExternalService<IEasClient>();
 ```
 

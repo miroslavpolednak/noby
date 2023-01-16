@@ -16,7 +16,7 @@ V některých případech ale může obsahovat např. vlastní kešování.
 Jednotlivé metody rozhraní `Clients` projektu kopírují endpointy gRPC služby.
 Metody v `Clients` projektu se musí jmenovat stejně, jako metody v gRPC službě. 
 Nemusí ale přesně kopírovat jejich signatury - tj. pokud má request gRPC služby jednu nebo dvě vlastnosti, nemusí `Clients` metoda přijímat jako parametr daný request, ale může ho rozpadnout do dvou samostatných parametrů:
-```
+```csharp
 // v gRPC kontraktu
 message MyRequest { int32 Id = 1; }
 
@@ -46,12 +46,12 @@ StartupExtensions.cs        (extension metoda pro registraci `Clients` projektu 
 `Clients` projekt vždy obsahuje dvě extension metody pro registraci při startupu konzumenta. 
 Jedna počítá s automatickým resolvingem URI služby, druhá očekává explicitně zadanou URI.  
 Jmenná konvence těchto metod je `Add{název služby}`, např. pro *UserService* je to:
-```
+```csharp
 static IServiceCollection AddUserService(this IServiceCollection services)
 static IServiceCollection AddUserService(this IServiceCollection services, string serviceUrl)
 ```
 Implementace metod je obecně následující:
-```
+```csharp
 public static IServiceCollection AddUserService(this IServiceCollection services)
 {
     services.AddCisServiceDiscovery();
@@ -74,13 +74,13 @@ Samotná infastruktura registrace gRPC (*AddCisGrpcClientUsing...*) je v projekt
 
 ## Použití v projektu konzumenta
 Registrace v startupu aplikace:
-```
+```csharp
 using DomainServices;
 builder.Services.AddHouseholdService();
 ```
 
 Použití v endpoint handleru:
-```
+```csharp
 private readonly IHouseholdServiceClient _householdService;
 
 public GetHouseholdHandler(IHouseholdServiceClient householdService)
