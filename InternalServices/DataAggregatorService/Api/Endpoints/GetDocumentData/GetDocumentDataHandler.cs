@@ -18,14 +18,14 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
 
     public async Task<GetDocumentDataResponse> Handle(GetDocumentDataRequest request, CancellationToken cancellationToken)
     {
-        var config = await _configurationManager.LoadDocumentConfiguration(request.DocumentTypeId, request.DocumentVersion);
+        var config = await _configurationManager.LoadDocumentConfiguration(request.DocumentTypeId, request.DocumentTemplateVersionId, cancellationToken);
 
         var documentMapper = await LoadDocumentData((DocumentType)request.DocumentTypeId, request.InputParameters, config);
 
         return new GetDocumentDataResponse
         {
-            DocumentTypeId = request.DocumentTypeId,
-            DocumentVersion = request.DocumentVersion,
+            DocumentTemplateVersionId = config.DocumentTemplateVersionId,
+            DocumentTemplateVersion = config.DocumentTemplateVersion,
             DocumentData = { documentMapper.MapDocumentFieldData() },
             InputParameters = request.InputParameters
         };
