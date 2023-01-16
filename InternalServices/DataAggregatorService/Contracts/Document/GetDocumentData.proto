@@ -10,15 +10,15 @@ import "Document/DocumentFieldData.proto";
 message GetDocumentDataRequest {
 	int32 DocumentTypeId = 1;
 
-	google.protobuf.StringValue DocumentVersion = 2;
+	google.protobuf.Int32Value DocumentTemplateVersionId = 2;
 
 	InputParameters InputParameters = 3;
 }
 
 message GetDocumentDataResponse {
-	int32 DocumentTypeId = 1;
+	int32 DocumentTemplateVersionId = 1;
 
-	string DocumentVersion = 2;
+	string DocumentTemplateVersion = 2;
 
 	InputParameters InputParameters = 3;
 

@@ -1,5 +1,4 @@
 ﻿using Grpc.Core;
-using MediatR;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Endpoints;
 
