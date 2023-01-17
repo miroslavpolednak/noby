@@ -2,11 +2,11 @@
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest;
 
-internal class Household
+internal class HouseholdDto
 {
     private readonly DomainServices.HouseholdService.Contracts.Household _household;
 
-    public Household(DomainServices.HouseholdService.Contracts.Household household, int number)
+    public HouseholdDto(DomainServices.HouseholdService.Contracts.Household household, int number)
     {
         Number = number;
         _household = household;

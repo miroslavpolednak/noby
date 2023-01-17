@@ -1,8 +1,8 @@
 ﻿using CIS.Core.Attributes;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DataAggregator;
-using CIS.InternalServices.DataAggregator.EasForms;
+using CIS.InternalServices.DataAggregatorService.Clients;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
@@ -13,14 +13,14 @@ namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 internal sealed class FormsService
 {
     private readonly IMediator _mediator;
-    private readonly IDataAggregator _dataAggregator;
+    private readonly IDataAggregatorServiceClient _dataAggregator;
     private readonly ICodebookServiceClients _codebookService;
     private readonly ICaseServiceClient _caseService;
     private readonly Eas.IEasClient _easClient;
     private readonly SulmService.ISulmClient _sulmClient;
 
     public FormsService(IMediator mediator,
-                        IDataAggregator dataAggregator,
+                        IDataAggregatorServiceClient dataAggregator,
                         ICodebookServiceClients codebookService,
                         ICaseServiceClient caseService,
                         Eas.IEasClient easClient,
@@ -34,64 +34,76 @@ internal sealed class FormsService
         _sulmClient = sulmClient;
     }
 
-    public async Task<SalesArrangementCategories> LoadSalesArrangementCategory(int salesArrangementId, CancellationToken cancellationToken)
+    public Task<SalesArrangement> LoadSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
     {
-        var salesArrangement = await _mediator.Send(new GetSalesArrangementRequest { SalesArrangementId = salesArrangementId }, cancellationToken);
+        return _mediator.Send(new GetSalesArrangementRequest { SalesArrangementId = salesArrangementId }, cancellationToken);
+    }
 
+    public async Task<SalesArrangementCategories> LoadSalesArrangementCategory(SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
         var types = await _codebookService.SalesArrangementTypes(cancellationToken);
 
         return (SalesArrangementCategories)types.First(t => t.Id == salesArrangement.SalesArrangementTypeId).SalesArrangementCategory;
     }
 
-    public async Task<IEasForm<IServiceFormData>> LoadServiceForm(int salesArrangementId)
+    public Task<GetEasFormResponse> LoadServiceForm(int salesArrangementId, IEnumerable<DynamicFormValues> dynamicFormValues, CancellationToken cancellationToken)
     {
-        var serviceForm = await _dataAggregator.GetEasForm<IServiceFormData>(salesArrangementId);
-
-        return serviceForm;
+        return _dataAggregator.GetEasForm(new GetEasFormRequest
+        {
+            SalesArrangementId = salesArrangementId,
+            EasFormRequestType = EasFormRequestType.Service,
+            DynamicFormValues = { dynamicFormValues }
+        }, cancellationToken);
     }
 
-    public async Task<IEasForm<IProductFormData>> LoadProductForm(int salesArrangementId)
+    public async Task<GetEasFormResponse> LoadProductForm(SalesArrangement salesArrangement, IEnumerable<DynamicFormValues> dynamicFormValues, CancellationToken cancellationToken)
     {
-        var productForm = await _dataAggregator.GetEasForm<IProductFormData>(salesArrangementId);
+        FormValidations.CheckArrangement(salesArrangement);
 
-        FormValidations.CheckFormData(productForm.FormData);
+        var response = await _dataAggregator.GetEasForm(new GetEasFormRequest
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            EasFormRequestType = EasFormRequestType.Product,
+            DynamicFormValues = { dynamicFormValues }
+        }, cancellationToken);
 
-        return productForm;
+        FormValidations.CheckFormData(response.Product);
+
+        return response;
     }
 
-    public async Task AddFirstSignatureDate(IProductFormData formData)
+    public Task AddFirstSignatureDate(long caseId)
     {
-        await _easClient.AddFirstSignatureDate((int)formData.SalesArrangement.CaseId, (int)formData.SalesArrangement.CaseId, DateTime.Now.Date);
+        return _easClient.AddFirstSignatureDate((int)caseId, (int)caseId, DateTime.Now.Date);
     }
 
-    public async Task CallSulm(IProductFormData formData, CancellationToken cancellation)
+    public async Task CallSulm(ProductData formData, CancellationToken cancellation)
     {
-        var customersOnSa = formData.HouseholdData
-                                    .CustomersOnSa
-                                    .Select(customer => customer.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
+        var customersOnSa = formData.CustomersOnSa
+                                    .Select(customer => customer.Identities.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
                                     .Where(kbIdentity => kbIdentity is not null);
 
         // HFICH-2426
         foreach (var kbIdentity in customersOnSa)
         {
-            await _sulmClient.StopUse(kbIdentity.IdentityId, "MLAP", cancellation);
+            await _sulmClient.StopUse(kbIdentity!.IdentityId, "MLAP", cancellation);
             await _sulmClient.StartUse(kbIdentity.IdentityId, "MLAP", cancellation);
         }
     }
 
-    public async Task UpdateContractNumber(IProductFormData formData, CancellationToken cancellationToken)
+    public async Task UpdateContractNumber(SalesArrangement salesArrangement, ProductData formData, CancellationToken cancellationToken)
     {
-        if (!string.IsNullOrEmpty(formData.SalesArrangement.ContractNumber))
+        if (!string.IsNullOrEmpty(salesArrangement.ContractNumber))
             return;
 
-        var mainHousehold = formData.HouseholdData.Households.Single(i => i.HouseholdType == HouseholdTypes.Main);
-        var mainCustomerOnSa = formData.HouseholdData.CustomersOnSa.Single(i => i.CustomerOnSAId == mainHousehold.CustomerOnSaId1!.Value);
+        var mainHousehold = formData.Households.Single(i => i.HouseholdTypeId == (int)HouseholdTypes.Main);
+        var mainCustomerOnSa = formData.CustomersOnSa.Single(i => i.CustomerOnSaId == mainHousehold.CustomerOnSaId1!.Value);
 
-        var identityMp = mainCustomerOnSa.CustomerIdentifiers.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
-        var contractNumber = await _easClient.GetContractNumber(identityMp.IdentityId, (int)formData.SalesArrangement.CaseId);
+        var identityMp = mainCustomerOnSa.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+        var contractNumber = await _easClient.GetContractNumber(identityMp.IdentityId, (int)salesArrangement.CaseId);
 
-        await UpdateSalesArrangement(formData.SalesArrangement, contractNumber, cancellationToken);
-        await UpdateCase(formData.SalesArrangement.CaseId, contractNumber, cancellationToken);
+        await UpdateSalesArrangement(salesArrangement, contractNumber, cancellationToken);
+        await UpdateCase(salesArrangement.CaseId, contractNumber, cancellationToken);
     }
 
     private async Task UpdateSalesArrangement(SalesArrangement entity, string contractNumber, CancellationToken cancellationToken)

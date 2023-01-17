@@ -29,6 +29,7 @@ internal class EasProductForm : EasForm
             {
                 EasFormType = type,
                 DynamicFormValues = dynamicFormValues,
+                DefaultValues = DefaultValuesFactory.Create(type),
                 Json = CreateJson(sourceFields)
             }
         };
@@ -47,6 +48,7 @@ internal class EasProductForm : EasForm
             {
                 EasFormType = EasFormType.F3602,
                 DynamicFormValues = dynamicFormValues,
+                DefaultValues = DefaultValuesFactory.Create(EasFormType.F3602),
                 Json = CreateJson(sourceFields)
             };
         }

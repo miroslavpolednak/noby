@@ -30,11 +30,11 @@ internal class HouseholdData
         _customerService = customerService;
     }
 
-    public Household Household { get; private set; } = null!;
+    public HouseholdDto HouseholdDto { get; private set; } = null!;
 
     public List<CustomerOnSA> CustomersOnSa { get; private set; } = null!;
 
-    public List<Household> Households { get; private set; } = null!;
+    public List<HouseholdDto> Households { get; private set; } = null!;
 
     public Dictionary<int, Income> Incomes { get; private set; } = null!;
 
@@ -67,17 +67,17 @@ internal class HouseholdData
         if (household is null)
             return false;
 
-        Household = household;
+        HouseholdDto = household;
 
         return true;
     }
 
-    private async Task<List<Household>> LoadHouseholds(int salesArrangementId)
+    private async Task<List<HouseholdDto>> LoadHouseholds(int salesArrangementId)
     {
         var households = await _householdService.GetHouseholdList(salesArrangementId);
 
         return households.OrderBy(x => x.HouseholdTypeId)
-                         .Select((household, index) => new Household(household, index + 1))
+                         .Select((household, index) => new HouseholdDto(household, index + 1))
                          .ToList();
     }
 
@@ -126,11 +126,11 @@ internal class HouseholdData
 
     private IEnumerable<Customer> GetCustomers()
     {
-        return CustomersOnSa.Where(c => c.CustomerOnSAId == Household.CustomerOnSaId1 || c.CustomerOnSAId == Household.CustomerOnSaId2)
+        return CustomersOnSa.Where(c => c.CustomerOnSAId == HouseholdDto.CustomerOnSaId1 || c.CustomerOnSAId == HouseholdDto.CustomerOnSaId2)
                             .OrderBy(c => c.CustomerOnSAId)
                             .Select(c => new Customer(c, _customers[GetCustomerId(c)])
                             {
-                                HouseholdNumber = Household.Number,
+                                HouseholdNumber = HouseholdDto.Number,
                                 IsPartner = AreCustomersPartners(),
                                 FirstEmploymentTypeId = _firstEmploymentTypeId,
                                 Incomes = Incomes,

@@ -9,8 +9,6 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms
 
 internal abstract class EasForm
 {
-    private IEnumerator<DynamicFormValues> _dynamicFormValues = Enumerable.Empty<DynamicFormValues>().GetEnumerator();
-
     protected EasForm(IFormData formData)
     {
         FormData = formData;

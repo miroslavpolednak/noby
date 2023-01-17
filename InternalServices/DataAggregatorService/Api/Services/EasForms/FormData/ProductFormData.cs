@@ -25,9 +25,9 @@ internal class ProductFormData : AggregatedData, IFormData
 
     public MockValues MockValues { get; } = new();
 
-    public DefaultValues DefaultValues3601 { get; } = DefaultValues.Create(EasFormType.F3601);
+    public DefaultValues DefaultValues3601 { get; } = DefaultValuesFactory.Create(EasFormType.F3601);
 
-    public DefaultValues DefaultValues3602 { get; } = DefaultValues.Create(EasFormType.F3602);
+    public DefaultValues DefaultValues3602 { get; } = DefaultValuesFactory.Create(EasFormType.F3602);
 
     public DynamicFormValues? DynamicFormValues { get; set; }
 
@@ -45,7 +45,7 @@ internal class ProductFormData : AggregatedData, IFormData
 
     public int? DrawingDurationId => _drawingDurations.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingDurationId)?.DrawingDuration;
 
-    public IEnumerable<Household> HouseholdList => new[] { HouseholdData.Household };
+    public IEnumerable<HouseholdDto> HouseholdList => new[] { HouseholdData.HouseholdDto };
 
     public long? MpIdentityId => GetMpIdentityId();
 

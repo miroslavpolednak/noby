@@ -1,11 +1,7 @@
 ﻿namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
-public class DefaultValues
+public class DefaultValuesFactory
 {
-    private DefaultValues()
-    {
-    }
-
     public static DefaultValues Create(EasFormType formType) =>
         formType switch
         {
@@ -14,8 +10,4 @@ public class DefaultValues
             EasFormType.F3602 => new DefaultValues { FormType = "3602A", PasswordCode = "608243" },
             _ => throw new ArgumentOutOfRangeException(nameof(formType), formType, null)
         };
-
-    public required string FormType { get; init; }
-
-    public required string PasswordCode { get; init; }
 }
