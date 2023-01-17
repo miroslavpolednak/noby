@@ -1,13 +1,24 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentToArchive;
+namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 
-public class SaveDocumentToArchiveRequest : IRequest
+public class SaveDocumentsToArchiveRequest : IRequest
 {
 
     [JsonIgnore]
     internal long CaseId;
 
+    public List<DocumentsInformation> DocumentsInformation { get; set; } = null!;
+
+    internal SaveDocumentsToArchiveRequest InfuseCaseId(long caseId)
+    {
+        CaseId = caseId;
+        return this;
+    }
+}
+
+public class DocumentsInformation
+{
     /// <summary>
     /// GUID dokumentu v dočasném úložišti
     /// </summary>
@@ -27,10 +38,4 @@ public class SaveDocumentToArchiveRequest : IRequest
     /// Popis dokumentu
     /// </summary>
     public string? Description { get; set; }
-
-    internal SaveDocumentToArchiveRequest InfuseCaseId(long caseId)
-    {
-        this.CaseId = caseId;
-        return this;
-    }
 }

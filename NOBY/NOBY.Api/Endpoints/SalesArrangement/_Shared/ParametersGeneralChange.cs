@@ -32,7 +32,7 @@ public sealed class ParametersGeneralChange
     /// Účet pro splácení
     /// </summary>
     [Required]
-    public PaymentAccountObject PaymentAccount { get; set; }
+    public PaymentAccountObject RepaymentAccount { get; set; }
 
     /// <summary>
     /// Výše měsíční splátky

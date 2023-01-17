@@ -11,20 +11,13 @@ import "Identity.proto";
 
 message SalesArrangementParametersHUBN {
 	cis.types.Identity Applicant = 1;
-	PaymentAccountObject PaymentAccount = 2;
-	LoanAmountObject LoanAmount = 3;
-	repeated LoanPurposeItem LoanPurposes = 4;
-	repeated LoanRealEstateItem LoanRealEstates = 5;
-	CollateralIdentificationObject CollateralIdentification = 6;
-	ExpectedDateOfDrawingObject ExpectedDateOfDrawing = 7;
-	DrawingDateToObject DrawingDateTo = 8;
-	CommentToChangeRequestObject CommentToChangeRequest = 9;
-
-	message PaymentAccountObject {
-		string AgreedPrefix = 1;
-		string AgreedNumber = 2;
-		string AgreedBankCode = 3;
-	}
+	LoanAmountObject LoanAmount = 2;
+	repeated LoanPurposeItem LoanPurposes = 3;
+	repeated LoanRealEstateItem LoanRealEstates = 4;
+	CollateralIdentificationObject CollateralIdentification = 5;
+	ExpectedDateOfDrawingObject ExpectedDateOfDrawing = 6;
+	DrawingDateToObject DrawingDateTo = 7;
+	CommentToChangeRequestObject CommentToChangeRequest = 8;
 
 	message LoanAmountObject {
 		bool ChangeAgreedLoanAmount = 1;

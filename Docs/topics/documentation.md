@@ -40,7 +40,7 @@ Aby generování dokumentace fungovalo správně, je potřeba:
 - vytvořit v **Docs** adresář se jménem dokumentovaného projektu.
 
 Obsah souboru *DefaultDocumentation.json*:
-```
+```json
 {
   "LogLevel": "Warn",
   "AssemblyFilePath": "./bin/Debug/net7.0/CIS.Core.dll",

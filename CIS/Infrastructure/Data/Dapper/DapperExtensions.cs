@@ -11,7 +11,10 @@ public static class DapperExtensions
     
     public static async Task<List<T>> ExecuteDapperRawSqlToList<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param, CancellationToken cancellationToken = default(CancellationToken))
         => await connectionProvider.ExecuteDapperQuery<List<T>>(async c => (await c.QueryAsync<T>(sqlQuery, param)).AsList(), cancellationToken);
-    
+
+    public static async Task<List<dynamic>> ExecuteDapperRawSqlToDynamicList(this IConnectionProvider connectionProvider, string sqlQuery, object? param = null, CancellationToken cancellationToken = default(CancellationToken))
+        => await connectionProvider.ExecuteDapperQuery<List<dynamic>>(async c => (await c.QueryAsync(sqlQuery, param)).AsList(), cancellationToken);
+
     public static async Task<T?> ExecuteDapperRawSqlFirstOrDefault<T>(this IConnectionProvider connectionProvider, string sqlQuery, CancellationToken cancellationToken = default(CancellationToken))
         => await connectionProvider.ExecuteDapperQuery<T>(async c => (await c.QueryFirstOrDefaultAsync<T>(sqlQuery)), cancellationToken);
     

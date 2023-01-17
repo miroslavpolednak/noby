@@ -1,0 +1,10 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DataAggregatorService;
+option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts";
+
+message DynamicFormValues {
+	string DocumentId = 1;
+
+	string FormId = 2;
+}

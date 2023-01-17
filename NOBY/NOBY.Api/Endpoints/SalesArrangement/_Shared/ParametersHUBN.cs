@@ -53,27 +53,6 @@ public sealed class ParametersHUBN
     public CommentToChangeRequestObject CommentToChangeRequest { get; set; }
 }
 
-/// <summary>
-/// Účet pro splácení
-/// </summary>
-public sealed class PaymentAccountObject2
-{
-    /// <summary>
-    /// Předčíslí účtu
-    /// </summary>
-    public string AgreedPrefix { get; set; }
-
-    /// <summary>
-    /// Číslo účtu
-    /// </summary>
-    public string AgreedNumber { get; set; }
-
-    /// <summary>
-    /// Kód banky
-    /// </summary>
-    public string AgreedBankCode { get; set; }
-}
-
 public sealed class LoanAmountObject
 {
     /// <summary>

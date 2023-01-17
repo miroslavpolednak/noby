@@ -1,0 +1,52 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DataAggregatorService;
+option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "GrpcDate.proto";
+import "GrpcDecimal.proto";
+
+message DocumentFieldData {
+	string FieldName = 1;
+
+	google.protobuf.StringValue StringFormat = 2;
+
+	oneof Value {
+		string Text = 3;
+		cis.types.GrpcDate Date = 4;
+		int32 Number = 5;
+		cis.types.GrpcDecimal DecimalNumber = 6;
+		bool LogicalValue = 7;
+		GenericTable Table = 8;
+	}
+}
+
+message GenericTable {
+	repeated GenericTableColumn Columns = 1;
+
+	repeated GenericTableRow Rows = 2;
+
+	google.protobuf.StringValue ConcludingParagraph = 3;
+}
+
+message GenericTableColumn {
+	string Header = 1;
+
+	cis.types.GrpcDecimal WidthPercentage = 2;
+
+	google.protobuf.StringValue StringFormat = 3;
+}
+
+message GenericTableRow {
+	repeated GenericTableRowValue Values = 1;
+}
+
+message GenericTableRowValue {
+	oneof Value {
+		string Text = 1;
+		cis.types.GrpcDate Date = 2;
+		int32 Number = 3;
+		cis.types.GrpcDecimal DecimalNumber = 4;
+	}
+}
