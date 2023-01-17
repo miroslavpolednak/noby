@@ -19,7 +19,7 @@ public static class DataAggregatorServiceExtensions
         return services;
     }
 
-    public static IServiceCollection AddCustomerService(this IServiceCollection services, string serviceUrl)
+    public static IServiceCollection AddDataAggregatorService(this IServiceCollection services, string serviceUrl)
     {
         services.TryAddTransient<IDataAggregatorServiceClient, DataAggregatorServiceClient>();
         services.TryAddCisGrpcClientUsingUrl<DataAggregatorService.Contracts.V1.DataAggregatorService.DataAggregatorServiceClient>(serviceUrl);
