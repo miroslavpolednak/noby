@@ -28,15 +28,15 @@ Překlad typů vyjímek na HTTP status kódy.
 ## Anonymní uživatel
 Zvláštním typem vyjímky je `AuthenticationException`.
 Pokud není uživatel autentizován, vracíme HTTP status kód 401 se strukturou:
-```
+```json
 {
-  RedirectUri: string
+  "RedirectUri": "string"
 }
 ```
 `RedirectUri` obsahuje adresu, na kterou má být uživatel přesměrován pro autentizaci - tj. CAAS.
 
 ## Příklad vrácení validační chyby z endpoint handleru
-```
+```csharp
 public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
 {
   ...
