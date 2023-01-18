@@ -27,6 +27,7 @@ def noby_sit1_url():
 def noby_fat_url():
     return "https://fat.noby.cz/api"
 
+
 def noby_dev_url():
     return "https://dev.noby.cz/api"
 
