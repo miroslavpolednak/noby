@@ -4,6 +4,7 @@ using DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Cont
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Immutable;
+using System.Globalization;
 
 namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1;
 
@@ -39,7 +40,7 @@ internal sealed class RealCustomerManagementClient
             { "customerId", searchRequest.CustomerId.ToString() },
             { "name", searchRequest.Name },
             { "firstName", searchRequest.FirstName },
-            { "birthEstablishedDate", searchRequest.BirthEstablishedDate?.ToString() },
+            { "birthEstablishedDate", searchRequest.BirthEstablishedDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) },
             { "identifierValue", searchRequest.IdentifierValue },
             { "identifierTypeCode", searchRequest.IdentifierTypeCode },
             { "idDocumentTypeCode", searchRequest.IdDocumentTypeCode },

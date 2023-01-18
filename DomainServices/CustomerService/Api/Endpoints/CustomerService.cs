@@ -17,9 +17,10 @@ internal class CustomerService : Contracts.V1.CustomerService.CustomerServiceBas
         => _mediator.Send(request, context.CancellationToken);
 
     public override Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, ServerCallContext context)
-    {
-        return _mediator.Send(request, context.CancellationToken);
-    }
+        => _mediator.Send(request, context.CancellationToken);
+
+    public override Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, ServerCallContext context)
+        => _mediator.Send(request, context.CancellationToken);
 
     public override Task<CustomerDetailResponse> GetCustomerDetail(CustomerDetailRequest request, ServerCallContext context)
         => _mediator.Send(request, context.CancellationToken);

@@ -143,8 +143,13 @@ INSERT INTO dbo.ServiceDiscovery2 ([EnvironmentName],[ServiceName],[ServiceUrl],
 ('UAT','ES:EAS:R21','https://sb2_test_server.mpss.cz/UAT/EAS_WS_SB_Services.svc',3),
 ('UAT','ES:EasSimulationHT:V6','https://sb2_test_server.mpss.cz/UAT/HT_WS_SB_Services.svc',3),
 ('UAT','ES:ESignatures:V1','',3),
+<<<<<<< HEAD
+('UAT','ES:IdentifiedSubjectBr:V1','https://cm-identified-subject-br-v1.prod.custmng.kbcloud/api/',3),
+('UAT','ES:MpHome:V1_1','https://hfuatmpdigi.mpss.cz/api/1.1',3),
+=======
 ('UAT','ES:IdentifiedSubjectBr:V1','https://cm-identified-subject-br-v1.stage.custmng.kbcloud/api',3),
 ('UAT','ES:MpHome:V1_1','https://hfuat1mpdigi.mpss.cz/api/1.1',3),
+>>>>>>> 75e20dda096ab309f60dea4b5eade5ddf1f8e569
 ('UAT','ES:SbWebApi:V1','https://sb2_test_server.mpss.cz/WebApi/UAT',3),
 ('UAT','ES:Sdf:V1','',3),
 ('UAT','ES:Sulm:V1','https://iib-sit1.kb.cz/SulmService/1/0',3);
