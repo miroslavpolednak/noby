@@ -1,4 +1,5 @@
-﻿using Avro.Specific;
+﻿using System.Diagnostics;
+using Avro.Specific;
 using CIS.Core;
 using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
@@ -31,10 +32,17 @@ public class McsEmailProducer
     
     public async Task SendEmail(SendEmail sendEmail, CancellationToken cancellationToken)
     {
-        var id = Guid.NewGuid().ToString("N");
-        var pipe = new ProducerPipe<ISpecificRecord>(id, _kafkaTopics.McsResult,
-            _kafkaConfiguration.Nodes.Business.BootstrapServers, _dateTime.Now);
+        var headers = new McsHeaders
+        {
+            Id = Guid.NewGuid().ToString("N"),
+            B3 = Activity.Current?.RootId,
+            Timestamp = _dateTime.Now,
+            ReplyTopic = _kafkaTopics.McsResult,
+            ReplyBrokerUri = _kafkaConfiguration.Nodes.Business.BootstrapServers,
+            Caller = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",
+            // Origin = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",
+        };
         
-        await _producer.Produce(sendEmail, pipe, cancellationToken);
+        await _producer.Produce(sendEmail, new ProducerPipe<ISpecificRecord>(headers), cancellationToken);
     }
 }

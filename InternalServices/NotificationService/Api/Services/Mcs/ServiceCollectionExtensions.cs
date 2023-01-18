@@ -3,8 +3,6 @@ using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers;
 using Confluent.Kafka;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
-using cz.kb.osbs.mcs.sender.sendapi.v1.sms;
-using cz.kb.osbs.mcs.sender.sendapi.v4.email;
 using KB.Speed.MassTransit.DependencyInjection;
 using KB.Speed.MassTransit.Kafka;
 using KB.Speed.Messaging.Kafka.DependencyInjection;

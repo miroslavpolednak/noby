@@ -5,28 +5,27 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers.In
 
 public class ProducerPipe<TRecord> : IPipe<KafkaSendContext<TRecord>> where TRecord : class, ISpecificRecord
 {
-    private readonly string _id;
-    private readonly string _replyTopic;
-    private readonly string _replyBrokerUri;
-    private readonly DateTime _now;
+    private readonly McsHeaders _headers;
 
-    public ProducerPipe(string id, string replyTopic, string replyBrokerUri, DateTime now)
+    public ProducerPipe(McsHeaders headers)
     {
-        _id = id;
-        _replyTopic = replyTopic;
-        _replyBrokerUri = replyBrokerUri;
-        _now = now;
+        _headers = headers;
     }
 
     public Task Send(KafkaSendContext<TRecord> context)
     {
-        context.Headers.Set( "messaging.id", _id );
-        context.Headers.Set( "messaging.messageType", "EVENT" );
+        context.Headers.Set( "b3", _headers.B3 ?? "" );
+        context.Headers.Set( "contentType", "avro/binary" );
+        context.Headers.Set( "messaging.id", _headers.Id );
+        context.Headers.Set( "messaging.messageType", "SIMPLE" );
         context.Headers.Set( "messaging.kafka.payloadTypeId", context.Message.Schema.Fullname );
-        context.Headers.Set( "messaging.kafka.replyTopic", _replyTopic );
-        context.Headers.Set( "messaging.kafka.replyBrokerUri", _replyBrokerUri );
-        context.Headers.Set( "messaging.timestamp", _now.ToUniversalTime().ToString("yyyy-MM-dd hh:mm:ssZ") );
-
+        context.Headers.Set( "messaging.kafka.replyTopic", _headers.ReplyTopic );
+        context.Headers.Set( "messaging.kafka.replyBrokerUri", _headers.ReplyBrokerUri );
+        context.Headers.Set( "messaging.kafka.schemaRegistryType", "confluent" );
+        context.Headers.Set( "messaging.timestamp", _headers.Timestamp.ToUniversalTime().ToString("O") );
+        context.Headers.Set( "X_HYPHEN_KB_HYPHEN_Orig_HYPHEN_System_HYPHEN_Identity", _headers.Origin );
+        context.Headers.Set( "X_HYPHEN_KB_HYPHEN_Caller_HYPHEN_System_HYPHEN_Identity", _headers.Caller );
+        
         return Task.CompletedTask;
     }
 

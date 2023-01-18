@@ -58,7 +58,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         result.CountryCode = request.Phone.CountryCode;
         result.PhoneNumber = request.Phone.NationalNumber;
 
-        var sendSms = new SendApi.v1.sms.SendSMS
+        var sendSms = new SendApi.v4.sms.SendSMS
         {
             id = result.Id.ToString(),
             phone = request.Phone.Map(),

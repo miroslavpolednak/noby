@@ -33,9 +33,9 @@
 
   <ItemGroup>
     <!-- DO NOT UPGRADE VERSIONS -->
-    <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="0.7.2.1"/>
-    <PackageReference Include="MassTransit" Version="8.0.9"/>
-    <PackageReference Include="MassTransit.Kafka" Version="8.0.9"/>
+    <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="0.7.2.1" />
+    <PackageReference Include="MassTransit" Version="8.0.9" />
+    <PackageReference Include="MassTransit.Kafka" Version="8.0.9" />
   </ItemGroup>
   
   <ItemGroup>

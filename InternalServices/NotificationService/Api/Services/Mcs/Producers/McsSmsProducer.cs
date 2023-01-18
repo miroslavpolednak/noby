@@ -1,9 +1,10 @@
-﻿using Avro.Specific;
+﻿using System.Diagnostics;
+using Avro.Specific;
 using CIS.Core;
 using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers.Infrastructure;
-using cz.kb.osbs.mcs.sender.sendapi.v1.sms;
+using cz.kb.osbs.mcs.sender.sendapi.v4.sms;
 using MassTransit;
 using Microsoft.Extensions.Options;
 
@@ -31,10 +32,17 @@ public class McsSmsProducer
     
     public async Task SendSms(SendSMS sendSms, CancellationToken cancellationToken)
     {
-        var id = Guid.NewGuid().ToString("N");
-        var pipe = new ProducerPipe<ISpecificRecord>(id, _kafkaTopics.McsResult,
-            _kafkaConfiguration.Nodes.Business.BootstrapServers, _dateTime.Now);
+        var headers = new McsHeaders
+        {
+            Id = Guid.NewGuid().ToString("N"),
+            B3 = Activity.Current?.RootId,
+            Timestamp = _dateTime.Now,
+            ReplyTopic = _kafkaTopics.McsResult,
+            ReplyBrokerUri = _kafkaConfiguration.Nodes.Business.BootstrapServers,
+            Caller = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",
+            // Origin = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",
+        };
         
-        await _producer.Produce(sendSms, pipe, cancellationToken);
+        await _producer.Produce(sendSms, new ProducerPipe<ISpecificRecord>(headers), cancellationToken);
     }
 }
