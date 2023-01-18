@@ -20,24 +20,24 @@ internal sealed class CreateHandler
             createOk = true;
         }
         // V případě, že existoval jeden klient
-        catch (CisValidationException ex) when (ex.Errors[0].Code == "11023")
+        catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11023")
         {
             _logger.LogInformation("CreateCustomer: client found {KBID}", ex.Message);
             kbId = long.Parse(ex.Message, System.Globalization.CultureInfo.InvariantCulture);
         }
         // Více klientů
-        catch (CisValidationException ex) when (ex.Errors[0].Code == "11024")
+        catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11024")
         {
             _logger.LogInformation("CreateCustomer: more clients found", ex);
             throw new CisConflictException(ex.Message);
         }
         // Registry nefungují
-        catch (CisValidationException ex) when (ex.Errors[0].Code == "11025")
+        catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11025")
         {
             _logger.LogInformation("CreateCustomer: registry failed", ex);
             return new CreateResponse { ResponseCode = "KBCM_NOT_FOUND_IN_BR" };
         }
-        catch (CisValidationException ex) when (ex.Errors[0].Code == "11026")
+        catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11026")
         {
             _logger.LogInformation("CreateCustomer: registry failed", ex);
             return new CreateResponse { ResponseCode = "KBCM_UNAVAILABLE_BR" };

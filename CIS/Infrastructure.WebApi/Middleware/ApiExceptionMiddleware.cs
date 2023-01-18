@@ -63,7 +63,7 @@ public class ApiExceptionMiddleware
         {
 
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
-            var errors = ex.Errors?.GroupBy(k => k.Code)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
+            var errors = ex.Errors?.GroupBy(k => k.ExceptionCode)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
             await Results.ValidationProblem(errors!).ExecuteAsync(context);
         }

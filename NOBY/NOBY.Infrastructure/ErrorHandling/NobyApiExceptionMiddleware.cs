@@ -98,7 +98,7 @@ public sealed class NobyApiExceptionMiddleware
         return ex.Errors!.Select(t => new ApiErrorItem
         {
             Severity = ApiErrorItemServerity.Error,
-            ErrorCode = t.Code,
+            ErrorCode = t.ExceptionCode,
             Message = t.Message
         });
     }

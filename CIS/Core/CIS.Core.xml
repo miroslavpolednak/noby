@@ -473,17 +473,17 @@
             <summary>
             Instance jednotlive chyby
             </summary>
-            <param name="Code">CIS error kód</param>
+            <param name="ExceptionCode">CIS error kód</param>
             <param name="Message">chybová zpráva</param>
         </member>
         <member name="M:CIS.Core.Exceptions.CisExceptionItem.#ctor(System.String,System.String)">
             <summary>
             Instance jednotlive chyby
             </summary>
-            <param name="Code">CIS error kód</param>
+            <param name="ExceptionCode">CIS error kód</param>
             <param name="Message">chybová zpráva</param>
         </member>
-        <member name="P:CIS.Core.Exceptions.CisExceptionItem.Code">
+        <member name="P:CIS.Core.Exceptions.CisExceptionItem.ExceptionCode">
             <summary>CIS error kód</summary>
         </member>
         <member name="P:CIS.Core.Exceptions.CisExceptionItem.Message">
@@ -515,6 +515,16 @@
             <param name="exceptionCode">CIS kód chyby</param>
             <param name="entityName">Název entity, která chybu vyvolala</param>
             <param name="entityId">ID entity, která chybu vyvolala</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisAuthenticationException">
+            <summary>
+            Chyba, která označuje problém s validací koncového uživatele.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisAuthenticationException.ProviderLoginUrl">
+            <summary>
+            Adresa providera autentizace, na kterou má být uživatel přesměrován pro přihlášení.
+            </summary>
         </member>
         <member name="T:CIS.Core.Exceptions.CisConflictException">
             <summary>
@@ -585,6 +595,9 @@
         <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.String,System.String)">
             <param name="exceptionCode">CIS error kód</param>
             <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Immutable.ImmutableList{CIS.Core.Exceptions.CisExceptionItem})">
+            <param name="errors">Seznam chyb</param>
         </member>
         <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IEnumerable{CIS.Core.Exceptions.CisExceptionItem})">
             <param name="errors">Seznam chyb</param>
