@@ -9,17 +9,22 @@ internal sealed class UpdateCustomersHandler
 {
     public async Task<UpdateCustomersResponse> Handle(UpdateCustomersRequest request, CancellationToken cancellationToken)
     {
-        // detail domacnosti
+        // detail domacnosti - kontrola existence (404)
         var householdInstance = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
         
         var c1 = await crudCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken);
+        if (c1.CancelSigning)
+        {
+
+        }
+
         var c2 = await crudCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken);
 
-        // linkovani na household
+        // linkovani novych nebo zmenenych CustomerOnSAId na household
         if (householdInstance.CustomerOnSAId1 != c1.CustomerOnSAId || householdInstance.CustomerOnSAId2 != c2.CustomerOnSAId)
             await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, c1.CustomerOnSAId, c2.CustomerOnSAId, cancellationToken);
 
-        // hlavni domacnost - hlavni klient ma modre ID
+        // hlavni domacnost - hlavni klient ma modre ID -> spustime vlacek na vytvoreni produktu atd. (pokud jeste neexistuje)
         if (c1.CustomerOnSAId.HasValue && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
         {
             var notification = new Notifications.MainCustomerUpdatedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, c1.CustomerOnSAId!.Value, c1.Identities);
@@ -33,7 +38,7 @@ internal sealed class UpdateCustomersHandler
         };
     }
 
-    async Task<(int? CustomerOnSAId, IEnumerable<CIS.Infrastructure.gRPC.CisTypes.Identity>? Identities)> crudCustomer(
+    async Task<(int? CustomerOnSAId, IEnumerable<CIS.Infrastructure.gRPC.CisTypes.Identity>? Identities, bool CancelSigning)> crudCustomer(
         CustomerDto? customer, 
         int? householdCustomerId,
         _HO.Household householdInstance,
@@ -44,11 +49,13 @@ internal sealed class UpdateCustomersHandler
         if (customer is null && householdCustomerId.HasValue)
         {
             await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken: cancellationToken);
+            return (default(int?), default(List<CIS.Infrastructure.gRPC.CisTypes.Identity>?), true);
         }
         else if (customer is not null)
         {
+            bool customerIdChanged = customer.CustomerOnSAId != householdCustomerId && householdCustomerId.HasValue;
             // smazat existujiciho, je nahrazen novym
-            if (customer.CustomerOnSAId != householdCustomerId && householdCustomerId.HasValue)
+            if (customerIdChanged)
                 await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken: cancellationToken);
 
             // update stavajiciho
@@ -65,7 +72,7 @@ internal sealed class UpdateCustomersHandler
                         }, cancellationToken))
                         .CustomerIdentifiers;
 
-                    return (customer.CustomerOnSAId.Value, identities);
+                    return (customer.CustomerOnSAId.Value, identities, customerIdChanged);
                 }
                 catch (CisArgumentException ex) when (ex.ExceptionCode == "16033")
                 {
@@ -82,11 +89,9 @@ internal sealed class UpdateCustomersHandler
                     Customer = customer.ToDomainServiceRequest()
                 }, cancellationToken);
 
-                return (createResult.CustomerOnSAId, createResult.CustomerIdentifiers);
+                return (createResult.CustomerOnSAId, createResult.CustomerIdentifiers, true);
             }
         }
-
-        return (default(int?), default(List<CIS.Infrastructure.gRPC.CisTypes.Identity>?));
     }
 
     private readonly IHouseholdServiceClient _householdService;
