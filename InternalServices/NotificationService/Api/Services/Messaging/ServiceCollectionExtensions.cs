@@ -1,6 +1,6 @@
 ﻿using Avro.Specific;
 using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Consumers;
 using Confluent.Kafka;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using KB.Speed.MassTransit.DependencyInjection;
@@ -11,7 +11,7 @@ using KB.Speed.Tracing.Instrumentations.AspNetCore;
 using KB.Speed.Tracing.Instrumentations.HttpClient;
 using MassTransit;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Mcs;
+namespace CIS.InternalServices.NotificationService.Api.Services.Messaging;
 
 public static class ServiceCollectionExtensions
 {
@@ -46,7 +46,7 @@ public static class ServiceCollectionExtensions
                 var topics = appConfiguration.KafkaTopics;
                 
                 // add consumers
-                rider.AddConsumer<ResultConsumer>();
+                rider.AddConsumer<McsResultConsumer>();
                 
                 // add producers
                 rider.AddProducerAvro<ISpecificRecord>(topics.McsSender);
@@ -74,7 +74,7 @@ public static class ServiceCollectionExtensions
                     });
                     
                     // configure topic mapping
-                    k.TopicEndpointAvro<NotificationReport, ResultConsumer>(
+                    k.TopicEndpointAvro<NotificationReport, McsResultConsumer>(
                         context,
                         topics.McsResult,
                         kafkaConfiguration.GroupId,

@@ -1,22 +1,20 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Handlers.Email.Models;
 using CIS.InternalServices.NotificationService.Api.Handlers.Email.Requests;
-using cz.kb.osbs.mcs.sender.sendapi.v4.email;
 using MassTransit;
 using MassTransit.Mediator;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers;
+namespace CIS.InternalServices.NotificationService.Api.Services.Messaging.Consumers;
 
-// todo: change Mcs.SendEmail for Mpss.SendEmail
-public class SendEmailConsumer : IConsumer<SendEmail>
+public class MpssSendEmailConsumer : IConsumer<MpssSendApi.v1.email.SendEmail>
 {
     private readonly IMediator _mediator;
 
-    public SendEmailConsumer(IMediator mediator)
+    public MpssSendEmailConsumer(IMediator mediator)
     {
         _mediator = mediator;
     }
     
-    public async Task Consume(ConsumeContext<SendEmail> context)
+    public async Task Consume(ConsumeContext<MpssSendApi.v1.email.SendEmail> context)
     {
         var sendEmail = context.Message;
         

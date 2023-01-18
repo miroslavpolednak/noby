@@ -1,8 +1,8 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.Infrastructure.Telemetry;
-using CIS.InternalServices.NotificationService.Api.Services.Mcs.Mappers;
-using CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using DomainServices.CodebookService.Contracts;
@@ -61,7 +61,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         result.CountryCode = request.Phone.CountryCode;
         result.PhoneNumber = request.Phone.NationalNumber;
 
-        var sendSms = new SendApi.v4.sms.SendSMS
+        var sendSms = new McsSendApi.v4.sms.SendSMS
         {
             id = result.Id.ToString(),
             phone = request.Phone.Map(),

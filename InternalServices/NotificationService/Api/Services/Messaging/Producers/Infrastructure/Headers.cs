@@ -1,6 +1,6 @@
-﻿namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers.Infrastructure;
+﻿namespace CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 
-public class McsHeaders
+public class Headers
 {
     public string Id { get; set; } = null!;
  

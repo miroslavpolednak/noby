@@ -3,13 +3,13 @@ using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using MassTransit;
 using MediatR;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers;
+namespace CIS.InternalServices.NotificationService.Api.Services.Messaging.Consumers;
 
-public class ResultConsumer : IConsumer<NotificationReport>
+public class McsResultConsumer : IConsumer<NotificationReport>
 {
     private readonly IMediator _mediator;
 
-    public ResultConsumer(IMediator mediator)
+    public McsResultConsumer(IMediator mediator)
     {
         _mediator = mediator;
     }

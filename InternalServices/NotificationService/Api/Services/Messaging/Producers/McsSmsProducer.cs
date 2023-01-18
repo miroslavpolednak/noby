@@ -3,22 +3,22 @@ using Avro.Specific;
 using CIS.Core;
 using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers.Infrastructure;
-using cz.kb.osbs.mcs.sender.sendapi.v4.email;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using MassTransit;
 using Microsoft.Extensions.Options;
+using Headers = CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure.Headers;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers;
+namespace CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 
 [ScopedService, SelfService]
-public class McsEmailProducer
+public class McsSmsProducer
 {
     private readonly ITopicProducer<ISpecificRecord> _producer;
     private readonly IDateTime _dateTime;
     private readonly KafkaTopics _kafkaTopics;
     private readonly KafkaConfiguration _kafkaConfiguration;
 
-    public McsEmailProducer(
+    public McsSmsProducer(
         ITopicProducer<ISpecificRecord> producer,
         IDateTime dateTime,
         IOptions<AppConfiguration> appOptions,
@@ -30,9 +30,9 @@ public class McsEmailProducer
         _kafkaConfiguration = kafkaOptions.Value;
     }
     
-    public async Task SendEmail(SendEmail sendEmail, CancellationToken cancellationToken)
+    public async Task SendSms(McsSendApi.v4.sms.SendSMS sendSms, CancellationToken cancellationToken)
     {
-        var headers = new McsHeaders
+        var headers = new Headers
         {
             Id = Guid.NewGuid().ToString("N"),
             B3 = Activity.Current?.RootId,
@@ -43,6 +43,6 @@ public class McsEmailProducer
             // Origin = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",
         };
         
-        await _producer.Produce(sendEmail, new ProducerPipe<ISpecificRecord>(headers), cancellationToken);
+        await _producer.Produce(sendSms, new ProducerPipe<ISpecificRecord>(headers), cancellationToken);
     }
 }

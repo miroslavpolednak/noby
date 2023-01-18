@@ -1,13 +1,13 @@
 ﻿using Avro.Specific;
 using MassTransit;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers.Infrastructure;
+namespace CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 
 public class ProducerPipe<TRecord> : IPipe<KafkaSendContext<TRecord>> where TRecord : class, ISpecificRecord
 {
-    private readonly McsHeaders _headers;
+    private readonly Headers _headers;
 
-    public ProducerPipe(McsHeaders headers)
+    public ProducerPipe(Headers headers)
     {
         _headers = headers;
     }
