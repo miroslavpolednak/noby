@@ -21,11 +21,11 @@ def get_all_codebooks(codebook_name):
 def get_codebooks(codebook_name, product_type):
     session = requests.session()
     resp = session.get(
-        noby_fat_url() + "/codebooks/" + codebook_name,
+        noby_dev_url() + "/codebooks/" + codebook_name,
         params={
             "productTypeId": product_type
         },
-        cookies=get_noby_fat_cookies()
+        cookies=get_noby_dev_cookies()
     )
     data = resp.json()
     status_code = resp.status_code
@@ -35,11 +35,11 @@ def get_codebooks(codebook_name, product_type):
 def get_codebooks_fixation_period_length(product_type):
     session = requests.session()
     resp = session.get(
-        noby_fat_url() + "/codebooks/fixation-period-length",
+        noby_dev_url() + "/codebooks/fixation-period-length",
         params={
             "productTypeId": product_type
         },
-        cookies=get_noby_fat_cookies()
+        cookies=get_noby_dev_cookies()
     )
     data = resp.json()
     status_code = resp.status_code
