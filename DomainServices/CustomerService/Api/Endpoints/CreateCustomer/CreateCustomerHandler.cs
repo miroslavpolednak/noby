@@ -6,12 +6,12 @@ namespace DomainServices.CustomerService.Api.Endpoints.CreateCustomer;
 
 internal class CreateCustomerHandler : IRequestHandler<CreateCustomerRequest, CreateCustomerResponse>
 {
-    private readonly CreateIdentifiedSubject _createIdentifiedSubject;
-    private readonly MpDigiCreateClient _mpDigiClient;
+    private readonly IdentifiedSubjectService _identifiedSubjectService;
+    private readonly MpDigiClient _mpDigiClient;
     
-    public CreateCustomerHandler(CreateIdentifiedSubject createIdentifiedSubject, MpDigiCreateClient mpDigiClient)
+    public CreateCustomerHandler(IdentifiedSubjectService identifiedSubjectService, MpDigiClient mpDigiClient)
     {
-        _createIdentifiedSubject = createIdentifiedSubject;
+        _identifiedSubjectService = identifiedSubjectService;
         _mpDigiClient = mpDigiClient;
     }
 
@@ -21,7 +21,7 @@ internal class CreateCustomerHandler : IRequestHandler<CreateCustomerRequest, Cr
         {
             CreatedCustomerIdentity = request.Mandant switch
             {
-                Mandants.Kb => await _createIdentifiedSubject.CreateSubject(request, cancellationToken),
+                Mandants.Kb => await _identifiedSubjectService.CreateSubject(request, cancellationToken),
                 Mandants.Mp => await _mpDigiClient.CreatePartner(request, cancellationToken),
                 _ => throw new InvalidEnumArgumentException()
             }
