@@ -15,14 +15,7 @@ public class GetResultHandler : IRequestHandler<GetResultRequest, GetResultRespo
     
     public async Task<GetResultResponse> Handle(GetResultRequest request, CancellationToken cancellationToken)
     {
-        var notificationResult = await _repository.GetResult(request.NotificationId, cancellationToken);
-        
-        return new GetResultResponse
-        {
-            NotificationId = notificationResult.Id,
-            Channel = notificationResult.Channel,
-            State = notificationResult.State,
-            Errors = notificationResult.ErrorSet.ToList()
-        };
+        var result = await _repository.GetResult(request.NotificationId, cancellationToken);
+        return new GetResultResponse { Result = result.ToDto() };
     }
 }

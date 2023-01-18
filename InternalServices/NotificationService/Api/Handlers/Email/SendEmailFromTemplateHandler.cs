@@ -1,7 +1,7 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Services.Mcs.Mappers;
-using CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Contracts.Email;
@@ -38,7 +38,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
     
     public async Task<SendEmailFromTemplateResponse> Handle(SendEmailFromTemplateRequest request, CancellationToken cancellationToken)
     {
-        var attachments = new List<Attachment>();
+        var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
         var host = request.From.Value.ToLowerInvariant().Split('@').Last();
         var bucketName = host == "kb.cz" ? Buckets.Mcs : Buckets.Mpss;
         
@@ -47,7 +47,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
             foreach (var attachment in request.Attachments)
             {
                 var objectKey = await _s3Service.UploadFile(attachment.Binary, bucketName);
-                attachments.Add( EmailMappers.Map(attachment.Filename, objectKey));
+                attachmentKeyFilenames.Add(new (objectKey, attachment.Filename));
             }
         }
         catch (Exception e)
@@ -64,29 +64,29 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         result.RequestTimestamp = _dateTime.Now;
         
         // todo:
-        var sendEmail = new SendEmail
-        {
-            id = result.Id.ToString(),
-            sender = request.From.Map(),
+        // var sendEmail = new SendEmail
+        // {
+            // id = result.Id.ToString(),
+            // sender = request.From.Map(),
             // to = request.To.Map().ToList(),
             // bcc = request.Bcc.Map().ToList(),
             // cc = request.Cc.Map().ToList(),
             // replyTo = request.ReplyTo?.Map(),
             // subject = request.Subject,
             // content = request.Content.Map(),
-            attachments = attachments
-        };
+            // attachments = attachments
+        // };
         
         try
         {
             if (host == "kb.cz")
             {
-                await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
+                // await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
                 result.HandoverToMcsTimestamp = _dateTime.Now;
             }
             else
             {
-                await _mpssEmailProducer.SendEmail(sendEmail, cancellationToken);
+                // await _mpssEmailProducer.SendEmail(sendEmail, cancellationToken);
             }
             
             await _repository.AddResult(result, cancellationToken);

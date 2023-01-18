@@ -41,11 +41,12 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
 
         try
         {
-            var state = _map[report.state];
-            var errorCodes = report.notificationErrors.Select(e => e.code).ToHashSet();
-
             var result = await _repository.GetResult(id, cancellationToken);
-            result.State = state;
+            result.State = _map[report.state];
+            
+            var errorCodes = report.notificationErrors?
+                .Select(e => e.code)
+                .ToHashSet() ?? Enumerable.Empty<string>();
             
             var errorSet = new HashSet<string>();
             errorSet.UnionWith(result.ErrorSet);
