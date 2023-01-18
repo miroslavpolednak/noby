@@ -4,7 +4,7 @@ Pro logování (jako implementaci `ILogger`) používáme **Serilog** (https://s
 Vždy se používá pouze instance `ILogger` nebo `ILoggerFactory` z DI - nikdy nevoláme přímo statické metody *Serilogu*.
 
 Nastavení *Serilogu* je společné pro všechny projekty, jedná se o extension metodu do startup aplikace:
-```
+```csharp
 builder.AddCisLogging()
 ...
 var app = builder.Build();
@@ -27,7 +27,7 @@ Konfigurace má dvě části - první část konfiguruje co se má logovat, druh
 
 ### Co se má logovat
 Nastavení levelu logování, případně potlačení logování některých knihoven se nastavuje standardní konfigurací Serilogu v *appsettings.json*. Např. takto:
-```
+```json
 "Serilog": {
     "MinimumLevel": {
         "Default": "Warning",
@@ -47,7 +47,7 @@ Standardně používáme tyto Serilog Sinks: **ApplicationInsights, Seq, File, C
 Nastavení těchto sinků je společné pro všechny služby, nicméně je možné jednotlivé Sinky zapínat v *appsettings.json*, nastavovat jejich connection string atd.
 Konfigurace jednotlivých Sinků je v *appsettings.json* v sekci "**CisTelemetry**". Struktura konfigurace viz. `CIS.Infrastructure.Telemetry.Configuration.CisTelemetryConfiguration`.
 
-```
+```json
   "CisTelemetry": {
     "Logging": {
       "LogType": "Grpc",
@@ -125,6 +125,6 @@ Trace se inicializuje na první aplikaci v systému NOBY - většinou tedy na FE
 Pokud se jedná o request z FE API, vrací se po ukončení requestu TraceId v HTTP headeru odpovědi na frontend. Toto je zajištěno middlewarem `CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware`.
 
 Nastavení tracingu je pomocí extension metody ve startupu aplikace:
-```
+```csharp
 builder.AddCisTracing()
 ```

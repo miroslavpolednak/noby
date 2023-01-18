@@ -29,6 +29,13 @@ public interface ICustomerServiceClient
     Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Uprava klienta v CM nebo MP (podle schematu)
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="UpdateCustomerResponse"/> - OK;</returns>
+    /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
+    Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default);
+    
+    /// <summary>
     /// Detail customera podle identity
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="CustomerDetailResponse"/> - OK;</returns>

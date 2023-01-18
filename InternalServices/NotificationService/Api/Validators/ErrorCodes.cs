@@ -61,7 +61,8 @@ public static class ErrorCodes
     
     public static class SearchResult
     {
-        public const string IdentityInvalid = "330";
+        public const string AtLeastOneParameterRequired = "330";
+        public const string IdentityInvalid = "331";
     }
     
     public static class SendEmail

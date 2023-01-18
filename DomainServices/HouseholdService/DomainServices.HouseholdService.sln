@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.HouseholdService.Api", ".\Api\DomainServices.HouseholdService.Api.csproj", "{3AF60985-67AC-43E4-B97E-8051274DBC24}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.HouseholdService.Clients", ".\Clients\DomainServices.HouseholdService.Clients.csproj", "{BEC33303-7052-4E98-9FC6-CA922D3096C4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{98576666-0E2D-467B-88C8-A118F6EA1664}"
+	ProjectSection(SolutionItems) = preProject
+		.\DatabaseMigrations\1-initial_creation.sql = .\DatabaseMigrations\1-initial_creation.sql
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.HouseholdService.Contracts", ".\Contracts\DomainServices.HouseholdService.Contracts.csproj", "{B584A3F3-D648-4BF2-A3A0-A66613626E2C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3AF60985-67AC-43E4-B97E-8051274DBC24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF60985-67AC-43E4-B97E-8051274DBC24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF60985-67AC-43E4-B97E-8051274DBC24}.Debug|x64.ActiveCfg = Debug|x64
+		{3AF60985-67AC-43E4-B97E-8051274DBC24}.Debug|x64.Build.0 = Debug|x64
+		{3AF60985-67AC-43E4-B97E-8051274DBC24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF60985-67AC-43E4-B97E-8051274DBC24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AF60985-67AC-43E4-B97E-8051274DBC24}.Release|x64.ActiveCfg = Release|x64
+		{3AF60985-67AC-43E4-B97E-8051274DBC24}.Release|x64.Build.0 = Release|x64
+		{BEC33303-7052-4E98-9FC6-CA922D3096C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEC33303-7052-4E98-9FC6-CA922D3096C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEC33303-7052-4E98-9FC6-CA922D3096C4}.Debug|x64.ActiveCfg = Debug|x64
+		{BEC33303-7052-4E98-9FC6-CA922D3096C4}.Debug|x64.Build.0 = Debug|x64
+		{BEC33303-7052-4E98-9FC6-CA922D3096C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEC33303-7052-4E98-9FC6-CA922D3096C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEC33303-7052-4E98-9FC6-CA922D3096C4}.Release|x64.ActiveCfg = Release|x64
+		{BEC33303-7052-4E98-9FC6-CA922D3096C4}.Release|x64.Build.0 = Release|x64
+		{B584A3F3-D648-4BF2-A3A0-A66613626E2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B584A3F3-D648-4BF2-A3A0-A66613626E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B584A3F3-D648-4BF2-A3A0-A66613626E2C}.Debug|x64.ActiveCfg = Debug|x64
+		{B584A3F3-D648-4BF2-A3A0-A66613626E2C}.Debug|x64.Build.0 = Debug|x64
+		{B584A3F3-D648-4BF2-A3A0-A66613626E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B584A3F3-D648-4BF2-A3A0-A66613626E2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B584A3F3-D648-4BF2-A3A0-A66613626E2C}.Release|x64.ActiveCfg = Release|x64
+		{B584A3F3-D648-4BF2-A3A0-A66613626E2C}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C50E936-3E80-43B1-8447-E746BD6E1C82}
+	EndGlobalSection
+EndGlobal

@@ -30,11 +30,11 @@ Dále fungují stejně jako při použití `AddEnvironmentVariables()`.
 Cílově by měli proměnné prostředí nastavovat CI/CD pipelines.
 
 Příklad nastavení proměnné z terminalu:
-```
+```csharp
 setx DEV_ExternalServices__SbWebApi__V1__Username passw0rd /M
 ```
 Nahradí tento klíč z *appsettings.json*:
-```
+```csharp
 "ExternalServices": {
   "SbWebApi": {
     "V1": {

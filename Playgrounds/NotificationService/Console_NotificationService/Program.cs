@@ -73,7 +73,7 @@ Console.WriteLine($"Sms from template send response: {smsFromTemplateSendRespons
 var resultRequest = new GetResultRequest { NotificationId = smsFromTemplateSendResponse.NotificationId };
 
 var resultResponse = await client.GetResult(resultRequest, CancellationToken.None);
-Console.WriteLine($"Result response: {resultResponse.NotificationId}");
+Console.WriteLine($"Result response: {resultResponse.Result.NotificationId}");
 
 Console.WriteLine("Press any key to exit...");
 Console.ReadKey();

@@ -11,7 +11,7 @@ Jedná se o JSON soubor v rootu aplikace. Struktura konfigurace je obrazem této
 Používáme vlastní konfigurační soubor, protože výchozí možnosti konfigurace *Kestrelu* v .NETu neumožňují vše, co jsme potřebovali - zejména nastavení SSL certifikátu.  
 
 Ukázka konfigurace:
-```
+```json
 {
   "CustomKestrel": {
     "Endpoints": [
@@ -31,7 +31,7 @@ Ukázka konfigurace:
 ```
 
 Načtení konfigurace ze souboru a nastavení Kestrelu v apliaci se dělá pomocí extension metody během startupu aplikace:
-```
+```csharp
 builder.UseKestrelWithCustomConfiguration();
 ```
 
@@ -53,42 +53,42 @@ Každá služba se skládá min. ze tří projektů:
 Standardní flow nastavení služby v Program.cs:
 
 Načtení konfigurace ze sekce **CisEnvironmentConfiguration** appsettings.json a vložení do DI jako `ICisEnvironmentConfiguration`.
-```
+```csharp
 builder.AddCisEnvironmentConfiguration()
 ```
 
 Společné nastavení .NET fw - nastavení JsonOptions, přidání HttpContextAccessor, options API.
-```
+```csharp
 builder..AddCisCoreFeatures()
 ```
 
 Přidání logování a tracingu.
-```
+```csharp
 builder.AddCisLogging().AddCisTracing()
 ```
 
 Nastavení health checku.
-```
+```csharp
 builder.AddCisHealthChecks()
 ```
 
 Umožnění registrace tříd do DI pomocí atributů.
-```
+```csharp
 builder.Services.AddAttributedServices(typeof(Program));
 ```
 
 Basic authentication technickým uživatelem.
-```
+```csharp
 builder.AddCisServiceAuthentication();
 ```
 
 Registrace MediatR a pipeline pro validaci requestů.
-```
+```csharp
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 ```
 
 .NET registrace gRPC služby a gRPC Reflection.
-```
+```csharp
 builder.Services.AddGrpc(options =>
 {
     options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
@@ -97,28 +97,28 @@ builder.Services.AddGrpcReflection();
 ```
 
 Konfigurace Kestrelu.
-```
+```csharp
 builder.UseKestrelWithCustomConfiguration();
 ```
 
 Nastavení autentizace.
-```
+```csharp
 app.UseAuthentication();
 app.UseAuthorization();
 ```
 
 Registrace technického uživatele do HttpContextu.
-```
+```csharp
 app.UseCisServiceUserContext();
 ```
 
 Middleware pro logování.
-```
+```csharp
 app.UseCisLogging();
 ```
 
 Registrace gRPC služby, health checku, gRPC reflection.
-```
+```csharp
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapCisHealthChecks();
@@ -130,7 +130,7 @@ app.UseEndpoints(endpoints =>
 ```
 
 Spuštění aplikace. Finally blok je zde proto, že zápis logu má zpoždění a kdyby se aplikace ukončovala okamžitě, pár posledních záznamů by se nezalogovalo.
-```
+```csharp
 try
 {
     app.Run();

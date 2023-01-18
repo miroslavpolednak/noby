@@ -1,4 +1,4 @@
-INSERT INTO dbo.ServiceDiscovery2 ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
+INSERT INTO dbo.ServiceDiscovery ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
 ('DEV','CIS:DocumentGeneratorService','https://172.30.35.51:30014',1),
 ('DEV','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_fat,password=MpssFatPass,allowAdmin=false,tieBreaker=',3),
 ('DEV','CIS:NotificationService','https://172.30.35.51:30015',1),
@@ -29,14 +29,14 @@ INSERT INTO dbo.ServiceDiscovery2 ([EnvironmentName],[ServiceName],[ServiceUrl],
 ('DEV','ES:EAS:R21','https://sb2_test_server.mpss.cz/FAT/EAS_WS_SB_Services.svc',3),
 ('DEV','ES:EasSimulationHT:V6','https://sb2_test_server.mpss.cz/FAT/HT_WS_SB_Services.svc',3),
 ('DEV','ES:ESignatures:V1','https://testbio.mpss.cz/ePodpisy',3),
-('DEV','ES:IdentifiedSubjectBr:V1','https://cm-identified-subject-br-v1.prod.custmng.kbcloud/api/',3),
+('DEV','ES:IdentifiedSubjectBr:V1','https://cm-identified-subject-br-v1.fat.custmng.kbcloud/api',3),
 ('DEV','ES:MpHome:V1_1','https://hffatmpdigi.mpss.cz/api/1.1',3),
 ('DEV','ES:SbWebApi:V1','https://sb2_test_server.mpss.cz/WebApi/FAT',3),
 ('DEV','ES:Sdf:V1','https://adpra043.vsskb.cz/SDF/ExtendedServices.svc',3),
 ('DEV','ES:Sulm:V1','https://iib-sit1.kb.cz/SulmService/1/0',3);
 GO
 
-INSERT INTO dbo.ServiceDiscovery2 ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
+INSERT INTO dbo.ServiceDiscovery ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
 ('FAT','CIS:DocumentGeneratorService','https://172.30.35.51:31014',1),
 ('FAT','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_fat,password=MpssFatPass,allowAdmin=false,tieBreaker=',3),
 ('FAT','CIS:NotificationService','https://172.30.35.51:31015',1),
@@ -67,14 +67,14 @@ INSERT INTO dbo.ServiceDiscovery2 ([EnvironmentName],[ServiceName],[ServiceUrl],
 ('FAT','ES:EAS:R21','https://sb2_test_server.mpss.cz/FAT/EAS_WS_SB_Services.svc',3),
 ('FAT','ES:EasSimulationHT:V6','https://sb2_test_server.mpss.cz/FAT/HT_WS_SB_Services.svc',3),
 ('FAT','ES:ESignatures:V1','',3),
-('FAT','ES:IdentifiedSubjectBr:V1','https://cm-identified-subject-br-v1.prod.custmng.kbcloud/api/',3),
+('FAT','ES:IdentifiedSubjectBr:V1','https://cm-identified-subject-br-v1.fat.custmng.kbcloud/api',3),
 ('FAT','ES:MpHome:V1_1','https://hffatmpdigi.mpss.cz/api/1.1',3),
 ('FAT','ES:SbWebApi:V1','https://sb2_test_server.mpss.cz/WebApi/FAT',3),
 ('FAT','ES:Sdf:V1','',3),
 ('FAT','ES:Sulm:V1','https://iib-sit1.kb.cz/SulmService/1/0',3);
 GO
 
-INSERT INTO dbo.ServiceDiscovery2 ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
+INSERT INTO dbo.ServiceDiscovery ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
 ('SIT1','CIS:DocumentGeneratorService','https://172.30.35.51:32014',1),
 ('SIT1','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_fat,password=MpssFatPass,allowAdmin=false,tieBreaker=',3),
 ('SIT1','CIS:NotificationService','https://172.30.35.51:32015',1),
@@ -105,14 +105,14 @@ INSERT INTO dbo.ServiceDiscovery2 ([EnvironmentName],[ServiceName],[ServiceUrl],
 ('SIT1','ES:EAS:R21','https://sb2_test_server.mpss.cz/SIT/EAS_WS_SB_Services.svc',3),
 ('SIT1','ES:EasSimulationHT:V6','https://sb2_test_server.mpss.cz/SIT/HT_WS_SB_Services.svc',3),
 ('SIT1','ES:ESignatures:V1','',3),
-('SIT1','ES:IdentifiedSubjectBr:V1','https://cm-identified-subject-br-v1.prod.custmng.kbcloud/api/',3),
+('SIT1','ES:IdentifiedSubjectBr:V1','https://cm-identified-subject-br-v1.fat.custmng.kbcloud/api',3),
 ('SIT1','ES:MpHome:V1_1','https://hfsit1mpdigi.mpss.cz/api/1.1',3),
 ('SIT1','ES:SbWebApi:V1','https://sb2_test_server.mpss.cz/WebApi/SIT',3),
 ('SIT1','ES:Sdf:V1','',3),
 ('SIT1','ES:Sulm:V1','https://iib-sit1.kb.cz/SulmService/1/0',3);
 GO
 
-INSERT INTO dbo.ServiceDiscovery2 ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
+INSERT INTO dbo.ServiceDiscovery ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
 ('UAT','CIS:DocumentGeneratorService','https://172.30.35.51:33014',1),
 ('UAT','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_fat,password=MpssFatPass,allowAdmin=false,tieBreaker=',3),
 ('UAT','CIS:NotificationService','https://172.30.35.51:33015',1),
@@ -143,7 +143,7 @@ INSERT INTO dbo.ServiceDiscovery2 ([EnvironmentName],[ServiceName],[ServiceUrl],
 ('UAT','ES:EAS:R21','https://sb2_test_server.mpss.cz/UAT/EAS_WS_SB_Services.svc',3),
 ('UAT','ES:EasSimulationHT:V6','https://sb2_test_server.mpss.cz/UAT/HT_WS_SB_Services.svc',3),
 ('UAT','ES:ESignatures:V1','',3),
-('UAT','ES:IdentifiedSubjectBr:V1','https://cm-identified-subject-br-v1.prod.custmng.kbcloud/api/',3),
+('UAT','ES:IdentifiedSubjectBr:V1','https://cm-identified-subject-br-v1.stage.custmng.kbcloud/api',3),
 ('UAT','ES:MpHome:V1_1','https://hfuat1mpdigi.mpss.cz/api/1.1',3),
 ('UAT','ES:SbWebApi:V1','https://sb2_test_server.mpss.cz/WebApi/UAT',3),
 ('UAT','ES:Sdf:V1','',3),

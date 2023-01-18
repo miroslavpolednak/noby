@@ -7,7 +7,7 @@ Instance uživatele jako taková je reprezentována interfacem `ICurrentUser` - 
 Mezi službami se uživatel předává ve formě HTTP headeru "**mp-user-id**", který obsahuje *v33id* aktuálního uživatele.
 
 Registrace `ICurrentUserAccessor` (do DI) probíhá během startupu:
-```
+```csharp
 var app = builder.Build();
 ...
 app.UseCisServiceUserContext();
@@ -22,7 +22,7 @@ Informace o technickém uživateli je možné ve volané službě získat z DI i
 Instance uživatele je potom implementací `IServiceUser` - je dostupná jako vlastnost IServiceUserAccessor.
 
 Nastavení autentizace technickým uživatelem a registrace interface do DI probíhá během startupu:
-```
+```csharp
 builder.AddCisServiceAuthentication();
 ...
 var app = builder.Build();

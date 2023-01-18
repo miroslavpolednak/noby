@@ -61,18 +61,18 @@ public class NotificationController : ControllerBase
     public async Task<SendEmailResponse> SendEmail([FromBody] SendEmailRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
     
-    /// <summary>
-    /// Odeslat email notifikaci ze šablony
-    /// </summary>
-    /// <remarks>
-    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
-    /// </remarks>
-    [HttpPost("emailFromTemplate")]
-    [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
-    [ProducesResponseType(typeof(SendEmailFromTemplateResponse), StatusCodes.Status200OK)]
-    public async Task<SendEmailFromTemplateResponse> SendEmailFromTemplate([FromBody] SendEmailFromTemplateRequest request, CancellationToken token)
-        => await _mediator.Send(request, token);
+    // /// <summary>
+    // /// Odeslat email notifikaci ze šablony
+    // /// </summary>
+    // /// <remarks>
+    // /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+    // /// </remarks>
+    // [HttpPost("emailFromTemplate")]
+    // [Produces("application/json")]
+    // [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
+    // [ProducesResponseType(typeof(SendEmailFromTemplateResponse), StatusCodes.Status200OK)]
+    // public async Task<SendEmailFromTemplateResponse> SendEmailFromTemplate([FromBody] SendEmailFromTemplateRequest request, CancellationToken token)
+    //     => await _mediator.Send(request, token);
 
     /// <summary>
     /// Získat výsledek o notifikaci
@@ -84,8 +84,14 @@ public class NotificationController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(GetResultResponse), StatusCodes.Status200OK)]
-    public async Task<GetResultResponse> GetResult([Required] Guid id, CancellationToken token)
-        => await _mediator.Send(new GetResultRequest { NotificationId = id }, token);
+    public async Task<Result> GetResult([Required] Guid id, CancellationToken token)
+    {
+        var response = await _mediator.Send(new GetResultRequest
+        {
+            NotificationId = id
+        }, token);
+        return response.Result;
+    }
 
     /// <summary>
     /// Vyhledat výsledky o notifikací podle vyhledávacích kritérií

@@ -54,9 +54,18 @@ public sealed class GenericClientExceptionInterceptor
         {
             throw new CisValidationException(ex.GetErrorMessagesFromRpcException());
         }
+        catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.Unknown)
+        {
+            throw new CisValidationException(ex.GetErrorMessagesFromRpcException());
+        }
         catch (RpcException ex)
         {
             _logger.ClientUncoughtRpcException(methodFullName, ex);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            string catchAll = ex.Message;
             throw;
         }
     }

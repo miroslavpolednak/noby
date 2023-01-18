@@ -6,7 +6,7 @@ Pro každou službu a verzi musí existovat právě jeden soubor s gRPC definic�
 Konvence pro pojmenování souboru je: `{název služby}.{verze služby}.proto`
 Např. tedy *CaseService.v1.proto*.  
 Tento soubor vždy obsahuje pouze definici služby, např.:
-```
+```csharp
 service HouseholdService {
     rpc CreateHousehold (CreateHouseholdRequest) returns (CreateHouseholdResponse);
 }
@@ -25,12 +25,12 @@ Abychom nemuseli pro každý MediatR handler / gRPC endpoint vytvářet umělou 
 To nám umožňuje přidat do definice kontraktu další interface a použít ho jako request pro *MediatR*.
 Partial class se vytváří pro každou request message v *proto* kontraktu a má následující tvar:
 
-```
+```csharp
 public partial class CreateHouseholdRequest
     : MediatR.IRequest<CreateHouseholdResponse>
 ```
 V případě, že má request podporovat *FluentValidation*, přidáme ještě interface `IValidatableRequest`:
-```
+```csharp
 public partial class CreateHouseholdRequest
     : MediatR.IRequest<CreateHouseholdResponse>, CIS.Core.Validation.IValidatableRequest
 ```
@@ -46,12 +46,12 @@ Pro správnou funkčnost ProtoC toolu pro generování C# tříd z proto soubor�
 Každý .proto soubor v projektu musí mít nastavený způsob kompilace a odkaz na společně sdílené soubory.
 
 Ukázka elementu v .csproj pro soubor s definicí služby:
-```
+```xml
 <Protobuf Include="CustomerOnSAService.v1.proto" GrpcServices="Both" ProtoRoot="/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 ```
 
 Ukázka elementu v .csproj pro soubor s definicí kontraktu:
-```
+```xml
 <Protobuf Include="CustomerOnSA.proto" GrpcServices="None" ProtoRoot="/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 ```
 
@@ -65,7 +65,7 @@ Název odvozujeme z názvu služby s prefixem DomainServices. Např. `package Do
 Název odvozujeme z názvu služby. Např. `option csharp_namespace = "DomainServices.HouseholdService.Contracts";`
 
 Hlavička každého .proto souboru tedy vypadá takto:
-```
+```protobuf
 syntax = "proto3";
 package DomainServices.HouseholdService;
 option csharp_namespace = "DomainServices.HouseholdService.Contracts";
@@ -85,11 +85,11 @@ Jedná se zejména o (ale nikoliv pouze):
 
 Tyto typy je možné v kontraktech použít následovně:
 - nejdříve se typ musí naimportovat:
-```
+```protobuf
 import "NullableGrpcDate.proto";
 ```
 - poté je možné ho použít v message:
-```
+```protobuf
 message SalesArrangement {
     cis.types.NullableGrpcDate OfferGuaranteeDateFrom = 12;
 }

@@ -1,10 +1,7 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Mappers;
 using CIS.InternalServices.NotificationService.Contracts.Result;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using MediatR;
-using EmailResult = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.EmailResult;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Result;
 
