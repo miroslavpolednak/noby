@@ -22,10 +22,10 @@ public static class GrpcExceptionHelpers
     {
         Metadata trailersCollection = new();
 
-        trailersCollection.Add(ExceptionHandlingConstants.GrpcTrailerCisCodeKey, string.Join(',', exception.Errors.Select(t => t.Code)));
+        trailersCollection.Add(ExceptionHandlingConstants.GrpcTrailerCisCodeKey, string.Join(',', exception.Errors.Select(t => t.ExceptionCode)));
 
         foreach (var item in exception.Errors)
-            trailersCollection.Add(new(item.Code + "-bin", TryConvertStringToTrailerValue(item.Message)));
+            trailersCollection.Add(new($"ciserr-{item.ExceptionCode}-bin", TryConvertStringToTrailerValue(item.Message)));
 
         return new RpcException(new Status(StatusCode.InvalidArgument, exception.Errors[0].Message), trailersCollection);
     }
@@ -35,7 +35,7 @@ public static class GrpcExceptionHelpers
         Metadata trailersCollection = new();
         
         trailersCollection.Add(ExceptionHandlingConstants.GrpcTrailerCisCodeKey, exception.ExceptionCode);
-        trailersCollection.Add(new(exception.ExceptionCode + "-bin", TryConvertStringToTrailerValue(exception.ExceptionCode)));
+        trailersCollection.Add(new($"ciserr-{exception.ExceptionCode}-bin", TryConvertStringToTrailerValue(exception.ExceptionCode)));
 
         return new RpcException(new Status(statusCode, exception.Message), trailersCollection);
     }
@@ -52,7 +52,7 @@ public static class GrpcExceptionHelpers
             {
                 if (int.TryParse(ids[i], out int code))
                 {
-                    var message = TryConvertTrailerValueToString(exception.Trailers?.GetValueBytes($"ciserr_{i}_{code}-bin"));
+                    var message = TryConvertTrailerValueToString(exception.Trailers?.GetValueBytes($"ciserr-{code}-bin"));
                     if (!string.IsNullOrEmpty(message))
                         list.Add(new(ids[i], message));
                 }

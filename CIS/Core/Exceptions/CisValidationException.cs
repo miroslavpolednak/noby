@@ -42,6 +42,7 @@ public class CisValidationException
         }.ToImmutableList();
     }
 
+    /// <param name="errors">Seznam chyb</param>
     public CisValidationException(ImmutableList<CisExceptionItem> errors)
         : base(errors.FirstOrDefault()?.Message)
     {
