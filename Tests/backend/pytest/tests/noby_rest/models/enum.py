@@ -1,6 +1,6 @@
 
 
-class Codebooks:
+class Codebooks_all:
     ACADEMICDEGREESAFTER = 'AcademicDegreesAfter'
     ACADEMICDEGREESBEFORE = 'AcademicDegreesBefore'
     BANKCODES = 'Bankcodes'
@@ -51,5 +51,15 @@ class Codebooks:
     SIGNATURETYPES = 'SignatureTypes'
     WORKFLOWTASKCATEGORIES = 'WorkflowTaskCategories'
     WORKFLOWTASKSTATES = 'WorkflowTaskStates'
-    WORKFLOWTASKTYPES = 'WorkflowTaskTypes'
+    WORKFLOWTASKTYPES = 'WorkflowTaskProcessTypes'
     WORKSECTORS = 'WorkSectors'
+
+
+class Codebooks:
+    FIXATIONPERIODLENGTH = 'fixation-period-length'
+    PRODUCTLOANKINDS = 'product-loan-kinds'
+    FIXEDRATEPERIODS = 'fixed-rate-periods'
+
+
+class ProductTypes:
+    MORTGAGE = 20001

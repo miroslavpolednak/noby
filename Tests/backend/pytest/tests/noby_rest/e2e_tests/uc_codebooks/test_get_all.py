@@ -6,82 +6,82 @@ from response.codebooks_json import json_resp_academic_degrees_after, json_resp_
     json_resp_country_code_phone_idc, json_resp_currencies, json_resp_customer_roles, json_resp_developers, \
     json_resp_developer_projects, json_resp_document_on_sa_types, json_resp_drawing_durations, json_resp_drawing_types, \
     json_resp_ea_codes_main, json_resp_education_levels, json_resp_employment_types
-from Tests.backend.pytest.tests.noby_rest.models.enum import Codebooks
+from Tests.backend.pytest.tests.noby_rest.models.enum import Codebooks_all
 from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import get_all_codebooks
 
 
 #TODO: assert pro CIS ciselnik vs. nas(hotovo)
 @pytest.mark.parametrize("codebook_name, expected_resp_json", [
     (
-            Codebooks.PAYMENTDAYS,
+            Codebooks_all.PAYMENTDAYS,
             json_resp_paymentDays
     ),
     (
-            Codebooks.ACADEMICDEGREESAFTER,
+            Codebooks_all.ACADEMICDEGREESAFTER,
             json_resp_academic_degrees_after
     ),
     (
-            Codebooks.ACADEMICDEGREESBEFORE,
+            Codebooks_all.ACADEMICDEGREESBEFORE,
             json_resp_academic_degrees_before
     ),
     (
-            Codebooks.BANKCODES,
+            Codebooks_all.BANKCODES,
             json_resp_bank_codes
     ),
     (
-            Codebooks.CLASSIFICATIONOFECONOMICACTIVITIES,
+            Codebooks_all.CLASSIFICATIONOFECONOMICACTIVITIES,
             json_resp_classification_of_economic_activities
     ),
     (
-            Codebooks.CASESTATES,
+            Codebooks_all.CASESTATES,
             json_resp_case_states
     ),
     (
-            Codebooks.CONTACTTYPES,
+            Codebooks_all.CONTACTTYPES,
             json_resp_contact_types
     ),
     (
-            Codebooks.COUNTRIES,
+            Codebooks_all.COUNTRIES,
             json_resp_countries
     ),
     (
-            Codebooks.CURRENCIES,
+            Codebooks_all.CURRENCIES,
             json_resp_currencies
     ),
     (
-            Codebooks.CUSTOMERROLES,
+            Codebooks_all.CUSTOMERROLES,
             json_resp_customer_roles
     ),
     (
-            Codebooks.DEVELOPERS,
+            Codebooks_all.DEVELOPERS,
             json_resp_developers
     ),
     (
-            Codebooks.DEVELOPERPROJECTS,
+            Codebooks_all.DEVELOPERPROJECTS,
             json_resp_developer_projects
     ),
     (
-            Codebooks.DOCUMENTONSATYPES,
+            Codebooks_all.DOCUMENTONSATYPES,
             json_resp_document_on_sa_types
     ),
     (
-            Codebooks.DRAWINGDURATIONS,
+            Codebooks_all.DRAWINGDURATIONS,
             json_resp_drawing_durations
     ),
     (
-            Codebooks.DRAWINGTYPES,
+            Codebooks_all.DRAWINGTYPES,
             json_resp_drawing_types
     ),
     (
-            Codebooks.EACODESMAIN,
+            Codebooks_all.EACODESMAIN,
             json_resp_ea_codes_main
     ),
     (
-            Codebooks.EDUCATIONLEVELS,
+            Codebooks_all.EDUCATIONLEVELS,
             json_resp_education_levels
     ),
     (
-            Codebooks.EMPLOYMENTTYPES,
+            Codebooks_all.EMPLOYMENTTYPES,
             json_resp_employment_types
     ),
 ]
