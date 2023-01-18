@@ -8,6 +8,7 @@ from .Insurance import Insurance
 from .LoanPurpose import LoanPurpose
 from .MarketingActions import MarketingActions
 
+from fe_api.FeAPI import FeAPI
 
 def build_models():
     import json
@@ -51,4 +52,13 @@ def build_models():
     print(Offer.to_grpc(offer))
     # print(offer.get_value('loanKindId'))
 
+    # """Test API get codebooks."""
+    # from fe_api.enums.ECodebook import ECodebook
+    # items = FeAPI.Codebooks.get_codebook(ECodebook.AcademicDegreesAfter)
+    # print(items)
+   
+
+
     return dict(offer=offer, developer=developer)
+
+
