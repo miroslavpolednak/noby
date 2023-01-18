@@ -52,8 +52,7 @@ public sealed class GenericClientExceptionInterceptor
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
         {
-            var errors = ex.GetErrorMessagesFromRpcException();
-            throw new CisValidationException(errors);
+            throw new CisValidationException(ex.GetErrorMessagesFromRpcException());
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.Unknown)
         {

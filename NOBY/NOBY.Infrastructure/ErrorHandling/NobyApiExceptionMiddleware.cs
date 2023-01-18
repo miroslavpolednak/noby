@@ -27,14 +27,14 @@ public sealed class NobyApiExceptionMiddleware
             await _next(context);
         }
         // neprihlaseny uzivatel
+        catch (CisAuthenticationException ex)
+        {
+            await Results.Json(new ApiAuthenticationProblemDetail { RedirectUri = ex.ProviderLoginUrl }, statusCode: 401).ExecuteAsync(context);
+        }
         catch (AuthenticationException ex)
         {
             logger.WebApiAuthenticationException(ex.Message, ex);
-            var model = new ApiAuthenticationProblemDetail
-            {
-                RedirectUri = "presmerovat_na_caas"
-            };
-            await Results.Json(model, statusCode: 401).ExecuteAsync(context);
+            await Results.Unauthorized().ExecuteAsync(context);
         }
         catch (NotImplementedException ex)
         {

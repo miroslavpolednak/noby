@@ -24,6 +24,10 @@ public class ApiExceptionMiddleware
         {
             await _next(context);
         }
+        catch (CisAuthenticationException ex)
+        {
+            await Results.Json(new { url = ex.ProviderLoginUrl }, statusCode: 401).ExecuteAsync(context);
+        }
         // neprihlaseny uzivatel
         catch (AuthenticationException ex)
         {
