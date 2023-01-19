@@ -13,7 +13,7 @@ Pro naše aplikace/služby je ale preferovanou variantou načítat URI automatic
 Aby automatický resolving adres v aplikaci fungoval, musí být konzument správně nakonfigurován - tj. mít v DI instanci `ICisEnvironmentConfiguration`.
 
 Konfigurace se načítá z *appsettings.json* a je popsána [zde](grpc-services-api.md).
-```
+```json
 "CisEnvironmentConfiguration": {
 	"DefaultApplicationKey": "DS:CaseService",
 	"EnvironmentName": "FAT",
@@ -23,11 +23,11 @@ Konfigurace se načítá z *appsettings.json* a je popsána [zde](grpc-services-
 }
 ```
 Při startupu se pak načíta a vkládá do DI pomocí této extension metody:
-```
+```csharp
 builder.AddCisEnvironmentConfiguration();
 ```
 Dále je potřeba při startupu aplikace spustit automatický resolving:
-```
+```csharp
 app.UseServiceDiscovery();
 ```
 `UseServiceDiscovery()` prochází všechny singleton instance v DI, které implementují interface `CIS.Core.IIsServiceDiscoverable` a zároveň požadují automatický resolving (`UseServiceDiscovery`=true).

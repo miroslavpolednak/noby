@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.ServiceDiscovery.Api", "Api\CIS.InternalServices.ServiceDiscovery.Api.csproj", "{A365EF10-7D9F-434F-967E-922BB0FF88CF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.ServiceDiscovery.Clients", "Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj", "{23D488E6-B385-47C1-968D-BAFB944ED022}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.ServiceDiscovery.Contracts", "Contracts\CIS.InternalServices.ServiceDiscovery.Contracts.csproj", "{33A6AF39-18B9-4C62-B506-3940C5A63D08}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{C2AC8B59-82F6-4D2A-9486-0AEABA5989A4}"
+	ProjectSection(SolutionItems) = preProject
+		DatabaseMigrations\1-initial_creation.sql = DatabaseMigrations\1-initial_creation.sql
+		DatabaseMigrations\2-seed.sql = DatabaseMigrations\2-seed.sql
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A365EF10-7D9F-434F-967E-922BB0FF88CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A365EF10-7D9F-434F-967E-922BB0FF88CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A365EF10-7D9F-434F-967E-922BB0FF88CF}.Debug|x64.ActiveCfg = Debug|x64
+		{A365EF10-7D9F-434F-967E-922BB0FF88CF}.Debug|x64.Build.0 = Debug|x64
+		{A365EF10-7D9F-434F-967E-922BB0FF88CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A365EF10-7D9F-434F-967E-922BB0FF88CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A365EF10-7D9F-434F-967E-922BB0FF88CF}.Release|x64.ActiveCfg = Release|x64
+		{A365EF10-7D9F-434F-967E-922BB0FF88CF}.Release|x64.Build.0 = Release|x64
+		{23D488E6-B385-47C1-968D-BAFB944ED022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23D488E6-B385-47C1-968D-BAFB944ED022}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23D488E6-B385-47C1-968D-BAFB944ED022}.Debug|x64.ActiveCfg = Debug|x64
+		{23D488E6-B385-47C1-968D-BAFB944ED022}.Debug|x64.Build.0 = Debug|x64
+		{23D488E6-B385-47C1-968D-BAFB944ED022}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23D488E6-B385-47C1-968D-BAFB944ED022}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23D488E6-B385-47C1-968D-BAFB944ED022}.Release|x64.ActiveCfg = Release|x64
+		{23D488E6-B385-47C1-968D-BAFB944ED022}.Release|x64.Build.0 = Release|x64
+		{33A6AF39-18B9-4C62-B506-3940C5A63D08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A6AF39-18B9-4C62-B506-3940C5A63D08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A6AF39-18B9-4C62-B506-3940C5A63D08}.Debug|x64.ActiveCfg = Debug|x64
+		{33A6AF39-18B9-4C62-B506-3940C5A63D08}.Debug|x64.Build.0 = Debug|x64
+		{33A6AF39-18B9-4C62-B506-3940C5A63D08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A6AF39-18B9-4C62-B506-3940C5A63D08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A6AF39-18B9-4C62-B506-3940C5A63D08}.Release|x64.ActiveCfg = Release|x64
+		{33A6AF39-18B9-4C62-B506-3940C5A63D08}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {761CF464-0182-4408-BD66-C43D4E899AA9}
+	EndGlobalSection
+EndGlobal
