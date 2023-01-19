@@ -23,12 +23,27 @@ function WinSvcCreate([string] $service, [bool] $isInternal) {
         echo "$svc_name - exists"
     }
     else {
-        # create if not exists
+        
+        # ---------------------------------------------------
+        # create subfolders
+        # ---------------------------------------------------
+        [string[]] $subfolders = "d:\app\DS-$env\$service", "d:\backup\DS-$env\$service", "d:\deploy\DS-$env\$service"
+
+        $subfolders.ForEach({
+            $path = $_
+
+            If(!(test-path -PathType container $path))
+            {
+                New-Item -ItemType Directory -Path $path
+            }
+        })
+
+        # ---------------------------------------------------
+        # create windows service
+        # ---------------------------------------------------
         $svc_bin_path = If ($isInternal -eq $true) {"d:\app\DS-$env\$service\CIS.InternalServices.$service.Api.exe winsvc"} Else {"d:\app\DS-$env\$service\DomainServices.$service.Api.exe winsvc"}
-       
+
         New-Service -name $svc_name -binaryPathName $svc_bin_path -displayName $svc_name -startupType Automatic
-        # sc create DS-FAT-HouseholdService binPath= "d:\app\DS-FAT\HouseholdService\DomainServices.HouseholdService.Api.exe winsvc" start=auto error=critical obj=LocalSystem
-        # how to set error=critical obj=LocalSystem ???
 
         # set for TFS
         Start-Process -FilePath "D:\sw-install\SubInACL\subinacl.exe" -ArgumentList @("/service $svc_name", "/grant=vsskb\kb2mp_devops=LQSETOP")
@@ -42,10 +57,10 @@ function WinSvcCreate([string] $service, [bool] $isInternal) {
 $env = CheckEnv($env)
 
 # services
-[string[]] $services = "ServiceDiscovery", "NotificationService", "DocumentGeneratorService", "HouseholdService", "CaseService", "CodebookService", "CustomerService", "OfferService", "ProductService", "RiskIntegrationService", "SalesArrangementService", "UserService", "DocumentArchiveService"
+[string[]] $services = "ServiceDiscovery", "NotificationService", "DataAggregatorService", "DocumentGeneratorService", "HouseholdService", "CaseService", "CodebookService", "CustomerService", "OfferService", "ProductService", "RiskIntegrationService", "SalesArrangementService", "UserService", "DocumentArchiveService"
 
 # internalservices
-[string[]] $internal = "ServiceDiscovery", "NotificationService", "DocumentGeneratorService"
+[string[]] $internal = "ServiceDiscovery", "NotificationService", "DataAggregatorService", "DocumentGeneratorService"
 
 $services.ForEach({
     $isInternal = $internal.IndexOf($_) -ge 0
