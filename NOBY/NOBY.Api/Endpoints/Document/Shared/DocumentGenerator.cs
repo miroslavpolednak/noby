@@ -51,15 +51,15 @@ internal class DocumentGenerator
     private static _Document.GenerateDocumentRequest Create(GetDocumentBaseRequest request, IEnumerable<DocumentFieldData> documentData) =>
         new()
         {
-            TemplateTypeId = (int)request.DocumentType,
-            TemplateVersion = request.DocumentTemplateVersion,
+            DocumentTypeId = (int)request.DocumentType,
+            DocumentTemplateVersion = request.DocumentTemplateVersion,
             OutputType = _Document.OutputFileType.OpenForm,
             Parts =
             {
                 new _Document.GenerateDocumentPart
                 {
-                    TemplateTypeId = (int)request.DocumentType,
-                    TemplateVersion = request.DocumentTemplateVersion,
+                    DocumentTypeId = (int)request.DocumentType,
+                    DocumentTemplateVersion = request.DocumentTemplateVersion,
                     Data = { documentData.Select(CreateDocumentPartData) }
                 }
             },

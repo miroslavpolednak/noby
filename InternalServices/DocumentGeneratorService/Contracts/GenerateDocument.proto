@@ -17,9 +17,9 @@ enum OutputFileType {
 }
 
 message GenerateDocumentRequest {
-	int32 TemplateTypeId = 1;
+	int32 DocumentTypeId = 1;
 
-	google.protobuf.StringValue TemplateVersion = 2;
+	string DocumentTemplateVersion = 2;
 
 	OutputFileType OutputType = 3;
 
@@ -31,9 +31,9 @@ message GenerateDocumentRequest {
 }
 
 message GenerateDocumentPart {
-	int32 TemplateTypeId = 1;
+	int32 DocumentTypeId = 1;
 
-	google.protobuf.StringValue TemplateVersion = 2;
+	string DocumentTemplateVersion = 2;
 
 	google.protobuf.Int32Value Order = 3;
 
