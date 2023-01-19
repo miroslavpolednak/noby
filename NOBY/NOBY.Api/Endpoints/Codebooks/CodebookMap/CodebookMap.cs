@@ -33,8 +33,8 @@ public class CodebookMap : ICodebookMap
     {
         AddCodebook(s => s.AcademicDegreesAfter);
         AddCodebook(s => s.AcademicDegreesBefore);
-        AddCodebook(s => s.ActionCodesSavings, c => c.Cast<GenericCodebookItem>().Where(t => t.IsValid));
-        AddCodebook(s => s.ActionCodesSavingsLoan, c => c.Cast<GenericCodebookItem>().Where(t => t.IsValid));
+        AddCodebook(s => s.ActionCodesSavings);
+        AddCodebook(s => s.ActionCodesSavingsLoan);
         AddCodebook(s => s.BankCodes);
         AddCodebook(s => s.CaseStates);
         AddCodebook(s => s.ClassificationOfEconomicActivities);
@@ -49,8 +49,8 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.DocumentOnSATypes);
         AddCodebook(s => s.DocumentTemplateVersions);
         AddCodebook(s => s.DrawingDurations);
-        AddCodebook(s => s.DrawingTypes, c => c.Cast<Codebook.DrawingTypes.DrawingTypeItem>().Where(t => t.Id > 0));
-        AddCodebook(s => s.EaCodesMain, c => c.Cast<Codebook.EaCodesMain.EaCodeMainItem>().Where(t => t.IsValid));
+        AddCodebook(s => s.DrawingTypes);
+        AddCodebook(s => s.EaCodesMain);
         AddCodebook(s => s.EducationLevels);
         AddCodebook(s => s.EmploymentTypes);
         AddCodebook(s => s.Fees);
@@ -63,15 +63,15 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.IncomeOtherTypes);
         AddCodebook(s => s.JobTypes);
         AddCodebook(s => s.LegalCapacityRestrictionTypes);
-        AddCodebook(s => s.LoanPurposes, c => c.Cast<Codebook.LoanPurposes.LoanPurposesItem>().Where(t => t.IsValid));
-        AddCodebook(s => s.LoanKinds, c => c.Cast<Codebook.LoanKinds.LoanKindsItem>().Where(t => t.IsValid));
+        AddCodebook(s => s.LoanPurposes);
+        AddCodebook(s => s.LoanKinds);
         AddCodebook(s => s.LoanInterestRateAnnouncedTypes);
         AddCodebook(s => s.Mandants);
         AddCodebook(s => s.MaritalStatuses);
         AddCodebook(s => s.NetMonthEarnings);
         AddCodebook(s => s.ObligationCorrectionTypes);
         AddCodebook(s => s.ObligationTypes);
-        AddCodebook(s => s.FormTypes, c => c.Cast<Codebook.FormTypes.FormTypeItem>().Where(t => t.IsValid));
+        AddCodebook(s => s.FormTypes);
         AddCodebook(s => s.PaymentDays, c => c.Cast<Codebook.PaymentDays.PaymentDayItem>().Where(t => t.ShowOnPortal));
         AddCodebook(s => s.PayoutTypes);
         AddCodebook(s => s.PostCodes);
