@@ -1,12 +1,11 @@
 ﻿using System.Globalization;
 using CIS.Foms.Enums;
-using CIS.InternalServices.DataAggregator.EasForms;
-using DomainServices.SalesArrangementService.Api.Database.Entities;
+using CIS.InternalServices.DataAggregatorService.Contracts;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.SendToCmp;
 
-internal class SendToCmpHandler
-    : IRequestHandler<Contracts.SendToCmpRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     private readonly ILogger<SendToCmpHandler> _logger;
     private readonly Database.NobyRepository _repository;
@@ -25,73 +24,77 @@ internal class SendToCmpHandler
         _formsService = formsService;
     }
 
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.SendToCmpRequest request, CancellationToken cancellationToken)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(SendToCmpRequest request, CancellationToken cancellationToken)
     {
-        var category = await _formsService.LoadSalesArrangementCategory(request.SalesArrangementId, cancellationToken);
+        var salesArrangement = await _formsService.LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
+        var category = await _formsService.LoadSalesArrangementCategory(salesArrangement, cancellationToken);
 
-        var easForm = await GetEasForm(request.SalesArrangementId, category, cancellationToken);
+        var easFormResponse = await GetEasForm(salesArrangement, category, cancellationToken);
 
-        await SaveForms(easForm, cancellationToken);
+        await SaveForms(easFormResponse, salesArrangement, cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private async Task<IEasForm<IEasFormData>> GetEasForm(int salesArrangementId, SalesArrangementCategories category, CancellationToken cancellationToken)
+    private async Task<GetEasFormResponse> GetEasForm(SalesArrangement salesArrangement, SalesArrangementCategories category, CancellationToken cancellationToken)
     {
         return category switch
         {
-            SalesArrangementCategories.ProductRequest => await ProcessProductRequest(salesArrangementId, cancellationToken),
-            SalesArrangementCategories.ServiceRequest => await _formsService.LoadServiceForm(salesArrangementId),
+            SalesArrangementCategories.ProductRequest => await ProcessProductRequest(salesArrangement, cancellationToken),
+            SalesArrangementCategories.ServiceRequest => await ProcessServiceRequest(salesArrangement.SalesArrangementId, cancellationToken),
             _ => throw new NotImplementedException()
         };
     }
 
-    private async Task<IEasForm<IEasFormData>> ProcessProductRequest(int salesArrangementId, CancellationToken cancellationToken)
+    private async Task<GetEasFormResponse> ProcessProductRequest(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
-        var productForm = await _formsService.LoadProductForm(salesArrangementId);
+        var dynamicValues = await GetDynamicValuesRange(cancellationToken, 3);
 
-        await _formsService.UpdateContractNumber(productForm.FormData, cancellationToken);
-        await _formsService.AddFirstSignatureDate(productForm.FormData);
-        await _formsService.CallSulm(productForm.FormData, cancellationToken);
+        await _formsService.UpdateContractNumber(salesArrangement, cancellationToken);
 
-        return productForm;
+        var response = await _formsService.LoadProductForm(salesArrangement, dynamicValues, cancellationToken);
+
+        await _formsService.AddFirstSignatureDate(salesArrangement.CaseId);
+        await _formsService.CallSulm(response.Product, cancellationToken);
+
+        return response;
     }
 
-    private async Task SaveForms(IEasForm<IEasFormData> easForm, CancellationToken cancellationToken)
+    private async Task<GetEasFormResponse> ProcessServiceRequest(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var dynamicValues = await GetDynamicValuesRange(cancellationToken, 1);
+
+        return await _formsService.LoadServiceForm(salesArrangementId, dynamicValues, cancellationToken);
+    }
+
+    private async Task SaveForms(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         // load user
-        var user = await _userService.GetUser(easForm.FormData.SalesArrangement.Created.UserId!.Value, cancellationToken);
-
-        var dynamicValues = await GetDynamicValuesRange(cancellationToken, easForm.FormData is IServiceFormData ? 1 : 3);
+        var user = await _userService.GetUser(salesArrangement.Created.UserId!.Value, cancellationToken);
 
         // map to entities
-        var entities = easForm.BuildForms(dynamicValues).Select(f =>
+        var entities = easFormResponse.Forms.Select(f => new Database.Entities.FormInstanceInterface
         {
-            var defaultValues = CIS.InternalServices.DataAggregator.EasForms.FormData.DefaultValues.Create(f.FormType);
-
-            return new FormInstanceInterface
-            {
-                DOKUMENT_ID = f.DynamicValues!.DocumentId,
-                TYP_FORMULARE = defaultValues.FormType,
-                CISLO_SMLOUVY = easForm.FormData.SalesArrangement.ContractNumber,
-                STATUS = 100,
-                DRUH_FROMULARE = 'N',
-                FORMID = f.DynamicValues.FormId,
-                CPM = user.CPM ?? string.Empty,
-                ICP = user.ICP ?? string.Empty,
-                CREATED_AT = DateTime.Now,          // what time zone?
-                HESLO_KOD = defaultValues.PasswordCode,
-                STORNOVANO = 0,
-                TYP_DAT = 1,
-                JSON_DATA_CLOB = f.Json
-            };
+            DOKUMENT_ID = f.DynamicFormValues!.DocumentId, //Mock
+            TYP_FORMULARE = f.DefaultValues.FormType,
+            CISLO_SMLOUVY = salesArrangement.ContractNumber,
+            STATUS = 100,
+            DRUH_FROMULARE = 'N',
+            FORMID = f.DynamicFormValues.FormId, //Mock
+            CPM = user.CPM ?? string.Empty,
+            ICP = user.ICP ?? string.Empty,
+            CREATED_AT = DateTime.Now, // what time zone?
+            HESLO_KOD = f.DefaultValues.PasswordCode,
+            STORNOVANO = 0,
+            TYP_DAT = 1,
+            JSON_DATA_CLOB = f.Json
         }).ToList();
 
         await _repository.CreateForms(entities, cancellationToken);
 
         var documentIds = entities.Select(e => e.DOKUMENT_ID);
 
-        _logger.LogInformation($"Entities {nameof(FormInstanceInterface)} created [ContractNumber: {easForm.FormData.SalesArrangement}, DokumentIds: {string.Join(", ", documentIds)} ]");
+        _logger.LogInformation($"Entities {nameof(Database.Entities.FormInstanceInterface)} created [ContractNumber: {salesArrangement}, DokumentIds: {string.Join(", ", documentIds)} ]");
     }
 
     private async Task<List<DynamicFormValues>> GetDynamicValuesRange(CancellationToken cancellationToken, int count = 3)

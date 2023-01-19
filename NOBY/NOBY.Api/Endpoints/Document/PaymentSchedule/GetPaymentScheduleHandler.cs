@@ -13,7 +13,7 @@ internal class GetPaymentScheduleHandler : IRequestHandler<GetPaymentScheduleReq
 
     public async Task<ReadOnlyMemory<byte>> Handle(GetPaymentScheduleRequest request, CancellationToken cancellationToken)
     {
-        var generateDocumentRequest = await _documentGenerator.CreateRequest(request);
+        var generateDocumentRequest = await _documentGenerator.CreateRequest(request, cancellationToken);
 
         return await _documentGenerator.GenerateDocument(generateDocumentRequest, cancellationToken);
     }

@@ -1,0 +1,39 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DataAggregatorService;
+option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Identity.proto";
+
+message ProductData {
+	repeated CustomerOnSa CustomersOnSa = 1;
+
+	repeated Household Households = 2;
+
+	repeated EmployementIncome EmployementIncomes = 3;
+}
+
+message CustomerOnSa {
+	int32 CustomerOnSaId = 1;
+
+	repeated cis.types.Identity Identities = 2;
+}
+
+message Household {
+	int32 HouseholdId = 1;
+
+	int32 HouseholdTypeId = 2;
+
+	google.protobuf.Int32Value CustomerOnSaId1 = 3;
+
+	google.protobuf.Int32Value CustomerOnSaId2 = 4;
+}
+
+message EmployementIncome {
+	int32 IncomeId = 1;
+
+	bool IsInProbationaryPeriodHasValue = 2;
+
+	bool IsInTrialPeriodHasValue = 3;
+}

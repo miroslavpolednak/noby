@@ -59,7 +59,7 @@ internal class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnlyMemory
 
     private async Task<ReadOnlyMemory<byte>> GenerateOfferDocument(GetDocumentBaseRequest request, string documentId, CancellationToken cancellationToken)
     {
-        var generateDocumentRequest = await _documentGenerator.CreateRequest(request);
+        var generateDocumentRequest = await _documentGenerator.CreateRequest(request, cancellationToken);
 
         generateDocumentRequest.DocumentFooter.DocumentId = documentId;
 

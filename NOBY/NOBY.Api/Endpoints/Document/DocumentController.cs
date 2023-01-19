@@ -32,9 +32,11 @@ public class DocumentController : ControllerBase
     [ProducesResponseType(typeof(FileResult), 200)]
     public async Task<IActionResult> GetOffer(int salesArrangementId, CancellationToken cancellationToken)
     {
-        var request = await _documentManager.CreateRequest<Offer.GetOfferRequest>(DocumentTemplateType.NABIDKA,
-                                                                                  _documentManager.GetSalesArrangementInput(salesArrangementId),
-                                                                                  cancellationToken);
+        var request = new Offer.GetOfferRequest
+        {
+            DocumentType = DocumentType.NABIDKA,
+            InputParameters = _documentManager.GetSalesArrangementInput(salesArrangementId)
+        };
 
         var memory = await _mediator.Send(request, cancellationToken);
 
@@ -55,7 +57,11 @@ public class DocumentController : ControllerBase
     [ProducesResponseType(typeof(FileResult), 200)]
     public async Task<IActionResult> GetCalculation(int offerId, CancellationToken cancellationToken)
     {
-        var request = await _documentManager.CreateRequest<Calculation.GetCalculationRequest>(DocumentTemplateType.KALKULHU, _documentManager.GetOfferInput(offerId), cancellationToken);
+        var request = new Calculation.GetCalculationRequest
+        {
+            DocumentType = DocumentType.KALKULHU,
+            InputParameters = _documentManager.GetOfferInput(offerId)
+        };
 
         var memory = await _mediator.Send(request, cancellationToken);
 
@@ -76,7 +82,11 @@ public class DocumentController : ControllerBase
     [ProducesResponseType(typeof(FileResult), 200)]
     public async Task<IActionResult> GetPaymentSchedule(int offerId, CancellationToken cancellationToken)
     {
-        var request = await _documentManager.CreateRequest<PaymentSchedule.GetPaymentScheduleRequest>(DocumentTemplateType.SPLKALHU, _documentManager.GetOfferInput(offerId), cancellationToken);
+        var request = new PaymentSchedule.GetPaymentScheduleRequest
+        {
+            DocumentType = DocumentType.SPLKALHU,
+            InputParameters = _documentManager.GetOfferInput(offerId)
+        };
 
         var memory = await _mediator.Send(request, cancellationToken);
 

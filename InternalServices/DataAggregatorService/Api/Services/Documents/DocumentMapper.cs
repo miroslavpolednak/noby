@@ -69,9 +69,6 @@ internal class DocumentMapper
             case bool logicalValue:
                 fieldData.LogicalValue = logicalValue;
                 break;
-
-            default:
-                throw new NotImplementedException();
         }
     }
 

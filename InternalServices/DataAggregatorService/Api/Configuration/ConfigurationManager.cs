@@ -50,6 +50,7 @@ internal class ConfigurationManager
 
         return new EasFormConfiguration
         {
+            EasFormRequestType = (EasFormRequestType)easFormRequestType,
             InputConfig = new InputConfig
             {
                 DataSources = GetDataSources(fields.Select(f => f.DataSource)),
