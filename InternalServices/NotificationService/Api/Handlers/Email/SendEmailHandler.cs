@@ -2,10 +2,10 @@
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Contracts.Email;
-using cz.kb.osbs.mcs.sender.sendapi.v4.email;
 using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
@@ -66,11 +66,15 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         
         try
         {
+            // todo: map user to consumerId
+            var consumerId = NotificationConsumerIds.Starbuild;
+            
             if (host == "kb.cz")
             {
-                var sendEmail = new SendEmail
+                var sendEmail = new McsSendApi.v4.email.SendEmail
                 {
                     id = result.Id.ToString(),
+                    notificationConsumer = McsEmailMappers.MapToMcs(consumerId),
                     sender = request.From.MapToMcs(),
                     to = request.To.MapToMcs().ToList(),
                     bcc = request.Bcc.MapToMcs().ToList(),
@@ -91,6 +95,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
                 var sendEmail = new MpssSendApi.v1.email.SendEmail
                 {
                     id = result.Id.ToString(),
+                    notificationConsumer = MpssEmailMappers.MapToMpss(consumerId),
                     sender = request.From.MapToMpss(),
                     to = request.To.MapToMpss().ToList(),
                     bcc = request.Bcc.MapToMpss().ToList(),
@@ -111,7 +116,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Could not produce message {nameof(SendEmail)} to KAFKA.");
+            _logger.LogError(e, "Could not produce message SendEmail to KAFKA.");
             throw new CisServiceUnavailableException("Todo", nameof(SendEmailHandler), "Todo");
         }
 

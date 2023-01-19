@@ -34,7 +34,7 @@ public class SendEmailRequest : IRequest<SendEmailResponse>, IValidatableRequest
     public List<EmailAttachment> Attachments { get; set; } = new();
     
     [ProtoMember(9)]
-    public Identifier Identifier { get; set; } = default!;
+    public Identifier? Identifier { get; set; }
     
     [ProtoMember(10)]
     public string CustomId { get; set; } = string.Empty;

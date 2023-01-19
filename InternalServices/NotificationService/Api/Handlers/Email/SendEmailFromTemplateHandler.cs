@@ -74,7 +74,11 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
             // replyTo = request.ReplyTo?.Map(),
             // subject = request.Subject,
             // content = request.Content.Map(),
-            // attachments = attachments
+            // attachments = attachments,
+            // notificationConsumer = new NotificationConsumer
+            // {
+            //     consumerId = "HF"
+            // }
         // };
         
         try
