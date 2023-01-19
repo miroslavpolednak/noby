@@ -56,7 +56,7 @@ internal sealed class UpdateCustomersHandler
             bool customerIdChanged = customer.CustomerOnSAId != householdCustomerId && householdCustomerId.HasValue;
             // smazat existujiciho, je nahrazen novym
             if (customerIdChanged)
-                await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken: cancellationToken);
+                await _customerOnSAService.DeleteCustomer(householdCustomerId!.Value, cancellationToken: cancellationToken);
 
             // update stavajiciho
             if (customer.CustomerOnSAId.HasValue)
