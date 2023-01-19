@@ -5,6 +5,7 @@ using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
@@ -16,6 +17,8 @@ internal sealed class FormsService
     private readonly IDataAggregatorServiceClient _dataAggregator;
     private readonly ICodebookServiceClients _codebookService;
     private readonly ICaseServiceClient _caseService;
+    private readonly IHouseholdServiceClient _householdService;
+    private readonly ICustomerOnSAServiceClient _customerOnSaService;
     private readonly Eas.IEasClient _easClient;
     private readonly SulmService.ISulmClient _sulmClient;
 
@@ -23,6 +26,8 @@ internal sealed class FormsService
                         IDataAggregatorServiceClient dataAggregator,
                         ICodebookServiceClients codebookService,
                         ICaseServiceClient caseService,
+                        IHouseholdServiceClient householdService,
+                        ICustomerOnSAServiceClient customerOnSaService,
                         Eas.IEasClient easClient,
                         SulmService.ISulmClient sulmClient)
     {
@@ -30,6 +35,8 @@ internal sealed class FormsService
         _dataAggregator = dataAggregator;
         _codebookService = codebookService;
         _caseService = caseService;
+        _householdService = householdService;
+        _customerOnSaService = customerOnSaService;
         _easClient = easClient;
         _sulmClient = sulmClient;
     }
@@ -91,15 +98,18 @@ internal sealed class FormsService
         }
     }
 
-    public async Task UpdateContractNumber(SalesArrangement salesArrangement, ProductData formData, CancellationToken cancellationToken)
+    public async Task UpdateContractNumber(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         if (!string.IsNullOrEmpty(salesArrangement.ContractNumber))
             return;
 
-        var mainHousehold = formData.Households.Single(i => i.HouseholdTypeId == (int)HouseholdTypes.Main);
-        var mainCustomerOnSa = formData.CustomersOnSa.Single(i => i.CustomerOnSaId == mainHousehold.CustomerOnSaId1!.Value);
+        var households = await _householdService.GetHouseholdList(salesArrangement.SalesArrangementId, cancellationToken);
+        var mainHousehold = households.Single(h => h.HouseholdTypeId == (int)HouseholdTypes.Main);
 
-        var identityMp = mainCustomerOnSa.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+        var customersOnSa = await _customerOnSaService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
+        var mainCustomerOnSa = customersOnSa.Single(c => c.CustomerOnSAId == mainHousehold.CustomerOnSAId1!.Value);
+
+        var identityMp = mainCustomerOnSa.CustomerIdentifiers.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
         var contractNumber = await _easClient.GetContractNumber(identityMp.IdentityId, (int)salesArrangement.CaseId);
 
         await UpdateSalesArrangement(salesArrangement, contractNumber, cancellationToken);
