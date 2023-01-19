@@ -13,4 +13,7 @@ internal class DataAggregatorServiceClient : IDataAggregatorServiceClient
 
     public Task<GetDocumentDataResponse> GetDocumentData(GetDocumentDataRequest request, CancellationToken cancellationToken = default) =>
         _client.GetDocumentDataAsync(request, cancellationToken: cancellationToken).ResponseAsync;
+
+    public Task<GetEasFormResponse> GetEasForm(GetEasFormRequest request, CancellationToken cancellationToken = default) => 
+        _client.GetEasFormAsync(request, cancellationToken: cancellationToken).ResponseAsync;
 }

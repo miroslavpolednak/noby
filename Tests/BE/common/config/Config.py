@@ -21,6 +21,11 @@ class Config(IConfig):
         return os.getenv("SERVER")
 
     @property
+    def fe_api_url(self) -> str:
+        """Returns FeAPI URL"""
+        return os.getenv("FE_API_URL")
+
+    @property
     def is_discovery_db_connection(self) -> MsSqlDbConnection:
         """Returns db connection params for internal service Discovery"""
         return MsSqlDbConnection(

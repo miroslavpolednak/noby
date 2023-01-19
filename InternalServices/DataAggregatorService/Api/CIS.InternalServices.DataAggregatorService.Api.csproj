@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Endpoints\GetDocumentData\" />
     <Folder Include="Endpoints\GetEasForm\" />
+    <Folder Include="Services\EasForms\Forms\" />
   </ItemGroup>
 
   <ItemGroup>

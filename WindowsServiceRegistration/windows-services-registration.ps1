@@ -1,7 +1,7 @@
 param([string]$env)
 
 function CheckEnv([string] $env) {
-    [string[]] $envs = "DEV", "FAT", "SIT1", "UAT"
+    [string[]] $envs = "DEV", "FAT", "SIT1", "UAT", "PREPROD"
     
     if ($envs.Contains($env.ToUpperInvariant()) -eq $false)
     {

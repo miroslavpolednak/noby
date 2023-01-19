@@ -36,6 +36,7 @@ builder.Services
 
 builder.Services.AddDbContext<ConfigurationContext>(opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.Services.AddAttributedServices(typeof(Program));
 
 builder.Services.AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());

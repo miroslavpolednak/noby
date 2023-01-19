@@ -30,6 +30,16 @@ internal class SearchCustomersRequestValidator : AbstractValidator<SearchCustome
             .When(t => !string.IsNullOrEmpty(t.Email))
             .WithMessage("Email is not valid").WithErrorCode("11011");
 
+        When(t => t.NaturalPerson?.DateOfBirth != null,
+             () =>
+             {
+                 RuleFor(t => t)
+                     .Must(t => t.Identity != null || !string.IsNullOrWhiteSpace(t.NaturalPerson.LastName) || !string.IsNullOrWhiteSpace(t.NaturalPerson.BirthNumber) ||
+                                t.IdentificationDocument != null || !string.IsNullOrEmpty(t.Email) || !string.IsNullOrEmpty(t.PhoneNumber))
+                     .WithMessage("One more parameter, which can be sent to CM, is needed to search by date of birth.")
+                     .WithErrorCode("11029");
+             });
+
         When(t => t.IdentificationDocument != null, () =>
         {
             RuleFor(t => t.IdentificationDocument.Number)
