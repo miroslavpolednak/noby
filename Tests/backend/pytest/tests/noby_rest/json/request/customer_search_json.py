@@ -40,7 +40,7 @@ json_req_customer_search_date_of_birth = \
             "firstName": "",
             "lastName": "",
             "dateOfBirth": "1989-11-07T00:00:00.000Z",
-            "birthNumber": None,
+            "birthNumber": "89110701111",
             "nameJuridicalPerson": None,
             "cin": None,
             "email": None,
