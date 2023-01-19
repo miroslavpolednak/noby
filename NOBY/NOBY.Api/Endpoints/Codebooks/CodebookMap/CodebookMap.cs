@@ -49,7 +49,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.DocumentOnSATypes);
         AddCodebook(s => s.DocumentTemplateVersions);
         AddCodebook(s => s.DrawingDurations);
-        AddCodebook(s => s.DrawingTypes);
+        AddCodebook(s => s.DrawingTypes, c => c.Cast<Codebook.DrawingTypes.DrawingTypeItem>().Where(t => t.Id > 0));
         AddCodebook(s => s.EaCodesMain);
         AddCodebook(s => s.EducationLevels);
         AddCodebook(s => s.EmploymentTypes);
