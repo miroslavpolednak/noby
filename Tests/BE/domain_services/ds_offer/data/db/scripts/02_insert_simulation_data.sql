@@ -62,3 +62,10 @@ INSERT INTO SimulateMortgageRequest(SimulateMortgageRequestPk, ResourceProcessId
 (1, '00000000-0000-0000-1111-000000000000', 1, 1),
 (2, '00000000-0000-0000-2222-000000000000', 1, 2),
 (3, '00000000-0000-0000-3333-000000000000', 1, 3);
+
+
+--------------------------------------------------------------------------------------------------------------------
+-- OfferMortgage | OfferMortgageIds: [1, 2, 3]
+--------------------------------------------------------------------------------------------------------------------
+INSERT INTO OfferMortgage(OfferMortgageId, Request) VALUES
+(1, '{"productTypeId":20001,"loanKindId":2000,"loanAmount":2000000,"loanDuration":186,"fixedRatePeriod":36,"collateralAmount":8000000,"paymentDay":15,"statementTypeId":1,"isEmployeeBonusRequested":true,"expectedDateOfDrawing":"2023-02-11T00:00:00.000Z","withGuarantee":false,"financialResourcesOwn":300000,"financialResourcesOther":20000,"drawingTypeId":2,"drawingDurationId":null,"loanPurposes":[{"id":202,"sum":1500000},{"id":203,"sum":500000}],"interestRateDiscount":0.15,"interestRateDiscountToggle":true,"marketingActions":{"domicile":true,"healthRiskInsurance":true,"realEstateInsurance":true,"incomeLoanRatioDiscount":true,"userVip":false},"developer":{"developerId":1845,"projectId":23,"newDeveloperName":null,"newDeveloperProjectName":null,"newDeveloperCin":null},"riskLifeInsurance":{"sum":15000,"frequency":null},"realEstateInsurance":{"sum":40000,"frequency":null},"resourceProcessId":"e7b24267-4728-4139-9552-cdd61e1b1439","fees":[]}');
