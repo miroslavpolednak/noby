@@ -1,8 +1,6 @@
-﻿using Grpc.Core;
-using DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.SalesArrangementService.Contracts;
 using CIS.Foms.Enums;
-using CIS.InternalServices.DataAggregator.Configuration.EasForm;
-using CIS.InternalServices.DataAggregator.EasForms;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement;
 
@@ -27,46 +25,47 @@ internal class ValidateSalesArrangementHandler
 
     public async Task<ValidateSalesArrangementResponse> Handle(ValidateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
-        var category = await _formsService.LoadSalesArrangementCategory(request.SalesArrangementId, cancellationToken);
+        var salesArrangement = await _formsService.LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
+        var category = await _formsService.LoadSalesArrangementCategory(salesArrangement, cancellationToken);
 
-        var easForm = await GetEasForm(request.SalesArrangementId, category, cancellationToken);
+        var easFormResponse = await GetEasForm(salesArrangement, category, cancellationToken);
 
-        return await CheckForms(easForm);
+        return await CheckForms(salesArrangement, easFormResponse);
     }
 
-    private async Task<IEasForm<IEasFormData>> GetEasForm(int salesArrangementId, SalesArrangementCategories category, CancellationToken cancellationToken)
+    private async Task<GetEasFormResponse> GetEasForm(SalesArrangement salesArrangement, SalesArrangementCategories category, CancellationToken cancellationToken)
     {
         return category switch
         {
-            SalesArrangementCategories.ProductRequest => await ProcessProductRequest(salesArrangementId, cancellationToken),
-            SalesArrangementCategories.ServiceRequest => await _formsService.LoadServiceForm(salesArrangementId),
+            SalesArrangementCategories.ProductRequest => await ProcessProductRequest(salesArrangement, cancellationToken),
+            SalesArrangementCategories.ServiceRequest => await _formsService.LoadServiceForm(salesArrangement.SalesArrangementId, Enumerable.Empty<DynamicFormValues>(), cancellationToken),
             _ => throw new NotImplementedException()
         };
     }
 
-    private async Task<IEasForm<IEasFormData>> ProcessProductRequest(int salesArrangementId, CancellationToken cancellationToken)
+    private async Task<GetEasFormResponse> ProcessProductRequest(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
-        var productForm = await _formsService.LoadProductForm(salesArrangementId);
+        await _formsService.UpdateContractNumber(salesArrangement, cancellationToken);
 
-        await _formsService.UpdateContractNumber(productForm.FormData, cancellationToken);
+        var response = await _formsService.LoadProductForm(salesArrangement, Enumerable.Empty<DynamicFormValues>(), cancellationToken);
 
-        return productForm;
+        return response;
     }
 
-    private async Task<ValidateSalesArrangementResponse> CheckForms(IEasForm<IEasFormData> easForm)
+    private async Task<ValidateSalesArrangementResponse> CheckForms(SalesArrangement salesArrangement, GetEasFormResponse easForm)
     {
         var response = new ValidateSalesArrangementResponse();
 
-        foreach (var form in easForm.BuildForms(Enumerable.Empty<DynamicFormValues>()))
+        foreach (var form in easForm.Forms)
         {
             var checkFormData = new Eas.EasWrapper.CheckFormData
             {
                 //formular_id = 3601001,
                 //cislo_smlouvy = formData.Arrangement.ContractNumber,
-                formular_id = GetFormId(form.FormType),
-                cislo_smlouvy = easForm.FormData.SalesArrangement.ContractNumber,
+                formular_id = GetFormId(form.EasFormType),
+                cislo_smlouvy = salesArrangement.ContractNumber,
                 // dokument_id = "9876543210",                      // ??? dokument_id je nepovinné, to neposílej
-                dokument_id = easForm.FormData.MockValues.MockDocumentId,           // TODO: dočasný mock - odstranit až si to Assecco odladí
+                dokument_id = "9876543210",    // TODO: dočasný mock - odstranit až si to Assecco odladí
                 datum_prijeti = DateTime.Now.Date,                         // ??? datum prijeti dej v D1.2 aktuální datum
                 data = form.Json,
             };

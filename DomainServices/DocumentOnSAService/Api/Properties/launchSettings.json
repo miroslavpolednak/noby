@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "http": {
+    "DomainServices.DocumentOnSAService.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

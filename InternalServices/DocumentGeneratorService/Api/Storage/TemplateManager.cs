@@ -17,13 +17,13 @@ public class TemplateManager : IDisposable
         _codebookService = codebookService;
     }
 
-    public async Task<TemplateLoader> CreateLoader(int templateTypeId, string templateVersion)
+    public async Task<TemplateLoader> CreateLoader(int documentTypeId, string templateVersion)
     {
-        await CheckTemplateVersion(templateTypeId, templateVersion);
+        await CheckTemplateVersion(documentTypeId, templateVersion);
 
         return new TemplateLoader(_fileStorage)
         {
-            TemplateTypeName = await LoadTemplateTypeName(templateTypeId),
+            TemplateTypeName = await LoadTemplateTypeName(documentTypeId),
             TemplateVersion = templateVersion
         };
     }
@@ -37,9 +37,9 @@ public class TemplateManager : IDisposable
         _documentStreams.Add(memoryStream);
     }
 
-    public async Task<FinalDocument> CreateFinalDocument(int templateTypeId, string templateVersion)
+    public async Task<FinalDocument> CreateFinalDocument(int documentTypeId, string templateVersion)
     {
-        var document = await PrepareFinalDocument(templateTypeId, templateVersion);
+        var document = await PrepareFinalDocument(documentTypeId, templateVersion);
 
         var finalDocument = new FinalDocument(document);
 
@@ -59,25 +59,25 @@ public class TemplateManager : IDisposable
         _documentStreams.ForEach(stream => stream.Dispose());
     }
 
-    private async Task<string> LoadTemplateTypeName(int templateTypeId)
+    private async Task<string> LoadTemplateTypeName(int documentTypeId)
     {
         var templateTypes = await _codebookService.DocumentTemplateTypes();
 
-        var type = templateTypes.FirstOrDefault(t => t.Id == templateTypeId) ??
-                   throw new CisArgumentException(401, $"Unsupported template with Id {templateTypeId}", nameof(templateTypeId));
+        var type = templateTypes.FirstOrDefault(t => t.Id == documentTypeId) ??
+                   throw new CisArgumentException(401, $"Unsupported template with Id {documentTypeId}", nameof(documentTypeId));
 
         return type.ShortName;
     }
 
-    private async Task CheckTemplateVersion(int templateTypeId, string templateVersion)
+    private async Task CheckTemplateVersion(int documentTypeId, string templateVersion)
     {
         var templateVersions = await _codebookService.DocumentTemplateVersions();
 
-        var templateExists = templateVersions.Any(t => t.DocumentTemplateTypeId == templateTypeId &&
+        var templateExists = templateVersions.Any(t => t.DocumentTemplateTypeId == documentTypeId &&
                                                        t.DocumentVersion.Equals(templateVersion, StringComparison.InvariantCultureIgnoreCase));
 
         if (!templateExists)
-            throw new CisArgumentException(402, $"Unsupported template (id: {templateTypeId}) version {templateVersion}", nameof(templateVersion));
+            throw new CisArgumentException(402, $"Unsupported template (id: {documentTypeId}) version {templateVersion}", nameof(templateVersion));
     }
 
     private async Task<MergeDocument> PrepareFinalDocument(int templateTypeId, string templateVersion)

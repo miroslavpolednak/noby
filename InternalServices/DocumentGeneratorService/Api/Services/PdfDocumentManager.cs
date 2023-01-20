@@ -38,7 +38,7 @@ internal class PdfDocumentManager
         {
             var acroFormWriter = _pdfAcroFormWriterFactory.Create(documentPart.Data);
 
-            var templateLoader = await _templateManager.CreateLoader(documentPart.TemplateTypeId, documentPart.TemplateVersion);
+            var templateLoader = await _templateManager.CreateLoader(documentPart.DocumentTypeId, documentPart.DocumentTemplateVersion);
 
             var template = acroFormWriter.Write(templateLoader);
             
@@ -48,7 +48,7 @@ internal class PdfDocumentManager
 
     private async Task<Document> PrepareFinalPdf(OutputFileType outputFileType, GenerateDocumentRequest request)
     {
-        var finalDocument = await _templateManager.CreateFinalDocument(request.TemplateTypeId, request.TemplateVersion);
+        var finalDocument = await _templateManager.CreateFinalDocument(request.DocumentTypeId, request.DocumentTemplateVersion);
 
         await _pdfFooter.FillFooter(finalDocument, request);
 

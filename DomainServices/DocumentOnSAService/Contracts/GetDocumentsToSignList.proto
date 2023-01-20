@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentOnSAService.GetDocumentsToSignList;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "DocumentOnSAToSign.proto";
+
+message GetDocumentsToSignListRequest {
+	google.protobuf.Int32Value SalesArrangementId = 1;
+}
+
+message GetDocumentsToSignListResponse {
+	repeated DocumentOnSAToSign DocumentsOnSAToSign = 1;
+}

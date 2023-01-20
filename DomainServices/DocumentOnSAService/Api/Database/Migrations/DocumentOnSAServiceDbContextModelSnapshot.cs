@@ -22,6 +22,80 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DomainServices.DocumentOnSAService.Api.Database.Entities.DocumentOnSa", b =>
+                {
+                    b.Property<int>("DocumentOnSAId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentOnSAId"));
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedUserName")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("DmsxId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("DocumentTemplateVersionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DocumentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EArchivId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("FormId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<int>("HouseholdId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDocumentArchived")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsSigned")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsValid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<int>("SalesArrangementId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SignatureConfirmedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("SignatureDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SignatureMethodId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DocumentOnSAId");
+
+                    b.HasIndex("SalesArrangementId");
+
+                    b.ToTable("DocumentOnSa");
+                });
+
             modelBuilder.Entity("DomainServices.DocumentOnSAService.Api.Database.Entities.GeneratedFormId", b =>
                 {
                     b.Property<long>("Id")

@@ -39,9 +39,11 @@ builder.Services
     .AddCaseService()
     .AddCodebookService()
     .AddOfferService()
-    .AddUserService();
+    .AddUserService()
+    .AddHouseholdService();
 
-builder.Services.AddDataAggregator(builder.Configuration.GetConnectionString("dataAggregator")!);
+// Internal services
+builder.Services.AddDataAggregatorService();
 
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddSalesArrangementService();

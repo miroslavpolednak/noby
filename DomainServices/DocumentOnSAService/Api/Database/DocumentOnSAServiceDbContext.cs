@@ -12,6 +12,8 @@ public class DocumentOnSAServiceDbContext : BaseDbContext<DocumentOnSAServiceDbC
 
     public DbSet<GeneratedFormId> GeneratedFormId { get; set; }
 
+    public DbSet<DocumentOnSa> DocumentOnSa { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Program).Assembly);

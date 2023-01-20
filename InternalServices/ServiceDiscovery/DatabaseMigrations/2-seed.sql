@@ -1,4 +1,5 @@
 INSERT INTO dbo.ServiceDiscovery ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
+('DEV','CIS:DataAggregatorService','https://172.30.35.51:30020',1),
 ('DEV','CIS:DocumentGeneratorService','https://172.30.35.51:30014',1),
 ('DEV','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_fat,password=MpssFatPass,allowAdmin=false,tieBreaker=',3),
 ('DEV','CIS:NotificationService','https://172.30.35.51:30015',1),
@@ -37,6 +38,7 @@ INSERT INTO dbo.ServiceDiscovery ([EnvironmentName],[ServiceName],[ServiceUrl],[
 GO
 
 INSERT INTO dbo.ServiceDiscovery ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
+('FAT','CIS:DataAggregatorService','https://172.30.35.51:31020',1),
 ('FAT','CIS:DocumentGeneratorService','https://172.30.35.51:31014',1),
 ('FAT','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_fat,password=MpssFatPass,allowAdmin=false,tieBreaker=',3),
 ('FAT','CIS:NotificationService','https://172.30.35.51:31015',1),
@@ -75,6 +77,7 @@ INSERT INTO dbo.ServiceDiscovery ([EnvironmentName],[ServiceName],[ServiceUrl],[
 GO
 
 INSERT INTO dbo.ServiceDiscovery ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
+('SIT1','CIS:DataAggregatorService','https://172.30.35.51:32020',1),
 ('SIT1','CIS:DocumentGeneratorService','https://172.30.35.51:32014',1),
 ('SIT1','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_fat,password=MpssFatPass,allowAdmin=false,tieBreaker=',3),
 ('SIT1','CIS:NotificationService','https://172.30.35.51:32015',1),
@@ -113,6 +116,7 @@ INSERT INTO dbo.ServiceDiscovery ([EnvironmentName],[ServiceName],[ServiceUrl],[
 GO
 
 INSERT INTO dbo.ServiceDiscovery ([EnvironmentName],[ServiceName],[ServiceUrl],[ServiceType]) VALUES
+('UAT','CIS:DataAggregatorService','https://172.30.35.51:33020',1),
 ('UAT','CIS:DocumentGeneratorService','https://172.30.35.51:33014',1),
 ('UAT','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_fat,password=MpssFatPass,allowAdmin=false,tieBreaker=',3),
 ('UAT','CIS:NotificationService','https://172.30.35.51:33015',1),

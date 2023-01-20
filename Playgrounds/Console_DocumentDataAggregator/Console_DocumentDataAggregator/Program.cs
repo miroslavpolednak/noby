@@ -58,15 +58,15 @@ static async Task GenerateDocument(IDataAggregator dataAggregator, IDocumentGene
 
     var request = new GenerateDocumentRequest
     {
-        TemplateTypeId = (int)documentType,
-        TemplateVersion = "001A",
+        DocumentTypeId = (int)documentType,
+        DocumentTemplateVersion = "001A",
         OutputType = OutputFileType.OpenForm,
         Parts =
         {
             new GenerateDocumentPart
             {
-                TemplateTypeId = (int)documentType,
-                TemplateVersion = "001A"
+                DocumentTypeId = (int)documentType,
+                DocumentTemplateVersion = "001A"
             }
 
         },

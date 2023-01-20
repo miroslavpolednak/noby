@@ -25,7 +25,7 @@ public class Worker : BackgroundService
         var id = Guid.NewGuid().ToString();
         
         // https://wiki.kb.cz/display/BST/Seznam+konzumentu
-        var consumerId = "HF";
+        var consumerId = "HF_STARBUILD";
         
         _logger.LogInformation("Sending Email with id = {0}", id);
         

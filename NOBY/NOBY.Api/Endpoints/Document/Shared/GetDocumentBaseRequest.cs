@@ -1,13 +1,13 @@
 ﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DataAggregator.Configuration;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 
 namespace NOBY.Api.Endpoints.Document.Shared;
 
 internal class GetDocumentBaseRequest : IRequest<ReadOnlyMemory<byte>>
 {
-    public DocumentTemplateType TemplateType { get; init; }
+    public required DocumentType DocumentType { get; init; }
 
-    public string TemplateVersion { get; init; } = null!;
+    public string? DocumentTemplateVersion { get; set; }
 
-    public InputParameters InputParameters { get; init; } = null!;
+    public required InputParameters InputParameters { get; set; }
 }
