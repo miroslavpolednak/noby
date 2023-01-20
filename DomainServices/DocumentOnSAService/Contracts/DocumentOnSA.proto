@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentOnSAService;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+message DocumentOnSA {
+
+	// Unikátní identifikátor DocumentuOnSA
+	google.protobuf.Int32Value DocumentOnSAId = 1;
+	
+	google.protobuf.Int32Value DocumentTypeId = 2;
+
+	// Id z modré instance eArchivu
+	string FormId = 3;
+
+	google.protobuf.Int32Value HouseholdId = 4;
+
+	bool IsValid = 5;
+
+	bool IsSigned = 6;
+	
+	bool IsDocumentArchived = 7;
+
+	google.protobuf.Int32Value SignatureMethodId = 8;
+}

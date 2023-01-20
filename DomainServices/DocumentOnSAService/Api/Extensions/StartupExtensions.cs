@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using DomainServices.DocumentOnSAService.Api.Configuration;
+using ExternalServices;
 
 namespace DomainServices.DocumentOnSAService.Api.Extensions;
 
@@ -13,6 +14,17 @@ internal static class StartupExtensions
     {
         // dbcontext
         builder.AddEntityFramework<Database.DocumentOnSAServiceDbContext>(connectionStringKey: "default");
+
+        builder.Services.AddHouseholdService();
+
+        builder.Services.AddSalesArrangementService();
+
+        builder.Services.AddCaseService();
+
+        builder.Services.AddCodebookService();
+
+        // EAS svc
+        builder.AddExternalService<ExternalServices.Eas.R21.IEasClient>();
 
         return builder;
     }
