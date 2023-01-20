@@ -3,7 +3,7 @@ using NOBY.Api.Endpoints.Offer.Dto;
 
 namespace NOBY.Api.Endpoints.Offer.GetFullPaymentScheduleByOfferId;
 
-internal class GetFullPaymentScheduleByOfferIdHandler
+internal sealed class GetFullPaymentScheduleByOfferIdHandler
     : IRequestHandler<GetFullPaymentScheduleByOfferIdRequest, Dto.GetFullPaymentScheduleResponse>
 {
     public async Task<Dto.GetFullPaymentScheduleResponse> Handle(GetFullPaymentScheduleByOfferIdRequest request, CancellationToken cancellationToken)

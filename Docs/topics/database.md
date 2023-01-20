@@ -9,6 +9,8 @@ Pokud jiná aplikace potřebuje provádět operace nad databází této služby,
 
 V případě potřeby auditu změn na databázových entitách používáme na MS SQL serveru feature [Temporal Tables](https://learn.microsoft.com/en-us/sql/relational-databases/tables/temporal-tables?view=sql-server-ver16).
 
+U všech aplikací, které mají vlastní databázi dodržujeme standard pojmenování connection string v *appsettings.json* pro databázi aplikace `default`.
+
 ## Dapper
 *Dapper* používáme výhradně pro READ operace. Jeho výhodou je lepší práce s raw SQL dotazy.
 Pro použití *Dapper* je nutné z DI získat instanci interface `CIS.Core.Data.IConnectionProvider`.
@@ -27,7 +29,7 @@ builder.Services.AddDapper<INobyDatabase>(builder.Configuration.GetConnectionStr
 ```
 
 Následně je možné z DI získat instanci connection objektu:
-```
+```csharp
 class T {
 	// jeden connection string / instance Dapper connection v aplikaci
 	public ctr(IConnectionProvider conn) { }
@@ -41,7 +43,7 @@ V projektu `CIS.Infrastructure` jsou v namespace `CIS.Infrastructure.Data` exten
 - ExecuteDapperRawSqlToList()
 - ExecuteDapperRawSqlFirstOrDefault()
 - ExecuteDapperQuery()
-```
+```csharp
 // načtení celého recordsetu 
 await _connectionProvider.ExecuteDapperRawSqlToList<MyItem>("SELECT * FROM Table", cancellationToken);
 
@@ -51,14 +53,14 @@ long x = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<long>("SELE
 
 ## Entity Framework
 *Entity Framework* **DbContext** se registruje při startupu aplikace extension metodou `AddEntityFramework<TDbContext>()` v namespace `CIS.Infrastructure.StartupExtensions`.
-```
+```csharp
 builder.AddEntityFramework<CaseServiceDbContext>();
 ```
 
 ### DbContext
 Každý EF *DbContext* musí dědit z bázové třídy `CIS.Infrastructure.Data.BaseDbContext<>` z projektu `CIS.Infrastructure`.
 Příklad implementace *DbContextu*:
-```
+```csharp
 internal sealed class CaseServiceDbContext
     : BaseDbContext<CaseServiceDbContext>
 {

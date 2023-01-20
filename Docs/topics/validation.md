@@ -18,7 +18,7 @@ Ve chvíli, kdy FluentValidation vrátí chybu/y, pipeline vyvolá vyjímku `Cis
 
 Vložení pipeline do *MediatR* probíhá během startupu aplikace extension metodou:
 
-```
+```csharp
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 ```
 
@@ -29,7 +29,7 @@ Zároveň je možné do gRPC pipeline přidat další custom exception intercept
 ## Validace requestů REST služeb / FE API
 FluentValidation se do *MVC* pipeline vloží standardním způsobem během startupu extension metodou:
 
-```
+```csharp
 builder.Services.AddControllers().AddFluentValidation();
 ```
 

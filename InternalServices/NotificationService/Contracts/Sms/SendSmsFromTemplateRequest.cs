@@ -5,7 +5,7 @@ using ProtoBuf;
 
 namespace CIS.InternalServices.NotificationService.Contracts.Sms;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class SendSmsFromTemplateRequest : IRequest<SendSmsFromTemplateResponse>, IValidatableRequest
 {
     [ProtoMember(1)]
@@ -21,11 +21,11 @@ public class SendSmsFromTemplateRequest : IRequest<SendSmsFromTemplateResponse>,
     public List<StringKeyValuePair> Placeholders { get; set; } = new();
     
     [ProtoMember(5)]
-    public Identifier Identifier { get; set; } = default!;
+    public Identifier? Identifier { get; set; }
     
     [ProtoMember(6)]
-    public string CustomId { get; set; } = string.Empty;
+    public string? CustomId { get; set; }
     
     [ProtoMember(7)]
-    public string DocumentId { get; set; } = string.Empty;
+    public string? DocumentId { get; set; }
 }

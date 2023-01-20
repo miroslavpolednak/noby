@@ -1,0 +1,169 @@
+{
+    "ResourceProcessId": "33333333-3333-3333-3333-333333333333",
+    "SimulationInputs": {
+        "ExpectedDateOfDrawing": {
+            "year": 2025,
+            "month": 12,
+            "day": 5
+        },
+        "ProductTypeId": 20001,
+        "LoanKindId": 2001,
+        "LoanAmount": {
+            "units": 1250000,
+            "nanos": 0
+        },
+        "LoanDuration": 360,
+        "GuaranteeDateFrom": {
+            "year": 2022,
+            "month": 12,
+            "day": 7
+        },
+        "InterestRateDiscount": {
+            "units": 0,
+            "nanos": 0
+        },
+        "FixedRatePeriod": 120,
+        "CollateralAmount": {
+            "units": 1500000,
+            "nanos": 0
+        },
+        "DrawingTypeId": 1,
+        "DrawingDurationId": 5,
+        "PaymentDay": 20,
+        "IsEmployeeBonusRequested": false,
+        "Developer": null,
+        "LoanPurposes": [],
+        "FeeSettings": {
+            "FeeTariffPurpose": 0,
+            "IsStatementCharged": true
+        },
+        "MarketingActions": {
+            "Domicile": false,
+            "HealthRiskInsurance": false,
+            "RealEstateInsurance": true,
+            "IncomeLoanRatioDiscount": true,
+            "UserVip": false
+        },
+        "Fees": [
+            {
+                "FeeId": 2001,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2002,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2004,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2005,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2006,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2007,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2010,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2012,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2013,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2015,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2016,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2017,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 2032,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 1005,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            },
+            {
+                "FeeId": 1003,
+                "DiscountPercentage": {
+                    "units": 0,
+                    "nanos": 0
+                }
+            }
+        ],
+        "RiskLifeInsurance": {
+            "Sum": {
+                "units": 1200,
+                "nanos": 0
+            },
+            "Frequency": 1
+        },
+        "RealEstateInsurance": {
+            "Sum": {
+                "units": 500,
+                "nanos": 0
+            },
+            "Frequency": 12
+        }
+    }
+}

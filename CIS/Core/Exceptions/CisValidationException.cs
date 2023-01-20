@@ -1,37 +1,64 @@
 ﻿using System.Collections.Immutable;
-using System.Runtime.Serialization;
+using System.Globalization;
 
 namespace CIS.Core.Exceptions;
 
 /// <summary>
-/// HTTP 400. Validační chyba.
+/// Validační chyba.
 /// </summary>
 /// <remarks>
-/// Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation. Podporuje seznam chyb.
+/// Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation. 
+/// Může také ošetřovat stavy místo ArgumentException nebo ArgumentNullException a podobně.
 /// </remarks>
-public sealed class CisValidationException 
-    : BaseCisValidationException
+public class CisValidationException 
+    : Exception
 {
+    // <summary>
+    /// Seznam chyb.
+    /// </summary>
+    public ImmutableList<CisExceptionItem> Errors { get; init; }
+
     /// <param name="message">Chybová zpráva</param>
     public CisValidationException(string message)
-        : base(BaseCisException.UnknownExceptionCode, message)
+        : this(BaseCisException.UnknownExceptionCode, message)
     { }
 
     /// <param name="exceptionCode">CIS error kód</param>
     /// <param name="message">Chybová zpráva</param>
-    public CisValidationException(int exceptionCode, string message) 
-        : base(exceptionCode, message)
+    public CisValidationException(int exceptionCode, string message)
+        : this(exceptionCode.ToString(CultureInfo.InvariantCulture), message)
     { }
 
-    /// <param name="errors">Seznam chyb</param>
-    /// <param name="message">Souhrná chybová zpráva</param>
-    public CisValidationException(IEnumerable<(string Key, string Message)> errors, string message = "") 
-        : base(errors, message)
-    { }
+    /// <param name="exceptionCode">CIS error kód</param>
+    /// <param name="message">Chybová zpráva</param>
+    public CisValidationException(string exceptionCode, string message) 
+        : base(message)
+    {
+        ArgumentNullException.ThrowIfNullOrEmpty(message);
+
+        this.Errors = new List<CisExceptionItem>
+        {
+            new(exceptionCode, message)
+        }.ToImmutableList();
+    }
 
     /// <param name="errors">Seznam chyb</param>
-    /// <param name="message">Souhrná chybová zpráva</param>
-    public CisValidationException(IEnumerable<(int Key, string Message)> errors, string message = "")
-        : base(errors, message)
-    {  }
+    public CisValidationException(ImmutableList<CisExceptionItem> errors)
+        : base(errors.FirstOrDefault()?.Message)
+    {
+        if (errors is null || !errors.Any())
+            throw new ArgumentNullException(nameof(errors), $"No errors has been specified when creating new CisValidationException");
+
+        this.Errors = errors;
+    }
+
+    /// <param name="errors">Seznam chyb</param>
+    public CisValidationException(IEnumerable<CisExceptionItem> errors) 
+        : base(errors.FirstOrDefault()?.Message)
+    { 
+        if (errors is null || !errors.Any())
+            throw new ArgumentNullException(nameof(errors), $"No errors has been specified when creating new CisValidationException");
+
+        this.Errors = errors.ToImmutableList();
+    }
 }

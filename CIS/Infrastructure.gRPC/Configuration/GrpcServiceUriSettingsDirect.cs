@@ -15,8 +15,8 @@ public sealed class GrpcServiceUriSettingsDirect<TService>
     public GrpcServiceUriSettingsDirect(in string? serviceUrl)
     {
         if (string.IsNullOrEmpty(serviceUrl))
-            throw new Core.Exceptions.CisArgumentNullException(12, "Service URL is empty or null", nameof(serviceUrl));
+            throw new ArgumentNullException(nameof(serviceUrl), $"Service URL in GrpcServiceUriSettingsDirect for {typeof(TService)} is empty or null");
 
-        ServiceUrl = new Uri(serviceUrl) ?? throw new Core.Exceptions.CisArgumentNullException(12, "Service URL is empty or null", nameof(serviceUrl));
+        ServiceUrl = new Uri(serviceUrl) ?? throw new ArgumentNullException(nameof(serviceUrl), $"Service URL in GrpcServiceUriSettingsDirect for {typeof(TService)} is empty or null");
     }
 }

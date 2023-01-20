@@ -1,12 +1,11 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Services.Mcs.Mappers;
-using CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Contracts.Email;
-using cz.kb.osbs.mcs.sender.sendapi.v4;
-using cz.kb.osbs.mcs.sender.sendapi.v4.email;
 using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
@@ -38,7 +37,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
     
     public async Task<SendEmailResponse> Handle(SendEmailRequest request, CancellationToken cancellationToken)
     {
-        var attachments = new List<Attachment>();
+        var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
         var host = request.From.Value.ToLowerInvariant().Split('@').Last();
         
         // todo: Buckets to configuration
@@ -49,7 +48,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
             foreach (var attachment in request.Attachments)
             {
                 var objectKey = await _s3Service.UploadFile(attachment.Binary, bucketName);
-                attachments.Add( EmailMappers.Map(attachment.Filename, objectKey));
+                attachmentKeyFilenames.Add(new (objectKey, attachment.Filename));
             }
         }
         catch (Exception e)
@@ -65,28 +64,50 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
         
-        var sendEmail = new SendEmail
-        {
-            id = result.Id.ToString(),
-            sender = request.From.Map(),
-            to = request.To.Map().ToList(),
-            bcc = request.Bcc.Map().ToList(),
-            cc = request.Cc.Map().ToList(),
-            replyTo = request.ReplyTo?.Map(),
-            subject = request.Subject,
-            content = request.Content.Map(),
-            attachments = attachments
-        };
-
         try
         {
+            // todo: map user to consumerId
+            var consumerId = NotificationConsumerIds.Starbuild;
+            
             if (host == "kb.cz")
             {
+                var sendEmail = new McsSendApi.v4.email.SendEmail
+                {
+                    id = result.Id.ToString(),
+                    notificationConsumer = McsEmailMappers.MapToMcs(consumerId),
+                    sender = request.From.MapToMcs(),
+                    to = request.To.MapToMcs().ToList(),
+                    bcc = request.Bcc.MapToMcs().ToList(),
+                    cc = request.Cc.MapToMcs().ToList(),
+                    replyTo = request.ReplyTo?.MapToMcs(),
+                    subject = request.Subject,
+                    content = request.Content.MapToMcs(),
+                    attachments = attachmentKeyFilenames
+                        .Select(kv => McsEmailMappers.MapToMcs(kv.Key, kv.Value))
+                        .ToList()
+                };
+                
                 await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
                 result.HandoverToMcsTimestamp = _dateTime.Now;
             }
             else
             {
+                var sendEmail = new MpssSendApi.v1.email.SendEmail
+                {
+                    id = result.Id.ToString(),
+                    notificationConsumer = MpssEmailMappers.MapToMpss(consumerId),
+                    sender = request.From.MapToMpss(),
+                    to = request.To.MapToMpss().ToList(),
+                    bcc = request.Bcc.MapToMpss().ToList(),
+                    cc = request.Cc.MapToMpss().ToList(),
+                    replyTo = request.ReplyTo?.MapToMpss(),
+                    subject = request.Subject,
+                    content = request.Content.MapToMpss(),
+                    attachments = attachmentKeyFilenames
+                        .Select(kv => MpssEmailMappers.MapToMpss(kv.Key, kv.Value))
+                        .ToList()
+                };
+                
                 await _mpssEmailProducer.SendEmail(sendEmail, cancellationToken);
             }
             
@@ -95,7 +116,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Could not produce message {nameof(SendEmail)} to KAFKA.");
+            _logger.LogError(e, "Could not produce message SendEmail to KAFKA.");
             throw new CisServiceUnavailableException("Todo", nameof(SendEmailHandler), "Todo");
         }
 

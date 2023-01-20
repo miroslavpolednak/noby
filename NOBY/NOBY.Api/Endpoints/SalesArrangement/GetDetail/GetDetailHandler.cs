@@ -1,12 +1,11 @@
 ﻿using DomainServices.CaseService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using _CA = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetDetail;
 
-internal class GetDetailHandler
+internal sealed class GetDetailHandler
     : IRequestHandler<GetDetailRequest, GetDetailResponse>
 {
     public async Task<GetDetailResponse> Handle(GetDetailRequest request, CancellationToken cancellationToken)
@@ -47,7 +46,7 @@ internal class GetDetailHandler
     async Task<Dto.MortgageDetailDto> getDataInternal(_SA.SalesArrangement saInstance, _Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellationToken)
     {
         if (!saInstance.OfferId.HasValue)
-            throw new CisArgumentNullException(ErrorCodes.SalesArrangementOfferIdIsNull, $"Offer does not exist for Case #{saInstance.OfferId}", "OfferId");
+            throw new CisArgumentException(ErrorCodes.SalesArrangementOfferIdIsNull, $"Offer does not exist for Case #{saInstance.OfferId}", "OfferId");
 
         var loanKindName = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.LoanKindId)?.Name ?? "-";
 
@@ -79,6 +78,8 @@ internal class GetDetailHandler
         {
             _SA.SalesArrangement.ParametersOneofCase.Mortgage => saInstance.Mortgage.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.Drawing => saInstance.Drawing.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.GeneralChange => saInstance.GeneralChange.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.HUBN => saInstance.HUBN.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.None => null,
             _ => throw new NotImplementedException($"getParameters for {saInstance.ParametersCase} not implemented")
         };

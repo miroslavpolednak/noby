@@ -4,6 +4,7 @@ using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
 using DomainServices;
 using CIS.InternalServices;
+using DomainServices.SalesArrangementService.Api.Endpoints;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -38,9 +39,11 @@ builder.Services
     .AddCaseService()
     .AddCodebookService()
     .AddOfferService()
-    .AddUserService();
+    .AddUserService()
+    .AddHouseholdService();
 
-builder.Services.AddDataAggregator(builder.Configuration.GetConnectionString("dataAggregator")!);
+// Internal services
+builder.Services.AddDataAggregatorService();
 
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddSalesArrangementService();
@@ -69,7 +72,7 @@ app.UseCisLogging();
 
 app.MapCisHealthChecks();
 
-app.MapGrpcService<DomainServices.SalesArrangementService.Api.Services.SalesArrangementService>();
+app.MapGrpcService<SalesArrangementService>();
 
 app.MapGrpcReflectionService();
 

@@ -72,16 +72,17 @@ Tento konfigurační soubor obsahuje informace zejména o portu na kterém *Kest
 *Kestrel* může být nastaven na více portů a pro různé verze HTTP protokolu (1.1 a 2).
 
 Příklad konfiguračního souboru:
-```
+```json
 {
   "CustomKestrel": {
     "Endpoints": [
       {
-        "Port": 5005,           (port na kterém Kestrel naslouchá)
-        "Protocol": 2           (protokol HTTP2)
+        "Port": 5005, // (port na kterém Kestrel naslouchá)
+        "Protocol": 2 // (protokol HTTP2)
       }
     ],
-    "Certificate": {            (nastavení SSL certifikátu)
+    // (nastavení SSL certifikátu)
+    "Certificate": {
       "Location": "CertStore",
       "CertStoreName": "My",
       "CertStoreLocation": "LocalMachine",
@@ -95,27 +96,28 @@ Příklad konfiguračního souboru:
 
 ### Nastavení logování
 [Konfigurace logování je popsána zde.](logging.md)
-```
+```json
 "Serilog": { ... }
 "CisTelemetry": { ... }
 ```
 
 ### Nastavení konzumace služeb třetích stran
 [Konfigurace pro External Services je popsána zde.](external-services.md)
-```
+```json
 "ExternalServices": { ... }
 ```
 
 ### Nastavení databáze
-Connection stringy do databází se konfigurují standardním .NET způsobem.
-```
+Connection stringy do databází se konfigurují standardním .NET způsobem. 
+Pokud má služba vlastní databázi, connection string na tuto databázi se vždy jmenuje `default`.
+```json
 "ConnectionStrings": { ... }
 ```
 
 ### Nastavení autentizace služby
 Příchozí requesty vždy procházejí autentizací. 
 Druh autentizace lze nastavit na StaticCollectioni nebo ActiveDirectory, podle toho zda chci ověřovat uživatele proti AD.
-```
+```json
 "CisSecurity": {
     "ServiceAuthentication": {
         "Validator": "StaticCollection"
@@ -126,7 +128,7 @@ Druh autentizace lze nastavit na StaticCollectioni nebo ActiveDirectory, podle t
 ### Nastavení ekosystému NOBY
 Zapojení aplikace do ekosystému NOBY. 
 Správným nastavením této sekce se zajišťuje korektní funkčnost `Clients` projektů a *ServiceDiscovery*.
-```
+```json
 "CisEnvironmentConfiguration": {
     "DefaultApplicationKey": "DS:HouseholdService",
     "EnvironmentName": "DEV",
@@ -142,7 +144,7 @@ Správným nastavením této sekce se zajišťuje korektní funkčnost `Clients`
 
 ### Vlastní konfigurace služby
 Aplikace může obsahovat další, vlastní konfiguraci. V tom případě je tato konfigurace vždy v elementu **AppConfiguration**.
-```
+```json
 "AppConfiguration": { ... }
 ```
 

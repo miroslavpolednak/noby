@@ -439,7 +439,7 @@
             <summary>
             Premapuje Field names na hodnoty v databazi. Zaroven kontroluje, ze v mapperu jsou vsechna Field names z puvodni kolekce.
             </summary>
-            <exception cref="T:CIS.Core.Exceptions.CisArgumentException">Sort Field not allowed</exception>
+            <exception cref="T:CIS.Core.Exceptions.CisValidationException">Sort Field not allowed</exception>
         </member>
         <member name="M:CIS.Core.Types.Paginable.SetDefaultSort(System.String,System.Boolean)">
             <summary>
@@ -451,21 +451,6 @@
             Custom vyjímky nahrazující standardní exceptions v .NETu. Snažíme se používat vlastní vyjímky, abychom dokázali rozeznat o jakou chybu se jedná a jak na ni reagovat.
             </summary>
         </member>
-        <member name="T:CIS.Core.Exceptions.BaseCisArgumentException">
-            <summary>
-            Stejná chyba jako <see cref="T:System.ArgumentException"/>, ale obsahuje navíc CIS error kód
-            </summary>
-        </member>
-        <member name="P:CIS.Core.Exceptions.BaseCisArgumentException.ExceptionCode">
-            <summary>
-            CIS error kód
-            </summary>
-        </member>
-        <member name="M:CIS.Core.Exceptions.BaseCisArgumentException.#ctor(System.Int32,System.String,System.String)">
-            <param name="exceptionCode">CIS error kód</param>
-            <param name="message">Chybová zpráva</param>
-            <param name="paramName">Název parametru, který chybu vyvolal</param>
-        </member>
         <member name="T:CIS.Core.Exceptions.BaseCisException">
             <summary>
             Base třída pro CIS vyjímky. Obsahuje vlastnost ExceptionCode, která určuje o jakou vyjímku se jedná.
@@ -476,35 +461,33 @@
             Společný kód pro neznámou chybu
             </summary>
         </member>
-        <member name="P:CIS.Core.Exceptions.BaseCisException.ExceptionCode">
-            <summary>
-            CIS error kód
-            </summary>
-        </member>
         <member name="M:CIS.Core.Exceptions.BaseCisException.#ctor(System.Int32,System.String)">
             <param name="exceptionCode">CIS error kód</param>
             <param name="message">Chybová zpráva</param>
         </member>
-        <member name="P:CIS.Core.Exceptions.BaseCisValidationException.Errors">
-            <summary>
-            Seznam chyb.
-            </summary>
-            <remarks>
-            Key: CIS error kód <br/>
-            Message: chybová zpráva
-            </remarks>
-        </member>
-        <member name="M:CIS.Core.Exceptions.BaseCisValidationException.#ctor(System.Int32,System.String)">
+        <member name="M:CIS.Core.Exceptions.BaseCisException.#ctor(System.String,System.String)">
             <param name="exceptionCode">CIS error kód</param>
             <param name="message">Chybová zpráva</param>
         </member>
-        <member name="M:CIS.Core.Exceptions.BaseCisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String)">
-            <param name="errors">Seznam chyb</param>
-            <param name="message">Souhrná chybová zpráva</param>
+        <member name="T:CIS.Core.Exceptions.CisExceptionItem">
+            <summary>
+            Instance jednotlive chyby
+            </summary>
+            <param name="ExceptionCode">CIS error kód</param>
+            <param name="Message">chybová zpráva</param>
         </member>
-        <member name="M:CIS.Core.Exceptions.BaseCisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.String}},System.String)">
-            <param name="errors">Seznam chyb</param>
-            <param name="message">Souhrná chybová zpráva</param>
+        <member name="M:CIS.Core.Exceptions.CisExceptionItem.#ctor(System.String,System.String)">
+            <summary>
+            Instance jednotlive chyby
+            </summary>
+            <param name="ExceptionCode">CIS error kód</param>
+            <param name="Message">chybová zpráva</param>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisExceptionItem.ExceptionCode">
+            <summary>CIS error kód</summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisExceptionItem.Message">
+            <summary>chybová zpráva</summary>
         </member>
         <member name="T:CIS.Core.Exceptions.CisAlreadyExistsException">
             <summary>
@@ -533,30 +516,15 @@
             <param name="entityName">Název entity, která chybu vyvolala</param>
             <param name="entityId">ID entity, která chybu vyvolala</param>
         </member>
-        <member name="T:CIS.Core.Exceptions.CisArgumentException">
+        <member name="T:CIS.Core.Exceptions.CisAuthenticationException">
             <summary>
-            Stejná chyba jako <see cref="T:System.ArgumentException"/>, ale obsahuje navíc CIS error kód
+            Chyba, která označuje problém s validací koncového uživatele.
             </summary>
         </member>
-        <member name="M:CIS.Core.Exceptions.CisArgumentException.#ctor(System.Int32,System.String,System.String)">
-            <param name="exceptionCode">CIS error kód</param>
-            <param name="message">Chybová zpráva</param>
-            <param name="paramName">Název parametru, který chybu vyvolal</param>
-        </member>
-        <member name="T:CIS.Core.Exceptions.CisArgumentNullException">
+        <member name="P:CIS.Core.Exceptions.CisAuthenticationException.ProviderLoginUrl">
             <summary>
-            Stejná chyba jako <see cref="T:System.ArgumentNullException"/>, ale obsahuje navíc CIS error kód
+            Adresa providera autentizace, na kterou má být uživatel přesměrován pro přihlášení.
             </summary>
-        </member>
-        <member name="P:CIS.Core.Exceptions.CisArgumentNullException.ExceptionCode">
-            <summary>
-            CIS error kód
-            </summary>
-        </member>
-        <member name="M:CIS.Core.Exceptions.CisArgumentNullException.#ctor(System.Int32,System.String,System.String)">
-            <param name="exceptionCode">CIS error kód</param>
-            <param name="message">Chybová zpráva</param>
-            <param name="paramName">Název parametru, který chybu vyvolal</param>
         </member>
         <member name="T:CIS.Core.Exceptions.CisConflictException">
             <summary>
@@ -566,14 +534,12 @@
             Např. pokud mám vrátit detail klienta, ale v CM je více klientů se stejným ID.
             </remarks>
         </member>
-        <member name="P:CIS.Core.Exceptions.CisConflictException.Errors">
-            <summary>
-            Seznam chyb.
-            </summary>
-            <remarks>
-            Key: CIS error kód <br/>
-            Message: chybová zpráva
-            </remarks>
+        <member name="M:CIS.Core.Exceptions.CisConflictException.#ctor(System.String)">
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisConflictException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
         </member>
         <member name="T:CIS.Core.Exceptions.CisException">
             <summary>
@@ -609,19 +575,16 @@
             <param name="entityName">Název entity, která chybu vyvolala</param>
             <param name="entityId">ID entity, která chybu vyvolala</param>
         </member>
-        <member name="T:CIS.Core.Exceptions.CisServiceCallResultErrorException">
-            <summary>
-            nevim? asi zrusit spolu s ServiceCallResult
-            </summary>
-        </member>
         <member name="T:CIS.Core.Exceptions.CisValidationException">
             <summary>
-            HTTP 400. Validační chyba.
+            Validační chyba.
             </summary>
             <remarks>
-            Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation. Podporuje seznam chyb.
+            Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation. 
+            Může také ošetřovat stavy místo ArgumentException nebo ArgumentNullException a podobně.
             </remarks>
         </member>
+        <!-- Badly formed XML comment ignored for member "P:CIS.Core.Exceptions.CisValidationException.Errors" -->
         <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.String)">
             <param name="message">Chybová zpráva</param>
         </member>
@@ -629,13 +592,15 @@
             <param name="exceptionCode">CIS error kód</param>
             <param name="message">Chybová zpráva</param>
         </member>
-        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String)">
-            <param name="errors">Seznam chyb</param>
-            <param name="message">Souhrná chybová zpráva</param>
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.String,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
         </member>
-        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.String}},System.String)">
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Immutable.ImmutableList{CIS.Core.Exceptions.CisExceptionItem})">
             <param name="errors">Seznam chyb</param>
-            <param name="message">Souhrná chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IEnumerable{CIS.Core.Exceptions.CisExceptionItem})">
+            <param name="errors">Seznam chyb</param>
         </member>
         <member name="T:CIS.Core.Exceptions.ExternalServices.CisExtServiceResponseDeserializationException">
             <summary>
@@ -688,9 +653,16 @@
         <member name="M:CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException.#ctor(System.String)">
             <param name="message">Chybová zpráva</param>
         </member>
-        <member name="M:CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String)">
+        <member name="M:CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException.#ctor(System.String,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException.#ctor(System.Collections.Generic.IEnumerable{CIS.Core.Exceptions.CisExceptionItem})">
             <param name="errors">Seznam chyb</param>
-            <param name="message">Souhrná chybová zpráva</param>
         </member>
         <member name="F:CIS.Core.Exceptions.ExceptionHandlingConstants.GrpcTrailerCisCodeKey">
             <summary>

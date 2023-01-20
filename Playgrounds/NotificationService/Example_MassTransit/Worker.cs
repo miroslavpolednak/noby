@@ -24,6 +24,9 @@ public class Worker : BackgroundService
 
         var id = Guid.NewGuid().ToString();
         
+        // https://wiki.kb.cz/display/BST/Seznam+konzumentu
+        var consumerId = "HF_STARBUILD";
+        
         _logger.LogInformation("Sending Email with id = {0}", id);
         
         await producer.Produce(new SendEmail()
@@ -42,9 +45,13 @@ public class Worker : BackgroundService
             subject = "MCS Testovací email",
             notificationConsumer = new NotificationConsumer
             { 
-                consumerId = Guid.NewGuid().ToString()
+                consumerId = consumerId
             }
-        }, cancellationToken: stoppingToken);
+        }, new ProducerPipe<SendEmail>(
+            Guid.NewGuid().ToString(),
+            Topics.McsResult, 
+            "kafkabc-test-broker.service.ist.consul-nprod.kb.cz",
+            DateTime.Now), stoppingToken);
         
         _logger.LogInformation("Email with id = {0} sent", id);
     }

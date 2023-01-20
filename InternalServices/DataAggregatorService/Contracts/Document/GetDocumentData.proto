@@ -1,0 +1,26 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DataAggregatorService;
+option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Document/InputParameters.proto";
+import "Document/DocumentFieldData.proto";
+
+message GetDocumentDataRequest {
+	int32 DocumentTypeId = 1;
+
+	google.protobuf.Int32Value DocumentTemplateVersionId = 2;
+
+	InputParameters InputParameters = 3;
+}
+
+message GetDocumentDataResponse {
+	int32 DocumentTemplateVersionId = 1;
+
+	string DocumentTemplateVersion = 2;
+
+	InputParameters InputParameters = 3;
+
+	repeated DocumentFieldData DocumentData = 4;
+}

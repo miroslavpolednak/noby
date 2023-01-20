@@ -70,3 +70,5 @@ Složka pro projekty "na hraní". Pokud je potřeba vytvoření testovací konzo
 [Implementace služeb třetích stran](./topics/external-services.md)
 
 [Jak funguje ServiceDiscovery](./topics/service-discovery.md)
+
+[Error handling na FE API](./topics/feapi-error-handling.md)

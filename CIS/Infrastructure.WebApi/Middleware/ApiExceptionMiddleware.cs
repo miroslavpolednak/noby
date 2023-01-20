@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
+﻿using System.Net;
 using System.Security.Authentication;
 using CIS.Infrastructure.Logging;
 using CIS.Core.Exceptions;
@@ -10,7 +9,7 @@ public class ApiExceptionMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILoggerFactory _loggerFactory;
-    
+
     public ApiExceptionMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
     {
         _loggerFactory = loggerFactory;
@@ -24,6 +23,10 @@ public class ApiExceptionMiddleware
         try
         {
             await _next(context);
+        }
+        catch (CisAuthenticationException ex)
+        {
+            await Results.Json(new { url = ex.ProviderLoginUrl }, statusCode: 401).ExecuteAsync(context);
         }
         // neprihlaseny uzivatel
         catch (AuthenticationException ex)
@@ -48,11 +51,6 @@ public class ApiExceptionMiddleware
             logger.ExtServiceUnavailable(ex.ServiceName, ex);
             await Results.Problem(ex.MethodName, $"Service '{ex.ServiceName}' failed with HTTP 500", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
         }
-        // serviceCallResult error
-        catch (CisServiceCallResultErrorException ex)
-        {
-            await Results.ValidationProblem(ex.Errors.ToDictionary(k => k.Key.ToString(System.Globalization.CultureInfo.InvariantCulture), v => new[] { v.Message })).ExecuteAsync(context);
-        }
         // object not found
         catch (CisNotFoundException ex)
         {
@@ -67,8 +65,9 @@ public class ApiExceptionMiddleware
         // osetrena validace na urovni api call
         catch (CisValidationException ex)
         {
+
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
-            var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
+            var errors = ex.Errors?.GroupBy(k => k.ExceptionCode)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
             await Results.ValidationProblem(errors!).ExecuteAsync(context);
         }

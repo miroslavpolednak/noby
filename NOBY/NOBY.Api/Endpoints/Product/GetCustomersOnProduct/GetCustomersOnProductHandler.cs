@@ -10,7 +10,7 @@ internal sealed class GetCustomersOnProductHandler
     public async Task<List<GetCustomersOnProductCustomer>> Handle(GetCustomersOnProductRequest request, CancellationToken cancellationToken)
     {
         // dostat seznam klientu z konsDb
-        var customers = ServiceCallResult.ResolveAndThrowIfError<_Pr.GetCustomersOnProductResponse>(await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken));
+        var customers = await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken);
 
         // detail customeru z customerService
         var identifiedCustomers = customers.Customers.Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).ToList();

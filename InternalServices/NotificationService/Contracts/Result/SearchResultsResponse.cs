@@ -2,9 +2,9 @@
 
 namespace CIS.InternalServices.NotificationService.Contracts.Result;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class SearchResultsResponse
 {
     [ProtoMember(1)]
-    public List<Dto.Abstraction.Result> Results { get; set; } = new();
+    public List<Dto.Result> Results { get; set; } = new();
 }

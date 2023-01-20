@@ -1,6 +1,6 @@
 ﻿using NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
-using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentToArchive;
+using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 using NOBY.Api.Endpoints.DocumentArchive.UploadDocument;
 using NOBY.Api.Endpoints.Shared;
 using Swashbuckle.AspNetCore.Annotations;
@@ -85,12 +85,12 @@ public class DocumentArchiveController : ControllerBase
     [HttpPost("case/{caseId:long}/documents")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
-    public async Task<IActionResult> SaveDocumentToArchive(
+    public async Task<IActionResult> SaveDocumentsToArchive(
      [FromRoute] long caseId,
-     [FromBody] SaveDocumentToArchiveRequest request,
+     [FromBody] SaveDocumentsToArchiveRequest request,
      CancellationToken cancellationToken)
     {
-        await _mediator.Send(request?.InfuseCaseId(caseId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), 
+        await _mediator.Send(request?.InfuseCaseId(caseId) ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), 
                              cancellationToken);
         return Accepted();
     }

@@ -3,7 +3,7 @@ using ceTe.DynamicPDF.Merger.Forms;
 using ceTe.DynamicPDF.PageElements;
 using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTemplateTypes;
+using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 
@@ -17,7 +17,7 @@ public class PdfFooter
     private readonly ICodebookServiceClients _codebookService;
     private readonly CultureInfo _cultureInfo;
 
-    private List<DocumentTemplateTypeItem> _templateTypes = null!;
+    private List<DocumentTypeItem> _templateTypes = null!;
 
     public PdfFooter(ICodebookServiceClients codebookService)
     {
@@ -29,7 +29,7 @@ public class PdfFooter
 
     public async Task FillFooter(FinalDocument finalDocument, GenerateDocumentRequest request)
     {
-        _templateTypes = await _codebookService.DocumentTemplateTypes();
+        _templateTypes = await _codebookService.DocumentTypes();
 
         FillFooterIdentifiers(finalDocument.Document.Form.Fields, request);
         FillFooterPageNumber(finalDocument);
@@ -95,17 +95,17 @@ public class PdfFooter
         {
             GetCaseIdIdentifier(footer.CaseId),
             GetOfferIdIdentifier(footer.OfferId),
-            GetArchiveIdIdentifier(footer.DocumentId),
-            GetDocumentNameIdentifier(request.TemplateTypeId, request.TemplateVersion),
+            footer.DocumentId,
+            GetDocumentNameIdentifier(request.DocumentTypeId, request.DocumentTemplateVersion),
             GetDocumentDate()
         };
 
         return string.Join(" | ", identifiers.Where(str => !string.IsNullOrWhiteSpace(str)));
     }
 
-    private string GetDocumentNameIdentifier(int templateTypeId, string templateVersion)
+    private string GetDocumentNameIdentifier(int documentTypeId, string templateVersion)
     {
-        var templateName = _templateTypes.First(t => t.Id == templateTypeId).ShortName;
+        var templateName = _templateTypes.First(t => t.Id == documentTypeId).ShortName;
 
         return $"{templateName} {templateVersion}";
     }
@@ -115,8 +115,6 @@ public class PdfFooter
 
     private string? GetOfferIdIdentifier(int? offerId) =>
         offerId is null ? default : $"{PdfTextConstants.OfferIdIdentifierText}:{offerId.Value.ToString(_cultureInfo)}";
-
-    private static string? GetArchiveIdIdentifier(int? archiveId) => archiveId.ToString();
 
     private string GetDocumentDate() => DateTime.Now.ToString("G", _cultureInfo);
 }

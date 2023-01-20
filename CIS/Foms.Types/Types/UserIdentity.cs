@@ -46,7 +46,7 @@ public sealed class UserIdentity
     {
         ArgumentNullException.ThrowIfNullOrEmpty(identity);
         if (!Enum.TryParse(scheme, out UserIdentitySchemes parsedScheme))
-            throw new CisArgumentException(1, "UserIdentity scheme is not in valid format", nameof(scheme));
+            throw new ArgumentException("UserIdentity scheme is not in valid format", nameof(scheme));
 
         Identity = identity;
         Scheme = parsedScheme;

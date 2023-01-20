@@ -14,7 +14,9 @@ internal class SalesArrangementParametersSwagerSchema : ISchemaFilter
         var possibleTypes = new[]
         {
             typeof(ParametersMortgage),
-            typeof(ParametersDrawing)
+            typeof(ParametersDrawing),
+            typeof(ParametersHUBN),
+            typeof(ParametersGeneralChange)
         };
 
         foreach (var type in possibleTypes)

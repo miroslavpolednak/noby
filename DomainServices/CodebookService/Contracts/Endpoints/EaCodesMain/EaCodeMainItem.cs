@@ -27,6 +27,5 @@ public class EaCodeMainItem
     public bool IsInsertingAllowedNoby { get; set; }
 
     [DataMember(Order = 8)]
-    [JsonIgnore]
     public bool IsValid { get; set; }
 }

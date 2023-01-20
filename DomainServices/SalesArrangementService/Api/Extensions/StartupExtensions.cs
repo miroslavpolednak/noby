@@ -17,8 +17,8 @@ internal static class StartupExtensions
         builder.AddExternalService<ISbWebApiClient>();
 
         // dbcontext
-        builder.AddEntityFramework<Repositories.SalesArrangementServiceDbContext>();
-        builder.AddEntityFramework<Repositories.NobyDbContext>(connectionStringKey: "nobyDb");
+        builder.AddEntityFramework<Database.SalesArrangementServiceDbContext>();
+        builder.AddEntityFramework<Database.NobyDbContext>(connectionStringKey: "nobyDb");
 
         return builder;
     }

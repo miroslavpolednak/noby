@@ -491,9 +491,6 @@
             Vedlejší heslo jen archiv TCP
             </summary>
         </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.TesttimeFieldNumber">
-            <summary>Field number for the "testtime" field.</summary>
-        </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.GetDocumentReflection">
             <summary>Holder for reflection information generated from GetDocument.proto</summary>
         </member>

@@ -6,54 +6,62 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Map
 
 public static class ResultMapper
 {
-    public static IEnumerable<dto.Abstraction.Result> Map(this IEnumerable<entity.Abstraction.Result> results)
+    public static IEnumerable<dto.Result> Map(this IEnumerable<entity.Abstraction.Result> results)
     {
         return results.Select(r => r.ToDto());
     }
 
-    public static dto.Abstraction.Result Map(this entity.SmsResult smsResult)
+    public static Identifier? Map(string? identity, string? identityScheme)
     {
-        return new dto.SmsResult
+        return string.IsNullOrEmpty(identity) && string.IsNullOrEmpty(identityScheme)
+            ? null : new Identifier { Identity = identity, IdentityScheme = identityScheme };
+    }
+    
+    public static dto.Result Map(this entity.SmsResult smsResult)
+    {
+        return new dto.Result
         {
             NotificationId = smsResult.Id,
             State = smsResult.State,
             Channel = smsResult.Channel,
             Errors = smsResult.ErrorSet.ToList(),
-            Identifier = new Identifier
+            Identifier = Map(smsResult.Identity, smsResult.IdentityScheme),
+            CustomId = smsResult.CustomId,
+            DocumentId = smsResult.DocumentId,
+            RequestTimestamp = smsResult.RequestTimestamp,
+            RequestData = new dto.RequestData
             {
-                Identity = smsResult.Identity ?? "",
-                IdentityScheme = smsResult.IdentityScheme ?? ""
+                SmsData = new dto.SmsData
+                {
+                    Phone = new Phone
+                    {
+                        CountryCode = smsResult.CountryCode,
+                        NationalNumber = smsResult.PhoneNumber
+                    },
+                    Text = smsResult.Text
+                }
             },
-            CustomId = smsResult.CustomId ?? "",
-            DocumentId = smsResult.DocumentId ?? "",
-            RequestTimestamp = smsResult.RequestTimestamp ?? default,
-            HandoverToMcsTimestamp = smsResult.HandoverToMcsTimestamp ?? default,
-            Phone = new Phone
-            {
-                CountryCode = smsResult.CountryCode,
-                NationalNumber = smsResult.PhoneNumber
-            },
-            Text = smsResult.Text,
+            HandoverToMcsTimestamp = smsResult.HandoverToMcsTimestamp,
         };
     }
 
-    public static dto.Abstraction.Result Map(this entity.EmailResult emailResult)
+    public static dto.Result Map(this entity.EmailResult emailResult)
     {
-        return new dto.EmailResult
+        return new dto.Result
         {
             NotificationId = emailResult.Id,
             State = emailResult.State,
             Channel = emailResult.Channel,
             Errors = emailResult.ErrorSet.ToList(),
-            Identifier = new Identifier
+            Identifier = Map(emailResult.Identity, emailResult.IdentityScheme),
+            CustomId = emailResult.CustomId,
+            DocumentId = emailResult.DocumentId,
+            RequestTimestamp = emailResult.RequestTimestamp,
+            RequestData = new dto.RequestData
             {
-                Identity = emailResult.Identity ?? "",
-                IdentityScheme = emailResult.IdentityScheme ?? ""
+                EmailData = new dto.EmailData()
             },
-            CustomId = emailResult.CustomId ?? "",
-            DocumentId = emailResult.DocumentId ?? "",
-            RequestTimestamp = emailResult.RequestTimestamp ?? default,
-            HandoverToMcsTimestamp = emailResult.HandoverToMcsTimestamp ?? default
+            HandoverToMcsTimestamp = emailResult.HandoverToMcsTimestamp,
         };
     }
 }

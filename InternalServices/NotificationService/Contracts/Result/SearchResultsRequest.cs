@@ -4,18 +4,18 @@ using ProtoBuf;
 
 namespace CIS.InternalServices.NotificationService.Contracts.Result;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class SearchResultsRequest : IRequest<SearchResultsResponse>, IValidatableRequest
 {
     [ProtoMember(1)]
-    public string Identity { get; set; } = string.Empty;
+    public string? Identity { get; set; }
 
     [ProtoMember(2)]
-    public string IdentityScheme { get; set; } = string.Empty;
+    public string? IdentityScheme { get; set; }
     
     [ProtoMember(3)]
-    public string CustomId { get; set; } = string.Empty;
+    public string? CustomId { get; set; }
     
     [ProtoMember(4)]
-    public string DocumentId { get; set; } = string.Empty;
+    public string? DocumentId { get; set; }
 }

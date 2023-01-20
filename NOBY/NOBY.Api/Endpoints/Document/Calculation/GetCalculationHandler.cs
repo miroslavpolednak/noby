@@ -13,7 +13,7 @@ internal class GetCalculationHandler : IRequestHandler<GetCalculationRequest, Re
 
     public async Task<ReadOnlyMemory<byte>> Handle(GetCalculationRequest request, CancellationToken cancellationToken)
     {
-        var generateDocumentRequest = await _documentGenerator.CreateRequest(request);
+        var generateDocumentRequest = await _documentGenerator.CreateRequest(request, cancellationToken);
 
         return await _documentGenerator.GenerateDocument(generateDocumentRequest, cancellationToken);
     }

@@ -1,7 +1,6 @@
-﻿namespace DomainServices.CodebookService.Contracts.Endpoints.AcademicDegreesBefore
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.AcademicDegreesBefore;
+
+[DataContract]
+public class AcademicDegreesBeforeRequest : IRequest<List<GenericCodebookItem>>
 {
-    [DataContract]
-    public class AcademicDegreesBeforeRequest : IRequest<List<GenericCodebookItem>>
-    {
-    }
 }

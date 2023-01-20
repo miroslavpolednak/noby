@@ -1,0 +1,38 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DataAggregatorService;
+option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts";
+
+import "EasForm/DynamicFormValues.proto";
+import "EasForm/ProductData.proto";
+
+enum EasFormType {
+    EasFormTypeUnknown = 0;
+	EasFormType_F3700 = 1;
+    EasFormType_F3601 = 2;
+    EasFormType_F3602 = 3;
+}
+
+message GetEasFormResponse {
+    repeated Form Forms = 1;
+
+    oneof FormData {
+        ProductData Product = 2;
+    }
+}
+
+message Form {
+    EasFormType EasFormType = 1;
+
+    optional DynamicFormValues DynamicFormValues = 2;
+
+    optional DefaultValues DefaultValues = 3;
+
+    string Json = 4;
+}
+
+message DefaultValues {
+    string FormType = 1;
+
+    string PasswordCode = 2;
+}

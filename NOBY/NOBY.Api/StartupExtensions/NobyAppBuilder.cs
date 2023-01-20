@@ -1,9 +1,7 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
-using System.Diagnostics;
 using System.Reflection;
 using NOBY.Infrastructure.Security;
-using Serilog;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -49,13 +47,11 @@ internal static class NobyAppBuilder
             appBuilder.UseHttpLogging();
 
             // error middlewares
-            /*if (app.Environment.IsProduction())
-                appBuilder.UseExceptionHandler("/error");
+            /*if (app.Environment.IsDevelopment())
+                appBuilder.UseDeveloperExceptionPage();
             else*/
-            appBuilder.UseDeveloperExceptionPage();
-
-            // exception handling
-            appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middlewares.ApiExceptionMiddleware>();
+                // exception handling
+                appBuilder.UseMiddleware<NOBY.Infrastructure.ErrorHandling.NobyApiExceptionMiddleware>();
 
             if (app.Environment.IsProduction())
                 appBuilder.UseHsts();
