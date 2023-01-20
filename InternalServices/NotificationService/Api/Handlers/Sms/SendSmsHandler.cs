@@ -3,6 +3,7 @@ using CIS.Core.Exceptions;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using DomainServices.CodebookService.Contracts;
@@ -58,15 +59,18 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         result.CountryCode = request.Phone.CountryCode;
         result.PhoneNumber = request.Phone.NationalNumber;
 
+        var consumerId = NotificationConsumerIds.InSign;
+        
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {
             id = result.Id.ToString(),
             phone = request.Phone.Map(),
             type = smsType.McsCode,
             text = request.Text,
-            processingPriority = request.ProcessingPriority
+            processingPriority = request.ProcessingPriority,
+            notificationConsumer = McsSmsMappers.MapToMcs(consumerId)
         };
-
+        
         try
         {
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
