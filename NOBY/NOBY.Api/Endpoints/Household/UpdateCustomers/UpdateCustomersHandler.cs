@@ -78,6 +78,7 @@ internal sealed class UpdateCustomersHandler
                 {
                     // osetrena vyjimka, kdy je klient identifikovan KB identitou, ale nepodarilo se vytvorit identitu v MP
                     //TODO je otazka, jak se zde zachovat?
+                    return (customer.CustomerOnSAId.Value, default(List<CIS.Infrastructure.gRPC.CisTypes.Identity>?), customerIdChanged);
                 }
             }
             else // vytvoreni noveho
@@ -91,6 +92,10 @@ internal sealed class UpdateCustomersHandler
 
                 return (createResult.CustomerOnSAId, createResult.CustomerIdentifiers, true);
             }
+        }
+        else
+        {
+            return (default(int?), default(List<CIS.Infrastructure.gRPC.CisTypes.Identity>?), false);
         }
     }
 
