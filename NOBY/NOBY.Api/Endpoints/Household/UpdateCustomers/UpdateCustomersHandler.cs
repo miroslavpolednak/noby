@@ -20,14 +20,14 @@ internal sealed class UpdateCustomersHandler
             await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, c1.CustomerOnSAId, c2.CustomerOnSAId, cancellationToken);
 
         // zastavit podepisovani, pokud probehla zmena na customerech
-        if (c1.CancelSigning || c2.CancelSigning)
+        /*if (c1.CancelSigning || c2.CancelSigning)
         {
             var documentsToSign = await _documentOnSAService.GetDocumentsToSignList(householdInstance.SalesArrangementId, cancellationToken);
             foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && t.IsValid))
             {
                 await _documentOnSAService.StopSigning(document.DocumentOnSAId!.Value, cancellationToken);
             }
-        }
+        }*/
 
         // hlavni domacnost - hlavni klient ma modre ID -> spustime vlacek na vytvoreni produktu atd. (pokud jeste neexistuje)
         if (c1.CustomerOnSAId.HasValue && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
