@@ -63,7 +63,7 @@ Složka pro projekty "na hraní". Pokud je potřeba vytvoření testovací konzo
 
 [Validace requestu a byznys logiky](./topics/validation.md)
 
-[Autentizace](./topics/authentication.md)
+[Autentizace FE a doménových služeb](./topics/authentication.md)
 
 [gRPC služby - technický popis](./topics/grpc-services.md)
 
