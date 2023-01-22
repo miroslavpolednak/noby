@@ -118,11 +118,12 @@ Zároveň pokud je potřeba v daném projektu logovat vlastní události, vytvo�
 Výsledkem by mělo být, že nikde v kódu nebude logování defaultními *ILogger* metodami.
 
 # Tracing
-Tracing zajišťuje implementace **OpenTelemetry** (https://opentelemetry.io/). Zatím není kam exportovat data, takže není žádná vizualizace requestu.
+Tracing zajišťuje implementace **OpenTelemetry** (https://opentelemetry.io/).
+Zatím není kam exportovat data, takže není žádná vizualizace requestu.
 
-OT zajišťuje propagaci Trace a Span pomocí standardního Activity API v .NETu napříč všemi službami použitými v daném requestu.
+OT zajišťuje propagaci **Trace** a **Span** pomocí standardního *Activity API* v .NETu napříč všemi službami použitými v daném requestu.
 Trace se inicializuje na první aplikaci v systému NOBY - většinou tedy na FE API. 
-Pokud se jedná o request z FE API, vrací se po ukončení requestu TraceId v HTTP headeru odpovědi na frontend. Toto je zajištěno middlewarem `CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware`.
+Pokud se jedná o request z FE API, vrací se po ukončení requestu **TraceId** v HTTP headeru odpovědi na frontend. Toto je zajištěno middlewarem `CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware`.
 
 Nastavení tracingu je pomocí extension metody ve startupu aplikace:
 ```csharp

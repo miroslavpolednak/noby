@@ -13,16 +13,21 @@ internal sealed class UpdateCustomersHandler
         var householdInstance = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
         
         var c1 = await crudCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken);
-        if (c1.CancelSigning)
-        {
-
-        }
-
         var c2 = await crudCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken);
 
         // linkovani novych nebo zmenenych CustomerOnSAId na household
         if (householdInstance.CustomerOnSAId1 != c1.CustomerOnSAId || householdInstance.CustomerOnSAId2 != c2.CustomerOnSAId)
             await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, c1.CustomerOnSAId, c2.CustomerOnSAId, cancellationToken);
+
+        // zastavit podepisovani, pokud probehla zmena na customerech
+        if (c1.CancelSigning || c2.CancelSigning)
+        {
+            var documentsToSign = await _documentOnSAService.GetDocumentsToSignList(householdInstance.SalesArrangementId, cancellationToken);
+            foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && t.IsValid))
+            {
+                await _documentOnSAService.StopSigning(document.DocumentOnSAId!.Value, cancellationToken);
+            }
+        }
 
         // hlavni domacnost - hlavni klient ma modre ID -> spustime vlacek na vytvoreni produktu atd. (pokud jeste neexistuje)
         if (c1.CustomerOnSAId.HasValue && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
@@ -99,6 +104,7 @@ internal sealed class UpdateCustomersHandler
         }
     }
 
+    private readonly DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IMediator _mediator;
@@ -106,10 +112,12 @@ internal sealed class UpdateCustomersHandler
     public UpdateCustomersHandler(
         IMediator mediator,
         IHouseholdServiceClient householdService,
-        ICustomerOnSAServiceClient customerOnSAService)
+        ICustomerOnSAServiceClient customerOnSAService,
+        DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSAService)
     {
         _mediator = mediator;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;
+        _documentOnSAService = documentOnSAService;
     }
 }

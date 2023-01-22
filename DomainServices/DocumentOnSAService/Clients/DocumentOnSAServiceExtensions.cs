@@ -1,5 +1,4 @@
 ﻿using CIS.InternalServices;
-using DomainServices.DocumentOnSAService.Clients.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using __Services = DomainServices.DocumentOnSAService.Clients.Services;
 using __Contracts = DomainServices.DocumentOnSAService.Contracts;
