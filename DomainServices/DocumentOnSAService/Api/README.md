@@ -1,12 +1,13 @@
 ﻿## Generate FormId
 grpcurl -insecure -d "{\"HouseholdId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GenerateFormId
 ## StartSigning
-grpcurl -insecure -d "{\"SalesArrangementId\":1,\"DocumentTypeId\":4,\"SignatureMethodId\":3}" -H "Authorization: Basic YTph" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/StartSigning
+grpcurl -insecure -d "{\"SalesArrangementId\":6,\"DocumentTypeId\":4,\"SignatureMethodCode\":\"DELEGATE\"}" -H "Authorization: Basic YTph" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/StartSigning
 ## StopSigning: if you want call this method, it is necessary call start signing first to get DocumentOnSaId 
 grpcurl -insecure -d "{\"DocumentOnSAId\":3}" -H "Authorization: Basic YTph" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/StopSigning
 ## GetDocumentsToSignList
 grpcurl -insecure -d "{\"SalesArrangementId\":11}" -H "Authorization: Basic YTph" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GetDocumentsToSignList
-
+## GetDocumentOnSAData
+grpcurl -insecure -d "{\"DocumentOnSAId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GetDocumentOnSAData
 
 ## Migrations
 1) Open Package manager console

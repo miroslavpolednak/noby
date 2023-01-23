@@ -7,6 +7,7 @@ import "GenerateFormId.proto";
 import "StartSigning.proto";
 import "StopSigning.proto";
 import "GetDocumentsToSignList.proto";
+import "GetDocumentOnSAData.proto";
 
 //DocumentOnSAService
 service DocumentOnSAService{
@@ -14,4 +15,5 @@ service DocumentOnSAService{
 	rpc StartSigning(DomainServices.DocumentOnSAService.StartSigning.StartSigningRequest) returns(DomainServices.DocumentOnSAService.StartSigning.StartSigningResponse);
 	rpc StopSigning(DomainServices.DocumentOnSAService.StopSigning.StopSigningRequest) returns(google.protobuf.Empty);
 	rpc GetDocumentsToSignList(DomainServices.DocumentOnSAService.GetDocumentsToSignList.GetDocumentsToSignListRequest) returns(DomainServices.DocumentOnSAService.GetDocumentsToSignList.GetDocumentsToSignListResponse);
+	rpc GetDocumentOnSAData(DomainServices.DocumentOnSAService.GetDocumentOnSAData.GetDocumentOnSADataRequest) returns (DomainServices.DocumentOnSAService.GetDocumentOnSAData.GetDocumentOnSADataResponse);
 }

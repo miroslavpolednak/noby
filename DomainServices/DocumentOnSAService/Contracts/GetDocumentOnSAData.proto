@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentOnSAService.GetDocumentOnSAData;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message GetDocumentOnSADataRequest{
+
+	google.protobuf.Int32Value DocumentOnSAId = 1;
+} 
+
+message GetDocumentOnSADataResponse{
+
+	google.protobuf.Int32Value DocumentTypeId = 1;
+
+	google.protobuf.Int32Value DocumentTemplateVersionId = 2;
+
+	string Data = 3;
+}

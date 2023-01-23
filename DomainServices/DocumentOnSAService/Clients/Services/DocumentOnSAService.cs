@@ -1,5 +1,4 @@
-﻿using DomainServices.DocumentOnSAService.Clients.Interfaces;
-using DomainServices.DocumentOnSAService.Contracts;
+﻿using DomainServices.DocumentOnSAService.Contracts;
 using static DomainServices.DocumentOnSAService.Contracts.v1.DocumentOnSAService;
 
 namespace DomainServices.DocumentOnSAService.Clients.Services;
@@ -30,5 +29,10 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
     public async Task StopSigning(StopSigningRequest request, CancellationToken cancellationToken = default)
     {
         await _client.StopSigningAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task<GetDocumentOnSADataResponse> GetDocumentOnSAData(int documentOnSAId, CancellationToken cancellationToken = default)
+    {
+        return await _client.GetDocumentOnSADataAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
     }
 }

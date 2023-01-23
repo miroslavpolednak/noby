@@ -27,4 +27,7 @@ internal sealed class DocumentOnSAServiceGrpc : Contracts.v1.DocumentOnSAService
 
     public override async Task<GetDocumentsToSignListResponse> GetDocumentsToSignList(GetDocumentsToSignListRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<GetDocumentOnSADataResponse> GetDocumentOnSAData(GetDocumentOnSADataRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
 }

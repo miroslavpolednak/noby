@@ -1,6 +1,6 @@
 ﻿using DomainServices.DocumentOnSAService.Contracts;
 
-namespace DomainServices.DocumentOnSAService.Clients.Interfaces;
+namespace DomainServices.DocumentOnSAService.Clients;
 public interface IDocumentOnSAServiceClient
 {
     /// <summary>
@@ -22,4 +22,9 @@ public interface IDocumentOnSAServiceClient
     /// Metoda slouží k poskytnutí seznamu dokumentů k podpisu.
     /// </summary>
     Task<GetDocumentsToSignListResponse> GetDocumentsToSignList(GetDocumentsToSignListRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Vrácení dat uložených v DocumentOnSA dle poskytnutého DocumentOnSAId, data lze pak použít k vygenerování PDF metodou generateDocument
+    /// </summary>
+    Task<GetDocumentOnSADataResponse> GetDocumentOnSAData(int documentOnSAId, CancellationToken cancellationToken = default);
 }
