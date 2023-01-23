@@ -7,3 +7,7 @@ class Offer(Base):
 
     def simulate_mortgage(self, request: dict) -> dict:
         return self.post('mortgage', request)
+
+    def create_case(self, request: dict) -> dict:
+        return self.post('mortgage/create-case', request)
+

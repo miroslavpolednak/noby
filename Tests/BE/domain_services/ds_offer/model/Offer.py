@@ -145,6 +145,9 @@ class Offer(Base):
 
 
 
+# ?????:
+# "withGuarantee":false,
+# "interestRateDiscountToggle":true,
 
 
 # --------------------------------------------------------------------------------------------

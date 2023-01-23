@@ -15,10 +15,10 @@ def find_folder_tests_be():
     return current_folder[0 : i + len(FOLDER_BE)]
 
 PATH_TO_TESTS_BE:str = find_folder_tests_be()
-PATH_TO_GRPC:str = f'{PATH_TO_TESTS_BE}/grpc'
+PATH_TO_GRPC:str = f'{PATH_TO_TESTS_BE}\\grpc'
 
 #Load .env variables
-load_dotenv(f'{PATH_TO_TESTS_BE}/.env')
+load_dotenv(f'{PATH_TO_TESTS_BE}\\.env')
 
 # #Import Stubs CIS
 # sys.path.append(f'{PATH_TO_GRPC}/CisTypes')
