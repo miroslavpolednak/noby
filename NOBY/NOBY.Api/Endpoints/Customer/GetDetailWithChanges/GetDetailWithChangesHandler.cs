@@ -60,7 +60,17 @@ internal sealed class GetDetailWithChangesHandler
                 MergeNullValueHandling = MergeNullValueHandling.Merge
             });
 
-            return original.ToObject<GetDetailWithChangesResponse>()!;
+            var changedData = original.ToObject<GetDetailWithChangesResponse>()!;
+
+            // https://jira.kb.cz/browse/HFICH-4200
+            // docasne reseni nez se CM rozmysli jak na to
+            changedData.LegalCapacity = new()
+            {
+                RestrictionTypeId = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionTypeId,
+                RestrictionUntil = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionUntil
+            };
+
+            return changedData;
         }
         else
         {

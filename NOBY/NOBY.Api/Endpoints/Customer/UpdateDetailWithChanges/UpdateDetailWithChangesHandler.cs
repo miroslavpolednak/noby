@@ -36,8 +36,7 @@ internal sealed class UpdateDetailWithChangesHandler
         ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
 
         // https://jira.kb.cz/browse/HFICH-4200
-        if (customerOnSA.CustomerAdditionalData is null)
-            customerOnSA.CustomerAdditionalData = new();
+        // docasne reseni nez se CM rozmysli jak na to
         customerOnSA.CustomerAdditionalData.LegalCapacity = new()
         {
             RestrictionTypeId = request.LegalCapacity?.RestrictionTypeId,
