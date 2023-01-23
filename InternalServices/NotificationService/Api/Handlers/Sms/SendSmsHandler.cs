@@ -16,6 +16,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 {
     private readonly IDateTime _dateTime;
     private readonly McsSmsProducer _mcsSmsProducer;
+    private readonly UserConsumerIdMapper _userConsumerIdMapper;
     private readonly NotificationRepository _repository;
     private readonly ICodebookService _codebookService;
     private readonly IAuditLogger _auditLogger;
@@ -24,6 +25,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
     public SendSmsHandler(
         IDateTime dateTime,
         McsSmsProducer mcsSmsProducer,
+        UserConsumerIdMapper userConsumerIdMapper,
         NotificationRepository repository,
         ICodebookService codebookService,
         IAuditLogger auditLogger,
@@ -31,6 +33,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
     {
         _dateTime = dateTime;
         _mcsSmsProducer = mcsSmsProducer;
+        _userConsumerIdMapper = userConsumerIdMapper;
         _repository = repository;
         _codebookService = codebookService;
         _auditLogger = auditLogger;
@@ -59,7 +62,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         result.CountryCode = request.Phone.CountryCode;
         result.PhoneNumber = request.Phone.NationalNumber;
 
-        var consumerId = NotificationConsumerIds.InSign;
+        var consumerId = _userConsumerIdMapper.GetConsumerId();
         
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {

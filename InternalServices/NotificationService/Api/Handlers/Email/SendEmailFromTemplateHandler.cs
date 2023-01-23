@@ -1,5 +1,6 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
@@ -8,6 +9,7 @@ using CIS.InternalServices.NotificationService.Contracts.Email;
 using cz.kb.osbs.mcs.sender.sendapi.v4;
 using cz.kb.osbs.mcs.sender.sendapi.v4.email;
 using MediatR;
+using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
 
@@ -18,6 +20,9 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
     private readonly McsEmailProducer _mcsEmailProducer;
     private readonly NotificationRepository _repository;
     private readonly S3AdapterService _s3Service;
+    private readonly S3Buckets _buckets;
+    private readonly HashSet<string> _mcsSenders;
+    private readonly HashSet<string> _mpssSenders;
     private readonly ILogger<SendEmailFromTemplateHandler> _logger;
 
     public SendEmailFromTemplateHandler(
@@ -26,6 +31,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         McsEmailProducer mcsEmailProducer,
         NotificationRepository repository,
         S3AdapterService s3Service,
+        IOptions<AppConfiguration> options,
         ILogger<SendEmailFromTemplateHandler> logger)
     {
         _dateTime = dateTime;
@@ -33,6 +39,9 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         _mcsEmailProducer = mcsEmailProducer;
         _repository = repository;
         _s3Service = s3Service;
+        _buckets = options.Value.S3Buckets;
+        _mcsSenders = options.Value.EmailSenders.Mcs.Select(e => e.ToLowerInvariant()).ToHashSet();
+        _mpssSenders = options.Value.EmailSenders.Mpss.Select(e => e.ToLowerInvariant()).ToHashSet();
         _logger = logger;
     }
     
@@ -40,7 +49,9 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
     {
         var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
         var host = request.From.Value.ToLowerInvariant().Split('@').Last();
-        var bucketName = host == "kb.cz" ? Buckets.Mcs : Buckets.Mpss;
+        var bucketName = _mcsSenders.Contains(host)
+            ? _buckets.Mcs
+            : (_mpssSenders.Contains(host) ? _buckets.Mpss : throw new ArgumentException(host));
         
         try
         {
@@ -83,14 +94,18 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         
         try
         {
-            if (host == "kb.cz")
+            if (_mcsSenders.Contains(host))
             {
                 // await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
                 result.HandoverToMcsTimestamp = _dateTime.Now;
             }
-            else
+            else if (_mpssSenders.Contains(host))
             {
                 // await _mpssEmailProducer.SendEmail(sendEmail, cancellationToken);
+            }
+            else
+            {
+                throw new ArgumentException(host);
             }
             
             await _repository.AddResult(result, cancellationToken);
