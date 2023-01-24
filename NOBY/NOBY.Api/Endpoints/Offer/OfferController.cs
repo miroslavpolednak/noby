@@ -16,7 +16,7 @@ public class OfferController : ControllerBase
     /// <i>DS:</i> OfferService/SimulateMortgage
     /// </remarks>
     /// <param name="request">Nastaveni simulace.</param>
-    /// <returns>ID vytvorene simulace a jeji vysledky.</returns>
+    /// <returns>ID vytvořené simulace a její výsledky.</returns>
     [HttpPost("mortgage")]
     [Produces("application/json")]
     [Consumes("application/json")]
