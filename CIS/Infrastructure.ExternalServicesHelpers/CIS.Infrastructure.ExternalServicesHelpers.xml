@@ -19,7 +19,7 @@
             Výchozí implementace IExternalServiceConfiguration.
             </summary>
         </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.LogPayloads">
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.UseLogging">
             <summary>
             Zapne logovani request a response payloadu a hlavicek. Default: true
             </summary>
@@ -108,7 +108,7 @@
             </summary>
             <remarks>Pro registraci HTTP klienta by se vždy měla používat generická verze interface.</remarks>
         </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogPayloads">
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseLogging">
             <summary>
             Zapne logovani request a response payloadu a hlavicek. Default: true
             </summary>

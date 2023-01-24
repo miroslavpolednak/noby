@@ -13,7 +13,7 @@ public interface IExternalServiceConfiguration
     /// Zapne logovani request a response payloadu a hlavicek. Default: true
     /// </summary>
     /// <remarks>Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.</remarks>
-    bool LogPayloads { get; set; }
+    bool UseLogging { get; set; }
 
     /// <summary>
     /// True = do logu se ulozi plny payload odpovedi externi sluzby

@@ -48,7 +48,7 @@ public static class StartupRestExtensions
                     } : new HttpClientHandler();
 
                 // logovat payload a hlavicku
-                if (configuration.LogPayloads)
+                if (configuration.UseLogging)
                 {
                     var logger = services.GetRequiredService<ILogger<TClient>>();
                     return new HttpHandlers.LoggingHttpHandler(clientHandler, logger, configuration.LogRequestPayload, configuration.LogResponsePayload);
