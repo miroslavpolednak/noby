@@ -7,7 +7,7 @@ using DomainServices.CodebookService.Contracts.Endpoints.Countries;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
 
-internal class LoanApplicationTemplateData : AggregatedData
+internal class DrawingTemplateData : AggregatedData
 {
     private List<CountriesItem> _countries = null!;
     
