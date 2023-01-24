@@ -63,8 +63,8 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Could not upload attachments.");
-            throw new CisServiceUnavailableException("Todo", nameof(SendEmailFromTemplateHandler), "Todo");
+            _logger.LogError(e, $"Could not upload attachments to S3 bucket {bucketName}.");
+            throw new CisServiceServerErrorException("Todo", nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
         }
      
         var result = _repository.NewEmailResult();
@@ -73,6 +73,17 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         result.CustomId = request.CustomId;
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
+        
+        try
+        {
+            await _repository.AddResult(result, cancellationToken);
+            await _repository.SaveChanges(cancellationToken);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Could not create EmailResult.");
+            throw new CisServiceServerErrorException("Todo", nameof(SendEmailFromTemplateHandler), "SendEmailFromTemplate request failed due to internal server error.");
+        }
         
         // todo:
         // var sendEmail = new SendEmail
@@ -97,7 +108,6 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
             if (_mcsSenders.Contains(domainName))
             {
                 // await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
-                result.HandoverToMcsTimestamp = _dateTime.Now;
             }
             else if (_mpssSenders.Contains(domainName))
             {
@@ -107,19 +117,15 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
             {
                 throw new ArgumentException(domainName);
             }
-            
-            await _repository.AddResult(result, cancellationToken);
-            await _repository.SaveChanges(cancellationToken);
         }
         catch(Exception e)
         {
-            _logger.LogError(e, $"Could not produce message {nameof(SendEmail)} to KAFKA.");
-            throw new CisServiceUnavailableException("Todo", nameof(SendEmailFromTemplateHandler), "Todo");
+            _logger.LogError(e, "Could not produce message SendEmail to KAFKA.");
+            _repository.DeleteResult(result);
+            await _repository.SaveChanges(cancellationToken);
+            throw new CisServiceServerErrorException("Todo", nameof(SendEmailFromTemplateHandler), "SendEmailFromTemplate request failed due to internal server error.");
         }
         
-        return new SendEmailFromTemplateResponse
-        {
-            NotificationId = Guid.NewGuid()
-        };
+        return new SendEmailFromTemplateResponse { NotificationId = result.Id };
     }
 }
