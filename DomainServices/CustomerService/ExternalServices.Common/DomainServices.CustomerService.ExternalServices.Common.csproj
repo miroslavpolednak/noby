@@ -16,19 +16,7 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <None Remove="V1\openapi.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="V1\OpenApi\openapi.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ExternalServices.Common\DomainServices.CustomerService.ExternalServices.Common.csproj" />
+    <ProjectReference Include="..\..\..\CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj" />
   </ItemGroup>
 
 </Project>

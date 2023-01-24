@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-<PropertyGroup>
+  <PropertyGroup>
 	  <TargetFramework>net7.0</TargetFramework>
 	  <Authors>Filip Tuma</Authors>
 	  <Product>MPSS DomainServices</Product>
@@ -11,24 +11,16 @@
 	  <Version>1.0.0.0</Version>
   </PropertyGroup>
 
-	<PropertyGroup>
+<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="V1\openapi.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="V1\OpenApi\openapi.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
+	
   <ItemGroup>
     <ProjectReference Include="..\ExternalServices.Common\DomainServices.CustomerService.ExternalServices.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="V1\OpenApi\" />
   </ItemGroup>
 
 </Project>

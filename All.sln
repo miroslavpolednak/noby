@@ -273,7 +273,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.CustomerProfile", "DomainServices\CustomerService\ExternalServices.CustomerProfile\DomainServices.CustomerService.ExternalServices.CustomerProfile.csproj", "{C7BE5EA3-E65A-4652-95AB-F36121AF30BE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.Common", "DomainServices\CustomerService\DomainServices.CustomerService.ExternalServices.Common\DomainServices.CustomerService.ExternalServices.Common.csproj", "{0B3BAD08-EB17-4E38-803E-655B0A85347E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.Common", "DomainServices\CustomerService\ExternalServices.Common\DomainServices.CustomerService.ExternalServices.Common.csproj", "{0B3BAD08-EB17-4E38-803E-655B0A85347E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{4FDD79BE-4EC7-4394-8088-4F9527AF510D}"
 	ProjectSection(SolutionItems) = preProject
@@ -318,11 +318,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAggregatorService", "DataAggregatorService", "{EAA77847-CE7C-48E3-B918-1626CEB8B32B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DataAggregatorService.Api", "InternalServices\DataAggregatorService\Api\CIS.InternalServices.DataAggregatorService.Api.csproj", "{53178B65-D475-4752-9BBF-E7708BC6FB61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregatorService.Api", "InternalServices\DataAggregatorService\Api\CIS.InternalServices.DataAggregatorService.Api.csproj", "{53178B65-D475-4752-9BBF-E7708BC6FB61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DataAggregatorService.Contracts", "InternalServices\DataAggregatorService\Contracts\CIS.InternalServices.DataAggregatorService.Contracts.csproj", "{0E0A617E-7D9E-4F79-983F-3E618505FE72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregatorService.Contracts", "InternalServices\DataAggregatorService\Contracts\CIS.InternalServices.DataAggregatorService.Contracts.csproj", "{0E0A617E-7D9E-4F79-983F-3E618505FE72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DataAggregatorService.Clients", "InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj", "{5472F80E-8475-4FEC-8920-908B089B543D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregatorService.Clients", "InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj", "{5472F80E-8475-4FEC-8920-908B089B543D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentOnSAService", "DocumentOnSAService", "{234188C5-FF3F-4C38-831C-FB404B56A5C1}"
 EndProject
@@ -333,6 +333,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSAService.Contracts", "DomainServices\DocumentOnSAService\Contracts\DomainServices.DocumentOnSAService.Contracts.csproj", "{B19E7528-6A6D-4330-910F-2780D462D08F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{72288697-BCA0-41AF-A56B-A4075B5FA0FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.CustomerService.ExternalServices.Kyc", "DomainServices\CustomerService\ExternalServices.Kyc\DomainServices.CustomerService.ExternalServices.Kyc.csproj", "{8DD02052-0C04-49A1-AF7A-21FEF64B6851}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1134,6 +1136,14 @@ Global
 		{B19E7528-6A6D-4330-910F-2780D462D08F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B19E7528-6A6D-4330-910F-2780D462D08F}.Release|x64.ActiveCfg = Release|Any CPU
 		{B19E7528-6A6D-4330-910F-2780D462D08F}.Release|x64.Build.0 = Release|Any CPU
+		{8DD02052-0C04-49A1-AF7A-21FEF64B6851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DD02052-0C04-49A1-AF7A-21FEF64B6851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DD02052-0C04-49A1-AF7A-21FEF64B6851}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8DD02052-0C04-49A1-AF7A-21FEF64B6851}.Debug|x64.Build.0 = Debug|Any CPU
+		{8DD02052-0C04-49A1-AF7A-21FEF64B6851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DD02052-0C04-49A1-AF7A-21FEF64B6851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DD02052-0C04-49A1-AF7A-21FEF64B6851}.Release|x64.ActiveCfg = Release|Any CPU
+		{8DD02052-0C04-49A1-AF7A-21FEF64B6851}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1266,6 +1276,7 @@ Global
 		{78E594D5-76F2-4F60-ABE6-D8E28F34BC77} = {234188C5-FF3F-4C38-831C-FB404B56A5C1}
 		{B19E7528-6A6D-4330-910F-2780D462D08F} = {234188C5-FF3F-4C38-831C-FB404B56A5C1}
 		{72288697-BCA0-41AF-A56B-A4075B5FA0FF} = {234188C5-FF3F-4C38-831C-FB404B56A5C1}
+		{8DD02052-0C04-49A1-AF7A-21FEF64B6851} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

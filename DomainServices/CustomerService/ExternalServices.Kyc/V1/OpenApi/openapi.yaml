@@ -1,0 +1,481 @@
+openapi: 3.0.1
+info:
+  description: 'KYC service, contains operations for setting KYC data'
+  title: KycService.v2
+  version: 2.0.1
+servers:
+  - url: https://cm-dev.kb.cz/be-cm/api
+    description: DEV environment
+  - url: https://cm-fat.kb.cz/be-cm/api
+    description: SIT environment
+  - url: https://cm-uat.kb.cz/be-cm/api
+    description: UAT environment
+  - url: https://cm-edu.kb.cz/be-cm/api
+    description: EDU environment
+  - url: https://cm.kb.cz/be-cm/api
+    description: Production environment
+paths:
+  /public/v2/customers/{customerId}/employment-financial-profile:
+    put:
+      operationId: setEmploymentFinancialProfile
+      tags:
+        - KycService.v2
+      summary: setEmploymentFinancialProfile
+      description: Operation sets customer's employment and financial profile
+      parameters:
+        - name: customerId
+          in: path
+          description: Identifier of the customer whose employment and financial profile is to set. (KBID - identifier of customer in Customer Management system)
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 123
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Party-Identity-In-Service'
+        - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      requestBody:
+        $ref: '#/components/requestBodies/EmploymentFinancialProfile'
+      responses:
+        "204":
+          description: Operation set customer's employment and financial profile
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+          description: Unexpected error occurred
+  /public/v2/customers/{customerId}/kyc:
+    put:
+      operationId: setKyc
+      tags:
+        - KycService.v2
+      summary: setKyc
+      description: |
+        Operation sets customer's KYC data
+        * The operation saves individual filled objects. If the object is not filled, it is neither changed nor removed. Its values remain unchanged.
+        * For example: naturalPersonKyc.financialProfile, naturalPersonKyc.employment, taxResidence, accountCreationPurpose
+        * Each object is stored as it is filled. If the value in the object is not filled, the object is saved and the value is deleted.
+        * For example: value taxResidence.tin
+        * Each object must be valid and validation rules are applied before save. Violation of rules raises an exception.
+          1. TaxResidence validation rules: 
+                * Tax Residence must have at least one Residence Country.
+                * For Natural Person: If Tax Residence contains Czech residenceCountry, customer must have Czech Primary Address or Temporary Stay Address.
+                * For Natural Person: If Tax Residence contains only foreign residenceCountries, customer must have at least one Primary Address or Temporary Stay Address with same Country Code.
+      parameters:
+        - name: customerId
+          in: path
+          description: Identifier of the customer whose KYC data are to set. (KBID - identifier of customer in Customer Management system)
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 123
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Party-Identity-In-Service'
+        - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      requestBody:
+        $ref: '#/components/requestBodies/Kyc'
+      responses:
+        "204":
+          description: Operation set customer's KYC data
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occurred
+  /public/v2/customers/{customerId}/social-characteristics:
+    put:
+      operationId: setSocialCharacteristics
+      tags:
+        - KycService.v2
+      summary: setSocialCharacteristics
+      description: Operation sets customer's social characteristics. Only filled values are stored. If the object is not filled, it is neither changed nor removed. Its values remain unchanged.
+      parameters:
+        - name: customerId
+          in: path
+          description: Identifier of the customer whose data are to set. (KBID - identifier of customer in Customer Management system)
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 123
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Party-Identity-In-Service'
+        - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      requestBody:
+        $ref: '#/components/requestBodies/SocialCharacteristics'
+      responses:
+        "204":
+          description: Operation set customer's social characteristics
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occurred
+components:
+  requestBodies:
+    EmploymentFinancialProfile:
+      description: Employment and financial profile
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EmploymentFinancialProfile'
+    Kyc:
+      description: Customer KYC data
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Kyc'
+    SocialCharacteristics:
+      description: Social characteristics
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SocialCharacteristics'
+  schemas:
+    EmploymentFinancialProfile:
+      type: object
+      properties:
+        financialProfile:
+          $ref: '#/components/schemas/FinancialProfile'
+        employment:
+          $ref: '#/components/schemas/Employment'
+      required:
+        - financialProfile
+        - employment
+      description: Customer employment and financial profile
+    FinancialProfile:
+      type: object
+      properties:
+        mainSourceOfEarnings:
+          $ref: '#/components/schemas/MainSourceOfEarnings'
+        netMonthEarningCode:
+          type: string
+          maxLength: 1
+          description: Code of net monthly earning - RDM codebook CB_CmEpNetMonthEarnings
+          example: A
+      required:
+        - mainSourceOfEarnings
+        - netMonthEarningCode
+      description: Customer financial profile
+    Employment:
+      type: object
+      properties:
+        categoryCode:
+          type: integer
+          format: int32
+          description: Profession category code - RDM codebook CB_CmEpProfessionCategory
+          example: 2
+        professionCode:
+          type: integer
+          format: int32
+          description: Profession code - RDM codebook CB_CmEpProfession
+          example: 14
+      required:
+        - categoryCode
+        - professionCode
+      description: Customer employment category and profession
+    MainSourceOfEarnings:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Code of the source of earnings - RDM codebook CB_KYC_SourceOfIncome
+          example: 1
+        description:
+          type: string
+          description: Description of the source of earnings- only for code 6 / 'other source'
+      description: Main source of earnings
+    AccountCreationPurpose:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Code of the account creation purpose - CSC codebook ACCSETREAS
+          example: 1
+        description:
+          type: string
+          description: Description for account creation purpose
+          example: Pouze zástavce u HÚ
+    TaxResidence:
+      type: object
+      required:
+        - validFrom
+        - residenceCountries
+      properties:
+        validFrom:
+          type: string
+          format: date
+          description: Date of beginning of tax residence
+          example: 2010-01-01
+        residenceCountries:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/TaxResidenceCountry'
+          description: List of Countries with TIN, where customer is tax resident
+        legalEntityTypeCode:
+          type: string
+          minLength: 1
+          maxLength: 1
+          description: Legal entity type for CRS purposes. Filled only for Legal Person. RDM codebook CB_CmTrLegalEntityType
+      description: | 
+              Tax residence.
+              TaxResidence validation rules:
+                * Tax Residence must have at least one Residence Country.
+                * For Natural Person: If Tax Residence contains Czech residenceCountry, customer must have Czech Primary Address or Temporary Stay Address.
+                * For Natural Person: If Tax Residence contains only foreign residenceCountry, customer must have at least one Primary Address or Temporary Stay Address with same Country Code.
+
+    TaxResidenceCountry:
+      type: object
+      required:
+        - countryCode
+      properties:
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          description: Country code of tax residence - two characters ISO code - CB_Country. CZ code can only be used if the customer has a primary/temporary CZ address.
+          example: DE
+        tin:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Tax identification number. Requirement and format for individual countries are recorded in codebook CB_CmTinCountry
+          example: 12345678901
+        tinMissingReasonDescription:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Reason why TIN was not filled out
+          example: "TIN není možné získat"
+    NaturalPersonKyc:
+      type: object
+      properties:
+        financialProfile:
+          $ref: '#/components/schemas/FinancialProfile'
+        employment:
+          $ref: '#/components/schemas/Employment'
+      description: Natural person KYC data. Object is only present when customer is type of NaturalPerson.
+    Kyc:
+      type: object
+      properties:
+        naturalPersonKyc:
+          $ref: '#/components/schemas/NaturalPersonKyc'
+        taxResidence:
+          $ref: '#/components/schemas/TaxResidence'
+        isUSPerson:
+          type: boolean
+          description: Information whether the customer is US person from the perspective of FATCA.
+          example: false
+        isPoliticallyExposed:
+          type: boolean
+          description: Information whether the customer is a politically exposed person.
+          example: false
+        accountCreationPurpose:
+          $ref: '#/components/schemas/AccountCreationPurpose'
+      description: Customer KYC data. The isUSPerson and isPoliticallyExposed properties can only be set to false, value true raises an exception.
+    Education:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          description: Code of education - codebook CB_EducationDegree
+          example: Z
+      description: Customer education
+    MaritalStatus:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          description: Marital status code, RDM codebook CB_MaritalStatus
+          example: M
+      description: Customer education
+    Housing:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          description: Code of housing - codebook CB_Housing_Type
+          example: OW
+        description:
+          type: string
+          description: Description of housing - only for code 'OT' / 'other'
+          example: popis bydleni
+      description: Customer housing
+    SocialCharacteristics:
+      type: object
+      properties:
+        education:
+          $ref: '#/components/schemas/Education'
+        maritalStatus:
+          $ref: '#/components/schemas/MaritalStatus'
+        housing:
+          $ref: '#/components/schemas/Housing'
+      description: Social characteristics
+    Error:
+      type: object
+      properties:
+        httpStatusCode:
+          type: integer
+          description: Http status code
+        category:
+          type: integer
+          description: Error category
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        uuid:
+          type: string
+          description: Error uuid
+        detail:
+          description: Error detail
+      required:
+        - httpStatusCode
+        - category
+        - code
+        - message
+        - uuid
+  parameters:
+    X-KB-Caller-System-Identity:
+      name: X-KB-Caller-System-Identity
+      description: "[Caller system](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-CallerSystemIdentity)"
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "{\"app\":\"CM\",\"appComp\":\"cm-dch-prs-consumer\"}"
+    X-KB-Orig-System-Identity:
+      name: X-KB-Orig-System-Identity
+      description: "[System that as a first triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-OrigSystemIdentity)"
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "{\"app\":\"CM\",\"appComp\":\"CM_FE.INT\"}"
+    X-KB-Party-Identity-In-Service:
+      name: X-KB-Party-Identity-In-Service
+      description: "[Human user identity that triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-PartyIdentityInService)"
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "{\"partyIdIS\":[{\"partyId\":{\"id\":\"A09FK3\",\"idScheme\":{\"code\":\"KBUID\"}},\"usg\":\"BA\"},{\"partyId\":{\"id\":\"JMARKOVA\",\"idScheme\":{\"code\":\"KBAD\"}},\"usg\":\"BA\"}]}"
+    X-B3-TraceId:
+      name: X-B3-TraceId
+      description: "[Trace Id](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-TraceId)"
+      in: header
+      required: true
+      schema:
+        type: string
+        example: 614b21fe65a3e6cbf8507e2a3d304691
