@@ -16,6 +16,16 @@ public interface IExternalServiceConfiguration
     bool LogPayloads { get; set; }
 
     /// <summary>
+    /// True = do logu se ulozi plny payload odpovedi externi sluzby
+    /// </summary>
+    bool LogRequestPayload { get; set; }
+
+    /// <summary>
+    /// True = do logu se ulozi plny request poslany do externi sluzby
+    /// </summary>
+    bool LogResponsePayload { get; set; }
+
+    /// <summary>
     /// Default request timeout in seconds
     /// </summary>
     /// <remarks>Default is set to 10 seconds</remarks>

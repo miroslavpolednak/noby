@@ -51,7 +51,7 @@ public static class StartupRestExtensions
                 if (configuration.LogPayloads)
                 {
                     var logger = services.GetRequiredService<ILogger<TClient>>();
-                    return new HttpHandlers.LoggingHttpHandler(clientHandler, logger);
+                    return new HttpHandlers.LoggingHttpHandler(clientHandler, logger, configuration.LogRequestPayload, configuration.LogResponsePayload);
                 }
                 else
                     return clientHandler;

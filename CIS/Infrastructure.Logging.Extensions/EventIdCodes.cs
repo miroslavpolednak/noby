@@ -25,6 +25,7 @@ public sealed class EventIdCodes
     public const int ExtServiceRequest = 518;
     public const int HttpRequestPayload = 519;
     public const int HttpResponsePayload = 520;
+    public const int HttpResponseFinished = 525;
     public const int ExtServiceAuthenticationFailed = 521;
     public const int HttpRequestStarted = 522;
     public const int SoapRequestPayload = 523;
