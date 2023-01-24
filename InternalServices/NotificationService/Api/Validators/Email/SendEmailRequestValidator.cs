@@ -1,17 +1,19 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Email;
+﻿using CIS.InternalServices.NotificationService.Api.Configuration;
+using CIS.InternalServices.NotificationService.Contracts.Email;
 using FluentValidation;
+using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Email;
 
 public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
 {
-    public SendEmailRequestValidator()
+    public SendEmailRequestValidator(IOptions<AppConfiguration> options)
     {
         RuleFor(request => request.From)
             .NotNull()
                 .WithErrorCode(ErrorCodes.SendEmail.FromRequired)
                 .WithMessage($"{nameof(SendEmailRequest.From)} required.")
-            .SetValidator(new EmailAddressFromValidator())
+            .SetValidator(new EmailAddressFromValidator(options))
                 .WithErrorCode(ErrorCodes.SendEmail.FromInvalid)
                 .WithMessage($"Invalid {nameof(SendEmailRequest.From)}.");
         

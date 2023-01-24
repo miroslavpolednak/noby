@@ -1,10 +1,12 @@
 ﻿using CIS.Core;
+using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Handlers.Email.Requests;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Api.Services.Smtp;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using MediatR;
+using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
 
@@ -14,17 +16,20 @@ public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, 
     private readonly NotificationRepository _repository;
     private readonly SmtpAdapterService _smtpAdapterService;
     private readonly S3AdapterService _s3AdapterService;
+    private readonly S3Buckets _buckets;
 
     public SendEmailConsumeHandler(
         IDateTime dateTime,
         NotificationRepository repository,
         SmtpAdapterService smtpAdapterService,
-        S3AdapterService s3AdapterService)
+        S3AdapterService s3AdapterService,
+        IOptions<AppConfiguration> options)
     {
         _dateTime = dateTime;
         _repository = repository;
         _smtpAdapterService = smtpAdapterService;
         _s3AdapterService = s3AdapterService;
+        _buckets = options.Value.S3Buckets;
     }
     
     public async Task<SendEmailConsumeResponse> Handle(SendEmailConsumeRequest request, CancellationToken cancellationToken)
@@ -33,7 +38,7 @@ public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, 
 
         foreach (var attachment in request.Attachments)
         {
-            var fileContent = await _s3AdapterService.GetFile(attachment.S3Key, Buckets.Mpss);
+            var fileContent = await _s3AdapterService.GetFile(attachment.S3Key, _buckets.Mpss);
             smtpAttachments.Add(new SmtpAttachment{ Filename = attachment.Filename, Binary = fileContent });
         }
 
