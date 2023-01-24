@@ -61,6 +61,17 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         result.CountryCode = request.Phone.CountryCode;
         result.PhoneNumber = request.Phone.NationalNumber;
 
+        try
+        {
+            await _repository.AddResult(result, cancellationToken);
+            await _repository.SaveChanges(cancellationToken);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Could not create SmsResult.");
+            throw new CisServiceServerErrorException("Todo", nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
+        }
+        
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {
             id = result.Id.ToString(),
@@ -78,24 +89,20 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         try
         {
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
-            result.HandoverToMcsTimestamp = _dateTime.Now;
-
-            await _repository.AddResult(result, cancellationToken);
-            await _repository.SaveChanges(cancellationToken);
 
             if (smsType.IsAuditLogEnabled)
             {
-                _auditLogger.Log("todo - sms ");
+                _auditLogger.Log("todo");
             }
         }
         catch (Exception e)
         {
-            // todo:
+            _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
+            _repository.DeleteResult(result);
+            await _repository.SaveChanges(cancellationToken);
+            throw new CisServiceServerErrorException("Todo", nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
         }
 
-        return new SendSmsFromTemplateResponse
-        {
-            NotificationId = result.Id
-        };
+        return new SendSmsFromTemplateResponse { NotificationId = result.Id };
     }
 }

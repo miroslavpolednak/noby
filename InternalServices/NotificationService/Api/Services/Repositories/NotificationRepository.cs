@@ -56,6 +56,11 @@ public class NotificationRepository
             .Where(r => string.IsNullOrEmpty(documentId) || r.DocumentId == documentId)
             .ToListAsync();
     }
+
+    public void DeleteResult(Result result)
+    {
+        _dbContext.Remove(result);
+    }
     
     public async Task<int> SaveChanges(CancellationToken token = default)
     {
