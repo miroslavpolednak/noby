@@ -50,10 +50,10 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
     public async Task<SendEmailResponse> Handle(SendEmailRequest request, CancellationToken cancellationToken)
     {
         var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
-        var host = request.From.Value.ToLowerInvariant().Split('@').Last();
-        var bucketName = _mcsSenders.Contains(host)
+        var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
+        var bucketName = _mcsSenders.Contains(domainName)
             ? _buckets.Mcs
-            : (_mpssSenders.Contains(host) ? _buckets.Mpss : throw new ArgumentException(host));
+            : (_mpssSenders.Contains(domainName) ? _buckets.Mpss : throw new ArgumentException(domainName));
         
         try
         {
@@ -80,7 +80,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         {
             var consumerId = _userConsumerIdMapper.GetConsumerId();
             
-            if (_mcsSenders.Contains(host))
+            if (_mcsSenders.Contains(domainName))
             {
                 var sendEmail = new McsSendApi.v4.email.SendEmail
                 {
@@ -101,7 +101,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
                 await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
                 result.HandoverToMcsTimestamp = _dateTime.Now;
             }
-            else if (_mpssSenders.Contains(host))
+            else if (_mpssSenders.Contains(domainName))
             {
                 var sendEmail = new MpssSendApi.v1.email.SendEmail
                 {
@@ -123,7 +123,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
             }
             else
             {
-                throw new ArgumentException(host);
+                throw new ArgumentException(domainName);
             }
             
             await _repository.AddResult(result, cancellationToken);

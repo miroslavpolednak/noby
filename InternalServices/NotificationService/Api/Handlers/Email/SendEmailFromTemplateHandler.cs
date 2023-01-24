@@ -48,10 +48,10 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
     public async Task<SendEmailFromTemplateResponse> Handle(SendEmailFromTemplateRequest request, CancellationToken cancellationToken)
     {
         var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
-        var host = request.From.Value.ToLowerInvariant().Split('@').Last();
-        var bucketName = _mcsSenders.Contains(host)
+        var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
+        var bucketName = _mcsSenders.Contains(domainName)
             ? _buckets.Mcs
-            : (_mpssSenders.Contains(host) ? _buckets.Mpss : throw new ArgumentException(host));
+            : (_mpssSenders.Contains(domainName) ? _buckets.Mpss : throw new ArgumentException(domainName));
         
         try
         {
@@ -94,18 +94,18 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         
         try
         {
-            if (_mcsSenders.Contains(host))
+            if (_mcsSenders.Contains(domainName))
             {
                 // await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
                 result.HandoverToMcsTimestamp = _dateTime.Now;
             }
-            else if (_mpssSenders.Contains(host))
+            else if (_mpssSenders.Contains(domainName))
             {
                 // await _mpssEmailProducer.SendEmail(sendEmail, cancellationToken);
             }
             else
             {
-                throw new ArgumentException(host);
+                throw new ArgumentException(domainName);
             }
             
             await _repository.AddResult(result, cancellationToken);

@@ -11,7 +11,7 @@ public class EmailAddressFromValidator : AbstractValidator<EmailAddress>
     public EmailAddressFromValidator(IOptions<AppConfiguration> options)
     {
         var senders = options.Value.EmailSenders;
-        var allowedHosts = senders.Mcs
+        var allowedDomainNames = senders.Mcs
             .Union(senders.Mpss)
             .Select(_normalForm)
             .ToHashSet();
@@ -22,10 +22,10 @@ public class EmailAddressFromValidator : AbstractValidator<EmailAddress>
         RuleFor(emailAddress => emailAddress.Value)
             .Must(email =>
             {
-                var host = _normalForm(email).Split('@').Last();
-                return allowedHosts.Contains(host);
+                var domainName = _normalForm(email).Split('@').Last();
+                return allowedDomainNames.Contains(domainName);
             })
             .WithErrorCode(ErrorCodes.SendEmail.FromInvalid)
-            .WithMessage($"Allowed hosts for sender: {string.Join(',', allowedHosts)}.");
+            .WithMessage($"Allowed domain names for sender: {string.Join(',', allowedDomainNames)}.");
     }
 }
