@@ -16,6 +16,8 @@ public sealed class LoggingHttpHandler
     public LoggingHttpHandler(HttpMessageHandler innerHandler, ILogger logger, bool logRequestPayload = true, bool logResponsePayload = true)
         : base(innerHandler)
     {
+        _logRequestPayload = logRequestPayload;
+        _logResponsePayload = logResponsePayload;
         _logger = logger;
     }
 
