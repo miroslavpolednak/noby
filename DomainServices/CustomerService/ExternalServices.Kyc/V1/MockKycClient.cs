@@ -7,4 +7,14 @@ internal sealed class MockKycClient
     {
         return Task.CompletedTask;
     }
+
+    public Task SetKyc(int kbCustomerId, Contracts.Kyc request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        return Task.CompletedTask;
+    }
+
+    public Task SetFinancialProfile(int kbCustomerId, Contracts.EmploymentFinancialProfile request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        return Task.CompletedTask;
+    }
 }
