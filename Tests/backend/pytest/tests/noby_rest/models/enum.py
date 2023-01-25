@@ -51,7 +51,8 @@ class Codebooks_all:
     SIGNATURETYPES = 'SignatureTypes'
     WORKFLOWTASKCATEGORIES = 'WorkflowTaskCategories'
     WORKFLOWTASKSTATES = 'WorkflowTaskStates'
-    WORKFLOWTASKTYPES = 'WorkflowTaskProcessTypes'
+    WORKFLOWTASKPROCESSTYPES = 'WorkflowTaskProcessTypes'
+    WORKFLOWTASKTYPES = 'WorkflowTaskTypes'
     WORKSECTORS = 'WorkSectors'
 
 

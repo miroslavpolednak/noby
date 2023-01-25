@@ -85,7 +85,7 @@ def test_get_codebooks_fixed_rate_periods(codebook_name, product_type):
 
 @pytest.mark.parametrize("product_type", [
     ProductTypes.MORTGAGE]
-    )
+                         )
 def test_get_codebooks_fixation_period_length(product_type):
     resp = get_codebooks_fixation_period_length(product_type)
     assert resp[0] == 200
