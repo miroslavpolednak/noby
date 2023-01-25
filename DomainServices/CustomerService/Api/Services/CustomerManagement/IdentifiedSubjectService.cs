@@ -70,7 +70,7 @@ internal class IdentifiedSubjectService
             IsUSPerson = request.NaturalPerson?.IsUSPerson ?? false,
             AccountCreationPurpose = new ExternalServices.Kyc.V1.Contracts.AccountCreationPurpose
             {
-                Code = "",
+                Code = 1,
                 Description = ""
             },
             TaxResidence = new ExternalServices.Kyc.V1.Contracts.TaxResidence
