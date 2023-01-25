@@ -1,5 +1,4 @@
 ﻿using __SA = DomainServices.SalesArrangementService.Contracts;
-using __Pr = DomainServices.ProductService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
@@ -16,9 +15,9 @@ internal sealed class DrawingBuilder
 
     public async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
-        _request.Drawing = new __SA.SalesArrangementParametersDrawing
+        _request.Drawing = new()
         {
-            RepaymentAccount = new __SA.SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingRepaymentAccount
+            RepaymentAccount = new()
             {
                 IsAccountNumberMissing = true
             }
