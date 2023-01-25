@@ -1,6 +1,7 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
 using CIS.Foms.Enums;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 using NOBY.Api.Endpoints.Document.Shared;
 
 namespace NOBY.Api.Endpoints.Document;
@@ -55,24 +56,18 @@ public class DocumentController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), 200)]
-    public async Task<IActionResult> GetCalculation(int offerId, CancellationToken cancellationToken)
+    public Task<IActionResult> GetCalculation(int offerId, CancellationToken cancellationToken)
     {
-        var request = new Calculation.GetCalculationRequest
-        {
-            DocumentType = DocumentType.KALKULHU,
-            InputParameters = _documentManager.GetOfferInput(offerId)
-        };
+        var input = _documentManager.GetOfferInput(offerId);
 
-        var memory = await _mediator.Send(request, cancellationToken);
-
-        return await File(request, memory, cancellationToken);
+        return GenerateGeneralDocument(DocumentType.KALKULHU, input, cancellationToken);
     }
 
     /// <summary>
     /// Vygenerování dokumentu splátkový kalendář ze šablony
     /// </summary>
     /// <remarks>
-    ///Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br /><br />
+    /// Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
@@ -80,12 +75,87 @@ public class DocumentController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), 200)]
-    public async Task<IActionResult> GetPaymentSchedule(int offerId, CancellationToken cancellationToken)
+    public Task<IActionResult> GetPaymentSchedule(int offerId, CancellationToken cancellationToken)
     {
-        var request = new PaymentSchedule.GetPaymentScheduleRequest
+        var input = _documentManager.GetOfferInput(offerId);
+
+        return GenerateGeneralDocument(DocumentType.SPLKALHU, input, cancellationToken);
+    }
+
+    /// <summary>
+    /// Vygenerování dokumentu Žádost o čerpání
+    /// </summary>
+    /// <remarks>
+    /// Vygenerování dokumentu Žádost o čerpání ze šablony k dané SalesArrangement.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FF4A4806-9638-4287-8A4F-4CA027677E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20\" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId">Sales Arrangement ID</param>
+    [HttpGet("template/drawing/sales-arrangement/{salesArrangementId:int}")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [ProducesResponseType(typeof(FileResult), 200)]
+    public Task<IActionResult> GetDrawing(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
+
+        return GenerateGeneralDocument(DocumentType.ZADOCERP, input, cancellationToken);
+    }
+
+    /// <summary>
+    /// Vygenerování dokumentu Žádost o obecnou změnu
+    /// </summary>
+    /// <remarks>
+    /// Vygenerování dokumentu Žádost o obecnou změnu ze šablony k dané SalesArrangement.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=176277CE-66F6-4abd-93E6-57F113B5AF16"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId">Sales Arrangement ID</param>
+    [HttpGet("template/general-change/sales-arrangement/{salesArrangementId:int}")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [ProducesResponseType(typeof(FileResult), 200)]
+    public Task<IActionResult> GetGeneralChange(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
+
+        return GenerateGeneralDocument(DocumentType.ZAOZMPAR, input, cancellationToken);
+    }
+
+    /// <summary>
+    /// Vygenerování dokumentu Žádost o HUBN
+    /// </summary>
+    /// <remarks>
+    /// Vygenerování dokumentu Žádost o HUBN ze šablony k dané SalesArrangement.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0E17AE8A-C137-415b-B4FB-2C0D3995E0DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId">Sales Arrangement ID</param>
+    [HttpGet("template/HUBN/sales-arrangement/{salesArrangementId:int}")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [ProducesResponseType(typeof(FileResult), 200)]
+    public Task<IActionResult> GetHUBN(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
+
+        return GenerateGeneralDocument(DocumentType.ZAODHUBN, input, cancellationToken);
+    }
+
+    [Obsolete]
+    [HttpGet("template/type/{documentTypeId:int}/sales-arrangement/{salesArrangementId:int}")]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [ProducesResponseType(typeof(FileResult), 200)]
+    public Task<IActionResult> TestDocument(int documentTypeId, int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
+
+        return GenerateGeneralDocument((DocumentType)documentTypeId, input, cancellationToken);
+    }
+
+    private async Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, CancellationToken cancellationToken)
+    {
+        var request = new GeneralDocument.GetGeneralDocumentRequest
         {
-            DocumentType = DocumentType.SPLKALHU,
-            InputParameters = _documentManager.GetOfferInput(offerId)
+            DocumentType = documentType,
+            InputParameters = inputParameters
         };
 
         var memory = await _mediator.Send(request, cancellationToken);

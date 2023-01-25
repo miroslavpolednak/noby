@@ -47,7 +47,7 @@ internal class LoanApplicationCustomer
         if (!_customer.NaturalPerson.DegreeBeforeId.HasValue)
             return $"{_customer.NaturalPerson.FirstName} {_customer.NaturalPerson.LastName}";
 
-        var degree = _degreesBefore.First(d => d.Id == _customer.NaturalPerson.DegreeBeforeId.Value);
+        var degree = _degreesBefore.First(d => d.Id == _customer.NaturalPerson.DegreeBeforeId.Value).Name;
 
         return $"{_customer.NaturalPerson.FirstName} {_customer.NaturalPerson.LastName}, {degree}";
     }

@@ -21,6 +21,8 @@ internal class DocumentDataFactory
             DocumentType.ZADOCERP => new DrawingTemplateData(),
             DocumentType.ZADOSTHU => _serviceProvider.GetRequiredService<LoanApplication3601TemplateData>(),
             DocumentType.ZADOSTHD => _serviceProvider.GetRequiredService<LoanApplication3602TemplateData>(),
+            DocumentType.ZAOZMPAR => new GeneralChangeTemplateData(),
+            DocumentType.ZAODHUBN => new HUBNTemplateData(),
             _ => new AggregatedData()
         };
 }
