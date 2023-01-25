@@ -1,17 +1,17 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
-using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+using DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness;
+namespace DomainServices.RiskIntegrationService.ExternalServices;
 
 public static class StartupExtensions
 {
     internal const string ServiceName = "C4MCreditWorthiness";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
-        where TClient : class, IExternalServiceClient
+        where TClient : class, ICreditWorthinessClientBase
     {
         // ziskat konfigurace pro danou verzi sluzby
         string version = getVersion<TClient>();
@@ -19,13 +19,13 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (V1.ICreditWorthinessClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<V1.ICreditWorthinessClient, V1.MockCreditWorthinessClient>();
+            case (CreditWorthiness.V1.ICreditWorthinessClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<CreditWorthiness.V1.ICreditWorthinessClient, CreditWorthiness.V1.MockCreditWorthinessClient>();
                 break;
 
-            case (V1.ICreditWorthinessClient.Version, ServiceImplementationTypes.Real):
+            case (CreditWorthiness.V1.ICreditWorthinessClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<V1.ICreditWorthinessClient, V1.RealCreditWorthinessClient>()
+                    .AddExternalServiceRestClient<CreditWorthiness.V1.ICreditWorthinessClient, CreditWorthiness.V1.RealCreditWorthinessClient>()
                     .AddExternalServicesKbHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
                     .AddBadRequestHandling();
@@ -41,7 +41,7 @@ public static class StartupExtensions
     static string getVersion<TClient>()
         => typeof(TClient) switch
         {
-            Type t when t.IsAssignableFrom(typeof(V1.ICreditWorthinessClient)) => V1.ICreditWorthinessClient.Version,
+            Type t when t.IsAssignableFrom(typeof(CreditWorthiness.V1.ICreditWorthinessClient)) => CreditWorthiness.V1.ICreditWorthinessClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
 

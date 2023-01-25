@@ -1,10 +1,10 @@
-﻿using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts;
+﻿using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1.Contracts;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.Calculate;
 
 internal static class CalculateRequestExtensions
 {
-    public static _C4M.LoanApplicationDealer ToC4mDealer(this Dto.C4mUserInfoData userInfo, Contracts.Shared.Identity humanUser)
+    public static _C4M.LoanApplicationDealer ToC4mDealer(this ExternalServices.Dto.C4mUserInfoData userInfo, Contracts.Shared.Identity humanUser)
 #pragma warning disable CA1305 // Specify IFormatProvider
         => new()
         {

@@ -2,7 +2,7 @@
 
 namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V1.Contracts;
 
-internal partial class ResourceIdentifier
+public partial class ResourceIdentifier
 {
     public static ResourceIdentifier CreateResourceProcessId(string id)
         => new ResourceIdentifier

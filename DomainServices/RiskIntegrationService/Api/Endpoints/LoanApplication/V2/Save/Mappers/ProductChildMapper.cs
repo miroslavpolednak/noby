@@ -1,7 +1,7 @@
-﻿using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+﻿using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
-using DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
 using DomainServices.RiskIntegrationService.Contracts.Shared;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;

@@ -43,8 +43,8 @@ internal sealed class CalculateHandler
         ?? throw new CisValidationException(17006, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly Clients.CreditWorthiness.V1.ICreditWorthinessClient _client;
-    private readonly Clients.RiskCharakteristics.V1.IRiskCharakteristicsClient _riskCharacteristicsClient;
+    private readonly ExternalServices.CreditWorthiness.V1.ICreditWorthinessClient _client;
+    private readonly ExternalServices.RiskCharacteristics.V1.IRiskCharacteristicsClient _riskCharacteristicsClient;
     private readonly Mappers.CalculateRequestMapper _requestMapper;
     private readonly Mappers.DtiRequestMapper _dtiRequestMapper;
     private readonly Mappers.DstiRequestMapper _dstiRequestMapper;
@@ -54,8 +54,8 @@ internal sealed class CalculateHandler
         Mappers.DtiRequestMapper dtiRequestMapper,
         Mappers.DstiRequestMapper dstiRequestMapper,
         CodebookService.Clients.ICodebookServiceClients codebookService,
-        Clients.RiskCharakteristics.V1.IRiskCharakteristicsClient riskCharacteristicsClient,
-        Clients.CreditWorthiness.V1.ICreditWorthinessClient client)
+        ExternalServices.RiskCharacteristics.V1.IRiskCharacteristicsClient riskCharacteristicsClient,
+        ExternalServices.CreditWorthiness.V1.ICreditWorthinessClient client)
     {
         _codebookService = codebookService;
         _riskCharacteristicsClient = riskCharacteristicsClient;

@@ -1,10 +1,9 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1.Contracts;
+﻿using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1.Contracts;
 
 namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1;
 
-internal interface IRiskCharakteristicsClient
-    : IExternalServiceClient
+public interface IRiskCharacteristicsClient
+    : IRiskCharacteristicsClientBase
 {
     Task<_C4M.DTICalculation> CalculateDti(_C4M.DTICalculationArguments request, CancellationToken cancellationToken);
 

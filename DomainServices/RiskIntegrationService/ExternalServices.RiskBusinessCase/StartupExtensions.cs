@@ -1,17 +1,18 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
-using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+using DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase;
+using DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase;
+namespace DomainServices.RiskIntegrationService.ExternalServices;
 
 public static class StartupExtensions
 {
     internal const string ServiceName = "C4MRiskBusinessCase";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
-        where TClient : class, IExternalServiceClient
+        where TClient : class, IRiskBusinessCaseClientBase
     {
         // ziskat konfigurace pro danou verzi sluzby
         string version = getVersion<TClient>();
@@ -19,13 +20,13 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (V1.IRiskBusinessCaseClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<V1.IRiskBusinessCaseClient, V1.MockRiskBusinessCaseClient>();
+            case (RiskBusinessCase.V1.IRiskBusinessCaseClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.MockRiskBusinessCaseClient>();
                 break;
 
-            case (V1.IRiskBusinessCaseClient.Version, ServiceImplementationTypes.Real):
+            case (RiskBusinessCase.V1.IRiskBusinessCaseClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<V1.IRiskBusinessCaseClient, V1.RealRiskBusinessCaseClient>()
+                    .AddExternalServiceRestClient<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.RealRiskBusinessCaseClient>()
                     .AddExternalServicesKbHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
                     .AddBadRequestHandling();
@@ -41,7 +42,7 @@ public static class StartupExtensions
     static string getVersion<TClient>()
         => typeof(TClient) switch
         {
-            Type t when t.IsAssignableFrom(typeof(V1.IRiskBusinessCaseClient)) => V1.IRiskBusinessCaseClient.Version,
+            Type t when t.IsAssignableFrom(typeof(RiskBusinessCase.V1.IRiskBusinessCaseClient)) => RiskBusinessCase.V1.IRiskBusinessCaseClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
 

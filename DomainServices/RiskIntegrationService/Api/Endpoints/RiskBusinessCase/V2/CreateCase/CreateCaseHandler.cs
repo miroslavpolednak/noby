@@ -1,6 +1,6 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts;
-using _cl = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1.Contracts;
+using _cl = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1;
 using CIS.Core.Configuration;
 using CIS.Core.Types;
 

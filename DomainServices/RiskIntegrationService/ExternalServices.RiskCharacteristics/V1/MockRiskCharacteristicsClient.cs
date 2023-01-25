@@ -1,9 +1,9 @@
-﻿using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts;
+﻿using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1.Contracts;
 
-namespace DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1;
+namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1;
 
-internal sealed class MockRiskCharakteristicsClient
-    : IRiskCharakteristicsClient
+internal sealed class MockRiskCharacteristicsClient
+    : IRiskCharacteristicsClient
 {
     public Task<_C4M.DTICalculation> CalculateDti(_C4M.DTICalculationArguments request, CancellationToken cancellationToken)
     {

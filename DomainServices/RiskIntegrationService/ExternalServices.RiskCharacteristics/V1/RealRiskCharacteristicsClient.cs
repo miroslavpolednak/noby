@@ -2,8 +2,8 @@
 
 namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1;
 
-internal sealed class RealRiskCharakteristicsClient
-    : IRiskCharakteristicsClient
+internal sealed class RealRiskCharacteristicsClient
+    : IRiskCharacteristicsClient
 {
     public async Task<_C4M.DTICalculation> CalculateDti(_C4M.DTICalculationArguments request, CancellationToken cancellationToken)
     {
@@ -27,7 +27,7 @@ internal sealed class RealRiskCharakteristicsClient
 
     private readonly HttpClient _httpClient;
 
-    public RealRiskCharakteristicsClient(HttpClient httpClient)
+    public RealRiskCharacteristicsClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }

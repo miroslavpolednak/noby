@@ -3,7 +3,7 @@ using DomainServices.RiskIntegrationService.ExternalServices.Dto;
 
 namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V1.Contracts;
 
-internal static class C4mUserInfoDataExtensions
+public static class C4mUserInfoDataExtensions
 {
     public static Dealer ToC4mDealer(this C4mUserInfoData userInfo, Identity humanUser)
 #pragma warning disable CA1305 // Specify IFormatProvider
@@ -31,7 +31,7 @@ internal static class C4mUserInfoDataExtensions
         };
 
     public static ResourceIdentifier createResourceIdentifier(string domain, string resource, RiskIntegrationService.Contracts.Shared.Identity humanUser, string? id = null)
-        => new ResourceIdentifier
+        => new()
         {
             Instance = ExternalServices.Helpers.GetResourceIdentifierInstanceForDealer(humanUser.IdentityScheme),
             Domain = domain,

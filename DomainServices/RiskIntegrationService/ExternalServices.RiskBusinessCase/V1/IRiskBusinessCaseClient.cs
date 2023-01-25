@@ -1,10 +1,9 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers;
-using DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1.Contracts;
+﻿using DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1.Contracts;
 
 namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1;
 
-internal interface IRiskBusinessCaseClient
-    : IExternalServiceClient
+public interface IRiskBusinessCaseClient
+    : IRiskBusinessCaseClientBase
 {
     /// <summary>
     /// Vytvoření nového Risk Business Case

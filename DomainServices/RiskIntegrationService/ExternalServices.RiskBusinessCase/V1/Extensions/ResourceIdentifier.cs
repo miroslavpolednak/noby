@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1.Contracts;
 
-internal partial class ResourceIdentifier
+public partial class ResourceIdentifier
 {
     public static ResourceIdentifier CreateLoanApplication(string id, string variant)
         => new ResourceIdentifier

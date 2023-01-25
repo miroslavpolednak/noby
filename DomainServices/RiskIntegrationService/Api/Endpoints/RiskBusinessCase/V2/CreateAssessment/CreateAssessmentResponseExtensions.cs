@@ -1,5 +1,5 @@
 ﻿using DomainServices.RiskIntegrationService.Contracts.Shared;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1.Contracts;
 using _sh = DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssessment;

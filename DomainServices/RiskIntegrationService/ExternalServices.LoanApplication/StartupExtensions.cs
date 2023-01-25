@@ -1,17 +1,17 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
-using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication;
+namespace DomainServices.RiskIntegrationService.ExternalServices;
 
 public static class StartupExtensions
 {
     internal const string ServiceName = "C4MLoanApplication";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
-        where TClient : class, IExternalServiceClient
+        where TClient : class, ILoanApplicationClientBase
     {
         // ziskat konfigurace pro danou verzi sluzby
         string version = getVersion<TClient>();
@@ -19,13 +19,13 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (V1.ILoanApplicationClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<V1.ILoanApplicationClient, V1.MockLoanApplicationClient>();
+            case (LoanApplication.V1.ILoanApplicationClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<LoanApplication.V1.ILoanApplicationClient, LoanApplication.V1.MockLoanApplicationClient>();
                 break;
 
-            case (V1.ILoanApplicationClient.Version, ServiceImplementationTypes.Real):
+            case (LoanApplication.V1.ILoanApplicationClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<V1.ILoanApplicationClient, V1.RealLoanApplicationClient>()
+                    .AddExternalServiceRestClient<LoanApplication.V1.ILoanApplicationClient, LoanApplication.V1.RealLoanApplicationClient>()
                     .AddExternalServicesKbHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
                     .AddBadRequestHandling();
@@ -41,7 +41,7 @@ public static class StartupExtensions
     static string getVersion<TClient>()
         => typeof(TClient) switch
         {
-            Type t when t.IsAssignableFrom(typeof(V1.ILoanApplicationClient)) => V1.ILoanApplicationClient.Version,
+            Type t when t.IsAssignableFrom(typeof(LoanApplication.V1.ILoanApplicationClient)) => LoanApplication.V1.ILoanApplicationClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
 

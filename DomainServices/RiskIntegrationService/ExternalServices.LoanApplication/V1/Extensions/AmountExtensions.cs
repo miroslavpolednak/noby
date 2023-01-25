@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
 
-internal static class AmountExtensions
+public static class AmountExtensions
 {
     public static Amount? ToAmount(this decimal? amount)
         => amount.HasValue ? new Amount { CurrencyCode = Constants.CurrencyCode, Value = amount } : null;
