@@ -24,6 +24,8 @@ internal sealed class CreateSalesArrangementParametersFactory
         {
             //>= 1 and <= 5 => new MortgageBuilder(salesArrangementId, _logger),
             6 => new DrawingValidator(_logger, request, _httpContextAccessor),
+            7 => new GeneralChangeValidator(_logger, request, _httpContextAccessor),
+            8 => new HUBNValidator(_logger, request, _httpContextAccessor),
             _ => throw new NotImplementedException($"Create Builder not implemented for SalesArrangementTypeId={salesArrangementTypeId}")
         };
     }
