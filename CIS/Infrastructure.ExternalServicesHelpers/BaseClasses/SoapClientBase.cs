@@ -30,7 +30,7 @@ public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposabl
 
         _client.Endpoint.EndpointBehaviors.Add(new MaxFaultSizeBehavior(2147483647));
 
-        if (_configuration.LogPayloads)
+        if (_configuration.UseLogging)
         {
             _client.Endpoint.SetTraceLogging(logger, _configuration.ServiceUrl.AbsoluteUri!);
         }

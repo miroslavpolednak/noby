@@ -37,6 +37,20 @@ internal static class NobyAppBuilder
     public static IApplicationBuilder UseFomsApi(this WebApplication app)
         => app.MapWhen(_isApiCall, appBuilder =>
         {
+            appBuilder.UseHttpLogging();
+            appBuilder.UseCisWebApiCors();
+
+            // error middlewares
+            if (app.Environment.IsDevelopment())
+            {
+                appBuilder.UseDeveloperExceptionPage();
+            }
+            else // custom exception handling
+            {
+                appBuilder.UseMiddleware<NOBY.Infrastructure.ErrorHandling.NobyApiExceptionMiddleware>();
+                appBuilder.UseHsts();
+            }
+
             // version header
             appBuilder.Use(async (context, next) =>
             {
@@ -44,19 +58,6 @@ internal static class NobyAppBuilder
                 await next();
             });
 
-            appBuilder.UseHttpLogging();
-
-            // error middlewares
-            /*if (app.Environment.IsDevelopment())
-                appBuilder.UseDeveloperExceptionPage();
-            else*/
-                // exception handling
-                appBuilder.UseMiddleware<NOBY.Infrastructure.ErrorHandling.NobyApiExceptionMiddleware>();
-
-            if (app.Environment.IsProduction())
-                appBuilder.UseHsts();
-
-            appBuilder.UseCisWebApiCors();
             appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.HttpOptionsMiddleware>();
 
             // autentizace a autorizace

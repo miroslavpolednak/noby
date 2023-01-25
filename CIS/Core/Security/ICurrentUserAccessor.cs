@@ -1,10 +1,14 @@
-﻿namespace CIS.Core.Security;
+﻿using System.Security.Claims;
+
+namespace CIS.Core.Security;
 
 /// <summary>
 /// Helper pro ziskani akltuálně přihlášeného fyzickeho uzivatele, ktery aplikaci/sluzbu vola
 /// </summary>
 public interface ICurrentUserAccessor
 {
+    IEnumerable<Claim> Claims { get; }
+
     /// <summary>
     /// Pokud je false, uzivatel neni autentikovan - User = null
     /// </summary>

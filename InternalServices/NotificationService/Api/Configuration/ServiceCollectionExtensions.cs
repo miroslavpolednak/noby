@@ -9,44 +9,57 @@ public static class ServiceCollectionExtensions
         builder.Services
             .AddOptions<AppConfiguration>()
             .Bind(builder.Configuration.GetSection(nameof(AppConfiguration)))
+            
             .Validate(config =>
-                    config != null,
-                $"{nameof(AppConfiguration)} required.")
+                config?.UserConsumerIdMap?.Any() ?? false,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.UserConsumerIdMap)} cannot be empty.")
+            
             .Validate(config =>
-                    config.KafkaTopics != null,
-                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)} required.")
+                    config?.EmailSenders?.Mcs?.Any() ?? false,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailSenders)}.{nameof(EmailSenders.Mcs)} cannot be empty.")
             .Validate(config =>
-                !string.IsNullOrEmpty(config.KafkaTopics.McsResult),
+                    config?.EmailSenders?.Mpss?.Any() ?? false,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailSenders)}.{nameof(EmailSenders.Mpss)} cannot be empty.")
+            
+            .Validate(config =>
+                !string.IsNullOrEmpty(config?.KafkaTopics?.McsResult),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.McsResult)} required.")
             .Validate(config =>
-                    !string.IsNullOrEmpty(config.KafkaTopics.McsSender),
+                    !string.IsNullOrEmpty(config?.KafkaTopics?.McsSender),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.McsSender)} required.")
             .Validate(config =>
-                    !string.IsNullOrEmpty(config.KafkaTopics.NobyResult),
+                    !string.IsNullOrEmpty(config?.KafkaTopics?.NobyResult),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.NobyResult)} required.")
             .Validate(config =>
-                    !string.IsNullOrEmpty(config.KafkaTopics.NobySendEmail),
+                    !string.IsNullOrEmpty(config?.KafkaTopics?.NobySendEmail),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.NobySendEmail)} required.")
+            
+            .Validate(config =>
+                !string.IsNullOrEmpty(config?.S3Buckets?.Mcs),
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.S3Buckets)}.{nameof(S3Buckets.Mcs)} required.")
+            .Validate(config =>
+                    !string.IsNullOrEmpty(config?.S3Buckets?.Mpss),
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.S3Buckets)}.{nameof(S3Buckets.Mpss)} required.")
             .ValidateOnStart();
         
         builder.Services
             .AddOptions<S3Configuration>()
             .Bind(builder.Configuration.GetSection(nameof(S3Configuration)))
-            .Validate(config => !string.IsNullOrEmpty(config.ServiceUrl),
+            .Validate(config => !string.IsNullOrEmpty(config?.ServiceUrl),
                 $"{nameof(S3Configuration)}.{nameof(S3Configuration.ServiceUrl)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config.AccessKey),
+            .Validate(config => !string.IsNullOrEmpty(config?.AccessKey),
                 $"{nameof(S3Configuration)}.{nameof(S3Configuration.AccessKey)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config.SecretKey),
+            .Validate(config => !string.IsNullOrEmpty(config?.SecretKey),
                 $"{nameof(S3Configuration)}.{nameof(S3Configuration.SecretKey)} required.");
 
         builder.Services
             .AddOptions<KafkaConfiguration>()
             .Bind(builder.Configuration.GetSection(nameof(KafkaConfiguration)))
-            .Validate(config => !string.IsNullOrEmpty(config.GroupId),
+            .Validate(config => !string.IsNullOrEmpty(config?.GroupId),
                 $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.GroupId)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config.Nodes?.Business?.BootstrapServers),
+            .Validate(config => !string.IsNullOrEmpty(config?.Nodes?.Business?.BootstrapServers),
                 $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Nodes)}.{nameof(KafkaConfiguration.Nodes.Business)}.{nameof(KafkaConfiguration.Nodes.Business.BootstrapServers)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config.Debug),
+            .Validate(config => !string.IsNullOrEmpty(config?.Debug),
                 $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Debug)}")
             .ValidateOnStart();
 
@@ -54,11 +67,11 @@ public static class ServiceCollectionExtensions
             .AddOptions<SmtpConfiguration>()
             .Bind(builder.Configuration.GetSection(nameof(SmtpConfiguration)))
             .Validate(
-                config => !string.IsNullOrEmpty(config.Host),
+                config => !string.IsNullOrEmpty(config?.Host),
                 $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Host)} required.")
             .Validate(
-                config => config.Port != 0,
-                $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Port)} required and != 0.")
+                config => config?.Port != 0,
+                $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Port)} required and cannot be 0.")
             .ValidateOnStart();
         
         return builder;

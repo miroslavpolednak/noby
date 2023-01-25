@@ -1047,6 +1047,11 @@
             Kolekce nalezenych klientu.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Shared.BaseCustomerDetail.LegalCapacity">
+            <summary>
+            Objekt právního omezení	
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Shared.BaseCustomerDetail.IsBrSubscribed">
             <summary>
             Přihlášen k aktualizaci dat ze základních registrů
@@ -1080,6 +1085,16 @@
         <member name="P:NOBY.Api.Endpoints.Customer.Shared.BaseCustomerDetail.IsUSPerson">
             <summary>
             Americký občan (FATCA)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Shared.LegalCapacityItem.RestrictionTypeId">
+            <summary>
+            Typ právního omezení klienta
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Shared.LegalCapacityItem.RestrictionUntil">
+            <summary>
+            Datum platnosti právního omezení klienta do
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Shared.NaturalPerson.EducationLevelId">
@@ -1325,14 +1340,10 @@
             Update customeru na domacnosti
             </summary>
             <remarks>
-            Založí, případně updatuje CustomerOnSAId1 a CustomerOnSAId2 podle objektu v requestu Customer1 a Customer2.
-            <ul>
-            <li>Customer1 = NULL; pokud je v puvodni domacnosti v CustomerOnSAId1 existujici ID, je toto ID smazano, vcetne entity CustomerOnSA</li>
-            <li>Customer1.CustomerOnSAId = NULL; vola se CustomerOnSAService.CreateCustomer; pote se doplni Household.CustomerOnSAId1 nove vytvorenym ID</li>
-            <li>Customer1.CustomerOnSAId = existujici customer; vola se CustomerOnSAService.UpdateCustomer</li>
-            </ul>
-            Pokud je pri update nebo create klient identifikovan, rezervuje se mu modre ID a pousti se flow identifikovaneho klienta.<br/>
-            při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp
+            Založí, smaže nebo updatuje CustomerOnSAId1 a CustomerOnSAId2 podle objektu v requestu Customer1 a Customer2.<br /><br />
+            Zavoláním lockedIncome = true se zapíše timestamp zamknutí příjmů. Při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp.<br /><br />
+            V případě, že se mění Cutomer na daném householdu, dojde k znevalidnění rozběhnutých či skončených podepisovacích proseců (nutno znovu podepsat).<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF47934C-D0C7-46da-B13E-C3E648389EFB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="householdId">ID domacnosti</param>
             <returns>CustomerOnSAId nalinkovanych customeru</returns>

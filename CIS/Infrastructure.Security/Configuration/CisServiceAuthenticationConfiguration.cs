@@ -3,7 +3,7 @@
 /// <summary>
 /// Konfigurace autentizace doménové služby
 /// </summary>
-public class CisServiceAuthenticationConfiguration
+public sealed class CisServiceAuthenticationConfiguration
 {
     public enum LoginValidators
     {

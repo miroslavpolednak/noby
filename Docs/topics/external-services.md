@@ -123,7 +123,7 @@ static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation>
     * nastavení `BaseAddress` HttpClient-a
     * nastavení autentizace (pokud je vyžadována)
 2. pokud je v konfiguraci *IgnoreServerCertificateErrors=true*, přidání HttpHandleru který ignoruje SSL certificate chyby
-3. pokud je v konfiguraci *LogPayloads=true*, přidání HttpHandleru logujícího payload a hlavičky request/response.
+3. pokud je v konfiguraci *UseLogging=true*, přidání HttpHandleru logujícího request/response (volitelně payload a hlavičky).
 
 Metoda vrací instanci `IHttpClientBuilder`, takže je možné ji použít ve formě fluent syntaxe např. k přidání dalších HttpHandlerů.
 Její volání tedy může v implementaci vypadat takto:
@@ -155,7 +155,20 @@ Přidává do HTTP hlavičky hodnoty vyžadované KB službami. X-B3-TraceId, X-
 Extension metoda `IHttpClientBuilder.AddExternalServicesKbHeaders()`.
 
 **LoggingHttpHandler**  
-Přidává logování request a response payloadu a hlavičky.
+Přidává logování request a response (volitelně payloadu a hlavičky).
+Nastavení logování se řeší v konfiguraci *appsettings.json*.
+```json
+"ExternalServices": {
+  "AddressWhisperer": {
+    "V1": {
+      ...
+      "UseLogging": true,           // zapnutí a vypnutí HTTP logování
+      "LogRequestPayload": true,    // logování payloadu a hlaviček requestu
+      "LogResponsePayload": "Basic" // logování payloadu a hlaviček responsu
+    }
+  }
+}
+```
 
 ### Příklad implementace
 Ukázka nastavení služby v `StartupExtensions.cs`
