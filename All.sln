@@ -318,11 +318,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAggregatorService", "DataAggregatorService", "{EAA77847-CE7C-48E3-B918-1626CEB8B32B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DataAggregatorService.Api", "InternalServices\DataAggregatorService\Api\CIS.InternalServices.DataAggregatorService.Api.csproj", "{53178B65-D475-4752-9BBF-E7708BC6FB61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregatorService.Api", "InternalServices\DataAggregatorService\Api\CIS.InternalServices.DataAggregatorService.Api.csproj", "{53178B65-D475-4752-9BBF-E7708BC6FB61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DataAggregatorService.Contracts", "InternalServices\DataAggregatorService\Contracts\CIS.InternalServices.DataAggregatorService.Contracts.csproj", "{0E0A617E-7D9E-4F79-983F-3E618505FE72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregatorService.Contracts", "InternalServices\DataAggregatorService\Contracts\CIS.InternalServices.DataAggregatorService.Contracts.csproj", "{0E0A617E-7D9E-4F79-983F-3E618505FE72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DataAggregatorService.Clients", "InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj", "{5472F80E-8475-4FEC-8920-908B089B543D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregatorService.Clients", "InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj", "{5472F80E-8475-4FEC-8920-908B089B543D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentOnSAService", "DocumentOnSAService", "{234188C5-FF3F-4C38-831C-FB404B56A5C1}"
 EndProject
@@ -333,6 +333,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSAService.Contracts", "DomainServices\DocumentOnSAService\Contracts\DomainServices.DocumentOnSAService.Contracts.csproj", "{B19E7528-6A6D-4330-910F-2780D462D08F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{72288697-BCA0-41AF-A56B-A4075B5FA0FF}"
+	ProjectSection(SolutionItems) = preProject
+		001-InitialCreate.sql = 001-InitialCreate.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

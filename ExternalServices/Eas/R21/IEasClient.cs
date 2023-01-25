@@ -32,7 +32,7 @@ public interface IEasClient
     /// <summary>
     /// Přidání data prvního podpisu
     /// </summary>
-    Task<CommonResponse?> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate);
+    Task<CommonResponse?> AddFirstSignatureDate(int caseId, DateTime firstSignatureDate);
 
     /// <summary>
     /// Kontrola formuláře V2
