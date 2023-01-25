@@ -40,6 +40,7 @@
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />
+		<ProjectReference Include="..\ExternalServices.Common\DomainServices.RiskIntegrationService.ExternalServices.Common.csproj" />
 	</ItemGroup>
 
 </Project>

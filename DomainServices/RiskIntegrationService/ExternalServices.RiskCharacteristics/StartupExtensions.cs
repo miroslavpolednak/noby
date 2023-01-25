@@ -1,13 +1,14 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
+using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure;
+namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics;
 
 public static class StartupExtensions
 {
-    internal const string ServiceName = "C4MCustomersExposure";
+    internal const string ServiceName = "C4MRiskCharakteristics";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
         where TClient : class, IExternalServiceClient
@@ -18,13 +19,13 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (V1.ICustomersExposureClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<V1.ICustomersExposureClient, V1.MockCustomersExposureClient>();
+            case (V1.IRiskCharakteristicsClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<V1.IRiskCharakteristicsClient, V1.MockRiskCharakteristicsClient>();
                 break;
 
-            case (V1.ICustomersExposureClient.Version, ServiceImplementationTypes.Real):
+            case (V1.IRiskCharakteristicsClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<V1.ICustomersExposureClient, V1.RealCustomersExposureClient>()
+                    .AddExternalServiceRestClient<V1.IRiskCharakteristicsClient, V1.RealRiskCharakteristicsClient>()
                     .AddExternalServicesKbHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
                     .AddBadRequestHandling();
@@ -40,7 +41,7 @@ public static class StartupExtensions
     static string getVersion<TClient>()
         => typeof(TClient) switch
         {
-            Type t when t.IsAssignableFrom(typeof(V1.ICustomersExposureClient)) => V1.ICustomersExposureClient.Version,
+            Type t when t.IsAssignableFrom(typeof(V1.IRiskCharakteristicsClient)) => V1.IRiskCharakteristicsClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
 
