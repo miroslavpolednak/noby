@@ -37,15 +37,26 @@ class Base():
             
         return res
 
+    def __handle_response(self, res: Response) -> dict:
+        if (len(res.content) == 0):
+            return None
+        return json.loads(res.content)
+
     def get(self, route: str, login: str = None) -> dict:
         response = self.__handle_request(method='GET', route=route, login=login)
+        return self.__handle_response(response)
         content_json = json.loads(response.content)
         return content_json
 
     def post(self, route: str, data: dict, login: str = None) -> dict:
         response = self.__handle_request(method='POST', route=route, login=login, json=data)
+        return self.__handle_response(response)
         content_json = json.loads(response.content)
         return content_json
+
+    def put(self, route: str, data: dict, login: str = None) -> dict:
+        response = self.__handle_request(method='PUT', route=route, login=login, json=data)
+        return self.__handle_response(response)
 
     @staticmethod
     def get_cookies(login: str) -> cookies.RequestsCookieJar:

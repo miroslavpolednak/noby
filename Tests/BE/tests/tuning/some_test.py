@@ -26,7 +26,7 @@ def run_offers():
 
 def run_cases():
     from tuning.TestProcessor import TestProcessor
-    cases_to_test: List[str] = TestProcessor.instance().get_case_codes()
+    cases_to_test: List[str] = TestProcessor.instance().get_case_codes()[0:1]
     TestProcessor.instance().run_cases(cases_to_test)
 
 #simulate_mortgage()
