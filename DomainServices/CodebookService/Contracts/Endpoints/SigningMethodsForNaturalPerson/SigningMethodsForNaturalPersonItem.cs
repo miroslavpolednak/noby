@@ -21,4 +21,8 @@ public sealed class SigningMethodsForNaturalPersonItem
 
     [DataMember(Order = 5)]
     public bool IsValid { get; set; }
+
+
+    [DataMember(Order = 6)]
+    public int StarbuildEnumId { get; set; }
 }
