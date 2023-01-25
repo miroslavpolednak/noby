@@ -19,11 +19,21 @@
             Výchozí implementace IExternalServiceConfiguration.
             </summary>
         </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.LogPayloads">
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.UseLogging">
             <summary>
             Zapne logovani request a response payloadu a hlavicek. Default: true
             </summary>
             <remarks>Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.</remarks>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.LogRequestPayload">
+            <summary>
+            True = do logu se ulozi plny payload odpovedi externi sluzby
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.LogResponsePayload">
+            <summary>
+            True = do logu se ulozi plny request poslany do externi sluzby
+            </summary>
         </member>
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.RequestTimeout">
             <summary>
@@ -98,11 +108,21 @@
             </summary>
             <remarks>Pro registraci HTTP klienta by se vždy měla používat generická verze interface.</remarks>
         </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogPayloads">
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseLogging">
             <summary>
             Zapne logovani request a response payloadu a hlavicek. Default: true
             </summary>
             <remarks>Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.</remarks>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogRequestPayload">
+            <summary>
+            True = do logu se ulozi plny payload odpovedi externi sluzby
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogResponsePayload">
+            <summary>
+            True = do logu se ulozi plny request poslany do externi sluzby
+            </summary>
         </member>
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.RequestTimeout">
             <summary>

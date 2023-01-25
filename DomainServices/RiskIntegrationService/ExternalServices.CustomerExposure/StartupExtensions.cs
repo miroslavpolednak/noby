@@ -1,6 +1,5 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
-using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 

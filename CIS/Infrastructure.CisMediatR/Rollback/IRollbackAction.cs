@@ -12,6 +12,5 @@ public interface IRollbackAction<TRequest>
     /// </summary>
     /// <param name="exception">Vyjimka, ktera rollback spustila</param>
     /// <param name="request">Puvodni Mediatr request</param>
-    /// <returns></returns>
     Task ExecuteRollback(Exception exception, TRequest request, CancellationToken cancellationToken = default(CancellationToken));
 }

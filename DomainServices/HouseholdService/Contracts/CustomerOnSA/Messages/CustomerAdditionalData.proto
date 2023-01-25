@@ -2,6 +2,9 @@
 package DomainServices.HouseholdService;
 option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+import "NullableGrpcDate.proto";
+
 message CustomerAdditionalData {
     bool IsAddressWhispererUsed = 1;
     bool HasRelationshipWithKB = 2;
@@ -9,4 +12,10 @@ message CustomerAdditionalData {
     bool HasRelationshipWithCorporate = 4;
     bool IsPoliticallyExposed = 5;
     bool IsUSPerson = 6;
+    LegalCapacityData LegalCapacity = 7;
+}
+
+message LegalCapacityData {
+    google.protobuf.Int32Value RestrictionTypeId = 1;
+    cis.types.NullableGrpcDate RestrictionUntil = 2;
 }

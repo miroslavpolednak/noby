@@ -15,6 +15,11 @@ public abstract class BaseCustomerDetail
     public List<CustomerContact>? Contacts { get; set; }
 
     /// <summary>
+    /// Objekt právního omezení	
+    /// </summary>
+    public LegalCapacityItem? LegalCapacity { get; set; }
+
+    /// <summary>
     /// Přihlášen k aktualizaci dat ze základních registrů
     /// </summary>
     public bool? IsBrSubscribed { get; set; }

@@ -15,9 +15,9 @@ internal sealed class RealEasSimulationHTClient
         return await callMethod<SimulationHTResponse>(async () =>
         {
             using HT_WS_SB_ServicesClient client = createClient();
-
+            
             _logger.LogSerializedObject("SimulationHTRequest", request);
-            var result = await client.SimulationHTAsync(request);
+            var result = client.SimulationHT(request);
             _logger.LogSerializedObject("SimulationHTResponse", result);
 
             if ((result.errorInfo?.kodChyby ?? 0) != 0)
@@ -38,7 +38,7 @@ internal sealed class RealEasSimulationHTClient
             using HT_WS_SB_ServicesClient client = createClient();
 
             _logger.LogSerializedObject("FindTasksRequest", new { header, message });
-            var result = await client.WFS_FindTasksAsync(header, message);
+            var result = client.WFS_FindTasks(header, message);
             _logger.LogSerializedObject("FindTasksResponse", result);
 
             return result.tasks;

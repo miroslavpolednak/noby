@@ -1,5 +1,4 @@
-﻿using __SA = DomainServices.SalesArrangementService.Contracts;
-using DomainServices.SalesArrangementService.Clients;
+﻿using DomainServices.SalesArrangementService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
@@ -38,6 +37,16 @@ internal sealed class GetDetailWithChangesHandler
         // convert DS contract to FE model
         var model = customer.FillResponseDto(new GetDetailWithChangesResponse());
 
+        // https://jira.kb.cz/browse/HFICH-4200
+        if (customerOnSA.CustomerAdditionalData?.LegalCapacity is not null)
+        {
+            model.LegalCapacity = new()
+            {
+                RestrictionTypeId = customerOnSA.CustomerAdditionalData.LegalCapacity.RestrictionTypeId,
+                RestrictionUntil = customerOnSA.CustomerAdditionalData.LegalCapacity.RestrictionUntil
+            };
+        }
+
         // changed data already exist in database
         if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
         {
@@ -51,7 +60,17 @@ internal sealed class GetDetailWithChangesHandler
                 MergeNullValueHandling = MergeNullValueHandling.Merge
             });
 
-            return original.ToObject<GetDetailWithChangesResponse>()!;
+            var changedData = original.ToObject<GetDetailWithChangesResponse>()!;
+
+            // https://jira.kb.cz/browse/HFICH-4200
+            // docasne reseni nez se CM rozmysli jak na to
+            changedData.LegalCapacity = new()
+            {
+                RestrictionTypeId = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionTypeId,
+                RestrictionUntil = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionUntil
+            };
+
+            return changedData;
         }
         else
         {

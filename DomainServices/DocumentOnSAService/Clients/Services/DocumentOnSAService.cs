@@ -11,14 +11,18 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
         _client = client;
     }
 
-    public async Task<GenerateFormIdResponse> GenerateFormId(GenerateFormIdRequest request, CancellationToken cancellationToken = default)
+    public async Task<string> GenerateFormId(GenerateFormIdRequest request, CancellationToken cancellationToken = default)
     {
-        return await _client.GenerateFormIdAsync(request, cancellationToken: cancellationToken);
+        var result = await _client.GenerateFormIdAsync(request, cancellationToken: cancellationToken);
+        return result.FormId;
     }
 
-    public async Task<GetDocumentsToSignListResponse> GetDocumentsToSignList(GetDocumentsToSignListRequest request, CancellationToken cancellationToken = default)
+    public async Task<GetDocumentsToSignListResponse> GetDocumentsToSignList(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        return await _client.GetDocumentsToSignListAsync(request, cancellationToken: cancellationToken);
+        return await _client.GetDocumentsToSignListAsync(new GetDocumentsToSignListRequest
+        {
+            SalesArrangementId = salesArrangementId
+        }, cancellationToken: cancellationToken);
     }
 
     public async Task<StartSigningResponse> StartSigning(StartSigningRequest request, CancellationToken cancellationToken = default)
@@ -26,9 +30,12 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
         return await _client.StartSigningAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task StopSigning(StopSigningRequest request, CancellationToken cancellationToken = default)
+    public async Task StopSigning(int documentOnSAId, CancellationToken cancellationToken = default)
     {
-        await _client.StopSigningAsync(request, cancellationToken: cancellationToken);
+        await _client.StopSigningAsync(new StopSigningRequest
+        {
+            DocumentOnSAId = documentOnSAId
+        }, cancellationToken: cancellationToken);
     }
 
     public async Task<GetDocumentOnSADataResponse> GetDocumentOnSAData(int documentOnSAId, CancellationToken cancellationToken = default)

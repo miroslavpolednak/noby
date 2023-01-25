@@ -1,5 +1,26 @@
 ﻿# NOBY svět
 
+## Témata
+[Psaní technické dokumentace](./topics/documentation.md)
+
+[Databáze - čtení, zápis dat](./topics/database.md)
+
+[Databáze - migrace](./topics/database-migrations.md)
+
+[Konfigurace služeb / aplikací](./topics/configuration.md)
+
+[Validace requestu a byznys logiky](./topics/validation.md)
+
+[Autentizace FE a doménových služeb](./topics/authentication.md)
+
+[gRPC služby - technický popis](./topics/grpc-services.md)
+
+[Implementace služeb třetích stran](./topics/external-services.md)
+
+[Jak funguje ServiceDiscovery](./topics/service-discovery.md)
+
+[Error handling na FE API](./topics/feapi-error-handling.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS
@@ -51,24 +72,3 @@ Obsahuje proxy projekty nad API třetích stran. V zásadě jde o to, aby konzum
 
 ### Playgrounds
 Složka pro projekty "na hraní". Pokud je potřeba vytvoření testovací konzolové aplikace, ukázkové implementace atd. tak takové projekty patří sem.
-
-## Témata
-[Psaní technické dokumentace](./topics/documentation.md)
-
-[Databáze - čtení, zápis dat](./topics/database.md)
-
-[Databáze - migrace](./topics/database-migrations.md)
-
-[Konfigurace služeb / aplikací](./topics/configuration.md)
-
-[Validace requestu a byznys logiky](./topics/validation.md)
-
-[Autentizace](./topics/authentication.md)
-
-[gRPC služby - technický popis](./topics/grpc-services.md)
-
-[Implementace služeb třetích stran](./topics/external-services.md)
-
-[Jak funguje ServiceDiscovery](./topics/service-discovery.md)
-
-[Error handling na FE API](./topics/feapi-error-handling.md)

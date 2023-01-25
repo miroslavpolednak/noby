@@ -1,8 +1,10 @@
 ﻿using CIS.Core.Security;
+using System.Security.Claims;
 
 namespace Console_CustomerService;
 
-public class MockCurrentUserAccessor : ICurrentUserAccessor
+public sealed class MockCurrentUserAccessor 
+    : ICurrentUserAccessor
 {
     public Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken)
     {
@@ -12,6 +14,11 @@ public class MockCurrentUserAccessor : ICurrentUserAccessor
     public Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken) where TDetails : ICurrentUserDetails
     {
         throw new NotImplementedException();
+    }
+
+    public IEnumerable<Claim> Claims
+    {
+        get => new List<Claim>();
     }
 
     public bool IsAuthenticated => true;

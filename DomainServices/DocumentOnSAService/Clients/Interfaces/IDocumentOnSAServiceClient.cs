@@ -6,7 +6,7 @@ public interface IDocumentOnSAServiceClient
     /// <summary>
     /// Metoda slouží k vygenerování FormId dle pravidel definovaných business analýzou. V aktuální verzi generujeme FormId jen s prefixem "N" protože Noby je aktuálně jediný konzument metody.
     /// </summary>
-    Task<GenerateFormIdResponse> GenerateFormId(GenerateFormIdRequest request, CancellationToken cancellationToken = default);
+    Task<string> GenerateFormId(GenerateFormIdRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Metoda slouží k zahájení podepisovacího procesu.
@@ -16,12 +16,12 @@ public interface IDocumentOnSAServiceClient
     /// <summary>
     /// Metoda slouží k přerušení podepisovacího procesu.
     /// </summary>
-    Task StopSigning(StopSigningRequest request, CancellationToken cancellationToken = default);
+    Task StopSigning(int documentOnSAId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Metoda slouží k poskytnutí seznamu dokumentů k podpisu.
     /// </summary>
-    Task<GetDocumentsToSignListResponse> GetDocumentsToSignList(GetDocumentsToSignListRequest request, CancellationToken cancellationToken = default);
+    Task<GetDocumentsToSignListResponse> GetDocumentsToSignList(int salesArrangementId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vrácení dat uložených v DocumentOnSA dle poskytnutého DocumentOnSAId, data lze pak použít k vygenerování PDF metodou generateDocument
