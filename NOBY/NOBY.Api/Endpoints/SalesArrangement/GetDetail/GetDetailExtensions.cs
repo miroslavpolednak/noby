@@ -67,53 +67,53 @@ internal static class GetDetailExtensions
             Applicant = model.Applicant,
             Collateral = new CollateralObject
             {
-                IsActive = model.Collateral.IsActive,
-                AddLoanRealEstateCollateral = model.Collateral.AddLoanRealEstateCollateral,
-                ReleaseLoanRealEstateCollateral = model.Collateral.ReleaseLoanRealEstateCollateral
+                IsActive = model.Collateral?.IsActive ?? false,
+                AddLoanRealEstateCollateral = model.Collateral?.AddLoanRealEstateCollateral,
+                ReleaseLoanRealEstateCollateral = model.Collateral?.ReleaseLoanRealEstateCollateral
             },
             PaymentDay = new PaymentDayObject
             {
-                IsActive = model.PaymentDay.IsActive,
-                AgreedPaymentDay = model.PaymentDay.AgreedPaymentDay,
-                NewPaymentDay = model.PaymentDay.NewPaymentDay
+                IsActive = model.PaymentDay?.IsActive ?? false,
+                AgreedPaymentDay = model.PaymentDay?.AgreedPaymentDay,
+                NewPaymentDay = model.PaymentDay?.NewPaymentDay
             },
             DrawingDateTo = new DrawingDateToObject
             {
-                IsActive = model.DrawingDateTo.IsActive,
-                AgreedDrawingDateTo = model.DrawingDateTo.AgreedDrawingDateTo,
-                CommentToDrawingDateTo = model.DrawingDateTo.CommentToDrawingDateTo,
-                ExtensionDrawingDateToByMonths = model.DrawingDateTo.ExtensionDrawingDateToByMonths
+                IsActive = model.DrawingDateTo?.IsActive ?? false,
+                AgreedDrawingDateTo = model.DrawingDateTo?.AgreedDrawingDateTo,
+                CommentToDrawingDateTo = model.DrawingDateTo?.CommentToDrawingDateTo,
+                ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths
             },
             RepaymentAccount = new PaymentAccountObject
             {
-                IsActive = model.RepaymentAccount.IsActive,
-                AgreedBankCode = model.RepaymentAccount.AgreedBankCode,
-                AgreedNumber = model.RepaymentAccount.AgreedNumber,
-                AgreedPrefix = model.RepaymentAccount.AgreedPrefix,
-                BankCode = model.RepaymentAccount.BankCode,
-                Number = model.RepaymentAccount.Number,
-                OwnerDateOfBirth = model.RepaymentAccount.OwnerDateOfBirth,
-                OwnerFirstName = model.RepaymentAccount.OwnerFirstName,
-                OwnerLastName = model.RepaymentAccount.OwnerLastName
+                IsActive = model.RepaymentAccount?.IsActive ?? false,
+                AgreedBankCode = model.RepaymentAccount?.AgreedBankCode,
+                AgreedNumber = model.RepaymentAccount?.AgreedNumber,
+                AgreedPrefix = model.RepaymentAccount?.AgreedPrefix,
+                BankCode = model.RepaymentAccount?.BankCode,
+                Number = model.RepaymentAccount?.Number,
+                OwnerDateOfBirth = model.RepaymentAccount?.OwnerDateOfBirth,
+                OwnerFirstName = model.RepaymentAccount?.OwnerFirstName,
+                OwnerLastName = model.RepaymentAccount?.OwnerLastName
             },
             LoanPaymentAmount = new LoanPaymentAmountObject
             {
-                IsActive = model.LoanPaymentAmount.IsActive,
-                ActualLoanPaymentAmount = model.LoanPaymentAmount.ActualLoanPaymentAmount,
-                NewLoanPaymentAmount = model.LoanPaymentAmount.NewLoanPaymentAmount,
-                ConnectionExtraordinaryPayment = model.LoanPaymentAmount.ConnectionExtraordinaryPayment
+                IsActive = model.LoanPaymentAmount?.IsActive ?? false,
+                ActualLoanPaymentAmount = model.LoanPaymentAmount?.ActualLoanPaymentAmount,
+                NewLoanPaymentAmount = model.LoanPaymentAmount?.NewLoanPaymentAmount,
+                ConnectionExtraordinaryPayment = model.LoanPaymentAmount?.ConnectionExtraordinaryPayment ?? false
             },
             DueDate = new DueDateObject
             {
-                IsActive = model.DueDate.IsActive,
-                ActualLoanDueDate = model.DueDate.ActualLoanDueDate,
-                ConnectionExtraordinaryPayment = model.DueDate.ConnectionExtraordinaryPayment,
-                NewLoanDueDate = model.DueDate.NewLoanDueDate
+                IsActive = model.DueDate?.IsActive ?? false,
+                ActualLoanDueDate = model.DueDate?.ActualLoanDueDate,
+                ConnectionExtraordinaryPayment = model.DueDate?.ConnectionExtraordinaryPayment ?? false,
+                NewLoanDueDate = model.DueDate?.NewLoanDueDate
             },
             LoanRealEstate = new LoanRealEstateObject
             {
-                IsActive = model.LoanRealEstate.IsActive,
-                LoanRealEstates = model.LoanRealEstate.LoanRealEstates?.Select(t => new LoanRealEstateItem
+                IsActive = model.LoanRealEstate?.IsActive ?? false,
+                LoanRealEstates = model.LoanRealEstate?.LoanRealEstates?.Select(t => new LoanRealEstateItem
                 {
                     RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
                     RealEstateTypeId = t.RealEstateTypeId
@@ -121,18 +121,18 @@ internal static class GetDetailExtensions
             },
             LoanPurpose = new LoanPurposeObject
             {
-                IsActive = model.LoanPurpose.IsActive,
-                LoanPurposesComment = model.LoanPurpose.LoanPurposesComment
+                IsActive = model.LoanPurpose?.IsActive ?? false,
+                LoanPurposesComment = model.LoanPurpose?.LoanPurposesComment
             },
             DrawingAndOtherConditions = new DrawingAndOtherConditionsObject
             {
-                IsActive = model.DrawingAndOtherConditions.IsActive,
-                CommentToChangeContractConditions = model.DrawingAndOtherConditions.CommentToChangeContractConditions
+                IsActive = model.DrawingAndOtherConditions?.IsActive ?? false,
+                CommentToChangeContractConditions = model.DrawingAndOtherConditions?.CommentToChangeContractConditions
             },
             CommentToChangeRequest = new CommentToChangeRequestObject
             {
-                IsActive = model.CommentToChangeRequest.IsActive,
-                GeneralComment = model.CommentToChangeRequest.GeneralComment
+                IsActive = model.CommentToChangeRequest?.IsActive ?? false,
+                GeneralComment = model.CommentToChangeRequest?.GeneralComment
             }
         };
 
@@ -142,40 +142,40 @@ internal static class GetDetailExtensions
             Applicant = model.Applicant,
             CollateralIdentification = new()
             {
-                RealEstateIdentification = model.CollateralIdentification.RealEstateIdentification
+                RealEstateIdentification = model.CollateralIdentification?.RealEstateIdentification
             },
             LoanAmount = new()
             {
-                ChangeAgreedLoanAmount = model.LoanAmount.ChangeAgreedLoanAmount,
-                RequiredLoanAmount = model.LoanAmount.RequiredLoanAmount,
-                PreserveAgreedPaymentAmount = model.LoanAmount.PreserveAgreedLoanPaymentAmount,
-                PreserveLoanDueDate = model.LoanAmount.PreserveAgreedLoanDueDate
+                ChangeAgreedLoanAmount = model.LoanAmount?.ChangeAgreedLoanAmount ?? false,
+                RequiredLoanAmount = model.LoanAmount?.RequiredLoanAmount,
+                PreserveAgreedPaymentAmount = model.LoanAmount?.PreserveAgreedLoanPaymentAmount ?? false,
+                PreserveLoanDueDate = model.LoanAmount?.PreserveAgreedLoanDueDate ?? false
             },
-            ExpectedDateOfDrawing = new()
-            {
-                IsActive = model.ExpectedDateOfDrawing.IsActive,
-                NewExpectedDateOfDrawing = model.ExpectedDateOfDrawing.NewExpectedDateOfDrawing
-            },
-            DrawingDateTo = new()
-            {
-                IsActive = model.DrawingDateTo.IsActive,
-                ExtensionDrawingDateToByMonths = model.DrawingDateTo.ExtensionDrawingDateToByMonths
-            },
-            CommentToChangeRequest = new()
-            {
-                IsActive = model.CommentToChangeRequest.IsActive,
-                GeneralComment = model.CommentToChangeRequest.GeneralComment
-            },
-            LoanPurposes = model.LoanPurposes.Select(t => new LoanPurposeItem
+            LoanPurposes = model.LoanPurposes?.Select(t => new LoanPurposeItem
             {
                 Id = t.LoanPurposeId,
                 Sum = t.Sum
             }).ToList(),
-            LoanRealEstates = model.LoanRealEstates.Select(t => new LoanRealEstateItem2
+            LoanRealEstates = model.LoanRealEstates?.Select(t => new LoanRealEstateItem2
             {
                 IsCollateral = t.IsCollateral,
                 RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
                 RealEstateTypeId = t.RealEstateTypeId
-            }).ToList()
+            }).ToList(),
+            ExpectedDateOfDrawing = new()
+            {
+                IsActive = model.ExpectedDateOfDrawing?.IsActive ?? false,
+                NewExpectedDateOfDrawing = model.ExpectedDateOfDrawing?.NewExpectedDateOfDrawing
+            },
+            DrawingDateTo = new()
+            {
+                IsActive = model.DrawingDateTo?.IsActive ?? false,
+                ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths
+            },
+            CommentToChangeRequest = new()
+            {
+                IsActive = model.CommentToChangeRequest?.IsActive ?? false,
+                GeneralComment = model.CommentToChangeRequest?.GeneralComment
+            }
         };
 }

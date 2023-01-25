@@ -86,7 +86,7 @@ internal static class UpdateParametersExtensions
             PaymentDay = new()
             {
                 IsActive = parameters.PaymentDay.IsActive,
-                AgreedPaymentDay = parameters.PaymentDay.AgreedPaymentDay,
+                AgreedPaymentDay = parameters.PaymentDay.AgreedPaymentDay.GetValueOrDefault(),
                 NewPaymentDay = parameters.PaymentDay.NewPaymentDay
             },
             DrawingDateTo = new()
