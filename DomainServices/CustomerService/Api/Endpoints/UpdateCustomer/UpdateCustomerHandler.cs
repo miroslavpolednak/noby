@@ -4,7 +4,8 @@ using DomainServices.CustomerService.Api.Services.KonsDb;
 
 namespace DomainServices.CustomerService.Api.Endpoints.UpdateCustomer;
 
-internal class UpdateCustomerHandler : IRequestHandler<UpdateCustomerRequest, UpdateCustomerResponse>
+internal sealed class UpdateCustomerHandler 
+    : IRequestHandler<UpdateCustomerRequest, UpdateCustomerResponse>
 {
     private readonly IdentifiedSubjectService _identifiedSubjectService;
     private readonly MpDigiClient _mpDigiClient;

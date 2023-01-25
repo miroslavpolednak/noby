@@ -4,6 +4,7 @@ using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
 using FastEnumUtility;
+using System.Threading;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -13,6 +14,7 @@ internal class IdentifiedSubjectService
     private readonly ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient _identifiedSubjectClient;
     private readonly ICodebookServiceClients _codebook;
     private readonly CustomerManagementErrorMap _errorMap;
+    private readonly ExternalServices.Kyc.V1.IKycClient _kycClient;
 
     private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
     private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
@@ -20,11 +22,12 @@ internal class IdentifiedSubjectService
     private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
     private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public IdentifiedSubjectService(ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap)
+    public IdentifiedSubjectService(ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
     {
         _identifiedSubjectClient = identifiedSubjectClient;
         _codebook = codebook;
         _errorMap = errorMap;
+        _kycClient = kycClient;
     }
 
     public async Task<Identity> CreateSubject(CreateCustomerRequest request, CancellationToken cancellationToken)
@@ -53,8 +56,69 @@ internal class IdentifiedSubjectService
         var identifiedSubject = BuildUpdateRequest(request);
 
         await _identifiedSubjectClient.UpdateIdentifiedSubject(customerId.IdentityId, identifiedSubject, cancellationToken);
+
+        // https://jira.kb.cz/browse/HFICH-3555
+        await callSetSocialCharacteristics(customerId.IdentityId, request, cancellationToken);
+        await callSetKyc(customerId.IdentityId, request, cancellationToken);
     }
     
+    private async Task callSetKyc(long customerId, UpdateCustomerRequest request, CancellationToken cancellationToken)
+    {
+        var model = new ExternalServices.Kyc.V1.Contracts.Kyc
+        {
+            IsPoliticallyExposed = request.NaturalPerson?.IsPoliticallyExposed ?? false,
+            IsUSPerson = request.NaturalPerson?.IsUSPerson ?? false,
+            AccountCreationPurpose = new ExternalServices.Kyc.V1.Contracts.AccountCreationPurpose
+            {
+                Code = "",
+                Description = ""
+            },
+            TaxResidence = new ExternalServices.Kyc.V1.Contracts.TaxResidence
+            {
+                LegalEntityTypeCode = "",
+                ValidFrom = request.NaturalPerson?.TaxResidence?.ValidFrom ?? DateTime.MinValue
+            }
+        };
+
+        if (request.NaturalPerson?.TaxResidence?.ResidenceCountries is not null)
+        {
+            model.TaxResidence.ResidenceCountries = request
+                .NaturalPerson
+                .TaxResidence
+                .ResidenceCountries
+                .Select(x => new ExternalServices.Kyc.V1.Contracts.TaxResidenceCountry
+                {
+                    Tin = x.Tin,
+                    CountryCode = _countries.FirstOrDefault(c => c.Id == x.CountryId)?.ShortName ?? "",
+                    TinMissingReasonDescription = x.TinMissingReasonDescription
+                }).ToList();
+        }
+
+        await _kycClient.SetKyc(customerId, model, cancellationToken);
+    }
+
+    private async Task callSetSocialCharacteristics(long customerId, UpdateCustomerRequest request, CancellationToken cancellationToken)
+    {
+        var model = new ExternalServices.Kyc.V1.Contracts.SocialCharacteristics
+        {
+            Education = new()
+            {
+                Code = (await _codebook.EducationLevels(cancellationToken)).FirstOrDefault(t => t.Id == request.NaturalPerson.EducationLevelId)?.RdmCode ?? ""
+            },
+            MaritalStatus = new()
+            {
+                Code = _maritals.FirstOrDefault(t => t.Id == request.NaturalPerson?.MaritalStatusStateId)?.RdmMaritalStatusCode ?? ""
+            },
+            Housing = new()
+            {
+                Code = "",
+                Description = ""
+            }
+        };
+
+        await _kycClient.SetSocialCharacteristics(customerId, model, cancellationToken);
+    }
+
     private Task InitializeCodebooks(CancellationToken cancellationToken)
     {
         return Task.WhenAll(Genders(), Titles(), Countries(), Maritals(), DocTypes());

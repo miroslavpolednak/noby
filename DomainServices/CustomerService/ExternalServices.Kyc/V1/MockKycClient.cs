@@ -3,17 +3,17 @@
 internal sealed class MockKycClient
     : IKycClient
 {
-    public Task SetSocialCharacteristics(int kbCustomerId, Contracts.SocialCharacteristics request, CancellationToken cancellationToken = default(CancellationToken))
+    public Task SetSocialCharacteristics(long customerId, Contracts.SocialCharacteristics request, CancellationToken cancellationToken = default(CancellationToken))
     {
         return Task.CompletedTask;
     }
 
-    public Task SetKyc(int kbCustomerId, Contracts.Kyc request, CancellationToken cancellationToken = default(CancellationToken))
+    public Task SetKyc(long customerId, Contracts.Kyc request, CancellationToken cancellationToken = default(CancellationToken))
     {
         return Task.CompletedTask;
     }
-
-    public Task SetFinancialProfile(int kbCustomerId, Contracts.EmploymentFinancialProfile request, CancellationToken cancellationToken = default(CancellationToken))
+        
+    public Task SetFinancialProfile(long customerId, Contracts.EmploymentFinancialProfile request, CancellationToken cancellationToken = default(CancellationToken))
     {
         return Task.CompletedTask;
     }

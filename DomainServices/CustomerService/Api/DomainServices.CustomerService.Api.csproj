@@ -38,6 +38,7 @@
 	<ProjectReference Include="..\ExternalServices.CustomerManagement\DomainServices.CustomerService.ExternalServices.CustomerManagement.csproj" />
 	<ProjectReference Include="..\ExternalServices.CustomerProfile\DomainServices.CustomerService.ExternalServices.CustomerProfile.csproj" />
 	<ProjectReference Include="..\ExternalServices.IdentifiedSubjectBr\DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.csproj" />
+	<ProjectReference Include="..\ExternalServices.Kyc\DomainServices.CustomerService.ExternalServices.Kyc.csproj" />
   </ItemGroup>
 
   <ItemGroup>
