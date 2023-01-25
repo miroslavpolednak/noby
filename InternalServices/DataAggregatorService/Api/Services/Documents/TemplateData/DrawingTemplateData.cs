@@ -3,15 +3,17 @@ using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.Countries;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
 
-internal class LoanApplicationTemplateData : AggregatedData
+internal class DrawingTemplateData : AggregatedData
 {
     private List<CountriesItem> _countries = null!;
-    
-    public string PersonName => $"{Customer.NaturalPerson.FirstName} {Customer.NaturalPerson.LastName}";
+    private List<GenericCodebookItem> _degreesBefore = null!;
+
+    public string PersonName => GetFullName();
 
     public string PersonAddress =>
         Customer.Addresses
@@ -51,5 +53,16 @@ internal class LoanApplicationTemplateData : AggregatedData
     public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
     {
         _countries = await codebookService.Countries();
+        _degreesBefore = await codebookService.AcademicDegreesBefore();
+    }
+
+    private string GetFullName()
+    {
+        if (!Customer.NaturalPerson.DegreeBeforeId.HasValue)
+            return $"{Customer.NaturalPerson.FirstName} {Customer.NaturalPerson.LastName}";
+
+        var degree = _degreesBefore.First(d => d.Id == Customer.NaturalPerson.DegreeBeforeId.Value).Name;
+
+        return $"{Customer.NaturalPerson.FirstName} {Customer.NaturalPerson.LastName}, {degree}";
     }
 }

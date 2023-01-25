@@ -4,6 +4,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms;
 
+[TransientService, SelfService]
 internal class EasFormFactory
 {
     private readonly IServiceProvider _serviceProvider;

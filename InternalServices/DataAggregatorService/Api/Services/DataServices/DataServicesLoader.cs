@@ -25,7 +25,7 @@ internal class DataServicesLoader
     {
         var status = new DataLoaderStatus
         {
-            RemainingDataSources = inputConfig.DataSources.Concat(inputConfig.DynamicInputParameters.Select(i => i.SourceDataSource).Distinct()).ToList(),
+            RemainingDataSources = inputConfig.DataSources.Concat(inputConfig.DynamicInputParameters.Select(i => i.SourceDataSource)).Distinct().ToList(),
             RelatedInputParameters = inputConfig.DynamicInputParameters.ToList()
         };
 
@@ -36,6 +36,7 @@ internal class DataServicesLoader
         }
 
         await aggregatedData.LoadCodebooks(_codebookService);
+        await aggregatedData.LoadAdditionalData(CancellationToken.None);
     }
 
     private async Task ProcessRemainingDataSources(DataLoaderStatus status, InputParameters parameters, AggregatedData aggregatedData)
@@ -74,6 +75,9 @@ internal class DataServicesLoader
         AddService<CustomerServiceWrapper>(DataSource.CustomerService);
         AddService<ProductServiceWrapper>(DataSource.ProductService);
         AddService<OfferPaymentScheduleServiceWrapper>(DataSource.OfferPaymentScheduleService);
+        AddService<HouseholdServiceWrapper>(DataSource.HouseholdService);
+        AddService<CustomersOnSaDetailServiceWrapper>(DataSource.CustomersOnSaDetail);
+        AddService<HouseholdWIthCustomersServiceWrapper>(DataSource.HouseholdWithCustomersService);
 
         void AddService<TSource>(DataSource dataSource) where TSource : IServiceWrapper =>
             _serviceMap.Add(dataSource, _serviceProvider.GetRequiredService<TSource>().LoadData);

@@ -1,17 +1,17 @@
 ﻿using NOBY.Api.Endpoints.Document.Shared;
 
-namespace NOBY.Api.Endpoints.Document.PaymentSchedule;
+namespace NOBY.Api.Endpoints.Document.GeneralDocument;
 
-internal class GetPaymentScheduleHandler : IRequestHandler<GetPaymentScheduleRequest, ReadOnlyMemory<byte>>
+internal class GetGeneralDocumentHandler : IRequestHandler<GetGeneralDocumentRequest, ReadOnlyMemory<byte>>
 {
     private readonly DocumentGenerator _documentGenerator;
 
-    public GetPaymentScheduleHandler(DocumentGenerator documentGenerator)
+    public GetGeneralDocumentHandler(DocumentGenerator documentGenerator)
     {
         _documentGenerator = documentGenerator;
     }
 
-    public async Task<ReadOnlyMemory<byte>> Handle(GetPaymentScheduleRequest request, CancellationToken cancellationToken)
+    public async Task<ReadOnlyMemory<byte>> Handle(GetGeneralDocumentRequest request, CancellationToken cancellationToken)
     {
         var generateDocumentRequest = await _documentGenerator.CreateRequest(request, cancellationToken);
 

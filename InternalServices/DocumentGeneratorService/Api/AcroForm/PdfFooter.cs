@@ -47,6 +47,8 @@ public class PdfFooter
 
     private void FillFooterPageNumber(FinalDocument finalDocument)
     {
+        return;
+
         var pageNumberFields = GetAllFields(finalDocument.Document.Form.Fields, FooterPageNumberFieldName).ToList();
 
         var originalField = finalDocument.PdfDocumentParts
