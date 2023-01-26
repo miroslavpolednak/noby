@@ -64,7 +64,8 @@ public class CustomerController : ControllerBase
     /// Identifikace klienta
     /// </summary>
     /// <remarks>
-    /// Slouzi pro idenfifikaci klienta.<br />Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br/>
+    /// Slouží pro identifikaci klienta.<br />
+    /// Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer-on-sa/{customerOnSAId:int}/identify-by-identity")]
@@ -72,6 +73,7 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] IdentifyByIdentity.IdentifyByIdentityRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
 
