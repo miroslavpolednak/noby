@@ -6,7 +6,7 @@ using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
-internal class GetLoanApplicationAssessmentHandler
+internal sealed class GetLoanApplicationAssessmentHandler
     : IRequestHandler<GetLoanApplicationAssessmentRequest, GetLoanApplicationAssessmentResponse>
 {
 
@@ -59,11 +59,11 @@ internal class GetLoanApplicationAssessmentHandler
 
             // loan application save
             var loanApplicationSaveRequest = loanApplicationData.ToLoanApplicationSaveRequest();
-            var riskSegment = ServiceCallResult.ResolveAndThrowIfError<string>(await _loanApplicationService.Save(loanApplicationSaveRequest, cancellationToken));
+            var riskSegment = await _loanApplicationService.Save(loanApplicationSaveRequest, cancellationToken);
 
             // create assesment
             var createAssesmentRequest = loanApplicationData.ToRiskBusinessCaseCreateAssesmentRequest();
-            var createAssesmentResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse>(await _riskBusinessCaseService.CreateAssessment(createAssesmentRequest, cancellationToken));
+            var createAssesmentResponse = await _riskBusinessCaseService.CreateAssessment(createAssesmentRequest, cancellationToken);
             loanApplicationAssessmentId = createAssesmentResponse.LoanApplicationAssessmentId;
 
             // update sales arrangement (loanApplicationAssessmentId, riskSegment)
@@ -76,7 +76,7 @@ internal class GetLoanApplicationAssessmentHandler
             LoanApplicationAssessmentId = loanApplicationAssessmentId!,
             RequestedDetails = new List<RiskBusinessCaseRequestedDetails> { RiskBusinessCaseRequestedDetails.assessmentDetail, RiskBusinessCaseRequestedDetails.householdAssessmentDetail, RiskBusinessCaseRequestedDetails.counterpartyAssessmentDetail, RiskBusinessCaseRequestedDetails.collateralRiskCharacteristics }
         };
-        var getAssesmentResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse>(await _riskBusinessCaseService.GetAssessment(getAssesmentRequest, cancellationToken));
+        var getAssesmentResponse = await _riskBusinessCaseService.GetAssessment(getAssesmentRequest, cancellationToken);
 
         var offer = saInstance.OfferId.HasValue ? await _offerService.GetMortgageOfferDetail(saInstance.OfferId.Value, cancellationToken) : null;
 

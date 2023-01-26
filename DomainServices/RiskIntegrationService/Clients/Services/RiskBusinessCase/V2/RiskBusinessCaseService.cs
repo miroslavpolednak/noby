@@ -4,47 +4,37 @@ using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 namespace DomainServices.RiskIntegrationService.Clients.Services.RiskBusinessCase.V2;
 
-internal class RiskBusinessCaseService
+internal sealed class RiskBusinessCaseService
     : Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient
 {
-    public async Task<IServiceCallResult> CreateCase(long salesArrangementId, string? resourceProcessId, CancellationToken cancellationToken = default)
+    public async Task<RiskBusinessCaseCreateResponse> CreateCase(long salesArrangementId, string? resourceProcessId, CancellationToken cancellationToken = default)
     {
-        _logger.RequestHandlerStarted(nameof(CreateCase));
-        var result = await _service.CreateCase(new RiskBusinessCaseCreateRequest
+        return await _service.CreateCase(new RiskBusinessCaseCreateRequest
         {
             SalesArrangementId = salesArrangementId,
             ResourceProcessId = resourceProcessId
         }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<RiskBusinessCaseCreateResponse>(result);
     }
 
-    public async Task<IServiceCallResult> CreateAssessment(RiskBusinessCaseCreateAssessmentRequest request, CancellationToken cancellationToken = default)
+    public async Task<LoanApplicationAssessmentResponse> CreateAssessment(RiskBusinessCaseCreateAssessmentRequest request, CancellationToken cancellationToken = default)
     {
-        _logger.RequestHandlerStarted(nameof(CreateAssessment));
-        var result = await _service.CreateAssessment(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<LoanApplicationAssessmentResponse>(result);
+        return await _service.CreateAssessment(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> GetAssessment(RiskBusinessCaseGetAssessmentRequest request, CancellationToken cancellationToken = default)
+    public async Task<LoanApplicationAssessmentResponse> GetAssessment(RiskBusinessCaseGetAssessmentRequest request, CancellationToken cancellationToken = default)
     {
-        _logger.RequestHandlerStarted(nameof(GetAssessment));
-        var result = await _service.GetAssessment(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<LoanApplicationAssessmentResponse>(result);
+        return await _service.GetAssessment(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> CommitCase(RiskBusinessCaseCommitCaseRequest request, CancellationToken cancellationToken = default)
+    public async Task<RiskBusinessCaseCommitCaseResponse> CommitCase(RiskBusinessCaseCommitCaseRequest request, CancellationToken cancellationToken = default)
     {
-        _logger.RequestHandlerStarted(nameof(CommitCase));
-        var result = await _service.CommitCase(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<RiskBusinessCaseCommitCaseResponse>(result);
+        return await _service.CommitCase(request, cancellationToken: cancellationToken);
     }
 
-    private readonly ILogger<RiskBusinessCaseService> _logger;
     private readonly IRiskBusinessCaseService _service;
 
-    public RiskBusinessCaseService(IRiskBusinessCaseService service, ILogger<RiskBusinessCaseService> logger)
+    public RiskBusinessCaseService(IRiskBusinessCaseService service)
     {
-        _logger = logger;
         _service = service;
     }
 }
