@@ -1,6 +1,4 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
-
-namespace DomainServices.CaseService.Api.Notifications.Handlers;
+﻿namespace DomainServices.CaseService.Api.Notifications.Handlers;
 
 internal sealed class CaseStateChangedHandler
     : INotificationHandler<CaseStateChangedNotification>
@@ -29,7 +27,7 @@ internal sealed class CaseStateChangedHandler
         //TODO login
         var request = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest
         {
-            Login = userInstance.UserIdentifiers.First().Identity,
+            Login = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "",
             CaseId = notification.CaseId,
             ContractNumber = notification.ContractNumber,
             ClientFullName = notification.ClientName ?? "",
@@ -37,7 +35,7 @@ internal sealed class CaseStateChangedHandler
             ProductTypeId = notification.ProductTypeId,
             OwnerUserCpm = ownerInstance.CPM,
             OwnerUserIcp = ownerInstance.ICP,
-            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId,
+            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId.GetValueOrDefault(),
             RiskBusinessCaseId = rbcId
         };
         await _sbWebApiClient.CaseStateChanged(request, cancellationToken);
