@@ -878,7 +878,8 @@
             Identifikace klienta
             </summary>
             <remarks>
-            Slouzi pro idenfifikaci klienta.<br />Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br/>
+            Slouží pro identifikaci klienta.<br />
+            Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
@@ -920,6 +921,11 @@
         <member name="P:NOBY.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.IsBrSubscribed">
             <summary>
             Přihlášen k aktualizaci dat ze základních registrů
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.IdentifyByIdentity.IdentifyByIdentityRequest.CustomerIdentity">
+            <summary>
+            Identita klienta
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest.FirstName">
