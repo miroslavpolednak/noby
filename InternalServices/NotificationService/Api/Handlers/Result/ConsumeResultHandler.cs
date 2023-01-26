@@ -55,10 +55,12 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
             result.ErrorSet = errorSet;
 
             await _repository.SaveChanges(cancellationToken);
+            
+            _logger.LogInformation($"Result updated for notificationId: {id}");
         }
         catch (CisNotFoundException)
         {
-            _logger.LogInformation("Skipped for notificationId: {id}", report.id);
+            _logger.LogDebug("Not found for notificationId: {id}", report.id);
         }
         catch (Exception e)
         {

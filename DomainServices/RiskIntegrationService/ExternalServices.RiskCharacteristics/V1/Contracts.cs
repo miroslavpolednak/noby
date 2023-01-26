@@ -23,7 +23,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DTICalculation
+    public partial class DTICalculation
     {
         /// <summary>
         /// DTI
@@ -40,7 +40,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// Amount
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Amount
+    public partial class Amount
     {
         /// <summary>
         /// Hodnota částky
@@ -67,7 +67,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// HouseholdCreditLiabilitiesSummaryOutHomeCompany.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CreditLiabilitiesSummary
+    public partial class CreditLiabilitiesSummary
     {
         /// <summary>
         /// Product group.
@@ -103,7 +103,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DTICalculationArguments
+    public partial class DTICalculationArguments
     {
         /// <summary>
         /// resourceProcessId
@@ -151,7 +151,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DTILoanApplicationHousehold
+    public partial class DTILoanApplicationHousehold
     {
         /// <summary>
         /// Výše závazků mimo KB
@@ -184,7 +184,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DTILoanApplicationProduct
+    public partial class DTILoanApplicationProduct
     {
         /// <summary>
         /// Požadovaná výše úvěru
@@ -202,7 +202,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationCounterparty
+    public partial class LoanApplicationCounterparty
     {
         /// <summary>
         /// customerId
@@ -255,7 +255,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// ResourceIdentifier
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResourceIdentifier
+    public partial class ResourceIdentifier
     {
         /// <summary>
         /// The resource instance code, eg. 'KBCZ'
@@ -317,7 +317,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DSTICalculation
+    public partial class DSTICalculation
     {
         /// <summary>
         /// DSTI
@@ -334,7 +334,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DSTICalculationArguments
+    public partial class DSTICalculationArguments
     {
         /// <summary>
         /// resourceProcessId
@@ -382,7 +382,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// DSTICreditLiabilitiesSummary.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DSTICreditLiabilitiesSummary
+    public partial class DSTICreditLiabilitiesSummary
     {
         /// <summary>
         /// Product group.
@@ -418,7 +418,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DSTILoanApplicationHousehold
+    public partial class DSTILoanApplicationHousehold
     {
         /// <summary>
         /// Výše závazků mimo KB
@@ -469,7 +469,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DSTILoanApplicationProduct
+    public partial class DSTILoanApplicationProduct
     {
         /// <summary>
         /// kód produktového shluku
@@ -505,7 +505,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     /// householdInstallmentsSummaryOutHomeCompany
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanInstallmentsSummary
+    public partial class LoanInstallmentsSummary
     {
         /// <summary>
         /// Product group.
@@ -538,7 +538,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum CreditLiabilitiesSummaryProductClusterCode
+    public enum CreditLiabilitiesSummaryProductClusterCode
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CC")]
@@ -556,7 +556,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum DTICalculationArgumentsItChannel
+    public enum DTICalculationArgumentsItChannel
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"AON")]
@@ -580,7 +580,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum DSTICalculationArgumentsItChannel
+    public enum DSTICalculationArgumentsItChannel
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"AON")]
@@ -604,7 +604,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum DSTICreditLiabilitiesSummaryProductClusterCode
+    public enum DSTICreditLiabilitiesSummaryProductClusterCode
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CC")]
@@ -616,7 +616,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanInstallmentsSummaryProductClusterCode
+    public enum LoanInstallmentsSummaryProductClusterCode
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CL")]

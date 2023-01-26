@@ -13,13 +13,13 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Messaging.Produc
 [ScopedService, SelfService]
 public class MpssEmailProducer
 {
-    private readonly ITopicProducer<ISpecificRecord> _producer;
+    private readonly ITopicProducer<MpssSendApi.v1.email.SendEmail> _producer;
     private readonly IDateTime _dateTime;
     private readonly KafkaTopics _kafkaTopics;
     private readonly KafkaConfiguration _kafkaConfiguration;
     
     public MpssEmailProducer(
-        ITopicProducer<ISpecificRecord> producer,
+        ITopicProducer<MpssSendApi.v1.email.SendEmail> producer,
         IDateTime dateTime,
         IOptions<AppConfiguration> appOptions,
         IOptions<KafkaConfiguration> kafkaOptions)

@@ -47,12 +47,11 @@ public static class ServiceCollectionExtensions
                 
                 // add consumers
                 rider.AddConsumer<McsResultConsumer>();
+                rider.AddConsumer<MpssSendEmailConsumer>();
                 
                 // add producers
                 rider.AddProducerAvro<ISpecificRecord>(topics.McsSender);
-                // rider.AddProducerAvro<SendEmail>(topics.McsSender);
-                // rider.AddProducerAvro<SendSMS>(topics.McsSender);
-                // todo: Add Mpss SendEmail, Push, MsgBox...
+                rider.AddProducerAvro<MpssSendApi.v1.email.SendEmail>(topics.NobySendEmail);
                 
                 rider.UsingKafka((context, k) =>
                 {
@@ -73,18 +72,27 @@ public static class ServiceCollectionExtensions
                         }
                     });
                     
-                    // configure topic mapping
+                    // configure topic mapping for Mcs
                     k.TopicEndpointAvro<NotificationReport, McsResultConsumer>(
                         context,
                         topics.McsResult,
                         kafkaConfiguration.GroupId,
-                        e =>
+                        _ =>
+                        {
+                        });
+                    
+                    // configure topic mapping for Mpss
+                    k.TopicEndpointAvro<MpssSendApi.v1.email.SendEmail, MpssSendEmailConsumer>(
+                        context,
+                        topics.NobySendEmail,
+                        kafkaConfiguration.GroupId,
+                        _ =>
                         {
                         });
                 });
             });
         });
-        
+
         return builder;
     }
 }

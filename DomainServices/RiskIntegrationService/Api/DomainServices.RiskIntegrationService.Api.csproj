@@ -32,7 +32,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
-		<ProjectReference Include="..\..\..\CIS\ExternalServicesHelpers\CIS.ExternalServicesHelpers.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
@@ -41,6 +40,12 @@
 		<ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />
 		<ProjectReference Include="..\ExternalServices.Common\DomainServices.RiskIntegrationService.ExternalServices.Common.csproj" />
+		<ProjectReference Include="..\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj" />
+		<ProjectReference Include="..\ExternalServices.CustomerExposure\DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.csproj" />
+		<ProjectReference Include="..\ExternalServices.LoanApplicationAssessment\DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment.csproj" />
+		<ProjectReference Include="..\ExternalServices.LoanApplication\DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.csproj" />
+		<ProjectReference Include="..\ExternalServices.RiskBusinessCase\DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.csproj" />
+		<ProjectReference Include="..\ExternalServices.RiskCharacteristics\DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.csproj" />
 	</ItemGroup>
 
 </Project>

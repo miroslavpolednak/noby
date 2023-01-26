@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
 
-internal partial class ResourceIdentifier
+public partial class ResourceIdentifier
 {
     public static ResourceIdentifier CreateId(string id, string variant)
 #pragma warning disable CA1305 // Specify IFormatProvider

@@ -3,7 +3,7 @@ using DomainServices.RiskIntegrationService.ExternalServices.Dto;
 
 namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1.Contracts;
 
-internal static class C4mUserInfoDataExtensions
+public static class C4mUserInfoDataExtensions
 {
     public static LoanApplicationDealer ToC4mDealer(this C4mUserInfoData userInfo, Identity humanUser)
 #pragma warning disable CA1305 // Specify IFormatProvider

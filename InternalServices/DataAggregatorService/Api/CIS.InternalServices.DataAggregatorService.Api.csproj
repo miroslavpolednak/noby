@@ -10,6 +10,7 @@
   <ItemGroup>
     <Folder Include="Endpoints\GetDocumentData\" />
     <Folder Include="Endpoints\GetEasForm\" />
+    <Folder Include="Services\Documents\TemplateData\LoanApplication\" />
     <Folder Include="Services\EasForms\Forms\" />
   </ItemGroup>
 

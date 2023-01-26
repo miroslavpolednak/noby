@@ -9,11 +9,13 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
 {
     private readonly Configuration.ConfigurationManager _configurationManager;
     private readonly DataServicesLoader _dataServicesLoader;
+    private readonly DocumentDataFactory _documentDataFactory;
 
-    public GetDocumentDataHandler(Configuration.ConfigurationManager configurationManager, DataServicesLoader dataServicesLoader)
+    public GetDocumentDataHandler(Configuration.ConfigurationManager configurationManager, DataServicesLoader dataServicesLoader, DocumentDataFactory documentDataFactory)
     {
         _configurationManager = configurationManager;
         _dataServicesLoader = dataServicesLoader;
+        _documentDataFactory = documentDataFactory;
     }
 
     public async Task<GetDocumentDataResponse> Handle(GetDocumentDataRequest request, CancellationToken cancellationToken)
@@ -33,7 +35,7 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
 
     private async Task<DocumentMapper> LoadDocumentData(DocumentType documentType, InputParameters inputParameters, DocumentConfiguration config)
     {
-        var documentData = DocumentDataFactory.Create(documentType);
+        var documentData = _documentDataFactory.Create(documentType);
 
         await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, documentData);
 

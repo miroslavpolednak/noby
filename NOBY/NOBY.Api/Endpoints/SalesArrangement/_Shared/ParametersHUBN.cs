@@ -20,13 +20,13 @@ public sealed class ParametersHUBN
     /// Účely úvěru
     /// </summary>
     [Required]
-    public List<LoanPurposeItem> LoanPurposes { get; set; }
+    public List<LoanPurposeItem>? LoanPurposes { get; set; }
 
     /// <summary>
     /// Objekty úvěru
     /// </summary>
     [Required]
-    public List<LoanRealEstateItem2> LoanRealEstates { get; set; }
+    public List<LoanRealEstateItem2>? LoanRealEstates { get; set; }
 
     /// <summary>
     /// Identifikace zajištění
@@ -118,7 +118,7 @@ public sealed class CollateralIdentificationObject
     /// <summary>
     /// Identifikace nemovitosti
     /// </summary>
-    public string RealEstateIdentification { get; set; }
+    public string? RealEstateIdentification { get; set; }
 }
 
 public sealed class ExpectedDateOfDrawingObject

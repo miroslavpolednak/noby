@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1.Contracts;
 
-internal partial class ResourceIdentifier
+public partial class ResourceIdentifier
 {
     private static string[] _kbPersonSchemas = new[] { "KBAD", "DMID" };
     const string _kbInstanceName = "KBCZ";
