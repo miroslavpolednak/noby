@@ -32,7 +32,9 @@ internal class GetUserByLoginHandler
             ICP = cachedUser.v33icp ?? "",
             FullName = $"{cachedUser.v33jmeno} {cachedUser.v33prijmeni}".Trim(),
             Email = "",
-            Phone = ""
+            Phone = "",
+            UserVip = false,
+            CzechIdentificationNumber = "12345678"
         };
 
         model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.Mpad));
