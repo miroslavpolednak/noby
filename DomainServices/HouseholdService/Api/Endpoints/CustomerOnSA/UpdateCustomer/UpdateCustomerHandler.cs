@@ -46,7 +46,7 @@ internal sealed class UpdateCustomerHandler
             await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, kbIdentity.IdentityScheme, cancellationToken);
 
             // zavolat EAS
-            await _updateService.TryCreateMpIdentity(entity);
+            await _updateService.TryCreateMpIdentity(entity, cancellationToken);
         }
         // nove byl customer identifikovan KB identitou
         else if (!alreadyKbUpdatedCustomer && kbIdentity is not null)
