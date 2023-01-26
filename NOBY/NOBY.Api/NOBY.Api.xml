@@ -2629,6 +2629,11 @@
             Změnit sjednanou výši úvěru
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanAmountObject.AgreedLoanAmount">
+            <summary>
+            Sjednaná výše úvěru
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanAmountObject.RequiredLoanAmount">
             <summary>
             Požadovaná výše úvěru
@@ -2642,6 +2647,16 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanAmountObject.PreserveAgreedPaymentAmount">
             <summary>
             Zachovat sjednanou splátku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanAmountObject.AgreedLoanDueDate">
+            <summary>
+            Sjednaná splatnost do
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanAmountObject.AgreedLoanPaymentAmount">
+            <summary>
+            Sjednaná měsíční splátka
             </summary>
         </member>
         <member name="T:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanPurposeItem">
@@ -2684,6 +2699,11 @@
             Sekce aktivní
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ExpectedDateOfDrawingObject.AgreedExpectedDateOfDrawing">
+            <summary>
+            Sjednaný termín prvního čerpání
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ExpectedDateOfDrawingObject.NewExpectedDateOfDrawing">
             <summary>
             Nový předpokládaný termín prvního čerpání
@@ -2692,6 +2712,11 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.DrawingDateToObject2.IsActive">
             <summary>
             Sekce aktivní
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.DrawingDateToObject2.AgreedDrawingDateTo">
+            <summary>
+            Sjednaný termín čerpání do
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.DrawingDateToObject2.ExtensionDrawingDateToByMonths">

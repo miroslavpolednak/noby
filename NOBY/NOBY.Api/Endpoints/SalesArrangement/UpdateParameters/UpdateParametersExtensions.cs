@@ -161,29 +161,34 @@ internal static class UpdateParametersExtensions
             Applicant = parameters.Applicant,
             CollateralIdentification = new()
             {
-                RealEstateIdentification = parameters.CollateralIdentification.RealEstateIdentification
+                RealEstateIdentification = parameters.CollateralIdentification?.RealEstateIdentification
             },
             LoanAmount = new()
             {
-                ChangeAgreedLoanAmount = parameters.LoanAmount.ChangeAgreedLoanAmount,
-                PreserveAgreedLoanDueDate = parameters.LoanAmount.PreserveLoanDueDate,
-                PreserveAgreedLoanPaymentAmount = parameters.LoanAmount.PreserveAgreedPaymentAmount,
-                RequiredLoanAmount = parameters.LoanAmount.RequiredLoanAmount
+                ChangeAgreedLoanAmount = parameters.LoanAmount?.ChangeAgreedLoanAmount ?? false,
+                PreserveAgreedLoanDueDate = parameters.LoanAmount?.PreserveLoanDueDate ?? false,
+                PreserveAgreedLoanPaymentAmount = parameters.LoanAmount?.PreserveAgreedPaymentAmount ?? false,
+                RequiredLoanAmount = parameters.LoanAmount?.RequiredLoanAmount,
+                AgreedLoanAmount = parameters.LoanAmount?.AgreedLoanAmount,
+                AgreedLoanDueDate = parameters.LoanAmount?.AgreedLoanDueDate,
+                AgreedLoanPaymentAmount = parameters.LoanAmount?.AgreedLoanPaymentAmount
             },
             ExpectedDateOfDrawing = new()
             {
-                IsActive = parameters.ExpectedDateOfDrawing.IsActive,
-                NewExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing.NewExpectedDateOfDrawing
+                IsActive = parameters.ExpectedDateOfDrawing?.IsActive ?? false,
+                AgreedExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing?.AgreedExpectedDateOfDrawing,
+                NewExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing?.NewExpectedDateOfDrawing
             },
             DrawingDateTo = new()
             {
-                IsActive = parameters.DrawingDateTo.IsActive,
-                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths
+                IsActive = parameters.DrawingDateTo?.IsActive ?? false,
+                AgreedDrawingDateTo = parameters.DrawingDateTo?.AgreedDrawingDateTo,
+                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo?.ExtensionDrawingDateToByMonths
             },
             CommentToChangeRequest = new()
             {
-                IsActive = parameters.CommentToChangeRequest.IsActive,
-                GeneralComment = parameters.CommentToChangeRequest.GeneralComment
+                IsActive = parameters.CommentToChangeRequest?.IsActive ?? false,
+                GeneralComment = parameters.CommentToChangeRequest?.GeneralComment
             }
         };
 

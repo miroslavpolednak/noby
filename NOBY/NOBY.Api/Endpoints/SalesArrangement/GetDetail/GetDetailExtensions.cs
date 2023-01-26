@@ -149,7 +149,10 @@ internal static class GetDetailExtensions
                 ChangeAgreedLoanAmount = model.LoanAmount?.ChangeAgreedLoanAmount ?? false,
                 RequiredLoanAmount = model.LoanAmount?.RequiredLoanAmount,
                 PreserveAgreedPaymentAmount = model.LoanAmount?.PreserveAgreedLoanPaymentAmount ?? false,
-                PreserveLoanDueDate = model.LoanAmount?.PreserveAgreedLoanDueDate ?? false
+                PreserveLoanDueDate = model.LoanAmount?.PreserveAgreedLoanDueDate ?? false,
+                AgreedLoanAmount = model.LoanAmount?.AgreedLoanAmount,
+                AgreedLoanDueDate = model.LoanAmount?.AgreedLoanDueDate,
+                AgreedLoanPaymentAmount = model.LoanAmount?.AgreedLoanPaymentAmount
             },
             LoanPurposes = model.LoanPurposes?.Select(t => new LoanPurposeItem
             {
@@ -165,11 +168,13 @@ internal static class GetDetailExtensions
             ExpectedDateOfDrawing = new()
             {
                 IsActive = model.ExpectedDateOfDrawing?.IsActive ?? false,
+                AgreedExpectedDateOfDrawing = model.ExpectedDateOfDrawing?.AgreedExpectedDateOfDrawing,
                 NewExpectedDateOfDrawing = model.ExpectedDateOfDrawing?.NewExpectedDateOfDrawing
             },
             DrawingDateTo = new()
             {
                 IsActive = model.DrawingDateTo?.IsActive ?? false,
+                AgreedDrawingDateTo = model.DrawingDateTo?.AgreedDrawingDateTo,
                 ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths
             },
             CommentToChangeRequest = new()

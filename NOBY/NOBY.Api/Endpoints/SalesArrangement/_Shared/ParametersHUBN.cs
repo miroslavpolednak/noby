@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Types;
+using CIS.Infrastructure.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.Dto;
@@ -62,6 +63,12 @@ public sealed class LoanAmountObject
     public bool ChangeAgreedLoanAmount { get; set; }
 
     /// <summary>
+    /// Sjednaná výše úvěru
+    /// </summary>
+    [Required]
+    public decimal? AgreedLoanAmount { get; set; }
+
+    /// <summary>
     /// Požadovaná výše úvěru
     /// </summary>
     public decimal? RequiredLoanAmount { get; set; }
@@ -77,6 +84,18 @@ public sealed class LoanAmountObject
     /// </summary>
     [Required]
     public bool PreserveAgreedPaymentAmount { get; set; }
+
+    /// <summary>
+    /// Sjednaná splatnost do
+    /// </summary>
+    [Required]
+    public DateTime? AgreedLoanDueDate { get; set; }
+
+    /// <summary>
+    /// Sjednaná měsíční splátka
+    /// </summary>
+    [Required]
+    public decimal? AgreedLoanPaymentAmount { get; set; }
 }
 
 /// <summary>
@@ -130,6 +149,12 @@ public sealed class ExpectedDateOfDrawingObject
     public bool IsActive { get; set; }
 
     /// <summary>
+    /// Sjednaný termín prvního čerpání
+    /// </summary>
+    [Required]
+    public DateTime? AgreedExpectedDateOfDrawing { get; set; }
+
+    /// <summary>
     /// Nový předpokládaný termín prvního čerpání
     /// </summary>
     public DateTime? NewExpectedDateOfDrawing { get; set; }
@@ -142,6 +167,12 @@ public sealed class DrawingDateToObject2
     /// </summary>
     [Required]
     public bool IsActive { get; set; }
+
+    /// <summary>
+    /// Sjednaný termín čerpání do
+    /// </summary>
+    [Required]
+    public DateTime? AgreedDrawingDateTo { get; set; }
 
     /// <summary>
     /// Prodloužení konce lhůty čerpání o kolik měsíců
