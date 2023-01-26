@@ -40,7 +40,7 @@ internal static class LoggerExtensions
         _adConnectionFailed = LoggerMessage.Define<string>(
            LogLevel.Error,
            new EventId(526, nameof(AdConnectionFailed)),
-           "AD connection failed for '{Login}'");
+           "AD query failed for '{Login}'");
 
         _contextUserAdded = LoggerMessage.Define<int>(
            LogLevel.Trace,

@@ -1,12 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Platforms>AnyCPU;x64</Platforms>
+<PropertyGroup>
+	  <TargetFramework>net7.0</TargetFramework>
+	  <Authors>Filip Tuma</Authors>
+	  <Product>MPSS DomainServices</Product>
+	  <LangVersion>preview</LangVersion>
+	  <Nullable>enable</Nullable>
+	  <Platforms>AnyCPU;x64</Platforms>
+	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Version>1.0.0.0</Version>
   </PropertyGroup>
+
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
   
   <ItemGroup>
 	<PackageReference Include="Dapper" Version="2.0.123" />
@@ -31,6 +38,7 @@
 	<ProjectReference Include="..\ExternalServices.CustomerManagement\DomainServices.CustomerService.ExternalServices.CustomerManagement.csproj" />
 	<ProjectReference Include="..\ExternalServices.CustomerProfile\DomainServices.CustomerService.ExternalServices.CustomerProfile.csproj" />
 	<ProjectReference Include="..\ExternalServices.IdentifiedSubjectBr\DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.csproj" />
+	<ProjectReference Include="..\ExternalServices.Kyc\DomainServices.CustomerService.ExternalServices.Kyc.csproj" />
   </ItemGroup>
 
   <ItemGroup>
