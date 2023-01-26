@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
 {
     [DbContext(typeof(DocumentOnSAServiceDbContext))]
-    [Migration("20230120083034_Init")]
-    partial class Init
+    [Migration("20230123122811_InitDb")]
+    partial class InitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,8 +89,9 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                     b.Property<DateTime?>("SignatureDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SignatureMethodId")
-                        .HasColumnType("int");
+                    b.Property<string>("SignatureMethodCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("DocumentOnSAId");
 

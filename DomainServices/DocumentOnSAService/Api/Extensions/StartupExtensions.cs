@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
+using CIS.InternalServices;
 using DomainServices.DocumentOnSAService.Api.Configuration;
 using ExternalServices;
 
@@ -22,6 +23,8 @@ internal static class StartupExtensions
         builder.Services.AddCaseService();
 
         builder.Services.AddCodebookService();
+
+        builder.Services.AddDataAggregatorService();
 
         // EAS svc
         builder.AddExternalService<ExternalServices.Eas.R21.IEasClient>();

@@ -81,7 +81,7 @@ internal sealed class FormsService
 
     public Task AddFirstSignatureDate(long caseId)
     {
-        return _easClient.AddFirstSignatureDate((int)caseId, (int)caseId, DateTime.Now.Date);
+        return _easClient.AddFirstSignatureDate((int)caseId, DateTime.Now.Date);
     }
 
     public async Task CallSulm(ProductData formData, CancellationToken cancellation)

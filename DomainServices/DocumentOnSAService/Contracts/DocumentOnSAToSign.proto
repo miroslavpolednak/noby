@@ -31,7 +31,7 @@ message DocumentOnSAToSign {
 	
 	bool IsDocumentArchived = 11;
 
-	google.protobuf.Int32Value SignatureMethodId = 12;
+	string SignatureMethodCode = 12;
 	
 	google.protobuf.Timestamp SignatureDateTime = 13;
 
