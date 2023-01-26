@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.DataAggregatorService.Clients;
+﻿using CIS.Core.Security;
+using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
@@ -27,6 +28,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     private readonly IEasClient _easClient;
     private readonly IDataAggregatorServiceClient _dataAggregatorServiceClient;
     private readonly ICodebookServiceClients _codebookServiceClients;
+    private readonly ICurrentUserAccessor _currentUser;
 
     public StartSigningHandler(
         DocumentOnSAServiceDbContext dbContext,
@@ -37,7 +39,8 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         ICaseServiceClient caseServiceClient,
         IEasClient easClient,
         IDataAggregatorServiceClient dataAggregatorServiceClient,
-        ICodebookServiceClients codebookServiceClients)
+        ICodebookServiceClients codebookServiceClients,
+        ICurrentUserAccessor currentUser)
     {
         _dbContext = dbContext;
         _mediator = mediator;
@@ -48,6 +51,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         _easClient = easClient;
         _dataAggregatorServiceClient = dataAggregatorServiceClient;
         _codebookServiceClients = codebookServiceClients;
+        _currentUser = currentUser;
     }
 
     public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
@@ -80,6 +84,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             {
                 SalesArrangementId = request.SalesArrangementId!.Value,
                 CaseId = salesArrangement.CaseId,
+                UserId = _currentUser.User?.Id
             }
         }, cancellationToken);
 
