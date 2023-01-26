@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:61202;http://localhost:61203"
+    }
+  }
+}
