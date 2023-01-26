@@ -26,7 +26,7 @@ public class DocumentOnSa : ICreated
 
     public bool IsDocumentArchived { get; set; }
 
-    public int SignatureMethodId { get; set; }
+    public string SignatureMethodCode { get; set; } = null!;
 
     public DateTime? SignatureDateTime { get; set; }
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DomainServices.DocumentOnSAService.Api.Database.Migrations;
 
 /// <inheritdoc />
-public partial class Init : Migration
+public partial class InitDb : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,7 +27,7 @@ public partial class Init : Migration
                 IsValid = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                 IsSigned = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                 IsDocumentArchived = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                SignatureMethodId = table.Column<int>(type: "int", nullable: false),
+                SignatureMethodCode = table.Column<string>(type: "nvarchar(15)", nullable: false),
                 SignatureDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                 SignatureConfirmedBy = table.Column<int>(type: "int", nullable: true),
                 CreatedUserName = table.Column<string>(type: "nvarchar(50)", nullable: true),

@@ -23,5 +23,5 @@ message DocumentOnSA {
 	
 	bool IsDocumentArchived = 7;
 
-	google.protobuf.Int32Value SignatureMethodId = 8;
+	string SignatureMethodCode = 8;
 }
