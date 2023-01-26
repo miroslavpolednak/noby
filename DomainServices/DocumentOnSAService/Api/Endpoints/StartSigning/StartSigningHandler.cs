@@ -54,9 +54,8 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     {
         ArgumentNullException.ThrowIfNull(nameof(request));
 
-        // ToDo this require enums, TK will be do it. 
         await ValidateRequest(request, cancellationToken);
-        
+
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
 
         if (salesArrangement is null)
@@ -76,11 +75,11 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
         var documentData = await _dataAggregatorServiceClient.GetDocumentData(new()
         {
-            DocumentTypeId = 1, //ToDo we have to transfor request.SignatureMethodCode to DocumentTypeId,
+            DocumentTypeId = request.DocumentTypeId!.Value,
             InputParameters = new()
             {
                 SalesArrangementId = request.SalesArrangementId!.Value,
-                CaseId = salesArrangement.CaseId
+                CaseId = salesArrangement.CaseId,
             }
         }, cancellationToken);
 
@@ -92,11 +91,14 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
         return MapToResponse(documentOnSaEntity);
     }
-      
+
     private async Task ValidateRequest(StartSigningRequest request, CancellationToken cancellationToken)
     {
         var signingMethods = await _codebookServiceClients.SigningMethodsForNaturalPerson(cancellationToken);
-        //ToDo extension for SigningMethodsForNaturalPerson is not done yet
+        if (!signingMethods.Any(r => r.Code.ToUpper() == request.SignatureMethodCode.ToUpper()))
+        {
+            throw new CisNotFoundException(19002, $"SignatureMethod {request.SignatureMethodCode} does not exist.");
+        }
     }
 
     private async Task InvalidateExistingSigningProcessesIfExist(StartSigningRequest request, __Household.Household houseHold)
@@ -115,42 +117,45 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
     private async Task UpdateContractNumberIfNeeded(SalesArrangement salesArrangement, __Household.Household household, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(salesArrangement.ContractNumber))
+        if (!string.IsNullOrWhiteSpace(salesArrangement.ContractNumber))
         {
-            if (household.CustomerOnSAId1 is null)
-            {
-                throw new CisNotFoundException(19007, $"CustomerOnSAId1 not found on household {household.HouseholdId}");
-            }
-
-            var customer = await _customerOnSAServiceClient.GetCustomer(household.CustomerOnSAId1!.Value, cancellationToken);
-
-            // According to household.CustomerOnSAId1 we have to get customer.CustomerIdentifiers for MPSS 
-            var identifier = customer.CustomerIdentifiers.SingleOrDefault(r => r.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp);
-
-            if (identifier is null)
-            {
-                throw new CisNotFoundException(19006, $"Identity for specified CustomerOnSAId1 {household.CustomerOnSAId1} not found");
-            }
-
-            // identifier.IdentityId is specific id for MPSS => clientId
-            var contractNumber = await _easClient.GetContractNumber(identifier.IdentityId, (int)salesArrangement.CaseId);
-
-            if (string.IsNullOrWhiteSpace(contractNumber))
-            {
-                throw new CisNotFoundException(19008, $"ContractNumber for specified IdentityId {identifier.IdentityId} and CaseId {salesArrangement.CaseId} not found");
-            }
-
-            await _arrangementServiceClient.UpdateSalesArrangement(salesArrangement.SalesArrangementId, contractNumber, salesArrangement.RiskBusinessCaseId, salesArrangement.FirstSignedDate, cancellationToken);
-
-            var caseDetail = await _caseServiceClient.GetCaseDetail(salesArrangement.CaseId, cancellationToken);
-
-            await _caseServiceClient.UpdateCaseData(salesArrangement.CaseId, new CaseService.Contracts.CaseData
-            {
-                ContractNumber = contractNumber,
-                ProductTypeId = caseDetail.Data.ProductTypeId,
-                TargetAmount = caseDetail.Data.TargetAmount
-            });
+            return;
         }
+
+        if (household.CustomerOnSAId1 is null)
+        {
+            throw new CisNotFoundException(19007, $"CustomerOnSAId1 not found on household {household.HouseholdId}");
+        }
+
+        var customer = await _customerOnSAServiceClient.GetCustomer(household.CustomerOnSAId1!.Value, cancellationToken);
+
+        // According to household.CustomerOnSAId1 we have to get customer.CustomerIdentifiers for MPSS 
+        var identifier = customer.CustomerIdentifiers.SingleOrDefault(r => r.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp);
+
+        if (identifier is null)
+        {
+            throw new CisNotFoundException(19006, $"Identity for specified CustomerOnSAId1 {household.CustomerOnSAId1} not found");
+        }
+
+        // identifier.IdentityId is specific id for MPSS => clientId
+        var contractNumber = await _easClient.GetContractNumber(identifier.IdentityId, (int)salesArrangement.CaseId);
+
+        if (string.IsNullOrWhiteSpace(contractNumber))
+        {
+            throw new CisNotFoundException(19008, $"ContractNumber for specified IdentityId {identifier.IdentityId} and CaseId {salesArrangement.CaseId} not found");
+        }
+
+        await _arrangementServiceClient.UpdateSalesArrangement(salesArrangement.SalesArrangementId, contractNumber, salesArrangement.RiskBusinessCaseId, salesArrangement.FirstSignedDate, cancellationToken);
+
+        var caseDetail = await _caseServiceClient.GetCaseDetail(salesArrangement.CaseId, cancellationToken);
+
+        await _caseServiceClient.UpdateCaseData(salesArrangement.CaseId, new CaseService.Contracts.CaseData
+        {
+            ContractNumber = contractNumber,
+            ProductTypeId = caseDetail.Data.ProductTypeId,
+            TargetAmount = caseDetail.Data.TargetAmount
+        });
+
     }
 
     private StartSigningResponse MapToResponse(DocumentOnSa documentOnSaEntity)
