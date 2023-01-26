@@ -27,7 +27,7 @@ internal sealed class CaseStateChangedHandler
         //TODO login
         var request = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest
         {
-            Login = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "",
+            Login = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous",
             CaseId = notification.CaseId,
             ContractNumber = notification.ContractNumber,
             ClientFullName = notification.ClientName ?? "",
