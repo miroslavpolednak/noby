@@ -6,6 +6,7 @@ using DomainServices.CodebookService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
+[TransientService, SelfService]
 internal class ProductFormData : AggregatedData
 {
     private List<DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementStates.SalesArrangementStateItem> _salesArrangementStates = null!;

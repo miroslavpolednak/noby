@@ -5,6 +5,7 @@ using DomainServices.CodebookService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
+[TransientService, SelfService]
 internal class ServiceFormData : AggregatedData
 {
     private List<GenericCodebookItem> _academicDegreesBefore = null!;
