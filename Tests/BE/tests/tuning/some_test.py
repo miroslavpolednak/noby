@@ -29,8 +29,11 @@ def run_cases():
     cases_to_test: List[str] = TestProcessor.instance().get_case_codes()[0:1]
     TestProcessor.instance().run_cases(cases_to_test)
 
+from tuning.TestProcessor import TestProcessor
+TestProcessor.instance().process_case()
+
 #simulate_mortgage()
 #run_offers()
-run_cases()
+#run_cases()
 
 print('FINISHED!')

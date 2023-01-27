@@ -1,0 +1,132 @@
+{
+    "offer": {
+        "loanAmount": 5000000,
+        "loanDuration": 120,
+        "fixedRatePeriod": 60,
+        "collateralAmount": 1000000,
+        "paymentDay": 15,
+        "statementTypeId": 1,
+        "isEmployeeBonusRequested": false,
+        "expectedDateOfDrawing": "2023-01-26T10:09:53.127Z",
+        "withGuarantee": false,
+        "financialResourcesOwn": null,
+        "financialResourcesOther": null,
+        "drawingTypeId": 2,
+        "drawingDurationId": null,
+        "loanPurposes": [
+            {
+                "id": 202,
+                "sum": 3000000
+            },
+            {
+                "id": 203,
+                "sum": 2000000
+            }
+        ],
+        "interestRateDiscount": 0,
+        "interestRateDiscountToggle": false,
+        "marketingActions": {
+            "domicile": true,
+            "healthRiskInsurance": true,
+            "realEstateInsurance": false,
+            "incomeLoanRatioDiscount": false,
+            "userVip": false
+        },
+        "developer": null,
+        "riskLifeInsurance": {
+            "sum": null,
+            "frequency": null
+        },
+        "realEstateInsurance": {
+            "sum": null,
+            "frequency": null
+        },
+        "resourceProcessId": "127532f3-093f-4e28-abb4-ed409bd97d43",
+        "fees": []
+    },
+    "households": [
+        {
+            "HouseholdType": "Main",
+            "childrenUpToTenYearsCount": 1,
+            "childrenOverTenYearsCount": 1,
+            "areCustomersPartners": false,
+            "customer1": {
+                "firstName": "JAN",
+                "lastName": "Novák",
+                "dateOfBirth": "1980-01-01T00:00:00",
+                "phoneNumberForOffer": "+420 777543234",
+                "emailForOffer": "novak@testcm.cz",
+                "identity": {
+                    "id": 0,
+                    "scheme": 0
+                },
+                "roleId": 1,
+                "incomes": [
+                    {
+                        "incomeId": 68,
+                        "incomeSource": "Agro",
+                        "hasProofOfIncome": false,
+                        "incomeTypeId": 1,
+                        "sum": 50000,
+                        "currencyCode": "CZK"
+                    }
+                ],
+                "obligations": [
+                    {
+                        "obligationId": 43,
+                        "customerOnSAId": 291,
+                        "obligationTypeId": 1,
+                        "installmentAmount": 10000,
+                        "loanPrincipalAmount": 1000000,
+                        "creditor": {
+                            "creditorId": "",
+                            "name": "",
+                            "isExternal": true
+                        },
+                        "correction": {
+                            "correctionTypeId": 1
+                        }
+                    }
+                ]
+            },
+            "customer2": {
+                "firstName": "JANA",
+                "lastName": "Nováková",
+                "dateOfBirth": "1980-01-01T00:00:00",
+                "phoneNumberForOffer": "+420 777543234",
+                "emailForOffer": "novak@testcm.cz",
+                "identity": {
+                    "id": 0,
+                    "scheme": 0
+                },
+                "roleId": 2
+            },
+            "expenses": {
+                "savingExpenseAmount": 10000,
+                "insuranceExpenseAmount": 3000,
+                "housingExpenseAmount": 10000,
+                "otherExpenseAmount": 7500
+            }
+        }
+    ],
+    "parameters": {
+        "expectedDateOfDrawing": "2023-01-27T00:00:00.000Z",
+        "incomeCurrencyCode": "CAD",
+        "residencyCurrencyCode": "CZK",
+        "contractSignatureTypeId": 2,
+        "loanRealEstates": [
+            {
+                "realEstateTypeId": 1,
+                "isCollateral": true,
+                "realEstatePurchaseTypeId": 1
+            },
+            {
+                "realEstateTypeId": 5,
+                "isCollateral": false,
+                "realEstatePurchaseTypeId": 2
+            }
+        ],
+        "agent": 291,
+        "agentConsentWithElCom": false
+    }
+}
