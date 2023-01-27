@@ -154,6 +154,10 @@ Extension metoda `IHttpClientBuilder.AddExternalServicesErrorHandling()`.
 Přidává do HTTP hlavičky hodnoty vyžadované KB službami. X-B3-TraceId, X-B3-SpanId, X-KB-Caller-System-Identity.    
 Extension metoda `IHttpClientBuilder.AddExternalServicesKbHeaders()`.
 
+**KbPartyHeaderHttpHandler**  
+Přidává do HTTP hlavičku s aktuálním uživatelem vyžadovanou KB službami. X-KB-Party-Identity-In-Service.    
+Extension metoda `IHttpClientBuilder.AddExternalServicesKbPartyHeaders()`.
+
 **LoggingHttpHandler**  
 Přidává logování request a response (volitelně payloadu a hlavičky).
 Nastavení logování se řeší v konfiguraci *appsettings.json*.

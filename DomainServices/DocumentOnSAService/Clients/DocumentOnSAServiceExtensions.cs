@@ -3,8 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using __Services = DomainServices.DocumentOnSAService.Clients.Services;
 using __Contracts = DomainServices.DocumentOnSAService.Contracts;
 using CIS.Infrastructure.gRPC;
+using DomainServices.DocumentOnSAService.Clients;
 
-namespace DomainServices.DocumentOnSAService.Clients;
+namespace DomainServices;
 
 public static class DocumentOnSAServiceExtensions
 {

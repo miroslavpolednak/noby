@@ -16,7 +16,7 @@ internal class UpdateCustomerOnCaseHandler
         if (customerInstance.CustomerRoleId == (int)CIS.Foms.Enums.CustomerRoles.Debtor)
         {
             // update case detailu
-            await _caseService.UpdateCaseCustomer(notification.CaseId, new _Case.CustomerData
+            await _caseService.UpdateCustomerData(notification.CaseId, new _Case.CustomerData
             {
                 DateOfBirthNaturalPerson = customerInstance.DateOfBirthNaturalPerson,
                 FirstNameNaturalPerson = customerInstance.FirstNameNaturalPerson,

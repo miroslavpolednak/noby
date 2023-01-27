@@ -1,5 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -47,11 +48,10 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)
         {
             await ComposeResultForProductRequest(request, response, cancellationToken);
-
         }
         else if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ServiceRequest)
         {
-          // ToDo
+            await ComposeResultForServiceRequest(request, salesArrangement, response, cancellationToken);
         }
         else
         {
@@ -61,20 +61,28 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         return response;
     }
 
+    private async Task ComposeResultForServiceRequest(GetDocumentsToSignListRequest request, SalesArrangement salesArrangement, GetDocumentsToSignListResponse response, CancellationToken cancellationToken)
+    {
+        var documentTypes = await _codebookServiceClients.DocumentTypes(cancellationToken);
+        var documentType = documentTypes.Single(d => d.SalesArrangementTypeId == salesArrangement.SalesArrangementTypeId);
+        var documentsOnSaToSignVirtual = CreateDocumentOnSaToSign(documentType, request.SalesArrangementId!.Value);
+        response.DocumentsOnSAToSign.Add(documentsOnSaToSignVirtual);
+    }
+
     private async Task ComposeResultForProductRequest(GetDocumentsToSignListRequest request, GetDocumentsToSignListResponse response, CancellationToken cancellationToken)
     {
-        var documentsOnSasRealEntity = await _dbContext.DocumentOnSa
+        var documentsOnSaRealEntity = await _dbContext.DocumentOnSa
                                                     .AsNoTracking()
                                                     .Where(e => e.SalesArrangementId == request.SalesArrangementId && e.IsValid)
                                                     .ToListAsync(cancellationToken);
 
-        var documentsOnSaToSignReal = CreateDocumentOnSaToSign(documentsOnSasRealEntity);
+        var documentsOnSaToSignReal = CreateDocumentOnSaToSign(documentsOnSaRealEntity);
         response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignReal);
 
 
         var households = await _householdClient.GetHouseholdList(request.SalesArrangementId!.Value, cancellationToken);
         var householdsWithoutdocumentOnsa = households
-                                            .Where(h => !documentsOnSasRealEntity.Select(d => d.HouseholdId)
+                                            .Where(h => !documentsOnSaRealEntity.Select(d => d.HouseholdId)
                                             .Contains(h.HouseholdId));
 
         var documentsOnSaToSignVirtual = CreateDocumentOnSaToSign(householdsWithoutdocumentOnsa);
@@ -98,11 +106,24 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
                 IsValid = documentOnSa.IsValid,
                 IsSigned = documentOnSa.IsSigned,
                 IsDocumentArchived = documentOnSa.IsDocumentArchived,
-                SignatureMethodId = documentOnSa.SignatureMethodId,
+                SignatureMethodCode = documentOnSa.SignatureMethodCode,
                 SignatureDateTime = documentOnSa.SignatureDateTime is not null ? Timestamp.FromDateTime(documentOnSa.SignatureDateTime.Value) : null,
                 SignatureConfirmedBy = documentOnSa.SignatureConfirmedBy
             };
         }
+    }
+
+    private DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypeItem documentTypeItem, int salesArrangementId)
+    {
+        return new DocumentOnSAToSign
+        {
+            DocumentTypeId = documentTypeItem.Id,
+            SalesArrangementId = salesArrangementId,
+            IsValid = true,
+            IsSigned = false,
+            IsDocumentArchived = false
+        };
+
     }
 
     private IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<Household> households)

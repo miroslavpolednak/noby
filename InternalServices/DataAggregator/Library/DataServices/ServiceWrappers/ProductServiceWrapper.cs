@@ -1,6 +1,4 @@
-﻿using CIS.Core.Results;
-using DomainServices.ProductService.Clients;
-using DomainServices.ProductService.Contracts;
+﻿using DomainServices.ProductService.Clients;
 
 namespace CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
 

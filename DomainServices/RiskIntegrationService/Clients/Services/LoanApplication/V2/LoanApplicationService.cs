@@ -1,24 +1,20 @@
-﻿using CIS.Infrastructure.Logging;
-using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
+﻿using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 
 namespace DomainServices.RiskIntegrationService.Clients.Services.LoanApplication.V2;
 
-internal class LoanApplicationService
+internal sealed class LoanApplicationService
     : Clients.LoanApplication.V2.ILoanApplicationServiceClient
 {
-    public async Task<IServiceCallResult> Save(LoanApplicationSaveRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<string> Save(LoanApplicationSaveRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStarted(nameof(Save));
         var result = await _service.Save(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<string>(result.RiskSegment.ToString());
+        return result.RiskSegment.ToString();
     }
 
-    private readonly ILogger<LoanApplicationService> _logger;
     private readonly ILoanApplicationService _service;
 
-    public LoanApplicationService(ILoanApplicationService service, ILogger<LoanApplicationService> logger)
+    public LoanApplicationService(ILoanApplicationService service)
     {
-        _logger = logger;
         _service = service;
     }
 }

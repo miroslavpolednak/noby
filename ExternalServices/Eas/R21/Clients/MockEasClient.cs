@@ -52,7 +52,7 @@ internal sealed class MockEasClient
         return Task.FromResult<string>($"{clientId}_{caseId}");
     }
 
-    public Task<CommonResponse?> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate)
+    public Task<CommonResponse?> AddFirstSignatureDate(int caseId, DateTime firstSignatureDate)
     {
         return null;
     }

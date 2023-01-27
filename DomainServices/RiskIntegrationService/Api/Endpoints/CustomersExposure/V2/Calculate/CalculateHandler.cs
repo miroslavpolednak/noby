@@ -1,5 +1,5 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1.Contracts;
 using System.Globalization;
 using CIS.Core.Configuration;
 
@@ -32,7 +32,7 @@ internal sealed class CalculateHandler
     }
 
     private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
-    private readonly Clients.CustomersExposure.V1.ICustomersExposureClient _client;
+    private readonly ExternalServices.CustomersExposure.V1.ICustomersExposureClient _client;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
@@ -41,7 +41,7 @@ internal sealed class CalculateHandler
     public CalculateHandler(
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        Clients.CustomersExposure.V1.ICustomersExposureClient client,
+        ExternalServices.CustomersExposure.V1.ICustomersExposureClient client,
         CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
         CodebookService.Clients.ICodebookServiceClients codebookService,
         ICisEnvironmentConfiguration cisEnvironment)

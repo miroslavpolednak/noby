@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using DomainServices;
 using CIS.Infrastructure.Security.ContextUser;
-using CIS.Core.Results;
 using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using Console_RiskIntegrationService;
 using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
@@ -27,15 +26,15 @@ var serviceProvider = new ServiceCollection()
 
 /*Console.WriteLine("RUN 1");
 var service1 = serviceProvider.GetService<DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction>() ?? throw new Exception();
-var result1 = ServiceCallResult.ResolveAndThrowIfError<CreditWorthinessCalculateResponse>(await service1.Calculate(CreditWorthinessTest._test1));
+var result1 = await service1.Calculate(CreditWorthinessTest._test1);
 Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result1));*/
 
 Console.WriteLine("RUN 2");
 var service2 = serviceProvider.GetService<DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient>() ?? throw new Exception();
-var result2 = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationSaveResponse>(await service2.Save(LoanApplicationTest._test1));
+var result2 = await service2.Save(LoanApplicationTest._test1);
 Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result2));
 
 /*Console.WriteLine("RUN 3");
 var service3 = serviceProvider.GetService<DomainServices.RiskIntegrationService.Abstraction.CustomersExposure.V2.ICustomersExposureServiceAbstraction>() ?? throw new Exception();
-var result3 = ServiceCallResult.ResolveAndThrowIfError<CustomersExposureCalculateResponse>(await service3.Calculate(ExposureTest._test1));
+var result3 = await service3.Calculate(ExposureTest._test1);
 Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result3));*/

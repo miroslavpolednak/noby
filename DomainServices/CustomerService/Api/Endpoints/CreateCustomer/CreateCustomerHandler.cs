@@ -4,7 +4,7 @@ using DomainServices.CustomerService.Api.Services.KonsDb;
 
 namespace DomainServices.CustomerService.Api.Endpoints.CreateCustomer;
 
-internal class CreateCustomerHandler : IRequestHandler<CreateCustomerRequest, CreateCustomerResponse>
+internal sealed class CreateCustomerHandler : IRequestHandler<CreateCustomerRequest, CreateCustomerResponse>
 {
     private readonly IdentifiedSubjectService _identifiedSubjectService;
     private readonly MpDigiClient _mpDigiClient;

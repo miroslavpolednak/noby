@@ -23,7 +23,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// Amount
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Amount
+    public partial class Amount
     {
         /// <summary>
         /// Hodnota částky
@@ -50,7 +50,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// AssessmentDetail
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class AssessmentDetail
+    public partial class AssessmentDetail
     {
         /// <summary>
         /// Assessment detail
@@ -85,7 +85,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// AssessmentReasonDetail
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class AssessmentReasonDetail
+    public partial class AssessmentReasonDetail
     {
         /// <summary>
         /// Target
@@ -129,7 +129,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// Change
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Change
+    public partial class Change
     {
         /// <summary>
         /// Identita actora/uživatele
@@ -157,7 +157,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// CollateralRiskCharacteristics
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CollateralRiskCharacteristics
+    public partial class CollateralRiskCharacteristics
     {
         /// <summary>
         /// Ltv
@@ -210,7 +210,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// Counterparty Assessment Detail
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CounterpartyAssessmentDetail
+    public partial class CounterpartyAssessmentDetail
     {
         /// <summary>
         /// Id
@@ -254,7 +254,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// Household Assessment detail
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class HouseholdAssessmentDetail
+    public partial class HouseholdAssessmentDetail
     {
         /// <summary>
         /// Id
@@ -298,7 +298,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// An identified object
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Identified
+    public partial class Identified
     {
         /// <summary>
         /// ID
@@ -442,7 +442,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// Možnosti samo/autoschválení
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationApprovalPossibilities
+    public partial class LoanApplicationApprovalPossibilities
     {
         /// <summary>
         /// Id
@@ -468,7 +468,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// LoanApplicationAssessmentReason
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationAssessmentReason
+    public partial class LoanApplicationAssessmentReason
     {
         /// <summary>
         /// Code
@@ -521,7 +521,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// LoanApplicationLimit
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationLimit
+    public partial class LoanApplicationLimit
     {
         /// <summary>
         /// Loan Application Limit
@@ -610,7 +610,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// LoanApplicationScore
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationScore
+    public partial class LoanApplicationScore
     {
         /// <summary>
         /// Value
@@ -636,7 +636,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// Resource
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Resource
+    public partial class Resource
     {
         /// <summary>
         /// Entity
@@ -662,7 +662,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// ResourceIdentifier
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResourceIdentifier
+    public partial class ResourceIdentifier
     {
         /// <summary>
         /// The resource instance code, eg. 'KBCZ'
@@ -724,7 +724,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// RiskCharacteristics
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RiskCharacteristics
+    public partial class RiskCharacteristics
     {
         /// <summary>
         /// monthlyIncomeAmount
@@ -795,7 +795,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// SemanticVersion
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class SemanticVersion
+    public partial class SemanticVersion
     {
         /// <summary>
         /// Major part of a version
@@ -839,7 +839,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// LoanApplicationAssessmentCreate
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationAssessmentCreate
+    public partial class LoanApplicationAssessmentCreate
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("loanApplicationId")]
@@ -919,7 +919,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     /// LoanApplicationException
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationException
+    public partial class LoanApplicationException
     {
         /// <summary>
         /// Arm
@@ -942,7 +942,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Anonymous
+    public enum Anonymous
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"assessmentDetail")]
@@ -963,7 +963,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanApplicationAssessmentCreateItChannel
+    public enum LoanApplicationAssessmentCreateItChannel
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"NOBY")]
@@ -987,7 +987,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanApplicationAssessmentCreateItChannelPrevious
+    public enum LoanApplicationAssessmentCreateItChannelPrevious
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"NOBY")]
@@ -1011,7 +1011,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanApplicationAssessmentCreateAssessmentMode
+    public enum LoanApplicationAssessmentCreateAssessmentMode
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"PS")]
@@ -1026,7 +1026,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanApplicationAssessmentCreateGrantingProcedureCode
+    public enum LoanApplicationAssessmentCreateGrantingProcedureCode
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CPG")]
@@ -1065,7 +1065,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Expand
+    public enum Expand
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"assessmentDetail")]

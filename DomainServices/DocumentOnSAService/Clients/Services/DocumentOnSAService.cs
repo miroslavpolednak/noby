@@ -11,9 +11,10 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
         _client = client;
     }
 
-    public async Task<GenerateFormIdResponse> GenerateFormId(GenerateFormIdRequest request, CancellationToken cancellationToken = default)
+    public async Task<string> GenerateFormId(GenerateFormIdRequest request, CancellationToken cancellationToken = default)
     {
-        return await _client.GenerateFormIdAsync(request, cancellationToken: cancellationToken);
+        var result = await _client.GenerateFormIdAsync(request, cancellationToken: cancellationToken);
+        return result.FormId;
     }
 
     public async Task<GetDocumentsToSignListResponse> GetDocumentsToSignList(int salesArrangementId, CancellationToken cancellationToken = default)
@@ -35,5 +36,10 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
         {
             DocumentOnSAId = documentOnSAId
         }, cancellationToken: cancellationToken);
+    }
+
+    public async Task<GetDocumentOnSADataResponse> GetDocumentOnSAData(int documentOnSAId, CancellationToken cancellationToken = default)
+    {
+        return await _client.GetDocumentOnSADataAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
     }
 }

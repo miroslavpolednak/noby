@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment.V1.Contracts;
 
-internal partial class ResourceIdentifier
+public partial class ResourceIdentifier
 {
     public long GetSalesArrangementId()
     {

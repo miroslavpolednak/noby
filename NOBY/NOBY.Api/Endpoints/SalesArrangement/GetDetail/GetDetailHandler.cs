@@ -20,7 +20,7 @@ internal sealed class GetDetailHandler
         if (saInstance.SalesArrangementTypeId == 1)
         {
             // get mortgage data
-            var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken));
+            var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken);
 
             data = await getDataInternal(saInstance, offerInstance, cancellationToken);
             if (!data.ExpectedDateOfDrawing.HasValue)

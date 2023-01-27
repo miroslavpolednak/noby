@@ -2,9 +2,12 @@
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
-public class IdentifyByIdentityRequest
+public sealed class IdentifyByIdentityRequest
     : IRequest
 {
+    /// <summary>
+    /// Identita klienta
+    /// </summary>
     public CIS.Foms.Types.CustomerIdentity? CustomerIdentity { get; set; }
 
     [JsonIgnore]

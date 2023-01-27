@@ -86,8 +86,9 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                     b.Property<DateTime?>("SignatureDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SignatureMethodId")
-                        .HasColumnType("int");
+                    b.Property<string>("SignatureMethodCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("DocumentOnSAId");
 

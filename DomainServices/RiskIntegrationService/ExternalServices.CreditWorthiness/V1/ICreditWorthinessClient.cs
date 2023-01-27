@@ -1,10 +1,9 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers;
-using DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V1.Contracts;
+﻿using DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V1.Contracts;
 
 namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V1;
 
-internal interface ICreditWorthinessClient
-    : IExternalServiceClient
+public interface ICreditWorthinessClient
+    : ICreditWorthinessClientBase
 {
     Task<CreditWorthinessCalculation> Calculate(CreditWorthinessCalculationArguments request, CancellationToken cancellationToken);
 

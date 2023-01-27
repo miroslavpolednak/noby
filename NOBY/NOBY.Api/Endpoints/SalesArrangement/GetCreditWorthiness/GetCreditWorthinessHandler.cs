@@ -45,7 +45,7 @@ internal class GetCreditWorthinessHandler
         };
 #pragma warning restore CA1305 // Specify IFormatProvider
 
-        var ripResult = ServiceCallResult.ResolveAndThrowIfError<_Rip.CreditWorthinessCalculateResponse>(await _creditWorthinessService.Calculate(ripRequest, cancellationToken));
+        var ripResult = await _creditWorthinessService.Calculate(ripRequest, cancellationToken);
 
         return new GetCreditWorthinessResponse
         {

@@ -23,6 +23,7 @@ public sealed class KbHeadersHttpHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        request.Headers.Add("X-KB-Orig-System-Identity", $$"""{"app":"NOBY","appComp":"{{_appComponent}}"}""");
         request.Headers.Add("X-KB-Caller-System-Identity", $$"""{"app":"NOBY","appComp":"{{_appComponent}}"}""");
         if (Activity.Current?.Id is not null)
         {

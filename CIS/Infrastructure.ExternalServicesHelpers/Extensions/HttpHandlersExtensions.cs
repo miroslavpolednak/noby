@@ -17,6 +17,12 @@ public static class HttpHandlersExtensions
         => builder.AddHttpMessageHandler(b => new HttpHandlers.KbHeadersHttpHandler(appComponent));
 
     /// <summary>
+    /// Prida do kazdeho requestu HttpClienta hlavicku s aktualnim uzivatelem vyzadovanou v KB.
+    /// </summary>
+    public static IHttpClientBuilder AddExternalServicesKbPartyHeaders(this IHttpClientBuilder builder)
+        => builder.AddHttpMessageHandler(b => new HttpHandlers.KbPartyHeaderHttpHandler(b));
+
+    /// <summary>
     /// Doplňuje do každého requestu Correlation Id z OT.
     /// </summary>
     /// <param name="headerKey">Klíč v hlavičce, kam se má Id zapsat. Pokud není vyplněno, ne nastavena na "X-Correlation-ID".</param>

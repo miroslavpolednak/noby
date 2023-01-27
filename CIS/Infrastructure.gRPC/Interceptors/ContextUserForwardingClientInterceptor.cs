@@ -49,7 +49,7 @@ public sealed class ContextUserForwardingClientInterceptor
                     .CreateLogger<ContextUserForwardingClientInterceptor>()
                     .UserAccessorNotFound();
             }
-            else
+            else if (context.Method.Name != "GetUserByLogin") //ignorujeme chyby v callu do UserService
             {
                 serviceScope.ServiceProvider
                     .GetRequiredService<ILoggerFactory>()

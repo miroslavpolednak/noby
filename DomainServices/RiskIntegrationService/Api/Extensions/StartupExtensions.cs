@@ -1,5 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using DomainServices.RiskIntegrationService.Api.Clients;
+using DomainServices.RiskIntegrationService.ExternalServices;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
@@ -34,12 +34,12 @@ internal static class StartupExtensions
         builder.Services.AddControllers();
 
         // register c4m clients
-        builder.AddRiskBusinessCaseClient();
-        builder.AddCreditWorthinessClient();
-        builder.AddCustomersExposureClient();
-        builder.AddLoanApplicationClient();
-        builder.AddLoanApplicationAssessmentClient();
-        builder.AddRiskCharakteristicsClient();
+        builder.AddExternalService<ExternalServices.CreditWorthiness.V1.ICreditWorthinessClient>();
+        builder.AddExternalService<ExternalServices.CustomersExposure.V1.ICustomersExposureClient>();
+        builder.AddExternalService<ExternalServices.LoanApplication.V1.ILoanApplicationClient>();
+        builder.AddExternalService<ExternalServices.LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient>();
+        builder.AddExternalService<ExternalServices.RiskBusinessCase.V1.IRiskBusinessCaseClient>();
+        builder.AddExternalService<ExternalServices.RiskCharacteristics.V1.IRiskCharacteristicsClient>();
 
         // databases
         builder.Services

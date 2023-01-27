@@ -1,5 +1,5 @@
-﻿using DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts;
+﻿using DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;

@@ -1,10 +1,9 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers;
-using DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment.V1.Contracts;
+﻿using DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment.V1.Contracts;
 
 namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment.V1;
 
-internal interface ILoanApplicationAssessmentClient
-    : IExternalServiceClient
+public interface ILoanApplicationAssessmentClient
+    : ILoanApplicationAssessmentClientBase
 {
     Task<Identified> GetAssessment(string loanApplicationAssessmentId, List<string>? requestedDetails, CancellationToken cancellationToken);
 

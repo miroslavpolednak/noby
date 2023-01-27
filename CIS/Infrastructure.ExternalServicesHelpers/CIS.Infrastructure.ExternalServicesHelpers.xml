@@ -189,6 +189,14 @@
             Přidává hlavičky X-KB-Caller-System-Identity a X-B3-TraceId a X-B3-SpanId.
             </remarks>
         </member>
+        <member name="T:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbPartyHeaderHttpHandler">
+            <summary>
+            Middleware přidávájící KB hlavičku s informací o přihlášeném uživateli do requestu.
+            </summary>
+            <remarks>
+            Přidává hlavičku X-KB-Party-Identity-In-Service.
+            </remarks>
+        </member>
         <member name="T:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.LoggingHttpHandler">
             <summary>
             Middleware pro logování payloadu a hlavičke requestu a responsu.
@@ -228,6 +236,11 @@
             Prida do kazdeho requestu HttpClienta hlavicky vyzadovane v KB.
             </summary>
             <param name="appComponent">Hodnota appComp v hlavičce X-KB-Caller-System-Identity. Pokud není vyplněno, je nastavena na "NOBY".</param>
+        </member>
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbPartyHeaders(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder)">
+            <summary>
+            Prida do kazdeho requestu HttpClienta hlavicku s aktualnim uzivatelem vyzadovanou v KB.
+            </summary>
         </member>
         <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesCorrelationIdForwarding(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
             <summary>

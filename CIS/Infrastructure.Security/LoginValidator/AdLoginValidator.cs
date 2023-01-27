@@ -31,6 +31,11 @@ internal sealed class AdLoginValidator : ILoginValidator
                 return cn.Bound;
             }
         }
+        catch (LdapException err)
+        {
+            _logger.AdConnectionFailed(login, err);
+            return false;
+        }
         catch (Exception err)
         {
             _logger.AdConnectionFailed(login, err);

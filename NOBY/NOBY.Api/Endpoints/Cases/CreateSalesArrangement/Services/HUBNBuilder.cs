@@ -17,8 +17,10 @@ internal sealed class HUBNBuilder
     {
         _request.HUBN = new __SA.SalesArrangementParametersHUBN
         {
+            LoanAmount = new(),
             DrawingDateTo = new(),
-            CommentToChangeRequest = new()
+            CommentToChangeRequest = new(),
+            ExpectedDateOfDrawing = new()
         };
 
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage

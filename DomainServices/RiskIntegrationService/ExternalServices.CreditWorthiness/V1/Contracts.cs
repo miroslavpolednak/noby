@@ -23,7 +23,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// Parametry potřebné pro výpočet Bonity
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CreditWorthinessCalculation
+    public partial class CreditWorthinessCalculation
     {
         /// <summary>
         /// maximální disponibilní splátka
@@ -77,7 +77,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// Důvod(y) nespočetní výseldků bonity.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResultReason
+    public partial class ResultReason
     {
         /// <summary>
         /// kód důvodu nespočtení výsledku
@@ -103,7 +103,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// HouseholdCreditLiabilitiesSummaryOutHomeCompany.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CreditLiabilitiesSummary
+    public partial class CreditLiabilitiesSummary
     {
         /// <summary>
         /// Product group.
@@ -140,7 +140,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// HouseholdCreditLiabilitiesSummaryHomeCompany.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CreditLiabilitiesSummaryHomeCompany
+    public partial class CreditLiabilitiesSummaryHomeCompany
     {
         /// <summary>
         /// Product group.
@@ -177,7 +177,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// Parametry potřebné pro výpočet Bonity
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CreditWorthinessCalculationArguments
+    public partial class CreditWorthinessCalculationArguments
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
@@ -254,7 +254,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// Dealer
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Dealer
+    public partial class Dealer
     {
         /// <summary>
         /// Identifikátor dealera
@@ -282,7 +282,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// Parametry domácnosti.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ExpensesSummary
+    public partial class ExpensesSummary
     {
         /// <summary>
         /// Kategorie.
@@ -310,7 +310,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// HouseholdInstallmentsSummaryHomeCompany.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class InstallmentsSummaryHomeCompany
+    public partial class InstallmentsSummaryHomeCompany
     {
         /// <summary>
         /// Product group.
@@ -347,7 +347,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// HouseholdInstallmentsSummaryOutHomeCompany.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class InstallmentsSummaryOutHomeCompany
+    public partial class InstallmentsSummaryOutHomeCompany
     {
         /// <summary>
         /// Product group.
@@ -384,7 +384,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// JobPost
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class JobPost
+    public partial class JobPost
     {
         /// <summary>
         /// Kód pracovní pozice přihlášeného uživatele/schvalovatele
@@ -402,7 +402,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// Protistrana žádosti o půjčku.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationCounterParty
+    public partial class LoanApplicationCounterParty
     {
         /// <summary>
         /// Identifikátor klienta (např. v případě KB klienta IDDI)
@@ -445,7 +445,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// Parametry domácnosti.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationHousehold
+    public partial class LoanApplicationHousehold
     {
         /// <summary>
         /// počet vyživovaných dětí do 10 let (včetně).
@@ -531,7 +531,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// Žádost o půjčku příjem.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationIncome
+    public partial class LoanApplicationIncome
     {
         /// <summary>
         /// Kategorie.
@@ -568,7 +568,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// Parametry potřebné pro výpočet Bonity
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationProduct
+    public partial class LoanApplicationProduct
     {
         /// <summary>
         /// kód produktového shluku (shluk jednoho produktu).
@@ -631,7 +631,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// OrganizationUnit
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class OrganizationUnit
+    public partial class OrganizationUnit
     {
         /// <summary>
         /// Pobočka + expozitura přihlášení uživatele/schvalovatele
@@ -669,7 +669,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// Person
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Person
+    public partial class Person
     {
         /// <summary>
         /// osobní číslo přihlášeného uživatele/schvalovatele
@@ -707,7 +707,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     /// ResourceIdentifier
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResourceIdentifier
+    public partial class ResourceIdentifier
     {
         /// <summary>
         /// The resource instance code, eg. 'KBCZ'
@@ -766,7 +766,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum CreditLiabilitiesSummaryProductGroup
+    public enum CreditLiabilitiesSummaryProductGroup
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CC")]
@@ -778,7 +778,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum CreditLiabilitiesSummaryHomeCompanyProductGroup
+    public enum CreditLiabilitiesSummaryHomeCompanyProductGroup
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CC")]
@@ -790,7 +790,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum CreditWorthinessCalculationArgumentsItChannel
+    public enum CreditWorthinessCalculationArgumentsItChannel
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"NOBY")]
@@ -805,7 +805,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum ExpensesSummaryCategory
+    public enum ExpensesSummaryCategory
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"RENT")]
@@ -826,7 +826,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum InstallmentsSummaryHomeCompanyProductGroup
+    public enum InstallmentsSummaryHomeCompanyProductGroup
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CL")]
@@ -838,7 +838,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum InstallmentsSummaryOutHomeCompanyProductGroup
+    public enum InstallmentsSummaryOutHomeCompanyProductGroup
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CL")]
@@ -850,7 +850,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanApplicationCounterPartyMaritalStatus
+    public enum LoanApplicationCounterPartyMaritalStatus
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"S")]
@@ -871,7 +871,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthines
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanApplicationIncomeCategory
+    public enum LoanApplicationIncomeCategory
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"SALARY")]

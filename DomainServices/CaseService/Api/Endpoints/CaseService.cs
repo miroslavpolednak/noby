@@ -29,7 +29,7 @@ internal sealed class CaseService
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCaseState(UpdateCaseStateRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCaseCustomer(UpdateCaseCustomerRequest request, ServerCallContext context)
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCustomerData(UpdateCustomerDataRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<GetCaseCountsResponse> GetCaseCounts(GetCaseCountsRequest request, ServerCallContext context)
