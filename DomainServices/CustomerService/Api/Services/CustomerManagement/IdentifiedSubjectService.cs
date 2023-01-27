@@ -58,15 +58,15 @@ internal class IdentifiedSubjectService
         await _identifiedSubjectClient.UpdateIdentifiedSubject(customerId.IdentityId, identifiedSubject, cancellationToken);
 
         // https://jira.kb.cz/browse/HFICH-3555
-        //await callSetSocialCharacteristics(customerId.IdentityId, request, cancellationToken);
-        //await callSetKyc(customerId.IdentityId, request, cancellationToken);
+        await callSetSocialCharacteristics(customerId.IdentityId, request, cancellationToken);
+        await callSetKyc(customerId.IdentityId, request, cancellationToken);
     }
 
     private async Task callSetKyc(long customerId, UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
         var model = new ExternalServices.Kyc.V1.Contracts.Kyc
         {
-            IsPoliticallyExposed = request.NaturalPerson?.IsPoliticallyExposed ?? false,
+            //IsPoliticallyExposed = request.NaturalPerson?.IsPoliticallyExposed ?? false, //!!! nesmi byt zadano, CM pada
             IsUSPerson = request.NaturalPerson?.IsUSPerson ?? false
         };
 
@@ -96,7 +96,7 @@ internal class IdentifiedSubjectService
         {
             Education = new()
             {
-                Code = (await _codebook.EducationLevels(cancellationToken)).FirstOrDefault(t => t.Id == request.NaturalPerson.EducationLevelId)?.RdmCode ?? ""
+                Code = (await _codebook.EducationLevels(cancellationToken)).FirstOrDefault(t => t.Id == request.NaturalPerson?.EducationLevelId)?.RdmCode ?? ""
             }/*,
             MaritalStatus = new()
             {
