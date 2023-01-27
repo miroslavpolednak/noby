@@ -19,9 +19,14 @@ public sealed class IdentificationDocumentFull
 
     public string? RegisterPlace { get; set; }
 
-    public int? CustomerIdentification { get; set; }
+    public CustomerIdentificationObject? CustomerIdentification { get; set; }
 
-    public string? CustomerName { get; set; }
+    public sealed class CustomerIdentificationObject
+    {
+        public int? CustomerIdentification { get; set; }
 
-    public DateTime? IdentificationDate { get; set; }
+        public string? CustomerName { get; set; }
+
+        public DateTime? IdentificationDate { get; set; }
+    }
 }
