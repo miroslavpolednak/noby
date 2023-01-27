@@ -54,6 +54,7 @@ internal sealed class CreateProductHandler
             NaturalPerson = customerDetail.NaturalPerson,
             Mandant = Mandants.Mp
         };
+
         if (customerDetail.IdentificationDocument is not null)
             createCustomerRequest.IdentificationDocument = new _Cu.IdentificationDocument
             {

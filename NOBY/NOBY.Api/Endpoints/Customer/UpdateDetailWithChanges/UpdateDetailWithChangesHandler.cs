@@ -37,6 +37,8 @@ internal sealed class UpdateDetailWithChangesHandler
 
         // https://jira.kb.cz/browse/HFICH-4200
         // docasne reseni nez se CM rozmysli jak na to
+        if (customerOnSA.CustomerAdditionalData is null)
+            customerOnSA.CustomerAdditionalData = new DomainServices.HouseholdService.Contracts.CustomerAdditionalData();
         customerOnSA.CustomerAdditionalData.LegalCapacity = new()
         {
             RestrictionTypeId = request.LegalCapacity?.RestrictionTypeId,
