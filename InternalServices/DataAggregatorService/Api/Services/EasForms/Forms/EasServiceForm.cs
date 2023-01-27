@@ -5,7 +5,7 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms
 
 internal class EasServiceForm : EasForm
 {
-    public EasServiceForm(ProductFormData formData) : base(formData)
+    public EasServiceForm(ServiceFormData formData) : base(formData)
     {
     }
 

@@ -29,11 +29,11 @@ internal class GeneralChangeTemplateData : AggregatedData
 
     public string RealEstatePurchaseTypes => string.Join(", ", GetRealEstatePurchaseTypes());
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
+    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
-        _countries = await codebookService.Countries();
-        _realEstateTypes = await codebookService.RealEstateTypes();
-        _purchaseTypes = await codebookService.RealEstatePurchaseTypes();
+        _countries = await codebookService.Countries(cancellationToken);
+        _realEstateTypes = await codebookService.RealEstateTypes(cancellationToken);
+        _purchaseTypes = await codebookService.RealEstatePurchaseTypes(cancellationToken);
     }
 
     private string FormatAddress(GrpcAddress? address)

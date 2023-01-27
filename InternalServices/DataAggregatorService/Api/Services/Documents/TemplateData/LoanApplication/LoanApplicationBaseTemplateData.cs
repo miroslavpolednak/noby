@@ -41,29 +41,29 @@ internal class LoanApplicationBaseTemplateData : AggregatedData
 
     public string PropertySettlement => GetPropertySettlementName();
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
+    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
-        _productTypes = await codebookService.ProductTypes();
-        _loanKinds = await codebookService.LoanKinds();
-        _loanPurposes = await codebookService.LoanPurposes();
-        _propertySettlements = await codebookService.PropertySettlements();
-        _degreesBefore = await codebookService.AcademicDegreesBefore();
-        _countries = await codebookService.Countries();
-        _identificationDocumentTypes = await codebookService.IdentificationDocumentTypes();
-        _maritalStatuses = await codebookService.MaritalStatuses();
+        _productTypes = await codebookService.ProductTypes(cancellationToken);
+        _loanKinds = await codebookService.LoanKinds(cancellationToken);
+        _loanPurposes = await codebookService.LoanPurposes(cancellationToken);
+        _propertySettlements = await codebookService.PropertySettlements(cancellationToken);
+        _degreesBefore = await codebookService.AcademicDegreesBefore(cancellationToken);
+        _countries = await codebookService.Countries(cancellationToken);
+        _identificationDocumentTypes = await codebookService.IdentificationDocumentTypes(cancellationToken);
+        _maritalStatuses = await codebookService.MaritalStatuses(cancellationToken);
     }
 
     private bool IsUserBroker() => User.UserIdentifiers.Any(u => u.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId);
 
     private string GetProductTypeName() =>
         _productTypes.Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.ProductTypeId)
-                     .Select(x => x.Name.ToUpperInvariant())
+                     .Select(x => x.Name)
                      .DefaultIfEmpty(string.Empty)
                      .First();
 
     private string GetLoanKindName() =>
         _loanKinds.Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.LoanKindId)
-                  .Select(x => x.Name.ToUpperInvariant())
+                  .Select(x => x.Name)
                   .DefaultIfEmpty(string.Empty)
                   .First();
 

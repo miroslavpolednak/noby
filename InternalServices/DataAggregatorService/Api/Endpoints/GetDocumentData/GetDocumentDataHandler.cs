@@ -22,7 +22,7 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
     {
         var config = await _configurationManager.LoadDocumentConfiguration(request.DocumentTypeId, request.DocumentTemplateVersionId, cancellationToken);
 
-        var documentMapper = await LoadDocumentData((DocumentType)request.DocumentTypeId, request.InputParameters, config);
+        var documentMapper = await LoadDocumentData((DocumentType)request.DocumentTypeId, request.InputParameters, config, cancellationToken);
 
         return new GetDocumentDataResponse
         {
@@ -33,11 +33,11 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
         };
     }
 
-    private async Task<DocumentMapper> LoadDocumentData(DocumentType documentType, InputParameters inputParameters, DocumentConfiguration config)
+    private async Task<DocumentMapper> LoadDocumentData(DocumentType documentType, InputParameters inputParameters, DocumentConfiguration config, CancellationToken cancellationToken)
     {
         var documentData = _documentDataFactory.Create(documentType);
 
-        await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, documentData);
+        await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, documentData, cancellationToken);
 
         return new DocumentMapper(config, documentData);
     }

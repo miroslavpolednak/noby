@@ -21,7 +21,7 @@ internal class DataServicesLoader
         ConfigureServiceMap();
     }
 
-    public async Task LoadData(InputConfig inputConfig, InputParameters parameters, AggregatedData aggregatedData)
+    public async Task LoadData(InputConfig inputConfig, InputParameters parameters, AggregatedData aggregatedData, CancellationToken cancellationToken = default)
     {
         var status = new DataLoaderStatus
         {
@@ -31,15 +31,15 @@ internal class DataServicesLoader
 
         while (status.RemainingDataSources.Any())
         {
-            await ProcessRemainingDataSources(status, parameters, aggregatedData);
+            await ProcessRemainingDataSources(status, parameters, aggregatedData, cancellationToken);
             SetInputParameters(status, parameters, aggregatedData);
         }
 
-        await aggregatedData.LoadCodebooks(_codebookService);
-        await aggregatedData.LoadAdditionalData(CancellationToken.None);
+        await aggregatedData.LoadCodebooks(_codebookService, cancellationToken);
+        await aggregatedData.LoadAdditionalData(cancellationToken);
     }
 
-    private async Task ProcessRemainingDataSources(DataLoaderStatus status, InputParameters parameters, AggregatedData aggregatedData)
+    private async Task ProcessRemainingDataSources(DataLoaderStatus status, InputParameters parameters, AggregatedData aggregatedData, CancellationToken cancellationToken)
     {
         var dataSources = status.RemainingDataSources.Except(status.RelatedInputParameters.Select(p => p.TargetDataSource)).ToList();
 
@@ -48,7 +48,7 @@ internal class DataServicesLoader
 
         foreach (var dataSource in dataSources)
         {
-            await _serviceMap[dataSource].Invoke(parameters, aggregatedData, CancellationToken.None);
+            await _serviceMap[dataSource].Invoke(parameters, aggregatedData, cancellationToken);
 
             status.RemainingDataSources.Remove(dataSource);
             status.LoadedDataSources.Add(dataSource);

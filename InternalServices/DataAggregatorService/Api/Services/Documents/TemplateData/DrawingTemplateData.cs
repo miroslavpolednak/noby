@@ -50,10 +50,10 @@ internal class DrawingTemplateData : AggregatedData
         }
     }
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
+    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
-        _countries = await codebookService.Countries();
-        _degreesBefore = await codebookService.AcademicDegreesBefore();
+        _countries = await codebookService.Countries(cancellationToken);
+        _degreesBefore = await codebookService.AcademicDegreesBefore(cancellationToken);
     }
 
     private string GetFullName()
