@@ -54,8 +54,7 @@ internal sealed class SaveRequestValidator
                     x.RuleFor(x => x.RemainingExposure)
                         .Cascade(CascadeMode.Stop)
                         .NotEmpty()
-                        .WithErrorCode("ProductRelations.RemainingExposure")
-                        .GreaterThan(0);
+                        .WithErrorCode("ProductRelations.RemainingExposure");
 
                     x.RuleFor(x => x.Customers)
                         .NotEmpty()

@@ -76,7 +76,7 @@ public class LoanApplicationProduct
     public string? HomeCurrencyResidence { get; set; }
 
     [ProtoMember(27)]
-    public string? FinancingType { get; set; }
+    public List<int>? FinancingTypes { get; set; }
 
     [ProtoMember(25)]
     public int? DeveloperId { get; set; }
