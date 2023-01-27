@@ -39,6 +39,9 @@ internal sealed class CreateProductHandler
         // detail offer
         var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken);
 
+        // zjistit, zda existuje customer v konsDb
+        var konsDbCustomer = await _customerService.GetCustomerDetail(mpIdentity!, cancellationToken);
+
         // pokud neexistuje customer v konsDb, tak ho vytvor
         var customerDetail = await _customerService.GetCustomerDetail(notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
 
