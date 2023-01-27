@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.OfferService.Api.Endpoints.SimulateMortgage;
 
-internal class SimulateMortgageRequestValidator 
+internal sealed class SimulateMortgageRequestValidator 
     : AbstractValidator<SimulateMortgageRequest>
 {
     public SimulateMortgageRequestValidator()

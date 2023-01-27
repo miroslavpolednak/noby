@@ -6,8 +6,6 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using _Product = DomainServices.ProductService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using NOBY.Api.Endpoints.Offer.CreateMortgageCase;
-using MediatR;
-using System.Threading;
 
 namespace NOBY.Api.Notifications.Handlers;
 
@@ -61,7 +59,7 @@ internal sealed class CreateProductHandler
         // ma klient v konsDb KB identitu? pokud ne, tak ho updatuj
         else if (konsDbCustomer.Identities.Any(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
         {
-            await updateClientInKonsDb(konsDbCustomer, mpIdentity, kbIdentity, cancellationToken);
+            await updateClientInKonsDb(konsDbCustomer, mpIdentity!, kbIdentity, cancellationToken);
         }
 
         // vytovrit produkt
