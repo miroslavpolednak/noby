@@ -10,6 +10,7 @@ internal sealed class CaseStateChangedHandler
 
         // get current user's login
         var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
+        _logger.LogSerializedObject("userInstance", userInstance);
 
         // get case owner
         var ownerInstance = await _userService.GetUser(notification.CaseOwnerUserId, cancellationToken);
@@ -46,14 +47,17 @@ internal sealed class CaseStateChangedHandler
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
+    private readonly ILogger<CaseStateChangedHandler> _logger;
 
     public CaseStateChangedHandler(
+        ILogger<CaseStateChangedHandler> logger,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         CodebookService.Clients.ICodebookServiceClients codebookService, 
         UserService.Clients.IUserServiceClient userService,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
+        _logger = logger;
         _userAccessor = userAccessor;
         _codebookService = codebookService;
         _userService = userService;
