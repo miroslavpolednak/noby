@@ -52,7 +52,7 @@ internal class IdentifiedSubjectService
             // todo: error_code
             throw new CisArgumentException(9999999, "Customer does not have KB Identity", "IdentityId");
         }
-        
+
         var identifiedSubject = BuildUpdateRequest(request);
 
         await _identifiedSubjectClient.UpdateIdentifiedSubject(customerId.IdentityId, identifiedSubject, cancellationToken);
@@ -61,37 +61,29 @@ internal class IdentifiedSubjectService
         await callSetSocialCharacteristics(customerId.IdentityId, request, cancellationToken);
         await callSetKyc(customerId.IdentityId, request, cancellationToken);
     }
-    
+
     private async Task callSetKyc(long customerId, UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
         var model = new ExternalServices.Kyc.V1.Contracts.Kyc
         {
             IsPoliticallyExposed = request.NaturalPerson?.IsPoliticallyExposed ?? false,
-            IsUSPerson = request.NaturalPerson?.IsUSPerson ?? false,
-            AccountCreationPurpose = new ExternalServices.Kyc.V1.Contracts.AccountCreationPurpose
-            {
-                Code = 1,
-                Description = ""
-            },
-            TaxResidence = new ExternalServices.Kyc.V1.Contracts.TaxResidence
-            {
-                LegalEntityTypeCode = "",
-                ValidFrom = request.NaturalPerson?.TaxResidence?.ValidFrom ?? DateTime.MinValue
-            }
+            IsUSPerson = request.NaturalPerson?.IsUSPerson ?? false
         };
 
-        if (request.NaturalPerson?.TaxResidence?.ResidenceCountries is not null)
+        if (request.NaturalPerson?.TaxResidence is not null)
         {
-            model.TaxResidence.ResidenceCountries = request
-                .NaturalPerson
-                .TaxResidence
-                .ResidenceCountries
-                .Select(x => new ExternalServices.Kyc.V1.Contracts.TaxResidenceCountry
+#pragma warning disable CS8601 // Possible null reference assignment.
+            model.TaxResidence = new ExternalServices.Kyc.V1.Contracts.TaxResidence
+            {
+                ResidenceCountries = request.NaturalPerson?.TaxResidence?.ResidenceCountries?.Select(x => new ExternalServices.Kyc.V1.Contracts.TaxResidenceCountry
                 {
                     Tin = x.Tin,
-                    CountryCode = _countries.FirstOrDefault(c => c.Id == x.CountryId)?.ShortName ?? "",
-                    TinMissingReasonDescription = x.TinMissingReasonDescription
-                }).ToList();
+                    TinMissingReasonDescription = x.TinMissingReasonDescription,
+                    CountryCode = _countries.FirstOrDefault(c => c.Id == x.CountryId)?.ShortName
+                }).ToList(),
+                ValidFrom = request.NaturalPerson!.TaxResidence.ValidFrom
+            };
+#pragma warning restore CS8601 // Possible null reference assignment.
         }
 
         await _kycClient.SetKyc(customerId, model, cancellationToken);
@@ -99,21 +91,17 @@ internal class IdentifiedSubjectService
 
     private async Task callSetSocialCharacteristics(long customerId, UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
+        //! Honza rika, ze neni treba posilat nic jineho nez Education
         var model = new ExternalServices.Kyc.V1.Contracts.SocialCharacteristics
         {
             Education = new()
             {
                 Code = (await _codebook.EducationLevels(cancellationToken)).FirstOrDefault(t => t.Id == request.NaturalPerson.EducationLevelId)?.RdmCode ?? ""
-            },
+            }/*,
             MaritalStatus = new()
             {
                 Code = _maritals.FirstOrDefault(t => t.Id == request.NaturalPerson?.MaritalStatusStateId)?.RdmMaritalStatusCode ?? ""
-            },
-            Housing = new()
-            {
-                Code = "",
-                Description = ""
-            }
+            }*/
         };
 
         await _kycClient.SetSocialCharacteristics(customerId, model, cancellationToken);
@@ -163,7 +151,7 @@ internal class IdentifiedSubjectService
             PrimaryEmail = CreatePrimaryEmail(request.Contacts)
         };
     }
-    
+
     private __Contracts.NaturalPersonAttributes CreateNaturalPersonAttributes(NaturalPerson naturalPerson)
     {
         var citizenshipCodes = naturalPerson.CitizenshipCountriesId.Select(id => _countries.First(c => c.Id == id).ShortName).ToList();
