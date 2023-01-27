@@ -87,7 +87,7 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task UpdateCaseCustomer(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateCustomerData(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Smazani case

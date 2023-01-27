@@ -26,7 +26,7 @@ public partial class UpdateCaseStateRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 
-public partial class UpdateCaseCustomerRequest
+public partial class UpdateCustomerDataRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 

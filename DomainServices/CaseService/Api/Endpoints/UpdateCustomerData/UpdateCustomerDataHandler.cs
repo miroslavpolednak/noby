@@ -1,12 +1,12 @@
 ﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 
-namespace DomainServices.CaseService.Api.Endpoints.UpdateCaseCustomer;
+namespace DomainServices.CaseService.Api.Endpoints.UpdateCustomerData;
 
-internal sealed class UpdateCaseCustomerHandler
-    : IRequestHandler<UpdateCaseCustomerRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateCustomerDataHandler
+    : IRequestHandler<UpdateCustomerDataRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateCaseCustomerRequest request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateCustomerDataRequest request, CancellationToken cancellation)
     {
         // zjistit zda existuje case
         var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation)
@@ -28,7 +28,7 @@ internal sealed class UpdateCaseCustomerHandler
 
     private readonly CaseServiceDbContext _dbContext;
 
-    public UpdateCaseCustomerHandler(CaseServiceDbContext dbContext)
+    public UpdateCustomerDataHandler(CaseServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }

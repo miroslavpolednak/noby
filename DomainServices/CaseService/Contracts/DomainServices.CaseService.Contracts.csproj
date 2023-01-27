@@ -19,6 +19,7 @@
 	<ItemGroup>
 	  <None Remove="DeleteCase.proto" />
 	  <None Remove="GetTaskList.proto" />
+	  <None Remove="Messages\UpdateCustomerData.proto" />
 	  <None Remove="OfferContacts.proto" />
 	  <None Remove="UpdateActiveTasks.proto" />
 	  <None Remove="UpdateOfferContacts.proto" />
@@ -53,7 +54,7 @@
 		<Protobuf Include="Messages/SearchCases.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/UpdateOfferContacts.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/UpdateCaseData.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="Messages/UpdateCaseCustomer.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\UpdateCustomerData.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/UpdateCaseState.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 	</ItemGroup>
 </Project>
