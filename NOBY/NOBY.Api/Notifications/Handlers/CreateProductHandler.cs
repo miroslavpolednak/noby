@@ -61,7 +61,7 @@ internal sealed class CreateProductHandler
         // ma klient v konsDb KB identitu? pokud ne, tak ho updatuj
         else if (konsDbCustomer.Identities.Any(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
         {
-            await updateClientInKonsDb(konsDbCustomer, kbIdentity, cancellationToken);
+            await updateClientInKonsDb(konsDbCustomer, mpIdentity, kbIdentity, cancellationToken);
         }
 
         // vytovrit produkt
@@ -76,9 +76,25 @@ internal sealed class CreateProductHandler
         _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
     }
 
-    private async Task updateClientInKonsDb(_Cu.CustomerDetailResponse originalClient, Identity kbIdentity, CancellationToken cancellationToken)
+    private async Task updateClientInKonsDb(_Cu.CustomerDetailResponse originalClient, Identity mpIdentity, Identity kbIdentity, CancellationToken cancellationToken)
     {
+        var request = new _Cu.UpdateCustomerRequest
+        {
+            Identities =
+            {
+                mpIdentity,
+                kbIdentity
+            },
+            Mandant = Mandants.Mp,
+            IdentificationDocument = originalClient.IdentificationDocument,
+            NaturalPerson = originalClient.NaturalPerson
+        };
+        if (originalClient.Addresses is not null)
+            request.Addresses.AddRange(originalClient.Addresses);
+        if (originalClient.Contacts is not null)
+            request.Contacts.AddRange(originalClient.Contacts);
 
+        await _customerService.UpdateCustomer(request, cancellationToken);
     }
 
     private async Task createClientInKonsDb(Identity kbIdentity, Identity mpIdentity, CancellationToken cancellationToken)
@@ -87,7 +103,7 @@ internal sealed class CreateProductHandler
         var customerDetail = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
         // zalozit noveho klienta
-        var createCustomerRequest = new _Cu.CreateCustomerRequest
+        var request = new _Cu.CreateCustomerRequest
         {
             Identities =
             {
@@ -100,7 +116,7 @@ internal sealed class CreateProductHandler
         };
 
         if (customerDetail.IdentificationDocument is not null)
-            createCustomerRequest.IdentificationDocument = new _Cu.IdentificationDocument
+            request.IdentificationDocument = new _Cu.IdentificationDocument
             {
                 IssuedBy = customerDetail.IdentificationDocument.IssuedBy,
                 IssuedOn = customerDetail.IdentificationDocument.IssuedOn,
@@ -111,7 +127,7 @@ internal sealed class CreateProductHandler
                 ValidTo = customerDetail.IdentificationDocument.ValidTo
             };
         if (customerDetail.Addresses is not null && customerDetail.Addresses.Any())
-            createCustomerRequest.Addresses.Add(customerDetail.Addresses.Where(x => x.AddressTypeId == 1).Select(x => new GrpcAddress
+            request.Addresses.Add(customerDetail.Addresses.Where(x => x.AddressTypeId == 1).Select(x => new GrpcAddress
             {
                 Street = x.Street,
                 City = x.City,
@@ -122,7 +138,7 @@ internal sealed class CreateProductHandler
                 Postcode = x.Postcode
             }));
 
-        await _customerService.CreateCustomer(createCustomerRequest, cancellationToken);
+        await _customerService.CreateCustomer(request, cancellationToken);
     }
 
     private readonly IRollbackBag _bag;
