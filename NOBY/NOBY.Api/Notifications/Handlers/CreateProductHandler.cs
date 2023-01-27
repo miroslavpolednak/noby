@@ -6,6 +6,8 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using _Product = DomainServices.ProductService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using NOBY.Api.Endpoints.Offer.CreateMortgageCase;
+using MediatR;
+using System.Threading;
 
 namespace NOBY.Api.Notifications.Handlers;
 
@@ -40,18 +42,57 @@ internal sealed class CreateProductHandler
         var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken);
 
         // zjistit, zda existuje customer v konsDb
-        var konsDbCustomer = await _customerService.GetCustomerDetail(mpIdentity!, cancellationToken);
+        var kbIdentity = notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        _Cu.CustomerDetailResponse? konsDbCustomer = null;
+        try
+        {
+            //TODO rollbackovat i vytvoreni klienta?
+            konsDbCustomer = await _customerService.GetCustomerDetail(mpIdentity!, cancellationToken);
+        }
+        catch (CisNotFoundException) // klient nenalezen v konsDb
+        {
+        }
 
+        // klient nenalezen v konsDb, zaloz ho tam
+        if (konsDbCustomer is null)
+        {
+            await createClientInKonsDb(kbIdentity, mpIdentity!, cancellationToken);
+        }
+        // ma klient v konsDb KB identitu? pokud ne, tak ho updatuj
+        else if (konsDbCustomer.Identities.Any(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
+        {
+            await updateClientInKonsDb(konsDbCustomer, kbIdentity, cancellationToken);
+        }
+
+        // vytovrit produkt
+        var request = new _Product.CreateMortgageRequest
+        {
+            CaseId = notification.CaseId,
+            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
+        };
+        var result = await _productService.CreateMortgage(request, cancellationToken);
+        _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
+
+        _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
+    }
+
+    private async Task updateClientInKonsDb(_Cu.CustomerDetailResponse originalClient, Identity kbIdentity, CancellationToken cancellationToken)
+    {
+
+    }
+
+    private async Task createClientInKonsDb(Identity kbIdentity, Identity mpIdentity, CancellationToken cancellationToken)
+    {
         // pokud neexistuje customer v konsDb, tak ho vytvor
-        var customerDetail = await _customerService.GetCustomerDetail(notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+        var customerDetail = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
         // zalozit noveho klienta
         var createCustomerRequest = new _Cu.CreateCustomerRequest
         {
-            Identities = 
-            { 
-                mpIdentity, 
-                notification.CustomerIdentifiers!.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
+            Identities =
+            {
+                mpIdentity,
+                kbIdentity
             },
             HardCreate = true,
             NaturalPerson = customerDetail.NaturalPerson,
@@ -81,31 +122,7 @@ internal sealed class CreateProductHandler
                 Postcode = x.Postcode
             }));
 
-        try
-        {
-            await _customerService.CreateCustomer(createCustomerRequest, cancellationToken);
-        }
-        catch (CisAlreadyExistsException)
-        {
-            // tise spolknout -> klient existuje a my jsme spokojeni
-        }
-        catch (Exception ex)
-        {
-            _logger.LogInformation("MpHome create client failed", ex);
-            throw new CisConflictException(0, "MpHome client can't be created");
-        }
-
-        var request = new _Product.CreateMortgageRequest
-        {
-            CaseId = notification.CaseId,
-            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
-        };
-
-        var result = await _productService.CreateMortgage(request, cancellationToken);
-        _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
-        //TODO rollbackovat i vytvoreni klienta?
-
-        _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
+        await _customerService.CreateCustomer(createCustomerRequest, cancellationToken);
     }
 
     private readonly IRollbackBag _bag;
