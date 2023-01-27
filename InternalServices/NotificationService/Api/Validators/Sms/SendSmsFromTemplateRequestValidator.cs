@@ -28,8 +28,21 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SendSmsFrom
         RuleFor(request => request.Placeholders)
             .NotNull()
                 .WithErrorCode(ErrorCodes.SendSmsFromTemplate.PlaceholdersRequired)
-                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} required.");
-        
-        // todo: validate placeholders
+                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} required.")
+            .Must(placeholders =>
+            {
+                return placeholders.Select(p => p.Value).All(p => p.Length > 0);
+            })
+                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.PlaceholdersInvalid)
+                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} must contain non-empty values.")
+            .Must(placeholders =>
+            {
+                var totalCount = placeholders.Count;
+                var uniqueCount = placeholders.Select(p => p.Key).Distinct().Count();
+
+                return totalCount == uniqueCount;
+            })
+                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.PlaceholdersInvalid)
+                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} must contain unique keys.");
     }
 }
