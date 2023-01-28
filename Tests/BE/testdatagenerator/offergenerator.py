@@ -18,19 +18,21 @@ from loan_purposes_eval import loan_purposes_eval
 #Nultý prvek seznamu musí být typu PipelineRoot. Ten inicializuje výchozí dokument.
 pipe=next=Pipeline_root()
 
+
 #Normální/americká hypotéka
-loan_kind=next=Attribute_iterator("LoanKindId",next,[2000,2001])
+product_type=next=Attribute_iterator("ProductTypeId",next,[20001,20010])
 
 #Ve variantě s nemovitostí/bez
-product_type=next=Attribute_iterator("ProductTypeId",next,[20001,20010])
+loan_kind=next=Attribute_iterator("LoanKindId",next,[2000,2001])
+
 #Americká hypotéka bez nemovitosti není validní kombinace
-product_type.register_filter(lambda doc: not (doc['LoanKindId']==2001 and doc['ProductTypeId']==20010))
+loan_kind.register_filter(lambda doc: not (doc['LoanKindId']==2001 and doc['ProductTypeId']==20010))
 
 #Zkusíme pro hodnotu zástavy 4.000.000Kč a 5.500.000Kč
 collateral_amount=next=Attribute_iterator("CollateralAmount",next,[4000000,5500000])
 #Aby nevzniklo příliš mnoho kombinací, vyzkoušíme pouze hypotéku s nemovitostí se zástavou 5.500.000Kč
 #a hypotéku bez nemovitosti se zástavou 4.000.000Kč (kombinace nultý a prvním a první s nultým elementem pole)
-collateral_amount.register_filter(lambda doc: doc['__ProductTypeId']['count']+doc['__CollateralAmount']['count']==1)
+collateral_amount.register_filter(lambda doc: doc['__LoanKindId']['count']+doc['__CollateralAmount']['count']==1)
 
 #Poskytneme úvěry na 80% zástavy +/- 1Kč a 90% zástavy +/- 1Kč
 loan_amount=next=Attribute_iterator("LoanAmount",next,[(80,-1),(80,0),(80,1),(90,-1),(90,0),(90,1)])
@@ -75,7 +77,7 @@ ma_user_vip.register_filter(lambda doc: doc["__"]["mainCase"] or ((doc["Marketin
 flag_main=next=Flag("mainCase",next,lambda doc: doc["__"]["mainCase"] and ((doc["MarketingActions"]["Domicile"]) and (doc["MarketingActions"]["HealthRiskInsurance"]) and (doc["MarketingActions"]["RealEstateInsurance"]) and (not doc["MarketingActions"]["IncomeLoanRatioDiscount"]) and (not doc["MarketingActions"]["UserVip"]) ))
 
 #Vybereme jeden případ americké hypotéky, pro který chceme otestovat simulaci s garancí 20 a 45 dní zpětně
-flag_main=next=Flag("ameriCase",next,lambda doc:(doc["LoanKindId"]==2001 and len(doc["LoanPurposes"])==2 and doc["LoanPurposes"][0]["LoanPurposeId"]==201 and doc["LoanPurposes"][1]["LoanPurposeId"]==210))
+flag_main=next=Flag("ameriCase",next,lambda doc:(doc["ProductTypeId"]==20010 and len(doc["LoanPurposes"])==2 and doc["LoanPurposes"][0]["LoanPurposeId"]==201 and doc["LoanPurposes"][1]["LoanPurposeId"]==210))
 guarantee_date_from=next=Attribute_iterator('GuaranteeDateFrom',next,[str(date.today()),str(date.today()-timedelta(20)),str(date.today()-timedelta(45))])
 #Simulaci s garancí 20 a 45 dní zpětně otestujeme pro hlavní případ a vybraný případ amarické hypotéky
 guarantee_date_from.register_filter(lambda doc:doc["__"]["mainCase"] or doc["__"]["ameriCase"] or doc["__GuaranteeDateFrom"]["count"]==0)

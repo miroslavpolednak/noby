@@ -16,13 +16,13 @@ def loan_purposes_eval(doc,val):
     lps=0
     match val:
         case "AmVse":
-            if(doc["LoanKindId"]==2001):
+            if(doc["ProductTypeId"]==20010):
                 lps=create_loan_purposes(doc["LoanAmount"],[(201,0.2),(210,0.8)])
         case "Splaceni":
-            if((doc["LoanKindId"]==2001) or doc["__"]["mainCase"]):
+            if((doc["ProductTypeId"]==20010) or doc["__"]["mainCase"]):
                 lps=create_loan_purposes(doc["LoanAmount"],[(201,1)])
         case "Koupe":
-            if((doc["LoanKindId"]==2000) or doc["__"]["mainCase"]):
+            if((doc["ProductTypeId"]==20001) or doc["__"]["mainCase"]):
                 lps=create_loan_purposes(doc["LoanAmount"],[(202,1)])
         case "Vystavba":
             if(doc["__"]["mainCase"]):
@@ -43,7 +43,7 @@ def loan_purposes_eval(doc,val):
             if(doc["__"]["mainCase"]):
                 lps=create_loan_purposes(doc["LoanAmount"],[(209,1)])
         case "Neucel":
-            if((doc["LoanKindId"]==2001) or doc["__"]["mainCase"]):
+            if((doc["ProductTypeId"]==20010) or doc["__"]["mainCase"]):
                 lps=create_loan_purposes(doc["LoanAmount"],[(210,1)])
         case "2a":
             if(doc["__"]["mainCase"]):
