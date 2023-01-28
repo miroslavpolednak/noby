@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using NOBY.Api.Endpoints.Test.Rollback;
+using System.Threading;
 
 namespace NOBY.Api.Endpoints.Test;
 
@@ -22,6 +23,18 @@ public class TestController : ControllerBase
     public async Task T2()
     {
         throw new CisNotFoundException(111, "moje chybova hlaska");
+    }
+
+    [HttpGet("t3")]
+    public async Task T3()
+    {
+        var list = new List<CIS.Infrastructure.gRPC.CisTypes.Identity>
+        {
+            new CIS.Infrastructure.gRPC.CisTypes.Identity(951061749, CIS.Foms.Enums.IdentitySchemes.Kb),
+            new CIS.Infrastructure.gRPC.CisTypes.Identity(300522530, CIS.Foms.Enums.IdentitySchemes.Mp)
+        };
+        var notification = new Notifications.MainCustomerUpdatedNotification(2987188, 45, 60, list);
+        await _mediator.Publish(notification);
     }
 
     private readonly IHttpContextAccessor _context;
