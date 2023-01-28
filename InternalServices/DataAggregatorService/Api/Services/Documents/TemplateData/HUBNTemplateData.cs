@@ -23,12 +23,12 @@ internal class HUBNTemplateData : AggregatedData
 
     public IEnumerable<string> LoanRealEstates => GetLoanRealEstates();
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
+    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
-        _countries = await codebookService.Countries();
-        _loanPurposes = await codebookService.LoanPurposes();
-        _realEstateTypes = await codebookService.RealEstateTypes();
-        _purchaseTypes = await codebookService.RealEstatePurchaseTypes();
+        _countries = await codebookService.Countries(cancellationToken);
+        _loanPurposes = await codebookService.LoanPurposes(cancellationToken);
+        _realEstateTypes = await codebookService.RealEstateTypes(cancellationToken);
+        _purchaseTypes = await codebookService.RealEstatePurchaseTypes(cancellationToken);
     }
 
     private string FormatAddress(GrpcAddress? address)
@@ -44,7 +44,7 @@ internal class HUBNTemplateData : AggregatedData
     private IEnumerable<string> GetLoanPurposes() =>
         SalesArrangement.HUBN
                         .LoanPurposes
-                        .Join(_loanPurposes, x => x.LoanPurposeId, y => y.Id, (_, y) => y.Name);
+                        .Join(_loanPurposes.Where(l => l.MandantId == 2), x => x.LoanPurposeId, y => y.Id, (_, y) => y.Name);
 
     private IEnumerable<string> GetLoanRealEstates()
     {
@@ -54,8 +54,8 @@ internal class HUBNTemplateData : AggregatedData
             select new
             {
                 LoanRealEstate = l,
-                RealEstateTypeName = r.Name,
-                PurchaseTypeName = p.Name
+                RealEstateTypeName = r.Name.Trim(),
+                PurchaseTypeName = p.Name.Trim()
             };
 
         return realEstates.Select(r => r.LoanRealEstate.IsCollateral

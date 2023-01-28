@@ -30,7 +30,7 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
     public string? CodebtorMaritalStatus => HouseholdCodebtor?.Household.Data.AreBothPartnersDeptors == true ? $"{GetMaritalStatus(CodebtorCustomer)} | druh/družka" : GetMaritalStatus(CodebtorCustomer);
 
     public LoanApplicationIncome DebtorIncome => new(CustomerOnSaDebtor);
-
+    
     public LoanApplicationIncome? CodebtorIncome => CustomerOnSaCodebtor is null ? null : new LoanApplicationIncome(CustomerOnSaCodebtor);
 
     public LoanApplicationObligation DebtorObligation => new(CustomerOnSaDebtor);
@@ -46,12 +46,12 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
     public string HeaderHouseholdExpenses => CustomerOnSaCodebtor is null ? "Výdaje domácnosti žadatele (měsíčně)" : "Výdaje domácnosti žadatele a spolužadatele (měsíčně)";
 
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
+    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
-        await base.LoadCodebooks(codebookService);
+        await base.LoadCodebooks(codebookService, cancellationToken);
 
-        _drawingTypes = await codebookService.DrawingTypes();
-        _drawingDurations = await codebookService.DrawingDurations();
+        _drawingTypes = await codebookService.DrawingTypes(cancellationToken);
+        _drawingDurations = await codebookService.DrawingDurations(cancellationToken);
     }
 
     public override async Task LoadAdditionalData(CancellationToken cancellationToken)

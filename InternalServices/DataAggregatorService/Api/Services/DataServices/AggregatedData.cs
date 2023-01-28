@@ -43,7 +43,7 @@ internal class AggregatedData
 
     public DateTime CurrentDateTime => DateTime.Now;
 
-    public virtual Task LoadCodebooks(ICodebookServiceClients codebookService) => Task.CompletedTask;
+    public virtual Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken) => Task.CompletedTask;
 
     public virtual Task LoadAdditionalData(CancellationToken cancellationToken) => Task.CompletedTask;
 }

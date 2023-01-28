@@ -304,7 +304,7 @@ public sealed class LoanPurposeObject
     /// <summary>
     /// Komentář k popisu změny na stávajících účelech úvěru
     /// </summary>
-    public DateTime? LoanPurposesComment { get; set; }
+    public string? LoanPurposesComment { get; set; }
 }
 
 /// <summary>

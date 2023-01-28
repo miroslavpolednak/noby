@@ -5,7 +5,8 @@ using DomainServices.CodebookService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
-internal class ServiceFormData : AggregatedData, IFormData
+[TransientService, SelfService]
+internal class ServiceFormData : AggregatedData
 {
     private List<GenericCodebookItem> _academicDegreesBefore = null!;
 
@@ -27,10 +28,8 @@ internal class ServiceFormData : AggregatedData, IFormData
 
     public bool IsAgent => SalesArrangement.Drawing.Agent is not null;
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
+    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
-        _academicDegreesBefore = await codebookService.AcademicDegreesBefore();
+        _academicDegreesBefore = await codebookService.AcademicDegreesBefore(cancellationToken);
     }
-
-    public Task LoadFormSpecificData(CancellationToken cancellationToken) => Task.CompletedTask;
 }

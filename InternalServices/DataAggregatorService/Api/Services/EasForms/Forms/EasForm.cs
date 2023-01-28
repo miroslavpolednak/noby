@@ -1,20 +1,20 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
-using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Json;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms;
 
 internal abstract class EasForm
 {
-    protected EasForm(IFormData formData)
+    protected EasForm(AggregatedData formData)
     {
         FormData = formData;
     }
 
-    public IFormData FormData { get; }
+    public AggregatedData FormData { get; }
     
     public abstract IEnumerable<Form> BuildForms(IEnumerable<EasFormSourceField> sourceFields, IEnumerable<DynamicFormValues> dynamicFormValues);
 
