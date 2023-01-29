@@ -59,7 +59,7 @@ internal sealed class CreateProductHandler
         // ma klient v konsDb KB identitu? pokud ne, tak ho updatuj
         else if (konsDbCustomer.Identities.Any(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
         {
-            await updateClientInKonsDb(konsDbCustomer, mpIdentity!, kbIdentity, cancellationToken);
+            //await updateClientInKonsDb(konsDbCustomer, mpIdentity!, kbIdentity, cancellationToken);
         }
 
         // vytovrit produkt
