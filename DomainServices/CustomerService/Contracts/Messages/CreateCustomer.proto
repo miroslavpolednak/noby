@@ -6,7 +6,7 @@ import "Identity.proto";
 import "Messages/NaturalPerson.proto";
 import "Messages/IdentificationDocument.proto";
 import "GrpcAddress.proto";
-import "Messages/Contact.proto";
+import "Messages/Contacts.proto";
 import "Mandants.proto";
 
 message CreateCustomerRequest {
@@ -20,7 +20,10 @@ message CreateCustomerRequest {
 
 	repeated cis.types.GrpcAddress Addresses = 5;
 
-	repeated Contact Contacts = 6;
+	repeated oneof Contacts  {
+		MobilePhone Mobile = 20;
+		EmailAddress Email = 21;
+	}
 
 	cis.types.Mandants Mandant = 7;
 }
