@@ -20,4 +20,9 @@ internal class EasServiceForm : EasForm
             Json = CreateJson(group.AsEnumerable())
         });
     }
+
+    public override void SetFormResponseSpecificData(GetEasFormResponse response)
+    {
+        response.ContractNumber = FormData.Case.Data.ContractNumber;
+    }
 }
