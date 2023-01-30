@@ -68,9 +68,19 @@ Aktuálně podporujeme dva režimy autentizace technického uživatele:
 - **active directory**: ověření uživatele vůči zadanému AD.
 
 ```json
+// hardcoded autentizace
 "CisSecurity": {
   "ServiceAuthentication": {
     "Validator": "StaticCollection"
+  }
+}
+
+// autentizace na AD
+"CisSecurity": {
+  "ServiceAuthentication": {
+    "Validator": "ActiveDirectory",
+    "DomainUsernamePrefix": "vsskb\\",
+    "AdHost": "vsskb.cz"
   }
 }
 ```
