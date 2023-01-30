@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS [dbo].[SalesArrangementHistory]
 GO
 
 CREATE TABLE [dbo].[SalesArrangement](
-	[SalesArrangementId] [int] IDENTITY(1,1) NOT NULL,
+	[SalesArrangementId] [int] IDENTITY(10000,1) NOT NULL,
 	[CaseId] [bigint] NOT NULL,
 	[OfferId] [int] NULL,
 	[ResourceProcessId] [uniqueidentifier] NULL,

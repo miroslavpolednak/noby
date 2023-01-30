@@ -12,16 +12,22 @@ Parser.Default
 
 int runMigration(MigrateOptions o)
 {
+    ArgumentNullException.ThrowIfNullOrEmpty(o.ScriptFolder);
+
+    string folder = o.ScriptFolder;
+    if (o.ScriptFolder.EndsWith('\\') || o.ScriptFolder.EndsWith('/'))
+        folder = o.ScriptFolder[0..^1];
+
     // check folder
-    if (!Directory.Exists(o.ScriptFolder))
+    if (!Directory.Exists(folder))
     {
-        AnsiConsole.MarkupLine($"[bold red]ERROR:[/] Folder [dim]'{o.ScriptFolder}'[/] does not exist.");
+        AnsiConsole.MarkupLine($"[bold red]ERROR:[/] Folder [dim]'{folder}'[/] does not exist.");
         return -3;
     }
 
     var upgradeEngine = DeployChanges.To
         .SqlDatabase(o.ConnecitonString)
-        .WithScriptsFromFileSystem(o.ScriptFolder)
+        .WithScriptsFromFileSystem(folder)
         .LogToConsole()
         .Build();
 
