@@ -27,6 +27,7 @@ int runMigration(MigrateOptions o)
 
     var upgradeEngine = DeployChanges.To
         .SqlDatabase(o.ConnecitonString)
+        .JournalToSqlTable("dbo", "MigrationHistory")
         .WithScriptsFromFileSystem(folder)
         .LogToConsole()
         .Build();
