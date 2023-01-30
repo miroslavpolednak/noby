@@ -30,6 +30,18 @@ public sealed class NobyValidationException
         }.ToImmutableList();
     }
 
+    public NobyValidationException(string exceptionCode, string message, string description)
+        : base(message)
+    {
+        ArgumentNullException.ThrowIfNullOrEmpty(message);
+        ArgumentNullException.ThrowIfNullOrEmpty(description);
+
+        this.Errors = new List<ApiErrorItem>
+        {
+            new ApiErrorItem(exceptionCode, message, description, ApiErrorItemServerity.Error)
+        }.ToImmutableList();
+    }
+
     public NobyValidationException(IEnumerable<ApiErrorItem> errors)
     {
         this.Errors = errors.ToImmutableList();
