@@ -292,7 +292,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
 	ProjectSection(SolutionItems) = preProject
-		DomainServices\CodebookService\DatabaseMigrations\1-initial_creation.sql = DomainServices\CodebookService\DatabaseMigrations\1-initial_creation.sql
+		DomainServices\CodebookService\DatabaseMigrations\001-initial_creation.sql = DomainServices\CodebookService\DatabaseMigrations\001-initial_creation.sql
+		DomainServices\CodebookService\DatabaseMigrations\002-seed.sql = DomainServices\CodebookService\DatabaseMigrations\002-seed.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
