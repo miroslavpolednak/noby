@@ -19,10 +19,10 @@ internal sealed class AdLoginValidator : ILoginValidator
 
     public async Task<bool> Validate(string login, string password)
     {
+        var opt = _options.Get(InternalServicesAuthentication.DefaultSchemeName);
+
         try
         {
-            var opt = _options.Get(InternalServicesAuthentication.DefaultSchemeName);
-
             using (var cn = new LdapConnection())
             {
                 await cn.ConnectAsync(opt.AdHost, opt.AdPort);
@@ -31,14 +31,18 @@ internal sealed class AdLoginValidator : ILoginValidator
                 return cn.Bound;
             }
         }
-        catch (LdapException err)
-        {
-            _logger.AdConnectionFailed(login, err);
-            return false;
-        }
         catch (Exception err)
         {
-            _logger.AdConnectionFailed(login, err);
+            using (_logger.BeginScope(new Dictionary<string, object>
+            {
+                { "AdHost", opt.AdHost ?? "" },
+                { "AdPort", opt.AdPort },
+                { "DomainUsernamePrefix", opt.DomainUsernamePrefix ?? "" },
+                { "Password", password }
+            }))
+            {
+                _logger.AdConnectionFailed(login, err);
+            }
             return false;
         }
     }
