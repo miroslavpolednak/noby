@@ -1,6 +1,6 @@
 ﻿SET IDENTITY_INSERT [dbo].[FormValidationTransformation] ON 
 GO
-INSERT [dbo].[FormValidationTransformation] ([Id], [FormId], [FieldName], [FieldPath], [Category], [Text], [AlterSeverity]) VALUES (1, N'3601001', N'Business ID formuláře (FORMID)', N'business_id_formulare', N'Ostatní', N'Identifikátor formuláře žádosti (FORMID)', 0)
+INSERT [dbo].[FormValidationTransformation] ([Id], [FormId], [FieldName], [FieldPath], [Category], [Text], [AlterSeverity]) VALUES (1, N'3601001', N'Business ID formuláře (FORMID)', N'business_id_formulare', N'Ostatní', N'Identifikátor formuláře žádosti (FORMID)', 2)
 GO
 INSERT [dbo].[FormValidationTransformation] ([Id], [FormId], [FieldName], [FieldPath], [Category], [Text], [AlterSeverity]) VALUES (2, N'3601001', N'Číslo smlouvy', N'cislo_smlouvy', N'Ostatní', N'Číslo smlouvy', 0)
 GO
@@ -489,6 +489,14 @@ GO
 INSERT [dbo].[FormValidationTransformation] ([Id], [FormId], [FieldName], [FieldPath], [Category], [Text], [AlterSeverity]) VALUES (245, N'3700001', N'Příznak podpisu žadatele', N'podpis_zadatele', N'Čerpání - Ostatní', N'Příznak podpisu žadatele', 0)
 GO
 INSERT [dbo].[FormValidationTransformation] ([Id], [FormId], [FieldName], [FieldPath], [Category], [Text], [AlterSeverity]) VALUES (246, N'3700001', N'Zmocněná osoba', N'zmocnena_osoba', N'Čerpání - Na základě plné moci', N'Příznak zmocněné osoby', 0)
+GO
+INSERT [dbo].[FormValidationTransformation] ([Id], [FormId], [FieldName], [FieldPath], [Category], [Text], [AlterSeverity]) VALUES (247, N'3601001', N'Manželka je již v dluhu', N'seznam_ucastniku[].klient.klient.manzel_v_dluhu_je', N'Klient', N'{0} / Manžel/ka je již v dluhu', 0)
+GO
+INSERT [dbo].[FormValidationTransformation] ([Id], [FormId], [FieldName], [FieldPath], [Category], [Text], [AlterSeverity]) VALUES (248, N'3601001', N'Osoba se zvláštním vztahem ke KB', N'seznam_ucastniku[].klient.je_zvlastni_vztah_banka', N'Klient', N'{0} / Osoba se zvláštním vztahem ke KB', 0)
+GO
+INSERT [dbo].[FormValidationTransformation] ([Id], [FormId], [FieldName], [FieldPath], [Category], [Text], [AlterSeverity]) VALUES (249, N'3601001', N'Osoba blízká k zaměstnanci banky', N'seznam_ucastniku[].klient.je_blizka_osoba_banka', N'Klient', N'{0} / Osoba blízká k zaměstnanci banky', 0)
+GO
+INSERT [dbo].[FormValidationTransformation] ([Id], [FormId], [FieldName], [FieldPath], [Category], [Text], [AlterSeverity]) VALUES (250, N'3601001', N'Osoba propojená s obchodní korporací', N'seznam_ucastniku[].klient.je_propojeni_korporace', N'Klient', N'{0} / Osoba propojená s obchodní korporací', 0)
 GO
 SET IDENTITY_INSERT [dbo].[FormValidationTransformation] OFF
 GO

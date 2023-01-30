@@ -9,6 +9,14 @@ public struct ApiErrorItem
         this.Severity = severity;
     }
 
+    public ApiErrorItem(string code, string message, string description, ApiErrorItemServerity severity)
+    {
+        this.ErrorCode = code;
+        this.Message = message;
+        this.Severity = severity;
+        this.Description = description;
+    }
+
     /// <summary>
     /// Kod chyby v rozsahu FE API
     /// </summary>
@@ -18,6 +26,11 @@ public struct ApiErrorItem
     /// Chybova zprava
     /// </summary>
     public string Message { get; set; }
+
+    /// <summary>
+    /// Popis chyby
+    /// </summary>
+    public string? Description { get; set; }
 
     /// <summary>
     /// Zavaznost chyby

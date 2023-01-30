@@ -1,5 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.HouseholdService.Clients;
+using System.Threading;
 using __HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
@@ -11,7 +12,10 @@ internal sealed class UpdateCustomersHandler
     {
         // detail domacnosti - kontrola existence (404)
         var householdInstance = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
-        
+
+        // zkontrolovat, zda neni customer jiz v jine domacnosti
+        await checkDoubledCustomers(householdInstance.SalesArrangementId, request, cancellationToken);
+
         var c1 = await crudCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken);
         var c2 = await crudCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken);
 
@@ -41,6 +45,26 @@ internal sealed class UpdateCustomersHandler
             CustomerOnSAId1 = c1.CustomerOnSAId,
             CustomerOnSAId2 = c2.CustomerOnSAId
         };
+    }
+
+    async Task checkDoubledCustomers(int salesArrangementId, UpdateCustomersRequest request, CancellationToken cancellationToken)
+    {
+        var allHouseholds = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
+        var allCustomers = await _customerOnSAService.GetCustomerList(salesArrangementId, cancellationToken);
+
+        var customers = allHouseholds
+            .Where(t => t.HouseholdId != request.HouseholdId && t.CustomerOnSAId1.HasValue)
+            .Select(t => new { CustomerOnSAId = t.CustomerOnSAId1!.Value, KbId = allCustomers.First(x => x.CustomerOnSAId == t.CustomerOnSAId1).CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId })
+            .Union(allHouseholds
+                .Where(t => t.HouseholdId != request.HouseholdId && t.CustomerOnSAId2.HasValue)
+                .Select(t => new { CustomerOnSAId = t.CustomerOnSAId2!.Value, KbId = allCustomers.First(x => x.CustomerOnSAId == t.CustomerOnSAId2).CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId })
+            );
+
+        if (customers.Any(t => t.CustomerOnSAId == request.Customer1?.CustomerOnSAId || t.CustomerOnSAId == request.Customer2?.CustomerOnSAId))
+            throw new NOBY.Infrastructure.ErrorHandling.NobyValidationException("90005", "The same CustomerOnSAId already exist in another household");
+
+        if (customers.Any(t => t.CustomerOnSAId == request.Customer1?.Identity?.Id || t.CustomerOnSAId == request.Customer2?.Identity?.Id))
+            throw new NOBY.Infrastructure.ErrorHandling.NobyValidationException("90005", "The same KBID already exist in another household");
     }
 
     async Task<(int? CustomerOnSAId, IEnumerable<CIS.Infrastructure.gRPC.CisTypes.Identity>? Identities, bool CancelSigning)> crudCustomer(
