@@ -1,9 +1,10 @@
 ﻿using CIS.Foms.Types;
+using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using System.ComponentModel.DataAnnotations;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.Dto;
+namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto;
 
-public sealed class ParametersGeneralChange
+public sealed class GeneralChangeUpdate
 {
     /// <summary>
     /// Identita klienta
@@ -71,56 +72,6 @@ public sealed class ParametersGeneralChange
     public CommentToChangeRequestObject CommentToChangeRequest { get; set; }
 }
 
-public sealed class LoanRealEstateObject
-{
-    /// <summary>
-    /// Sekce aktivní
-    /// </summary>
-    [Required]
-    public bool IsActive { get; set; }
-
-    public List<LoanRealEstateItem>? LoanRealEstates { get; set; }
-}
-
-/// <summary>
-/// Objekt úvěru
-/// </summary>
-public sealed class LoanRealEstateItem
-{
-    /// <summary>
-    /// Typ nemovitosti
-    /// </summary>
-    public int RealEstateTypeId { get; set; }
-
-    /// <summary>
-    /// Účel pořízení nemovitosti
-    /// </summary>
-    public int RealEstatePurchaseTypeId { get; set; }
-}
-
-/// <summary>
-/// Zajištění
-/// </summary>
-public sealed class CollateralObject
-{
-    /// <summary>
-    /// Sekce aktivní
-    /// </summary>
-    [Required]
-    public bool IsActive { get; set; }
-
-    /// <summary>
-    /// Identifikace nemovitosti (přidat zajištění)
-    /// </summary>
-    public string? AddLoanRealEstateCollateral { get; set; }
-
-    /// <summary>
-    /// Identifikace nemovitosti (uvolnit zajištění)
-    /// </summary>
-    public string? ReleaseLoanRealEstateCollateral { get; set; }
-
-}
-
 /// <summary>
 /// Den splácení
 /// </summary>
@@ -131,12 +82,6 @@ public sealed class PaymentDayObject
     /// </summary>
     [Required]
     public bool IsActive { get; set; }
-
-    /// <summary>
-    /// Sjednaný den splácení
-    /// </summary>
-    [Required]
-    public int? AgreedPaymentDay { get; set; }
 
     /// <summary>
     /// Nový den splácení, CIS_DEN_SPLACENI
@@ -154,12 +99,6 @@ public sealed class DrawingDateToObject
     /// </summary>
     [Required]
     public bool IsActive { get; set; }
-
-    /// <summary>
-    /// Sjednaný termín čerpání do
-    /// </summary>
-    [Required]
-    public DateTime? AgreedDrawingDateTo { get; set; }
 
     /// <summary>
     /// Prodloužení konce lhůty čerpání o kolik měsíců
@@ -183,24 +122,6 @@ public sealed class PaymentAccountObject
     /// </summary>
     [Required]
     public bool IsActive { get; set; }
-
-    /// <summary>
-    /// Předčíslí účtu
-    /// </summary>
-    [Required]
-    public string? AgreedPrefix { get; set; }
-
-    /// <summary>
-    /// Číslo účtu
-    /// </summary>
-    [Required]
-    public string? AgreedNumber { get; set; }
-
-    /// <summary>
-    /// Kód banky
-    /// </summary>
-    [Required]
-    public string? AgreedBankCode { get; set; }
 
     /// <summary>
     /// Předčíslí účtu
@@ -245,12 +166,6 @@ public sealed class LoanPaymentAmountObject
     public bool IsActive { get; set; }
 
     /// <summary>
-    /// Aktuální výše měsíční splátky
-    /// </summary>
-    [Required]
-    public decimal? ActualLoanPaymentAmount { get; set; }
-
-    /// <summary>
     /// Nová výše měsíční splátky
     /// </summary>
     public decimal? NewLoanPaymentAmount { get; set; }
@@ -273,12 +188,6 @@ public sealed class DueDateObject
     public bool IsActive { get; set; }
 
     /// <summary>
-    /// Aktuální datum splatnosti
-    /// </summary>
-    [Required]
-    public DateTime? ActualLoanDueDate { get; set; }
-
-    /// <summary>
     /// Nový datum splatnosti
     /// </summary>
     public DateTime? NewLoanDueDate { get; set; }
@@ -288,57 +197,4 @@ public sealed class DueDateObject
     /// </summary>
     [Required]
     public bool ConnectionExtraordinaryPayment { get; set; }
-}
-
-/// <summary>
-/// Účel úvěru
-/// </summary>
-public sealed class LoanPurposeObject
-{
-    /// <summary>
-    /// Sekce aktivní
-    /// </summary>
-    [Required]
-    public bool IsActive { get; set; }
-
-    /// <summary>
-    /// Komentář k popisu změny na stávajících účelech úvěru
-    /// </summary>
-    public string? LoanPurposesComment { get; set; }
-}
-
-/// <summary>
-/// Podmínky čerpání a další podmínky
-/// </summary>
-public sealed class DrawingAndOtherConditionsObject
-{
-    /// <summary>
-    /// Sekce aktivní
-    /// </summary>
-    [Required]
-    public bool IsActive { get; set; }
-
-    /// <summary>
-    /// Komentář ke změně v podmínkách smlouvy
-    /// </summary>
-    public string? CommentToChangeContractConditions { get; set; }
-
-}
-
-/// <summary>
-/// Komentář k žádosti o změnu
-/// </summary>
-public sealed class CommentToChangeRequestObject
-{
-    /// <summary>
-    /// Sekce aktivní
-    /// </summary>
-    [Required]
-    public bool IsActive { get; set; }
-
-    /// <summary>
-    /// Obecný komentář
-    /// </summary>
-    public string? GeneralComment { get; set; }
-
 }
