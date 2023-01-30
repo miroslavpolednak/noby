@@ -11,6 +11,8 @@ DISPATCHES = {
             'other_expense_amount': lambda value: Convertor.to_decimal(value),
         }
 
+JSON_KEYS = ['savingExpenseAmount','insuranceExpenseAmount','housingExpenseAmount','otherExpenseAmount']
+
 class Expenses(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -40,6 +42,9 @@ class Expenses(Base):
 
     def to_grpc(self) -> dict:
        return dict()
+
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 
 # --------------------------------------------------------------------------------------------

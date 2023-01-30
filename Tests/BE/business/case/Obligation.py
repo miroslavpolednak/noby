@@ -15,6 +15,8 @@ DISPATCHES = {
             'correction': lambda value: ObligationCorrection.from_json(value),
         }
 
+JSON_KEYS = ['obligationTypeId', 'installmentAmount', 'loanPrincipalAmount','creditor','correction']
+
 class Obligation(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -37,6 +39,9 @@ class Obligation(Base):
 
     def to_grpc(self) -> dict:
        return dict()
+
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 
 # ?????:

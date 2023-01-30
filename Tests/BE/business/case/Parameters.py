@@ -14,6 +14,8 @@ DISPATCHES = {
             'loan_real_estates': lambda value: LoanRealEstate.from_json_list(value),
         }
 
+JSON_KEYS = ['expectedDateOfDrawing','incomeCurrencyCode','residencyCurrencyCode','contractSignatureTypeId','agent','agentConsentWithElCom','loanRealEstates']
+
 class Parameters(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -33,6 +35,8 @@ class Parameters(Base):
     def to_grpc(self) -> dict:
        return dict()
 
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 # --------------------------------------------------------------------------------------------
     # "parameters": {

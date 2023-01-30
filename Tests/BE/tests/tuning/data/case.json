@@ -1,5 +1,7 @@
 {
     "offer": {
+        "productTypeId":20001,
+        "loanKindId":2000,
         "loanAmount": 5000000,
         "loanDuration": 120,
         "fixedRatePeriod": 60,
@@ -7,7 +9,7 @@
         "paymentDay": 15,
         "statementTypeId": 1,
         "isEmployeeBonusRequested": false,
-        "expectedDateOfDrawing": "2023-01-26T10:09:53.127Z",
+        "expectedDateOfDrawing": "2023-02-20T10:09:53.127Z",
         "withGuarantee": false,
         "financialResourcesOwn": null,
         "financialResourcesOther": null,
@@ -46,7 +48,7 @@
     },
     "households": [
         {
-            "HouseholdType": "Main",
+            "householdTypeId": 1,
             "childrenUpToTenYearsCount": 1,
             "childrenOverTenYearsCount": 1,
             "areCustomersPartners": false,

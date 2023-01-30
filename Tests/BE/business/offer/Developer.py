@@ -10,6 +10,8 @@ DISPATCHES = {
             'new_developer_cin': lambda value: Convertor.to_str(value),
         }
 
+JSON_KEYS = ['developerId','projectId','newDeveloperName','newDeveloperProjectName','newDeveloperCin']
+
 class Developer(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -45,6 +47,9 @@ class Developer(Base):
             NewDeveloperProjectName = Convertor.to_grpc(self.get_value('new_developer_project_name')),
             NewDeveloperCin = Convertor.to_grpc(self.get_value('new_developer_cin')),
         )
+
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 # --------------------------------------------------------------------------------------------
 

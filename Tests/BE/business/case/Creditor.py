@@ -9,6 +9,8 @@ DISPATCHES = {
             'is_external': lambda value: Convertor.to_bool(value),
         }
 
+JSON_KEYS = ['name','isExternal']
+
 class Creditor(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -32,6 +34,8 @@ class Creditor(Base):
     def to_grpc(self) -> dict:
        return dict()
 
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 # ?????:
 # creditorId

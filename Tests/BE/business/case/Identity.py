@@ -9,6 +9,8 @@ DISPATCHES = {
             'scheme': lambda value: Convertor.to_int(value),
         }
 
+JSON_KEYS = ['id','scheme']
+
 class Identity(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -38,6 +40,9 @@ class Identity(Base):
 
     def to_grpc(self) -> dict:
        return dict()
+
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 # --------------------------------------------------------------------------------------------
 #                 "identity": {

@@ -10,6 +10,8 @@ DISPATCHES = {
             'real_estate_purchase_type_id': lambda value: Convertor.to_int(value),
         }
 
+JSON_KEYS = ['realEstateTypeId', 'isCollateral','realEstatePurchaseTypeId']
+
 class LoanRealEstate(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -39,6 +41,9 @@ class LoanRealEstate(Base):
 
     def to_grpc(self) -> dict:
        return dict()
+
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 # --------------------------------------------------------------------------------------------
     #           {

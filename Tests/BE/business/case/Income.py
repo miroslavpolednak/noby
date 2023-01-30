@@ -13,6 +13,8 @@ DISPATCHES = {
             'currency_code': lambda value: Convertor.to_str(value),
         }
 
+JSON_KEYS = ['incomeSource','hasProofOfIncome','incomeTypeId','sum','currencyCode']
+
 class Income(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -35,6 +37,9 @@ class Income(Base):
 
     def to_grpc(self) -> dict:
        return dict()
+
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 
 # --------------------------------------------------------------------------------------------

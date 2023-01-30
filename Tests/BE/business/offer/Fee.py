@@ -9,6 +9,8 @@ DISPATCHES = {
             'discount_percentage': lambda value: Convertor.to_decimal(value),
         }
 
+JSON_KEYS = ['feeId', 'discountPercentage']
+
 class Fee(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -40,3 +42,6 @@ class Fee(Base):
             FeeId = Convertor.to_grpc(self.get_value('fee_id')),
             DiscountPercentage = Convertor.to_grpc(self.get_value('discount_percentage')),
         )
+
+    def _get_json_keys(self):
+        return JSON_KEYS

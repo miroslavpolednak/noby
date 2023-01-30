@@ -9,6 +9,8 @@ DISPATCHES = {
             'sum': lambda value: Convertor.to_decimal(value),
         }
 
+JSON_KEYS = ['id', 'sum']
+
 class LoanPurpose(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -47,6 +49,10 @@ class LoanPurpose(Base):
             LoanPurposeId = Convertor.to_grpc(self.get_value('id')),
             Sum = Convertor.to_grpc(self.get_value('sum')),
         )
+
+    def _get_json_keys(self):
+        return JSON_KEYS
+
 
 # --------------------------------------------------------------------------------------------
 

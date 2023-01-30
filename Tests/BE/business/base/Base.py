@@ -1,8 +1,12 @@
 from typing import List
 
+from common import Convertor
+
+from .IToJsonValue import IToJsonValue
+
 CHECK_ATTR_DISPATCH: bool = False
 
-class Base():
+class Base(IToJsonValue):
     def __init__(self, dispatches: dict, js_dict: dict = None):
 
         assert dispatches is not None, f'Dispatches must be provided!'
@@ -91,4 +95,23 @@ class Base():
         dispatch = self.__dispatches[k_next]
         dispatch_key = dispatch['key']
         attr = f'_{self.__class__.__name__}__{dispatch_key}'
-        return getattr(self, attr)        
+        return getattr(self, attr)
+
+
+    def _get_json_keys(self) -> List[str]:
+        raise NotImplementedError(f"Method '{self.class_name}._get_json_keys' not implemented!")
+
+
+    def to_json_value(self) -> dict:
+
+        keys: List[str] = self._get_json_keys()
+
+        req = {}
+
+        for k in keys:
+            print(k)
+            value = Convertor.to_json_value(self.get_value(k))
+            req[k] = value
+
+        return req
+

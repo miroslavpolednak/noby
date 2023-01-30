@@ -10,6 +10,8 @@ DISPATCHES = {
             'user_vip': lambda value: Convertor.to_bool(value),
         }
 
+JSON_KEYS = ['domicile', 'healthRiskInsurance', 'realEstateInsurance', 'incomeLoanRatioDiscount', 'userVip']
+
 class MarketingActions(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -44,6 +46,8 @@ class MarketingActions(Base):
             UserVip = Convertor.to_grpc(self.get_value('user_vip')),
         )        
 
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 # --------------------------------------------------------------------------------------------
 

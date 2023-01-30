@@ -7,6 +7,8 @@ DISPATCHES = {
             'frequency': lambda value: Convertor.to_int(value),
         }
 
+JSON_KEYS = ['sum', 'frequency']
+
 class Insurance(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -41,6 +43,9 @@ class Insurance(Base):
             Frequency = Convertor.to_grpc(self.get_value('frequency')),
         )
     
+    def _get_json_keys(self):
+        return JSON_KEYS
+
 # --------------------------------------------------------------------------------------------
 
 # class Insurance():

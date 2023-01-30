@@ -2,6 +2,8 @@ from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
 
+from business.base.IToJsonValue import IToJsonValue
+
 class Convertor():
 
     # @staticmethod
@@ -68,6 +70,30 @@ class Convertor():
             return datetime.fromisoformat(value)
             
         raise ValueError(f'DATE conversion not supported [{type(value)}({value})]')
+
+
+    @staticmethod
+    def to_json_value(value: object):
+
+        if (value is None) or isinstance(value, str) or isinstance(value, int):
+            return value
+
+        if isinstance(value, Decimal):
+            return float(value)
+
+        if isinstance(value, datetime):
+            return value.date().isoformat()
+
+        if isinstance(value, UUID):
+            return str(value)
+
+        if isinstance(value, IToJsonValue):
+            return value.to_json_value()
+        
+        if isinstance(value, list):
+            return list(map(lambda i: Convertor.to_json_value(i), value))
+       
+        raise ValueError(f'JSON conversion not supported [{type(value)}({value})]')
 
 
     @staticmethod

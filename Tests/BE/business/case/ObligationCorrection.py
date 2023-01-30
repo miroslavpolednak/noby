@@ -11,6 +11,8 @@ DISPATCHES = {
             'credit_card_limit_correction': lambda value: Convertor.to_decimal(value),
         }
 
+JSON_KEYS = ['correctionTypeId', 'installmentAmountCorrection', 'loanPrincipalAmountCorrection','creditCardLimitCorrection']
+
 class ObligationCorrection(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -34,6 +36,8 @@ class ObligationCorrection(Base):
     def to_grpc(self) -> dict:
        return dict()
 
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 # --------------------------------------------------------------------------------------------
 #                         "correction": {

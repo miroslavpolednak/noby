@@ -20,6 +20,8 @@ DISPATCHES = {
             'obligations': lambda value: Obligation.from_json_list(value),
         }
 
+JSON_KEYS = ['firstName','lastName','dateOfBirth','phoneNumberForOffer','emailForOffer','roleId','identity','incomes','obligations']
+
 class Customer(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -42,6 +44,9 @@ class Customer(Base):
 
     def to_grpc(self) -> dict:
        return dict()
+
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 
 # ?????:

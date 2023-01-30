@@ -17,6 +17,8 @@ DISPATCHES = {
             'expenses': lambda value: Expenses.from_json(value), 
         }
 
+JSON_KEYS = ['householdTypeId','childrenUpToTenYearsCount','childrenOverTenYearsCount','areCustomersPartners','customer1','customer2''expenses']
+
 class Household(Base):
 
     def __init__(self, js_dict: dict = None):
@@ -39,6 +41,9 @@ class Household(Base):
 
     def to_grpc(self) -> dict:
        return dict()
+
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 
 # --------------------------------------------------------------------------------------------

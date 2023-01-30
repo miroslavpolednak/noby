@@ -8,23 +8,20 @@ from typing import List
 from business.codebooks import EProductType, ELoanKind, EHouseholdType
 from fe_api import FeAPI
 
+from business.base import Base
 from business.offer import Offer
 from business.case import Case
 
+from tests.tuning.OptionsResolver import OptionsResolver
 from tests.tuning.data import load_file_json
-
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# DATA
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# EProductType:     Mortgage, MortgageBridging, MortgageWithoutIncome, MortgageNonPurposePart, MortgageAmerican
-# ELoanKind:        Standard, MortgageWithoutRealty
-# EHouseholdType:   Main, Codebtor, Garantor
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 test_data: dict = load_file_json()
 #print(test_data)
 
 js_dict = test_data['offer']
+
+#print(','.join(list(map(lambda k: f"'{k}'", list(js_dict.keys())))) )
+
 offer = Offer.from_json(js_dict)
 print(offer)
 print(offer.to_grpc())
@@ -39,74 +36,65 @@ js_dict = dict(
 case = Case.from_json(js_dict)
 print(case)
 
+case = Case.from_json(test_data)
+print(case)
 
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# OPTION RESOLVERS
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-def to_date(days: int = 0) -> str:
-    from datetime import datetime, timedelta
 
-    date: datetime = datetime.today() + timedelta(days=days)
+# --------------------------------------------------------------------------------------------------------------
+# FeAPI - process OFFER
+# --------------------------------------------------------------------------------------------------------------
 
-    #return date.isoformat()
-    return date.strftime('%Y-%m-%d')
+offer = case.get_value('offer')
+req = offer.to_json_value()
+#print(req)
 
-def to_product_type_id(product_type) -> int:
-    e = EProductType[product_type]
-    return e.value
+#req = test_data['offer']
+#print(test_data['offer'])
 
-def to_loan_kind_id(loan_kind) -> int:
-    e = ELoanKind[loan_kind]
-    return e.value
+# call FE API endpoint 
+print(f'process_offer.req [{req}]')
+res = FeAPI.Offer.simulate_mortgage(req)
+print(f'process_offer.res [{res}]')
 
-def to_household_type_id(household_type) -> int:
-    e = EHouseholdType[household_type]
-    return e.value
+offer_id = res['offerId']
+print(offer_id)
 
-def resolve_options(options: dict, option_resolvers: dict) -> dict:
 
-    if (options is None):
-        return None
+# response serialization & persistence
+#res_str = json.dumps(res)
 
-    result = {}
+# --------------------------------------------------------------------------------------------------------------
+# FeAPI - process CASE
+# --------------------------------------------------------------------------------------------------------------
 
-    for k in options.keys():
-        assert k in option_resolvers.keys(), f'Option resolver not specified [{k}]'
-        target_key = option_resolvers[k]['target_key']
-        fce = option_resolvers[k]['fce']
-        value_in = options[k]
-        value_out = fce(value_in)
-        result[target_key] = value_out
+households = case.get_value('households')
+household_main = list(filter(lambda i: i.get_value('householdTypeId') == 1, households))[0]
+household_main_customer1 = household_main.get_value('customer1')
 
-    return result          
+print(households)
+print(household_main)
+print(household_main_customer1)
 
-option_resolvers_household = {
-    'HouseholdType': dict(fce = lambda value: to_household_type_id(value), target_key = 'householdTypeId'),
-}
+customer_json = household_main_customer1.to_json_value()
+print(customer_json)
 
-option_resolvers_offer = {
-    'ExpectedDateOfDrawing': dict(fce = lambda value: to_date(value), target_key = 'expectedDateOfDrawing'),
-    'ProductType': dict(fce = lambda value: to_product_type_id(value), target_key = 'productTypeId'),
-    'LoanKind': dict(fce = lambda value: to_loan_kind_id(value), target_key = 'loanKindId'),
-}
+req = dict(
+    offerId = offer_id,
+    firstName = customer_json['firstName'],
+    lastName = customer_json['lastName'],
+    dateOfBirth = customer_json['dateOfBirth'],
+    phoneNumberForOffer = customer_json['phoneNumberForOffer'],
+    emailForOffer = customer_json['emailForOffer'],
+    identity = customer_json['identity'],
+)
 
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# call FE API endpoint
+print(f'process_case.req [{req}]')
+res = FeAPI.Offer.create_case(req)
+print(f'process_case.res [{res}]')
 
-class TestProcessor():
+#{'offerId': 691, 'firstName': 'JAN', 'lastName': 'NOVÁK', 'dateOfBirth': '1980-01-01T00:00:00', 'phoneNumberForOffer': '+420 777543234', 'emailForOffer': 'novak@testcm.cz', 'identity': {'id': 0, 'scheme': 0}}
 
-    __instance = None
-
-    def __init__(self):
-        self.__data = test_data
-        
-    @staticmethod
-    def instance():
-        if (TestProcessor.__instance is None):
-            TestProcessor.__instance = TestProcessor()
-        return TestProcessor.__instance
-        
-    def process_case(self):
-        print(self.__data)
 
 
 
