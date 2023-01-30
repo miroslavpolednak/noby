@@ -55,6 +55,8 @@ internal class EasProductForm : EasForm
 
     private IEnumerable<Form> CreateForms(EasFormType type, IEnumerable<EasFormSourceField> sourceFields, DynamicFormValues? dynamicFormValues)
     {
+        ProductData.DynamicFormValues = dynamicFormValues;
+
         if (type == EasFormType.F3602)
             return CreateF3602Form(sourceFields.ToList(), dynamicFormValues);
 
