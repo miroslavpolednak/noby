@@ -54,12 +54,26 @@ internal sealed class CreateProductHandler
         // klient nenalezen v konsDb, zaloz ho tam
         if (konsDbCustomer is null)
         {
-            await createClientInKonsDb(kbIdentity, mpIdentity!, cancellationToken);
+            try
+            {
+                await createClientInKonsDb(kbIdentity, mpIdentity!, cancellationToken);
+            }
+            catch 
+            {
+                _logger.LogError("MpDigi createClient failed");
+            }
         }
         // ma klient v konsDb KB identitu? pokud ne, tak ho updatuj
         else if (konsDbCustomer.Identities.Any(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
         {
-            //await updateClientInKonsDb(konsDbCustomer, mpIdentity!, kbIdentity, cancellationToken);
+            try
+            {
+                await updateClientInKonsDb(konsDbCustomer, mpIdentity!, kbIdentity, cancellationToken);
+            }
+            catch 
+            {
+                _logger.LogError("MpDigi updateClient failed");
+            }
         }
 
         // vytovrit produkt
