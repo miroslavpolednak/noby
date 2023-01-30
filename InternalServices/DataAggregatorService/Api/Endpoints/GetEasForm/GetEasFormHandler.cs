@@ -19,9 +19,13 @@ internal class GetEasFormHandler : IRequestHandler<GetEasFormRequest, GetEasForm
 
         var easForm = await _easFormFactory.Create(request.SalesArrangementId, config, cancellationToken);
 
-        return new GetEasFormResponse
+        var response = new GetEasFormResponse
         {
             Forms = { easForm.BuildForms(config.SourceFields, request.DynamicFormValues) }
         };
+
+        easForm.SetFormResponseSpecificData(response);
+
+        return response;
     }
 }

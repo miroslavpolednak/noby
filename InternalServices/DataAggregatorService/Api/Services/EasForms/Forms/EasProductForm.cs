@@ -6,6 +6,8 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms
 
 internal class EasProductForm : EasForm
 {
+    private ProductFormData ProductData => (ProductFormData)FormData;
+
     public EasProductForm(ProductFormData formData) : base(formData)
     {
     }
@@ -16,6 +18,39 @@ internal class EasProductForm : EasForm
 
         return sourceFields.GroupBy(f => f.FormType)
                            .SelectMany(group => CreateForms(group.Key, group.AsEnumerable(), GetDynamicFormValues(dynamicFromValuesEnumerator)));
+    }
+
+    public override void SetFormResponseSpecificData(GetEasFormResponse response)
+    {
+        response.ContractNumber = FormData.SalesArrangement.ContractNumber;
+
+        response.Product = new ProductData
+        {
+            CustomersOnSa =
+            {
+                ProductData.HouseholdData.CustomersOnSa.Select(x => new CustomerOnSa
+                {
+                    CustomerOnSaId = x.CustomerOnSAId,
+                    Identities = { x.CustomerIdentifiers }
+                })
+            },
+            Households =
+            {
+                ProductData.HouseholdData.Households.Select(x => new Household
+                {
+                    HouseholdId = x.HouseholdId,
+                    HouseholdTypeId = (int)x.HouseholdType,
+                    CustomerOnSaId1 = x.CustomerOnSaId1,
+                    CustomerOnSaId2 = x.CustomerOnSaId2
+                })
+            },
+            EmployementIncomes = { ProductData.HouseholdData.Incomes.Where(i => i.Value.IncomeTypeId == (int)CustomerIncomeTypes.Employement).Select(x => new EmployementIncome
+            {
+                IncomeId = x.Value.IncomeId,
+                IsInProbationaryPeriodHasValue = x.Value.Employement.Job.IsInProbationaryPeriod,
+                IsInTrialPeriodHasValue = x.Value.Employement.Job.IsInTrialPeriod
+            }) }
+        };
     }
 
     private IEnumerable<Form> CreateForms(EasFormType type, IEnumerable<EasFormSourceField> sourceFields, DynamicFormValues? dynamicFormValues)
@@ -41,7 +76,7 @@ internal class EasProductForm : EasForm
 
         foreach (var householdType in householdTypes)
         {
-            if (!((ProductFormData)FormData).HouseholdData.TrySetHousehold(householdType))
+            if (!(ProductData).HouseholdData.TrySetHousehold(householdType))
                 continue;
 
             yield return new Form
