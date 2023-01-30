@@ -9,7 +9,7 @@ import "Messages/Case.proto";
 import "Messages/LinkOwnerToCase.proto";
 import "Messages/UpdateCaseData.proto";
 import "Messages/UpdateCaseState.proto";
-import "Messages/UpdateCaseCustomer.proto";
+import "Messages/UpdateCustomerData.proto";
 import "Messages/GetCaseDetail.proto";
 import "Messages/GetCaseCounts.proto";
 import "Messages/DeleteCase.proto";
@@ -30,7 +30,7 @@ service CaseService {
    
    rpc UpdateCaseState (UpdateCaseStateRequest) returns (google.protobuf.Empty);
    
-   rpc UpdateCaseCustomer (UpdateCaseCustomerRequest) returns (google.protobuf.Empty);
+   rpc UpdateCustomerData (UpdateCustomerDataRequest) returns (google.protobuf.Empty);
 
    rpc GetCaseCounts (GetCaseCountsRequest) returns (GetCaseCountsResponse);
 

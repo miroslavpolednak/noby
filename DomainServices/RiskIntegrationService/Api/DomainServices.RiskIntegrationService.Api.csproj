@@ -24,15 +24,14 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.179" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.179" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
 		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
-		<ProjectReference Include="..\..\..\CIS\ExternalServicesHelpers\CIS.ExternalServicesHelpers.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
@@ -40,6 +39,13 @@
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />
+		<ProjectReference Include="..\ExternalServices.Common\DomainServices.RiskIntegrationService.ExternalServices.Common.csproj" />
+		<ProjectReference Include="..\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj" />
+		<ProjectReference Include="..\ExternalServices.CustomerExposure\DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.csproj" />
+		<ProjectReference Include="..\ExternalServices.LoanApplicationAssessment\DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment.csproj" />
+		<ProjectReference Include="..\ExternalServices.LoanApplication\DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.csproj" />
+		<ProjectReference Include="..\ExternalServices.RiskBusinessCase\DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.csproj" />
+		<ProjectReference Include="..\ExternalServices.RiskCharacteristics\DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.csproj" />
 	</ItemGroup>
 
 </Project>

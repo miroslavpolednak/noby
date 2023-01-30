@@ -35,6 +35,16 @@ internal sealed class UpdateDetailWithChangesHandler
         ModelComparers.CompareObjects(request.Addresses, originalModel.Addresses, "Addresses", delta);
         ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
 
+        // https://jira.kb.cz/browse/HFICH-4200
+        // docasne reseni nez se CM rozmysli jak na to
+        if (customerOnSA.CustomerAdditionalData is null)
+            customerOnSA.CustomerAdditionalData = new DomainServices.HouseholdService.Contracts.CustomerAdditionalData();
+        customerOnSA.CustomerAdditionalData.LegalCapacity = new()
+        {
+            RestrictionTypeId = request.LegalCapacity?.RestrictionTypeId,
+            RestrictionUntil = request.LegalCapacity?.RestrictionUntil
+        };
+
         string? finalJson = null;
         if (((IDictionary<string, Object>)delta).Count > 0)
         {

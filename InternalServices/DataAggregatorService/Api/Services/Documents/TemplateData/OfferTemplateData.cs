@@ -87,11 +87,11 @@ internal class OfferTemplateData : AggregatedData
         }
     }
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
+    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
-        _productTypes = await codebookService.ProductTypes();
-        _loanKinds = await codebookService.LoanKinds();
-        _loanPurposes = await codebookService.LoanPurposes();
+        _productTypes = await codebookService.ProductTypes(cancellationToken);
+        _loanKinds = await codebookService.LoanKinds(cancellationToken);
+        _loanPurposes = await codebookService.LoanPurposes(cancellationToken);
     }
 
     private string GetLoanKindOfferHeader()

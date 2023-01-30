@@ -111,15 +111,15 @@ internal sealed class RealEasClient
         });
     }
 
-    public async Task<CommonResponse?> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate)
+    public async Task<CommonResponse?> AddFirstSignatureDate(int caseId, DateTime firstSignatureDate)
     {
-        _logger.LogDebug("AddFirstSignatureDate inputs: CaseId: {caseId}, LoanId: {loanId}, FirstSignatureDate: {firstSignatureDate}", caseId, loanId, firstSignatureDate);
+        _logger.LogDebug("AddFirstSignatureDate inputs: CaseId: {caseId}, LoanId: {loanId}, FirstSignatureDate: {firstSignatureDate}", caseId, caseId, firstSignatureDate);
 
         return await callMethod<CommonResponse?>(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
 
-            var response = await client.Add_FirstSignatureDateAsync(caseId, loanId, firstSignatureDate);
+            var response = await client.Add_FirstSignatureDateAsync(caseId, caseId, firstSignatureDate);
             _logger.LogSerializedObject("AddFirstSignatureDate outputs: ", response.commonResult);
 
             return new CommonResponse(response.commonResult);

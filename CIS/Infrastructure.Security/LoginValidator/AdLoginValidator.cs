@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Novell.Directory.Ldap;
 
 namespace CIS.Infrastructure.Security;
@@ -31,6 +30,11 @@ internal sealed class AdLoginValidator : ILoginValidator
 
                 return cn.Bound;
             }
+        }
+        catch (LdapException err)
+        {
+            _logger.AdConnectionFailed(login, err);
+            return false;
         }
         catch (Exception err)
         {

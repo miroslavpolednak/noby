@@ -1,0 +1,18 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentOnSAService.StartSigning;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "DocumentOnSA.proto";
+
+
+message StartSigningRequest {
+
+	google.protobuf.Int32Value SalesArrangementId = 1;
+	google.protobuf.Int32Value DocumentTypeId = 2;
+	string SignatureMethodCode = 3;
+}
+
+message StartSigningResponse {
+	DocumentOnSA DocumentOnSa = 1;
+}

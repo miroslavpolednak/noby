@@ -1,7 +1,7 @@
-﻿using CIS.Core.Results;
-using CIS.Core.Security;
+﻿using CIS.Core.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 
 namespace NOBY.Infrastructure.Security;
 
@@ -27,6 +27,13 @@ public sealed class NobyCurrentUserAccessor
                 _user = _httpContext.HttpContext?.User as ICurrentUser;
             return _user;
         }
+    }
+
+    public IEnumerable<Claim> Claims
+    {
+#pragma warning disable CS8603 // Possible null reference return.
+        get => _httpContext!.HttpContext?.User.Claims;
+#pragma warning restore CS8603 // Possible null reference return.
     }
 
     public bool IsAuthenticated => User is not null;

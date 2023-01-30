@@ -39,17 +39,16 @@
 	
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
-    <PackageReference Include="CompareNETObjects" Version="4.78.0" />
+    <PackageReference Include="CompareNETObjects" Version="4.79.0" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.2" />
     <PackageReference Include="Scrutor" Version="4.2.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,6 +60,7 @@
     <ProjectReference Include="..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\DocumentArchiveService\Clients\DomainServices.DocumentArchiveService.Clients.csproj" />
+    <ProjectReference Include="..\..\DomainServices\DocumentOnSAService\Clients\DomainServices.DocumentOnSAService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\OfferService\Clients\DomainServices.OfferService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\ProductService\Clients\DomainServices.ProductService.Clients.csproj" />
@@ -75,8 +75,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Endpoints\Document\GeneralDocument\" />
     <Folder Include="Endpoints\Document\Offer\" />
-    <Folder Include="Endpoints\Document\PaymentSchedule\" />
     <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
     <Folder Include="Endpoints\Document\Shared\DocumentIdManager\" />
   </ItemGroup>

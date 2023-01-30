@@ -27,7 +27,7 @@ internal class LinkModelationHandler
         // update customer
         if (caseInstance.Customer?.Identity is null || caseInstance.Customer.Identity.IdentityId == 0)
         {
-            await _caseService.UpdateCaseCustomer(saInstance.CaseId, new _Ca.CustomerData
+            await _caseService.UpdateCustomerData(saInstance.CaseId, new _Ca.CustomerData
             {
                 DateOfBirthNaturalPerson = request.DateOfBirth,
                 FirstNameNaturalPerson = request.FirstName ?? "",

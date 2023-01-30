@@ -9,5 +9,9 @@ internal enum DataSource
     UserService,
     CustomerService,
     ProductService,
-    OfferPaymentScheduleService
+    OfferPaymentScheduleService,
+    HouseholdService,
+    CustomersOnSa,
+    CustomersOnSaDetail,
+    HouseholdWithCustomersService
 }

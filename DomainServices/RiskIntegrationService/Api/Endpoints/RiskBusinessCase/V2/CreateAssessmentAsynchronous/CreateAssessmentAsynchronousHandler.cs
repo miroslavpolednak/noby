@@ -1,5 +1,5 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
-using _cl = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1;
+using _cl = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssessmentAsynchronous;
 

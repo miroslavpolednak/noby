@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetMortgageOffer;
 
-internal class GetMortgageOfferRequestValidator 
+internal sealed class GetMortgageOfferRequestValidator 
     : AbstractValidator<GetMortgageOfferRequest>
 {
     public GetMortgageOfferRequestValidator()

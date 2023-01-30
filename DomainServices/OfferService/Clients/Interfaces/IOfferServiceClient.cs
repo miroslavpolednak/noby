@@ -7,9 +7,6 @@ public interface IOfferServiceClient
     /// <summary>
     /// Základní data simulace (bez inputs a outputs) 
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[GetOfferResponse] - OK
-    /// </returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10000; Offer #{offerId} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
     Task<GetOfferResponse> GetOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken));
@@ -17,9 +14,6 @@ public interface IOfferServiceClient
     /// <summary>
     /// Získání základních informací o simulaci KB Hypotéky
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[GetMortgageOfferResponse] - OK
-    /// </returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10000; Offer #{offerId} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
     Task<GetMortgageOfferResponse> GetMortgageOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken));
@@ -27,9 +21,6 @@ public interface IOfferServiceClient
     /// <summary>
     /// Získání detailních informací o simulaci KB Hypotéky
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[GetMortgageOfferDetailResponse] - OK
-    /// </returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10000; Offer #{offerId} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
     Task<GetMortgageOfferDetailResponse> GetMortgageOfferDetail(int offerId, CancellationToken cancellationToken = default(CancellationToken));
@@ -37,11 +28,6 @@ public interface IOfferServiceClient
     /// <summary>
     /// Simulace KB Hypotéky
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[Contracts.SimulateMortgageResponse] - OK;
-    /// SimulationServiceErrorResult - chyba z EAS;
-    /// ErrorServiceCallResult - chyba pri request kontrole;
-    /// </returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10002; Default 'PaymentDay' not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10003; ResourceProcessId is missing or is in invalid format</exception>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10004; SimulationInputs are not specified</exception>
@@ -58,9 +44,6 @@ public interface IOfferServiceClient
     /// <summary>
     /// Získání plného splátkového kalendáře KB Hypotéky
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[GetMortgageOfferFPScheduleResponse] - OK
-    /// </returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10000; Offer #{offerId} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
     Task<GetMortgageOfferFPScheduleResponse> GetMortgageOfferFPSchedule(int offerId, CancellationToken cancellationToken = default(CancellationToken));

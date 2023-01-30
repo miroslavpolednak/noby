@@ -1,5 +1,5 @@
-﻿using DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts;
+﻿using DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;
@@ -63,7 +63,7 @@ internal sealed class DtiRequestMapper
     private _C4M.CreditLiabilitiesSummary createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode clusterCode, List<_V2.CreditWorthinessObligation>? obligations, bool isObligationCreditorExternal)
     {
         var arr = _obligationTypes!.Where(t => t.Code == clusterCode.FastToString()).Select(t => t.Id).ToArray();
-        return new CreditLiabilitiesSummary
+        return new ()
         {
             ProductClusterCode = clusterCode,
             Amount = (obligations?.Where(t => t.IsObligationCreditorExternal == isObligationCreditorExternal && arr.Contains(t.ObligationTypeId)).Sum(t => t.Amount) ?? 0).ToAmount(),

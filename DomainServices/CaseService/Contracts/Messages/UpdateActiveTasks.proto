@@ -2,7 +2,6 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
-import "GrpcDate.proto";
 import "Messages/Case.proto";
 
 message UpdateActiveTasksRequest {

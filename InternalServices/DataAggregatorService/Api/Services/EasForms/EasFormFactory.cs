@@ -1,9 +1,11 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
+using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms;
 
+[TransientService, SelfService]
 internal class EasFormFactory
 {
     private readonly IServiceProvider _serviceProvider;
@@ -21,19 +23,20 @@ internal class EasFormFactory
 
         var easForm = CreateEasForm(config.EasFormRequestType);
 
-        await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, easForm.FormData.AggregatedData);
-        await easForm.FormData.LoadFormSpecificData(cancellationToken);
+        await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, easForm.FormData, cancellationToken);
 
         return easForm;
     }
 
-    private EasForm CreateEasForm(EasFormRequestType requestType) =>
-        requestType switch
+    private EasForm CreateEasForm(EasFormRequestType requestType)
+    {
+        return requestType switch
         {
-            EasFormRequestType.Service => CreateForm<EasServiceForm>(),
-            EasFormRequestType.Product => CreateForm<EasProductForm>(),
+            EasFormRequestType.Service => new EasServiceForm(CreateData<ServiceFormData>()),
+            EasFormRequestType.Product => new EasProductForm(CreateData<ProductFormData>()),
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private EasForm CreateForm<TForm>() where TForm : EasForm => _serviceProvider.GetRequiredService<TForm>();
+        TFormData CreateData<TFormData>() where TFormData : AggregatedData => _serviceProvider.GetRequiredService<TFormData>();
+    }
 }

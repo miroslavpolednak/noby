@@ -23,7 +23,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposu
     /// Amount
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Amount
+    public partial class Amount
     {
         /// <summary>
         /// Hodnota částky
@@ -50,7 +50,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposu
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ExistingCBCBExposureItem
+    public partial class ExistingCBCBExposureItem
     {
         /// <summary>
         /// cbcbContractId
@@ -148,7 +148,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposu
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ExistingKBGroupExposureItem
+    public partial class ExistingKBGroupExposureItem
     {
         /// <summary>
         /// productId
@@ -300,7 +300,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposu
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ExposureSummaryForApproval
+    public partial class ExposureSummaryForApproval
     {
         /// <summary>
         /// totalExistingExposureKB
@@ -344,7 +344,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposu
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationCounterparty
+    public partial class LoanApplicationCounterparty
     {
         /// <summary>
         /// loanApplicationCounterpartyId
@@ -469,7 +469,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposu
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationRelatedExposureResult
+    public partial class LoanApplicationRelatedExposureResult
     {
         /// <summary>
         /// loanApplicationCounterparty
@@ -495,7 +495,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposu
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RequestedCBCBExposureItem
+    public partial class RequestedCBCBExposureItem
     {
         /// <summary>
         /// cbcbContractId
@@ -575,7 +575,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposu
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RequestedKBGroupExposureItem
+    public partial class RequestedKBGroupExposureItem
     {
         /// <summary>
         /// riskBusinessCaseId
@@ -673,7 +673,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposu
     /// ResourceIdentifier
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResourceIdentifier
+    public partial class ResourceIdentifier
     {
         /// <summary>
         /// The resource instance code, eg. 'KBCZ'
@@ -735,7 +735,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposu
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationDealer
+    public partial class LoanApplicationDealer
     {
         /// <summary>
         /// id
@@ -763,7 +763,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposu
     /// Abstract DTO - should be overwritten by successors of this abstract class
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationRelatedExposure
+    public partial class LoanApplicationRelatedExposure
     {
         /// <summary>
         /// loanApplicationId

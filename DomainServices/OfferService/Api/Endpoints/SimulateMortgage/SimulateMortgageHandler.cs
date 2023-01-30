@@ -102,13 +102,6 @@ internal sealed class SimulateMortgageHandler
         }
     }
 
-    private static EasSimulationHT.EasSimulationHTWrapper.SimulationHTResponse resolveRunSimulationHT(IServiceCallResult result) =>
-       result switch
-       {
-           SuccessfulServiceCallResult<EasSimulationHT.EasSimulationHTWrapper.SimulationHTResponse> r => r.Model,
-           _ => throw new NotImplementedException("RunSimulationHT")
-       };
-
     private readonly ILogger<SimulateMortgageHandler> _logger;
     private readonly ICodebookServiceClients _codebookService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;

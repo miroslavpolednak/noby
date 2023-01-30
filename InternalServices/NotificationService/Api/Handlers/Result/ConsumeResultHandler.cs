@@ -36,14 +36,15 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
         var report = request.NotificationReport;
         if (!Guid.TryParse(report.id, out var id))
         {
-            _logger.LogInformation("Skipped for notificationId: {id}", report.id);
+            _logger.LogDebug("Skipped for notificationId: {id}", report.id);
         }
 
         try
         {
             var result = await _repository.GetResult(id, cancellationToken);
+            result.HandoverToMcsTimestamp = _dateTime.Now;
             result.State = _map[report.state];
-            
+
             var errorCodes = report.notificationErrors?
                 .Select(e => e.code)
                 .ToHashSet() ?? Enumerable.Empty<string>();
@@ -54,10 +55,12 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
             result.ErrorSet = errorSet;
 
             await _repository.SaveChanges(cancellationToken);
+            
+            _logger.LogInformation($"Result updated for notificationId: {id}");
         }
         catch (CisNotFoundException)
         {
-            _logger.LogInformation("Skipped for notificationId: {id}", report.id);
+            _logger.LogDebug("Not found for notificationId: {id}", report.id);
         }
         catch (Exception e)
         {

@@ -9,7 +9,7 @@ using CIS.Core;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangement;
 
-internal class UpdateSalesArrangementHandler
+internal sealed class UpdateSalesArrangementHandler
     : IRequestHandler<Contracts.UpdateSalesArrangementRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateSalesArrangementRequest request, CancellationToken cancellation)
@@ -44,7 +44,7 @@ internal class UpdateSalesArrangementHandler
             // get current user's login
             string? userLogin = null;
             if (_userAccessor.User?.Id > 0)
-                userLogin = (await _userService.GetUser(_userAccessor.User!.Id, cancellation)).UserIdentifiers.First().Identity;
+                userLogin = (await _userService.GetUser(_userAccessor.User!.Id, cancellation)).UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous";
 
             // get case owner
             var ownerInstance = await _userService.GetUser(caseInstance.CaseOwner.UserId, cancellation);

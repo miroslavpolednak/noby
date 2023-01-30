@@ -878,7 +878,8 @@
             Identifikace klienta
             </summary>
             <remarks>
-            Slouzi pro idenfifikaci klienta.<br />Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br/>
+            Slouží pro identifikaci klienta.<br />
+            Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
@@ -920,6 +921,11 @@
         <member name="P:NOBY.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.IsBrSubscribed">
             <summary>
             Přihlášen k aktualizaci dat ze základních registrů
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.IdentifyByIdentity.IdentifyByIdentityRequest.CustomerIdentity">
+            <summary>
+            Identita klienta
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest.FirstName">
@@ -1047,6 +1053,11 @@
             Kolekce nalezenych klientu.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Shared.BaseCustomerDetail.LegalCapacity">
+            <summary>
+            Objekt právního omezení	
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Shared.BaseCustomerDetail.IsBrSubscribed">
             <summary>
             Přihlášen k aktualizaci dat ze základních registrů
@@ -1080,6 +1091,16 @@
         <member name="P:NOBY.Api.Endpoints.Customer.Shared.BaseCustomerDetail.IsUSPerson">
             <summary>
             Americký občan (FATCA)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Shared.LegalCapacityItem.RestrictionTypeId">
+            <summary>
+            Typ právního omezení klienta
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Shared.LegalCapacityItem.RestrictionUntil">
+            <summary>
+            Datum platnosti právního omezení klienta do
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Shared.NaturalPerson.EducationLevelId">
@@ -1168,14 +1189,44 @@
             <param name="offerId">Offer ID</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetPaymentSchedule(System.Int32,System.Threading.CancellationToken)">
-             <summary>
-             Vygenerování dokumentu splátkový kalendář ze šablony
-             </summary>
-             <remarks>
+            <summary>
+            Vygenerování dokumentu splátkový kalendář ze šablony
+            </summary>
+            <remarks>
             Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br /><br />
-             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
-             </remarks>
-             <param name="offerId">Offer ID</param>
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+            </remarks>
+            <param name="offerId">Offer ID</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetDrawing(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Vygenerování dokumentu Žádost o čerpání
+            </summary>
+            <remarks>
+            Vygenerování dokumentu Žádost o čerpání ze šablony k dané SalesArrangement.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FF4A4806-9638-4287-8A4F-4CA027677E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20\" />Diagram v EA</a>
+            </remarks>
+            <param name="salesArrangementId">Sales Arrangement ID</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetGeneralChange(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Vygenerování dokumentu Žádost o obecnou změnu
+            </summary>
+            <remarks>
+            Vygenerování dokumentu Žádost o obecnou změnu ze šablony k dané SalesArrangement.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=176277CE-66F6-4abd-93E6-57F113B5AF16"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="salesArrangementId">Sales Arrangement ID</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetHUBN(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Vygenerování dokumentu Žádost o HUBN
+            </summary>
+            <remarks>
+            Vygenerování dokumentu Žádost o HUBN ze šablony k dané SalesArrangement.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0E17AE8A-C137-415b-B4FB-2C0D3995E0DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
         <member name="P:NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest.SalesArrangementId">
             <summary>
@@ -1295,14 +1346,10 @@
             Update customeru na domacnosti
             </summary>
             <remarks>
-            Založí, případně updatuje CustomerOnSAId1 a CustomerOnSAId2 podle objektu v requestu Customer1 a Customer2.
-            <ul>
-            <li>Customer1 = NULL; pokud je v puvodni domacnosti v CustomerOnSAId1 existujici ID, je toto ID smazano, vcetne entity CustomerOnSA</li>
-            <li>Customer1.CustomerOnSAId = NULL; vola se CustomerOnSAService.CreateCustomer; pote se doplni Household.CustomerOnSAId1 nove vytvorenym ID</li>
-            <li>Customer1.CustomerOnSAId = existujici customer; vola se CustomerOnSAService.UpdateCustomer</li>
-            </ul>
-            Pokud je pri update nebo create klient identifikovan, rezervuje se mu modre ID a pousti se flow identifikovaneho klienta.<br/>
-            při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp
+            Založí, smaže nebo updatuje CustomerOnSAId1 a CustomerOnSAId2 podle objektu v requestu Customer1 a Customer2.<br /><br />
+            Zavoláním lockedIncome = true se zapíše timestamp zamknutí příjmů. Při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp.<br /><br />
+            V případě, že se mění Cutomer na daném householdu, dojde k znevalidnění rozběhnutých či skončených podepisovacích proseců (nutno znovu podepsat).<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF47934C-D0C7-46da-B13E-C3E648389EFB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="householdId">ID domacnosti</param>
             <returns>CustomerOnSAId nalinkovanych customeru</returns>
@@ -2588,6 +2635,11 @@
             Změnit sjednanou výši úvěru
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanAmountObject.AgreedLoanAmount">
+            <summary>
+            Sjednaná výše úvěru
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanAmountObject.RequiredLoanAmount">
             <summary>
             Požadovaná výše úvěru
@@ -2601,6 +2653,16 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanAmountObject.PreserveAgreedPaymentAmount">
             <summary>
             Zachovat sjednanou splátku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanAmountObject.AgreedLoanDueDate">
+            <summary>
+            Sjednaná splatnost do
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanAmountObject.AgreedLoanPaymentAmount">
+            <summary>
+            Sjednaná měsíční splátka
             </summary>
         </member>
         <member name="T:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanPurposeItem">
@@ -2643,6 +2705,11 @@
             Sekce aktivní
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ExpectedDateOfDrawingObject.AgreedExpectedDateOfDrawing">
+            <summary>
+            Sjednaný termín prvního čerpání
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ExpectedDateOfDrawingObject.NewExpectedDateOfDrawing">
             <summary>
             Nový předpokládaný termín prvního čerpání
@@ -2651,6 +2718,11 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.DrawingDateToObject2.IsActive">
             <summary>
             Sekce aktivní
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.DrawingDateToObject2.AgreedDrawingDateTo">
+            <summary>
+            Sjednaný termín čerpání do
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.DrawingDateToObject2.ExtensionDrawingDateToByMonths">

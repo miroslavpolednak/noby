@@ -4,6 +4,7 @@ using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
 using FastEnumUtility;
+using System.Threading;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -13,6 +14,7 @@ internal class IdentifiedSubjectService
     private readonly ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient _identifiedSubjectClient;
     private readonly ICodebookServiceClients _codebook;
     private readonly CustomerManagementErrorMap _errorMap;
+    private readonly ExternalServices.Kyc.V1.IKycClient _kycClient;
 
     private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
     private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
@@ -20,11 +22,12 @@ internal class IdentifiedSubjectService
     private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
     private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public IdentifiedSubjectService(ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap)
+    public IdentifiedSubjectService(ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
     {
         _identifiedSubjectClient = identifiedSubjectClient;
         _codebook = codebook;
         _errorMap = errorMap;
+        _kycClient = kycClient;
     }
 
     public async Task<Identity> CreateSubject(CreateCustomerRequest request, CancellationToken cancellationToken)
@@ -49,12 +52,61 @@ internal class IdentifiedSubjectService
             // todo: error_code
             throw new CisArgumentException(9999999, "Customer does not have KB Identity", "IdentityId");
         }
-        
+
         var identifiedSubject = BuildUpdateRequest(request);
 
         await _identifiedSubjectClient.UpdateIdentifiedSubject(customerId.IdentityId, identifiedSubject, cancellationToken);
+
+        // https://jira.kb.cz/browse/HFICH-3555
+        await callSetSocialCharacteristics(customerId.IdentityId, request, cancellationToken);
+        await callSetKyc(customerId.IdentityId, request, cancellationToken);
     }
-    
+
+    private async Task callSetKyc(long customerId, UpdateCustomerRequest request, CancellationToken cancellationToken)
+    {
+        var model = new ExternalServices.Kyc.V1.Contracts.Kyc
+        {
+            //IsPoliticallyExposed = request.NaturalPerson?.IsPoliticallyExposed ?? false, //!!! nesmi byt zadano, CM pada
+            IsUSPerson = request.NaturalPerson?.IsUSPerson ?? false
+        };
+
+        if (request.NaturalPerson?.TaxResidence is not null)
+        {
+#pragma warning disable CS8601 // Possible null reference assignment.
+            model.TaxResidence = new ExternalServices.Kyc.V1.Contracts.TaxResidence
+            {
+                ResidenceCountries = request.NaturalPerson?.TaxResidence?.ResidenceCountries?.Select(x => new ExternalServices.Kyc.V1.Contracts.TaxResidenceCountry
+                {
+                    Tin = x.Tin,
+                    TinMissingReasonDescription = x.TinMissingReasonDescription,
+                    CountryCode = _countries.FirstOrDefault(c => c.Id == x.CountryId)?.ShortName
+                }).ToList(),
+                ValidFrom = request.NaturalPerson!.TaxResidence.ValidFrom
+            };
+#pragma warning restore CS8601 // Possible null reference assignment.
+        }
+
+        await _kycClient.SetKyc(customerId, model, cancellationToken);
+    }
+
+    private async Task callSetSocialCharacteristics(long customerId, UpdateCustomerRequest request, CancellationToken cancellationToken)
+    {
+        //! Honza rika, ze neni treba posilat nic jineho nez Education
+        var model = new ExternalServices.Kyc.V1.Contracts.SocialCharacteristics
+        {
+            Education = new()
+            {
+                Code = (await _codebook.EducationLevels(cancellationToken)).FirstOrDefault(t => t.Id == request.NaturalPerson?.EducationLevelId)?.RdmCode ?? ""
+            }/*,
+            MaritalStatus = new()
+            {
+                Code = _maritals.FirstOrDefault(t => t.Id == request.NaturalPerson?.MaritalStatusStateId)?.RdmMaritalStatusCode ?? ""
+            }*/
+        };
+
+        await _kycClient.SetSocialCharacteristics(customerId, model, cancellationToken);
+    }
+
     private Task InitializeCodebooks(CancellationToken cancellationToken)
     {
         return Task.WhenAll(Genders(), Titles(), Countries(), Maritals(), DocTypes());
@@ -99,7 +151,7 @@ internal class IdentifiedSubjectService
             PrimaryEmail = CreatePrimaryEmail(request.Contacts)
         };
     }
-    
+
     private __Contracts.NaturalPersonAttributes CreateNaturalPersonAttributes(NaturalPerson naturalPerson)
     {
         var citizenshipCodes = naturalPerson.CitizenshipCountriesId.Select(id => _countries.First(c => c.Id == id).ShortName).ToList();

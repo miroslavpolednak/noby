@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetMortgageOfferFPSchedule;
 
-internal class GetMortgageOfferFPScheduleRequestValidator 
+internal sealed class GetMortgageOfferFPScheduleRequestValidator 
     : AbstractValidator<GetMortgageOfferFPScheduleRequest>
 {
     public GetMortgageOfferFPScheduleRequestValidator()

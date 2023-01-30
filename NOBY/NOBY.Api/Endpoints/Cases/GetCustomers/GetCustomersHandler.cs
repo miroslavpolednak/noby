@@ -7,7 +7,7 @@ using CIS.Core;
 
 namespace NOBY.Api.Endpoints.Cases.GetCustomers;
 
-internal class GetCustomersHandler
+internal sealed class GetCustomersHandler
     : IRequestHandler<GetCustomersRequest, List<GetCustomersResponseCustomer>>
 {
     public async Task<List<GetCustomersResponseCustomer>> Handle(GetCustomersRequest request, CancellationToken cancellationToken)
@@ -95,7 +95,7 @@ internal class GetCustomersHandler
             return new GetCustomersResponseCustomer
             {
                 Agent = t.Agent,
-                IsKYCSuccessful= t.IsKYCSuccessful,
+                IsKYCSuccessful = t.IsKYCSuccessful,
                 Email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value,
                 Mobile = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value,
                 KBID = customer.Identities.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),

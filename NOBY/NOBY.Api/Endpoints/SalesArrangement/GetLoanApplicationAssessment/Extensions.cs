@@ -251,7 +251,7 @@ internal static class Extensions
                 {
                     InternalCustomerId = cOnSA.CustomerOnSAId,
                     PrimaryCustomerId = identityKb!.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                    SpecialRelationsWithKB = cOnSA.CustomerAdditionalData.HasRelationshipWithKB,
+                    SpecialRelationsWithKB = cOnSA.CustomerAdditionalData?.HasRelationshipWithKB ?? false,
                     BirthNumber = c.NaturalPerson?.BirthNumber,
                     CustomerRoleId = cOnSA.CustomerRoleId,
                     Firstname = c.NaturalPerson?.FirstName,

@@ -44,7 +44,6 @@
             </summary>
             <param name="exception">Vyjimka, ktera rollback spustila</param>
             <param name="request">Puvodni Mediatr request</param>
-            <returns></returns>
         </member>
         <member name="T:CIS.Infrastructure.CisMediatR.Rollback.IRollbackBag">
             <summary>

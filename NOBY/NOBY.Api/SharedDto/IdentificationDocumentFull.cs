@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.SharedDto;
 
-public class IdentificationDocumentFull
+public sealed class IdentificationDocumentFull
     : IdentificationDocumentBase
 {
     /// <summary>
@@ -18,4 +18,15 @@ public class IdentificationDocumentFull
     public DateTime? IssuedOn { get; set; }
 
     public string? RegisterPlace { get; set; }
+
+    public CustomerIdentificationObject? CustomerIdentification { get; set; }
+
+    public sealed class CustomerIdentificationObject
+    {
+        public int? CustomerIdentification { get; set; }
+
+        public string? CustomerName { get; set; }
+
+        public DateTime? IdentificationDate { get; set; }
+    }
 }

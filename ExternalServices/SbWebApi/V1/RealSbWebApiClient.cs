@@ -43,7 +43,7 @@ internal sealed class RealSbWebApiClient
 
             // neco je spatne ve WS
             if ((result.Result?.Return_val ?? 0) != 0)
-                throw new CisExtServiceValidationException(result.Result?.Return_text ?? "");
+                throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName}.CaseStateChanged: {result.Result?.Return_text}");
         }
         else
         {

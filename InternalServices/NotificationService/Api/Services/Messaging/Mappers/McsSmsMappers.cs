@@ -12,4 +12,12 @@ public static class McsSmsMappers
             nationalPhoneNumber = phone.NationalNumber
         };
     }
+    
+    public static McsSendApi.v4.NotificationConsumer MapToMcs(string consumerId)
+    {
+        return new()
+        {
+            consumerId = consumerId
+        };
+    }
 }

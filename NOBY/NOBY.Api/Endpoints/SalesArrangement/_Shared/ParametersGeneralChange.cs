@@ -136,7 +136,7 @@ public sealed class PaymentDayObject
     /// Sjednaný den splácení
     /// </summary>
     [Required]
-    public int AgreedPaymentDay { get; set; }
+    public int? AgreedPaymentDay { get; set; }
 
     /// <summary>
     /// Nový den splácení, CIS_DEN_SPLACENI
@@ -188,19 +188,19 @@ public sealed class PaymentAccountObject
     /// Předčíslí účtu
     /// </summary>
     [Required]
-    public string AgreedPrefix { get; set; }
+    public string? AgreedPrefix { get; set; }
 
     /// <summary>
     /// Číslo účtu
     /// </summary>
     [Required]
-    public string AgreedNumber { get; set; }
+    public string? AgreedNumber { get; set; }
 
     /// <summary>
     /// Kód banky
     /// </summary>
     [Required]
-    public string AgreedBankCode { get; set; }
+    public string? AgreedBankCode { get; set; }
 
     /// <summary>
     /// Předčíslí účtu
@@ -304,7 +304,7 @@ public sealed class LoanPurposeObject
     /// <summary>
     /// Komentář k popisu změny na stávajících účelech úvěru
     /// </summary>
-    public DateTime? LoanPurposesComment { get; set; }
+    public string? LoanPurposesComment { get; set; }
 }
 
 /// <summary>

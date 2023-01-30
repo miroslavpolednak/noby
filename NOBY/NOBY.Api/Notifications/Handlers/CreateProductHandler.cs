@@ -39,23 +39,96 @@ internal sealed class CreateProductHandler
         // detail offer
         var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken);
 
+        // zjistit, zda existuje customer v konsDb
+        var kbIdentity = notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        _Cu.CustomerDetailResponse? konsDbCustomer = null;
+        try
+        {
+            //TODO rollbackovat i vytvoreni klienta?
+            konsDbCustomer = await _customerService.GetCustomerDetail(mpIdentity!, cancellationToken);
+        }
+        catch (CisNotFoundException) // klient nenalezen v konsDb
+        {
+        }
+
+        // klient nenalezen v konsDb, zaloz ho tam
+        if (konsDbCustomer is null)
+        {
+            try
+            {
+                await createClientInKonsDb(kbIdentity, mpIdentity!, cancellationToken);
+            }
+            catch 
+            {
+                _logger.LogError("MpDigi createClient failed");
+            }
+        }
+        // ma klient v konsDb KB identitu? pokud ne, tak ho updatuj
+        else if (konsDbCustomer.Identities.Any(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
+        {
+            try
+            {
+                await updateClientInKonsDb(konsDbCustomer, mpIdentity!, kbIdentity, cancellationToken);
+            }
+            catch 
+            {
+                _logger.LogError("MpDigi updateClient failed");
+            }
+        }
+
+        // vytovrit produkt
+        var request = new _Product.CreateMortgageRequest
+        {
+            CaseId = notification.CaseId,
+            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
+        };
+        var result = await _productService.CreateMortgage(request, cancellationToken);
+        _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
+
+        _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
+    }
+
+    private async Task updateClientInKonsDb(_Cu.CustomerDetailResponse originalClient, Identity mpIdentity, Identity kbIdentity, CancellationToken cancellationToken)
+    {
+        var request = new _Cu.UpdateCustomerRequest
+        {
+            Identities =
+            {
+                mpIdentity,
+                kbIdentity
+            },
+            Mandant = Mandants.Mp,
+            IdentificationDocument = originalClient.IdentificationDocument,
+            NaturalPerson = originalClient.NaturalPerson
+        };
+        if (originalClient.Addresses is not null)
+            request.Addresses.AddRange(originalClient.Addresses);
+        if (originalClient.Contacts is not null)
+            request.Contacts.AddRange(originalClient.Contacts);
+
+        await _customerService.UpdateCustomer(request, cancellationToken);
+    }
+
+    private async Task createClientInKonsDb(Identity kbIdentity, Identity mpIdentity, CancellationToken cancellationToken)
+    {
         // pokud neexistuje customer v konsDb, tak ho vytvor
-        var customerDetail = await _customerService.GetCustomerDetail(notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+        var customerDetail = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
         // zalozit noveho klienta
-        var createCustomerRequest = new _Cu.CreateCustomerRequest
+        var request = new _Cu.CreateCustomerRequest
         {
-            Identities = 
-            { 
-                mpIdentity, 
-                notification.CustomerIdentifiers!.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
+            Identities =
+            {
+                mpIdentity,
+                kbIdentity
             },
             HardCreate = true,
             NaturalPerson = customerDetail.NaturalPerson,
             Mandant = Mandants.Mp
         };
+
         if (customerDetail.IdentificationDocument is not null)
-            createCustomerRequest.IdentificationDocument = new _Cu.IdentificationDocument
+            request.IdentificationDocument = new _Cu.IdentificationDocument
             {
                 IssuedBy = customerDetail.IdentificationDocument.IssuedBy,
                 IssuedOn = customerDetail.IdentificationDocument.IssuedOn,
@@ -66,7 +139,7 @@ internal sealed class CreateProductHandler
                 ValidTo = customerDetail.IdentificationDocument.ValidTo
             };
         if (customerDetail.Addresses is not null && customerDetail.Addresses.Any())
-            createCustomerRequest.Addresses.Add(customerDetail.Addresses.Where(x => x.AddressTypeId == 1).Select(x => new GrpcAddress
+            request.Addresses.Add(customerDetail.Addresses.Where(x => x.AddressTypeId == 1).Select(x => new GrpcAddress
             {
                 Street = x.Street,
                 City = x.City,
@@ -77,31 +150,7 @@ internal sealed class CreateProductHandler
                 Postcode = x.Postcode
             }));
 
-        try
-        {
-            await _customerService.CreateCustomer(createCustomerRequest, cancellationToken);
-        }
-        catch (CisAlreadyExistsException)
-        {
-            // tise spolknout -> klient existuje a my jsme spokojeni
-        }
-        catch (Exception ex)
-        {
-            _logger.LogInformation("MpHome create client failed", ex);
-            throw new CisConflictException(0, "MpHome client can't be created");
-        }
-
-        var request = new _Product.CreateMortgageRequest
-        {
-            CaseId = notification.CaseId,
-            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
-        };
-
-        var result = await _productService.CreateMortgage(request, cancellationToken);
-        _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
-        //TODO rollbackovat i vytvoreni klienta?
-
-        _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
+        await _customerService.CreateCustomer(request, cancellationToken);
     }
 
     private readonly IRollbackBag _bag;

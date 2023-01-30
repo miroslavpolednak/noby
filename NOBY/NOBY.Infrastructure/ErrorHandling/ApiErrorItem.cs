@@ -2,6 +2,13 @@
 
 public struct ApiErrorItem
 {
+    public ApiErrorItem(string code, string message, ApiErrorItemServerity severity)
+    {
+        this.ErrorCode = code;
+        this.Message = message;
+        this.Severity = severity;
+    }
+
     /// <summary>
     /// Kod chyby v rozsahu FE API
     /// </summary>

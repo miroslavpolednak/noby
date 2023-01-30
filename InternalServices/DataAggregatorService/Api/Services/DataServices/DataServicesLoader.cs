@@ -21,24 +21,25 @@ internal class DataServicesLoader
         ConfigureServiceMap();
     }
 
-    public async Task LoadData(InputConfig inputConfig, InputParameters parameters, AggregatedData aggregatedData)
+    public async Task LoadData(InputConfig inputConfig, InputParameters parameters, AggregatedData aggregatedData, CancellationToken cancellationToken = default)
     {
         var status = new DataLoaderStatus
         {
-            RemainingDataSources = inputConfig.DataSources.Concat(inputConfig.DynamicInputParameters.Select(i => i.SourceDataSource).Distinct()).ToList(),
+            RemainingDataSources = inputConfig.DataSources.Concat(inputConfig.DynamicInputParameters.Select(i => i.SourceDataSource)).Distinct().ToList(),
             RelatedInputParameters = inputConfig.DynamicInputParameters.ToList()
         };
 
         while (status.RemainingDataSources.Any())
         {
-            await ProcessRemainingDataSources(status, parameters, aggregatedData);
+            await ProcessRemainingDataSources(status, parameters, aggregatedData, cancellationToken);
             SetInputParameters(status, parameters, aggregatedData);
         }
 
-        await aggregatedData.LoadCodebooks(_codebookService);
+        await aggregatedData.LoadCodebooks(_codebookService, cancellationToken);
+        await aggregatedData.LoadAdditionalData(cancellationToken);
     }
 
-    private async Task ProcessRemainingDataSources(DataLoaderStatus status, InputParameters parameters, AggregatedData aggregatedData)
+    private async Task ProcessRemainingDataSources(DataLoaderStatus status, InputParameters parameters, AggregatedData aggregatedData, CancellationToken cancellationToken)
     {
         var dataSources = status.RemainingDataSources.Except(status.RelatedInputParameters.Select(p => p.TargetDataSource)).ToList();
 
@@ -47,7 +48,7 @@ internal class DataServicesLoader
 
         foreach (var dataSource in dataSources)
         {
-            await _serviceMap[dataSource].Invoke(parameters, aggregatedData, CancellationToken.None);
+            await _serviceMap[dataSource].Invoke(parameters, aggregatedData, cancellationToken);
 
             status.RemainingDataSources.Remove(dataSource);
             status.LoadedDataSources.Add(dataSource);
@@ -74,6 +75,9 @@ internal class DataServicesLoader
         AddService<CustomerServiceWrapper>(DataSource.CustomerService);
         AddService<ProductServiceWrapper>(DataSource.ProductService);
         AddService<OfferPaymentScheduleServiceWrapper>(DataSource.OfferPaymentScheduleService);
+        AddService<HouseholdServiceWrapper>(DataSource.HouseholdService);
+        AddService<CustomersOnSaDetailServiceWrapper>(DataSource.CustomersOnSaDetail);
+        AddService<HouseholdWIthCustomersServiceWrapper>(DataSource.HouseholdWithCustomersService);
 
         void AddService<TSource>(DataSource dataSource) where TSource : IServiceWrapper =>
             _serviceMap.Add(dataSource, _serviceProvider.GetRequiredService<TSource>().LoadData);
