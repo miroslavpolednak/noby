@@ -19,9 +19,9 @@ internal static class ValidationTransformationCache
         _changeTokenSource = new CancellationTokenSource();
     }
 
-    public class TransformationItem
+    public sealed class TransformationItem
     {
-        public string Name { get; init; } = string.Empty;
+        public int CategoryOrder { get; init; }
         public string? Category { get; init; }
         public string Text { get; init; } = string.Empty;
         public Database.FormValidationTransformationAlterSeverity AlterSeverity { get; init; }
