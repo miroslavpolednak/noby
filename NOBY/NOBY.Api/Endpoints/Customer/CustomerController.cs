@@ -64,12 +64,8 @@ public class CustomerController : ControllerBase
     /// Identifikace klienta
     /// </summary>
     /// <remarks>
-<<<<<<< HEAD
     /// Slouží pro identifikaci klienta.<br />
     /// Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br /><br />
-=======
-    /// Slouží pro idenfifikaci klienta.<br />Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br /><br />
->>>>>>> HFICH-3566-summary-description
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer-on-sa/{customerOnSAId:int}/identify-by-identity")]

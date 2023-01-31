@@ -17,6 +17,7 @@
 
         grpcurl -insecure -d "{\"SalesArrangementId\":26}" -H "Authorization: Basic YTph" 127.0.0.1:5010 DomainServices.SalesArrangementService.v1.SalesArrangementService/SendToCmp
         grpcurl -insecure -d "{\"SalesArrangementId\":26}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/ValidateSalesArrangement
+        grpcurl -insecure -d "{\"SalesArrangementId\":705}" -H "Authorization: Basic YTph" 127.0.0.1:30009 DomainServices.SalesArrangementService.v1.SalesArrangementService/ValidateSalesArrangement
 
 ## run batch
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"

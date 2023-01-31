@@ -84,7 +84,7 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Admin.AdminController.GetDiscoveryServices(System.Threading.CancellationToken)">
             <summary>
-            Seznam URL sluzeb zaregistrovanych v ServiceDiscovery
+            Seznam URL služeb zaregistrovaných v ServiceDiscovery
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateSalesArrangement(System.Int64,NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest,System.Threading.CancellationToken)">
@@ -124,33 +124,33 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetDashboardFilters(System.Threading.CancellationToken)">
             <summary>
-            Pocty Cases pro prihlaseneho uzivatele zgrupovane podle nastavenych filtru.
+            Počty Cases pro přihlášeného uživatele zgrupované podle nastavených filtrů.
             </summary>
             <remarks>
             <i>DS:</i> CseService/GetCaseCounts<br/>
             https://wiki.kb.cz/confluence/display/HT/getCaseCounts
             </remarks>
-            <returns>Kolekce ID stavu s poctem Cases.</returns>
+            <returns>Kolekce ID stavu s počtem Cases.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.Search(NOBY.Api.Endpoints.Cases.Search.SearchRequest,System.Threading.CancellationToken)">
             <summary>
-            Seznam Cases pro prihlaseneho uzivatele.
+            Seznam Cases pro přihlášeného uživatele.
             </summary>
             <remarks>
-            Endpoint umoznuje:
-            - vyhledat Case podle retezce
-            - zobrazit pouze Cases v pozadovanem stavu
-            - nastavit strankovani
-            - nastavit razeni [povolene: stateUpdated, customerName]
+            Endpoint umožnuje:
+            - vyhledat Case podle řetězce
+            - zobrazit pouze Cases v požadovaném stavu
+            - nastavit stránkovaní
+            - nastavit řazení [povolené: stateUpdated, customerName]
             <i>DS:</i> CaseService/SearchCases<br/>
             https://wiki.kb.cz/confluence/display/HT/searchCases
             </remarks>
-            <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
-            <returns>Seznam Cases + informace o pouzitem strankovani/razeni.</returns>
+            <param name="request">Nastavení možnosti filtrovaní, strankovaní a řazení.</param>
+            <returns>Seznam Cases + informace o použitém stránkovaní/řazení.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetTaskList(System.Int64,System.Threading.CancellationToken)">
             <summary>
-            Seznam workflow tasku dotazeny z SB.
+            Seznam workflow tasku dotažený z SB.
             </summary>
             <remarks>
             <i>DS:</i> CaseService/GetTaskList<br/>
@@ -533,20 +533,20 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixationPeriodLength(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
             <summary>
-            Ciselnik fixace uveru.
+            Číselník fixace úvěru.
             </summary>
-            <returns>Kolekce dob fixaci v mesicich.</returns>
-            <param name="productTypeId">ID typu produktu, pro ktery se maji vratit fixace.</param>
+            <returns>Kolekce dob fixací v měsících.</returns>
+            <param name="productTypeId">ID typu produktu, pro který se mají vrátit fixace.</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetProductLoanKinds(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
             <summary>
-            Ciselnik druhu uveru.
+            Číselník druhu úveru.
             </summary>
-            <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
+            <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixedRatePeriods(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
             <summary>
-            FixedRatePeriod s filtraci na product
+            FixedRatePeriod s filtrací na product
             </summary>
             <param name="productTypeId">ID typu produktu</param>
         </member>
@@ -587,46 +587,46 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.CustomerIncome.CustomerIncomeController.Delete(System.Int32,System.Int32)">
             <summary>
-            Smazani prijmu customera
+            Smazání příjmu customera
             </summary>
             <remarks>
             <strong>CustomerIncome.Delete</strong><br/>
-            Tento endpoint se v soucasne dobe asi pouzivat nebude.<br/>
+            Tento endpoint se v současné době asi používat nebude.<br/>
             <i>DS:</i> SalesArrangementService/DeleteIncome
             </remarks>
             <param name="customerOnSAId">ID customera</param>
-            <param name="incomeId">ID prijmu ke smazani</param>
+            <param name="incomeId">ID příjmu ke smazání</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.CustomerIncome.CustomerIncomeController.GetDetail(System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Detail prijmu customera
+            Detail příjmu customera
             </summary>
             <remarks>
             <strong>CustomerIncome.GetDetail</strong><br/>
-            Pouzit pro zobrazeni detailu prijmu - tj. Level 2 obrazovka prokliknuta z detailu domacnosti.<br/>
+            Použít pro zobrazení detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domacnosti.<br/>
             <i>DS:</i> SalesArrangementService/GetIncome
             </remarks>
             <param name="customerOnSAId">ID customera</param>
-            <param name="incomeId">ID prijmu</param>
+            <param name="incomeId">ID příjmu</param>
             <returns>
             <see cref="T:NOBY.Api.Endpoints.CustomerIncome.Dto.IncomeDataEmployement"/>
             </returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.CustomerIncome.CustomerIncomeController.Update(System.Int32,System.Int32,NOBY.Api.Endpoints.CustomerIncome.UpdateIncome.UpdateIncomeRequest)">
             <summary>
-            Update detailu prijmu customera
+            Update detailu příjmu customera
             </summary>
             <remarks>
             <strong>CustomerIncome.Update</strong><br/>
-            Pouzit pro update detailu prijmu - tj. Level 2 obrazovka prokliknuta z detailu domacnosti.<br/>
+            Použít pro update detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domácnosti.<br/>
             <i>DS:</i> SalesArrangementService/UpdateIncome
             </remarks>
             <param name="customerOnSAId">ID customera</param>
-            <param name="incomeId">ID prijmu</param>
+            <param name="incomeId">ID příjmu</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.CustomerIncome.CustomerIncomeController.Create(System.Int32,NOBY.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest)">
             <summary>
-            Vytvoreni prijmu customera
+            Vytvoření příjmu customera
             </summary>
             <remarks>
             <strong>CustomerIncome.Create</strong><br/>
@@ -853,16 +853,16 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.Search(NOBY.Api.Endpoints.Customer.Search.SearchRequest,System.Threading.CancellationToken)">
             <summary>
-            Vyhledavani klientu
+            Vyhledávání klientů
             </summary>
             <remarks>
-            Endpoint umoznuje:
-            - hledat podle zadanych kriterii
-            - nastavit strankovani
-            - nastavit razeni [lastName]
+            Endpoint umožňuje:
+            - hledat podle zadaných kriterií
+            - nastavit stránkovaní
+            - nastavit řazení [lastName]
             <i>DS:</i> CustomerService/SearchCustomers
             </remarks>
-            <returns>Seznam nalezenych klientu. BE sluzba neni strankovatelna, takze strankovani je jen jako fake na FE.</returns>
+            <returns>Seznam nalezených klientů. BE služba není stránkovatelná, takže stránkovaní je jen jako fake na FE.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.GetDetail(CIS.Foms.Types.CustomerIdentity,System.Threading.CancellationToken)">
             <summary>
@@ -871,7 +871,7 @@
             <remarks>
             <i>DS:</i> CustomerService/GetCustomer
             </remarks>
-            <returns>Kompletni detail klienta vraceny z KB CM nebo KonsDb.</returns>
+            <returns>Kompletní detail klienta vrácený z KB CM nebo KonsDb.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.IdentifyByIdentity(System.Int32,NOBY.Api.Endpoints.Customer.IdentifyByIdentity.IdentifyByIdentityRequest,System.Threading.CancellationToken)">
             <summary>
@@ -1292,10 +1292,10 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.GetList(System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Seznam domacnosti
+            Seznam domácností
             </summary>
             <remarks>
-            Vraci zakladni seznam domacnosti pro dany Sales Arrangement bez detailu.<br/>
+            Vraci zakladni seznam domacností pro daný Sales Arrangement bez detailu.<br/>
             <i>DS:</i> SalesArrangementService/GetHouseholdList
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement-u</param>
@@ -1320,11 +1320,11 @@
             <i>DS:</i> SalesArrangementService/DeleteHousehold
             </remarks>
             <param name="householdId">ID domacnosti</param>
-            <returns>ID smazane domacnosti</returns>
+            <returns>ID smazané domacnosti</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.Create(NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest)">
             <summary>
-            Vytvoreni nove domacnosti
+            Vytvořeni nové domacnosti
             </summary>
             <remarks>
             Vytvoří nový household zavoláním DS: SalesArrangementService/CreateHousehold a zároveň vytvoří prvního CustomerOnSA s rolí odpovídající vytvářené domácnosti (Spolužadatel na spolužadatelské a ručitel na ručitelské domácnosti) pomocí volání DS: SalesArrangementService/CreateCustomer.<br/>
@@ -1334,16 +1334,16 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.Update(System.Int32,NOBY.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest)">
             <summary>
-            Update existujici domacnosti
+            Update existující domácnosti
             </summary>
             <remarks>
             <i>DS:</i> SalesArrangementService/UpdateHousehold
             </remarks>
-            <param name="householdId">ID domacnosti</param>
+            <param name="householdId">ID domácnosti</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.UpdateCustomers(System.Int32,NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest)">
             <summary>
-            Update customeru na domacnosti
+            Update customeru na domácnosti
             </summary>
             <remarks>
             Založí, smaže nebo updatuje CustomerOnSAId1 a CustomerOnSAId2 podle objektu v requestu Customer1 a Customer2.<br /><br />
@@ -1351,7 +1351,7 @@
             V případě, že se mění Cutomer na daném householdu, dojde k znevalidnění rozběhnutých či skončených podepisovacích proseců (nutno znovu podepsat).<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF47934C-D0C7-46da-B13E-C3E648389EFB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
-            <param name="householdId">ID domacnosti</param>
+            <param name="householdId">ID domácnosti</param>
             <returns>CustomerOnSAId nalinkovanych customeru</returns>
         </member>
         <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.CustomerDto.LockedIncome">
@@ -1554,43 +1554,43 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgage(NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest,System.Threading.CancellationToken)">
             <summary>
-            Simulace KB hypoteky.
+            Simulace KB hypotéky.
             </summary>
             <remarks>
             <i>DS:</i> OfferService/SimulateMortgage
             </remarks>
             <param name="request">Nastaveni simulace.</param>
-            <returns>ID vytvorene simulace a jeji vysledky.</returns>
+            <returns>ID vytvořené simulace a její výsledky.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.GetMortgageByOfferId(System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Detail provedene simulace dle ID simulace.
+            Detail provedené simulace dle ID simulace.
             </summary>
             <remarks>
             <i>DS:</i> OfferService/GetMortgageData
             </remarks>
-            <returns>Vstupy a vystupy ulozene simulace.</returns>
+            <returns>Vstupy a výstupy uložené simulace.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.GetMortgageBySalesArrangementId(System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Detail provedene simulace dle ID Sales Arrangement.
+            Detail provedené simulace dle ID Sales Arrangement.
             </summary>
             <remarks>
-            Stejny endpoint jako GetMortgageByOfferId, jen podle jineho ID.<br/>
+            Stejný endpoint jako GetMortgageByOfferId, jen podle jiného ID.<br/>
             <i>DS:</i> SalesArrangementService/GetSalesArrangement (to get OfferId)<br/>
             <i>DS:</i> OfferService/GetMortgageData
             </remarks>
-            <returns>Vstupy a vystupy ulozene simulace.</returns>
+            <returns>Vstupy a výstupy uložené simulace.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.CreateMortgageCase(NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest)">
             <summary>
-            Vytvoreni noveho pripadu (hypoteky) ze simulace.
+            Vytvoření nového případu (hypotéky) ze simulace.
             </summary>
             <remarks>
-            Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA.<br/>
-            V pripade identifikovaneho klienta navic vytvorit Product, RiskBusinessCaseId.<br/>
-            Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.<br/>
-            Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/><br/>
+            Vytvoří nový Case, Sales Arrangement, Household, CustomerOnSA.<br/>
+            V případe identifikovaného klienta navíc vytvořit Product, RiskBusinessCaseId.<br/>
+            Pokud je identifikován klient, v request modelu musí být naplněna vlastnost customer.<br/>
+            Pokud se jedná o anonymní případ, musi být vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/><br/>
             <i>DS:</i> OfferService/GetMortgageData<br/>
             <i>DS:</i> SalesArrangement/GetSalesArrangementByOfferId<br/>
             <i>DS:</i> CaseService/CreateCase<br/>
@@ -1600,11 +1600,11 @@
             <i>DS:</i> SalesArrangement/CreateCustomerOnSA
             </remarks>
             <param name="request">Identifikace klienta a ID simulace.</param>
-            <returns>ID nove vytvoreneho Case</returns>
+            <returns>ID nově vytvořeného Case</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkModelation(NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest)">
             <summary>
-            Nalinkuje novou modelaci na stavajici SA.
+            Nalinkuje novou modelaci na stávající SA.
             </summary>
             <remarks>
             Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
@@ -2416,14 +2416,14 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetCreditWorthiness(System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Vypocet rozsirene bonity
+            Výpočet rozšírené bonity
             </summary>
             <remarks>
             <i>DS:</i> HouseholdService<br/>
             <i>DS:</i> CustomerOnSaService
             </remarks>
             <param name="salesArrangementId">Sales arrangement</param>
-            <returns><see cref="T:NOBY.Api.Endpoints.SalesArrangement.GetCreditWorthiness.GetCreditWorthinessResponse"/> Vysledek vypoctu</returns>
+            <returns><see cref="T:NOBY.Api.Endpoints.SalesArrangement.GetCreditWorthiness.GetCreditWorthinessResponse"/> Výsledek výpočtu</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetList(System.Int64,System.Threading.CancellationToken)">
             <summary>
@@ -2433,18 +2433,18 @@
             <i>DS:</i> SalesArrangementService/GetSalesArrangementList
             </remarks>
             <param name="caseId">ID Case-u</param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.Api.Endpoints.SalesArrangement.Dto.SalesArrangementListItem"/> Seznam zakladnich informaci o vsech Sales Arrangements pro dany Case.</returns>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.Api.Endpoints.SalesArrangement.Dto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetCustomers(System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Seznam klientu navazanych na Sales Arrangement.
+            Seznam klientů navázaných na Sales Arrangement.
             </summary>
             <remarks>
             <i>DS:</i> SalesArrangementService/GetCustomerList<br/>
             <i>DS:</i> CustomerService/GetCustomerDetail
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.Api.Endpoints.SalesArrangement.Dto.CustomerListItem"/> Seznam klientu vc. vsech jejich dat dotazenych z CM atd.</returns>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.Api.Endpoints.SalesArrangement.Dto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetDetail(System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -3062,19 +3062,19 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetCurrentUser(System.Threading.CancellationToken)">
             <summary>
-            Informace o prihlasenem uzivateli.
+            Informace o prihlašeném uživateli.
             </summary>
             <remarks>
-            Pokud je uzivatel prihlasen (existuje platna auth cookie), vraci zakladni informace o uzivateli.
+            Pokud je uživatel přihlášen (existuje platná auth cookie), vrací základní informace o uživateli.
             </remarks>
-            <returns>Instance prihlaseneho uzivatele.</returns>
+            <returns>Instance přihlášeného uživatele.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.SignIn(NOBY.Api.Endpoints.Users.SignIn.SignInRequest,System.Threading.CancellationToken)">
             <summary>
             Endpoint pro Simple Authentication provider.
             </summary>
             <remarks>
-            Slouzi pro vytvoreni auth cookie v pripade, ze aplikace neni napojena na CAAS.
+            Slouží pro vytvoření auth cookie v případe, že aplikace není napojena na CAAS.
             </remarks>
         </member>
         <member name="T:NOBY.Api.Notifications.Handlers.CreateRiskBusinessCaseHandler">
