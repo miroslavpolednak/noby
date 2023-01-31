@@ -77,7 +77,7 @@ internal sealed partial class ValidationTransformationServiceFactory
                 message.ParameterName = titem.Text;
             }
 
-            message.Message = string.IsNullOrEmpty(item.AdditionalInformation) ? $"\"{item.Value}\" {item.Message}" : $"\"{item.Value}\" {item.Message} ({item.AdditionalInformation})";
+            message.Message = string.IsNullOrEmpty(item.AdditionalInformation) ? $"'{item.Value}' {item.Message}" : $"'{item.Value}' {item.Message} ({item.AdditionalInformation})";
             message.Category = titem.Category;
             message.CategoryOrder = titem.CategoryOrder;
             
