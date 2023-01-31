@@ -58,14 +58,14 @@ public class SalesArrangementController : ControllerBase
         => await _mediator.Send(new GetLoanApplicationAssessment.GetLoanApplicationAssessmentRequest(salesArrangementId, newAssessmentRequired), cancellationToken);
 
     /// <summary>
-    /// Vypocet rozsirene bonity
+    /// Výpočet rozšírené bonity
     /// </summary>
     /// <remarks>
     /// <i>DS:</i> HouseholdService<br/>
     /// <i>DS:</i> CustomerOnSaService
     /// </remarks>
     /// <param name="salesArrangementId">Sales arrangement</param>
-    /// <returns><see cref="GetCreditWorthiness.GetCreditWorthinessResponse"/> Vysledek vypoctu</returns>
+    /// <returns><see cref="GetCreditWorthiness.GetCreditWorthinessResponse"/> Výsledek výpočtu</returns>
     [HttpGet("{salesArrangementId:int}/credit-worthiness")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
@@ -80,7 +80,7 @@ public class SalesArrangementController : ControllerBase
     /// <i>DS:</i> SalesArrangementService/GetSalesArrangementList
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
-    /// <returns><see cref="List{T}"/> where T : <see cref="Dto.SalesArrangementListItem"/> Seznam zakladnich informaci o vsech Sales Arrangements pro dany Case.</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="Dto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
     [HttpGet("list/{caseId:long}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
@@ -89,14 +89,14 @@ public class SalesArrangementController : ControllerBase
         => await _mediator.Send(new GetList.GetListRequest(caseId), cancellationToken);
 
     /// <summary>
-    /// Seznam klientu navazanych na Sales Arrangement.
+    /// Seznam klientů navázaných na Sales Arrangement.
     /// </summary>
     /// <remarks>
     /// <i>DS:</i> SalesArrangementService/GetCustomerList<br/>
     /// <i>DS:</i> CustomerService/GetCustomerDetail
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
-    /// <returns><see cref="List{T}"/> where T : <see cref="Dto.CustomerListItem"/> Seznam klientu vc. vsech jejich dat dotazenych z CM atd.</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="Dto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
     [HttpGet("{salesArrangementId:int}/customers")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
