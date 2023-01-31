@@ -10,7 +10,10 @@ public class EmailAttachmentValidator : AbstractValidator<EmailAttachment>
         RuleFor(attachment => attachment.Binary)
             .NotEmpty()
                 .WithErrorCode(ErrorCodes.EmailAttachment.BinaryRequired)
-                .WithMessage($"{nameof(EmailAttachment.Binary)} required.");
+                .WithMessage($"{nameof(EmailAttachment.Binary)} required.")
+            .Matches("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$")
+                .WithErrorCode(ErrorCodes.EmailAttachment.BinaryInvalid)
+                .WithMessage($"{nameof(EmailAttachment.Binary)} must be encoded in Base64.");
                 
         RuleFor(attachment => attachment.Filename)
             .NotEmpty()
