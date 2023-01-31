@@ -4,7 +4,7 @@ option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "Messages/CustomerData.proto";
 
-message UpdateCaseCustomerRequest {
+message UpdateCustomerDataRequest {
 	int64 CaseId = 1;
 
 	// Upravena dada o klientovi

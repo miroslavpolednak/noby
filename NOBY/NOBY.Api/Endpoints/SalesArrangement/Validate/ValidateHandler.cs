@@ -13,6 +13,7 @@ internal sealed class ValidateHandler
         return new ValidateResponse
         {
             Categories = response.ValidationMessages?
+                .Where(t => t.NobyMessageDetail.Severity != _SA.ValidationMessageNoby.Types.NobySeverity.None)
                 .GroupBy(t => t.NobyMessageDetail.Category)
                 .Select(t => new Dto.ValidateCategory
                 {

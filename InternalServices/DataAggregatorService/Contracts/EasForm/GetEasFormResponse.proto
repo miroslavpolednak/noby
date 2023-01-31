@@ -16,8 +16,10 @@ enum EasFormType {
 message GetEasFormResponse {
     repeated Form Forms = 1;
 
+    string ContractNumber = 2;
+
     oneof FormData {
-        ProductData Product = 2;
+        ProductData Product = 3;
     }
 }
 

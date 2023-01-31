@@ -1,11 +1,5 @@
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SalesArrangement]') AND type in (N'U'))
-ALTER TABLE [dbo].[SalesArrangement] SET ( SYSTEM_VERSIONING = OFF)
+	ALTER TABLE [dbo].[SalesArrangement] SET ( SYSTEM_VERSIONING = OFF)
 GO
 DROP TABLE IF EXISTS [dbo].[SalesArrangement]
 GO
@@ -13,7 +7,7 @@ DROP TABLE IF EXISTS [dbo].[SalesArrangementHistory]
 GO
 
 CREATE TABLE [dbo].[SalesArrangement](
-	[SalesArrangementId] [int] IDENTITY(1,1) NOT NULL,
+	[SalesArrangementId] [int] IDENTITY(10000,1) NOT NULL,
 	[CaseId] [bigint] NOT NULL,
 	[OfferId] [int] NULL,
 	[ResourceProcessId] [uniqueidentifier] NULL,

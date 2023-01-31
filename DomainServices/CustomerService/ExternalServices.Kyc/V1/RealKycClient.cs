@@ -22,7 +22,7 @@ internal sealed class RealKycClient
         where TRequest : class
     {
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + url, request, cancellationToken)
+            .PutAsJsonAsync(_httpClient.BaseAddress + url, request, cancellationToken)
             .ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)

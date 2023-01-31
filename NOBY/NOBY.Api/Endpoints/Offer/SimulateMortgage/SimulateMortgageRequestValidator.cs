@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
-internal class SimulateMortgageRequestValidator
+internal sealed class SimulateMortgageRequestValidator
      : AbstractValidator<SimulateMortgageRequest>
 {
     public SimulateMortgageRequestValidator()

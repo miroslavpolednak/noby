@@ -32,5 +32,18 @@ public class UpdateCustomerRequestValidator : AbstractValidator<UpdateCustomerRe
                     });
             });
         });
+
+        When(m => m.NaturalPerson is not null, () =>
+        {
+            RuleFor(m => m.NaturalPerson.IsPoliticallyExposed)
+                .Must(t => !t.GetValueOrDefault())
+                .WithMessage("Parametr isPoliticallyExposed je nastaven na true")
+                .WithErrorCode("11027");
+
+            RuleFor(m => m.NaturalPerson.IsUSPerson)
+                .Must(t => !t.GetValueOrDefault())
+                .WithMessage("Parametr isUSPerson je nastaven na true")
+                .WithErrorCode("11028");
+        });
     }
 }

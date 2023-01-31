@@ -4,7 +4,6 @@ option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "PaginationRequest.proto";
 import "PaginationResponse.proto";
-import "google/protobuf/wrappers.proto";
 import "Messages/Case.proto";
 
 message SearchCasesRequest {

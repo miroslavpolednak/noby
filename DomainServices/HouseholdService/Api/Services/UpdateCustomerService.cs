@@ -25,7 +25,7 @@ internal sealed class UpdateCustomerService
             var saInstance = await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellation);
 
             // update case service
-            await _caseService.UpdateCaseCustomer(saInstance.CaseId, new CaseService.Contracts.CustomerData
+            await _caseService.UpdateCustomerData(saInstance.CaseId, new CaseService.Contracts.CustomerData
             {
                 DateOfBirthNaturalPerson = _cachedCustomerInstance.NaturalPerson?.DateOfBirth,
                 FirstNameNaturalPerson = _cachedCustomerInstance.NaturalPerson?.FirstName,

@@ -13,7 +13,7 @@ namespace CIS.Core.Exceptions;
 public class CisValidationException 
     : Exception
 {
-    // <summary>
+    /// <summary>
     /// Seznam chyb.
     /// </summary>
     public ImmutableList<CisExceptionItem> Errors { get; init; }

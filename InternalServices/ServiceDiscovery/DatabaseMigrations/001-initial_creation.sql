@@ -1,16 +1,10 @@
 DROP TABLE IF EXISTS [dbo].[ServiceDiscovery]
 GO
 
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[ServiceDiscovery](
-	[EnvironmentName] [varchar](50) NOT NULL,
-	[ServiceName] [varchar](50) NOT NULL,
-	[ServiceUrl] [varchar](250) NOT NULL,
+	[EnvironmentName] [varchar](20) NOT NULL,
+	[ServiceName] [varchar](100) NOT NULL,
+	[ServiceUrl] [varchar](500) NOT NULL,
 	[ServiceType] [tinyint] NOT NULL,
  CONSTRAINT [PK_ServiceDiscovery] PRIMARY KEY CLUSTERED 
 (

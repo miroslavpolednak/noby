@@ -63,6 +63,11 @@ public sealed class NobyApiExceptionMiddleware
         {
             await Results.Json(singleErrorResult(ex), statusCode: 409).ExecuteAsync(context);
         }
+        // osetrena validace na urovni FE API
+        catch (NobyValidationException ex)
+        {
+            await Results.Json(ex.Errors, statusCode: 400).ExecuteAsync(context);
+        }
         // osetrena validace na urovni api call
         catch (CisValidationException ex)
         {
@@ -87,7 +92,7 @@ public sealed class NobyApiExceptionMiddleware
             new()
             {
                 Severity = ApiErrorItemServerity.Error,
-                ErrorCode = string.IsNullOrEmpty(errorCode) ? "90001" : errorCode,
+                ErrorCode = string.IsNullOrEmpty(errorCode) ? NobyValidationException.DefaultExceptionCode : errorCode,
                 Message = message
             }
         };

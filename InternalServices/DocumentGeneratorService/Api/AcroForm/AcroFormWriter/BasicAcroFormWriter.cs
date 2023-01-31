@@ -42,14 +42,14 @@ public class BasicAcroFormWriter : IAcroFormWriter
             GenerateDocumentPartData.ValueOneofCase.Date => GetFormattedString<DateTime>(value.Date, value.StringFormat),
             GenerateDocumentPartData.ValueOneofCase.Number => GetFormattedString(value.Number, value.StringFormat),
             GenerateDocumentPartData.ValueOneofCase.DecimalNumber => GetFormattedString<decimal>(value.DecimalNumber, value.StringFormat),
-            GenerateDocumentPartData.ValueOneofCase.LogicalValue => GetFormattedString(value.LogicalValue),
+            GenerateDocumentPartData.ValueOneofCase.LogicalValue => GetFormattedString(value.LogicalValue, value.StringFormat),
             _ => throw new InvalidEnumArgumentException(nameof(value.ValueCase), (int)value.ValueCase, typeof(GenerateDocumentPartData.ValueOneofCase))
         };
     }
 
     private static string GetFormattedString(string text, string? format) => format is null ? text : string.Format(format, text);
 
-    private static string GetFormattedString(bool boolean) => boolean ? "Yes" : "No";
+    private static string GetFormattedString(bool boolean, string? format) => format ?? (boolean ? "Yes" : "No");
 
     private string GetFormattedString<TValue>(TValue value, string? format) where TValue : notnull => _fieldFormatProvider.Format(value, format);
 }

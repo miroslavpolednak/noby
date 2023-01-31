@@ -133,8 +133,8 @@ Správným nastavením této sekce se zajišťuje korektní funkčnost `Clients`
     "DefaultApplicationKey": "DS:HouseholdService",
     "EnvironmentName": "DEV",
     "ServiceDiscoveryUrl": "https://172.30.35.51:30000",
-    "InternalServicesLogin": "a",
-    "InternalServicePassword": "a"
+    "InternalServicesLogin": "XX_NOBY_RMT_USR_TEST",
+    "InternalServicePassword": "ppmlesnrTWYSDYGDR!98538535634544"
 }
 ```
 - **DefaultApplicationKey** - název aplikace v *ServiceDiscovery*

@@ -1,5 +1,4 @@
 ﻿using ExternalServices.AddressWhisperer;
-using FluentValidation.AspNetCore;
 using System.Text.Json.Serialization;
 using NOBY.Infrastructure.Security;
 using ExternalServices.AddressWhisperer.V1;
@@ -10,11 +9,27 @@ internal static class NobyServices
 {
     public static WebApplicationBuilder AddNobyServices(this WebApplicationBuilder builder)
     {
-        // mediatr
-        builder.Services.AddMediatR(typeof(IApiAssembly).Assembly);
-        
+        var assemblyType = typeof(IApiAssembly);
+
         // user accessor
         builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, NobyCurrentUserAccessor>();
+
+        // disable default asp model validation
+        builder.Services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
+
+        builder.Services
+            .AddMediatR(assemblyType.Assembly)
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(Infrastructure.ErrorHandling.NobyValidationBehavior<,>));
+
+        // add validators
+        builder.Services.Scan(selector => selector
+            .FromAssembliesOf(assemblyType)
+            .AddClasses(x => x.AssignableTo(typeof(FluentValidation.IValidator<>)))
+            .AsImplementedInterfaces()
+            .WithTransientLifetime());
 
         // controllers and validation
         builder.Services
@@ -25,11 +40,6 @@ internal static class NobyServices
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                 options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
 
-            })
-            .AddFluentValidation(fv =>
-            {
-                fv.RegisterValidatorsFromAssemblyContaining<IApiAssembly>(includeInternalTypes: true);
-                fv.DisableDataAnnotationsValidation = true;
             });
 
         // ext services

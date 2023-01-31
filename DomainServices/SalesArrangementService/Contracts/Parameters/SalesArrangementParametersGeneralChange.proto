@@ -80,7 +80,7 @@ message SalesArrangementParametersGeneralChange {
 
 	message LoanPurposeObject {
 		bool IsActive = 1;
-		cis.types.NullableGrpcDate LoanPurposesComment = 2;
+		google.protobuf.StringValue LoanPurposesComment = 2;
 	}
 
 	message DrawingAndOtherConditionsObject {

@@ -1,8 +1,10 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.Infrastructure.Telemetry;
+using CIS.InternalServices.NotificationService.Api.Helpers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using DomainServices.CodebookService.Contracts;
@@ -15,6 +17,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
 {
     private readonly IDateTime _dateTime;
     private readonly McsSmsProducer _mcsSmsProducer;
+    private readonly UserConsumerIdMapper _userConsumerIdMapper;
     private readonly NotificationRepository _repository;
     private readonly ICodebookService _codebookService;
     private readonly IAuditLogger _auditLogger;
@@ -23,6 +26,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     public SendSmsFromTemplateHandler(
         IDateTime dateTime,
         McsSmsProducer mcsSmsProducer,
+        UserConsumerIdMapper userConsumerIdMapper,
         NotificationRepository repository,
         ICodebookService codebookService,
         IAuditLogger auditLogger,
@@ -30,6 +34,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     {
         _dateTime = dateTime;
         _mcsSmsProducer = mcsSmsProducer;
+        _userConsumerIdMapper = userConsumerIdMapper;
         _repository = repository;
         _codebookService = codebookService;
         _auditLogger = auditLogger;
@@ -47,9 +52,11 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
             _auditLogger.Log("todo");
         }
         
-        // todo: placeholders
-        var text = smsType.SmsText;
+        var keyValues = request.Placeholders.ToDictionary(p => p.Key, p => p.Value);
         
+        smsType.SmsText.Validate(keyValues.Keys);
+        var text = smsType.SmsText.Interpolate(keyValues);
+
         var result = _repository.NewSmsResult();
         result.Identity = request.Identifier?.Identity;
         result.IdentityScheme = request.Identifier?.IdentityScheme;
@@ -72,13 +79,16 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
             throw new CisServiceServerErrorException("Todo", nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
         }
         
+        var consumerId = _userConsumerIdMapper.GetConsumerId();
+        
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {
             id = result.Id.ToString(),
             phone = request.Phone.Map(),
             type = smsType.McsCode,
             text = text,
-            processingPriority = request.ProcessingPriority
+            processingPriority = request.ProcessingPriority,
+            notificationConsumer = McsSmsMappers.MapToMcs(consumerId)
         };
 
         if (smsType.IsAuditLogEnabled)

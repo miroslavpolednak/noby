@@ -38,9 +38,9 @@ public sealed class GenericServerExceptionInterceptor
         // 500 z volane externi sluzby
         catch (CisServiceServerErrorException ex)
         {
-            setHttpStatus(StatusCodes.Status424FailedDependency);
+            setHttpStatus(StatusCodes.Status500InternalServerError);
             _logger.ExtServiceUnavailable(ex.ServiceName, ex);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"Service '{ex.ServiceName}' failed with HTTP 500");
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"Service '{ex.ServiceName}' failed with HTTP 500");
         }
         catch (CisNotFoundException e) // entity neexistuje
         {

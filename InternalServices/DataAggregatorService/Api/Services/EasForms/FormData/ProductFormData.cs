@@ -6,7 +6,8 @@ using DomainServices.CodebookService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
-internal class ProductFormData : AggregatedData, IFormData
+[TransientService, SelfService]
+internal class ProductFormData : AggregatedData
 {
     private List<DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementStates.SalesArrangementStateItem> _salesArrangementStates = null!;
     private List<DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes.SalesArrangementTypeItem> _salesArrangementTypes = null!;
@@ -51,7 +52,7 @@ internal class ProductFormData : AggregatedData, IFormData
 
     public bool IsEmployeeBonusRequested => Offer.SimulationInputs.IsEmployeeBonusRequested == true;
 
-    public Task LoadFormSpecificData(CancellationToken cancellationToken)
+    public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
         ProductTypeId = GetProductTypeId();
 
@@ -60,13 +61,13 @@ internal class ProductFormData : AggregatedData, IFormData
         return HouseholdData.Initialize(SalesArrangement.SalesArrangementId);
     }
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
+    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
-        _salesArrangementStates = await codebookService.SalesArrangementStates();
-        _salesArrangementTypes = await codebookService.SalesArrangementTypes();
-        _productTypes = await codebookService.ProductTypes();
-        _drawingTypes = await codebookService.DrawingTypes();
-        _drawingDurations = await codebookService.DrawingDurations();
+        _salesArrangementStates = await codebookService.SalesArrangementStates(cancellationToken);
+        _salesArrangementTypes = await codebookService.SalesArrangementTypes(cancellationToken);
+        _productTypes = await codebookService.ProductTypes(cancellationToken);
+        _drawingTypes = await codebookService.DrawingTypes(cancellationToken);
+        _drawingDurations = await codebookService.DrawingDurations(cancellationToken);
 
         await HouseholdData.LoadCodebooks(codebookService);
     }

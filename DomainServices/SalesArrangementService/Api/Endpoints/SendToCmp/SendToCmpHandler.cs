@@ -77,7 +77,7 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Google.Proto
         {
             DOKUMENT_ID = f.DynamicFormValues!.DocumentId, //Mock
             TYP_FORMULARE = f.DefaultValues.FormType,
-            CISLO_SMLOUVY = salesArrangement.ContractNumber,
+            CISLO_SMLOUVY = easFormResponse.ContractNumber,
             STATUS = 100,
             DRUH_FROMULARE = 'N',
             FORMID = f.DynamicFormValues.FormId, //Mock

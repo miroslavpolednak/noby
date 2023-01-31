@@ -7,7 +7,7 @@ using CIS.InternalServices;
 using DomainServices;
 using DomainServices.OfferService.Api.Endpoints;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
+bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
 //TODO workaround until .NET6 UseWindowsService() will work with WebApplication
 var webAppOptions = runAsWinSvc

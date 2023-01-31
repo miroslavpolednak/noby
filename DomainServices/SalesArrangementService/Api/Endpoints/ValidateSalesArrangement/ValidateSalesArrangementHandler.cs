@@ -31,7 +31,7 @@ internal class ValidateSalesArrangementHandler
 
         var easFormResponse = await GetEasForm(salesArrangement, category, cancellationToken);
 
-        return await CheckForms(salesArrangement, easFormResponse, cancellationToken);
+        return await CheckForms(easFormResponse,cancellationToken);
     }
 
     private async Task<GetEasFormResponse> GetEasForm(SalesArrangement salesArrangement, SalesArrangementCategories category, CancellationToken cancellationToken)
@@ -53,7 +53,7 @@ internal class ValidateSalesArrangementHandler
         return response;
     }
 
-    private async Task<ValidateSalesArrangementResponse> CheckForms(SalesArrangement salesArrangement, GetEasFormResponse easForm, CancellationToken cancellationToken)
+    private async Task<ValidateSalesArrangementResponse> CheckForms(GetEasFormResponse easForm, CancellationToken cancellationToken)
     {
         var response = new ValidateSalesArrangementResponse();
 
@@ -64,7 +64,7 @@ internal class ValidateSalesArrangementHandler
                 //formular_id = 3601001,
                 //cislo_smlouvy = formData.Arrangement.ContractNumber,
                 formular_id = GetFormId(form.EasFormType),
-                cislo_smlouvy = salesArrangement.ContractNumber,
+                cislo_smlouvy = easForm.ContractNumber,
                 // dokument_id = "9876543210",                      // ??? dokument_id je nepovinné, to neposílej
                 dokument_id = "9876543210",    // TODO: dočasný mock - odstranit až si to Assecco odladí
                 datum_prijeti = DateTime.Now.Date,                         // ??? datum prijeti dej v D1.2 aktuální datum

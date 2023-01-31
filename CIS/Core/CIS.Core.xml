@@ -584,7 +584,11 @@
             Může také ošetřovat stavy místo ArgumentException nebo ArgumentNullException a podobně.
             </remarks>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:CIS.Core.Exceptions.CisValidationException.Errors" -->
+        <member name="P:CIS.Core.Exceptions.CisValidationException.Errors">
+            <summary>
+            Seznam chyb.
+            </summary>
+        </member>
         <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.String)">
             <param name="message">Chybová zpráva</param>
         </member>
