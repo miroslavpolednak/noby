@@ -1,3 +1,5 @@
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'DEV', N'CIS:DocumentOnSAService', N'https://172.30.35.51:30021', 1)
+GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'DEV', N'CIS:DataAggregatorService', N'https://172.30.35.51:30020', 1)
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'DEV', N'CIS:DocumentGeneratorService', N'https://172.30.35.51:30014', 1)
