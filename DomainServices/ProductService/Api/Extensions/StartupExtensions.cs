@@ -8,7 +8,7 @@ internal static class StartupExtensions
     public static WebApplicationBuilder AddProductService(this WebApplicationBuilder builder)
     {
         // EAS svc
-        builder.AddExternalService<ExternalServices.Eas.R21.IEasClient>();
+        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
         // MpHome svc
         builder.AddExternalService<ExternalServices.MpHome.V1_1.IMpHomeClient>();
 

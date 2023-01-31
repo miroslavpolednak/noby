@@ -1,4 +1,4 @@
-﻿namespace ExternalServices.Eas.R21
+﻿namespace ExternalServices.Eas.V1
 {
     public class CommonResponse
     {

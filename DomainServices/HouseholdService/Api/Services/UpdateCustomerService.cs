@@ -1,6 +1,7 @@
 ﻿using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using ExternalServices.Eas.V1;
 using _Customer = DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Services;
@@ -53,7 +54,7 @@ internal sealed class UpdateCustomerService
             ClientType = _cachedCustomerInstance.NaturalPerson.CitizenshipCountriesId?.Any(t => t == defaultCountry) ?? false ? ExternalServices.Eas.Dto.ClientDataModel.ClientTypes.FO : ExternalServices.Eas.Dto.ClientDataModel.ClientTypes.Foreigner
         };
 
-        int? id = (await _easClient.CreateNewOrGetExisingClient(model)).Id;
+        int? id = (await _easClient.CreateNewOrGetExisingClient(model, cancellationToken)).Id;
 
         if (id.HasValue)
         {
@@ -79,10 +80,10 @@ internal sealed class UpdateCustomerService
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICaseServiceClient _caseService;
     private readonly ICustomerServiceClient _customerService;
-    private readonly Eas.IEasClient _easClient;
+    private readonly IEasClient _easClient;
 
     public UpdateCustomerService(
-        Eas.IEasClient easClient,
+        IEasClient easClient,
         ISalesArrangementServiceClient salesArrangementService,
         ICaseServiceClient caseService,
         ICustomerServiceClient customerService,

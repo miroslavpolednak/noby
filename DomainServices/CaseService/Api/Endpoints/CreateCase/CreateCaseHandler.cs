@@ -1,5 +1,6 @@
 ﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
+using ExternalServices.Eas.V1;
 
 namespace DomainServices.CaseService.Api.Endpoints.CreateCase;
 
@@ -16,14 +17,14 @@ internal sealed class CreateCaseHandler
         int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault).Id;
 
         // ziskat caseId
-        long newCaseId = await _easClient.GetCaseId(CIS.Foms.Enums.IdentitySchemes.Kb, request.Data.ProductTypeId);
+        long newCaseId = await _easClient.GetCaseId(CIS.Foms.Enums.IdentitySchemes.Kb, request.Data.ProductTypeId, cancellation);
         _logger.NewCaseIdCreated(newCaseId);
 
         // vytvorit entitu
         var entity = createDatabaseEntity(request, newCaseId);
         entity.OwnerUserName = userInstance.FullName;//dotazene jmeno majitele caseu (poradce)
         entity.State = defaultCaseState;//vychozi status
-        
+
         try
         {
             _dbContext.Cases.Add(entity);
@@ -89,7 +90,7 @@ internal sealed class CreateCaseHandler
     private readonly CIS.Core.IDateTime _dateTime;
     private readonly CaseServiceDbContext _dbContext;
     private readonly ILogger<CreateCaseHandler> _logger;
-    private readonly Eas.IEasClient _easClient;
+    private readonly IEasClient _easClient;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly UserService.Clients.IUserServiceClient _userService;
 
@@ -98,7 +99,7 @@ internal sealed class CreateCaseHandler
         CIS.Core.IDateTime dateTime,
         UserService.Clients.IUserServiceClient userService,
         CodebookService.Clients.ICodebookServiceClients codebookService,
-        Eas.IEasClient easClient,
+        IEasClient easClient,
         CaseServiceDbContext dbContext,
         ILogger<CreateCaseHandler> logger)
     {

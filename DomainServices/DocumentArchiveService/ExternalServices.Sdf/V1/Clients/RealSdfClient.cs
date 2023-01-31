@@ -19,6 +19,8 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
     private AsyncRetryPolicy _retryPolicy;
     private ILogger<RealSdfClient> _logger;
 
+    protected override string ServiceName => StartupExtensions.ServiceName;
+
     public RealSdfClient(
             ILogger<RealSdfClient> logger,
             IExternalServiceConfiguration<ISdfClient> configuration)

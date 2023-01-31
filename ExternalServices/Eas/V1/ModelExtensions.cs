@@ -1,6 +1,6 @@
-﻿using ExternalServices.Eas.R21.EasWrapper;
+﻿using ExternalServices.Eas.V1.EasWrapper;
 
-namespace ExternalServices.Eas.R21;
+namespace ExternalServices.Eas.V1;
 
 internal static class ModelExtensions
 {

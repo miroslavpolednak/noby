@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ExternalServices.Eas.R21.EasWrapper
+namespace ExternalServices.Eas.V1.EasWrapper
 {
     
     
@@ -26,67 +26,67 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/GetVersionInfo", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/GetVersionInfo")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.GetVersionInfoResponse> GetVersionInfoAsync(string Mode);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.GetVersionInfoResponse> GetVersionInfoAsync(string Mode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/GetDOD", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/GetDOD")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.GetDODResponse> GetDODAsync(ExternalServices.Eas.R21.EasWrapper.GetDODRequest request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.GetDODResponse> GetDODAsync(ExternalServices.Eas.V1.EasWrapper.GetDODRequest request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/CheckForm", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/CheckForm")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CheckFormResponse> CheckFormAsync(ExternalServices.Eas.R21.EasWrapper.CheckFormRequest request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CheckFormResponse> CheckFormAsync(ExternalServices.Eas.V1.EasWrapper.CheckFormRequest request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/CheckForm_V2", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/CheckForm_V2")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CheckFormV2Response> CheckForm_V2Async(ExternalServices.Eas.R21.EasWrapper.CheckFormV2Request request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CheckFormV2Response> CheckForm_V2Async(ExternalServices.Eas.V1.EasWrapper.CheckFormV2Request request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/InsertForm", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/InsertForm")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.InsertFormResponse> InsertFormAsync(ExternalServices.Eas.R21.EasWrapper.InsertFormRequest request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.InsertFormResponse> InsertFormAsync(ExternalServices.Eas.V1.EasWrapper.InsertFormRequest request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/LoanProposalFormProcess", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/LoanProposalFormProcess")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.LoanProposalFormResponse> LoanProposalFormProcessAsync(ExternalServices.Eas.R21.EasWrapper.LoanProposalFormRequest request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.LoanProposalFormResponse> LoanProposalFormProcessAsync(ExternalServices.Eas.V1.EasWrapper.LoanProposalFormRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/Simulation", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/Simulation")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.ESBI_SIMULATION_RESULTS> SimulationAsync(ExternalServices.Eas.R21.EasWrapper.ESBI_SIMULATION_INPUT_PARAMETERS settings);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.ESBI_SIMULATION_RESULTS> SimulationAsync(ExternalServices.Eas.V1.EasWrapper.ESBI_SIMULATION_INPUT_PARAMETERS settings);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/UveroveZavazky", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/UveroveZavazky")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.UVEROVE_ZAVAZKY_OUTPUT> UveroveZavazkyAsync(ExternalServices.Eas.R21.EasWrapper.UVEROVE_ZAVAZKY_INPUT vstup);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.UVEROVE_ZAVAZKY_OUTPUT> UveroveZavazkyAsync(ExternalServices.Eas.V1.EasWrapper.UVEROVE_ZAVAZKY_INPUT vstup);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/GetKontraktID", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/GetKontraktID")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CBCB_KONTRAKT_RETURN> GetKontraktIDAsync(ExternalServices.Eas.R21.EasWrapper.CBCB_KONTRAKT_INPUT vstup);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CBCB_KONTRAKT_RETURN> GetKontraktIDAsync(ExternalServices.Eas.V1.EasWrapper.CBCB_KONTRAKT_INPUT vstup);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SchvalenieDavkyCBCB", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SchvalenieDavkyCBCB")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CBCB_DAVKA_RETURN> SchvalenieDavkyCBCBAsync(ExternalServices.Eas.R21.EasWrapper.CBCB_DAVKA_INPUT vstup);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CBCB_DAVKA_RETURN> SchvalenieDavkyCBCBAsync(ExternalServices.Eas.V1.EasWrapper.CBCB_DAVKA_INPUT vstup);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/GetKlientData", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/GetKlientData")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> GetKlientDataAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> GetKlientDataAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/NewKlient", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/NewKlient")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> NewKlientAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> NewKlientAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/GetCisloZmluvy", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/GetCisloZmluvy")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> GetCisloZmluvyAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> GetCisloZmluvyAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/GetUverId", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/GetUverId")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> GetUverIdAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> GetUverIdAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SetVersionLoanProposal", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SetVersionLoanProposal")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> SetVersionLoanProposalAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> SetVersionLoanProposalAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/LoanProposalState", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/LoanProposalState")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -94,153 +94,153 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/GetKlientData_NewKlient", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/GetKlientData_NewKlient")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.GetKlientData_NewKlientResponse> GetKlientData_NewKlientAsync(ExternalServices.Eas.R21.EasWrapper.GetKlientData_NewKlientRequest request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.GetKlientData_NewKlientResponse> GetKlientData_NewKlientAsync(ExternalServices.Eas.V1.EasWrapper.GetKlientData_NewKlientRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/UndoCisloZmluvy", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/UndoCisloZmluvy")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> UndoCisloZmluvyAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> UndoCisloZmluvyAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/CriticalScoringInfo", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/CriticalScoringInfo")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_ScoringDataCritical> CriticalScoringInfoAsync(ExternalServices.Eas.R21.EasWrapper.S_ScoringDataCritical inp);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_ScoringDataCritical> CriticalScoringInfoAsync(ExternalServices.Eas.V1.EasWrapper.S_ScoringDataCritical inp);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/Get_CaseId", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/Get_CaseId")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CaseIdResponse> Get_CaseIdAsync(ExternalServices.Eas.R21.EasWrapper.CaseIdRequest request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CaseIdResponse> Get_CaseIdAsync(ExternalServices.Eas.V1.EasWrapper.CaseIdRequest request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/Get_UverIdForSS", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/Get_UverIdForSS")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.UverIdResponse> Get_UverIdForSSAsync(ExternalServices.Eas.R21.EasWrapper.UverIdRequest request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.UverIdResponse> Get_UverIdForSSAsync(ExternalServices.Eas.V1.EasWrapper.UverIdRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/Add_FirstSignatureDate", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/Add_FirstSignatureDate")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.FirstSignatureResponse> Add_FirstSignatureDateAsync(ExternalServices.Eas.R21.EasWrapper.FirstSignatureRequest request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.FirstSignatureResponse> Add_FirstSignatureDateAsync(ExternalServices.Eas.V1.EasWrapper.FirstSignatureRequest request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/Get_ContractNumber", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/Get_ContractNumber")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.ContractNrResponse> Get_ContractNumberAsync(ExternalServices.Eas.R21.EasWrapper.ContractNrRequest request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.ContractNrResponse> Get_ContractNumberAsync(ExternalServices.Eas.V1.EasWrapper.ContractNrRequest request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/KlientKontakty", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/KlientKontakty")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.KontaktyResults> KlientKontaktyAsync(ExternalServices.Eas.R21.EasWrapper.KontaktyData request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.KontaktyResults> KlientKontaktyAsync(ExternalServices.Eas.V1.EasWrapper.KontaktyData request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/KlientSouhlasy", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/KlientSouhlasy")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CommonResult1> KlientSouhlasyAsync(ExternalServices.Eas.R21.EasWrapper.KlSouhlasyData request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CommonResult1> KlientSouhlasyAsync(ExternalServices.Eas.V1.EasWrapper.KlSouhlasyData request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/PoznamkyVymahani", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/PoznamkyVymahani")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.PoznamkyVymResults> PoznamkyVymahaniAsync(ExternalServices.Eas.R21.EasWrapper.PoznamkyVymData request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.PoznamkyVymResults> PoznamkyVymahaniAsync(ExternalServices.Eas.V1.EasWrapper.PoznamkyVymData request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/KontrolaNeplatneDoklady", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/KontrolaNeplatneDoklady")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CommonResult1> KontrolaNeplatneDokladyAsync(ExternalServices.Eas.R21.EasWrapper.DokladData request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CommonResult1> KontrolaNeplatneDokladyAsync(ExternalServices.Eas.V1.EasWrapper.DokladData request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/KontrolaKontakt", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/KontrolaKontakt")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CommonResult1> KontrolaKontaktAsync(ExternalServices.Eas.R21.EasWrapper.KontaktData1 request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CommonResult1> KontrolaKontaktAsync(ExternalServices.Eas.V1.EasWrapper.KontaktData1 request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/KontrolaAdresa", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/KontrolaAdresa")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.AdresaResults> KontrolaAdresaAsync(ExternalServices.Eas.R21.EasWrapper.AdresaData1 request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.AdresaResults> KontrolaAdresaAsync(ExternalServices.Eas.V1.EasWrapper.AdresaData1 request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/PoplatekSSVypocet", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/PoplatekSSVypocet")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.PoplatkySSResults> PoplatekSSVypocetAsync(ExternalServices.Eas.R21.EasWrapper.PoplatkySSData request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.PoplatkySSResults> PoplatekSSVypocetAsync(ExternalServices.Eas.V1.EasWrapper.PoplatkySSData request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/KlientCaasIdentita", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/KlientCaasIdentita")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CaasIdentitaResults> KlientCaasIdentitaAsync(ExternalServices.Eas.R21.EasWrapper.CaasIdentitaData request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CaasIdentitaResults> KlientCaasIdentitaAsync(ExternalServices.Eas.V1.EasWrapper.CaasIdentitaData request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/KlientZalozeni", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/KlientZalozeni")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.KlientZalozeniResults> KlientZalozeniAsync(ExternalServices.Eas.R21.EasWrapper.KlientZalozeniData request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.KlientZalozeniResults> KlientZalozeniAsync(ExternalServices.Eas.V1.EasWrapper.KlientZalozeniData request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/AddCisDomeny", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/AddCisDomeny")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.AddCisDomenyResults> AddCisDomenyAsync(ExternalServices.Eas.R21.EasWrapper.AddCisDomenyData request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.AddCisDomenyResults> AddCisDomenyAsync(ExternalServices.Eas.V1.EasWrapper.AddCisDomenyData request);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/KlientDoklady", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/KlientDoklady")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.KlientDokladyResults> KlientDokladyAsync(ExternalServices.Eas.R21.EasWrapper.KlientDokladyData request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.KlientDokladyResults> KlientDokladyAsync(ExternalServices.Eas.V1.EasWrapper.KlientDokladyData request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetPerson", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetPerson")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="accountOwner")]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_Person> SBSS_GetPersonAsync(string birthnumber, bool activeonly);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_Person> SBSS_GetPersonAsync(string birthnumber, bool activeonly);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetAllAccounts", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetAllAccounts")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="list")]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_AccountBase[]> SBSS_GetAllAccountsAsync(string birthnumber, bool includenoactive);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_AccountBase[]> SBSS_GetAllAccountsAsync(string birthnumber, bool includenoactive);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetBSHeaders", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetBSHeaders")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="list")]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_BSHeader[]> SBSS_GetBSHeadersAsync(string birthnumber, bool ownerOnly, bool headerlevel);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_BSHeader[]> SBSS_GetBSHeadersAsync(string birthnumber, bool ownerOnly, bool headerlevel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetBS", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetBS")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="data")]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_BSData> SBSS_GetBSAsync(string birthnumber, ExternalServices.Eas.R21.EasWrapper.SBSS_AccountBase accountBase);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_BSData> SBSS_GetBSAsync(string birthnumber, ExternalServices.Eas.V1.EasWrapper.SBSS_AccountBase accountBase);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetLoanHeaders", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetLoanHeaders")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="list")]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_LoanHeader[]> SBSS_GetLoanHeadersAsync(string birthnumber, bool ownerOnly);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_LoanHeader[]> SBSS_GetLoanHeadersAsync(string birthnumber, bool ownerOnly);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetLoan", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetLoan")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="data")]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_LoanData> SBSS_GetLoanAsync(string birthnumber, ExternalServices.Eas.R21.EasWrapper.SBSS_AccountBase accountBase);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_LoanData> SBSS_GetLoanAsync(string birthnumber, ExternalServices.Eas.V1.EasWrapper.SBSS_AccountBase accountBase);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetTH", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetTH")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="list")]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_Transaction[]> SBSS_GetTHAsync(ExternalServices.Eas.R21.EasWrapper.SBSS_AccountBase accountBase, ExternalServices.Eas.R21.EasWrapper.SBSS_THFilter filter);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_Transaction[]> SBSS_GetTHAsync(ExternalServices.Eas.V1.EasWrapper.SBSS_AccountBase accountBase, ExternalServices.Eas.V1.EasWrapper.SBSS_THFilter filter);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetAllAccountsTH", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetAllAccountsTH")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="list")]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_AccountTH[]> SBSS_GetAllAccountsTHAsync(int accountId, string accountNumber, bool includenoactive);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_AccountTH[]> SBSS_GetAllAccountsTHAsync(int accountId, string accountNumber, bool includenoactive);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetFormProp", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetFormProp")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_GetFormPropResponse> SBSS_GetFormPropAsync(ExternalServices.Eas.R21.EasWrapper.SBSS_GetFormPropRequest request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_GetFormPropResponse> SBSS_GetFormPropAsync(ExternalServices.Eas.V1.EasWrapper.SBSS_GetFormPropRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetEvents", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetEvents")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="list")]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_Event[]> SBSS_GetEventsAsync(string birthnumber);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_Event[]> SBSS_GetEventsAsync(string birthnumber);
         
         // CODEGEN: Probíhá generování kontraktu zprávy, protože operace má více návratových hodnot.
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetCommunicatorMessages", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetCommunicatorMessages")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_GetCommunicatorMessagesResponse> SBSS_GetCommunicatorMessagesAsync(ExternalServices.Eas.R21.EasWrapper.SBSS_GetCommunicatorMessagesRequest request);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_GetCommunicatorMessagesResponse> SBSS_GetCommunicatorMessagesAsync(ExternalServices.Eas.V1.EasWrapper.SBSS_GetCommunicatorMessagesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_SendCommunicatorMessage", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_SendCommunicatorMessage")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="result")]
-        System.Threading.Tasks.Task<int> SBSS_SendCommunicatorMessageAsync(string birthnumber, ExternalServices.Eas.R21.EasWrapper.SBSS_CommMessage message);
+        System.Threading.Tasks.Task<int> SBSS_SendCommunicatorMessageAsync(string birthnumber, ExternalServices.Eas.V1.EasWrapper.SBSS_CommMessage message);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetAfterrequests", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SBSS_GetAfterrequests")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="list")]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_Afterrequest[]> SBSS_GetAfterrequestsAsync(string birthnumber);
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_Afterrequest[]> SBSS_GetAfterrequestsAsync(string birthnumber);
     }
     
     /// <remarks/>
@@ -11650,13 +11650,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
-        public ExternalServices.Eas.R21.EasWrapper.S_FORMULAR sParameters;
+        public ExternalServices.Eas.V1.EasWrapper.S_FORMULAR sParameters;
         
         public CheckFormRequest()
         {
         }
         
-        public CheckFormRequest(ExternalServices.Eas.R21.EasWrapper.S_FORMULAR sParameters)
+        public CheckFormRequest(ExternalServices.Eas.V1.EasWrapper.S_FORMULAR sParameters)
         {
             this.sParameters = sParameters;
         }
@@ -11672,13 +11672,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         public int CheckFormResult;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
-        public ExternalServices.Eas.R21.EasWrapper.S_FORMULAR sParameters;
+        public ExternalServices.Eas.V1.EasWrapper.S_FORMULAR sParameters;
         
         public CheckFormResponse()
         {
         }
         
-        public CheckFormResponse(int CheckFormResult, ExternalServices.Eas.R21.EasWrapper.S_FORMULAR sParameters)
+        public CheckFormResponse(int CheckFormResult, ExternalServices.Eas.V1.EasWrapper.S_FORMULAR sParameters)
         {
             this.CheckFormResult = CheckFormResult;
             this.sParameters = sParameters;
@@ -11693,13 +11693,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CheckFormData formularData;
+        public ExternalServices.Eas.V1.EasWrapper.CheckFormData formularData;
         
         public CheckFormV2Request()
         {
         }
         
-        public CheckFormV2Request(ExternalServices.Eas.R21.EasWrapper.CheckFormData formularData)
+        public CheckFormV2Request(ExternalServices.Eas.V1.EasWrapper.CheckFormData formularData)
         {
             this.formularData = formularData;
         }
@@ -11712,17 +11712,17 @@ namespace ExternalServices.Eas.R21.EasWrapper
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
-        public ExternalServices.Eas.R21.EasWrapper.CheckFormData formularData;
+        public ExternalServices.Eas.V1.EasWrapper.CheckFormData formularData;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public CheckFormV2Response()
         {
         }
         
-        public CheckFormV2Response(ExternalServices.Eas.R21.EasWrapper.CheckFormData formularData, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public CheckFormV2Response(ExternalServices.Eas.V1.EasWrapper.CheckFormData formularData, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.formularData = formularData;
             this.commonResult = commonResult;
@@ -11737,13 +11737,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.FormularData formularData;
+        public ExternalServices.Eas.V1.EasWrapper.FormularData formularData;
         
         public InsertFormRequest()
         {
         }
         
-        public InsertFormRequest(ExternalServices.Eas.R21.EasWrapper.FormularData formularData)
+        public InsertFormRequest(ExternalServices.Eas.V1.EasWrapper.FormularData formularData)
         {
             this.formularData = formularData;
         }
@@ -11756,17 +11756,17 @@ namespace ExternalServices.Eas.R21.EasWrapper
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
-        public ExternalServices.Eas.R21.EasWrapper.FormularData formularData;
+        public ExternalServices.Eas.V1.EasWrapper.FormularData formularData;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public InsertFormResponse()
         {
         }
         
-        public InsertFormResponse(ExternalServices.Eas.R21.EasWrapper.FormularData formularData, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public InsertFormResponse(ExternalServices.Eas.V1.EasWrapper.FormularData formularData, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.formularData = formularData;
             this.commonResult = commonResult;
@@ -11781,13 +11781,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.FormularData formularData;
+        public ExternalServices.Eas.V1.EasWrapper.FormularData formularData;
         
         public LoanProposalFormRequest()
         {
         }
         
-        public LoanProposalFormRequest(ExternalServices.Eas.R21.EasWrapper.FormularData formularData)
+        public LoanProposalFormRequest(ExternalServices.Eas.V1.EasWrapper.FormularData formularData)
         {
             this.formularData = formularData;
         }
@@ -11804,13 +11804,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public LoanProposalFormResponse()
         {
         }
         
-        public LoanProposalFormResponse(int uver_id, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public LoanProposalFormResponse(int uver_id, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.uver_id = uver_id;
             this.commonResult = commonResult;
@@ -11826,13 +11826,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA[] inputData;
+        public ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA[] inputData;
         
         public GetKlientData_NewKlientRequest()
         {
         }
         
-        public GetKlientData_NewKlientRequest(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA[] inputData)
+        public GetKlientData_NewKlientRequest(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA[] inputData)
         {
             this.inputData = inputData;
         }
@@ -11847,13 +11847,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA[] GetKlientData_NewKlientResult;
+        public ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA[] GetKlientData_NewKlientResult;
         
         public GetKlientData_NewKlientResponse()
         {
         }
         
-        public GetKlientData_NewKlientResponse(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA[] GetKlientData_NewKlientResult)
+        public GetKlientData_NewKlientResponse(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA[] GetKlientData_NewKlientResult)
         {
             this.GetKlientData_NewKlientResult = GetKlientData_NewKlientResult;
         }
@@ -11899,13 +11899,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=3)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public CaseIdResponse()
         {
         }
         
-        public CaseIdResponse(int mandant, int productCode, int caseId, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public CaseIdResponse(int mandant, int productCode, int caseId, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.mandant = mandant;
             this.productCode = productCode;
@@ -11954,13 +11954,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=3)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public UverIdResponse()
         {
         }
         
-        public UverIdResponse(int caseId, int productCode, int uverId, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public UverIdResponse(int caseId, int productCode, int uverId, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.caseId = caseId;
             this.productCode = productCode;
@@ -12006,13 +12006,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public FirstSignatureResponse()
         {
         }
         
-        public FirstSignatureResponse(ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public FirstSignatureResponse(ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.commonResult = commonResult;
         }
@@ -12059,13 +12059,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=3)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public ContractNrResponse()
         {
         }
         
-        public ContractNrResponse(int clientId, int caseId, string contractNumber, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public ContractNrResponse(int clientId, int caseId, string contractNumber, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.clientId = clientId;
             this.caseId = caseId;
@@ -12082,21 +12082,21 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonRequestData kontaktRequest;
+        public ExternalServices.Eas.V1.EasWrapper.CommonRequestData kontaktRequest;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
         [System.Xml.Serialization.XmlArrayItemAttribute("elKontakt", IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.ElKontaktZmena[] zoznamKontakty;
+        public ExternalServices.Eas.V1.EasWrapper.ElKontaktZmena[] zoznamKontakty;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=2)]
         [System.Xml.Serialization.XmlArrayItemAttribute("adresa", IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.AdresaData[] zoznamAdresy;
+        public ExternalServices.Eas.V1.EasWrapper.AdresaData[] zoznamAdresy;
         
         public KontaktyData()
         {
         }
         
-        public KontaktyData(ExternalServices.Eas.R21.EasWrapper.CommonRequestData kontaktRequest, ExternalServices.Eas.R21.EasWrapper.ElKontaktZmena[] zoznamKontakty, ExternalServices.Eas.R21.EasWrapper.AdresaData[] zoznamAdresy)
+        public KontaktyData(ExternalServices.Eas.V1.EasWrapper.CommonRequestData kontaktRequest, ExternalServices.Eas.V1.EasWrapper.ElKontaktZmena[] zoznamKontakty, ExternalServices.Eas.V1.EasWrapper.AdresaData[] zoznamAdresy)
         {
             this.kontaktRequest = kontaktRequest;
             this.zoznamKontakty = zoznamKontakty;
@@ -12112,25 +12112,25 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonRequestData kontaktRequest;
+        public ExternalServices.Eas.V1.EasWrapper.CommonRequestData kontaktRequest;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
         [System.Xml.Serialization.XmlArrayItemAttribute("elKontaktResult", IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.ElKontaktResult[] zoznamKontakty;
+        public ExternalServices.Eas.V1.EasWrapper.ElKontaktResult[] zoznamKontakty;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=2)]
         [System.Xml.Serialization.XmlArrayItemAttribute("adresa", IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.AdresaData[] zoznamAdresy;
+        public ExternalServices.Eas.V1.EasWrapper.AdresaData[] zoznamAdresy;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=3)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public KontaktyResults()
         {
         }
         
-        public KontaktyResults(ExternalServices.Eas.R21.EasWrapper.CommonRequestData kontaktRequest, ExternalServices.Eas.R21.EasWrapper.ElKontaktResult[] zoznamKontakty, ExternalServices.Eas.R21.EasWrapper.AdresaData[] zoznamAdresy, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public KontaktyResults(ExternalServices.Eas.V1.EasWrapper.CommonRequestData kontaktRequest, ExternalServices.Eas.V1.EasWrapper.ElKontaktResult[] zoznamKontakty, ExternalServices.Eas.V1.EasWrapper.AdresaData[] zoznamAdresy, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.kontaktRequest = kontaktRequest;
             this.zoznamKontakty = zoznamKontakty;
@@ -12147,17 +12147,17 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonRequestData souhlasyRequest;
+        public ExternalServices.Eas.V1.EasWrapper.CommonRequestData souhlasyRequest;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
         [System.Xml.Serialization.XmlArrayItemAttribute("souhlas", IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.KlSouhlasZmena[] zoznamSouhlasy;
+        public ExternalServices.Eas.V1.EasWrapper.KlSouhlasZmena[] zoznamSouhlasy;
         
         public KlSouhlasyData()
         {
         }
         
-        public KlSouhlasyData(ExternalServices.Eas.R21.EasWrapper.CommonRequestData souhlasyRequest, ExternalServices.Eas.R21.EasWrapper.KlSouhlasZmena[] zoznamSouhlasy)
+        public KlSouhlasyData(ExternalServices.Eas.V1.EasWrapper.CommonRequestData souhlasyRequest, ExternalServices.Eas.V1.EasWrapper.KlSouhlasZmena[] zoznamSouhlasy)
         {
             this.souhlasyRequest = souhlasyRequest;
             this.zoznamSouhlasy = zoznamSouhlasy;
@@ -12196,21 +12196,21 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonRequestExData poznamkyRequest;
+        public ExternalServices.Eas.V1.EasWrapper.CommonRequestExData poznamkyRequest;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
         [System.Xml.Serialization.XmlArrayItemAttribute("poznamkaVym", IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.PoznamkaData[] zoznamPoznamky;
+        public ExternalServices.Eas.V1.EasWrapper.PoznamkaData[] zoznamPoznamky;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.StavVymData stavVymahani;
+        public ExternalServices.Eas.V1.EasWrapper.StavVymData stavVymahani;
         
         public PoznamkyVymData()
         {
         }
         
-        public PoznamkyVymData(ExternalServices.Eas.R21.EasWrapper.CommonRequestExData poznamkyRequest, ExternalServices.Eas.R21.EasWrapper.PoznamkaData[] zoznamPoznamky, ExternalServices.Eas.R21.EasWrapper.StavVymData stavVymahani)
+        public PoznamkyVymData(ExternalServices.Eas.V1.EasWrapper.CommonRequestExData poznamkyRequest, ExternalServices.Eas.V1.EasWrapper.PoznamkaData[] zoznamPoznamky, ExternalServices.Eas.V1.EasWrapper.StavVymData stavVymahani)
         {
             this.poznamkyRequest = poznamkyRequest;
             this.zoznamPoznamky = zoznamPoznamky;
@@ -12226,25 +12226,25 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonRequestExData poznamkyRequest;
+        public ExternalServices.Eas.V1.EasWrapper.CommonRequestExData poznamkyRequest;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
         [System.Xml.Serialization.XmlArrayItemAttribute("poznamkaVym", IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.PoznamkaData[] zoznamPoznamky;
+        public ExternalServices.Eas.V1.EasWrapper.PoznamkaData[] zoznamPoznamky;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.StavVymData stavVymahani;
+        public ExternalServices.Eas.V1.EasWrapper.StavVymData stavVymahani;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=3)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public PoznamkyVymResults()
         {
         }
         
-        public PoznamkyVymResults(ExternalServices.Eas.R21.EasWrapper.CommonRequestExData poznamkyRequest, ExternalServices.Eas.R21.EasWrapper.PoznamkaData[] zoznamPoznamky, ExternalServices.Eas.R21.EasWrapper.StavVymData stavVymahani, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public PoznamkyVymResults(ExternalServices.Eas.V1.EasWrapper.CommonRequestExData poznamkyRequest, ExternalServices.Eas.V1.EasWrapper.PoznamkaData[] zoznamPoznamky, ExternalServices.Eas.V1.EasWrapper.StavVymData stavVymahani, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.poznamkyRequest = poznamkyRequest;
             this.zoznamPoznamky = zoznamPoznamky;
@@ -12358,17 +12358,17 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlArrayItemAttribute("chyba", IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonError[] seznamChyb;
+        public ExternalServices.Eas.V1.EasWrapper.CommonError[] seznamChyb;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public AdresaResults()
         {
         }
         
-        public AdresaResults(ExternalServices.Eas.R21.EasWrapper.CommonError[] seznamChyb, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public AdresaResults(ExternalServices.Eas.V1.EasWrapper.CommonError[] seznamChyb, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.seznamChyb = seznamChyb;
             this.commonResult = commonResult;
@@ -12436,13 +12436,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=3)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public PoplatkySSResults()
         {
         }
         
-        public PoplatkySSResults(decimal poplatek_sjednani, decimal poplatek_vedeni_uctu, decimal sleva_marketing_akce, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public PoplatkySSResults(decimal poplatek_sjednani, decimal poplatek_vedeni_uctu, decimal sleva_marketing_akce, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.poplatek_sjednani = poplatek_sjednani;
             this.poplatek_vedeni_uctu = poplatek_vedeni_uctu;
@@ -12459,16 +12459,16 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonRequestData caasRequest;
+        public ExternalServices.Eas.V1.EasWrapper.CommonRequestData caasRequest;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
-        public ExternalServices.Eas.R21.EasWrapper.KlCaasIdentita caasIdentita;
+        public ExternalServices.Eas.V1.EasWrapper.KlCaasIdentita caasIdentita;
         
         public CaasIdentitaData()
         {
         }
         
-        public CaasIdentitaData(ExternalServices.Eas.R21.EasWrapper.CommonRequestData caasRequest, ExternalServices.Eas.R21.EasWrapper.KlCaasIdentita caasIdentita)
+        public CaasIdentitaData(ExternalServices.Eas.V1.EasWrapper.CommonRequestData caasRequest, ExternalServices.Eas.V1.EasWrapper.KlCaasIdentita caasIdentita)
         {
             this.caasRequest = caasRequest;
             this.caasIdentita = caasIdentita;
@@ -12483,20 +12483,20 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonRequestData caasRequest;
+        public ExternalServices.Eas.V1.EasWrapper.CommonRequestData caasRequest;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
-        public ExternalServices.Eas.R21.EasWrapper.KlCaasIdentita caasIdentita;
+        public ExternalServices.Eas.V1.EasWrapper.KlCaasIdentita caasIdentita;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public CaasIdentitaResults()
         {
         }
         
-        public CaasIdentitaResults(ExternalServices.Eas.R21.EasWrapper.CommonRequestData caasRequest, ExternalServices.Eas.R21.EasWrapper.KlCaasIdentita caasIdentita, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public CaasIdentitaResults(ExternalServices.Eas.V1.EasWrapper.CommonRequestData caasRequest, ExternalServices.Eas.V1.EasWrapper.KlCaasIdentita caasIdentita, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.caasRequest = caasRequest;
             this.caasIdentita = caasIdentita;
@@ -12512,16 +12512,16 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonRequestData zalozeniRequest;
+        public ExternalServices.Eas.V1.EasWrapper.CommonRequestData zalozeniRequest;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
-        public ExternalServices.Eas.R21.EasWrapper.KlZalozeni klientData;
+        public ExternalServices.Eas.V1.EasWrapper.KlZalozeni klientData;
         
         public KlientZalozeniData()
         {
         }
         
-        public KlientZalozeniData(ExternalServices.Eas.R21.EasWrapper.CommonRequestData zalozeniRequest, ExternalServices.Eas.R21.EasWrapper.KlZalozeni klientData)
+        public KlientZalozeniData(ExternalServices.Eas.V1.EasWrapper.CommonRequestData zalozeniRequest, ExternalServices.Eas.V1.EasWrapper.KlZalozeni klientData)
         {
             this.zalozeniRequest = zalozeniRequest;
             this.klientData = klientData;
@@ -12536,21 +12536,21 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonRequestData zalozeniRequest;
+        public ExternalServices.Eas.V1.EasWrapper.CommonRequestData zalozeniRequest;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
         [System.Xml.Serialization.XmlArrayItemAttribute("chyba", IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonError[] seznamChyb;
+        public ExternalServices.Eas.V1.EasWrapper.CommonError[] seznamChyb;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public KlientZalozeniResults()
         {
         }
         
-        public KlientZalozeniResults(ExternalServices.Eas.R21.EasWrapper.CommonRequestData zalozeniRequest, ExternalServices.Eas.R21.EasWrapper.CommonError[] seznamChyb, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public KlientZalozeniResults(ExternalServices.Eas.V1.EasWrapper.CommonRequestData zalozeniRequest, ExternalServices.Eas.V1.EasWrapper.CommonError[] seznamChyb, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.zalozeniRequest = zalozeniRequest;
             this.seznamChyb = seznamChyb;
@@ -12592,13 +12592,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public AddCisDomenyResults()
         {
         }
         
-        public AddCisDomenyResults(int domena_kod, string domena_text, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public AddCisDomenyResults(int domena_kod, string domena_text, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.domena_kod = domena_kod;
             this.domena_text = domena_text;
@@ -12614,16 +12614,16 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonRequestData dokladyRequest;
+        public ExternalServices.Eas.V1.EasWrapper.CommonRequestData dokladyRequest;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
-        public ExternalServices.Eas.R21.EasWrapper.KlDokladEx dokladData;
+        public ExternalServices.Eas.V1.EasWrapper.KlDokladEx dokladData;
         
         public KlientDokladyData()
         {
         }
         
-        public KlientDokladyData(ExternalServices.Eas.R21.EasWrapper.CommonRequestData dokladyRequest, ExternalServices.Eas.R21.EasWrapper.KlDokladEx dokladData)
+        public KlientDokladyData(ExternalServices.Eas.V1.EasWrapper.CommonRequestData dokladyRequest, ExternalServices.Eas.V1.EasWrapper.KlDokladEx dokladData)
         {
             this.dokladyRequest = dokladyRequest;
             this.dokladData = dokladData;
@@ -12638,21 +12638,21 @@ namespace ExternalServices.Eas.R21.EasWrapper
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonRequestData dokladyRequest;
+        public ExternalServices.Eas.V1.EasWrapper.CommonRequestData dokladyRequest;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
         [System.Xml.Serialization.XmlArrayItemAttribute("chyba", IsNullable=false)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonError[] seznamChyb;
+        public ExternalServices.Eas.V1.EasWrapper.CommonError[] seznamChyb;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult;
+        public ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult;
         
         public KlientDokladyResults()
         {
         }
         
-        public KlientDokladyResults(ExternalServices.Eas.R21.EasWrapper.CommonRequestData dokladyRequest, ExternalServices.Eas.R21.EasWrapper.CommonError[] seznamChyb, ExternalServices.Eas.R21.EasWrapper.CommonResult commonResult)
+        public KlientDokladyResults(ExternalServices.Eas.V1.EasWrapper.CommonRequestData dokladyRequest, ExternalServices.Eas.V1.EasWrapper.CommonError[] seznamChyb, ExternalServices.Eas.V1.EasWrapper.CommonResult commonResult)
         {
             this.dokladyRequest = dokladyRequest;
             this.seznamChyb = seznamChyb;
@@ -12705,13 +12705,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
-        public ExternalServices.Eas.R21.EasWrapper.SBSS_FPData[] list;
+        public ExternalServices.Eas.V1.EasWrapper.SBSS_FPData[] list;
         
         public SBSS_GetFormPropResponse()
         {
         }
         
-        public SBSS_GetFormPropResponse(ExternalServices.Eas.R21.EasWrapper.SBSS_FPData[] list)
+        public SBSS_GetFormPropResponse(ExternalServices.Eas.V1.EasWrapper.SBSS_FPData[] list)
         {
             this.list = list;
         }
@@ -12727,13 +12727,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
         public string birthnumber;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
-        public ExternalServices.Eas.R21.EasWrapper.SBSS_CommFilter filter;
+        public ExternalServices.Eas.V1.EasWrapper.SBSS_CommFilter filter;
         
         public SBSS_GetCommunicatorMessagesRequest()
         {
         }
         
-        public SBSS_GetCommunicatorMessagesRequest(string birthnumber, ExternalServices.Eas.R21.EasWrapper.SBSS_CommFilter filter)
+        public SBSS_GetCommunicatorMessagesRequest(string birthnumber, ExternalServices.Eas.V1.EasWrapper.SBSS_CommFilter filter)
         {
             this.birthnumber = birthnumber;
             this.filter = filter;
@@ -12747,16 +12747,16 @@ namespace ExternalServices.Eas.R21.EasWrapper
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=0)]
-        public ExternalServices.Eas.R21.EasWrapper.SBSS_CommHeader header;
+        public ExternalServices.Eas.V1.EasWrapper.SBSS_CommHeader header;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", Order=1)]
-        public ExternalServices.Eas.R21.EasWrapper.SBSS_CommMessage[] list;
+        public ExternalServices.Eas.V1.EasWrapper.SBSS_CommMessage[] list;
         
         public SBSS_GetCommunicatorMessagesResponse()
         {
         }
         
-        public SBSS_GetCommunicatorMessagesResponse(ExternalServices.Eas.R21.EasWrapper.SBSS_CommHeader header, ExternalServices.Eas.R21.EasWrapper.SBSS_CommMessage[] list)
+        public SBSS_GetCommunicatorMessagesResponse(ExternalServices.Eas.V1.EasWrapper.SBSS_CommHeader header, ExternalServices.Eas.V1.EasWrapper.SBSS_CommMessage[] list)
         {
             this.header = header;
             this.list = list;
@@ -12764,13 +12764,13 @@ namespace ExternalServices.Eas.R21.EasWrapper
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    internal interface IEAS_WS_SB_ServicesChannel : ExternalServices.Eas.R21.EasWrapper.IEAS_WS_SB_Services, System.ServiceModel.IClientChannel
+    internal interface IEAS_WS_SB_ServicesChannel : ExternalServices.Eas.V1.EasWrapper.IEAS_WS_SB_Services, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    internal partial class EAS_WS_SB_ServicesClient : System.ServiceModel.ClientBase<ExternalServices.Eas.R21.EasWrapper.IEAS_WS_SB_Services>, ExternalServices.Eas.R21.EasWrapper.IEAS_WS_SB_Services
+    internal partial class EAS_WS_SB_ServicesClient : System.ServiceModel.ClientBase<ExternalServices.Eas.V1.EasWrapper.IEAS_WS_SB_Services>, ExternalServices.Eas.V1.EasWrapper.IEAS_WS_SB_Services
     {
         
         /// <summary>
@@ -12823,84 +12823,84 @@ namespace ExternalServices.Eas.R21.EasWrapper
             return base.Channel.EsbiTestAsync(test_number);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.GetVersionInfoResponse> GetVersionInfoAsync(string Mode)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.GetVersionInfoResponse> GetVersionInfoAsync(string Mode)
         {
             return base.Channel.GetVersionInfoAsync(Mode);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.GetDODResponse> ExternalServices.Eas.R21.EasWrapper.IEAS_WS_SB_Services.GetDODAsync(ExternalServices.Eas.R21.EasWrapper.GetDODRequest request)
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.GetDODResponse> ExternalServices.Eas.V1.EasWrapper.IEAS_WS_SB_Services.GetDODAsync(ExternalServices.Eas.V1.EasWrapper.GetDODRequest request)
         {
             return base.Channel.GetDODAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.GetDODResponse> GetDODAsync()
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.GetDODResponse> GetDODAsync()
         {
-            ExternalServices.Eas.R21.EasWrapper.GetDODRequest inValue = new ExternalServices.Eas.R21.EasWrapper.GetDODRequest();
-            return ((ExternalServices.Eas.R21.EasWrapper.IEAS_WS_SB_Services)(this)).GetDODAsync(inValue);
+            ExternalServices.Eas.V1.EasWrapper.GetDODRequest inValue = new ExternalServices.Eas.V1.EasWrapper.GetDODRequest();
+            return ((ExternalServices.Eas.V1.EasWrapper.IEAS_WS_SB_Services)(this)).GetDODAsync(inValue);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CheckFormResponse> CheckFormAsync(ExternalServices.Eas.R21.EasWrapper.CheckFormRequest request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CheckFormResponse> CheckFormAsync(ExternalServices.Eas.V1.EasWrapper.CheckFormRequest request)
         {
             return base.Channel.CheckFormAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CheckFormV2Response> CheckForm_V2Async(ExternalServices.Eas.R21.EasWrapper.CheckFormV2Request request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CheckFormV2Response> CheckForm_V2Async(ExternalServices.Eas.V1.EasWrapper.CheckFormV2Request request)
         {
             return base.Channel.CheckForm_V2Async(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.InsertFormResponse> InsertFormAsync(ExternalServices.Eas.R21.EasWrapper.InsertFormRequest request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.InsertFormResponse> InsertFormAsync(ExternalServices.Eas.V1.EasWrapper.InsertFormRequest request)
         {
             return base.Channel.InsertFormAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.LoanProposalFormResponse> LoanProposalFormProcessAsync(ExternalServices.Eas.R21.EasWrapper.LoanProposalFormRequest request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.LoanProposalFormResponse> LoanProposalFormProcessAsync(ExternalServices.Eas.V1.EasWrapper.LoanProposalFormRequest request)
         {
             return base.Channel.LoanProposalFormProcessAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.ESBI_SIMULATION_RESULTS> SimulationAsync(ExternalServices.Eas.R21.EasWrapper.ESBI_SIMULATION_INPUT_PARAMETERS settings)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.ESBI_SIMULATION_RESULTS> SimulationAsync(ExternalServices.Eas.V1.EasWrapper.ESBI_SIMULATION_INPUT_PARAMETERS settings)
         {
             return base.Channel.SimulationAsync(settings);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.UVEROVE_ZAVAZKY_OUTPUT> UveroveZavazkyAsync(ExternalServices.Eas.R21.EasWrapper.UVEROVE_ZAVAZKY_INPUT vstup)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.UVEROVE_ZAVAZKY_OUTPUT> UveroveZavazkyAsync(ExternalServices.Eas.V1.EasWrapper.UVEROVE_ZAVAZKY_INPUT vstup)
         {
             return base.Channel.UveroveZavazkyAsync(vstup);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CBCB_KONTRAKT_RETURN> GetKontraktIDAsync(ExternalServices.Eas.R21.EasWrapper.CBCB_KONTRAKT_INPUT vstup)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CBCB_KONTRAKT_RETURN> GetKontraktIDAsync(ExternalServices.Eas.V1.EasWrapper.CBCB_KONTRAKT_INPUT vstup)
         {
             return base.Channel.GetKontraktIDAsync(vstup);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CBCB_DAVKA_RETURN> SchvalenieDavkyCBCBAsync(ExternalServices.Eas.R21.EasWrapper.CBCB_DAVKA_INPUT vstup)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CBCB_DAVKA_RETURN> SchvalenieDavkyCBCBAsync(ExternalServices.Eas.V1.EasWrapper.CBCB_DAVKA_INPUT vstup)
         {
             return base.Channel.SchvalenieDavkyCBCBAsync(vstup);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> GetKlientDataAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> GetKlientDataAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData)
         {
             return base.Channel.GetKlientDataAsync(inputData);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> NewKlientAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> NewKlientAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData)
         {
             return base.Channel.NewKlientAsync(inputData);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> GetCisloZmluvyAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> GetCisloZmluvyAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData)
         {
             return base.Channel.GetCisloZmluvyAsync(inputData);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> GetUverIdAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> GetUverIdAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData)
         {
             return base.Channel.GetUverIdAsync(inputData);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> SetVersionLoanProposalAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> SetVersionLoanProposalAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData)
         {
             return base.Channel.SetVersionLoanProposalAsync(inputData);
         }
@@ -12911,186 +12911,186 @@ namespace ExternalServices.Eas.R21.EasWrapper
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.GetKlientData_NewKlientResponse> ExternalServices.Eas.R21.EasWrapper.IEAS_WS_SB_Services.GetKlientData_NewKlientAsync(ExternalServices.Eas.R21.EasWrapper.GetKlientData_NewKlientRequest request)
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.GetKlientData_NewKlientResponse> ExternalServices.Eas.V1.EasWrapper.IEAS_WS_SB_Services.GetKlientData_NewKlientAsync(ExternalServices.Eas.V1.EasWrapper.GetKlientData_NewKlientRequest request)
         {
             return base.Channel.GetKlientData_NewKlientAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.GetKlientData_NewKlientResponse> GetKlientData_NewKlientAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA[] inputData)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.GetKlientData_NewKlientResponse> GetKlientData_NewKlientAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA[] inputData)
         {
-            ExternalServices.Eas.R21.EasWrapper.GetKlientData_NewKlientRequest inValue = new ExternalServices.Eas.R21.EasWrapper.GetKlientData_NewKlientRequest();
+            ExternalServices.Eas.V1.EasWrapper.GetKlientData_NewKlientRequest inValue = new ExternalServices.Eas.V1.EasWrapper.GetKlientData_NewKlientRequest();
             inValue.inputData = inputData;
-            return ((ExternalServices.Eas.R21.EasWrapper.IEAS_WS_SB_Services)(this)).GetKlientData_NewKlientAsync(inValue);
+            return ((ExternalServices.Eas.V1.EasWrapper.IEAS_WS_SB_Services)(this)).GetKlientData_NewKlientAsync(inValue);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA> UndoCisloZmluvyAsync(ExternalServices.Eas.R21.EasWrapper.S_KLIENTDATA inputData)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA> UndoCisloZmluvyAsync(ExternalServices.Eas.V1.EasWrapper.S_KLIENTDATA inputData)
         {
             return base.Channel.UndoCisloZmluvyAsync(inputData);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.S_ScoringDataCritical> CriticalScoringInfoAsync(ExternalServices.Eas.R21.EasWrapper.S_ScoringDataCritical inp)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.S_ScoringDataCritical> CriticalScoringInfoAsync(ExternalServices.Eas.V1.EasWrapper.S_ScoringDataCritical inp)
         {
             return base.Channel.CriticalScoringInfoAsync(inp);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CaseIdResponse> Get_CaseIdAsync(ExternalServices.Eas.R21.EasWrapper.CaseIdRequest request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CaseIdResponse> Get_CaseIdAsync(ExternalServices.Eas.V1.EasWrapper.CaseIdRequest request)
         {
             return base.Channel.Get_CaseIdAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.UverIdResponse> Get_UverIdForSSAsync(ExternalServices.Eas.R21.EasWrapper.UverIdRequest request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.UverIdResponse> Get_UverIdForSSAsync(ExternalServices.Eas.V1.EasWrapper.UverIdRequest request)
         {
             return base.Channel.Get_UverIdForSSAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.FirstSignatureResponse> ExternalServices.Eas.R21.EasWrapper.IEAS_WS_SB_Services.Add_FirstSignatureDateAsync(ExternalServices.Eas.R21.EasWrapper.FirstSignatureRequest request)
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.FirstSignatureResponse> ExternalServices.Eas.V1.EasWrapper.IEAS_WS_SB_Services.Add_FirstSignatureDateAsync(ExternalServices.Eas.V1.EasWrapper.FirstSignatureRequest request)
         {
             return base.Channel.Add_FirstSignatureDateAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.FirstSignatureResponse> Add_FirstSignatureDateAsync(int caseId, int uverId, System.DateTime firstSignatureDate)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.FirstSignatureResponse> Add_FirstSignatureDateAsync(int caseId, int uverId, System.DateTime firstSignatureDate)
         {
-            ExternalServices.Eas.R21.EasWrapper.FirstSignatureRequest inValue = new ExternalServices.Eas.R21.EasWrapper.FirstSignatureRequest();
+            ExternalServices.Eas.V1.EasWrapper.FirstSignatureRequest inValue = new ExternalServices.Eas.V1.EasWrapper.FirstSignatureRequest();
             inValue.caseId = caseId;
             inValue.uverId = uverId;
             inValue.firstSignatureDate = firstSignatureDate;
-            return ((ExternalServices.Eas.R21.EasWrapper.IEAS_WS_SB_Services)(this)).Add_FirstSignatureDateAsync(inValue);
+            return ((ExternalServices.Eas.V1.EasWrapper.IEAS_WS_SB_Services)(this)).Add_FirstSignatureDateAsync(inValue);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.ContractNrResponse> Get_ContractNumberAsync(ExternalServices.Eas.R21.EasWrapper.ContractNrRequest request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.ContractNrResponse> Get_ContractNumberAsync(ExternalServices.Eas.V1.EasWrapper.ContractNrRequest request)
         {
             return base.Channel.Get_ContractNumberAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.KontaktyResults> KlientKontaktyAsync(ExternalServices.Eas.R21.EasWrapper.KontaktyData request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.KontaktyResults> KlientKontaktyAsync(ExternalServices.Eas.V1.EasWrapper.KontaktyData request)
         {
             return base.Channel.KlientKontaktyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CommonResult1> KlientSouhlasyAsync(ExternalServices.Eas.R21.EasWrapper.KlSouhlasyData request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CommonResult1> KlientSouhlasyAsync(ExternalServices.Eas.V1.EasWrapper.KlSouhlasyData request)
         {
             return base.Channel.KlientSouhlasyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.PoznamkyVymResults> PoznamkyVymahaniAsync(ExternalServices.Eas.R21.EasWrapper.PoznamkyVymData request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.PoznamkyVymResults> PoznamkyVymahaniAsync(ExternalServices.Eas.V1.EasWrapper.PoznamkyVymData request)
         {
             return base.Channel.PoznamkyVymahaniAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CommonResult1> KontrolaNeplatneDokladyAsync(ExternalServices.Eas.R21.EasWrapper.DokladData request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CommonResult1> KontrolaNeplatneDokladyAsync(ExternalServices.Eas.V1.EasWrapper.DokladData request)
         {
             return base.Channel.KontrolaNeplatneDokladyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CommonResult1> KontrolaKontaktAsync(ExternalServices.Eas.R21.EasWrapper.KontaktData1 request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CommonResult1> KontrolaKontaktAsync(ExternalServices.Eas.V1.EasWrapper.KontaktData1 request)
         {
             return base.Channel.KontrolaKontaktAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.AdresaResults> KontrolaAdresaAsync(ExternalServices.Eas.R21.EasWrapper.AdresaData1 request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.AdresaResults> KontrolaAdresaAsync(ExternalServices.Eas.V1.EasWrapper.AdresaData1 request)
         {
             return base.Channel.KontrolaAdresaAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.PoplatkySSResults> PoplatekSSVypocetAsync(ExternalServices.Eas.R21.EasWrapper.PoplatkySSData request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.PoplatkySSResults> PoplatekSSVypocetAsync(ExternalServices.Eas.V1.EasWrapper.PoplatkySSData request)
         {
             return base.Channel.PoplatekSSVypocetAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.CaasIdentitaResults> KlientCaasIdentitaAsync(ExternalServices.Eas.R21.EasWrapper.CaasIdentitaData request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.CaasIdentitaResults> KlientCaasIdentitaAsync(ExternalServices.Eas.V1.EasWrapper.CaasIdentitaData request)
         {
             return base.Channel.KlientCaasIdentitaAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.KlientZalozeniResults> KlientZalozeniAsync(ExternalServices.Eas.R21.EasWrapper.KlientZalozeniData request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.KlientZalozeniResults> KlientZalozeniAsync(ExternalServices.Eas.V1.EasWrapper.KlientZalozeniData request)
         {
             return base.Channel.KlientZalozeniAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.AddCisDomenyResults> AddCisDomenyAsync(ExternalServices.Eas.R21.EasWrapper.AddCisDomenyData request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.AddCisDomenyResults> AddCisDomenyAsync(ExternalServices.Eas.V1.EasWrapper.AddCisDomenyData request)
         {
             return base.Channel.AddCisDomenyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.KlientDokladyResults> KlientDokladyAsync(ExternalServices.Eas.R21.EasWrapper.KlientDokladyData request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.KlientDokladyResults> KlientDokladyAsync(ExternalServices.Eas.V1.EasWrapper.KlientDokladyData request)
         {
             return base.Channel.KlientDokladyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_Person> SBSS_GetPersonAsync(string birthnumber, bool activeonly)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_Person> SBSS_GetPersonAsync(string birthnumber, bool activeonly)
         {
             return base.Channel.SBSS_GetPersonAsync(birthnumber, activeonly);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_AccountBase[]> SBSS_GetAllAccountsAsync(string birthnumber, bool includenoactive)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_AccountBase[]> SBSS_GetAllAccountsAsync(string birthnumber, bool includenoactive)
         {
             return base.Channel.SBSS_GetAllAccountsAsync(birthnumber, includenoactive);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_BSHeader[]> SBSS_GetBSHeadersAsync(string birthnumber, bool ownerOnly, bool headerlevel)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_BSHeader[]> SBSS_GetBSHeadersAsync(string birthnumber, bool ownerOnly, bool headerlevel)
         {
             return base.Channel.SBSS_GetBSHeadersAsync(birthnumber, ownerOnly, headerlevel);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_BSData> SBSS_GetBSAsync(string birthnumber, ExternalServices.Eas.R21.EasWrapper.SBSS_AccountBase accountBase)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_BSData> SBSS_GetBSAsync(string birthnumber, ExternalServices.Eas.V1.EasWrapper.SBSS_AccountBase accountBase)
         {
             return base.Channel.SBSS_GetBSAsync(birthnumber, accountBase);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_LoanHeader[]> SBSS_GetLoanHeadersAsync(string birthnumber, bool ownerOnly)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_LoanHeader[]> SBSS_GetLoanHeadersAsync(string birthnumber, bool ownerOnly)
         {
             return base.Channel.SBSS_GetLoanHeadersAsync(birthnumber, ownerOnly);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_LoanData> SBSS_GetLoanAsync(string birthnumber, ExternalServices.Eas.R21.EasWrapper.SBSS_AccountBase accountBase)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_LoanData> SBSS_GetLoanAsync(string birthnumber, ExternalServices.Eas.V1.EasWrapper.SBSS_AccountBase accountBase)
         {
             return base.Channel.SBSS_GetLoanAsync(birthnumber, accountBase);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_Transaction[]> SBSS_GetTHAsync(ExternalServices.Eas.R21.EasWrapper.SBSS_AccountBase accountBase, ExternalServices.Eas.R21.EasWrapper.SBSS_THFilter filter)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_Transaction[]> SBSS_GetTHAsync(ExternalServices.Eas.V1.EasWrapper.SBSS_AccountBase accountBase, ExternalServices.Eas.V1.EasWrapper.SBSS_THFilter filter)
         {
             return base.Channel.SBSS_GetTHAsync(accountBase, filter);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_AccountTH[]> SBSS_GetAllAccountsTHAsync(int accountId, string accountNumber, bool includenoactive)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_AccountTH[]> SBSS_GetAllAccountsTHAsync(int accountId, string accountNumber, bool includenoactive)
         {
             return base.Channel.SBSS_GetAllAccountsTHAsync(accountId, accountNumber, includenoactive);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_GetFormPropResponse> ExternalServices.Eas.R21.EasWrapper.IEAS_WS_SB_Services.SBSS_GetFormPropAsync(ExternalServices.Eas.R21.EasWrapper.SBSS_GetFormPropRequest request)
+        System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_GetFormPropResponse> ExternalServices.Eas.V1.EasWrapper.IEAS_WS_SB_Services.SBSS_GetFormPropAsync(ExternalServices.Eas.V1.EasWrapper.SBSS_GetFormPropRequest request)
         {
             return base.Channel.SBSS_GetFormPropAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_GetFormPropResponse> SBSS_GetFormPropAsync(string birthnumber, int scope, int type, int mode, System.Nullable<int> span)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_GetFormPropResponse> SBSS_GetFormPropAsync(string birthnumber, int scope, int type, int mode, System.Nullable<int> span)
         {
-            ExternalServices.Eas.R21.EasWrapper.SBSS_GetFormPropRequest inValue = new ExternalServices.Eas.R21.EasWrapper.SBSS_GetFormPropRequest();
+            ExternalServices.Eas.V1.EasWrapper.SBSS_GetFormPropRequest inValue = new ExternalServices.Eas.V1.EasWrapper.SBSS_GetFormPropRequest();
             inValue.birthnumber = birthnumber;
             inValue.scope = scope;
             inValue.type = type;
             inValue.mode = mode;
             inValue.span = span;
-            return ((ExternalServices.Eas.R21.EasWrapper.IEAS_WS_SB_Services)(this)).SBSS_GetFormPropAsync(inValue);
+            return ((ExternalServices.Eas.V1.EasWrapper.IEAS_WS_SB_Services)(this)).SBSS_GetFormPropAsync(inValue);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_Event[]> SBSS_GetEventsAsync(string birthnumber)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_Event[]> SBSS_GetEventsAsync(string birthnumber)
         {
             return base.Channel.SBSS_GetEventsAsync(birthnumber);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_GetCommunicatorMessagesResponse> SBSS_GetCommunicatorMessagesAsync(ExternalServices.Eas.R21.EasWrapper.SBSS_GetCommunicatorMessagesRequest request)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_GetCommunicatorMessagesResponse> SBSS_GetCommunicatorMessagesAsync(ExternalServices.Eas.V1.EasWrapper.SBSS_GetCommunicatorMessagesRequest request)
         {
             return base.Channel.SBSS_GetCommunicatorMessagesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<int> SBSS_SendCommunicatorMessageAsync(string birthnumber, ExternalServices.Eas.R21.EasWrapper.SBSS_CommMessage message)
+        public System.Threading.Tasks.Task<int> SBSS_SendCommunicatorMessageAsync(string birthnumber, ExternalServices.Eas.V1.EasWrapper.SBSS_CommMessage message)
         {
             return base.Channel.SBSS_SendCommunicatorMessageAsync(birthnumber, message);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Eas.R21.EasWrapper.SBSS_Afterrequest[]> SBSS_GetAfterrequestsAsync(string birthnumber)
+        public System.Threading.Tasks.Task<ExternalServices.Eas.V1.EasWrapper.SBSS_Afterrequest[]> SBSS_GetAfterrequestsAsync(string birthnumber)
         {
             return base.Channel.SBSS_GetAfterrequestsAsync(birthnumber);
         }

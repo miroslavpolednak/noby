@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace ExternalServices.Eas.R21.CheckFormV2
+namespace ExternalServices.Eas.V1.CheckFormV2
 {
     public class Errors
     {
