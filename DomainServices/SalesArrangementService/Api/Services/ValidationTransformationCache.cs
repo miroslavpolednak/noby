@@ -21,7 +21,7 @@ internal static class ValidationTransformationCache
 
     public sealed class TransformationItem
     {
-        public int CategoryOrder { get; init; }
+        public int? CategoryOrder { get; init; }
         public string? Category { get; init; }
         public string Text { get; init; } = string.Empty;
         public Database.FormValidationTransformationAlterSeverity AlterSeverity { get; init; }

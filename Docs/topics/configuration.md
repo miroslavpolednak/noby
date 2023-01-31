@@ -23,7 +23,7 @@ Kdykoliv je poté potřeba zjistit např. pro jaké prostředí je a aplikace pu
 `AddCisEnvironmentConfiguration` zároveň nahrazuje data z *appsettings.json* proměnnými prostředí pomocí extension metody `AddCisEnvironmentVariables()`.
 Toto používáme pro "schování" citlivých informací (hesel) tak, aby je nešlo přečíst z konfiguračního souboru.
 
-Nepoužíváme standardní `AddEnvironmentVariables()` z .NET frameworku, protože ta načítá proměnné pouze z procesu - my potřebujeme načíst **machine level environment variables**.
+Nepoužíváme standardní `AddEnvironmentVariables()` z .NET frameworku, protože ta načítá proměnné pouze z procesu - my potřebujeme načíst **user level environment variables**.
 
 Aby se proměnné prostředí načetly, musí být v systému uloženy v **System variables** a musí začínat prefixem aplikačního prostředí `{CIS_environment}_`, pro které se mají použít.
 Dále fungují stejně jako při použití `AddEnvironmentVariables()`.  

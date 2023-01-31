@@ -15,7 +15,7 @@ internal sealed class FormValidationTransformation
 
     public string? Category { get; set; }
 
-    public int CategoryOrder { get; set; }
+    public int? CategoryOrder { get; set; }
 
     public string Text { get; set; } = string.Empty;
 

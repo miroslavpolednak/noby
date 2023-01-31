@@ -25,7 +25,7 @@ internal sealed class CisEnvironmentVariablesConfigurationProvider
     /// Loads the environment variables.
     /// </summary>
     public override void Load() =>
-        Load(Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Machine));
+        Load(Environment.GetEnvironmentVariables(EnvironmentVariableTarget.User));
 
     /// <summary>
     /// Generates a string representing this provider name and relevant details.
