@@ -11,7 +11,7 @@ public class MockDocumentServiceRepository : IDocumentServiceRepository
             {
                 CaseId = "1",
                 DocumentId = "TestID",
-                EaCodeMainId = 3,
+                EaCodeMainId = 614377,
                 Filename = "test.txt",
                 OrderId = "1",
                 CreatedOn = DateTime.Now,
@@ -32,7 +32,7 @@ public class MockDocumentServiceRepository : IDocumentServiceRepository
             {
                 CaseId = "2",
                 DocumentId = "TestID2",
-                EaCodeMainId = 3,
+                EaCodeMainId = 615357,
                 Filename = "test2.txt",
                 OrderId = "1",
                 CreatedOn = DateTime.Now,

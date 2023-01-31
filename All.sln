@@ -292,8 +292,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
 	ProjectSection(SolutionItems) = preProject
-		DomainServices\CodebookService\DatabaseMigrations\001-initial_creation.sql = DomainServices\CodebookService\DatabaseMigrations\001-initial_creation.sql
-		DomainServices\CodebookService\DatabaseMigrations\002-seed.sql = DomainServices\CodebookService\DatabaseMigrations\002-seed.sql
+		DomainServices\CodebookService\DatabaseMigrations\1-initial_creation.sql = DomainServices\CodebookService\DatabaseMigrations\1-initial_creation.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -339,6 +338,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment", "DomainServices\RiskIntegrationService\ExternalServices.LoanApplicationAssessment\DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment.csproj", "{D8B0F8F5-AF3B-4C05-B4B9-8F8AF083E60B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.Kyc", "DomainServices\CustomerService\ExternalServices.Kyc\DomainServices.CustomerService.ExternalServices.Kyc.csproj", "{8DD02052-0C04-49A1-AF7A-21FEF64B6851}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{49E4977C-DD43-424E-89C7-A59324CC0864}"
+	ProjectSection(SolutionItems) = preProject
+		DomainServices\DocumentArchiveService\DatabaseMigrations\001-InitialCreate.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\001-InitialCreate.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1289,6 +1293,7 @@ Global
 		{57C88926-9964-435B-A0D0-05936FD76DB4} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
 		{D8B0F8F5-AF3B-4C05-B4B9-8F8AF083E60B} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
 		{8DD02052-0C04-49A1-AF7A-21FEF64B6851} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
+		{49E4977C-DD43-424E-89C7-A59324CC0864} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}
