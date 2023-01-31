@@ -82,6 +82,28 @@ guarantee_date_from=next=Attribute_iterator('GuaranteeDateFrom',next,[str(date.t
 #Simulaci s garancí 20 a 45 dní zpětně otestujeme pro hlavní případ a vybraný případ amarické hypotéky
 guarantee_date_from.register_filter(lambda doc:doc["__"]["mainCase"] or doc["__"]["ameriCase"] or doc["__GuaranteeDateFrom"]["count"]==0)
 
+#Dalsi atributy vzdy v jedne variante - TODO
+interest_rate_discount=next=Attribute_iterator('InterestRateDiscount',next,[0])
+drawing_type_id=next=Attribute_iterator('DrawingTypeId',next,[2])
+drawing_duration_id=next=Attribute_iterator('DrawingDurationId',next,[None])
+payment_day=next=Attribute_iterator('PaymentDay',next,[15])
+is_employee_bonus_requested=next=Attribute_iterator('IsEmployeeBonusRequested',next,[False])
+developer=next=Attribute_iterator('Developer',next,[None])
+fee_settings=next=Attribute_struct('FeeSettings',next)
+fee_tariff_purpose=next=Attribute_iterator('FeeSettings.FeeTariffPurpose',next,[0])
+is_statement_charged=next=Attribute_iterator('FeeSettings.IsStatementCharged',next,[True])
+fees=next=Attribute_array('Fees',next)
+
+risk_life_insurance=next=Attribute_struct('RiskLifeInsurance',next)
+risk_life_insurance_sum=next=Attribute_iterator('RiskLifeInsurance.Sum',next,[None])
+risk_life_insurance_frequency=next=Attribute_iterator('RiskLifeInsurance.Frequency',next,[1])
+
+real_estate_nsurance=next=Attribute_struct('RealEstateInsurance',next)
+real_estate_nsurance_sum=next=Attribute_iterator('RealEstateInsurance.Sum',next,[None])
+real_estate_nsurance_frequency=next=Attribute_iterator('RealEstateInsurance.Frequency',next,[12])
+
+
+
 #Smaže metadata a flagy, odstraní null položky polí
 cleaner=next=Cleaner(next)
 #Registrujeme jednoduchý Writer, který výsledky zapíše na konzoli (lze implementovat další typy writerů)
