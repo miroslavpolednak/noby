@@ -1,4 +1,5 @@
-﻿using Amazon.S3;
+﻿using System.Text;
+using Amazon.S3;
 using Amazon.S3.Model;
 using CIS.Core.Attributes;
 
@@ -14,18 +15,18 @@ public class S3AdapterService
         _s3Client = s3Client;
     }
     
-    public async Task<string> UploadFile(string content, string bucketName)
+    public async Task<string> UploadFile(byte [] content, string bucketName)
     {
         var key = Guid.NewGuid().ToString();
+        var contentBody = new string(content.Select(Convert.ToChar).ToArray());
         var putRequest = new PutObjectRequest
         {
             BucketName = bucketName,
             Key = key,
-            ContentBody = content
+            ContentBody = contentBody
         };
 
         var putResponse = await _s3Client.PutObjectAsync(putRequest);
-        
         return key;
     }
 
@@ -38,9 +39,9 @@ public class S3AdapterService
         };
         
         var response = await _s3Client.GetObjectAsync(getRequest);
-        
         using var memoryStream = new MemoryStream();
         await response.ResponseStream.CopyToAsync(memoryStream);
-        return memoryStream.ToArray();
+        
+        return Encoding.Default.GetString(memoryStream.ToArray()).Select(Convert.ToByte).ToArray();
     }
 }

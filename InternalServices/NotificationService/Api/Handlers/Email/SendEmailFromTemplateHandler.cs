@@ -57,7 +57,8 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         {
             foreach (var attachment in request.Attachments)
             {
-                var objectKey = await _s3Service.UploadFile(attachment.Binary, bucketName);
+                var content = Convert.FromBase64String(attachment.Binary);
+                var objectKey = await _s3Service.UploadFile(content, bucketName);
                 attachmentKeyFilenames.Add(new (objectKey, attachment.Filename));
             }
         }

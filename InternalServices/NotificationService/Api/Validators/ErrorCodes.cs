@@ -47,16 +47,17 @@ public static class ErrorCodes
     public static class EmailAttachment
     {
         public const string BinaryRequired = "318";
-        public const string FilenameRequired = "319";
-        public const string FilenameLengthLimitExceeded = "320";
+        public const string BinaryInvalid = "319";
+        public const string FilenameRequired = "320";
+        public const string FilenameLengthLimitExceeded = "321";
     }
 
     public static class Phone
     {
-        public const string CountryCodeRequired = "321";
-        public const string CountryCodeInvalid = "322";
-        public const string NationalNumberRequired = "323";
-        public const string NationalNumberInvalid = "324";
+        public const string CountryCodeRequired = "322";
+        public const string CountryCodeInvalid = "323";
+        public const string NationalNumberRequired = "324";
+        public const string NationalNumberInvalid = "325";
     }
     
     public static class SearchResult
