@@ -19,7 +19,7 @@ public class MockSdfClient : ISdfClient
           new MetadataValue
           {
              AttributeName= "DOK_Heslo_hlavni_ID",
-             Value ="1"
+             Value ="603225"
           },
           new MetadataValue
           {
