@@ -82,9 +82,9 @@ GO
 CREATE TABLE [dbo].[FormValidationTransformation](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[FormId] [varchar](7) NOT NULL,
-	[FieldName] [nvarchar](100) NOT NULL,
 	[FieldPath] [varchar](500) NOT NULL,
 	[Category] [nvarchar](150) NULL,
+	[CategoryOrder] [int] NOT NULL,
 	[Text] [nvarchar](500) NOT NULL,
 	[AlterSeverity] [tinyint] NOT NULL,
  CONSTRAINT [PK_FormValidationTransformation] PRIMARY KEY CLUSTERED 
