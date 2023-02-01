@@ -230,8 +230,8 @@ internal sealed class IdentifiedSubjectService
             TypeCode = _docTypes.First(d => d.Id == document.IdentificationDocumentTypeId).RdmCode,
             IssuedBy = document.IssuedBy.ToCMString(),
             IssuingCountryCode = _countries.FirstOrDefault(c => c.Id == document.IssuingCountryId)?.ShortName,
-            IssuedOn = document.IssuedOn,
-            ValidTo = document.ValidTo
+            IssuedOn = document.IssuedOn ?? DateTime.Today.AddYears(-1),
+            ValidTo = document.ValidTo ?? DateTime.Today.AddYears(2),
         };
     }
 
