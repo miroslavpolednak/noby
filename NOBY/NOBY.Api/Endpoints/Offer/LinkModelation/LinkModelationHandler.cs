@@ -4,7 +4,7 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.LinkModelation;
 
-internal class LinkModelationHandler
+internal sealed class LinkModelationHandler
     : AsyncRequestHandler<LinkModelationRequest>
 {
     protected override async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)

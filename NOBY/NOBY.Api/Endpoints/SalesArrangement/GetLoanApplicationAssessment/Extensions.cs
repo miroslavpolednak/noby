@@ -263,8 +263,8 @@ internal static class Extensions
                     MaritalStateId = c.NaturalPerson?.MaritalStatusStateId,
                     EducationLevelId = c.NaturalPerson?.EducationLevelId > 0 ? c.NaturalPerson?.EducationLevelId : null, // neposílat pokud 0
                     AcademicTitlePrefix = academicTitlePrefix,
-                    MobilePhoneNumber = contactMobilePhone?.Value,
-                    HasEmail = !String.IsNullOrEmpty(contactEmail?.Value),
+                    MobilePhoneNumber = $"{contactMobilePhone?.Mobile?.PhoneIDC}{contactMobilePhone?.Mobile?.PhoneNumber}",
+                    HasEmail = !String.IsNullOrEmpty(contactEmail?.Email?.Address),
                     IsPartner = isPartner,
                     Taxpayer = c.NaturalPerson?.TaxResidence?.ResidenceCountries?.Any(t => t.CountryId == 16) ?? false,
                     Address = (addressPermanent is null) ? null : MapAddress(addressPermanent),

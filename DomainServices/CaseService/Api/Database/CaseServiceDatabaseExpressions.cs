@@ -13,13 +13,13 @@ internal static class CaseServiceDatabaseExpressions
             State = t.State,
             StateUpdatedOn = t.StateUpdateTime,
             CaseOwner = new CIS.Infrastructure.gRPC.CisTypes.UserInfo(t.OwnerUserId, t.OwnerUserName),
-            Data = new Contracts.CaseData
+            Data = new()
             {
                 ProductTypeId = t.ProductTypeId,
                 TargetAmount = t.TargetAmount,
                 ContractNumber = t.ContractNumber ?? ""
             },
-            Customer = new Contracts.CustomerData
+            Customer = new()
             {
                 Identity = !t.CustomerIdentityId.HasValue ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(t.CustomerIdentityId, t.CustomerIdentityScheme),
                 DateOfBirthNaturalPerson = t.DateOfBirthNaturalPerson,
@@ -27,10 +27,14 @@ internal static class CaseServiceDatabaseExpressions
                 Name = t.Name ?? "",
                 Cin = t.Cin ?? ""
             },
-            OfferContacts = new Contracts.OfferContacts
+            OfferContacts = new()
             {
                 EmailForOffer = t.EmailForOffer ?? "",
-                PhoneNumberForOffer = t.PhoneNumberForOffer ?? ""
+                PhoneNumberForOffer = new()
+                {
+                    PhoneNumber = t.PhoneNumberForOffer ?? "",
+                    PhoneIDC = t.PhoneIDCForOffer ?? ""
+                }
             },
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime)
         };

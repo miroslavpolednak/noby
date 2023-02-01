@@ -37,15 +37,7 @@ public sealed class GetCustomersResponseCustomer
     /// </summary>
     public string? KBID { get; set; }
 
-    /// <summary>
-    /// Email
-    /// </summary>
-    public string? Email { get; set; }
-
-    /// <summary>
-    /// Mobil
-    /// </summary>
-    public string? Mobile { get; set; }
+    public SharedDto.ContactsDto? Contacts { get; set; }
 
     public DomainServices.CodebookService.Contracts.GenericCodebookItem? CitizenshipCountry { get; set; }
 

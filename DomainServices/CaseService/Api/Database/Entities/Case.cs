@@ -6,7 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.CaseService.Api.Database.Entities;
 
 [Table("Case", Schema = "dbo")]
-internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
+internal sealed class Case 
+    : CIS.Core.Data.BaseCreatedWithModifiedUserId
 {
     [Key]
     public long CaseId { get; set; }
@@ -28,6 +29,7 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
     public string? Cin { get; set; }
     public string? EmailForOffer { get; set; }
     public string? PhoneNumberForOffer { get; set; }
+    public string? PhoneIDCForOffer { get; set; }
 
     // byznys data
     public string? ContractNumber { get; set; }

@@ -80,7 +80,8 @@ internal sealed class CreateCaseHandler
         }
 
         entity.EmailForOffer = request.OfferContacts?.EmailForOffer;
-        entity.PhoneNumberForOffer = request.OfferContacts?.PhoneNumberForOffer;
+        entity.PhoneIDCForOffer = request.OfferContacts?.PhoneNumberForOffer?.PhoneIDC;
+        entity.PhoneNumberForOffer = request.OfferContacts?.PhoneNumberForOffer?.PhoneNumber;
 
         return entity;
     }

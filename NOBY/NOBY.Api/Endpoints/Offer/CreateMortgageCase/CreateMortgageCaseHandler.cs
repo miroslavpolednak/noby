@@ -10,7 +10,7 @@ using CIS.Infrastructure.CisMediatR.Rollback;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
-internal class CreateMortgageCaseHandler
+internal sealed class CreateMortgageCaseHandler
     : IRequestHandler<CreateMortgageCaseRequest, CreateMortgageCaseResponse>
 {
     public async Task<CreateMortgageCaseResponse> Handle(CreateMortgageCaseRequest request, CancellationToken cancellationToken)

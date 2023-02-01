@@ -12,7 +12,7 @@ public abstract class BaseCustomerDetail
 
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
 
-    public List<CustomerContact>? Contacts { get; set; }
+    public ConfirmedContactsDto? Contacts { get; set; }
 
     /// <summary>
     /// Objekt právního omezení	
