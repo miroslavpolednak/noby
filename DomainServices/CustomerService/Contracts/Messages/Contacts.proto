@@ -9,7 +9,7 @@ message Contact {
 	int32 ContactTypeId = 2;
 	bool IsConfirmed = 3;
 
-	oneof obj  {
+	oneof Data  {
 		MobilePhone Mobile = 20;
 		EmailAddress Email = 21;
 	}
@@ -21,5 +21,5 @@ message MobilePhone {
 }
 
 message EmailAddress {
-	string EmailAddress = 1;
+	string Address = 1;
 }

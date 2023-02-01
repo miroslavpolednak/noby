@@ -238,19 +238,13 @@ internal class IdentifiedSubjectService
     private static __Contracts.PrimaryPhone? CreatePrimaryPhone(IEnumerable<Contact> contacts)
     {
         var phone = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil);
-
-        if (phone is null || string.IsNullOrWhiteSpace(phone.Value))
+        if (string.IsNullOrWhiteSpace(phone?.Mobile?.PhoneNumber))
             return default;
-
-        var phoneNumber = phone.Value.Replace(" ", "");
-
-        var phoneIDC = phoneNumber[..Math.Max(0, phoneNumber.Length - 9)];
-        phoneNumber = phoneNumber.Substring(phoneIDC.Length, phoneNumber.Length - phoneIDC.Length);
 
         return new()
         {
-            PhoneIDC = phoneIDC,
-            PhoneNumber = phoneNumber
+            PhoneIDC = phone.Mobile.PhoneIDC,
+            PhoneNumber = phone.Mobile.PhoneNumber
         };
     }
 
@@ -263,7 +257,7 @@ internal class IdentifiedSubjectService
 
         return new()
         {
-            EmailAddress = email.Value
+            EmailAddress = email.Email.Address
         };
     }
 }

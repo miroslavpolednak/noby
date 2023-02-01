@@ -185,12 +185,7 @@ public class KonsDbDetailProvider
 
     private static void AddContacts(Partner partner, Action<IEnumerable<Contact>> onAddContacts)
     {
-        var contacts = partner.Contacts.Select(c => new Contact
-        {
-            IsPrimary = c.IsPrimaryContact,
-            ContactTypeId = c.ContactType,
-            Value = c.Value ?? string.Empty
-        });
+        var contacts = partner.Contacts.Select(c => c.ToContract());
 
         onAddContacts(contacts);
     }
