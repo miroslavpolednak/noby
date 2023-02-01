@@ -46,12 +46,8 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         var smsTypes = await _codebookService.SmsNotificationTypes(new SmsNotificationTypesRequest(), cancellationToken);
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {string.Join(',', smsTypes.Select(s => s.Code))}");
-        
-        if (smsType.IsAuditLogEnabled)
-        {
-            _auditLogger.Log("todo");
-        }
-        
+
+        var auditEnabled = smsType.IsAuditLogEnabled;
         var keyValues = request.Placeholders.ToDictionary(p => p.Key, p => p.Value);
         
         smsType.SmsText.Validate(keyValues.Keys);
@@ -76,7 +72,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         catch (Exception e)
         {
             _logger.LogError(e, $"Could not create SmsResult.");
-            throw new CisServiceServerErrorException("Todo", nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorCodes.Internal.CreateSmsResultFailed, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
         }
         
         var consumerId = _userConsumerIdMapper.GetConsumerId();
@@ -90,27 +86,32 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
             processingPriority = request.ProcessingPriority,
             notificationConsumer = McsSmsMappers.MapToMcs(consumerId)
         };
-
-        if (smsType.IsAuditLogEnabled)
-        {
-            _auditLogger.Log("todo");
-        }
         
         try
         {
+            if (auditEnabled)
+            {
+                _auditLogger.Log("todo - Producing message SendSMS to KAFKA.");
+            }
+            
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
 
-            if (smsType.IsAuditLogEnabled)
+            if (auditEnabled)
             {
-                _auditLogger.Log("todo");
+                _auditLogger.Log("todo - Produced message SendSMS to KAFKA.");
             }
         }
         catch (Exception e)
         {
+            if (auditEnabled)
+            {
+                _auditLogger.Log("todo - Could not produce message SendSMS to KAFKA.");
+            }
+            
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
-            throw new CisServiceServerErrorException("Todo", nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorCodes.Internal.ProduceSendSmsError, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
         }
 
         return new SendSmsFromTemplateResponse { NotificationId = result.Id };

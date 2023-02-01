@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Attributes;
+using CIS.Core.Exceptions;
 using CIS.Core.Security;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using Microsoft.Extensions.Options;
@@ -25,8 +26,7 @@ public class UserConsumerIdMapper
 
         if (string.IsNullOrEmpty(username) || !_map.ContainsKey(username))
         {
-            // todo: cis error
-            throw new ArgumentException(username);
+            throw new CisAuthenticationException(username ?? "Unknown");
         }
 
         return _map[username];

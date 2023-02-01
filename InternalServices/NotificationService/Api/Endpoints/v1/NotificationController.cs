@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CIS.InternalServices.NotificationService.Api.Endpoints.Infrastructure.AuditLog;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
@@ -28,6 +29,7 @@ public class NotificationController : ControllerBase
     /// <remarks>
     /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
     /// </remarks>
+    [AuditLog]
     [HttpPost("sms")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
@@ -41,6 +43,7 @@ public class NotificationController : ControllerBase
     /// <remarks>
     /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
     /// </remarks>
+    [AuditLog]
     [HttpPost("smsFromTemplate")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]

@@ -9,17 +9,17 @@ public class EmailContentValidator : AbstractValidator<EmailContent>
     {
         RuleFor(content => content.Format)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.EmailContent.FormatRequired)
+                .WithErrorCode(ErrorCodes.Validation.EmailContent.FormatRequired)
                 .WithMessage($"{nameof(EmailContent.Format)} required.");
                 
         RuleFor(content => content.Language)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.EmailContent.LanguageRequired)
+                .WithErrorCode(ErrorCodes.Validation.EmailContent.LanguageRequired)
                 .WithMessage($"{nameof(EmailContent.Language)} required.");
                 
         RuleFor(content => content.Text)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.EmailContent.TextRequired)
+                .WithErrorCode(ErrorCodes.Validation.EmailContent.TextRequired)
                 .WithMessage($"{nameof(EmailContent.Text)} required.");
     }
 }

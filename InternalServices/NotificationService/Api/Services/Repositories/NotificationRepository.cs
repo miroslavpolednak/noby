@@ -42,9 +42,8 @@ public class NotificationRepository
     
     public async Task<Result> GetResult(Guid id, CancellationToken token = default)
     {
-        // todo: Cis Exception code 300-399
         return await _dbContext.Results.FindAsync(new object?[] { id }, token)
-            ?? throw new CisNotFoundException(399, $"Result with id = '{id}' not found.");
+               ?? throw new CisNotFoundException(ErrorCodes.Internal.ResultNotFound, $"Result with id = '{id}' not found.");
     }
 
     public async Task<IEnumerable<Result>> SearchResultsBy(string? identity, string? identityScheme, string? customId, string? documentId)
