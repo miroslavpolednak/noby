@@ -27,7 +27,7 @@ internal static class StartupExtensions
         builder.Services.AddDataAggregatorService();
 
         // EAS svc
-        builder.AddExternalService<ExternalServices.Eas.R21.IEasClient>();
+        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
 
         return builder;
     }

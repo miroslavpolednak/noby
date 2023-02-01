@@ -4,7 +4,7 @@ namespace DomainServices.CaseService.Api;
 
 internal static class CaseExtensions
 {
-    public static WorkflowTask ToWorkflowTask(this ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_FindItem easTask)
+    public static WorkflowTask ToWorkflowTask(this ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.WFS_FindItem easTask)
     {
         var dict = easTask.task.ToDictionary(i => i.mtdt_def, i => i.mtdt_val);
 

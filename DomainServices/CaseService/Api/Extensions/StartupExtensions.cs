@@ -9,10 +9,10 @@ internal static class StartupExtensions
     public static WebApplicationBuilder AddCaseService(this WebApplicationBuilder builder)
     {
         // EAS svc
-        builder.AddExternalService<ExternalServices.Eas.R21.IEasClient>();
+        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
 
         // EAS EasSimulationHT svc
-        builder.AddExternalService<ExternalServices.EasSimulationHT.V6.IEasSimulationHTClient>();
+        builder.AddExternalService<ExternalServices.EasSimulationHT.V1.IEasSimulationHTClient>();
 
         // SB webapi svc
         builder.AddExternalService<ExternalServices.SbWebApi.V1.ISbWebApiClient>();

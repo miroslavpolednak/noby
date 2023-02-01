@@ -1,7 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Contracts;
-using Grpc.Core;
-using CIS.Infrastructure.gRPC;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetTaskList;
 
@@ -35,7 +33,7 @@ internal sealed class GetTaskListHandler
         };
 
         // load tasks
-        var easTasks = await _easSimulationHTClient.FindTasks(header, messsage);
+        var easTasks = await _easSimulationHTClient.FindTasks(header, messsage, cancellation);
         var tasks = easTasks.Select(i => i.ToWorkflowTask()).ToArray();
 
         // check tasks

@@ -3,6 +3,7 @@ using DomainServices.CodebookService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.OfferService.Api.Database;
 using Google.Protobuf;
+using ExternalServices.EasSimulationHT.V1;
 
 namespace DomainServices.OfferService.Api.Endpoints.SimulateMortgage;
 
@@ -22,7 +23,7 @@ internal sealed class SimulateMortgageHandler
 
         // get simulation outputs
         var easSimulationReq = request.SimulationInputs.ToEasSimulationRequest(request.BasicParameters, drawingDurationsById, drawingTypeById);
-        var easSimulationRes = await _easSimulationHTClient.RunSimulationHT(easSimulationReq);
+        var easSimulationRes = await _easSimulationHTClient.RunSimulationHT(easSimulationReq, cancellationToken);
         var results = easSimulationRes.ToSimulationResults();
         var additionalResults = easSimulationRes.ToAdditionalSimulationResults();
 
@@ -104,14 +105,14 @@ internal sealed class SimulateMortgageHandler
 
     private readonly ILogger<SimulateMortgageHandler> _logger;
     private readonly ICodebookServiceClients _codebookService;
-    private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
+    private readonly IEasSimulationHTClient _easSimulationHTClient;
     private readonly OfferServiceDbContext _dbContext;
 
     public SimulateMortgageHandler(
         OfferServiceDbContext dbContext,
         ILogger<SimulateMortgageHandler> logger,
         ICodebookServiceClients codebookService,
-        EasSimulationHT.IEasSimulationHTClient easSimulationHTClient
+        IEasSimulationHTClient easSimulationHTClient
         )
     {
         _logger = logger;

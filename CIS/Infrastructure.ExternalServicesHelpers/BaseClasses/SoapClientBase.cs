@@ -7,12 +7,14 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
+
 public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposable
     where SoapClient : ClientBase<SoapClientChannel>, new()
     where SoapClientChannel : class
 {
     private readonly SoapClient _client;
     private readonly IExternalServiceConfiguration _configuration;
+    private readonly ILogger _logger;
 
     protected SoapClient Client => _client;
 
@@ -23,7 +25,7 @@ public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposabl
         ILogger logger)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-
+        _logger = logger;
         _client = new SoapClient();
         _client.Endpoint.Address = new EndpointAddress(_configuration.ServiceUrl);
         _client.Endpoint.Binding = CreateBinding();
@@ -32,7 +34,12 @@ public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposabl
 
         if (_configuration.UseLogging)
         {
-            _client.Endpoint.SetTraceLogging(logger, _configuration.ServiceUrl.AbsoluteUri!);
+            _client.Endpoint.SetTraceLogging(logger, new()
+            {
+                ServiceUrl = _configuration.ServiceUrl!.AbsoluteUri,
+                LogRequestPayload = _configuration.LogRequestPayload,
+                LogResponsePayload = _configuration.LogResponsePayload
+            });
         }
 
         if (_configuration.Authentication == ExternalServicesAuthenticationTypes.Basic)
@@ -63,5 +70,29 @@ public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposabl
         }
     }
     protected abstract Binding CreateBinding();
+    protected abstract string ServiceName { get; }
+
+    protected async Task<TResult> callMethod<TResult>(Func<Task<TResult>> fce)
+    {
+        try
+        {
+            return await fce();
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            throw new CIS.Core.Exceptions.CisServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
+        }
+        catch (EndpointNotFoundException ex)
+        {
+            _logger.LogError("Endpoint '{uri}' not found", _configuration.ServiceUrl);
+            throw new CIS.Core.Exceptions.CisServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
+            throw;
+        }
+    }
 }
 

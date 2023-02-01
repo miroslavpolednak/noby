@@ -1,11 +1,11 @@
-﻿using ExternalServices.Eas.R21.EasWrapper;
+﻿using ExternalServices.Eas.V1.EasWrapper;
 
-namespace ExternalServices.Eas.R21;
+namespace ExternalServices.Eas.V1;
 
 internal sealed class MockEasClient 
     : IEasClient
 {
-    public Task<ESBI_SIMULATION_RESULTS> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input)
+    public Task<ESBI_SIMULATION_RESULTS> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input, CancellationToken cancellationToken)
     {
         return Task.FromResult<ESBI_SIMULATION_RESULTS>(new ESBI_SIMULATION_RESULTS
         {
@@ -36,28 +36,28 @@ internal sealed class MockEasClient
         });
     }
 
-    public Task<long> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId)
+    public Task<long> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId, CancellationToken cancellationToken)
     {
         Random random = new Random();
         return Task.FromResult<long>(random.NextInt64(1, 999));
     }
 
-    public Task<Dto.CreateNewOrGetExisingClientResponse> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData)
+    public Task<Dto.CreateNewOrGetExisingClientResponse> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData, CancellationToken cancellationToken)
     {
         return Task.FromResult(new Dto.CreateNewOrGetExisingClientResponse() { Id = 123 });
     }
 
-    public Task<string> GetContractNumber(long clientId, int caseId)
+    public Task<string> GetContractNumber(long clientId, int caseId, CancellationToken cancellationToken)
     {
         return Task.FromResult<string>($"{clientId}_{caseId}");
     }
 
-    public Task<CommonResponse?> AddFirstSignatureDate(int caseId, DateTime firstSignatureDate)
+    public Task<CommonResponse?> AddFirstSignatureDate(int caseId, DateTime firstSignatureDate, CancellationToken cancellationToken)
     {
         return null;
     }
 
-    public Task<CheckFormV2.Response> CheckFormV2(CheckFormData formData)
+    public Task<CheckFormV2.Response> CheckFormV2(CheckFormData formData, CancellationToken cancellationToken)
     {
         return null;
     }

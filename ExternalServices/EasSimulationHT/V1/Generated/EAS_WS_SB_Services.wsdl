@@ -1,0 +1,1564 @@
+﻿<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://asseco/EAS/EAS_WS_SB_Services" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="HT_WS_SB_Services" targetNamespace="http://asseco/EAS/EAS_WS_SB_Services">
+	<wsp:Policy wsu:Id="BasicHttpBinding_IHT_WS_SB_Services_policy">
+		<wsp:ExactlyOne>
+			<wsp:All>
+				<sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+					<wsp:Policy>
+						<sp:TransportToken>
+							<wsp:Policy>
+								<sp:HttpsToken RequireClientCertificate="false"/>
+							</wsp:Policy>
+						</sp:TransportToken>
+						<sp:AlgorithmSuite>
+							<wsp:Policy>
+								<sp:Basic256/>
+							</wsp:Policy>
+						</sp:AlgorithmSuite>
+						<sp:Layout>
+							<wsp:Policy>
+								<sp:Strict/>
+							</wsp:Policy>
+						</sp:Layout>
+					</wsp:Policy>
+				</sp:TransportBinding>
+			</wsp:All>
+		</wsp:ExactlyOne>
+	</wsp:Policy>
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://asseco/EAS/EAS_WS_SB_Services">
+			<xs:element name="GetVersionInfo">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="Mode" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetVersionInfoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="GetVersionInfoResult" type="tns:GetVersionInfoResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="GetVersionInfoResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="Version" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="BuildDir" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="WebServicesBuilt" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="CoreBuilt" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="ShareBuilt" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="MachineName" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="DB" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="DBsysdate" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="DOD" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="User" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="DebugInfo" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="Mandant" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="SimulationHT">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="request" type="tns:SimulationHTRequest"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="SimulationHTRequest">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="settings" type="tns:SimSettings"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="uver" type="tns:SimSettingsUver"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="ucelyUveru" type="tns:ArrayOfUcelUveru"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="urokovaSazba" type="tns:SimSettingsUrokovaSazba"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="mimoradneOperace" type="tns:ArrayOfMimoradnaOperace"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="marketingoveAkce" type="tns:ArrayOfMarketingovaAkce"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="poplatky" type="tns:ArrayOfPoplatek"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="nastaveniPoplatku" type="tns:SimSettingsPoplatky"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SimSettings">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="rezimVolani" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="enableResponseSplatkovyKalendarJednoduchy" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="enableResponseSplatkovyKalendarPlny" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="enableResponseOperace" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="enableResponseRpsnToky" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SimSettingsUver">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="datumZalozeni" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="datumPodpisuSmlouvy" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="kodProduktu" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="tarif" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="kanal" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="druhUveru" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="segmentUveru" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="kodZvyhodneni" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="denSplatky" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="vyseUveru" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splatkaUveru" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splatnostUveru" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splatnostUveruDatum" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="rozhodnyDenSazby" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="urokovaSazba" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="indCenotvorbaOdchylka" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="periodaFixace" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="predpokladanaHodnotaZajisteni" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="LTV" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="typCerpani" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="lhutaDocerpani" nillable="true" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfUcelUveru">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="UcelUveru" nillable="true" type="tns:UcelUveru"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="UcelUveru">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="kodUcelu" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SimSettingsUrokovaSazba">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="zadaZvyhodneni" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="developerId" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="developerProjektId" nillable="true" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfMimoradnaOperace">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="MimoradnaOperace" nillable="true" type="tns:MimoradnaOperace"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="MimoradnaOperace">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="klic" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="valuta" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="suma" type="xs:decimal"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="poznamka" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfMarketingovaAkce">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="MarketingovaAkce" nillable="true" type="tns:MarketingovaAkce"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="MarketingovaAkce">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="typMaAkce" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="zaskrtnuto" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="uplatnena" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="kodMaAkce" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="odchylkaSazby" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="jeSkladacka" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="nazev" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfPoplatek">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="Poplatek" nillable="true" type="tns:Poplatek"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Poplatek">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="kodSB" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="slevaIC" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="sumaSazebnikova" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="sumaSkladackova" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="kodMaAkce" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="textAplikace" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="textDokumentaceVzorovyPriklad" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="sumaVysledna" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="textDokumentaceSazebnik" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="textDokumentaceSazebnikHodnota" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="pouziti" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="kodKB" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="zobrazitZdarma" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="zapocitatRPSN" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="periodicita" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="uctovatOd" nillable="true" type="xs:dateTime"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SimSettingsPoplatky">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="dokument" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="restructPriznak" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="vypisHu" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="vypisBu" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="rzpSuma" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="rzpFrekvence" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="rzpDenPlatby" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="rzpDatumPocatku" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="rzpDatumKonce" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="pojNemovSuma" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="pojNemovFrekvence" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="pojNemovDenPlatby" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="pojNemovDatumPocatku" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="pojNemovDatumKonce" nillable="true" type="xs:dateTime"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="SimulationHTResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="SimulationHTResult" type="tns:SimulationHTResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="SimulationHTResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="uverVysledky" type="tns:UverVysledky"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="urokovaSazba" type="tns:UrokovaSazba"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="marketingoveAkce" type="tns:ArrayOfMarketingovaAkce"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="poplatky" type="tns:ArrayOfPoplatek"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="operace" type="tns:ArrayOfOperace"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="splatkovyKalendarJednoduchy" type="tns:ArrayOfSplS"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="splatkovyKalendarPlny" type="tns:ArrayOfSplF"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="rpsnToky" type="tns:ArrayOfRpsnTok"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="rpsnTokyRefix" type="tns:ArrayOfRpsnTok"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="errorInfo" type="tns:SimErrorInfo"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="UverVysledky">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="vyseUveru" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splatkaUveru" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splatnostUveru" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splatnostUveruDatum" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="sazbaPoskytnuta" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="kodZvyhodneni" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="LTV" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="datumPodpisuSmlouvy" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="datumDocerpani" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="datumZahajeniAnuitnihoSplaceni" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="pocetAnuitnichSplatek" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="rpsn" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="celkoveNakladyUveru" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="rpsnRefix" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="celkoveNakladyUveruRefix" nillable="true" type="xs:decimal"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="UrokovaSazba">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="urokovaSazba" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="vyhlasovana" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="vyhlasovanaTyp" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="vyhlasovanaIdSazby" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="stdVyhlasovana" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="vipVyhlasovana" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="devVyhlasovana" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="zamVyhlasovana" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="maOdchylka" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="zamOdchylka" type="xs:decimal"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfOperace">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="Operace" nillable="true" type="tns:Operace"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Operace">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="klic" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="valuta" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="suma" type="xs:decimal"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="poznamka" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="zustatek" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="preplatek" type="xs:decimal"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfSplS">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="SplS" nillable="true" type="tns:SplS"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SplS">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="n" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="cisloSplatky" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="datumSplatky" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="typSplatky" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="vyseSplatky" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfSplF">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="SplF" nillable="true" type="tns:SplF"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SplF">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="n" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="c" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="d" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="p" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="j" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="u" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="o" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="z" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfRpsnTok">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="RpsnTok" nillable="true" type="tns:RpsnTok"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="RpsnTok">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="datum" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="sumaToku" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="cerpani" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splatka" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="ostatniNaklady" type="xs:decimal"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="poznamka" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SimErrorInfo">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="kodChyby" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="textChyby" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="warningy" type="tns:ArrayOfSimWarningInfo"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfSimWarningInfo">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="SimWarningInfo" nillable="true" type="tns:SimWarningInfo"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SimWarningInfo">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="kodWarningu" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="textWarningu" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="internalMsg" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="GetSazbaPuUss">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="request" type="tns:GetSazbaPuUssRequest"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="GetSazbaPuUssRequest">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="settings" type="tns:UrokovaSazbaPuUssSettings"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="UrokovaSazbaPuUssSettings">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="typUveru" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="SS_DatumZalozenia" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="SS_KodProduktu" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="SS_KlientFyzickaPravnicka" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_KodAkcie" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_kodZvyhodneniUv" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_developerId" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_DatumSplatnosti" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_PeriodaFixace" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_TypZajisteni" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_LTV" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_jeDomicilace" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_jeRzp" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_kanal" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_vyseUveru" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_hlavniUcelUveru" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="UV_formaPodpisu" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="GetSazbaPuUssResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="GetSazbaPuUssResult" type="tns:GetSazbaPuUssResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="GetSazbaPuUssResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="sazbaInfo" type="tns:UrokovaSazbaPuUss"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="errorInfo" type="tns:SimErrorInfo"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="UrokovaSazbaPuUss">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="urokovaSazba" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="vyhlasovana" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="vyhlasovanaTyp" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="vyhlasovanaTypText" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="vyhlasovanaIdSazby" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="stdOdchylka" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="zamOdchylka" type="xs:decimal"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="GetValidity">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="request" type="tns:GetValidityRequest"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="GetValidityRequest">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="datum1" type="xs:dateTime"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="datum2" type="xs:dateTime"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="GetValidityResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="GetValidityResult" type="tns:GetValidityResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="GetValidityResponse">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="chcksumSazby1" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="chcksumSazby2" type="xs:decimal"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="errorInfo" type="tns:SimErrorInfo"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="SplatkovyKalendar">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="request" type="tns:SplatkovyKalendarRequest"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="SplatkovyKalendarRequest">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="settings" type="tns:SplatkovyKalendarSettings"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SplatkovyKalendarSettings">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="uverId" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="mode" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="SplatkovyKalendarResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="SplatkovyKalendarResult" type="tns:SplatkovyKalendarResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="SplatkovyKalendarResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="splatkovyKalendar" type="tns:ArrayOfUmoreni"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="errorInfo" type="tns:SimErrorInfo"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfUmoreni">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="Umoreni" nillable="true" type="tns:Umoreni"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Umoreni">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="uverId" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="mes" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="datM" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="dat" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splC" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splM" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splX" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="msg" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="splTxt" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="datTxt" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="cerpane" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splatka" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="splatkaMim" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="jistina" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="urokyBezne" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="urokyOdlozene" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="poplatky" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="poplatkyMim" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="smluvniPokuty" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="urokySankci" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="urokyzProdleni" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="pojisteni" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="zustJist" type="xs:decimal"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="CASH_FLOW" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="cf_m" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="cf_ur" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="cf_df" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="cf" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="cf_disk" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="cf_sum" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="cf_disk_sum" type="xs:decimal"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="INFO" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="saldo" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="preplatek" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="z4" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="z6" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="z8" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="z10" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="z12" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="dnesna" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="pouz" type="xs:decimal"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="WFS_FindTasks">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="header" type="tns:WFS_Header"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="message" type="tns:WFS_Message"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="WFS_Header">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="system" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="login" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="WFS_Message"/>
+			<xs:complexType name="WFS_Find_ByPools">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="pools" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="task_state" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Find_ByCpmIcp">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="0" maxOccurs="1" name="owner_cpm" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="owner_icp" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="task_state" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Find_ByContractNo">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="0" maxOccurs="1" name="contract_no" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="task_state" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="search_pattern" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Find_ByCaseId">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="case_id" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="task_state" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="search_pattern" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Find_ByTaskId">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_id" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="task_state" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Manage_UpdateTask">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_id" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="metadata" type="tns:WFS_MetadataItem"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_MetadataItem">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="mtdt_def" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="mtdt_val" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="WFS_Manage_CancelTask">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_id" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="note" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Manage_CompleteTask">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_id" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="metadata" type="tns:WFS_MetadataItem"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Manage_AdoptTask">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_id" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="note" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Manage_UnAssignTask">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_id" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="note" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Manage_AssignTask">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_id" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="performer" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Manage_ChangeTask">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_id" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_type" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Manage_AcceptTask">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_id" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="performer" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Manage_CreateTask">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_type" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="parent_task_set" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="performer" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="metadata" type="tns:WFS_MetadataItem"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Event_VerificationNotification">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="0" maxOccurs="1" name="risk_bc_id" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="ntf_subj" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="ntf_text" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="ntf_url" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Event_VerificationFinished">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="uver_id" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Event_VerificationConfidentialDocumentsDone">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="uver_id" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="cas_id" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Event_VerificationConfidentialDocumentsStart">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="uver_id" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="klient_id" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="cas_id" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="klient_schema" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="documents" type="tns:WFS_VerificationDocumentItem"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_VerificationDocumentItem">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="doc_type" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="doc_desc" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="WFS_Event_VerificationCommonDocumentsStart">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="uver_id" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="klient_id" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="cas_id" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="klient_schema" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="documents" type="tns:WFS_VerificationDocumentItem"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Event_VerificationStart">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="uver_id" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Event_CaseStateChanged">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="case_id" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="uver_id" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="contract_no" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="loan_no" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="jmeno_prijmeni" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="case_state" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="product_type" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="owner_cpm" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="owner_icp" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="mandant" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="client_benefits" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="risk_business_case_id" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Event_DocumentBankSigned">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="external_id" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="document_type" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="contract_no" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="bank_sign_date" type="xs:date"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="bank_sign_login" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Event_Test">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="text" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="datum" type="xs:date"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="WFS_FindTasksResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="WFS_FindTasksResult" type="tns:WFS_Find_Response"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="WFS_Find_Response">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_CommonResponse">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="items_found" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="tasks" type="tns:ArrayOfWFS_FindItem"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_CommonResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="result" type="tns:CommonResult"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="CommonResult">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="return_val" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="return_text" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="WFS_Manage_CreateTask_Response">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_CommonResponse">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="task_id" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="WFS_Event_Response">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:WFS_CommonResponse">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="request_id" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfWFS_FindItem">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="WFS_FindItem" nillable="true" type="tns:WFS_FindItem"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="WFS_FindItem">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="task" type="tns:ArrayOfWFS_MetadataItem"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfWFS_MetadataItem">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="WFS_MetadataItem" nillable="true" type="tns:WFS_MetadataItem"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="WFS_EventReport">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="header" type="tns:WFS_Header"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="message" type="tns:WFS_Message"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WFS_EventReportResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="WFS_EventReportResult" type="tns:WFS_Event_Response"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WFS_ManageTask">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="header" type="tns:WFS_Header"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="message" type="tns:WFS_Message"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WFS_ManageTaskResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="WFS_ManageTaskResult" type="tns:WFS_CommonResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetBookOfTermsAndLoanPurpose">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="message" type="tns:BookOfTerms_request"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="BookOfTerms_request">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="contract_number" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="GetBookOfTermsAndLoanPurposeResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="GetBookOfTermsAndLoanPurposeResult" type="tns:BookOfTerms_response"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="BookOfTerms_response">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="result" type="tns:CommonResult"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="bookOfTerms" type="tns:ArrayOfBookOfTermsItem"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="purposesOfLoan" type="tns:ArrayOfPurposeOfLoanItem"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="purposeDetail" nillable="true" type="tns:PurposeDetail"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="loanInfo" type="tns:LoanInfo"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfBookOfTermsItem">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="BookOfTermsItem" nillable="true" type="tns:BookOfTermsItem"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="BookOfTermsItem">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="nameOfTerm" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="text" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="isZov" type="xs:boolean"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="isLastConditionZov" type="xs:boolean"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="dateOfCompletion" nillable="true" type="xs:date"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="completionOperator" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="actionCode" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="typeOfSekcion" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="phaseNumber" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="orderInSection" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="blockedTo" nillable="true" type="xs:date"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="isVisibleToClient" type="xs:boolean"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="isInReminding" type="xs:boolean"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="reminding_Deadline" nillable="true" type="xs:date"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="reminding_Condition" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="reminding_DeadlineShiftInMonths" nillable="true" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfPurposeOfLoanItem">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="PurposeOfLoanItem" nillable="true" type="tns:PurposeOfLoanItem"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="PurposeOfLoanItem">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="type" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="isAdvanceDrawdownLoan" type="xs:boolean"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="amountOfPurpose" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="undrawnLoanAmount" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="allowedAmountToDraw" type="xs:decimal"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="PurposeDetail">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="stateOfConstraction" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="orderOfLastZov" type="xs:int"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="numberOfValuationOfLastZov" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="feeForNextZov" type="xs:decimal"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="LoanInfo">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="loanAmounth" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="exhaustedLoanAmount" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="sumOfPendingDrawdowns" type="xs:decimal"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="CreateDocumentPaymentInstructions">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="message" type="tns:CreateDocumentPaymentInstructions_request"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="CreateDocumentPaymentInstructions_request">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="uverId" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="orderId" type="xs:int"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="feeAmount" type="xs:decimal"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="CreateDocumentPaymentInstructionsResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="CreateDocumentPaymentInstructionsResult" type="tns:CreateDocumentPaymentInstructions_response"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="CreateDocumentPaymentInstructions_response">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="result" type="tns:CommonResult"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="EA_DocumentId" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="BG_Instrument">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="header" type="tns:Coll_Header"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="message" type="tns:Coll_BG_Instrument"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Coll_Header">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="system" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="login" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Coll_BG_Instrument">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:Coll_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="idCollateral" type="xs:long"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="companyCode" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="status" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="accountNumber" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="Coll_Message"/>
+			<xs:element name="BG_InstrumentResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="BG_InstrumentResult" type="tns:Coll_BG_Instrument_Response"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Coll_BG_Instrument_Response">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:Coll_CommonResponse">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="idCollateral" type="xs:long"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="companyCode" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="collateralCategory" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="collateralTypeCode" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="collateralTypeCzech" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="status" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="insuranceValid" type="xs:int"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="insuranceBlocked" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="insuranceContractDate" nillable="true" type="xs:dateTime"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="borrowingPercentage" type="xs:decimal"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="resultingPercentage" type="xs:decimal"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="currency" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="unitCount" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="unitPrice" type="xs:decimal"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="nominalPrice" type="xs:decimal"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="descriptionLine1" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="descriptionLine2" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="descriptionLine3" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="descriptionLine4" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="dateOfAppraisal" nillable="true" type="xs:dateTime"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="appraisalMethod" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="accountNumber" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="liabilityType" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="ultimateEffectivityDate" type="xs:dateTime"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="volatilityHaircut" nillable="true" type="xs:decimal"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="typeOfRealEstate" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="priority" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="sumLienJpu" type="xs:decimal"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="onlineValuationPossible" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="lienOrder" type="xs:int"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="sumMPSSLoans" type="xs:decimal"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="sumLoansMandant" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="Coll_CommonResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="result" type="tns:CommonResult"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="BG_Owners">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="header" type="tns:Coll_Header"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="message" type="tns:Coll_BG_Owners"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Coll_BG_Owners">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:Coll_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="idCollateral" type="xs:long"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="idOwner" type="xs:long"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="warrantorRoleType" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="companyCode" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="BG_OwnersResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="BG_OwnersResult" type="tns:Coll_BG_Owners_Response"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Coll_BG_Owners_Response">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:Coll_CommonResponse">
+						<xs:sequence>
+							<xs:element minOccurs="0" maxOccurs="1" name="owners" type="tns:ArrayOfColl_BG_Owners_ResponseOne"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfColl_BG_Owners_ResponseOne">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="Coll_BG_Owners_ResponseOne" nillable="true" type="tns:Coll_BG_Owners_ResponseOne"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Coll_BG_Owners_ResponseOne">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="idCollateral" type="xs:long"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="idOwner" type="xs:long"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="warrantorRoleType" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="equityPercentage" type="xs:decimal"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="companyCode" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="BG_Contract">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="header" type="tns:Coll_Header"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="message" type="tns:Coll_BG_Contract"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Coll_BG_Contract">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:Coll_Message">
+						<xs:sequence>
+							<xs:element minOccurs="0" maxOccurs="1" name="contractNumber" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="companyCode" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="contractStatus" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="idCollateral" type="xs:long"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="accountNumber" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="BG_ContractResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="BG_ContractResult" type="tns:Coll_BG_Contract_Response"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Coll_BG_Contract_Response">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:Coll_CommonResponse">
+						<xs:sequence>
+							<xs:element minOccurs="0" maxOccurs="1" name="contractNumber" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="companyCode" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="contractDate" nillable="true" type="xs:dateTime"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="contractStatus" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="idCollateral" type="xs:long"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="accountNumber" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="virtueFromDate" nillable="true" type="xs:dateTime"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="collateralCategory" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="proceedingNumber" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="delProceedingNumber" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="contractManager" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="BG_Relationship">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="header" type="tns:Coll_Header"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="message" type="tns:Coll_BG_Relationship"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Coll_BG_Relationship">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:Coll_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="accountNumber" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="usageStatuses" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="contractStatus" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="idCollateral" type="xs:long"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="companyCode" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="appraisalMethod" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="BG_RelationshipResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="BG_RelationshipResult" type="tns:Coll_BG_Relationship_Response"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Coll_BG_Relationship_Response">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:Coll_CommonResponse">
+						<xs:sequence>
+							<xs:element minOccurs="0" maxOccurs="1" name="relationships" type="tns:ArrayOfColl_BG_Relationship_ResponseOne"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="ArrayOfColl_BG_Relationship_ResponseOne">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="Coll_BG_Relationship_ResponseOne" nillable="true" type="tns:Coll_BG_Relationship_ResponseOne"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Coll_BG_Relationship_ResponseOne">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="accountNumber" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="sumUsedValue" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="sumUsedValueOther" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="usageStatuses" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="contractNumber" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="contractStatus" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="nominalValue" type="xs:decimal"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="availableValue" type="xs:decimal"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="airbEligibility" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="currencyHaircut" type="xs:decimal"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="retailEligibility" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="caEligibility" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="ifrsEligibility" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="idCollateral" type="xs:long"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="companyCode" type="xs:string"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="appraisalMethod" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="BG_Valuation">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="header" type="tns:Coll_Header"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="message" type="tns:Coll_BG_Valuation"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Coll_BG_Valuation">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:Coll_Message">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="idCollateral" type="xs:long"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="appraisalMethod" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="companyCode" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="BG_ValuationResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="BG_ValuationResult" type="tns:Coll_BG_Valuation_Response"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Coll_BG_Valuation_Response">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:Coll_CommonResponse">
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="idValuation" type="xs:long"/>
+							<xs:element minOccurs="0" maxOccurs="1" name="statementNumber" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="idCollateral" type="xs:long"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="unitPriceForValuation" type="xs:decimal"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="unitCount" type="xs:long"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="appraisalMethod" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="dateOfAppraisal" type="xs:dateTime"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="insertWhen" nillable="true" type="xs:dateTime"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="companyCode" nillable="true" type="xs:string"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="usedCollateralValue" type="xs:decimal"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="price" type="xs:decimal"/>
+							<xs:element minOccurs="1" maxOccurs="1" name="priceType" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="IHT_WS_SB_Services_GetVersionInfo_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetVersionInfo"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_GetVersionInfo_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetVersionInfoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_SimulationHT_InputMessage">
+		<wsdl:part name="parameters" element="tns:SimulationHT"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_SimulationHT_OutputMessage">
+		<wsdl:part name="parameters" element="tns:SimulationHTResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_GetSazbaPuUss_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetSazbaPuUss"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_GetSazbaPuUss_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetSazbaPuUssResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_GetValidity_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetValidity"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_GetValidity_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetValidityResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_SplatkovyKalendar_InputMessage">
+		<wsdl:part name="parameters" element="tns:SplatkovyKalendar"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_SplatkovyKalendar_OutputMessage">
+		<wsdl:part name="parameters" element="tns:SplatkovyKalendarResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_WFS_FindTasks_InputMessage">
+		<wsdl:part name="parameters" element="tns:WFS_FindTasks"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_WFS_FindTasks_OutputMessage">
+		<wsdl:part name="parameters" element="tns:WFS_FindTasksResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_WFS_EventReport_InputMessage">
+		<wsdl:part name="parameters" element="tns:WFS_EventReport"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_WFS_EventReport_OutputMessage">
+		<wsdl:part name="parameters" element="tns:WFS_EventReportResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_WFS_ManageTask_InputMessage">
+		<wsdl:part name="parameters" element="tns:WFS_ManageTask"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_WFS_ManageTask_OutputMessage">
+		<wsdl:part name="parameters" element="tns:WFS_ManageTaskResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_GetBookOfTermsAndLoanPurpose_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetBookOfTermsAndLoanPurpose"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_GetBookOfTermsAndLoanPurpose_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetBookOfTermsAndLoanPurposeResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_CreateDocumentPaymentInstructions_InputMessage">
+		<wsdl:part name="parameters" element="tns:CreateDocumentPaymentInstructions"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_CreateDocumentPaymentInstructions_OutputMessage">
+		<wsdl:part name="parameters" element="tns:CreateDocumentPaymentInstructionsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_BG_Instrument_InputMessage">
+		<wsdl:part name="parameters" element="tns:BG_Instrument"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_BG_Instrument_OutputMessage">
+		<wsdl:part name="parameters" element="tns:BG_InstrumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_BG_Owners_InputMessage">
+		<wsdl:part name="parameters" element="tns:BG_Owners"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_BG_Owners_OutputMessage">
+		<wsdl:part name="parameters" element="tns:BG_OwnersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_BG_Contract_InputMessage">
+		<wsdl:part name="parameters" element="tns:BG_Contract"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_BG_Contract_OutputMessage">
+		<wsdl:part name="parameters" element="tns:BG_ContractResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_BG_Relationship_InputMessage">
+		<wsdl:part name="parameters" element="tns:BG_Relationship"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_BG_Relationship_OutputMessage">
+		<wsdl:part name="parameters" element="tns:BG_RelationshipResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_BG_Valuation_InputMessage">
+		<wsdl:part name="parameters" element="tns:BG_Valuation"/>
+	</wsdl:message>
+	<wsdl:message name="IHT_WS_SB_Services_BG_Valuation_OutputMessage">
+		<wsdl:part name="parameters" element="tns:BG_ValuationResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="IHT_WS_SB_Services">
+		<wsdl:operation name="GetVersionInfo">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/GetVersionInfo" message="tns:IHT_WS_SB_Services_GetVersionInfo_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/GetVersionInfo" message="tns:IHT_WS_SB_Services_GetVersionInfo_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="SimulationHT">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/SimulationHT" message="tns:IHT_WS_SB_Services_SimulationHT_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/SimulationHT" message="tns:IHT_WS_SB_Services_SimulationHT_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetSazbaPuUss">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/GetSazbaPuUss" message="tns:IHT_WS_SB_Services_GetSazbaPuUss_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/GetSazbaPuUss" message="tns:IHT_WS_SB_Services_GetSazbaPuUss_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetValidity">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/GetValidity" message="tns:IHT_WS_SB_Services_GetValidity_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/GetValidity" message="tns:IHT_WS_SB_Services_GetValidity_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="SplatkovyKalendar">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/SplatkovyKalendar" message="tns:IHT_WS_SB_Services_SplatkovyKalendar_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/SplatkovyKalendar" message="tns:IHT_WS_SB_Services_SplatkovyKalendar_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="WFS_FindTasks">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/WFS_FindTasks" message="tns:IHT_WS_SB_Services_WFS_FindTasks_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/WFS_FindTasks" message="tns:IHT_WS_SB_Services_WFS_FindTasks_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="WFS_EventReport">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/WFS_EventReport" message="tns:IHT_WS_SB_Services_WFS_EventReport_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/WFS_EventReport" message="tns:IHT_WS_SB_Services_WFS_EventReport_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="WFS_ManageTask">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/WFS_ManageTask" message="tns:IHT_WS_SB_Services_WFS_ManageTask_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/WFS_ManageTask" message="tns:IHT_WS_SB_Services_WFS_ManageTask_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetBookOfTermsAndLoanPurpose">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/GetBookOfTermsAndLoanPurpose" message="tns:IHT_WS_SB_Services_GetBookOfTermsAndLoanPurpose_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/GetBookOfTermsAndLoanPurpose" message="tns:IHT_WS_SB_Services_GetBookOfTermsAndLoanPurpose_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="CreateDocumentPaymentInstructions">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/CreateDocumentPaymentInstructions" message="tns:IHT_WS_SB_Services_CreateDocumentPaymentInstructions_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/CreateDocumentPaymentInstructions" message="tns:IHT_WS_SB_Services_CreateDocumentPaymentInstructions_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="BG_Instrument">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/BG_Instrument" message="tns:IHT_WS_SB_Services_BG_Instrument_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/BG_Instrument" message="tns:IHT_WS_SB_Services_BG_Instrument_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="BG_Owners">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/BG_Owners" message="tns:IHT_WS_SB_Services_BG_Owners_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/BG_Owners" message="tns:IHT_WS_SB_Services_BG_Owners_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="BG_Contract">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/BG_Contract" message="tns:IHT_WS_SB_Services_BG_Contract_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/BG_Contract" message="tns:IHT_WS_SB_Services_BG_Contract_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="BG_Relationship">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/BG_Relationship" message="tns:IHT_WS_SB_Services_BG_Relationship_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/BG_Relationship" message="tns:IHT_WS_SB_Services_BG_Relationship_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="BG_Valuation">
+			<wsdl:input wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/BG_Valuation" message="tns:IHT_WS_SB_Services_BG_Valuation_InputMessage"/>
+			<wsdl:output wsam:Action="http://asseco/EAS/EAS_WS_SB_Services/BG_Valuation" message="tns:IHT_WS_SB_Services_BG_Valuation_OutputMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="BasicHttpBinding_IHT_WS_SB_Services" type="tns:IHT_WS_SB_Services">
+		<wsp:PolicyReference URI="#BasicHttpBinding_IHT_WS_SB_Services_policy"/>
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="GetVersionInfo">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/GetVersionInfo" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SimulationHT">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/SimulationHT" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetSazbaPuUss">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/GetSazbaPuUss" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetValidity">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/GetValidity" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SplatkovyKalendar">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/SplatkovyKalendar" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="WFS_FindTasks">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/WFS_FindTasks" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="WFS_EventReport">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/WFS_EventReport" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="WFS_ManageTask">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/WFS_ManageTask" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetBookOfTermsAndLoanPurpose">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/GetBookOfTermsAndLoanPurpose" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CreateDocumentPaymentInstructions">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/CreateDocumentPaymentInstructions" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="BG_Instrument">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/BG_Instrument" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="BG_Owners">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/BG_Owners" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="BG_Contract">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/BG_Contract" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="BG_Relationship">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/BG_Relationship" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="BG_Valuation">
+			<soap:operation soapAction="http://asseco/EAS/EAS_WS_SB_Services/BG_Valuation" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="HT_WS_SB_Services">
+		<wsdl:port name="BasicHttpBinding_IHT_WS_SB_Services" binding="tns:BasicHttpBinding_IHT_WS_SB_Services">
+			<soap:address location="https://adpra136.vsskb.cz/FAT/HT_WS_SB_Services.svc"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

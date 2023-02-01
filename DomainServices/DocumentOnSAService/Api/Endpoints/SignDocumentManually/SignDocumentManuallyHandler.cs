@@ -4,7 +4,7 @@ using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using ExternalServices.Eas.R21;
+using ExternalServices.Eas.V1;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocumentManually;
@@ -71,7 +71,7 @@ public class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyR
                 throw new CisNotFoundException(19000, $"SalesArrangement{documentOnSa.SalesArrangementId} does not exist.");
             }
 
-            var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, _dateTime.Now.Date);
+            var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, _dateTime.Now.Date, cancellationToken);
 
             if (result is not null && result.CommonValue != 0)
             {
