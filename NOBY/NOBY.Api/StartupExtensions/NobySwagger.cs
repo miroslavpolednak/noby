@@ -31,7 +31,7 @@ internal static class NobySwagger
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();
 
-            x.CustomSchemaIds(type => type.ToString());
+            x.CustomSchemaIds(type => type.ToString().Replace('+', '_'));
 
             // generate the XML docs that'll drive the swagger docs
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
