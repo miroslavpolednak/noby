@@ -5,6 +5,10 @@ option csharp_namespace = "DomainServices.CustomerService.Contracts";
 import "google/protobuf/wrappers.proto";
 
 message Contact {
+	bool IsPrimary = 1;	
+	int32 ContactTypeId = 2;
+	bool IsConfirmed = 3;
+
 	oneof obj  {
 		MobilePhone Mobile = 20;
 		EmailAddress Email = 21;
@@ -12,16 +16,10 @@ message Contact {
 } 
 
 message MobilePhone {
-	bool IsPrimary = 1;	
-	int32 ContactTypeId = 2;
-	string PhoneNumber = 3;
-	string PhoneIDC = 4;
-	google.protobuf.BoolValue IsConfirmed = 5;
+	string PhoneNumber = 1;
+	string PhoneIDC = 2;
 }
 
 message EmailAddress {
-	bool IsPrimary = 1;
-	int32 ContactTypeId = 2;
-	string EmailAddress = 3;
-	google.protobuf.BoolValue IsConfirmed = 4;
+	string EmailAddress = 1;
 }

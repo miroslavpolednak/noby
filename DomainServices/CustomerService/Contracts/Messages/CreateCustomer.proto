@@ -20,10 +20,7 @@ message CreateCustomerRequest {
 
 	repeated cis.types.GrpcAddress Addresses = 5;
 
-	repeated oneof Contacts  {
-		MobilePhone Mobile = 20;
-		EmailAddress Email = 21;
-	}
+	repeated Contact Contacts = 6;
 
 	cis.types.Mandants Mandant = 7;
 }
