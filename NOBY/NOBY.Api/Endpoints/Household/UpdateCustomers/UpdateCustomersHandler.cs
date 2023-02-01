@@ -1,6 +1,5 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.HouseholdService.Clients;
-using System.Threading;
 using __HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
@@ -24,14 +23,14 @@ internal sealed class UpdateCustomersHandler
             await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, c1.CustomerOnSAId, c2.CustomerOnSAId, cancellationToken);
 
         // zastavit podepisovani, pokud probehla zmena na customerech
-        /*if (c1.CancelSigning || c2.CancelSigning)
+        if (c1.CancelSigning || c2.CancelSigning)
         {
             var documentsToSign = await _documentOnSAService.GetDocumentsToSignList(householdInstance.SalesArrangementId, cancellationToken);
             foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && t.IsValid))
             {
                 await _documentOnSAService.StopSigning(document.DocumentOnSAId!.Value, cancellationToken);
             }
-        }*/
+        }
 
         // hlavni domacnost - hlavni klient ma modre ID -> spustime vlacek na vytvoreni produktu atd. (pokud jeste neexistuje)
         if (c1.CustomerOnSAId.HasValue && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
@@ -128,7 +127,7 @@ internal sealed class UpdateCustomersHandler
         }
     }
 
-    //private readonly DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSAService;
+    private readonly DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IMediator _mediator;
@@ -136,13 +135,13 @@ internal sealed class UpdateCustomersHandler
     public UpdateCustomersHandler(
         IMediator mediator,
         IHouseholdServiceClient householdService,
-        ICustomerOnSAServiceClient customerOnSAService
-        //DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSAService
+        ICustomerOnSAServiceClient customerOnSAService,
+        DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSAService
         )
     {
         _mediator = mediator;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;
-        //_documentOnSAService = documentOnSAService;
+        _documentOnSAService = documentOnSAService;
     }
 }
