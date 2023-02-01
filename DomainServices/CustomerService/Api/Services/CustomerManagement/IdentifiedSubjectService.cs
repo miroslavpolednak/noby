@@ -9,7 +9,7 @@ using System.Threading;
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
-internal class IdentifiedSubjectService
+internal sealed class IdentifiedSubjectService
 {
     private readonly ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient _identifiedSubjectClient;
     private readonly ICodebookServiceClients _codebook;

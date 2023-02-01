@@ -15,7 +15,7 @@ internal sealed class ValidateHandler
             Categories = response.ValidationMessages?
                 .Where(t => t.NobyMessageDetail.Severity != _SA.ValidationMessageNoby.Types.NobySeverity.None)
                 .GroupBy(t => t.NobyMessageDetail.Category)
-                .OrderByDescending(t => t.Min(x => x.NobyMessageDetail.CategoryOrder))
+                .OrderBy(t => t.Min(x => x.NobyMessageDetail.CategoryOrder))
                 .Select(t => new Dto.ValidateCategory
                 {
                     CategoryName = t.Key,
