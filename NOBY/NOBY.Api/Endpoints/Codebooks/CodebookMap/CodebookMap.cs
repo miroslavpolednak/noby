@@ -58,6 +58,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.Genders);
         AddCodebook(s => s.HouseholdTypes);
         AddCodebook(s => s.IdentificationDocumentTypes);
+        AddCodebook(s => s.IdentificationSubjectMethods);
         AddCodebook(s => s.IncomeMainTypes);
         AddCodebook(s => s.IncomeForeignTypes);
         AddCodebook(s => s.IncomeOtherTypes);
