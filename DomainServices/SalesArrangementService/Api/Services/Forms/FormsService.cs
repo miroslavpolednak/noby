@@ -112,6 +112,7 @@ internal sealed class FormsService
 
         var identityMp = mainCustomerOnSa.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
 
+        //Probly better to throw exception
         if (identityMp is null)
             return;
 
