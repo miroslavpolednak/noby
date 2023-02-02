@@ -171,12 +171,12 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             {
                 DocumentOnSAId = documentOnSaEntity.DocumentOnSAId,
                 DocumentTypeId = documentOnSaEntity.DocumentTypeId,
-                FormId = documentOnSaEntity.FormId,
+                FormId = documentOnSaEntity.FormId ?? string.Empty,
                 HouseholdId = documentOnSaEntity.HouseholdId,
                 IsValid = documentOnSaEntity.IsValid,
                 IsSigned = documentOnSaEntity.IsSigned,
                 IsDocumentArchived = documentOnSaEntity.IsDocumentArchived,
-                SignatureMethodCode = documentOnSaEntity.SignatureMethodCode,
+                SignatureMethodCode = documentOnSaEntity.SignatureMethodCode ?? string.Empty,
             }
         };
     }
