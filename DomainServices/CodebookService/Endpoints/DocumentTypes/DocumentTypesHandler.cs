@@ -23,7 +23,7 @@ public class DocumentTypesHandler
 
    
     // query
-    const string _sql = @"SELECT [Id], Id 'EnumValue', [ShortName],[Name],[FileName],[SalesArrangementTypeId],[FormTypeId],CASE WHEN SYSDATETIME() BETWEEN[ValidFrom] AND ISNULL([ValidTo], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
+    const string _sql = @"SELECT [Id], Id 'EnumValue', [ShortName],[Name],[FileName],[SalesArrangementTypeId],[EACodeMainId],[IsFormIdRequested],CASE WHEN SYSDATETIME() BETWEEN[ValidFrom] AND ISNULL([ValidTo], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
                           FROM [dbo].[DocumentTypes] ORDER BY [Id]";
 
     public async Task<List<DocumentTypeItem>> Handle(DocumentTypesRequest request, CancellationToken cancellationToken)
@@ -35,4 +35,3 @@ public class DocumentTypesHandler
         });
     }
 }
-
