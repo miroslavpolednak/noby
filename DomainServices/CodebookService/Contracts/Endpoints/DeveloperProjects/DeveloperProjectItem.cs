@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace DomainServices.CodebookService.Contracts.Endpoints.DeveloperProjects;
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.DeveloperProjects;
 
 [DataContract]
 public class DeveloperProjectItem
@@ -30,7 +28,6 @@ public class DeveloperProjectItem
     public string Recommandation { get; set; }
 
     [DataMember(Order = 9)]
-    [JsonIgnore]
     public string Place { get; set; }
 
     [DataMember(Order = 10)]
