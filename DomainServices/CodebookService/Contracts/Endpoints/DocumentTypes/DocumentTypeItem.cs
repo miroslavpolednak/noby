@@ -31,10 +31,14 @@ public class DocumentTypeItem
 
 
     [DataMember(Order = 7)]
-    public int? FormTypeId { get; set; }
+    public bool IsValid { get; set; }
 
 
     [DataMember(Order = 8)]
-    public bool IsValid { get; set; }
+    public int? EACodeMainId { get; set; }
+
+
+    [DataMember(Order = 9)]
+    public bool IsFormIdRequested { get; set; }
 
 }
