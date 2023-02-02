@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Api.Database;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
+using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 using ExternalServices.Eas.V1;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ internal sealed class CreateCaseHandler
         {
             _dbContext.Cases.Add(entity);
             await _dbContext.SaveChangesAsync(cancellation);
+            _bag.Add(CreateCaseRollback.BagKeyCaseId, entity.CaseId);
 
             _logger.EntityCreated(nameof(Database.Entities.Case), newCaseId);
         }
@@ -38,26 +40,16 @@ internal sealed class CreateCaseHandler
             throw new CisAlreadyExistsException(13015, nameof(Database.Entities.Case), newCaseId);
         }
 
-        try
+        // fire notification
+        await _mediator.Publish(new Notifications.CaseStateChangedNotification
         {
-            // fire notification
-            await _mediator.Publish(new Notifications.CaseStateChangedNotification
-            {
-                CaseId = newCaseId,
-                CaseStateId = defaultCaseState,
-                ClientName = $"{request.Customer?.FirstNameNaturalPerson} {request.Customer?.Name}",
-                ProductTypeId = request.Data.ProductTypeId,
-                CaseOwnerUserId = request.CaseOwnerUserId
-            }, cancellation);
-        }
-        catch // EAS spadlo na hubu
-        {
-            // rollback
-            await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.[Case] WHERE CaseId={entity.CaseId}", cancellation);
-
-            throw;
-        }
-
+            CaseId = newCaseId,
+            CaseStateId = defaultCaseState,
+            ClientName = $"{request.Customer?.FirstNameNaturalPerson} {request.Customer?.Name}",
+            ProductTypeId = request.Data.ProductTypeId,
+            CaseOwnerUserId = request.CaseOwnerUserId
+        }, cancellation);
+        
         return new CreateCaseResponse()
         {
             CaseId = newCaseId
@@ -97,6 +89,7 @@ internal sealed class CreateCaseHandler
         return entity;
     }
 
+    private readonly IRollbackBag _bag;
     private readonly IMediator _mediator;
     private readonly CIS.Core.IDateTime _dateTime;
     private readonly CaseServiceDbContext _dbContext;
@@ -106,6 +99,7 @@ internal sealed class CreateCaseHandler
     private readonly UserService.Clients.IUserServiceClient _userService;
 
     public CreateCaseHandler(
+        IRollbackBag bag,
         IMediator mediator,
         CIS.Core.IDateTime dateTime,
         UserService.Clients.IUserServiceClient userService,
@@ -114,6 +108,7 @@ internal sealed class CreateCaseHandler
         CaseServiceDbContext dbContext,
         ILogger<CreateCaseHandler> logger)
     {
+        _bag = bag;
         _mediator = mediator;
         _dateTime = dateTime;
         _userService = userService;
