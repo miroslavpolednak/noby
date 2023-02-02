@@ -30,4 +30,7 @@ public sealed class EventIdCodes
     public const int HttpRequestStarted = 522;
     public const int SoapRequestPayload = 523;
     public const int SoapResponsePayload = 524;
+
+    public const int RollbackHandlerStarted = 530;
+    public const int RollbackHandlerStepDone = 531;
 }

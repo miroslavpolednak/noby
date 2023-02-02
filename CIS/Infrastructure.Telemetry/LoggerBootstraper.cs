@@ -40,12 +40,14 @@ internal sealed class LoggerBootstraper
             loggerConfiguration
                 .Filter.ByExcluding(Matching.WithProperty("RequestPath", "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo"));
         }
+        
         if (_logType == LogBehaviourTypes.WebApi)
         {
             // cokoliv jineho nez /api zahazovat
             loggerConfiguration
                 .Filter.ByExcluding(Matching.WithProperty<string>("RequestPath", t => !t.StartsWith("/api/", StringComparison.OrdinalIgnoreCase)));
         }
+        
         // remove health checks from logging
         loggerConfiguration
             .Filter.ByExcluding(Matching.WithProperty("RequestPath", CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl));
@@ -66,6 +68,7 @@ internal sealed class LoggerBootstraper
         {
             if (!string.IsNullOrEmpty(_cisConfiguration.EnvironmentName))
                 loggerConfiguration.Enrich.WithProperty("CisEnvironment", _cisConfiguration.EnvironmentName);
+
             if (!string.IsNullOrEmpty(_cisConfiguration.DefaultApplicationKey))
                 loggerConfiguration.Enrich.WithProperty("CisAppKey", _cisConfiguration.DefaultApplicationKey);
         }
@@ -88,7 +91,7 @@ internal sealed class LoggerBootstraper
         {
             loggerConfiguration
                 .WriteTo
-                .Seq(configuration.Seq.ServerUrl);
+                .Seq(configuration.Seq.ServerUrl, eventBodyLimitBytes: 1048576);
         }
 
         // logovani do souboru

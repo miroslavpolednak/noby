@@ -101,6 +101,16 @@
             Extension metody pro ILogger pro logování HTTP requestů a responsů.
             </summary>
         </member>
+        <member name="M:CIS.Infrastructure.Logging.RollbackLoggerExtensions.RollbackHandlerStarted(Microsoft.Extensions.Logging.ILogger,System.String)">
+            <summary>
+            Spuštění rollabck handleru
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.RollbackLoggerExtensions.RollbackHandlerStepDone(Microsoft.Extensions.Logging.ILogger,System.String,System.Object)">
+            <summary>
+            Úspěšné projetí jednoho kroku v rollback handleru
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.Logging.ServiceLoggerExtensions">
             <summary>
             Extension metody pro ILogger v týkající se handlingu webových služeb třetích stran.

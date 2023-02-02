@@ -40,7 +40,7 @@ builder.Services
     .AddCustomerService()
     .AddProductService()
     .AddCaseService()
-    //.AddDocumentOnSAService()
+    .AddDocumentOnSAService()
     .AddSalesArrangementService()
     .AddRiskIntegrationService()
     .AddDocumentArchiveService();

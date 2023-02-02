@@ -47,6 +47,11 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {string.Join(',', smsTypes.Select(s => s.Code))}");
 
+        if (string.IsNullOrEmpty(smsType.SmsText))
+        {
+            throw new CisValidationException($"Invalid Type = '{request.Type}' has empty template text.");
+        }
+        
         var auditEnabled = smsType.IsAuditLogEnabled;
         var keyValues = request.Placeholders.ToDictionary(p => p.Key, p => p.Value);
         
