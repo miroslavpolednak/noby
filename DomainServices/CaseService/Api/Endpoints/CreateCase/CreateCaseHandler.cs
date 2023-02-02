@@ -1,6 +1,7 @@
 ﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 using ExternalServices.Eas.V1;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.CaseService.Api.Endpoints.CreateCase;
 
@@ -32,20 +33,30 @@ internal sealed class CreateCaseHandler
 
             _logger.EntityCreated(nameof(Database.Entities.Case), newCaseId);
         }
-        catch (Microsoft.EntityFrameworkCore.DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
+        catch (DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
         {
             throw new CisAlreadyExistsException(13015, nameof(Database.Entities.Case), newCaseId);
         }
 
-        // fire notification
-        await _mediator.Publish(new Notifications.CaseStateChangedNotification
+        try
         {
-            CaseId = newCaseId,
-            CaseStateId = defaultCaseState,
-            ClientName = $"{request.Customer?.FirstNameNaturalPerson} {request.Customer?.Name}",
-            ProductTypeId = request.Data.ProductTypeId,
-            CaseOwnerUserId = request.CaseOwnerUserId
-        }, cancellation);
+            // fire notification
+            await _mediator.Publish(new Notifications.CaseStateChangedNotification
+            {
+                CaseId = newCaseId,
+                CaseStateId = defaultCaseState,
+                ClientName = $"{request.Customer?.FirstNameNaturalPerson} {request.Customer?.Name}",
+                ProductTypeId = request.Data.ProductTypeId,
+                CaseOwnerUserId = request.CaseOwnerUserId
+            }, cancellation);
+        }
+        catch // EAS spadlo na hubu
+        {
+            // rollback
+            await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.[Case] WHERE CaseId={entity.CaseId}", cancellation);
+
+            throw;
+        }
 
         return new CreateCaseResponse()
         {
