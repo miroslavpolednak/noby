@@ -110,7 +110,12 @@ internal sealed class FormsService
         var customersOnSa = await _customerOnSaService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
         var mainCustomerOnSa = customersOnSa.Single(c => c.CustomerOnSAId == mainHousehold.CustomerOnSAId1!.Value);
 
-        var identityMp = mainCustomerOnSa.CustomerIdentifiers.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+        var identityMp = mainCustomerOnSa.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+
+        //Probly better to throw exception
+        if (identityMp is null)
+            return;
+
         var contractNumber = await _easClient.GetContractNumber(identityMp.IdentityId, (int)salesArrangement.CaseId, cancellationToken);
 
         await UpdateSalesArrangement(salesArrangement, contractNumber, cancellationToken);
