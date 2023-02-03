@@ -42,4 +42,9 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
     {
         return await _client.GetDocumentOnSADataAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
     }
+
+    public async Task SignDocumentManually(int documentOnSAId, CancellationToken cancellationToken = default)
+    {
+        await _client.SignDocumentManuallyAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
+    }
 }
