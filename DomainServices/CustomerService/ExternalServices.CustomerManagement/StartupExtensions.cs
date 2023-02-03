@@ -29,7 +29,7 @@ public static class StartupExtensions
                 builder
                     .AddExternalServiceRestClient<CustomerManagement.V1.ICustomerManagementClient, CustomerManagement.V1.RealCustomerManagementClient>()
                     .AddExternalServicesKbHeaders("CUSTOMER_SERVICE")
-                    .AddExternalServicesKbPartyHeaders()
+                    //.AddExternalServicesKbPartyHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
