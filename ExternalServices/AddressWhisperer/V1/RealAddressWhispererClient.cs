@@ -59,7 +59,7 @@ internal class RealAddressWhispererClient
                         CityDistrict = baseNode.Element(_ns2 + "cityDistrict")?.Value,
                         Country = baseNode.Element(_ns2 + "country")?.Value,
                         HouseNumber = baseNode.Element(_ns2 + "landRegisterNumber")?.Value,
-                        Postcode = baseNode.Element(_ns2 + "postcode")?.Value,
+                        Postcode = baseNode.Element(_ns2 + "postCode")?.Value,
                         Street = baseNode.Element(_ns2 + "street")?.Value,
                         StreetNumber = baseNode.Element(_ns2 + "streetNumber")?.Value,
                         EvidenceNumber = baseNode.Element(_ns2 + "evidenceNumber")?.Value,
