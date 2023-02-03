@@ -14,7 +14,7 @@ public class TemplateLoader
 
     public required string TemplateVersion { get; init; }
 
-    public PdfDocument Load(string? modifier)
+    public PdfDocument Load(string? modifier = null)
     {
         if (_loadedDocuments.ContainsKey(modifier ?? string.Empty))
             return _loadedDocuments[modifier ?? string.Empty];
