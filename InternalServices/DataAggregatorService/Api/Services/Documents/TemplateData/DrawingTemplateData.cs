@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts;
@@ -18,11 +17,10 @@ internal class DrawingTemplateData : AggregatedData
     public string PersonAddress =>
         Customer.Addresses
                 .Where(c => c.AddressTypeId == (int)AddressTypes.Permanent)
-                .DefaultIfEmpty(new GrpcAddress())
                 .Select(a => $"{a.Street} {string.Join("/", new[] { a.HouseNumber, a.StreetNumber }.Where(str => !string.IsNullOrWhiteSpace(str)))}, " +
                              $"{a.Postcode} {a.City}, " +
                              $"{_countries.First(c => c.Id == a.CountryId).LongName}")
-                .First();
+                .FirstOrDefault(string.Empty);
 
     public string PaymentAccount
     {
