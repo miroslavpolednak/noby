@@ -61,7 +61,7 @@ public class TemplateManager : IDisposable
 
     private async Task<string> LoadTemplateTypeName(int documentTypeId)
     {
-        var templateTypes = await _codebookService.DocumentTemplateTypes();
+        var templateTypes = await _codebookService.DocumentTypes();
 
         var type = templateTypes.FirstOrDefault(t => t.Id == documentTypeId) ??
                    throw new CisArgumentException(401, $"Unsupported template with Id {documentTypeId}", nameof(documentTypeId));
