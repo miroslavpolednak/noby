@@ -57,7 +57,7 @@ internal class OfferTemplateData : AggregatedData
         }
     }
 
-    public string FeeNames => string.Join(Environment.NewLine, Offer.AdditionalSimulationResults.Fees.Select(f => f.Name));
+    public string FeeNames => string.Join(Environment.NewLine, Offer.AdditionalSimulationResults.Fees.Where(f => f.IncludeInRPSN).Select(f => f.Name));
 
     public string FeeFinalSums
     {
@@ -69,6 +69,7 @@ internal class OfferTemplateData : AggregatedData
             return string.Join(Environment.NewLine,
                                Offer.AdditionalSimulationResults
                                     .Fees
+                                    .Where(f => f.IncludeInRPSN)
                                     .Select(f => (decimal?)f.FinalSum ?? 0m)
                                     .Select(f => f.ToString("C2", numberProvider)));
         }

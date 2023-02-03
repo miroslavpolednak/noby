@@ -29,7 +29,7 @@ internal class DocumentMapper
         return _configuration.SourceFields
                              .GroupBy(f => CollectionPathHelper.GetCollectionPath(f.FieldPath))
                              .SelectMany(group => FieldParser.ISourceFieldParser.Create(group.Key).GetFields(group, _aggregatedData))
-                             .Where(f => f.Value is not null)
+                             .Where(f => f.Value is not null && (f.Value is not string str || !string.IsNullOrWhiteSpace(str)))
                              .Select(ParseDocumentFieldData);
 
         DocumentFieldData ParseDocumentFieldData(DocumentSourceFieldData sourceData)
