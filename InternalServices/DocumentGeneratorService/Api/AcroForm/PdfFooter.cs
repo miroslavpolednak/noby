@@ -57,16 +57,17 @@ public class PdfFooter
         if (originalField is null)
             return;
 
-        var page = finalDocument.Document.Pages[1];
-        var subField = originalField.ChildFields[0];
+        var page = finalDocument.Document.Pages[0];
+
+        var field = originalField.ChildFields is null ? originalField : originalField.ChildFields[0];
 
         var pageNumberingLabel = new PageNumberingLabel(PageNumberFormat,
-                                                        subField.GetX(page),
-                                                        subField.GetY(page),
-                                                        subField.Width - 2,
-                                                        subField.Height,
-                                                        subField.Font,
-                                                        subField.FontSize,
+                                                        field.GetX(page),
+                                                        field.GetY(page),
+                                                        field.Width - 2,
+                                                        field.Height,
+                                                        field.Font,
+                                                        field.FontSize,
                                                         TextAlign.Right);
 
         finalDocument.Document.Template = new Template { Elements = { pageNumberingLabel } }; ;

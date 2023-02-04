@@ -64,7 +64,7 @@ internal sealed class CreateProductHandler
             }
         }
         // ma klient v konsDb KB identitu? pokud ne, tak ho updatuj
-        else if (konsDbCustomer.Identities.Any(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
+        else if (konsDbCustomer.Identities.All(t => t.IdentityScheme != Identity.Types.IdentitySchemes.Kb))
         {
             try
             {
