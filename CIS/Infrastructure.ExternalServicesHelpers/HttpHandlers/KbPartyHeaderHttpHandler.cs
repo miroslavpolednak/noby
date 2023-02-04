@@ -21,9 +21,11 @@ public sealed class KbPartyHeaderHttpHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var userId = _serviceProvider.GetService<CIS.Core.Security.ICurrentUserAccessor>()?.User?.Id;
+        //var userId = _serviceProvider.GetService<CIS.Core.Security.ICurrentUserAccessor>()?.User?.Id;
 
-        request.Headers.Add("X-KB-Party-Identity-In-Service", $$"""{"partyIdIS":[{"partyId":{"id":"{{userId}}","idScheme":"MPAD"},"usg":"AUTH"}]}""");
+        //request.Headers.Add("X-KB-Party-Identity-In-Service", $$"""{"partyIdIS":[{"partyId":{"id":"{{userId}}","idScheme":"MPAD"},"usg":"AUTH"}]}""");
+        //TODO zamockovano https://jira.kb.cz/browse/HFICH-4442, https://jira.kb.cz/browse/HFICH-366
+        request.Headers.Add("X-KB-Party-Identity-In-Service", $$"""{"partyIdIS":[{"partyId":{"id":"A09FK3","idScheme":"KBUID"},"usg":"AUTH"}]}""");
 
         return await base.SendAsync(request, cancellationToken);
     }
