@@ -4,7 +4,6 @@ using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
 using FastEnumUtility;
-using System.Threading;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -127,8 +126,9 @@ internal sealed class IdentifiedSubjectService
                 LegalStatus = __Contracts.PartyLegalStatus.P,
                 NaturalPersonAttributes = CreateNaturalPersonAttributes(request.NaturalPerson)
             },
-            PrimaryAddress = CreatePrimaryAddress(request.Addresses),
-            ContactAddress = CreateContactAddress(request.Addresses),
+            PrimaryAddress = CreateAddress(request.Addresses, AddressTypes.Permanent, CreatePrimaryAddress),
+            ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
+            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Abroad, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
             PrimaryEmail = CreatePrimaryEmail(request.Contacts)
@@ -144,8 +144,9 @@ internal sealed class IdentifiedSubjectService
                 LegalStatus = __Contracts.PartyLegalStatus.P,
                 NaturalPersonAttributes = CreateNaturalPersonAttributes(request.NaturalPerson)
             },
-            PrimaryAddress = CreatePrimaryAddress(request.Addresses),
-            ContactAddress = CreateContactAddress(request.Addresses),
+            PrimaryAddress = CreateAddress(request.Addresses, AddressTypes.Permanent, CreatePrimaryAddress),
+            ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
+            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Abroad, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
             PrimaryEmail = CreatePrimaryEmail(request.Contacts)
@@ -172,37 +173,14 @@ internal sealed class IdentifiedSubjectService
         };
     }
 
-    private __Contracts.PrimaryAddress? CreatePrimaryAddress(IEnumerable<GrpcAddress> addresses)
+    private TAddress? CreateAddress<TAddress>(IEnumerable<GrpcAddress> addresses, AddressTypes addressType, Func<__Contracts.Address, DateTime?, TAddress> factory)
     {
-        var primaryAddress = addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Permanent);
+        var address = addresses.FirstOrDefault(a => a.AddressTypeId == (int)addressType);
 
-        if (primaryAddress is null)
+        if (address is null)
             return default;
 
-        return new()
-        {
-            Address = CreateAddress(primaryAddress),
-            PrimaryAddressFrom = primaryAddress.PrimaryAddressFrom
-        };
-    }
-
-    private __Contracts.ContactAddress? CreateContactAddress(IEnumerable<GrpcAddress> addresses)
-    {
-        var contactAddress = addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Mailing);
-
-        if (contactAddress is null)
-            return default;
-
-        return new()
-        {
-            Confirmed = true,
-            Address = CreateAddress(contactAddress)
-        };
-    }
-
-    private __Contracts.Address CreateAddress(GrpcAddress address)
-    {
-        return new()
+        var parsedAddress = new __Contracts.Address
         {
             City = address.City,
             PostCode = address.Postcode.ToCMString(),
@@ -217,7 +195,26 @@ internal sealed class IdentifiedSubjectService
             CountrySubdivision = address.CountrySubdivision.ToCMString(),
             AddressPointId = address.AddressPointId.ToCMString()
         };
+
+        return factory(parsedAddress, address.PrimaryAddressFrom);
     }
+
+    private static __Contracts.PrimaryAddress CreatePrimaryAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+        new()
+        {
+            Address = address,
+            PrimaryAddressFrom = primaryAddressFrom
+        };  
+    
+    private static __Contracts.ContactAddress CreateContactAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+        new()
+        {
+            Address = address,
+            Confirmed = true
+        };
+
+    private static __Contracts.TemporaryStayAddress CreateTemporaryStayAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+        new() { Address = address };
 
     private __Contracts.IdentificationDocument? CreateIdentificationDocument(Contracts.IdentificationDocument? document)
     {
