@@ -1,10 +1,7 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using Newtonsoft.Json;
-using NOBY.Api.Endpoints.Customer.Shared;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateDetailWithChanges;
 
@@ -15,21 +12,14 @@ internal sealed class UpdateDetailWithChangesHandler
     {
         // customer instance
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
-
-        // kontrola identity KB
-        var kbIdentity = customerOnSA.CustomerIdentifiers
-            .FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
-            ?? throw new CisValidationException("Customer is missing KB identity");
-
-        // instance customer z KB CM
-        var customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
-        // convert DS contract to FE model
-        var originalModel = customer.FillResponseDto(new UpdateDetailWithChangesRequest());
+        
+        // customer from KB CM
+        var originalModel = await _changedDataService.GetCustomerFromCM<UpdateDetailWithChangesRequest>(customerOnSA, cancellationToken);
 
         // compare objects
         dynamic delta = new System.Dynamic.ExpandoObject();
 
-        ModelComparers.CompareRoot(request, originalModel,delta);
+        ModelComparers.CompareRoot(request, originalModel, delta);
         ModelComparers.ComparePerson(request.NaturalPerson, originalModel.NaturalPerson, delta);
         ModelComparers.CompareObjects(request.IdentificationDocument, originalModel.IdentificationDocument, "IdentificationDocument", delta);
         ModelComparers.CompareObjects(request.Addresses, originalModel.Addresses, "Addresses", delta);
@@ -60,18 +50,18 @@ internal sealed class UpdateDetailWithChangesHandler
         await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
     }
 
+    private readonly CustomerWithChangedDataService _changedDataService;
     private readonly ICodebookServiceClients _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICustomerServiceClient _customerService;
 
     public UpdateDetailWithChangesHandler(
-        ICustomerServiceClient customerService,
+        CustomerWithChangedDataService changedDataService,
         ICodebookServiceClients codebookService,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSAService)
     {
-        _customerService = customerService;
+        _changedDataService = changedDataService;
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
         _customerOnSAService = customerOnSAService;
