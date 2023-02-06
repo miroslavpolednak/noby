@@ -1,6 +1,7 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
 using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
+using ExternalServices.Eas.V1;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement;
 
@@ -10,12 +11,12 @@ internal class ValidateSalesArrangementHandler
     private static readonly int[] ValidCommonValues = { 0, 6 };
 
     private readonly Services.ValidationTransformationServiceFactory _transformationServiceFactory;
-    private readonly Eas.IEasClient _easClient;
+    private readonly IEasClient _easClient;
     private readonly Services.Forms.FormsService _formsService;
 
     public ValidateSalesArrangementHandler(
         Services.ValidationTransformationServiceFactory transformationServiceFactory,
-        Eas.IEasClient easClient,
+        IEasClient easClient,
         Services.Forms.FormsService formsService)
     {
         _transformationServiceFactory = transformationServiceFactory;
@@ -30,7 +31,7 @@ internal class ValidateSalesArrangementHandler
 
         var easFormResponse = await GetEasForm(salesArrangement, category, cancellationToken);
 
-        return await CheckForms(salesArrangement, easFormResponse);
+        return await CheckForms(easFormResponse,cancellationToken);
     }
 
     private async Task<GetEasFormResponse> GetEasForm(SalesArrangement salesArrangement, SalesArrangementCategories category, CancellationToken cancellationToken)
@@ -52,7 +53,7 @@ internal class ValidateSalesArrangementHandler
         return response;
     }
 
-    private async Task<ValidateSalesArrangementResponse> CheckForms(SalesArrangement salesArrangement, GetEasFormResponse easForm)
+    private async Task<ValidateSalesArrangementResponse> CheckForms(GetEasFormResponse easForm, CancellationToken cancellationToken)
     {
         var response = new ValidateSalesArrangementResponse();
 
@@ -63,14 +64,14 @@ internal class ValidateSalesArrangementHandler
                 //formular_id = 3601001,
                 //cislo_smlouvy = formData.Arrangement.ContractNumber,
                 formular_id = GetFormId(form.EasFormType),
-                cislo_smlouvy = salesArrangement.ContractNumber,
+                cislo_smlouvy = easForm.ContractNumber,
                 // dokument_id = "9876543210",                      // ??? dokument_id je nepovinné, to neposílej
                 dokument_id = "9876543210",    // TODO: dočasný mock - odstranit až si to Assecco odladí
                 datum_prijeti = DateTime.Now.Date,                         // ??? datum prijeti dej v D1.2 aktuální datum
                 data = form.Json,
             };
 
-            var checkFormResult = await _easClient.CheckFormV2(checkFormData);
+            var checkFormResult = await _easClient.CheckFormV2(checkFormData, cancellationToken);
 
             if (!ValidCommonValues.Contains(checkFormResult.CommonValue))
             {

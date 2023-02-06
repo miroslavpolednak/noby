@@ -18,6 +18,8 @@ internal abstract class EasForm
     
     public abstract IEnumerable<Form> BuildForms(IEnumerable<EasFormSourceField> sourceFields, IEnumerable<DynamicFormValues> dynamicFormValues);
 
+    public abstract void SetFormResponseSpecificData(GetEasFormResponse response);
+
     protected DynamicFormValues? GetDynamicFormValues(IEnumerator<DynamicFormValues> enumerator) => enumerator.MoveNext() ? enumerator.Current : default;
 
     protected string CreateJson(IEnumerable<EasFormSourceField> sourceFieldGroups)

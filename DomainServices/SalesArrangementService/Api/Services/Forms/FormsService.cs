@@ -7,6 +7,7 @@ using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
+using ExternalServices.Eas.V1;
 
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 
@@ -19,7 +20,7 @@ internal sealed class FormsService
     private readonly ICaseServiceClient _caseService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly Eas.IEasClient _easClient;
+    private readonly IEasClient _easClient;
     private readonly SulmService.ISulmClient _sulmClient;
 
     public FormsService(IMediator mediator,
@@ -28,7 +29,7 @@ internal sealed class FormsService
                         ICaseServiceClient caseService,
                         IHouseholdServiceClient householdService,
                         ICustomerOnSAServiceClient customerOnSaService,
-                        Eas.IEasClient easClient,
+                        IEasClient easClient,
                         SulmService.ISulmClient sulmClient)
     {
         _mediator = mediator;
@@ -79,9 +80,9 @@ internal sealed class FormsService
         return response;
     }
 
-    public Task AddFirstSignatureDate(long caseId)
+    public Task AddFirstSignatureDate(long caseId, CancellationToken cancellationToken)
     {
-        return _easClient.AddFirstSignatureDate((int)caseId, DateTime.Now.Date);
+        return _easClient.AddFirstSignatureDate((int)caseId, DateTime.Now.Date, cancellationToken);
     }
 
     public async Task CallSulm(ProductData formData, CancellationToken cancellation)
@@ -109,8 +110,13 @@ internal sealed class FormsService
         var customersOnSa = await _customerOnSaService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
         var mainCustomerOnSa = customersOnSa.Single(c => c.CustomerOnSAId == mainHousehold.CustomerOnSAId1!.Value);
 
-        var identityMp = mainCustomerOnSa.CustomerIdentifiers.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
-        var contractNumber = await _easClient.GetContractNumber(identityMp.IdentityId, (int)salesArrangement.CaseId);
+        var identityMp = mainCustomerOnSa.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+
+        //Probly better to throw exception
+        if (identityMp is null)
+            return;
+
+        var contractNumber = await _easClient.GetContractNumber(identityMp.IdentityId, (int)salesArrangement.CaseId, cancellationToken);
 
         await UpdateSalesArrangement(salesArrangement, contractNumber, cancellationToken);
         await UpdateCase(salesArrangement.CaseId, contractNumber, cancellationToken);

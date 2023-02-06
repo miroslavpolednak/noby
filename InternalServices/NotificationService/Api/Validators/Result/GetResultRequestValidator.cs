@@ -9,7 +9,7 @@ public class GetResultRequestValidator : AbstractValidator<GetResultRequest>
     {
         RuleFor(request => request.NotificationId)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Result.NotificationIdNotEmpty)
+                .WithErrorCode(ErrorCodes.Validation.Result.NotificationIdNotEmpty)
                 .WithMessage($"{nameof(GetResultRequest.NotificationId)} must be not empty.");
     }
 }

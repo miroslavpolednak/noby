@@ -47,18 +47,18 @@ public class DocumentManager
     {
         var nameParts = new[]
         {
-            await GetTemplateShortName(),
+            await GetTemplateFileName(),
             baseRequest.InputParameters.CaseId?.ToString(CultureInfo.InvariantCulture),
             DateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)
         };
 
         return string.Join("_", nameParts.Where(str => !string.IsNullOrWhiteSpace(str))) + ".pdf";
 
-        async Task<string> GetTemplateShortName()
+        async Task<string> GetTemplateFileName()
         {
-            var templates = await _codebookService.DocumentTemplateTypes(cancellationToken);
+            var templates = await _codebookService.DocumentTypes(cancellationToken);
 
-            return templates.First(t => t.Id == (int)baseRequest.DocumentType).ShortName;
+            return templates.First(t => t.Id == (int)baseRequest.DocumentType).FileName;
         }
     }
 }

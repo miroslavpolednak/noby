@@ -3,6 +3,7 @@ using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
 using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 using Google.Protobuf;
+using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
 
@@ -12,12 +13,14 @@ internal class PdfDocumentManager
     private readonly PdfAcroFormWriterFactory _pdfAcroFormWriterFactory;
     private readonly TemplateManager _templateManager;
     private readonly PdfFooter _pdfFooter;
+    private readonly GeneratorConfiguration _config;
 
-    public PdfDocumentManager(PdfAcroFormWriterFactory pdfAcroFormWriterFactory, TemplateManager templateManager, PdfFooter pdfFooter)
+    public PdfDocumentManager(PdfAcroFormWriterFactory pdfAcroFormWriterFactory, TemplateManager templateManager, PdfFooter pdfFooter, IOptions<GeneratorConfiguration> configurationOptions)
     {
         _pdfAcroFormWriterFactory = pdfAcroFormWriterFactory;
         _templateManager = templateManager;
         _pdfFooter = pdfFooter;
+        _config = configurationOptions.Value;
     }
 
     public async Task<Contracts.Document> GenerateDocument(GenerateDocumentRequest request)
@@ -58,19 +61,19 @@ internal class PdfDocumentManager
         return finalDocument.Document;
     }
 
-    private static void ArchiveDocument(Document document)
+    private void ArchiveDocument(Document document)
     {
         var xmp = new XmpMetadata();
 
-        xmp.AddSchema(new PdfASchema(PdfAStandard.PDF_A_1a_2005));
+        xmp.AddSchema(new PdfASchema(PdfAStandard.PdfA2a));
 
         xmp.DublinCore.Title.DefaultText = document.Title;
         xmp.DublinCore.Creators.Add(document.Author);
         xmp.DublinCore.Title.AddLang("cs-cz", "PDF/A1 Dokument");
 
         document.XmpMetadata = xmp;
-
-        var iccProfile = new IccProfile("D:\\Users\\992589l\\Downloads\\AdobeICCProfilesCS4Win_end-user\\Adobe ICC Profiles (end-user)\\CMYK\\CoatedFOGRA27.icc");
+        
+        var iccProfile = new IccProfile(Path.Combine(_config.StoragePath, "ICC\\CoatedFOGRA27.icc"));
         var outputIntents = new OutputIntent("", "CoatedFOGRA27", "https://www.adobe.com/", "CMYK", iccProfile)
         {
             Version = OutputIntentVersion.PDF_A

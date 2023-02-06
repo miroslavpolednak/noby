@@ -42,7 +42,15 @@ internal class Customer
 
     public Identity IdentityMp => _customerOnSa.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
 
+    public bool HasRelationshipWithKB => _customerOnSa.CustomerAdditionalData.HasRelationshipWithKB;
+
+    public bool HasRelationshipWithKBEmployee => _customerOnSa.CustomerAdditionalData.HasRelationshipWithKBEmployee;
+
+    public bool HasRelationshipWithCorporate => _customerOnSa.CustomerAdditionalData.HasRelationshipWithCorporate;
+
     public NaturalPerson NaturalPerson => _customerDetail.NaturalPerson;
+
+    public bool IsPoliticallyExposed => _customerDetail.NaturalPerson.IsPoliticallyExposed ?? false;
 
     public IEnumerable<Address> Addresses => _customerDetail.Addresses.Select(a => new Address(a));
 

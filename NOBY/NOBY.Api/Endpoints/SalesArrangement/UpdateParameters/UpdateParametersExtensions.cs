@@ -1,10 +1,11 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using NOBY.Api.Endpoints.SalesArrangement.Dto;
+using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
 internal static class UpdateParametersExtensions
 {
-    public static _SA.SalesArrangementParametersMortgage ToDomainService(this Dto.ParametersMortgage parameters)
+    public static _SA.SalesArrangementParametersMortgage ToDomainService(this ParametersMortgage parameters)
     {
         var model = new _SA.SalesArrangementParametersMortgage
         {
@@ -27,7 +28,7 @@ internal static class UpdateParametersExtensions
         return model;
     }
 
-    public static _SA.SalesArrangementParametersDrawing ToDomainService(this Dto.ParametersDrawing parameters)
+    public static _SA.SalesArrangementParametersDrawing ToDomainService(this ParametersDrawing parameters)
     {
         var model = new _SA.SalesArrangementParametersDrawing()
         {
@@ -72,7 +73,7 @@ internal static class UpdateParametersExtensions
         return model;
     }
 
-    public static _SA.SalesArrangementParametersGeneralChange ToDomainService(this Dto.ParametersGeneralChange parameters)
+    public static _SA.SalesArrangementParametersGeneralChange ToDomainService(this Dto.GeneralChangeUpdate parameters, _SA.SalesArrangementParametersGeneralChange? originalParameter)
     {
         var model = new _SA.SalesArrangementParametersGeneralChange()
         {
@@ -86,22 +87,22 @@ internal static class UpdateParametersExtensions
             PaymentDay = new()
             {
                 IsActive = parameters.PaymentDay.IsActive,
-                AgreedPaymentDay = parameters.PaymentDay.AgreedPaymentDay.GetValueOrDefault(),
+                AgreedPaymentDay = originalParameter?.PaymentDay?.AgreedPaymentDay ?? 0,
                 NewPaymentDay = parameters.PaymentDay.NewPaymentDay
             },
             DrawingDateTo = new()
             {
                 IsActive = parameters.DrawingDateTo.IsActive,
-                AgreedDrawingDateTo = parameters.DrawingDateTo.AgreedDrawingDateTo,
+                AgreedDrawingDateTo = originalParameter?.DrawingDateTo?.AgreedDrawingDateTo,
                 CommentToDrawingDateTo = parameters.DrawingDateTo.CommentToDrawingDateTo,
                 ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths
             },
             RepaymentAccount = new()
             {
                 IsActive = parameters.RepaymentAccount.IsActive,
-                AgreedBankCode = parameters.RepaymentAccount.AgreedBankCode,
-                AgreedNumber = parameters.RepaymentAccount.AgreedNumber,
-                AgreedPrefix = parameters.RepaymentAccount.AgreedPrefix,
+                AgreedBankCode = originalParameter?.RepaymentAccount?.AgreedBankCode,
+                AgreedNumber = originalParameter?.RepaymentAccount?.AgreedNumber,
+                AgreedPrefix = originalParameter?.RepaymentAccount?.AgreedPrefix,
                 BankCode = parameters.RepaymentAccount.BankCode,
                 Number = parameters.RepaymentAccount.Number,
                 OwnerDateOfBirth = parameters.RepaymentAccount.OwnerDateOfBirth,
@@ -113,13 +114,13 @@ internal static class UpdateParametersExtensions
             {
                 IsActive = parameters.LoanPaymentAmount.IsActive,
                 NewLoanPaymentAmount = parameters.LoanPaymentAmount.NewLoanPaymentAmount,
-                ActualLoanPaymentAmount = parameters.LoanPaymentAmount.ActualLoanPaymentAmount,
+                ActualLoanPaymentAmount = originalParameter?.LoanPaymentAmount?.ActualLoanPaymentAmount,
                 ConnectionExtraordinaryPayment = parameters.LoanPaymentAmount.ConnectionExtraordinaryPayment
             },
             DueDate = new()
             {
                 IsActive = parameters.DueDate.IsActive,
-                ActualLoanDueDate = parameters.DueDate.ActualLoanDueDate,
+                ActualLoanDueDate = originalParameter?.DueDate?.ActualLoanDueDate,
                 ConnectionExtraordinaryPayment = parameters.DueDate.ConnectionExtraordinaryPayment,
                 NewLoanDueDate = parameters.DueDate.NewLoanDueDate
             },
@@ -154,7 +155,7 @@ internal static class UpdateParametersExtensions
         return model;
     }
 
-    public static _SA.SalesArrangementParametersHUBN ToDomainService(this Dto.ParametersHUBN parameters)
+    public static _SA.SalesArrangementParametersHUBN ToDomainService(this Dto.HUBNUpdate parameters, _SA.SalesArrangementParametersHUBN? originalParameter)
     {
         var model = new _SA.SalesArrangementParametersHUBN()
         {
@@ -169,20 +170,20 @@ internal static class UpdateParametersExtensions
                 PreserveAgreedLoanDueDate = parameters.LoanAmount?.PreserveLoanDueDate ?? false,
                 PreserveAgreedLoanPaymentAmount = parameters.LoanAmount?.PreserveAgreedPaymentAmount ?? false,
                 RequiredLoanAmount = parameters.LoanAmount?.RequiredLoanAmount,
-                AgreedLoanAmount = parameters.LoanAmount?.AgreedLoanAmount,
-                AgreedLoanDueDate = parameters.LoanAmount?.AgreedLoanDueDate,
-                AgreedLoanPaymentAmount = parameters.LoanAmount?.AgreedLoanPaymentAmount
+                AgreedLoanAmount = originalParameter?.LoanAmount?.AgreedLoanAmount,
+                AgreedLoanDueDate = originalParameter?.LoanAmount?.AgreedLoanDueDate,
+                AgreedLoanPaymentAmount = originalParameter?.LoanAmount?.AgreedLoanPaymentAmount
             },
             ExpectedDateOfDrawing = new()
             {
                 IsActive = parameters.ExpectedDateOfDrawing?.IsActive ?? false,
-                AgreedExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing?.AgreedExpectedDateOfDrawing,
+                AgreedExpectedDateOfDrawing = originalParameter.ExpectedDateOfDrawing?.AgreedExpectedDateOfDrawing,
                 NewExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing?.NewExpectedDateOfDrawing
             },
             DrawingDateTo = new()
             {
                 IsActive = parameters.DrawingDateTo?.IsActive ?? false,
-                AgreedDrawingDateTo = parameters.DrawingDateTo?.AgreedDrawingDateTo,
+                AgreedDrawingDateTo = originalParameter.DrawingDateTo?.AgreedDrawingDateTo,
                 ExtensionDrawingDateToByMonths = parameters.DrawingDateTo?.ExtensionDrawingDateToByMonths
             },
             CommentToChangeRequest = new()

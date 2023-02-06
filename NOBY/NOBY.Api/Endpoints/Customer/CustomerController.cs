@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using NOBY.Infrastructure.ErrorHandling;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Customer;
 
@@ -27,16 +28,16 @@ public class CustomerController : ControllerBase
         => await _mediator.Send(resquest, cancellationToken);
 
     /// <summary>
-    /// Vyhledavani klientu
+    /// Vyhledávání klientů
     /// </summary>
     /// <remarks>
-    /// Endpoint umoznuje:
-    /// - hledat podle zadanych kriterii
-    /// - nastavit strankovani
-    /// - nastavit razeni [lastName]
+    /// Endpoint umožňuje:
+    /// - hledat podle zadaných kriterií
+    /// - nastavit stránkovaní
+    /// - nastavit řazení [lastName]
     /// <i>DS:</i> CustomerService/SearchCustomers
     /// </remarks>
-    /// <returns>Seznam nalezenych klientu. BE sluzba neni strankovatelna, takze strankovani je jen jako fake na FE.</returns>
+    /// <returns>Seznam nalezených klientů. BE služba není stránkovatelná, takže stránkovaní je jen jako fake na FE.</returns>
     [HttpPost("customer/search")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -51,7 +52,7 @@ public class CustomerController : ControllerBase
     /// <remarks>
     /// <i>DS:</i> CustomerService/GetCustomer
     /// </remarks>
-    /// <returns>Kompletni detail klienta vraceny z KB CM nebo KonsDb.</returns>
+    /// <returns>Kompletní detail klienta vrácený z KB CM nebo KonsDb.</returns>
     [HttpPost("customer/get")]
     [Consumes("application/json")]
     [Produces("application/json")]
@@ -73,7 +74,7 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status404NotFound)]
     public async Task IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] IdentifyByIdentity.IdentifyByIdentityRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
 

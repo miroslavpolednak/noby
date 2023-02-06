@@ -6,6 +6,7 @@ using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
 using CIS.InternalServices;
 using DomainServices.CaseService.Api.Endpoints;
+using CIS.Infrastructure.CisMediatR;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -43,6 +44,8 @@ builder.Services
     .AddCisServiceDiscovery();
 
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+builder.Services.AddCisMediatrRollbackCapability();
+
 // add this service
 builder.AddCaseService();
 

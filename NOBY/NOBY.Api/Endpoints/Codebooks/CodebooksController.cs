@@ -44,6 +44,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405524365">Genders</a>
     /// - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> - zatím není na FE API implementováno
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392871926">IdentificationDocumentTypes</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/IdentificationSubjectMethod+%28CB_IdentificationMethodType%29+-+MOCK">IdentificationSubjectMethods</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426158089">IncomeMainTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967686">IncomeMainTypesAML</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216188">IncomeForeignTypes</a>
@@ -73,6 +74,8 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417284324">StatementTypes</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/TinFormatByCountry+%28CB_CmTrTinFormat%29+-+MOCK">TinFormatsByCountry</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/TinNoFillReasonsByCountry+%28CB_CmTrTinCountry%29+-+MOCK">TinNoFillReasonsByCountry</a>
     /// - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskCategory">WorkflowTaskCategories</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440871662">WorkflowTaskStates</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440879561">WorkflowTaskTypes</a>
@@ -102,10 +105,10 @@ public class CodebooksController : ControllerBase
     }
 
     /// <summary>
-    /// Ciselnik fixace uveru.
+    /// Číselník fixace úvěru.
     /// </summary>
-    /// <returns>Kolekce dob fixaci v mesicich.</returns>
-    /// <param name="productTypeId">ID typu produktu, pro ktery se maji vratit fixace.</param>
+    /// <returns>Kolekce dob fixací v měsících.</returns>
+    /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit fixace.</param>
     [HttpGet("fixation-period-length")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<int>), StatusCodes.Status200OK)]
@@ -117,9 +120,9 @@ public class CodebooksController : ControllerBase
             .ToList();
 
     /// <summary>
-    /// Ciselnik druhu uveru.
+    /// Číselník druhu úveru.
     /// </summary>
-    /// <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
+    /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
     [HttpGet("product-loan-kinds")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<LoanKindsItem>), StatusCodes.Status200OK)]
@@ -137,7 +140,7 @@ public class CodebooksController : ControllerBase
     }
 
     /// <summary>
-    /// FixedRatePeriod s filtraci na product
+    /// FixedRatePeriod s filtrací na product
     /// </summary>
     /// <param name="productTypeId">ID typu produktu</param>
     [HttpGet("fixed-rate-periods")]

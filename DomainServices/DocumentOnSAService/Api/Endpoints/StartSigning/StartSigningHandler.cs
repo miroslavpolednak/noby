@@ -9,7 +9,7 @@ using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using ExternalServices.Eas.R21;
+using ExternalServices.Eas.V1;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using __Entity = DomainServices.DocumentOnSAService.Api.Database.Entities;
@@ -57,7 +57,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(nameof(request));
-
+        
         await ValidateRequest(request, cancellationToken);
 
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
@@ -143,7 +143,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         }
 
         // identifier.IdentityId is specific id for MPSS => clientId
-        var contractNumber = await _easClient.GetContractNumber(identifier.IdentityId, (int)salesArrangement.CaseId);
+        var contractNumber = await _easClient.GetContractNumber(identifier.IdentityId, (int)salesArrangement.CaseId, cancellationToken);
 
         if (string.IsNullOrWhiteSpace(contractNumber))
         {
@@ -171,12 +171,12 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             {
                 DocumentOnSAId = documentOnSaEntity.DocumentOnSAId,
                 DocumentTypeId = documentOnSaEntity.DocumentTypeId,
-                FormId = documentOnSaEntity.FormId,
+                FormId = documentOnSaEntity.FormId ?? string.Empty,
                 HouseholdId = documentOnSaEntity.HouseholdId,
                 IsValid = documentOnSaEntity.IsValid,
                 IsSigned = documentOnSaEntity.IsSigned,
                 IsDocumentArchived = documentOnSaEntity.IsDocumentArchived,
-                SignatureMethodCode = documentOnSaEntity.SignatureMethodCode,
+                SignatureMethodCode = documentOnSaEntity.SignatureMethodCode ?? string.Empty,
             }
         };
     }

@@ -1,5 +1,8 @@
-﻿using DomainServices.CaseService.Api.Database;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
+using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
+using ExternalServices.Eas.V1;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.CaseService.Api.Endpoints.CreateCase;
 
@@ -16,22 +19,23 @@ internal sealed class CreateCaseHandler
         int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault).Id;
 
         // ziskat caseId
-        long newCaseId = await _easClient.GetCaseId(CIS.Foms.Enums.IdentitySchemes.Kb, request.Data.ProductTypeId);
+        long newCaseId = await _easClient.GetCaseId(CIS.Foms.Enums.IdentitySchemes.Kb, request.Data.ProductTypeId, cancellation);
         _logger.NewCaseIdCreated(newCaseId);
 
         // vytvorit entitu
         var entity = createDatabaseEntity(request, newCaseId);
         entity.OwnerUserName = userInstance.FullName;//dotazene jmeno majitele caseu (poradce)
         entity.State = defaultCaseState;//vychozi status
-        
+
         try
         {
             _dbContext.Cases.Add(entity);
             await _dbContext.SaveChangesAsync(cancellation);
+            _bag.Add(CreateCaseRollback.BagKeyCaseId, entity.CaseId);
 
             _logger.EntityCreated(nameof(Database.Entities.Case), newCaseId);
         }
-        catch (Microsoft.EntityFrameworkCore.DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
+        catch (DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
         {
             throw new CisAlreadyExistsException(13015, nameof(Database.Entities.Case), newCaseId);
         }
@@ -45,7 +49,7 @@ internal sealed class CreateCaseHandler
             ProductTypeId = request.Data.ProductTypeId,
             CaseOwnerUserId = request.CaseOwnerUserId
         }, cancellation);
-
+        
         return new CreateCaseResponse()
         {
             CaseId = newCaseId
@@ -85,23 +89,26 @@ internal sealed class CreateCaseHandler
         return entity;
     }
 
+    private readonly IRollbackBag _bag;
     private readonly IMediator _mediator;
     private readonly CIS.Core.IDateTime _dateTime;
     private readonly CaseServiceDbContext _dbContext;
     private readonly ILogger<CreateCaseHandler> _logger;
-    private readonly Eas.IEasClient _easClient;
+    private readonly IEasClient _easClient;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly UserService.Clients.IUserServiceClient _userService;
 
     public CreateCaseHandler(
+        IRollbackBag bag,
         IMediator mediator,
         CIS.Core.IDateTime dateTime,
         UserService.Clients.IUserServiceClient userService,
         CodebookService.Clients.ICodebookServiceClients codebookService,
-        Eas.IEasClient easClient,
+        IEasClient easClient,
         CaseServiceDbContext dbContext,
         ILogger<CreateCaseHandler> logger)
     {
+        _bag = bag;
         _mediator = mediator;
         _dateTime = dateTime;
         _userService = userService;

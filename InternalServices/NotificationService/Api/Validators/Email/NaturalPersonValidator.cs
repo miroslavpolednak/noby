@@ -9,23 +9,23 @@ public class NaturalPersonValidator : AbstractValidator<NaturalPerson>
     {
         RuleFor(person => person.FirstName)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.NaturalPerson.FirstNameRequired)
+                .WithErrorCode(ErrorCodes.Validation.NaturalPerson.FirstNameRequired)
                 .WithMessage($"{nameof(NaturalPerson.FirstName)} required.")
             .MaximumLength(40)
-                .WithErrorCode(ErrorCodes.NaturalPerson.FirstNameLengthLimitExceeded)
+                .WithErrorCode(ErrorCodes.Validation.NaturalPerson.FirstNameLengthLimitExceeded)
                 .WithMessage($"Maximum length of {nameof(NaturalPerson.FirstName)} is 40.");
 
         RuleFor(person => person.MiddleName)
             .MaximumLength(40)
-                .WithErrorCode(ErrorCodes.NaturalPerson.MiddleNameLengthLimitExceeded)
+                .WithErrorCode(ErrorCodes.Validation.NaturalPerson.MiddleNameLengthLimitExceeded)
                 .WithMessage($"Maximum length of {nameof(NaturalPerson.MiddleName)} is 40.");
 
         RuleFor(person => person.Surname)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.NaturalPerson.SurnameRequired)
+                .WithErrorCode(ErrorCodes.Validation.NaturalPerson.SurnameRequired)
                 .WithMessage($"{nameof(NaturalPerson.Surname)} required.")
             .MaximumLength(80)
-                .WithErrorCode(ErrorCodes.NaturalPerson.SurnameLengthLimitExceeded)
+                .WithErrorCode(ErrorCodes.Validation.NaturalPerson.SurnameLengthLimitExceeded)
                 .WithMessage($"Maximum length of {nameof(NaturalPerson.Surname)} is 80.");
     }
 }

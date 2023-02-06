@@ -27,4 +27,9 @@ public interface IDocumentOnSAServiceClient
     /// Vrácení dat uložených v DocumentOnSA dle poskytnutého DocumentOnSAId, data lze pak použít k vygenerování PDF metodou generateDocument
     /// </summary>
     Task<GetDocumentOnSADataResponse> GetDocumentOnSAData(int documentOnSAId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k zahájení podepisovacího procesu
+    /// </summary>
+    Task SignDocumentManually(int documentOnSAId, CancellationToken cancellationToken = default);
 }

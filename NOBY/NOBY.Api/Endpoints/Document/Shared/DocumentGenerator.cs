@@ -53,7 +53,7 @@ internal class DocumentGenerator
         {
             DocumentTypeId = (int)request.DocumentType,
             DocumentTemplateVersion = request.DocumentTemplateVersion,
-            OutputType = _Document.OutputFileType.OpenForm,
+            OutputType = _Document.OutputFileType.Pdfa,
             Parts =
             {
                 new _Document.GenerateDocumentPart

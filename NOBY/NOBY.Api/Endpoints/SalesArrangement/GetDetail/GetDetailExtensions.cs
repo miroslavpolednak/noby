@@ -1,4 +1,5 @@
 ﻿using NOBY.Api.Endpoints.SalesArrangement.Dto;
+using NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetDetail;
@@ -61,7 +62,7 @@ internal static class GetDetailExtensions
             }
         };
 
-    public static ParametersGeneralChange ToApiResponse(this _SA.SalesArrangementParametersGeneralChange model)
+    public static Dto.GeneralChangeDetail ToApiResponse(this _SA.SalesArrangementParametersGeneralChange model)
         => new()
         {
             Applicant = model.Applicant,
@@ -71,20 +72,20 @@ internal static class GetDetailExtensions
                 AddLoanRealEstateCollateral = model.Collateral?.AddLoanRealEstateCollateral,
                 ReleaseLoanRealEstateCollateral = model.Collateral?.ReleaseLoanRealEstateCollateral
             },
-            PaymentDay = new PaymentDayObject
+            PaymentDay = new()
             {
                 IsActive = model.PaymentDay?.IsActive ?? false,
                 AgreedPaymentDay = model.PaymentDay?.AgreedPaymentDay,
                 NewPaymentDay = model.PaymentDay?.NewPaymentDay
             },
-            DrawingDateTo = new DrawingDateToObject
+            DrawingDateTo = new()
             {
                 IsActive = model.DrawingDateTo?.IsActive ?? false,
                 AgreedDrawingDateTo = model.DrawingDateTo?.AgreedDrawingDateTo,
                 CommentToDrawingDateTo = model.DrawingDateTo?.CommentToDrawingDateTo,
                 ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths
             },
-            RepaymentAccount = new PaymentAccountObject
+            RepaymentAccount = new()
             {
                 IsActive = model.RepaymentAccount?.IsActive ?? false,
                 AgreedBankCode = model.RepaymentAccount?.AgreedBankCode,
@@ -96,14 +97,14 @@ internal static class GetDetailExtensions
                 OwnerFirstName = model.RepaymentAccount?.OwnerFirstName,
                 OwnerLastName = model.RepaymentAccount?.OwnerLastName
             },
-            LoanPaymentAmount = new LoanPaymentAmountObject
+            LoanPaymentAmount = new()
             {
                 IsActive = model.LoanPaymentAmount?.IsActive ?? false,
                 ActualLoanPaymentAmount = model.LoanPaymentAmount?.ActualLoanPaymentAmount,
                 NewLoanPaymentAmount = model.LoanPaymentAmount?.NewLoanPaymentAmount,
                 ConnectionExtraordinaryPayment = model.LoanPaymentAmount?.ConnectionExtraordinaryPayment ?? false
             },
-            DueDate = new DueDateObject
+            DueDate = new()
             {
                 IsActive = model.DueDate?.IsActive ?? false,
                 ActualLoanDueDate = model.DueDate?.ActualLoanDueDate,
@@ -136,7 +137,7 @@ internal static class GetDetailExtensions
             }
         };
 
-    public static ParametersHUBN ToApiResponse(this _SA.SalesArrangementParametersHUBN model)
+    public static Dto.HUBNDetail ToApiResponse(this _SA.SalesArrangementParametersHUBN model)
         => new()
         {
             Applicant = model.Applicant,

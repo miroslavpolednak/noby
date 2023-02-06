@@ -3,7 +3,6 @@ using System.Text;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
-using NOBY.Api.Endpoints.Codebooks.GetAll;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.StartupExtensions;
@@ -32,7 +31,7 @@ internal static class NobySwagger
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();
 
-            x.CustomSchemaIds(type => type.ToString());
+            x.CustomSchemaIds(type => type.ToString().Replace('+', '_'));
 
             // generate the XML docs that'll drive the swagger docs
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
@@ -41,8 +40,8 @@ internal static class NobySwagger
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
             
             x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
-            x.SchemaFilter<Endpoints.SalesArrangement.GetDetail.MortgageDetailSwaggerSchema>();
-            x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.SalesArrangementParametersSwagerSchema>();
+            x.SchemaFilter<Endpoints.SalesArrangement.GetDetail.GetDetailSwaggerSchema> ();
+            x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwagerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
         });
@@ -64,10 +63,10 @@ internal static class NobySwagger
 
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
-            if (context.Type != typeof(GetAllResponseItem))
+            if (context.Type != typeof(Endpoints.Codebooks.GetAll.GetAllResponseItem))
                 return;
 
-            var codebookCollectionProperty = schema.Properties[nameof(GetAllResponseItem.Codebook).ToLowerInvariant()];
+            var codebookCollectionProperty = schema.Properties[nameof(Endpoints.Codebooks.GetAll.GetAllResponseItem.Codebook).ToLowerInvariant()];
 
             foreach (var type in _getAllResponsePossibleTypes)
             {

@@ -1,6 +1,7 @@
 ﻿using DomainServices.SalesArrangementService.Api.Services;
 using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using static DomainServices.SalesArrangementService.Api.Services.ValidationTransformationCache;
 
@@ -8,7 +9,7 @@ namespace DomainServices.SalesArrangementService.Api.Services;
 
 internal sealed partial class ValidationTransformationServiceFactory
 {
-    private class ValidationTransformationService
+    private sealed class ValidationTransformationService
         : IValidationTransformationService
     {
         public List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.Error[]>? errors)
@@ -65,19 +66,20 @@ internal sealed partial class ValidationTransformationServiceFactory
                         case "seznam_ucastniku":
                             return getJsonValue($"seznam_ucastniku[{m.Groups["idx"].Value}].klient.jmeno") + " " + getJsonValue($"seznam_ucastniku[{m.Groups["idx"].Value}].klient.prijmeni_nazev");
                         default:
-                            return (Convert.ToInt32(m.Groups["idx"].Value) + 1).ToString();
+                            return (Convert.ToInt32(m.Groups["idx"].Value, CultureInfo.InvariantCulture) + 1).ToString(CultureInfo.InvariantCulture);
                     }
                 }).ToArray();
-                message.Message = string.Format(titem.Text, arguments);
+                message.ParameterName = string.Format(CultureInfo.InvariantCulture, titem.Text, arguments);
             }
             else
             {
                 titem = getTransformationItem(item.Parameter);
-                message.Message = titem.Text;
+                message.ParameterName = titem.Text;
             }
 
-            message.ParameterName = titem.Name;
+            message.Message = string.IsNullOrEmpty(item.AdditionalInformation) ? $"'{item.Value}' {item.Message}" : $"'{item.Value}' {item.Message} ({item.AdditionalInformation})";
             message.Category = titem.Category;
+            message.CategoryOrder = titem.CategoryOrder;
             
             // severity
             if (titem.AlterSeverity == Database.FormValidationTransformationAlterSeverity.Ignore)
@@ -100,7 +102,6 @@ internal sealed partial class ValidationTransformationServiceFactory
                     // polozka neexistuje v transformacni tabulce... co s tim?
                     return new TransformationItem
                     {
-                        Name = item.Parameter,
                         Category = "-unknown-",
                         Text = item.Message
                     };

@@ -47,8 +47,6 @@ public class PdfFooter
 
     private void FillFooterPageNumber(FinalDocument finalDocument)
     {
-        return;
-
         var pageNumberFields = GetAllFields(finalDocument.Document.Form.Fields, FooterPageNumberFieldName).ToList();
 
         var originalField = finalDocument.PdfDocumentParts
@@ -59,15 +57,17 @@ public class PdfFooter
         if (originalField is null)
             return;
 
-        var page = finalDocument.Document.Pages[1];
+        var page = finalDocument.Document.Pages[0];
+
+        var field = originalField.ChildFields is null ? originalField : originalField.ChildFields[0];
 
         var pageNumberingLabel = new PageNumberingLabel(PageNumberFormat,
-                                                        originalField.GetX(page),
-                                                        originalField.GetY(page),
-                                                        originalField.Width - 2,
-                                                        originalField.Height,
-                                                        originalField.Font,
-                                                        originalField.FontSize,
+                                                        field.GetX(page),
+                                                        field.GetY(page),
+                                                        field.Width - 2,
+                                                        field.Height,
+                                                        field.Font,
+                                                        field.FontSize,
                                                         TextAlign.Right);
 
         finalDocument.Document.Template = new Template { Elements = { pageNumberingLabel } }; ;
@@ -75,12 +75,12 @@ public class PdfFooter
         pageNumberFields.ForEach(field => field.Output = FormFieldOutput.Remove);
     }
 
-    private IEnumerable<FormField> GetAllFields(FormFieldList fields, string fieldName) =>
+    private static IEnumerable<FormField> GetAllFields(FormFieldList fields, string fieldName) =>
         fields.Cast<FormField>()
               .Concat(fields.Cast<FormField>().SelectMany(f => f.ChildFields.Cast<FormField>()))
               .Where(f => f.Name.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase));
 
-    private IEnumerable<PdfFormField?> GetOriginalFields(IEnumerable<FormField> fields, PdfDocument originalDocument)
+    private static IEnumerable<PdfFormField?> GetOriginalFields(IEnumerable<FormField> fields, PdfDocument originalDocument)
     {
         return fields.Select(SelectOriginalField);
 

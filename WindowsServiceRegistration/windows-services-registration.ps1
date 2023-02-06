@@ -57,7 +57,7 @@ function WinSvcCreate([string] $service, [bool] $isInternal) {
 $env = CheckEnv($env)
 
 # services
-[string[]] $services = "ServiceDiscovery", "NotificationService", "DataAggregatorService", "DocumentGeneratorService", "HouseholdService", "CaseService", "CodebookService", "CustomerService", "OfferService", "ProductService", "RiskIntegrationService", "SalesArrangementService", "UserService", "DocumentArchiveService"
+[string[]] $services = "ServiceDiscovery", "NotificationService", "DataAggregatorService", "DocumentGeneratorService", "HouseholdService", "CaseService", "CodebookService", "CustomerService", "OfferService", "ProductService", "RiskIntegrationService", "SalesArrangementService", "UserService", "DocumentArchiveService", "DocumentOnSAService"
 
 # internalservices
 [string[]] $internal = "ServiceDiscovery", "NotificationService", "DataAggregatorService", "DocumentGeneratorService"

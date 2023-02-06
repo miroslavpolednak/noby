@@ -15,7 +15,7 @@ public class AdminController : ControllerBase
     }
 
     /// <summary>
-    /// Seznam URL sluzeb zaregistrovanych v ServiceDiscovery
+    /// Seznam URL služeb zaregistrovaných v ServiceDiscovery
     /// </summary>
     [AllowAnonymous]
     [HttpGet("discovery-service")]

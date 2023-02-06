@@ -45,6 +45,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
             result.HandoverToMcsTimestamp = _dateTime.Now;
             result.State = _map[report.state];
 
+            // todo: extend result with Type, fetch codebook sms notification type by result type, if audit is enabled, log
             var errorCodes = report.notificationErrors?
                 .Select(e => e.code)
                 .ToHashSet() ?? Enumerable.Empty<string>();
@@ -60,12 +61,11 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
         }
         catch (CisNotFoundException)
         {
-            _logger.LogDebug("Not found for notificationId: {id}", report.id);
+            _logger.LogDebug("Result not found for notificationId: {id}", report.id);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed for notificationId: {id}", report.id);
-            throw new CisException(399, "todo");
+            _logger.LogError(e, "Update result failed for notificationId: {id}", report.id);
         }
 
         return new ResultConsumeResponse();

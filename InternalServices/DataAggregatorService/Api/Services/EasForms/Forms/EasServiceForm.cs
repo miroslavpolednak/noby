@@ -13,11 +13,23 @@ internal class EasServiceForm : EasForm
     {
         var dynamicFormValuesEnumerator = dynamicFormValues.GetEnumerator();
 
-        return sourceFields.GroupBy(f => f.FormType).Select(group => new Form
+        return sourceFields.GroupBy(f => f.FormType).Select(group =>
         {
-            EasFormType = group.Key,
-            DynamicFormValues = GetDynamicFormValues(dynamicFormValuesEnumerator),
-            Json = CreateJson(group.AsEnumerable())
+            var formValues = GetDynamicFormValues(dynamicFormValuesEnumerator);
+
+            ((ServiceFormData)FormData).DynamicFormValues = formValues;
+
+            return new Form
+            {
+                EasFormType = group.Key,
+                DynamicFormValues = formValues,
+                Json = CreateJson(group.AsEnumerable())
+            };
         });
+    }
+
+    public override void SetFormResponseSpecificData(GetEasFormResponse response)
+    {
+        response.ContractNumber = FormData.Case.Data.ContractNumber;
     }
 }

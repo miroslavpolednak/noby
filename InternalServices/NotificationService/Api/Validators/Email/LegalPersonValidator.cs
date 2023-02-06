@@ -9,10 +9,10 @@ public class LegalPersonValidator : AbstractValidator<LegalPerson>
     {
         RuleFor(person => person.Name)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.LegalPerson.NameRequired)
+                .WithErrorCode(ErrorCodes.Validation.LegalPerson.NameRequired)
                 .WithMessage($"{nameof(LegalPerson.Name)} required.")
             .MaximumLength(255)
-                .WithErrorCode(ErrorCodes.LegalPerson.NameLengthLimitExceeded)
+                .WithErrorCode(ErrorCodes.Validation.LegalPerson.NameLengthLimitExceeded)
                 .WithMessage($"Maximum length of {nameof(LegalPerson.Name)} is 255.");
     }
 }

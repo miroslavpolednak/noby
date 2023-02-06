@@ -1,10 +1,11 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.CaseService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp;
 
-internal class SendToCmpHandler
+internal sealed class SendToCmpHandler
     : AsyncRequestHandler<SendToCmpRequest>
 {
 
@@ -30,12 +31,15 @@ internal class SendToCmpHandler
 
         // provolat validaci SA
         var validationResult = await _salesArrangementService.ValidateSalesArrangement(request.SalesArrangementId, cancellationToken);
+
         bool validationContainErrors = validationResult
             ?.ValidationMessages
             ?.Any(t => t.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error) ?? false;
+        bool validationContainWarnings = validationResult
+            ?.ValidationMessages
+            ?.Any(t => t.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Warning) ?? false;
 
-        if (validationResult?.ValidationMessages?.Any() ?? false 
-            && (validationContainErrors || !request.IgnoreWarnings))
+        if (validationContainErrors || (validationContainWarnings && !request.IgnoreWarnings))
         {
             throw new CisValidationException("SA neni validni, nelze odeslat do SB. Provolej Validate endpoint.");
         }
@@ -44,6 +48,6 @@ internal class SendToCmpHandler
         await _salesArrangementService.SendToCmp(request.SalesArrangementId, cancellationToken);
 
         // update case state
-        await _caseService.UpdateCaseState(saInstance.CaseId, 2, cancellationToken);
+        await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
     }
 }

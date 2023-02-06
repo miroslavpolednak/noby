@@ -83,7 +83,13 @@ internal sealed class CisServiceAuthenticationHandler
         }
         else
         {
-            _logger.AdConnectionFailed(login, null);
+            using (_logger.BeginScope(new Dictionary<string, object>
+            {
+                { "Password", password }
+            }))
+            {
+                _logger.AdConnectionFailed(login, null);
+            }
             return false;
         }
     }

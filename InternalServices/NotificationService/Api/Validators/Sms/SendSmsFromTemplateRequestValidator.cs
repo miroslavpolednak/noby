@@ -9,31 +9,31 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SendSmsFrom
     {
         RuleFor(request => request.Phone)
             .NotNull()
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.PhoneRequired)
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PhoneRequired)
                 .WithMessage($"{nameof(SendSmsFromTemplateRequest.Phone)} required.")
             .SetValidator(new PhoneValidator())
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.PhoneInvalid)
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PhoneInvalid)
                 .WithMessage(nameof(SendSmsFromTemplateRequest.Phone));
         
         RuleFor(request => request.ProcessingPriority)
             .GreaterThan(0)
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.ProcessPriorityInvalid)
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.ProcessPriorityInvalid)
                 .WithMessage(nameof(SendSmsFromTemplateRequest.ProcessingPriority));
         
         RuleFor(request => request.Type)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.TypeInvalid)
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.TypeInvalid)
                 .WithMessage($"Invalid {nameof(SendSmsFromTemplateRequest.Type)}.");
 
         RuleFor(request => request.Placeholders)
             .NotNull()
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.PlaceholdersRequired)
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PlaceholdersRequired)
                 .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} required.")
             .Must(placeholders =>
             {
                 return placeholders.Select(p => p.Value).All(p => p.Length > 0);
             })
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.PlaceholdersInvalid)
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PlaceholdersInvalid)
                 .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} must contain non-empty values.")
             .Must(placeholders =>
             {
@@ -42,7 +42,7 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SendSmsFrom
 
                 return totalCount == uniqueCount;
             })
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.PlaceholdersInvalid)
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PlaceholdersInvalid)
                 .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} must contain unique keys.");
     }
 }

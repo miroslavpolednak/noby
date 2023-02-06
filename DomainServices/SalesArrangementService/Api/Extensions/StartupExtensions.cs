@@ -10,7 +10,7 @@ internal static class StartupExtensions
     public static WebApplicationBuilder AddSalesArrangementService(this WebApplicationBuilder builder)
     {
         // EAS svc
-        builder.AddExternalService<ExternalServices.Eas.R21.IEasClient>();
+        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
         // sulm
         builder.AddExternalService<ISulmClient>();
         // sb web api

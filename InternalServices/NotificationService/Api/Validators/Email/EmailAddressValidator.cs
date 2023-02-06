@@ -9,18 +9,18 @@ public class EmailAddressValidator : AbstractValidator<EmailAddress>
     {
         RuleFor(emailAddress => emailAddress.Value)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.EmailAddress.ValueRequired)
+                .WithErrorCode(ErrorCodes.Validation.EmailAddress.ValueRequired)
                 .WithMessage($"{nameof(EmailAddress.Value)} required.")
             .EmailAddress()
-                .WithErrorCode(ErrorCodes.EmailAddress.ValueInvalid)
+                .WithErrorCode(ErrorCodes.Validation.EmailAddress.ValueInvalid)
                 .WithMessage($"Invalid {nameof(EmailAddress.Value)}.");
 
         RuleFor(emailAddress => emailAddress.Party)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.EmailAddress.PartyRequired)
+                .WithErrorCode(ErrorCodes.Validation.EmailAddress.PartyRequired)
                 .WithMessage($"{nameof(EmailAddress.Party)} required.")
             .SetValidator(new PartyValidator())
-                .WithErrorCode(ErrorCodes.EmailAddress.PartyInvalid)
+                .WithErrorCode(ErrorCodes.Validation.EmailAddress.PartyInvalid)
                 .WithMessage($"Invalid {nameof(EmailAddress.Party)}");
     }
 }
