@@ -1,4 +1,5 @@
-﻿using CIS.Foms.Enums;
+﻿using System.Globalization;
+using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
 
@@ -54,7 +55,8 @@ internal class CustomerManagementDetailProvider
         {
             Identities = { new Identity(customer.CustomerId, IdentitySchemes.Kb) },
             NaturalPerson = CreateNaturalPerson(customer),
-            IdentificationDocument = CreateIdentificationDocument(customer.PrimaryIdentificationDocument)
+            IdentificationDocument = CreateIdentificationDocument(customer.PrimaryIdentificationDocument),
+            CustomerIdentification = CreateCustomerIdentification(customer.CustomerIdentification)
         };
 
         AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.Address, customer.PrimaryAddress?.ComponentAddress, customer.PrimaryAddress?.PrimaryAddressFrom);
@@ -150,6 +152,19 @@ internal class CustomerManagementDetailProvider
             Number = document.DocumentNumber ?? string.Empty,
             IssuingCountryId = _countries.FirstOrDefault(t => t.ShortName == document.IssuingCountryCode)?.Id,
             IdentificationDocumentTypeId = _docTypes.First(t => t.RdmCode == document.TypeCode).Id
+        };
+    }
+
+    private CustomerIdentification? CreateCustomerIdentification(__Contracts.CustomerIdentification? customerIdentification)
+    {
+        if (customerIdentification is null)
+            return default;
+
+        return new CustomerIdentification
+        {
+            IdentificationMethodId = int.Parse(customerIdentification.IdentificationMethodCode, CultureInfo.InvariantCulture),
+            IdentificationDate = customerIdentification.IdentificationDate,
+            CzechIdentificationNumber = customerIdentification.CzechIdentificationNumber
         };
     }
 

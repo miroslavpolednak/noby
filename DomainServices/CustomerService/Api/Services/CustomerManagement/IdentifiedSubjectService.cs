@@ -1,4 +1,5 @@
-﻿using CIS.Core.Exceptions;
+﻿using System.Globalization;
+using CIS.Core.Exceptions;
 using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
@@ -130,6 +131,7 @@ internal sealed class IdentifiedSubjectService
             ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
             TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Abroad, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
+            CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
             PrimaryEmail = CreatePrimaryEmail(request.Contacts)
         };
@@ -148,6 +150,7 @@ internal sealed class IdentifiedSubjectService
             ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
             TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Abroad, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
+            CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
             PrimaryEmail = CreatePrimaryEmail(request.Contacts)
         };
@@ -229,6 +232,19 @@ internal sealed class IdentifiedSubjectService
             IssuingCountryCode = _countries.FirstOrDefault(c => c.Id == document.IssuingCountryId)?.ShortName,
             IssuedOn = document.IssuedOn,
             ValidTo = document.ValidTo,
+        };
+    }
+
+    private __Contracts.CustomerIdentification? CreateCustomerIdentification(CustomerIdentification? customerIdentification)
+    {
+        if (customerIdentification is null)
+            return default;
+
+        return new __Contracts.CustomerIdentification
+        {
+            IdentificationMethodCode = customerIdentification.IdentificationMethodId.ToString(CultureInfo.InvariantCulture),
+            IdentificationDate = customerIdentification.IdentificationDate,
+            CzechIdentificationNumber = customerIdentification.CzechIdentificationNumber.ToCMString()
         };
     }
 
