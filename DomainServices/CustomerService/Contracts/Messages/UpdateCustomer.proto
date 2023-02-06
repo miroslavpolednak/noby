@@ -8,6 +8,7 @@ import "Messages/IdentificationDocument.proto";
 import "GrpcAddress.proto";
 import "Messages/Contact.proto";
 import "Mandants.proto";
+import "Messages/CustomerIdentification.proto";
 
 message UpdateCustomerRequest {
 	repeated cis.types.Identity Identities = 1;
@@ -21,6 +22,8 @@ message UpdateCustomerRequest {
 	repeated Contact Contacts = 5;
 
 	cis.types.Mandants Mandant = 6;
+
+	CustomerIdentification CustomerIdentification = 7;
 }
 
 message UpdateCustomerResponse {
