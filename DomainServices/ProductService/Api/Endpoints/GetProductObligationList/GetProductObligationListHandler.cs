@@ -31,8 +31,8 @@ internal sealed class GetProductObligationListHandler
                 PaymentSymbols = new PaymentSymbols { VariableSymbol = "750504444" },
                 PaymentAccount = new PaymentAccount
                 {
-                    Prefix = "107",
-                    Number = "71286260207",
+                    Prefix = "115",
+                    Number = "8912354748",
                     BankCode = "0100"
                 }
             })
