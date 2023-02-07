@@ -65,9 +65,11 @@ internal class Customer
 
     public string GenderCode => GenderCodes[NaturalPerson.GenderId];
 
-    public int? CitizenshipCountryId => NaturalPerson.CitizenshipCountriesId.Select(id => (int?)id).FirstOrDefault();
+    public int? CitizenshipCountryId => NaturalPerson.CitizenshipCountriesId
+                                                     .Cast<int?>()
+                                                     .FirstOrDefault(id => id == 16, NaturalPerson.CitizenshipCountriesId.Cast<int?>().FirstOrDefault());
 
-    public bool IsResident => NaturalPerson.TaxResidence?.ResidenceCountries?.Any() ?? false && Countries[NaturalPerson.TaxResidence.ResidenceCountries.First().CountryId.GetValueOrDefault()] == "CZ";
+    public bool IsResident => NaturalPerson.TaxResidence?.ResidenceCountries.Any(r => r.CountryId == 16) ?? false;
 
     public int DefaultZeroValue => 0;
 
