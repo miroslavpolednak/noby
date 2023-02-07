@@ -2533,117 +2533,117 @@
             Komentář k žádosti o změnu
             </summary>
         </member>
-        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentDayObject">
+        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentDay">
             <summary>
             Den splácení
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentDayObject.IsActive">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentDay.IsActive">
             <summary>
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentDayObject.NewPaymentDay">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentDay.NewPaymentDay">
             <summary>
             Nový den splácení, CIS_DEN_SPLACENI
             </summary>
         </member>
-        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateToObject">
+        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo">
             <summary>
             Lhůta ukončení čerpání
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateToObject.IsActive">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo.IsActive">
             <summary>
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateToObject.ExtensionDrawingDateToByMonths">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo.ExtensionDrawingDateToByMonths">
             <summary>
             Prodloužení konce lhůty čerpání o kolik měsíců
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateToObject.CommentToDrawingDateTo">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo.CommentToDrawingDateTo">
             <summary>
             Komentář ke lhůtě ukončení čerpání
             </summary>
         </member>
-        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccountObject">
+        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount">
             <summary>
             Účet pro splácení
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccountObject.IsActive">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount.IsActive">
             <summary>
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccountObject.Prefix">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount.Prefix">
             <summary>
             Předčíslí účtu
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccountObject.Number">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount.Number">
             <summary>
             Číslo účtu
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccountObject.BankCode">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount.BankCode">
             <summary>
             Kód banky
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccountObject.OwnerFirstName">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount.OwnerFirstName">
             <summary>
             Jméno majitele účtu
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccountObject.OwnerLastName">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount.OwnerLastName">
             <summary>
             Příjmení majitele účtu
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccountObject.OwnerDateOfBirth">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount.OwnerDateOfBirth">
             <summary>
             Datum narození majitele účtu
             </summary>
         </member>
-        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanPaymentAmountObject">
+        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanPaymentAmount">
             <summary>
             Výše měsíční splátky
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanPaymentAmountObject.IsActive">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanPaymentAmount.IsActive">
             <summary>
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanPaymentAmountObject.NewLoanPaymentAmount">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanPaymentAmount.NewLoanPaymentAmount">
             <summary>
             Nová výše měsíční splátky
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanPaymentAmountObject.ConnectionExtraordinaryPayment">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanPaymentAmount.ConnectionExtraordinaryPayment">
             <summary>
             V souvislosti s mimořádnou splátkou
             </summary>
         </member>
-        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DueDateObject">
+        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DueDate">
             <summary>
             Splatnost
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DueDateObject.IsActive">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DueDate.IsActive">
             <summary>
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DueDateObject.NewLoanDueDate">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DueDate.NewLoanDueDate">
             <summary>
             Nový datum splatnosti
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DueDateObject.ConnectionExtraordinaryPayment">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DueDate.ConnectionExtraordinaryPayment">
             <summary>
             V souvislosti s mimořádnou splátkou
             </summary>
@@ -2688,42 +2688,42 @@
             Komentář k žádosti o změnu
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanAmountObject.ChangeAgreedLoanAmount">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanAmount.ChangeAgreedLoanAmount">
             <summary>
             Změnit sjednanou výši úvěru
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanAmountObject.RequiredLoanAmount">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanAmount.RequiredLoanAmount">
             <summary>
             Požadovaná výše úvěru
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanAmountObject.PreserveLoanDueDate">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanAmount.PreserveLoanDueDate">
             <summary>
             Zachovat sjednanou splatnost do
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanAmountObject.PreserveAgreedPaymentAmount">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanAmount.PreserveAgreedPaymentAmount">
             <summary>
             Zachovat sjednanou splátku
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.ExpectedDateOfDrawingObject.IsActive">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.ExpectedDateOfDrawing.IsActive">
             <summary>
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.ExpectedDateOfDrawingObject.NewExpectedDateOfDrawing">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.ExpectedDateOfDrawing.NewExpectedDateOfDrawing">
             <summary>
             Nový předpokládaný termín prvního čerpání
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateToObject2.IsActive">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo2.IsActive">
             <summary>
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateToObject2.ExtensionDrawingDateToByMonths">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo2.ExtensionDrawingDateToByMonths">
             <summary>
             Prodloužení konce lhůty čerpání o kolik měsíců
             </summary>

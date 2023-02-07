@@ -15,7 +15,7 @@ public sealed class HUBNUpdate
     /// Výše úvěru
     /// </summary>
     [Required]
-    public LoanAmountObject LoanAmount { get; set; }
+    public LoanAmount LoanAmount { get; set; }
 
     /// <summary>
     /// Účely úvěru
@@ -39,13 +39,13 @@ public sealed class HUBNUpdate
     /// Předpokládaný termín prvního čerpání
     /// </summary>
     [Required]
-    public ExpectedDateOfDrawingObject ExpectedDateOfDrawing { get; set; }
+    public ExpectedDateOfDrawing ExpectedDateOfDrawing { get; set; }
 
     /// <summary>
     /// Lhůta ukončení čerpání
     /// </summary>
     [Required]
-    public DrawingDateToObject2 DrawingDateTo { get; set; }
+    public DrawingDateTo2 DrawingDateTo { get; set; }
 
     /// <summary>
     /// Komentář k žádosti o změnu
@@ -54,7 +54,7 @@ public sealed class HUBNUpdate
     public CommentToChangeRequestObject CommentToChangeRequest { get; set; }
 }
 
-public sealed class LoanAmountObject
+public sealed class LoanAmount
 {
     /// <summary>
     /// Změnit sjednanou výši úvěru
@@ -80,7 +80,7 @@ public sealed class LoanAmountObject
     public bool PreserveAgreedPaymentAmount { get; set; }
 }
 
-public sealed class ExpectedDateOfDrawingObject
+public sealed class ExpectedDateOfDrawing
 {
     /// <summary>
     /// Sekce aktivní
@@ -94,7 +94,7 @@ public sealed class ExpectedDateOfDrawingObject
     public DateTime? NewExpectedDateOfDrawing { get; set; }
 }
 
-public sealed class DrawingDateToObject2
+public sealed class DrawingDateTo2
 {
     /// <summary>
     /// Sekce aktivní

@@ -21,31 +21,31 @@ public sealed class GeneralChangeUpdate
     /// Den splácení
     /// </summary>
     [Required]
-    public PaymentDayObject PaymentDay { get; set; }
+    public PaymentDay PaymentDay { get; set; }
 
     /// <summary>
     /// Lhůta ukončení čerpání
     /// </summary>
     [Required]
-    public DrawingDateToObject DrawingDateTo { get; set; }
+    public DrawingDateTo DrawingDateTo { get; set; }
 
     /// <summary>
     /// Účet pro splácení
     /// </summary>
     [Required]
-    public PaymentAccountObject RepaymentAccount { get; set; }
+    public PaymentAccount RepaymentAccount { get; set; }
 
     /// <summary>
     /// Výše měsíční splátky
     /// </summary>
     [Required]
-    public LoanPaymentAmountObject LoanPaymentAmount { get; set; }
+    public LoanPaymentAmount LoanPaymentAmount { get; set; }
 
     /// <summary>
     /// Splatnost
     /// </summary>
     [Required]
-    public DueDateObject DueDate { get; set; }
+    public DueDate DueDate { get; set; }
 
     /// <summary>
     /// Objekty úvěru
@@ -75,7 +75,7 @@ public sealed class GeneralChangeUpdate
 /// <summary>
 /// Den splácení
 /// </summary>
-public sealed class PaymentDayObject
+public sealed class PaymentDay
 {
     /// <summary>
     /// Sekce aktivní
@@ -92,7 +92,7 @@ public sealed class PaymentDayObject
 /// <summary>
 /// Lhůta ukončení čerpání
 /// </summary>
-public sealed class DrawingDateToObject
+public sealed class DrawingDateTo
 {
     /// <summary>
     /// Sekce aktivní
@@ -115,7 +115,7 @@ public sealed class DrawingDateToObject
 /// <summary>
 /// Účet pro splácení
 /// </summary>
-public sealed class PaymentAccountObject
+public sealed class PaymentAccount
 {
     /// <summary>
     /// Sekce aktivní
@@ -157,7 +157,7 @@ public sealed class PaymentAccountObject
 /// <summary>
 /// Výše měsíční splátky
 /// </summary>
-public sealed class LoanPaymentAmountObject
+public sealed class LoanPaymentAmount
 {
     /// <summary>
     /// Sekce aktivní
@@ -180,7 +180,7 @@ public sealed class LoanPaymentAmountObject
 /// <summary>
 /// Splatnost
 /// </summary>
-public sealed class DueDateObject
+public sealed class DueDate
 {
     /// <summary>
     /// Sekce aktivní
