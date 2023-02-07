@@ -69,7 +69,7 @@ public class SaveDocumentToArchiveHandler : IRequestHandler<SaveDocumentsToArchi
                 Filename = documentInformation.FileName,
                 AuthorUserLogin = _currentUserAccessor.User is not null ? _currentUserAccessor.User.Id.ToString() : "Unknow NOBY user",
                 CreatedOn = _dateTime.Now.Date,
-                Description = documentInformation.Description
+                Description = documentInformation.Description ?? string.Empty
             }
         };
     }
