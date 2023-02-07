@@ -15,7 +15,7 @@ public sealed class GeneralChangeUpdate
     /// Zajištění
     /// </summary>
     [Required]
-    public CollateralObject Collateral { get; set; }
+    public Collateral Collateral { get; set; }
 
     /// <summary>
     /// Den splácení
@@ -51,25 +51,25 @@ public sealed class GeneralChangeUpdate
     /// Objekty úvěru
     /// </summary>
     [Required]
-    public LoanRealEstateObject LoanRealEstate { get; set; }
+    public LoanRealEstate LoanRealEstate { get; set; }
 
     /// <summary>
     /// Účel úvěru
     /// </summary>
     [Required]
-    public LoanPurposeObject LoanPurpose { get; set; }
+    public LoanPurpose LoanPurpose { get; set; }
 
     /// <summary>
     /// Podmínky čerpání a další podmínky
     /// </summary>
     [Required]
-    public DrawingAndOtherConditionsObject DrawingAndOtherConditions { get; set; }
+    public DrawingAndOtherConditions DrawingAndOtherConditions { get; set; }
 
     /// <summary>
     /// Komentář k žádosti o změnu
     /// </summary>
     [Required]
-    public CommentToChangeRequestObject CommentToChangeRequest { get; set; }
+    public CommentToChangeRequest CommentToChangeRequest { get; set; }
 }
 
 /// <summary>

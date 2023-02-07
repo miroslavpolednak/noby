@@ -33,7 +33,7 @@ public sealed class HUBNUpdate
     /// Identifikace zajištění
     /// </summary>
     [Required]
-    public CollateralIdentificationObject CollateralIdentification { get; set; }
+    public CollateralIdentification CollateralIdentification { get; set; }
 
     /// <summary>
     /// Předpokládaný termín prvního čerpání
@@ -51,7 +51,7 @@ public sealed class HUBNUpdate
     /// Komentář k žádosti o změnu
     /// </summary>
     [Required]
-    public CommentToChangeRequestObject CommentToChangeRequest { get; set; }
+    public CommentToChangeRequest CommentToChangeRequest { get; set; }
 }
 
 public sealed class LoanAmount

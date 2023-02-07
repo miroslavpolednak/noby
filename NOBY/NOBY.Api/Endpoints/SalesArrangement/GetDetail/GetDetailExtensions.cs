@@ -66,7 +66,7 @@ internal static class GetDetailExtensions
         => new()
         {
             Applicant = model.Applicant,
-            Collateral = new CollateralObject
+            Collateral = new Collateral
             {
                 IsActive = model.Collateral?.IsActive ?? false,
                 AddLoanRealEstateCollateral = model.Collateral?.AddLoanRealEstateCollateral,
@@ -111,7 +111,7 @@ internal static class GetDetailExtensions
                 ConnectionExtraordinaryPayment = model.DueDate?.ConnectionExtraordinaryPayment ?? false,
                 NewLoanDueDate = model.DueDate?.NewLoanDueDate
             },
-            LoanRealEstate = new LoanRealEstateObject
+            LoanRealEstate = new LoanRealEstate
             {
                 IsActive = model.LoanRealEstate?.IsActive ?? false,
                 LoanRealEstates = model.LoanRealEstate?.LoanRealEstates?.Select(t => new LoanRealEstateItem
@@ -120,17 +120,17 @@ internal static class GetDetailExtensions
                     RealEstateTypeId = t.RealEstateTypeId
                 }).ToList()
             },
-            LoanPurpose = new LoanPurposeObject
+            LoanPurpose = new LoanPurpose
             {
                 IsActive = model.LoanPurpose?.IsActive ?? false,
                 LoanPurposesComment = model.LoanPurpose?.LoanPurposesComment
             },
-            DrawingAndOtherConditions = new DrawingAndOtherConditionsObject
+            DrawingAndOtherConditions = new DrawingAndOtherConditions
             {
                 IsActive = model.DrawingAndOtherConditions?.IsActive ?? false,
                 CommentToChangeContractConditions = model.DrawingAndOtherConditions?.CommentToChangeContractConditions
             },
-            CommentToChangeRequest = new CommentToChangeRequestObject
+            CommentToChangeRequest = new CommentToChangeRequest
             {
                 IsActive = model.CommentToChangeRequest?.IsActive ?? false,
                 GeneralComment = model.CommentToChangeRequest?.GeneralComment

@@ -34,7 +34,7 @@ public sealed class LoanRealEstateItem2
     public int RealEstatePurchaseTypeId { get; set; }
 }
 
-public sealed class CollateralIdentificationObject
+public sealed class CollateralIdentification
 {
     /// <summary>
     /// Identifikace nemovitosti

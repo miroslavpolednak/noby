@@ -15,67 +15,67 @@ public sealed class GeneralChangeDetail
     /// Zajištění
     /// </summary>
     [Required]
-    public CollateralObject Collateral { get; set; }
+    public Collateral Collateral { get; set; }
 
     /// <summary>
     /// Den splácení
     /// </summary>
     [Required]
-    public PaymentDayObject PaymentDay { get; set; }
+    public PaymentDay PaymentDay { get; set; }
 
     /// <summary>
     /// Lhůta ukončení čerpání
     /// </summary>
     [Required]
-    public DrawingDateToObject DrawingDateTo { get; set; }
+    public DrawingDateTo DrawingDateTo { get; set; }
 
     /// <summary>
     /// Účet pro splácení
     /// </summary>
     [Required]
-    public PaymentAccountObject RepaymentAccount { get; set; }
+    public PaymentAccount RepaymentAccount { get; set; }
 
     /// <summary>
     /// Výše měsíční splátky
     /// </summary>
     [Required]
-    public LoanPaymentAmountObject LoanPaymentAmount { get; set; }
+    public LoanPaymentAmount LoanPaymentAmount { get; set; }
 
     /// <summary>
     /// Splatnost
     /// </summary>
     [Required]
-    public DueDateObject DueDate { get; set; }
+    public DueDate DueDate { get; set; }
 
     /// <summary>
     /// Objekty úvěru
     /// </summary>
     [Required]
-    public LoanRealEstateObject LoanRealEstate { get; set; }
+    public LoanRealEstate LoanRealEstate { get; set; }
 
     /// <summary>
     /// Účel úvěru
     /// </summary>
     [Required]
-    public LoanPurposeObject LoanPurpose { get; set; }
+    public LoanPurpose LoanPurpose { get; set; }
 
     /// <summary>
     /// Podmínky čerpání a další podmínky
     /// </summary>
     [Required]
-    public DrawingAndOtherConditionsObject DrawingAndOtherConditions { get; set; }
+    public DrawingAndOtherConditions DrawingAndOtherConditions { get; set; }
 
     /// <summary>
     /// Komentář k žádosti o změnu
     /// </summary>
     [Required]
-    public CommentToChangeRequestObject CommentToChangeRequest { get; set; }
+    public CommentToChangeRequest CommentToChangeRequest { get; set; }
 }
 
 /// <summary>
 /// Den splácení
 /// </summary>
-public sealed class PaymentDayObject
+public sealed class PaymentDay
 {
     /// <summary>
     /// Sekce aktivní
@@ -98,7 +98,7 @@ public sealed class PaymentDayObject
 /// <summary>
 /// Lhůta ukončení čerpání
 /// </summary>
-public sealed class DrawingDateToObject
+public sealed class DrawingDateTo
 {
     /// <summary>
     /// Sekce aktivní
@@ -127,7 +127,7 @@ public sealed class DrawingDateToObject
 /// <summary>
 /// Účet pro splácení
 /// </summary>
-public sealed class PaymentAccountObject
+public sealed class PaymentAccount
 {
     /// <summary>
     /// Sekce aktivní
@@ -187,7 +187,7 @@ public sealed class PaymentAccountObject
 /// <summary>
 /// Výše měsíční splátky
 /// </summary>
-public sealed class LoanPaymentAmountObject
+public sealed class LoanPaymentAmount
 {
     /// <summary>
     /// Sekce aktivní
@@ -216,7 +216,7 @@ public sealed class LoanPaymentAmountObject
 /// <summary>
 /// Splatnost
 /// </summary>
-public sealed class DueDateObject
+public sealed class DueDate
 {
     /// <summary>
     /// Sekce aktivní
