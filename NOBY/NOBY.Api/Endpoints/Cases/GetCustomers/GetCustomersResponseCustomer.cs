@@ -46,6 +46,8 @@ public sealed class GetCustomersResponseCustomer
     /// Mobil
     /// </summary>
     public string? Mobile { get; set; }
+    
+    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 
     public DomainServices.CodebookService.Contracts.GenericCodebookItem? CitizenshipCountry { get; set; }
 
