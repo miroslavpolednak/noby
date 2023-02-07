@@ -4,6 +4,7 @@ using _Cust = DomainServices.CustomerService.Contracts;
 using CIS.Infrastructure.gRPC.CisTypes;
 using System.ComponentModel.DataAnnotations;
 using CIS.Core;
+using NOBY.Api.SharedDto;
 
 namespace NOBY.Api.Endpoints.Cases.GetCustomers;
 
@@ -105,6 +106,7 @@ internal sealed class GetCustomersHandler
                 FirstName = customer.NaturalPerson?.FirstName,
                 PermanentAddress = permanentAddress,
                 ContactAddress = mailingAddress,
+                IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
                 CitizenshipCountry = country is null ? null : new()
                 {
                     Id = country.Id,
