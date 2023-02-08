@@ -44,6 +44,7 @@
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
+    <ProjectReference Include="..\..\..\NOBY\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
     <ProjectReference Include="..\..\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
     <ProjectReference Include="..\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
     <ProjectReference Include="..\Mcs\CIS.InternalServices.NotificationService.Mcs.csproj" />
