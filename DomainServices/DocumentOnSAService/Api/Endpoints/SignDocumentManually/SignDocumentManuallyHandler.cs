@@ -46,9 +46,9 @@ public class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyR
             throw new CisNotFoundException(19003, $"DocumentOnSA {request.DocumentOnSAId!.Value} does not exist.");
         }
 
-        if (documentOnSa.SignatureMethodCode.ToUpper() != ManualSigningMethodCode)
+        if (documentOnSa.SignatureMethodCode.ToUpper() != ManualSigningMethodCode || documentOnSa.IsSigned)
         {
-            throw new CisValidationException(19005, $"Unable to sign DocumentOnSA {request.DocumentOnSAId!.Value}. Document is for electronic signature only.");
+            throw new CisValidationException(19005, $"Unable to sign DocumentOnSA {request.DocumentOnSAId!.Value}. Document is for electronic signature only or is already signed.");
         }
 
         UpdateDocumentOnSa(documentOnSa);
