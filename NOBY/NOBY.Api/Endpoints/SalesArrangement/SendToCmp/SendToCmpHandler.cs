@@ -15,9 +15,11 @@ internal sealed class SendToCmpHandler
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public SendToCmpHandler(
+        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService)
     {
+        _codebookService = codebookService;
         _caseService = caseService;
         _salesArrangementService = salesArrangementService;
     }
