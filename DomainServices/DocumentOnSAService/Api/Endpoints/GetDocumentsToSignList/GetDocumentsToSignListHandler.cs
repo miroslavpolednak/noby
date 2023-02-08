@@ -107,7 +107,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
                 IsSigned = documentOnSa.IsSigned,
                 IsDocumentArchived = documentOnSa.IsDocumentArchived,
                 SignatureMethodCode = documentOnSa.SignatureMethodCode ?? string.Empty,
-                SignatureDateTime = documentOnSa.SignatureDateTime is not null ? Timestamp.FromDateTime(documentOnSa.SignatureDateTime.Value) : null,
+                SignatureDateTime = documentOnSa.SignatureDateTime is not null ? Timestamp.FromDateTime(DateTime.SpecifyKind(documentOnSa.SignatureDateTime.Value, DateTimeKind.Utc)) : null,
                 SignatureConfirmedBy = documentOnSa.SignatureConfirmedBy
             };
         }
