@@ -12,7 +12,7 @@ internal sealed class CreateCustomerHandler
         var model = new CreateCustomerResponse();
 
         // check existing SalesArrangementId
-        await __HouseholdlesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+        await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         var entity = new Database.Entities.CustomerOnSA
         {
@@ -70,7 +70,7 @@ internal sealed class CreateCustomerHandler
     }
 
     private readonly SulmService.ISulmClient _sulmClient;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient __HouseholdlesArrangementService;
+    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly UpdateCustomerService _updateService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateCustomerHandler> _logger;
@@ -82,7 +82,7 @@ internal sealed class CreateCustomerHandler
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateCustomerHandler> logger)
     {
-        __HouseholdlesArrangementService = salesArrangementService;
+        _salesArrangementService = salesArrangementService;
         _sulmClient = sulmClient;
         _updateService = updateService;
         _dbContext = dbContext;
