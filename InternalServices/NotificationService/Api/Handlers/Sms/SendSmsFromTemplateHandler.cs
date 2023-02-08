@@ -15,6 +15,7 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Sms;
 
 public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateRequest, SendSmsFromTemplateResponse>
 {
+    private const int _maxSmsTextLength = 480;
     private readonly IDateTime _dateTime;
     private readonly McsSmsProducer _mcsSmsProducer;
     private readonly UserConsumerIdMapper _userConsumerIdMapper;
@@ -58,6 +59,11 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         smsType.SmsText.Validate(keyValues.Keys);
         var text = smsType.SmsText.Interpolate(keyValues);
 
+        if (text.Length > _maxSmsTextLength)
+        {
+            throw new CisValidationException($"Final sms text from template '{text}' is too long. Maximum allowed length is {_maxSmsTextLength}.");
+        }
+        
         var result = _repository.NewSmsResult();
         result.Identity = request.Identifier?.Identity;
         result.IdentityScheme = request.Identifier?.IdentityScheme;
