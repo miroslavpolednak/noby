@@ -37,7 +37,7 @@ public sealed class Grpc2WebApiExceptionMiddleware
         }
         catch (Core.Exceptions.CisServiceServerErrorException ex)
         {
-            await Results.Problem(ex.Message, title: "External service server error", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
+            await Results.Problem(ex.Message, title: "External service server error", statusCode: (int)HttpStatusCode.InternalServerError).ExecuteAsync(context);
         }
         // osetrena validace na urovni api call
         catch (Core.Exceptions.CisValidationException ex)
