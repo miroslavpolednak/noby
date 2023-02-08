@@ -346,6 +346,7 @@ internal static class Extensions
                 InvestmentAmount = investmentAmount,
                 OwnResourcesAmount = financialResourcesOwn,
                 ForeignResourcesAmount = financialResourcesOther,
+                FinancingTypes = data.Arrangement.Mortgage?.LoanRealEstates?.Select(t => t.RealEstatePurchaseTypeId)?.ToList(),
                 MarketingActions = data.Offer.AdditionalSimulationResults?.MarketingActions?.Where(i => i.MarketingActionId.HasValue && i.Applied == 1).Select(i => i.MarketingActionId!.Value).ToList(),
                 Purposes = data.Offer.SimulationInputs.LoanPurposes?.Select(i => MapLoanPurpose(i)).ToList(),
                 Collaterals = new List<cLA.LoanApplicationProductCollateral> { productCollateral },
