@@ -19,6 +19,7 @@ internal sealed class UpdateCaseDataHandler
         // ulozit do DB
         entity.ContractNumber = request.Data.ContractNumber;
         entity.TargetAmount = request.Data.TargetAmount;
+        entity.IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested;
         entity.ProductTypeId = request.Data.ProductTypeId;
 
         await _dbContext.SaveChangesAsync(cancellation);

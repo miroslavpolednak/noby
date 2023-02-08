@@ -71,6 +71,7 @@ internal sealed class CreateCaseHandler
             Cin = request.Customer.Cin,
 
             TargetAmount = request.Data.TargetAmount,
+            IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested,
             ContractNumber = request.Data.ContractNumber,
 
             OwnerUserId = request.CaseOwnerUserId,

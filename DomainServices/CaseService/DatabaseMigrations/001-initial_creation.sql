@@ -34,6 +34,7 @@ CREATE TABLE [dbo].[Case](
 	[PhoneNumberForOffer] [varchar](50) NULL,
 	[ContractNumber] [varchar](20) NULL,
 	[TargetAmount] [decimal](12, 2) NULL,
+	[IsEmployeeBonusRequested] bit NULL,
 	[ProductTypeId] [int] NOT NULL,
 	[State] [int] NOT NULL,
 	[StateUpdateTime] [datetime] NOT NULL,
