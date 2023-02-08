@@ -1877,27 +1877,27 @@
             Nový den splácení, CIS_DEN_SPLACENI
             </summary>
         </member>
-        <member name="T:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo">
+        <member name="T:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateToExtended">
             <summary>
             Lhůta ukončení čerpání
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo.IsActive">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateToExtended.IsActive">
             <summary>
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo.AgreedDrawingDateTo">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateToExtended.AgreedDrawingDateTo">
             <summary>
             Sjednaný termín čerpání do
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo.ExtensionDrawingDateToByMonths">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateToExtended.ExtensionDrawingDateToByMonths">
             <summary>
             Prodloužení konce lhůty čerpání o kolik měsíců
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo.CommentToDrawingDateTo">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateToExtended.CommentToDrawingDateTo">
             <summary>
             Komentář ke lhůtě ukončení čerpání
             </summary>
@@ -2097,17 +2097,17 @@
             Nový předpokládaný termín prvního čerpání
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo2.IsActive">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo.IsActive">
             <summary>
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo2.AgreedDrawingDateTo">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo.AgreedDrawingDateTo">
             <summary>
             Sjednaný termín čerpání do
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo2.ExtensionDrawingDateToByMonths">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo.ExtensionDrawingDateToByMonths">
             <summary>
             Prodloužení konce lhůty čerpání o kolik měsíců
             </summary>
@@ -2548,22 +2548,22 @@
             Nový den splácení, CIS_DEN_SPLACENI
             </summary>
         </member>
-        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo">
+        <member name="T:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateToExtended">
             <summary>
             Lhůta ukončení čerpání
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo.IsActive">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateToExtended.IsActive">
             <summary>
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo.ExtensionDrawingDateToByMonths">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateToExtended.ExtensionDrawingDateToByMonths">
             <summary>
             Prodloužení konce lhůty čerpání o kolik měsíců
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo.CommentToDrawingDateTo">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateToExtended.CommentToDrawingDateTo">
             <summary>
             Komentář ke lhůtě ukončení čerpání
             </summary>
@@ -2718,12 +2718,12 @@
             Nový předpokládaný termín prvního čerpání
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo2.IsActive">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo.IsActive">
             <summary>
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo2.ExtensionDrawingDateToByMonths">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo.ExtensionDrawingDateToByMonths">
             <summary>
             Prodloužení konce lhůty čerpání o kolik měsíců
             </summary>
@@ -2963,17 +2963,17 @@
             Výše úvěru pro zvolený účel v Kč
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItem2.RealEstateTypeId">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItemExtended.RealEstateTypeId">
             <summary>
             Typ nemovitosti
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItem2.IsCollateral">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItemExtended.IsCollateral">
             <summary>
             Slouží k zajištění
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItem2.RealEstatePurchaseTypeId">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItemExtended.RealEstatePurchaseTypeId">
             <summary>
             Účel pořízení nemovitosti
             </summary>

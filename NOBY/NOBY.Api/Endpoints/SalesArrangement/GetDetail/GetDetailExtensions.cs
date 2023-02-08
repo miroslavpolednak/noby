@@ -160,7 +160,7 @@ internal static class GetDetailExtensions
                 Id = t.LoanPurposeId,
                 Sum = t.Sum
             }).ToList(),
-            LoanRealEstates = model.LoanRealEstates?.Select(t => new LoanRealEstateItem2
+            LoanRealEstates = model.LoanRealEstates?.Select(t => new LoanRealEstateItemExtended
             {
                 IsCollateral = t.IsCollateral,
                 RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,

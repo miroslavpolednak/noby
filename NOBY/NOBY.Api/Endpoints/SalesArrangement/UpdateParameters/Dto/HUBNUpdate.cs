@@ -27,7 +27,7 @@ public sealed class HUBNUpdate
     /// Objekty úvěru
     /// </summary>
     [Required]
-    public List<LoanRealEstateItem2>? LoanRealEstates { get; set; }
+    public List<LoanRealEstateItemExtended>? LoanRealEstates { get; set; }
 
     /// <summary>
     /// Identifikace zajištění
@@ -45,7 +45,7 @@ public sealed class HUBNUpdate
     /// Lhůta ukončení čerpání
     /// </summary>
     [Required]
-    public DrawingDateTo2 DrawingDateTo { get; set; }
+    public DrawingDateTo DrawingDateTo { get; set; }
 
     /// <summary>
     /// Komentář k žádosti o změnu
@@ -94,7 +94,7 @@ public sealed class ExpectedDateOfDrawing
     public DateTime? NewExpectedDateOfDrawing { get; set; }
 }
 
-public sealed class DrawingDateTo2
+public sealed class DrawingDateTo
 {
     /// <summary>
     /// Sekce aktivní
