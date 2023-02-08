@@ -27,7 +27,7 @@ public sealed class GeneralChangeUpdate
     /// Lhůta ukončení čerpání
     /// </summary>
     [Required]
-    public DrawingDateTo DrawingDateTo { get; set; }
+    public DrawingDateToExtended DrawingDateTo { get; set; }
 
     /// <summary>
     /// Účet pro splácení
@@ -92,7 +92,7 @@ public sealed class PaymentDay
 /// <summary>
 /// Lhůta ukončení čerpání
 /// </summary>
-public sealed class DrawingDateTo
+public sealed class DrawingDateToExtended
 {
     /// <summary>
     /// Sekce aktivní

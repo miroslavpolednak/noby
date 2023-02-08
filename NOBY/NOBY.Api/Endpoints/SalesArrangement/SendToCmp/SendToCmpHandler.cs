@@ -10,14 +10,16 @@ internal sealed class SendToCmpHandler
 {
 
     #region Construction
-
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public SendToCmpHandler(
+        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService)
     {
+        _codebookService = codebookService;
         _caseService = caseService;
         _salesArrangementService = salesArrangementService;
     }
@@ -47,7 +49,11 @@ internal sealed class SendToCmpHandler
         // odeslat do SB
         await _salesArrangementService.SendToCmp(request.SalesArrangementId, cancellationToken);
 
-        // update case state
-        await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
+        // update case state, pokud to neni servisni zadost.
+        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
+        if (saCategory.SalesArrangementCategory == 1)
+        {
+            await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
+        }
     }
 }

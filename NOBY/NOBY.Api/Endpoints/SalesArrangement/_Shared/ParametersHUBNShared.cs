@@ -16,7 +16,7 @@ public sealed class LoanPurposeItem
     public decimal Sum { get; set; }
 }
 
-public sealed class LoanRealEstateItem2
+public sealed class LoanRealEstateItemExtended
 {
     /// <summary>
     /// Typ nemovitosti
