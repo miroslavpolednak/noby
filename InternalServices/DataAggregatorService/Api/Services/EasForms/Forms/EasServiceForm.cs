@@ -23,6 +23,7 @@ internal class EasServiceForm : EasForm
             {
                 EasFormType = group.Key,
                 DynamicFormValues = formValues,
+                DefaultValues = DefaultValuesFactory.Create(group.Key),
                 Json = CreateJson(group.AsEnumerable())
             };
         });
