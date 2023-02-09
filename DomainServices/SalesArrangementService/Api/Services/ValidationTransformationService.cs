@@ -54,7 +54,7 @@ internal sealed partial class ValidationTransformationServiceFactory
         {
             ValidationTransformationCache.TransformationItem titem;
             var message = new Contracts.ValidationMessageNoby();
-            
+
             var matches = _arrayIndexesRegex.Matches(item.Parameter);
             if (matches.Any())
             {
@@ -77,30 +77,31 @@ internal sealed partial class ValidationTransformationServiceFactory
                 message.ParameterName = titem.Text;
             }
 
-            message.Message = string.IsNullOrEmpty(item.AdditionalInformation) ? $"'{item.Value}' {item.Message}" : $"'{item.Value}' {item.Message} ({item.AdditionalInformation})";
+            message.Message = getMessage();
             message.Category = titem.Category;
             message.CategoryOrder = titem.CategoryOrder;
 
             // severity
             if (titem.AlterSeverity == Database.FormValidationTransformationAlterSeverity.Ignore)
-            {
                 message.Severity = Contracts.ValidationMessageNoby.Types.NobySeverity.None;
-            }
             else if (titem.AlterSeverity == Database.FormValidationTransformationAlterSeverity.AlterToWarning)
-            {
                 message.Severity = Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
-            }
             else
-            {
-                message.Severity = item.ErrorQueue switch
-                {
-                    "A" => Contracts.ValidationMessageNoby.Types.NobySeverity.Error,
-                    "I" => Contracts.ValidationMessageNoby.Types.NobySeverity.Error,
-                    _ => Contracts.ValidationMessageNoby.Types.NobySeverity.None
-                };
-            }
+                message.Severity = item.ErrorQueue == "A" ? Contracts.ValidationMessageNoby.Types.NobySeverity.Error : Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
 
             return message;
+
+            string getMessage()
+            {
+                if (string.IsNullOrEmpty(item.Value))
+                {
+                    return string.IsNullOrEmpty(item.AdditionalInformation) ? item.Message : $"{item.Message} ({item.AdditionalInformation})";
+                }
+                else
+                {
+                    return string.IsNullOrEmpty(item.AdditionalInformation) ? $"'{item.Value}' {item.Message}" : $"'{item.Value}' {item.Message} ({item.AdditionalInformation})";
+                }
+            }
 
             TransformationItem getTransformationItem(string key)
             {
