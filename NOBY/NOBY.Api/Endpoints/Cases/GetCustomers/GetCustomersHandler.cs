@@ -103,7 +103,7 @@ internal sealed class GetCustomersHandler
                 Mobile = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value,
                 KBID = customer.Identities.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 RoleName = t.RoleName,
-                Role = t.Role,
+                RoleId = t.Role,
                 DateOfBirth = customer.NaturalPerson?.DateOfBirth,
                 LastName = customer.NaturalPerson?.LastName,
                 FirstName = customer.NaturalPerson?.FirstName,
@@ -118,7 +118,7 @@ internal sealed class GetCustomersHandler
             };
         }).ToList();
 
-        return finalCustomerList.OrderBy(t => t.Role).ThenBy(t => t.LastName).ToList();
+        return finalCustomerList.OrderBy(t => t.RoleId).ThenBy(t => t.LastName).ToList();
     }
 
     private static int[] _allowedCustomerRoles = new[] { 1, 2 };

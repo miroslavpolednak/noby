@@ -321,6 +321,11 @@
             Poradce třetí strana.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleId">
+            <summary>
+            ID role klienta
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleName">
             <summary>
             Jméno role - NameNoby z číselníku CustomerRole|RelationshipCustomerProductType

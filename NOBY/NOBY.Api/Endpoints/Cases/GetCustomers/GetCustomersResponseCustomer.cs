@@ -2,7 +2,10 @@
 
 public sealed class GetCustomersResponseCustomer
 {
-    internal int Role;
+    /// <summary>
+    /// ID role klienta
+    /// </summary>
+    public int RoleId { get; set; }
 
     /// <summary>
     /// Jméno role - NameNoby z číselníku CustomerRole|RelationshipCustomerProductType
