@@ -36,6 +36,8 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
     [Precision(12, 2)]
     public decimal TargetAmount { get; set; }
 
+    public bool? IsEmployeeBonusRequested { get; set; }
+
     public List<ActiveTask>? ActiveTasks { get; set; }
 
     /// <summary>
@@ -57,6 +59,7 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
 
             TargetAmount = request.Data.TargetAmount,
             ContractNumber = request.Data.ContractNumber,
+            IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested,
 
             OwnerUserId = request.CaseOwnerUserId,
         };

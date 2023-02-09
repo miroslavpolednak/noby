@@ -46,6 +46,7 @@ internal static class Extensions
             },
             Data = new _Case.CaseData
             {
+                IsEmployeeBonusRequested = offerInstance.IsEmployeeBonusRequested,
                 ProductTypeId = offerInstance.ProductTypeId,
                 TargetAmount = (decimal)offerInstance.LoanAmount!
             }

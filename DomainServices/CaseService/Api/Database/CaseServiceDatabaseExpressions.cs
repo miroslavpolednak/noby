@@ -17,6 +17,7 @@ internal static class CaseServiceDatabaseExpressions
             {
                 ProductTypeId = t.ProductTypeId,
                 TargetAmount = t.TargetAmount,
+                IsEmployeeBonusRequested = t.IsEmployeeBonusRequested,
                 ContractNumber = t.ContractNumber ?? ""
             },
             Customer = new Contracts.CustomerData

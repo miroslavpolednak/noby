@@ -37,7 +37,8 @@ internal sealed class CaseStateChangedHandler
             OwnerUserCpm = ownerInstance.CPM,
             OwnerUserIcp = ownerInstance.ICP,
             Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId.GetValueOrDefault(),
-            RiskBusinessCaseId = rbcId
+            RiskBusinessCaseId = rbcId,
+            IsEmployeeBonusRequested = notification.IsEmployeeBonusRequested
         };
         await _sbWebApiClient.CaseStateChanged(request, cancellationToken);
     }
