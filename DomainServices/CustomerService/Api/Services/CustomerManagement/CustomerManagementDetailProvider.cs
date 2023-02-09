@@ -99,8 +99,8 @@ internal class CustomerManagementDetailProvider
             PlaceOfBirth = np.BirthPlace ?? string.Empty,
             BirthCountryId = _countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,
             MaritalStatusStateId = _maritals.FirstOrDefault(t => t.RdmMaritalStatusCode == np.MaritalStatusCode)?.Id ?? 0,
-            DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id,
-            EducationLevelId = _educations.FirstOrDefault(t => t.RdmCode.Equals(customer.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.InvariantCultureIgnoreCase))?.Id ?? 0,
+            DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.OrdinalIgnoreCase))?.Id,
+            EducationLevelId = _educations.FirstOrDefault(t => t.RdmCode.Equals(customer.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.OrdinalIgnoreCase))?.Id ?? 0,
             IsPoliticallyExposed = customer.IsPoliticallyExposed,
             IsUSPerson = false, //je vzdy false!
             IsBrSubscribed = customer.BrSubscription?.IsSubscribed ?? false,

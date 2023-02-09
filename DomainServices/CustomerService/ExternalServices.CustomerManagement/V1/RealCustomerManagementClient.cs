@@ -76,6 +76,7 @@ internal sealed class RealCustomerManagementClient
             { "showPrimaryIdDocument", "true" },
             { "showCustomerIdentification", "true" },
             { "showContactAddress", "true" },
+            { "showTemporaryStay", "true" },
             { "showPrimaryPhone", "true" },
             { "showPrimaryEmail", "true" },
             { "showSegment", "true" },
@@ -84,6 +85,7 @@ internal sealed class RealCustomerManagementClient
             { "showBRSubscription", "true" },
             { "showTaxResidence", "true" },
             { "showCustomerKbRelationship", "true" },
+            { "showEducation", "true" },
             { "requiredAddressFormats", new string[] { AddressFormat.LINE.ToString(), AddressFormat.COMPONENT.ToString() } }
         };
 
