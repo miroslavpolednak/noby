@@ -76,6 +76,7 @@ internal sealed class RealCustomerManagementClient
             { "showPrimaryIdDocument", "true" },
             { "showCustomerIdentification", "true" },
             { "showContactAddress", "true" },
+            { "showTemporaryStay", "true" },
             { "showPrimaryPhone", "true" },
             { "showPrimaryEmail", "true" },
             { "showSegment", "true" },
