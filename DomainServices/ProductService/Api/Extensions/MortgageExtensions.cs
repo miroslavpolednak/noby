@@ -68,7 +68,7 @@ internal static class MortgageExtensions
             FixedRatePeriodRefix = null,            // ???
             // Cpm = eLoan.CPM,                     // ???
             // Icp = eLoan.PoradceId,               // ???
-            FirstAnnuityPaymentDate = null,         // ???
+            FirstAnnuityPaymentDate = eLoan.PocatekSplaceni,         // ???
             RepaymentAccount = null                 // ???
         };
 

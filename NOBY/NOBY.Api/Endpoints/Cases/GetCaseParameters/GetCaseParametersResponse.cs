@@ -5,9 +5,11 @@ namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
 
 public sealed class GetCaseParametersResponse
 {
+    public DateTime? FirstAnnuityPaymentDate { get; set; }
+
     /// <summary>
-	/// Typ úvěru (číselník).
-	/// </summary>
+    /// Typ úvěru (číselník).
+    /// </summary>
     public DomainServices.CodebookService.Contracts.GenericCodebookItem? ProductType { get; set; }
 
     /// <summary>

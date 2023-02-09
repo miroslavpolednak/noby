@@ -56,7 +56,9 @@ internal class Loan
 
 	public DateTime? DatumFixaceUrokoveSazby { get; set; }
 
-	public DateTime? DatumPrvniVyplatyZUveru { get; set; }
+	public DateTime? PocatekSplaceni { get; set; }
+
+    public DateTime? DatumPrvniVyplatyZUveru { get; set; }
 
 	public DateTime? DatumPredpSplatnosti { get; set; }
 
