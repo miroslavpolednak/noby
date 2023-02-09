@@ -2,6 +2,8 @@
 
 public sealed class GetCustomersResponseCustomer
 {
+    internal int Role;
+
     /// <summary>
     /// Jméno role - NameNoby z číselníku CustomerRole|RelationshipCustomerProductType
     /// </summary>

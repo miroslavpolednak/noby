@@ -18,7 +18,7 @@ internal sealed class GetCustomersHandler
         // seznam zemi
         var countries = (await _codebookService.Countries(cancellationToken));
 
-        List<(Identity? Identity, _HO.CustomerOnSA? CustomerOnSA, int Role, bool Agent, bool IsKYCSuccessful)> customerIdentities;
+        List<(Identity? Identity, _HO.CustomerOnSA? CustomerOnSA, int Role, string RoleName, bool Agent, bool IsKYCSuccessful)> customerIdentities;
 
         if (caseInstance.State == (int)CIS.Foms.Enums.CaseStates.InProgress)
         {
@@ -44,16 +44,17 @@ internal sealed class GetCustomersHandler
                     t.CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb),
                     (_HO.CustomerOnSA?)t,
                     t.CustomerRoleId,
+                    ((CIS.Foms.Enums.CustomerRoles)t.CustomerRoleId).GetAttribute<DisplayAttribute>()!.Name ?? "",
                     saDetail.Mortgage?.Agent.GetValueOrDefault() == t.CustomerOnSAId,
                     false
                 ))
-                .OrderBy(t => t.CustomerRoleId).ThenBy(t => t.Item2!.Name)
                 .ToList();
         }
         else
         {
             // vsichni customeri v KonsDB
             var customers = await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken);
+            var roles = await _codebookService.RelationshipCustomerProductTypes(cancellationToken);
 
             // vybrat a transformovat jen vlastnik, spoludluznik
             customerIdentities = customers
@@ -63,6 +64,7 @@ internal sealed class GetCustomersHandler
                     Identity: t.CustomerIdentifiers.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb),
                     CustomerOnSA: default(_HO.CustomerOnSA),
                     Role: t.RelationshipCustomerProductTypeId,
+                    RoleName: roles.FirstOrDefault(x => x.Id == t.RelationshipCustomerProductTypeId)?.NameNoby ?? "",
                     Agent: t.Agent ?? false,
                     IsKYCSuccessful: t.IsKYCSuccessful
                  ))
@@ -77,7 +79,7 @@ internal sealed class GetCustomersHandler
             customerDetails = (await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.Identity!), cancellationToken)).Customers.ToList();
         }
 
-        return customerIdentities.Select(t =>
+        var finalCustomerList = customerIdentities.Select(t =>
         {
             var customer = t.Identity is null ? new _Cust.CustomerDetailResponse
             {
@@ -100,7 +102,8 @@ internal sealed class GetCustomersHandler
                 Email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value,
                 Mobile = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value,
                 KBID = customer.Identities.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                RoleName = ((CIS.Foms.Enums.CustomerRoles)t.Role).GetAttribute<DisplayAttribute>()!.Name,
+                RoleName = t.RoleName,
+                Role = t.Role,
                 DateOfBirth = customer.NaturalPerson?.DateOfBirth,
                 LastName = customer.NaturalPerson?.LastName,
                 FirstName = customer.NaturalPerson?.FirstName,
@@ -114,6 +117,8 @@ internal sealed class GetCustomersHandler
                 }
             };
         }).ToList();
+
+        return finalCustomerList.OrderBy(t => t.Role).ThenBy(t => t.LastName).ToList();
     }
 
     private static int[] _allowedCustomerRoles = new[] { 1, 2 };
