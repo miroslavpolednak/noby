@@ -84,6 +84,7 @@ internal sealed class RealCustomerManagementClient
             { "showBRSubscription", "true" },
             { "showTaxResidence", "true" },
             { "showCustomerKbRelationship", "true" },
+            { "showEducation", "true" },
             { "requiredAddressFormats", new string[] { AddressFormat.LINE.ToString(), AddressFormat.COMPONENT.ToString() } }
         };
 
