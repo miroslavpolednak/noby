@@ -9,7 +9,7 @@ CREATE TABLE [dbo].[FormInstanceInterface](
 	[DOKUMENT_ID] [varchar](30) NULL,
 	[TYP_FORMULARE] [varchar](7) NULL,
 	[CISLO_SMLOUVY] [varchar](13) NULL,
-	[STATUS] [tinyint] NULL,
+	[STATUS] [smallint] NULL,
 	[DRUH_FROMULARE] [char](1) NULL,
 	[FORMID] [varchar](15) NULL,
 	[CPM] [varchar](10) NULL,
