@@ -47,7 +47,8 @@ internal sealed class CreateCaseHandler
             CaseStateId = defaultCaseState,
             ClientName = $"{request.Customer?.FirstNameNaturalPerson} {request.Customer?.Name}",
             ProductTypeId = request.Data.ProductTypeId,
-            CaseOwnerUserId = request.CaseOwnerUserId
+            CaseOwnerUserId = request.CaseOwnerUserId,
+            IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested
         }, cancellation);
         
         return new CreateCaseResponse()

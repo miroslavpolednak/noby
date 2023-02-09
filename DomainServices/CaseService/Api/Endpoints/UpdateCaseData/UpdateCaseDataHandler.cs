@@ -35,7 +35,8 @@ internal sealed class UpdateCaseDataHandler
                 CaseStateId = entity.State,
                 ClientName = $"{entity.FirstNameNaturalPerson} {entity.Name}",
                 ProductTypeId = request.Data.ProductTypeId,
-                CaseOwnerUserId = entity.OwnerUserId
+                CaseOwnerUserId = entity.OwnerUserId,
+                IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested
             }, cancellation);
         }
 

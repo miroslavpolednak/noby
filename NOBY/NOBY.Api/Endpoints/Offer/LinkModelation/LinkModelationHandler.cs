@@ -31,7 +31,7 @@ internal class LinkModelationHandler
             {
                 DateOfBirthNaturalPerson = request.DateOfBirth,
                 FirstNameNaturalPerson = request.FirstName ?? "",
-                Name = request.LastName ?? ""
+                Name = request.LastName ?? "",
             }, cancellationToken);
         }
     }
