@@ -125,6 +125,7 @@ internal sealed class GetCaseParametersHandler
             // FixedRatePeriodRefix
             Cpm = userInstance?.CPM,
             Icp = userInstance?.ICP,
+            FirstAnnuityPaymentDate = offerInstance.SimulationResults.AnnuityPaymentsDateFrom
         };
     }
 
