@@ -96,6 +96,13 @@ internal sealed class CustomerWithChangedDataService
         newCustomer.Contacts = dsCustomer.Contacts?.ToResponseDto();
         newCustomer.Addresses = dsCustomer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList();
 
+        newCustomer.CustomerIdentification = new CustomerIdentificationMethod
+        {
+            CzechIdentificationNumber = dsCustomer.CustomerIdentification?.CzechIdentificationNumber,
+            IdentificationDate = dsCustomer.CustomerIdentification?.IdentificationDate,
+            IdentificationMethodId = dsCustomer.CustomerIdentification?.IdentificationMethodId
+        };
+
         return newCustomer;
     }
 

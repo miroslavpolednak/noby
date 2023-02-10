@@ -34,7 +34,7 @@ internal sealed class UpdateDetailWithChangesHandler
             RestrictionTypeId = request.LegalCapacity?.RestrictionTypeId,
             RestrictionUntil = request.LegalCapacity?.RestrictionUntil
         };
-
+        
         string? finalJson = null;
         if (((IDictionary<string, Object>)delta).Count > 0)
         {
