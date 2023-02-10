@@ -10,3 +10,6 @@ class Household(Base):
 
     def set_household_parameters(self, household_id: int, request: dict) -> dict:
         return self.put(str(household_id), request)
+
+    def set_household_customers(self, household_id: int, request: dict) -> dict:
+        return self.put(f'{household_id}/customers', request)

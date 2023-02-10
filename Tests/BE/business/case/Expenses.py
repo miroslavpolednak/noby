@@ -5,10 +5,10 @@ from common import Convertor
 from typing import List
 
 DISPATCHES = {
-            'saving_expense_amount': lambda value: Convertor.to_decimal(value),
-            'insurance_expense_amount': lambda value: Convertor.to_decimal(value),
-            'housing_expense_amount': lambda value: Convertor.to_decimal(value),
-            'other_expense_amount': lambda value: Convertor.to_decimal(value),
+            'saving_expense_amount': lambda value: Convertor.to_int(value),
+            'insurance_expense_amount': lambda value: Convertor.to_int(value),
+            'housing_expense_amount': lambda value: Convertor.to_int(value),
+            'other_expense_amount': lambda value: Convertor.to_int(value),
         }
 
 JSON_KEYS = ['savingExpenseAmount','insuranceExpenseAmount','housingExpenseAmount','otherExpenseAmount']

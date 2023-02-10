@@ -2,63 +2,110 @@
 import _setup
 # ----------------------------
 
-import json
+# https://fat.noby.cz/undefined#/
+
 from typing import List
 
 from business.codebooks import EProductType, ELoanKind, EHouseholdType
 from fe_api import FeAPI
 
-from business.base import Base
 from business.offer import Offer
 from business.case import Case
 
 from tests.tuning.OptionsResolver import OptionsResolver
 from tests.tuning.data import load_file_json
 
+
+# --------------------------------------------------------------------------------------------------------------
+# Processing data helpers
+# --------------------------------------------------------------------------------------------------------------
+
+KEY_TEST_DATA = 'TEST_DATA'
+KEY_OFFER_ID = 'KEY_OFFER_ID'
+KEY_CASE_ID = 'CASE_ID'
+KEY_SALES_ARRAMGEMENT_ID = 'SALES_ARRAMGEMENT_ID'
+KEY_HOUSEHOLD_ID = 'HOUSEHOLD_ID'
+KEY_CUSTOMER_ON_SA_ID = 'CUSTOMER_ON_SA_ID'
+
+def initKey(entity_json: dict, key: str, value = dict()):
+    if entity_json is None:
+        return entity_json
+
+    if key not in entity_json:
+        entity_json[key] = value
+
+    if entity_json[key] is None:
+        entity_json[key] = value
+
+    return entity_json[key]
+
+def getKey(entity_json: dict, key: str, default = None):
+    if entity_json is None:
+        return None
+
+    if key not in entity_json:
+        return default
+
+    if entity_json[key] is None:
+        return default
+
+    return entity_json[key]
+
+def setTestKey(entity_json: dict, key: str, value: object ) -> dict:
+    if entity_json is None:
+        return entity_json
+
+    if KEY_TEST_DATA not in entity_json:
+        entity_json[KEY_TEST_DATA] = dict()
+    
+    entity_json[KEY_TEST_DATA][key] = value
+
+    return entity_json
+
+def getTestKey(entity_json: dict, key: str) -> object:
+    if entity_json is None:
+        return entity_json
+
+    if KEY_TEST_DATA not in entity_json:
+        return None
+
+    if key not in entity_json[KEY_TEST_DATA]:
+        return None
+    
+    return entity_json[KEY_TEST_DATA][key]
+
+# --------------------------------------------------------------------------------------------------------------
+
 test_data: dict = load_file_json()
 #print(test_data)
 
-js_dict = test_data['offer']
+# js_dict = test_data['offer']
 
-#print(','.join(list(map(lambda k: f"'{k}'", list(js_dict.keys())))) )
+# #print(','.join(list(map(lambda k: f"'{k}'", list(js_dict.keys())))) )
 
-offer = Offer.from_json(js_dict)
-print(offer)
-print(offer.to_grpc())
-print(Offer.to_grpc(offer))
-
-js_dict = dict(
-    offer = test_data['offer'],
-    households = test_data['households'],
-    parameters = test_data['parameters'],
-    )
-
-case = Case.from_json(js_dict)
-print(case)
+# offer = Offer.from_json(js_dict)
+# print(offer)
+# print(offer.to_grpc())
+# print(Offer.to_grpc(offer))
 
 case = Case.from_json(test_data)
 print(case)
 
+case_json: dict = case.to_json_value()
+offer_json: dict = getKey(case_json, 'offer')
 
 # --------------------------------------------------------------------------------------------------------------
 # FeAPI - process OFFER
 # --------------------------------------------------------------------------------------------------------------
-
-offer = case.get_value('offer')
-req = offer.to_json_value()
-#print(req)
-
-#req = test_data['offer']
-#print(test_data['offer'])
+req = offer_json
 
 # call FE API endpoint 
 print(f'process_offer.req [{req}]')
 res = FeAPI.Offer.simulate_mortgage(req)
 print(f'process_offer.res [{res}]')
 
-offer_id = res['offerId']
-print(offer_id)
-
+# set test data
+setTestKey(offer_json, KEY_OFFER_ID, res['offerId'])
 
 # response serialization & persistence
 #res_str = json.dumps(res)
@@ -67,35 +114,272 @@ print(offer_id)
 # FeAPI - process CASE
 # --------------------------------------------------------------------------------------------------------------
 
-households = case.get_value('households')
-household_main = list(filter(lambda i: i.get_value('householdTypeId') == 1, households))[0]
-household_main_customer1 = household_main.get_value('customer1')
+def create_customers(household_json: dict):
+    household_id: int = getTestKey(household_json, KEY_HOUSEHOLD_ID)
 
-print(households)
-print(household_main)
-print(household_main_customer1)
+    def get_req_customer(customer_json: dict) -> dict:
 
-customer_json = household_main_customer1.to_json_value()
-print(customer_json)
+        if (customer_json is None):
+            return None
 
-req = dict(
-    offerId = offer_id,
-    firstName = customer_json['firstName'],
-    lastName = customer_json['lastName'],
-    dateOfBirth = customer_json['dateOfBirth'],
-    phoneNumberForOffer = customer_json['phoneNumberForOffer'],
-    emailForOffer = customer_json['emailForOffer'],
-    identity = customer_json['identity'],
-)
+        customer_on_sa_id: int = getTestKey(customer_json, KEY_CUSTOMER_ON_SA_ID)
+        identity: dict = getKey(customer_json, 'identity', None)
 
-# call FE API endpoint
-print(f'process_case.req [{req}]')
-res = FeAPI.Offer.create_case(req)
-print(f'process_case.res [{res}]')
+        customer = dict(
+            customerOnSAId = customer_on_sa_id,
+            firstName = getKey(customer_json, 'firstName', ''),
+            lastName = getKey(customer_json, 'lastName', ''),
+            incomes = [],
+            roleId = 1, #""""
+            identities = [] if identity is None else [identity],
+            obligations = [],
+        )
 
-#{'offerId': 691, 'firstName': 'JAN', 'lastName': 'NOVÁK', 'dateOfBirth': '1980-01-01T00:00:00', 'phoneNumberForOffer': '+420 777543234', 'emailForOffer': 'novak@testcm.cz', 'identity': {'id': 0, 'scheme': 0}}
+        return customer
+
+    req = dict(
+        householdId = household_id,
+        customer1 = get_req_customer(household_json['customer1']),
+        customer2 = get_req_customer(household_json['customer2']),
+    )
+
+    print(f'process_household.req [{req}]')
+    res = FeAPI.Household.set_household_customers(household_id, req)
+    print(f'process_household.res [{res}]')
+
+    # set test data (ids of customers on SA)
+    setTestKey(household_json['customer1'], KEY_CUSTOMER_ON_SA_ID, res['customerOnSAId1'])
+    if household_json['customer2'] is not None:
+        setTestKey(household_json['customer2'], KEY_CUSTOMER_ON_SA_ID, res['customerOnSAId2'])
+
+def create_households(case_json: dict):
+
+    sales_arrangement_id = getTestKey(case_json, KEY_SALES_ARRAMGEMENT_ID)
+
+    household_by_type: dict = dict()
+
+    # create households
+    for household_json in case_json['households']:
+        household_id: int = getTestKey(household_json, KEY_HOUSEHOLD_ID)
+        household_type_id = household_json['householdTypeId']
+
+        household_by_type[household_type_id] = household_json
+
+        if household_id is None:
+            req = dict(
+                salesArrangementId = sales_arrangement_id,
+                householdTypeId = household_type_id
+            )
+
+            # call FE API endpoint
+            print(f'process_household.req [{req}]')
+            res = FeAPI.Household.create_household(req)
+            print(f'process_household.res [{res}]')
+
+            household_id = res['householdId']
+            setTestKey(household_json, KEY_HOUSEHOLD_ID, household_id)
+
+        expenses_json = getKey(household_json, 'expenses')
+        req = dict(
+            data = dict(
+                childrenUpToTenYearsCount = getKey(household_json, 'childrenUpToTenYearsCount', 0),
+                childrenOverTenYearsCount = getKey(household_json, 'childrenOverTenYearsCount', 0),
+                areCustomersPartners = getKey(household_json, 'areCustomersPartners', False),
+            ),
+            expenses = dict(
+                savingExpenseAmount = getKey(expenses_json, 'savingExpenseAmount', None),
+                insuranceExpenseAmount = getKey(expenses_json, 'insuranceExpenseAmount', None),
+                housingExpenseAmount = getKey(expenses_json, 'housingExpenseAmount', None),
+                otherExpenseAmount = getKey(expenses_json, 'otherExpenseAmount', None),
+            )
+        )
+
+        # call FE API endpoint
+        print(f'process_household.req [{req}]')
+        res = FeAPI.Household.set_household_parameters(household_id, req)
+        print(f'process_household.res [{res}]')
+        
+    # set test data (ids of customers)
+    customers = FeAPI.SalesArrangement.get_customers(sales_arrangement_id)
+    for c in customers:
+        customer_on_sa_id = c['id']
+        household_type_id = c['customerRoleId']
+        household_json = household_by_type[household_type_id]
+        household_customer_json = initKey(household_json,'customer1')
+        setTestKey(household_customer_json, KEY_CUSTOMER_ON_SA_ID, customer_on_sa_id)
+
+    # create customers for households
+    for household_json in case_json['households']:
+        create_customers(household_json)
+
+def create_case(case_json: dict, offer_id: int):
+    
+    household_json = list(filter(lambda i: int(i['householdTypeId']) == EHouseholdType.Main.value, case_json['households']))[0]
+    customer_json = getKey(household_json,'customer1')
+
+    req = dict(
+        offerId = offer_id,
+        firstName = getKey(customer_json, 'firstName', ''),
+        lastName = getKey(customer_json, 'lastName', ''),
+        dateOfBirth = getKey(customer_json, 'dateOfBirth'),
+        phoneNumberForOffer = getKey(customer_json, 'phoneNumberForOffer'),
+        emailForOffer = getKey(customer_json, 'emailForOffer'),
+        identity = getKey(customer_json, 'identity'),
+    )
+
+    # call FE API endpoint
+    print(f'process_case.req [{req}]')
+    res = FeAPI.Offer.create_case(req)
+    print(f'process_case.res [{res}]')
+
+    # set test data
+    setTestKey(case_json, KEY_CASE_ID, res['caseId'])
+    setTestKey(case_json, KEY_SALES_ARRAMGEMENT_ID, res['salesArrangementId'])
+
+    setTestKey(household_json, KEY_HOUSEHOLD_ID, res['householdId'])
+    setTestKey(customer_json, KEY_CUSTOMER_ON_SA_ID, res['customerOnSAId'])
+
+    # create households
+    create_households(case_json)
+
+# --------------------------------------------------------------------------------------------------------------
+
+offer_id: int = getTestKey(offer_json, KEY_OFFER_ID)
+create_case(case_json, offer_id)
+
+case_id: int = getTestKey(case_json, KEY_CASE_ID)
+print(f'https://fat.noby.cz/undefined#/mortgage/case-detail/{case_id}')
+
+# --------------------------------------------------------------------------------------------------------------
 
 
+# --------------------------------------------------------------------------------------------------------------
+# FeAPI - process CASE HOUSEHOLD
+# --------------------------------------------------------------------------------------------------------------
+
+# def toReqPostIncome(income: Income) -> dict:
+#     if income is None:
+#         return None
+
+#     income_json = income.to_json_value()
+
+#     data: dict = None
+
+  
+#     # JSON_KEYS = ['incomeSource','hasProofOfIncome','incomeTypeId','sum','currencyCode']
+#     return dict(
+#         sum = income_json['sum'],
+#         currencyCode = income_json['currencyCode'],
+#         incomeTypeId = income_json['incomeTypeId'],
+#         data = data
+#     )
+
+# def toReqPostObligation(obligation: Obligation) -> dict:
+#     if obligation is None:
+#         return None
+
+#     obligation_json = obligation.to_json_value()
+
+#     creditor: dict = None
+#     if 'creditor' in obligation_json:
+#         creditor_json = obligation_json['creditor']
+#         creditor = dict(
+#             name = creditor_json['name'],
+#             isExternal = creditor_json['isExternal'],
+#         )
+        
+#     correction: dict = None
+#     if 'correction' in obligation_json:
+#         correction_json = obligation_json['correction']
+#         correction = dict(
+#             correctionTypeId = correction_json['correctionTypeId'],
+#             installmentAmountCorrection = correction_json['installmentAmountCorrection'],
+#             loanPrincipalAmountCorrection = correction_json['loanPrincipalAmountCorrection'],
+#             creditCardLimitCorrection = correction_json['creditCardLimitCorrection'],
+#         )
+
+#     # JSON_KEYS = ['obligationTypeId', 'installmentAmount', 'loanPrincipalAmount','creditor','correction']
+#     return dict(
+#         obligationTypeId = obligation_json['obligationTypeId'],
+#         installmentAmount = obligation_json['installmentAmount'],
+#         loanPrincipalAmount = obligation_json['loanPrincipalAmount'],
+#         creditor = creditor,
+#         correction = correction,
+#     )
+
+# def setCustomer(customer: dict, customer_id: int = None):
+#     print(f'setCustomer: {customer_id} [{customer}')
+
+#     incomes = customer.get_value('incomes')
+#     if incomes is not None:
+#         for i in incomes:
+#             req = toReqPostIncome(i)
+#             # call FE API endpoint
+#             print(f'process_income.req [{req}]')
+#             res = FeAPI.CustomerOnSa.create_income(customer_id, req)
+#             print(f'process_income.res [{res}]')
+
+#     obligations = customer.get_value('obligations')
+#     if obligations is not None:
+#         for o in obligations:
+#             req = toReqPostObligation(o)
+#             # call FE API endpoint
+#             print(f'process_obligation.req [{req}]')
+#             res = FeAPI.CustomerOnSa.create_obligation(customer_id, req)
+#             print(f'process_obligation.res [{res}]')
+
+# def addHousehold(household: dict, household_id: int = None):
+#     is_main = household.get_value('householdTypeId') == EHouseholdType.Main.value
+
+#     customer1 = household.get_value('customer1')
+#     customer1_id = customer_on_sa_id if is_main else None
+#     setCustomer(customer1, customer1_id)
+
+#     customer2 = household.get_value('customer2')
+#     if (customer2 is not None):
+#         setCustomer(customer2, None)
+
+#     household_json = household.to_json_value()
+#     data = dict(
+#         childrenUpToTenYearsCount = household_json['childrenUpToTenYearsCount'],
+#         childrenOverTenYearsCount = household_json['childrenOverTenYearsCount'],
+#         areCustomersPartners = household_json['areCustomersPartners'],
+#         expenses = household_json['expenses'],
+#     )
+
+#     req = dict(data = data)
+#     # call FE API endpoint
+#     print(f'process_household.req [{req}]')
+#     res = FeAPI.Household.set_household_parameters(household_id, req)
+#     print(f'process_household.res [{res}]')
+
+# def setHousehold(household_json: dict):
+
+#     household_id: int = getTestKey(household_json, KEY_HOUSEHOLD_ID)
+
+#     req = household_json.copy()
+#     req['householdId'] = household_id
+#     req['customer1']['customerOnSAId'] = getTestKey(req['customer1'], KEY_CUSTOMER_ON_SA_ID)
+
+#     print(f'process_household.req [{req}]')
+#     res = FeAPI.Household.set_household_customers(household_id, req)
+#     print(f'process_household.res [{res}]')
+
+#     setTestKey(household_json['customer2'], KEY_CUSTOMER_ON_SA_ID, res['customerOnSAId2'])
+
+#     data = dict(
+#         childrenUpToTenYearsCount = household_json['childrenUpToTenYearsCount'],
+#         childrenOverTenYearsCount = household_json['childrenOverTenYearsCount'],
+#         areCustomersPartners = household_json['areCustomersPartners'],
+#         expenses = household_json['expenses'],
+#     )
+
+#     req = dict(data = data)
+
+#     # call FE API endpoint
+#     print(f'process_household.req [{req}]')
+#     res = FeAPI.Household.set_household_parameters(household_id, req)
+#     print(f'process_household.res [{res}]')
 
 
 # --------------------------------------------------------------------------------------------------------------

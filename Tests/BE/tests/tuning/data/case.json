@@ -50,8 +50,8 @@
         {
             "householdTypeId": 1,
             "childrenUpToTenYearsCount": 1,
-            "childrenOverTenYearsCount": 1,
-            "areCustomersPartners": false,
+            "childrenOverTenYearsCount": 2,
+            "areCustomersPartners": true,
             "customer1": {
                 "firstName": "JAN",
                 "lastName": "Novák",
@@ -71,6 +71,47 @@
                         "incomeTypeId": 1,
                         "sum": 50000,
                         "currencyCode": "CZK"
+                    },
+                    {
+                        "sum": 50000,
+                        "currencyCode": "CZK",
+                        "incomeTypeId": 1,
+                        "data": {
+                            "employer": {
+                                "name": "Agro",
+                                "cin": "123",
+                                "birthNumber": null,
+                                "countryId": 16
+                            },
+                            "job": {
+                                "jobDescription": null,
+                                "firstWorkContractSince": null,
+                                "employmentTypeId": null,
+                                "currentWorkContractSince": null,
+                                "currentWorkContractTo": null,
+                                "grossAnnualIncome": null,
+                                "isInTrialPeriod": false,
+                                "isInProbationaryPeriod": false
+                            },
+                            "wageDeduction": {
+                                "deductionDecision": null,
+                                "deductionPayments": null,
+                                "deductionOther": null
+                            },
+                            "incomeConfirmation": {
+                                "confirmationDate": null,
+                                "confirmationPerson": null,
+                                "confirmationContact": null,
+                                "isIssuedByExternalAccountant": false
+                            },
+                            "hasProofOfIncome": false,
+                            "foreignIncomeTypeId": null,
+                            "hasWageDeduction": false,
+                            "cin": null,
+                            "birthNumber": null,
+                            "countryOfResidenceId": null,
+                            "incomeOtherTypeId": null
+                        }
                     }
                 ],
                 "obligations": [
@@ -109,6 +150,12 @@
                 "housingExpenseAmount": 10000,
                 "otherExpenseAmount": 7500
             }
+        },
+        {
+            "householdTypeId": 2
+        },
+        {
+            "householdTypeId": 128
         }
     ],
     "parameters": {
