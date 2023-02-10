@@ -460,6 +460,9 @@ namespace ExternalServices.MpHome.V1_1.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"MPHome_UnsecuredLoan")]
         MPHome_UnsecuredLoan = 6,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"StarBuildHF")]
+        StarBuildHF = 7,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -670,6 +673,9 @@ namespace ExternalServices.MpHome.V1_1.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"ResidencePermit")]
         ResidencePermit = 3,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"Foreign")]
+        Foreign = 4,
+
     }
 
     /// <summary>
@@ -796,6 +802,29 @@ namespace ExternalServices.MpHome.V1_1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class LoanPurpose
+    {
+        /// <summary>
+        /// Suma
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("amount")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public double Amount { get; set; } = default!;
+
+        /// <summary>
+        /// ID účelu úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPurposeId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public int LoanPurposeId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     internal partial class LoanRequest
     {
         /// <summary>
@@ -904,13 +933,76 @@ namespace ExternalServices.MpHome.V1_1.Contracts
         public System.DateTime? FirstRequestSignDate { get; set; } = default!;
 
         /// <summary>
-        /// IdPoradce
+        /// IdPoradce (v33id)
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("consultantId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public long? ConsultantId { get; set; } = default!;
+
+        /// <summary>
+        /// Účet pro splácení - číslo
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentAccountNumber")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? RepaymentAccountNumber { get; set; } = default!;
+
+        /// <summary>
+        /// Účet pro splácení - předčíslí
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentAccountPrefix")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? RepaymentAccountPrefix { get; set; } = default!;
+
+        /// <summary>
+        /// Účet pro splácení - banka
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentAccountBank")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? RepaymentAccountBank { get; set; } = default!;
+
+        /// <summary>
+        /// Den splácení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("installmentDay")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public int? InstallmentDay { get; set; } = default!;
+
+        /// <summary>
+        /// Účely úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPurposes")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.Collections.Generic.ICollection<LoanPurpose>? LoanPurposes { get; set; } = default!;
+
+        /// <summary>
+        /// Typ produktu uv
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("productCodeUv")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public int? ProductCodeUv { get; set; } = default!;
+
+        /// <summary>
+        /// ID pobočky obsluhy (v33id)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("serviceBranchId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public long? ServiceBranchId { get; set; } = default!;
 
         /// <summary>
         /// ID spoření
@@ -1122,13 +1214,76 @@ namespace ExternalServices.MpHome.V1_1.Contracts
         public System.DateTime? FirstRequestSignDate { get; set; } = default!;
 
         /// <summary>
-        /// IdPoradce
+        /// IdPoradce (v33id)
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("consultantId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public long? ConsultantId { get; set; } = default!;
+
+        /// <summary>
+        /// Účet pro splácení - číslo
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentAccountNumber")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? RepaymentAccountNumber { get; set; } = default!;
+
+        /// <summary>
+        /// Účet pro splácení - předčíslí
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentAccountPrefix")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? RepaymentAccountPrefix { get; set; } = default!;
+
+        /// <summary>
+        /// Účet pro splácení - banka
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentAccountBank")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? RepaymentAccountBank { get; set; } = default!;
+
+        /// <summary>
+        /// Den splácení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("installmentDay")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public int? InstallmentDay { get; set; } = default!;
+
+        /// <summary>
+        /// Účely úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPurposes")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.Collections.Generic.ICollection<LoanPurpose>? LoanPurposes { get; set; } = default!;
+
+        /// <summary>
+        /// Typ produktu uv
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("productCodeUv")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public int? ProductCodeUv { get; set; } = default!;
+
+        /// <summary>
+        /// ID pobočky obsluhy (v33id)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("serviceBranchId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public long? ServiceBranchId { get; set; } = default!;
 
         /// <summary>
         /// definuje vztah úvěru k dalším osobám
@@ -1329,6 +1484,15 @@ namespace ExternalServices.MpHome.V1_1.Contracts
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public long? KbId { get; set; } = default!;
 
+        /// <summary>
+        /// KYC Status
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("kycStatus")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public int? KycStatus { get; set; } = default!;
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1494,6 +1658,15 @@ namespace ExternalServices.MpHome.V1_1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public long? KbId { get; set; } = default!;
+
+        /// <summary>
+        /// KYC Status
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("kycStatus")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public int? KycStatus { get; set; } = default!;
 
         /// <summary>
         /// Seznam dokladů
@@ -1676,6 +1849,15 @@ namespace ExternalServices.MpHome.V1_1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public long? KbId { get; set; } = default!;
+
+        /// <summary>
+        /// KYC Status
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("kycStatus")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public int? KycStatus { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("dataSource")]
 
