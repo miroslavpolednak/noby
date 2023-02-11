@@ -6,14 +6,17 @@ option csharp_namespace = "DomainServices.CustomerService.Contracts.V1";
 import "Messages/ProfileCheck.proto";
 import "Messages/CreateCustomer.proto";
 import "Messages/UpdateCustomer.proto";
+import "Messages/UpdateCustomerIdentifiers.proto";
 import "Messages/CustomerDetail.proto";
 import "Messages/CustomerList.proto";
 import "Messages/SearchCustomers.proto";
+import "google/protobuf/empty.proto";
 
 service CustomerService {
    rpc ProfileCheck(ProfileCheckRequest) returns (ProfileCheckResponse);
    rpc CreateCustomer(CreateCustomerRequest) returns (CreateCustomerResponse);
    rpc UpdateCustomer(UpdateCustomerRequest) returns (UpdateCustomerResponse);
+   rpc UpdateCustomerIdentifiers(UpdateCustomerIdentifiersRequest) returns (google.protobuf.Empty);
    rpc GetCustomerDetail(CustomerDetailRequest) returns (CustomerDetailResponse);
    rpc GetCustomerList(CustomerListRequest) returns (CustomerListResponse);
    rpc SearchCustomers(SearchCustomersRequest) returns (SearchCustomersResponse);

@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "Mandants.proto";
+import "Identity.proto";
+
+message UpdateCustomerIdentifiersRequest {
+	cis.types.Mandants Mandant = 1;
+
+	repeated cis.types.Identity CustomerIdentities = 2;
+}
