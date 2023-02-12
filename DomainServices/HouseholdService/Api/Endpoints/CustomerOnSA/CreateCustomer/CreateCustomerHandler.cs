@@ -1,6 +1,7 @@
 ﻿using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
+using Google.Protobuf;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
 
@@ -51,6 +52,24 @@ internal sealed class CreateCustomerHandler
         {
             await _updateService.GetCustomerAndUpdateEntity(entity, entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb).IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellationToken);
         }
+
+        // additional data
+        // https://jira.kb.cz/browse/HFICH-4551
+        CustomerAdditionalData additionalData = new()
+        {
+            IsAddressWhispererUsed = false,
+            HasRelationshipWithKB = false,
+            HasRelationshipWithKBEmployee = false,
+            HasRelationshipWithCorporate = false,
+            IsPoliticallyExposed = false,
+            IsUSPerson = false,
+            LegalCapacity = new()
+            {
+                RestrictionTypeId = 2
+            }
+        };
+        entity.AdditionalData = Newtonsoft.Json.JsonConvert.SerializeObject(additionalData);
+        entity.AdditionalDataBin = additionalData.ToByteArray();
 
         // ulozit do DB
         _dbContext.Customers.Add(entity);

@@ -29,16 +29,6 @@ internal sealed class CustomerWithChangedDataService
         // convert DS contract to FE model
         var model = await GetCustomerFromCM<TResponse>(customerOnSA, cancellationToken);
 
-        // https://jira.kb.cz/browse/HFICH-4200
-        if (customerOnSA.CustomerAdditionalData?.LegalCapacity is not null)
-        {
-            model.LegalCapacity = new()
-            {
-                RestrictionTypeId = customerOnSA.CustomerAdditionalData.LegalCapacity.RestrictionTypeId,
-                RestrictionUntil = customerOnSA.CustomerAdditionalData.LegalCapacity.RestrictionUntil
-            };
-        }
-
         // changed data already exist in database
         if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
         {
@@ -56,18 +46,26 @@ internal sealed class CustomerWithChangedDataService
 
             // https://jira.kb.cz/browse/HFICH-4200
             // docasne reseni nez se CM rozmysli jak na to
-            changedData.LegalCapacity = new()
-            {
-                RestrictionTypeId = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionTypeId,
-                RestrictionUntil = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionUntil
-            };
+            changedData.LegalCapacity = overwriteLegalCapacity(customerOnSA);
 
             return changedData;
         }
         else
         {
+            model.LegalCapacity = overwriteLegalCapacity(customerOnSA);
             return model;
         }
+    }
+
+    // https://jira.kb.cz/browse/HFICH-4200
+    // docasne reseni nez se CM rozmysli jak na to
+    private static LegalCapacityItem overwriteLegalCapacity(DomainServices.HouseholdService.Contracts.CustomerOnSA customerOnSA)
+    {
+        return new LegalCapacityItem()
+        {
+            RestrictionTypeId = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionTypeId,
+            RestrictionUntil = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionUntil
+        };
     }
 
     private static TCustomerDetail fillResponseDto<TCustomerDetail>(DomainServices.CustomerService.Contracts.CustomerDetailResponse dsCustomer)
@@ -84,12 +82,16 @@ internal sealed class CustomerWithChangedDataService
         //person.NetMonthEarningTypeId = customer.NaturalPerson ?;
 
         newCustomer.IsBrSubscribed = dsCustomer.NaturalPerson?.IsBrSubscribed;
-        //newCustomer.HasRelationshipWithCorporate = customer.NaturalPerson?.HasRelationshipWithCorporate,
-        //newCustomer.HasRelationshipWithKB = customer.NaturalPerson?.HasRelationshipWithKB,
-        //newCustomer.HasRelationshipWithKBEmployee = customer.NaturalPerson?.HasRelationshipWithKBEmployee,
-        //newCustomer.IsUSPerson = customer.NaturalPerson?.IsUSPerson,
-        //newCustomer.IsAddressWhispererUsed = customer.NaturalPerson?.AddressWhispererUsed,
-        //newCustomer.IsPoliticallyExposed = customer.NaturalPerson?.IsPoliticallyExposed,
+        
+        // fill defaults
+        // https://jira.kb.cz/browse/HFICH-4551
+        newCustomer.HasRelationshipWithCorporate = false;
+        newCustomer.HasRelationshipWithKB = false;
+        newCustomer.HasRelationshipWithKBEmployee = false;
+        newCustomer.IsUSPerson = false;
+        newCustomer.IsAddressWhispererUsed = false;
+        newCustomer.IsPoliticallyExposed = false;
+
         newCustomer.NaturalPerson = person;
         newCustomer.JuridicalPerson = null;
         newCustomer.IdentificationDocument = dsCustomer.IdentificationDocument?.ToResponseDto();
