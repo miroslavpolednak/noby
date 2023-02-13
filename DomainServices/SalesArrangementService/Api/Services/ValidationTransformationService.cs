@@ -87,8 +87,15 @@ internal sealed partial class ValidationTransformationServiceFactory
             else if (titem.AlterSeverity == Database.FormValidationTransformationAlterSeverity.AlterToWarning)
                 message.Severity = Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
             else
-                message.Severity = item.ErrorQueue == "A" ? Contracts.ValidationMessageNoby.Types.NobySeverity.Error : Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
-
+            {
+                message.Severity = item.ErrorQueue switch
+                {
+                    "A" => Contracts.ValidationMessageNoby.Types.NobySeverity.Error,
+                    "I" => Contracts.ValidationMessageNoby.Types.NobySeverity.Warning,
+                    _ => Contracts.ValidationMessageNoby.Types.NobySeverity.None
+                };
+            }
+            
             return message;
 
             string getMessage()

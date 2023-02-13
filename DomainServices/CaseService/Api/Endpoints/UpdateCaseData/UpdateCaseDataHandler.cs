@@ -29,29 +29,40 @@ internal sealed class UpdateCaseDataHandler
         // pokud se zmenil IsEmployeeBonusRequested, zavolat EAS
         if (bonusChanged)
         {
-            await _mediator.Publish(new Notifications.CaseStateChangedNotification
+            try
             {
-                CaseId = request.CaseId,
-                CaseStateId = entity.State,
-                ClientName = $"{entity.FirstNameNaturalPerson} {entity.Name}",
-                ProductTypeId = request.Data.ProductTypeId,
-                CaseOwnerUserId = entity.OwnerUserId,
-                IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested
-            }, cancellation);
+                await _mediator.Publish(new Notifications.CaseStateChangedNotification
+                {
+                    CaseId = request.CaseId,
+                    CaseStateId = entity.State,
+                    ClientName = $"{entity.FirstNameNaturalPerson} {entity.Name}",
+                    ProductTypeId = request.Data.ProductTypeId,
+                    CaseOwnerUserId = entity.OwnerUserId,
+                    IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested
+                }, cancellation);
+            }
+            catch (Exception ex)
+            {
+                // pouze logujeme!
+                _logger.CaseStateChangedFailed(request.CaseId, ex);
+            }
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private readonly ILogger<UpdateCaseDataHandler> _logger;
     private readonly IMediator _mediator;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly CaseServiceDbContext _dbContext;
 
     public UpdateCaseDataHandler(
+        ILogger<UpdateCaseDataHandler> logger,
         IMediator mediator,
         CodebookService.Clients.ICodebookServiceClients codebookService,
         CaseServiceDbContext dbContext)
     {
+        _logger = logger;
         _mediator = mediator;
         _codebookService = codebookService;
         _dbContext = dbContext;
