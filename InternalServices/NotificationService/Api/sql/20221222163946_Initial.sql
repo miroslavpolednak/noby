@@ -20,7 +20,7 @@ CREATE TABLE [EmailResult] (
     [IdentityScheme] nvarchar(450) NULL,
     [DocumentId] nvarchar(450) NULL,
     [RequestTimestamp] datetime2 NULL,
-    [HandoverToMcsTimestamp] datetime2 NULL,
+    [ResultTimestamp] datetime2 NULL,
     [Errors] nvarchar(max) NOT NULL,
     CONSTRAINT [PK_EmailResult] PRIMARY KEY ([Id])
     );
@@ -35,7 +35,7 @@ CREATE TABLE [SmsResult] (
     [IdentityScheme] nvarchar(450) NULL,
     [DocumentId] nvarchar(450) NULL,
     [RequestTimestamp] datetime2 NULL,
-    [HandoverToMcsTimestamp] datetime2 NULL,
+    [ResultTimestamp] datetime2 NULL,
     [Errors] nvarchar(max) NOT NULL,
     [Text] nvarchar(max) NOT NULL,
     [CountryCode] nvarchar(max) NOT NULL,

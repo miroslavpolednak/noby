@@ -23,7 +23,7 @@ public abstract class Result
     
     public DateTime? RequestTimestamp { get; set; }
     
-    public DateTime? HandoverToMcsTimestamp { get; set; }
+    public DateTime? ResultTimestamp { get; set; }
     
     public string Errors { get; set; } = null!;
     

@@ -76,6 +76,8 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         result.CustomId = request.CustomId;
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
+
+        result.CreatedBy = "todo";
         
         try
         {

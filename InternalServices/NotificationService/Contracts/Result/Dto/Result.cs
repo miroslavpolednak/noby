@@ -34,7 +34,7 @@ public class Result
     public RequestData RequestData { get; set; } = null!;
     
     [ProtoMember(10)]
-    public DateTime? HandoverToMcsTimestamp { get; set; }
+    public DateTime? ResultTimestamp { get; set; }
 
     [ProtoMember(11)]
     public string CreatedBy { get; set; } = null!;

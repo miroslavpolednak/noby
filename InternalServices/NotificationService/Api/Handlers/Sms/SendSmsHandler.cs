@@ -53,11 +53,14 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         result.CustomId = request.CustomId;
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
-        
+
+        result.Type = result.Type;
         result.Text = request.Text;
         result.CountryCode = request.Phone.CountryCode;
         result.PhoneNumber = request.Phone.NationalNumber;
 
+        result.CreatedBy = "todo";
+        
         try
         {
             await _repository.AddResult(result, cancellationToken);

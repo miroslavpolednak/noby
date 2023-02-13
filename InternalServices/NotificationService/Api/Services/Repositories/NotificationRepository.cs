@@ -22,7 +22,7 @@ public class NotificationRepository
         Id = Guid.NewGuid(),
         Channel = NotificationChannel.Email, 
         State = NotificationState.InProgress,
-        HandoverToMcsTimestamp = null,
+        ResultTimestamp = null,
         ErrorSet = new HashSet<Contracts.Common.Error>(),
     };
 
@@ -31,7 +31,7 @@ public class NotificationRepository
         Id = Guid.NewGuid(),
         Channel = NotificationChannel.Sms,
         State = NotificationState.InProgress,
-        HandoverToMcsTimestamp = null,
+        ResultTimestamp = null,
         ErrorSet = new HashSet<Contracts.Common.Error>()
     };
 

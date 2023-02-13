@@ -42,7 +42,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
         try
         {
             var result = await _repository.GetResult(id, cancellationToken);
-            result.HandoverToMcsTimestamp = _dateTime.Now;
+            result.ResultTimestamp = _dateTime.Now;
             result.State = _map[report.state];
 
             // todo: extend result with Type, fetch codebook sms notification type by result type, if audit is enabled, log

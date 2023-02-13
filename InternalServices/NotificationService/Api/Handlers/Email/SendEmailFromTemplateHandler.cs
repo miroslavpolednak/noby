@@ -75,6 +75,8 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
         
+        result.CreatedBy = "todo";
+        
         try
         {
             await _repository.AddResult(result, cancellationToken);

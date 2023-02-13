@@ -42,7 +42,7 @@ public static class ResultMapper
                     Text = smsResult.Text
                 }
             },
-            HandoverToMcsTimestamp = smsResult.HandoverToMcsTimestamp,
+            ResultTimestamp = smsResult.ResultTimestamp,
             CreatedBy = smsResult.CreatedBy
         };
     }
@@ -63,7 +63,7 @@ public static class ResultMapper
             {
                 EmailData = new dto.EmailData()
             },
-            HandoverToMcsTimestamp = emailResult.HandoverToMcsTimestamp,
+            ResultTimestamp = emailResult.ResultTimestamp,
         };
     }
 }

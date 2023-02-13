@@ -41,7 +41,7 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("HandoverToMcsTimestamp")
+                    b.Property<DateTime?>("ResultTimestamp")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Identity")

@@ -70,11 +70,14 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         result.CustomId = request.CustomId;
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
-        
+
+        result.Type = request.Type;
         result.Text = text;
         result.CountryCode = request.Phone.CountryCode;
         result.PhoneNumber = request.Phone.NationalNumber;
 
+        result.CreatedBy = "todo";
+        
         try
         {
             await _repository.AddResult(result, cancellationToken);
