@@ -2,6 +2,7 @@
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using Newtonsoft.Json;
+using __Household = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateDetailWithChanges;
 
@@ -25,29 +26,42 @@ internal sealed class UpdateDetailWithChangesHandler
         ModelComparers.CompareObjects(request.Addresses, originalModel.Addresses, "Addresses", delta);
         ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
 
-        // https://jira.kb.cz/browse/HFICH-4200
-        // docasne reseni nez se CM rozmysli jak na to
-        if (customerOnSA.CustomerAdditionalData is null)
-            customerOnSA.CustomerAdditionalData = new DomainServices.HouseholdService.Contracts.CustomerAdditionalData();
-        customerOnSA.CustomerAdditionalData.LegalCapacity = new()
-        {
-            RestrictionTypeId = request.LegalCapacity?.RestrictionTypeId,
-            RestrictionUntil = request.LegalCapacity?.RestrictionUntil
-        };
-        
+        // vytvoreni JSONu z delta objektu
         string? finalJson = null;
         if (((IDictionary<string, Object>)delta).Count > 0)
         {
             finalJson = JsonConvert.SerializeObject(delta);
         }
 
-        var updateRequest = new DomainServices.HouseholdService.Contracts.UpdateCustomerDetailRequest
+        var updateRequest = new __Household.UpdateCustomerDetailRequest
         {
             CustomerOnSAId = customerOnSA.CustomerOnSAId,
             CustomerChangeData = finalJson,
-            CustomerAdditionalData = customerOnSA.CustomerAdditionalData
+            CustomerAdditionalData = createAdditionalData(customerOnSA, request)
         };
         await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
+    }
+
+    static __Household.CustomerAdditionalData createAdditionalData(__Household.CustomerOnSA customerOnSA, UpdateDetailWithChangesRequest request)
+    {
+        var additionalData = customerOnSA.CustomerAdditionalData is null ? new __Household.CustomerAdditionalData() : customerOnSA.CustomerAdditionalData;
+
+        // https://jira.kb.cz/browse/HFICH-4200
+        // docasne reseni nez se CM rozmysli jak na to
+        additionalData.LegalCapacity = new()
+        {
+            RestrictionTypeId = request.LegalCapacity?.RestrictionTypeId,
+            RestrictionUntil = request.LegalCapacity?.RestrictionUntil
+        };
+
+        additionalData.HasRelationshipWithCorporate = request.HasRelationshipWithCorporate.GetValueOrDefault();
+        additionalData.HasRelationshipWithKB = request.HasRelationshipWithKB.GetValueOrDefault();
+        additionalData.HasRelationshipWithKBEmployee = request.HasRelationshipWithKBEmployee.GetValueOrDefault();
+        additionalData.IsUSPerson = request.IsUSPerson.GetValueOrDefault();
+        additionalData.IsPoliticallyExposed = request.IsUSPerson.GetValueOrDefault();
+        additionalData.IsAddressWhispererUsed = request.IsAddressWhispererUsed.GetValueOrDefault();
+
+        return additionalData;
     }
 
     private readonly CustomerWithChangedDataService _changedDataService;

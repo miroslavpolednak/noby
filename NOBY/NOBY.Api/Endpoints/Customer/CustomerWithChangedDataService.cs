@@ -2,13 +2,15 @@
 using Newtonsoft.Json.Linq;
 using NOBY.Api.Endpoints.Customer.Shared;
 using NOBY.Api.SharedDto;
+using __Household = DomainServices.HouseholdService.Contracts;
+using __Customer = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer;
 
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class CustomerWithChangedDataService
 {
-    public async Task<TResponse> GetCustomerFromCM<TResponse>(DomainServices.HouseholdService.Contracts.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
+    public async Task<TResponse> GetCustomerFromCM<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
         where TResponse : Shared.BaseCustomerDetail
     {
         // kontrola identity KB
@@ -20,10 +22,10 @@ internal sealed class CustomerWithChangedDataService
         var customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
         // convert DS contract to FE model
-        return fillResponseDto<TResponse>(customer);
+        return fillResponseDto<TResponse>(customer, customerOnSA);
     }
 
-    public async Task<TResponse> GetCustomerWithChangedData<TResponse>(DomainServices.HouseholdService.Contracts.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
+    public async Task<TResponse> GetCustomerWithChangedData<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
         where TResponse : Shared.BaseCustomerDetail
     {
         // convert DS contract to FE model
@@ -42,33 +44,15 @@ internal sealed class CustomerWithChangedDataService
                 MergeNullValueHandling = MergeNullValueHandling.Merge
             });
 
-            var changedData = original.ToObject<TResponse>()!;
-
-            // https://jira.kb.cz/browse/HFICH-4200
-            // docasne reseni nez se CM rozmysli jak na to
-            changedData.LegalCapacity = overwriteLegalCapacity(customerOnSA);
-
-            return changedData;
+            return original.ToObject<TResponse>()!;
         }
         else
         {
-            model.LegalCapacity = overwriteLegalCapacity(customerOnSA);
             return model;
         }
     }
 
-    // https://jira.kb.cz/browse/HFICH-4200
-    // docasne reseni nez se CM rozmysli jak na to
-    private static LegalCapacityItem overwriteLegalCapacity(DomainServices.HouseholdService.Contracts.CustomerOnSA customerOnSA)
-    {
-        return new LegalCapacityItem()
-        {
-            RestrictionTypeId = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionTypeId,
-            RestrictionUntil = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionUntil
-        };
-    }
-
-    private static TCustomerDetail fillResponseDto<TCustomerDetail>(DomainServices.CustomerService.Contracts.CustomerDetailResponse dsCustomer)
+    private static TCustomerDetail fillResponseDto<TCustomerDetail>(__Customer.CustomerDetailResponse dsCustomer, __Household.CustomerOnSA customerOnSA)
         where TCustomerDetail : BaseCustomerDetail
     {
         var newCustomer = (TCustomerDetail)Activator.CreateInstance(typeof(TCustomerDetail))!;
@@ -80,17 +64,14 @@ internal sealed class CustomerWithChangedDataService
         //person.ProfessionId = customer.NaturalPerson ?;
         //person.NetMonthEarningAmountId = customer.NaturalPerson
         //person.NetMonthEarningTypeId = customer.NaturalPerson ?;
-
         newCustomer.IsBrSubscribed = dsCustomer.NaturalPerson?.IsBrSubscribed;
         
-        // fill defaults
-        // https://jira.kb.cz/browse/HFICH-4551
-        newCustomer.HasRelationshipWithCorporate = false;
-        newCustomer.HasRelationshipWithKB = false;
-        newCustomer.HasRelationshipWithKBEmployee = false;
-        newCustomer.IsUSPerson = false;
-        newCustomer.IsAddressWhispererUsed = false;
-        newCustomer.IsPoliticallyExposed = false;
+        newCustomer.HasRelationshipWithCorporate = customerOnSA.CustomerAdditionalData?.HasRelationshipWithCorporate;
+        newCustomer.HasRelationshipWithKB = customerOnSA.CustomerAdditionalData?.HasRelationshipWithKB;
+        newCustomer.HasRelationshipWithKBEmployee = customerOnSA.CustomerAdditionalData?.HasRelationshipWithKBEmployee;
+        newCustomer.IsUSPerson = customerOnSA.CustomerAdditionalData?.IsUSPerson;
+        newCustomer.IsAddressWhispererUsed = customerOnSA.CustomerAdditionalData?.IsAddressWhispererUsed;
+        newCustomer.IsPoliticallyExposed = customerOnSA.CustomerAdditionalData?.IsPoliticallyExposed;
 
         newCustomer.NaturalPerson = person;
         newCustomer.JuridicalPerson = null;
@@ -103,6 +84,14 @@ internal sealed class CustomerWithChangedDataService
             CzechIdentificationNumber = dsCustomer.CustomerIdentification?.CzechIdentificationNumber,
             IdentificationDate = dsCustomer.CustomerIdentification?.IdentificationDate,
             IdentificationMethodId = dsCustomer.CustomerIdentification?.IdentificationMethodId
+        };
+
+        // https://jira.kb.cz/browse/HFICH-4200
+        // docasne reseni nez se CM rozmysli jak na to
+        newCustomer.LegalCapacity = new LegalCapacityItem()
+        {
+            RestrictionTypeId = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionTypeId,
+            RestrictionUntil = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionUntil
         };
 
         return newCustomer;
