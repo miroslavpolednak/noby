@@ -28,11 +28,13 @@ public abstract class Result
     public string Errors { get; set; } = null!;
     
     [NotMapped]
-    public HashSet<string> ErrorSet
+    public HashSet<Contracts.Common.Error> ErrorSet
     {
-        get => JsonSerializer.Deserialize<HashSet<string>>(Errors)!;
+        get => JsonSerializer.Deserialize<HashSet<Contracts.Common.Error>>(Errors)!;
         set => Errors = JsonSerializer.Serialize(value);
     }
+    
+    public string CreatedBy { get; set; } = null!;
 
     public abstract Contracts.Result.Dto.Result ToDto();
 }

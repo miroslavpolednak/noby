@@ -38,10 +38,12 @@ public static class ResultMapper
                         CountryCode = smsResult.CountryCode,
                         NationalNumber = smsResult.PhoneNumber
                     },
+                    Type = smsResult.Type,
                     Text = smsResult.Text
                 }
             },
             HandoverToMcsTimestamp = smsResult.HandoverToMcsTimestamp,
+            CreatedBy = smsResult.CreatedBy
         };
     }
 
