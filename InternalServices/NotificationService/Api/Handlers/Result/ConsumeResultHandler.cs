@@ -42,15 +42,19 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
         try
         {
             var result = await _repository.GetResult(id, cancellationToken);
-            result.HandoverToMcsTimestamp = _dateTime.Now;
+            result.ResultTimestamp = _dateTime.Now;
             result.State = _map[report.state];
 
             // todo: extend result with Type, fetch codebook sms notification type by result type, if audit is enabled, log
             var errorCodes = report.notificationErrors?
-                .Select(e => e.code)
-                .ToHashSet() ?? Enumerable.Empty<string>();
+                .Select(e => new ResultError()
+                {
+                    Code = e.code,
+                    Message = e.message
+                })
+                .ToHashSet() ?? Enumerable.Empty<ResultError>();
             
-            var errorSet = new HashSet<string>();
+            var errorSet = new HashSet<ResultError>();
             errorSet.UnionWith(result.ErrorSet);
             errorSet.UnionWith(errorCodes);
             result.ErrorSet = errorSet;

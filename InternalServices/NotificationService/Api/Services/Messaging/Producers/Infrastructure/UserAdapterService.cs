@@ -7,12 +7,12 @@ using Microsoft.Extensions.Options;
 namespace CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 
 [ScopedService, SelfService]
-public class UserConsumerIdMapper
+public class UserAdapterService
 {
     private readonly IServiceUserAccessor _userAccessor;
     private Dictionary<string, string> _map;
 
-    public UserConsumerIdMapper(
+    public UserAdapterService(
         IServiceUserAccessor userAccessor,
         IOptions<AppConfiguration> options)
     {
@@ -22,13 +22,25 @@ public class UserConsumerIdMapper
 
     public string GetConsumerId()
     {
+        var username = GetUsername();
+
+        return _map[username];
+    }
+
+    public string GetUsername()
+    {
         var username = _userAccessor.User?.Name;
 
         if (string.IsNullOrEmpty(username) || !_map.ContainsKey(username))
         {
-            throw new CisAuthenticationException(username ?? "Unknown");
+            throw new CisAuthenticationException("/todo");
         }
 
-        return _map[username];
+        if (!_map.ContainsKey(username))
+        {
+            // todo: throw Authorization exception, username not allowed.
+        }
+
+        return username;
     }
 }
