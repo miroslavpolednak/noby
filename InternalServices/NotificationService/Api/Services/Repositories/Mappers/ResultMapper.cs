@@ -64,6 +64,7 @@ public static class ResultMapper
                 EmailData = new dto.EmailData()
             },
             ResultTimestamp = emailResult.ResultTimestamp,
+            CreatedBy = emailResult.CreatedBy
         };
     }
 }

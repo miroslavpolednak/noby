@@ -31,14 +31,14 @@ public class UserAdapterService
     {
         var username = _userAccessor.User?.Name;
 
-        if (string.IsNullOrEmpty(username) || !_map.ContainsKey(username))
+        if (string.IsNullOrEmpty(username))
         {
-            throw new CisAuthenticationException("/todo");
+            throw new CisAuthenticationException();
         }
 
         if (!_map.ContainsKey(username))
         {
-            // todo: throw Authorization exception, username not allowed.
+            throw new CisAuthorizationException($"Forbidden for username '{username}'.");
         }
 
         return username;
