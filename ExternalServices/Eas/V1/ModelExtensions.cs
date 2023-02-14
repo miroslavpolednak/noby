@@ -11,6 +11,7 @@ internal static class ModelExtensions
             case Dto.ClientDataModel.ClientTypes.PO:
                 return new S_KLIENTDATA
                 {
+                    kb_id = model.KbId,
                     klient_type = 2,
                     rodne_cislo_ico = model.Cin,
                     priezvisko = model.LastName
@@ -19,6 +20,7 @@ internal static class ModelExtensions
             case Dto.ClientDataModel.ClientTypes.FO:
                 return new S_KLIENTDATA
                 {
+                    kb_id = model.KbId,
                     klient_type = 1,
                     rodne_cislo_ico = model.BirthNumber,
                     priezvisko = model.LastName,
@@ -28,6 +30,7 @@ internal static class ModelExtensions
             default:
                 return new S_KLIENTDATA
                 {
+                    kb_id = model.KbId,
                     klient_type = 3,
                     rodne_cislo_ico = model.BirthNumber,
                     priezvisko = model.LastName,
