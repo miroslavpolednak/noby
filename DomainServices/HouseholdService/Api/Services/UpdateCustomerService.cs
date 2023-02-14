@@ -46,6 +46,7 @@ internal sealed class UpdateCustomerService
 
         var model = new ExternalServices.Eas.Dto.ClientDataModel()
         {
+            KbId = dbIdentity.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
             BirthNumber = _cachedCustomerInstance!.NaturalPerson!.BirthNumber,
             FirstName = _cachedCustomerInstance.NaturalPerson.FirstName,
             LastName = _cachedCustomerInstance.NaturalPerson.LastName,

@@ -38,10 +38,12 @@ public static class ResultMapper
                         CountryCode = smsResult.CountryCode,
                         NationalNumber = smsResult.PhoneNumber
                     },
+                    Type = smsResult.Type,
                     Text = smsResult.Text
                 }
             },
-            HandoverToMcsTimestamp = smsResult.HandoverToMcsTimestamp,
+            ResultTimestamp = smsResult.ResultTimestamp,
+            CreatedBy = smsResult.CreatedBy
         };
     }
 
@@ -61,7 +63,8 @@ public static class ResultMapper
             {
                 EmailData = new dto.EmailData()
             },
-            HandoverToMcsTimestamp = emailResult.HandoverToMcsTimestamp,
+            ResultTimestamp = emailResult.ResultTimestamp,
+            CreatedBy = emailResult.CreatedBy
         };
     }
 }

@@ -148,7 +148,7 @@ public class CodebooksController : ControllerBase
     [ProducesResponseType(typeof(List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>), StatusCodes.Status200OK)]
     public async Task<List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
-            .Where(t => t.ProductTypeId == productTypeId && t.IsNewProduct && t.IsValid)
+            .Where(t => t.ProductTypeId == productTypeId && t.IsNewProduct)
             .DistinctBy(t => new { t.FixedRatePeriod, t.MandantId })
             .ToList();
 

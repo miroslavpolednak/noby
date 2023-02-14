@@ -20,7 +20,7 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -34,6 +34,10 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
                     b.Property<int>("Channel")
                         .HasColumnType("int");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CustomId")
                         .HasColumnType("nvarchar(450)");
 
@@ -44,9 +48,6 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("HandoverToMcsTimestamp")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Identity")
                         .HasColumnType("nvarchar(450)");
 
@@ -54,6 +55,9 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("RequestTimestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ResultTimestamp")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("State")
@@ -88,6 +92,10 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

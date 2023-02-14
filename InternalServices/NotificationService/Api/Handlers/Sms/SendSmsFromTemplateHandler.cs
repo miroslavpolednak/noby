@@ -18,7 +18,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     private const int _maxSmsTextLength = 480;
     private readonly IDateTime _dateTime;
     private readonly McsSmsProducer _mcsSmsProducer;
-    private readonly UserConsumerIdMapper _userConsumerIdMapper;
+    private readonly UserAdapterService _userAdapterService;
     private readonly NotificationRepository _repository;
     private readonly ICodebookService _codebookService;
     private readonly IAuditLogger _auditLogger;
@@ -27,7 +27,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     public SendSmsFromTemplateHandler(
         IDateTime dateTime,
         McsSmsProducer mcsSmsProducer,
-        UserConsumerIdMapper userConsumerIdMapper,
+        UserAdapterService userAdapterService,
         NotificationRepository repository,
         ICodebookService codebookService,
         IAuditLogger auditLogger,
@@ -35,7 +35,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     {
         _dateTime = dateTime;
         _mcsSmsProducer = mcsSmsProducer;
-        _userConsumerIdMapper = userConsumerIdMapper;
+        _userAdapterService = userAdapterService;
         _repository = repository;
         _codebookService = codebookService;
         _auditLogger = auditLogger;
@@ -70,11 +70,14 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         result.CustomId = request.CustomId;
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
-        
+
+        result.Type = request.Type;
         result.Text = text;
         result.CountryCode = request.Phone.CountryCode;
         result.PhoneNumber = request.Phone.NationalNumber;
 
+        result.CreatedBy = _userAdapterService.GetUsername();
+        
         try
         {
             await _repository.AddResult(result, cancellationToken);
@@ -86,7 +89,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
             throw new CisServiceServerErrorException(ErrorCodes.Internal.CreateSmsResultFailed, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
         }
         
-        var consumerId = _userConsumerIdMapper.GetConsumerId();
+        var consumerId = _userAdapterService.GetConsumerId();
         
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {
