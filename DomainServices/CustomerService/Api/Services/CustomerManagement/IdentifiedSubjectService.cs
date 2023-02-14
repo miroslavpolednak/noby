@@ -73,6 +73,7 @@ internal sealed class IdentifiedSubjectService
             IsUSPerson = request.NaturalPerson?.IsUSPerson ?? false
         };
 
+        // jedine v tomto pripade se muze do CM poslat neco v IsPoliticallyExposed
         if (!isPoliticallyExposed.HasValue && (request.NaturalPerson?.IsUSPerson ?? false))
         {
             model.IsPoliticallyExposed = false;
