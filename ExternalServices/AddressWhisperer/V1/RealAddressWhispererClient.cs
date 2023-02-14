@@ -47,7 +47,7 @@ internal class RealAddressWhispererClient
                 XElement? baseNode;
 
                 if (country == "CZ" || country == "SK")
-                    baseNode = nodes!.FirstOrDefault(t => t.Attribute(_ns3 + "type")?.Value.Contains("Ruian") ?? false);
+                    baseNode = nodes!.FirstOrDefault(t => t.Attribute(_ns3 + "type")?.Value == "nsDto:SlovakRuianAddressPointRepresentation");
                 else
                     baseNode = nodes!.FirstOrDefault(t => t.Attribute(_ns3 + "type")?.Value == "nsDto:ComponentAddressPointRepresentation");
 
