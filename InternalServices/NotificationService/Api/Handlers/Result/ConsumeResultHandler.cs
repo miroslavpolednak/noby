@@ -47,14 +47,14 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
 
             // todo: extend result with Type, fetch codebook sms notification type by result type, if audit is enabled, log
             var errorCodes = report.notificationErrors?
-                .Select(e => new Contracts.Common.Error()
+                .Select(e => new ResultError()
                 {
                     Code = e.code,
                     Message = e.message
                 })
-                .ToHashSet() ?? Enumerable.Empty<Contracts.Common.Error>();
+                .ToHashSet() ?? Enumerable.Empty<ResultError>();
             
-            var errorSet = new HashSet<Contracts.Common.Error>();
+            var errorSet = new HashSet<ResultError>();
             errorSet.UnionWith(result.ErrorSet);
             errorSet.UnionWith(errorCodes);
             result.ErrorSet = errorSet;

@@ -28,9 +28,9 @@ public abstract class Result
     public string Errors { get; set; } = null!;
     
     [NotMapped]
-    public HashSet<Contracts.Common.Error> ErrorSet
+    public HashSet<ResultError> ErrorSet
     {
-        get => JsonSerializer.Deserialize<HashSet<Contracts.Common.Error>>(Errors)!;
+        get => JsonSerializer.Deserialize<HashSet<ResultError>>(Errors)!;
         set => Errors = JsonSerializer.Serialize(value);
     }
     

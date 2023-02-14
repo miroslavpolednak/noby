@@ -23,7 +23,7 @@ public class NotificationRepository
         Channel = NotificationChannel.Email, 
         State = NotificationState.InProgress,
         ResultTimestamp = null,
-        ErrorSet = new HashSet<Contracts.Common.Error>(),
+        ErrorSet = new HashSet<ResultError>(),
     };
 
     public Entities.SmsResult NewSmsResult() => new()
@@ -32,7 +32,7 @@ public class NotificationRepository
         Channel = NotificationChannel.Sms,
         State = NotificationState.InProgress,
         ResultTimestamp = null,
-        ErrorSet = new HashSet<Contracts.Common.Error>()
+        ErrorSet = new HashSet<ResultError>()
     };
 
     public async Task AddResult(Result result, CancellationToken token = default)

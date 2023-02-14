@@ -1,9 +1,9 @@
 ﻿using ProtoBuf;
 
-namespace CIS.InternalServices.NotificationService.Contracts.Common;
+namespace CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 
 [ProtoContract]
-public class Error
+public class ResultError
 {
     [ProtoMember(1)]
     public string Code { get; set; } = string.Empty;

@@ -24,7 +24,8 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
                     DocumentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     RequestTimestamp = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ResultTimestamp = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Errors = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Errors = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,6 +46,8 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
                     RequestTimestamp = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ResultTimestamp = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Errors = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CountryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
