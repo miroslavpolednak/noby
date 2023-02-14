@@ -57,7 +57,7 @@ public class MpDigiClient
 
         var partnerRequest = MapToPartnerRequest(request);
 
-        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest);
+        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest, cancellationToken);
 
         return new Identity(mpIdentity.IdentityId, IdentitySchemes.Mp);
     }
@@ -78,7 +78,7 @@ public class MpDigiClient
 
         var partnerRequest = MapToPartnerRequest(request);
         
-        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest);
+        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest, cancellationToken);
     }
 
     private async Task<bool> PartnerExists(long partnerId, CancellationToken cancellationToken)
