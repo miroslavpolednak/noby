@@ -8,6 +8,7 @@ namespace CIS.Infrastructure.Logging;
 public static class ServiceLoggerExtensions
 {
     private static readonly Action<ILogger, string, Exception> _serviceUnavailable;
+    private static readonly Action<ILogger, Exception> _serviceAuthorizationFailed;
     private static readonly Action<ILogger, string, Exception> _extServiceUnavailable;
     private static readonly Action<ILogger, Exception> _extServiceAuthenticationFailed;
 
@@ -17,6 +18,11 @@ public static class ServiceLoggerExtensions
             LogLevel.Error,
             new EventId(EventIdCodes.ServiceUnavailable, nameof(ServiceUnavailable)),
             "{ServiceName} unavailable");
+
+        _serviceAuthorizationFailed = LoggerMessage.Define(
+            LogLevel.Warning,
+            new EventId(EventIdCodes.ServiceAuthorizationFailed, nameof(ServiceAuthorizationFailed)),
+            "Authorization failed");
 
         _extServiceUnavailable = LoggerMessage.Define<string>(
             LogLevel.Error,
@@ -34,6 +40,9 @@ public static class ServiceLoggerExtensions
     /// </summary>
     public static void ExtServiceAuthenticationFailed(this ILogger logger, Exception ex)
         => _extServiceAuthenticationFailed(logger, ex);
+
+    public static void ServiceAuthorizationFailed(this ILogger logger, Exception ex)
+        => _serviceAuthorizationFailed(logger, ex);
 
     /// <summary>
     /// Doménová služba není dostupná.

@@ -9,9 +9,10 @@ public sealed class CisAuthenticationException
     /// <summary>
     /// Adresa providera autentizace, na kterou má být uživatel přesměrován pro přihlášení.
     /// </summary>
-    public string ProviderLoginUrl { get; init; }
+    /// <remarks>Je použité v případě, že se jedná o autentizaci frontendu, kdy chceme FE vrátit informaci o tom, kam má uživatele přesměrovat.</remarks>
+    public string? ProviderLoginUrl { get; init; }
 
-    public CisAuthenticationException(string providerLoginUrl, string? message = null)
+    public CisAuthenticationException(string? providerLoginUrl, string? message = null)
         : base(message)
     {
         ProviderLoginUrl = providerLoginUrl;
