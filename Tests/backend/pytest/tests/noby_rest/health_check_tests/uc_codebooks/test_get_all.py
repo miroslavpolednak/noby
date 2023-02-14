@@ -89,3 +89,8 @@ def test_get_codebooks_fixed_rate_periods(codebook_name, product_type):
 def test_get_codebooks_fixation_period_length(product_type):
     resp = get_codebooks_fixation_period_length(product_type)
     assert resp[0] == 200
+    check = resp[1][0]
+
+    s = 'isValid' in check
+    print(s)
+
