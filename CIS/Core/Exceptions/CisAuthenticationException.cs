@@ -12,7 +12,7 @@ public sealed class CisAuthenticationException
     /// <remarks>Je použité v případě, že se jedná o autentizaci frontendu, kdy chceme FE vrátit informaci o tom, kam má uživatele přesměrovat.</remarks>
     public string? ProviderLoginUrl { get; init; }
 
-    public CisAuthenticationException(string? providerLoginUrl, string? message = null)
+    public CisAuthenticationException(string? providerLoginUrl = null , string? message = null)
         : base(message)
     {
         ProviderLoginUrl = providerLoginUrl;
