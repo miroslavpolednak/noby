@@ -3,6 +3,7 @@ using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Contracts.Email;
@@ -18,6 +19,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
     private readonly IDateTime _dateTime;
     private readonly MpssEmailProducer _mpssEmailProducer;
     private readonly McsEmailProducer _mcsEmailProducer;
+    private readonly UserAdapterService _userAdapterService;
     private readonly NotificationRepository _repository;
     private readonly S3AdapterService _s3Service;
     private readonly S3Buckets _buckets;
@@ -29,6 +31,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         IDateTime dateTime,
         MpssEmailProducer mpssEmailProducer,
         McsEmailProducer mcsEmailProducer,
+        UserAdapterService userAdapterService,
         NotificationRepository repository,
         S3AdapterService s3Service,
         IOptions<AppConfiguration> options,
@@ -37,6 +40,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         _dateTime = dateTime;
         _mpssEmailProducer = mpssEmailProducer;
         _mcsEmailProducer = mcsEmailProducer;
+        _userAdapterService = userAdapterService;
         _repository = repository;
         _s3Service = s3Service;
         _buckets = options.Value.S3Buckets;
@@ -75,7 +79,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
         
-        result.CreatedBy = "todo";
+        result.CreatedBy = _userAdapterService.GetUsername();
         
         try
         {
@@ -87,6 +91,8 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
             _logger.LogError(e, $"Could not create EmailResult.");
             throw new CisServiceServerErrorException(ErrorCodes.Internal.CreateEmailResultFailed, nameof(SendEmailFromTemplateHandler), "SendEmailFromTemplate request failed due to internal server error.");
         }
+        
+        var consumerId = _userAdapterService.GetConsumerId();
         
         // todo:
         // var sendEmail = new SendEmail
@@ -102,7 +108,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
             // attachments = attachments,
             // notificationConsumer = new NotificationConsumer
             // {
-            //     consumerId = "HF"
+            //     consumerId = consumerId
             // }
         // };
         

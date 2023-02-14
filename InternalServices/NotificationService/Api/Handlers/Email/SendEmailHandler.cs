@@ -17,7 +17,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
     private readonly IDateTime _dateTime;
     private readonly MpssEmailProducer _mpssEmailProducer;
     private readonly McsEmailProducer _mcsEmailProducer;
-    private readonly UserConsumerIdMapper _userConsumerIdMapper;
+    private readonly UserAdapterService _userAdapterService;
     private readonly NotificationRepository _repository;
     private readonly S3AdapterService _s3Service;
     private readonly S3Buckets _buckets;
@@ -29,7 +29,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         IDateTime dateTime,
         MpssEmailProducer mpssEmailProducer,
         McsEmailProducer mcsEmailProducer,
-        UserConsumerIdMapper userConsumerIdMapper,
+        UserAdapterService userAdapterService,
         NotificationRepository repository,
         S3AdapterService s3Service,
         IOptions<AppConfiguration> options,
@@ -38,7 +38,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         _dateTime = dateTime;
         _mpssEmailProducer = mpssEmailProducer;
         _mcsEmailProducer = mcsEmailProducer;
-        _userConsumerIdMapper = userConsumerIdMapper;
+        _userAdapterService = userAdapterService;
         _repository = repository;
         _s3Service = s3Service;
         _buckets = options.Value.S3Buckets;
@@ -77,7 +77,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
 
-        result.CreatedBy = "todo";
+        result.CreatedBy = _userAdapterService.GetUsername();
         
         try
         {
@@ -92,7 +92,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
 
         try
         {
-            var consumerId = _userConsumerIdMapper.GetConsumerId();
+            var consumerId = _userAdapterService.GetConsumerId();
             
             if (_mcsSenders.Contains(domainName))
             {
