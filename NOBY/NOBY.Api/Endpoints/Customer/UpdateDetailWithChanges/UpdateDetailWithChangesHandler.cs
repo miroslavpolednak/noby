@@ -24,8 +24,12 @@ internal sealed class UpdateDetailWithChangesHandler
         ModelComparers.ComparePerson(request.NaturalPerson, originalModel.NaturalPerson, delta);
         ModelComparers.CompareObjects(request.IdentificationDocument, originalModel.IdentificationDocument, "IdentificationDocument", delta);
         ModelComparers.CompareObjects(request.Addresses, originalModel.Addresses, "Addresses", delta);
-        ModelComparers.CompareObjects(request.PrimaryEmail, originalModel.PrimaryEmail, "PrimaryEmail", delta);
-        ModelComparers.CompareObjects(request.PrimaryPhoneNumber, originalModel.PrimaryPhoneNumber, "PrimaryPhoneNumber", delta);
+
+        // tohle je zajimavost - do delty ukladame zmeny jen u kontaktu, ktere nejsou v CM jako IsConfirmed=true
+        if (!(originalModel.PrimaryEmail?.IsConfirmed ?? false))
+            ModelComparers.CompareObjects(request.PrimaryEmail, originalModel.PrimaryEmail, "PrimaryEmail", delta);
+        if (!(originalModel.PrimaryPhoneNumber?.IsConfirmed ?? false))
+            ModelComparers.CompareObjects(request.PrimaryPhoneNumber, originalModel.PrimaryPhoneNumber, "PrimaryPhoneNumber", delta);
 
         // vytvoreni JSONu z delta objektu
         string? finalJson = null;

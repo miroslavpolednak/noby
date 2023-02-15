@@ -3,7 +3,7 @@
 public sealed class GetDetailWithChangesResponse
     : Shared.BaseCustomerDetail, Shared.ICustomerDetailConfirmedContacts
 {
-    public Shared.CustomerDetailEmailConfirmedDto? PrimaryEmail { get; set; }
+    public SharedDto.EmailAddressConfirmedDto? PrimaryEmail { get; set; }
 
-    public Shared.CustomerDetailPhoneConfirmedDto? PrimaryPhoneNumber { get; set; }
+    public SharedDto.PhoneNumberConfirmedDto? PrimaryPhoneNumber { get; set; }
 }

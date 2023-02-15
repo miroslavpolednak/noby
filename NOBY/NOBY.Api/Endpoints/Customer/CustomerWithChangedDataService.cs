@@ -97,30 +97,48 @@ internal sealed class CustomerWithChangedDataService
         if (newCustomer is ICustomerDetailConfirmedContacts)
         {
             var contactsDetail = (ICustomerDetailConfirmedContacts)newCustomer;
-
-            var email = dsCustomer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email);
-            if (!string.IsNullOrEmpty(email?.Email?.Address))
-            {
-                contactsDetail.PrimaryEmail = new CustomerDetailEmailConfirmedDto
-                {
-                    IsConfirmed = email.IsConfirmed,
-                    EmailAddress = email.Email.Address
-                };
-            }
-
-            var phone = dsCustomer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Mobil);
-            if (!string.IsNullOrEmpty(phone?.Mobile?.PhoneNumber))
-            {
-                contactsDetail.PrimaryPhoneNumber = new CustomerDetailPhoneConfirmedDto
-                {
-                    IsConfirmed = phone.IsConfirmed,
-                    PhoneNumber = phone.Mobile.PhoneNumber,
-                    PhoneIDC = phone.Mobile.PhoneNumber
-                };
-            }
+            contactsDetail.PrimaryEmail = getEmail<EmailAddressConfirmedDto>(dsCustomer);
+            contactsDetail.PrimaryPhoneNumber = getPhone<PhoneNumberConfirmedDto>(dsCustomer);
+        }
+        else if (newCustomer is ICustomerDetailContacts)
+        {
+            var contactsDetail = (ICustomerDetailContacts)newCustomer;
+            contactsDetail.PrimaryEmail = getEmail<EmailAddressDto>(dsCustomer);
+            contactsDetail.PrimaryPhoneNumber = getPhone<PhoneNumberDto>(dsCustomer);
         }
 
         return newCustomer;
+    }
+
+    private static TPhone? getPhone<TPhone>(__Customer.CustomerDetailResponse dsCustomer)
+        where TPhone : IPhoneNumberDto
+    {
+        var phone = dsCustomer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Mobil);
+        if (!string.IsNullOrEmpty(phone?.Mobile?.PhoneNumber))
+        {
+            var newPhone = (TPhone)Activator.CreateInstance(typeof(TPhone))!;
+            newPhone.IsConfirmed = phone.IsConfirmed;
+            newPhone.PhoneNumber = phone.Mobile.PhoneNumber;
+            newPhone.PhoneIDC = phone.Mobile.PhoneNumber;
+            return newPhone;
+        }
+        else
+            return default(TPhone);
+    }
+
+    private static TEmail? getEmail<TEmail>(__Customer.CustomerDetailResponse dsCustomer)
+        where TEmail : IEmailAddressDto
+    {
+        var email = dsCustomer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email);
+        if (!string.IsNullOrEmpty(email?.Email?.Address))
+        {
+            var newEmail = (TEmail)Activator.CreateInstance(typeof(TEmail))!;
+            newEmail.IsConfirmed = email.IsConfirmed;
+            newEmail.EmailAddress = email.Email.Address;
+            return newEmail;
+        }
+        else
+            return default(TEmail);
     }
 
     private readonly ICustomerServiceClient _customerService;

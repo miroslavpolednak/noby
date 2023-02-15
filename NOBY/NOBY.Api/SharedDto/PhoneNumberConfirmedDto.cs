@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.SharedDto;
 
-public sealed class PhoneNumberConfirmedDto
+public sealed class PhoneNumberConfirmedDto : IPhoneNumberDto
 {
     public string? PhoneNumber { get; set; }
 
