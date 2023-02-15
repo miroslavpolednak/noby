@@ -10,7 +10,7 @@ using CIS.Infrastructure.CisMediatR.Rollback;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
-internal class CreateMortgageCaseHandler
+internal sealed class CreateMortgageCaseHandler
     : IRequestHandler<CreateMortgageCaseRequest, CreateMortgageCaseResponse>
 {
     public async Task<CreateMortgageCaseResponse> Handle(CreateMortgageCaseRequest request, CancellationToken cancellationToken)
@@ -36,8 +36,12 @@ internal class CreateMortgageCaseHandler
         // updatovat kontakty
         await _caseService.UpdateOfferContacts(caseId, new _Case.OfferContacts
         {
-            EmailForOffer = request.EmailForOffer ?? "",
-            PhoneNumberForOffer = request.PhoneNumberForOffer ?? ""
+            EmailForOffer = request.Contacts?.EmailAddress?.EmailAddress ?? "",
+            PhoneNumberForOffer = new()
+            {
+                PhoneNumber = request.Contacts?.PhoneNumber?.PhoneNumber ?? "",
+                PhoneIDC = request.Contacts?.PhoneNumber?.PhoneIDC ?? ""
+            }
         }, cancellationToken);
 
         // vytvorit zadost

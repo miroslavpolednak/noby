@@ -4,6 +4,7 @@ using NOBY.Api.Endpoints.Customer.Shared;
 using NOBY.Api.SharedDto;
 using __Household = DomainServices.HouseholdService.Contracts;
 using __Customer = DomainServices.CustomerService.Contracts;
+using CIS.Foms.Enums;
 
 namespace NOBY.Api.Endpoints.Customer;
 
@@ -76,7 +77,6 @@ internal sealed class CustomerWithChangedDataService
         newCustomer.NaturalPerson = person;
         newCustomer.JuridicalPerson = null;
         newCustomer.IdentificationDocument = dsCustomer.IdentificationDocument?.ToResponseDto();
-        newCustomer.Contacts = dsCustomer.Contacts?.ToResponseDto();
         newCustomer.Addresses = dsCustomer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList();
 
         newCustomer.CustomerIdentification = new CustomerIdentificationMethod
@@ -93,6 +93,32 @@ internal sealed class CustomerWithChangedDataService
             RestrictionTypeId = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionTypeId,
             RestrictionUntil = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionUntil
         };
+
+        if (newCustomer is ICustomerDetailConfirmedContacts)
+        {
+            var contactsDetail = (ICustomerDetailConfirmedContacts)newCustomer;
+
+            var email = dsCustomer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email);
+            if (!string.IsNullOrEmpty(email?.Email?.Address))
+            {
+                contactsDetail.PrimaryEmail = new CustomerDetailEmailConfirmedDto
+                {
+                    IsConfirmed = email.IsConfirmed,
+                    EmailAddress = email.Email.Address
+                };
+            }
+
+            var phone = dsCustomer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Mobil);
+            if (!string.IsNullOrEmpty(phone?.Mobile?.PhoneNumber))
+            {
+                contactsDetail.PrimaryPhoneNumber = new CustomerDetailPhoneConfirmedDto
+                {
+                    IsConfirmed = phone.IsConfirmed,
+                    PhoneNumber = phone.Mobile.PhoneNumber,
+                    PhoneIDC = phone.Mobile.PhoneNumber
+                };
+            }
+        }
 
         return newCustomer;
     }

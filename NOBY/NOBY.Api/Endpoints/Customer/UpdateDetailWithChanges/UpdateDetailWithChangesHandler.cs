@@ -24,7 +24,8 @@ internal sealed class UpdateDetailWithChangesHandler
         ModelComparers.ComparePerson(request.NaturalPerson, originalModel.NaturalPerson, delta);
         ModelComparers.CompareObjects(request.IdentificationDocument, originalModel.IdentificationDocument, "IdentificationDocument", delta);
         ModelComparers.CompareObjects(request.Addresses, originalModel.Addresses, "Addresses", delta);
-        ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
+        ModelComparers.CompareObjects(request.PrimaryEmail, originalModel.PrimaryEmail, "PrimaryEmail", delta);
+        ModelComparers.CompareObjects(request.PrimaryPhoneNumber, originalModel.PrimaryPhoneNumber, "PrimaryPhoneNumber", delta);
 
         // vytvoreni JSONu z delta objektu
         string? finalJson = null;

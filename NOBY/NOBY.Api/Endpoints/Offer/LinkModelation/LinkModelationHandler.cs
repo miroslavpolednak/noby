@@ -1,10 +1,9 @@
 ﻿using DomainServices.SalesArrangementService.Clients;
 using _Ca = DomainServices.CaseService.Contracts;
-using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.LinkModelation;
 
-internal class LinkModelationHandler
+internal sealed class LinkModelationHandler
     : AsyncRequestHandler<LinkModelationRequest>
 {
     protected override async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)
@@ -18,11 +17,16 @@ internal class LinkModelationHandler
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
 
         // update kontaktu
-        await _caseService.UpdateOfferContacts(saInstance.CaseId, new _Ca.OfferContacts
+        var offerContacts = new _Ca.OfferContacts
         {
-            EmailForOffer = request.EmailForOffer ?? "",
-            PhoneNumberForOffer = request.PhoneNumberForOffer ?? ""
-        }, cancellationToken);
+            EmailForOffer = request.OfferContacts?.EmailAddress?.EmailAddress ?? "",
+            PhoneNumberForOffer = new _Ca.Phone
+            {
+                PhoneNumber = request.OfferContacts?.PhoneNumber?.PhoneNumber ?? "",
+                PhoneIDC = request.OfferContacts?.PhoneNumber?.PhoneIDC ?? ""
+            }
+        };
+        await _caseService.UpdateOfferContacts(saInstance.CaseId, offerContacts, cancellationToken);
 
         // update customer
         if (caseInstance.Customer?.Identity is null || caseInstance.Customer.Identity.IdentityId == 0)

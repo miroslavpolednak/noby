@@ -361,16 +361,6 @@
             KBID
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.Email">
-            <summary>
-            Email
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.Mobile">
-            <summary>
-            Mobil
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.Search.SearchRequest.FilterId">
             <summary>
             [optional] ID pozadovaneho stavu filtru.
@@ -820,16 +810,6 @@
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.CitizenshipCountryId">
             <summary>
             Státní příslušnost/občanství
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.Email">
-            <summary>
-            E-mail
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.Mobile">
-            <summary>
-            Mobil
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.BirthNumber">
@@ -1553,12 +1533,6 @@
             Datum narození
             </summary>
             <example>2002-10-26</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.PhoneNumberForOffer">
-            <example>777111222</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.EmailForOffer">
-            <example>jonatan.skocdopole@mpss.cz</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgage(NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest,System.Threading.CancellationToken)">
             <summary>
