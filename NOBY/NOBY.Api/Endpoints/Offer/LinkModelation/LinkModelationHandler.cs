@@ -4,9 +4,9 @@ using _Ca = DomainServices.CaseService.Contracts;
 namespace NOBY.Api.Endpoints.Offer.LinkModelation;
 
 internal sealed class LinkModelationHandler
-    : AsyncRequestHandler<LinkModelationRequest>
+    : IRequestHandler<LinkModelationRequest>
 {
-    protected override async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)
+    public async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)
     {
         // get SA data
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);

@@ -4,9 +4,9 @@ using _HO = DomainServices.HouseholdService.Contracts;
 namespace NOBY.Api.Endpoints.CustomerIncome.UpdateIncome;
 
 internal class UpdateIncomeHandler
-    : AsyncRequestHandler<UpdateIncomeRequest>
+    : IRequestHandler<UpdateIncomeRequest>
 {
-    protected override async Task Handle(UpdateIncomeRequest request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateIncomeRequest request, CancellationToken cancellationToken)
     {
         var model = new _HO.UpdateIncomeRequest
         {

@@ -7,9 +7,9 @@ using __Household = DomainServices.HouseholdService.Contracts;
 namespace NOBY.Api.Endpoints.Customer.UpdateDetailWithChanges;
 
 internal sealed class UpdateDetailWithChangesHandler
-    : AsyncRequestHandler<UpdateDetailWithChangesRequest>
+    : IRequestHandler<UpdateDetailWithChangesRequest>
 {
-    protected override async Task Handle(UpdateDetailWithChangesRequest request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateDetailWithChangesRequest request, CancellationToken cancellationToken)
     {
         // customer instance
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);

@@ -21,7 +21,7 @@
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
-	  <PackageReference Include="MediatR.Contracts" Version="1.0.1" />
+	  <PackageReference Include="MediatR.Contracts" Version="2.0.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.3" />
 	  <PackageReference Include="protobuf-net.Core" Version="3.1.33" />
 	  <PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />

@@ -13,7 +13,7 @@ internal static class StartupExtensions
         builder.Services.AddSingleton<IObjectModelValidator, CIS.Infrastructure.WebApi.Validation.NullObjectModelValidator>();
 
         builder.Services
-            .AddMediatR(typeof(Program).Assembly)
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly))
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.CisMediatR.GrpcValidationBehavior<,>));
 
         // add validators

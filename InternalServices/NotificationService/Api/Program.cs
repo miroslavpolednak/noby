@@ -41,7 +41,7 @@ builder
 builder.Services.AddAttributedServices(typeof(Program));
 
 // Mediator
-builder.Services.AddMediatR(typeof(Program).Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 // Validators
 builder.Services

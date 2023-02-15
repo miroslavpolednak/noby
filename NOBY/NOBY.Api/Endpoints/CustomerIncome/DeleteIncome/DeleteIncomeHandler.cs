@@ -3,9 +3,9 @@
 namespace NOBY.Api.Endpoints.CustomerIncome.DeleteIncome;
 
 internal class DeleteIncomeHandler
-    : AsyncRequestHandler<DeleteIncomeRequest>
+    : IRequestHandler<DeleteIncomeRequest>
 {
-    protected override async Task Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)
     {
         await _customerService.DeleteIncome(request.IncomeId, cancellationToken);
     }
