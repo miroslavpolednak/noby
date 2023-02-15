@@ -92,4 +92,4 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
     ArtifactName: 'drop'
     publishLocation: 'FilePath'
-    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\NOBY\'
+    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\NOBY\$(Build.DefinitionName)\$(Build.BuildNumber)'
