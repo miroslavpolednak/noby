@@ -28,9 +28,10 @@ internal sealed class UpdateCaseStateHandler
         entity.StateUpdateTime = _dateTime.Now;
 
         await _dbContext.SaveChangesAsync(cancellation);
-        
+
         // fire notification
         if (entity.State == 1)
+        {
             await _mediator.Publish(new Notifications.CaseStateChangedNotification
             {
                 CaseId = request.CaseId,
@@ -38,8 +39,10 @@ internal sealed class UpdateCaseStateHandler
                 ClientName = $"{entity.FirstNameNaturalPerson} {entity.Name}",
                 ProductTypeId = entity.ProductTypeId,
                 CaseOwnerUserId = entity.OwnerUserId,
-                ContractNumber = entity.ContractNumber
+                ContractNumber = entity.ContractNumber,
+                IsEmployeeBonusRequested = entity.IsEmployeeBonusRequested
             }, cancellation);
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

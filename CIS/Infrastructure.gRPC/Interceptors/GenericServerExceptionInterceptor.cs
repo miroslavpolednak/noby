@@ -35,6 +35,13 @@ public sealed class GenericServerExceptionInterceptor
             _logger.ExtServiceUnavailable(ex.ServiceName, ex);
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"Service '{ex.ServiceName}' unavailable");
         }
+        // 403
+        catch (CisAuthorizationException ex)
+        {
+            setHttpStatus(StatusCodes.Status403Forbidden);
+            _logger.ServiceAuthorizationFailed(ex);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.PermissionDenied, "Service authorization failed: " + ex.Message);
+        }
         // 500 z volane externi sluzby
         catch (CisServiceServerErrorException ex)
         {

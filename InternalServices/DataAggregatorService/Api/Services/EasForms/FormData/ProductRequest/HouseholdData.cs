@@ -136,7 +136,6 @@ internal class HouseholdData
                                 Incomes = Incomes,
                                 AcademicDegreesBefore = _academicDegreesBefore,
                                 GenderCodes = _genders,
-                                Countries = _countries,
                                 ObligationTypes = _obligationTypes
                             }).ToList();
 
@@ -144,7 +143,11 @@ internal class HouseholdData
             customerOnSa.CustomerIdentifiers.Single(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId;
     }
 
-    private bool AreCustomersPartners() =>
-        CustomersOnSa.Count == 2 &&
-        DomainServices.HouseholdService.Clients.Helpers.AreCustomersPartners(CustomersOnSa[0].MaritalStatusId, CustomersOnSa[1].MaritalStatusId);
+    private bool AreCustomersPartners()
+    {
+        var householdCustomers = CustomersOnSa.Where(c => c.CustomerOnSAId == HouseholdDto.CustomerOnSaId1 || c.CustomerOnSAId == HouseholdDto.CustomerOnSaId2).ToArray();
+
+        return householdCustomers.Length == 2 &&
+               DomainServices.HouseholdService.Clients.Helpers.AreCustomersPartners(householdCustomers[0].MaritalStatusId, householdCustomers[1].MaritalStatusId);
+    }
 }

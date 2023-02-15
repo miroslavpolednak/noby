@@ -1,5 +1,6 @@
 ﻿using DomainServices.ProductService.Contracts;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
+using NOBY.Api.Endpoints.Offer.SimulateMortgage;
 using cCodebookService = DomainServices.CodebookService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
@@ -124,6 +125,7 @@ internal sealed class GetCaseParametersHandler
             // FixedRatePeriodRefix
             Cpm = userInstance?.CPM,
             Icp = userInstance?.ICP,
+            FirstAnnuityPaymentDate = offerInstance.SimulationResults.AnnuityPaymentsDateFrom
         };
     }
 
@@ -139,6 +141,7 @@ internal sealed class GetCaseParametersHandler
 
         return new GetCaseParametersResponse
         {
+            FirstAnnuityPaymentDate = mortgageData.FirstAnnuityPaymentDate,
             ProductType = productTypesById[mortgageData.ProductTypeId].ToCodebookItem(),
             ContractNumber = mortgageData.ContractNumber,
             LoanAmount = mortgageData.LoanAmount,

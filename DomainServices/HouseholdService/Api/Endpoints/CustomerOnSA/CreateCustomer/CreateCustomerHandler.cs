@@ -1,6 +1,7 @@
 ﻿using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
+using Google.Protobuf;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
 
@@ -12,7 +13,7 @@ internal sealed class CreateCustomerHandler
         var model = new CreateCustomerResponse();
 
         // check existing SalesArrangementId
-        await __HouseholdlesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+        await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         var entity = new Database.Entities.CustomerOnSA
         {
@@ -52,6 +53,24 @@ internal sealed class CreateCustomerHandler
             await _updateService.GetCustomerAndUpdateEntity(entity, entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb).IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellationToken);
         }
 
+        // additional data
+        // https://jira.kb.cz/browse/HFICH-4551
+        CustomerAdditionalData additionalData = new()
+        {
+            IsAddressWhispererUsed = false,
+            HasRelationshipWithKB = false,
+            HasRelationshipWithKBEmployee = false,
+            HasRelationshipWithCorporate = false,
+            IsPoliticallyExposed = false,
+            IsUSPerson = false,
+            LegalCapacity = new()
+            {
+                RestrictionTypeId = 2
+            }
+        };
+        entity.AdditionalData = Newtonsoft.Json.JsonConvert.SerializeObject(additionalData);
+        entity.AdditionalDataBin = additionalData.ToByteArray();
+
         // ulozit do DB
         _dbContext.Customers.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -70,7 +89,7 @@ internal sealed class CreateCustomerHandler
     }
 
     private readonly SulmService.ISulmClient _sulmClient;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient __HouseholdlesArrangementService;
+    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly UpdateCustomerService _updateService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateCustomerHandler> _logger;
@@ -82,7 +101,7 @@ internal sealed class CreateCustomerHandler
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateCustomerHandler> logger)
     {
-        __HouseholdlesArrangementService = salesArrangementService;
+        _salesArrangementService = salesArrangementService;
         _sulmClient = sulmClient;
         _updateService = updateService;
         _dbContext = dbContext;

@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using CIS.Core.Exceptions;
+using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
 using System.Net;
@@ -25,22 +26,27 @@ public sealed class Grpc2WebApiExceptionMiddleware
         {
             await _next(context);
         }
+        
+        catch ( CisAuthorizationException)
+        {
+            await Results.Unauthorized().ExecuteAsync(context);
+        }
         // neprihlaseny uzivatel
         catch (AuthenticationException)
         {
             await Results.Unauthorized().ExecuteAsync(context);
         }
         // chyby na strane c4m
-        catch (Core.Exceptions.CisServiceUnavailableException ex)
+        catch (CisServiceUnavailableException ex)
         {
             await Results.Problem(ex.Message, title: "External service unavailable", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
         }
-        catch (Core.Exceptions.CisServiceServerErrorException ex)
+        catch (CisServiceServerErrorException ex)
         {
-            await Results.Problem(ex.Message, title: "External service server error", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
+            await Results.Problem(ex.Message, title: "External service server error", statusCode: (int)HttpStatusCode.InternalServerError).ExecuteAsync(context);
         }
         // osetrena validace na urovni api call
-        catch (Core.Exceptions.CisValidationException ex)
+        catch (CisValidationException ex)
         {
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
             var errors = ex.Errors?.GroupBy(k => k.ExceptionCode)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());

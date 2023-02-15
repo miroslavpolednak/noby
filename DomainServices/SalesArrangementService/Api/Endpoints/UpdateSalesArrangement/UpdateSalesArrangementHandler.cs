@@ -61,7 +61,8 @@ internal sealed class UpdateSalesArrangementHandler
                 OwnerUserCpm = ownerInstance.CPM,
                 OwnerUserIcp = ownerInstance.ICP,
                 Mandant = (Mandants)productType.MandantId,
-                RiskBusinessCaseId = request.RiskBusinessCaseId
+                RiskBusinessCaseId = request.RiskBusinessCaseId,
+                IsEmployeeBonusRequested = caseInstance.Data.IsEmployeeBonusRequested
             };
             await _sbWebApiClient.CaseStateChanged(sbNotifyModel, cancellation);
         }

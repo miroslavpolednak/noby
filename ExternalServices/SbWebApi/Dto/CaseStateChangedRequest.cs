@@ -28,4 +28,6 @@ public sealed class CaseStateChangedRequest
     public CIS.Foms.Enums.Mandants Mandant { get; set; }
     
     public string? RiskBusinessCaseId { get; set; }
+
+    public bool? IsEmployeeBonusRequested { get; set; }
 }

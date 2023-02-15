@@ -3,6 +3,7 @@ package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "GrpcDecimal.proto";
+import "google/protobuf/wrappers.proto";
 
 message CaseData {
 	// Produkt
@@ -13,4 +14,7 @@ message CaseData {
 	
 	// Cislo smlouvy hypo nebo SS
 	string ContractNumber = 3;
+
+	// Replikace příznaku o zaměstnanecké slevě. Replikováno z Offer při přilinkování
+	google.protobuf.BoolValue IsEmployeeBonusRequested = 4;
 }

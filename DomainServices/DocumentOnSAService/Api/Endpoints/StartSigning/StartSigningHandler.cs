@@ -158,7 +158,8 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         {
             ContractNumber = contractNumber,
             ProductTypeId = caseDetail.Data.ProductTypeId,
-            TargetAmount = caseDetail.Data.TargetAmount
+            TargetAmount = caseDetail.Data.TargetAmount,
+            IsEmployeeBonusRequested = caseDetail.Data.IsEmployeeBonusRequested
         });
 
     }

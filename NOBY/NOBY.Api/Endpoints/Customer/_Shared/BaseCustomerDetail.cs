@@ -14,6 +14,8 @@ public abstract class BaseCustomerDetail
 
     public List<CustomerContact>? Contacts { get; set; }
 
+    public CustomerIdentificationMethod? CustomerIdentification { get; set; }
+
     /// <summary>
     /// Objekt právního omezení	
     /// </summary>

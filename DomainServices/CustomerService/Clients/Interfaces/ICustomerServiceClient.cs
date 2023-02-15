@@ -30,7 +30,9 @@ public interface ICustomerServiceClient
     /// </summary>
     /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
     Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default);
-    
+
+    Task UpdateCustomerIdentifiers(UpdateCustomerIdentifiersRequest request, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Detail customera podle identity
     /// </summary>

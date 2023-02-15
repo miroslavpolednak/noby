@@ -24,4 +24,9 @@ internal sealed class MockMpHomeClient
     {
         return Task.CompletedTask;
     }
+
+    public Task UpdatePartnerKbId(long partnerId, long kbId, CancellationToken cancellationToken = default)
+    {
+        return Task.CompletedTask;
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
 using ExternalServices.MpHome.V1_1.Contracts;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace ExternalServices.MpHome.V1_1;
 
@@ -36,6 +37,15 @@ internal sealed class RealMpHomeClient
         var response = await _httpClient
             .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}", request, cancellationToken)
             .ConfigureAwait(false);
+        await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+    }
+
+    public async Task UpdatePartnerKbId(long partnerId, long kbId, CancellationToken cancellationToken = default)
+    {
+        var address = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}/foms/Partner/{partnerId}/kbId", "kbId", partnerId.ToString());
+
+        var response = await _httpClient.PutAsync(address, default, cancellationToken);
+
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
 

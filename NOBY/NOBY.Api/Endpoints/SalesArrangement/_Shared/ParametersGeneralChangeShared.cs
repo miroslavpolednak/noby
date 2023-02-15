@@ -5,7 +5,7 @@ namespace NOBY.Api.Endpoints.SalesArrangement.Dto;
 /// <summary>
 /// Zajištění
 /// </summary>
-public sealed class CollateralObject
+public sealed class Collateral
 {
     /// <summary>
     /// Sekce aktivní
@@ -25,7 +25,7 @@ public sealed class CollateralObject
 
 }
 
-public sealed class LoanRealEstateObject
+public sealed class LoanRealEstate
 {
     /// <summary>
     /// Sekce aktivní
@@ -55,7 +55,7 @@ public sealed class LoanRealEstateItem
 /// <summary>
 /// Účel úvěru
 /// </summary>
-public sealed class LoanPurposeObject
+public sealed class LoanPurpose
 {
     /// <summary>
     /// Sekce aktivní
@@ -72,7 +72,7 @@ public sealed class LoanPurposeObject
 /// <summary>
 /// Podmínky čerpání a další podmínky
 /// </summary>
-public sealed class DrawingAndOtherConditionsObject
+public sealed class DrawingAndOtherConditions
 {
     /// <summary>
     /// Sekce aktivní
@@ -90,7 +90,7 @@ public sealed class DrawingAndOtherConditionsObject
 /// <summary>
 /// Komentář k žádosti o změnu
 /// </summary>
-public sealed class CommentToChangeRequestObject
+public sealed class CommentToChangeRequest
 {
     /// <summary>
     /// Sekce aktivní

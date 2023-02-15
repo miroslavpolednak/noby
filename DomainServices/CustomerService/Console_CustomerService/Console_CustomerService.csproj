@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.21.10" />
+    <PackageReference Include="Google.Protobuf" Version="3.21.12" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
-    <PackageReference Include="protobuf-net.Grpc" Version="1.0.179" />
-    <PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.0.179" />
+    <PackageReference Include="protobuf-net.Grpc" Version="1.1.1" />
+    <PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -58,6 +58,7 @@ internal sealed class LoggerBootstraper
         loggerConfiguration
             .ReadFrom.Configuration(_generalConfiguration)
             .Enrich.WithSpan()
+            .Enrich.WithClientIp()
             .Enrich.FromLogContext()
             .Enrich.WithMachineName()
             .Enrich.WithProperty("Assembly", $"{_assemblyName!.Name}")

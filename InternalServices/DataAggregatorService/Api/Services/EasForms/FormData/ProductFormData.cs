@@ -40,7 +40,7 @@ internal class ProductFormData : AggregatedData
 
     public int ProductTypeId { get; private set; }
 
-    public decimal? InterestRateDiscount => (decimal?)Offer.SimulationInputs.InterestRateDiscount * 1;
+    public decimal? InterestRateDiscount => (decimal?)Offer.SimulationInputs.InterestRateDiscount * -1;
 
     public int? DrawingTypeId => _drawingTypes.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingTypeId)?.StarbuildId;
 

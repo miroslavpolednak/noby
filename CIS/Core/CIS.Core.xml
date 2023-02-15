@@ -525,6 +525,7 @@
             <summary>
             Adresa providera autentizace, na kterou má být uživatel přesměrován pro přihlášení.
             </summary>
+            <remarks>Je použité v případě, že se jedná o autentizaci frontendu, kdy chceme FE vrátit informaci o tom, kam má uživatele přesměrovat.</remarks>
         </member>
         <member name="T:CIS.Core.Exceptions.CisConflictException">
             <summary>
