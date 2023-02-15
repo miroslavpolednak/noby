@@ -1223,6 +1223,11 @@
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
         </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData.DocumentDataDto.Table">
+            <summary>
+            This is not supported yet
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.DocumentOnSAId">
             <summary>
             Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.

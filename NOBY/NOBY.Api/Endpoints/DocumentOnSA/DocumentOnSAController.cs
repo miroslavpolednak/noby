@@ -3,6 +3,8 @@ using Swashbuckle.AspNetCore.Annotations;
 using NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 using NOBY.Api.Endpoints.DocumentOnSA.StopSigning;
 using NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
+using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
+using System.Net.Mime;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -98,12 +100,14 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="documentOnSAId"></param>
     [HttpGet("document/template/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}")]
     [SwaggerResponse(StatusCodes.Status200OK, type: typeof(Stream))]
+    [Produces(MediaTypeNames.Application.Pdf)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     public async Task<IActionResult> GetDocumentOnSa(
      [FromRoute] int salesArrangementId,
      [FromRoute] int documentOnSAId,
      CancellationToken cancellationToken)
     {
-        return File(Array.Empty<byte>(), "", "");
+        var response = await _mediator.Send(new GetDocumentOnSADataRequest(salesArrangementId, documentOnSAId), cancellationToken);
+        return File(response.FileData, response.ContentType, response.Filename);
     }
 }

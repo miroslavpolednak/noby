@@ -1,17 +1,15 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Api.Endpoints.Customer;
 using NOBY.Api.Endpoints.Customer.GetDetailWithChanges;
-using NOBY.Api.Endpoints.SalesArrangement.Dto;
+using NOBY.Api.Endpoints.SalesArrangement.Validate;
 using NOBY.Api.SharedDto;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -22,32 +20,36 @@ namespace NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest>
 {
     private readonly IDocumentOnSAServiceClient _documentOnSaClient;
-    private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
+
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
     private readonly ICodebookServiceClients _codebookServiceClients;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
     private readonly ICustomerServiceClient _customerServiceClient;
     private readonly CustomerWithChangedDataService _changedDataService;
+    private readonly ICaseServiceClient _caseServiceClient;
+    private readonly IMediator _mediator;
 
     public SignDocumentManuallyHandler(
         IDocumentOnSAServiceClient documentOnSaClient,
-        ISalesArrangementServiceClient salesArrangementServiceClient,
         ISalesArrangementServiceClient arrangementServiceClient,
         ICodebookServiceClients codebookServiceClients,
         IHouseholdServiceClient householdClient,
         ICustomerOnSAServiceClient customerOnSAServiceClient,
         ICustomerServiceClient customerServiceClient,
-        CustomerWithChangedDataService changedDataService)
+        CustomerWithChangedDataService changedDataService,
+        ICaseServiceClient caseServiceClient,
+        IMediator mediator)
     {
         _documentOnSaClient = documentOnSaClient;
-        _salesArrangementServiceClient = salesArrangementServiceClient;
         _arrangementServiceClient = arrangementServiceClient;
         _codebookServiceClients = codebookServiceClients;
         _householdClient = householdClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
         _customerServiceClient = customerServiceClient;
         _changedDataService = changedDataService;
+        _caseServiceClient = caseServiceClient;
+        _mediator = mediator;
     }
 
     public async Task<Unit> Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
@@ -71,6 +73,27 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
             return Unit.Value;
         }
 
+        var mandantId = await GetMandantId(request, cancellationToken);
+
+        if (mandantId != (int)Mandants.Kb)
+        {
+            throw new CisValidationException(90002, $"Mp products not supported (mandant {mandantId})");
+        }
+
+        var customersOnSa = await GetCustomersOnSa(documentOnSa, cancellationToken);
+        foreach (var customerOnSa in customersOnSa)
+        {
+            var detailWithChangedData = await _changedDataService.GetCustomerWithChangedData<GetDetailWithChangesResponse>(customerOnSa, cancellationToken);
+            await _customerServiceClient.UpdateCustomer(MapUpdateCustomerRequest(detailWithChangedData, mandantId.Value, customerOnSa), cancellationToken);
+            //Throw away locally stored data(update CustomerChangeData with null)
+            await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa), cancellationToken);
+        }
+
+        return Unit.Value;
+    }
+
+    private async Task<int?> GetMandantId(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
+    {
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         if (salesArrangement is null)
@@ -78,30 +101,9 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
             throw new CisNotFoundException(19000, $"SalesArrangement{request.SalesArrangementId} does not exist.");
         }
 
-        var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
-
-        if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ServiceRequest)
-        {
-            throw new CisValidationException(90002, "Mp products not supported");
-        }
-        else if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)
-        {
-            // locally stored changes
-            var customersOnSa = await GetCustomersOnSa(documentOnSa, cancellationToken);
-            foreach (var customerOnSa in customersOnSa)
-            {
-                var detailWithChangedData = await _changedDataService.GetCustomerWithChangedData<GetDetailWithChangesResponse>(customerOnSa, cancellationToken);
-                await _customerServiceClient.UpdateCustomer(MapUpdateCustomerRequest(detailWithChangedData), cancellationToken);
-                //Throw away locally stored data(update CustomerChangeData with null)
-                await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa), cancellationToken);
-            }
-        }
-        else
-        {
-            throw new NotSupportedException($"SalesArrangementCategory {salesArrangementType.SalesArrangementCategory} not supported");
-        }
-
-        return Unit.Value;
+        var caseDetail = await _caseServiceClient.GetCaseDetail(salesArrangement.CaseId, cancellationToken);
+        var productTypes = await _codebookServiceClients.ProductTypes(cancellationToken);
+        return productTypes.Single(r => r.Id == caseDetail.Data.ProductTypeId).MandantId;
     }
 
     private static UpdateCustomerDetailRequest MapUpdateCustomerOnSaRequest(CustomerOnSA customerOnSa)
@@ -115,9 +117,12 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
         };
     }
 
-    private static DomainServices.CustomerService.Contracts.UpdateCustomerRequest MapUpdateCustomerRequest(GetDetailWithChangesResponse detailWithChangedData)
+    private static DomainServices.CustomerService.Contracts.UpdateCustomerRequest MapUpdateCustomerRequest(GetDetailWithChangesResponse detailWithChangedData, int mandant, CustomerOnSA customerOnSA)
     {
         var updateRequest = new DomainServices.CustomerService.Contracts.UpdateCustomerRequest();
+        updateRequest.Mandant = (Mandants)mandant;
+        updateRequest.Identities.AddRange(customerOnSA.CustomerIdentifiers);
+
         if (detailWithChangedData.NaturalPerson is not null)
             updateRequest.NaturalPerson = MapNaturalPerson(detailWithChangedData.NaturalPerson);
         if (detailWithChangedData.IdentificationDocument is not null)
@@ -249,42 +254,18 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
 
     private async Task ValidateSalesArrangement(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
     {
-        var validationResult = await _salesArrangementServiceClient.ValidateSalesArrangement(request.SalesArrangementId, cancellationToken);
+        var validationResult = await _mediator.Send(new ValidateRequest(request.SalesArrangementId), cancellationToken);
 
-        if (validationResult is not null)
+        if (validationResult is not null && validationResult.Categories is not null && validationResult.Categories.Any())
         {
-            var nobyError = validationResult.ValidationMessages?
-                                       .Where(t => t.NobyMessageDetail.Severity != ValidationMessageNoby.Types.NobySeverity.None)
-                                       .GroupBy(t => t.NobyMessageDetail.Category)
-                                       .OrderBy(t => t.Min(x => x.NobyMessageDetail.CategoryOrder))
-                                       .Select(t => new
-                                       {
-                                           CategoryName = t.Key,
-                                           ValidationMessages = t.Select(t2 => new
-                                           {
-                                               Message = t2.NobyMessageDetail.Message,
-                                               Parameter = t2.NobyMessageDetail.ParameterName,
-                                               Severity = t2.NobyMessageDetail.Severity == ValidationMessageNoby.Types.NobySeverity.Error ? MessageSeverity.Error : MessageSeverity.Warning
-                                           }).ToList()
-                                       }).ToList();
-
-            if (nobyError is not null && nobyError.Any())
+            var options = new JsonSerializerOptions
             {
-                var options = new JsonSerializerOptions
-                {
-                    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-                    WriteIndented = true
-                };
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                WriteIndented = true
+            };
 
-                var errors = nobyError.Select(s => new CisExceptionItem(90009, JsonSerializer.Serialize(s, options)));
-                throw new CisValidationException(errors);
-            }
+            var errors = validationResult.Categories.Select(s => new CisExceptionItem(90009, JsonSerializer.Serialize(s, options)));
+            throw new CisValidationException(errors);
         }
-    }
-
-    private async Task<SalesArrangementTypeItem> GetSalesArrangementType(DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, CancellationToken cancellationToken)
-    {
-        var salesArrangementTypes = await _codebookServiceClients.SalesArrangementTypes(cancellationToken);
-        return salesArrangementTypes.Single(r => r.Id == salesArrangement.SalesArrangementTypeId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using NOBY.Api.Endpoints.DocumentArchive.GetDocument;
+﻿using CIS.Infrastructure.gRPC;
+using NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 using NOBY.Api.Endpoints.DocumentArchive.UploadDocument;
@@ -39,11 +40,11 @@ public class DocumentArchiveController : ControllerBase
         var result = await _mediator.Send(new GetDocumentRequest(documentId), cancellationToken);
         if (contentDisposition == FileContentDisposition.inline)
         {
-            return File(result.Content.BinaryData.ToArray(), result.Content.MineType);
+            return File(result.Content.BinaryData.ToArrayUnsafe(), result.Content.MineType);
         }
         else
         {
-            return File(result.Content.BinaryData.ToArray(), result.Content.MineType, result.Metadata.Filename);
+            return File(result.Content.BinaryData.ToArrayUnsafe(), result.Content.MineType, result.Metadata.Filename);
         }
     }
 
