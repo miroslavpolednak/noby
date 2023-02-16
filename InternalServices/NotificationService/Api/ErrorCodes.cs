@@ -86,8 +86,8 @@ public static class ErrorCodes
 
         public static class SendSms
         {
-            public const string PhoneRequired = "360";
-            public const string PhoneInvalid = "361";
+            public const string PhoneNumberRequired = "360";
+            public const string PhoneNumberInvalid = "361";
             public const string ProcessPriorityInvalid = "362";
             public const string TypeInvalid = "363";
             public const string TextRequired = "364";
@@ -96,8 +96,8 @@ public static class ErrorCodes
 
         public static class SendSmsFromTemplate
         {
-            public const string PhoneRequired = "370";
-            public const string PhoneInvalid = "371";
+            public const string PhoneNumberRequired = "370";
+            public const string PhoneNumberInvalid = "371";
             public const string ProcessPriorityInvalid = "372";
             public const string TypeInvalid = "373";
             public const string TextRequired = "374";

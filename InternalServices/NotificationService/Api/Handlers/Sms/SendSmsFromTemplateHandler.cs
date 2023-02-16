@@ -65,6 +65,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         }
         
         var result = _repository.NewSmsResult();
+        var phone = request.PhoneNumber.ParsePhone();
         result.Identity = request.Identifier?.Identity;
         result.IdentityScheme = request.Identifier?.IdentityScheme;
         result.CustomId = request.CustomId;
@@ -73,8 +74,8 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
 
         result.Type = request.Type;
         result.Text = text;
-        result.CountryCode = request.Phone.CountryCode;
-        result.PhoneNumber = request.Phone.NationalNumber;
+        result.CountryCode = phone.CountryCode;
+        result.PhoneNumber = phone.NationalNumber;
 
         result.CreatedBy = _userAdapterService.GetUsername();
         
@@ -94,7 +95,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {
             id = result.Id.ToString(),
-            phone = request.Phone.Map(),
+            phone = phone.Map(),
             type = smsType.McsCode,
             text = text,
             processingPriority = request.ProcessingPriority,
