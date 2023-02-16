@@ -200,13 +200,20 @@ internal class CustomerManagementDetailProvider
     {
         if (customer.PrimaryPhone is not null)
         {
-            onAddContact(new Contact
+            var noIndex = (customer.PrimaryPhone.PhoneNumber ?? "").IndexOf(' ');
+            var model = new Contact
             {
                 ContactTypeId = (int)ContactTypes.Mobil,
-                Value = customer.PrimaryPhone.PhoneNumber,
                 IsPrimary = true,
-                Confirmed = customer.PrimaryPhone.Confirmed
-            });
+                IsConfirmed = customer.PrimaryPhone.Confirmed
+            };
+
+            if (noIndex <= 0)
+                model.Mobile = new MobilePhone { PhoneNumber = customer.PrimaryPhone.PhoneNumber };
+            else
+                model.Mobile = new MobilePhone { PhoneNumber = customer.PrimaryPhone.PhoneNumber![noIndex..], PhoneIDC = customer.PrimaryPhone.PhoneNumber![..noIndex] };
+
+            onAddContact(model);
         }
 
         if (customer.PrimaryEmail is not null)
@@ -214,9 +221,9 @@ internal class CustomerManagementDetailProvider
             onAddContact(new Contact
             {
                 ContactTypeId = (int)ContactTypes.Email,
-                Value = customer.PrimaryEmail.EmailAddress,
+                Email = new EmailAddress { Address = customer.PrimaryEmail.EmailAddress },
                 IsPrimary = true,
-                Confirmed = customer.PrimaryEmail.Confirmed
+                IsConfirmed = customer.PrimaryEmail.Confirmed
             });
         }
     }

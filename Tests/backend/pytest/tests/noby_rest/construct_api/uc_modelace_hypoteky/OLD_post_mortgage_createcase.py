@@ -4,7 +4,7 @@ import pytest
 
 # varianta:
 @pytest.fixture()
-def post_create_case(webapi_url, get_cookies,  post_offer_mortgage_loan_kind_2000):
+def post_create_case_old(webapi_url, get_cookies, post_offer_mortgage_loan_kind_2000):
     resp = post_offer_mortgage_loan_kind_2000
     data = resp.json()
     offer_id = data['offerId']

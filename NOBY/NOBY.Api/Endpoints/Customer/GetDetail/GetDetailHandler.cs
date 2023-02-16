@@ -1,11 +1,10 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Clients;
 using NOBY.Api.SharedDto;
-using contracts = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.GetDetail;
 
-internal class GetDetailHandler
+internal sealed class GetDetailHandler
     : IRequestHandler<GetDetailRequest, GetDetailResponse>
 {
     public async Task<GetDetailResponse> Handle(GetDetailRequest request, CancellationToken cancellationToken)

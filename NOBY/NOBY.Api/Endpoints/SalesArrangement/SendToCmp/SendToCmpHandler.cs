@@ -16,7 +16,7 @@ using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
 namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp;
 
 internal sealed class SendToCmpHandler
-    : AsyncRequestHandler<SendToCmpRequest>
+    : IRequestHandler<SendToCmpRequest>
 {
 
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
@@ -42,7 +42,7 @@ internal sealed class SendToCmpHandler
         _customerService = customerService;
     }
 
-    protected override async Task Handle(SendToCmpRequest request, CancellationToken cancellationToken)
+    public async Task Handle(SendToCmpRequest request, CancellationToken cancellationToken)
     {
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);

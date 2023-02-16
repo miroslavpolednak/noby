@@ -15,18 +15,17 @@
 	<ItemGroup>
 		<PackageReference Include="FastEnum" Version="1.8.0" />
 		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.51.0" />
-		<PackageReference Include="MediatR" Version="11.1.0" />
-		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.3.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
+		<PackageReference Include="MediatR" Version="12.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.3.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="7.0.0" />
 		<PackageReference Include="Polly" Version="7.2.3" />
-		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.179" />
-		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.179" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.1.1" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.1.1" />
 		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
 	</ItemGroup>
 

@@ -95,12 +95,11 @@ internal sealed class GetCustomersHandler
             var mailingAddress = customer.Addresses?.FirstOrDefault(x => x.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Mailing);
             var country = countries.FirstOrDefault(x => x.Id == customer.NaturalPerson.CitizenshipCountriesId.FirstOrDefault());
 
-            return new GetCustomersResponseCustomer
+            var model = new GetCustomersResponseCustomer
             {
                 Agent = t.Agent,
                 IsKYCSuccessful = t.IsKYCSuccessful,
-                Email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value,
-                Mobile = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value,
+                Contacts = new(),
                 KBID = customer.Identities.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 RoleName = t.RoleName,
                 RoleId = t.Role,
@@ -116,6 +115,20 @@ internal sealed class GetCustomersHandler
                     Name = country?.Name
                 }
             };
+
+            var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.Address;
+            if (!string.IsNullOrEmpty(email))
+                model.Contacts.EmailAddress = new() { EmailAddress = email };
+
+            var phone = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
+            if (!string.IsNullOrEmpty(phone))
+                model.Contacts.PhoneNumber = new()
+                {
+                    PhoneNumber = phone,
+                    PhoneIDC = customer.Contacts!.First(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil).Mobile.PhoneIDC
+                };
+
+            return model;
         }).ToList();
 
         return finalCustomerList.OrderBy(t => t.RoleId).ThenBy(t => t.LastName).ToList();

@@ -2,6 +2,7 @@ using CIS.Core;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Net.NetworkInformation;
 
 namespace CIS.Infrastructure.gRPC;
 
@@ -81,7 +82,7 @@ public static class StartupExtensions
     public static IServiceCollection AddCisGrpcInfrastructure(this IServiceCollection services, Type assemblyType)
     {
         services
-            .AddMediatR(assemblyType.Assembly)
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(CisMediatR.GrpcValidationBehavior<,>));
 
         // add validators

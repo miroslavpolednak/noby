@@ -66,15 +66,29 @@ internal static class CreateExtensions
         customer.NaturalPerson?.FillResponseDto(person);
         person.IsBrSubscribed = customer.NaturalPerson?.IsBrSubscribed;
 
-        return new CreateResponse
+        var model = new CreateResponse
         {
             NaturalPerson = person,
             JuridicalPerson = null,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
-            Contacts = customer.Contacts?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList(),
-            IsInputDataDifferent = true
+            IsInputDataDifferent = true,
+            Contacts = new()
         };
+
+        var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.Address;
+        if (!string.IsNullOrEmpty(email))
+            model.Contacts.EmailAddress = new() { EmailAddress = email };
+
+        var phone = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
+        if (!string.IsNullOrEmpty(phone))
+            model.Contacts.PhoneNumber = new()
+            {
+                PhoneNumber = phone,
+                PhoneIDC = customer.Contacts!.First(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil).Mobile.PhoneIDC
+            };
+
+        return model;
     }
     
     public static CreateResponse SetResponseCode(this CreateResponse response, bool createOk)
@@ -86,8 +100,8 @@ internal static class CreateExtensions
     public static CreateResponse InputDataComparison(this CreateResponse response, CreateRequest originalRequest)
     {
         if (
-            !stringCompare(originalRequest.Mobile, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value)
-            || !stringCompare(originalRequest.Email, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value)
+            !stringCompare(originalRequest.Contacts?.PhoneNumber?.PhoneNumber, response.Contacts?.PhoneNumber?.PhoneNumber)
+            || !stringCompare(originalRequest.Contacts?.EmailAddress?.EmailAddress, response.Contacts?.EmailAddress?.EmailAddress)
             || originalRequest.BirthDate != response.NaturalPerson?.DateOfBirth
             || !stringCompare(originalRequest.BirthNumber, response.NaturalPerson?.BirthNumber)
             || !stringCompare(originalRequest.BirthPlace, response.NaturalPerson?.PlaceOfBirth)
