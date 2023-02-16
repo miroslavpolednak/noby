@@ -132,13 +132,30 @@ public sealed class GetCaseParametersResponse
     /// </summary>
     public int? FixedRatePeriodRefix { get; set; }
 
+    public Consultant? BranchConsultant { get; set; }
+
+    public Consultant? ThirdPartyConsultant { get; set; }
+}
+
+public sealed class Consultant
+{
     /// <summary>
-    /// Pobočka banky, pod kterou spadá úvěr.
+    /// Pobočka banky, pod kterou spadá úvěr / Pobočka/společnost třetí strany
+    /// </summary>
+    public string? BranchName { get; set; }
+
+    /// <summary>
+    /// Poradce, pod kterého spadá úvěr / Poradce třetí strany
+    /// </summary>
+    public string? ConsultantName { get; set; }
+
+    /// <summary>
+    /// ČPM
     /// </summary>
     public string? Cpm { get; set; }
 
     /// <summary>
-    /// Poradce třetí strana.
+    /// IČP
     /// </summary>
     public string? Icp { get; set; }
 }
