@@ -1,4 +1,6 @@
-﻿namespace CIS.InternalServices.NotificationService.Api.Helpers;
+﻿using CIS.InternalServices.NotificationService.Contracts.Common;
+
+namespace CIS.InternalServices.NotificationService.Api.Helpers;
 
 public static class PhoneNumberExtensions
 {
@@ -10,6 +12,19 @@ public static class PhoneNumberExtensions
         "+370", "+371", "+372", "+385", "+386", "+420", "+421", "+423"
     };
 
+    public static Phone ParsePhone(this string value)
+    {
+        var normalizedPhoneNumber = value.NormalizePhoneNumber();
+        var code = ParseCode(normalizedPhoneNumber);
+        var number = normalizedPhoneNumber.Substring(code.Length);
+
+        return new Phone
+        {
+            CountryCode = code,
+            NationalNumber = number
+        };
+    }
+    
     private static string NormalizePhoneNumber(this string value)
     {
         // odstranění mezer
@@ -24,19 +39,11 @@ public static class PhoneNumberExtensions
         return phoneNumber;
     }
     
-    public static void Parse(this string value)
-    {
-        var normalizedPhoneNumber = value.NormalizePhoneNumber();
-        
-        var code = ParseCode(normalizedPhoneNumber);
-        var phoneNumber = ParsePhoneNumber(normalizedPhoneNumber);
-    }
-
     private static string ParseCode(this string normalizedPhoneNumber)
     {
+        // postupně odkrajuješ od 5 do 2 a hledáš a koukám že se to děje od největšího po nejmenší
         for (var i  = Math.Max(normalizedPhoneNumber.Length, 5); i > 1; i--)
         {
-            // postupně odkrajuješ od 5 do 2 a hledáš a koukám že se to děje od největšího po nejmenší
             var code = normalizedPhoneNumber.Substring(0, i);
             if (_countryCallingCodes.Contains(code))
             {
@@ -46,10 +53,5 @@ public static class PhoneNumberExtensions
         
         // nevyhovuje
         return string.Empty;
-    }
-
-    private static string ParsePhoneNumber(this string normalizedPhoneNumber)
-    {
-        return normalizedPhoneNumber;
     }
 }
