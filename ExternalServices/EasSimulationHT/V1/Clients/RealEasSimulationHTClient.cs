@@ -37,8 +37,7 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
 
             if ((result.errorInfo?.kodChyby ?? 0) != 0)
             {
-                var message = $"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]";
-                _logger.LogWarning(message);
+                _logger.LogWarning($"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]");
                 throw new CisValidationException(10020, result.errorInfo!.textChyby);
             }
             return result;
