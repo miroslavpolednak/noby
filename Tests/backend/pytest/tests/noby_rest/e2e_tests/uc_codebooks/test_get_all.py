@@ -1,6 +1,6 @@
 import pytest
 
-from response.codebooks_json import json_resp_academic_degrees_after, json_resp_paymentDays, \
+from Tests.backend.pytest.tests.noby_rest.json.response.codebooks_json import json_resp_academic_degrees_after, json_resp_paymentDays, \
     json_resp_academic_degrees_before, json_resp_bank_codes, json_resp_case_states, \
     json_resp_classification_of_economic_activities, json_resp_contact_types, json_resp_countries, \
     json_resp_country_code_phone_idc, json_resp_currencies, json_resp_customer_roles, json_resp_developers, \
