@@ -22,8 +22,8 @@ public class NotificationRepository
         Id = Guid.NewGuid(),
         Channel = NotificationChannel.Email, 
         State = NotificationState.InProgress,
-        HandoverToMcsTimestamp = null,
-        ErrorSet = new HashSet<string>(),
+        ResultTimestamp = null,
+        ErrorSet = new HashSet<ResultError>(),
     };
 
     public Entities.SmsResult NewSmsResult() => new()
@@ -31,8 +31,8 @@ public class NotificationRepository
         Id = Guid.NewGuid(),
         Channel = NotificationChannel.Sms,
         State = NotificationState.InProgress,
-        HandoverToMcsTimestamp = null,
-        ErrorSet = new HashSet<string>()
+        ResultTimestamp = null,
+        ErrorSet = new HashSet<ResultError>()
     };
 
     public async Task AddResult(Result result, CancellationToken token = default)

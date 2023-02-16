@@ -16,7 +16,7 @@ public class Result
     public NotificationChannel Channel { get; set; }
     
     [ProtoMember(4)]
-    public List<string> Errors { get; set; } = new();
+    public List<ResultError> Errors { get; set; } = new();
     
     [ProtoMember(5)]
     public Identifier? Identifier { get; set; }
@@ -34,5 +34,8 @@ public class Result
     public RequestData RequestData { get; set; } = null!;
     
     [ProtoMember(10)]
-    public DateTime? HandoverToMcsTimestamp { get; set; }
+    public DateTime? ResultTimestamp { get; set; }
+
+    [ProtoMember(11)]
+    public string CreatedBy { get; set; } = null!;
 }

@@ -21,7 +21,7 @@ internal static class NobyServices
         });
 
         builder.Services
-            .AddMediatR(assemblyType.Assembly)
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(Infrastructure.ErrorHandling.NobyValidationBehavior<,>));
 
         // add validators

@@ -11,9 +11,9 @@ using __Household = DomainServices.HouseholdService.Contracts;
 namespace NOBY.Api.Endpoints.Customer.UpdateDetailWithChanges;
 
 internal sealed class UpdateDetailWithChangesHandler
-    : AsyncRequestHandler<UpdateDetailWithChangesRequest>
+    : IRequestHandler<UpdateDetailWithChangesRequest>
 {
-    protected override async Task Handle(UpdateDetailWithChangesRequest request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateDetailWithChangesRequest request, CancellationToken cancellationToken)
     {
         // customer instance
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
@@ -30,6 +30,12 @@ internal sealed class UpdateDetailWithChangesHandler
         ModelComparers.CompareObjects(request.Addresses, originalModel.Addresses, "Addresses", delta);
         ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
         
+        // tohle je zajimavost - do delty ukladame zmeny jen u kontaktu, ktere nejsou v CM jako IsConfirmed=true
+        if (!(originalModel.EmailAddress?.IsConfirmed ?? false))
+            ModelComparers.CompareObjects(request.EmailAddress, originalModel.EmailAddress, "EmailAddress", delta);
+        if (!(originalModel.MobilePhone?.IsConfirmed ?? false))
+            ModelComparers.CompareObjects(request.MobilePhone, originalModel.MobilePhone, "MobilePhone", delta);
+        
         if (originalModel.CustomerIdentification?.IdentificationMethodId != 1 && originalModel.CustomerIdentification?.IdentificationMethodId != 8)
         {
             delta.CustomerIdentification = new CustomerIdentificationMethod
@@ -38,7 +44,7 @@ internal sealed class UpdateDetailWithChangesHandler
                 CzechIdentificationNumber = string.Empty,
                 IdentificationMethodId = 1
             };
-
+            
             if (_userAccessor.User?.Id != null)
             {
                 var user = await _userServiceClient.GetUser(_userAccessor.User.Id, cancellationToken);

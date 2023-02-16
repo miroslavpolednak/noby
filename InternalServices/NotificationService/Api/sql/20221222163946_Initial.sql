@@ -20,8 +20,9 @@ CREATE TABLE [EmailResult] (
     [IdentityScheme] nvarchar(450) NULL,
     [DocumentId] nvarchar(450) NULL,
     [RequestTimestamp] datetime2 NULL,
-    [HandoverToMcsTimestamp] datetime2 NULL,
+    [ResultTimestamp] datetime2 NULL,
     [Errors] nvarchar(max) NOT NULL,
+    [CreatedBy] nvarchar(max) NOT NULL,
     CONSTRAINT [PK_EmailResult] PRIMARY KEY ([Id])
     );
 GO
@@ -35,8 +36,10 @@ CREATE TABLE [SmsResult] (
     [IdentityScheme] nvarchar(450) NULL,
     [DocumentId] nvarchar(450) NULL,
     [RequestTimestamp] datetime2 NULL,
-    [HandoverToMcsTimestamp] datetime2 NULL,
+    [ResultTimestamp] datetime2 NULL,
     [Errors] nvarchar(max) NOT NULL,
+    [CreatedBy] nvarchar(max) NOT NULL,
+    [Type] nvarchar(max) NOT NULL,
     [Text] nvarchar(max) NOT NULL,
     [CountryCode] nvarchar(max) NOT NULL,
     [PhoneNumber] nvarchar(max) NOT NULL,
@@ -51,7 +54,7 @@ CREATE INDEX [IX_SmsResult_CustomId_Identity_IdentityScheme_DocumentId] ON [SmsR
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20221222163946_Initial', N'7.0.1');
+VALUES (N'20221222163946_Initial', N'7.0.2');
 GO
 
 COMMIT;

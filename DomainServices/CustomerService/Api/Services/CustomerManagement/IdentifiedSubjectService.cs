@@ -11,6 +11,7 @@ namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 [ScopedService, SelfService]
 internal sealed class IdentifiedSubjectService
 {
+    private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
     private readonly ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient _identifiedSubjectClient;
     private readonly ICodebookServiceClients _codebook;
     private readonly CustomerManagementErrorMap _errorMap;
@@ -22,8 +23,9 @@ internal sealed class IdentifiedSubjectService
     private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
     private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public IdentifiedSubjectService(ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
+    public IdentifiedSubjectService(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
     {
+        _customerManagement = customerManagement;
         _identifiedSubjectClient = identifiedSubjectClient;
         _codebook = codebook;
         _errorMap = errorMap;
@@ -53,22 +55,29 @@ internal sealed class IdentifiedSubjectService
             throw new CisArgumentException(9999999, "Customer does not have KB Identity", "IdentityId");
         }
 
+        var customer = await _customerManagement.GetDetail(customerId.IdentityId, cancellationToken);
+
         var identifiedSubject = BuildUpdateRequest(request);
 
         await _identifiedSubjectClient.UpdateIdentifiedSubject(customerId.IdentityId, identifiedSubject, cancellationToken);
-
+        
         // https://jira.kb.cz/browse/HFICH-3555
         await callSetSocialCharacteristics(customerId.IdentityId, request, cancellationToken);
-        await callSetKyc(customerId.IdentityId, request, cancellationToken);
+        await callSetKyc(customerId.IdentityId, request, customer.IsPoliticallyExposed, cancellationToken);
     }
 
-    private async Task callSetKyc(long customerId, UpdateCustomerRequest request, CancellationToken cancellationToken)
+    private async Task callSetKyc(long customerId, UpdateCustomerRequest request, bool? isPoliticallyExposed, CancellationToken cancellationToken)
     {
         var model = new ExternalServices.Kyc.V1.Contracts.Kyc
         {
-            //IsPoliticallyExposed = request.NaturalPerson?.IsPoliticallyExposed ?? false, //!!! nesmi byt zadano, CM pada
             IsUSPerson = request.NaturalPerson?.IsUSPerson ?? false
         };
+
+        // jedine v tomto pripade se muze do CM poslat neco v IsPoliticallyExposed
+        if (!isPoliticallyExposed.HasValue && (request.NaturalPerson?.IsUSPerson ?? false))
+        {
+            model.IsPoliticallyExposed = false;
+        }
 
         if (request.NaturalPerson?.TaxResidence is not null)
         {
@@ -251,19 +260,13 @@ internal sealed class IdentifiedSubjectService
     private static __Contracts.PrimaryPhone? CreatePrimaryPhone(IEnumerable<Contact> contacts)
     {
         var phone = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil);
-
-        if (phone is null || string.IsNullOrWhiteSpace(phone.Value))
+        if (string.IsNullOrWhiteSpace(phone?.Mobile?.PhoneNumber))
             return default;
-
-        var phoneNumber = phone.Value.Replace(" ", "");
-
-        var phoneIDC = phoneNumber[..Math.Max(0, phoneNumber.Length - 9)];
-        phoneNumber = phoneNumber.Substring(phoneIDC.Length, phoneNumber.Length - phoneIDC.Length);
 
         return new()
         {
-            PhoneIDC = phoneIDC,
-            PhoneNumber = phoneNumber
+            PhoneIDC = phone.Mobile.PhoneIDC,
+            PhoneNumber = phone.Mobile.PhoneNumber
         };
     }
 
@@ -276,7 +279,7 @@ internal sealed class IdentifiedSubjectService
 
         return new()
         {
-            EmailAddress = email.Value
+            EmailAddress = email.Email.Address
         };
     }
 }

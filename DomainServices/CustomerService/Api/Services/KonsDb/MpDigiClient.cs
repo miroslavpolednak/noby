@@ -57,7 +57,7 @@ public class MpDigiClient
 
         var partnerRequest = MapToPartnerRequest(request);
 
-        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest);
+        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest, cancellationToken);
 
         return new Identity(mpIdentity.IdentityId, IdentitySchemes.Mp);
     }
@@ -78,7 +78,7 @@ public class MpDigiClient
 
         var partnerRequest = MapToPartnerRequest(request);
         
-        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest);
+        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest, cancellationToken);
     }
 
     private async Task<bool> PartnerExists(long partnerId, CancellationToken cancellationToken)
@@ -105,12 +105,7 @@ public class MpDigiClient
 
     private ContactRequest MapToContactRequest(Contact contact)
     {
-        return new ContactRequest
-        {
-            Type = FastEnum.Parse<ContactType>(_contactTypes.First(x => x.Id == contact.ContactTypeId).MpDigiApiCode),
-            Primary = true,
-            Value = contact.Value
-        };
+        return contact.ToExternalService(_contactTypes);
     }
     
     private PartnerRequest MapToPartnerRequest(CreateCustomerRequest request)

@@ -34,7 +34,7 @@ internal class OfferTemplateData : AggregatedData
     {
         get
         {
-            var phone = string.IsNullOrWhiteSpace(Case.OfferContacts.PhoneNumberForOffer) ? null : $"telefon: {Case.OfferContacts.PhoneNumberForOffer}";
+            var phone = string.IsNullOrWhiteSpace(Case.OfferContacts.PhoneNumberForOffer?.PhoneNumber) ? null : $"telefon: {Case.OfferContacts.PhoneNumberForOffer?.PhoneIDC}{Case.OfferContacts.PhoneNumberForOffer?.PhoneNumber}";
             var email = string.IsNullOrWhiteSpace(Case.OfferContacts.EmailForOffer) ? null : $"e-mail: {Case.OfferContacts.EmailForOffer}";
 
             return string.Join(" | ", new[] { phone, email }.Where(str => !string.IsNullOrWhiteSpace(str)));

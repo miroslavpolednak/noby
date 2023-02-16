@@ -1,6 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest.Incomes;
+using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 
@@ -8,18 +9,18 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormD
 
 internal class Customer
 {
-    private readonly CustomerOnSA _customerOnSa;
     private readonly CustomerDetailResponse _customerDetail;
 
     private readonly ILookup<CustomerIncomeTypes, IncomeInList> _customerIncomes;
 
     public Customer(CustomerOnSA customerOnSa, CustomerDetailResponse customerDetail)
     {
-        _customerOnSa = customerOnSa;
+        CustomerOnSA = customerOnSa;
         _customerDetail = customerDetail;
 
-        _customerIncomes = _customerOnSa.Incomes.OrderBy(i => i.IncomeId).ToLookup(i => (CustomerIncomeTypes)i.IncomeTypeId);
+        _customerIncomes = CustomerOnSA.Incomes.OrderBy(i => i.IncomeId).ToLookup(i => (CustomerIncomeTypes)i.IncomeTypeId);
     }
+
     public required int HouseholdNumber { get; init; }
 
     public required bool IsPartner { get; init; }
@@ -32,25 +33,29 @@ internal class Customer
 
     public required Dictionary<int, string> GenderCodes { private get; init; }
 
-    public required Dictionary<int, string> Countries { private get; init; }
-
     public required ILookup<string, int> ObligationTypes { private get; init; }
 
-    public int RoleId => _customerOnSa.CustomerRoleId;
+    public required List<LegalCapacityRestrictionTypeItem> LegalCapacityTypes { private get; init; }
 
-    public Identity IdentityKb => _customerOnSa.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+    public CustomerOnSA CustomerOnSA { get; }
 
-    public Identity IdentityMp => _customerOnSa.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+    public Identity IdentityKb => CustomerOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
 
-    public bool HasRelationshipWithKB => _customerOnSa.CustomerAdditionalData?.HasRelationshipWithKB ?? false;
+    public Identity IdentityMp => CustomerOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
 
-    public bool HasRelationshipWithKBEmployee => _customerOnSa.CustomerAdditionalData?.HasRelationshipWithKBEmployee ?? false;
+    public bool HasRelationshipWithKB => CustomerOnSA.CustomerAdditionalData?.HasRelationshipWithKB ?? false;
 
-    public bool HasRelationshipWithCorporate => _customerOnSa.CustomerAdditionalData?.HasRelationshipWithCorporate ?? false;
+    public bool HasRelationshipWithKBEmployee => CustomerOnSA.CustomerAdditionalData?.HasRelationshipWithKBEmployee ?? false;
+
+    public bool HasRelationshipWithCorporate => CustomerOnSA.CustomerAdditionalData?.HasRelationshipWithCorporate ?? false;
+
+    public bool IsPoliticallyExposed => CustomerOnSA.CustomerAdditionalData?.IsPoliticallyExposed ?? false;
+
+    public bool IsUSPerson => CustomerOnSA.CustomerAdditionalData?.IsUSPerson ?? false;
+
+    public string? RestrictionType => LegalCapacityTypes.Where(l => l.Id == CustomerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionTypeId).Select(l => l.RdmCode).FirstOrDefault();
 
     public NaturalPerson NaturalPerson => _customerDetail.NaturalPerson;
-
-    public bool IsPoliticallyExposed => _customerDetail.NaturalPerson.IsPoliticallyExposed ?? false;
 
     public IEnumerable<Address> Addresses => _customerDetail.Addresses.Select(a => new Address(a));
 
@@ -71,42 +76,40 @@ internal class Customer
 
     public bool IsResident => NaturalPerson.TaxResidence?.ResidenceCountries.Any(r => r.CountryId == 16) ?? false;
 
-    public int DefaultZeroValue => 0;
-
     public IEnumerable<IncomeEmployment> IncomesEmployment => 
         _customerIncomes[CustomerIncomeTypes.Employement].Select(i => new IncomeEmployment(i, Incomes[i.IncomeId])
         {
-            Number = _customerOnSa.Incomes.IndexOf(i),
+            Number = CustomerOnSA.Incomes.IndexOf(i),
             FirstEmploymentTypeId = FirstEmploymentTypeId
         });
 
     public IncomeEntrepreneur? IncomeEntrepreneur =>
         _customerIncomes[CustomerIncomeTypes.Enterprise].Select(i => new IncomeEntrepreneur(i, Incomes[i.IncomeId])
         {
-            Number = _customerOnSa.Incomes.IndexOf(i)
+            Number = CustomerOnSA.Incomes.IndexOf(i)
         }).FirstOrDefault(); 
     
     public IncomeBase? IncomeRent =>
         _customerIncomes[CustomerIncomeTypes.Rent].Select(i => new IncomeBase(i)
         {
-            Number = _customerOnSa.Incomes.IndexOf(i)
+            Number = CustomerOnSA.Incomes.IndexOf(i)
         }).FirstOrDefault();
 
     public IEnumerable<IncomeOther> IncomesOther =>
         _customerIncomes[CustomerIncomeTypes.Other].Select(i => new IncomeOther(i, Incomes[i.IncomeId])
         {
-            Number = _customerOnSa.Incomes.IndexOf(i)
+            Number = CustomerOnSA.Incomes.IndexOf(i)
         });
 
     public IEnumerable<Obligation> Obligations =>
-        _customerOnSa.Obligations.Select((obligation, index) => new Obligation
+        CustomerOnSA.Obligations.Select((obligation, index) => new Obligation
         {
             Number = index + 1,
             ObligationData = obligation,
             ObligationTypeIds = ObligationTypes["amount"]
         });
 
-    public bool HasLockedIncomeDateTime => ((DateTime?)_customerOnSa.LockedIncomeDateTime).HasValue;
+    public bool HasLockedIncomeDateTime => ((DateTime?)CustomerOnSA.LockedIncomeDateTime).HasValue;
 
-    public DateTime? LockedIncomeDateTime => _customerOnSa.LockedIncomeDateTime;
+    public DateTime? LockedIncomeDateTime => CustomerOnSA.LockedIncomeDateTime;
 }

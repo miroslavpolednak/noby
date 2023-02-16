@@ -59,9 +59,9 @@ internal class CustomerManagementDetailProvider
             CustomerIdentification = CreateCustomerIdentification(customer.CustomerIdentification)
         };
 
-        AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.Address, customer.PrimaryAddress?.ComponentAddress, customer.PrimaryAddress?.PrimaryAddressFrom);
-        AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.Address, customer.ContactAddress?.ComponentAddress, default);
-        AddAddress(AddressTypes.Abroad, response.Addresses.Add, customer.TemporaryStay?.Address, customer.TemporaryStay?.ComponentAddress, default);
+        AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.ComponentAddress, customer.PrimaryAddress?.PrimaryAddressFrom);
+        AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.ComponentAddress, default);
+        AddAddress(AddressTypes.Abroad, response.Addresses.Add, customer.TemporaryStay?.ComponentAddress, default);
 
         AddContacts(customer, response.Contacts.Add);
 
@@ -170,30 +170,29 @@ internal class CustomerManagementDetailProvider
 
     private void AddAddress(AddressTypes addressType,
                             Action<GrpcAddress> onAddAddress,
-                            __Contracts.Address? address,
                             __Contracts.ComponentAddress? componentAddress,
                             DateTime? primaryAddressFrom)
     {
-        if (address is null)
+        if (componentAddress is null)
             return;
 
         onAddAddress(new GrpcAddress
         {
             AddressTypeId = (int)addressType,
-            StreetNumber = componentAddress?.StreetNumber ?? string.Empty,
-            HouseNumber = componentAddress?.HouseNumber ?? string.Empty,
-            EvidenceNumber = componentAddress?.EvidenceNumber ?? string.Empty,
-            City = address.City ?? string.Empty,
+            StreetNumber = componentAddress.StreetNumber ?? string.Empty,
+            HouseNumber = componentAddress.HouseNumber ?? string.Empty,
+            EvidenceNumber = componentAddress.EvidenceNumber ?? string.Empty,
+            City = componentAddress.City ?? string.Empty,
             IsPrimary = addressType == AddressTypes.Permanent,
-            CountryId = _countries.FirstOrDefault(t => t.ShortName == address.CountryCode)?.Id,
-            Postcode = address.PostCode?.Replace(" ", "") ?? string.Empty,
-            Street = (componentAddress?.Street ?? address.Street) ?? string.Empty,
-            DeliveryDetails = address.DeliveryDetails ?? string.Empty,
-            CityDistrict = componentAddress?.CityDistrict ?? string.Empty,
-            PragueDistrict = componentAddress?.PragueDistrict ?? string.Empty,
-            CountrySubdivision = componentAddress?.CountrySubdivision ?? string.Empty,
+            CountryId = _countries.FirstOrDefault(t => t.ShortName == componentAddress.CountryCode)?.Id,
+            Postcode = componentAddress.PostCode?.Replace(" ", "") ?? string.Empty,
+            Street = componentAddress.Street ?? string.Empty,
+            DeliveryDetails = componentAddress.DeliveryDetails ?? string.Empty,
+            CityDistrict = componentAddress.CityDistrict ?? string.Empty,
+            PragueDistrict = componentAddress.PragueDistrict ?? string.Empty,
+            CountrySubdivision = componentAddress.CountrySubdivision ?? string.Empty,
             PrimaryAddressFrom = primaryAddressFrom,
-            AddressPointId = componentAddress?.AddressPointId ?? string.Empty
+            AddressPointId = componentAddress.AddressPointId ?? string.Empty
         });
     }
 
@@ -201,13 +200,20 @@ internal class CustomerManagementDetailProvider
     {
         if (customer.PrimaryPhone is not null)
         {
-            onAddContact(new Contact
+            var noIndex = (customer.PrimaryPhone.PhoneNumber ?? "").IndexOf(' ');
+            var model = new Contact
             {
                 ContactTypeId = (int)ContactTypes.Mobil,
-                Value = customer.PrimaryPhone.PhoneNumber,
                 IsPrimary = true,
-                Confirmed = customer.PrimaryPhone.Confirmed
-            });
+                IsConfirmed = customer.PrimaryPhone.Confirmed
+            };
+
+            if (noIndex <= 0)
+                model.Mobile = new MobilePhone { PhoneNumber = customer.PrimaryPhone.PhoneNumber };
+            else
+                model.Mobile = new MobilePhone { PhoneNumber = customer.PrimaryPhone.PhoneNumber![noIndex..], PhoneIDC = customer.PrimaryPhone.PhoneNumber![..noIndex] };
+
+            onAddContact(model);
         }
 
         if (customer.PrimaryEmail is not null)
@@ -215,9 +221,9 @@ internal class CustomerManagementDetailProvider
             onAddContact(new Contact
             {
                 ContactTypeId = (int)ContactTypes.Email,
-                Value = customer.PrimaryEmail.EmailAddress,
+                Email = new EmailAddress { Address = customer.PrimaryEmail.EmailAddress },
                 IsPrimary = true,
-                Confirmed = customer.PrimaryEmail.Confirmed
+                IsConfirmed = customer.PrimaryEmail.Confirmed
             });
         }
     }

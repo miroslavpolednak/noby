@@ -71,4 +71,4 @@ steps:
 #    PathtoPublish: '$(Build.ArtifactStagingDirectory)/CaseService_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
 #    ArtifactName: 'drop'
 #    publishLocation: 'FilePath'
-#    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\DomainServices\'
+#    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\DomainServices\$(Build.DefinitionName)\$(Build.BuildNumber)'
