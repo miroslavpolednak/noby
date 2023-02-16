@@ -97,14 +97,14 @@ internal sealed class CustomerWithChangedDataService
         if (newCustomer is ICustomerDetailConfirmedContacts)
         {
             var contactsDetail = (ICustomerDetailConfirmedContacts)newCustomer;
-            contactsDetail.PrimaryEmail = getEmail<EmailAddressConfirmedDto>(dsCustomer);
-            contactsDetail.PrimaryPhoneNumber = getPhone<PhoneNumberConfirmedDto>(dsCustomer);
+            contactsDetail.EmailAddress = getEmail<EmailAddressConfirmedDto>(dsCustomer);
+            contactsDetail.MobilePhone = getPhone<PhoneNumberConfirmedDto>(dsCustomer);
         }
         else if (newCustomer is ICustomerDetailContacts)
         {
             var contactsDetail = (ICustomerDetailContacts)newCustomer;
-            contactsDetail.PrimaryEmail = getEmail<EmailAddressDto>(dsCustomer);
-            contactsDetail.PrimaryPhoneNumber = getPhone<PhoneNumberDto>(dsCustomer);
+            contactsDetail.EmailAddress = getEmail<EmailAddressDto>(dsCustomer);
+            contactsDetail.MobilePhone = getPhone<PhoneNumberDto>(dsCustomer);
         }
 
         return newCustomer;

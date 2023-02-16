@@ -36,11 +36,11 @@ internal sealed class CreateMortgageCaseHandler
         // updatovat kontakty
         await _caseService.UpdateOfferContacts(caseId, new _Case.OfferContacts
         {
-            EmailForOffer = request.Contacts?.EmailAddress?.EmailAddress ?? "",
+            EmailForOffer = request.OfferContacts?.EmailAddress?.EmailAddress ?? "",
             PhoneNumberForOffer = new()
             {
-                PhoneNumber = request.Contacts?.PhoneNumber?.PhoneNumber ?? "",
-                PhoneIDC = request.Contacts?.PhoneNumber?.PhoneIDC ?? ""
+                PhoneNumber = request.OfferContacts?.PhoneNumber?.PhoneNumber ?? "",
+                PhoneIDC = request.OfferContacts?.PhoneNumber?.PhoneIDC ?? ""
             }
         }, cancellationToken);
 

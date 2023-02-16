@@ -28,5 +28,5 @@ public sealed class CreateMortgageCaseRequest
     /// </summary>
     public DateTime? DateOfBirth { get; set; }
 
-    public SharedDto.ContactsDto? Contacts { get; set; }
+    public SharedDto.ContactsDto? OfferContacts { get; set; }
 }
