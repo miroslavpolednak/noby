@@ -136,7 +136,6 @@ internal class HouseholdData
                                 Incomes = Incomes,
                                 AcademicDegreesBefore = _academicDegreesBefore,
                                 GenderCodes = _genders,
-                                Countries = _countries,
                                 ObligationTypes = _obligationTypes
                             }).ToList();
 
