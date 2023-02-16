@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.UploadDocument;
 
-public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest>
+public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest>
 {
     private readonly DocumentArchiveDbContext _context;
 
@@ -14,7 +14,7 @@ public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest>
         _context = context;
     }
 
-    public async Task<Unit> Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
+    public async Task Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
     {
         if (await _context.DocumentInterface.AnyAsync(e => e.DocumentId == request.Metadata.DocumentId, cancellationToken))
         {
@@ -23,7 +23,6 @@ public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest>
 
         await _context.DocumentInterface.AddAsync(MapToEntity(request), cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return Unit.Value;
     }
 
     private DocumentInterface MapToEntity(UploadDocumentRequest request)

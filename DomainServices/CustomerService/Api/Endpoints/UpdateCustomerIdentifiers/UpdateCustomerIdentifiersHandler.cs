@@ -3,7 +3,8 @@ using ExternalServices.MpHome.V1_1;
 
 namespace DomainServices.CustomerService.Api.Endpoints.UpdateCustomerIdentifiers;
 
-internal class UpdateCustomerIdentifiersHandler : IRequestHandler<UpdateCustomerIdentifiersRequest>
+internal sealed class UpdateCustomerIdentifiersHandler 
+    : IRequestHandler<UpdateCustomerIdentifiersRequest>
 {
     private readonly IMediator _mediator;
     private readonly IMpHomeClient _mpHomeClient;
@@ -14,7 +15,7 @@ internal class UpdateCustomerIdentifiersHandler : IRequestHandler<UpdateCustomer
         _mpHomeClient = mpHomeClient;
     }
 
-    public async Task<Unit> Handle(UpdateCustomerIdentifiersRequest request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateCustomerIdentifiersRequest request, CancellationToken cancellationToken)
     {
         switch (request.Mandant)
         {
@@ -25,8 +26,6 @@ internal class UpdateCustomerIdentifiersHandler : IRequestHandler<UpdateCustomer
             default:
                 throw new CisValidationException(11030, "Unsupported mandant");
         }
-
-        return Unit.Value;
     }
 
     private async Task UpdateKbIdInKonsDb(ICollection<Identity> identities, CancellationToken cancellationToken)

@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message Contact {
+	bool IsPrimary = 1;	
+	int32 ContactTypeId = 2;
+	bool IsConfirmed = 3;
+
+	oneof Data  {
+		MobilePhone Mobile = 20;
+		EmailAddress Email = 21;
+	}
+} 
+
+message MobilePhone {
+	string PhoneNumber = 1;
+	string PhoneIDC = 2;
+}
+
+message EmailAddress {
+	string Address = 1;
+}

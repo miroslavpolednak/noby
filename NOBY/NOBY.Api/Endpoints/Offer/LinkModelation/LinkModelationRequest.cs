@@ -25,9 +25,5 @@ public class LinkModelationRequest
     /// <example>2002-10-26</example>
     public DateTime? DateOfBirth { get; set; }
 
-    /// <example>777111222</example>
-    public string? PhoneNumberForOffer { get; set; }
-
-    /// <example>jonatan.skocdopole@mpss.cz</example>
-    public string? EmailForOffer { get; set; }
+    public SharedDto.ContactsDto? OfferContacts { get; set; }
 }

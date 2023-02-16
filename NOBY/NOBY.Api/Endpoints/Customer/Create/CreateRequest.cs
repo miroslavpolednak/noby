@@ -43,15 +43,7 @@ public class CreateRequest
     /// </summary>
     public int? CitizenshipCountryId { get; set; }
 
-    /// <summary>
-    /// E-mail
-    /// </summary>
-    public string? Email { get; set; }
-
-    /// <summary>
-    /// Mobil
-    /// </summary>
-    public string? Mobile { get; set; }
+    public SharedDto.ContactsDto? Contacts { get; set; }
 
     /// <summary>
     /// Rodné číslo CZ

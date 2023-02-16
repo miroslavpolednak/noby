@@ -69,9 +69,7 @@ public class CaseModel
 	/// </summary>
 	public DateTime StateUpdated { get; set; }
 
-	public string? EmailForOffer { get; set; }
-
-	public string? PhoneNumberForOffer { get; set; }
+	public SharedDto.ContactsDto? OfferContacts { get; set; }
 
     public List<TaskModel>? ActiveTasks { get; set; }
 }

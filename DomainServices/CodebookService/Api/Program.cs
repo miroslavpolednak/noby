@@ -33,7 +33,7 @@ builder
     .AddCisTracing();
 
 // add mediatr
-builder.Services.AddMediatR(assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
 
 // health checks
 builder.AddCisHealthChecks();

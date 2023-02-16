@@ -4,9 +4,9 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
 internal sealed class UpdateParametersHandler
-    : AsyncRequestHandler<UpdateParametersRequest>
+    : IRequestHandler<UpdateParametersRequest>
 {
-    protected override async Task Handle(UpdateParametersRequest request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateParametersRequest request, CancellationToken cancellationToken)
     {
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 

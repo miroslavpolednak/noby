@@ -1,6 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest.Incomes;
+using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 
@@ -19,6 +20,7 @@ internal class Customer
 
         _customerIncomes = CustomerOnSA.Incomes.OrderBy(i => i.IncomeId).ToLookup(i => (CustomerIncomeTypes)i.IncomeTypeId);
     }
+
     public required int HouseholdNumber { get; init; }
 
     public required bool IsPartner { get; init; }
@@ -33,6 +35,8 @@ internal class Customer
 
     public required ILookup<string, int> ObligationTypes { private get; init; }
 
+    public required List<LegalCapacityRestrictionTypeItem> LegalCapacityTypes { private get; init; }
+
     public CustomerOnSA CustomerOnSA { get; }
 
     public Identity IdentityKb => CustomerOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
@@ -45,9 +49,13 @@ internal class Customer
 
     public bool HasRelationshipWithCorporate => CustomerOnSA.CustomerAdditionalData?.HasRelationshipWithCorporate ?? false;
 
-    public NaturalPerson NaturalPerson => _customerDetail.NaturalPerson;
+    public bool IsPoliticallyExposed => CustomerOnSA.CustomerAdditionalData?.IsPoliticallyExposed ?? false;
 
-    public bool IsPoliticallyExposed => _customerDetail.NaturalPerson.IsPoliticallyExposed ?? false;
+    public bool IsUSPerson => CustomerOnSA.CustomerAdditionalData?.IsUSPerson ?? false;
+
+    public string? RestrictionType => LegalCapacityTypes.Where(l => l.Id == CustomerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionTypeId).Select(l => l.RdmCode).FirstOrDefault();
+
+    public NaturalPerson NaturalPerson => _customerDetail.NaturalPerson;
 
     public IEnumerable<Address> Addresses => _customerDetail.Addresses.Select(a => new Address(a));
 
@@ -67,8 +75,6 @@ internal class Customer
                                                      .FirstOrDefault(id => id == 16, NaturalPerson.CitizenshipCountriesId.Cast<int?>().FirstOrDefault());
 
     public bool IsResident => NaturalPerson.TaxResidence?.ResidenceCountries.Any(r => r.CountryId == 16) ?? false;
-
-    public int DefaultZeroValue => 0;
 
     public IEnumerable<IncomeEmployment> IncomesEmployment => 
         _customerIncomes[CustomerIncomeTypes.Employement].Select(i => new IncomeEmployment(i, Incomes[i.IncomeId])

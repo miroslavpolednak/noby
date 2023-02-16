@@ -5,9 +5,9 @@ using System.Security.Claims;
 namespace NOBY.Api.Endpoints.Users.SignIn;
 
 internal sealed class SignInHandler 
-    : AsyncRequestHandler<SignInRequest>
+    : IRequestHandler<SignInRequest>
 {
-    protected override async Task Handle(SignInRequest request, CancellationToken cancellationToken)
+    public async Task Handle(SignInRequest request, CancellationToken cancellationToken)
     {
         _logger.UserSigningInAs(request.Login);
 

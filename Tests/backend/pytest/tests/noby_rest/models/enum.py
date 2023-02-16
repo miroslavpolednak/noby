@@ -1,23 +1,30 @@
 
 
-class Codebooks:
+class Codebooks_all:
     ACADEMICDEGREESAFTER = 'AcademicDegreesAfter'
     ACADEMICDEGREESBEFORE = 'AcademicDegreesBefore'
-    ACTIONCODESSAVINGS = 'ActionCodesSavings'
-    ACTIONCODESSAVINGSLOAN = 'ActionCodesSavingsLoan'
+    BANKCODES = 'Bankcodes'
     CASESTATES = 'CaseStates'
     CLASSIFICATIONOFECONOMICACTIVITIES = 'ClassificationOfEconomicActivities'
     CONTACTTYPES = 'ContactTypes'
     COUNTRIES = 'Countries'
+    COUNTRYCODEPHONEIDC = 'CountryCodePhoneIdc'
     CURRENCIES = 'Currencies'
+    CUSTOMERPROFILES = 'CustomerProfiles'
     CUSTOMERROLES = 'CustomerRoles'
     DEVELOPERS = 'Developers'
     DEVELOPERPROJECTS = 'DeveloperProjects'
+    DOCUMENTONSATYPES = 'DocumentOnSATypes'
+    DRAWINGDURATIONS = 'DrawingDurations'
+    DRAWINGTYPES = 'DrawingTypes'
+    EACODESMAIN = 'EaCodesMain'
     EDUCATIONLEVELS = 'EducationLevels'
     EMPLOYMENTTYPES = 'EmploymentTypes'
     FEES = 'Fees'
     FIXEDRATEPERIODS = 'FixedRatePeriods'
+    FORMTYPES = 'FormTypes'
     GENDERS = 'Genders'
+    HOUSEHOLDTYPES = 'HouseholdTypes'
     IDENTIFICATIONDOCUMENTTYPES = 'IdentificationDocumentTypes'
     INCOMEMAINTYPES = 'IncomeMainTypes'
     INCOMEFOREIGNTYPES = 'IncomeForeignTypes'
@@ -26,10 +33,14 @@ class Codebooks:
     LEGALCAPACITIES = 'LegalCapacities'
     LOANPURPOSES = 'LoanPurposes'
     LOANKINDS = 'LoanKinds'
+    LOANINTERESTRATEANNOUNCEDTYPES = 'LoanInterestRateAnnouncedTypes'
     MANDANTS = 'Mandants'
     MARITALSTATUSES = 'MaritalStatuses'
+    MARKETINGACTIONS = 'MarketingActions'
+    OBLIGATIONCORRECTIONTYPES = 'ObligationCorrectionTypes'
     OBLIGATIONTYPES = 'ObligationTypes'
     PAYMENTDAYS = 'PaymentDays'
+    PAYOUTTYPES = 'PayoutTypes'
     POSTCODES = 'PostCodes'
     PRODUCTTYPES = 'ProductTypes'
     PROPERTYSETTLEMENTS = 'PropertySettlements'
@@ -40,5 +51,16 @@ class Codebooks:
     SIGNATURETYPES = 'SignatureTypes'
     WORKFLOWTASKCATEGORIES = 'WorkflowTaskCategories'
     WORKFLOWTASKSTATES = 'WorkflowTaskStates'
+    WORKFLOWTASKPROCESSTYPES = 'WorkflowTaskProcessTypes'
     WORKFLOWTASKTYPES = 'WorkflowTaskTypes'
     WORKSECTORS = 'WorkSectors'
+
+
+class Codebooks:
+    FIXATIONPERIODLENGTH = 'fixation-period-length'
+    PRODUCTLOANKINDS = 'product-loan-kinds'
+    FIXEDRATEPERIODS = 'fixed-rate-periods'
+
+
+class ProductTypes:
+    MORTGAGE = 20001

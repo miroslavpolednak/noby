@@ -14,7 +14,8 @@ internal sealed class UpdateOfferContactsHandler
 
         // ulozit do DB
         entity.EmailForOffer = request.OfferContacts.EmailForOffer;
-        entity.PhoneNumberForOffer = request.OfferContacts.PhoneNumberForOffer;
+        entity.PhoneIDCForOffer = request.OfferContacts.PhoneNumberForOffer?.PhoneIDC;
+        entity.PhoneNumberForOffer = request.OfferContacts.PhoneNumberForOffer?.PhoneNumber;
 
         await _dbContext.SaveChangesAsync(cancellation);
 

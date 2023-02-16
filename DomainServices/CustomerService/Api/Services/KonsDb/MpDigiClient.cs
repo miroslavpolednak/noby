@@ -105,12 +105,7 @@ public class MpDigiClient
 
     private ContactRequest MapToContactRequest(Contact contact)
     {
-        return new ContactRequest
-        {
-            Type = FastEnum.Parse<ContactType>(_contactTypes.First(x => x.Id == contact.ContactTypeId).MpDigiApiCode),
-            Primary = true,
-            Value = contact.Value
-        };
+        return contact.ToExternalService(_contactTypes);
     }
     
     private PartnerRequest MapToPartnerRequest(CreateCustomerRequest request)
