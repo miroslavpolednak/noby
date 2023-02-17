@@ -9,7 +9,7 @@ namespace CIS.InternalServices.NotificationService.Contracts.Sms;
 public class SendSmsFromTemplateRequest : IRequest<SendSmsFromTemplateResponse>, IValidatableRequest
 {
     [ProtoMember(1)]
-    public Phone Phone { get; set; } = new();
+    public string PhoneNumber { get; set; } = string.Empty;
     
     [ProtoMember(2)]
     public int ProcessingPriority { get; set; } = 1;

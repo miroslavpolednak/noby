@@ -1,6 +1,7 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.Infrastructure.Telemetry;
+using CIS.InternalServices.NotificationService.Api.Helpers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
@@ -48,6 +49,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 
         var auditEnabled = smsType.IsAuditLogEnabled;
         var result = _repository.NewSmsResult();
+        var phone = request.PhoneNumber.ParsePhone();
         result.Identity = request.Identifier?.Identity;
         result.IdentityScheme = request.Identifier?.IdentityScheme;
         result.CustomId = request.CustomId;
@@ -56,8 +58,8 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 
         result.Type = request.Type;
         result.Text = request.Text;
-        result.CountryCode = request.Phone.CountryCode;
-        result.PhoneNumber = request.Phone.NationalNumber;
+        result.CountryCode = phone.CountryCode;
+        result.PhoneNumber = phone.NationalNumber;
 
         result.CreatedBy = _userAdapterService.GetUsername();
         
@@ -77,7 +79,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {
             id = result.Id.ToString(),
-            phone = request.Phone.Map(),
+            phone = phone.Map(),
             type = smsType.McsCode,
             text = request.Text,
             processingPriority = request.ProcessingPriority,
