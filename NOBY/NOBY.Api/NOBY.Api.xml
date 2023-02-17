@@ -162,7 +162,8 @@
             Parametry Case-u.
             </summary>
             <remarks>
-            <i>DS:</i> CaseService/GetTaskList<br/>
+            Vrátí parametry case s ohledem na stav case. Před předáním žádosti vrací lokálně uložená data. Po předání žádosti vrací data z KonsDB. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EEB4BBAA-9996-43ff-BB50-61514A2B6107"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
         </member>
@@ -311,14 +312,44 @@
             Délka nové fixace v měsících.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Cpm">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.BranchName">
             <summary>
-            Pobočka banky, pod kterou spadá úvěr.
+            Pobočka banky, pod kterou spadá úvěr
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Icp">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.ConsultantName">
             <summary>
-            Poradce třetí strana.
+            Poradce, pod kterého spadá úvěr
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.Cpm">
+            <summary>
+            ČPM
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.Icp">
+            <summary>
+            IČP
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.BranchName">
+            <summary>
+            Pobočka/společnost třetí strany
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.ConsultantName">
+            <summary>
+            Poradce třetí strany
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.Cpm">
+            <summary>
+            ČPM
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.Icp">
+            <summary>
+            IČP
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleId">
