@@ -27,12 +27,10 @@ internal sealed class GetProductListHandler
         var loan = await _repository.GetLoan(request.CaseId, cancellation);
         if (loan != null)
         {
-            var map = await GetMapLoanTypeToProductTypeId();
-
             model.Products.Add(new GetProductListItem
             {
                 ProductId = request.CaseId,
-                ProductTypeId = map[loan.TypUveru]
+                ProductTypeId = loan.KodProduktyUv.GetValueOrDefault()
             });
         }
 

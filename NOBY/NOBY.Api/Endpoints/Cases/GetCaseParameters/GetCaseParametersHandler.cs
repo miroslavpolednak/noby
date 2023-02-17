@@ -139,6 +139,15 @@ internal sealed class GetCaseParametersHandler
     {
         var mortgageData = (await _productService.GetMortgage(caseInstance.CaseId, cancellation)).Mortgage;
 
+        string? cpm = null;
+        string? icp = null;
+        if (mortgageData.BranchConsultantId.HasValue)
+        {
+            var cpmUser = await _userService.GetUser(mortgageData.BranchConsultantId.Value, cancellation);
+            cpm = cpmUser.CPM;
+            icp = cpmUser.ICP;
+        }
+
         return new GetCaseParametersResponse
         {
             FirstAnnuityPaymentDate = mortgageData.FirstAnnuityPaymentDate,
@@ -171,8 +180,8 @@ internal sealed class GetCaseParametersHandler
             LoanInterestRateRefix = mortgageData.LoanInterestRateRefix,
             LoanInterestRateValidFromRefix = mortgageData.LoanInterestRateValidFromRefix,
             FixedRatePeriodRefix = mortgageData.FixedRatePeriodRefix,
-            Cpm = mortgageData.Cpm,
-            Icp = mortgageData.Icp,
+            Cpm = cpm,
+            Icp = icp
         };
     }
 }

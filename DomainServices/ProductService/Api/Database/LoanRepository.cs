@@ -13,6 +13,14 @@ internal class LoanRepository
         _dbContext = dbContext;
     }
 
+    public async Task<List<Entities.LoanPurpose>> GetPurposes(long loanId, CancellationToken cancellation)
+    {
+        return await _dbContext.LoanPurposes
+            .AsNoTracking()
+            .Where(t => t.UverId == loanId)
+            .ToListAsync(cancellation);
+    }
+
     public async Task<Entities.Loan> GetLoan(long loanId, CancellationToken cancellation)
     {
 #pragma warning disable CS8603 // Possible null reference return.
