@@ -8,12 +8,12 @@ public class OfferController : ControllerBase
 {
     private readonly IMediator _mediator;
     public OfferController(IMediator mediator) =>  _mediator = mediator;
-    
+
     /// <summary>
     /// Simulace KB hypotéky.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> OfferService/SimulateMortgage
+    /// Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.
     /// </remarks>
     /// <param name="request">Nastaveni simulace.</param>
     /// <returns>ID vytvořené simulace a její výsledky.</returns>
