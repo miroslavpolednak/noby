@@ -7,7 +7,6 @@ using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
-using DomainServices.UserService.Clients;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Net.Mime;
@@ -20,7 +19,6 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
-    private readonly IUserServiceClient _userServiceClient;
     private readonly ICodebookServiceClients _codebookServiceClients;
     private readonly IDateTime _dateTime;
 
@@ -29,7 +27,6 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         IDocumentArchiveServiceClient documentArchiveServiceClient,
         ICurrentUserAccessor currentUserAccessor,
         IDocumentGeneratorServiceClient documentGeneratorServiceClient,
-        IUserServiceClient userServiceClient,
         ICodebookServiceClients codebookServiceClients,
         IDateTime dateTime)
     {
@@ -37,7 +34,6 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         _documentArchiveServiceClient = documentArchiveServiceClient;
         _currentUserAccessor = currentUserAccessor;
         _documentGeneratorServiceClient = documentGeneratorServiceClient;
-        _userServiceClient = userServiceClient;
         _codebookServiceClients = codebookServiceClients;
         _dateTime = dateTime;
     }
