@@ -129,7 +129,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
         if (household.CustomerOnSAId1 is null)
         {
-            throw new CisNotFoundException(19007, $"CustomerOnSAId1 not found on household {household.HouseholdId}");
+            throw new CisNotFoundException(19007, $"CustomerOnSAId not found on household {household.HouseholdId}");
         }
 
         var customer = await _customerOnSAServiceClient.GetCustomer(household.CustomerOnSAId1!.Value, cancellationToken);
@@ -139,7 +139,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
         if (identifier is null)
         {
-            throw new CisNotFoundException(19006, $"Identity for specified CustomerOnSAId1 {household.CustomerOnSAId1} not found");
+            throw new CisNotFoundException(19009, $"Identity for specified CustomerOnSAId1 {household.CustomerOnSAId1} not found");
         }
 
         // identifier.IdentityId is specific id for MPSS => clientId

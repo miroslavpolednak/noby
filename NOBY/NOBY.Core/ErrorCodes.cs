@@ -8,8 +8,11 @@ public struct ErrorCodes
     public const int SalesArrangementNotLinkedToOffer = 4;
     public const int SalesArrangementProductCategoryNotFound = 5;
     public const int SalesArrangementOfferIdIsNull = 6;
-    public const int HouseholdTypeNotFound = 8;
-
     public const int CaseNotFoundInKonsDb = 7;
+    public const int HouseholdTypeNotFound = 8;
+    public const int DocumentOnSaNotExistForSalesArrangement= 9;
+
+
+
     public const int PayloadIsEmpty = 16;
 }
