@@ -11,7 +11,7 @@ public class StopSigningHandler : IRequestHandler<StopSigningRequest>
         _client = client;
     }
 
-    public async Task<Unit> Handle(StopSigningRequest request, CancellationToken cancellationToken)
+    public async Task Handle(StopSigningRequest request, CancellationToken cancellationToken)
     {
         var documentOnSas = await _client.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
 
@@ -21,7 +21,5 @@ public class StopSigningHandler : IRequestHandler<StopSigningRequest>
         }
 
         await _client.StopSigning(request.DocumentOnSAId, cancellationToken);
-
-        return Unit.Value;
     }
 }

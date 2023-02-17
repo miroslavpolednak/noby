@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
@@ -52,7 +53,7 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
         _mediator = mediator;
     }
 
-    public async Task<Unit> Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
+    public async Task Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
     {
         var documentOnSas = await _documentOnSaClient.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
 
@@ -70,12 +71,12 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
 
         if (documentOnSa.HouseholdId is null)
         {
-            return Unit.Value;
+            return;
         }
 
         var mandantId = await GetMandantId(request, cancellationToken);
 
-        if (mandantId != (int)Mandants.Kb)
+        if (mandantId != (int)CIS.Foms.Enums.Mandants.Kb)
         {
             throw new CisValidationException(90002, $"Mp products not supported (mandant {mandantId})");
         }
@@ -88,8 +89,6 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
             //Throw away locally stored data(update CustomerChangeData with null)
             await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa), cancellationToken);
         }
-
-        return Unit.Value;
     }
 
     private async Task<int?> GetMandantId(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
@@ -120,7 +119,7 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
     private static DomainServices.CustomerService.Contracts.UpdateCustomerRequest MapUpdateCustomerRequest(GetDetailWithChangesResponse detailWithChangedData, int mandant, CustomerOnSA customerOnSA)
     {
         var updateRequest = new DomainServices.CustomerService.Contracts.UpdateCustomerRequest();
-        updateRequest.Mandant = (Mandants)mandant;
+        updateRequest.Mandant = (CIS.Infrastructure.gRPC.CisTypes.Mandants)mandant;
         updateRequest.Identities.AddRange(customerOnSA.CustomerIdentifiers);
 
         if (detailWithChangedData.NaturalPerson is not null)
@@ -129,22 +128,39 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
             updateRequest.IdentificationDocument = MapIdentificationDocument(detailWithChangedData.IdentificationDocument);
         if (detailWithChangedData.Addresses is not null && detailWithChangedData.Addresses.Any())
             updateRequest.Addresses.AddRange(MapAddresses(detailWithChangedData.Addresses));
-        if (detailWithChangedData.Contacts is not null && detailWithChangedData.Contacts.Any())
-            updateRequest.Contacts.AddRange(MapContacts(detailWithChangedData.Contacts));
-        // Mandant not in GetDetailWithChangesResponse
+        if (detailWithChangedData.EmailAddress is not null)
+            updateRequest.Contacts.Add(MapEmailContact(detailWithChangedData.EmailAddress));
+        if (detailWithChangedData.MobilePhone is not null)
+            updateRequest.Contacts.Add(MapPhoneContact(detailWithChangedData.MobilePhone));
         // CustomerIdentification not in GetDetailWithChangesResponse
         return updateRequest;
     }
 
-    private static IEnumerable<Contact> MapContacts(List<CustomerContact> contacts)
+    private static Contact MapEmailContact(EmailAddressConfirmedDto emailAddress)
     {
-        return contacts.Select(contact => new Contact
+        return new Contact
         {
-            ContactTypeId = contact.ContactTypeId ?? 0,
-            Value = contact.Value ?? string.Empty,
-            IsPrimary = contact.IsPrimary ?? false,
-            Confirmed = contact.Confirmed,
-        });
+            IsConfirmed = emailAddress.IsConfirmed,
+            ContactTypeId = (int)ContactTypes.Email,
+            Email = new EmailAddress
+            {
+                Address = emailAddress.EmailAddress
+            }
+        };
+    }
+
+    private static Contact MapPhoneContact(PhoneNumberConfirmedDto phoneNumber)
+    {
+        return new Contact
+        {
+            IsConfirmed = phoneNumber.IsConfirmed,
+            ContactTypeId = (int)ContactTypes.Mobil,
+            Mobile = new MobilePhone
+            {
+                PhoneIDC = phoneNumber.PhoneIDC,
+                PhoneNumber = phoneNumber.PhoneNumber,
+            }
+        };
     }
 
     private static IEnumerable<GrpcAddress> MapAddresses(List<CIS.Foms.Types.Address> addresses)
