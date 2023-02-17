@@ -59,7 +59,7 @@ internal class Customer
 
     public IEnumerable<Address> Addresses => _customerDetail.Addresses.Select(a => new Address(a));
 
-    public IEnumerable<Contact> Contacts => _customerDetail.Contacts;
+    public IEnumerable<CustomerContact> Contacts => _customerDetail.Contacts.Select(c => new CustomerContact(c));
 
     public IEnumerable<IdentificationDocument> IdentificationDocuments =>
         _customerDetail.IdentificationDocument != null
