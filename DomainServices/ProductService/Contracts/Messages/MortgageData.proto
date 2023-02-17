@@ -36,8 +36,8 @@ message MortgageData {
 	cis.types.NullableGrpcDecimal LoanInterestRateRefix = 25;
 	cis.types.NullableGrpcDate LoanInterestRateValidFromRefix = 26;
 	google.protobuf.Int32Value FixedRatePeriodRefix = 27;
-	string BranchConsultantId = 28;
-	string ThirdPartyConsultantId = 29;
+	google.protobuf.Int32Value BranchConsultantId = 28;
+	google.protobuf.Int32Value ThirdPartyConsultantId = 29;
 	cis.types.NullableGrpcDate FirstAnnuityPaymentDate = 30;
 	PaymentAccount RepaymentAccount = 31;
 }

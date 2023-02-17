@@ -13,15 +13,25 @@ internal static class MortgageExtensions
     {
         var request = new MortgageRequest
         {
-            LoanType = LoanType.KBMortgage, // ProductTypeId
+            LoanType = LoanType.KBMortgage,
+            ProductCodeUv = mortgage.ProductTypeId,
             PartnerId = mortgage.PartnerId,
             LoanContractNumber = mortgage.ContractNumber,
             LoanAmount = mortgage.LoanAmount,
             InterestRate = mortgage.LoanInterestRate,
             FixationPeriod = mortgage.FixedRatePeriod,
             MonthlyInstallment = mortgage.LoanPaymentAmount,
-            LoanKind = mortgage.LoanKindId.GetValueOrDefault()
-            //TODO: add mapping (not specified so far)
+            LoanKind = mortgage.LoanKindId.GetValueOrDefault(),
+            InstallmentDay = mortgage.PaymentDay,
+            Expected1stDrawDate = mortgage.ExpectedDateOfDrawing,
+            RepaymentAccountBank = mortgage.RepaymentAccount?.BankCode,
+            RepaymentAccountNumber = mortgage.RepaymentAccount?.Number,
+            RepaymentAccountPrefix = mortgage.RepaymentAccount?.Prefix,
+            LoanPurposes = mortgage.LoanPurposes is null ? null : mortgage.LoanPurposes.Select(t => new ExternalServices.MpHome.V1_1.Contracts.LoanPurpose
+            {
+                Amount = Convert.ToDouble((decimal)t.Sum),
+                LoanPurposeId = t.LoanPurposeId
+            }).ToList()
         };
 
         return request;
@@ -36,8 +46,8 @@ internal static class MortgageExtensions
         var mortgage = new MortgageData
         {
             PartnerId = (int)(eLoan.PartnerId ?? default),
-            BranchConsultantId = eLoan.PobockaObsluhyId.ToString(),
-            ThirdPartyConsultantId = eLoan.PoradceId.ToString(),
+            BranchConsultantId = eLoan.PobockaObsluhyId.HasValue ? Convert.ToInt32(eLoan.PobockaObsluhyId) : default,
+            ThirdPartyConsultantId = eLoan.PoradceId.HasValue ? Convert.ToInt32(eLoan.PoradceId) : default,
             ContractNumber = eLoan.CisloSmlouvy,
             LoanAmount = eLoan.VyseUveru,
             LoanInterestRate = eLoan.RadnaSazba,
@@ -60,7 +70,6 @@ internal static class MortgageExtensions
             CurrentOverdueAmount = eLoan.CelkovyDluhPoSplatnosti,
             AllOverdueFees = eLoan.PohledavkaPoplatkyPo,
             OverdueDaysNumber = eLoan.PocetBankovnichDniPoSpl,
-            LoanPurposes = null,
             ExpectedDateOfDrawing = eLoan.DatumPrvniVyplatyZUveru,
             InterestInArrears = eLoan.SazbaZProdleni,
             LoanDueDate = eLoan.DatumPredpSplatnosti,
