@@ -30,10 +30,6 @@ internal sealed class GetMortgageHandler
 
         var mortgage = loan.ToMortgage(relationships);
 
-        var map = await GetMapLoanTypeToProductTypeId();
-
-        mortgage.ProductTypeId = map[loan.TypUveru];
-
         return new GetMortgageResponse { Mortgage = mortgage };
     }
 

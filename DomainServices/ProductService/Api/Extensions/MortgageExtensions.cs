@@ -36,18 +36,20 @@ internal static class MortgageExtensions
         var mortgage = new MortgageData
         {
             PartnerId = (int)(eLoan.PartnerId ?? default),
+            BranchConsultantId = eLoan.PobockaObsluhyId.ToString(),
+            ThirdPartyConsultantId = eLoan.PoradceId.ToString(),
             ContractNumber = eLoan.CisloSmlouvy,
             LoanAmount = eLoan.VyseUveru,
             LoanInterestRate = eLoan.RadnaSazba,
             FixedRatePeriod = eLoan.DelkaFixaceUrokoveSazby,
-            ProductTypeId = eLoan.TypUveru,
+            ProductTypeId = eLoan.KodProduktyUv.GetValueOrDefault(),
             LoanPaymentAmount = eLoan.MesicniSplatka,
             CurrentAmount = eLoan.ZustatekCelkem,
             DrawingDateTo = eLoan.DatumKonceCerpani,
             ContractSignedDate = eLoan.DatumUzavreniSmlouvy,
             FixedRateValidTo = eLoan.DatumFixaceUrokoveSazby,
             AvailableForDrawing = eLoan.ZbyvaCerpat,
-            // Principal = eLoan.Jistina,           // ???
+            Principal = eLoan.Jistina,
             LoanKindId = eLoan.DruhUveru,
             PaymentAccount = string.IsNullOrEmpty(eLoan.CisloUctu) ? null : new PaymentAccount
             {
@@ -55,21 +57,24 @@ internal static class MortgageExtensions
                 Number = eLoan.CisloUctu ?? "",
                 BankCode = "0100"//ma byt hardcoded
             },
-            CurrentOverdueAmount = null,            // ???
-            AllOverdueFees = null,                  // ???
-            OverdueDaysNumber = null,               // ???
-            // LoanPurposes = null,                 // ???
+            CurrentOverdueAmount = eLoan.CelkovyDluhPoSplatnosti,
+            AllOverdueFees = eLoan.PohledavkaPoplatkyPo,
+            OverdueDaysNumber = eLoan.PocetBankovnichDniPoSpl,
+            LoanPurposes = null,
             ExpectedDateOfDrawing = eLoan.DatumPrvniVyplatyZUveru,
-            InterestInArrears = null,               // ???
-            LoanDueDate = null,                     // ???
-            PaymentDay = null,                      // ???
+            InterestInArrears = eLoan.SazbaZProdleni,
+            LoanDueDate = eLoan.DatumPredpSplatnosti,
+            PaymentDay = eLoan.SplatkyDen,
             LoanInterestRateRefix = null,           // ???
             LoanInterestRateValidFromRefix = null,  // ???
             FixedRatePeriodRefix = null,            // ???
-            // Cpm = eLoan.CPM,                     // ???
-            // Icp = eLoan.PoradceId,               // ???
-            FirstAnnuityPaymentDate = eLoan.PocatekSplaceni,         // ???
-            RepaymentAccount = null                 // ???
+            FirstAnnuityPaymentDate = eLoan.PocatekSplaceni,
+            RepaymentAccount = new PaymentAccount
+            {
+                BankCode = eLoan.InkasoBanka ?? "",
+                Number = eLoan.InkasoCislo ?? "",
+                Prefix = eLoan.InkasoPredcisli ?? ""
+            }
         };
 
         if (eRelationships?.Count > 0)
