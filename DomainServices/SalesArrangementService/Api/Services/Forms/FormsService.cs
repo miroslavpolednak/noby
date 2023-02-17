@@ -80,11 +80,6 @@ internal sealed class FormsService
         return response;
     }
 
-    public Task AddFirstSignatureDate(long caseId, CancellationToken cancellationToken)
-    {
-        return _easClient.AddFirstSignatureDate((int)caseId, DateTime.Now.Date, cancellationToken);
-    }
-
     public async Task CallSulm(ProductData formData, CancellationToken cancellation)
     {
         var customersOnSa = formData.CustomersOnSa
@@ -99,7 +94,7 @@ internal sealed class FormsService
         }
     }
 
-    public async Task UpdateContractNumber(SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    /*public async Task UpdateContractNumber(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         if (!string.IsNullOrEmpty(salesArrangement.ContractNumber))
             return;
@@ -144,5 +139,5 @@ internal sealed class FormsService
         caseDetail.Data.ContractNumber = contractNumber;
 
         await _caseService.UpdateCaseData(caseId, caseDetail.Data, cancellationToken);
-    }
+    }*/
 }

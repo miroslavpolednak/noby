@@ -50,11 +50,8 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Google.Proto
     {
         var dynamicValues = await GetDynamicValuesRange(cancellationToken, 3);
 
-        await _formsService.UpdateContractNumber(salesArrangement, cancellationToken);
-
         var response = await _formsService.LoadProductForm(salesArrangement, dynamicValues, cancellationToken);
 
-        await _formsService.AddFirstSignatureDate(salesArrangement.CaseId, cancellationToken);
         await _formsService.CallSulm(response.Product, cancellationToken);
 
         return response;
