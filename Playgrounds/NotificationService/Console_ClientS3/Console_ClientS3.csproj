@@ -8,14 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
-      <PackageReference Include="AWSSDK.S3" Version="3.7.101.50" />
+      <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.4" />
+      <PackageReference Include="AWSSDK.S3" Version="3.7.103.9" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
     </ItemGroup>
 

@@ -3,10 +3,14 @@
 namespace NOBY.Api.Endpoints.Customer.UpdateDetailWithChanges;
 
 public sealed class UpdateDetailWithChangesRequest
-    : Shared.BaseCustomerDetail, IRequest
+    : Shared.BaseCustomerDetail, Shared.ICustomerDetailContacts, IRequest
 {
     [JsonIgnore]
     public int CustomerOnSAId { get; set; }
+
+    public SharedDto.EmailAddressDto? EmailAddress { get; set; }
+
+    public SharedDto.PhoneNumberDto? MobilePhone { get; set; }
 
     internal UpdateDetailWithChangesRequest InfuseId(int customerOnSAId)
     {

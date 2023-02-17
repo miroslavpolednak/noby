@@ -19,7 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
-builder.Services.AddMediatR(typeof(WebApiTest.Controllers.TestController).Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(WebApiTest.Controllers.TestController).Assembly));
 
 // BUILD APP
 var app = builder.Build();

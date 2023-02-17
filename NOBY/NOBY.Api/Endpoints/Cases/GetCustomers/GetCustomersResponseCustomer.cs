@@ -42,17 +42,9 @@ public sealed class GetCustomersResponseCustomer
     /// </summary>
     public string? KBID { get; set; }
 
-    /// <summary>
-    /// Email
-    /// </summary>
-    public string? Email { get; set; }
-
-    /// <summary>
-    /// Mobil
-    /// </summary>
-    public string? Mobile { get; set; }
-    
     public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
+
+    public SharedDto.ContactsConfirmedDto? Contacts { get; set; }
 
     public DomainServices.CodebookService.Contracts.GenericCodebookItem? CitizenshipCountry { get; set; }
 

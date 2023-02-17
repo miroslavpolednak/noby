@@ -12,8 +12,6 @@ public abstract class BaseCustomerDetail
 
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
 
-    public List<CustomerContact>? Contacts { get; set; }
-
     public CustomerIdentificationMethod? CustomerIdentification { get; set; }
 
     /// <summary>
@@ -55,4 +53,16 @@ public abstract class BaseCustomerDetail
     /// Americký občan (FATCA)
     /// </summary>
     public bool? IsUSPerson { get; set; }
+}
+
+internal interface ICustomerDetailConfirmedContacts
+{
+    PhoneNumberConfirmedDto? MobilePhone { get; set; }
+    EmailAddressConfirmedDto? EmailAddress { get; set; }
+}
+
+internal interface ICustomerDetailContacts
+{
+    PhoneNumberDto? MobilePhone { get; set; }
+    EmailAddressDto? EmailAddress { get; set; }
 }

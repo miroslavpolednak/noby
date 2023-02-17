@@ -6,7 +6,7 @@ from request.simulation_mortgage.OLD_simulation_mortgage_json import json_req_lo
 
 
 #TODO: příprava pro parametrizaci, dodělat x variant základních
-@pytest.mark.parametrize("call_json", [
+@pytest.mark.parametrize("call_mortgage_json", [
     (
         json_req_loan_kind_2000
     ),

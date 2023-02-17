@@ -68,7 +68,7 @@ internal sealed class CreateProductHandler
         {
             try
             {
-                await updateClientInKonsDb(konsDbCustomer, mpIdentity!, kbIdentity, cancellationToken);
+                await updateClientInKonsDb(mpIdentity!, kbIdentity, cancellationToken);
             }
             catch 
             {
@@ -88,25 +88,15 @@ internal sealed class CreateProductHandler
         _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
     }
 
-    private async Task updateClientInKonsDb(_Cu.CustomerDetailResponse originalClient, Identity mpIdentity, Identity kbIdentity, CancellationToken cancellationToken)
+    private Task updateClientInKonsDb(Identity mpIdentity, Identity kbIdentity, CancellationToken cancellationToken)
     {
-        var request = new _Cu.UpdateCustomerRequest
+        var request = new _Cu.UpdateCustomerIdentifiersRequest
         {
-            Identities =
-            {
-                mpIdentity,
-                kbIdentity
-            },
             Mandant = Mandants.Mp,
-            IdentificationDocument = originalClient.IdentificationDocument,
-            NaturalPerson = originalClient.NaturalPerson
+            CustomerIdentities = { mpIdentity, kbIdentity }
         };
-        if (originalClient.Addresses is not null)
-            request.Addresses.AddRange(originalClient.Addresses);
-        if (originalClient.Contacts is not null)
-            request.Contacts.AddRange(originalClient.Contacts);
 
-        await _customerService.UpdateCustomer(request, cancellationToken);
+        return _customerService.UpdateCustomerIdentifiers(request, cancellationToken);
     }
 
     private async Task createClientInKonsDb(Identity kbIdentity, Identity mpIdentity, CancellationToken cancellationToken)

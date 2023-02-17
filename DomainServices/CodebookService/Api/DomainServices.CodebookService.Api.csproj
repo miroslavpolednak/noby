@@ -18,11 +18,10 @@
 	
 	<ItemGroup>
 		<PackageReference Include="Dapper" Version="2.0.123" />
-		<PackageReference Include="MediatR" Version="11.1.0" />
-		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+		<PackageReference Include="MediatR" Version="12.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
-		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.179" />
-		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.179" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.1.1" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.1.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
 	</ItemGroup>

@@ -23,7 +23,8 @@ internal class GetCustomersHandler
                 LastName = t.Name,
                 DateOfBirth = t.DateOfBirthNaturalPerson,
                 CustomerRoleId = t.CustomerRoleId,
-                MaritalStatusId = t.MaritalStatusId
+                MaritalStatusId = t.MaritalStatusId,
+                Contacts = new()
             };
             
             // pokud nema identitu, ani nevolej customerSvc
@@ -75,9 +76,17 @@ internal class GetCustomersHandler
                 }
 
                 // kontakty
-                //TODO jak poznam jake kontakty se maji naplnit?
-                c.Phone = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value;
-                c.Email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value;
+                var email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.Address;
+                if (!string.IsNullOrEmpty(email))
+                    c.Contacts.EmailAddress = new() { EmailAddress = email };
+
+                var phone = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
+                if (!string.IsNullOrEmpty(phone))
+                    c.Contacts.PhoneNumber = new()
+                    {
+                        PhoneNumber = phone,
+                        PhoneIDC = customerDetail.Contacts!.First(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil).Mobile.PhoneIDC
+                    };
             }
 
             model.Add(c);

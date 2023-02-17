@@ -11,13 +11,57 @@ Base = declarative_base()
 
 
 def pytest_addoption(parser):
-    parser.addoption("--webapi-url", action="store", default="https://noby-fat.vsskb.cz/api", help="web api url")
+    parser.addoption("--webapi-url", action="store", default="https://fat.noby.cz/api", help="web api url")
     parser.addoption("--cpm", action="store", default="99917587", help="client id")
 
 
 @pytest.fixture(scope="session")
 def webapi_url(request):
     return request.config.getoption("--webapi-url")
+
+
+def noby_sit1_url():
+    return "https://sit1.noby.cz/api"
+
+
+def noby_fat_url():
+    return "https://fat.noby.cz/api"
+
+
+def noby_dev_url():
+    return "https://dev.noby.cz/api"
+
+
+def get_noby_sit1_cookies():
+    session = requests.session()
+    session.post(
+        noby_sit1_url() + "/users/signin",
+        json={
+            "Login": "99917587"
+        }
+    )
+    return session.cookies
+
+
+def get_noby_fat_cookies():
+    session = requests.session()
+    session.post(
+        noby_fat_url() + "/users/signin",
+        json={
+            "Login": "99917587"
+        }
+    )
+    return session.cookies
+
+def get_noby_dev_cookies():
+    session = requests.session()
+    session.post(
+        noby_dev_url() + "/users/signin",
+        json={
+            "Login": "99917587"
+        }
+    )
+    return session.cookies
 
 
 @pytest.fixture(scope="session")
@@ -84,18 +128,30 @@ def tomorrow_datetime():
     return tomorrow.strftime("%Y-%m-%dT%H:%M:%S")
 
 
-@pytest.fixture()
-def guaranteeDateTo_datetime():
+def get_guarantee_date_to():
     guarantee_date_from = (datetime.date.today() + datetime.timedelta(days=45))
     return guarantee_date_from.strftime("%Y-%m-%dT%H:%M:%S")
-
-
-@pytest.fixture()
-def guarantee_date_from_datetime_OLD():
-    guarantee_date_from = (datetime.date.today())
-    return guarantee_date_from.strftime("%Y-%d-%mT%H:%M:%S")
 
 
 def get_guarantee_date_from():
     guarantee_date_from = (datetime.date.today())
     return guarantee_date_from.strftime("%Y-%d-%mT%H:%M:%S")
+
+
+def get_expected_date_of_drawing():
+    date = (datetime.date.today() + datetime.timedelta(days=30))
+    return date.strftime("%Y-%m-%dT%H:%M:%S")
+
+
+# razeni dle urciteho parametru
+def sort_response_id(resps):
+    return sorted(resps, key=lambda resp: resp['id'])
+
+
+def sort_response_productTypeId(resps):
+    return sorted(resps, key=lambda resp: resp['productTypeId'])
+
+
+def sort_response_paymentDay(resps):
+    return sorted(resps, key=lambda resp: resp['paymentDay'])
+
