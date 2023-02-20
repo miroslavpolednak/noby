@@ -7,7 +7,7 @@ using NOBY.Infrastructure.Configuration;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 
-public class SaveDocumentToArchiveHandler 
+public class SaveDocumentToArchiveHandler
     : IRequestHandler<SaveDocumentsToArchiveRequest>
 {
     private readonly AppConfiguration _configuration;
@@ -30,9 +30,9 @@ public class SaveDocumentToArchiveHandler
     public async Task Handle(SaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        
+
         var filePaths = new List<string>();
-        
+
         foreach (var docInfo in request.DocumentsInformation)
         {
             var filePath = Path.Combine(_configuration.FileTempFolderLocation, docInfo.Guid!.Value.ToString());
@@ -59,7 +59,6 @@ public class SaveDocumentToArchiveHandler
         return new UploadDocumentRequest
         {
             BinaryData = ByteString.CopyFrom(file),
-            Kdv = 0,
             Metadata = new()
             {
                 CaseId = caseId,
