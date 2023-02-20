@@ -18,18 +18,11 @@ public sealed class UploadDocumentValidator : AbstractValidator<UploadDocumentRe
                 });
 
         When(t => t is not null, () =>
-        {
-            RuleFor(t => t.Kdv)
-                .InclusiveBetween(0, 1)
-                .WithMessage("Kdv have to be in range 0-1");
-        });
-
-        When(t => t is not null, () =>
-        {
-            RuleFor(t => t.Metadata)
-                .NotNull()
-                .WithMessage("Metadata cannot be empty");
-        });
+         {
+             RuleFor(t => t.Metadata)
+                 .NotNull()
+                 .WithMessage("Metadata cannot be empty");
+         });
 
         RuleFor(m => m.Metadata)
             .NotNull()

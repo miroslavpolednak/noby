@@ -101,10 +101,10 @@
             Soubour (pole bajtů) ve formě base64string 
             </summary>
         </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.KdvFieldNumber">
-            <summary>Field number for the "Kdv" field.</summary>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.NotifyStarBuildFieldNumber">
+            <summary>Field number for the "NotifyStarBuild" field.</summary>
         </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.Kdv">
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.NotifyStarBuild">
             <summary>
             Příznak (1/0 ano/ne), který určuje, zda se při archivaci vytvoří věta na rozhraní kdv, pokud ea kód použitý pro archivaci je pro kdv určen (Default: 0).
             </summary>
