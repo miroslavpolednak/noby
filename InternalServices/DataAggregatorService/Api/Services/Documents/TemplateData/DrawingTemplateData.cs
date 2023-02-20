@@ -48,6 +48,10 @@ internal class DrawingTemplateData : AggregatedData
         }
     }
 
+    public string SignPersonName => SalesArrangement.Drawing.Agent?.IsActive == true ? string.Empty : GetFullName();
+
+    public string SignAgentName => SalesArrangement.Drawing.Agent?.IsActive != true ? string.Empty : $"{SalesArrangement.Drawing.Agent.FirstName} {SalesArrangement.Drawing.Agent.LastName}";
+
     public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
         _countries = await codebookService.Countries(cancellationToken);
