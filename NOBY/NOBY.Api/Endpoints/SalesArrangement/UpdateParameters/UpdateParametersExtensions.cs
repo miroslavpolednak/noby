@@ -42,11 +42,12 @@ internal static class UpdateParametersExtensions
                 Number = parameters.RepaymentAccount.Number,
                 Prefix = parameters.RepaymentAccount.Prefix
             },
-            Agent = parameters.Agent is null ? null : new()
+            Agent = new()
             {
-                DateOfBirth = (DateTime?)parameters.Agent.DateOfBirth,
-                FirstName = parameters.Agent.FirstName,
-                LastName = parameters.Agent.LastName,
+                IsActive = parameters.Agent?.IsActive ?? false,
+                DateOfBirth = parameters.Agent?.DateOfBirth,
+                FirstName = parameters.Agent?.FirstName,
+                LastName = parameters.Agent?.LastName,
                 IdentificationDocument = parameters.Agent?.IdentificationDocument is null ? null : new()
                 {
                     Number = parameters.Agent.IdentificationDocument.Number,

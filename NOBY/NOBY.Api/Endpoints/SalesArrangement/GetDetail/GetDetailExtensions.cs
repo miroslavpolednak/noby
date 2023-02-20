@@ -49,8 +49,9 @@ internal static class GetDetailExtensions
                 Number = model.RepaymentAccount.Number,
                 Prefix = model.RepaymentAccount.Prefix
             },
-            Agent = model.Agent is null ? null : new()
+            Agent = model.Agent is null ? new ParametersDrawingAgent() : new()
             {
+                IsActive = model.Agent.IsActive,
                 DateOfBirth = (DateTime?)model.Agent.DateOfBirth,
                 FirstName = model.Agent.FirstName,
                 LastName = model.Agent.LastName,

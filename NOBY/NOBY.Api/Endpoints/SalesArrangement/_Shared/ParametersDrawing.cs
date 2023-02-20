@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.Dto;
 
@@ -12,7 +13,8 @@ public sealed class ParametersDrawing
     /// <summary>
     /// Zmocněná osoba
     /// </summary>
-    public ParametersDrawingAgent? Agent { get; set; }
+    [Required]
+    public ParametersDrawingAgent? Agent { get; set; } = new();
 
     /// <summary>
     /// Účet pro splácení
@@ -38,6 +40,12 @@ public sealed class ParametersDrawing
 
 public sealed class ParametersDrawingAgent
 {
+    /// <summary>
+    /// Sekce je aktivní
+    /// </summary>
+    [Required]
+    public bool IsActive { get; set; }
+
     /// <summary>
     /// Jméno
     /// </summary>

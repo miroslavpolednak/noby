@@ -28,7 +28,7 @@ internal sealed class UpdateDetailWithChangesHandler
         ModelComparers.ComparePerson(request.NaturalPerson, originalModel.NaturalPerson, delta);
         ModelComparers.CompareObjects(request.IdentificationDocument, originalModel.IdentificationDocument, "IdentificationDocument", delta);
         ModelComparers.CompareObjects(request.Addresses, originalModel.Addresses, "Addresses", delta);
-        ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
+        //ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
         
         // tohle je zajimavost - do delty ukladame zmeny jen u kontaktu, ktere nejsou v CM jako IsConfirmed=true
         if (!(originalModel.EmailAddress?.IsConfirmed ?? false))
