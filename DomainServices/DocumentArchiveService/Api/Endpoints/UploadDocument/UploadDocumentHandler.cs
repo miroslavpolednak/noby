@@ -15,6 +15,7 @@ public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentReques
     }
 
     public async Task Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
+    
     {
         if (await _context.DocumentInterface.AnyAsync(e => e.DocumentId == request.Metadata.DocumentId, cancellationToken))
         {
@@ -25,13 +26,13 @@ public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentReques
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    private DocumentInterface MapToEntity(UploadDocumentRequest request)
+    private static DocumentInterface MapToEntity(UploadDocumentRequest request)
     {
         var entity = new DocumentInterface();
         entity.DocumentId = request.Metadata.DocumentId;
         entity.DocumentData = request.BinaryData.ToByteArray();
         entity.FileName = request.Metadata.Filename;
-        entity.FileNameSuffix = Path.GetExtension(request.Metadata.Filename);
+        entity.FileNameSuffix = Path.GetExtension(request.Metadata.Filename).Substring(1);
         entity.Description = request.Metadata.Description;
         entity.CaseId = request.Metadata.CaseId!.Value;
         entity.CreatedOn = request.Metadata.CreatedOn;
@@ -50,7 +51,14 @@ public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentReques
             entity.FolderDocument = request.Metadata.FolderDocument;
         }
         entity.FolderDocumentId = request.Metadata.FolderDocumentId;
-        entity.Kdv = (short)request.Kdv;
+        entity.Kdv = MapToKdv(request.NotifyStarBuild);
         return entity;
     }
+
+    private static short MapToKdv(bool? notifyStarBuild) => notifyStarBuild switch
+    {
+        true => 1,
+        false => 0,
+        null => 1
+    };
 }
