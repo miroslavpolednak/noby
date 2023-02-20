@@ -1,5 +1,5 @@
 from ..base.Base import Base
-from .Creditor import Creditor
+from .ObligationCreditor import ObligationCreditor
 from .ObligationCorrection import ObligationCorrection
 
 from common import Convertor
@@ -8,14 +8,17 @@ from typing import List
 
 DISPATCHES = {
             'obligation_type_id': lambda value: Convertor.to_int(value),
+            'obligation_state': lambda value: Convertor.to_int(value),
             'installment_amount': lambda value: Convertor.to_decimal(value),
             'loan_principal_amount': lambda value: Convertor.to_decimal(value),
+            'credit_card_limit': lambda value: Convertor.to_decimal(value),
+            'amount_consolidated': lambda value: Convertor.to_decimal(value),
 
-            'creditor': lambda value: Creditor.from_json(value),
+            'creditor': lambda value: ObligationCreditor.from_json(value),
             'correction': lambda value: ObligationCorrection.from_json(value),
         }
 
-JSON_KEYS = ['obligationTypeId', 'installmentAmount', 'loanPrincipalAmount','creditor','correction']
+JSON_KEYS = ['obligationTypeId', 'obligationState', 'installmentAmount', 'loanPrincipalAmount', 'creditCardLimit', 'amountConsolidated', 'creditor', 'correction']
 
 class Obligation(Base):
 

@@ -1,6 +1,6 @@
 print("Package: business.case")
 
-from .Creditor import Creditor
+from .ObligationCreditor import ObligationCreditor
 from .Customer import Customer
 from .Expenses import Expenses
 from .Household import Household

@@ -26,6 +26,8 @@ KEY_CASE_ID = 'CASE_ID'
 KEY_SALES_ARRAMGEMENT_ID = 'SALES_ARRAMGEMENT_ID'
 KEY_HOUSEHOLD_ID = 'HOUSEHOLD_ID'
 KEY_CUSTOMER_ON_SA_ID = 'CUSTOMER_ON_SA_ID'
+KEY_INCOME_ID = 'INCOME_ID'
+KEY_OBLIGATION_ID = 'OBLIGATION_ID'
 
 def initKey(entity_json: dict, key: str, value = dict()):
     if entity_json is None:
@@ -114,6 +116,152 @@ setTestKey(offer_json, KEY_OFFER_ID, res['offerId'])
 # FeAPI - process CASE
 # --------------------------------------------------------------------------------------------------------------
 
+#https://fat.noby.cz/api/customer-on-sa/291/income
+
+def create_incomes(customer_json: dict):
+
+    incomes_json = getKey(customer_json, 'incomes')
+
+    if incomes_json is None:
+        return
+
+    customer_on_sa_id: int = getTestKey(customer_json, KEY_CUSTOMER_ON_SA_ID)
+
+    def get_req_data(income_json: dict) -> dict:
+        
+        data_json = getKey(income_json, 'data')
+
+        if (data_json is None):
+            return None
+
+        # employer
+        employer: dict = None
+        employer_json = getKey(data_json, 'employer')
+        if employer_json is not None:
+            employer = dict(
+                name = getKey(employer_json, 'name'),
+                cin = getKey(employer_json, 'cin'),
+                birthNumber = getKey(employer_json, 'birthNumber'),
+                countryId = getKey(employer_json, 'countryId'),
+            )
+
+        # job
+        job: dict = None
+        job_json = getKey(data_json, 'job')
+        if job_json is not None:
+            job = dict(
+                jobDescription = getKey(job_json, 'jobDescription'),
+                firstWorkContractSince = getKey(job_json, 'firstWorkContractSince'),
+                employmentTypeId = getKey(job_json, 'employmentTypeId'),
+                currentWorkContractSince = getKey(job_json, 'currentWorkContractSince'),
+                currentWorkContractTo = getKey(job_json, 'currentWorkContractTo'),
+                grossAnnualIncome = getKey(job_json, 'grossAnnualIncome'),
+                isInTrialPeriod = getKey(job_json, 'isInTrialPeriod'),
+                isInProbationaryPeriod = getKey(job_json, 'isInProbationaryPeriod'),
+            )
+        
+        # wageDeduction
+        wage_deduction: dict = None
+        wage_deduction_json = getKey(data_json, 'wageDeduction')
+        if wage_deduction_json is not None:
+            wage_deduction = dict(
+                deductionDecision = getKey(wage_deduction_json, 'deductionDecision'),
+                deductionPayments = getKey(wage_deduction_json, 'deductionPayments'),
+                deductionOther = getKey(wage_deduction_json, 'deductionOther'),
+            )
+
+        # incomeConfirmation
+        income_confirmation: dict = None
+        income_confirmation_json = getKey(data_json, 'incomeConfirmation')
+        if wage_deduction_json is not None:
+            income_confirmation = dict(
+                confirmationDate = getKey(income_confirmation_json, 'confirmationDate'),
+                confirmationPerson = getKey(income_confirmation_json, 'confirmationPerson'),
+                confirmationContact = getKey(income_confirmation_json, 'confirmationContact'),
+                isIssuedByExternalAccountant = getKey(income_confirmation_json, 'isIssuedByExternalAccountant'),
+            )
+
+        # data
+        return dict(
+            hasProofOfIncome = getKey(data_json, 'hasProofOfIncome'),
+            foreignIncomeTypeId = getKey(data_json, 'foreignIncomeTypeId'),
+            hasWageDeduction = getKey(data_json, 'hasWageDeduction'),
+            cin = getKey(data_json, 'cin'),
+            birthNumber = getKey(data_json, 'birthNumber'),
+            countryOfResidenceId = getKey(data_json, 'countryOfResidenceId'),
+            incomeOtherTypeId = getKey(data_json, 'incomeOtherTypeId'),
+
+            employer = employer,
+            job = job,
+            wageDeduction = wage_deduction,
+            incomeConfirmation = income_confirmation,
+        )
+
+    # create incomes
+    for income_json in incomes_json:
+        req = dict(
+            sum = income_json['sum'],
+            currencyCode = getKey(income_json, 'currencyCode'),
+            incomeTypeId = getKey(income_json, 'incomeTypeId'),
+            data = get_req_data(income_json)
+        )
+
+        print(f'create_incomes.req [{req}]')
+        res = FeAPI.CustomerOnSa.create_income(customer_on_sa_id, req)
+        print(f'create_incomes.res [{res}]')
+
+        setTestKey(income_json, KEY_INCOME_ID, res)
+
+
+def create_obligations(customer_json: dict):
+
+    obligations_json = getKey(customer_json, 'obligations')
+
+    if obligations_json is None:
+        return
+
+    customer_on_sa_id: int = getTestKey(customer_json, KEY_CUSTOMER_ON_SA_ID)
+
+    # create obligations
+    for obligation_json in obligations_json:
+
+        creditor: dict = None
+        if 'creditor' in obligation_json:
+            creditor_json = obligation_json['creditor']
+            creditor = dict(
+                creditorId = getKey(creditor_json, 'creditorId'),
+                name = getKey(creditor_json, 'name'),
+                isExternal = getKey(creditor_json, 'isExternal'),
+            )
+
+        correction: dict = None
+        if 'correction' in obligation_json:
+            correction_json = obligation_json['correction']
+            correction = dict(
+                correctionTypeId = getKey(correction_json, 'correctionTypeId'),
+                installmentAmountCorrection = getKey(correction_json, 'installmentAmountCorrection'),
+                loanPrincipalAmountCorrection = getKey(correction_json, 'loanPrincipalAmountCorrection'),
+                creditCardLimitCorrection = getKey(correction_json, 'creditCardLimitCorrection'),
+            )
+
+        req = dict(
+            obligationTypeId = getKey(obligation_json, 'obligationTypeId'),
+            obligationState = getKey(obligation_json, 'obligationState'),
+            installmentAmount = getKey(obligation_json, 'installmentAmount'),
+            loanPrincipalAmount = getKey(obligation_json, 'loanPrincipalAmount'),
+            creditCardLimit = getKey(obligation_json, 'creditCardLimit'),
+            amountConsolidated = getKey(obligation_json, 'amountConsolidated'),
+            
+            creditor = creditor,
+            correction = correction,
+        )
+
+        print(f'create_obligations.req [{req}]')
+        res = FeAPI.CustomerOnSa.create_obligation(customer_on_sa_id, req)
+        print(f'create_obligations.res [{res}]')
+
+        setTestKey(obligation_json, KEY_OBLIGATION_ID, res)
+
 def create_customers(household_json: dict):
     household_id: int = getTestKey(household_json, KEY_HOUSEHOLD_ID)
 
@@ -130,7 +278,7 @@ def create_customers(household_json: dict):
             firstName = getKey(customer_json, 'firstName', ''),
             lastName = getKey(customer_json, 'lastName', ''),
             incomes = [],
-            roleId = 1, #""""
+            # roleId = 1, #TODO: remove from source JSON !?
             identities = [] if identity is None else [identity],
             obligations = [],
         )
@@ -143,14 +291,21 @@ def create_customers(household_json: dict):
         customer2 = get_req_customer(household_json['customer2']),
     )
 
-    print(f'process_household.req [{req}]')
+    print(f'create_customers.req [{req}]')
     res = FeAPI.Household.set_household_customers(household_id, req)
-    print(f'process_household.res [{res}]')
+    print(f'create_customers.res [{res}]')
 
     # set test data (ids of customers on SA)
     setTestKey(household_json['customer1'], KEY_CUSTOMER_ON_SA_ID, res['customerOnSAId1'])
     if household_json['customer2'] is not None:
         setTestKey(household_json['customer2'], KEY_CUSTOMER_ON_SA_ID, res['customerOnSAId2'])
+
+    # create incomes & obligations
+    create_incomes(household_json['customer1'])
+    create_obligations(household_json['customer1'])
+    if household_json['customer2'] is not None:
+        create_incomes(household_json['customer2'])
+        create_obligations(household_json['customer2'])
 
 def create_households(case_json: dict):
 
@@ -172,9 +327,9 @@ def create_households(case_json: dict):
             )
 
             # call FE API endpoint
-            print(f'process_household.req [{req}]')
+            print(f'create_households.req [{req}]')
             res = FeAPI.Household.create_household(req)
-            print(f'process_household.res [{res}]')
+            print(f'create_households.res [{res}]')
 
             household_id = res['householdId']
             setTestKey(household_json, KEY_HOUSEHOLD_ID, household_id)
@@ -195,9 +350,9 @@ def create_households(case_json: dict):
         )
 
         # call FE API endpoint
-        print(f'process_household.req [{req}]')
+        print(f'create_households_parameters.req [{req}]')
         res = FeAPI.Household.set_household_parameters(household_id, req)
-        print(f'process_household.res [{res}]')
+        print(f'create_households_parameters.res [{res}]')
         
     # set test data (ids of customers)
     customers = FeAPI.SalesArrangement.get_customers(sales_arrangement_id)
@@ -228,9 +383,9 @@ def create_case(case_json: dict, offer_id: int):
     )
 
     # call FE API endpoint
-    print(f'process_case.req [{req}]')
+    print(f'create_case.req [{req}]')
     res = FeAPI.Offer.create_case(req)
-    print(f'process_case.res [{res}]')
+    print(f'create_case.res [{res}]')
 
     # set test data
     setTestKey(case_json, KEY_CASE_ID, res['caseId'])

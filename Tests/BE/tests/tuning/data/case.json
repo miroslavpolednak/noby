@@ -1,7 +1,7 @@
 {
     "offer": {
-        "productTypeId":20001,
-        "loanKindId":2000,
+        "productTypeId": 20001,
+        "loanKindId": 2000,
         "loanAmount": 5000000,
         "loanDuration": 120,
         "fixedRatePeriod": 60,
@@ -9,7 +9,7 @@
         "paymentDay": 15,
         "statementTypeId": 1,
         "isEmployeeBonusRequested": false,
-        "expectedDateOfDrawing": "2023-02-20T10:09:53.127Z",
+        "expectedDateOfDrawing": "2023-03-01T00:00:00.0000",
         "withGuarantee": false,
         "financialResourcesOwn": null,
         "financialResourcesOther": null,
@@ -112,6 +112,129 @@
                             "countryOfResidenceId": null,
                             "incomeOtherTypeId": null
                         }
+                    },
+                    {
+                        "sum": 50000,
+                        "currencyCode": "CZK",
+                        "incomeTypeId": 1,
+                        "data": {
+                            "employer": {
+                                "name": "AB",
+                                "cin": "444",
+                                "birthNumber": null,
+                                "countryId": 16
+                            },
+                            "job": {
+                                "jobDescription": null,
+                                "firstWorkContractSince": null,
+                                "employmentTypeId": null,
+                                "currentWorkContractSince": null,
+                                "currentWorkContractTo": null,
+                                "grossAnnualIncome": null,
+                                "isInTrialPeriod": false,
+                                "isInProbationaryPeriod": false
+                            },
+                            "wageDeduction": {
+                                "deductionDecision": null,
+                                "deductionPayments": null,
+                                "deductionOther": null
+                            },
+                            "incomeConfirmation": {
+                                "confirmationDate": null,
+                                "confirmationPerson": null,
+                                "confirmationContact": null,
+                                "isIssuedByExternalAccountant": false
+                            },
+                            "hasProofOfIncome": false,
+                            "foreignIncomeTypeId": null,
+                            "hasWageDeduction": false,
+                            "cin": null,
+                            "birthNumber": null,
+                            "countryOfResidenceId": null,
+                            "incomeOtherTypeId": null
+                        }
+                    },
+                    {
+                        "sum": 10000,
+                        "currencyCode": "CZK",
+                        "incomeTypeId": 2,
+                        "data": {
+                            "employer": {
+                                "name": null,
+                                "cin": null,
+                                "birthNumber": null,
+                                "countryId": null
+                            },
+                            "job": {
+                                "jobDescription": null,
+                                "firstWorkContractSince": null,
+                                "employmentTypeId": null,
+                                "currentWorkContractSince": null,
+                                "currentWorkContractTo": null,
+                                "grossAnnualIncome": null,
+                                "isInTrialPeriod": false,
+                                "isInProbationaryPeriod": false
+                            },
+                            "wageDeduction": {
+                                "deductionDecision": null,
+                                "deductionPayments": null,
+                                "deductionOther": null
+                            },
+                            "incomeConfirmation": {
+                                "confirmationDate": null,
+                                "confirmationPerson": null,
+                                "confirmationContact": null,
+                                "isIssuedByExternalAccountant": false
+                            },
+                            "hasProofOfIncome": false,
+                            "foreignIncomeTypeId": null,
+                            "hasWageDeduction": false,
+                            "cin": "111",
+                            "birthNumber": null,
+                            "countryOfResidenceId": 16,
+                            "incomeOtherTypeId": null
+                        }
+                    },
+                    {
+                        "sum": 10000,
+                        "currencyCode": "CZK",
+                        "incomeTypeId": 2,
+                        "data": {
+                            "employer": {
+                                "name": null,
+                                "cin": null,
+                                "birthNumber": null,
+                                "countryId": null
+                            },
+                            "job": {
+                                "jobDescription": null,
+                                "firstWorkContractSince": null,
+                                "employmentTypeId": null,
+                                "currentWorkContractSince": null,
+                                "currentWorkContractTo": null,
+                                "grossAnnualIncome": null,
+                                "isInTrialPeriod": false,
+                                "isInProbationaryPeriod": false
+                            },
+                            "wageDeduction": {
+                                "deductionDecision": null,
+                                "deductionPayments": null,
+                                "deductionOther": null
+                            },
+                            "incomeConfirmation": {
+                                "confirmationDate": null,
+                                "confirmationPerson": null,
+                                "confirmationContact": null,
+                                "isIssuedByExternalAccountant": false
+                            },
+                            "hasProofOfIncome": false,
+                            "foreignIncomeTypeId": null,
+                            "hasWageDeduction": false,
+                            "cin": "111",
+                            "birthNumber": null,
+                            "countryOfResidenceId": 16,
+                            "incomeOtherTypeId": null
+                        }
                     }
                 ],
                 "obligations": [
@@ -129,6 +252,39 @@
                         "correction": {
                             "correctionTypeId": 1
                         }
+                    },
+                    {
+                        "obligationTypeId": 1,
+                        "amountConsolidated": null,
+                        "installmentAmount": 4000,
+                        "loanPrincipalAmount": 40000,
+                        "creditor": {
+                            "name": "",
+                            "isExternal": true
+                        },
+                        "correction": {
+                            "correctionTypeId": 1,
+                            "installmentAmountCorrection": null,
+                            "loanPrincipalAmountCorrection": null,
+                            "creditCardLimitCorrection": null
+                        },
+                        "customerOnSAId": 0
+                    },
+                    {
+                        "obligationTypeId": 4,
+                        "amountConsolidated": null,
+                        "creditCardLimit": 50000,
+                        "creditor": {
+                            "creditorId": "0800",
+                            "isExternal": true
+                        },
+                        "correction": {
+                            "correctionTypeId": 2,
+                            "installmentAmountCorrection": null,
+                            "loanPrincipalAmountCorrection": null,
+                            "creditCardLimitCorrection": 50000
+                        },
+                        "customerOnSAId": 0
                     }
                 ]
             },
