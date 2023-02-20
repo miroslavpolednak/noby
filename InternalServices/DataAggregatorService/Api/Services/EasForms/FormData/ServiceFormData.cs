@@ -28,7 +28,7 @@ internal class ServiceFormData : AggregatedData
 
     public long IdentityKb => Customer.Identities.Single(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId;
 
-    public bool IsAgent => SalesArrangement.Drawing.Agent is not null;
+    public bool IsAgent => SalesArrangement.Drawing.Agent?.IsActive ?? false;
 
     public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
