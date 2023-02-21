@@ -113,9 +113,9 @@ internal class ConfigurationRepository
                          .ToListAsync();
     }
 
-    public Task<List<EasFormSourceField>> LoadEasFormSourceFields(int requestTypeId)
+    public Task<List<EasFormSourceField>> LoadEasFormSourceFields(int requestTypeId, CancellationToken cancellationToken)
     {
-        return GetSourceFields().Concat(GetSpecialSourceFields()).ToListAsync();
+        return GetSourceFields().Concat(GetSpecialSourceFields()).ToListAsync(cancellationToken);
 
         IQueryable<EasFormSourceField> GetSourceFields()
         {
@@ -152,7 +152,7 @@ internal class ConfigurationRepository
         }
     }
 
-    public Task<List<DynamicInputParameter>> LoadEasFormDynamicInputFields(int requestTypeId)
+    public Task<List<DynamicInputParameter>> LoadEasFormDynamicInputFields(int requestTypeId, CancellationToken cancellationToken)
     {
         return _dbContext.EasFormDynamicInputParameters
                          .AsNoTracking()
@@ -164,6 +164,6 @@ internal class ConfigurationRepository
                              SourceDataSource = (DataSource)e.SourceDataField.DataServiceId,
                              SourceFieldPath = e.SourceDataField.FieldPath
                          })
-                         .ToListAsync();
+                         .ToListAsync(cancellationToken);
     }
 }
