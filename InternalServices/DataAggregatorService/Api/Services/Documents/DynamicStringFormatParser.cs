@@ -38,7 +38,7 @@ internal class DynamicStringFormatParser
     private bool ValidateConditionCollection(IGrouping<string, DocumentDynamicStringFormatCondition> groupedConditions)
     {
         if (MapperHelper.GetValue(_aggregatedData, groupedConditions.Key) is not IEnumerable collection)
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"Path '{groupedConditions.Key}' does not return IEnumerable.");
 
         return collection.Cast<object>().Any(obj =>
         {
