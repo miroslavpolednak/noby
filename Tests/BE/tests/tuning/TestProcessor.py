@@ -16,6 +16,22 @@ from tests.tuning.OptionsResolver import OptionsResolver
 from tests.tuning.data import load_file_json
 
 
+def run_via_processor():
+    from E2E import ApiProcessor
+    case_inputs_json: dict = load_file_json()
+    case = Case.from_json(case_inputs_json)
+    
+    results = ApiProcessor.process_list([case])
+    for r in results:
+        print(r)
+
+
+run_via_processor()
+
+quit()
+
+
+
 # --------------------------------------------------------------------------------------------------------------
 # Processing data helpers
 # --------------------------------------------------------------------------------------------------------------
@@ -367,6 +383,42 @@ def create_households(case_json: dict):
     for household_json in case_json['households']:
         create_customers(household_json)
 
+def create_parameters(case_json: dict):
+
+    parameters_json = getKey(case_json, 'parameters')
+
+    if parameters_json is None:
+        return
+
+    sales_arrangement_id = getTestKey(case_json, KEY_SALES_ARRAMGEMENT_ID)
+
+    def map_loan_real_estate(loan_real_estate_json: dict)-> dict:
+        return dict(
+            realEstateTypeId = getKey(loan_real_estate_json, 'realEstateTypeId'),
+            isCollateral = getKey(loan_real_estate_json, 'isCollateral'),
+            realEstatePurchaseTypeId = getKey(loan_real_estate_json, 'realEstatePurchaseTypeId'),
+        )
+
+    loan_real_estates_json = getKey(parameters_json, 'loanRealEstates', [])
+    loan_real_estates = list(map(lambda i_json: map_loan_real_estate(i_json), loan_real_estates_json))
+
+    req = dict(
+        parameters = dict(
+            incomeCurrencyCode = getKey(parameters_json, 'incomeCurrencyCode'),
+            residencyCurrencyCode = getKey(parameters_json, 'residencyCurrencyCode'),
+            contractSignatureTypeId = getKey(parameters_json, 'contractSignatureTypeId'),
+            agent = getKey(parameters_json, 'agent'),
+            agentConsentWithElCom = getKey(parameters_json, 'agentConsentWithElCom'),
+            loanRealEstates = loan_real_estates,
+        )
+    )
+
+    # call FE API endpoint
+    print(f'create_parameters.req [{req}]')
+    res = FeAPI.SalesArrangement.set_parameters(sales_arrangement_id, req)
+    print(f'create_parameters.res [{res}]')
+
+
 def create_case(case_json: dict, offer_id: int):
     
     household_json = list(filter(lambda i: int(i['householdTypeId']) == EHouseholdType.Main.value, case_json['households']))[0]
@@ -396,6 +448,9 @@ def create_case(case_json: dict, offer_id: int):
 
     # create households
     create_households(case_json)
+
+    # create parameters
+    create_parameters(case_json)
 
 # --------------------------------------------------------------------------------------------------------------
 
@@ -577,5 +632,11 @@ print(f'https://fat.noby.cz/undefined#/mortgage/case-detail/{case_id}')
 # add other parameters
 # PUT https://fat.noby.cz/api/sales-arrangement/243/parameters
 # {parameters: {incomeCurrencyCode: "CZK", residencyCurrencyCode: "CZK", contractSignatureTypeId: 3,…}
+
+#
+# PUT https://fat.noby.cz/api/sales-arrangement/334/parameters
+# {"parameters":{"incomeCurrencyCode":"CZK","residencyCurrencyCode":"CZK","contractSignatureTypeId":3,"loanRealEstates":[{"isCollateral":true,"realEstatePurchaseTypeId":2,"realEstateTypeId":2}],"agent":522,"agentConsentWithElCom":true}}
+# {"parameters":{"incomeCurrencyCode":"CZK","residencyCurrencyCode":"CZK","contractSignatureTypeId":1,"loanRealEstates":[{"realEstateTypeId":2,"isCollateral":true,"realEstatePurchaseTypeId":2}],"agent":522,"agentConsentWithElCom":true}}
+
 
 # --------------------------------------------------------------------------------------------------------------

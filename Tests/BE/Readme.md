@@ -43,3 +43,13 @@ ProtoTypes:
 - google.protobuf.StringValue
 - int32
 - string
+
+# Azure DevOps
+
+## New AgentPool
+
+    - https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/v2-windows?view=azure-devops#permissions
+    - https://azureops.org/articles/azure-devops-self-hosted-agent/
+
+## Python
+    - logging: https://realpython.com/python-logging/

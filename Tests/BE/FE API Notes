@@ -1,0 +1,18 @@
+# Income
+
+## GET https://fat.noby.cz/api/household/422
+
+### {"householdId":422,"areCustomersPartners":false,"data":{"childrenUpToTenYearsCount":1,"childrenOverTenYearsCount":2},"expenses":{"savingExpenseAmount":10000,"insuranceExpenseAmount":3000,"housingExpenseAmount":10000,"otherExpenseAmount":7500},"customer1":{"incomes":[{"incomeId":131,<ins>"incomeSource":"ABC"</ins>,"hasProofOfIncome":true,"incomeTypeId":1,"sum":25000,"currencyCode":"CZK"},{"incomeId":132,"incomeSource":"-","hasProofOfIncome":false,"incomeTypeId":2,"sum":1000000,"currencyCode":"CZK"},{"incomeId":133,"incomeSource":"-","hasProofOfIncome":false,"incomeTypeId":3,"sum":80000,"currencyCode":"CZK"},{"incomeId":134,"incomeSource":"cestovní náhrady (diety) - měsíční","hasProofOfIncome":false,"incomeTypeId":4,"sum":30000,"currencyCode":"CZK"}],"roleId":1,"identities":[],"obligations":[],"customerOnSAId":514,"firstName":"JAN","lastName":"NovĂˇk","dateOfBirth":"1980-01-01T00:00:00"},"customer2":{"incomes":[],"roleId":2,"identities":[],"obligations":[],"customerOnSAId":517,"firstName":"JANA","lastName":"NovĂˇkovĂˇ"}}{"householdId":422,"areCustomersPartners":false,"data":{"childrenUpToTenYearsCount":1,"childrenOverTenYearsCount":2},"expenses":{"savingExpenseAmount":10000,"insuranceExpenseAmount":3000,"housingExpenseAmount":10000,"otherExpenseAmount":7500},"customer1":{"incomes":[{"incomeId":131,"incomeSource":"ABC","hasProofOfIncome":true,"incomeTypeId":1,"sum":25000,"currencyCode":"CZK"},{"incomeId":132,"incomeSource":"-","hasProofOfIncome":false,"incomeTypeId":2,"sum":1000000,"currencyCode":"CZK"},{"incomeId":133,"incomeSource":"-","hasProofOfIncome":false,"incomeTypeId":3,"sum":80000,"currencyCode":"CZK"},{"incomeId":134,"incomeSource":"cestovní náhrady (diety) - měsíční","hasProofOfIncome":false,"incomeTypeId":4,"sum":30000,"currencyCode":"CZK"}],"roleId":1,"identities":[],"obligations":[],"customerOnSAId":514,"firstName":"JAN","lastName":"NovĂˇk","dateOfBirth":"1980-01-01T00:00:00"},"customer2":{"incomes":[],"roleId":2,"identities":[],"obligations":[],"customerOnSAId":517,"firstName":"JANA","lastName":"NovĂˇkovĂˇ"}}
+<br />
+
+## GET https://fat.noby.cz/api/customer-on-sa/514/income/131
+
+### {"incomeTypeId":1,"data":{"foreignIncomeTypeId":2,"hasProofOfIncome":true,"hasWageDeduction":true,"employer":{<ins>"name":"ABC"</ins>,"birthNumber":"","cin":"123456789","countryId":1},"job":{"grossAnnualIncome":300000,"jobDescription":"HR","isInProbationaryPeriod":false,"isInTrialPeriod":true,"employmentTypeId":2,"firstWorkContractSince":"2023-02-22T00:00:00"},"wageDeduction":{"deductionDecision":20000,"deductionPayments":10000,"deductionOther":3000},"incomeConfirmation":{"isIssuedByExternalAccountant":true,"confirmationDate":"2023-02-06T00:00:00","confirmationPerson":"BarÄŤa","confirmationContact":"777555333"}},"sum":25000,"currencyCode":"CZK"}
+<br />
+<br />
+
+# Parameters
+
+### Agent
+
+- Value of **parameters.agent** cannot be specified directly (it must be evaluated dynamically). Value must be valid id of customer.

@@ -1,7 +1,8 @@
 import json
+from logging import WARNING, DEBUG
 from requests import cookies, Response, request
 
-from common import config
+from common import config, Log
 
 class Base():
 
@@ -9,8 +10,13 @@ class Base():
     __cookies_by_login: dict = dict()
 
     def __init__(self, route: str):
+        self._log = Log.getLogger(f'FeApi.{self.class_name}')
         assert route is not None, f'Route must be provided!'
         self.__route = route
+
+    @property
+    def class_name(self) -> object:
+        return self.__class__.__name__
 
     def __build_url(self, route: str):
         return f'{config.fe_api_url}/{self.__route}/{route}'
@@ -28,11 +34,16 @@ class Base():
             cookies = Base.get_cookies(login)
             res = request(url=url, method=method, cookies=cookies, json=json)
 
+            log_level: int = DEBUG if res.status_code == 200 else WARNING
+            self._log.log(log_level, f'HandleRequest [url: {url}, method: {method}, login: {login}, status_code: {res.status_code}]]')
+
             print(f'FeAPI.HandleRequest [url: {url}, method: {method}, login: {login}, status_code: {res.status_code}]]')
 
         except Exception as e:
             message = f'Error occured while FeAPI request [url: {url}, method: {method}, login: {login}]. Error: {str(e)}'
             print(message)
+            self._log.error(message)
+
             raise message
             
         return res

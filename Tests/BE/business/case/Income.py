@@ -1,19 +1,20 @@
 from ..base.Base import Base
+from .IncomeData import IncomeData
 
 from common import Convertor
 
 from typing import List
 
 DISPATCHES = {
-            # 'income_id': lambda value: Convertor.to_int(value),
-            'income_source': lambda value: Convertor.to_str(value),
-            'has_proof_of_income': lambda value: Convertor.to_bool(value),
+            # 'income_id': lambda value: Convertor.to_int(value),            
             'income_type_id': lambda value: Convertor.to_int(value),
             'sum': lambda value: Convertor.to_decimal(value),
             'currency_code': lambda value: Convertor.to_str(value),
+
+            'data': lambda value: IncomeData.from_json(value),
         }
 
-JSON_KEYS = ['incomeSource','hasProofOfIncome','incomeTypeId','sum','currencyCode']
+JSON_KEYS = ['incomeTypeId', 'sum', 'currencyCode', 'data']
 
 class Income(Base):
 
