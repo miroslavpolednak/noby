@@ -1207,6 +1207,17 @@
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
         </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SearchDocumentsOnSa(System.Int32,NOBY.Api.Endpoints.DocumentOnSA.Search.SearchRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vyhledání dokumentů na základě hlavního hesla (eArchivu)
+            </summary>
+            <remarks>
+            Vyhledání formId (businessovém identifikátoru dokumentů) na sales arrangementu dle hlavního hesla (eArchivu).<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0C28E9E5-7AC1-4265-8342-FCE63B33967F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+            </remarks>
+            <param name="salesArrangementId"></param>
+            <param name="request"></param>
+        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData.DocumentDataDto.Table">
             <summary>
             This is not supported yet
