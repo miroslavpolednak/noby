@@ -12,6 +12,8 @@ internal class Loan
 
     public Int64? PartnerId { get; set; }
 
+	public int? KodProduktyUv { get; set; }
+
     public string? CisloSmlouvy { get; set; }
 
     [Column(TypeName = "decimal(16, 4)")]
@@ -67,6 +69,34 @@ internal class Loan
 	public string? CisloUctu { get; set; }
 
 	public string? PredcisliUctu { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? Jistina { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? CelkovyDluhPoSplatnosti { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? PohledavkaPoplatkyPo { get; set; }
+
+	public int? PocetBankovnichDniPoSpl { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? SazbaZProdleni { get; set; }
+
+	public int? SplatkyDen { get; set; }
+
+	public long? PobockaObsluhyId { get; set; }
+
+	public string? InkasoPredcisli { get; set; }
+
+    public string? InkasoCislo { get; set; }
+
+    public string? InkasoBanka { get; set; }
 }
 
 /*

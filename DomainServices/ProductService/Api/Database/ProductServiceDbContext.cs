@@ -14,6 +14,7 @@ internal sealed class ProductServiceDbContext
     public DbSet<Entities.Loan> Loans { get; set; }
     public DbSet<Entities.Relationship> Relationships { get; set; }
 	public DbSet<Entities.Partner> Partners { get; set; }
+    public DbSet<Entities.LoanPurpose> LoanPurposes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

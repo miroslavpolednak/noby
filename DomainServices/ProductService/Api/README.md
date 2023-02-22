@@ -9,7 +9,7 @@
         grpcurl -insecure -d "{\"ProductId\":300, \"Relationship\":{\"PartnerId\":1, \"ContractRelationshipTypeId\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5011 DomainServices.ProductService.v1.ProductService/CreateContractRelationship
         grpcurl -insecure -d "{\"ProductId\":300, \"PartnerId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5011 DomainServices.ProductService.v1.ProductService/DeleteContractRelationship
 
-        grpcurl -insecure -d "{\"ProductId\":300}" -H "Authorization: Basic YTph" 127.0.0.1:5070 DomainServices.ProductService.v1.ProductService/GetCustomersOnProduct
+        grpcurl -insecure -d "{\"ProductId\":2193680}" -H "Authorization: Basic YTph" 127.0.0.1:30007 DomainServices.ProductService.v1.ProductService/GetCustomersOnProduct
 
 ## run batch
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\CIS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"

@@ -123,9 +123,14 @@ internal sealed class GetCaseParametersHandler
             // LoanInterestRateRefix
             // LoanInterestRateValidFromRefix
             // FixedRatePeriodRefix
-            Cpm = userInstance?.CPM,
-            Icp = userInstance?.ICP,
-            FirstAnnuityPaymentDate = offerInstance.SimulationResults.AnnuityPaymentsDateFrom
+            FirstAnnuityPaymentDate = offerInstance.SimulationResults.AnnuityPaymentsDateFrom,
+            BranchConsultant = new BranchConsultantDto
+            {
+                BranchName = "Pobocka XXX",
+                ConsultantName = userInstance?.FullName,
+                Cpm = userInstance?.CPM,
+                Icp = userInstance?.ICP
+            }
         };
     }
 
@@ -138,6 +143,9 @@ internal sealed class GetCaseParametersHandler
         )
     {
         var mortgageData = (await _productService.GetMortgage(caseInstance.CaseId, cancellation)).Mortgage;
+
+        var branchUser = mortgageData.BranchConsultantId.HasValue ? await _userService.GetUser(mortgageData.BranchConsultantId.Value, cancellation) : null;
+        var thirdPartyUser = mortgageData.ThirdPartyConsultantId.HasValue ? await _userService.GetUser(mortgageData.ThirdPartyConsultantId.Value, cancellation) : null;
 
         return new GetCaseParametersResponse
         {
@@ -171,8 +179,20 @@ internal sealed class GetCaseParametersHandler
             LoanInterestRateRefix = mortgageData.LoanInterestRateRefix,
             LoanInterestRateValidFromRefix = mortgageData.LoanInterestRateValidFromRefix,
             FixedRatePeriodRefix = mortgageData.FixedRatePeriodRefix,
-            Cpm = mortgageData.Cpm,
-            Icp = mortgageData.Icp,
+            BranchConsultant = new BranchConsultantDto
+            {
+                BranchName = "Pobocka XXX",
+                ConsultantName = branchUser?.FullName,
+                Cpm = branchUser?.CPM,
+                Icp = branchUser?.ICP
+            },
+            ThirdPartyConsultant = new ThirdPartyConsultantDto
+            {
+                BranchName = "Spolecnost XXX",
+                ConsultantName = thirdPartyUser?.FullName,
+                Cpm = thirdPartyUser?.CPM,
+                Icp = thirdPartyUser?.ICP
+            }
         };
     }
 }
