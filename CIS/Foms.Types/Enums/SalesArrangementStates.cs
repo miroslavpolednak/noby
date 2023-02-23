@@ -30,5 +30,10 @@ public enum SalesArrangementStates : byte
     [EnumMember]
     [Display(Name = "Podepsáno")]
     [CisStarbuildId(1)]
-    IsSigned = 4
+    IsSigned = 4,
+
+    [EnumMember]
+    [Display(Name = "Nová")]
+    [CisStarbuildId(5)]
+    NewArrangement = 5
 }
