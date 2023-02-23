@@ -13,7 +13,6 @@ public enum SalesArrangementStates : byte
     
     [EnumMember]
     [Display(Name = "Rozpracováno")]
-    [CisDefaultValue]
     [CisStarbuildId(1)]
     InProgress = 1,
         
@@ -33,6 +32,7 @@ public enum SalesArrangementStates : byte
     IsSigned = 4,
 
     [EnumMember]
+    [CisDefaultValue]
     [Display(Name = "Nová")]
     [CisStarbuildId(1)]
     NewArrangement = 5

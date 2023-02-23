@@ -1,4 +1,6 @@
-﻿namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateOfferDocumentId;
+﻿using CIS.Foms.Enums;
+
+namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateOfferDocumentId;
 
 internal sealed class UpdateOfferDocumentIdHandler
     : IRequestHandler<Contracts.UpdateOfferDocumentIdRequest, Google.Protobuf.WellKnownTypes.Empty>
@@ -9,6 +11,12 @@ internal sealed class UpdateOfferDocumentIdHandler
             ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
 
         entity.OfferDocumentId = request.OfferDocumentId;
+
+        // pokud je zadost NEW, zmenit na InProgress
+        if (entity.State == (int)SalesArrangementStates.NewArrangement)
+        {
+            entity.State = (int)SalesArrangementStates.InProgress;
+        }
 
         await _dbContext.SaveChangesAsync(cancellation);
 

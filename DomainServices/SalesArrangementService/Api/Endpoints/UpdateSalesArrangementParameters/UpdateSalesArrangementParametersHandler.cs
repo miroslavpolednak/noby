@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Google.Protobuf;
+using CIS.Foms.Enums;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementParameters;
 
@@ -9,8 +10,11 @@ internal sealed class UpdateSalesArrangementParametersHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellation)
     {
         // existuje SA?
-        if (!await _dbContext.SalesArrangements.AnyAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation))
-            throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
+        var saInfoInstance = (await _dbContext.SalesArrangements
+            .Where(t => t.SalesArrangementId == request.SalesArrangementId)
+            .Select(t => new { t.State })
+            .FirstOrDefaultAsync(cancellation))
+            ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
 
         // kontrolovat pokud je zmocnenec, tak zda existuje?
         if (request.DataCase == Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage)
@@ -24,7 +28,9 @@ internal sealed class UpdateSalesArrangementParametersHandler
         }
 
         // instance parametru, pokud existuje
-        var entity = await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation);
+        var entity = await _dbContext.SalesArrangementsParameters
+            .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation);
+
         if (entity is null)
         {
             entity = new Database.Entities.SalesArrangementParameters
@@ -42,7 +48,23 @@ internal sealed class UpdateSalesArrangementParametersHandler
 
         await _dbContext.SaveChangesAsync(cancellation);
 
+        // pokud je zadost NEW, zmenit na InProgress
+        if (saInfoInstance.State == (int)SalesArrangementStates.NewArrangement)
+        {
+            await updateSalesArrangementState(request.SalesArrangementId, cancellation);
+        }
+
         return new Google.Protobuf.WellKnownTypes.Empty();
+    }
+
+    async Task updateSalesArrangementState(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var entity = await _dbContext.SalesArrangements
+            .FirstAsync(t => t.SalesArrangementId == salesArrangementId, cancellationToken);
+
+        entity.State = (int)SalesArrangementStates.InProgress;
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     static Database.Entities.SalesArrangementParametersTypes getParameterType(Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase datacase)
