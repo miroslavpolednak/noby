@@ -3,7 +3,7 @@ package CIS.InternalServices.ServiceDiscovery;
 
 option csharp_namespace = "CIS.InternalServices.ServiceDiscovery.Contracts";
 
-import "DiscoverableService.proto";
+import "Messages/DiscoverableService.proto";
 
 message GetServiceRequest {
    string Environment = 1;
