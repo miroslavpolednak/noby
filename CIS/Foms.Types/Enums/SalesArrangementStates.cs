@@ -34,6 +34,6 @@ public enum SalesArrangementStates : byte
 
     [EnumMember]
     [Display(Name = "Nová")]
-    [CisStarbuildId(5)]
+    [CisStarbuildId(1)]
     NewArrangement = 5
 }
