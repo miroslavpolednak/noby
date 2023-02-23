@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace NOBY.Api.Endpoints.Customer.Search;
 
-internal class SearchRequestValidator
+internal sealed class SearchRequestValidator
     : AbstractValidator<SearchRequest>
 {
     public SearchRequestValidator()
