@@ -67,7 +67,8 @@ public class SaveDocumentToArchiveHandler
                 Filename = documentInformation.FileName,
                 AuthorUserLogin = _currentUserAccessor.User is not null ? _currentUserAccessor.User.Id.ToString() : "Unknow NOBY user",
                 CreatedOn = _dateTime.Now.Date,
-                Description = documentInformation.Description ?? string.Empty
+                Description = documentInformation.Description ?? string.Empty,
+                FormId = documentInformation.FormId ?? string.Empty,
             }
         };
     }
