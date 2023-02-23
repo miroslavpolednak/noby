@@ -29,6 +29,8 @@ internal static class MortgageExtensions
             RepaymentAccountPrefix = mortgage.RepaymentAccount?.Prefix,
             EstimatedDuePaymentDate = mortgage.LoanDueDate,
             RepaymentStartDate = mortgage.FirstAnnuityPaymentDate,
+            ServiceBranchId = mortgage.BranchConsultantId,
+            ConsultantId = mortgage.ThirdPartyConsultantId,
             LoanPurposes = mortgage.LoanPurposes is null ? null : mortgage.LoanPurposes.Select(t => new ExternalServices.MpHome.V1_1.Contracts.LoanPurpose
             {
                 Amount = Convert.ToDouble((decimal)t.Sum),
