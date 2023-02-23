@@ -1041,16 +1041,6 @@
             [optional] Cislo dokladu
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Search.Dto.SearchData.Email">
-            <summary>
-            [optional] Email
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Search.Dto.SearchData.Phone">
-            <summary>
-            [optional] Telefon
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Search.SearchRequest.SearchData">
             <summary>
             Podle ceho se ma hledat

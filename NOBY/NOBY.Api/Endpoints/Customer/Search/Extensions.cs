@@ -12,8 +12,8 @@ internal static class Extensions
     {
         var model = new SearchCustomersRequest
         {
-            Email = request.Email ?? "",
-            PhoneNumber = request.Phone ?? "",
+            //Email = request.Email ?? "",
+            //PhoneNumber = request.Phone ?? "",
             NaturalPerson = new NaturalPersonSearch
             {
                 FirstName = request.FirstName ?? "",
