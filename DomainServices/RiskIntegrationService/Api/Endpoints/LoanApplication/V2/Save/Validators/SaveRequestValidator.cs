@@ -43,10 +43,6 @@ internal sealed class SaveRequestValidator
             RuleForEach(t => t.ProductRelations)
                 .ChildRules(x =>
                 {
-                    x.RuleFor(x => x.ProductType)
-                        .NotEmpty()
-                        .WithErrorCode("ProductRelations.ProductType");
-
                     x.RuleFor(x => x.RelationType)
                         .NotEmpty()
                         .WithErrorCode("ProductRelations.");
