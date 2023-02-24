@@ -3,7 +3,7 @@ using CIS.Core.Security;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using Google.Protobuf;
-using NOBY.Api.Endpoints._Shared;
+using NOBY.Api.Endpoints.Shared;
 using NOBY.Infrastructure.Configuration;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;

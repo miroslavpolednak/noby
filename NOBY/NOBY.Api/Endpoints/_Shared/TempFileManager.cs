@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Attributes;
 using NOBY.Infrastructure.Configuration;
 
-namespace NOBY.Api.Endpoints._Shared;
+namespace NOBY.Api.Endpoints.Shared;
 
 public interface ITempFileManager
 {
