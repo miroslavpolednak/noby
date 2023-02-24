@@ -24,5 +24,7 @@ internal sealed class ProductServiceDbContext
             .HasOne(t => t.Partner)
             .WithMany()
             .HasForeignKey(t => t.PartnerId);
+
+        modelBuilder.Entity<Entities.Obligation>().HasKey(m => new { m.LoanId, m.LoanPurposeId });
     }
 }
