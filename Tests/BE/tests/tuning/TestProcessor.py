@@ -15,21 +15,32 @@ from business.case import Case
 from tests.tuning.OptionsResolver import OptionsResolver
 from tests.tuning.data import load_file_json
 
+# Load CASE
+from E2E import ApiProcessor
+case: Case = ApiProcessor.load_case(3013351)
+print(case)
+quit()
+
+# TODO: setup find_folder_tests_be  [D:\Users\992387r\Desktop\workspace\BE\GIT\0004\OneSolution\Tests\BE\grpc] !
+
+# from datetime import datetime
+# dtm = datetime.fromisoformat('2023-01-27T00:00:00.000Z')
+
+use_api_processor: bool = True
 
 def run_via_processor():
-    from E2E import ApiProcessor
+    from E2E import ApiProcessor    
     case_inputs_json: dict = load_file_json()
     case = Case.from_json(case_inputs_json)
     
     results = ApiProcessor.process_list([case])
     for r in results:
         print(r)
+        # print(f'https://fat.noby.cz/undefined#/mortgage/case-detail/{r.case_id}')
 
-
-run_via_processor()
-
-quit()
-
+if use_api_processor:
+    run_via_processor()
+    quit()
 
 
 # --------------------------------------------------------------------------------------------------------------

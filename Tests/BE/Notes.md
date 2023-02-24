@@ -32,3 +32,5 @@
     - python -m pytest --no-header -vv
     - python -m pytest --no-header -vv -s
     - spouštět ze složky Test/BE (inicializační soubor '/Tests/BE/tests/__init__.py' zajistí načtení stubs)
+
+https://www.programiz.com/python-programming/online-compiler/

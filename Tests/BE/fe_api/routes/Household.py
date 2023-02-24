@@ -5,6 +5,9 @@ class Household(Base):
     def __init__(self):
         super().__init__(route='household')
 
+    def get_household_list(self, sales_arrangement_id: int) -> dict:
+        return self.get(f'list/{sales_arrangement_id}')
+
     def create_household(self, request: dict) -> dict:
         return self.post('', request)
 
