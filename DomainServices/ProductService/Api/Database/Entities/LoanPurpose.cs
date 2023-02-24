@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.ProductService.Api.Database.Entities;
 
 [Table("UverUcely", Schema = "dbo")]
+[Keyless]
 internal sealed class LoanPurpose
 {
     public int UverId { get; set; }
