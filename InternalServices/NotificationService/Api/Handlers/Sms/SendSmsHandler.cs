@@ -20,7 +20,6 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
     private readonly UserAdapterService _userAdapterService;
     private readonly NotificationRepository _repository;
     private readonly ICodebookService _codebookService;
-    private readonly IAuditLogger _auditLogger;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
@@ -29,7 +28,6 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         UserAdapterService userAdapterService,
         NotificationRepository repository,
         ICodebookService codebookService,
-        IAuditLogger auditLogger,
         ILogger<SendSmsHandler> logger)
     {
         _dateTime = dateTime;
@@ -37,7 +35,6 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         _userAdapterService = userAdapterService;
         _repository = repository;
         _codebookService = codebookService;
-        _auditLogger = auditLogger;
         _logger = logger;
     }
     
@@ -90,21 +87,21 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         {
             if (auditEnabled)
             {
-                _auditLogger.Log("todo - Producing message SendSMS to KAFKA.");
+                _logger.LogInformation("todo - Producing message SendSMS to KAFKA.");
             }
             
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
 
             if (auditEnabled)
             {
-                _auditLogger.Log("todo - Produced message SendSMS to KAFKA.");
+                _logger.LogInformation("todo - Produced message SendSMS to KAFKA.");
             }
         }
         catch (Exception e)
         {
             if (auditEnabled)
             {
-                _auditLogger.Log("todo - Could not produce message SendSMS to KAFKA.");
+                _logger.LogInformation("todo - Could not produce message SendSMS to KAFKA.");
             }
             
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");

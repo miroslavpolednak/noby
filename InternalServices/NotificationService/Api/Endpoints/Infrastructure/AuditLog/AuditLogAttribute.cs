@@ -1,5 +1,4 @@
 ﻿using CIS.Core;
-using CIS.Infrastructure.Telemetry;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
@@ -36,7 +35,7 @@ public class AuditLogAttribute : Attribute, IActionFilter, IExceptionFilter
     public void OnActionExecuting(ActionExecutingContext context)
     {
         var httpContext = context.HttpContext;
-        var auditLogger = httpContext.RequestServices.GetRequiredService<IAuditLogger>();
+        var logger = httpContext.RequestServices.GetRequiredService<ILogger>();
         var dateTime = httpContext.RequestServices.GetRequiredService<IDateTime>();
         var log = new AuditHttpRequestLog();
         log.TraceId = httpContext.TraceIdentifier;
@@ -53,13 +52,13 @@ public class AuditLogAttribute : Attribute, IActionFilter, IExceptionFilter
         log.RequestContentType = httpContext.Request.ContentType;
         
         var logMessage = JsonConvert.SerializeObject(log);
-        auditLogger.Log(logMessage);
+        logger.LogInformation(logMessage);
     }
 
     public void OnActionExecuted(ActionExecutedContext context) 
     {
         var httpContext = context.HttpContext;
-        var auditLogger = httpContext.RequestServices.GetRequiredService<IAuditLogger>();
+        var logger = httpContext.RequestServices.GetRequiredService<ILogger>();
         var dateTime = httpContext.RequestServices.GetRequiredService<IDateTime>();
         var log = new AuditHttpResponseLog();
         log.ResponseDateTimeUtc = dateTime.Now;
@@ -77,13 +76,13 @@ public class AuditLogAttribute : Attribute, IActionFilter, IExceptionFilter
         }
         
         var logMessage = JsonConvert.SerializeObject(log);
-        auditLogger.Log(logMessage);
+        logger.LogInformation(logMessage);
     }
 
     public void OnException(ExceptionContext context)
     {
         var httpContext = context.HttpContext;
-        var auditLogger = httpContext.RequestServices.GetRequiredService<IAuditLogger>();
+        var logger = httpContext.RequestServices.GetRequiredService<ILogger>();
         var dateTime = httpContext.RequestServices.GetRequiredService<IDateTime>();
 
         var log = new AuditHttpExceptionLog();
@@ -93,6 +92,6 @@ public class AuditLogAttribute : Attribute, IActionFilter, IExceptionFilter
         log.Exception = context.Exception;
         
         var logMessage = JsonConvert.SerializeObject(log);
-        auditLogger.Log(logMessage);
+        logger.LogInformation(logMessage);
     }
 }

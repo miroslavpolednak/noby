@@ -21,7 +21,6 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     private readonly UserAdapterService _userAdapterService;
     private readonly NotificationRepository _repository;
     private readonly ICodebookService _codebookService;
-    private readonly IAuditLogger _auditLogger;
     private readonly ILogger<SendSmsFromTemplateHandler> _logger;
     
     public SendSmsFromTemplateHandler(
@@ -30,7 +29,6 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         UserAdapterService userAdapterService,
         NotificationRepository repository,
         ICodebookService codebookService,
-        IAuditLogger auditLogger,
         ILogger<SendSmsFromTemplateHandler> logger)
     {
         _dateTime = dateTime;
@@ -38,7 +36,6 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         _userAdapterService = userAdapterService;
         _repository = repository;
         _codebookService = codebookService;
-        _auditLogger = auditLogger;
         _logger = logger;
     }
     
@@ -106,21 +103,24 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         {
             if (auditEnabled)
             {
-                _auditLogger.Log("todo - Producing message SendSMS to KAFKA.");
+                _logger.LogInformation("todo - Producing message SendSMS to KAFKA. NotificationId: @{notificationId}", new
+                {
+                    NotificationId = result.Id
+                });
             }
             
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
 
             if (auditEnabled)
             {
-                _auditLogger.Log("todo - Produced message SendSMS to KAFKA.");
+                _logger.LogInformation("todo - Produced message SendSMS to KAFKA.");
             }
         }
         catch (Exception e)
         {
             if (auditEnabled)
             {
-                _auditLogger.Log("todo - Could not produce message SendSMS to KAFKA.");
+                _logger.LogInformation("todo - Could not produce message SendSMS to KAFKA.");
             }
             
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");

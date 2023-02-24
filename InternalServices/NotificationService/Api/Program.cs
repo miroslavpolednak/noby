@@ -27,7 +27,12 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 builder.Configure();
 
 // Mvc
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.SuppressMapClientErrors = true;
+    });
 
 // Cis
 builder
