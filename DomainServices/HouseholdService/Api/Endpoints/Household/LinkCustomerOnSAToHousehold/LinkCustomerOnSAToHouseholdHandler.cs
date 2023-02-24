@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.LinkCustomerOnSAToHousehold;
 
@@ -8,16 +9,14 @@ internal sealed class LinkCustomerOnSAToHouseholdHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(LinkCustomerOnSAToHouseholdRequest request, CancellationToken cancellationToken)
     {
         // domacnost
-        var householdEntity = await _dbContext.Households
-            .FirstOrDefaultAsync(t => t.HouseholdId == request.HouseholdId, cancellationToken)
-            ?? throw new CisNotFoundException(16022, $"Household ID {request.HouseholdId} does not exist.");
+        var householdEntity = await _dbContext.GetHousehold(request.HouseholdId, cancellationToken);
 
         // overeni existence customeru
         if (request.CustomerOnSAId1.HasValue
-            && !(await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId1 && t.SalesArrangementId == householdEntity.SalesArrangementId, cancellationToken)))
+            && !(await _dbContext.CustomerExistOnSalesArrangement(request.CustomerOnSAId1.Value, householdEntity.SalesArrangementId, cancellationToken)))
             throw new CisNotFoundException(16020, $"CustomerOnSA #1 ID {request.CustomerOnSAId1} does not exist in this SA {householdEntity.SalesArrangementId}.");
         if (request.CustomerOnSAId2.HasValue
-            && !(await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId2 && t.SalesArrangementId == householdEntity.SalesArrangementId, cancellationToken)))
+            && !(await _dbContext.CustomerExistOnSalesArrangement(request.CustomerOnSAId2.Value, householdEntity.SalesArrangementId, cancellationToken)))
             throw new CisNotFoundException(16020, $"CustomerOnSA #2 ID {request.CustomerOnSAId2} does not exist in this SA {householdEntity.SalesArrangementId}.");
 
         householdEntity.CustomerOnSAId1 = request.CustomerOnSAId1;
@@ -28,9 +27,9 @@ internal sealed class LinkCustomerOnSAToHouseholdHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Database.HouseholdServiceDbContext _dbContext;
+    private readonly HouseholdServiceDbContext _dbContext;
     
-    public LinkCustomerOnSAToHouseholdHandler(Database.HouseholdServiceDbContext dbContext)
+    public LinkCustomerOnSAToHouseholdHandler(HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }

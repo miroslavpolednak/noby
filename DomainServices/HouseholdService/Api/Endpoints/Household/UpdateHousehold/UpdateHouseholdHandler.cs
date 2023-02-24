@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.UpdateHousehold;
 
@@ -7,16 +8,14 @@ internal sealed class UpdateHouseholdHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)
     {
-        var household = await _dbContext.Households
-            .Where(t => t.HouseholdId == request.HouseholdId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16022, $"Household ID {request.HouseholdId} does not exist.");
+        var household = await _dbContext.GetHousehold(request.HouseholdId, cancellationToken);
 
         //TODO nejake kontroly?
         if (request.CustomerOnSAId1.HasValue
-            && !(await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId1 && t.SalesArrangementId == household.SalesArrangementId, cancellationToken)))
+            && !(await _dbContext.CustomerExistOnSalesArrangement(request.CustomerOnSAId1.Value, household.SalesArrangementId, cancellationToken)))
             throw new CisNotFoundException(16020, $"CustomerOnSA #1 ID {request.CustomerOnSAId1} does not exist in this SA {household.SalesArrangementId}.");
         if (request.CustomerOnSAId2.HasValue
-            && !(await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId2 && t.SalesArrangementId == household.SalesArrangementId, cancellationToken)))
+            && !(await _dbContext.CustomerExistOnSalesArrangement(request.CustomerOnSAId2.Value, household.SalesArrangementId, cancellationToken)))
             throw new CisNotFoundException(16020, $"CustomerOnSA #2 ID {request.CustomerOnSAId2} does not exist in this SA {household.SalesArrangementId}.");
 
         household.CustomerOnSAId1 = request.CustomerOnSAId1;
@@ -37,9 +36,9 @@ internal sealed class UpdateHouseholdHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Database.HouseholdServiceDbContext _dbContext;
+    private readonly HouseholdServiceDbContext _dbContext;
 
-    public UpdateHouseholdHandler(Database.HouseholdServiceDbContext dbContext)
+    public UpdateHouseholdHandler(HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }

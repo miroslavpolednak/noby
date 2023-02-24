@@ -6,7 +6,7 @@ using System.Text;
 namespace DomainServices.CodebookService.ClientsGenerators
 {
     [Generator]
-    public class ServiceClientsSourceGenerator : ISourceGenerator
+    public sealed class ServiceClientsSourceGenerator : ISourceGenerator
     {
         private static string[] _hardcodedCodebooks = new[] { "DeveloperSearch", "Reset" };
 
@@ -35,6 +35,10 @@ namespace DomainServices.CodebookService.ClientsGenerators
             sbImpl.AppendLine("namespace DomainServices.CodebookService.Clients;");
             sbImpl.AppendLine("internal partial class CodebookService {");
 
+            var sbImplSync = new StringBuilder();
+            sbImplSync.AppendLine("namespace DomainServices.CodebookService.Clients;");
+            sbImplSync.AppendLine("internal partial class CodebookService {");
+
             var sbInterface = new StringBuilder();
             sbInterface.AppendLine("namespace DomainServices.CodebookService.Clients;");
             sbInterface.AppendLine("public partial interface ICodebookServiceClients {");
@@ -42,19 +46,27 @@ namespace DomainServices.CodebookService.ClientsGenerators
             endpoints.ForEach(m =>
             {
                 // implementation
-                sbImpl.AppendLine($"public async {m.ReturnType} {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken))");
-                sbImpl.AppendLine($"=> await _cache.GetOrCreate(\"{m.MethodName}\", async () => await _codebookService.{m.MethodName}(new {m.RequestDtoType}(), cancellationToken));");
+                sbImpl.Append($"public async {m.ReturnType} {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken))");
+                sbImpl.AppendLine($" => await _cache.GetOrCreate(\"{m.MethodName}\", async () => await _codebookService.{m.MethodName}(new {m.RequestDtoType}(), cancellationToken));");
+
+                // sync
+                sbImplSync.Append($"public {m.ReturnTypeSync} {m.MethodName}Synchronous()");
+                sbImplSync.AppendLine($" => _cache.GetOrCreate(\"{m.MethodName}\", () => _codebookService.{m.MethodName}(new {m.RequestDtoType}())).GetAwaiter().GetResult();");
 
                 // interface
                 sbInterface.AppendLine($"{m.ReturnType} {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken));");
+                // sync
+                sbInterface.AppendLine($"{m.ReturnTypeSync} {m.MethodName}Synchronous();");
             });
 
             sbImpl.Append("}");
+            sbImplSync.Append("}");
             sbInterface.Append("}");
 
             // generate source using targets ...
             context.AddSource("ICodebookServiceClients_generated.cs", sbInterface.ToString());
             context.AddSource("CodebookService_generated.cs", sbImpl.ToString());
+            context.AddSource("CodebookServiceSync_generated.cs", sbImplSync.ToString());
         }
     }
 }

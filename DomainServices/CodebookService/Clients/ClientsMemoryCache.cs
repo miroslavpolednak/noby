@@ -18,6 +18,7 @@ internal sealed class ClientsMemoryCache
 
     public async Task<TItem> GetOrCreate<TItem>(string key, Func<Task<TItem>> createItem)
     {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         if (!_cache.TryGetValue(key, out TItem cacheEntry))
         {
             SemaphoreSlim mylock = _locks.GetOrAdd(key, k => new SemaphoreSlim(1, 1));
@@ -44,6 +45,7 @@ internal sealed class ClientsMemoryCache
                 mylock.Release();
             }
         }
-        return cacheEntry;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+        return cacheEntry!;
     }
 }
