@@ -1,14 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.ProductService.Api.Database.Entities;
 
 [Table("Zavazky", Schema = "dbo")]
 internal class Obligation
 {
-    [Column("UverId")]
+    [Key, Column("UverId")]
     public long LoanId { get; set; }
 
-    [Column("UcelUveruInt")]
+    [Key, Column("UcelUveruInt")]
     public int LoanPurposeId { get; set; }
 
     [Column("TypZavazku")]
