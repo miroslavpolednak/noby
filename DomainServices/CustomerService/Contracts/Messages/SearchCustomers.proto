@@ -8,6 +8,7 @@ import "Identity.proto";
 import "Mandants.proto";
 import "Messages/NaturalPerson.proto";
 import "Messages/IdentificationDocument.proto";
+import "Messages/Contacts.proto";
 
 message SearchCustomersRequest {
     cis.types.Identity Identity = 1;
@@ -18,9 +19,9 @@ message SearchCustomersRequest {
 
     IdentificationDocumentSearch IdentificationDocument = 4;
 
-    string Email = 5;
+    EmailAddressItem Email = 5;
 
-    string PhoneNumber = 6;
+    MobilePhoneItem MobilePhone = 6;
 
     google.protobuf.BoolValue SearchOnlyIdentified = 7;
 }

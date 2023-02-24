@@ -78,10 +78,10 @@ internal class LoanApplicationCustomer
         var phone = _customer.Contacts.FirstOrDefault(c => c.ContactTypeId == 5);
 
         if (email is not null && phone is not null)
-            return $"telefon: {phone.Mobile?.PhoneIDC}{phone.Mobile?.PhoneNumber} | e-mail: {email.Email?.Address}";
+            return $"telefon: {phone.Mobile?.PhoneIDC}{phone.Mobile?.PhoneNumber} | e-mail: {email.Email?.EmailAddress}";
 
         if (email is not null)
-            return $"e-mail: {email.Email?.Address}";
+            return $"e-mail: {email.Email?.EmailAddress}";
 
         if (phone is not null)
             return $"telefon: {phone.Mobile?.PhoneIDC}{phone.Mobile?.PhoneNumber}";

@@ -10,16 +10,16 @@ message Contact {
 	bool IsConfirmed = 3;
 
 	oneof Data  {
-		MobilePhone Mobile = 20;
-		EmailAddress Email = 21;
+		MobilePhoneItem Mobile = 20;
+		EmailAddressItem Email = 21;
 	}
 } 
 
-message MobilePhone {
+message MobilePhoneItem {
 	string PhoneNumber = 1;
 	string PhoneIDC = 2;
 }
 
-message EmailAddress {
-	string Address = 1;
+message EmailAddressItem {
+	string EmailAddress = 1;
 }

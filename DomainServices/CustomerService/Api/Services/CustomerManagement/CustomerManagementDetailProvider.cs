@@ -209,9 +209,9 @@ internal class CustomerManagementDetailProvider
             };
 
             if (noIndex <= 0)
-                model.Mobile = new MobilePhone { PhoneNumber = customer.PrimaryPhone.PhoneNumber };
+                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber };
             else
-                model.Mobile = new MobilePhone { PhoneNumber = customer.PrimaryPhone.PhoneNumber![noIndex..], PhoneIDC = customer.PrimaryPhone.PhoneNumber![..noIndex] };
+                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber![noIndex..], PhoneIDC = customer.PrimaryPhone.PhoneNumber![..noIndex] };
 
             onAddContact(model);
         }
@@ -221,7 +221,7 @@ internal class CustomerManagementDetailProvider
             onAddContact(new Contact
             {
                 ContactTypeId = (int)ContactTypes.Email,
-                Email = new EmailAddress { Address = customer.PrimaryEmail.EmailAddress },
+                Email = new EmailAddressItem { EmailAddress = customer.PrimaryEmail.EmailAddress },
                 IsPrimary = true,
                 IsConfirmed = customer.PrimaryEmail.Confirmed
             });

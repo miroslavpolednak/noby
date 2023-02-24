@@ -13,11 +13,11 @@ internal static class CustomerContactExtensions
         var model = new ContactsConfirmedDto();
 
         var email = contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email);
-        if (!string.IsNullOrEmpty(email?.Email?.Address))
+        if (!string.IsNullOrEmpty(email?.Email?.EmailAddress))
         {
             model.EmailAddress = new() 
             { 
-                EmailAddress = email.Email.Address,
+                EmailAddress = email.Email.EmailAddress,
                 IsConfirmed = email.IsConfirmed
             };
         }
@@ -25,7 +25,7 @@ internal static class CustomerContactExtensions
         var phone = contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Mobil);
         if (!string.IsNullOrEmpty(phone?.Mobile?.PhoneNumber))
         {
-            model.PhoneNumber = new()
+            model.MobilePhone = new()
             {
                 PhoneNumber = phone.Mobile.PhoneNumber,
                 PhoneIDC = phone.Mobile.PhoneIDC,

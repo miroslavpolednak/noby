@@ -130,11 +130,11 @@ internal sealed class CustomerWithChangedDataService
         where TEmail : IEmailAddressDto
     {
         var email = dsCustomer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email);
-        if (!string.IsNullOrEmpty(email?.Email?.Address))
+        if (!string.IsNullOrEmpty(email?.Email?.EmailAddress))
         {
             var newEmail = (TEmail)Activator.CreateInstance(typeof(TEmail))!;
             newEmail.IsConfirmed = email.IsConfirmed;
-            newEmail.EmailAddress = email.Email.Address;
+            newEmail.EmailAddress = email.Email.EmailAddress;
             return newEmail;
         }
         else

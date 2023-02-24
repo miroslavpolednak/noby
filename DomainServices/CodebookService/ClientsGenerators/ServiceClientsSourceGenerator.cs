@@ -28,7 +28,7 @@ namespace DomainServices.CodebookService.ClientsGenerators
                 .Where(t => t is IMethodSymbol)
                 .Cast<IMethodSymbol>()
                 .Where(t => !_hardcodedCodebooks.Contains(t.OriginalDefinition.Name))
-                .Select(t => new Endpoint(t.OriginalDefinition.Name, t.OriginalDefinition.ReturnType.ToString(), t.OriginalDefinition.Parameters.Count() == 2 ? t.OriginalDefinition.Parameters[0].ToString() : ""))
+                .Select(t => new Endpoint(t.OriginalDefinition.Name, t.OriginalDefinition.ReturnType.ToString(), t.OriginalDefinition.Parameters.Count() == 2 ? t.OriginalDefinition.Parameters[0].Type.ToString() : ""))
                 .ToList();
 
             var sbImpl = new StringBuilder();
@@ -55,6 +55,9 @@ namespace DomainServices.CodebookService.ClientsGenerators
             // generate source using targets ...
             context.AddSource("ICodebookServiceClients_generated.cs", sbInterface.ToString());
             context.AddSource("CodebookService_generated.cs", sbImpl.ToString());
+
+            System.IO.File.WriteAllText("d:/interface.cs", sbInterface.ToString());
+            System.IO.File.WriteAllText("d:/impl.cs", sbImpl.ToString());
         }
     }
 }
