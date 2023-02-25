@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Codebooks.DeveloperSearch;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NOBY.Api.Endpoints.Codebooks.DeveloperSearch;
 
 public sealed class DeveloperSearchRequest
     : IRequest<DeveloperSearchResponse>
@@ -6,6 +8,7 @@ public sealed class DeveloperSearchRequest
     /// <summary>
     /// Text pro vyhledávání
     /// </summary>
+    [Required]
     public string? SearchText { get; set; }
 
     /// <summary>
