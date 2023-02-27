@@ -47,7 +47,7 @@ var phone = new Phone
 
 var smsSendRequest = new SendSmsRequest
 {
-    Phone = phone,
+    //Phone = phone,
     Type = type,
     ProcessingPriority = priority,
     Text = text,
@@ -58,7 +58,7 @@ Console.WriteLine($"Sms send response: {smsSendResponse.NotificationId}");
 
 var smsFromTemplateSendRequest = new SendSmsFromTemplateRequest
 {
-    Phone = phone,
+    //Phone = phone,
     Type = type,
     ProcessingPriority = priority,
     Placeholders = new List<StringKeyValuePair>()

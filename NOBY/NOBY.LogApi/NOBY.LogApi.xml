@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NOBY.LogApi</name>
+    </assembly>
+    <members>
+        <member name="P:NOBY.LogApi.LogModel.Level">
+            <summary>
+            Level logu
+            </summary>
+        </member>
+        <member name="P:NOBY.LogApi.LogModel.Message">
+            <summary>
+            Popis udalosti
+            </summary>
+        </member>
+        <member name="P:NOBY.LogApi.LogModel.UserId">
+            <summary>
+            ID uzivatele vracene z FE API
+            </summary>
+        </member>
+    </members>
+</doc>

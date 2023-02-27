@@ -15,7 +15,6 @@ public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentReques
     }
 
     public async Task Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
-    
     {
         if (await _context.DocumentInterface.AnyAsync(e => e.DocumentId == request.Metadata.DocumentId, cancellationToken))
         {
@@ -51,11 +50,12 @@ public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentReques
             entity.FolderDocument = request.Metadata.FolderDocument;
         }
         entity.FolderDocumentId = request.Metadata.FolderDocumentId;
-        entity.Kdv = MapToKdv(request.NotifyStarBuild);
+        entity.Kdv = MapToShortWithTrueDefault(request.NotifyStarBuild);
+        entity.SendDocumentOnly = MapToShortWithTrueDefault(request.SendDocumentOnly); 
         return entity;
     }
 
-    private static short MapToKdv(bool? notifyStarBuild) => notifyStarBuild switch
+    private static short MapToShortWithTrueDefault(bool? value) => value switch
     {
         true => 1,
         false => 0,

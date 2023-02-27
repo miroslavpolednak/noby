@@ -76,13 +76,13 @@ internal static class CreateExtensions
             Contacts = new()
         };
 
-        var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.Address;
+        var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.EmailAddress;
         if (!string.IsNullOrEmpty(email))
             model.Contacts.EmailAddress = new() { EmailAddress = email };
 
         var phone = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
         if (!string.IsNullOrEmpty(phone))
-            model.Contacts.PhoneNumber = new()
+            model.Contacts.MobilePhone = new()
             {
                 PhoneNumber = phone,
                 PhoneIDC = customer.Contacts!.First(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil).Mobile.PhoneIDC
@@ -100,7 +100,7 @@ internal static class CreateExtensions
     public static CreateResponse InputDataComparison(this CreateResponse response, CreateRequest originalRequest)
     {
         if (
-            !stringCompare(originalRequest.Contacts?.PhoneNumber?.PhoneNumber, response.Contacts?.PhoneNumber?.PhoneNumber)
+            !stringCompare(originalRequest.Contacts?.MobilePhone?.PhoneNumber, response.Contacts?.MobilePhone?.PhoneNumber)
             || !stringCompare(originalRequest.Contacts?.EmailAddress?.EmailAddress, response.Contacts?.EmailAddress?.EmailAddress)
             || originalRequest.BirthDate != response.NaturalPerson?.DateOfBirth
             || !stringCompare(originalRequest.BirthNumber, response.NaturalPerson?.BirthNumber)

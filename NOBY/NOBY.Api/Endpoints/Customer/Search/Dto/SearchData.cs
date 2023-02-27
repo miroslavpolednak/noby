@@ -23,13 +23,5 @@ public class SearchData
     /// </summary>
     public string? IdentificationDocumentNumber { get; set; }
 
-    /// <summary>
-    /// [optional] Email
-    /// </summary>
-    public string? Email { get; set; }
-
-    /// <summary>
-    /// [optional] Telefon
-    /// </summary>
-    public string? Phone { get; set; }
+    public SharedDto.ContactsDto? Contacts { get; set; }
 }

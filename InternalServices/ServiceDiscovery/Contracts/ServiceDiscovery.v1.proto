@@ -4,9 +4,9 @@ package CIS.InternalServices.ServiceDiscovery.v1;
 option csharp_namespace = "CIS.InternalServices.ServiceDiscovery.Contracts.v1";
 
 import "google/protobuf/empty.proto";
-import "GetService.proto";
-import "GetServices.proto";
-import "ClearCache.proto";
+import "Messages/GetService.proto";
+import "Messages/GetServices.proto";
+import "Messages/ClearCache.proto";
 
 service DiscoveryService {
    rpc GetService (CIS.InternalServices.ServiceDiscovery.GetServiceRequest) returns (CIS.InternalServices.ServiceDiscovery.GetServiceResponse);

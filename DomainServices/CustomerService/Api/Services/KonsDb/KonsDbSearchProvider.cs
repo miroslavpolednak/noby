@@ -18,7 +18,7 @@ public class KonsDbSearchProvider
 
     public async Task<IEnumerable<SearchCustomersItem>> Search(SearchCustomersRequest searchRequest, CancellationToken cancellationToken)
     {
-        var contacts = await SearchByContacts(searchRequest.Email, searchRequest.PhoneNumber, cancellationToken);
+        var contacts = await SearchByContacts(searchRequest.Email, searchRequest.MobilePhone, cancellationToken);
 
         var request = new SearchRequest
         {
@@ -66,12 +66,12 @@ public class KonsDbSearchProvider
         Task<IEnumerable<Partner>> SearchQuery(IDbConnection conn) => conn.QueryAsync<Partner>(command);
     }
 
-    private Task<IEnumerable<long>> SearchByContacts(string? email, string? phoneNumber, CancellationToken cancellationToken)
+    private Task<IEnumerable<long>> SearchByContacts(EmailAddressItem? email, MobilePhoneItem? phoneNumber, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(email) && string.IsNullOrWhiteSpace(phoneNumber))
+        if (string.IsNullOrWhiteSpace(email?.EmailAddress) && string.IsNullOrWhiteSpace(phoneNumber?.PhoneNumber))
             return Task.FromResult(Enumerable.Empty<long>());
 
-        var command = new CommandDefinition(Sql.SqlScripts.SearchCustomersContacts, parameters: new { email, phoneNumber }, cancellationToken: cancellationToken);
+        var command = new CommandDefinition(Sql.SqlScripts.SearchCustomersContacts, parameters: new { email = email?.EmailAddress, phoneNumber = $"{phoneNumber?.PhoneIDC}{phoneNumber?.PhoneNumber}" }, cancellationToken: cancellationToken);
 
        return _connectionProvider.ExecuteDapperQuery(SearchContacts, cancellationToken);
 

@@ -5,6 +5,7 @@ using NOBY.Api.Endpoints.DocumentOnSA.StopSigning;
 using NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
 using System.Net.Mime;
+using NOBY.Api.Endpoints.DocumentOnSA.Search;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -82,6 +83,8 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually")]
     [SwaggerResponse(StatusCodes.Status200OK)]
+    [SwaggerResponse(StatusCodes.Status404NotFound)]
+    [SwaggerResponse(StatusCodes.Status400BadRequest)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     public async Task SignDocumentManually(
      [FromRoute] int salesArrangementId,
@@ -100,6 +103,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="documentOnSAId"></param>
     [HttpGet("document/template/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}")]
     [SwaggerResponse(StatusCodes.Status200OK, type: typeof(Stream))]
+    [SwaggerResponse(StatusCodes.Status404NotFound)]
     [Produces(MediaTypeNames.Application.Pdf)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     public async Task<IActionResult> GetDocumentOnSa(
@@ -109,5 +113,32 @@ public class DocumentOnSAController : ControllerBase
     {
         var response = await _mediator.Send(new GetDocumentOnSADataRequest(salesArrangementId, documentOnSAId), cancellationToken);
         return File(response.FileData, response.ContentType, response.Filename);
+    }
+
+    /// <summary>
+    /// Vyhledání dokumentů na základě hlavního hesla (eArchivu)
+    /// </summary>
+    /// <remarks>
+    /// Vyhledání formId (businessovém identifikátoru dokumentů) na sales arrangementu dle hlavního hesla (eArchivu).<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0C28E9E5-7AC1-4265-8342-FCE63B33967F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+    /// </remarks>
+    /// <param name="salesArrangementId"></param>
+    /// <param name="request"></param>
+    [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/search")]
+    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(SearchResponse))]
+    [SwaggerResponse(StatusCodes.Status204NoContent)]
+    [SwaggerResponse(StatusCodes.Status404NotFound)]
+    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    public async Task<IActionResult> SearchDocumentsOnSa(
+             [FromRoute] int salesArrangementId,
+             [FromBody] SearchRequest request,
+             CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId), cancellationToken);
+
+        if (result.FormIds is null || !result.FormIds.Any())
+            return NoContent();
+
+        return Ok(result);
     }
 }

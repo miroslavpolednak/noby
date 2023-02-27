@@ -14,6 +14,9 @@ internal sealed class ProductServiceDbContext
     public DbSet<Entities.Loan> Loans { get; set; }
     public DbSet<Entities.Relationship> Relationships { get; set; }
 	public DbSet<Entities.Partner> Partners { get; set; }
+    public DbSet<Entities.LoanPurpose> LoanPurposes { get; set; }
+
+    public DbSet<Entities.Obligation> Obligations => Set<Entities.Obligation>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,5 +24,7 @@ internal sealed class ProductServiceDbContext
             .HasOne(t => t.Partner)
             .WithMany()
             .HasForeignKey(t => t.PartnerId);
+
+        modelBuilder.Entity<Entities.Obligation>().HasKey(m => new { m.LoanId, m.LoanPurposeId });
     }
 }

@@ -39,8 +39,8 @@ internal sealed class CreateMortgageCaseHandler
             EmailForOffer = request.OfferContacts?.EmailAddress?.EmailAddress ?? "",
             PhoneNumberForOffer = new()
             {
-                PhoneNumber = request.OfferContacts?.PhoneNumber?.PhoneNumber ?? "",
-                PhoneIDC = request.OfferContacts?.PhoneNumber?.PhoneIDC ?? ""
+                PhoneNumber = request.OfferContacts?.MobilePhone?.PhoneNumber ?? "",
+                PhoneIDC = request.OfferContacts?.MobilePhone?.PhoneIDC ?? ""
             }
         }, cancellationToken);
 

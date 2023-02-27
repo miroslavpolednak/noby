@@ -49,7 +49,7 @@ internal class HouseholdData
         Incomes = await LoadIncomes(CustomersOnSa);
 
         if (!TrySetHousehold(HouseholdTypes.Main))
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"SalesArrangement '{salesArrangementId}' does not contain main houselhod");
     }
 
     public async Task LoadCodebooks(ICodebookServiceClients codebookService)

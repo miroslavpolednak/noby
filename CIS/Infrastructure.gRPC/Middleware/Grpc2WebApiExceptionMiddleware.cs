@@ -53,6 +53,10 @@ public sealed class Grpc2WebApiExceptionMiddleware
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
             await getValidationProblemObject(context, errors!);
         }
+        catch (CisNotFoundException)
+        {
+            await Results.NotFound().ExecuteAsync(context);
+        }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.InvalidArgument)
         {
             // try list of errors first

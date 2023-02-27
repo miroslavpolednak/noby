@@ -162,7 +162,8 @@
             Parametry Case-u.
             </summary>
             <remarks>
-            <i>DS:</i> CaseService/GetTaskList<br/>
+            Vrátí parametry case s ohledem na stav case. Před předáním žádosti vrací lokálně uložená data. Po předání žádosti vrací data z KonsDB. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EEB4BBAA-9996-43ff-BB50-61514A2B6107"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
         </member>
@@ -311,14 +312,44 @@
             Délka nové fixace v měsících.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Cpm">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.BranchName">
             <summary>
-            Pobočka banky, pod kterou spadá úvěr.
+            Pobočka banky, pod kterou spadá úvěr
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Icp">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.ConsultantName">
             <summary>
-            Poradce třetí strana.
+            Poradce, pod kterého spadá úvěr
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.Cpm">
+            <summary>
+            ČPM
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.Icp">
+            <summary>
+            IČP
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.BranchName">
+            <summary>
+            Pobočka/společnost třetí strany
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.ConsultantName">
+            <summary>
+            Poradce třetí strany
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.Cpm">
+            <summary>
+            ČPM
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.Icp">
+            <summary>
+            IČP
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleId">
@@ -833,7 +864,6 @@
             </summary>
             <remarks>
             Vytvoření Customer entity, která zaštiťuje KB customera a MPSS customera.<br /><br />
-            SalesArrnagementService/UpdateCustomer(onSA)<br />CustomerService/GetDetail<br /><br />
             Na výstupu je Customer objekt s kompletními daty z KB CM.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
@@ -1008,16 +1038,6 @@
         <member name="P:NOBY.Api.Endpoints.Customer.Search.Dto.SearchData.IdentificationDocumentNumber">
             <summary>
             [optional] Cislo dokladu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Search.Dto.SearchData.Email">
-            <summary>
-            [optional] Email
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Search.Dto.SearchData.Phone">
-            <summary>
-            [optional] Telefon
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Search.SearchRequest.SearchData">
@@ -1206,6 +1226,17 @@
             </remarks>
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SearchDocumentsOnSa(System.Int32,NOBY.Api.Endpoints.DocumentOnSA.Search.SearchRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vyhledání dokumentů na základě hlavního hesla (eArchivu)
+            </summary>
+            <remarks>
+            Vyhledání formId (businessovém identifikátoru dokumentů) na sales arrangementu dle hlavního hesla (eArchivu).<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0C28E9E5-7AC1-4265-8342-FCE63B33967F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+            </remarks>
+            <param name="salesArrangementId"></param>
+            <param name="request"></param>
         </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData.DocumentDataDto.Table">
             <summary>
@@ -1894,13 +1925,13 @@
             <returns>Seznam klientů na produktu</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Product.ProductController.GetProductObligations(System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Vrátí seznam závazků na daném produktu
-            </summary>
-            <remarks>
-            <i>DS:</i> ProductService/GetProductObligationList<br />
-            </remarks>
-            <returns>Seznam závazků na produktu</returns>
+             <summary>
+             Vrátí seznam závazků na daném produktu
+             </summary>
+             <remarks>
+            Seznam z závazků načtený z KonsDB.<br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=058D1B76-375C-4747-90DB-D4E3BE5C46F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+             </remarks>
+             <returns>Seznam závazků na produktu</returns>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.GeneralChangeDetail.Applicant">
             <summary>

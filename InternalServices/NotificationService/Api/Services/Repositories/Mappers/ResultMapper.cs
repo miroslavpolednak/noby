@@ -1,12 +1,12 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Common;
-using entity = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
-using dto = CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+using Entity = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
+using Dto = CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mappers;
 
 public static class ResultMapper
 {
-    public static IEnumerable<dto.Result> Map(this IEnumerable<entity.Abstraction.Result> results)
+    public static IEnumerable<Dto.Result> Map(this IEnumerable<Entity.Abstraction.Result> results)
     {
         return results.Select(r => r.ToDto());
     }
@@ -17,9 +17,9 @@ public static class ResultMapper
             ? null : new Identifier { Identity = identity, IdentityScheme = identityScheme };
     }
     
-    public static dto.Result Map(this entity.SmsResult smsResult)
+    public static Dto.Result Map(this Entity.SmsResult smsResult)
     {
-        return new dto.Result
+        return new Dto.Result
         {
             NotificationId = smsResult.Id,
             State = smsResult.State,
@@ -29,9 +29,9 @@ public static class ResultMapper
             CustomId = smsResult.CustomId,
             DocumentId = smsResult.DocumentId,
             RequestTimestamp = smsResult.RequestTimestamp,
-            RequestData = new dto.RequestData
+            RequestData = new Dto.RequestData
             {
-                SmsData = new dto.SmsData
+                SmsData = new Dto.SmsData
                 {
                     Phone = new Phone
                     {
@@ -47,9 +47,9 @@ public static class ResultMapper
         };
     }
 
-    public static dto.Result Map(this entity.EmailResult emailResult)
+    public static Dto.Result Map(this Entity.EmailResult emailResult)
     {
-        return new dto.Result
+        return new Dto.Result
         {
             NotificationId = emailResult.Id,
             State = emailResult.State,
@@ -59,9 +59,9 @@ public static class ResultMapper
             CustomId = emailResult.CustomId,
             DocumentId = emailResult.DocumentId,
             RequestTimestamp = emailResult.RequestTimestamp,
-            RequestData = new dto.RequestData
+            RequestData = new Dto.RequestData
             {
-                EmailData = new dto.EmailData()
+                EmailData = new Dto.EmailData()
             },
             ResultTimestamp = emailResult.ResultTimestamp,
             CreatedBy = emailResult.CreatedBy

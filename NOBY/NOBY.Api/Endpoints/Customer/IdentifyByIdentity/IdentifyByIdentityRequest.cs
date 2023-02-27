@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
@@ -8,6 +9,7 @@ public sealed class IdentifyByIdentityRequest
     /// <summary>
     /// Identita klienta
     /// </summary>
+    [Required]
     public CIS.Foms.Types.CustomerIdentity? CustomerIdentity { get; set; }
 
     [JsonIgnore]

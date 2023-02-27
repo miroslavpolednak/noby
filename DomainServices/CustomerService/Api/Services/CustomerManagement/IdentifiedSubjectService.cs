@@ -279,7 +279,7 @@ internal sealed class IdentifiedSubjectService
 
         return new()
         {
-            EmailAddress = email.Email.Address
+            EmailAddress = email.Email.EmailAddress
         };
     }
 }

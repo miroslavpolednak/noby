@@ -1,50 +1,42 @@
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
-using Microsoft.AspNetCore.Mvc;
+using NOBY.LogApi;
+using System.Reflection;
 
-namespace NOBY.LogApi;
 
-public class Program
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder
+    .AddCisEnvironmentConfiguration()
+    .AddCisWebApiCors()
+    .AddCisLogging()
+    .AddCisHealthChecks();
+
+// nahrat dokumentaci
+var appConfiguration = new AppConfiguration();
+builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
+
+// pridat swagger
+builder.Services.AddLogApiSwagger();
+
+var app = builder.Build();
+
+if (appConfiguration.EnableSwaggerUi)
 {
-    public static void Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
-
-        builder
-            .AddCisEnvironmentConfiguration()
-            .AddCisWebApiCors()
-            .AddCisLogging()
-            .AddCisHealthChecks();
-
-        var app = builder.Build();
-
-        // logovani standardniho logu
-        app.MapPost("/log", (LogModel model, [FromServices] ILogger<Program> logger) =>
-        {
-#pragma warning disable CA2254 // Template should be a static expression
-#pragma warning disable CA1848 // Use the LoggerMessage delegates
-            logger.Log(model.Level.ToLogLevel(), model.Message);
-#pragma warning restore CA1848 // Use the LoggerMessage delegates
-#pragma warning restore CA2254 // Template should be a static expression
-        });
-
-        // logovani auditniho logu
-        app.MapPost("/audit", (LogModel model, [FromServices] IAuditLogger logger) =>
-        {
-#pragma warning disable CA2254 // Template should be a static expression
-#pragma warning disable CA1848 // Use the LoggerMessage delegates
-            logger.Log(model.Message ?? "");
-#pragma warning restore CA1848 // Use the LoggerMessage delegates
-#pragma warning restore CA2254 // Template should be a static expression
-        });
-
-        try
-        {
-            app.Run();
-        }
-        finally
-        {
-            LoggingExtensions.CloseAndFlush();
-        }
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+// mapovani endpointu
+app.RegisterLoggerEndpoints();
+
+try
+{
+    app.Run();
+}
+finally
+{
+    LoggingExtensions.CloseAndFlush();
+}
+

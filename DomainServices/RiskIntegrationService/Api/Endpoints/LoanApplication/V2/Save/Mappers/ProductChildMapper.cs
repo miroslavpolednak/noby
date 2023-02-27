@@ -58,7 +58,7 @@ internal sealed class ProductChildMapper
             .Select(t => new _C4M.LoanApplicationProductRelation
             {
                 ProductId = getProductId(t),
-                ProductType = t.ProductType,
+                ProductType = getProductType(t),
                 RelationType = t.RelationType,
                 Value = new _C4M.LoanApplicationProductRelationValue
                 {
@@ -106,6 +106,14 @@ internal sealed class ProductChildMapper
             {
                 return null;
             }
+        }
+
+        string getProductType(_V2.LoanApplicationProductRelation relation)
+        {
+            if (!string.IsNullOrWhiteSpace(relation.ProductType))
+                return relation.ProductType;
+
+            return relation.BankAccount?.BankCode == "0100" ? "KBGROUP" : "OFI";
         }
     }
 

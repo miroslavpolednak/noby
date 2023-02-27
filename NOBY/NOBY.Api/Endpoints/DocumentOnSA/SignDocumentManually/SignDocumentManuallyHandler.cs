@@ -143,9 +143,9 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
             IsPrimary = true,
             IsConfirmed = emailAddress.IsConfirmed,
             ContactTypeId = (int)ContactTypes.Email,
-            Email = new EmailAddress
+            Email = new EmailAddressItem
             {
-                Address = emailAddress.EmailAddress
+                EmailAddress = emailAddress.EmailAddress
             }
         };
     }
@@ -157,7 +157,7 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
             IsPrimary = true,
             IsConfirmed = phoneNumber.IsConfirmed,
             ContactTypeId = (int)ContactTypes.Mobil,
-            Mobile = new MobilePhone
+            Mobile = new MobilePhoneItem
             {
                 PhoneIDC = phoneNumber.PhoneIDC,
                 PhoneNumber = phoneNumber.PhoneNumber,
