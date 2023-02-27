@@ -13,7 +13,8 @@ internal sealed class GetCustomerHandler
             .Include(t => t.Identities)
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken) 
+            ?? throw new CisNotFoundException(ValidationMessages.CustomerOnSANotFound, ValidationMessages.GetFormattedMessage(ValidationMessages.CustomerOnSANotFound, request.CustomerOnSAId));
 
         var customerInstance = new Contracts.CustomerOnSA
         {

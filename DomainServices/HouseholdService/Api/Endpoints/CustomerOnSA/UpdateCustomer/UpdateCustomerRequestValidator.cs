@@ -12,11 +12,11 @@ internal sealed class UpdateCustomerRequestValidator
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
-            .WithMessage("CustomerOnSAId must be > 0").WithErrorCode("16024");
+            .WithErrorCode(ValidationMessages.CustomerOnSAIdIsEmpty);
 
         RuleFor(t => t.Customer.DateOfBirthNaturalPerson)
             .Must(d => d > _dateOfBirthMin && d < DateTime.Now)
-            .WithMessage("Date of birth is out of range").WithErrorCode("16038")
+            .WithErrorCode(ValidationMessages.InvalidDateOfBirth)
             .When(t => t.Customer.DateOfBirthNaturalPerson is not null);
     }
 }
