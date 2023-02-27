@@ -19,7 +19,7 @@ internal class CustomerContact
         {
             return _contact.DataCase switch
             {
-                Contact.DataOneofCase.Mobile => (_contact.Mobile.PhoneIDC + _contact.Mobile.PhoneNumber).Trim(),
+                Contact.DataOneofCase.Mobile => $"{_contact.Mobile.PhoneIDC} {_contact.Mobile.PhoneNumber}".Trim(),
                 Contact.DataOneofCase.Email => _contact.Email.EmailAddress,
                 _ => string.Empty
             };
