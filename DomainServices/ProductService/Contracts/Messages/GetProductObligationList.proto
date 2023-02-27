@@ -14,10 +14,16 @@ message GetProductObligationListResponse {
 }
 
 message GetProductObligationItem {
-    int32 ProductObligationId = 1;
+    ProductObligationId ProductObligationId = 1;
     int32 ObligationTypeId = 2;
     cis.types.GrpcDecimal Amount = 3;
     string CreditorName = 4;
     PaymentAccount PaymentAccount = 5;
     PaymentSymbols PaymentSymbols = 6; 
+}
+
+message ProductObligationId {
+    int64 LoanId = 1;
+
+    int32 LoanPurpose = 2;
 }

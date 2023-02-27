@@ -52,6 +52,12 @@
             Helpery pro vytváření RpcException.
             </summary>
         </member>
+        <member name="M:CIS.Infrastructure.gRPC.ByteStringExtensions.ToArrayUnsafe(Google.Protobuf.ByteString)">
+            <summary>
+            This method is memory efficient, there is no data copy (ToArray do copy of data).  
+            Byte array instance should only be passed to methods which treat the array contents as read-only.
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.gRPC.KestrelExtensions">
             <summary>
             Nastavení Kestrel serveru pro gRPC služby.

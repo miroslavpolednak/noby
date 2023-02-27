@@ -11,13 +11,16 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Google.Proto
     private readonly Database.NobyRepository _repository;
     private readonly UserService.Clients.IUserServiceClient _userService;
     private readonly Services.Forms.FormsService _formsService;
+    private readonly IMediator _mediator;
 
     public SendToCmpHandler(
+        IMediator mediator,
         ILogger<SendToCmpHandler> logger,
         Database.NobyRepository repository,
         UserService.Clients.IUserServiceClient userService,
         Services.Forms.FormsService formsService)
     {
+        _mediator = mediator;
         _logger = logger;
         _repository = repository;
         _userService = userService;
@@ -32,6 +35,13 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Google.Proto
         var easFormResponse = await GetEasForm(salesArrangement, category, cancellationToken);
 
         await SaveForms(easFormResponse, salesArrangement, cancellationToken);
+
+        //https://jira.kb.cz/browse/HFICH-4684
+        await _mediator.Send(new UpdateSalesArrangementStateRequest 
+        { 
+            SalesArrangementId = request.SalesArrangementId, 
+            State = (int)SalesArrangementStates.InApproval 
+        }, cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

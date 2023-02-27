@@ -17,7 +17,7 @@ internal class CollectionFieldParser : ISourceFieldParser
     public IEnumerable<DocumentSourceFieldData> GetFields(IEnumerable<DocumentSourceField> sourceFields, AggregatedData aggregatedData)
     {
         if (MapperHelper.GetValue(aggregatedData, _collectionPath) is not IEnumerable collection)
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"Path '{_collectionPath}' does not return IEnumerable.");
 
         return collection.Cast<object>().SelectMany((value, index) => GetCollectionValues(value, index, sourceFields));
     }

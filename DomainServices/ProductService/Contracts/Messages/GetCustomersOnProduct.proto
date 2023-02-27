@@ -15,7 +15,10 @@ message GetCustomersOnProductResponse {
 
 message GetCustomersOnProductResponseItem {
 	repeated cis.types.Identity CustomerIdentifiers = 1;
+	
 	int32 RelationshipCustomerProductTypeId = 2;
+	
 	google.protobuf.BoolValue Agent = 3;
+	
 	bool IsKYCSuccessful = 4;
 }

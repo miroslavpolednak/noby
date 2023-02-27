@@ -12,8 +12,6 @@ public class CustomerController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vytvoření Customer entity, která zaštiťuje KB customera a MPSS customera.<br /><br />
-    /// DS:<br />CustomerService/Create(customer)<br />SalesArrangementService/GetCustomer<br />
-    /// SalesArrnagementService/UpdateCustomer(onSA)<br />CustomerService/GetDetail<br /><br />
     /// Na výstupu je Customer objekt s kompletními daty z KB CM.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
@@ -135,7 +133,7 @@ public class CustomerController : ControllerBase
     [HttpPut("customer-on-sa/{customerOnSAId:int}")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task GetDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateDetailWithChanges.UpdateDetailWithChangesRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);

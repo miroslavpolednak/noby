@@ -38,4 +38,6 @@ public class DocumentsInformation
     /// Popis dokumentu
     /// </summary>
     public string? Description { get; set; }
+
+    public string? FormId { get; set; }
 }

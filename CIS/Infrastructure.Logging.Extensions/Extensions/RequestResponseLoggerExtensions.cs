@@ -38,12 +38,12 @@ public static class RequestResponseLoggerExtensions
         _httpResponsePayload = LoggerMessage.Define<string, string, int>(
             LogLevel.Information,
             new EventId(EventIdCodes.HttpResponsePayload, nameof(HttpResponsePayload)),
-            "Reponse Payload for {HttpMethod} {Url} with status code {StatusCode}");
+            "Response Payload for {HttpMethod} {Url} with status code {StatusCode}");
 
         _httpResponseFinished = LoggerMessage.Define<string, string, int>(
             LogLevel.Information,
             new EventId(EventIdCodes.HttpResponseFinished, nameof(HttpResponsePayload)),
-            "Reponse for {HttpMethod} {Url} with status code {StatusCode}");
+            "Response for {HttpMethod} {Url} with status code {StatusCode}");
 
         _httpRequestStarted = LoggerMessage.Define<string, string>(
             LogLevel.Debug,

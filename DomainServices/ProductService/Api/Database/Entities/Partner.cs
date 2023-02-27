@@ -16,4 +16,7 @@ internal class Partner
 
     public long? KBId { get; set; }
 
+    [Column(TypeName = "tinyint")]
+    public int? StavKyc { get; set; }
+
 }

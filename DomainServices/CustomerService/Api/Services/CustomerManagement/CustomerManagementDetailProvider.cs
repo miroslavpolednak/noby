@@ -1,4 +1,5 @@
-﻿using CIS.Foms.Enums;
+﻿using System.Globalization;
+using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
 
@@ -54,12 +55,13 @@ internal class CustomerManagementDetailProvider
         {
             Identities = { new Identity(customer.CustomerId, IdentitySchemes.Kb) },
             NaturalPerson = CreateNaturalPerson(customer),
-            IdentificationDocument = CreateIdentificationDocument(customer.PrimaryIdentificationDocument)
+            IdentificationDocument = CreateIdentificationDocument(customer.PrimaryIdentificationDocument),
+            CustomerIdentification = CreateCustomerIdentification(customer.CustomerIdentification)
         };
 
-        AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.Address, customer.PrimaryAddress?.ComponentAddress, customer.PrimaryAddress?.PrimaryAddressFrom);
-        AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.Address, customer.ContactAddress?.ComponentAddress, default);
-        AddAddress(AddressTypes.Abroad, response.Addresses.Add, customer.TemporaryStay?.Address, customer.TemporaryStay?.ComponentAddress, default);
+        AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.ComponentAddress, customer.PrimaryAddress?.PrimaryAddressFrom);
+        AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.ComponentAddress, default);
+        AddAddress(AddressTypes.Abroad, response.Addresses.Add, customer.TemporaryStay?.ComponentAddress, default);
 
         AddContacts(customer, response.Contacts.Add);
 
@@ -97,8 +99,8 @@ internal class CustomerManagementDetailProvider
             PlaceOfBirth = np.BirthPlace ?? string.Empty,
             BirthCountryId = _countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,
             MaritalStatusStateId = _maritals.FirstOrDefault(t => t.RdmMaritalStatusCode == np.MaritalStatusCode)?.Id ?? 0,
-            DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id,
-            EducationLevelId = _educations.FirstOrDefault(t => t.RdmCode.Equals(customer.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.InvariantCultureIgnoreCase))?.Id ?? 0,
+            DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.OrdinalIgnoreCase))?.Id,
+            EducationLevelId = _educations.FirstOrDefault(t => t.RdmCode.Equals(customer.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.OrdinalIgnoreCase))?.Id ?? 0,
             IsPoliticallyExposed = customer.IsPoliticallyExposed,
             IsUSPerson = false, //je vzdy false!
             IsBrSubscribed = customer.BrSubscription?.IsSubscribed ?? false,
@@ -153,32 +155,44 @@ internal class CustomerManagementDetailProvider
         };
     }
 
+    private CustomerIdentification? CreateCustomerIdentification(__Contracts.CustomerIdentification? customerIdentification)
+    {
+        if (customerIdentification is null)
+            return default;
+
+        return new CustomerIdentification
+        {
+            IdentificationMethodId = int.Parse(customerIdentification.IdentificationMethodCode, CultureInfo.InvariantCulture),
+            IdentificationDate = customerIdentification.IdentificationDate,
+            CzechIdentificationNumber = customerIdentification.CzechIdentificationNumber
+        };
+    }
+
     private void AddAddress(AddressTypes addressType,
                             Action<GrpcAddress> onAddAddress,
-                            __Contracts.Address? address,
                             __Contracts.ComponentAddress? componentAddress,
                             DateTime? primaryAddressFrom)
     {
-        if (address is null)
+        if (componentAddress is null)
             return;
 
         onAddAddress(new GrpcAddress
         {
             AddressTypeId = (int)addressType,
-            StreetNumber = componentAddress?.StreetNumber ?? string.Empty,
-            HouseNumber = componentAddress?.HouseNumber ?? string.Empty,
-            EvidenceNumber = componentAddress?.EvidenceNumber ?? string.Empty,
-            City = address.City ?? string.Empty,
+            StreetNumber = componentAddress.StreetNumber ?? string.Empty,
+            HouseNumber = componentAddress.HouseNumber ?? string.Empty,
+            EvidenceNumber = componentAddress.EvidenceNumber ?? string.Empty,
+            City = componentAddress.City ?? string.Empty,
             IsPrimary = addressType == AddressTypes.Permanent,
-            CountryId = _countries.FirstOrDefault(t => t.ShortName == address.CountryCode)?.Id,
-            Postcode = address.PostCode?.Replace(" ", "") ?? string.Empty,
-            Street = (componentAddress?.Street ?? address.Street) ?? string.Empty,
-            DeliveryDetails = address.DeliveryDetails ?? string.Empty,
-            CityDistrict = componentAddress?.CityDistrict ?? string.Empty,
-            PragueDistrict = componentAddress?.PragueDistrict ?? string.Empty,
-            CountrySubdivision = componentAddress?.CountrySubdivision ?? string.Empty,
+            CountryId = _countries.FirstOrDefault(t => t.ShortName == componentAddress.CountryCode)?.Id,
+            Postcode = componentAddress.PostCode?.Replace(" ", "") ?? string.Empty,
+            Street = componentAddress.Street ?? string.Empty,
+            DeliveryDetails = componentAddress.DeliveryDetails ?? string.Empty,
+            CityDistrict = componentAddress.CityDistrict ?? string.Empty,
+            PragueDistrict = componentAddress.PragueDistrict ?? string.Empty,
+            CountrySubdivision = componentAddress.CountrySubdivision ?? string.Empty,
             PrimaryAddressFrom = primaryAddressFrom,
-            AddressPointId = componentAddress?.AddressPointId ?? string.Empty
+            AddressPointId = componentAddress.AddressPointId ?? string.Empty
         });
     }
 
@@ -186,13 +200,20 @@ internal class CustomerManagementDetailProvider
     {
         if (customer.PrimaryPhone is not null)
         {
-            onAddContact(new Contact
+            var noIndex = (customer.PrimaryPhone.PhoneNumber ?? "").IndexOf(' ');
+            var model = new Contact
             {
                 ContactTypeId = (int)ContactTypes.Mobil,
-                Value = customer.PrimaryPhone.PhoneNumber,
                 IsPrimary = true,
-                Confirmed = customer.PrimaryPhone.Confirmed
-            });
+                IsConfirmed = customer.PrimaryPhone.Confirmed
+            };
+
+            if (noIndex <= 0)
+                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber };
+            else
+                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber![noIndex..], PhoneIDC = customer.PrimaryPhone.PhoneNumber![..noIndex] };
+
+            onAddContact(model);
         }
 
         if (customer.PrimaryEmail is not null)
@@ -200,9 +221,9 @@ internal class CustomerManagementDetailProvider
             onAddContact(new Contact
             {
                 ContactTypeId = (int)ContactTypes.Email,
-                Value = customer.PrimaryEmail.EmailAddress,
+                Email = new EmailAddressItem { EmailAddress = customer.PrimaryEmail.EmailAddress },
                 IsPrimary = true,
-                Confirmed = customer.PrimaryEmail.Confirmed
+                IsConfirmed = customer.PrimaryEmail.Confirmed
             });
         }
     }

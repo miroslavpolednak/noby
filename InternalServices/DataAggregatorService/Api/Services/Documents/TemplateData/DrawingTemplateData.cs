@@ -29,9 +29,9 @@ internal class DrawingTemplateData : AggregatedData
             var bankAccount = $"{Mortgage.PaymentAccount.Prefix}-{Mortgage.PaymentAccount.Number}/{Mortgage.PaymentAccount.BankCode}";
 
             if (SalesArrangement.Drawing.IsImmediateDrawing)
-                return bankAccount + " a to bezokladně";
+                return bankAccount + " a to bezokladně.";
 
-            return bankAccount + $" a to k datu: {((DateTime)SalesArrangement.Drawing.DrawingDate).ToString("d", CultureInfo.GetCultureInfo("cs"))}";
+            return bankAccount + $" a to k datu: {((DateTime)SalesArrangement.Drawing.DrawingDate).ToString("d", CultureInfo.GetCultureInfo("cs"))}.";
         }
     }
 
@@ -47,6 +47,10 @@ internal class DrawingTemplateData : AggregatedData
             return "Číslo účtu pro splácení úvěru: " + $"{account.Prefix}-{account.Number}/{account.BankCode}";
         }
     }
+
+    public string SignPersonName => SalesArrangement.Drawing.Agent?.IsActive == true ? string.Empty : GetFullName();
+
+    public string SignAgentName => SalesArrangement.Drawing.Agent?.IsActive != true ? string.Empty : $"{SalesArrangement.Drawing.Agent.FirstName} {SalesArrangement.Drawing.Agent.LastName}";
 
     public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {

@@ -12,8 +12,6 @@ internal static class Extensions
     {
         var model = new SearchCustomersRequest
         {
-            Email = request.Email ?? "",
-            PhoneNumber = request.Phone ?? "",
             NaturalPerson = new NaturalPersonSearch
             {
                 FirstName = request.FirstName ?? "",
@@ -23,6 +21,23 @@ internal static class Extensions
             },
             Mandant = Mandants.Kb
         };
+
+        if (!string.IsNullOrEmpty(request.Contacts?.MobilePhone?.PhoneNumber))
+        {
+            model.MobilePhone = new MobilePhoneItem
+            {
+                PhoneIDC = request.Contacts.MobilePhone.PhoneIDC,
+                PhoneNumber = request.Contacts.MobilePhone.PhoneNumber
+            };
+        }
+
+        if (!string.IsNullOrEmpty(request.Contacts?.EmailAddress?.EmailAddress))
+        {
+            model.Email = new EmailAddressItem
+            {
+                EmailAddress = request.Contacts.EmailAddress.EmailAddress
+            };
+        }
 
         // ID klienta
         if (request.IdentityId.HasValue)

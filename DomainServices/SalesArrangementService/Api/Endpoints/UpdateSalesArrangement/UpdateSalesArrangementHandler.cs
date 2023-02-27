@@ -22,7 +22,7 @@ internal sealed class UpdateSalesArrangementHandler
             throw new CisValidationException(18013, $"SalesArrangement type not supported");*/
 
         // kontrola na stav
-        if (entity.State != (int)SalesArrangementStates.InProgress && entity.State != (int)SalesArrangementStates.IsSigned)
+        if (!_allowedStates.Contains(entity.State))
             throw new CisValidationException(18082, $"SalesArrangement cannot be updated/deleted in this state {entity.State}");
 
         // meni se rbcid
@@ -32,6 +32,12 @@ internal sealed class UpdateSalesArrangementHandler
         entity.RiskBusinessCaseId = request.RiskBusinessCaseId;
         entity.FirstSignedDate = request.FirstSignedDate;
         entity.SalesArrangementSignatureTypeId = request.SalesArrangementSignatureTypeId;
+
+        // pokud je zadost NEW, zmenit na InProgress
+        if (entity.State == (int)SalesArrangementStates.NewArrangement)
+        {
+            entity.State = (int)SalesArrangementStates.InProgress;
+        }
 
         await _dbContext.SaveChangesAsync(cancellation);
 
@@ -61,7 +67,8 @@ internal sealed class UpdateSalesArrangementHandler
                 OwnerUserCpm = ownerInstance.CPM,
                 OwnerUserIcp = ownerInstance.ICP,
                 Mandant = (Mandants)productType.MandantId,
-                RiskBusinessCaseId = request.RiskBusinessCaseId
+                RiskBusinessCaseId = request.RiskBusinessCaseId,
+                IsEmployeeBonusRequested = caseInstance.Data.IsEmployeeBonusRequested
             };
             await _sbWebApiClient.CaseStateChanged(sbNotifyModel, cancellation);
         }
@@ -69,13 +76,14 @@ internal sealed class UpdateSalesArrangementHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private static int[] _allowedStates = new[] { (int)SalesArrangementStates.NewArrangement, (int)SalesArrangementStates.InProgress, (int)SalesArrangementStates.IsSigned };
+
     private readonly ICaseServiceClient _caseService;
     private readonly ICurrentUserAccessor _userAccessor;
     private readonly ICodebookServiceClients _codebookService;
     private readonly IUserServiceClient _userService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
-
 
     public UpdateSalesArrangementHandler(
         ICaseServiceClient caseService,

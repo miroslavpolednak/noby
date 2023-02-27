@@ -25,7 +25,7 @@ public sealed class KbPartyHeaderHttpHandler
 
         //request.Headers.Add("X-KB-Party-Identity-In-Service", $$"""{"partyIdIS":[{"partyId":{"id":"{{userId}}","idScheme":"MPAD"},"usg":"AUTH"}]}""");
         //TODO zamockovano https://jira.kb.cz/browse/HFICH-4442, https://jira.kb.cz/browse/HFICH-366
-        request.Headers.Add("X-KB-Party-Identity-In-Service", $$"""{"partyIdIS":[{"partyId":{"id":"A09FK3","idScheme":"KBUID"},"usg":"AUTH"}]}""");
+        request.Headers.Add("X-KB-Party-Identity-In-Service", $$$"""{"partyIdIS":[{"partyId":{"id":"A09FK3","idScheme":{"code":"KBUID"}},"usg":"BA"},{"partyId":{"id":"JMARKOVA","idScheme":{"code":"KBAD"}},"usg":"BA"}]}""");
 
         return await base.SendAsync(request, cancellationToken);
     }

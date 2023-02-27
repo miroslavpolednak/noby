@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.CaseService.Api.Notifications;
 
-internal class CaseStateChangedNotification
+internal sealed class CaseStateChangedNotification
     : INotification
 {
     public long CaseId { get; set; }
@@ -9,4 +9,5 @@ internal class CaseStateChangedNotification
     public int ProductTypeId { get; set; }
     public string? ClientName { get; set; }
     public int CaseOwnerUserId { get; set; }
+    public bool? IsEmployeeBonusRequested { get; set; }
 }

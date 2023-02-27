@@ -32,8 +32,8 @@ var serviceProvider = new ServiceCollection()
         DefaultApplicationKey = "console",
         //ServiceDiscoveryUrl = "https://localhost:5005",
         ServiceDiscoveryUrl = "https://172.30.35.51:30000",
-        InternalServicesLogin = "a",
-        InternalServicePassword = "a"
+        InternalServicesLogin = "XX_NOBY_RMT_USR_TEST",
+        InternalServicePassword = "ppmlesnrTWYSDYGDR!98538535634544"
     })
     //.AddCustomerService()
     .AddCustomerService("https://localhost:5100")
@@ -64,7 +64,13 @@ var service = serviceProvider.GetRequiredService<ICustomerServiceClient>();
 //    CustomerProfileCode = "KYC_SUBJECT"
 //});
 
-var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
+await service.UpdateCustomerIdentifiers(new UpdateCustomerIdentifiersRequest
+{
+    Mandant = Mandants.Kb,
+    CustomerIdentities = { new Identity(134, IdentitySchemes.Mp), new Identity(123, IdentitySchemes.Kb) }
+});
+
+//var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
 
 //var create = await service.CreateCustomer(new CreateCustomerRequest
 //{

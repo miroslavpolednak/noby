@@ -17,10 +17,11 @@ message SalesArrangementParametersDrawing {
 	bool IsImmediateDrawing = 6;
 
 	message SalesArrangementParametersDrawingAgent {
-		string FirstName = 1;
-		string LastName = 2;
+		google.protobuf.StringValue FirstName = 1;
+		google.protobuf.StringValue LastName = 2;
 		cis.types.GrpcDate DateOfBirth = 3;
 		SalesArrangementParametersDrawingIdentificationDocument IdentificationDocument = 4;
+		bool IsActive = 5;
 	}
 
 	message SalesArrangementParametersDrawingIdentificationDocument {

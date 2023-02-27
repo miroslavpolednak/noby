@@ -14,7 +14,7 @@ internal class SalesArrangementPayout
 
     public GrpcDecimal DrawingAmount => _item.DrawingAmount;
 
-    public string BankAccount => $"{_item.PrefixAccount}-{_item.AccountNumber}";
+    public string BankAccount => string.Join('-', new[] { _item.PrefixAccount, _item.AccountNumber }.Where(str => !string.IsNullOrWhiteSpace(str)));
 
     public string BankCode => _item.BankCode;
 

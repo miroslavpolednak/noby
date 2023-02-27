@@ -41,11 +41,16 @@ internal static class Extensions
             },
             OfferContacts = new _Case.OfferContacts
             {
-                EmailForOffer = request.EmailForOffer ?? "",
-                PhoneNumberForOffer = request.PhoneNumberForOffer ?? ""
+                EmailForOffer = request.OfferContacts?.EmailAddress?.EmailAddress ?? "",
+                PhoneNumberForOffer = new()
+                {
+                    PhoneNumber = request.OfferContacts?.MobilePhone?.PhoneNumber ?? "",
+                    PhoneIDC = request.OfferContacts?.MobilePhone?.PhoneNumber ?? ""
+                }
             },
             Data = new _Case.CaseData
             {
+                IsEmployeeBonusRequested = offerInstance.IsEmployeeBonusRequested,
                 ProductTypeId = offerInstance.ProductTypeId,
                 TargetAmount = (decimal)offerInstance.LoanAmount!
             }

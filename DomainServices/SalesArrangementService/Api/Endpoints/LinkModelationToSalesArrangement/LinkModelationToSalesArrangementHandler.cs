@@ -56,7 +56,8 @@ internal sealed class LinkModelationToSalesArrangementHandler
         {
             ContractNumber = caseInstance.Data.ContractNumber,
             ProductTypeId = caseInstance.Data.ProductTypeId,
-            TargetAmount = offerInstance.SimulationInputs.LoanAmount
+            TargetAmount = offerInstance.SimulationInputs.LoanAmount,
+            IsEmployeeBonusRequested = offerInstance.SimulationInputs.IsEmployeeBonusRequested
         }, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();

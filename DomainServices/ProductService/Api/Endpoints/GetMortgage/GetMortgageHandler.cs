@@ -30,9 +30,15 @@ internal sealed class GetMortgageHandler
 
         var mortgage = loan.ToMortgage(relationships);
 
-        var map = await GetMapLoanTypeToProductTypeId();
-
-        mortgage.ProductTypeId = map[loan.TypUveru];
+        var purposes = await _repository.GetPurposes(request.ProductId, cancellation);
+        if (purposes is not null)
+        {
+            mortgage.LoanPurposes.AddRange(purposes.Select(t => new LoanPurpose
+            {
+                LoanPurposeId = t.UcelUveruId,
+                Sum = t.SumaUcelu
+            }));
+        }
 
         return new GetMortgageResponse { Mortgage = mortgage };
     }

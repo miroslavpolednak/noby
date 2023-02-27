@@ -3,6 +3,11 @@
 public sealed class GetCustomersResponseCustomer
 {
     /// <summary>
+    /// ID role klienta
+    /// </summary>
+    public int RoleId { get; set; }
+
+    /// <summary>
     /// Jméno role - NameNoby z číselníku CustomerRole|RelationshipCustomerProductType
     /// </summary>
     public string? RoleName { get; set; }
@@ -37,15 +42,9 @@ public sealed class GetCustomersResponseCustomer
     /// </summary>
     public string? KBID { get; set; }
 
-    /// <summary>
-    /// Email
-    /// </summary>
-    public string? Email { get; set; }
+    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 
-    /// <summary>
-    /// Mobil
-    /// </summary>
-    public string? Mobile { get; set; }
+    public SharedDto.ContactsConfirmedDto? Contacts { get; set; }
 
     public DomainServices.CodebookService.Contracts.GenericCodebookItem? CitizenshipCountry { get; set; }
 

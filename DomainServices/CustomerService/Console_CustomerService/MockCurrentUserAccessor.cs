@@ -1,4 +1,5 @@
-﻿using CIS.Core.Security;
+﻿using System.Security.Claims;
+using CIS.Core.Security;
 
 namespace Console_CustomerService;
 
@@ -13,6 +14,8 @@ public class MockCurrentUserAccessor : ICurrentUserAccessor
     {
         throw new NotImplementedException();
     }
+
+    public IEnumerable<Claim> Claims { get; } = Enumerable.Empty<Claim>();
 
     public bool IsAuthenticated => true;
     public ICurrentUser? User => new CurrentUser();

@@ -23,16 +23,18 @@ public abstract class Result
     
     public DateTime? RequestTimestamp { get; set; }
     
-    public DateTime? HandoverToMcsTimestamp { get; set; }
+    public DateTime? ResultTimestamp { get; set; }
     
     public string Errors { get; set; } = null!;
     
     [NotMapped]
-    public HashSet<string> ErrorSet
+    public HashSet<ResultError> ErrorSet
     {
-        get => JsonSerializer.Deserialize<HashSet<string>>(Errors)!;
+        get => JsonSerializer.Deserialize<HashSet<ResultError>>(Errors)!;
         set => Errors = JsonSerializer.Serialize(value);
     }
+    
+    public string CreatedBy { get; set; } = null!;
 
     public abstract Contracts.Result.Dto.Result ToDto();
 }

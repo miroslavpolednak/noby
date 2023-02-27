@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocumentManually;
 
-public class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest>
+public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest>
 {
     private const string ManualSigningMethodCode = "PHYSICAL";
     /// <summary>
@@ -37,7 +37,7 @@ public class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyR
         _easClient = easClient;
     }
 
-    public async Task<Unit> Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
+    public async Task Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
     {
         var documentOnSa = await _dbContext.DocumentOnSa.FirstOrDefaultAsync(r => r.DocumentOnSAId == request.DocumentOnSAId!.Value, cancellationToken);
 
@@ -46,9 +46,9 @@ public class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyR
             throw new CisNotFoundException(19003, $"DocumentOnSA {request.DocumentOnSAId!.Value} does not exist.");
         }
 
-        if (documentOnSa.SignatureMethodCode.ToUpper() != ManualSigningMethodCode)
+        if (documentOnSa.SignatureMethodCode.ToUpper() != ManualSigningMethodCode || documentOnSa.IsSigned)
         {
-            throw new CisValidationException(19005, $"Unable to sign DocumentOnSA {request.DocumentOnSAId!.Value}. Document is for electronic signature only.");
+            throw new CisValidationException(19005, $"Unable to sign DocumentOnSA {request.DocumentOnSAId!.Value}. Document is for electronic signature only or is already signed.");
         }
 
         UpdateDocumentOnSa(documentOnSa);
@@ -56,7 +56,6 @@ public class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyR
         await AddSignatureIfNotSetYet(documentOnSa, cancellationToken);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return Unit.Value;
     }
 
     private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, CancellationToken cancellationToken)

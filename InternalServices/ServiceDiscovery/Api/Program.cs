@@ -29,7 +29,7 @@ builder.Services.AddHttpLogging(logging =>
 });
 
 // add mediatr
-builder.Services.AddMediatR(typeof(Program).Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 // health checks
 builder.AddCisHealthChecks();

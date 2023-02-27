@@ -5,8 +5,9 @@ option csharp_namespace = "DomainServices.CustomerService.Contracts";
 import "Identity.proto";
 import "Messages/NaturalPerson.proto";
 import "Messages/IdentificationDocument.proto";
+import "Messages/CustomerIdentification.proto";
 import "GrpcAddress.proto";
-import "Messages/Contact.proto";
+import "Messages/Contacts.proto";
 
 message CustomerDetailRequest {
 	cis.types.Identity Identity = 1;
@@ -22,4 +23,6 @@ message CustomerDetailResponse {
     repeated cis.types.GrpcAddress Addresses = 4;
 
 	repeated Contact Contacts = 5;
+
+	CustomerIdentification CustomerIdentification = 6;
 }

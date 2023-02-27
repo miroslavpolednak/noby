@@ -1,6 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Clients;
@@ -18,8 +19,8 @@ internal class HouseholdData
     private Dictionary<long, CustomerDetailResponse> _customers = null!;
     private Dictionary<int, string> _academicDegreesBefore = null!;
     private Dictionary<int, string> _genders = null!;
-    private Dictionary<int, string> _countries = null!;
     private ILookup<string, int> _obligationTypes = null!;
+    private List<LegalCapacityRestrictionTypeItem> _legalCapacityTypes = null!;
 
     private int _firstEmploymentTypeId;
 
@@ -48,16 +49,16 @@ internal class HouseholdData
         Incomes = await LoadIncomes(CustomersOnSa);
 
         if (!TrySetHousehold(HouseholdTypes.Main))
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"SalesArrangement '{salesArrangementId}' does not contain main houselhod");
     }
 
     public async Task LoadCodebooks(ICodebookServiceClients codebookService)
     {
         _academicDegreesBefore = (await codebookService.AcademicDegreesBefore()).ToDictionary(a => a.Id, a => a.Name);
         _genders = (await codebookService.Genders()).ToDictionary(g => g.Id, g => g.StarBuildJsonCode);
-        _countries = (await codebookService.Countries()).ToDictionary(c => c.Id, c => c.ShortName);
         _firstEmploymentTypeId = (await codebookService.EmploymentTypes()).OrderBy(e => e.Id).Select(e => e.Id).FirstOrDefault();
         _obligationTypes = (await codebookService.ObligationTypes()).ToLookup(o => o.ObligationProperty, o => o.Id);
+        _legalCapacityTypes = await codebookService.LegalCapacityRestrictionTypes();
     }
     
     public bool TrySetHousehold(HouseholdTypes householdType)
@@ -136,15 +137,19 @@ internal class HouseholdData
                                 Incomes = Incomes,
                                 AcademicDegreesBefore = _academicDegreesBefore,
                                 GenderCodes = _genders,
-                                Countries = _countries,
-                                ObligationTypes = _obligationTypes
+                                ObligationTypes = _obligationTypes,
+                                LegalCapacityTypes = _legalCapacityTypes
                             }).ToList();
 
         static long GetCustomerId(CustomerOnSA customerOnSa) =>
             customerOnSa.CustomerIdentifiers.Single(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId;
     }
 
-    private bool AreCustomersPartners() =>
-        CustomersOnSa.Count == 2 &&
-        DomainServices.HouseholdService.Clients.Helpers.AreCustomersPartners(CustomersOnSa[0].MaritalStatusId, CustomersOnSa[1].MaritalStatusId);
+    private bool AreCustomersPartners()
+    {
+        var householdCustomers = CustomersOnSa.Where(c => c.CustomerOnSAId == HouseholdDto.CustomerOnSaId1 || c.CustomerOnSAId == HouseholdDto.CustomerOnSaId2).ToArray();
+
+        return householdCustomers.Length == 2 &&
+               DomainServices.HouseholdService.Clients.Helpers.AreCustomersPartners(householdCustomers[0].MaritalStatusId, householdCustomers[1].MaritalStatusId);
+    }
 }

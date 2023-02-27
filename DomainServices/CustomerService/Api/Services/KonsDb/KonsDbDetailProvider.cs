@@ -39,7 +39,7 @@ public class KonsDbDetailProvider
         AddAddress(AddressTypes.Permanent, response.Addresses.Add, partner.Street, partner.HouseNumber, partner.StreetNumber, partner.PostCode, partner.City);
         AddAddress(AddressTypes.Mailing, response.Addresses.Add, partner.MailingStreet, partner.MailingHouseNumber, partner.MailingStreetNumber, partner.MailingPostCode, partner.MailingCity);
 
-        AddContacts(partner, response.Contacts.AddRange);
+        AddContacts(partner, response.Contacts.Add);
 
         return response;
     }
@@ -65,7 +65,7 @@ public class KonsDbDetailProvider
             AddAddress(AddressTypes.Permanent, detail.Addresses.Add, p.Street, p.HouseNumber, p.StreetNumber, p.PostCode, p.City);
             AddAddress(AddressTypes.Mailing, detail.Addresses.Add, p.MailingStreet, p.MailingHouseNumber, p.MailingStreetNumber, p.MailingPostCode, p.MailingCity);
 
-            AddContacts(p, detail.Contacts.AddRange);
+            AddContacts(p, detail.Contacts.Add);
 
             return detail;
         });
@@ -183,15 +183,15 @@ public class KonsDbDetailProvider
         onAdd(address);
     }
 
-    private static void AddContacts(Partner partner, Action<IEnumerable<Contact>> onAddContacts)
+    // https://jira.kb.cz/browse/HFICH-4238
+    private static void AddContacts(Partner partner, Action<Contact> onAddContacts)
     {
-        var contacts = partner.Contacts.Select(c => new Contact
-        {
-            IsPrimary = c.IsPrimaryContact,
-            ContactTypeId = c.ContactType,
-            Value = c.Value ?? string.Empty
-        });
+        var phone = partner.Contacts.FirstOrDefault(t => t.ContactType == (int)ContactTypes.Mobil);
+        if (phone is not null)
+            onAddContacts(phone.ToContract());
 
-        onAddContacts(contacts);
+        var email = partner.Contacts.FirstOrDefault(t => t.ContactType == (int)ContactTypes.Email);
+        if (email is not null)
+            onAddContacts(email.ToContract());
     }
 }

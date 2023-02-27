@@ -7,9 +7,9 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
 internal sealed class IdentifyByIdentityHandler
-    : AsyncRequestHandler<IdentifyByIdentityRequest>
+    : IRequestHandler<IdentifyByIdentityRequest>
 {
-    protected override async Task Handle(IdentifyByIdentityRequest request, CancellationToken cancellationToken)
+    public async Task Handle(IdentifyByIdentityRequest request, CancellationToken cancellationToken)
     {
         // crm customer
         var customerInstance = await _customerService.GetCustomerDetail(request.CustomerIdentity!, cancellationToken);

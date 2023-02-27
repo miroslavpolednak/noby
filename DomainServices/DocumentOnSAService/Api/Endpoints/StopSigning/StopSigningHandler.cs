@@ -3,7 +3,7 @@ using DomainServices.DocumentOnSAService.Contracts;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StopSigning;
 
-public class StopSigningHandler : IRequestHandler<StopSigningRequest>
+public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest>
 {
     private readonly DocumentOnSAServiceDbContext _dbContext;
 
@@ -12,7 +12,7 @@ public class StopSigningHandler : IRequestHandler<StopSigningRequest>
         _dbContext = dbContext;
     }
 
-    public async Task<Unit> Handle(StopSigningRequest request, CancellationToken cancellationToken)
+    public async Task Handle(StopSigningRequest request, CancellationToken cancellationToken)
     {
         var documentOnSa = await _dbContext.DocumentOnSa.FindAsync(request.DocumentOnSAId, cancellationToken);
 
@@ -24,7 +24,5 @@ public class StopSigningHandler : IRequestHandler<StopSigningRequest>
         documentOnSa.IsValid = false;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }

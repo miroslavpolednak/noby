@@ -5,7 +5,6 @@
 	<Company>Wookiee.Apps s.r.o.</Company>
     <Product>Common Infrastructure Solution</Product>
     <Authors>Filip Tuma</Authors>
-	<LangVersion>preview</LangVersion>
 	<Nullable>enable</Nullable>
 	<Platforms>AnyCPU;x64</Platforms>
 	<ImplicitUsings>enable</ImplicitUsings>
@@ -37,9 +36,9 @@
 	
 	<ItemGroup>
 		<Protobuf Include="ServiceDiscovery.v1.proto" GrpcServices="Both" />
-		<Protobuf Include="GetService.proto" GrpcServices="None" />
-		<Protobuf Include="DiscoverableService.proto" GrpcServices="None" />
-		<Protobuf Include="ClearCache.proto" GrpcServices="None" />
-		<Protobuf Include="GetServices.proto" GrpcServices="None" />
+		<Protobuf Include="Messages/GetService.proto" GrpcServices="None" />
+		<Protobuf Include="Messages/DiscoverableService.proto" GrpcServices="None" />
+		<Protobuf Include="Messages/ClearCache.proto" GrpcServices="None" />
+		<Protobuf Include="Messages/GetServices.proto" GrpcServices="None" />
 	</ItemGroup>
 </Project>

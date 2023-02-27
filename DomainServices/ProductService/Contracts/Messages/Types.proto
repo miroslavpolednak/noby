@@ -22,6 +22,4 @@ message PaymentAccount {
 
 message PaymentSymbols {
     string VariableSymbol = 1;
-    string ConstantSymbol = 2;
-    string SpecificSymbol = 3;
 }

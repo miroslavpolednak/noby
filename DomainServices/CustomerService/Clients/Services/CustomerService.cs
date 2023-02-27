@@ -27,6 +27,11 @@ internal class CustomerService : ICustomerServiceClient
         return _service.UpdateCustomerAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
 
+    public Task UpdateCustomerIdentifiers(UpdateCustomerIdentifiersRequest request, CancellationToken cancellationToken = default)
+    {
+        return _service.UpdateCustomerIdentifiersAsync(request, cancellationToken: cancellationToken).ResponseAsync;
+    }
+
     public Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default)
     {
         return _service.GetCustomerDetailAsync(new CustomerDetailRequest { Identity = identity }, cancellationToken: cancellationToken).ResponseAsync;

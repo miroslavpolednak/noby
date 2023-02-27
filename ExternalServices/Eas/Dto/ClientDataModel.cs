@@ -2,6 +2,7 @@
 
 public sealed class ClientDataModel
 {
+    public string? KbId { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? BirthNumber { get; set; }

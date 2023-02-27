@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.ProductService.Api.Database.Entities;
@@ -11,12 +12,20 @@ internal class Loan
 
     public Int64? PartnerId { get; set; }
 
+	public int? KodProduktyUv { get; set; }
+
     public string? CisloSmlouvy { get; set; }
 
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
     public decimal? MesicniSplatka { get; set; }
 
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
     public decimal? VyseUveru { get; set; }
 
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
     public decimal? RadnaSazba { get; set; }
 
     public Int16? DelkaFixaceUrokoveSazby { get; set; }
@@ -35,9 +44,13 @@ internal class Loan
 
     public Int16 TypUveru { get; set; }
 
-	public decimal? ZbyvaCerpat { get; set; }
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? ZbyvaCerpat { get; set; }
 
-	public decimal? ZustatekCelkem { get; set; }
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? ZustatekCelkem { get; set; }
 
 	public DateTime? DatumKonceCerpani { get; set; }
 
@@ -45,7 +58,9 @@ internal class Loan
 
 	public DateTime? DatumFixaceUrokoveSazby { get; set; }
 
-	public DateTime? DatumPrvniVyplatyZUveru { get; set; }
+	public DateTime? PocatekSplaceni { get; set; }
+
+    public DateTime? DatumPrvniVyplatyZUveru { get; set; }
 
 	public DateTime? DatumPredpSplatnosti { get; set; }
 
@@ -54,6 +69,34 @@ internal class Loan
 	public string? CisloUctu { get; set; }
 
 	public string? PredcisliUctu { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? Jistina { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? CelkovyDluhPoSplatnosti { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? PohledavkaPoplatkyPo { get; set; }
+
+	public int? PocetBankovnichDniPoSpl { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? SazbaZProdleni { get; set; }
+
+	public int? SplatkyDen { get; set; }
+
+	public long? PobockaObsluhyId { get; set; }
+
+	public string? InkasoPredcisli { get; set; }
+
+    public string? InkasoCislo { get; set; }
+
+    public string? InkasoBanka { get; set; }
 }
 
 /*
