@@ -1,5 +1,4 @@
-﻿using DomainServices.HouseholdService.Api.Database;
-using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateObligation;
 
@@ -8,8 +7,6 @@ internal sealed class CreateObligationHandler
 {
     public async Task<CreateObligationResponse> Handle(CreateObligationRequest request, CancellationToken cancellationToken)
     {
-        //await _dbContext.CheckCustomerExistenceAndThrowException(request.CustomerOnSAId, cancellationToken);
-
         var entity = new Database.Entities.CustomerOnSAObligation
         {
             CustomerOnSAId = request.CustomerOnSAId,

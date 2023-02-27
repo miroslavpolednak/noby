@@ -9,14 +9,6 @@ internal sealed class CreateIncomeHandler
 {
     public async Task<CreateIncomeResponse> Handle(CreateIncomeRequest request, CancellationToken cancellationToken)
     {
-        CustomerIncomeTypes incomeType = (CustomerIncomeTypes)request.IncomeTypeId;
-
-        // kontrola poctu prijmu
-        int totalIncomesOfType = await _dbContext.CustomersIncomes
-            .CountAsync(t => t.CustomerOnSAId == request.CustomerOnSAId && t.IncomeTypeId == incomeType, cancellationToken);
-        if (IncomeHelpers.AlreadyHasMaxIncomes(incomeType, totalIncomesOfType))
-            throw new CisValidationException(16047, "Max incomes of the type has been reached");
-
         var entity = new Database.Entities.CustomerOnSAIncome
         {
             CustomerOnSAId = request.CustomerOnSAId,
@@ -24,7 +16,7 @@ internal sealed class CreateIncomeHandler
             CurrencyCode = request.BaseData?.CurrencyCode,
             IncomeSource = await getIncomeSource(request, cancellationToken),
             HasProofOfIncome = getProofOfIncomeToggle(request),
-            IncomeTypeId = incomeType
+            IncomeTypeId = (CustomerIncomeTypes)request.IncomeTypeId
         };
 
         var dataObject = getDataObject(request);

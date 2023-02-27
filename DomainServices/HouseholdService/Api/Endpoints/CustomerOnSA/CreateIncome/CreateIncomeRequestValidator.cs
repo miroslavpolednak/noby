@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using CIS.Foms.Enums;
+using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncome;
@@ -15,7 +16,7 @@ internal sealed class CreateIncomeRequestValidator
         RuleFor(t => t.IncomeTypeId)
             .GreaterThan(0)
             .WithErrorCode(ValidationMessages.IncomeTypeIdIsEmpty)
-            .Must(t => (CIS.Foms.Enums.HouseholdTypes)t != CIS.Foms.Enums.HouseholdTypes.Unknown)
+            .Must(t => (HouseholdTypes)t != HouseholdTypes.Unknown)
             .WithErrorCode(ValidationMessages.IncomeTypeIdIsEmpty);
 
         RuleFor(t => t.BaseData)
@@ -24,6 +25,12 @@ internal sealed class CreateIncomeRequestValidator
                 v.Add(new Validators.IncomeBaseDataValidator(codebookService));
             });
 
+        // customer nenalezen v DB
+        RuleFor(t => t.CustomerOnSAId)
+            .MustAsync(async (customerOnSAId, cancellationToken) => await dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerOnSAId, cancellationToken))
+            .WithErrorCode(ValidationMessages.CustomerOnSANotFound)
+            .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
+
         // nelze uvést Cin a BirthNumber zároveň
         RuleFor(t => t.Employement)
             .Must(t => !(!string.IsNullOrEmpty(t.Employer.Cin) && !string.IsNullOrEmpty(t.Employer.BirthNumber)))
@@ -31,8 +38,21 @@ internal sealed class CreateIncomeRequestValidator
             .When(t => t.Employement is not null);
 
         RuleFor(t => t.CustomerOnSAId)
-            .Must(customerOnSAId => dbContext.Customers.Any(t => t.CustomerOnSAId == customerOnSAId))
+            .MustAsync(async (customerOnSAId, cancellationToken) => await dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerOnSAId, cancellationToken))
             .WithErrorCode(ValidationMessages.CustomerOnSANotFound)
             .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
+
+        // kontrola poctu prijmu
+        RuleFor(t => t.IncomeTypeId)
+            .MustAsync(async (request, incomeTypeId, cancellationToken) =>
+            {
+                CustomerIncomeTypes incomeType = (CustomerIncomeTypes)incomeTypeId;
+
+                int totalIncomesOfType = await dbContext.CustomersIncomes
+                    .CountAsync(t => t.CustomerOnSAId == request.CustomerOnSAId && t.IncomeTypeId == incomeType, cancellationToken);
+
+                return !IncomeHelpers.AlreadyHasMaxIncomes(incomeType, totalIncomesOfType);
+            })
+            .WithErrorCode(ValidationMessages.MaxIncomesReached);
     }
 }

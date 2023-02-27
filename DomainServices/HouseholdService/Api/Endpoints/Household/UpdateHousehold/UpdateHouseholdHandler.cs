@@ -8,7 +8,7 @@ internal sealed class UpdateHouseholdHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)
     {
-        var household = await _dbContext.Households.FindAsync(request.HouseholdId, cancellationToken);
+        var household = await _dbContext.Households.FindAsync(new object[] { request.HouseholdId }, cancellationToken);
 
         household!.CustomerOnSAId1 = request.CustomerOnSAId1;
         household.CustomerOnSAId2 = request.CustomerOnSAId2;

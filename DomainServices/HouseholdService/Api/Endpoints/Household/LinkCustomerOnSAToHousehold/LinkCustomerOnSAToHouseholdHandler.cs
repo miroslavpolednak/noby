@@ -9,7 +9,7 @@ internal sealed class LinkCustomerOnSAToHouseholdHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(LinkCustomerOnSAToHouseholdRequest request, CancellationToken cancellationToken)
     {
         // domacnost
-        var householdEntity = await _dbContext.Households.FindAsync(request.HouseholdId, cancellationToken);
+        var householdEntity = await _dbContext.Households.FindAsync(new object[] { request.HouseholdId }, cancellationToken);
 
         householdEntity!.CustomerOnSAId1 = request.CustomerOnSAId1;
         householdEntity.CustomerOnSAId2 = request.CustomerOnSAId2;
