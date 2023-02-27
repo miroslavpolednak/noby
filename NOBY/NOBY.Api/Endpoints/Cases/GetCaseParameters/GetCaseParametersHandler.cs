@@ -90,7 +90,9 @@ internal sealed class GetCaseParametersHandler
 
         // load User
         var userId = caseInstance.CaseOwner?.UserId;
-        var userInstance = userId.HasValue ? await _userService.GetUser(userId.Value, cancellation) : null;
+        DomainServices.UserService.Contracts.User? userInstance = null;
+        if (userId.HasValue)
+            userInstance = await _userService.GetUser(userId.Value, cancellation);
 
         return new GetCaseParametersResponse
         {
@@ -144,8 +146,12 @@ internal sealed class GetCaseParametersHandler
     {
         var mortgageData = (await _productService.GetMortgage(caseInstance.CaseId, cancellation)).Mortgage;
 
-        var branchUser = mortgageData.BranchConsultantId.HasValue ? await _userService.GetUser(mortgageData.BranchConsultantId.Value, cancellation) : null;
-        var thirdPartyUser = mortgageData.ThirdPartyConsultantId.HasValue ? await _userService.GetUser(mortgageData.ThirdPartyConsultantId.Value, cancellation) : null;
+        DomainServices.UserService.Contracts.User? branchUser = null;
+        DomainServices.UserService.Contracts.User? thirdPartyUser = null;
+        if (mortgageData.BranchConsultantId.HasValue)
+            branchUser = await _userService.GetUser(mortgageData.BranchConsultantId.Value, cancellation);
+        if (mortgageData.ThirdPartyConsultantId.HasValue)
+            thirdPartyUser = await _userService.GetUser(mortgageData.ThirdPartyConsultantId.Value, cancellation);
 
         return new GetCaseParametersResponse
         {
