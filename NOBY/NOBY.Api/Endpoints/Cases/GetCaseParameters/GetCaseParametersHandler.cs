@@ -89,10 +89,7 @@ internal sealed class GetCaseParametersHandler
         var offerInstance = offerId.HasValue ? await _offerService.GetMortgageOfferDetail(offerId.Value, cancellation) : null;
 
         // load User
-        var userId = caseInstance.CaseOwner?.UserId;
-        DomainServices.UserService.Contracts.User? userInstance = null;
-        if (userId.HasValue)
-            userInstance = await _userService.GetUser(userId.Value, cancellation);
+        var userInstance = await getUserInstance(caseInstance.CaseOwner?.UserId, cancellation);
 
         return new GetCaseParametersResponse
         {
@@ -146,12 +143,8 @@ internal sealed class GetCaseParametersHandler
     {
         var mortgageData = (await _productService.GetMortgage(caseInstance.CaseId, cancellation)).Mortgage;
 
-        DomainServices.UserService.Contracts.User? branchUser = null;
-        DomainServices.UserService.Contracts.User? thirdPartyUser = null;
-        if (mortgageData.BranchConsultantId.HasValue)
-            branchUser = await _userService.GetUser(mortgageData.BranchConsultantId.Value, cancellation);
-        if (mortgageData.ThirdPartyConsultantId.HasValue)
-            thirdPartyUser = await _userService.GetUser(mortgageData.ThirdPartyConsultantId.Value, cancellation);
+        var branchUser = await getUserInstance(mortgageData.BranchConsultantId, cancellation);
+        var thirdPartyUser = await getUserInstance(mortgageData.ThirdPartyConsultantId, cancellation);
 
         return new GetCaseParametersResponse
         {
@@ -200,5 +193,20 @@ internal sealed class GetCaseParametersHandler
                 Icp = thirdPartyUser?.ICP
             }
         };
+    }
+
+    private async Task<DomainServices.UserService.Contracts.User?> getUserInstance(int? userId, CancellationToken cancellationToken)
+    {
+        if (!userId.HasValue)
+            return null;
+
+        try
+        {
+            return await _userService.GetUser(userId.Value, cancellationToken);
+        }
+        catch 
+        {
+            return null;
+        }
     }
 }
