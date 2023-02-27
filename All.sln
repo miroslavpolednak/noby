@@ -338,6 +338,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{49E4977C-DD43-424E-89C7-A59324CC0864}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\DocumentArchiveService\DatabaseMigrations\001-InitialCreate.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\001-InitialCreate.sql
+		DomainServices\DocumentArchiveService\DatabaseMigrations\002-AddSendDocumentOnly.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\002-AddSendDocumentOnly.sql
 	EndProjectSection
 EndProject
 Global
