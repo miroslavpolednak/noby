@@ -35,5 +35,15 @@ internal sealed class CreateHouseholdRequestValidator
         RuleFor(t => t.HouseholdTypeId)
             .MustAsync(async (householdTypeId, cancellationToken) => (await codebookService.HouseholdTypes(cancellationToken)).Any(t => t.Id == householdTypeId))
             .WithErrorCode(ValidationMessages.HouseholdTypeIdNotFound);
+
+        RuleFor(t => t.CustomerOnSAId1)
+            .MustAsync(async (request, customerOnSAId, cancellationToken) => await dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerOnSAId && t.SalesArrangementId == request.SalesArrangementId, cancellationToken))
+            .WithErrorCode(ValidationMessages.CustomerNotOnSA)
+            .When(t => t.CustomerOnSAId1.HasValue);
+
+        RuleFor(t => t.CustomerOnSAId2)
+            .MustAsync(async (request, customerOnSAId, cancellationToken) => await dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerOnSAId && t.SalesArrangementId == request.SalesArrangementId, cancellationToken))
+            .WithErrorCode(ValidationMessages.CustomerNotOnSA)
+            .When(t => t.CustomerOnSAId2.HasValue);
     }
 }
