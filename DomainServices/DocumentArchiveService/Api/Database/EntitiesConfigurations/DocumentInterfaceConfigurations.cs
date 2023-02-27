@@ -79,5 +79,9 @@ public class DocumentInterfaceConfigurations : IEntityTypeConfiguration<Document
         builder.Property(e => e.Kdv)
         .HasColumnName("KDV")
         .HasColumnType("tinyint");
+
+        builder.Property(e => e.SendDocumentOnly)
+            .HasColumnName("SEND_DOCUMENT_ONLY")
+            .HasColumnType("tinyint");
     }
 }
