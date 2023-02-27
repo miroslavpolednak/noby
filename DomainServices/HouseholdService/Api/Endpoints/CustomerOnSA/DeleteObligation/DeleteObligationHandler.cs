@@ -7,11 +7,9 @@ internal sealed class DeleteObligationHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteObligationRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.CustomersObligations
-            .Where(t => t.CustomerOnSAObligationId == request.ObligationId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16042, $"Obligation ID {request.ObligationId} does not exist.");
+        var entity = await _dbContext.CustomersObligations.FindAsync(new object[] { request.ObligationId }, cancellationToken);
 
-        _dbContext.CustomersObligations.Remove(entity);
+        _dbContext.CustomersObligations.Remove(entity!);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

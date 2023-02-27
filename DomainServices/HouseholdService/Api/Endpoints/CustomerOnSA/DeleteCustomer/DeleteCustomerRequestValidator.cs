@@ -12,6 +12,7 @@ internal sealed class DeleteCustomerRequestValidator
             .GreaterThan(0)
             .WithErrorCode(ValidationMessages.CustomerOnSAIdIsEmpty);
 
+        // kontrola existence customera
         RuleFor(t => t.CustomerOnSAId)
             .MustAsync(async (customerOnSAId, cancellationToken) =>
             {
@@ -20,6 +21,7 @@ internal sealed class DeleteCustomerRequestValidator
             .WithErrorCode(ValidationMessages.CustomerOnSANotFound)
             .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
 
+        // kontrola ze nemazu Debtora
         RuleFor(t => t.CustomerOnSAId)
             .MustAsync(async (request, customerOnSAId, cancellationToken) =>
             {

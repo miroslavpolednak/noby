@@ -31,5 +31,5 @@ internal sealed class CustomerOnSA
     public string? ChangeData { get; set; }
 
     // kdyby me to nekdy v budoucnu napadlo - EF neumoznuje link na jinou entitu pro temporal tables
-    public List<CustomerOnSAIdentity>? Identities { get; set; } = null!;
+    public List<CustomerOnSAIdentity>? Identities { get; set; }
 }
