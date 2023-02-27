@@ -211,7 +211,7 @@ internal class CustomerManagementDetailProvider
             if (noIndex <= 0)
                 model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber };
             else
-                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber![noIndex..], PhoneIDC = customer.PrimaryPhone.PhoneNumber![..noIndex] };
+                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber![(noIndex + 1)..], PhoneIDC = customer.PrimaryPhone.PhoneNumber![..noIndex] };
 
             onAddContact(model);
         }
