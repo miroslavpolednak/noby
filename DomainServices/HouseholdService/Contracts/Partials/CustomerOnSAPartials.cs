@@ -13,7 +13,7 @@ public partial class CreateObligationRequest
 { }
 
 public partial class DeleteCustomerRequest
-    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 
 public partial class DeleteIncomeRequest

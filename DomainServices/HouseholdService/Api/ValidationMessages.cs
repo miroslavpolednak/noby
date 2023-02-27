@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 
 namespace DomainServices.HouseholdService.Api;
 
@@ -28,7 +27,8 @@ internal static class ValidationMessages
     public const int CreditorIdAndNameInSameTime =      16052;
     public const int Customer2WithoutCustomer1 =        16056;
     public const int HouseholdIdIsEmpty =               16080;
-    
+    public const int CantDeleteDebtor = 16053;
+
     public static ImmutableSortedDictionary<int, string> Messages = (new Dictionary<int, string>()
     {
         { CustomerOnSAIdIsEmpty, "CustomerOnSAId must be > 0" },
@@ -53,7 +53,8 @@ internal static class ValidationMessages
         { CreditCardLimitNotAllowed, "CreditCardLimit not allowed for current ObligationTypeId" },
         { LoanPrincipalAmountNotAllowed, "LoanPrincipalAmount not allowed for current ObligationTypeId" },
         { InstallmentAmountNotAllowed, "InstallmentAmount not allowed for current ObligationTypeId" },
-        { CreditorIdAndNameInSameTime, "Creditor.CreditorId and Creditor.Name can't be set in the same time" }
+        { CreditorIdAndNameInSameTime, "Creditor.CreditorId and Creditor.Name can't be set in the same time" },
+        { CantDeleteDebtor, "CustomerOnSA is in role=Debtor -> can't be deleted" }
     }).ToImmutableSortedDictionary();
 
     public static string GetFormattedMessage(int key, object propertyValue)

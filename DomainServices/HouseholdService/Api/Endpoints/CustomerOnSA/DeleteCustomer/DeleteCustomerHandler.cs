@@ -8,27 +8,15 @@ internal sealed class DeleteCustomerHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteCustomerRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.Customers
-            .Include(t => t.Identities)
-            .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
+        var entity = await _dbContext.Customers.FindAsync(new object[] { request.CustomerOnSAId }, cancellationToken);
 
-        // nemuze to byt hlavni dluznik
-        if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor && !request.HardDelete)
-            throw new CisValidationException(16053, "CustomerOnSA is in role=Debtor -> can't be deleted");
+        var kbIdentity = await _dbContext.CustomersIdentities
+            .AsNoTracking()
+            .FirstAsync(t => t.CustomerOnSAId == request.CustomerOnSAId && t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb, cancellationToken);
 
-        var kbIdentity = entity.Identities?.FirstOrDefault(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
-
-        // smazat prijmy
-        await _dbContext.CustomersIncomes
-            .Where(t => t.CustomerOnSAId == entity.CustomerOnSAId)
-            .ExecuteDeleteAsync(cancellationToken);
-        // smazat zavazky
-        await _dbContext.CustomersObligations
-            .Where(t => t.CustomerOnSAId == entity.CustomerOnSAId)
-            .ExecuteDeleteAsync(cancellationToken);
+        await deleteChildEntities(request.CustomerOnSAId, cancellationToken);
         // smazat customera
-        _dbContext.Customers.Remove(entity);
+        _dbContext.Customers.Remove(entity!);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
@@ -39,13 +27,29 @@ internal sealed class DeleteCustomerHandler
         }
 
         // smazat Agent z SA, pokud je Agent=aktualni CustomerOnSAId
-        var saInstance = await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellationToken);
+        var saInstance = await _salesArrangementService.GetSalesArrangement(entity!.SalesArrangementId, cancellationToken);
         if (saInstance.Mortgage?.Agent == request.CustomerOnSAId)
         {
             await deleteAgentFromSalesArrangement(saInstance, entity.SalesArrangementId, cancellationToken);
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
+    }
+
+    private async Task deleteChildEntities(int customerOnSAId, CancellationToken cancellationToken)
+    {
+        // smazat identity
+        await _dbContext.CustomersIdentities
+            .Where(t => t.CustomerOnSAId == customerOnSAId)
+            .ExecuteDeleteAsync(cancellationToken);
+        // smazat prijmy
+        await _dbContext.CustomersIncomes
+            .Where(t => t.CustomerOnSAId == customerOnSAId)
+            .ExecuteDeleteAsync(cancellationToken);
+        // smazat zavazky
+        await _dbContext.CustomersObligations
+            .Where(t => t.CustomerOnSAId == customerOnSAId)
+            .ExecuteDeleteAsync(cancellationToken);
     }
 
     private async Task deleteAgentFromSalesArrangement(_SA.SalesArrangement saInstance, int salesArrangementId, CancellationToken cancellationToken)
