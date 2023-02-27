@@ -5,7 +5,7 @@ public partial class CreateHouseholdRequest
 { }
 
 public partial class DeleteHouseholdRequest
-    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 
 public partial class GetHouseholdRequest

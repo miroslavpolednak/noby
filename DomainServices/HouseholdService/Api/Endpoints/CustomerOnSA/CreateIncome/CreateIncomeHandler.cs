@@ -11,10 +11,6 @@ internal sealed class CreateIncomeHandler
     {
         CustomerIncomeTypes incomeType = (CustomerIncomeTypes)request.IncomeTypeId;
 
-        // check customer existence
-        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId, cancellationToken))
-            throw new CisNotFoundException(16020, "CustomerOnSA", request.CustomerOnSAId);
-
         // kontrola poctu prijmu
         int totalIncomesOfType = await _dbContext.CustomersIncomes
             .CountAsync(t => t.CustomerOnSAId == request.CustomerOnSAId && t.IncomeTypeId == incomeType, cancellationToken);
@@ -49,14 +45,14 @@ internal sealed class CreateIncomeHandler
         };
     }
 
-    static bool? getProofOfIncomeToggle(CreateIncomeRequest request)
+    private static bool? getProofOfIncomeToggle(CreateIncomeRequest request)
         => (CustomerIncomeTypes)request.IncomeTypeId switch
         {
             CustomerIncomeTypes.Employement => request.Employement?.HasProofOfIncome,
             _ => false
         };
 
-    async Task<string?> getIncomeSource(CreateIncomeRequest request, CancellationToken cancellationToken)
+    private async Task<string?> getIncomeSource(CreateIncomeRequest request, CancellationToken cancellationToken)
         => (CustomerIncomeTypes)request.IncomeTypeId switch
         {
             CustomerIncomeTypes.Employement => string.IsNullOrEmpty(request.Employement?.Employer.Name) ? "-" : request.Employement?.Employer.Name,
@@ -66,10 +62,10 @@ internal sealed class CreateIncomeHandler
             _ => throw new NotImplementedException("This customer income type serializer for getIncomeSource is not implemented")
         };
 
-    async Task<string?> getOtherIncomeName(int? id, CancellationToken cancellationToken)
+    private async Task<string?> getOtherIncomeName(int? id, CancellationToken cancellationToken)
         => id.HasValue ? (await _codebookService.IncomeOtherTypes(cancellationToken)).FirstOrDefault(t => t.Id == id)?.Name : "-";
 
-    static IMessage? getDataObject(CreateIncomeRequest request)
+    private static IMessage? getDataObject(CreateIncomeRequest request)
         => (CustomerIncomeTypes)request.IncomeTypeId switch
         {
             CustomerIncomeTypes.Employement => request.Employement,

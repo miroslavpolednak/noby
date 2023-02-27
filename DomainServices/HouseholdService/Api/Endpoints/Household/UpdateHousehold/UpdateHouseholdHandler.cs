@@ -8,17 +8,9 @@ internal sealed class UpdateHouseholdHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)
     {
-        var household = await _dbContext.GetHousehold(request.HouseholdId, cancellationToken);
+        var household = await _dbContext.Households.FindAsync(request.HouseholdId, cancellationToken);
 
-        //TODO nejake kontroly?
-        if (request.CustomerOnSAId1.HasValue
-            && !(await _dbContext.CustomerExistOnSalesArrangement(request.CustomerOnSAId1.Value, household.SalesArrangementId, cancellationToken)))
-            throw new CisNotFoundException(16020, $"CustomerOnSA #1 ID {request.CustomerOnSAId1} does not exist in this SA {household.SalesArrangementId}.");
-        if (request.CustomerOnSAId2.HasValue
-            && !(await _dbContext.CustomerExistOnSalesArrangement(request.CustomerOnSAId2.Value, household.SalesArrangementId, cancellationToken)))
-            throw new CisNotFoundException(16020, $"CustomerOnSA #2 ID {request.CustomerOnSAId2} does not exist in this SA {household.SalesArrangementId}.");
-
-        household.CustomerOnSAId1 = request.CustomerOnSAId1;
+        household!.CustomerOnSAId1 = request.CustomerOnSAId1;
         household.CustomerOnSAId2 = request.CustomerOnSAId2;
         
         household.ChildrenOverTenYearsCount = request.Data?.ChildrenOverTenYearsCount;

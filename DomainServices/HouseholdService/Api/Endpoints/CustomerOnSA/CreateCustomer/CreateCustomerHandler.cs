@@ -53,7 +53,7 @@ internal sealed class CreateCustomerHandler
             await _updateService.GetCustomerAndUpdateEntity(entity, entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb).IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellationToken);
         }
 
-        // additional data
+        // additional data - set defaults
         // https://jira.kb.cz/browse/HFICH-4551
         CustomerAdditionalData additionalData = new()
         {

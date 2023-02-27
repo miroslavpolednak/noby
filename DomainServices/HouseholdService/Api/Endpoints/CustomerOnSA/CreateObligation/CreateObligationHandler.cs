@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateObligation;
 
@@ -7,9 +8,7 @@ internal sealed class CreateObligationHandler
 {
     public async Task<CreateObligationResponse> Handle(CreateObligationRequest request, CancellationToken cancellationToken)
     {
-        // check customer existence
-        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId, cancellationToken))
-            throw new CisNotFoundException(16020, "CustomerOnSA", request.CustomerOnSAId);
+        //await _dbContext.CheckCustomerExistenceAndThrowException(request.CustomerOnSAId, cancellationToken);
 
         var entity = new Database.Entities.CustomerOnSAObligation
         {

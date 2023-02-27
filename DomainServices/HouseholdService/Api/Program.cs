@@ -42,7 +42,7 @@ builder.Services
     .AddCustomerService()
     .AddUserService();
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+builder.Services.AddCisGrpcInfrastructure(typeof(Program), ValidationMessages.Messages);
 builder.AddHouseholdService();
 
 builder.Services.AddGrpc(options =>

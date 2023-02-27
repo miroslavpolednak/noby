@@ -8,18 +8,15 @@ internal sealed class DeleteHouseholdHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteHouseholdRequest request, CancellationToken cancellationToken)
     {
-        var householdInstance = await _dbContext.GetHousehold(request.HouseholdId, cancellationToken);
-
-        if (householdInstance.HouseholdTypeId == CIS.Foms.Enums.HouseholdTypes.Main && !request.HardDelete)
-            throw new CisArgumentException(16032, "Can't delete Debtor household", "HouseholdId");
+        var householdInstance = await _dbContext.Households.FindAsync(request.HouseholdId, cancellationToken);
 
         // smazat domacnost
-        _dbContext.Households.Remove(householdInstance);
+        _dbContext.Households.Remove(householdInstance!);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // smazat customerOnSA
-        if (householdInstance.CustomerOnSAId1.HasValue)
+        if (householdInstance!.CustomerOnSAId1.HasValue)
             await _mediator.Send(new DeleteCustomerRequest
             {
                 CustomerOnSAId = householdInstance.CustomerOnSAId1.Value,

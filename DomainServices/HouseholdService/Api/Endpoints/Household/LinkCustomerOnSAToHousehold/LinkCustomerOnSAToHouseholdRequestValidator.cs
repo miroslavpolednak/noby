@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.LinkCustomerOnSAToHousehold;
@@ -6,11 +7,33 @@ namespace DomainServices.HouseholdService.Api.Endpoints.Household.LinkCustomerOn
 internal sealed class LinkCustomerOnSAToHouseholdRequestValidator
     : AbstractValidator<LinkCustomerOnSAToHouseholdRequest>
 {
-    public LinkCustomerOnSAToHouseholdRequestValidator()
+    public LinkCustomerOnSAToHouseholdRequestValidator(HouseholdServiceDbContext dbContext)
     {
         RuleFor(t => t.CustomerOnSAId1)
             .NotNull()
             .When(t => t.CustomerOnSAId2.HasValue)
-            .WithMessage("CustomerOnSAId1 is not set although CustomerOnSAId2 is.").WithErrorCode("16056");
+            .WithErrorCode(ValidationMessages.Customer2WithoutCustomer1);
+
+        RuleFor(t => t.HouseholdId)
+            .MustAsync(async (householdId, cancellationToken) => await dbContext.Households.FindAsync(householdId, cancellationToken) is not null)
+            .WithErrorCode(ValidationMessages.HouseholdNotFound);
+
+        RuleFor(t => t.CustomerOnSAId1)
+            .MustAsync(async (request, customerOnSAId, cancellationToken) =>
+            {
+                var household = await dbContext.Households.FindAsync(request.HouseholdId, cancellationToken);
+                return await dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerOnSAId && t.SalesArrangementId == household!.SalesArrangementId, cancellationToken);
+            })
+            .WithErrorCode(ValidationMessages.CustomerNotOnSA)
+            .When(t => t.CustomerOnSAId1.HasValue);
+
+        RuleFor(t => t.CustomerOnSAId2)
+            .MustAsync(async (request, customerOnSAId, cancellationToken) =>
+            {
+                var household = await dbContext.Households.FindAsync(request.HouseholdId, cancellationToken);
+                return await dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerOnSAId && t.SalesArrangementId == household!.SalesArrangementId, cancellationToken);
+            })
+            .WithErrorCode(ValidationMessages.CustomerNotOnSA)
+            .When(t => t.CustomerOnSAId2.HasValue);
     }
 }

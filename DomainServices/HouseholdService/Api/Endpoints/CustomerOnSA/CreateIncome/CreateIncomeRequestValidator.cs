@@ -6,19 +6,17 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncom
 internal sealed class CreateIncomeRequestValidator
     : AbstractValidator<CreateIncomeRequest>
 {
-    public CreateIncomeRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public CreateIncomeRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService, Database.HouseholdServiceDbContext dbContext)
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
-            .WithMessage("CustomerOnSAId must be > 0").WithErrorCode("16024");
+            .WithErrorCode(ValidationMessages.CustomerOnSAIdIsEmpty);
 
         RuleFor(t => t.IncomeTypeId)
             .GreaterThan(0)
-            .WithMessage("IncomeTypeId must be > 0").WithErrorCode("16028");
-
-        RuleFor(t => t.IncomeTypeId)
+            .WithErrorCode(ValidationMessages.IncomeTypeIdIsEmpty)
             .Must(t => (CIS.Foms.Enums.HouseholdTypes)t != CIS.Foms.Enums.HouseholdTypes.Unknown)
-            .WithMessage("IncomeTypeId must be > 0").WithErrorCode("16028");
+            .WithErrorCode(ValidationMessages.IncomeTypeIdIsEmpty);
 
         RuleFor(t => t.BaseData)
             .SetInheritanceValidator(v =>
@@ -26,16 +24,14 @@ internal sealed class CreateIncomeRequestValidator
                 v.Add(new Validators.IncomeBaseDataValidator(codebookService));
             });
 
+        // nelze uvést Cin a BirthNumber zároveň
         RuleFor(t => t.Employement)
-            .Must(t =>
-            {
-                if (t?.Employer is null)
-                {
-                    return true;
-                }
-                // nelze uvést Cin a BirthNumber zároveň
-                return !(!string.IsNullOrEmpty(t.Employer.Cin) && !string.IsNullOrEmpty(t.Employer.BirthNumber));
-            })
-            .WithMessage("Only one of values can be set [Employement.Employer.Cin, Employement.Employer.BirthNumber]").WithErrorCode("16046");
+            .Must(t => !(!string.IsNullOrEmpty(t.Employer.Cin) && !string.IsNullOrEmpty(t.Employer.BirthNumber)))
+            .WithErrorCode(ValidationMessages.EmployementCinBirthNo)
+            .When(t => t.Employement is not null);
+
+        RuleFor(t => t.CustomerOnSAId)
+            .Must(customerOnSAId => dbContext.Customers.Any(t => t.CustomerOnSAId == customerOnSAId))
+            .WithErrorCode(ValidationMessages.CustomerOnSANotFound);
     }
 }

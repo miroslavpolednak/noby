@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CIS.Core.Exceptions;
+using FluentValidation;
 
 namespace CIS.Infrastructure.CisMediatR;
 
@@ -29,7 +30,24 @@ public sealed class GrpcValidationBehavior<TRequest, TResponse>
 
         if (validationFailures.Any())
         {
-            throw new Core.Exceptions.CisValidationException(validationFailures.Select(t => new CIS.Core.Exceptions.CisExceptionItem(t.ErrorCode, t.ErrorMessage)));
+            var customStateException = validationFailures.FirstOrDefault(t => t.CustomState is not null && t.CustomState is GrpcValidationBehaviorExeptionTypes);
+
+            // pokud v customState najdu instanci nejake Exception, misto toho abych sel standardni CisValidationException, pouziji tuto exception
+            if (customStateException is not null)
+            {
+                if (!int.TryParse(customStateException.ErrorMessage, out int errorCode))
+                    errorCode = 0;
+
+                switch ((GrpcValidationBehaviorExeptionTypes)customStateException.CustomState)
+                {
+                    case GrpcValidationBehaviorExeptionTypes.CisNotFoundException:
+                        throw new CisNotFoundException(errorCode, customStateException.ErrorMessage);
+                    case GrpcValidationBehaviorExeptionTypes.CisValidationException:
+                        throw new CisArgumentException(errorCode, customStateException.ErrorMessage);
+                }
+            }
+
+            throw new CisValidationException(validationFailures.Select(t => new CisExceptionItem(t.ErrorCode, t.ErrorMessage)));
         }
         
         return next();

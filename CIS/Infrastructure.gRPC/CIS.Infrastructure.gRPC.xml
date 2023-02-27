@@ -79,7 +79,7 @@
             Nepouzivat primo, je public pouze pro ServiceDiscovery nebo jine specialni pripady.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type)">
+        <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type,System.Collections.Generic.IDictionary{System.Int32,System.String})">
             <summary>
             Zaregistruje do DI:
             - MediatR

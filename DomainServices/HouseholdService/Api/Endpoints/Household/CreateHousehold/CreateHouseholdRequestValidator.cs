@@ -12,31 +12,28 @@ internal sealed class CreateHouseholdRequestValidator
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementId must be > 0").WithErrorCode("16010");
+            .WithErrorCode(ValidationMessages.SalesArrangementIdIsEmpty);
 
         RuleFor(t => t.HouseholdTypeId)
             .GreaterThan(0)
-            .WithMessage("HouseholdTypeId must be > 0").WithErrorCode("16027");
-
-        RuleFor(t => t.HouseholdTypeId)
+            .WithErrorCode(ValidationMessages.HouseholdTypeIdIsEmpty)
             .Must(t => (HouseholdTypes)t != HouseholdTypes.Unknown)
-            .WithMessage("HouseholdTypeId must be > 0").WithErrorCode("16027");
+            .WithErrorCode(ValidationMessages.HouseholdTypeIdIsEmpty);
 
         RuleFor(t => t.CustomerOnSAId1)
             .NotNull()
-            .When(t => t.CustomerOnSAId2.HasValue)
-            .WithMessage("CustomerOnSAId1 is not set although CustomerOnSAId2 is.").WithErrorCode("16056");
+            .WithErrorCode(ValidationMessages.Customer2WithoutCustomer1)
+            .When(t => t.CustomerOnSAId2.HasValue);
 
         // Main domacnost muze byt jen jedna. Pocitame, ze Main domacnost je zalozena vzdy na zacatku, takze pokud uz v tuhle chvili nejaka existuje, tak je to spatne.
         RuleFor(t => t.SalesArrangementId)
             .Must(saId => !dbContext.Households.Any(t => t.SalesArrangementId == saId))
-            .WithMessage("Only one Debtor household allowed").WithErrorCode("16031")
+            .WithErrorCode(ValidationMessages.MoreDebtorHouseholds)
             .When(t => t.HouseholdTypeId == (int)HouseholdTypes.Main);
 
         // check household role
         RuleFor(t => t.HouseholdTypeId)
-            .Must(householdTypeId => codebookService.HouseholdTypesSynchronous()?.Any(t => t.Id == householdTypeId) ?? false)
-            .WithMessage(request => $"HouseholdTypeId {request.HouseholdTypeId} does not exist.").WithErrorCode("16023");
-
+            .MustAsync(async (householdTypeId, cancellationToken) => (await codebookService.HouseholdTypes(cancellationToken)).Any(t => t.Id == householdTypeId))
+            .WithErrorCode(ValidationMessages.HouseholdTypeIdNotFound);
     }
 }
