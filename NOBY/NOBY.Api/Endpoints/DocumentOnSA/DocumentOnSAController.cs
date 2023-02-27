@@ -83,6 +83,8 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually")]
     [SwaggerResponse(StatusCodes.Status200OK)]
+    [SwaggerResponse(StatusCodes.Status404NotFound)]
+    [SwaggerResponse(StatusCodes.Status400BadRequest)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     public async Task SignDocumentManually(
      [FromRoute] int salesArrangementId,
@@ -101,6 +103,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="documentOnSAId"></param>
     [HttpGet("document/template/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}")]
     [SwaggerResponse(StatusCodes.Status200OK, type: typeof(Stream))]
+    [SwaggerResponse(StatusCodes.Status404NotFound)]
     [Produces(MediaTypeNames.Application.Pdf)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     public async Task<IActionResult> GetDocumentOnSa(
