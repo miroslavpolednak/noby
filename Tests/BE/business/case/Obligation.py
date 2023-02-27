@@ -7,6 +7,7 @@ from common import Convertor
 from typing import List
 
 DISPATCHES = {
+            'obligation_id': lambda value: Convertor.to_int(value),
             'obligation_type_id': lambda value: Convertor.to_int(value),
             'obligation_state': lambda value: Convertor.to_int(value),
             'installment_amount': lambda value: Convertor.to_decimal(value),

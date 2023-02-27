@@ -7,6 +7,7 @@ from common import Convertor
 from typing import List
 
 DISPATCHES = {
+            'household_id': lambda value: Convertor.to_int(value),
             'household_type_id': lambda value: Convertor.to_int(value),
             'children_up_to_ten_years_count': lambda value: Convertor.to_int(value),
             'children_over_ten_years_count': lambda value: Convertor.to_int(value),

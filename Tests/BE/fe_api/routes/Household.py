@@ -8,6 +8,9 @@ class Household(Base):
     def get_household_list(self, sales_arrangement_id: int) -> dict:
         return self.get(f'list/{sales_arrangement_id}')
 
+    def get_household(self, household_id: int) -> dict:
+        return self.get(str(household_id))
+
     def create_household(self, request: dict) -> dict:
         return self.post('', request)
 

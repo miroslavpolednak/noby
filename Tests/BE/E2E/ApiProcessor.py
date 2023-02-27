@@ -435,18 +435,267 @@ class ApiProcessor():
         return Case(json_dict)
 
     @staticmethod
-    def __load_households(sales_arrangement_id: int) -> dict:
+    def __load_households(sales_arrangement_id: int) -> List[dict]:
 
-        # https://fat.noby.cz/api/household/list/337
-
+        # call FE API endpoint
+        customer_list = FeAPI.SalesArrangement.get_customers(sales_arrangement_id)
         household_list = FeAPI.Household.get_household_list(sales_arrangement_id)
-        household_ids: List[int] = list(map(lambda h: Processing.get_key(h, 'householdId'), household_list))
+
+        households: List[dict] = list(map(lambda household_list_item: ApiProcessor.__load_household(household_list_item), household_list))
+
+        return households
+
+    @staticmethod
+    def __load_household(household_list_item: dict) -> dict:
        
-        print(f'household_ids: {household_ids}')
+        household_id: int = Processing.get_key(household_list_item, 'householdId')
+        household_type_id: int = Processing.get_key(household_list_item, 'householdTypeId')
+        household_type_name: int = Processing.get_key(household_list_item, 'householdTypeName')
 
-        return dict()
+        # call FE API endpoint
+        res = FeAPI.Household.get_household(household_id)
 
+        res_data = Processing.get_key(res, 'data')
+        res_customer1 = Processing.get_key(res, 'customer1')
+        res_customer2 = Processing.get_key(res, 'customer2')
+        res_expenses = Processing.get_key(res, 'expenses')
 
+        # customer1
+        customer1: dict = None if res_customer1 is None else ApiProcessor.__load_customer(res_customer1)
+
+        # customer2
+        customer2: dict = None if res_customer2 is None else ApiProcessor.__load_customer(res_customer2)
+
+        # expenses
+        expenses: dict = None
+        if res_expenses is not None:
+            expenses = dict(
+                savingExpenseAmount = Processing.get_key(res_expenses, 'savingExpenseAmount'),
+                insuranceExpenseAmount = Processing.get_key(res_expenses, 'insuranceExpenseAmount'),
+                housingExpenseAmount = Processing.get_key(res_expenses, 'housingExpenseAmount'),
+                otherExpenseAmount = Processing.get_key(res_expenses, 'otherExpenseAmount'),
+            )
+
+        household = dict(
+            householdId = Processing.get_key(res, 'householdId'),
+            householdTypeId = household_type_id,
+            childrenUpToTenYearsCount = Processing.get_key(res_data, 'childrenUpToTenYearsCount'),
+            childrenOverTenYearsCount = Processing.get_key(res_data, 'childrenOverTenYearsCount'),
+            areCustomersPartners = Processing.get_key(res, 'areCustomersPartners'),
+            customer1 = customer1,
+            customer2 = customer2,
+            expenses = expenses
+        )
+
+        return household
+
+    @staticmethod
+    def __load_customer(household_list_item_customer: dict) -> dict:
+
+        if household_list_item_customer is None:
+            return None
+
+        res = household_list_item_customer
+
+        res_identity = Processing.get_key(res, 'identity')
+        res_incomes = Processing.get_key(res, 'incomes')
+        res_obligations = Processing.get_key(res, 'obligations')
+
+        customer_on_sa_id = Processing.get_key(res, 'customerOnSAId')
+
+        # identity
+        identity = None
+        if res_identity is not None:
+            identity = dict(
+                id = Processing.get_key(res_identity, 'id'),
+                scheme = Processing.get_key(res_identity, 'scheme'),
+            )
+
+        # incomes
+        incomes = None if res_incomes is None else list(map(lambda res_income_item: ApiProcessor.__load_income(customer_on_sa_id, res_income_item), res_incomes))
+
+        # obligations
+        obligations = None if res_obligations is None else list(map(lambda res_obligation_item: ApiProcessor.__load_obligation(customer_on_sa_id, res_obligation_item), res_obligations))
+
+        # customer
+        customer = dict(
+            customerOnSAId = customer_on_sa_id,
+            roleId = Processing.get_key(res, 'roleId'),
+            firstName = Processing.get_key(res, 'firstName'),
+            lastName = Processing.get_key(res, 'lastName'),
+            dateOfBirth = Processing.get_key(res, 'dateOfBirth'),
+            phoneNumberForOffer = Processing.get_key(res, 'phoneNumberForOffer'),
+            emailForOffer = Processing.get_key(res, 'emailForOffer'),
+
+            identity = identity,
+            incomes = incomes,
+            obligations = obligations,
+        )
+
+        return customer
+
+    @staticmethod
+    def __load_income(customer_on_sa_id: int, household_list_item_customer_income: dict) -> dict:
+
+        if customer_on_sa_id is None or household_list_item_customer_income is None:
+            return None
+
+        income_id = Processing.get_key(household_list_item_customer_income, 'incomeId')
+
+        # call FE API endpoint
+        # res = household_list_item_customer_income
+        res = FeAPI.CustomerOnSa.get_income(customer_on_sa_id, income_id)
+        res_data = Processing.get_key(res, 'data')
+
+        # data
+        data = None
+        if res_data is not None:
+
+            res_employer = Processing.get_key(res_data, 'employer')
+            res_job = Processing.get_key(res_data, 'job')
+            res_wage_deduction = Processing.get_key(res_data, 'wageDeduction')
+            res_income_confirmation = Processing.get_key(res_data, 'incomeConfirmation')
+
+            # employer
+            employer = None
+            if res_employer is not None:
+                employer = dict(
+                    name = Processing.get_key(res_employer, 'name'),
+                    cin = Processing.get_key(res_employer, 'cin'),
+                    birthNumber = Processing.get_key(res_employer, 'birthNumber'),
+                    countryId = Processing.get_key(res_employer, 'countryId'),
+                )
+
+            # job
+            job = None
+            if res_job is not None:
+                job = dict(
+                    jobDescription = Processing.get_key(res_job, 'jobDescription'),
+                    firstWorkContractSince = Processing.get_key(res_job, 'firstWorkContractSince'),
+                    employmentTypeId = Processing.get_key(res_job, 'employmentTypeId'),
+                    currentWorkContractSince = Processing.get_key(res_job, 'currentWorkContractSince'),
+                    currentWorkContractTo = Processing.get_key(res_job, 'currentWorkContractTo'),
+                    grossAnnualIncome = Processing.get_key(res_job, 'grossAnnualIncome'),
+                    isInTrialPeriod = Processing.get_key(res_job, 'isInTrialPeriod'),
+                    isInProbationaryPeriod = Processing.get_key(res_job, 'isInProbationaryPeriod'),
+                )
+
+            # wageDeduction
+            wage_deduction = None
+            if res_wage_deduction is not None:
+                wage_deduction = dict(
+                    deductionDecision = Processing.get_key(res_wage_deduction, 'deductionDecision'),
+                    deductionPayments = Processing.get_key(res_wage_deduction, 'deductionPayments'),
+                    deductionOther = Processing.get_key(res_wage_deduction, 'deductionOther'),
+                )
+
+            # incomeConfirmation
+            income_confirmation = None
+            if res_income_confirmation is not None:
+                income_confirmation = dict(
+                    confirmationDate = Processing.get_key(res_income_confirmation, 'confirmationDate'),
+                    confirmationPerson = Processing.get_key(res_income_confirmation, 'confirmationPerson'),
+                    confirmationContact = Processing.get_key(res_income_confirmation, 'confirmationContact'),
+                    isIssuedByExternalAccountant = Processing.get_key(res_income_confirmation, 'isIssuedByExternalAccountant'),   
+                )
+
+            # data
+            data = dict(
+                employer = employer,
+                job = job,
+                wageDeduction = wage_deduction,
+                incomeConfirmation = income_confirmation,
+
+                incomeSource = Processing.get_key(res_data, 'incomeSource'),
+                hasProofOfIncome = Processing.get_key(res_data, 'hasProofOfIncome'),
+                foreignIncomeTypeId = Processing.get_key(res_data, 'foreignIncomeTypeId'),
+                hasWageDeduction = Processing.get_key(res_data, 'hasWageDeduction'),
+                cin = Processing.get_key(res_data, 'cin'),
+                birthNumber = Processing.get_key(res_data, 'birthNumber'),
+                countryOfResidenceId = Processing.get_key(res_data, 'countryOfResidenceId'),
+                incomeOtherTypeId = Processing.get_key(res_data, 'incomeOtherTypeId'),
+            )
+
+        # income
+        income = dict(
+            incomeId = Processing.get_key(res, 'incomeId'),
+            incomeTypeId = Processing.get_key(res, 'incomeTypeId'),            
+            sum = Processing.get_key(res, 'sum'),
+            currencyCode = Processing.get_key(res, 'currencyCode'),
+
+            data = data
+        )
+
+        return income
+
+    @staticmethod
+    def __load_obligation(customer_on_sa_id: int, household_list_item_customer_obligation: dict) -> dict:
+
+        if customer_on_sa_id is None or household_list_item_customer_obligation is None:
+            return None
+
+        obligation_id = Processing.get_key(household_list_item_customer_obligation, 'obligationId')
+
+        # call FE API endpoint
+        # res = household_list_item_customer_obligation
+        res = FeAPI.CustomerOnSa.get_obligation(customer_on_sa_id, obligation_id)
+
+        res_creditor = Processing.get_key(res, 'creditor')
+        res_correction = Processing.get_key(res, 'correction')
+
+        # creditor
+        creditor = None
+        if res_creditor is not None:
+            # ['name','isExternal', 'creditorId']
+            creditor = dict(
+                name = Processing.get_key(res_creditor, 'name'),
+                isExternal = Processing.get_key(res_creditor, 'isExternal'),
+                creditorId = Processing.get_key(res_creditor, 'creditorId'),
+            )
+
+        # correction
+        correction = None
+        if res_correction is not None:
+            correction = dict(
+                correctionTypeId = Processing.get_key(res_correction, 'correctionTypeId'),
+                installmentAmountCorrection = Processing.get_key(res_correction, 'installmentAmountCorrection'),
+                loanPrincipalAmountCorrection = Processing.get_key(res_correction, 'loanPrincipalAmountCorrection'),
+                creditCardLimitCorrection = Processing.get_key(res_correction, 'creditCardLimitCorrection'),
+            )
+
+        # obligation
+        obligation = dict(
+            obligationId = Processing.get_key(res, 'obligationId'),
+            obligationTypeId = Processing.get_key(res, 'obligationTypeId'),  
+            obligationState = Processing.get_key(res, 'obligationState'),
+            installmentAmount = Processing.get_key(res, 'installmentAmount'),
+            loanPrincipalAmount = Processing.get_key(res, 'loanPrincipalAmount'),
+            creditCardLimit = Processing.get_key(res, 'creditCardLimit'),
+            amountConsolidated = Processing.get_key(res, 'amountConsolidated'),
+
+            creditor = creditor,
+            correction = correction,
+        )
+
+        return obligation
+    
+
+    # @staticmethod
+    # def group_list_by_key(list: List[dict], key: str) -> dict:
+
+    #     if list is None or key is None:
+    #         return None
+
+    #     result = {}
+
+    #     for i in list:
+    #         key_value = i[key]
+    #         if key_value not in result:
+    #             result[key_value] = []
+
+    #         result[key_value].append(i)
+
+    #     return result
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------

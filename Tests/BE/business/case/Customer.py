@@ -8,6 +8,7 @@ from common import Convertor
 from typing import List
 
 DISPATCHES = {
+            'customer_on_sa_id': lambda value: Convertor.to_int(value),
             'first_name': lambda value: Convertor.to_str(value),
             'last_name': lambda value: Convertor.to_str(value),
             'date_of_birth': lambda value: Convertor.to_date(value),
