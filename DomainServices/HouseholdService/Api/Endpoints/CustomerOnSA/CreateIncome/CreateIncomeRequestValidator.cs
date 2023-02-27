@@ -32,6 +32,7 @@ internal sealed class CreateIncomeRequestValidator
 
         RuleFor(t => t.CustomerOnSAId)
             .Must(customerOnSAId => dbContext.Customers.Any(t => t.CustomerOnSAId == customerOnSAId))
-            .WithErrorCode(ValidationMessages.CustomerOnSANotFound);
+            .WithErrorCode(ValidationMessages.CustomerOnSANotFound)
+            .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
     }
 }

@@ -16,7 +16,8 @@ internal sealed class LinkCustomerOnSAToHouseholdRequestValidator
 
         RuleFor(t => t.HouseholdId)
             .MustAsync(async (householdId, cancellationToken) => await dbContext.Households.FindAsync(householdId, cancellationToken) is not null)
-            .WithErrorCode(ValidationMessages.HouseholdNotFound);
+            .WithErrorCode(ValidationMessages.HouseholdNotFound)
+            .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
 
         RuleFor(t => t.CustomerOnSAId1)
             .MustAsync(async (request, customerOnSAId, cancellationToken) =>

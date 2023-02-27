@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Exceptions;
+using CIS.Infrastructure.CisMediatR.GrpcValidation;
 using FluentValidation;
 
 namespace CIS.Infrastructure.CisMediatR;
@@ -42,6 +43,8 @@ public sealed class GrpcValidationBehavior<TRequest, TResponse>
                 {
                     case GrpcValidationBehaviorExeptionTypes.CisNotFoundException:
                         throw new CisNotFoundException(errorCode, customStateException.ErrorMessage);
+                    case GrpcValidationBehaviorExeptionTypes.CisArgumentException:
+                        throw new CisArgumentException(errorCode, customStateException.ErrorMessage);
                     case GrpcValidationBehaviorExeptionTypes.CisValidationException:
                         throw new CisArgumentException(errorCode, customStateException.ErrorMessage);
                 }

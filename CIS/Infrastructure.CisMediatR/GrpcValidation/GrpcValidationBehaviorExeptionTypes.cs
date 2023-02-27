@@ -1,4 +1,4 @@
-﻿namespace CIS.Infrastructure.CisMediatR;
+﻿namespace CIS.Infrastructure.CisMediatR.GrpcValidation;
 
 public enum GrpcValidationBehaviorExeptionTypes
 {

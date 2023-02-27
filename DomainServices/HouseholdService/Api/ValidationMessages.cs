@@ -1,6 +1,4 @@
-﻿using CIS.Infrastructure.CisMediatR;
-using FluentValidation;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 
 namespace DomainServices.HouseholdService.Api;
 
@@ -40,17 +38,5 @@ internal static class ValidationMessages
     }).ToImmutableSortedDictionary();
 
     public static string GetFormattedMessage(int key, object propertyValue)
-    {
-        return Messages[key].Replace("{PropertyValue}", propertyValue.ToString());
-    }
-
-    public static IRuleBuilderOptions<TRequest, TElement> WithErrorCode<TRequest, TElement>(this IRuleBuilderOptions<TRequest, TElement> builder, int errorCode)
-        => errorCode switch
-        {
-            CustomerOnSANotFound or HouseholdNotFound => builder
-                .WithErrorCode(errorCode.ToString(System.Globalization.CultureInfo.InvariantCulture))
-                .WithState(t => GrpcValidationBehaviorExeptionTypes.CisNotFoundException),
-
-            _ => builder.WithErrorCode(errorCode.ToString(System.Globalization.CultureInfo.InvariantCulture))
-        };
+        => Messages[key].Replace("{PropertyValue}", propertyValue.ToString());
 }

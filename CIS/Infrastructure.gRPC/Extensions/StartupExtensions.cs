@@ -80,6 +80,7 @@ public static class StartupExtensions
     /// - FluentValidation through MediatR pipelines
     /// </summary>
     /// <param name="assemblyType">Typ, který je v hlavním projektu - typicky Program.cs</param>
+    /// <param name="validationMessages">Slovník pro překládání chybových kódů ve FluentValidation na naše error messages. [ExceptionCode, Message]</param>
     public static IServiceCollection AddCisGrpcInfrastructure(this IServiceCollection services, Type assemblyType, IDictionary<int, string>? validationMessages = null)
     {
         services
@@ -89,7 +90,7 @@ public static class StartupExtensions
         // add validators
         services.Scan(selector => selector
             .FromAssembliesOf(assemblyType)
-            .AddClasses(x => x.AssignableTo(typeof(FluentValidation.IValidator<>)))
+            .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
             .AsImplementedInterfaces()
             .WithTransientLifetime());
 
