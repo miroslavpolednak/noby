@@ -62,7 +62,7 @@ internal class CustomerManagementSearchProvider
             Name = searchRequest.NaturalPerson?.LastName.ToCMString(),
             BirthEstablishedDate = searchRequest.NaturalPerson?.DateOfBirth,
             Email = $"{searchRequest.Email?.EmailAddress}".ToCMString(),
-            PhoneNumber = $"{searchRequest.MobilePhone.PhoneIDC}{searchRequest.MobilePhone.PhoneNumber}".ToCMString(),
+            PhoneNumber = $"{searchRequest.MobilePhone?.PhoneIDC}{searchRequest.MobilePhone?.PhoneNumber}".ToCMString(),
             ShowOnlyIdentified = searchRequest.SearchOnlyIdentified ?? true
         };
 
