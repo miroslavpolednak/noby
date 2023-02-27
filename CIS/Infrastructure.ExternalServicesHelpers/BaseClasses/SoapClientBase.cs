@@ -8,15 +8,15 @@ using System.ServiceModel.Security;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
 
-public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposable
-    where SoapClient : ClientBase<SoapClientChannel>, new()
-    where SoapClientChannel : class
+public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposable
+    where TSoapClient : ClientBase<TSoapClientChannel>, new()
+    where TSoapClientChannel : class
 {
-    private readonly SoapClient _client;
+    private readonly TSoapClient _client;
     private readonly IExternalServiceConfiguration _configuration;
     private readonly ILogger _logger;
 
-    protected SoapClient Client => _client;
+    protected TSoapClient Client => _client;
 
     protected IExternalServiceConfiguration Configuration => _configuration;
 
@@ -26,7 +26,7 @@ public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposabl
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         _logger = logger;
-        _client = new SoapClient();
+        _client = new TSoapClient();
         _client.Endpoint.Address = new EndpointAddress(_configuration.ServiceUrl);
         _client.Endpoint.Binding = CreateBinding();
 

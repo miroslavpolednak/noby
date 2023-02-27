@@ -12,5 +12,7 @@ message UploadDocumentRequest{
     bytes BinaryData = 2;
     // Příznak (1/0 ano/ne), který určuje, zda se při archivaci vytvoří věta na rozhraní kdv, pokud ea kód použitý pro archivaci je pro kdv určen (Default: 0).
     google.protobuf.BoolValue NotifyStarBuild = 3;
+    // Zasílá se jen dokument bez DV (true jen doc bez DV) default: true
+    google.protobuf.BoolValue SendDocumentOnly =4;
 }
 
