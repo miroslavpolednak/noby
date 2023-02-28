@@ -35,7 +35,8 @@ public class SearchHandler : IRequestHandler<SearchRequest, SearchResponse>
         
         var documentsOnSaFiltered = documentsOnSa.DocumentsOnSAToSign
                 .Where(f => f.DocumentTypeId == documentTypeFiltered.Id 
-                            && !string.IsNullOrWhiteSpace(f.FormId));
+                            && !string.IsNullOrWhiteSpace(f.FormId)
+                            && string.IsNullOrWhiteSpace(f.EArchivId));
 
         return new SearchResponse
         {
