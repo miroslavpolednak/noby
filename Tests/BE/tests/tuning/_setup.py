@@ -13,7 +13,7 @@ def setup():
     def find_folder_tests_be():
         current_folder = os.path.dirname(__file__)
         assert FOLDER_BE in current_folder, f'Folder [{FOLDER_BE}] not found in current path [{current_folder}]!'
-        i = current_folder.index(FOLDER_BE)
+        i = current_folder.rindex(FOLDER_BE)
         return current_folder[0 : i + len(FOLDER_BE)]
 
     PATH_TO_TESTS_BE:str = find_folder_tests_be()

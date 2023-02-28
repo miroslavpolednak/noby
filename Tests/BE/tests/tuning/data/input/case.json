@@ -9,7 +9,7 @@
         "paymentDay": 15,
         "statementTypeId": 1,
         "isEmployeeBonusRequested": false,
-        "expectedDateOfDrawing": "2023-03-01T00:00:00.0000",
+        "expectedDateOfDrawing": "2023-04-01T00:00:00.0000",
         "withGuarantee": false,
         "financialResourcesOwn": null,
         "financialResourcesOther": null,
@@ -258,7 +258,7 @@
         }
     ],
     "parameters": {
-        "expectedDateOfDrawing": "2023-01-27T00:00:00.000Z",
+        "expectedDateOfDrawing": "2023-04-01T00:00:00.000Z",
         "incomeCurrencyCode": "CAD",
         "residencyCurrencyCode": "CZK",
         "contractSignatureTypeId": 2,

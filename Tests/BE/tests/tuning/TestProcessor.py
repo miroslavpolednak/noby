@@ -13,15 +13,27 @@ from business.offer import Offer
 from business.case import Case
 
 from tests.tuning.OptionsResolver import OptionsResolver
-from tests.tuning.data import load_file_json
+from tests.tuning.data import load_json, save_json, clean_folder, EInputOutput
 
-# Load CASE
-from E2E import ApiProcessor
-case: Case = ApiProcessor.load_case(3013351)
-print(case)
-quit()
+# data = load_json('case.json', EInputOutput.Input)
+# print(data)
 
-# TODO: setup find_folder_tests_be  [D:\Users\992387r\Desktop\workspace\BE\GIT\0004\OneSolution\Tests\BE\grpc] !
+# clean_folder(EInputOutput.Output)
+# save_json('case.json', EInputOutput.Output, data)
+
+
+
+# # Load CASE
+# from E2E import ApiProcessor
+# case: Case = ApiProcessor.load_case(3013351)
+# print(case)
+
+# case_json = case.to_json_value()
+
+# clean_folder(EInputOutput.Output)
+# save_json('case.json', EInputOutput.Output, case_json)
+
+# quit()
 
 # from datetime import datetime
 # dtm = datetime.fromisoformat('2023-01-27T00:00:00.000Z')
@@ -30,13 +42,19 @@ use_api_processor: bool = True
 
 def run_via_processor():
     from E2E import ApiProcessor    
-    case_inputs_json: dict = load_file_json()
+    case_inputs_json: dict = load_json('case.json', EInputOutput.Input)
     case = Case.from_json(case_inputs_json)
     
     results = ApiProcessor.process_list([case])
     for r in results:
         print(r)
-        # print(f'https://fat.noby.cz/undefined#/mortgage/case-detail/{r.case_id}')
+
+        if 'case_id' in r.keys():
+            case_id = r['case_id']
+            case: Case = ApiProcessor.load_case(case_id)
+            case_json = case.to_json_value()
+            save_json(f'case_{case_id}.json', EInputOutput.Output, case_json)
+            print(f'https://fat.noby.cz/undefined#/mortgage/case-detail/{case_id}')
 
 if use_api_processor:
     run_via_processor()
