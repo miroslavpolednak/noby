@@ -26,10 +26,29 @@ public class AcademicDegreesBeforeHandler
     {
         return Task.FromResult(new List<GenericCodebookItem>
         {
-            new GenericCodebookItem() { Id = 0, Name = "Neuvedeno", IsValid = true},
-            new GenericCodebookItem() { Id = 3, Name = "Dr.", IsValid = true},
-            new GenericCodebookItem() { Id = 7, Name = "JUDr.", IsValid = true},
-            new GenericCodebookItem() { Id = 8, Name = "MUDr.", IsValid = true},
+            new GenericCodebookItem() { Id = 0, Name ="Neuvedeno", IsValid = true},
+            new GenericCodebookItem() { Id = 3, Name ="DR.", IsValid = true},
+            new GenericCodebookItem() { Id = 7, Name ="JUDR.", IsValid = true},
+            new GenericCodebookItem() { Id = 10, Name ="RNDR.", IsValid = true},
+            new GenericCodebookItem() { Id = 20, Name ="MGR.", IsValid = true},
+            new GenericCodebookItem() { Id = 47, Name ="ING.", IsValid = true},
+            new GenericCodebookItem() { Id = 66, Name ="PROF.", IsValid = true},
+            new GenericCodebookItem() { Id = 79, Name ="THMGR", IsValid = true},
+            new GenericCodebookItem() { Id = 84, Name ="MVDR.", IsValid = true},
+            new GenericCodebookItem() { Id = 90, Name ="PHMR.", IsValid = true},
+            new GenericCodebookItem() { Id = 91, Name ="BC.", IsValid = true},
+            new GenericCodebookItem() { Id = 92, Name ="MGA.", IsValid = true},
+            new GenericCodebookItem() { Id = 94, Name ="PAEDDR", IsValid = true},
+            new GenericCodebookItem() { Id = 96, Name ="THDR.", IsValid = true},
+            new GenericCodebookItem() { Id = 97, Name ="THLIC.", IsValid = true},
+            new GenericCodebookItem() { Id = 100, Name ="DOC.", IsValid = true},
+            new GenericCodebookItem() { Id = 148, Name ="MDDr.", IsValid = true},
+            new GenericCodebookItem() { Id = 5001, Name ="AKAD.", IsValid = true},
+            new GenericCodebookItem() { Id = 5002, Name ="BCA.", IsValid = true},
+            new GenericCodebookItem() { Id = 5003, Name ="RSDR.", IsValid = true},
+            new GenericCodebookItem() { Id = 5004, Name ="PHDR.", IsValid = true},
+            new GenericCodebookItem() { Id = 5005, Name ="ARCH.", IsValid = true},
+            new GenericCodebookItem() { Id = 5006, Name ="MUDR.", IsValid = true},
         });
     }
 

@@ -21,15 +21,12 @@ internal class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnlyMemory
     public async Task<ReadOnlyMemory<byte>> Handle(GetOfferRequest request, CancellationToken cancellationToken)
     {
         var salesArrangementId = request.InputParameters.SalesArrangementId!.Value;
-        //var documentId = await _documentArchiveManager.GetDocumentId(salesArrangementId, cancellationToken);
+        var documentId = await _documentArchiveManager.GetDocumentId(salesArrangementId, cancellationToken);
 
-        return await GenerateAndSaveOffer(request, salesArrangementId, cancellationToken);
+        if (string.IsNullOrWhiteSpace(documentId))
+            return await GenerateAndSaveOffer(request, salesArrangementId, cancellationToken);
 
-        //TODO: DocumentArchiveService - GetDocument funguje z důvodu chybějícího propisu dokumentů do eArchivu.
-        //if (string.IsNullOrWhiteSpace(documentId))
-        //    return await GenerateAndSaveOffer(request, salesArrangementId, cancellationToken);
-
-        //return await _documentArchiveManager.GetDocument(documentId, request, cancellationToken);
+        return await _documentArchiveManager.GetDocument(documentId, request, cancellationToken);
     }
 
     private async Task<ReadOnlyMemory<byte>> GenerateAndSaveOffer(GetDocumentBaseRequest request, int salesArrangementId, CancellationToken cancellationToken)

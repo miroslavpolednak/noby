@@ -864,7 +864,6 @@
             </summary>
             <remarks>
             Vytvoření Customer entity, která zaštiťuje KB customera a MPSS customera.<br /><br />
-            SalesArrnagementService/UpdateCustomer(onSA)<br />CustomerService/GetDetail<br /><br />
             Na výstupu je Customer objekt s kompletními daty z KB CM.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
@@ -1926,13 +1925,13 @@
             <returns>Seznam klientů na produktu</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Product.ProductController.GetProductObligations(System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Vrátí seznam závazků na daném produktu
-            </summary>
-            <remarks>
-            <i>DS:</i> ProductService/GetProductObligationList<br />
-            </remarks>
-            <returns>Seznam závazků na produktu</returns>
+             <summary>
+             Vrátí seznam závazků na daném produktu
+             </summary>
+             <remarks>
+            Seznam z závazků načtený z KonsDB.<br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=058D1B76-375C-4747-90DB-D4E3BE5C46F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+             </remarks>
+             <returns>Seznam závazků na produktu</returns>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.GeneralChangeDetail.Applicant">
             <summary>
