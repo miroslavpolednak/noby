@@ -58,11 +58,18 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
 
                 if (smsType?.IsAuditLogEnabled ?? false)
                 {
-                    _logger.LogInformation("todo - Received notification report @{report}.", new
+                    // todo: change to audit
+                    _logger.LogInformation("Received notification report {@Report}.", new
                     {
-                        Id = id,
+                        NotificationId = id,
                         State = report.state,
-                        Errors = report.notificationErrors.ToList()
+                        Errors = report.notificationErrors
+                            .Select(e => new
+                            {
+                                Code = e.code,
+                                Message = e.message
+                            })
+                            .ToList()
                     });
                 }
             }
@@ -82,7 +89,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
 
             await _repository.SaveChanges(cancellationToken);
             
-            _logger.LogInformation($"Result updated for notificationId: {id}");
+            _logger.LogDebug($"Result updated for notificationId: {id}");
         }
         catch (CisNotFoundException)
         {

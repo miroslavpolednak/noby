@@ -96,12 +96,12 @@ public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, 
                 smtpAttachments
             );
             
-            _logger.LogInformation($"{nameof(SendEmailConsumeRequest)} was handled. MPSS Email was sent.");
             result.State = NotificationState.Sent;
+            _logger.LogDebug($"{nameof(SendEmailConsumeRequest)} was handled. MPSS Email was sent.");
         }
         catch (Exception e)
         {
-            // todo: result.ErrorSet
+            // todo: result.ErrorSet ?
             result.State = NotificationState.Error;
             _logger.LogError(e, $"{nameof(SendEmailConsumeHandler)} failed.");
         }

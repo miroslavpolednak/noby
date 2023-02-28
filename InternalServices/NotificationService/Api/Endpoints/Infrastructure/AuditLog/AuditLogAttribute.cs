@@ -52,6 +52,8 @@ public class AuditLogAttribute : Attribute, IActionFilter, IExceptionFilter
         log.RequestContentType = httpContext.Request.ContentType;
         
         var logMessage = JsonConvert.SerializeObject(log);
+        
+        // todo: change to audit
         logger.LogInformation(logMessage);
     }
 
@@ -76,6 +78,8 @@ public class AuditLogAttribute : Attribute, IActionFilter, IExceptionFilter
         }
         
         var logMessage = JsonConvert.SerializeObject(log);
+        
+        // todo: change to audit
         logger.LogInformation(logMessage);
     }
 

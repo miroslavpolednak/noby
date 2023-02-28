@@ -41,6 +41,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     
     public async Task<SendSmsFromTemplateResponse> Handle(SendSmsFromTemplateRequest request, CancellationToken cancellationToken)
     {
+        var username = _userAdapterService.GetUsername();
         var smsTypes = await _codebookService.SmsNotificationTypes(new SmsNotificationTypesRequest(), cancellationToken);
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {string.Join(',', smsTypes.Select(s => s.Code))}");
@@ -74,7 +75,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         result.CountryCode = phone.CountryCode;
         result.PhoneNumber = phone.NationalNumber;
 
-        result.CreatedBy = _userAdapterService.GetUsername();
+        result.CreatedBy = username;
         
         try
         {
@@ -103,24 +104,24 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         {
             if (auditEnabled)
             {
-                _logger.LogInformation("todo - Producing message SendSMS to KAFKA. NotificationId: @{notificationId}", new
-                {
-                    NotificationId = result.Id
-                });
+                // todo: change to audit
+                _logger.LogInformation("Producing message SendSMS with type '{SmsType}' to KAFKA by consumer '{Consumer}'.", smsType, username);
             }
             
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
 
             if (auditEnabled)
             {
-                _logger.LogInformation("todo - Produced message SendSMS to KAFKA.");
+                // todo: change to audit
+                _logger.LogInformation("Produced message SendSMS with type '{SmsType}' and notification id '{NotificationId}' to KAFKA by consumer '{Consumer}'.", smsType, result.Id, username);
             }
         }
         catch (Exception e)
         {
             if (auditEnabled)
             {
-                _logger.LogInformation("todo - Could not produce message SendSMS to KAFKA.");
+                // todo: change to audit
+                _logger.LogInformation("Could not produce message SendSMS with type '{SmsType}' to KAFKA by consumer '{Consumer}'.", smsType, username);
             }
             
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
