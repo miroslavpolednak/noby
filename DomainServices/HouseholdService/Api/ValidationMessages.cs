@@ -2,7 +2,12 @@
 
 namespace DomainServices.HouseholdService.Api;
 
-internal static class ValidationMessages
+interface IErrorCodeMapper
+{
+    IReadOnlyDictionary<int, string> Messages();
+}
+
+internal class ValidationMessages : IErrorCodeMapper
 {
     public const int SalesArrangementIdIsEmpty =        16010;
     public const int CustomerNotOnSA =                  16019;
