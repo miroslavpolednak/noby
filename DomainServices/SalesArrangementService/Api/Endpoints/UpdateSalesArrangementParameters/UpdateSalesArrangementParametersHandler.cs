@@ -41,6 +41,9 @@ internal sealed class UpdateSalesArrangementParametersHandler
             _dbContext.SalesArrangementsParameters.Add(entity);
         }
 
+        if (entity.SalesArrangementParametersType == Database.Entities.SalesArrangementParametersTypes.Drawing)
+            ValidateDrawingRepaymentAccount(request.Drawing, entity);
+
         // naplnit parametry serializovanym objektem
         var dataObject = getDataObject(request);
         entity.Parameters = dataObject is null ? null : Newtonsoft.Json.JsonConvert.SerializeObject(dataObject);
@@ -86,6 +89,28 @@ internal sealed class UpdateSalesArrangementParametersHandler
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => request.HUBN,
             _ => null
         };
+
+    private void ValidateDrawingRepaymentAccount(Contracts.SalesArrangementParametersDrawing drawingRequest, Database.Entities.SalesArrangementParameters originalParameters)
+    {
+        var originalAccount = Contracts.SalesArrangementParametersDrawing.Parser.ParseFrom(originalParameters.ParametersBin).RepaymentAccount;
+        var requestAccount = drawingRequest.RepaymentAccount;
+
+        if (originalAccount.IsAccountNumberMissing)
+        {
+            requestAccount.IsAccountNumberMissing = true;
+
+            return;
+        }
+
+        var isAccountEqual = string.Equals(originalAccount.Prefix, requestAccount.Prefix, StringComparison.InvariantCultureIgnoreCase) &&
+                             string.Equals(originalAccount.Number, requestAccount.Number, StringComparison.InvariantCultureIgnoreCase) &&
+                             string.Equals(originalAccount.BankCode, requestAccount.BankCode);
+
+        if (!isAccountEqual)
+            throw new CisValidationException("18081", "Repayment account cannot be changed with IsAccountNumberMissing set to false");
+
+        requestAccount.IsAccountNumberMissing = false;
+    }
 
     private readonly HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
