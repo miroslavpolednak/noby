@@ -1,5 +1,4 @@
 ﻿using Google.Protobuf;
-using CIS.Foms.Enums;
 using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncome;
@@ -10,19 +9,24 @@ internal sealed class UpdateIncomeHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateIncomeRequest request, CancellationToken cancellationToken)
     {
         // entita existujiciho prijmu
-        var entity = await _dbContext.CustomersIncomes
+        var entity = await _dbContext
+            .CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16029, $"Income ID {request.IncomeId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.IncomeNotFound, request.IncomeId);
 
         var incomeTypeId = (CustomerIncomeTypes)request.IncomeTypeId;
 
         // kontrola poctu prijmu
-        int totalIncomesOfType = await _dbContext.CustomersIncomes
+        int totalIncomesOfType = await _dbContext
+            .CustomersIncomes
             .CountAsync(t => t.CustomerOnSAIncomeId != request.IncomeId && t.CustomerOnSAId == entity.CustomerOnSAId && t.IncomeTypeId == incomeTypeId, cancellationToken);
+
         if (IncomeHelpers.AlreadyHasMaxIncomes(incomeTypeId, totalIncomesOfType))
-            throw new CisValidationException(16047, "Max incomes of the type has been reached");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MaxIncomesReached);
 
         var dataObject = getDataObject(incomeTypeId, request);
+
         entity.IncomeTypeId = incomeTypeId;
         entity.Sum = request.BaseData?.Sum;
         entity.CurrencyCode = request.BaseData?.CurrencyCode;

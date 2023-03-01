@@ -79,13 +79,14 @@
             Nepouzivat primo, je public pouze pro ServiceDiscovery nebo jine specialni pripady.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type)">
+        <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type,CIS.Core.ErrorCodes.IErrorCodesDictionary)">
             <summary>
             Zaregistruje do DI:
             - MediatR
             - FluentValidation through MediatR pipelines
             </summary>
             <param name="assemblyType">Typ, který je v hlavním projektu - typicky Program.cs</param>
+            <param name="validationMessages">Slovník pro překládání chybových kódů ve FluentValidation na naše error messages. [ExceptionCode, Message]</param>
         </member>
         <member name="M:CIS.Infrastructure.gRPC.GrpcHelpers.HasBinaryHeaderSuffix(System.String)">
             <summary>

@@ -6,36 +6,33 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncom
 internal sealed class CreateIncomeRequestValidator
     : AbstractValidator<CreateIncomeRequest>
 {
-    public CreateIncomeRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public CreateIncomeRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService, Database.HouseholdServiceDbContext dbContext)
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
-            .WithMessage("CustomerOnSAId must be > 0").WithErrorCode("16024");
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSAIdIsEmpty);
 
+        // existuje customer
+        RuleFor(t => t.CustomerOnSAId)
+            .MustAsync(async (customerOnSAId, cancellationToken) => await dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerOnSAId, cancellationToken))
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSANotFound)
+            .ThrowCisException(GrpcValidationBehaviorExceptionTypes.CisNotFoundException);
+
+        RuleFor(t => t)
+            .SetValidator(new Validators.IncomeValidator(codebookService));
+
+        // kontrola poctu prijmu
         RuleFor(t => t.IncomeTypeId)
-            .GreaterThan(0)
-            .WithMessage("IncomeTypeId must be > 0").WithErrorCode("16028");
-
-        RuleFor(t => t.IncomeTypeId)
-            .Must(t => (CIS.Foms.Enums.HouseholdTypes)t != CIS.Foms.Enums.HouseholdTypes.Unknown)
-            .WithMessage("IncomeTypeId must be > 0").WithErrorCode("16028");
-
-        RuleFor(t => t.BaseData)
-            .SetInheritanceValidator(v =>
+            .MustAsync(async (request, incomeTypeId, cancellationToken) =>
             {
-                v.Add(new Validators.IncomeBaseDataValidator(codebookService));
-            });
+                CustomerIncomeTypes incomeType = (CustomerIncomeTypes)incomeTypeId;
 
-        RuleFor(t => t.Employement)
-            .Must(t =>
-            {
-                if (t?.Employer is null)
-                {
-                    return true;
-                }
-                // nelze uvést Cin a BirthNumber zároveň
-                return !(!string.IsNullOrEmpty(t.Employer.Cin) && !string.IsNullOrEmpty(t.Employer.BirthNumber));
+                int totalIncomesOfType = await dbContext
+                    .CustomersIncomes
+                    .CountAsync(t => t.CustomerOnSAId == request.CustomerOnSAId && t.IncomeTypeId == incomeType, cancellationToken);
+
+                return !IncomeHelpers.AlreadyHasMaxIncomes(incomeType, totalIncomesOfType);
             })
-            .WithMessage("Only one of values can be set [Employement.Employer.Cin, Employement.Employer.BirthNumber]").WithErrorCode("16046");
+            .WithErrorCode(ErrorCodeMapper.MaxIncomesReached);
     }
 }

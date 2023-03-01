@@ -91,10 +91,13 @@
             <param name="count">Počet nalezených záznamů.</param>
             <param name="entityName">Typ nalezené entity</param>
         </member>
-        <member name="M:CIS.Infrastructure.Logging.LoggerExtensions.LogSerializedObject(Microsoft.Extensions.Logging.ILogger,System.String,System.Object,Microsoft.Extensions.Logging.LogLevel)">
+        <member name="M:CIS.Infrastructure.Logging.LoggerExtensions.LogValidationResults(Microsoft.Extensions.Logging.ILogger,CIS.Core.Exceptions.CisValidationException)">
             <summary>
-            TODO: odstranit? Logovat do log contextu?
+            Logování chyb zejména z FluentValidation.
             </summary>
+            <remarks>
+            Do logu uloží seznam chyb (Errors kolekci) do kontextu pod klíčem "Errors".
+            </remarks>
         </member>
         <member name="T:CIS.Infrastructure.Logging.RequestResponseLoggerExtensions">
             <summary>

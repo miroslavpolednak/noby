@@ -1,5 +1,4 @@
 ﻿using DomainServices.HouseholdService.Contracts;
-using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.CreateHousehold;
 
@@ -9,19 +8,7 @@ internal sealed class CreateHouseholdHandler
     public async Task<CreateHouseholdResponse> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)
     {
         // check existing SalesArrangementId
-        var saInstance = await __SAlesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-
-#pragma warning disable CA2208
-        // Debtor domacnost muze byt jen jedna
-        if (request.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main && _dbContext.Households.Any(t => t.SalesArrangementId == request.SalesArrangementId))
-            throw new CisArgumentException(16031, "Only one Debtor household allowed", "HouseholdTypeId");
-
-        // check household role
-        if (!(await _codebookService.HouseholdTypes(cancellationToken)).Any(t => t.Id == request.HouseholdTypeId))
-            throw new CisNotFoundException(16023, $"HouseholdTypeId {request.HouseholdTypeId} does not exist.");
-#pragma warning restore CA2208
-
-        //TODO check propertySettlement?
+        var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         // ulozit customera do databaze
         var entity = new Database.Entities.Household
@@ -52,19 +39,16 @@ internal sealed class CreateHouseholdHandler
         };
     }
 
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient __SAlesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateHouseholdHandler> _logger;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
 
     public CreateHouseholdHandler(
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateHouseholdHandler> logger)
     {
-        __SAlesArrangementService = salesArrangementService;
-        _codebookService = codebookService;
+        _salesArrangementService = salesArrangementService;
         _dbContext = dbContext;
         _logger = logger;
     }
