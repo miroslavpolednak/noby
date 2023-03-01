@@ -12,22 +12,7 @@ internal sealed class UpdateIncomeRequestValidator
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.IncomeIdIsEmpty);
 
-        RuleFor(t => t.IncomeTypeId)
-            .GreaterThan(0)
-            .WithErrorCode(ErrorCodeMapper.IncomeTypeIdIsEmpty)
-            .Must(t => (CIS.Foms.Enums.HouseholdTypes)t != CIS.Foms.Enums.HouseholdTypes.Unknown)
-            .WithErrorCode(ErrorCodeMapper.IncomeTypeIdIsEmpty);
-
-        RuleFor(t => t.BaseData)
-            .SetInheritanceValidator(v =>
-            {
-                v.Add(new Validators.IncomeBaseDataValidator(codebookService));
-            });
-
-        // nelze uvést Cin a BirthNumber zároveň
-        RuleFor(t => t.Employement)
-            .Must(t => !(!string.IsNullOrEmpty(t.Employer.Cin) && !string.IsNullOrEmpty(t.Employer.BirthNumber)))
-            .WithErrorCode(ErrorCodeMapper.EmployementCinBirthNo)
-            .When(t => t.Employement?.Employer is not null);
+        RuleFor(t => t)
+            .SetValidator(new Validators.IncomeValidator(codebookService));
     }
 }

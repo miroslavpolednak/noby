@@ -3,7 +3,7 @@
 namespace DomainServices.HouseholdService.Api;
 
 internal sealed class ErrorCodeMapper
-    : CIS.Core.ErrorCodes.ErrorCodeMapperBase
+    : ErrorCodeMapperBase
 {
     public const int SalesArrangementIdIsEmpty =        16010;
     public const int CustomerNotOnSA =                  16019;

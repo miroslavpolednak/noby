@@ -1,10 +1,11 @@
 ﻿using CIS.Core.Exceptions;
 using ExternalServices.MpHome.V1_1;
+using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.CustomerService.Api.Endpoints.UpdateCustomerIdentifiers;
 
 internal sealed class UpdateCustomerIdentifiersHandler 
-    : IRequestHandler<UpdateCustomerIdentifiersRequest>
+    : IRequestHandler<UpdateCustomerIdentifiersRequest, Empty>
 {
     private readonly IMediator _mediator;
     private readonly IMpHomeClient _mpHomeClient;
@@ -15,7 +16,7 @@ internal sealed class UpdateCustomerIdentifiersHandler
         _mpHomeClient = mpHomeClient;
     }
 
-    public async Task Handle(UpdateCustomerIdentifiersRequest request, CancellationToken cancellationToken)
+    public async Task<Empty> Handle(UpdateCustomerIdentifiersRequest request, CancellationToken cancellationToken)
     {
         switch (request.Mandant)
         {
@@ -26,6 +27,8 @@ internal sealed class UpdateCustomerIdentifiersHandler
             default:
                 throw new CisValidationException(11030, "Unsupported mandant");
         }
+
+        return new Empty();
     }
 
     private async Task UpdateKbIdInKonsDb(ICollection<Identity> identities, CancellationToken cancellationToken)

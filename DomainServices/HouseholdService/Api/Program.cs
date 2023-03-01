@@ -4,7 +4,6 @@ using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
 using DomainServices;
 using CIS.InternalServices;
-using CIS.Infrastructure.gRPC;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -48,7 +47,7 @@ builder.AddHouseholdService();
 
 builder.Services.AddGrpc(options =>
 {
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
+    options.Interceptors.Add<GenericServerExceptionInterceptor>();
 });
 builder.Services.AddGrpcReflection();
 #endregion register builder.Services

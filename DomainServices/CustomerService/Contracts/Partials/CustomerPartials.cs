@@ -1,4 +1,6 @@
-﻿namespace DomainServices.CustomerService.Contracts;
+﻿using Google.Protobuf.WellKnownTypes;
+
+namespace DomainServices.CustomerService.Contracts;
 
 public partial class ProfileCheckRequest
     : MediatR.IRequest<ProfileCheckResponse>, CIS.Core.Validation.IValidatableRequest
@@ -25,5 +27,5 @@ public partial class UpdateCustomerRequest
 { }
 
 public partial class UpdateCustomerIdentifiersRequest
-    :MediatR.IRequest, CIS.Core.Validation.IValidatableRequest
+    :MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
