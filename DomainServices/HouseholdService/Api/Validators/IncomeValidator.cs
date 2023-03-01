@@ -15,15 +15,9 @@ internal sealed class IncomeValidator
             .WithErrorCode(ErrorCodeMapper.IncomeTypeIdIsEmpty);
 
         RuleFor(t => t.BaseData)
-            .ChildRules(baseData =>
+            .SetInheritanceValidator(v =>
             {
-                baseData.RuleFor(t => t.CurrencyCode)
-                    .MustAsync(async (currencyCode, cancellation) =>
-                    {
-                        return (await codebookService.Currencies(cancellation)).Any(t => t.Code == currencyCode);
-                    })
-                    .When(t => !string.IsNullOrEmpty(t.CurrencyCode))
-                    .WithErrorCode(ErrorCodeMapper.CurrencyNotValid);
+                v.Add(new IncomeBaseDataValidator(codebookService));
             });
 
         // nelze uvést Cin a BirthNumber zároveň

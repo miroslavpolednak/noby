@@ -14,6 +14,7 @@ internal sealed class GetCustomerListHandler
             .AsNoTracking()
             .Select(CustomerOnSAServiceExpressions.CustomerDetail())
             .ToListAsync(cancellationToken);
+
         var ids = customers.Select(t => t.CustomerOnSAId).ToList();
 
         var identities = await _dbContext.CustomersIdentities

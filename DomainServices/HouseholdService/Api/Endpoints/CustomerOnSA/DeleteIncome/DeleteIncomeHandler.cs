@@ -7,9 +7,13 @@ internal sealed class DeleteIncomeHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.CustomersIncomes.FindAsync(new object[] { request.IncomeId }, cancellationToken);
+        var entity = await _dbContext
+            .CustomersIncomes
+            .AsNoTracking()
+            .FirstOrDefaultAsync(t => t.CustomerOnSAIncomeId == request.IncomeId, cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.IncomeNotFound, request.IncomeId);
         
-        _dbContext.CustomersIncomes.Remove(entity!);
+        _dbContext.CustomersIncomes.Remove(entity);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

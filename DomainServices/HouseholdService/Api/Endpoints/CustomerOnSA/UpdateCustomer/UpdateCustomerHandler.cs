@@ -8,20 +8,18 @@ internal sealed class UpdateCustomerHandler
 {
     public async Task<UpdateCustomerResponse> Handle(UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
-        // response instance
-        var model = new UpdateCustomerResponse();
-
         // vytahnout stavajici entitu z DB
         var entity = await _dbContext.Customers
             .Include(t => t.Identities)
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken) 
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CustomerOnSANotFound, request.CustomerOnSAId);
 
         // helper aby se nemuselo porad null checkovat
         entity.Identities ??= new List<Database.Entities.CustomerOnSAIdentity>();
 
         // customerOnSA byl jiz updatovan z KB CM
-        bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
+        bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == IdentitySchemes.Kb);
 
         // vychazim z toho, ze identitu klienta nelze menit. Tj. z muze prijit prazdna kolekce CustomerIdentifiers v requestu, ale to neznamena, ze jiz existujici identity na COnSA odstranim.
         if (request.Customer.CustomerIdentifiers is not null && request.Customer.CustomerIdentifiers.Any())
@@ -33,7 +31,7 @@ internal sealed class UpdateCustomerHandler
         }
 
         // provolat sulm - pokud jiz ma nebo mu byla akorat pridana KB identita
-        var kbIdentity = entity.Identities.FirstOrDefault(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
+        var kbIdentity = entity.Identities.FirstOrDefault(t => t.IdentityScheme == IdentitySchemes.Kb);
         if (kbIdentity is not null)
         {
             await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellationToken);
@@ -41,7 +39,7 @@ internal sealed class UpdateCustomerHandler
         }
 
         // uz ma KB identitu, ale jeste nema MP identitu
-        if (!entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Mp) && kbIdentity is not null)
+        if (!entity.Identities.Any(t => t.IdentityScheme == IdentitySchemes.Mp) && kbIdentity is not null)
         {
             await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, kbIdentity.IdentityScheme, cancellationToken);
 
@@ -51,7 +49,7 @@ internal sealed class UpdateCustomerHandler
         // nove byl customer identifikovan KB identitou
         else if (!alreadyKbUpdatedCustomer && kbIdentity is not null)
         {
-            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellationToken);
+            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, IdentitySchemes.Kb, cancellationToken);
         }
         // customer zije zatim jen v NOBY, mohu updatovat maritalState
         else if (!alreadyKbUpdatedCustomer)
@@ -63,6 +61,9 @@ internal sealed class UpdateCustomerHandler
         entity.LockedIncomeDateTime = request.Customer.LockedIncomeDateTime;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        // response instance
+        var model = new UpdateCustomerResponse();
 
         model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new CIS.Infrastructure.gRPC.CisTypes.Identity
         {

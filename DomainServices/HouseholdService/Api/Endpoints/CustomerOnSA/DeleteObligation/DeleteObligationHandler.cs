@@ -7,7 +7,11 @@ internal sealed class DeleteObligationHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteObligationRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.CustomersObligations.FindAsync(new object[] { request.ObligationId }, cancellationToken);
+        var entity = await _dbContext
+            .CustomersObligations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(t => t.CustomerOnSAObligationId == request.ObligationId, cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ObligationNotFound, request.ObligationId);
 
         _dbContext.CustomersObligations.Remove(entity!);
 
