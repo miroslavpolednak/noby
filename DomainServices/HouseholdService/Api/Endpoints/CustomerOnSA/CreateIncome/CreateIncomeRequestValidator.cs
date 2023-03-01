@@ -16,7 +16,7 @@ internal sealed class CreateIncomeRequestValidator
         RuleFor(t => t.CustomerOnSAId)
             .MustAsync(async (customerOnSAId, cancellationToken) => await dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerOnSAId, cancellationToken))
             .WithErrorCode(ErrorCodeMapper.CustomerOnSANotFound)
-            .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
+            .ThrowCisException(GrpcValidationBehaviorExceptionTypes.CisNotFoundException);
 
         RuleFor(t => t)
             .SetValidator(new Validators.IncomeValidator(codebookService));

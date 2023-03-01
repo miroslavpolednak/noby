@@ -31,7 +31,7 @@ public sealed class GrpcValidationBehavior<TRequest, TResponse>
 
         if (validationFailures.Any())
         {
-            var customStateException = validationFailures.FirstOrDefault(t => t.CustomState is not null && t.CustomState is GrpcValidationBehaviorExeptionTypes);
+            var customStateException = validationFailures.FirstOrDefault(t => t.CustomState is not null && t.CustomState is GrpcValidationBehaviorExceptionTypes);
 
             // pokud v customState najdu instanci nejake Exception, misto toho abych sel standardni CisValidationException, pouziji tuto exception
             if (customStateException is not null)
@@ -39,13 +39,13 @@ public sealed class GrpcValidationBehavior<TRequest, TResponse>
                 if (!int.TryParse(customStateException.ErrorMessage, out int errorCode))
                     errorCode = 0;
 
-                switch ((GrpcValidationBehaviorExeptionTypes)customStateException.CustomState)
+                switch ((GrpcValidationBehaviorExceptionTypes)customStateException.CustomState)
                 {
-                    case GrpcValidationBehaviorExeptionTypes.CisNotFoundException:
+                    case GrpcValidationBehaviorExceptionTypes.CisNotFoundException:
                         throw new CisNotFoundException(errorCode, customStateException.ErrorMessage);
-                    case GrpcValidationBehaviorExeptionTypes.CisArgumentException:
+                    case GrpcValidationBehaviorExceptionTypes.CisArgumentException:
                         throw new CisArgumentException(errorCode, customStateException.ErrorMessage);
-                    case GrpcValidationBehaviorExeptionTypes.CisValidationException:
+                    case GrpcValidationBehaviorExceptionTypes.CisValidationException:
                         throw new CisArgumentException(errorCode, customStateException.ErrorMessage);
                 }
             }

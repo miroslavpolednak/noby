@@ -10,6 +10,8 @@ internal sealed class CreateHouseholdRequestValidator
         Database.HouseholdServiceDbContext dbContext, 
         CodebookService.Clients.ICodebookServiceClients codebookService)
     {
+        ClassLevelCascadeMode = CascadeMode.Stop;
+
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.SalesArrangementIdIsEmpty);

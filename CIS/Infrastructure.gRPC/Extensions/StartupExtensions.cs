@@ -98,7 +98,6 @@ public static class StartupExtensions
         if (validationMessages is not null)
         {
             ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo(ExceptionHandling.FluentValidationLanguageManager.DefaultLanguage);
-            ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Stop;
             ValidatorOptions.Global.LanguageManager = new ExceptionHandling.FluentValidationLanguageManager(validationMessages);
         }
 

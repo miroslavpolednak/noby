@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.CisMediatR.GrpcValidation;
 
-public enum GrpcValidationBehaviorExeptionTypes
+public enum GrpcValidationBehaviorExceptionTypes
 {
     Unknown,
     CisValidationException,
