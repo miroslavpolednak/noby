@@ -40,9 +40,11 @@ internal sealed class UpdateSalesArrangementParametersHandler
             };
             _dbContext.SalesArrangementsParameters.Add(entity);
         }
-
-        if (entity.SalesArrangementParametersType == Database.Entities.SalesArrangementParametersTypes.Drawing)
+        else if (entity.SalesArrangementParametersType == Database.Entities.SalesArrangementParametersTypes.Drawing)
+        {
+            //Pokud se SA nezakládá (parameters v DB = null), tak validuj účet pro čerpání
             ValidateDrawingRepaymentAccount(request.Drawing, entity);
+        }
 
         // naplnit parametry serializovanym objektem
         var dataObject = getDataObject(request);
