@@ -69,10 +69,8 @@ public class SmsAuditLogger
             RequestHost = httpContext.Request.Host.ToString(),
             RequestContentType = httpContext.Request.ContentType
         };
-
-        var logMessage = JsonConvert.SerializeObject(log);
-
-        _logger.LogInformation(logMessage);
+        
+        _logger.LogInformation("Received HTTP Request: {@log}", log);
     }
 
     public async Task LogHttpResponse(IActionResult? actionResult)
@@ -96,9 +94,7 @@ public class SmsAuditLogger
             log.ResponseBody = JsonConvert.SerializeObject(result.Value);
         }
 
-        var logMessage = JsonConvert.SerializeObject(log);
-
-        _logger.LogInformation(logMessage);
+        _logger.LogInformation("Sending HTTP Response: {@log}", log);
     }
 
     public void LogHttpException(Exception exception)
@@ -114,9 +110,7 @@ public class SmsAuditLogger
             Exception = exception
         };
 
-        var logMessage = JsonConvert.SerializeObject(log);
-
-        _logger.LogInformation(logMessage);
+        _logger.LogInformation("Sending HTTP Exception: {@log}", log);
     }
 
     public void LogKafkaProducing(SmsNotificationTypeItem smsType, string consumer)
