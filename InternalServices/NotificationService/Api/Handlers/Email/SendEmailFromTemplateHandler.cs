@@ -1,14 +1,11 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Contracts.Email;
-using cz.kb.osbs.mcs.sender.sendapi.v4;
-using cz.kb.osbs.mcs.sender.sendapi.v4.email;
 using MediatR;
 using Microsoft.Extensions.Options;
 

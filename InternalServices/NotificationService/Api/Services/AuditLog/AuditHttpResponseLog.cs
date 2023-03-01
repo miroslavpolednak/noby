@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Primitives;
 
-namespace CIS.InternalServices.NotificationService.Api.Endpoints.Infrastructure.AuditLog;
+namespace CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 
 public class AuditHttpResponseLog : AuditLog
 {
