@@ -8,7 +8,14 @@ internal sealed class DeleteHouseholdHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteHouseholdRequest request, CancellationToken cancellationToken)
     {
-        var householdInstance = await _dbContext.Households.FindAsync(new object[] { request.HouseholdId }, cancellationToken);
+        var householdInstance = await _dbContext
+            .Households
+            .FirstOrDefaultAsync(t => t.HouseholdId == request.HouseholdId, cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.HouseholdNotFound, request.HouseholdId);
+
+        // kontrola ze to neni main household
+        if (householdInstance.HouseholdTypeId == HouseholdTypes.Main && !request.HardDelete)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CantDeleteDebtorHousehold);
 
         // smazat domacnost
         _dbContext.Households.Remove(householdInstance!);

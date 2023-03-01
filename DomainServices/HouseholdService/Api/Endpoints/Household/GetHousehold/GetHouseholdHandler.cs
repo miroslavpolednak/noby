@@ -12,7 +12,7 @@ internal sealed class GetHouseholdHandler
             .AsNoTracking()
             .Select(Database.HouseholdExpressions.HouseholdDetail())
             .FirstOrDefaultAsync(cancellationToken) 
-            ?? throw new CisNotFoundException(ErrorCodeMapper.HouseholdNotFound, ErrorCodeMapper.GetMessage(ErrorCodeMapper.HouseholdNotFound, request.HouseholdId));
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.HouseholdNotFound);
 
         return model;
     }

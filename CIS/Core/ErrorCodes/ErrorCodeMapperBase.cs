@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using CIS.Core.Exceptions;
+using System.Collections.ObjectModel;
 
 namespace CIS.Core.ErrorCodes;
 
@@ -26,6 +27,28 @@ public abstract class ErrorCodeMapperBase
         }
 
         return parameter == null ? Messages[exceptionCode] : Messages[exceptionCode].Replace("{PropertyValue}", parameter.ToString());
+    }
+
+    /// <summary>
+    /// Vytvoří vyjímku typu NotFound s textem pro daný ExceptionCode.
+    /// </summary>
+    /// <param name="exceptionCode">Kód chybové hlášky.</param>
+    /// <param name="parameter">Volitelně ID entity, která nebyla nalezena.</param>
+    /// <returns>Instance vyjímky, která má být vyvolána.</returns>
+    public static CisNotFoundException CreateNotFoundException(int exceptionCode, object? parameter = null)
+    {
+        return new CisNotFoundException(exceptionCode, GetMessage(exceptionCode, parameter));
+    }
+
+    /// <summary>
+    /// Vytvoří vyjímku typu ValidationFound s textem pro daný ExceptionCode.
+    /// </summary>
+    /// <param name="exceptionCode">Kód chybové hlášky.</param>
+    /// <param name="parameter">Volitelně parametr, který má být vložen na placeholder {PropertyValue}.</param>
+    /// <returns>Instance vyjímky, která má být vyvolána.</returns>
+    public static CisValidationException CreateValidationException(int exceptionCode, object? parameter = null)
+    {
+        return new CisValidationException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
     /// <summary>
