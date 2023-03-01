@@ -9,27 +9,27 @@ internal sealed class LinkCustomerOnSAToHouseholdHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(LinkCustomerOnSAToHouseholdRequest request, CancellationToken cancellationToken)
     {
         // domacnost
-        var householdEntity = await _dbContext
+        var household = await _dbContext
             .Households
             .FirstOrDefaultAsync(t => t.HouseholdId == request.HouseholdId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.HouseholdNotFound, request.HouseholdId);
 
         // customer 1 existuje na SA
         if (request.CustomerOnSAId1.HasValue
-            && !(await _dbContext.CustomerExistOnSalesArrangement(householdEntity.CustomerOnSAId1!.Value, householdEntity.SalesArrangementId, cancellationToken)))
+            && !(await _dbContext.CustomerExistOnSalesArrangement(household.CustomerOnSAId1!.Value, household.SalesArrangementId, cancellationToken)))
         {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CustomerNotOnSA, householdEntity.CustomerOnSAId1);
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CustomerNotOnSA, household.CustomerOnSAId1);
         }
 
         // customer 2 existuje na SA
         if (request.CustomerOnSAId2.HasValue
-            && !(await _dbContext.CustomerExistOnSalesArrangement(householdEntity.CustomerOnSAId2!.Value, householdEntity.SalesArrangementId, cancellationToken)))
+            && !(await _dbContext.CustomerExistOnSalesArrangement(household.CustomerOnSAId2!.Value, household.SalesArrangementId, cancellationToken)))
         {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CustomerNotOnSA, householdEntity.CustomerOnSAId2);
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CustomerNotOnSA, household.CustomerOnSAId2);
         }
 
-        householdEntity.CustomerOnSAId1 = request.CustomerOnSAId1;
-        householdEntity.CustomerOnSAId2 = request.CustomerOnSAId2;
+        household.CustomerOnSAId1 = request.CustomerOnSAId1;
+        household.CustomerOnSAId2 = request.CustomerOnSAId2;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

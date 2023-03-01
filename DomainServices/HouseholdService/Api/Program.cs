@@ -43,7 +43,7 @@ builder.Services
     .AddCustomerService()
     .AddUserService();
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Messages);
+builder.Services.AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init());
 builder.AddHouseholdService();
 
 builder.Services.AddGrpc(options =>

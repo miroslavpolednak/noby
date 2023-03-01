@@ -1,4 +1,6 @@
-﻿namespace DomainServices.HouseholdService.Api;
+﻿using CIS.Core.ErrorCodes;
+
+namespace DomainServices.HouseholdService.Api;
 
 internal sealed class ErrorCodeMapper
     : CIS.Core.ErrorCodes.ErrorCodeMapperBase
@@ -31,7 +33,7 @@ internal sealed class ErrorCodeMapper
     public const int Customer2WithoutCustomer1 =        16056;
     public const int HouseholdIdIsEmpty =               16080;
 
-    static ErrorCodeMapper()
+    public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
         {
@@ -63,5 +65,7 @@ internal sealed class ErrorCodeMapper
             { ObligationNotFound, "Obligation ID {PropertyValue} does not exist." },
             { IncomeIdIsEmpty, "IncomeId must be > 0" }
         });
+
+        return Messages;
     }
 }

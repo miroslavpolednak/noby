@@ -1,6 +1,5 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 using Google.Protobuf;
-using CIS.Foms.Enums;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncome;
 

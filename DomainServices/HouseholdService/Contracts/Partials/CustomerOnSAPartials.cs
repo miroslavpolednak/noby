@@ -9,7 +9,7 @@ public partial class CreateIncomeRequest
 { }
 
 public partial class CreateObligationRequest
-    : MediatR.IRequest<CreateObligationResponse>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<CreateObligationResponse>, CIS.Core.Validation.IValidatableRequest, IObligation
 { }
 
 public partial class DeleteCustomerRequest

@@ -27,21 +27,28 @@ internal sealed class CreateCustomerHandler
             Identities = request.Customer?.CustomerIdentifiers?.Select(t => new CustomerOnSAIdentity(t)).ToList()
         };
 
-        bool containsKbIdentity = request.Customer?.CustomerIdentifiers?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false;
-        bool containsMpIdentity = request.Customer?.CustomerIdentifiers?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp) ?? false;
+        bool containsKbIdentity = request
+            .Customer?
+            .CustomerIdentifiers?
+            .Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false;
+
+        bool containsMpIdentity = request
+            .Customer?
+            .CustomerIdentifiers?
+            .Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp) ?? false;
 
         // provolat sulm
         if (containsKbIdentity)
         {
-            var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
-            await _sulmClient.StopUse(identity.IdentityId, "MPAP", cancellationToken);
-            await _sulmClient.StartUse(identity.IdentityId, "MPAP", cancellationToken);
+            var kbIdentityId = entity.Identities!.First(t => t.IdentityScheme == IdentitySchemes.Kb).IdentityId;
+            await _sulmClient.StopUse(kbIdentityId, "MPAP", cancellationToken);
+            await _sulmClient.StartUse(kbIdentityId, "MPAP", cancellationToken);
         }
 
         // uz ma KB identitu, ale jeste nema MP identitu
         if (containsKbIdentity && !containsMpIdentity)
         {
-            var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
+            var identity = entity.Identities!.First(t => t.IdentityScheme == IdentitySchemes.Kb);
             await _updateService.GetCustomerAndUpdateEntity(entity, identity.IdentityId, identity.IdentityScheme, cancellationToken);
 
             // zavolat EAS
@@ -50,7 +57,8 @@ internal sealed class CreateCustomerHandler
         // nove byl customer identifikovan KB identitou
         else if (containsKbIdentity)
         {
-            await _updateService.GetCustomerAndUpdateEntity(entity, entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb).IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellationToken);
+            var kbIdentityId = entity.Identities!.First(t => t.IdentityScheme == IdentitySchemes.Kb).IdentityId;
+            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentityId, IdentitySchemes.Kb, cancellationToken);
         }
 
         // additional data - set defaults
@@ -79,11 +87,13 @@ internal sealed class CreateCustomerHandler
         _logger.EntityCreated(nameof(Database.Entities.CustomerOnSA), entity.CustomerOnSAId);
 
         if (entity.Identities is not null)
+        {
             model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new CIS.Infrastructure.gRPC.CisTypes.Identity
             {
                 IdentityScheme = (CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes)(int)t.IdentityScheme,
                 IdentityId = t.IdentityId
             }).ToList());
+        }
 
         return model;
     }

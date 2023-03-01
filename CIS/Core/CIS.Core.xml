@@ -881,6 +881,22 @@
             <param name="parameter">Volitelně parametr, který bude vložen do nalezené hlášky místo {PropertyValue}.</param>
             <exception cref="T:System.NotImplementedException">ExceptionCode nebyl nalezen v Messages.</exception>
         </member>
+        <member name="M:CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(System.Int32,System.Object)">
+            <summary>
+            Vytvoří vyjímku typu NotFound s textem pro daný ExceptionCode.
+            </summary>
+            <param name="exceptionCode">Kód chybové hlášky.</param>
+            <param name="parameter">Volitelně ID entity, která nebyla nalezena.</param>
+            <returns>Instance vyjímky, která má být vyvolána.</returns>
+        </member>
+        <member name="M:CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(System.Int32,System.Object)">
+            <summary>
+            Vytvoří vyjímku typu ValidationFound s textem pro daný ExceptionCode.
+            </summary>
+            <param name="exceptionCode">Kód chybové hlášky.</param>
+            <param name="parameter">Volitelně parametr, který má být vložen na placeholder {PropertyValue}.</param>
+            <returns>Instance vyjímky, která má být vyvolána.</returns>
+        </member>
         <member name="M:CIS.Core.ErrorCodes.ErrorCodeMapperBase.SetMessages(System.Collections.Generic.IDictionary{System.Int32,System.String})">
             <summary>
             Inicializuje kolekci chybových hlášek Messages. Tato kolekce je private, lze ji tedy z child třídy nastavit jen touto metodou.
