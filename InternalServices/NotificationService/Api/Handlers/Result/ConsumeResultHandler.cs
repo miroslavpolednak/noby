@@ -1,6 +1,7 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Handlers.Result.Requests;
+using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
@@ -15,6 +16,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
     private readonly IDateTime _dateTime;
     private readonly NotificationRepository _repository;
     private readonly ICodebookService _codebookService;
+    private readonly SmsAuditLogger _auditLogger;
     private readonly ILogger<ConsumeResultHandler> _logger;
 
     private static readonly Dictionary<string, NotificationState> _map = new()
@@ -29,11 +31,13 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
         IDateTime dateTime,
         NotificationRepository repository,
         ICodebookService codebookService,
+        SmsAuditLogger auditLogger,
         ILogger<ConsumeResultHandler> logger)
     {
         _dateTime = dateTime;
         _repository = repository;
         _codebookService = codebookService;
+        _auditLogger = auditLogger;
         _logger = logger;
     }
 
@@ -43,6 +47,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
         if (!Guid.TryParse(report.id, out var id))
         {
             _logger.LogDebug("Skipped for notificationId: {id}", report.id);
+            return new ResultConsumeResponse();
         }
 
         try
@@ -58,19 +63,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
 
                 if (smsType?.IsAuditLogEnabled ?? false)
                 {
-                    // todo: change to audit
-                    _logger.LogInformation("Received notification report {@Report}.", new
-                    {
-                        NotificationId = id,
-                        State = report.state,
-                        Errors = report.notificationErrors
-                            .Select(e => new
-                            {
-                                Code = e.code,
-                                Message = e.message
-                            })
-                            .ToList()
-                    });
+                    _auditLogger.LogKafkaResultReceived(report);
                 }
             }
             
