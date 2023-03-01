@@ -31,6 +31,7 @@ public class DocumentController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetOffer(int salesArrangementId, CancellationToken cancellationToken)
     {
         var request = new Offer.GetOfferRequest
@@ -56,6 +57,7 @@ public class DocumentController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<IActionResult> GetCalculation(int offerId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetOfferInput(offerId);
@@ -75,6 +77,7 @@ public class DocumentController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<IActionResult> GetPaymentSchedule(int offerId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetOfferInput(offerId);
@@ -94,6 +97,7 @@ public class DocumentController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<IActionResult> GetDrawing(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -113,6 +117,7 @@ public class DocumentController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<IActionResult> GetGeneralChange(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -132,6 +137,7 @@ public class DocumentController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<IActionResult> GetHUBN(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -143,6 +149,7 @@ public class DocumentController : ControllerBase
     [HttpGet("template/type/{documentTypeId:int}/sales-arrangement/{salesArrangementId:int}")]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<IActionResult> TestDocument(int documentTypeId, int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);

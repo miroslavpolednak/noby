@@ -24,6 +24,7 @@ public class HouseholdController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Domácnost" })]
     [ProducesResponseType(typeof(List<Dto.HouseholdInList>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<Dto.HouseholdInList>> GetList([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetHouseholds.GetHouseholdsRequest(salesArrangementId), cancellationToken);
 
@@ -40,6 +41,7 @@ public class HouseholdController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(GetHousehold.GetHouseholdResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetHousehold.GetHouseholdResponse> GetHousehold([FromRoute] int householdId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetHousehold.GetHouseholdRequest(householdId), cancellationToken);
 
@@ -55,6 +57,7 @@ public class HouseholdController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<int> Delete([FromRoute] int householdId)
         => await _mediator.Send(new DeleteHousehold.DeleteHouseholdRequest(householdId));
 
@@ -84,6 +87,7 @@ public class HouseholdController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task Update([FromRoute] int householdId, [FromBody] UpdateHousehold.UpdateHouseholdRequest? request)
         => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 

@@ -24,6 +24,7 @@ public class CasesController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(CreateSalesArrangement.CreateSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(caseId), cancellationToken);
 
@@ -60,6 +61,7 @@ public class CasesController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Case" })]
     [ProducesResponseType(typeof(Dto.CaseModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.CaseModel> GetById([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetById.GetByIdRequest(caseId), cancellationToken);
     
@@ -111,6 +113,7 @@ public class CasesController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(GetTaskList.GetTaskListResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetTaskList.GetTaskListResponse> GetTaskList([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetTaskList.GetTaskListRequest(caseId), cancellationToken);
 
