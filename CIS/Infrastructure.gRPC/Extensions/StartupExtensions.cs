@@ -81,7 +81,7 @@ public static class StartupExtensions
     /// </summary>
     /// <param name="assemblyType">Typ, který je v hlavním projektu - typicky Program.cs</param>
     /// <param name="validationMessages">Slovník pro překládání chybových kódů ve FluentValidation na naše error messages. [ExceptionCode, Message]</param>
-    public static IServiceCollection AddCisGrpcInfrastructure(this IServiceCollection services, Type assemblyType, IDictionary<int, string>? validationMessages = null)
+    public static IServiceCollection AddCisGrpcInfrastructure(this IServiceCollection services, Type assemblyType, CIS.Core.ErrorCodes.IErrorCodesDictionary? validationMessages = null)
     {
         services
             .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))

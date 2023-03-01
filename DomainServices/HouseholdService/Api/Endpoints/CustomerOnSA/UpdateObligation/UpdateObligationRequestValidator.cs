@@ -10,30 +10,30 @@ internal sealed class UpdateObligationRequestValidator
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
-            .WithErrorCode(ValidationMessages.CustomerOnSAIdIsEmpty);
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSAIdIsEmpty);
 
         RuleFor(t => t.ObligationTypeId)
             .MustAsync(async (t, token) => !t.HasValue || (await codebookService.ObligationTypes(token)).Any(x => x.Id == t.Value))
-            .WithErrorCode(ValidationMessages.ObligationTypeIsEmpty);
+            .WithErrorCode(ErrorCodeMapper.ObligationTypeIsEmpty);
 
         RuleFor(t => t.CreditCardLimit)
             .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 1 && r.ObligationTypeId.GetValueOrDefault() != 2)
-            .WithErrorCode(ValidationMessages.CreditCardLimitNotAllowed);
+            .WithErrorCode(ErrorCodeMapper.CreditCardLimitNotAllowed);
 
         RuleFor(t => t.LoanPrincipalAmount)
             .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 3 && r.ObligationTypeId.GetValueOrDefault() != 4)
-            .WithErrorCode(ValidationMessages.LoanPrincipalAmountNotAllowed);
+            .WithErrorCode(ErrorCodeMapper.LoanPrincipalAmountNotAllowed);
 
         RuleFor(t => t.InstallmentAmount)
             .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 3 && r.ObligationTypeId.GetValueOrDefault() != 4)
-            .WithErrorCode(ValidationMessages.InstallmentAmountNotAllowed);
+            .WithErrorCode(ErrorCodeMapper.InstallmentAmountNotAllowed);
 
         RuleFor(t => t.Creditor)
             .ChildRules(v =>
             {
                 v.RuleFor(t => t.CreditorId)
                     .Must((creditor, t) => string.IsNullOrEmpty(creditor.CreditorId) || string.IsNullOrEmpty(creditor.Name))
-                    .WithErrorCode(ValidationMessages.CreditorIdAndNameInSameTime);
+                    .WithErrorCode(ErrorCodeMapper.CreditorIdAndNameInSameTime);
             });
 
         /*RuleFor(t => t.Request.Correction)

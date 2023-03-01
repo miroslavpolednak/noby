@@ -4,6 +4,7 @@ using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
 using DomainServices;
 using CIS.InternalServices;
+using CIS.Infrastructure.gRPC;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -42,7 +43,7 @@ builder.Services
     .AddCustomerService()
     .AddUserService();
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program), ValidationMessages.Messages);
+builder.Services.AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Messages);
 builder.AddHouseholdService();
 
 builder.Services.AddGrpc(options =>

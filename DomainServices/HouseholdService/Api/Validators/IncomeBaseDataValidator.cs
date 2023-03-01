@@ -15,6 +15,6 @@ internal sealed class IncomeBaseDataValidator
                 return (await codebookService.Currencies(cancellation)).Any(t => t.Code == currencyCode);
             })
             .When(t => !string.IsNullOrEmpty(t.CurrencyCode))
-            .WithErrorCode(ValidationMessages.CurrencyNotValid);
+            .WithErrorCode(ErrorCodeMapper.CurrencyNotValid);
     }
 }

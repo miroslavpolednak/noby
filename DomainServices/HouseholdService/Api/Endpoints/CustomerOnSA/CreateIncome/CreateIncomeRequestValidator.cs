@@ -11,13 +11,13 @@ internal sealed class CreateIncomeRequestValidator
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
-            .WithErrorCode(ValidationMessages.CustomerOnSAIdIsEmpty);
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSAIdIsEmpty);
 
         RuleFor(t => t.IncomeTypeId)
             .GreaterThan(0)
-            .WithErrorCode(ValidationMessages.IncomeTypeIdIsEmpty)
+            .WithErrorCode(ErrorCodeMapper.IncomeTypeIdIsEmpty)
             .Must(t => (HouseholdTypes)t != HouseholdTypes.Unknown)
-            .WithErrorCode(ValidationMessages.IncomeTypeIdIsEmpty);
+            .WithErrorCode(ErrorCodeMapper.IncomeTypeIdIsEmpty);
 
         RuleFor(t => t.BaseData)
             .SetInheritanceValidator(v =>
@@ -28,18 +28,18 @@ internal sealed class CreateIncomeRequestValidator
         // customer nenalezen v DB
         RuleFor(t => t.CustomerOnSAId)
             .MustAsync(async (customerOnSAId, cancellationToken) => await dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerOnSAId, cancellationToken))
-            .WithErrorCode(ValidationMessages.CustomerOnSANotFound)
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSANotFound)
             .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
 
         // nelze uvést Cin a BirthNumber zároveň
         RuleFor(t => t.Employement)
             .Must(t => !(!string.IsNullOrEmpty(t.Employer.Cin) && !string.IsNullOrEmpty(t.Employer.BirthNumber)))
-            .WithErrorCode(ValidationMessages.EmployementCinBirthNo)
+            .WithErrorCode(ErrorCodeMapper.EmployementCinBirthNo)
             .When(t => t.Employement is not null);
 
         RuleFor(t => t.CustomerOnSAId)
             .MustAsync(async (customerOnSAId, cancellationToken) => await dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerOnSAId, cancellationToken))
-            .WithErrorCode(ValidationMessages.CustomerOnSANotFound)
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSANotFound)
             .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
 
         // kontrola poctu prijmu
@@ -53,6 +53,6 @@ internal sealed class CreateIncomeRequestValidator
 
                 return !IncomeHelpers.AlreadyHasMaxIncomes(incomeType, totalIncomesOfType);
             })
-            .WithErrorCode(ValidationMessages.MaxIncomesReached);
+            .WithErrorCode(ErrorCodeMapper.MaxIncomesReached);
     }
 }

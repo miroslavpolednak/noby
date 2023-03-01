@@ -9,7 +9,7 @@ internal sealed class DeleteHouseholdRequestValidator
     {
         RuleFor(t => t.HouseholdId)
             .MustAsync(async (householdId, cancellationToken) => await dbContext.Households.FindAsync(new object[] { householdId }, cancellationToken) is not null)
-            .WithErrorCode(ValidationMessages.HouseholdNotFound)
+            .WithErrorCode(ErrorCodeMapper.HouseholdNotFound)
             .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
 
         RuleFor(t => t.HouseholdId)
@@ -18,7 +18,7 @@ internal sealed class DeleteHouseholdRequestValidator
                 var householdInstance = await dbContext.Households.FindAsync(new object[] { householdId }, cancellationToken);
                 return householdInstance!.HouseholdTypeId != CIS.Foms.Enums.HouseholdTypes.Main;
             })
-            .WithErrorCode(ValidationMessages.CantDeleteDebtorHousehold)
+            .WithErrorCode(ErrorCodeMapper.CantDeleteDebtorHousehold)
             .When(request => !request.HardDelete);
     }
 }

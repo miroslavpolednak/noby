@@ -13,7 +13,7 @@ internal sealed class DeleteIncomeRequestValidator
             {
                 return await dbContext.CustomersIncomes.FindAsync(new object[] { incomeId }, cancellationToken) != null;
             })
-            .WithErrorCode(ValidationMessages.IncomeNotFound)
+            .WithErrorCode(ErrorCodeMapper.IncomeNotFound)
             .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
     }
 }

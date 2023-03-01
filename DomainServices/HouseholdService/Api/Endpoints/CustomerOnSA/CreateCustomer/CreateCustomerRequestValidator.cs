@@ -12,17 +12,17 @@ internal sealed class CreateCustomerRequestValidator
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithErrorCode(ValidationMessages.SalesArrangementIdIsEmpty);
+            .WithErrorCode(ErrorCodeMapper.SalesArrangementIdIsEmpty);
 
         RuleFor(t => t.CustomerRoleId)
             .GreaterThan(0)
-            .WithErrorCode(ValidationMessages.CustomerRoleIdIsEmpty)
+            .WithErrorCode(ErrorCodeMapper.CustomerRoleIdIsEmpty)
             .MustAsync(async (t, cancellationToken) => (await codebookService.CustomerRoles(cancellationToken)).Any(c => c.Id == t))
-            .WithErrorCode(ValidationMessages.CustomerRoleNotFound);
+            .WithErrorCode(ErrorCodeMapper.CustomerRoleNotFound);
 
         RuleFor(t => t.Customer.DateOfBirthNaturalPerson)
             .Must(d => d > _dateOfBirthMin && d < DateTime.Now)
-            .WithErrorCode(ValidationMessages.InvalidDateOfBirth)
+            .WithErrorCode(ErrorCodeMapper.InvalidDateOfBirth)
             .When(t => t.Customer.DateOfBirthNaturalPerson is not null);
     }
 }

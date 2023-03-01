@@ -10,13 +10,13 @@ internal sealed class UpdateIncomeRequestValidator
     {
         RuleFor(t => t.IncomeId)
             .GreaterThan(0)
-            .WithErrorCode(ValidationMessages.IncomeIdIsEmpty);
+            .WithErrorCode(ErrorCodeMapper.IncomeIdIsEmpty);
 
         RuleFor(t => t.IncomeTypeId)
             .GreaterThan(0)
-            .WithErrorCode(ValidationMessages.IncomeTypeIdIsEmpty)
+            .WithErrorCode(ErrorCodeMapper.IncomeTypeIdIsEmpty)
             .Must(t => (CIS.Foms.Enums.HouseholdTypes)t != CIS.Foms.Enums.HouseholdTypes.Unknown)
-            .WithErrorCode(ValidationMessages.IncomeTypeIdIsEmpty);
+            .WithErrorCode(ErrorCodeMapper.IncomeTypeIdIsEmpty);
 
         RuleFor(t => t.BaseData)
             .SetInheritanceValidator(v =>
@@ -27,7 +27,7 @@ internal sealed class UpdateIncomeRequestValidator
         // nelze uvést Cin a BirthNumber zároveň
         RuleFor(t => t.Employement)
             .Must(t => !(!string.IsNullOrEmpty(t.Employer.Cin) && !string.IsNullOrEmpty(t.Employer.BirthNumber)))
-            .WithErrorCode(ValidationMessages.EmployementCinBirthNo)
+            .WithErrorCode(ErrorCodeMapper.EmployementCinBirthNo)
             .When(t => t.Employement?.Employer is not null);
     }
 }

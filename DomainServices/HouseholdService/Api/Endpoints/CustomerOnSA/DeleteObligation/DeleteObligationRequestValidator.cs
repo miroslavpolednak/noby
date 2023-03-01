@@ -13,7 +13,7 @@ internal sealed class DeleteObligationRequestValidator
             {
                 return await dbContext.CustomersObligations.FindAsync(new object[] { obligationId }, cancellationToken) != null;
             })
-            .WithErrorCode(ValidationMessages.ObligationNotFound)
+            .WithErrorCode(ErrorCodeMapper.ObligationNotFound)
             .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
     }
 }

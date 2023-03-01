@@ -10,7 +10,7 @@ internal sealed class DeleteCustomerRequestValidator
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
-            .WithErrorCode(ValidationMessages.CustomerOnSAIdIsEmpty);
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSAIdIsEmpty);
 
         // kontrola existence customera
         RuleFor(t => t.CustomerOnSAId)
@@ -18,7 +18,7 @@ internal sealed class DeleteCustomerRequestValidator
             {
                 return await dbContext.Customers.FindAsync(new object[] { customerOnSAId }, cancellationToken) != null;
             })
-            .WithErrorCode(ValidationMessages.CustomerOnSANotFound)
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSANotFound)
             .ThrowCisException(GrpcValidationBehaviorExeptionTypes.CisNotFoundException);
 
         // kontrola ze nemazu Debtora
@@ -28,6 +28,6 @@ internal sealed class DeleteCustomerRequestValidator
                 var entity = await dbContext.Customers.FindAsync(new object[] { customerOnSAId }, cancellationToken);
                 return !(entity!.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor && !request.HardDelete);
             })
-            .WithErrorCode(ValidationMessages.CantDeleteDebtor);
+            .WithErrorCode(ErrorCodeMapper.CantDeleteDebtor);
     }
 }

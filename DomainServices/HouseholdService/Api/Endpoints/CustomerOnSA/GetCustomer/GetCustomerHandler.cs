@@ -14,7 +14,7 @@ internal sealed class GetCustomerHandler
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
             .FirstOrDefaultAsync(cancellationToken) 
-            ?? throw new CisNotFoundException(ValidationMessages.CustomerOnSANotFound, ValidationMessages.GetFormattedMessage(ValidationMessages.CustomerOnSANotFound, request.CustomerOnSAId));
+            ?? throw new CisNotFoundException(ErrorCodeMapper.CustomerOnSANotFound, ErrorCodeMapper.GetMessage(ErrorCodeMapper.CustomerOnSANotFound, request.CustomerOnSAId));
 
         var customerInstance = new Contracts.CustomerOnSA
         {

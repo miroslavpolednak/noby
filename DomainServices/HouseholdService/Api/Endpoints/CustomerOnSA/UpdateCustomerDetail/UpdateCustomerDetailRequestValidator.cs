@@ -10,6 +10,6 @@ internal sealed class UpdateCustomerDetailRequestValidator
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
-            .WithErrorCode(ValidationMessages.CustomerOnSAIdIsEmpty);
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSAIdIsEmpty);
     }
 }

@@ -5,7 +5,7 @@ internal sealed class FluentValidationLanguageManager
 {
     public const string DefaultLanguage = "en";
 
-    public FluentValidationLanguageManager(IDictionary<int, string> messages)
+    public FluentValidationLanguageManager(CIS.Core.ErrorCodes.IErrorCodesDictionary messages)
     {
         foreach (var message in messages)
         {

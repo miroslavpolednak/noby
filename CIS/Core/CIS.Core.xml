@@ -863,6 +863,43 @@
             URL health check endpointu pro vsechny sluzby/aplikace.
             </summary>
         </member>
+        <member name="T:CIS.Core.ErrorCodes.ErrorCodeMapperBase">
+            <summary>
+            Base třída pro zadávání chybových hlášek zejména pro FluentValidation a Rpc exceptions.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.ErrorCodes.ErrorCodeMapperBase.Messages">
+            <summary>
+            Slovník chybových hlášek [ExceptionCode, ExceptionMessage].
+            </summary>
+        </member>
+        <member name="M:CIS.Core.ErrorCodes.ErrorCodeMapperBase.GetMessage(System.Int32,System.Object)">
+            <summary>
+            Vrátí chybovou hláškou podle zadaného ExceptionCode - ten musí být uvedený v překladovém slovníku Messages.
+            </summary>
+            <param name="exceptionCode">Kód chybové hlášky.</param>
+            <param name="parameter">Volitelně parametr, který bude vložen do nalezené hlášky místo {PropertyValue}.</param>
+            <exception cref="T:System.NotImplementedException">ExceptionCode nebyl nalezen v Messages.</exception>
+        </member>
+        <member name="M:CIS.Core.ErrorCodes.ErrorCodeMapperBase.SetMessages(System.Collections.Generic.IDictionary{System.Int32,System.String})">
+            <summary>
+            Inicializuje kolekci chybových hlášek Messages. Tato kolekce je private, lze ji tedy z child třídy nastavit jen touto metodou.
+            </summary>
+            <remarks>Volat ve statickém konstruktoru child třídy?</remarks>
+            <param name="messages">[ExceptionCode, ExceptionMessage]</param>
+        </member>
+        <member name="T:CIS.Core.ErrorCodes.ErrorCodeMapperBase.ErrorCodesDictionary">
+            <summary>
+            Implementace IErrorCodesDictionary je private, aby nešla kolekce chybových hlášek vytvořit jinde, než v této base třídě.
+            </summary>
+            <remarks>Pokud tedy nebude někdo příliš kreativní a nevytvoří si vlastní implementaci...</remarks>
+        </member>
+        <member name="T:CIS.Core.ErrorCodes.IErrorCodesDictionary">
+            <summary>
+            Slovník obsahující mapování chybových kódů na chybové hlášky.
+            Implementace slovníku je v base třídě ErrorCodeMapperBase, jiná implementace by neměla existovat.
+            </summary>
+        </member>
         <member name="T:CIS.Core.AttributeExtensions">
             <summary>
             Extension metody na C# atributy
