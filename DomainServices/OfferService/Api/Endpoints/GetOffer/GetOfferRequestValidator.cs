@@ -10,6 +10,6 @@ internal sealed class GetOfferRequestValidator
     {
         RuleFor(t => t.OfferId)
             .GreaterThan(0)
-            .WithMessage("OfferId is not specified").WithErrorCode("10001");
+            .WithErrorCode(ErrorCodeMapper.OfferIdIsEmpty);
     }
 }

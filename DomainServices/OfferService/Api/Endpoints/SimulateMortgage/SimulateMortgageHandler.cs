@@ -35,7 +35,6 @@ internal sealed class SimulateMortgageHandler
             SimulationInputsBin = request.SimulationInputs.ToByteArray(),
             SimulationResultsBin = results.ToByteArray(),
             AdditionalSimulationResultsBin = additionalResults.ToByteArray(),
-            //TODO casem odstranit
             BasicParameters = Newtonsoft.Json.JsonConvert.SerializeObject(request.BasicParameters),
             SimulationInputs = Newtonsoft.Json.JsonConvert.SerializeObject(request.SimulationInputs),
             SimulationResults = Newtonsoft.Json.JsonConvert.SerializeObject(results),

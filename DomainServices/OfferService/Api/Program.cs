@@ -39,7 +39,7 @@ builder.Services.AddCisServiceDiscovery(); // kvuli auto dotazeni URL pro EAS
 builder.Services.AddCodebookService();
 
 // add my services
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+builder.Services.AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init());
 builder.AddOfferService();
 
 builder.Services.AddGrpc(options =>
