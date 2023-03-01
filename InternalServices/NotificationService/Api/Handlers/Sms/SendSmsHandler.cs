@@ -43,7 +43,6 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
     
     public async Task<SendSmsResponse> Handle(SendSmsRequest request, CancellationToken cancellationToken)
     {
-        await _auditLogger.LogHttpRequest();
         var username = _userAdapterService.GetUsername();
         var smsTypes = await _codebookService.SmsNotificationTypes(new SmsNotificationTypesRequest(), cancellationToken);
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??

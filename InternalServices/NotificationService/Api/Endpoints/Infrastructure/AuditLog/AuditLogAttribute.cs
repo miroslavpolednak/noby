@@ -7,6 +7,8 @@ public class AuditLogAttribute : Attribute, IActionFilter, IExceptionFilter
 {
     public void OnActionExecuting(ActionExecutingContext context)
     {
+        var logger = context.HttpContext.RequestServices.GetRequiredService<SmsAuditLogger>();
+        logger.LogHttpRequest().GetAwaiter();
     }
 
     public void OnActionExecuted(ActionExecutedContext context) 

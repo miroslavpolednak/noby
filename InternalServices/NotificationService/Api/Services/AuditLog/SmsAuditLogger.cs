@@ -1,4 +1,5 @@
-﻿using CIS.Core;
+﻿using System.Text;
+using CIS.Core;
 using CIS.Core.Attributes;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using DomainServices.CodebookService.Contracts.Endpoints.SmsNotificationTypes;
@@ -25,9 +26,9 @@ public class SmsAuditLogger
         _logger = logger;
     }
 
-    private async Task<string> GetBodyFromRequest(HttpRequest request)
+    private async Task<string> GetBodyFromRequest(HttpRequest request, Encoding? encoding = null)
     {
-        request.EnableBuffering();
+        request.Body.Seek(0, SeekOrigin.Begin);
         using var streamReader = new StreamReader(request.Body, leaveOpen: true);
         var requestBody = await streamReader.ReadToEndAsync();
         request.Body.Seek(0, SeekOrigin.Begin);
