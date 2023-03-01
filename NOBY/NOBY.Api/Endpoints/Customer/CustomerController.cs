@@ -20,7 +20,7 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(Create.CreateResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<Create.CreateResponse> Create([FromBody] Create.CreateRequest resquest, CancellationToken cancellationToken)
         => await _mediator.Send(resquest, cancellationToken);
@@ -72,7 +72,7 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] IdentifyByIdentity.IdentifyByIdentityRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
 
@@ -89,7 +89,7 @@ public class CustomerController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(Search.Dto.CustomerInList), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<Search.Dto.CustomerInList> Identify([FromBody] Identify.IdentifyRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 
@@ -117,7 +117,7 @@ public class CustomerController : ControllerBase
     [HttpGet("customer-on-sa/{customerOnSAId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(GetDetailWithChanges.GetDetailWithChangesResponse), StatusCodes.Status200OK)]
     public async Task<GetDetailWithChanges.GetDetailWithChangesResponse> GetDetailWithChanges([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
@@ -133,7 +133,7 @@ public class CustomerController : ControllerBase
     [HttpPut("customer-on-sa/{customerOnSAId:int}")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task GetDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateDetailWithChanges.UpdateDetailWithChangesRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
