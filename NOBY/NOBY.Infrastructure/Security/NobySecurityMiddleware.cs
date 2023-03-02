@@ -10,10 +10,20 @@ public class AppSecurityMiddleware
     public AppSecurityMiddleware(RequestDelegate next) =>
         _next = next;
 
-    public async Task Invoke(HttpContext context, DomainServices.UserService.Clients.IUserServiceClient userService)
+    public async Task Invoke(
+        HttpContext context, 
+        DomainServices.UserService.Clients.IUserServiceClient userService, 
+        Configuration.AppConfiguration configuration)
     {
-        //TODO v net5 nefunguje context.GetEndpoint(). Jak tohle vyresit lepe?
-        if (!_anonymousUrl.Contains(context.Request.Path.ToString()))
+        bool authenticateUser = true;
+
+        if (configuration.Security!.AuthenticationScheme != AuthenticationConstants.CaasAuthScheme)
+        {
+            //TODO v net5 nefunguje context.GetEndpoint(). Jak tohle vyresit lepe?
+            authenticateUser = !_anonymousUrl.Contains(context.Request.Path.ToString());
+        }
+
+        if (authenticateUser)
         {
             if (context.User?.Identity is null || !context.User.Identity.IsAuthenticated)
                 throw new System.Security.Authentication.AuthenticationException("User Identity not found in HttpContext");

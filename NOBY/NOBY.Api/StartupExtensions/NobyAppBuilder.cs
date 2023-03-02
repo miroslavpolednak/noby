@@ -41,15 +41,15 @@ internal static class NobyAppBuilder
             appBuilder.UseCisWebApiCors();
 
             // error middlewares
-            /*if (app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment())
             {
                 appBuilder.UseDeveloperExceptionPage();
             }
             else // custom exception handling
-            {*/
+            {
                 appBuilder.UseMiddleware<NOBY.Infrastructure.ErrorHandling.NobyApiExceptionMiddleware>();
                 appBuilder.UseHsts();
-            //}
+            }
 
             // version header
             appBuilder.Use(async (context, next) =>

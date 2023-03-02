@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 #region register services
 // konfigurace aplikace
 var appConfiguration = builder.AddNobyConfig();
+builder.Services.AddSingleton(appConfiguration);
 
 // vlozit do DI vsechny custom services
 builder.Services.AddAttributedServices(typeof(NOBY.Infrastructure.IInfrastructureAssembly), typeof(NOBY.Api.IApiAssembly));
@@ -51,9 +52,7 @@ builder.Services
        .AddDocumentGeneratorService();
 
 // FOMS services
-builder
-    .AddNobyServices()
-    .AddNobyDatabase();
+builder.AddNobyServices();
 
 // authentication
 builder.AddFomsAuthentication(appConfiguration);
