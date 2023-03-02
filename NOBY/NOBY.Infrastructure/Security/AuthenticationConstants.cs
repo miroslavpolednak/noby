@@ -23,12 +23,14 @@ public static class AuthenticationConstants
     public const string CaasAuthScheme = "CaasAuthentication";
 
     /// <summary>
-    /// Type claimu, který obsahuje v33id přihlášeného uživatele
-    /// </summary>
-    public const string ClaimNameV33id = "v33id";
-
-    /// <summary>
     /// Type claimu, který obsahuje login (CAAS login) přihlášeného uživatele
     /// </summary>
     public const string ClaimNameLogin = "login";
+
+    public const string DefaultAuthenticationUrlPrefix = "auth";
+    public const string DefaultAuthenticationUrlSegment = "/" + DefaultAuthenticationUrlPrefix;
+    public const string DefaultSignInEndpoint = "/signin";
+    public const string DefaultSignOutEndpoint = "/signout";
+    public const string DefaultSignInUrl = DefaultAuthenticationUrlSegment + DefaultSignInEndpoint;
+    public const string DefaultSignOutUrl = DefaultAuthenticationUrlSegment + DefaultSignOutEndpoint;
 }

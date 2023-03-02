@@ -8,7 +8,7 @@ namespace NOBY.Api.StartupExtensions;
 
 public static class NobyAuthentication
 {
-    public static AuthenticationBuilder AddFomsAuthentication(this WebApplicationBuilder builder, AppConfiguration configuration)
+    public static AuthenticationBuilder AddNobyAuthentication(this WebApplicationBuilder builder, AppConfiguration configuration)
     {
         // its mandatory to have auth scheme
         if (string.IsNullOrEmpty(configuration.Security?.AuthenticationScheme))
@@ -29,7 +29,7 @@ public static class NobyAuthentication
         switch (configuration.Security.AuthenticationScheme)
         {
             case AuthenticationConstants.CaasAuthScheme:
-                return builder.Services.AddFomsCaasAuthentication(configuration.Security);
+                return builder.Services.AddFomsCaasAuthentication();
 
             // fake authentication
             case AuthenticationConstants.MockAuthScheme:

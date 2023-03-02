@@ -18,16 +18,20 @@ internal sealed class CaasCookieHandler
         options.SlidingExpiration = true;
         options.Cookie.Name = AuthenticationConstants.CookieName;
 
+        // pokud je nastaveno odhlasen pri neaktivite uzivatele
+        if (_configuration.SessionInactivityTimeout.GetValueOrDefault() > 0)
+        {
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(_configuration.SessionInactivityTimeout!.Value);
+        }
+
         options.Events.OnSigningIn = context =>
         {
             var currentLogin = context.Principal!.Claims.First(t => t.Type == ClaimTypes.NameIdentifier).Value;
-            var parsedLogin = currentLogin.Split('=');
 
             var claims = new List<Claim>();
-            claims.Add(new Claim(AuthenticationConstants.ClaimNameV33id, "999"));
             claims.Add(new Claim(AuthenticationConstants.ClaimNameLogin, currentLogin));
 
-            var identity = new ClaimsIdentity(claims, context.Principal.Identity!.AuthenticationType, AuthenticationConstants.ClaimNameV33id, "role");
+            var identity = new ClaimsIdentity(claims, context.Principal.Identity!.AuthenticationType, AuthenticationConstants.ClaimNameLogin, "role");
             var principal = new ClaimsPrincipal(identity);
 
             context.Principal = principal;
@@ -39,5 +43,12 @@ internal sealed class CaasCookieHandler
     public void Configure(CookieAuthenticationOptions options)
     {
         Configure(Options.DefaultName, options);
+    }
+
+    private readonly Configuration.AppConfigurationSecurity _configuration;
+
+    public CaasCookieHandler(Configuration.AppConfiguration configuration)
+    {
+        _configuration = configuration.Security!;
     }
 }

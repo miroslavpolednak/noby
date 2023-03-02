@@ -29,7 +29,7 @@ public class AppSecurityMiddleware
                 throw new System.Security.Authentication.AuthenticationException("User Identity not found in HttpContext");
 
             // zjistit login uzivatele
-            var login = (context.User.Identity as ClaimsIdentity)?.Claims.FirstOrDefault(t => t.Type == ClaimTypes.Spn)?.Value;
+            var login = (context.User.Identity as ClaimsIdentity)?.Claims.FirstOrDefault(t => t.Type == AuthenticationConstants.ClaimNameLogin)?.Value;
             if (string.IsNullOrEmpty(login))
                 throw new System.Security.Authentication.AuthenticationException("User login is empty");
 

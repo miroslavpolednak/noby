@@ -27,4 +27,9 @@ public sealed class AppConfigurationSecurity
     /// oAuth Client secret
     /// </summary>
     public string? ClientSecret { get; set; }
+
+    /// <summary>
+    /// Pokud je nastaveno na True, použije pro oAuth2 backchannel systémovou proxy
+    /// </summary>
+    public bool UseSystemProxy { get; set; }
 }
