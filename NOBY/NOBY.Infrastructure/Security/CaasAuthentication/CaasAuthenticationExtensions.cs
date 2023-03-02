@@ -11,9 +11,13 @@ public static class CaasAuthenticationExtensions
 {
     public static AuthenticationBuilder AddFomsCaasAuthentication(this IServiceCollection services, Configuration.AppConfigurationSecurity configuration)
     {
+        // persistance refresh tokenu
         services.AddOpenIdConnectAccessTokenManagement();
 
+        // zpusob vytvareni autentizacni cookie
         services.AddSingleton<IConfigureOptions<OpenIdConnectOptions>, CaasOpendIdHandler>();
+
+        // nastaveni volani CAASu
         services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, CaasCookieHandler>();
 
         return services
@@ -22,7 +26,7 @@ public static class CaasAuthenticationExtensions
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            .AddCookie(options =>
             {
                 // pokud je nastaveno odhlasen pri neaktivite uzivatele
                 if (configuration.SessionInactivityTimeout.GetValueOrDefault() > 0)

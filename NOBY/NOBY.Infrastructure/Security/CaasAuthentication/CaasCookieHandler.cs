@@ -18,12 +18,6 @@ internal sealed class CaasCookieHandler
         options.SlidingExpiration = true;
         options.Cookie.Name = AuthenticationConstants.CookieName;
 
-        options.Events.OnRedirectToLogin = context =>
-        {
-            context.Response.StatusCode = 401;
-            return Task.CompletedTask;
-        };
-
         options.Events.OnSigningIn = context =>
         {
             var currentLogin = context.Principal!.Claims.First(t => t.Type == ClaimTypes.NameIdentifier).Value;
