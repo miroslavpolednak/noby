@@ -3371,5 +3371,10 @@
             Příznak potvrzeného kontaktu
             </summary>
         </member>
+        <member name="M:NOBY.Api.StartupExtensions.NobyAppBuilder.UseNobyAuthStrategy(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            routy pro autentizaci a signout uzivatele
+            </summary>
+        </member>
     </members>
 </doc>
