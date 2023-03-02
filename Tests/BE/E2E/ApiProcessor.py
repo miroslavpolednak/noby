@@ -66,9 +66,9 @@ class ApiProcessor():
         req = offer_json
 
         # call FE API endpoint 
-        self.__log.debug(f'create_offer.req [{req}]')
+        self.__log.info(f'create_offer.req [{req}]')
         res = FeAPI.Offer.simulate_mortgage(req)
-        self.__log.debug(f'create_offer.res [{res}]')
+        self.__log.info(f'create_offer.res [{res}]')
 
         # set process data
         offer_id: int = res['offerId']
@@ -94,9 +94,9 @@ class ApiProcessor():
         )
 
         # call FE API endpoint
-        self.__log.debug(f'create_case.req [{req}]')
+        self.__log.info(f'create_case.req [{req}]')
         res = FeAPI.Offer.create_case(req)
-        self.__log.debug(f'create_case.res [{res}]')
+        self.__log.info(f'create_case.res [{res}]')
 
         # set test data
         Processing.set_process_key(self.__case_json, EProcessKey.CASE_ID, res['caseId'])
@@ -132,9 +132,9 @@ class ApiProcessor():
                 )
 
                 # call FE API endpoint
-                self.__log.debug(f'create_households.req [{req}]')
+                self.__log.info(f'create_households.req [{req}]')
                 res = FeAPI.Household.create_household(req)
-                self.__log.debug(f'create_households.res [{res}]')
+                self.__log.info(f'create_households.res [{res}]')
 
                 household_id = res['householdId']
                 Processing.set_process_key(household_json, EProcessKey.HOUSEHOLD_ID, household_id)
@@ -155,9 +155,9 @@ class ApiProcessor():
             )
 
             # call FE API endpoint
-            self.__log.debug(f'create_households_parameters.req [{req}]')
+            self.__log.info(f'create_households_parameters.req [{req}]')
             res = FeAPI.Household.set_household_parameters(household_id, req)
-            self.__log.debug(f'create_households_parameters.res [{res}]')
+            self.__log.info(f'create_households_parameters.res [{res}]')
             
         # set test data (ids of customers)
         customers = FeAPI.SalesArrangement.get_customers(sales_arrangement_id)
@@ -204,9 +204,9 @@ class ApiProcessor():
         )
 
         # call FE API endpoint
-        self.__log.debug(f'create_customers.req [{req}]')
+        self.__log.info(f'create_customers.req [{req}]')
         res = FeAPI.Household.set_household_customers(household_id, req)
-        self.__log.debug(f'create_customers.res [{res}]')
+        self.__log.info(f'create_customers.res [{res}]')
 
         # set process data (ids of customers on SA)
         Processing.set_process_key(household_json['customer1'], EProcessKey.CUSTOMER_ON_SA_ID, res['customerOnSAId1'])
@@ -309,9 +309,9 @@ class ApiProcessor():
             )
 
             # call FE API endpoint
-            self.__log.debug(f'create_incomes.req [{req}]')
+            self.__log.info(f'create_incomes.req [{req}]')
             res = FeAPI.CustomerOnSa.create_income(customer_on_sa_id, req)
-            self.__log.debug(f'create_incomes.res [{res}]')
+            self.__log.info(f'create_incomes.res [{res}]')
 
             income_id: int = res
             Processing.set_process_key(income_json, EProcessKey.INCOME_ID, income_id)
@@ -361,9 +361,9 @@ class ApiProcessor():
             )
 
             # call FE API endpoint
-            self.__log.debug(f'create_obligations.req [{req}]')
+            self.__log.info(f'create_obligations.req [{req}]')
             res = FeAPI.CustomerOnSa.create_obligation(customer_on_sa_id, req)
-            self.__log.debug(f'create_obligations.res [{res}]')
+            self.__log.info(f'create_obligations.res [{res}]')
 
             obligation_id: int = res
             Processing.set_process_key(obligation_json, EProcessKey.OBLIGATION_ID, obligation_id)
@@ -399,9 +399,9 @@ class ApiProcessor():
         )
 
         # call FE API endpoint
-        self.__log.debug(f'create_parameters.req [{req}]')
+        self.__log.info(f'create_parameters.req [{req}]')
         res = FeAPI.SalesArrangement.set_parameters(sales_arrangement_id, req)
-        self.__log.debug(f'create_parameters.res [{res}]')
+        self.__log.info(f'create_parameters.res [{res}]')
 
     @staticmethod
     def load_case(case_id: int) -> Case | dict:

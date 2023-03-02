@@ -1,5 +1,5 @@
 import json
-from logging import WARNING, DEBUG
+from logging import WARNING, DEBUG, INFO
 from requests import cookies, Response, request
 
 from common import config, Log
@@ -34,7 +34,7 @@ class Base():
             cookies = Base.get_cookies(login)
             res = request(url=url, method=method, cookies=cookies, json=json)
 
-            log_level: int = DEBUG if res.status_code == 200 else WARNING
+            log_level: int = INFO if res.status_code == 200 else WARNING
             self._log.log(log_level, f'HandleRequest [url: {url}, method: {method}, login: {login}, status_code: {res.status_code}]]')
 
             print(f'FeAPI.HandleRequest [url: {url}, method: {method}, login: {login}, status_code: {res.status_code}]]')

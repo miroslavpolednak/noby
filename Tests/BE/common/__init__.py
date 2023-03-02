@@ -12,6 +12,6 @@ from .enums.EService import EService
 from .enums.EServiceType import EServiceType
 
 from .helpers.Convertor import Convertor
-from .logs.Log import Log
+from .logging.Log import Log
 
 config:IConfig = ConfigDefault()
