@@ -22,6 +22,7 @@ public class ProductController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
     [ProducesResponseType(typeof(List<GetCustomersOnProduct.GetCustomersOnProductCustomer>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<GetCustomersOnProduct.GetCustomersOnProductCustomer>> GetCustomersOnProduct([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomersOnProduct.GetCustomersOnProductRequest(caseId), cancellationToken);
 
@@ -34,10 +35,10 @@ public class ProductController : ControllerBase
     /// <returns>Seznam závazků na produktu</returns>
     [HttpGet("{caseId:long}/obligations")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(List<ProductObligation>), StatusCodes.Status200OK)]
-    [SwaggerResponse(StatusCodes.Status204NoContent)]
-    [SwaggerResponse(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
+    [ProducesResponseType(typeof(List<ProductObligation>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetProductObligations([FromRoute] long caseId, CancellationToken cancellationToken)
     {
         var items = await _mediator.Send(new GetProductObligationList.GetProductObligationListRequest(caseId), cancellationToken);
