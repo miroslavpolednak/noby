@@ -21,7 +21,7 @@ class Log():
             datefmt='%d.%m.%y %H:%M:%S',
             level=logging.INFO,
             handlers=[
-                logging.FileHandler("test.log", 'a'),
+                logging.FileHandler("test.log", 'a', 'utf-8'),
                 logging.StreamHandler()
             ]
         )
