@@ -51,8 +51,13 @@ builder.Services
        .AddGrpcReflection()
        .AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
 
+
+
 if (config.UseCacheForConfiguration)
+{
+    builder.Services.AddMemoryCache();
     builder.Services.Decorate<IConfigurationManager, CachedConfigurationManager>();
+}
 
 if (runAsWinSvc) builder.Host.UseWindowsService();
 

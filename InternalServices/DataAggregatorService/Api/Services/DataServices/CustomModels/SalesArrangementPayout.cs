@@ -1,7 +1,7 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.SalesArrangementService.Contracts;
 
-namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.Dto;
+namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
 
 internal class SalesArrangementPayout
 {

@@ -57,7 +57,7 @@ internal class LoanApplication3602TemplateData : LoanApplicationBaseTemplateData
             Customer2Obligation = new LoanApplicationObligation(HouseholdCodebtor!.CustomerOnSa2!);
         }
 
-        LoanApplicationCustomer CreateCustomer(long id) => new(GetDetail(id), _degreesBefore, _countries, _identificationDocumentTypes);
+        LoanApplicationCustomer CreateCustomer(long id) => new(GetDetail(id), _codebookManager.DegreesBefore, _codebookManager.Countries, _codebookManager.IdentificationDocumentTypes);
         CustomerDetailResponse GetDetail(long id) => response.Customers.First(c => c.Identities.Any(i => i.IdentityId == id));
     }
 
@@ -66,7 +66,7 @@ internal class LoanApplication3602TemplateData : LoanApplicationBaseTemplateData
         if (customer is null)
             return default;
 
-        return _maritalStatuses.Where(m => m.Id == customer.MaritalStatusStateId)
+        return _codebookManager.MaritalStatuses.Where(m => m.Id == customer.MaritalStatusStateId)
                                .Select(m => m.Name)
                                .First();
     }

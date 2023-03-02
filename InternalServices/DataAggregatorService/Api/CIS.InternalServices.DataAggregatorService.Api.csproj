@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Configuration\Keys\" />
     <Folder Include="Endpoints\GetDocumentData\" />
     <Folder Include="Endpoints\GetEasForm\" />
     <Folder Include="Services\Documents\TemplateData\LoanApplication\" />

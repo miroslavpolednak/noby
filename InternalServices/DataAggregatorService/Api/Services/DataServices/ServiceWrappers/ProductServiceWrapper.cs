@@ -12,12 +12,13 @@ internal class ProductServiceWrapper : IServiceWrapper
         _productService = productService;
     }
 
+    public DataSource DataSource => DataSource.ProductService;
+
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
-        if (!input.CaseId.HasValue)
-            throw new ArgumentNullException(nameof(InputParameters.CaseId));
+        input.ValidateCaseId();
 
-        var result = await _productService.GetMortgage(input.CaseId.Value, cancellationToken);
+        var result = await _productService.GetMortgage(input.CaseId!.Value, cancellationToken);
 
         data.Mortgage = result.Mortgage;
     }

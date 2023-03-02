@@ -44,17 +44,17 @@ internal class ConfigurationManager : IConfigurationManager
             fields.Select(f => f.DataSource).Union(tables.Select(t => t.DataSource));
     }
 
-    public async Task<EasFormConfiguration> LoadEasFormConfiguration(EasFormKey easFormRequestTypeId, CancellationToken cancellationToken)
+    public async Task<EasFormConfiguration> LoadEasFormConfiguration(EasFormKey easFormKey, CancellationToken cancellationToken)
     {
-        var fields = await _repository.LoadEasFormSourceFields(easFormRequestTypeId, cancellationToken);
+        var fields = await _repository.LoadEasFormSourceFields(easFormKey.RequestTypeId, cancellationToken);
 
         return new EasFormConfiguration
         {
-            EasFormRequestType = (EasFormRequestType)easFormRequestTypeId,
+            EasFormRequestType = (EasFormRequestType)easFormKey.RequestTypeId,
             InputConfig = new InputConfig
             {
                 DataSources = GetDataSources(fields.Select(f => f.DataSource)),
-                DynamicInputParameters = await _repository.LoadEasFormDynamicInputFields(easFormRequestTypeId, cancellationToken)
+                DynamicInputParameters = await _repository.LoadEasFormDynamicInputFields(easFormKey.RequestTypeId, cancellationToken)
             },
             SourceFields = fields
         };

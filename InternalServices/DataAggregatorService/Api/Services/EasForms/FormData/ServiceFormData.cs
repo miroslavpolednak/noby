@@ -1,15 +1,12 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
-using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
 [TransientService, SelfService]
 internal class ServiceFormData : AggregatedData
 {
-    private List<GenericCodebookItem> _academicDegreesBefore = null!;
-
     public AggregatedData AggregatedData => this;
 
     public MockValues MockValues { get; } = new();
@@ -22,7 +19,7 @@ internal class ServiceFormData : AggregatedData
         {
             var degreeBeforeId = Customer.NaturalPerson.DegreeBeforeId;
 
-            return degreeBeforeId.HasValue ? _academicDegreesBefore.First(x => x.Id == degreeBeforeId).Name : null;
+            return degreeBeforeId.HasValue ? _codebookManager.DegreesBefore.First(x => x.Id == degreeBeforeId).Name : null;
         }
     }
 
@@ -30,8 +27,8 @@ internal class ServiceFormData : AggregatedData
 
     public bool IsAgent => SalesArrangement.Drawing.Agent?.IsActive ?? false;
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
+    protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        _academicDegreesBefore = await codebookService.AcademicDegreesBefore(cancellationToken);
+        configurator.DegreesBefore();
     }
 }
