@@ -23,7 +23,7 @@ class Writer_sqlite(Pipeline_element):
         try:
             db = sqlite3.connect(self.db_file)
             cursor = db.cursor()
-            sql = f"insert into Testdata(TimeCreated, RecordOrder, RecordSource, EntityType, EntityData) values('{self.timestamp}',{self.cnt},'DATAGENERATOR','{self.entity_type}','{json_text}')"
+            sql = f"insert into TestData(TimeCreated, RecordOrder, RecordSource, EntityType, EntityData) values('{self.timestamp}',{self.cnt},'DATAGENERATOR','{self.entity_type}','{json_text}')"
             cursor.executescript(sql)
 
         except Error as e:

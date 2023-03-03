@@ -1,4 +1,4 @@
-from .Base import Base
+from ..base.Base import Base
 from .LoanPurpose import LoanPurpose
 from .Developer import Developer
 from .MarketingActions import MarketingActions
@@ -6,6 +6,7 @@ from .Insurance import Insurance
 from .Fee import Fee
 
 from common import Convertor
+#from typing import List
 
 DISPATCHES = {
             'product_type_id': lambda value: Convertor.to_int(value),
@@ -34,6 +35,8 @@ DISPATCHES = {
             'real_estate_insurance': lambda value: Insurance.from_json(value),
             'fees': lambda value: Fee.from_json_list(value),
         }
+
+JSON_KEYS = ['productTypeId','loanKindId','loanAmount','loanDuration','fixedRatePeriod','collateralAmount','paymentDay','statementTypeId','isEmployeeBonusRequested','expectedDateOfDrawing','withGuarantee','financialResourcesOwn','financialResourcesOther','drawingTypeId','drawingDurationId','loanPurposes','interestRateDiscount','interestRateDiscountToggle','marketingActions','developer','riskLifeInsurance','realEstateInsurance','resourceProcessId','fees']
 
 # CREATE TABLE SimulateMortgageRequest (SimulateMortgageRequestPk INTEGER PRIMARY KEY, ResourceProcessId TEXT NOT NULL /*string*/, BasicParametersPk INTEGER NULL /*None*/, SimulationInputsPk INTEGER NULL /*None*/);
 # CREATE TABLE BasicParameters (BasicParametersPk INTEGER PRIMARY KEY, FinancialResourcesOwn REAL NULL /*NullableGrpcDecimal*/, FinancialResourcesOther REAL NULL /*NullableGrpcDecimal*/, GuaranteeDateTo REAL NULL /*NullableGrpcDate*/, StatementTypeId INTEGER NULL /*Int32Value*/);
@@ -143,7 +146,8 @@ class Offer(Base):
             SimulationInputs = simulation_inputs
         )        
 
-
+    def _get_json_keys(self):
+        return JSON_KEYS
 
 # ?????:
 # "withGuarantee":false,
