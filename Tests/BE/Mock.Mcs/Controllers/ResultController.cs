@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Avro.Specific;
+using cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport;
+using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,8 +24,23 @@ public class ResultController : ControllerBase
     }
 
     [HttpPost]
-    public string Produce()
+    public async Task Produce([FromQuery] int count, [FromQuery] int delayMs)
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < count; i++)
+        {
+            await _producer.Produce(new NotificationReport
+            {
+                id = Guid.NewGuid().ToString(),
+                channel = new Channel
+                {
+                    id = "SMS"
+                },
+                state = "SENT",
+                exactlyOn = DateTime.Now,
+                notificationErrors = new List<NotificationError>()
+            });
+            
+            await Task.Delay(TimeSpan.FromMilliseconds(delayMs));
+        }
     }
 }

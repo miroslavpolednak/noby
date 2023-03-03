@@ -1,15 +1,24 @@
 ﻿using Avro.Specific;
+using CIS.InternalServices.NotificationService.Mcs.Partials;
 using Confluent.Kafka;
+using Confluent.Kafka.SyncOverAsync;
+using Confluent.SchemaRegistry;
 using cz.kb.osbs.mcs.sender.sendapi.v4.sms;
 using KB.Speed.MassTransit.DependencyInjection;
 using KB.Speed.MassTransit.Kafka;
+using KB.Speed.MassTransit.Kafka.Serializers;
 using KB.Speed.Messaging.Kafka.DependencyInjection;
+using KB.Speed.Messaging.Kafka.SerDes.Avro;
 using KB.Speed.Tracing.Extensions;
 using KB.Speed.Tracing.Instrumentations.AspNetCore;
 using KB.Speed.Tracing.Instrumentations.HttpClient;
 using MassTransit;
+using Microsoft.Extensions.Options;
 using Mock.Mcs.Configuration;
 using Mock.Mcs.Messaging.Consumers;
+using Mock.Mcs.Messaging.Infrastructure;
+using AvroDeserializerConfig = KB.Speed.Messaging.Kafka.SerDes.Avro.AvroDeserializerConfig;
+using AvroSerializerConfig = Confluent.SchemaRegistry.Serdes.AvroSerializerConfig;
 using SendEmail = cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail;
 
 namespace Mock.Mcs.Messaging;
@@ -72,22 +81,22 @@ public static class ServiceCollectionExtensions
                         }
                     });
                     
-                    // configure topic mapping for Mcs
-                    k.TopicEndpointAvro<SendEmail, SendEmailConsumer>(
-                        context,
-                        topics.McsSender,
-                        kafkaConfiguration.GroupId,
-                        _ =>
-                        {
-                        });
+                    var multipleTypeConfig = new MultipleTypeConfigBuilder<IMcsSenderCommand>()
+                        .AddType<SendEmail>(SendEmail._SCHEMA)
+                        .AddType<SendSMS>(SendSMS._SCHEMA)
+                        .Build();
                     
-                    k.TopicEndpointAvro<SendSMS, SendSmsConsumer>(
-                        context,
-                        topics.McsSender,
-                        kafkaConfiguration.GroupId,
-                        _ =>
-                        {
-                        });
+                    k.TopicEndpoint<IMcsSenderCommand>(topics.McsSender, kafkaConfiguration.GroupId, conf =>
+                    {
+                        var schemaRegistryClient = context.GetRequiredService<ISchemaRegistryClient>();
+                        var valueDeserializer = new MultipleTypeDeserializer<IMcsSenderCommand>(multipleTypeConfig, schemaRegistryClient);
+
+                        conf.SetValueDeserializer(valueDeserializer.AsSyncOverAsync());
+                        conf.ConfigureConsumer<SendEmailConsumer>(context);
+                        conf.ConfigureConsumer<SendSmsConsumer>(context);
+                        conf.SetHeadersDeserializer(new HeaderDeserializer());
+                    });
+                    
                 });
             });
         });
