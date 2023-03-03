@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- DO NOT UPGRADE VERSIONS -->
+        <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="0.7.2.1" />
+        <PackageReference Include="MassTransit" Version="8.0.9" />
+        <PackageReference Include="MassTransit.Kafka" Version="8.0.9" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\InternalServices\NotificationService\Mcs\CIS.InternalServices.NotificationService.Mcs.csproj" />
+    </ItemGroup>
+    
+</Project>
