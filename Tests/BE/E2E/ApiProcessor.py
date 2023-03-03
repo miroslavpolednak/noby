@@ -187,11 +187,14 @@ class ApiProcessor():
 
             customer = dict(
                 customerOnSAId = customer_on_sa_id,
+                # roleId = 1, #TODO: remove from source JSON !?
                 firstName = Processing.get_key(customer_json, 'firstName', ''),
                 lastName = Processing.get_key(customer_json, 'lastName', ''),
-                incomes = [],
-                # roleId = 1, #TODO: remove from source JSON !?
+                dateOfBirth = Processing.get_key(customer_json, 'dateOfBirth', ''),
+                phoneNumberForOffer = Processing.get_key(customer_json, 'phoneNumberForOffer', ''),
+                emailForOffer = Processing.get_key(customer_json, 'emailForOffer', ''),
                 identities = [] if identity is None else [identity],
+                incomes = [],
                 obligations = [],
             )
 
@@ -425,14 +428,52 @@ class ApiProcessor():
         print(f'sales_arrangement_id: {sales_arrangement_id}')
 
         households: dict = ApiProcessor.__load_households(sales_arrangement_id)
+        parameters: dict = ApiProcessor.__load_parameters(sales_arrangement_id)
 
         json_dict = dict(
             offer = dict(),
             households = households,
-            parameters = dict(),
+            parameters = parameters,
         )
 
         return Case(json_dict)
+
+    @staticmethod
+    def __load_parameters(sales_arrangement_id: int) -> dict:
+
+        # call FE API endpoint
+        res = FeAPI.SalesArrangement.get_sales_arrangement(sales_arrangement_id)
+        res_parameters = Processing.get_key(res, 'parameters')
+        
+        def parse_loan_real_estate(loan_real_estate_item: dict) -> dict:
+            # ['realEstateTypeId', 'isCollateral','realEstatePurchaseTypeId']
+            return dict(
+                realEstateTypeId = Processing.get_key(loan_real_estate_item, 'realEstateTypeId'),
+                isCollateral = Processing.get_key(loan_real_estate_item, 'isCollateral'),
+                realEstatePurchaseTypeId = Processing.get_key(loan_real_estate_item, 'realEstatePurchaseTypeId'),
+            )
+
+        parameters = None
+        if res_parameters is not None:
+
+            res_loan_real_estates = Processing.get_key(res_parameters, 'loanRealEstates')
+            loan_real_estates: List[dict] = None
+            
+            if res_loan_real_estates is not None:
+                loan_real_estates = list(map(lambda loan_real_estate_item: parse_loan_real_estate(loan_real_estate_item), res_loan_real_estates))
+
+            # ['expectedDateOfDrawing','incomeCurrencyCode','residencyCurrencyCode','contractSignatureTypeId','agent','agentConsentWithElCom','loanRealEstates']
+            parameters = dict(
+                expectedDateOfDrawing = Processing.get_key(res_parameters, 'expectedDateOfDrawing'),
+                incomeCurrencyCode = Processing.get_key(res_parameters, 'incomeCurrencyCode'),
+                residencyCurrencyCode = Processing.get_key(res_parameters, 'residencyCurrencyCode'),
+                contractSignatureTypeId = Processing.get_key(res_parameters, 'contractSignatureTypeId'),
+                agent = Processing.get_key(res_parameters, 'agent'),
+                agentConsentWithElCom = Processing.get_key(res_parameters, 'agentConsentWithElCom'),
+                loanRealEstates = loan_real_estates, 
+            )
+
+        return parameters
 
     @staticmethod
     def __load_households(sales_arrangement_id: int) -> List[dict]:

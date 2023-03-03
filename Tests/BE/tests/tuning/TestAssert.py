@@ -99,7 +99,7 @@ def run():
     case_input: dict = load_json('case.json', EInputOutput.Input)
 
     case_json_in: dict = Case.from_json(case_input).to_json_value()
-    case_json_out: dict = load_json('case_3014399.json', EInputOutput.Output)
+    case_json_out: dict = load_json('case_3014487.json', EInputOutput.Output)
 
     assert_case(case_json_in, case_json_out)
 
@@ -107,10 +107,30 @@ def run():
 
 run()
 
+# ForOffer ???
 # ! path: households[0].areCustomersPartners [True ---> False]
 # ! path: households[0].customer1.emailForOffer [novak@testcm.cz ---> None]
 # ! path: households[0].customer1.identity.id [0 ---> None]
 # ! path: households[0].customer1.identity.scheme [0 ---> None]
+# ! path: households[0].customer1.phoneNumberForOffer [+420 777543234 ---> None]
+# ! path: households[0].customer2.emailForOffer [novak@testcm.cz ---> None]
+# ! path: households[0].customer2.identity.id [0 ---> None]
+# ! path: households[0].customer2.identity.scheme [0 ---> None]
+# ! path: households[0].customer2.phoneNumberForOffer [+420 777543234 ---> None]
+# ! path: households[1].areCustomersPartners [None ---> False]
+# ! path: households[1].childrenOverTenYearsCount [None ---> 0]
+# ! path: households[1].childrenUpToTenYearsCount [None ---> 0]
+# ! path: households[1].customer1.firstName [None ---> ]
+# ! path: households[1].customer1.lastName [None ---> ]
+# ! path: households[1].customer1.roleId [None ---> 128]
+# ! path: households[2].areCustomersPartners [None ---> False]
+# ! path: households[2].childrenOverTenYearsCount [None ---> 0]
+# ! path: households[2].childrenUpToTenYearsCount [None ---> 0]
+# ! path: households[2].customer1.firstName [None ---> ]
+# ! path: households[2].customer1.lastName [None ---> ]
+# ! path: households[2].customer1.roleId [None ---> 128]
+# ! path: parameters.expectedDateOfDrawing [2023-04-01 ---> None]
+
 # ! path: households[0].customer1.incomes[0].data.employer.birthNumber [None ---> ]
 # ! path: households[0].customer1.incomes[1].data.cin [None ---> ]
 # ! path: households[0].customer1.incomes[1].data.hasProofOfIncome [False ---> None]
@@ -128,32 +148,3 @@ run()
 # ! path: households[0].customer1.incomes[3].data.incomeConfirmation.isIssuedByExternalAccountant [False ---> None]
 # ! path: households[0].customer1.incomes[3].data.job.isInProbationaryPeriod [False ---> None]
 # ! path: households[0].customer1.incomes[3].data.job.isInTrialPeriod [False ---> None]
-# ! path: households[0].customer1.phoneNumberForOffer [+420 777543234 ---> None]
-# ! path: households[0].customer2.dateOfBirth [1980-01-01 ---> None]
-# ! path: households[0].customer2.emailForOffer [novak@testcm.cz ---> None]
-# ! path: households[0].customer2.identity.id [0 ---> None]
-# ! path: households[0].customer2.identity.scheme [0 ---> None]
-# ! path: households[0].customer2.phoneNumberForOffer [+420 777543234 ---> None]
-# ! path: households[1].areCustomersPartners [None ---> False]
-# ! path: households[1].childrenOverTenYearsCount [None ---> 0]
-# ! path: households[1].childrenUpToTenYearsCount [None ---> 0]
-# ! path: households[1].customer1.firstName [None ---> ]
-# ! path: households[1].customer1.lastName [None ---> ]
-# ! path: households[1].customer1.roleId [None ---> 128]
-# ! path: households[2].areCustomersPartners [None ---> False]
-# ! path: households[2].childrenOverTenYearsCount [None ---> 0]
-# ! path: households[2].childrenUpToTenYearsCount [None ---> 0]
-# ! path: households[2].customer1.firstName [None ---> ]
-# ! path: households[2].customer1.lastName [None ---> ]
-# ! path: households[2].customer1.roleId [None ---> 128]
-# ! path: parameters.agentConsentWithElCom [False ---> None]
-# ! path: parameters.contractSignatureTypeId [2 ---> None]
-# ! path: parameters.expectedDateOfDrawing [2023-04-01 ---> None]
-# ! path: parameters.incomeCurrencyCode [CAD ---> None]
-# ! path: parameters.loanRealEstates[0].isCollateral [True ---> None]
-# ! path: parameters.loanRealEstates[0].realEstatePurchaseTypeId [1 ---> None]
-# ! path: parameters.loanRealEstates[0].realEstateTypeId [1 ---> None]
-# ! path: parameters.loanRealEstates[1].isCollateral [False ---> None]
-# ! path: parameters.loanRealEstates[1].realEstatePurchaseTypeId [2 ---> None]
-# ! path: parameters.loanRealEstates[1].realEstateTypeId [5 ---> None]
-# ! path: parameters.residencyCurrencyCode [CZK ---> None]
