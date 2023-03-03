@@ -11,7 +11,8 @@ internal sealed class GetHouseholdHandler
             .Where(t => t.HouseholdId == request.HouseholdId)
             .AsNoTracking()
             .Select(Database.HouseholdExpressions.HouseholdDetail())
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16022, $"Household ID {request.HouseholdId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken) 
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.HouseholdNotFound);
 
         return model;
     }

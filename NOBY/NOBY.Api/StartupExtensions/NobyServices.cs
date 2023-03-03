@@ -42,6 +42,15 @@ internal static class NobyServices
 
             });
 
+        // add sql distributed cache
+        //TODO replace with Redis?
+        builder.Services.AddDistributedSqlServerCache(options =>
+        {
+            options.SchemaName = "dbo";
+            options.TableName = "AppCache";
+            options.ConnectionString = builder.Configuration.GetConnectionString("distributedCache");
+        });
+
         // ext services
         builder.AddExternalService<IAddressWhispererClient>();
 

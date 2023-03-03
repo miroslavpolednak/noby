@@ -7,7 +7,6 @@ using CIS.InternalServices.NotificationService.Contracts.Sms;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NOBY.Infrastructure.ErrorHandling;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1;
@@ -35,8 +34,8 @@ public class NotificationController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(SendSmsResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<SendSmsResponse> SendSms([FromBody] SendSmsRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 
@@ -51,8 +50,8 @@ public class NotificationController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(SendSmsFromTemplateResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<SendSmsFromTemplateResponse> SendSmsFromTemplate([FromBody] SendSmsFromTemplateRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 
@@ -66,8 +65,8 @@ public class NotificationController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(SendEmailResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<SendEmailResponse> SendEmail([FromBody] SendEmailRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
     
@@ -94,8 +93,8 @@ public class NotificationController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(GetResultResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<Result> GetResult([Required] Guid id, CancellationToken token)
     {
         var response = await _mediator.Send(new GetResultRequest
@@ -114,8 +113,8 @@ public class NotificationController : ControllerBase
     [HttpGet("result/search")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(List<Result>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(IEnumerable<ApiErrorItem>), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<List<Result>> SearchResults([FromQuery] string? identity, [FromQuery] string? identityScheme,
         [FromQuery] string? customId, [FromQuery] string? documentId, CancellationToken token)
     {

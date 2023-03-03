@@ -62,7 +62,6 @@ internal class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, IEAS_WS_
                 throw new CIS.Core.Exceptions.CisValidationException(9104, "EAS GetKlientData_NewKlientResult is empty");
 
             var r = result.GetKlientData_NewKlientResult[0];
-            _logger.LogSerializedObject("GetKlientData_NewKlientResponse", r);
 
             if (r.return_val != 0)
             {

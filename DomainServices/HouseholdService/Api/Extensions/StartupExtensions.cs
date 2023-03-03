@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using ExternalServices;
+using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api;
 

@@ -4,7 +4,7 @@ using CIS.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.WebApi;
-using Grpc.Core;
+using NOBY.Infrastructure.Security;
 
 namespace NOBY.Infrastructure.ErrorHandling;
 
@@ -30,16 +30,16 @@ public sealed class NobyApiExceptionMiddleware
         // neprihlaseny uzivatel
         catch (CisAuthenticationException ex)
         {
-            await Results.Json(new ApiAuthenticationProblemDetail { RedirectUri = ex.ProviderLoginUrl }, statusCode: 401).ExecuteAsync(context);
+            await Results.Json(new ApiAuthenticationProblemDetail { RedirectUri = ex.ProviderLoginUrl ?? AuthenticationConstants.DefaultSignInUrl }, statusCode: 401).ExecuteAsync(context);
         }
         catch (CisAuthorizationException)
         {
             await Results.Unauthorized().ExecuteAsync(context);
         }
-        catch (AuthenticationException ex)
+        catch (AuthenticationException ex) // toto by nemelo nastat
         {
             logger.WebApiAuthenticationException(ex.Message, ex);
-            await Results.Unauthorized().ExecuteAsync(context);
+            await Results.Json(new ApiAuthenticationProblemDetail { RedirectUri = AuthenticationConstants.DefaultSignInUrl }, statusCode: 401).ExecuteAsync(context);
         }
         catch (NotImplementedException ex)
         {

@@ -29,9 +29,10 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/document-list")]
-    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(GetDocumentsSignListResponse))]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(typeof(GetDocumentsSignListResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetDocumentsSignListResponse> GetDocumentsSignList(
         [FromRoute] int salesArrangementId,
         CancellationToken cancellationToken)
@@ -46,9 +47,10 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId"> ID Sales Arrangement </param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/start")]
-    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(StartSigningResponse))]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(typeof(StartSigningResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<StartSigningResponse> StartSigning(
          [FromRoute] int salesArrangementId,
          [FromBody] StartSigningRequest request,
@@ -66,12 +68,13 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/stop")]
-    [SwaggerResponse(StatusCodes.Status200OK)]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task StopSigning(
-    [FromRoute] int salesArrangementId,
-    [FromRoute] int documentOnSAId,
-    CancellationToken cancellationToken)
+        [FromRoute] int salesArrangementId,
+        [FromRoute] int documentOnSAId,
+        CancellationToken cancellationToken)
     => await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId), cancellationToken);
 
     /// <summary>
@@ -82,12 +85,14 @@ public class DocumentOnSAController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually")]
-    [SwaggerResponse(StatusCodes.Status200OK)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task SignDocumentManually(
-     [FromRoute] int salesArrangementId,
-     [FromRoute] int documentOnSAId,
-     CancellationToken cancellationToken)
+        [FromRoute] int salesArrangementId,
+        [FromRoute] int documentOnSAId,
+        CancellationToken cancellationToken)
      => await _mediator.Send(new SignDocumentManuallyRequest(salesArrangementId, documentOnSAId), cancellationToken);
 
     /// <summary>
@@ -100,13 +105,14 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
     [HttpGet("document/template/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}")]
-    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(Stream))]
     [Produces(MediaTypeNames.Application.Pdf)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocumentOnSa(
-     [FromRoute] int salesArrangementId,
-     [FromRoute] int documentOnSAId,
-     CancellationToken cancellationToken)
+        [FromRoute] int salesArrangementId, 
+        [FromRoute] int documentOnSAId, 
+        CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(new GetDocumentOnSADataRequest(salesArrangementId, documentOnSAId), cancellationToken);
         return File(response.FileData, response.ContentType, response.Filename);
@@ -122,10 +128,10 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="request"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/search")]
-    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(SearchResponse))]
-    [SwaggerResponse(StatusCodes.Status204NoContent)]
-    [SwaggerResponse(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(typeof(SearchResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SearchDocumentsOnSa(
              [FromRoute] int salesArrangementId,
              [FromBody] SearchRequest request,

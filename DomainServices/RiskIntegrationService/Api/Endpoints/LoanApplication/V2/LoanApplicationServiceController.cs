@@ -27,7 +27,7 @@ public sealed class LoanApplicationServiceController
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Loan Application" })]
     [ProducesResponseType(typeof(_V2.LoanApplicationSaveResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<_V2.LoanApplicationSaveResponse> Save([FromBody] _V2.LoanApplicationSaveRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 }

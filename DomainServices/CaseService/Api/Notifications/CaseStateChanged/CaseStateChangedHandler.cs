@@ -10,7 +10,6 @@ internal sealed class CaseStateChangedHandler
 
         // get current user's login
         var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
-        _logger.LogSerializedObject("userInstance", userInstance);
 
         // get case owner
         var ownerInstance = await _userService.GetUser(notification.CaseOwnerUserId, cancellationToken);

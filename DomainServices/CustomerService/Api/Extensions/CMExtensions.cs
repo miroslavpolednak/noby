@@ -27,7 +27,7 @@ public static class CMExtensions
                 else if (contact.Value.Length == 9)
                     item.Mobile = new MobilePhoneItem { PhoneNumber = contact.Value, PhoneIDC = "" };
                 else
-                    item.Mobile = new MobilePhoneItem { PhoneNumber = contact.Value[^9..], PhoneIDC = contact.Value[..^9] };
+                    item.Mobile = new MobilePhoneItem { PhoneNumber = contact.Value[^9..].Trim(), PhoneIDC = contact.Value[..^9].Trim() };
                 break;
 
             case (int)ContactTypes.Email:
