@@ -152,8 +152,13 @@ internal class HouseholdData
                                 LegalCapacityTypes = _legalCapacityTypes
                             }).ToList();
 
-        static long GetCustomerId(CustomerOnSA customerOnSa) =>
-            customerOnSa.CustomerIdentifiers.Single(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId;
+        static long GetCustomerId(CustomerOnSA customerOnSa)
+        {
+            var customerIdentity = customerOnSa.CustomerIdentifiers.SingleOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb) ??
+                           throw new InvalidOperationException($"CustomerOnSa {customerOnSa.CustomerOnSAId} does not have KB ID");
+
+            return customerIdentity.IdentityId;
+        }
     }
 
     private bool AreCustomersPartners()
