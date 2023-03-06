@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
+﻿namespace CIS.InternalServices.DataAggregatorService.Api.Configuration.Common;
 
 internal static class ConfigurationConstants
 {

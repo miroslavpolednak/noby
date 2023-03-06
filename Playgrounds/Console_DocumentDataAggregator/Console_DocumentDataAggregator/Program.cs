@@ -86,7 +86,7 @@ static async Task BuildForms(IDataAggregatorServiceClient dataAggregator)
 {
     var request = new GetEasFormRequest
     {
-        SalesArrangementId = 97,
+        SalesArrangementId = 1248,
         EasFormRequestType = EasFormRequestType.Product
     };
 

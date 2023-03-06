@@ -2,5 +2,7 @@
 
 internal interface IServiceWrapper
 {
+    DataSource DataSource { get; }
+
     Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken);
 }

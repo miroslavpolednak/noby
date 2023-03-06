@@ -1,6 +1,8 @@
-﻿using CIS.Foms.Enums;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
+using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CodebookService.Clients;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
@@ -41,24 +43,32 @@ internal class HouseholdData
 
     public IEnumerable<Customer> Customers => GetCustomers();
 
-    public async Task Initialize(int salesArrangementId)
+    public async Task Initialize(int salesArrangementId, CancellationToken cancellationToken)
     {
-        CustomersOnSa = await LoadCustomersOnSA(salesArrangementId);
-        Households = await LoadHouseholds(salesArrangementId);
-        _customers = await LoadCustomers(CustomersOnSa);
-        Incomes = await LoadIncomes(CustomersOnSa);
+        CustomersOnSa = await LoadCustomersOnSA(salesArrangementId, cancellationToken);
+
+        await Task.WhenAll(LoadHouseholdsWrapper(), LoadCustomersWrapper(), LoadIncomesWrapper());
 
         if (!TrySetHousehold(HouseholdTypes.Main))
             throw new InvalidOperationException($"SalesArrangement '{salesArrangementId}' does not contain main houselhod");
+
+        async Task LoadHouseholdsWrapper() => Households = await LoadHouseholds(salesArrangementId, cancellationToken);
+        async Task LoadCustomersWrapper() => _customers = await LoadCustomers(CustomersOnSa, cancellationToken);
+        async Task LoadIncomesWrapper() => Incomes = await LoadIncomes(CustomersOnSa, cancellationToken);
     }
 
-    public async Task LoadCodebooks(ICodebookServiceClients codebookService)
+    public void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        _academicDegreesBefore = (await codebookService.AcademicDegreesBefore()).ToDictionary(a => a.Id, a => a.Name);
-        _genders = (await codebookService.Genders()).ToDictionary(g => g.Id, g => g.StarBuildJsonCode);
-        _firstEmploymentTypeId = (await codebookService.EmploymentTypes()).OrderBy(e => e.Id).Select(e => e.Id).FirstOrDefault();
-        _obligationTypes = (await codebookService.ObligationTypes()).ToLookup(o => o.ObligationProperty, o => o.Id);
-        _legalCapacityTypes = await codebookService.LegalCapacityRestrictionTypes();
+        configurator.DegreesBefore().Genders().EmploymentTypes().ObligationTypes().LegalCapacityRestrictionTypes();
+    }
+
+    public void PrepareCodebooks(CodebookManager codebookManager)
+    {
+        _academicDegreesBefore = codebookManager.DegreesBefore.ToDictionary(a => a.Id, a => a.Name);
+        _genders = codebookManager.Genders.ToDictionary(g => g.Id, g => g.StarBuildJsonCode);
+        _firstEmploymentTypeId = codebookManager.EmploymentTypes.OrderBy(e => e.Id).Select(e => e.Id).FirstOrDefault();
+        _obligationTypes =codebookManager.ObligationTypes.ToLookup(o => o.ObligationProperty, o => o.Id);
+        _legalCapacityTypes = codebookManager.LegalCapacityRestrictionTypes;
     }
     
     public bool TrySetHousehold(HouseholdTypes householdType)
@@ -73,9 +83,9 @@ internal class HouseholdData
         return true;
     }
 
-    private async Task<List<HouseholdDto>> LoadHouseholds(int salesArrangementId)
+    private async Task<List<HouseholdDto>> LoadHouseholds(int salesArrangementId, CancellationToken cancellationToken)
     {
-        var households = await _householdService.GetHouseholdList(salesArrangementId);
+        var households = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
 
         return households.OrderBy(x => x.HouseholdTypeId)
                          .Select((household, index) => new HouseholdDto(household, index + 1))
@@ -83,33 +93,34 @@ internal class HouseholdData
     }
 
 
-    private async Task<List<CustomerOnSA>> LoadCustomersOnSA(int salesArrangementId)
+    private async Task<List<CustomerOnSA>> LoadCustomersOnSA(int salesArrangementId, CancellationToken cancellationToken)
     {
-        var customers = await _customerOnSaService.GetCustomerList(salesArrangementId);
+        var customers = await _customerOnSaService.GetCustomerList(salesArrangementId, cancellationToken);
 
         var customersWithDetail = new List<CustomerOnSA>(customers.Count);
 
         foreach (var customerId in customers.Select(c => c.CustomerOnSAId))
         {
-            var customerDetail = await _customerOnSaService.GetCustomer(customerId);
+            var customerDetail = await _customerOnSaService.GetCustomer(customerId, cancellationToken);
             customersWithDetail.Add(customerDetail);
         }
+
         return customersWithDetail;
     }
 
-    private async Task<Dictionary<long, CustomerDetailResponse>> LoadCustomers(IEnumerable<CustomerOnSA> customersOnSa)
+    private async Task<Dictionary<long, CustomerDetailResponse>> LoadCustomers(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)
     {
         var customerIds = customersOnSa.SelectMany(c => c.CustomerIdentifiers)
                                        .Where(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
                                        .Select(i => i.IdentityId)
                                        .Distinct();
 
-        var result = await _customerService.GetCustomerList(customerIds.Select(id => new Identity(id, IdentitySchemes.Kb)));
+        var result = await _customerService.GetCustomerList(customerIds.Select(id => new Identity(id, IdentitySchemes.Kb)), cancellationToken);
 
         return result.Customers.ToDictionary(c => c.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId, c => c);
     }
 
-    private async Task<Dictionary<int, Income>> LoadIncomes(IEnumerable<CustomerOnSA> customersOnSa)
+    private async Task<Dictionary<int, Income>> LoadIncomes(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)
     {
         var incomeIds = customersOnSa.SelectMany(i => i.Incomes.Select(x => x.IncomeId)).ToList();
 
@@ -117,7 +128,7 @@ internal class HouseholdData
 
         foreach (var incomeId in incomeIds)
         {
-            var income = await _customerOnSaService.GetIncome(incomeId);
+            var income = await _customerOnSaService.GetIncome(incomeId, cancellationToken);
 
             incomes.Add(incomeId, income);
         }
@@ -141,8 +152,13 @@ internal class HouseholdData
                                 LegalCapacityTypes = _legalCapacityTypes
                             }).ToList();
 
-        static long GetCustomerId(CustomerOnSA customerOnSa) =>
-            customerOnSa.CustomerIdentifiers.Single(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId;
+        static long GetCustomerId(CustomerOnSA customerOnSa)
+        {
+            var customerIdentity = customerOnSa.CustomerIdentifiers.SingleOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb) ??
+                           throw new InvalidOperationException($"CustomerOnSa {customerOnSa.CustomerOnSAId} does not have KB ID");
+
+            return customerIdentity.IdentityId;
+        }
     }
 
     private bool AreCustomersPartners()

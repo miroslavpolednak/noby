@@ -1,9 +1,8 @@
 ﻿using DomainServices.HouseholdService.Contracts;
-using Household = DomainServices.HouseholdService.Contracts.Household;
 
-namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.Dto;
+namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
 
-internal class HouseholdDto
+internal class HouseholdInfo
 {
     public required Household Household { get; init; }
 

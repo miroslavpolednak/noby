@@ -1,9 +1,8 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.LoanApplication;
-using DomainServices.CodebookService.Clients;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
-using Codebook = DomainServices.CodebookService.Contracts.Endpoints;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
 
@@ -11,8 +10,6 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Temp
 internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
 {
     private readonly ICustomerServiceClient _customerService;
-    private List<Codebook.DrawingTypes.DrawingTypeItem> _drawingTypes = null!;
-    private List<Codebook.DrawingDurations.DrawingDurationItem> _drawingDurations = null!;
 
     public LoanApplication3601TemplateData(ICustomerServiceClient customerService)
     {
@@ -45,15 +42,6 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
 
     public string HeaderHouseholdExpenses => CustomerOnSaCodebtor is null ? "Výdaje domácnosti žadatele (měsíčně)" : "Výdaje domácnosti žadatele a spolužadatele (měsíčně)";
 
-
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
-    {
-        await base.LoadCodebooks(codebookService, cancellationToken);
-
-        _drawingTypes = await codebookService.DrawingTypes(cancellationToken);
-        _drawingDurations = await codebookService.DrawingDurations(cancellationToken);
-    }
-
     public override async Task LoadAdditionalData(CancellationToken cancellationToken)
     {
         var debtorIdentity = CustomerOnSaDebtor.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
@@ -68,27 +56,34 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
         if (codebtorIdentity is not null)
             CodebtorCustomer = CreateCustomer(codebtorIdentity.IdentityId);
 
-        LoanApplicationCustomer CreateCustomer(long id) => new(GetDetail(id), _degreesBefore, _countries, _identificationDocumentTypes);
+        LoanApplicationCustomer CreateCustomer(long id) => new(GetDetail(id), _codebookManager.DegreesBefore, _codebookManager.Countries, _codebookManager.IdentificationDocumentTypes);
         CustomerDetailResponse GetDetail(long id) => response.Customers.First(c => c.Identities.Any(i => i.IdentityId == id));
     }
 
+    protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
+    {
+        base.ConfigureCodebooks(configurator);
+
+        configurator.DrawingTypes().DrawingDurations();
+    }
+
     private string GetDrawingType() =>
-        _drawingTypes.Where(d => d.Id == Offer.SimulationInputs.DrawingTypeId)
-                     .Select(d => d.Name)
-                     .DefaultIfEmpty(string.Empty)
-                     .First();
+        _codebookManager.DrawingTypes.Where(d => d.Id == Offer.SimulationInputs.DrawingTypeId)
+                        .Select(d => d.Name)
+                        .DefaultIfEmpty(string.Empty)
+                        .First();
 
     private int? GetDrawingDuration() =>
-        _drawingDurations.Where(d => d.Id == Offer.SimulationInputs.DrawingDurationId)
-                         .Select(d => (int?)d.DrawingDuration)
-                         .FirstOrDefault();
+        _codebookManager.DrawingDurations.Where(d => d.Id == Offer.SimulationInputs.DrawingDurationId)
+                        .Select(d => (int?)d.DrawingDuration)
+                        .FirstOrDefault();
 
     private string? GetMaritalStatus(LoanApplicationCustomer? customer)
     {
         if (customer is null)
             return default;
 
-        return _maritalStatuses.Where(m => m.Id == customer.MaritalStatusStateId)
+        return _codebookManager.MaritalStatuses.Where(m => m.Id == customer.MaritalStatusStateId)
                                .Select(m => m.Name)
                                .First();
     }
