@@ -6,12 +6,15 @@ from .Parameters import Parameters
 from common import Convertor
 
 DISPATCHES = {
-            'offer': lambda value: Offer.from_json(value),
+            #'offer': lambda value: Offer.from_json(value),
+
+            'phone_number_for_offer': lambda value: Convertor.to_str(value),
+            'email_for_offer': lambda value: Convertor.to_str(value),
             'households': lambda value: Household.from_json_list(value),
             'parameters': lambda value: Parameters.from_json(value),
         }
 
-JSON_KEYS = ['offer','households','parameters']
+JSON_KEYS = ['phoneNumberForOffer','emailForOffer','households','parameters']
 class Case(Base):
 
     def __init__(self, js_dict: dict = None):
