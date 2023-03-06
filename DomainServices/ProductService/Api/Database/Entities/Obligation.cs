@@ -9,10 +9,10 @@ internal class Obligation
     public long LoanId { get; set; }
 
     [Column("UcelUveruInt")]
-    public int LoanPurposeId { get; set; }
+    public short LoanPurposeId { get; set; }
 
     [Column("TypZavazku")]
-    public int ObligationTypeId { get; set; }
+    public short ObligationTypeId { get; set; }
 
     [Column("Castka")]
     public decimal Amount { get; set; }
