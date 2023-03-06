@@ -15,14 +15,14 @@ internal sealed class UpdateHouseholdHandler
 
         // customer 1 existuje na SA
         if (request.CustomerOnSAId1.HasValue
-            && !(await _dbContext.CustomerExistOnSalesArrangement(household.CustomerOnSAId1!.Value, household.SalesArrangementId, cancellationToken)))
+            && !(await _dbContext.CustomerExistOnSalesArrangement(request.CustomerOnSAId1!.Value, household.SalesArrangementId, cancellationToken)))
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CustomerNotOnSA, household.CustomerOnSAId1);
         }
 
         // customer 2 existuje na SA
         if (request.CustomerOnSAId2.HasValue
-            && !(await _dbContext.CustomerExistOnSalesArrangement(household.CustomerOnSAId2!.Value, household.SalesArrangementId, cancellationToken)))
+            && !(await _dbContext.CustomerExistOnSalesArrangement(request.CustomerOnSAId2!.Value, household.SalesArrangementId, cancellationToken)))
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CustomerNotOnSA, household.CustomerOnSAId2);
         }

@@ -7,11 +7,11 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Endpoints.GetDocumentDa
 
 internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, GetDocumentDataResponse>
 {
-    private readonly Configuration.ConfigurationManager _configurationManager;
+    private readonly IConfigurationManager _configurationManager;
     private readonly DataServicesLoader _dataServicesLoader;
     private readonly DocumentDataFactory _documentDataFactory;
 
-    public GetDocumentDataHandler(Configuration.ConfigurationManager configurationManager, DataServicesLoader dataServicesLoader, DocumentDataFactory documentDataFactory)
+    public GetDocumentDataHandler(IConfigurationManager configurationManager, DataServicesLoader dataServicesLoader, DocumentDataFactory documentDataFactory)
     {
         _configurationManager = configurationManager;
         _dataServicesLoader = dataServicesLoader;
@@ -20,7 +20,8 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
 
     public async Task<GetDocumentDataResponse> Handle(GetDocumentDataRequest request, CancellationToken cancellationToken)
     {
-        var config = await _configurationManager.LoadDocumentConfiguration(request.DocumentTypeId, request.DocumentTemplateVersionId, cancellationToken);
+        var documentKey = new DocumentKey(request.DocumentTypeId, request.DocumentTemplateVersionId);
+        var config = await _configurationManager.LoadDocumentConfiguration(documentKey, cancellationToken);
 
         var documentMapper = await LoadDocumentData((DocumentType)request.DocumentTypeId, request.InputParameters, config, cancellationToken);
 

@@ -44,15 +44,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCisLogging();
+app.MapCisHealthChecks();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
-
-    endpoints.MapGrpcService<DocumentGeneratorService>();
-
-    endpoints.MapGrpcReflectionService();
-});
+app.MapGrpcService<DocumentGeneratorService>();
+app.MapGrpcReflectionService();
 
 try
 {

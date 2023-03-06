@@ -28,7 +28,7 @@ internal class EasProductForm : EasForm
         {
             CustomersOnSa =
             {
-                ProductData.HouseholdData.CustomersOnSa.Select(x => new CustomerOnSa
+                ProductData.HouseholdData.CustomersOnSa.Select(x => new ProductCustomerOnSa
                 {
                     CustomerOnSaId = x.CustomerOnSAId,
                     Identities = { x.CustomerIdentifiers }
@@ -36,7 +36,7 @@ internal class EasProductForm : EasForm
             },
             Households =
             {
-                ProductData.HouseholdData.Households.Select(x => new Household
+                ProductData.HouseholdData.Households.Select(x => new ProductHousehold
                 {
                     HouseholdId = x.HouseholdId,
                     HouseholdTypeId = (int)x.HouseholdType,
@@ -44,12 +44,15 @@ internal class EasProductForm : EasForm
                     CustomerOnSaId2 = x.CustomerOnSaId2
                 })
             },
-            EmployementIncomes = { ProductData.HouseholdData.Incomes.Where(i => i.Value.IncomeTypeId == (int)CustomerIncomeTypes.Employement).Select(x => new EmployementIncome
+            EmployementIncomes =
             {
-                IncomeId = x.Value.IncomeId,
-                IsInProbationaryPeriodHasValue = (x.Value.Employement?.Job?.IsInProbationaryPeriod).HasValue,
-                IsInTrialPeriodHasValue = (x.Value.Employement?.Job?.IsInTrialPeriod).HasValue
-            }) }
+                ProductData.HouseholdData.Incomes.Where(i => i.Value.IncomeTypeId == (int)CustomerIncomeTypes.Employement).Select(x => new ProductEmployementIncome
+                {
+                    IncomeId = x.Value.IncomeId,
+                    IsInProbationaryPeriodHasValue = (x.Value.Employement?.Job?.IsInProbationaryPeriod).HasValue,
+                    IsInTrialPeriodHasValue = (x.Value.Employement?.Job?.IsInTrialPeriod).HasValue
+                })
+            }
         };
     }
 

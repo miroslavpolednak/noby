@@ -12,11 +12,12 @@ internal class SalesArrangementServiceWrapper : IServiceWrapper
         _salesArrangementService = salesArrangementService;
     }
 
+    public DataSource DataSource => DataSource.SalesArrangementService;
+
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
-        if (!input.SalesArrangementId.HasValue)
-            throw new ArgumentNullException(nameof(InputParameters.SalesArrangementId));
+        input.ValidateSalesArrangementId();
 
-        data.SalesArrangement = await _salesArrangementService.GetSalesArrangement(input.SalesArrangementId.Value, cancellationToken);
+        data.SalesArrangement = await _salesArrangementService.GetSalesArrangement(input.SalesArrangementId!.Value, cancellationToken);
     }
 }

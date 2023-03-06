@@ -12,11 +12,19 @@ internal class OfferServiceWrapper : IServiceWrapper
         _offerService = offerService;
     }
 
+    public DataSource DataSource => DataSource.OfferService;
+
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
-        if (!input.OfferId.HasValue)
-            throw new ArgumentNullException(nameof(InputParameters.OfferId));
+        input.ValidateOfferId();
 
-        data.Offer = await _offerService.GetMortgageOfferDetail(input.OfferId.Value, cancellationToken);
+        data.Offer = await _offerService.GetMortgageOfferDetail(input.OfferId!.Value, cancellationToken);
+    }
+
+    public async Task LoadPaymentSchedule(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
+    {
+        input.ValidateOfferId();
+        
+        data.OfferPaymentSchedule = await _offerService.GetMortgageOfferFPSchedule(input.OfferId!.Value, cancellationToken);
     }
 }

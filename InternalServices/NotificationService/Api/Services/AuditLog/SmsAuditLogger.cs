@@ -149,7 +149,7 @@ public class SmsAuditLogger
         {
             NotificationId = report.id,
             State = report.state,
-            Errors = report.notificationErrors
+            Errors = report.notificationErrors?
                 .Select(e => new
                 {
                     Code = e.code,
