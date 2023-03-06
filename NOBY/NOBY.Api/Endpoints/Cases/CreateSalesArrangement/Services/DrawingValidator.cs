@@ -1,6 +1,4 @@
-﻿using _Pr = DomainServices.ProductService.Contracts;
-
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal class DrawingValidator
     : BaseValidator, ICreateSalesArrangementParametersValidator
@@ -23,11 +21,11 @@ internal class DrawingValidator
         var productInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
 
         if (productInstance.Mortgage.AvailableForDrawing <= 0M)
-            throw new CisValidationException("Zůstatek pro čerpání je menší nebo rovný nule. Formulář nelze vytvořit");
+            throw new CisValidationException(90011, "Zůstatek pro čerpání je menší nebo rovný nule. Formulář nelze vytvořit");
         if (productInstance.Mortgage.FirstAnnuityPaymentDate != null && DateTime.Now >= productInstance.Mortgage.FirstAnnuityPaymentDate)
-            throw new CisValidationException("Aktuální datum překračuje datum první anuitní splátky. Formulář nelze vytvořit");
+            throw new CisValidationException(90012, "Aktuální datum překračuje datum první anuitní splátky. Formulář nelze vytvořit");
         if (string.IsNullOrEmpty(productInstance.Mortgage.PaymentAccount?.Number))
-            throw new CisValidationException("Neexistuje úvěrový účet. Formulář nelze vytvořit");
+            throw new CisValidationException(90013, "Neexistuje úvěrový účet. Formulář nelze vytvořit");
 
         return new DrawingBuilder(_logger, _request, _httpContextAccessor);
     }
