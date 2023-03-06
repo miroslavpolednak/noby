@@ -1,5 +1,4 @@
-﻿using Avro.Specific;
-using CIS.InternalServices.NotificationService.Api.Configuration;
+﻿using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Consumers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Infrastructure;
 using CIS.InternalServices.NotificationService.Mcs.Partials;
@@ -12,7 +11,6 @@ using cz.kb.osbs.mcs.sender.sendapi.v4.sms;
 using KB.Speed.MassTransit.DependencyInjection;
 using KB.Speed.MassTransit.Kafka;
 using KB.Speed.Messaging.Kafka.DependencyInjection;
-using KB.Speed.Messaging.Kafka.SerDes.Avro;
 using KB.Speed.Tracing.Extensions;
 using KB.Speed.Tracing.Instrumentations.AspNetCore;
 using KB.Speed.Tracing.Instrumentations.HttpClient;

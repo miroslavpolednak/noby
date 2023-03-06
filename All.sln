@@ -231,6 +231,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\grpc-services.md = Docs\topics\grpc-services.md
 		Docs\topics\logging.md = Docs\topics\logging.md
 		Docs\topics\service-discovery.md = Docs\topics\service-discovery.md
+		Docs\topics\validation-feapi.md = Docs\topics\validation-feapi.md
+		Docs\topics\validation-grpc.md = Docs\topics\validation-grpc.md
 		Docs\topics\validation.md = Docs\topics\validation.md
 	EndProjectSection
 EndProject

@@ -27,7 +27,7 @@ public sealed class CustomersExposureServiceController
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Customers Exposure" })]
     [ProducesResponseType(typeof(_V2.CustomersExposureCalculateResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<_V2.CustomersExposureCalculateResponse> Calculate([FromBody] _V2.CustomersExposureCalculateRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 }

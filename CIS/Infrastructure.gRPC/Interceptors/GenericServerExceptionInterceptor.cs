@@ -64,6 +64,7 @@ public sealed class GenericServerExceptionInterceptor
         catch (CisValidationException e)
         {
             setHttpStatus(StatusCodes.Status400BadRequest);
+            _logger.LogValidationResults(e);
             throw GrpcExceptionHelpers.CreateRpcException(e);
         }
         catch (BaseCisException e)

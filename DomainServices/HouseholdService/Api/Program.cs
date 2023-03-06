@@ -42,12 +42,12 @@ builder.Services
     .AddCustomerService()
     .AddUserService();
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+builder.Services.AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init());
 builder.AddHouseholdService();
 
 builder.Services.AddGrpc(options =>
 {
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
+    options.Interceptors.Add<GenericServerExceptionInterceptor>();
 });
 builder.Services.AddGrpcReflection();
 #endregion register builder.Services

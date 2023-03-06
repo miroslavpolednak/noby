@@ -1,7 +1,7 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
-using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Helpers;
+using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
@@ -21,7 +21,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     private readonly UserAdapterService _userAdapterService;
     private readonly NotificationRepository _repository;
     private readonly ICodebookService _codebookService;
-    private readonly IAuditLogger _auditLogger;
+    private readonly SmsAuditLogger _auditLogger;
     private readonly ILogger<SendSmsFromTemplateHandler> _logger;
     
     public SendSmsFromTemplateHandler(
@@ -30,7 +30,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         UserAdapterService userAdapterService,
         NotificationRepository repository,
         ICodebookService codebookService,
-        IAuditLogger auditLogger,
+        SmsAuditLogger auditLogger,
         ILogger<SendSmsFromTemplateHandler> logger)
     {
         _dateTime = dateTime;
@@ -44,6 +44,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     
     public async Task<SendSmsFromTemplateResponse> Handle(SendSmsFromTemplateRequest request, CancellationToken cancellationToken)
     {
+        var username = _userAdapterService.GetUsername();
         var smsTypes = await _codebookService.SmsNotificationTypes(new SmsNotificationTypesRequest(), cancellationToken);
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {string.Join(',', smsTypes.Select(s => s.Code))}");
@@ -53,7 +54,6 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
             throw new CisValidationException($"Invalid Type = '{request.Type}' has empty template text.");
         }
         
-        var auditEnabled = smsType.IsAuditLogEnabled;
         var keyValues = request.Placeholders.ToDictionary(p => p.Key, p => p.Value);
         
         smsType.SmsText.Validate(keyValues.Keys);
@@ -77,7 +77,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         result.CountryCode = phone.CountryCode;
         result.PhoneNumber = phone.NationalNumber;
 
-        result.CreatedBy = _userAdapterService.GetUsername();
+        result.CreatedBy = username;
         
         try
         {
@@ -104,25 +104,13 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         
         try
         {
-            if (auditEnabled)
-            {
-                _auditLogger.Log("todo - Producing message SendSMS to KAFKA.");
-            }
-            
+            _auditLogger.LogKafkaProducing(smsType, username);
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
-
-            if (auditEnabled)
-            {
-                _auditLogger.Log("todo - Produced message SendSMS to KAFKA.");
-            }
+            _auditLogger.LogKafkaProduced(smsType, result.Id, username);
         }
         catch (Exception e)
         {
-            if (auditEnabled)
-            {
-                _auditLogger.Log("todo - Could not produce message SendSMS to KAFKA.");
-            }
-            
+            _auditLogger.LogKafkaError(smsType, username);
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);

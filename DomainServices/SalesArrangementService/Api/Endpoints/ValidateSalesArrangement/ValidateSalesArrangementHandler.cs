@@ -46,8 +46,6 @@ internal class ValidateSalesArrangementHandler
 
     private async Task<GetEasFormResponse> ProcessProductRequest(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
-        await _formsService.UpdateContractNumber(salesArrangement, cancellationToken);
-
         var response = await _formsService.LoadProductForm(salesArrangement, Enumerable.Empty<DynamicFormValues>(), cancellationToken);
 
         return response;

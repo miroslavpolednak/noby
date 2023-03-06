@@ -8,9 +8,11 @@ internal sealed class GetObligationHandler
     public async Task<Obligation> Handle(GetObligationRequest request, CancellationToken cancellationToken)
     {
         var model = await _dbContext.CustomersObligations
+            .AsNoTracking()
             .Where(t => t.CustomerOnSAObligationId == request.ObligationId)
             .Select(Database.CustomerOnSAServiceExpressions.Obligation())
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16042, $"Obligation ID {request.ObligationId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ObligationNotFound, request.ObligationId);
 
         return model;
     }

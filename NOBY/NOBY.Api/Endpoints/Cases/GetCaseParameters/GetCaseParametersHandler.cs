@@ -89,8 +89,7 @@ internal sealed class GetCaseParametersHandler
         var offerInstance = offerId.HasValue ? await _offerService.GetMortgageOfferDetail(offerId.Value, cancellation) : null;
 
         // load User
-        var userId = caseInstance.CaseOwner?.UserId;
-        var userInstance = userId.HasValue ? await _userService.GetUser(userId.Value, cancellation) : null;
+        var userInstance = await getUserInstance(caseInstance.CaseOwner?.UserId, cancellation);
 
         return new GetCaseParametersResponse
         {
@@ -144,8 +143,8 @@ internal sealed class GetCaseParametersHandler
     {
         var mortgageData = (await _productService.GetMortgage(caseInstance.CaseId, cancellation)).Mortgage;
 
-        var branchUser = mortgageData.BranchConsultantId.HasValue ? await _userService.GetUser(mortgageData.BranchConsultantId.Value, cancellation) : null;
-        var thirdPartyUser = mortgageData.ThirdPartyConsultantId.HasValue ? await _userService.GetUser(mortgageData.ThirdPartyConsultantId.Value, cancellation) : null;
+        var branchUser = await getUserInstance(mortgageData.BranchConsultantId, cancellation);
+        var thirdPartyUser = await getUserInstance(mortgageData.ThirdPartyConsultantId, cancellation);
 
         return new GetCaseParametersResponse
         {
@@ -194,5 +193,20 @@ internal sealed class GetCaseParametersHandler
                 Icp = thirdPartyUser?.ICP
             }
         };
+    }
+
+    private async Task<DomainServices.UserService.Contracts.User?> getUserInstance(int? userId, CancellationToken cancellationToken)
+    {
+        if (!userId.HasValue)
+            return null;
+
+        try
+        {
+            return await _userService.GetUser(userId.Value, cancellationToken);
+        }
+        catch 
+        {
+            return null;
+        }
     }
 }
