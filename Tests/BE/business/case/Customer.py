@@ -12,8 +12,6 @@ DISPATCHES = {
             'first_name': lambda value: Convertor.to_str(value),
             'last_name': lambda value: Convertor.to_str(value),
             'date_of_birth': lambda value: Convertor.to_date(value),
-            'phone_number_for_offer': lambda value: Convertor.to_str(value),
-            'email_for_offer': lambda value: Convertor.to_str(value),
             'role_id': lambda value: Convertor.to_int(value),
 
             'identity': lambda value: Identity.from_json(value),
@@ -21,7 +19,7 @@ DISPATCHES = {
             'obligations': lambda value: Obligation.from_json_list(value),
         }
 
-JSON_KEYS = ['firstName','lastName','dateOfBirth','phoneNumberForOffer','emailForOffer','roleId','identity','incomes','obligations']
+JSON_KEYS = ['firstName','lastName','dateOfBirth','roleId','identity','incomes','obligations']
 
 class Customer(Base):
 

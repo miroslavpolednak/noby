@@ -37,8 +37,6 @@ class Base():
             log_level: int = INFO if res.status_code == 200 else WARNING
             self._log.log(log_level, f'HandleRequest [url: {url}, method: {method}, login: {login}, status_code: {res.status_code}]]')
 
-            print(f'FeAPI.HandleRequest [url: {url}, method: {method}, login: {login}, status_code: {res.status_code}]]')
-
         except Exception as e:
             message = f'Error occured while FeAPI request [url: {url}, method: {method}, login: {login}]. Error: {str(e)}'
             print(message)
