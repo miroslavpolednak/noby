@@ -48,6 +48,10 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
     
     public async Task<SendEmailFromTemplateResponse> Handle(SendEmailFromTemplateRequest request, CancellationToken cancellationToken)
     {
+        var username = _userAdapterService
+            .CheckSendSmsAccess()
+            .GetUsername();
+        
         var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
         var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
         var bucketName = _mcsSenders.Contains(domainName)
@@ -76,7 +80,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
         
-        result.CreatedBy = _userAdapterService.GetUsername();
+        result.CreatedBy = username;
         
         try
         {
