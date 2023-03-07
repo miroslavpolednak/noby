@@ -49,7 +49,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
     public async Task<SendEmailFromTemplateResponse> Handle(SendEmailFromTemplateRequest request, CancellationToken cancellationToken)
     {
         var username = _userAdapterService
-            .CheckSendSmsAccess()
+            .CheckSendEmailAccess()
             .GetUsername();
         
         var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();

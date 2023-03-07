@@ -50,7 +50,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
     public async Task<SendEmailResponse> Handle(SendEmailRequest request, CancellationToken cancellationToken)
     {
         var username = _userAdapterService
-            .CheckSendSmsAccess()
+            .CheckSendEmailAccess()
             .GetUsername();
         
         var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
