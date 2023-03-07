@@ -7,7 +7,7 @@ namespace DomainServices.ProductService.Api.Database.Entities;
 [Keyless]
 internal sealed class LoanPurpose
 {
-    public int UverId { get; set; }
+    public long UverId { get; set; }
 
     public int UcelUveruId { get; set; }
 
