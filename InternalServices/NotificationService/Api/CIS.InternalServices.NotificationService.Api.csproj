@@ -46,7 +46,7 @@
     <ProjectReference Include="..\..\..\NOBY\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
     <ProjectReference Include="..\..\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
     <ProjectReference Include="..\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
-    <ProjectReference Include="..\Mcs\CIS.InternalServices.NotificationService.Mcs.csproj" />
+    <ProjectReference Include="..\Messaging\CIS.InternalServices.NotificationService.Messaging.csproj" />
   </ItemGroup>
 
 </Project>

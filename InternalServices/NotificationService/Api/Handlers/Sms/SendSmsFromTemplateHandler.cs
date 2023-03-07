@@ -44,7 +44,10 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     
     public async Task<SendSmsFromTemplateResponse> Handle(SendSmsFromTemplateRequest request, CancellationToken cancellationToken)
     {
-        var username = _userAdapterService.GetUsername();
+        var username = _userAdapterService
+            .CheckSendSmsAccess()
+            .GetUsername();
+
         var smsTypes = await _codebookService.SmsNotificationTypes(new SmsNotificationTypesRequest(), cancellationToken);
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {string.Join(',', smsTypes.Select(s => s.Code))}");

@@ -1,6 +1,6 @@
 ﻿using Avro.Specific;
 
-namespace CIS.InternalServices.NotificationService.Mcs.Partials;
+namespace CIS.InternalServices.NotificationService.Messaging.Partials;
 
 public interface IMcsSenderCommand : ISpecificRecord
 {

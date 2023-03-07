@@ -183,7 +183,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService", "Noti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_NotificationService", "Playgrounds\NotificationService\Console_NotificationService\Console_NotificationService.csproj", "{95762529-6391-4332-8829-1195002DFE32}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Mcs", "InternalServices\NotificationService\Mcs\CIS.InternalServices.NotificationService.Mcs.csproj", "{FA542662-EE7D-44DD-9E17-647751C627DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Messaging", "InternalServices\NotificationService\Messaging\CIS.InternalServices.NotificationService.Messaging.csproj", "{FA542662-EE7D-44DD-9E17-647751C627DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HouseholdService", "HouseholdService", "{9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}"
 EndProject
