@@ -37,8 +37,6 @@ public class KafkaTopics
     
     public string McsSender { get; set; } = null!;
 
-    public string NobyResult { get; set; } = null!;
-
     public string NobySendEmail { get; set; } = null!;
 }
 

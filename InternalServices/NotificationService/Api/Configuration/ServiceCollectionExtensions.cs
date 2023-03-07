@@ -34,9 +34,6 @@ public static class ServiceCollectionExtensions
                     !string.IsNullOrEmpty(config?.KafkaTopics?.McsSender),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.McsSender)} required.")
             .Validate(config =>
-                    !string.IsNullOrEmpty(config?.KafkaTopics?.NobyResult),
-                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.NobyResult)} required.")
-            .Validate(config =>
                     !string.IsNullOrEmpty(config?.KafkaTopics?.NobySendEmail),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.NobySendEmail)} required.")
             
