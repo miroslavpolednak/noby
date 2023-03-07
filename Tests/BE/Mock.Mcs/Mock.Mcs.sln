@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mock.Mcs", "Mock.Mcs.csproj", "{E7746545-2FD3-4021-A1D6-84E179D08546}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.NotificationService.Mcs", "..\..\..\InternalServices\NotificationService\Mcs\CIS.InternalServices.NotificationService.Mcs.csproj", "{91F55942-68F0-47FD-BAA0-8C0FD05BCB81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.NotificationService.Messaging", "..\..\..\InternalServices\NotificationService\Messaging\CIS.InternalServices.NotificationService.Messaging.csproj", "{91F55942-68F0-47FD-BAA0-8C0FD05BCB81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
