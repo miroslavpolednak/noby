@@ -32,6 +32,7 @@ public class ProfessionCategoriesHandler
             {
                 var ext = extMapperById.ContainsKey(t.Id) ? extMapperById[t.Id] : null;
                 t.ProfessionIds = ext?.ProfessionIds?.ParseIDs();
+                t.IncomeMainTypeAMLIds = ext?.IncomeMainTypeAMLIds?.ParseIDs();
             });
 
             return result;
@@ -42,10 +43,11 @@ public class ProfessionCategoriesHandler
     {
         public int ProfessionCategoryId { get; set; }
         public string? ProfessionIds { get; set; }
+        public string? IncomeMainTypeAMLIds { get; set; }
     }
     
     // dotaz na rozsirene vlastnosti codebooku mimo SB
-    const string _sqlQueryExtension = "SELECT ProfessionCategoryId, ProfessionIds FROM dbo.ProfessionCategoryExtension";
+    const string _sqlQueryExtension = "SELECT ProfessionCategoryId, ProfessionIds, IncomeMainTypeAMLIds FROM dbo.ProfessionCategoryExtension";
 
     // dotaz na codebook do SB
     // const string _sqlQuery = @"";
