@@ -9,6 +9,8 @@ internal static class CreateProductExtensions
     {
         var model = new MortgageData
         {
+            PaymentDay = offerData.SimulationInputs.PaymentDay,
+            ExpectedDateOfDrawing = offerData.SimulationInputs.ExpectedDateOfDrawing,
             FixedRatePeriod = offerData.SimulationInputs.FixedRatePeriod,
             LoanAmount = offerData.SimulationInputs.LoanAmount,
             LoanInterestRate = offerData.SimulationResults.LoanInterestRate,
@@ -17,6 +19,16 @@ internal static class CreateProductExtensions
             LoanKindId= offerData.SimulationInputs.LoanKindId,
             PartnerId = partnerId
         };
+
+        if (offerData.SimulationInputs.LoanPurposes is not null)
+        {
+            model.LoanPurposes.AddRange(offerData.SimulationInputs.LoanPurposes.Select(t => new DomainServices.ProductService.Contracts.LoanPurpose
+            {
+                LoanPurposeId = t.LoanPurposeId,
+                Sum = t.Sum
+            }));
+        }
+
         model.Relationships.Add(new Relationship { ContractRelationshipTypeId = 1, PartnerId = partnerId });//TODO tady je vzdy 1? Jako Vlastnik?
 
         return model;

@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.NotificationService.Mcs.Partials;
+﻿using CIS.InternalServices.NotificationService.Messaging.Partials;
 
 namespace cz.kb.osbs.mcs.sender.sendapi.v4.email
 {
