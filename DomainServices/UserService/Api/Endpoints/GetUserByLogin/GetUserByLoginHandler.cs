@@ -8,7 +8,7 @@ internal class GetUserByLoginHandler
     public async Task<User> Handle(GetUserByLoginRequest request, CancellationToken cancellation)
     {
         // na tvrdaka zadanej login, protoze nemame jak a kde zjistit mapovani caas identit na v33
-        string login = "KBUID=A09FK3";
+        string login = "99999943";
 
         string cacheKey = Helpers.GetUserCacheKey(login);
         var cachedUser = await _cache.GetObjectAsync<Dto.V33PmpUser>(cacheKey, SerializationTypes.Protobuf);
