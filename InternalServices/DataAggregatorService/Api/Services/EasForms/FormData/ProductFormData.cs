@@ -14,8 +14,6 @@ internal class ProductFormData : AggregatedData
         HouseholdData = householdData;
     }
 
-    public AggregatedData AggregatedData => this;
-
     public HouseholdData HouseholdData { get; }
 
     public MockValues MockValues { get; } = new();
