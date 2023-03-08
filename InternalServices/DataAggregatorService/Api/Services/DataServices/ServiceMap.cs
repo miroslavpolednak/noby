@@ -12,7 +12,7 @@ internal class ServiceMap
 
     public ServiceMap(IServiceProvider serviceProvider)
     {
-        _serviceProvider = serviceProvider;
+        _serviceProvider = serviceProvider.CreateScope().ServiceProvider;
 
         ConfigureServices();
     }
