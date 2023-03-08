@@ -9,15 +9,21 @@ Base = declarative_base()
 
 # pylint: disable=unused-import
 
-
 def pytest_addoption(parser):
-    parser.addoption("--webapi-url", action="store", default="https://ds-notification-dev.vsskb.cz:30015", help="web api url")
+    parser.addoption("--ns--dev-url", action="store", default="https://ds-notification-dev.vsskb.cz:30016", help="ns dev url")
+    parser.addoption("--username", action="store", default="XX_INSG_RMT_USR_TEST", help="username for authenticatiion")
+    parser.addoption("--password", action="store", default="dyasrykgSDSGNFN!!2dvcxgrttrrthyy", help="psw for auth")
 
 
 @pytest.fixture(scope="session")
-def sb_api_url(request):
-    return request.config.getoption("--webapi-url")
-
+def ns_url(request):
+    url = request.config.getoption("--ns--dev-url")
+    username = request.config.getoption("--username")
+    password = request.config.getoption("--password")
+    return {
+        "url": url,
+        "auth": (username, password)
+    }
 
 @pytest.fixture()
 def tomorrow_datetime():
