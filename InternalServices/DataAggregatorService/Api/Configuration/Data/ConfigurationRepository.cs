@@ -113,7 +113,7 @@ internal class ConfigurationRepository
                          .ToListAsync();
     }
 
-    public Task<List<EasFormSourceField>> LoadEasFormSourceFields(int requestTypeId, CancellationToken cancellationToken)
+    public Task<List<EasFormSourceField>> LoadEasFormSourceFields(int requestTypeId, int[] formTypeIds, CancellationToken cancellationToken)
     {
         return GetSourceFields().Concat(GetSpecialSourceFields()).ToListAsync(cancellationToken);
 
@@ -122,6 +122,7 @@ internal class ConfigurationRepository
             return _dbContext.EasFormDataFields
                              .AsNoTracking()
                              .Where(e => e.EasRequestTypeId == requestTypeId && 
+                                         formTypeIds.Contains(e.EasFormTypeId) &&
                                          e.EasFormType.ValidFrom < DateTime.Now &&
                                          e.EasFormType.ValidTo > DateTime.Now)
                              .Select(e => new EasFormSourceField
@@ -139,6 +140,7 @@ internal class ConfigurationRepository
             return _dbContext.EasFormSpecialDataFields
                              .AsNoTracking()
                              .Where(e => e.EasRequestTypeId == requestTypeId &&
+                                         formTypeIds.Contains(e.EasFormTypeId) &&
                                          e.EasFormType.ValidFrom < DateTime.Now &&
                                          e.EasFormType.ValidTo > DateTime.Now)
                              .Select(e => new EasFormSourceField

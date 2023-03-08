@@ -46,7 +46,9 @@ internal class ConfigurationManager : IConfigurationManager
 
     public async Task<EasFormConfiguration> LoadEasFormConfiguration(EasFormKey easFormKey, CancellationToken cancellationToken)
     {
-        var fields = await _repository.LoadEasFormSourceFields(easFormKey.RequestTypeId, cancellationToken);
+        var easFormTypeIds = easFormKey.EasFormTypes.Select(type => (int)type).ToArray();
+
+        var fields = await _repository.LoadEasFormSourceFields(easFormKey.RequestTypeId, easFormTypeIds, cancellationToken);
 
         return new EasFormConfiguration
         {
