@@ -15,6 +15,7 @@ public class CountryCodePhoneIdcHandler
             new CountryCodePhoneIdcItem() { Id = "AF+93", Name = "AF", Idc = "+93",  IsValid = true },
             new CountryCodePhoneIdcItem() { Id = "AG+1268", Name = "AG", Idc = "+1268",  IsValid = true },
             new CountryCodePhoneIdcItem() { Id = "AI+1264", Name = "AI", Idc = "+1264",  IsValid = true },
+            new CountryCodePhoneIdcItem() { Id = "CZ+420", Name = "CZ", Idc = "+420",  IsValid = true },
         });
     }
 
