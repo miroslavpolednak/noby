@@ -39,7 +39,21 @@ internal sealed class CaseStateChangedHandler
             RiskBusinessCaseId = rbcId,
             IsEmployeeBonusRequested = notification.IsEmployeeBonusRequested
         };
-        await _sbWebApiClient.CaseStateChanged(request, cancellationToken);
+        var result = await _sbWebApiClient.CaseStateChanged(request, cancellationToken);
+
+        // ulozit request id
+        if (result.RequestId.HasValue)
+        {
+            _dbContext.QueueRequestIds.Add(new Database.Entities.QueueRequestId 
+            { 
+                RequestId  = result.RequestId.Value,
+                CaseId = notification.CaseId,
+                CreatedTime = DateTime.Now
+            });
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            _logger.QueueRequestIdSaved(result.RequestId.Value, request.CaseId);
+        }
     }
 
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
@@ -48,8 +62,10 @@ internal sealed class CaseStateChangedHandler
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly ILogger<CaseStateChangedHandler> _logger;
+    private readonly Database.CaseServiceDbContext _dbContext;
 
     public CaseStateChangedHandler(
+        Database.CaseServiceDbContext dbContext,
         ILogger<CaseStateChangedHandler> logger,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         CodebookService.Clients.ICodebookServiceClients codebookService, 
@@ -57,6 +73,7 @@ internal sealed class CaseStateChangedHandler
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
+        _dbContext = dbContext;
         _logger = logger;
         _userAccessor = userAccessor;
         _codebookService = codebookService;

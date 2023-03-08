@@ -6,7 +6,7 @@ namespace ExternalServices.SbWebApi.V1;
 internal sealed class RealSbWebApiClient
     : ISbWebApiClient
 {
-    public async Task CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<CaseStateChangedResponse> CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         // vytvoreni EAS requestu
         var easRequest = new Contracts.WFS_Request_CaseStateChanged
@@ -44,6 +44,11 @@ internal sealed class RealSbWebApiClient
             // neco je spatne ve WS
             if ((result.Result?.Return_val ?? 0) != 0)
                 throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName}.CaseStateChanged: {result.Result?.Return_text}");
+
+            return new CaseStateChangedResponse
+            {
+                RequestId = result.Request_id
+            };
         }
         else
         {
