@@ -38,6 +38,7 @@ CREATE TABLE [dbo].[Case](
 	[IsEmployeeBonusRequested] bit NULL,
 	[ProductTypeId] [int] NOT NULL,
 	[State] [int] NOT NULL,
+	[StateUpdatedInStarbuild] [tinyint] NOT NULL default(0),
 	[StateUpdateTime] [datetime] NOT NULL,
 	[CreatedUserName] [nvarchar](100) NULL,
 	[CreatedUserId] [int] NULL,

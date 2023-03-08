@@ -12,6 +12,7 @@ internal static class CaseServiceDatabaseExpressions
             CaseId = t.CaseId,
             State = t.State,
             StateUpdatedOn = t.StateUpdateTime,
+            StateUpdatedInStarbuild = (Contracts.UpdatedInStarbuildStates)t.StateUpdatedInStarbuild,
             CaseOwner = new CIS.Infrastructure.gRPC.CisTypes.UserInfo(t.OwnerUserId, t.OwnerUserName),
             Data = new()
             {
