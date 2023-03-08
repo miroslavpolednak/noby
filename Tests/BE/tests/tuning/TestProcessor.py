@@ -10,6 +10,8 @@ from tests.tuning.OptionsResolver import OptionsResolver
 from tests.tuning.data import load_json, save_json, clean_folder, EInputOutput
 
 from E2E import ApiProcessor, ApiReaderOffer, ApiReaderCase
+from DATA.TestDataProvider import TestDataProvider
+# TestDataProvider.reset()
 
 offer_case_json: dict = load_json('case.json', EInputOutput.Input)
 
