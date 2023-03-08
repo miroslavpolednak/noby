@@ -95,7 +95,7 @@
         </member>
         <member name="T:CIS.Infrastructure.gRPC.ContextUserForwardingClientInterceptor">
             <summary>
-            Client Interceptor který automaticky přidává hlavičku "mp-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
+            Client Interceptor který automaticky přidává hlavičku "noby-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
             </summary>
             <remarks>
             TODO toto neni uplne pekna implementace, ale neprisel jsem na jiny zpusob jak v grpc pipeline vyklepat scoped instanci ICurrentUserAccessor a vrazit ji do headeru

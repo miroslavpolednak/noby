@@ -43,7 +43,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCisLogging();
 app.MapCisHealthChecks();
 
 app.MapGrpcService<DocumentGeneratorService>();

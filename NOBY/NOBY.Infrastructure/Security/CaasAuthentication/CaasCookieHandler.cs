@@ -29,9 +29,9 @@ internal sealed class CaasCookieHandler
             var currentLogin = context.Principal!.Claims.First(t => t.Type == ClaimTypes.NameIdentifier).Value;
 
             var claims = new List<Claim>();
-            claims.Add(new Claim(AuthenticationConstants.ClaimNameLogin, currentLogin));
+            claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimNameIdent, currentLogin));
 
-            var identity = new ClaimsIdentity(claims, context.Principal.Identity!.AuthenticationType, AuthenticationConstants.ClaimNameLogin, "role");
+            var identity = new ClaimsIdentity(claims, context.Principal.Identity!.AuthenticationType, CIS.Core.Security.SecurityConstants.ClaimNameIdent, "role");
             var principal = new ClaimsPrincipal(identity);
 
             context.Principal = principal;

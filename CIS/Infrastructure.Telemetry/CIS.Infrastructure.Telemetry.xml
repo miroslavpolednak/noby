@@ -44,11 +44,6 @@
             Extension metody do startupu aplikace pro registraci logování.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.Telemetry.LoggingExtensions.UseCisLogging(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
-            <summary>
-            Podle nastavení v appsettings.json zařazuje middleware pro logování buď gRPC nebo Webapi.
-            </summary>
-        </member>
         <member name="M:CIS.Infrastructure.Telemetry.LoggingExtensions.AddCisLogging(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
             Přidává do aplikace logování pomocí Serilogu.
@@ -62,11 +57,6 @@
         <member name="M:CIS.Infrastructure.Telemetry.LoggingExtensions.CloseAndFlush">
             <summary>
             Pri ukonceni aplikaci se ujisti, ze vsechny sinky jsou vyprazdnene
-            </summary>
-        </member>
-        <member name="T:CIS.Infrastructure.Telemetry.Middlewares.LoggerCisUserWebapiMiddleware">
-            <summary>
-            Middleware, ktery pridava do kontextu logu (serilogu) informace o aktualnim CIS uzivateli
             </summary>
         </member>
         <member name="T:CIS.Infrastructure.Telemetry.TracingExtensions">

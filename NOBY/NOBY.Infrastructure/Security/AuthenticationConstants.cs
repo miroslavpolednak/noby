@@ -22,11 +22,6 @@ public static class AuthenticationConstants
     /// </summary>
     public const string CaasAuthScheme = "CaasAuthentication";
 
-    /// <summary>
-    /// Type claimu, který obsahuje login (CAAS login) přihlášeného uživatele
-    /// </summary>
-    public const string ClaimNameLogin = "login";
-
     public const string DefaultAuthenticationUrlPrefix = "auth";
     public const string DefaultAuthenticationUrlSegment = "/" + DefaultAuthenticationUrlPrefix;
     public const string DefaultSignInEndpoint = "/signin";

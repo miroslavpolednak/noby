@@ -4,7 +4,7 @@
 Instanci přihlášeného uživatele (tj. uživatele sedícího u NOBY aplikace) je možné získat z DI interfacem `ICurrentUserAccessor`.
 Instance uživatele jako taková je reprezentována interfacem `ICurrentUser` - je dostupná jako vlastnost interface `ICurrentUserAccessor.User`.
 
-Mezi službami se uživatel předává ve formě HTTP headeru "**mp-user-id**", který obsahuje *v33id* aktuálního uživatele.
+Mezi službami se uživatel předává ve formě HTTP headeru "**noby-user-id**", který obsahuje *v33id* aktuálního uživatele.
 
 Registrace `ICurrentUserAccessor` (do DI) probíhá během startupu:
 ```csharp

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace CIS.Infrastructure.gRPC;
 
 /// <summary>
-/// Client Interceptor který automaticky přidává hlavičku "mp-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
+/// Client Interceptor který automaticky přidává hlavičku "noby-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
 /// </summary>
 /// <remarks>
 /// TODO toto neni uplne pekna implementace, ale neprisel jsem na jiny zpusob jak v grpc pipeline vyklepat scoped instanci ICurrentUserAccessor a vrazit ji do headeru
@@ -35,7 +35,7 @@ public sealed class ContextUserForwardingClientInterceptor
                 if (context.Options.Headers is not null && context.Options.Headers.Any())
                     foreach (var m in context.Options.Headers)
                         metadata.Add(m);
-                metadata.Add(Core.Security.Constants.ContextUserHttpHeaderKey, userAccessor!.User!.Id.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                metadata.Add(Core.Security.SecurityConstants.ContextUserHttpHeaderUserIdKey, userAccessor!.User!.Id.ToString(System.Globalization.CultureInfo.InvariantCulture));
 
                 var newOptions = context.Options.WithHeaders(metadata);
                 var newContext = new ClientInterceptorContext<TRequest, TResponse>(context.Method, context.Host, newOptions);

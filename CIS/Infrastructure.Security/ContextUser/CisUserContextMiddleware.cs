@@ -16,7 +16,9 @@ internal sealed class CisUserContextMiddleware
         int? partyId = CurrentUserAccessorHelpers.GetUserIdFromHeaders(httpContext.Request);
         if (partyId.HasValue)
         {
-            httpContext.User.AddIdentity(new CisUserIdentity(partyId.Value));
+            var identity = new CisUserIdentity(partyId.Value, CurrentUserAccessorHelpers.GetUserIdentFromHeaders(httpContext.Request));
+            httpContext.User.AddIdentity(identity);
+
             _logger.ContextUserAdded(partyId.Value);
         }
 

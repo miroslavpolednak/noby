@@ -3,8 +3,8 @@
 public sealed class SignInRequest : IRequest
 {
     /// <summary>
-    /// Login uzivatel z xxvvss databaze.
+    /// Login uzivatel do CAASu.
     /// </summary>
-    /// <example>990614w</example>
+    /// <example>KBUID=A09FK3</example>
     public string? Login { get; set; }
 }
