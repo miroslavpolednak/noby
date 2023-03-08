@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "CIS.InternalServices.NotificationService.Mcs": {
+    "CIS.InternalServices.NotificationService.Messaging": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
