@@ -1,0 +1,227 @@
+openapi: 3.0.3
+info:
+  title: SULM API
+  description: SULM Rest API
+  version: v1.0.2
+servers:
+  - url: https://localhost:8080
+security:
+  - basicAuth: []
+paths:
+  /customers/sulm/v1/use/start:
+    post:
+      tags:
+        - sulm
+      description:
+        Založ účel
+      operationId: startUse
+      parameters:
+        - $ref: '../../api-common/v001/service.yaml#/components/parameters/X-KB-Trace-Id'
+        - $ref: '../../api-common/v001/service.yaml#/components/parameters/X-KB-Orig-System-Identity'
+      requestBody:
+        description: Start Use
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartUseRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SulmResponse'
+        '400':
+          $ref: '#/components/schemas/SulmResponse'
+        '401':
+          $ref: '#/components/schemas/SulmResponse'
+        '403':
+          $ref: '#/components/schemas/SulmResponse'
+        '404':
+          $ref: '#/components/schemas/SulmResponse'
+        '500':
+          $ref: '#/components/schemas/SulmResponse'
+  /customers/sulm/v1/use/stop:
+    post:
+      tags:
+        - sulm
+      description:
+        Odstraň účel
+      operationId: stopUse
+      parameters:
+        - $ref: '../../api-common/v001/service.yaml#/components/parameters/X-KB-Trace-Id'
+        - $ref: '../../api-common/v001/service.yaml#/components/parameters/X-KB-Orig-System-Identity'
+      requestBody:
+        description: Stop Use
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StopUseRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SulmResponse'
+        '400':
+          $ref: '../../api-common/v001/service.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../api-common/v001/service.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../api-common/v001/service.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../api-common/v001/service.yaml#/components/responses/NotFound'
+        '500':
+          $ref: '../../api-common/v001/service.yaml#/components/responses/InternalServerError'
+  /customers/sulm/v1/state/{clientId}/{systemId}:
+    get:
+      tags:
+        - sulm
+      description:
+        Zjisti stav účelu
+      operationId: getState
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '[0-9]+'
+            description: Id klienta
+            example: 1234567989
+        - name: systemId
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+            description: Perspektiva, pro kterou je požadováno vyhodnotit stav klienta
+            example: CM_PRS
+        - $ref: '../../api-common/v001/service.yaml#/components/parameters/X-KB-Trace-Id'
+        - $ref: '../../api-common/v001/service.yaml#/components/parameters/X-KB-Orig-System-Identity'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SulmResponse'
+        '400':
+          $ref: '../../api-common/v001/service.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../api-common/v001/service.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../api-common/v001/service.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../api-common/v001/service.yaml#/components/responses/NotFound'
+        '500':
+          $ref: '../../api-common/v001/service.yaml#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    StartUseRequest:
+      type: object
+      required:
+        - clientId
+        - purposeCode
+        - channelCode
+        - userId
+        - userIdType
+      properties:
+        clientId:
+          type: string
+          pattern: '[0-9]+'
+          description: Id klienta
+          example: 1234567989
+        purposeCode:
+          type: string
+          description: Kód účelu
+          minLength: 1
+          maxLength: 4
+          example: MPAP
+        channelCode:
+          type: string
+          minLength: 0
+          maxLength: 30
+          description: Id Kanálu
+          example: CH0001
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Id Volajícího
+          example: A12345
+        userIdType:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Typ Id volajícího
+          example: KBUID
+    StopUseRequest:
+      type: object
+      required:
+        - clientId
+        - purposeCode
+        - channelCode
+        - userId
+        - userIdType
+      properties:
+        clientId:
+          type: string
+          pattern: '[0-9]+'
+          description: Id klienta
+          example: 1234567989
+        purposeCode:
+          type: string
+          description: Kód účelu
+          minLength: 1
+          maxLength: 4
+          example: MPAP
+        channelCode:
+          type: string
+          minLength: 0
+          maxLength: 30
+          description: Id Kanálu
+          example: CH0001
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Id Volajícího
+          example: A12345
+        userIdType:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Typ Id volajícího
+          example: KBUID
+    GetStateResponse:
+      type: object
+      properties:
+        returnValue:
+          type: string
+          minLength: 1
+          maxLength: 1
+          description: Kód stavu klienta.
+          example: A
+        returnCode:
+          type: string
+          description: Návratový kód
+          example: SULM_00001Y
+        returnText:
+          type: string
+          description: Slovní popis případné chyby nebo provedené akce
+    SulmResponse:
+      type: object
+      properties:
+        returnCode:
+          type: string
+          description: Návratový kód
+          example: SULM_00001Y
+        returnText:
+          type: string
+          description: Slovní popis případné chyby nebo provedené akce
