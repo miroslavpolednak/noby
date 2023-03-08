@@ -7,14 +7,17 @@ internal class GetUserByLoginHandler
 {
     public async Task<User> Handle(GetUserByLoginRequest request, CancellationToken cancellation)
     {
-        string cacheKey = Helpers.GetUserCacheKey(request.Login);
+        // na tvrdaka zadanej login, protoze nemame jak a kde zjistit mapovani caas identit na v33
+        string login = "KBUID=A09FK3";
+
+        string cacheKey = Helpers.GetUserCacheKey(login);
         var cachedUser = await _cache.GetObjectAsync<Dto.V33PmpUser>(cacheKey, SerializationTypes.Protobuf);
 
         // pokud je uzivatel v kesi, vytahni ho
         if (cachedUser is null)
         {
             // vytahnout info o uzivateli z DB
-            cachedUser = await _repository.GetUser(request.Login);
+            cachedUser = await _repository.GetUser(login);
 
             // ulozit do kese
             _logger.LogDebug("Store user in cache");
@@ -22,7 +25,7 @@ internal class GetUserByLoginHandler
         }
 
         if (cachedUser is null) // uzivatele se nepovedlo podle loginu najit
-            throw new CIS.Core.Exceptions.CisNotFoundException(0, "User", request.Login);
+            throw new CIS.Core.Exceptions.CisNotFoundException(0, "User", login);
 
         // vytvorit finalni model
         var model = new Contracts.User
