@@ -9,7 +9,7 @@
         grpcurl -insecure -d "{\"CaseOwnerUserId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/GetCaseCounts
         grpcurl -insecure -d "{\"CaseId\":49,\"CaseOwnerUserId\":9557}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/LinkOwnerToCase
         grpcurl -insecure -d "{\"CaseId\":59,\"Data\":{\"ProductTypeId\":1,\"ContractNumber\":\"HF1000000001\",\"TargetAmount\":{\"units\":200000,\"nanos\":0}}}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/UpdateCaseData
-        grpcurl -insecure -d "{\"CaseId\":49,\"State\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/UpdateCaseState
+        grpcurl -insecure -d "{\"CaseId\":49,\"State\":3014569}" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/UpdateCaseState
         grpcurl -insecure -d "{\"CaseId\":49,\"Customer\":{\"FirstNameNaturalPerson\":\"Peter\",\"Name\":\"Mortal\"}}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/UpdateCaseCustomer
         grpcurl -insecure -d "{\"CaseId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/GetTaskList
         grpcurl -insecure -d "{\"CaseId\":1,\"State\":2}" -H "Authorization: Basic YTph" -H "Correlation-Context: MpPartyId=3048" -H "traceparent: 00-ddc1760e36a462c9c03b2583b1c9a098-ea157dc423037e71-01" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/UpdateCaseState

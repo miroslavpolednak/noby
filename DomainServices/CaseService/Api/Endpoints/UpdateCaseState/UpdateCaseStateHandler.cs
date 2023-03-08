@@ -1,9 +1,5 @@
-﻿using CIS.Foms.Enums;
-using DomainServices.CaseService.Api.Database;
+﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
-using ExternalServices.SbWebApi.V1;
-using MediatR;
-using System.Threading;
 
 namespace DomainServices.CaseService.Api.Endpoints.UpdateCaseState;
 

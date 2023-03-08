@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.CaseService.Api.Database.Entities;
 
-[Table("Case", Schema = "dbo")]
+[Table("QueueRequestId", Schema = "dbo")]
 internal sealed class QueueRequestId
 {
     [Key]

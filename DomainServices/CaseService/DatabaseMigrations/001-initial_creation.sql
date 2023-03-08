@@ -80,7 +80,7 @@ SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[ActiveTaskHistory])
 GO
 
 CREATE TABLE [dbo].[QueueRequestId](
-	[QueueRequestId] [int] NOT NULL,
+	[RequestId] [int] NOT NULL,
 	[CaseId] [bigint] NULL,
 	[CreatedTime] [datetime] NULL,
  CONSTRAINT [PK_QueueRequestId] PRIMARY KEY CLUSTERED 
