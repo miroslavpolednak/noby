@@ -75,7 +75,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.PaymentDays(ct), c => c.Cast<Codebook.PaymentDays.PaymentDayItem>().Where(t => t.ShowOnPortal));
         AddCodebook((s, ct) => s.PayoutTypes(ct));
         AddCodebook((s, ct) => s.PostCodes(ct));
-        AddCodebook((s, ct) => s.ProfessionCategories(ct));
+        AddCodebook((s, ct) => s.ProfessionCategories(ct), c => c.Cast<Codebook.ProfessionCategories.ProfessionCategoryItem>());
         AddCodebook((s, ct) => s.ProfessionTypes(ct));
         AddCodebook((s, ct) => s.PropertySettlements(ct));
         AddCodebook((s, ct) => s.SalesArrangementStates(ct), c => c.Cast<Codebook.SalesArrangementStates.SalesArrangementStateItem>().Where(t => t.Id > 0));
