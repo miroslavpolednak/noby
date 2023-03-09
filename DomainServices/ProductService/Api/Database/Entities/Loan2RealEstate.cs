@@ -11,5 +11,7 @@ internal sealed class Loan2RealEstate
 
     public long NemovitostId { get; set; }
 
-    public int UcelKod { get; set; }
+    public Int16 UcelKod { get; set; }
+
+    public RealEstate RealEstate { get; set; }
 }

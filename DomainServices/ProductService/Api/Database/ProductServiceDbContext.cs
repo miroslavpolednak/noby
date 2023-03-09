@@ -27,6 +27,12 @@ internal sealed class ProductServiceDbContext
             .WithMany()
             .HasForeignKey(t => t.PartnerId);
 
+        modelBuilder.Entity<Entities.Loan2RealEstate>()
+            .HasOne(t => t.RealEstate)
+            .WithOne()
+            .HasForeignKey<Entities.Loan2RealEstate>(t => t.NemovitostId)
+            .IsRequired();
+
         modelBuilder.Entity<Entities.Obligation>().HasKey(m => new { m.LoanId, m.LoanPurposeId });
     }
 }

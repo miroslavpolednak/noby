@@ -26,7 +26,7 @@ message PaymentSymbols {
 }
 
 message LoanRealEstate {
-    google.protobuf.Int32Value RealEstateTypeId = 1;
-    google.protobuf.BoolValue IsCollateral = 2;
-    google.protobuf.Int32Value RealEstatePurchaseTypeId = 3;
+    int64 RealEstateTypeId = 1;
+    bool IsCollateral = 2;
+    int32 RealEstatePurchaseTypeId = 3;
 }
