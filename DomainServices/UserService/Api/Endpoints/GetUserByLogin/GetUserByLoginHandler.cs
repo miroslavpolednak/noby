@@ -10,14 +10,13 @@ internal class GetUserByLoginHandler
         // na tvrdaka zadanej login, protoze nemame jak a kde zjistit mapovani caas identit na v33
         string login = "99999943";
 
-        // vytahnout info o uzivateli z DB
         var cachedUser = await _repository.GetUser(login);
 
         if (cachedUser is null) // uzivatele se nepovedlo podle loginu najit
             throw new CIS.Core.Exceptions.CisNotFoundException(0, "User", login);
 
         // vytvorit finalni model
-        var model = new User
+        var model = new Contracts.User
         {
             Id = cachedUser!.v33id,
             CPM = cachedUser.v33cpm ?? "",
@@ -28,8 +27,6 @@ internal class GetUserByLoginHandler
             UserVip = false,
             CzechIdentificationNumber = "12345678"
         };
-
-        model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity("A09FK3", CIS.Foms.Enums.UserIdentitySchemes.KbUid));
 
         model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.Mpad));
 
@@ -42,7 +39,7 @@ internal class GetUserByLoginHandler
 
     private readonly Repositories.XxvRepository _repository;
     private readonly ILogger<GetUserByLoginHandler> _logger;
-
+    
     public GetUserByLoginHandler(
         Repositories.XxvRepository repository,
         ILogger<GetUserByLoginHandler> logger)

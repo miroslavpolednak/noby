@@ -25,7 +25,8 @@ public sealed class MockAuthenticationHandler
     {
         var claims = new[] 
         {
-            new Claim(AuthenticationConstants.ClaimNameLogin, "990614w")
+            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, "1"),
+            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, "KBUID=A09FK3")
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, AuthenticationConstants.MockAuthScheme);

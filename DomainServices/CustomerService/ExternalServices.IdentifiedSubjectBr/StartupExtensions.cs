@@ -28,7 +28,7 @@ public static class StartupExtensions
             case (IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient.Version, ServiceImplementationTypes.Real):
                 builder
                     .AddExternalServiceRestClient<IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient, IdentifiedSubjectBr.V1.RealIdentifiedSubjectBrClient>()
-                    .AddExternalServicesKbHeaders("CUSTOMER_SERVICE")
+                    .AddExternalServicesKbHeaders()
                     .AddExternalServicesKbPartyHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;

@@ -21,12 +21,17 @@ public static class StartupExtensions
         switch (version, configuration.ImplementationType)
         {
             case (Sulm.V1.ISulmClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddScoped<Sulm.V1.ISulmClient, Sulm.V1.MockSulmClient>();
+                builder.Services
+                    .AddScoped<Sulm.V1.ISulmClientHelper, Sulm.V1.SulmClientHelper>()
+                    .AddScoped<Sulm.V1.ISulmClient, Sulm.V1.MockSulmClient>();
                 break;
 
             case (Sulm.V1.ISulmClient.Version, ServiceImplementationTypes.Real):
+                builder.Services.AddScoped<Sulm.V1.ISulmClientHelper, Sulm.V1.SulmClientHelper>();
                 builder
                     .AddExternalServiceRestClient<Sulm.V1.ISulmClient, Sulm.V1.RealSulmClient>()
+                    .AddExternalServicesKbHeaders()
+                    .AddExternalServicesKbPartyHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 

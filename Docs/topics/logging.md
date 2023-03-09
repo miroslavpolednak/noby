@@ -6,10 +6,6 @@ Vždy se používá pouze instance `ILogger` nebo `ILoggerFactory` z DI - nikdy 
 Nastavení *Serilogu* je společné pro všechny projekty, jedná se o extension metodu do startup aplikace:
 ```csharp
 builder.AddCisLogging()
-...
-var app = builder.Build();
-...
-app.UseCisLogging();
 ```
 
 ## Druhy logů
@@ -92,7 +88,7 @@ Důležité je správně nastavit **LogType** v konfiguraci logování (v appset
 Oba middleware nastavují *Serilog* tak, aby ignoroval Health Check requesty.
 
 **LoggerCisUserGrpcMiddleware**  
-*LogType = Grpc*. Do kontextu každého záznamu vloží klíč **CisUserId** s hodnotou v33id z HTTP headeru **mp-user-id**. Zároveň *Serilog* ignoruje requesty na gRPC Reflection.
+*LogType = Grpc*. Do kontextu každého záznamu vloží klíč **CisUserId** s hodnotou v33id z HTTP headeru **noby-user-id**. Zároveň *Serilog* ignoruje requesty na gRPC Reflection.
 
 **LoggerCisUserWebapiMiddleware**  
 *LogType = WebApi*. Do kontextu každého záznamu vloží klíč **CisUserId** s hodnotou ID uživatele z **ICurrentUserAccessor.User.Id**. Zároveň *Serilog* loguje pouze requesty s URL začínající na "/api/".
