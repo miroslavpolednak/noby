@@ -6,6 +6,7 @@ using CIS.Infrastructure.Telemetry;
 using Microsoft.OpenApi.Models;
 using CIS.Infrastructure.Caching;
 using CIS.Infrastructure.Security;
+using CIS.InternalServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 var endpointsType = typeof(DomainServices.CodebookService.Endpoints.IEndpointsAssembly);
@@ -74,6 +75,8 @@ builder.UseKestrelWithCustomConfiguration();
 // BUILD APP
 if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
+
+app.UseServiceDiscovery();
 
 app
     .UseSwagger()
