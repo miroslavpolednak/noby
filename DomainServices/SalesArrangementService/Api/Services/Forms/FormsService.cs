@@ -105,20 +105,6 @@ internal sealed class FormsService
         return response;
     }
 
-    public async Task CallSulm(ProductData formData, CancellationToken cancellation)
-    {
-        var customersOnSa = formData.CustomersOnSa
-                                    .Select(customer => customer.Identities.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
-                                    .Where(kbIdentity => kbIdentity is not null);
-
-        // HFICH-2426
-        foreach (var kbIdentity in customersOnSa)
-        {
-            await _sulmClient.StopUse(kbIdentity!.IdentityId, "MLAP", cancellation);
-            await _sulmClient.StartUse(kbIdentity.IdentityId, "MLAP", cancellation);
-        }
-    }
-
     private async Task UpdateSalesArrangement(SalesArrangement salesArrangement, string contractNumber, CancellationToken cancellationToken)
     {
         await _mediator.Send(new UpdateSalesArrangementRequest

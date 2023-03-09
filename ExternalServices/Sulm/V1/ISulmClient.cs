@@ -1,13 +1,11 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers;
-
-namespace ExternalServices.Sulm.V1;
+﻿namespace ExternalServices.Sulm.V1;
 
 public interface ISulmClient
     : IExternalServiceClient
 {
-    Task StopUse(IList<CIS.Foms.Types.UserIdentity> identities, string purposeCode, CancellationToken cancellationToken = default(CancellationToken));
+    Task StopUse(long kbCustomerId, IList<CIS.Foms.Types.UserIdentity> identities, string purposeCode, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task StartUse(IList<CIS.Foms.Types.UserIdentity> identities, string purposeCode, CancellationToken cancellationToken = default(CancellationToken));
+    Task StartUse(long kbCustomerId, IList<CIS.Foms.Types.UserIdentity> identities, string purposeCode, CancellationToken cancellationToken = default(CancellationToken));
 
     const string Version = "V1";
 

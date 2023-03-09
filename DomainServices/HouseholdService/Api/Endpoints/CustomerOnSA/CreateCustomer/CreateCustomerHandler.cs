@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Api.Database.Entities;
+﻿using CIS.Core.Security;
+using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
 using Google.Protobuf;
@@ -41,8 +42,7 @@ internal sealed class CreateCustomerHandler
         if (containsKbIdentity)
         {
             var kbIdentityId = entity.Identities!.First(t => t.IdentityScheme == IdentitySchemes.Kb).IdentityId;
-            await _sulmClient.StopUse(kbIdentityId, "MPAP", cancellationToken);
-            await _sulmClient.StartUse(kbIdentityId, "MPAP", cancellationToken);
+            await _sulmClient.StartUse(kbIdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
         }
 
         // uz ma KB identitu, ale jeste nema MP identitu
@@ -98,7 +98,7 @@ internal sealed class CreateCustomerHandler
         return model;
     }
 
-    private readonly SulmService.ISulmClient _sulmClient;
+    private readonly SulmService.ISulmClientHelper _sulmClient;
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly UpdateCustomerService _updateService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
@@ -106,7 +106,7 @@ internal sealed class CreateCustomerHandler
 
     public CreateCustomerHandler(
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        SulmService.ISulmClient sulmClient,
+        SulmService.ISulmClientHelper sulmClient,
         UpdateCustomerService updateService,
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateCustomerHandler> logger)
