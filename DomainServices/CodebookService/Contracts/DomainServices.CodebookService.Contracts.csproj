@@ -9,8 +9,8 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MediatR" Version="12.0.0" />
-		<PackageReference Include="protobuf-net.Core" Version="3.1.33" />
+		<PackageReference Include="MediatR" Version="12.0.1" />
+		<PackageReference Include="protobuf-net.Core" Version="3.2.12" />
 		<PackageReference Include="protobuf-net.Grpc" Version="1.1.1" />
 		<PackageReference Include="System.Text.Json" Version="7.0.2" />
 	</ItemGroup>
