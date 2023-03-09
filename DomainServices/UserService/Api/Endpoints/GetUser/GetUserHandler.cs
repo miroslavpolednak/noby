@@ -26,7 +26,7 @@ internal class GetUserHandler
             CzechIdentificationNumber = "12345678"
         };
 
-        model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity("A09FK3", CIS.Foms.Enums.UserIdentitySchemes.KbUId));
+        model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity("A09FK3", CIS.Foms.Enums.UserIdentitySchemes.KbUid));
 
         model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.Mpad));
 

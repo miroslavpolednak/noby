@@ -12,7 +12,7 @@ public enum UserIdentitySchemes : byte
 
     [Display(Name = "KBUID")]
     [EnumMember]
-    KbUId = 4,
+    KbUid = 4,
 
     [Display(Name = "M04ID")]
     [EnumMember]
