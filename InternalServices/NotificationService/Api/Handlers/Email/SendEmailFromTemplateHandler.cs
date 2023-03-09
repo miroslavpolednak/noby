@@ -1,14 +1,11 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Contracts.Email;
-using cz.kb.osbs.mcs.sender.sendapi.v4;
-using cz.kb.osbs.mcs.sender.sendapi.v4.email;
 using MediatR;
 using Microsoft.Extensions.Options;
 
@@ -51,6 +48,10 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
     
     public async Task<SendEmailFromTemplateResponse> Handle(SendEmailFromTemplateRequest request, CancellationToken cancellationToken)
     {
+        var username = _userAdapterService
+            .CheckSendEmailAccess()
+            .GetUsername();
+        
         var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
         var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
         var bucketName = _mcsSenders.Contains(domainName)
@@ -79,7 +80,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
         
-        result.CreatedBy = _userAdapterService.GetUsername();
+        result.CreatedBy = username;
         
         try
         {

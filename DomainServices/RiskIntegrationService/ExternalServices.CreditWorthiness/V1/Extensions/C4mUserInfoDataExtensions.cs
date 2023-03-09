@@ -21,7 +21,7 @@ public static class C4mUserInfoDataExtensions
             Surname = userInfo.PersonSurname,
             OrgUnit = new OrganizationUnit
             {
-                Id = userInfo.DealerCompanyId.ToString(),
+                Id = userInfo.PersonOrgUnitId.ToString(),
                 JobPost = new JobPost
                 {
                     Id = userInfo.PersonJobPostId

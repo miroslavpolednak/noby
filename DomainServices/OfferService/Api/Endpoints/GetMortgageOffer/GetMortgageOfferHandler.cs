@@ -8,7 +8,8 @@ internal sealed class GetMortgageOfferHandler
 {
     public async Task<GetMortgageOfferResponse> Handle(GetMortgageOfferRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.Offers
+        var entity = await _dbContext
+           .Offers
            .AsNoTracking()
            .Where(t => t.OfferId == request.OfferId)
            .Select(t => new
@@ -21,7 +22,8 @@ internal sealed class GetMortgageOfferHandler
                t.SimulationInputsBin,
                t.SimulationResultsBin
            })
-           .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
+           .FirstOrDefaultAsync(cancellationToken) 
+           ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OfferNotFound, request.OfferId);
 
         var model = new GetMortgageOfferResponse
         {

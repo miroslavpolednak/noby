@@ -40,7 +40,7 @@ internal static class FormValidations
         }
     }
 
-    private static void CheckCustomersOnSA(IList<CustomerOnSa> customersOnSa)
+    private static void CheckCustomersOnSA(IList<ProductCustomerOnSa> customersOnSa)
     {
         // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
 
@@ -63,7 +63,7 @@ internal static class FormValidations
         }
     }
 
-    private static void CheckHouseholds(IList<Household> households, IList<CustomerOnSa> customersOnSa)
+    private static void CheckHouseholds(IList<ProductHousehold> households, IList<ProductCustomerOnSa> customersOnSa)
     {
         // check if each household type is represented at most once
         var duplicitHouseholdTypeIds = households.GroupBy(i => i.HouseholdTypeId).Where(g => g.Count() > 1).Select(i => i.Key);
@@ -118,7 +118,7 @@ internal static class FormValidations
         }
     }
 
-    private static void CheckIncomes(IList<EmployementIncome> incomes)
+    private static void CheckIncomes(IList<ProductEmployementIncome> incomes)
     {
         var invalidIncomes = incomes.Where(i => !i.IsInProbationaryPeriodHasValue || !i.IsInTrialPeriodHasValue).ToList();
 

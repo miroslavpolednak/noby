@@ -7,20 +7,20 @@ import "google/protobuf/wrappers.proto";
 import "Identity.proto";
 
 message ProductData {
-	repeated CustomerOnSa CustomersOnSa = 1;
+	repeated ProductCustomerOnSa CustomersOnSa = 1;
 
-	repeated Household Households = 2;
+	repeated ProductHousehold Households = 2;
 
-	repeated EmployementIncome EmployementIncomes = 3;
+	repeated ProductEmployementIncome EmployementIncomes = 3;
 }
 
-message CustomerOnSa {
+message ProductCustomerOnSa {
 	int32 CustomerOnSaId = 1;
 
 	repeated cis.types.Identity Identities = 2;
 }
 
-message Household {
+message ProductHousehold {
 	int32 HouseholdId = 1;
 
 	int32 HouseholdTypeId = 2;
@@ -30,7 +30,7 @@ message Household {
 	google.protobuf.Int32Value CustomerOnSaId2 = 4;
 }
 
-message EmployementIncome {
+message ProductEmployementIncome {
 	int32 IncomeId = 1;
 
 	bool IsInProbationaryPeriodHasValue = 2;

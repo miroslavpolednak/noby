@@ -51,12 +51,10 @@ builder.Services
        .AddDocumentGeneratorService();
 
 // FOMS services
-builder
-    .AddNobyServices()
-    .AddNobyDatabase();
+builder.AddNobyServices();
 
 // authentication
-builder.AddFomsAuthentication(appConfiguration);
+builder.AddNobyAuthentication(appConfiguration);
 
 // swagger
 if (appConfiguration.EnableSwaggerUi)
@@ -81,15 +79,17 @@ app.UseCisWebRequestLocalization();
 
 app
     // API call
-    .UseFomsApi()
+    .UseNobyApi()
+    // include authentication endpoints
+    .UseNobyAuthStrategy()
     // jedna se o SPA call, pust jen tyhle middlewares
-    .UseFomsSpa()
+    .UseNobySpa()
     // health check call - neni treba poustet celou pipeline
-    .UseFomsHealthChecks();
+    .UseNobyHealthChecks();
 
 // swagger
 if (appConfiguration.EnableSwaggerUi)
-    app.UseFomsSwagger();
+    app.UseNobySwagger();
 
 try
 {

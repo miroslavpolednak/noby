@@ -12,10 +12,11 @@ internal class CustomerServiceWrapper : IServiceWrapper
         _customerService = customerService;
     }
 
+    public DataSource DataSource => DataSource.CustomerService;
+
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
-        if (input.CustomerIdentity is null)
-            throw new ArgumentNullException(nameof(InputParameters.CustomerIdentity));
+        input.ValidateCustomerIdentity();
 
         data.Customer = await _customerService.GetCustomerDetail(input.CustomerIdentity, cancellationToken);
     }

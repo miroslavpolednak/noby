@@ -9,7 +9,8 @@ internal sealed class UpdateObligationHandler
     {
         var entity = await _dbContext.CustomersObligations
             .Where(t => t.CustomerOnSAObligationId == request.ObligationId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16042, $"Obligation ID {request.ObligationId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ObligationNotFound, request.ObligationId);
 
         entity.ObligationState = request.ObligationState;
         entity.ObligationTypeId = request.ObligationTypeId!.Value;

@@ -7,13 +7,10 @@ internal sealed class DeleteIncomeHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.CustomersIncomes
+        await _dbContext
+            .CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16029, $"Income ID {request.IncomeId} does not exist.");
-
-        _dbContext.CustomersIncomes.Remove(entity);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
+            .ExecuteDeleteAsync(cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

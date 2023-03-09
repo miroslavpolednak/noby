@@ -1,26 +1,14 @@
 ﻿using System.Globalization;
-using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
-using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.Countries;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
 
 internal class DrawingTemplateData : AggregatedData
 {
-    private List<CountriesItem> _countries = null!;
-    private List<GenericCodebookItem> _degreesBefore = null!;
+    public string PersonName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
-    public string PersonName => GetFullName();
-
-    public string PersonAddress =>
-        Customer.Addresses
-                .Where(c => c.AddressTypeId == (int)AddressTypes.Permanent)
-                .Select(a => $"{a.Street} {string.Join("/", new[] { a.HouseNumber, a.StreetNumber }.Where(str => !string.IsNullOrWhiteSpace(str)))}, " +
-                             $"{a.Postcode} {a.City}, " +
-                             $"{_countries.First(c => c.Id == a.CountryId).LongName}")
-                .FirstOrDefault(string.Empty);
+    public string PersonAddress => CustomerHelper.FullAddress(Customer, _codebookManager.Countries);
 
     public string PaymentAccount
     {
@@ -48,23 +36,12 @@ internal class DrawingTemplateData : AggregatedData
         }
     }
 
-    public string SignPersonName => SalesArrangement.Drawing.Agent?.IsActive == true ? string.Empty : GetFullName();
+    public string SignPersonName => SalesArrangement.Drawing.Agent?.IsActive == true ? string.Empty : CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
     public string SignAgentName => SalesArrangement.Drawing.Agent?.IsActive != true ? string.Empty : $"{SalesArrangement.Drawing.Agent.FirstName} {SalesArrangement.Drawing.Agent.LastName}";
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
+    protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        _countries = await codebookService.Countries(cancellationToken);
-        _degreesBefore = await codebookService.AcademicDegreesBefore(cancellationToken);
-    }
-
-    private string GetFullName()
-    {
-        if (!Customer.NaturalPerson.DegreeBeforeId.HasValue)
-            return $"{Customer.NaturalPerson.FirstName} {Customer.NaturalPerson.LastName}";
-
-        var degree = _degreesBefore.First(d => d.Id == Customer.NaturalPerson.DegreeBeforeId.Value).Name;
-
-        return $"{Customer.NaturalPerson.FirstName} {Customer.NaturalPerson.LastName}, {degree}";
+        configurator.Countries().DegreesBefore();
     }
 }

@@ -27,7 +27,12 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 builder.Configure();
 
 // Mvc
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.SuppressMapClientErrors = true;
+    });
 
 // Cis
 builder
@@ -91,6 +96,12 @@ if (winSvc)
 // ---------------------------------------------------------------------------------
 
 var app = builder.Build();
+
+app.Use((context, next) =>
+{
+    context.Request.EnableBuffering();
+    return next();
+});
 
 app.UseHttpsRedirection();
 app.UseServiceDiscovery();

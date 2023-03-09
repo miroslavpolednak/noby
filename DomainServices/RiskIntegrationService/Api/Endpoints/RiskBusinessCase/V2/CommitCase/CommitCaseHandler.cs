@@ -44,7 +44,7 @@ internal sealed class CommitCaseHandler
         if (request.UserIdentity != null)
         {
             var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellationToken);
-            if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
+            if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
                 requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
             else
                 requestModel.Creator = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
@@ -54,7 +54,7 @@ internal sealed class CommitCaseHandler
         if (request.Approver != null)
         {
             var approverInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.Approver, cancellationToken);
-            if (Helpers.IsDealerSchema(request.Approver!.IdentityScheme))
+            if (Helpers.IsDealerSchema(approverInstance.DealerCompanyId))
                 throw new CisValidationException(17010, $"Approver can't be dealer.");
             else
                 requestModel.Approver = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(approverInstance, request.Approver);

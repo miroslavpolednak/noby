@@ -21,7 +21,7 @@ public sealed class EventIdCodes
     public const int ValidationException = 513;
     public const int ItemFoundInCache = 514;
     public const int TryAddItemToCache = 515;
-    public const int LogSerializedObject = 516;
+    public const int LogValidationResults = 516;
     public const int ExtServiceRequest = 518;
     public const int HttpRequestPayload = 519;
     public const int HttpResponsePayload = 520;

@@ -17,6 +17,7 @@ public class CustomerObligationController : ControllerBase
     [HttpDelete("{customerOnSAId:int}/obligation/{obligationId:int}")]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task Delete([FromRoute] int customerOnSAId, [FromRoute] int obligationId)
         => await _mediator.Send(new DeleteObligation.DeleteObligationRequest(customerOnSAId, obligationId));
 
@@ -35,6 +36,7 @@ public class CustomerObligationController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(typeof(Dto.ObligationFullDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.ObligationFullDto> GetDetail([FromRoute] int customerOnSAId, [FromRoute] int obligationId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetObligation.GetObligationRequest(customerOnSAId, obligationId), cancellationToken);
 
@@ -50,6 +52,7 @@ public class CustomerObligationController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int obligationId, [FromBody] UpdateObligation.UpdateObligationRequest? request)
         => await _mediator.Send(request?.InfuseId(customerOnSAId, obligationId) ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 
@@ -64,6 +67,7 @@ public class CustomerObligationController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<int> Create([FromRoute] int customerOnSAId, [FromBody] CreateObligation.CreateObligationRequest? request)
         => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 

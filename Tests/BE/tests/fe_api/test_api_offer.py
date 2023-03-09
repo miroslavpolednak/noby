@@ -5,6 +5,10 @@ from typing import List
 from fe_api.FeAPI import FeAPI
 
 
+ids = dict(offer_id = 0, case_id = 0)
+#offer_id: int = 0
+#case_id: int = 0
+
 def test_simulate_mortgage():
     """Test API mortgage simulation."""
     import json
@@ -14,6 +18,27 @@ def test_simulate_mortgage():
     mortgage = FeAPI.Offer.simulate_mortgage(data_json)
     assert isinstance(mortgage, dict)
 
-    offerId = mortgage['offerId']
-    assert isinstance(offerId, int)
-    print(f"- mortgage: [{offerId}]")
+    ids['offer_id'] = mortgage['offerId']
+    assert isinstance(ids['offer_id'], int)
+    print(f"- mortgage: [{ids['offer_id']}]")
+
+
+def test_create_case():
+    """Test API case creation."""
+    import json
+    data_str = '{"offerId":0,"firstName":"JAN","lastName":"NOVÁK","dateOfBirth":"1980-01-01T00:00:00","phoneNumberForOffer":"+420 777543234","emailForOffer":"novak@testcm.cz", "identity":{"id":951070688,"scheme":2} }'
+
+    print(f"- mortgage: [{ids['offer_id']}]")
+
+    data_json = json.loads(data_str)
+    data_json['offerId'] = ids['offer_id']
+
+    print(f"- mortgage: [{str(data_json)}]")
+
+    case = FeAPI.Offer.create_case(data_json)
+    assert isinstance(case, dict)
+
+    print(f"- case: [{str(case)}]")
+
+    case_id = case['CaseId']
+    assert isinstance(case_id, int)

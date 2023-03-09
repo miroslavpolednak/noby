@@ -27,7 +27,7 @@ public sealed class CreditWorthinessServiceController
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Credit Worthiness" })]
     [ProducesResponseType(typeof(_V2.CreditWorthinessCalculateResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<_V2.CreditWorthinessCalculateResponse> Calculate([FromBody] _V2.CreditWorthinessCalculateRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 
@@ -41,7 +41,7 @@ public sealed class CreditWorthinessServiceController
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Credit Worthiness" })]
     [ProducesResponseType(typeof(_V2.CreditWorthinessSimpleCalculateResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<_V2.CreditWorthinessSimpleCalculateResponse> SimpleCalculate([FromBody] _V2.CreditWorthinessSimpleCalculateRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 }

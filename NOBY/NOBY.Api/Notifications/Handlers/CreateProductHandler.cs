@@ -76,7 +76,7 @@ internal sealed class CreateProductHandler
             }
         }
 
-        // vytovrit produkt
+        // vytovrit produkt - musi se zalozit pred klientem!
         var request = new _Product.CreateMortgageRequest
         {
             CaseId = notification.CaseId,
