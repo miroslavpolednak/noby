@@ -113,7 +113,6 @@ app
     .UseAuthentication()
     .UseAuthorization()
     .UseCisServiceUserContext()
-    .UseCisLogging()
     .UseEndpoints(endpoints =>
     {
         endpoints.MapCisHealthChecks();

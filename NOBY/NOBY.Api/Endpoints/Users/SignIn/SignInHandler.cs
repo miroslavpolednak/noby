@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using NOBY.Infrastructure.Security;
 using System.Security.Claims;
 
 namespace NOBY.Api.Endpoints.Users.SignIn;
@@ -17,9 +16,7 @@ internal sealed class SignInHandler
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, userInstance.FullName),
-            new Claim(ClaimTypes.NameIdentifier, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture)),
-            new Claim(AuthenticationConstants.ClaimNameLogin, userInstance.CPM),
+            new Claim(CIS.Core.Security.SecurityConstants.ClaimNameIdent, userInstance.CPM),
         };
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

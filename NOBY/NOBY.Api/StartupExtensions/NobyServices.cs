@@ -52,7 +52,7 @@ internal static class NobyServices
         });
 
         // ext services
-        builder.AddExternalService<IAddressWhispererClient>();
+        builder.AddExternalService<IAddressWhispererClient>(CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue, CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue);
 
         return builder;
     }

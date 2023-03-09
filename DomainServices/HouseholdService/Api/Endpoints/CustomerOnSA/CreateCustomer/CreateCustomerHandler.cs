@@ -1,5 +1,4 @@
-﻿using CIS.Core.Security;
-using DomainServices.HouseholdService.Api.Database.Entities;
+﻿using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
 using Google.Protobuf;
@@ -11,6 +10,12 @@ internal sealed class CreateCustomerHandler
 {
     public async Task<CreateCustomerResponse> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
+        var xxx = request.Customer!
+                .CustomerIdentifiers
+                .First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
+                .IdentityId;
+        await _sulmClient.StartUse(xxx, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
+
         var model = new CreateCustomerResponse();
 
         // check existing SalesArrangementId
@@ -41,7 +46,12 @@ internal sealed class CreateCustomerHandler
         // provolat sulm
         if (containsKbIdentity)
         {
-            var kbIdentityId = entity.Identities!.First(t => t.IdentityScheme == IdentitySchemes.Kb).IdentityId;
+            var kbIdentityId = request
+                .Customer!
+                .CustomerIdentifiers
+                .First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
+                .IdentityId;
+
             await _sulmClient.StartUse(kbIdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
         }
 

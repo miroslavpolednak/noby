@@ -28,7 +28,12 @@ public static class StartupExtensions
             case (CustomerProfile.V1.ICustomerProfileClient.Version, ServiceImplementationTypes.Real):
                 builder
                     .AddExternalServiceRestClient<CustomerProfile.V1.ICustomerProfileClient, CustomerProfile.V1.RealCustomerProfileClient>()
+<<<<<<< HEAD
                     .AddExternalServicesKbHeaders()
+=======
+                    .AddExternalServicesKbHeaders("CUSTOMER_SERVICE")
+                    .AddExternalServicesKbPartyHeaders()
+>>>>>>> feature/HFICH-2900
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
