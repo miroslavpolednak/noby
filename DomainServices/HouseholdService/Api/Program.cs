@@ -1,9 +1,9 @@
-using CIS.Infrastructure.StartupExtensions;
-using DomainServices.HouseholdService.Api;
-using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
-using DomainServices;
+using CIS.Infrastructure.StartupExtensions;
+using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices;
+using DomainServices;
+using DomainServices.HouseholdService.Api;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -16,6 +16,7 @@ var webAppOptions = runAsWinSvc
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
 #region register builder.Services
+
 builder.Services.AddAttributedServices(typeof(Program));
 
 // globalni nastaveni prostredi
@@ -24,7 +25,7 @@ builder
     .AddCisCoreFeatures()
     .AddCisHealthChecks();
 
-// logging 
+// logging
 builder
     .AddCisLogging()
     .AddCisTracing();
@@ -50,6 +51,7 @@ builder.Services.AddGrpc(options =>
     options.Interceptors.Add<GenericServerExceptionInterceptor>();
 });
 builder.Services.AddGrpcReflection();
+
 #endregion register builder.Services
 
 // kestrel configuration
@@ -83,6 +85,7 @@ finally
 }
 
 #pragma warning disable CA1050 // Declare types in namespaces
+
 public partial class Program
 #pragma warning restore CA1050 // Declare types in namespaces
 {

@@ -13,7 +13,7 @@ internal sealed class GetCustomerHandler
             .Include(t => t.Identities)
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .FirstOrDefaultAsync(cancellationToken) 
+            .FirstOrDefaultAsync(cancellationToken)
             ?? throw new CisNotFoundException(ErrorCodeMapper.CustomerOnSANotFound, ErrorCodeMapper.GetMessage(ErrorCodeMapper.CustomerOnSANotFound, request.CustomerOnSAId));
 
         var customerInstance = new Contracts.CustomerOnSA
@@ -31,7 +31,7 @@ internal sealed class GetCustomerHandler
 
         if (entity.AdditionalDataBin != null)
             customerInstance.CustomerAdditionalData = CustomerAdditionalData.Parser.ParseFrom(entity.AdditionalDataBin);
-        
+
         // identity
         if (entity.Identities is not null)
             customerInstance.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new Identity(t.IdentityId, t.IdentityScheme)));

@@ -12,7 +12,7 @@ internal sealed class UpdateCustomerHandler
         var entity = await _dbContext.Customers
             .Include(t => t.Identities)
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .FirstOrDefaultAsync(cancellationToken) 
+            .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CustomerOnSANotFound, request.CustomerOnSAId);
 
         // helper aby se nemuselo porad null checkovat

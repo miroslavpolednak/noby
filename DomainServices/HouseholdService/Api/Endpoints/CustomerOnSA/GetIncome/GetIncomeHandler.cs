@@ -32,15 +32,19 @@ internal sealed class GetIncomeHandler
                 case CustomerIncomeTypes.Employement:
                     model.Employement = IncomeDataEmployement.Parser.ParseFrom(entity.DataBin);
                     break;
+
                 case CustomerIncomeTypes.Other:
                     model.Other = IncomeDataOther.Parser.ParseFrom(entity.DataBin);
                     break;
+
                 case CustomerIncomeTypes.Enterprise:
                     model.Entrepreneur = IncomeDataEntrepreneur.Parser.ParseFrom(entity.DataBin);
                     break;
+
                 case CustomerIncomeTypes.Rent:
                     model.Rent = IncomeDataRent.Parser.ParseFrom(entity.DataBin);
                     break;
+
                 default:
                     throw new NotImplementedException("This customer income type deserializer is not implemented");
             }

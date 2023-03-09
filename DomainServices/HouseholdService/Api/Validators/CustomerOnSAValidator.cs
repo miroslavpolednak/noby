@@ -5,7 +5,7 @@ namespace DomainServices.HouseholdService.Api.Validators;
 internal sealed class CustomerOnSAValidator
     : AbstractValidator<Contracts.CustomerOnSABase>
 {
-    static DateTime _dateOfBirthMin = new DateTime(1900, 1, 1);
+    private static DateTime _dateOfBirthMin = new DateTime(1900, 1, 1);
 
     public CustomerOnSAValidator()
     {

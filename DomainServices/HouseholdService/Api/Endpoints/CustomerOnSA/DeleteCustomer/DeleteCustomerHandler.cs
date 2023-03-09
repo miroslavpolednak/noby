@@ -30,8 +30,8 @@ internal sealed class DeleteCustomerHandler
 
         // zjistit zda ma customer rozjednany pripad
         var hasMoreSA = (await _dbContext.CustomersIdentities
-            .CountAsync(t => 
-                t.IdentityScheme == customer.Identities!.First().IdentityScheme 
+            .CountAsync(t =>
+                t.IdentityScheme == customer.Identities!.First().IdentityScheme
                 && t.IdentityId == customer.Identities!.First().IdentityId
                 , cancellationToken)) > 1;
 
