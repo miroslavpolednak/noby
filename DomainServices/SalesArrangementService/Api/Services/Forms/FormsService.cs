@@ -17,7 +17,6 @@ internal sealed class FormsService
     private readonly IMediator _mediator;
     private readonly IDataAggregatorServiceClient _dataAggregator;
     private readonly ICodebookServiceClients _codebookService;
-    private readonly SulmService.ISulmClient _sulmClient;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ICaseServiceClient _caseService;
@@ -26,7 +25,6 @@ internal sealed class FormsService
     public FormsService(IMediator mediator,
                         IDataAggregatorServiceClient dataAggregator,
                         ICodebookServiceClients codebookService,
-                        SulmService.ISulmClient sulmClient,
                         IHouseholdServiceClient householdService,
                         ICustomerOnSAServiceClient customerOnSAService,
                         ICaseServiceClient caseService,
@@ -35,7 +33,6 @@ internal sealed class FormsService
         _mediator = mediator;
         _dataAggregator = dataAggregator;
         _codebookService = codebookService;
-        _sulmClient = sulmClient;
         _householdService = householdService;
         _customerOnSAService = customerOnSAService;
         _caseService = caseService;
@@ -103,20 +100,6 @@ internal sealed class FormsService
         FormValidations.CheckFormData(response.Product);
 
         return response;
-    }
-
-    public async Task CallSulm(ProductData formData, CancellationToken cancellation)
-    {
-        var customersOnSa = formData.CustomersOnSa
-                                    .Select(customer => customer.Identities.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
-                                    .Where(kbIdentity => kbIdentity is not null);
-
-        // HFICH-2426
-        foreach (var kbIdentity in customersOnSa)
-        {
-            await _sulmClient.StopUse(kbIdentity!.IdentityId, "MLAP", cancellation);
-            await _sulmClient.StartUse(kbIdentity.IdentityId, "MLAP", cancellation);
-        }
     }
 
     private async Task UpdateSalesArrangement(SalesArrangement salesArrangement, string contractNumber, CancellationToken cancellationToken)
