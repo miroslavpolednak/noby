@@ -255,7 +255,8 @@ GO
 DROP TABLE IF EXISTS [dbo].[ProfessionCategoryExtension];
 CREATE TABLE [dbo].[ProfessionCategoryExtension](
 	[ProfessionCategoryId] [int] NOT NULL,
-	[ProfessionIds] [nvarchar](100) NULL,
+	[ProfessionTypeIds] [nvarchar](100) NULL,
+	[IncomeMainTypeAMLIds] [nvarchar](100) NULL
 CONSTRAINT [PK_ProfessionCategoryExtension] PRIMARY KEY CLUSTERED 
 (
 	[ProfessionCategoryId] ASC
@@ -263,12 +264,18 @@ CONSTRAINT [PK_ProfessionCategoryExtension] PRIMARY KEY CLUSTERED
 ) ON [PRIMARY];
 GO
 
-	INSERT INTO [dbo].[ProfessionCategoryExtension]([ProfessionCategoryId],[ProfessionIds])
+	INSERT INTO [dbo].[ProfessionCategoryExtension]([ProfessionCategoryId],[ProfessionTypeIds],[IncomeMainTypeAMLIds])
     VALUES
-	(0, '0'),
-    (1, '3, 4, 7, 8, 9, 1, 2, 5, 6, 10, 12');
+	(0, '0', NULL),
+    (1, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', NULL),
+	(2, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', '1, 6'),
+	(3, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', '1, 6'),
+	(4, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', '2, 6'),
+	(5, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', '1, 6'),
+	(6, '0, 13, 14', '3, 4, 5'),
+	(7, '0', NULL),
+	(8, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', '1, 2, 3, 6');
 GO
-
 
 -- table 'NetMonthEarningsExtension'
 DROP TABLE IF EXISTS [dbo].[NetMonthEarningsExtension];
