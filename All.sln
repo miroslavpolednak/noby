@@ -217,6 +217,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E99-AE46-4B08-A830-1587E93A950E}"
 	ProjectSection(SolutionItems) = preProject
 		Docs\topics\authentication.md = Docs\topics\authentication.md
+		Docs\topics\background-service-job.md = Docs\topics\background-service-job.md
 		Docs\topics\configuration.md = Docs\topics\configuration.md
 		Docs\topics\dataAggregator.md = Docs\topics\dataAggregator.md
 		Docs\topics\database-migrations.md = Docs\topics\database-migrations.md
@@ -320,7 +321,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{72288697-BCA0-41AF-A56B-A4075B5FA0FF}"
 	ProjectSection(SolutionItems) = preProject
-		001-InitialCreate.sql = 001-InitialCreate.sql
+		DomainServices\DocumentOnSAService\DatabaseMigrations\001-InitialCreate.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\001-InitialCreate.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness", "DomainServices\RiskIntegrationService\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj", "{FF60B12F-B083-46BE-B8DA-FD91ABE2D831}"

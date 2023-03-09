@@ -21,6 +21,8 @@
 
 [Error handling na FE API](./topics/feapi-error-handling.md)
 
+[Registrace periodických jobů a popis funkčnosti](./topics/background-service-job.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

@@ -30,6 +30,11 @@ public class DocumentArchiveService
         return await _service.GetGetDocumentListAsync(request, cancellationToken: cancellationToken);
     }
 
+    public async Task<GetDocumentsInQueueResponse> GetDocumentsInQueue(GetDocumentsInQueueRequest request, CancellationToken cancellationToken = default)
+    {
+       return await _service.GetDocumentsInQueueAsync(request, cancellationToken: cancellationToken);
+    }
+
     public async Task UploadDocument(UploadDocumentRequest request, CancellationToken cancellationToken = default)
     {
         await _service.UploadDocumentAsync(request, cancellationToken: cancellationToken);

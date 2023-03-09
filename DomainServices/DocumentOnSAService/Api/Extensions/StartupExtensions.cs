@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices;
+using DomainServices.DocumentOnSAService.Api.BackgroundServiceJobs.CheckDocumentsArchived;
 using DomainServices.DocumentOnSAService.Api.Configuration;
 using ExternalServices;
 
@@ -13,6 +14,8 @@ internal static class StartupExtensions
 
     public static WebApplicationBuilder AddDocumentOnSAServiceService(this WebApplicationBuilder builder)
     {
+        builder.Services.AddAttributedServices(typeof(Program));
+
         // dbcontext
         builder.AddEntityFramework<Database.DocumentOnSAServiceDbContext>(connectionStringKey: "default");
 
@@ -26,10 +29,13 @@ internal static class StartupExtensions
 
         builder.Services.AddDataAggregatorService();
 
+        builder.Services.AddDocumentArchiveService();
+
         // EAS svc
         builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
 
+        builder.AddCisPeriodicJob<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
+       
         return builder;
     }
-
 }
