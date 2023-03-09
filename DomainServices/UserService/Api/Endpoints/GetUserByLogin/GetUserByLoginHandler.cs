@@ -10,19 +10,8 @@ internal class GetUserByLoginHandler
         // na tvrdaka zadanej login, protoze nemame jak a kde zjistit mapovani caas identit na v33
         string login = "99999943";
 
-        string cacheKey = Helpers.GetUserCacheKey(login);
-        var cachedUser = await _cache.GetObjectAsync<Dto.V33PmpUser>(cacheKey, SerializationTypes.Protobuf);
-
-        // pokud je uzivatel v kesi, vytahni ho
-        if (cachedUser is null)
-        {
-            // vytahnout info o uzivateli z DB
-            cachedUser = await _repository.GetUser(login);
-
-            // ulozit do kese
-            _logger.LogDebug("Store user in cache");
-            await _cache.SetObjectAsync(cacheKey, cachedUser, _cacheOptions, SerializationTypes.Protobuf, cancellation);
-        }
+        // vytahnout info o uzivateli z DB
+        var cachedUser = await _repository.GetUser(login);
 
         if (cachedUser is null) // uzivatele se nepovedlo podle loginu najit
             throw new CIS.Core.Exceptions.CisNotFoundException(0, "User", login);
@@ -40,7 +29,7 @@ internal class GetUserByLoginHandler
             CzechIdentificationNumber = "12345678"
         };
 
-        model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity("A09FK3", CIS.Foms.Enums.UserIdentitySchemes.KbUId));
+        model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity("A09FK3", CIS.Foms.Enums.UserIdentitySchemes.KbUid));
 
         model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.Mpad));
 
@@ -53,16 +42,11 @@ internal class GetUserByLoginHandler
 
     private readonly Repositories.XxvRepository _repository;
     private readonly ILogger<GetUserByLoginHandler> _logger;
-    private readonly IDistributedCache _cache;
-
-    static DistributedCacheEntryOptions _cacheOptions = new DistributedCacheEntryOptions() { SlidingExpiration = TimeSpan.FromMinutes(20) };
 
     public GetUserByLoginHandler(
-        IDistributedCache cache,
         Repositories.XxvRepository repository,
         ILogger<GetUserByLoginHandler> logger)
     {
-        _cache = cache;
         _repository = repository;
         _logger = logger;
     }
