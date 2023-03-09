@@ -1,6 +1,5 @@
 ﻿using CIS.Core.Attributes;
 using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CodebookService.Clients;
@@ -14,26 +13,14 @@ internal sealed class FormsService
     private readonly IMediator _mediator;
     private readonly IDataAggregatorServiceClient _dataAggregator;
     private readonly ICodebookServiceClients _codebookService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IEasClient _easClient;
 
     public FormsService(IMediator mediator,
                         IDataAggregatorServiceClient dataAggregator,
-                        ICodebookServiceClients codebookService,
-                        IHouseholdServiceClient householdService,
-                        ICustomerOnSAServiceClient customerOnSAService,
-                        ICaseServiceClient caseService,
-                        IEasClient easClient)
+                        ICodebookServiceClients codebookService)
     {
         _mediator = mediator;
         _dataAggregator = dataAggregator;
         _codebookService = codebookService;
-        _householdService = householdService;
-        _customerOnSAService = customerOnSAService;
-        _caseService = caseService;
-        _easClient = easClient;
     }
 
     public Task<SalesArrangement> LoadSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
@@ -72,28 +59,5 @@ internal sealed class FormsService
         FormValidations.CheckFormData(response.Product);
 
         return response;
-    }
-
-    private async Task UpdateSalesArrangement(SalesArrangement salesArrangement, string contractNumber, CancellationToken cancellationToken)
-    {
-        await _mediator.Send(new UpdateSalesArrangementRequest
-        {
-            SalesArrangementId = salesArrangement.SalesArrangementId,
-            ContractNumber = contractNumber,
-            RiskBusinessCaseId = salesArrangement.RiskBusinessCaseId,
-            SalesArrangementSignatureTypeId = salesArrangement.SalesArrangementSignatureTypeId,
-            FirstSignedDate = salesArrangement.FirstSignedDate
-        }, cancellationToken);
-
-        salesArrangement.ContractNumber = contractNumber;
-    }
-
-    private async Task UpdateCase(long caseId, string contractNumber, CancellationToken cancellationToken)
-    {
-        var caseDetail = await _caseService.GetCaseDetail(caseId, cancellationToken);
-
-        caseDetail.Data.ContractNumber = contractNumber;
-
-        await _caseService.UpdateCaseData(caseId, caseDetail.Data, cancellationToken);
     }
 }
