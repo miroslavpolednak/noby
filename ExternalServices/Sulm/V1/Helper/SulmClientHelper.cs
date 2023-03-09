@@ -21,7 +21,7 @@ internal class SulmClientHelper
 
     private async Task<List<CIS.Foms.Types.UserIdentity>> getUserIdentities(CancellationToken cancellationToken)
     {
-        if (_userAccessor.IsAuthenticated)
+        if (!_userAccessor.IsAuthenticated)
         {
             throw new CIS.Core.Exceptions.CisValidationException(0, "SULM integration: context user not found");
         }
