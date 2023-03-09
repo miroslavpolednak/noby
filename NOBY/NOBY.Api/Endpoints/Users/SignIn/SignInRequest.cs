@@ -5,6 +5,6 @@ public sealed class SignInRequest : IRequest
     /// <summary>
     /// Login uzivatel do CAASu.
     /// </summary>
-    /// <example>KBUID=A09FK3</example>
+    /// <example>990614w</example>
     public string? Login { get; set; }
 }

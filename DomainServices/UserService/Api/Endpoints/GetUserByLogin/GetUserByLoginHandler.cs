@@ -7,13 +7,10 @@ internal class GetUserByLoginHandler
 {
     public async Task<User> Handle(GetUserByLoginRequest request, CancellationToken cancellation)
     {
-        // na tvrdaka zadanej login, protoze nemame jak a kde zjistit mapovani caas identit na v33
-        string login = "99999943";
-
-        var cachedUser = await _repository.GetUser(login);
+        var cachedUser = await _repository.GetUser(request.Login);
 
         if (cachedUser is null) // uzivatele se nepovedlo podle loginu najit
-            throw new CIS.Core.Exceptions.CisNotFoundException(0, "User", login);
+            throw new CIS.Core.Exceptions.CisNotFoundException(0, "User", request.Login);
 
         // vytvorit finalni model
         var model = new Contracts.User
