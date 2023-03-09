@@ -18,7 +18,7 @@ public sealed class SecurityConstants
     /// <summary>
     /// Type claimu, který obsahuje login (CAAS login) přihlášeného uživatele
     /// </summary>
-    public const string ClaimNameIdent = "noby-user-ident";
+    public const string ClaimTypeIdent = ContextUserHttpHeaderUserIdentKey;
 
-    public const string ClaimNameId = "noby-user-id";
+    public const string ClaimTypeId = ContextUserHttpHeaderUserIdKey;
 }

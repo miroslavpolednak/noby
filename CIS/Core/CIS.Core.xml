@@ -781,7 +781,7 @@
             Klíč pro HTTP hlavičku s informací o loginu (CAAS) aktuálně přihlášeného uživatele.
             </summary>
         </member>
-        <member name="F:CIS.Core.Security.SecurityConstants.ClaimNameIdent">
+        <member name="F:CIS.Core.Security.SecurityConstants.ClaimTypeIdent">
             <summary>
             Type claimu, který obsahuje login (CAAS login) přihlášeného uživatele
             </summary>
@@ -799,6 +799,11 @@
         <member name="P:CIS.Core.Security.ICurrentUser.Login">
             <summary>
             Login uzivatele
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUser.DisplayName">
+            <summary>
+            Jmeno a prijmeni uzivatele
             </summary>
         </member>
         <member name="T:CIS.Core.Security.ICurrentUserAccessor">

@@ -13,6 +13,7 @@ public static class CurrentUserAccessorHelpers
 
     public static string? GetUserIdentFromHeaders(HttpRequest request)
     {
-        return request.Headers.ContainsKey(Core.Security.SecurityConstants.ContextUserHttpHeaderUserIdentKey) ? request.Headers[Core.Security.SecurityConstants.ContextUserHttpHeaderUserIdentKey].First() : null;
+        return request.Headers.ContainsKey(Core.Security.SecurityConstants.ContextUserHttpHeaderUserIdentKey) 
+            ? request.Headers[Core.Security.SecurityConstants.ContextUserHttpHeaderUserIdentKey].First() : null;
     }
 }

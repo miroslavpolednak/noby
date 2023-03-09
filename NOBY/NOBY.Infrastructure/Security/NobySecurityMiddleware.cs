@@ -29,15 +29,19 @@ public class AppSecurityMiddleware
                 throw new System.Security.Authentication.AuthenticationException("User Identity not found in HttpContext");
 
             // zjistit login uzivatele
-            var login = (context.User.Identity as ClaimsIdentity)?.Claims.FirstOrDefault(t => t.Type == CIS.Core.Security.SecurityConstants.ClaimNameIdent)?.Value;
-            if (string.IsNullOrEmpty(login))
+            var userIdClaimValue = (context.User.Identity as ClaimsIdentity)?
+                .Claims
+                .FirstOrDefault(t => t.Type == CIS.Core.Security.SecurityConstants.ClaimTypeId)?
+                .Value;
+
+            if (!int.TryParse(userIdClaimValue, out int userId))
                 throw new System.Security.Authentication.AuthenticationException("User login is empty");
 
             // ziskat instanci uzivatele z xxv
-            var result = await userService.GetUserByLogin(login);
+            var result = await userService.GetUser(userId);
 
             // vlozit FOMS uzivatele do contextu
-            context.User = new NobyUser(context.User.Identity, login, result);
+            context.User = new NobyUser(context.User.Identity, result);
         }
 
         await _next.Invoke(context);

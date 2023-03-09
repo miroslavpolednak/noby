@@ -44,7 +44,7 @@ internal class NobyHeadersEnricher
             }
         }
         // posledni pokus - muze byt jiz vytvorena claims identity, ale jeste neni v kontextu User z auth middlewaru
-        else if (_contextAccessor.HttpContext?.User?.HasClaim(t => t.Type == SecurityConstants.ClaimNameIdent) ?? false)
+        else if (_contextAccessor.HttpContext?.User?.HasClaim(t => t.Type == SecurityConstants.ClaimTypeIdent) ?? false)
         {
             var userIdentProperty = propertyFactory.CreateProperty(Constants.LoggerContextUserIdentPropertyName, _contextAccessor.HttpContext!.User.Claims.First(t => t.Type == SecurityConstants.ContextUserHttpHeaderUserIdentKey).Value);
             logEvent.AddPropertyIfAbsent(userIdentProperty);

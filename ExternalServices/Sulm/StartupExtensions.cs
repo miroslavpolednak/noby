@@ -30,6 +30,8 @@ public static class StartupExtensions
                 builder.Services.AddScoped<Sulm.V1.ISulmClientHelper, Sulm.V1.SulmClientHelper>();
                 builder
                     .AddExternalServiceRestClient<Sulm.V1.ISulmClient, Sulm.V1.RealSulmClient>()
+                    .AddExternalServicesKbHeaders()
+                    .AddExternalServicesKbPartyHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 

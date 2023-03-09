@@ -14,4 +14,9 @@ public interface ICurrentUser
     /// Login uzivatele
     /// </summary>
     string? Login { get; }
+
+    /// <summary>
+    /// Jmeno a prijmeni uzivatele
+    /// </summary>
+    string? DisplayName { get; }
 }

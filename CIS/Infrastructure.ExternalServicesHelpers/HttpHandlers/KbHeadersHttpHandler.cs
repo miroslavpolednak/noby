@@ -35,7 +35,7 @@ public sealed class KbHeadersHttpHandler
             request.Headers.Add("X-B3-TraceId", Activity.Current?.RootId);
             request.Headers.Add("X-B3-SpanId", Activity.Current?.SpanId.ToString());
         }
-
+        
         return await base.SendAsync(request, cancellationToken);
     }
 }

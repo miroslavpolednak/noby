@@ -10,12 +10,6 @@ internal sealed class CreateCustomerHandler
 {
     public async Task<CreateCustomerResponse> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
-        var xxx = request.Customer!
-                .CustomerIdentifiers
-                .First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
-                .IdentityId;
-        await _sulmClient.StartUse(xxx, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
-
         var model = new CreateCustomerResponse();
 
         // check existing SalesArrangementId

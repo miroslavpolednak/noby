@@ -7,19 +7,14 @@ internal sealed class CisUserIdentity
     : ClaimsIdentity, ICurrentUser
 {
     public int Id { get; init; }
-
     public string? Login { get; init; }
+    public string? DisplayName { get; init; }
 
-    public CisUserIdentity(int userId, string? login)
-        : base(InternalServicesAuthentication.ContextUserSchemeName, SecurityConstants.ClaimNameId, "role")
+    public CisUserIdentity(string? login, DomainServices.UserService.Contracts.User userInstance)
+        : base(InternalServicesAuthentication.ContextUserSchemeName, SecurityConstants.ClaimTypeId, "role")
     {
-        Id = userId;
+        Id = userInstance.Id;
         Login = login;
-
-        this.AddClaim(new Claim(SecurityConstants.ClaimNameId, userId.ToString(System.Globalization.CultureInfo.InvariantCulture)));
-        if (!string.IsNullOrEmpty(login))
-        {
-            this.AddClaim(new Claim(SecurityConstants.ClaimNameIdent, login));
-        }
+        DisplayName = userInstance.FullName;
     }
 }

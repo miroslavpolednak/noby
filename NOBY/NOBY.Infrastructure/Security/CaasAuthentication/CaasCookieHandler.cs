@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using DomainServices.UserService.Clients;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
@@ -24,19 +25,27 @@ internal sealed class CaasCookieHandler
             options.ExpireTimeSpan = TimeSpan.FromMinutes(_configuration.SessionInactivityTimeout!.Value);
         }
 
-        options.Events.OnSigningIn = context =>
+        options.Events.OnSigningIn = async context =>
         {
+            // login, ktery prisel z CAASu
             var currentLogin = context.Principal!.Claims.First(t => t.Type == ClaimTypes.NameIdentifier).Value;
 
-            var claims = new List<Claim>();
-            claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimNameIdent, currentLogin));
+            // zavolat user service a zjistit, jestli muze uzivatel do aplikace
+            var userServiceClient = (IUserServiceClient)context.HttpContext.RequestServices.GetService(typeof(IUserServiceClient))!;
+            var userInstance = await userServiceClient.GetUserByLogin(currentLogin);
+            
+            //TODO nejaka kontrola prav?
 
-            var identity = new ClaimsIdentity(claims, context.Principal.Identity!.AuthenticationType, CIS.Core.Security.SecurityConstants.ClaimNameIdent, "role");
+            // vytvorit claimy
+            var claims = new List<Claim>();
+            claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, currentLogin));
+            claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+
+            var identity = new ClaimsIdentity(claims, context.Principal.Identity!.AuthenticationType, CIS.Core.Security.SecurityConstants.ClaimTypeId, "role");
             var principal = new ClaimsPrincipal(identity);
 
+            // ulozit nove vytvorenou identitu
             context.Principal = principal;
-
-            return Task.CompletedTask;
         };
     }
 

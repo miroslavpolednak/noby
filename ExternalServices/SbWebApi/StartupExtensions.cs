@@ -28,8 +28,6 @@ public static class StartupExtensions
             case (SbWebApi.V1.ISbWebApiClient.Version, ServiceImplementationTypes.Real):
                 builder
                     .AddExternalServiceRestClient<SbWebApi.V1.ISbWebApiClient, SbWebApi.V1.RealSbWebApiClient>()
-                    .AddExternalServicesKbHeaders()
-                    .AddExternalServicesKbPartyHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
