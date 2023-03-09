@@ -14,7 +14,7 @@ public interface ISulmClient
     public const string PurposeMLAP = "MLAP";
     public const string PurposeMPAP = "MPAP";
 
-    public static string GetChannelCode(IList<CIS.Foms.Types.UserIdentity> identities)
+    internal static string GetChannelCode(IList<CIS.Foms.Types.UserIdentity> identities)
     {
         return identities.Any(t => t.Scheme == CIS.Foms.Enums.UserIdentitySchemes.BrokerId)
             ? "CH0001" : "CH0002";

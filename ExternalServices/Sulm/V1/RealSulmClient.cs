@@ -6,8 +6,11 @@ namespace ExternalServices.Sulm.V1;
 internal sealed class RealSulmClient 
     : ISulmClient
 {
-    public async Task StopUse(long partyId, string usageCode, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task StopUse(IList<CIS.Foms.Types.UserIdentity> identities, string purposeCode, CancellationToken cancellationToken = default(CancellationToken))
     {
+        var identity = getKbIdentity(identities);
+        var channgel = ISulmClient.GetChannelCode(identities);
+
         var response = await _httpClient
             .PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/eventreport/casestatechanged", easRequest, cancellationToken)
             .ConfigureAwait(false);
@@ -16,15 +19,18 @@ internal sealed class RealSulmClient
         {
             var result = await response.Content.ReadFromJsonAsync<Contracts.WFS_Event_Response>(cancellationToken: cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(CaseStateChanged), nameof(Contracts.WFS_Event_Response));
-
-            // neco je spatne ve WS
-            if ((result.Result?.Return_val ?? 0) != 0)
-                throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName}.CaseStateChanged: {result.Result?.Return_text}");
         }
         else
         {
             throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
         }
+    }
+
+    private static CIS.Foms.Types.UserIdentity getKbIdentity(IList<CIS.Foms.Types.UserIdentity> identities)
+    {
+        return identities
+            .FirstOrDefault(t => t.Scheme == CIS.Foms.Enums.UserIdentitySchemes.KbUId)
+            ?? throw new CisExtServiceValidationException(0, "SULM integration: KB Identity not found");
     }
 
     private readonly HttpClient _httpClient;
