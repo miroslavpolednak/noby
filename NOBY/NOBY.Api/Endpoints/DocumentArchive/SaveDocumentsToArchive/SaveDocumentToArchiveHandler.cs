@@ -103,7 +103,6 @@ public class SaveDocumentToArchiveHandler
 
         foreach (var salesArrangement in salesArrangements.SalesArrangements)
         {
-            // Todo ask where to find EaCodeMainId from request?
             var response = await _mediator.Send(new _DocOnSa.SearchRequest
             {
                 SalesArrangementId = salesArrangement.SalesArrangementId,
@@ -118,8 +117,6 @@ public class SaveDocumentToArchiveHandler
                 break;
             }
         }
-
-      
 
         return salesArrangementIdWithFormIdFromDocSa;
     }
