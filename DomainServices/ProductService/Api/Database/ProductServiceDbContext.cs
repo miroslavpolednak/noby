@@ -15,6 +15,8 @@ internal sealed class ProductServiceDbContext
     public DbSet<Entities.Relationship> Relationships { get; set; }
 	public DbSet<Entities.Partner> Partners { get; set; }
     public DbSet<Entities.LoanPurpose> LoanPurposes { get; set; }
+    public DbSet<Entities.RealEstate> RealEstates { get; set; }
+    public DbSet<Entities.Loan2RealEstate> Loans2RealEstates { get; set; }
 
     public DbSet<Entities.Obligation> Obligations => Set<Entities.Obligation>();
 
