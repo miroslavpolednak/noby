@@ -18,7 +18,7 @@ internal class ConditionalFormValues
 
     public int? DeveloperProjectId => _specificJsonKeys.GetValueOrDefault(JsonKey.DeveloperProjektId, NullIfZero(_data.Offer.SimulationInputs.Developer?.ProjectId));
 
-    public string? DeveloperDescription => _specificJsonKeys.GetValueOrDefault(JsonKey.DeveloperPopis, GetDeveloperDescription());
+    public string? DeveloperDescription => _specificJsonKeys.GetValueOrDefault(JsonKey.DeveloperPopis, _data.Offer.SimulationInputs.Developer.Description);
 
     public IEnumerable<LoanPurpose> LoanPurposes =>
         _specificJsonKeys.GetValueOrDefault(JsonKey.SeznamUcelu, _data.Offer.SimulationInputs.LoanPurposes) ?? Enumerable.Empty<LoanPurpose>();
@@ -41,20 +41,6 @@ internal class ConditionalFormValues
                             RowNumber = index + 1,
                             LoanRealEstateData = loanRealEstate
                         }) ?? Enumerable.Empty<LoanRealEstate>();
-
-    private string? GetDeveloperDescription()
-    {
-        var dev = _data.Offer.SimulationInputs.Developer;
-
-        if (dev is null)
-            return null;
-
-        var texts = new[] { dev.NewDeveloperName, dev.NewDeveloperCin, dev.NewDeveloperProjectName }
-                    .Where(str => !string.IsNullOrWhiteSpace(str))
-                    .ToList();
-
-        return texts.Count == 0 ? default : string.Join(",", texts);
-    }
-
+    
     private static int? NullIfZero(int? value) => value == 0 ? null : value;
 }

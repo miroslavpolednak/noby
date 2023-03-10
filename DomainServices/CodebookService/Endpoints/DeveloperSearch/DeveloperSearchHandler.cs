@@ -11,9 +11,9 @@ public class DeveloperSearchHandler
             return new List<DeveloperSearchItem>();
 
         var terms = request.Term.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-        var terms_values = String.Join(",", terms.Select(t => $"('{t}')"));
+        var termsValues = String.Join(",", terms.Select(t => $"('{t}')"));
 
-        var sqlQuery = sqlTamplate.Replace("<terms>", terms_values);
+        var sqlQuery = sqlTamplate.Replace("<terms>", termsValues);
 
         return await _connectionProvider.ExecuteDapperRawSqlToList<DeveloperSearchItem>(sqlQuery, cancellationToken);
     }
@@ -26,7 +26,7 @@ public class DeveloperSearchHandler
 	        SELECT A.DEVELOPER_ID, A.NAZEV, A.ICO_RC, B.DEVELOPER_PROJEKT_ID, B.PROJEKT,
 	        (
 		        SELECT SUM(rate) FROM(
-			        SELECT CAST(CAST(CHARINDEX(term, ISNULL(A.NAZEV,'')) AS BIT) AS INT) + CAST(CAST(CHARINDEX(term, ISNULL(B.PROJEKT,'')) AS BIT) AS INT) + CAST(CAST(CHARINDEX(term, ISNULL(A.ICO_RC,'')) AS BIT) AS INT) AS rate FROM terms
+			        SELECT CAST(CAST(CHARINDEX(term, ISNULL(A.NAZEV,'')) AS BIT) AS INT)*1.01 + CAST(CAST(CHARINDEX(term, ISNULL(B.PROJEKT,'')) AS BIT) AS INT) + CAST(CAST(CHARINDEX(term, ISNULL(A.ICO_RC,'')) AS BIT) AS INT) AS rate FROM terms
 		        )r
 	        ) AS RATE
 	        FROM [SBR].[CIS_DEVELOPER] A

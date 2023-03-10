@@ -24,9 +24,7 @@ internal static class OfferApiModuleDtoExtensions
             Developer = input.Developer is null ? null : new Dto.Developer
             {
                 DeveloperId = input.Developer.DeveloperId,
-                NewDeveloperProjectName = input.Developer.NewDeveloperProjectName,
-                NewDeveloperCin = input.Developer.NewDeveloperCin,
-                NewDeveloperName = input.Developer.NewDeveloperName,
+                Description = input.Developer.Description,
                 ProjectId = input.Developer.ProjectId
             },
             DrawingDurationId = input.DrawingDurationId,
