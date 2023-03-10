@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using NOBY.Infrastructure.Security;
 using ExternalServices.AddressWhisperer.V1;
+using NOBY.Infrastructure.ErrorHandling.Internals;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -22,7 +23,7 @@ internal static class NobyServices
 
         builder.Services
             .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(Infrastructure.ErrorHandling.NobyValidationBehavior<,>));
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(NobyValidationBehavior<,>));
 
         // add validators
         builder.Services.Scan(selector => selector

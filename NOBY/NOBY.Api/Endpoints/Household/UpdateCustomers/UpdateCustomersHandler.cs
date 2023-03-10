@@ -60,10 +60,10 @@ internal sealed class UpdateCustomersHandler
             );
 
         if (customers.Any(t => t.CustomerOnSAId == request.Customer1?.CustomerOnSAId || t.CustomerOnSAId == request.Customer2?.CustomerOnSAId))
-            throw new NOBY.Infrastructure.ErrorHandling.NobyValidationException("90005", "The same CustomerOnSAId already exist in another household");
+            throw new NobyValidationException(90005, "The same CustomerOnSAId already exist in another household");
 
         if (customers.Any(t => t.CustomerOnSAId == request.Customer1?.Identity?.Id || t.CustomerOnSAId == request.Customer2?.Identity?.Id))
-            throw new NOBY.Infrastructure.ErrorHandling.NobyValidationException("90005", "The same KBID already exist in another household");
+            throw new NobyValidationException(90005, "The same KBID already exist in another household");
     }
 
     async Task<(int? CustomerOnSAId, IEnumerable<CIS.Infrastructure.gRPC.CisTypes.Identity>? Identities, bool CancelSigning)> crudCustomer(

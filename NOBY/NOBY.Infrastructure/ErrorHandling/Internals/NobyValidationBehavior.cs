@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 
-namespace NOBY.Infrastructure.ErrorHandling;
+namespace NOBY.Infrastructure.ErrorHandling.Internals;
 
 /// <summary>
 /// MediatR pipeline, která přidává do flow requestu FluentValidation.
@@ -30,18 +30,24 @@ public sealed class NobyValidationBehavior<TRequest, TResponse>
 
         if (validationFailures.Any())
         {
-            throw new NobyValidationException(validationFailures.Select(t =>
+            var errors = validationFailures.Select(t =>
             {
-                var code = string.IsNullOrEmpty(t.ErrorCode) ? NobyValidationException.DefaultExceptionCode : t.ErrorCode;
-                if (!int.TryParse(code, out int x))
-                    code = NobyValidationException.DefaultExceptionCode;
-                
-                ApiErrorItemServerity severity = t.Severity == Severity.Warning ? ApiErrorItemServerity.Warning : ApiErrorItemServerity.Error;
+                // v chybe je zadany errorCode. asi.
+                if ((t.ErrorCode ?? "").Length == 5 
+                    && int.TryParse(t.ErrorCode, out int errorCode)
+                    && ErrorCodeMapper.Messages.ContainsKey(errorCode))
+                {
+                    // jedna se o chybu se zadanym kodem
+                    return new ApiErrorItem(errorCode);
+                }
 
-                return new ApiErrorItem(code, t.ErrorMessage, severity);
-            }));
+                ApiErrorItemServerity severity = t.Severity == Severity.Warning ? ApiErrorItemServerity.Warning : ApiErrorItemServerity.Error;
+                return new ApiErrorItem(NobyValidationException.DefaultExceptionCode, ErrorCodeMapper.Messages[NobyValidationException.DefaultExceptionCode].Message, t.ErrorMessage, severity);
+            });
+
+            throw new NobyValidationException(errors);
         }
-        
+
         return next();
     }
 }
