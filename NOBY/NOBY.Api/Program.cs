@@ -54,7 +54,7 @@ builder.Services
 builder.AddNobyServices();
 
 // init validacnich zprav
-NOBY.Infrastructure.ErrorHandling.ErrorCodeMapper.Init();
+ErrorCodeMapper.Init();
 
 // authentication
 builder.AddNobyAuthentication(appConfiguration);

@@ -26,6 +26,7 @@ Pokud není definovaný konkrétní kód, použijeme sběrný kód **90001**.
 Nestandardní (ne 90001) chyby jsou zapsány v tabulce na [tomto odkazu](https://wiki.kb.cz/display/HT/NOBY_FS_ErrorHandling).
 
 Chyby - ať už standardní validační (400), systémové (500) nebo chyby z *Fluent Validation* - na FE posíláme formou *Exceptions*.
+Validační chyby, které vzniknou přímo v handleru jsou typu `NOBY.Infrastructure.ErrorHandling.NobyValidationException`.
 Vyjímky zachytáváme middlewarem `NOBY.Infrastructure.ErrorHandling.Internals.NobyApiExceptionMiddleware`.
 Tento middleware zachytí vyhozenou vyjímku a vytvoří z ní HTTP response se status kódem podle typu dané chyby.
 
@@ -60,4 +61,16 @@ public async Task<TResponse> Handle(TRequest request, CancellationToken cancella
   throw new NobyValidationException(90002);
   ...
 }
+```
+
+## Obecný pattern pro evidenci a sdílení chybových kódů v FE API
+Používáme podobný způsob jako v gRPC službách. 
+Existuje kontajner obsahující všechny chyby a jejich popis - `NOBY.Infrastructure.ErrorHandling.ErrorCodeMapper`.
+Do kolekce Messages tohoto kontajneru se přidávají nové custom chyby.
+
+ErrorCodeMapper se inicializuje během startupu aplikace:
+```csharp
+...
+ErrorCodeMapper.Init();
+...
 ```
