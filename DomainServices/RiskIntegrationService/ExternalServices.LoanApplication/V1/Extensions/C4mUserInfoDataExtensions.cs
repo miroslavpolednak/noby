@@ -17,7 +17,7 @@ public static class C4mUserInfoDataExtensions
     public static KBGroupPerson ToC4mPerson(this C4mUserInfoData userInfo, Identity humanUser)
         => new()
         {
-            Id = ResourceIdentifier.Create("PM", "KBGroupPerson", humanUser),
+            Id = ResourceIdentifier.Create("PM", "KBGroupPerson", humanUser, userInfo.PersonId.ToString()),
             Surname = userInfo.PersonSurname,
             OrgUnit = new OrgUnit
             {
