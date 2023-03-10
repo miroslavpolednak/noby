@@ -326,26 +326,27 @@ GO
 -- table 'DocumentTemplateVersion'
 DROP TABLE IF EXISTS [dbo].[DocumentTemplateVersion];
 CREATE TABLE [dbo].[DocumentTemplateVersion](
-	[DocumentTemplateVersionId] [int] NOT NULL,
-	[DocumentTemplateTypeId] [int] NOT NULL,
+	[Id] [int] NOT NULL,
+	[DocumentTypeId] [int] NOT NULL,
 	[DocumentVersion] [nvarchar](50) NOT NULL,
+	[FormTypeId] [int] NULL,
 	[ValidFrom] [datetime] NOT NULL,
 	[ValidTo] [datetime] NULL,
 CONSTRAINT [PK_DocumentTemplateVersion] PRIMARY KEY CLUSTERED 
 (
-	[DocumentTemplateVersionId] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY];
 GO
 
-	INSERT INTO [dbo].[DocumentTemplateVersion]([DocumentTemplateVersionId], [DocumentTemplateTypeId], [DocumentVersion], [ValidFrom])
+	INSERT INTO [dbo].[DocumentTemplateVersion]([Id], [DocumentTypeId], [DocumentVersion], [FormTypeId], [ValidFrom])
     VALUES
-	(1, 1, '001A', '2022-01-01'),
-	(2, 2, '001A', '2022-01-01'),
-	(3, 3, '001A', '2022-01-01'),
-	(4, 4, '001A', '2022-01-01'),
-	(5, 5, '001A', '2022-01-01'),
-	(6, 6, '001A', '2022-01-01');
+	(1, 1, '001', NULL, '2022-01-01'),
+	(2, 2, '001', NULL, '2022-01-01'),
+	(3, 3, '001', NULL, '2022-01-01'),
+	(4, 4, '001', 3601001, '2022-01-01'),
+	(5, 5, '001', 3602001, '2022-01-01'),
+	(6, 6, '001', 3700001, '2022-01-01');
 GO
 
 
