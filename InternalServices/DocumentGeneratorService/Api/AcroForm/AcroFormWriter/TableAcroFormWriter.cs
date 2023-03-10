@@ -1,6 +1,5 @@
 ﻿using ceTe.DynamicPDF.Merger.Forms;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
-using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
 
@@ -17,9 +16,9 @@ public class TableAcroFormWriter : IAcroFormWriter
         _table = new PdfTable(fieldFormatProvider, tableData.Table);
     }
 
-    public MergeDocument Write(TemplateLoader templateLoader, string? templateNameModifier = default)
+    public MergeDocument Write(PdfDocument pdfDocument, string? templateNameModifier = default)
     {
-        var loadedData = InitializeDocument(templateLoader);
+        var loadedData = InitializeDocument(pdfDocument);
 
         DrawTitlePage(loadedData);
         DrawRemainingRows(loadedData);
@@ -31,15 +30,14 @@ public class TableAcroFormWriter : IAcroFormWriter
         return loadedData.MergeDocument;
     }
 
-    private LoadedTemplateData InitializeDocument(TemplateLoader templateLoader)
+    private LoadedTemplateData InitializeDocument(PdfDocument pdfDocument)
     {
         var loadedData = new LoadedTemplateData
         {
-            Template = templateLoader.Load(),
-            MergeDocument = _acroFormWriter.Write(templateLoader)
+            Template = pdfDocument,
+            MergeDocument = _acroFormWriter.Write(pdfDocument),
+            PlaceholderField = pdfDocument.Form.Fields[_tablePlaceholderKey]
         };
-
-        loadedData.PlaceholderField = loadedData.Template.Form.Fields[_tablePlaceholderKey];
 
         if (loadedData.PlaceholderField is null)
             throw new InvalidOperationException($"Placeholder field {_tablePlaceholderKey} was not found.");
