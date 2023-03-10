@@ -3197,7 +3197,7 @@
             <summary>
             Login uzivatel do CAASu.
             </summary>
-            <example>KBUID=A09FK3</example>
+            <example>990614w</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetCurrentUser(System.Threading.CancellationToken)">
             <summary>

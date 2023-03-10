@@ -16,7 +16,7 @@ internal sealed class SignInHandler
 
         var claims = new List<Claim>
         {
-            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, request.Login!),
+            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, "KBUID=A09FK3"),
             new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture))
         };
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
