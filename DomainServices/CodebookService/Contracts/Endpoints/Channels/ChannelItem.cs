@@ -17,4 +17,7 @@ public class ChannelItem
 
     [DataMember(Order = 5)]
     public bool IsValid { get; set; }
+
+    [DataMember(Order = 6)]
+    public string RdmCbChannelCode { get; set; }
 }
