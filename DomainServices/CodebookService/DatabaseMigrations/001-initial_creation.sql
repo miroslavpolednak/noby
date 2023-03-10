@@ -28,7 +28,10 @@ BEGIN
 	(5, 'Žádost o americkou hypotéku', 20010, 1),
 	(6, 'Žádost o čerpání', NULL, 2),
 	(7, 'Žádost o obecnou změnu', NULL, 2),
-	(8, 'Žádost o změnu HUBN', NULL, 2);
+	(8, 'Žádost o změnu HUBN', NULL, 2),
+	(9, 'Žádost o změnu dlužníků', NULL, 2),
+	(10, 'Žádost o změnu detailu dlužníka (3602)', NULL, 2),
+	(11, 'Žádost o přidání spoludlužníka (3602)', NULL, 2);
 END
 
 
@@ -345,6 +348,41 @@ GO
 	(6, 6, '001A', '2022-01-01');
 GO
 
+
+-- table 'DocumentTemplateVariant'
+DROP TABLE IF EXISTS [dbo].[DocumentTemplateVariant];
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'DocumentTemplateVariant')
+BEGIN
+	CREATE TABLE [dbo].[DocumentTemplateVariant](
+		[Id] [int] NOT NULL,
+		[DocumentTemplateVersionId] [int] NOT NULL,
+		[DocumentVariant] [nvarchar](10) NOT NULL,
+		[Description] [nvarchar](100) NOT NULL
+		CONSTRAINT [PK_DocumentTemplateVariant] PRIMARY KEY CLUSTERED
+		(
+		[Id] ASC
+		)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+	) ON [PRIMARY];
+
+
+INSERT INTO [dbo].[DocumentTemplateVariant]([Id],[DocumentTemplateVersionId],[DocumentVariant], [Description])
+   VALUES
+    (1, 4, 'A', 'jeden dlužník, zprostředkovatel'),
+	(2, 4, 'B', 'jeden dlužník, bez zprostředkovatele'),
+	(3, 4, 'C', 'dva dlužníci, zprostředkovatel'),
+	(4, 4, 'D', 'dva dlužníci, bez zprostředkovatele'),
+	(5, 5, 'A', 'jeden spoludlužník, zprostředkovatel'),
+	(6, 5, 'B', 'jeden spoludlužník, bez zprostředkovatele'),
+	(7, 5, 'C', 'dva spoludlužníci, zprostředkovatel'),
+	(8, 5, 'D', 'dva spoludlužníci, bez zprostředkovatele'),
+	(9, 9, 'A', 'podepisuje jeden dlužník'),
+	(10, 9, 'B', 'podepisují dva dlužníci'),
+	(11, 9, 'C', 'podepisují tři dlužníci'),
+	(12, 9, 'D', 'podepisují čtyři dlužníci');
+END
+
+
+-- table 'SmsNotificationType'
 CREATE TABLE [dbo].[SmsNotificationType](
 	[Id] [int] NOT NULL,
 	[Code] [varchar](100) NOT NULL,
@@ -392,3 +430,21 @@ CREATE TABLE [dbo].[DocumentTypes](
 	(11, 'ZADOOPCI', 'Žádost o změnu Flexi', 'Zadost_o_zmena_Flexi', NULL, NULL, '2022-01-01', NULL);
 GO
 
+
+-- table 'ChannelExtension'
+DROP TABLE IF EXISTS [dbo].[ChannelExtension];
+CREATE TABLE [dbo].[ChannelExtension](
+    [ChannelId] [int] NOT NULL,
+	[RdmCbChannelCode] [varchar](50) NULL,
+    CONSTRAINT [PK_ChannelExtension] PRIMARY KEY CLUSTERED
+    (
+    [ChannelId] ASC
+     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+INSERT INTO [dbo].[ChannelExtension]([ChannelId],[RdmCbChannelCode])
+    VALUES
+    (4, 'CH0001'),
+	(6, 'CH0002');
+GO
