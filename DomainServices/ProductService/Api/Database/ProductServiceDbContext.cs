@@ -15,6 +15,8 @@ internal sealed class ProductServiceDbContext
     public DbSet<Entities.Relationship> Relationships { get; set; }
 	public DbSet<Entities.Partner> Partners { get; set; }
     public DbSet<Entities.LoanPurpose> LoanPurposes { get; set; }
+    public DbSet<Entities.RealEstate> RealEstates { get; set; }
+    public DbSet<Entities.Loan2RealEstate> Loans2RealEstates { get; set; }
 
     public DbSet<Entities.Obligation> Obligations => Set<Entities.Obligation>();
 
@@ -24,6 +26,12 @@ internal sealed class ProductServiceDbContext
             .HasOne(t => t.Partner)
             .WithMany()
             .HasForeignKey(t => t.PartnerId);
+
+        modelBuilder.Entity<Entities.Loan2RealEstate>()
+            .HasOne(t => t.RealEstate)
+            .WithOne()
+            .HasForeignKey<Entities.Loan2RealEstate>(t => t.NemovitostId)
+            .IsRequired();
 
         modelBuilder.Entity<Entities.Obligation>().HasKey(m => new { m.LoanId, m.LoanPurposeId });
     }

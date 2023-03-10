@@ -67,7 +67,6 @@ internal static class NobyAppBuilder
             appBuilder.UseAuthentication();
             appBuilder.UseMiddleware<AppSecurityMiddleware>();
             appBuilder.UseAuthorization();
-            appBuilder.UseCisLogging();
             appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware>();
 
             // namapovani API modulu

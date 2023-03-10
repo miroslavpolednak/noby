@@ -47,6 +47,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.DeveloperProjects(ct));
         AddCodebook((s, ct) => s.DocumentOnSATypes(ct));
         AddCodebook((s, ct) => s.DocumentTemplateVersions(ct));
+        AddCodebook((s, ct) => s.DocumentTemplateVariants(ct));
         AddCodebook((s, ct) => s.DrawingDurations(ct));
         AddCodebook((s, ct) => s.DrawingTypes(ct), c => c.Cast<Codebook.DrawingTypes.DrawingTypeItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.EaCodesMain(ct));

@@ -62,8 +62,6 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Google.Proto
 
         var response = await _formsService.LoadProductForm(salesArrangement, dynamicValues, cancellationToken);
 
-        await _formsService.CallSulm(response.Product, cancellationToken);
-
         return response;
     }
 

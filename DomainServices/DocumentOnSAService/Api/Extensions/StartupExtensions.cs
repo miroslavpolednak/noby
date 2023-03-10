@@ -20,8 +20,6 @@ internal static class StartupExtensions
 
         builder.Services.AddSalesArrangementService();
 
-        builder.Services.AddCaseService();
-
         builder.Services.AddCodebookService();
 
         builder.Services.AddDataAggregatorService();

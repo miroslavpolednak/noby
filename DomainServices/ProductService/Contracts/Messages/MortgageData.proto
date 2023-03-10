@@ -40,4 +40,5 @@ message MortgageData {
 	google.protobuf.Int32Value ThirdPartyConsultantId = 29;
 	cis.types.NullableGrpcDate FirstAnnuityPaymentDate = 30;
 	PaymentAccount RepaymentAccount = 31;
+	repeated LoanRealEstate LoanRealEstates = 32;
 }

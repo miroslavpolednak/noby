@@ -11,7 +11,7 @@ internal sealed class GetHouseholdHandler
             .Where(t => t.HouseholdId == request.HouseholdId)
             .AsNoTracking()
             .Select(Database.HouseholdExpressions.HouseholdDetail())
-            .FirstOrDefaultAsync(cancellationToken) 
+            .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.HouseholdNotFound);
 
         return model;

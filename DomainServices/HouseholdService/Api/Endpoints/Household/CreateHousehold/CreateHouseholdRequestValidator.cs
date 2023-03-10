@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.CreateHousehold;
 
@@ -7,7 +6,7 @@ internal sealed class CreateHouseholdRequestValidator
     : AbstractValidator<Contracts.CreateHouseholdRequest>
 {
     public CreateHouseholdRequestValidator(
-        Database.HouseholdServiceDbContext dbContext, 
+        Database.HouseholdServiceDbContext dbContext,
         CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         ClassLevelCascadeMode = CascadeMode.Stop;

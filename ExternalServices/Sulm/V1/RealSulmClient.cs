@@ -1,64 +1,89 @@
-﻿using System.Text;
+﻿using CIS.Core;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Http.Json;
 
 namespace ExternalServices.Sulm.V1;
 
 internal sealed class RealSulmClient 
     : ISulmClient
 {
-    public async Task StartUse(long partyId, string usageCode, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task StartUse(
+        long kbCustomerId,
+        IList<CIS.Foms.Types.UserIdentity> userIdentities,
+        string purposeCode,
+        CancellationToken cancellationToken = default(CancellationToken))
     {
-        string text = $@"<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ns=""http://correlation.kb.cz/datatypes/1/0"" xmlns:ns1=""http://esb.kb.cz/core/dataTypes/1/0"" xmlns:ns2=""http://esb.kb.cz/Sulm/interface/1/0"">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <ns2:startUseRequest>
-         <partyId>{partyId}</partyId>
-         <usageCode>{usageCode}</usageCode>
-      </ns2:startUseRequest>
-   </soapenv:Body>
-</soapenv:Envelope>";
+        var request = createRequest(kbCustomerId, userIdentities, purposeCode);
 
-        using (HttpContent content = new StringContent(text, Encoding.UTF8, "text/xml"))
-        using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _configuration.ServiceUrl))
+        var response = await _httpClient
+            .PostAsJsonAsync(_httpClient.BaseAddress + _apiBasePath + "start", request, cancellationToken)
+            .ConfigureAwait(false);
+
+        if (!response.IsSuccessStatusCode)
         {
-            request.Headers.Add("SOAPAction", "");
-            request.Content = content;
-            using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
-            {
-                response.EnsureSuccessStatusCode();
-            }
+            await processUnsuccessfulResult(response, cancellationToken);
         }
     }
 
-    public async Task StopUse(long partyId, string usageCode, CancellationToken cancellationToken = default(CancellationToken)) 
+    public async Task StopUse(
+        long kbCustomerId, 
+        IList<CIS.Foms.Types.UserIdentity> userIdentities, 
+        string purposeCode, 
+        CancellationToken cancellationToken = default(CancellationToken))
     {
-        string text = $@"<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ns=""http://correlation.kb.cz/datatypes/1/0"" xmlns:ns1=""http://esb.kb.cz/core/dataTypes/1/0"" xmlns:ns2=""http://esb.kb.cz/Sulm/interface/1/0"">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <ns2:stopUseRequest>
-         <partyId>{partyId}</partyId>
-         <usageCode>{usageCode}</usageCode>
-      </ns2:stopUseRequest>
-   </soapenv:Body>
-</soapenv:Envelope>";
+        var request = createRequest(kbCustomerId, userIdentities, purposeCode);
+        
+        var response = await _httpClient
+            .PostAsJsonAsync(_httpClient.BaseAddress + _apiBasePath + "stop", request, cancellationToken)
+            .ConfigureAwait(false);
 
-        using (HttpContent content = new StringContent(text, Encoding.UTF8, "text/xml"))
-        using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _configuration.ServiceUrl))
+        if (!response.IsSuccessStatusCode)
         {
-            request.Headers.Add("SOAPAction", "");
-            request.Content = content;
-            using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
-            {
-                response.EnsureSuccessStatusCode();
-            }
+            await processUnsuccessfulResult(response, cancellationToken);
         }
     }
+
+    private static Dto.StartUseRequest createRequest(
+        long kbCustomerId,
+        IList<CIS.Foms.Types.UserIdentity> userIdentities,
+        string purposeCode)
+    {
+        var identity = getKbIdentity(userIdentities);
+
+        return new Dto.StartUseRequest
+        {
+            channelCode = ISulmClient.GetChannelCode(userIdentities),
+            clientId = kbCustomerId.ToString(),
+            userIdType = identity.Scheme.GetAttribute<DisplayAttribute>()!.Name!,
+            userId = identity.Identity,
+            purposeCode = purposeCode
+        };
+    }
+
+    private async Task processUnsuccessfulResult(HttpResponseMessage response, CancellationToken cancellationToken)
+    {
+        var result = await response.Content.ReadFromJsonAsync<Dto.Error>(cancellationToken: cancellationToken);
+        if (result is null)
+        {
+            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+        }
+        else
+        {
+            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} error {response.StatusCode}: {result.code}");
+        }
+
+    }
+
+    private static CIS.Foms.Types.UserIdentity getKbIdentity(IList<CIS.Foms.Types.UserIdentity> identities)
+    {
+        return identities
+            .FirstOrDefault(t => t.Scheme == CIS.Foms.Enums.UserIdentitySchemes.KbUid)
+            ?? throw new CisExtServiceValidationException(0, "SULM integration: KB Identity not found");
+    }
+
+    private const string _apiBasePath = "api/customers/sulm/v1/use/";
 
     private readonly HttpClient _httpClient;
-    private readonly CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<ISulmClient> _configuration;
-
-    public RealSulmClient(HttpClient httpClient, CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<ISulmClient> configuration)
-    {
-        _configuration = configuration;
-        _httpClient = httpClient;
-    }
+    public RealSulmClient(HttpClient httpClient)
+        => _httpClient = httpClient;
 }

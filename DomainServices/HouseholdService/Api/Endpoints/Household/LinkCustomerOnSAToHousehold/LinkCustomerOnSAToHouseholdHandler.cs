@@ -37,7 +37,7 @@ internal sealed class LinkCustomerOnSAToHouseholdHandler
     }
 
     private readonly HouseholdServiceDbContext _dbContext;
-    
+
     public LinkCustomerOnSAToHouseholdHandler(HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;

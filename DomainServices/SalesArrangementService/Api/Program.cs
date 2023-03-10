@@ -68,7 +68,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
-app.UseCisLogging();
 
 app.MapCisHealthChecks();
 

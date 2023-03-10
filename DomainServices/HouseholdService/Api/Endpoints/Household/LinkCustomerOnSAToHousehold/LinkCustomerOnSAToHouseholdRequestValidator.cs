@@ -1,5 +1,4 @@
-﻿using DomainServices.HouseholdService.Api.Database;
-using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.LinkCustomerOnSAToHousehold;
