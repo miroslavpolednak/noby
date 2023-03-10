@@ -5,6 +5,7 @@ Instanci přihlášeného uživatele (tj. uživatele sedícího u NOBY aplikace)
 Instance uživatele jako taková je reprezentována interfacem `ICurrentUser` - je dostupná jako vlastnost interface `ICurrentUserAccessor.User`.
 
 Mezi službami se uživatel předává ve formě HTTP headeru "**noby-user-id**", který obsahuje *v33id* aktuálního uživatele.
+Zároveň se mezi službami předává HTTP header **noby-user-ident**, který obsahuje login aktuálně přihlášeného uživatele ve formátu `[schema]=[username]` - např. KBUID=UZ6X9WE.
 
 Registrace `ICurrentUserAccessor` (do DI) probíhá během startupu:
 ```csharp
