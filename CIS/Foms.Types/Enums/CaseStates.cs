@@ -38,4 +38,20 @@ public enum CaseStates : byte
     [EnumMember]
     [Display(Name = "Ukončeno")]
     Finished = 6,
+
+    [EnumMember]
+    [Display(Name = "Zrušeno")]
+    Cancelled = 7,
+
+    [EnumMember]
+    [Display(Name = "Zpracování žádosti")]
+    InApprovalConfirmed = 8,
+
+    [EnumMember]
+    [Display(Name = "Žádost předána ke stornu")]
+    ToBeCancelled = 9,
+
+    [EnumMember]
+    [Display(Name = "Zpracování storna žádosti")]
+    ToBeCancelledConfirmed = 10,
 }
