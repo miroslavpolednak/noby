@@ -73,7 +73,7 @@ public class TemplateManager : IDisposable
     {
         var templateVersions = await _codebookService.DocumentTemplateVersions();
 
-        var templateExists = templateVersions.Any(t => t.DocumentTemplateTypeId == documentTypeId &&
+        var templateExists = templateVersions.Any(t => t.DocumentTypeId == documentTypeId &&
                                                        t.DocumentVersion.Equals(templateVersion, StringComparison.InvariantCultureIgnoreCase));
 
         if (!templateExists)

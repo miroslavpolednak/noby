@@ -59,7 +59,7 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
 
         if (!documentOnSas.DocumentsOnSAToSign.Any(d => d.DocumentOnSAId == request.DocumentOnSAId))
         {
-            throw new CisNotFoundException(ErrorCodes.DocumentOnSaNotExistForSalesArrangement, $"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
+            throw new NobyValidationException($"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
         }
 
         var documentOnSa = documentOnSas.DocumentsOnSAToSign.Single(r => r.DocumentOnSAId == request.DocumentOnSAId);

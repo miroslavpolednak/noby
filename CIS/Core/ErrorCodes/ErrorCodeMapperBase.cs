@@ -11,7 +11,7 @@ public abstract class ErrorCodeMapperBase
     /// <summary>
     /// Slovník chybových hlášek [ExceptionCode, ExceptionMessage].
     /// </summary>
-    public static IErrorCodesDictionary Messages { get; private set; }
+    public static IErrorCodesDictionary Messages { get; private set; } = null!;
 
     /// <summary>
     /// Vrátí chybovou hláškou podle zadaného ExceptionCode - ten musí být uvedený v překladovém slovníku Messages.

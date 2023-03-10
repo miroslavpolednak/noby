@@ -11,7 +11,7 @@ internal class CreateHouseholdHandler
     {
         // nazev typu domacnosti
         string householdTypeName = (await _codebookService.HouseholdTypes(cancellationToken)).FirstOrDefault(x => x.Id == request.HouseholdTypeId)?.Name ??
-            throw new CisNotFoundException(ErrorCodes.HouseholdTypeNotFound, nameof(CIS.Foms.Enums.HouseholdTypes), request.HouseholdTypeId);
+            throw new NobyValidationException($"Household type {request.HouseholdTypeId} not found");
 
         // vytvorit domacnost
         var requestModel = new _HO.CreateHouseholdRequest

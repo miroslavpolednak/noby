@@ -22,17 +22,17 @@ internal class DrawingValidator
 
         if (productInstance.Mortgage.AvailableForDrawing <= 0M)
         {
-            throw new CisValidationException(90011, "Zůstatek pro čerpání je menší nebo rovný nule. Formulář nelze vytvořit");
+            throw new NobyValidationException(90011);
         }
 
         if (productInstance.Mortgage.FirstAnnuityPaymentDate != null && DateTime.Now >= productInstance.Mortgage.FirstAnnuityPaymentDate)
         {
-            throw new CisValidationException(90012, "Aktuální datum překračuje datum první anuitní splátky. Formulář nelze vytvořit");
+            throw new NobyValidationException(90012);
         }
 
         if (string.IsNullOrEmpty(productInstance.Mortgage.PaymentAccount?.Number))
         {
-            throw new CisValidationException(90013, "Neexistuje úvěrový účet. Formulář nelze vytvořit");
+            throw new NobyValidationException(90013);
         }
 
         return new DrawingBuilder(_logger, _request, _httpContextAccessor);
