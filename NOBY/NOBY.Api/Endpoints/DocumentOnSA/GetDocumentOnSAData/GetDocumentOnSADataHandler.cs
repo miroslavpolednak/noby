@@ -44,7 +44,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
 
         if (!documentOnSas.DocumentsOnSAToSign.Any(d => d.DocumentOnSAId == request.DocumentOnSAId))
         {
-            throw new CisNotFoundException(ErrorCodes.DocumentOnSaNotExistForSalesArrangement, $"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
+            throw new NobyValidationException($"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
         }
 
         var documentOnSa = documentOnSas.DocumentsOnSAToSign.Single(r => r.DocumentOnSAId == request.DocumentOnSAId);
@@ -66,7 +66,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         var document = await _documentArchiveServiceClient.GetDocument(new()
         {
             DocumentId = documentOnSa.EArchivId,
-            UserLogin = user is null ? "Unknow NOBY user" : user.Id.ToString(),
+            UserLogin = user is null ? "Unknow NOBY user" : user.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),
             WithContent = true
 
         }, cancellationToken);

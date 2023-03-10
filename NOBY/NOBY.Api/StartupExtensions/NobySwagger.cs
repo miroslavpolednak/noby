@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Text;
-using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -45,9 +44,6 @@ internal static class NobySwagger
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
         });
-
-        // Adds FluentValidationRules staff to Swagger.
-        builder.Services.AddFluentValidationRulesToSwagger();
 
         return builder;
     }
