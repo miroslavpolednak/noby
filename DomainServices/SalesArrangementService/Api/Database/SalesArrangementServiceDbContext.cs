@@ -14,10 +14,12 @@ internal sealed class SalesArrangementServiceDbContext
     public DbSet<Entities.FormValidationTransformation> FormValidationTransformations { get; set; }
     public DbSet<Entities.SalesArrangement> SalesArrangements { get; set; }
     public DbSet<Entities.SalesArrangementParameters> SalesArrangementsParameters { get; set; }
+    public DbSet<Entities.FlowSwitch> FlowSwitches { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.RegisterCisTemporalTable<Entities.SalesArrangement>();
         modelBuilder.RegisterCisTemporalTable<Entities.SalesArrangementParameters>();
+        modelBuilder.RegisterCisTemporalTable<Entities.FlowSwitch>();
     }
 }
