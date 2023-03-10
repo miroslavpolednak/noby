@@ -16,6 +16,7 @@ internal sealed class SignInHandler
 
         var claims = new List<Claim>
         {
+            // natvrdo zadat login, protoze request.Login obsahuje CPM
             new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, "KBUID=A09FK3"),
             new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture))
         };
