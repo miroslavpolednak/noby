@@ -39,6 +39,11 @@
             Logovani do Sequ
             </summary>
         </member>
+        <member name="T:CIS.Infrastructure.Telemetry.Enrichers.NobyHeadersEnricher">
+            <summary>
+            Doda do kontextu log item ID a Login uzivatele
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.Telemetry.LoggingExtensions">
             <summary>
             Extension metody do startupu aplikace pro registraci logování.
