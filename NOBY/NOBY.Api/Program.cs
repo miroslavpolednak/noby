@@ -47,11 +47,14 @@ builder.Services
 
 // add internal services
 builder.Services
-       .AddDataAggregatorService()
-       .AddDocumentGeneratorService();
+    .AddDataAggregatorService()
+    .AddDocumentGeneratorService();
 
 // FOMS services
 builder.AddNobyServices();
+
+// init validacnich zprav
+NOBY.Infrastructure.ErrorHandling.ErrorCodeMapper.Init();
 
 // authentication
 builder.AddNobyAuthentication(appConfiguration);

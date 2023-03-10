@@ -1,6 +1,4 @@
-﻿using NOBY.Infrastructure.Security;
-
-namespace NOBY.Infrastructure.ErrorHandling;
+﻿namespace NOBY.Infrastructure.Security;
 
 /// <summary>
 /// Chyba autentizace - anonymni uzivatel
@@ -9,7 +7,7 @@ public sealed class ApiAuthenticationProblemDetail
 {
     public ApiAuthenticationProblemDetail() { }
 
-    public ApiAuthenticationProblemDetail(string? redirectUri, string? authenticationScheme) 
+    public ApiAuthenticationProblemDetail(string? redirectUri, string? authenticationScheme)
     {
         RedirectUri = redirectUri ?? AuthenticationConstants.DefaultSignInUrl;
         AuthenticationScheme = authenticationScheme ?? "Unknown";

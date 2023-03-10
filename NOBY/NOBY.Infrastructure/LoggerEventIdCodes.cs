@@ -1,4 +1,4 @@
-﻿namespace NOBY.Core;
+﻿namespace NOBY.Infrastructure;
 
 public struct LoggerEventIdCodes
 {

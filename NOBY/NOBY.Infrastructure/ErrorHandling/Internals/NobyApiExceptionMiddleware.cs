@@ -7,7 +7,7 @@ using CIS.Infrastructure.WebApi;
 using NOBY.Infrastructure.Security;
 using NOBY.Infrastructure.Configuration;
 
-namespace NOBY.Infrastructure.ErrorHandling;
+namespace NOBY.Infrastructure.ErrorHandling.Internals;
 
 public sealed class NobyApiExceptionMiddleware
 {
@@ -32,7 +32,7 @@ public sealed class NobyApiExceptionMiddleware
         catch (CisAuthenticationException ex)
         {
             await Results.Json(
-                new ApiAuthenticationProblemDetail(ex.ProviderLoginUrl, appConfiguration.Security?.AuthenticationScheme), 
+                new ApiAuthenticationProblemDetail(ex.ProviderLoginUrl, appConfiguration.Security?.AuthenticationScheme),
                 statusCode: 401
                 ).ExecuteAsync(context);
         }
@@ -51,19 +51,19 @@ public sealed class NobyApiExceptionMiddleware
         catch (NotImplementedException ex)
         {
             logger.WebApiNotImplementedException(ex.Message, ex);
-            await Results.Json(singleErrorResult("", ex.Message), statusCode: 500).ExecuteAsync(context);
+            await Results.Json(singleErrorResult(ex.Message), statusCode: 500).ExecuteAsync(context);
         }
         // DS neni dostupna
         catch (CisServiceUnavailableException ex)
         {
             logger.ExtServiceUnavailable(ex.ServiceName, ex);
-            await Results.Json(singleErrorResult("", $"Service '{ex.ServiceName}' unavailable"), statusCode: 500).ExecuteAsync(context);
+            await Results.Json(singleErrorResult($"Service '{ex.ServiceName}' unavailable"), statusCode: 500).ExecuteAsync(context);
         }
         // 500 z volane externi sluzby
         catch (CisServiceServerErrorException ex)
         {
             logger.ExtServiceUnavailable(ex.ServiceName, ex);
-            await Results.Json(singleErrorResult("", $"Service '{ex.ServiceName}' failed with HTTP 500"), statusCode: 500).ExecuteAsync(context);
+            await Results.Json(singleErrorResult($"Service '{ex.ServiceName}' failed with HTTP 500"), statusCode: 500).ExecuteAsync(context);
         }
         // object not found
         catch (CisNotFoundException ex)
@@ -89,22 +89,24 @@ public sealed class NobyApiExceptionMiddleware
         catch (Exception ex)
         {
             logger.WebApiUncoughtException(ex);
-            await Results.Json(singleErrorResult("", ex.Message), statusCode: 500).ExecuteAsync(context);
+            await Results.Json(singleErrorResult(ex.Message), statusCode: 500).ExecuteAsync(context);
         }
     }
 
-
     private static IEnumerable<ApiErrorItem> singleErrorResult(BaseCisException exception)
-        => singleErrorResult("", $"{exception.ExceptionCode} - {exception.Message}");
+        => singleErrorResult(parseExceptionCode(exception.ExceptionCode), exception.Message);
 
-    private static IEnumerable<ApiErrorItem> singleErrorResult(string errorCode, string message)
+    private static IEnumerable<ApiErrorItem> singleErrorResult(string message)
+        => singleErrorResult(NobyValidationException.DefaultExceptionCode, message);
+
+    private static IEnumerable<ApiErrorItem> singleErrorResult(int errorCode, string message)
     {
         return new List<ApiErrorItem>
         {
             new()
             {
                 Severity = ApiErrorItemServerity.Error,
-                ErrorCode = string.IsNullOrEmpty(errorCode) ? NobyValidationException.DefaultExceptionCode : errorCode,
+                ErrorCode = errorCode,
                 Message = message
             }
         };
@@ -115,8 +117,11 @@ public sealed class NobyApiExceptionMiddleware
         return ex.Errors!.Select(t => new ApiErrorItem
         {
             Severity = ApiErrorItemServerity.Error,
-            ErrorCode = t.ExceptionCode,
+            ErrorCode = parseExceptionCode(t.ExceptionCode),
             Message = t.Message
         });
     }
+
+    private static int parseExceptionCode(ReadOnlySpan<char> exceptionCode)
+        => int.TryParse(exceptionCode, out int code) ? code : NobyValidationException.DefaultExceptionCode;
 }
