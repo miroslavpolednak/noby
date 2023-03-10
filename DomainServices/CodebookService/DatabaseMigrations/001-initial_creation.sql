@@ -28,7 +28,10 @@ BEGIN
 	(5, 'Žádost o americkou hypotéku', 20010, 1),
 	(6, 'Žádost o čerpání', NULL, 2),
 	(7, 'Žádost o obecnou změnu', NULL, 2),
-	(8, 'Žádost o změnu HUBN', NULL, 2);
+	(8, 'Žádost o změnu HUBN', NULL, 2),
+	(9, 'Žádost o změnu dlužníků', NULL, 2),
+	(10, 'Žádost o změnu detailu dlužníka (3602)', NULL, 2),
+	(11, 'Žádost o přidání spoludlužníka (3602)', NULL, 2);
 END
 
 
