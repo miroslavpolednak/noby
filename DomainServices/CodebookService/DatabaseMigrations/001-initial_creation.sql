@@ -392,3 +392,21 @@ CREATE TABLE [dbo].[DocumentTypes](
 	(11, 'ZADOOPCI', 'Žádost o změnu Flexi', 'Zadost_o_zmena_Flexi', NULL, NULL, '2022-01-01', NULL);
 GO
 
+
+-- table 'ChannelExtension'
+DROP TABLE IF EXISTS [dbo].[ChannelExtension];
+CREATE TABLE [dbo].[ChannelExtension](
+    [ChannelId] [int] NOT NULL,
+	[RdmCbChannelCode] [varchar](50) NULL,
+    CONSTRAINT [PK_ChannelExtension] PRIMARY KEY CLUSTERED
+    (
+    [ChannelId] ASC
+     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+INSERT INTO [dbo].[ChannelExtension]([ChannelId],[RdmCbChannelCode])
+    VALUES
+    (4, 'CH0001'),
+	(6, 'CH0002');
+GO
