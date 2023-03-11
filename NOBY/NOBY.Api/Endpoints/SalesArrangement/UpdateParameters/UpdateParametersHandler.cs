@@ -19,30 +19,36 @@ internal sealed class UpdateParametersHandler
         {
             string dataString = ((System.Text.Json.JsonElement)request.Parameters).GetRawText();
 
-            switch (saInstance.SalesArrangementTypeId)
+            switch ((CIS.Foms.Types.Enums.SalesArrangementTypes)saInstance.SalesArrangementTypeId)
             {
-                case >= 1 and <= 5:
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.Mortgage:
                     var o1 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersMortgage>(dataString, _jsonSerializerOptions);
                     if (o1 is not null)
                         updateRequest.Mortgage = o1.ToDomainService();
                     break;
 
-                case 6:
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.Drawing:
                     var o2 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersDrawing>(dataString, _jsonSerializerOptions);
                     if (o2 is not null)
                         updateRequest.Drawing = o2.ToDomainService();
                     break;
 
-                case 7:
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.GeneralChange:
                     var o3 = System.Text.Json.JsonSerializer.Deserialize<Dto.GeneralChangeUpdate>(dataString, _jsonSerializerOptions);
                     if (o3 is not null)
                         updateRequest.GeneralChange = o3.ToDomainService(saInstance.GeneralChange);
                     break;
 
-                case 8:
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.HUBN:
                     var o4 = System.Text.Json.JsonSerializer.Deserialize<Dto.HUBNUpdate>(dataString, _jsonSerializerOptions);
                     if (o4 is not null)
                         updateRequest.HUBN = o4.ToDomainService(saInstance.HUBN);
+                    break;
+
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.CustomerChange:
+                    var o5 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChangeUpdate>(dataString, _jsonSerializerOptions);
+                    if (o5 is not null)
+                        updateRequest.CustomerChange = o5.ToDomainService(saInstance.CustomerChange);
                     break;
 
                 default:

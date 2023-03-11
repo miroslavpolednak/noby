@@ -1934,6 +1934,66 @@
              </remarks>
              <returns>Seznam závazků na produktu</returns>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetail.RepaymentAccount">
+            <summary>
+            Účet pro splácení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetail.CommentToChangeRequest">
+            <summary>
+            Komentář k žádosti o změnu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailNaturalPerson.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailNaturalPerson.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailNaturalPerson.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailRelease.IsActive">
+            <summary>
+            Sekce aktivní
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAdd.IsActive">
+            <summary>
+            Sekce aktivní
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAddCustomer.Name">
+            <summary>
+            Jméno a příjmení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAddCustomer.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAgent.IsActive">
+            <summary>
+            Sekce aktivní
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAgent.ActualAgent">
+            <summary>
+            Aktuální zmocněnec pro doručování
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAgent.NewAgent">
+            <summary>
+            Nový zmocněnec pro doručování
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.GeneralChangeDetail.Applicant">
             <summary>
             Identita klienta
@@ -2334,11 +2394,6 @@
             Datum, kdy končí garance pro danou simulaci
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.Data">
-            <summary>
-            Data o zadosti - bude se jednat o ruzne objekty podle typu zadosti.
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.Parameters">
             <summary>
             Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.
@@ -2347,6 +2402,9 @@
             OneOf(
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersMortgage
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersDrawing
+            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersGeneralChange
+            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersHUBN
+            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersCustomerChange
             )
             </remarks>
         </member>
@@ -2609,6 +2667,21 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChangeUpdate.CommentToChangeRequest">
+            <summary>
+            Komentář k žádosti o změnu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChangeUpdateAgent.IsActive">
+            <summary>
+            Sekce aktivní
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChangeUpdateAgent.NewAgent">
+            <summary>
+            Nový zmocněnec pro doručování
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.GeneralChangeUpdate.Applicant">
             <summary>
