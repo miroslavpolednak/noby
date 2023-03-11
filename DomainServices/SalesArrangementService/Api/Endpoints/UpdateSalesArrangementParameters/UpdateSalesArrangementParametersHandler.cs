@@ -12,7 +12,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
         // existuje SA?
         var saInfoInstance = (await _dbContext.SalesArrangements
             .Where(t => t.SalesArrangementId == request.SalesArrangementId)
-            .Select(t => new { t.State })
+            .Select(t => new { t.State, t.OfferGuaranteeDateTo })
             .FirstOrDefaultAsync(cancellation))
             ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
 
@@ -59,6 +59,9 @@ internal sealed class UpdateSalesArrangementParametersHandler
             await updateSalesArrangementState(request.SalesArrangementId, cancellation);
         }
 
+        // set flow switches
+        await setFlowSwitches(request.SalesArrangementId, saInfoInstance.OfferGuaranteeDateTo, cancellation);
+
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
@@ -92,7 +95,27 @@ internal sealed class UpdateSalesArrangementParametersHandler
             _ => null
         };
 
-    private void ValidateDrawingRepaymentAccount(Contracts.SalesArrangementParametersDrawing drawingRequest, Database.Entities.SalesArrangementParameters originalParameters)
+    /// <summary>
+    /// Nastaveni flow switches v podle toho jak je nastavena simulace / sa
+    /// </summary>
+    private async Task setFlowSwitches(int salesArrangementId, DateTime? offerGuaranteeDateTo, CancellationToken cancellation)
+    {
+        if ((offerGuaranteeDateTo ?? DateTime.MinValue) > DateTime.Now)
+        {
+            var flowSwitchesRequest = new Contracts.SetFlowSwitchesRequest
+            {
+                SalesArrangementId = salesArrangementId
+            };
+            flowSwitchesRequest.FlowSwitches.Add(new Contracts.FlowSwitch
+            {
+                FlowSwitchId = 1,
+                Value = true
+            });
+            await _mediator.Send(flowSwitchesRequest, cancellation);
+        }
+    }
+
+    private static void ValidateDrawingRepaymentAccount(Contracts.SalesArrangementParametersDrawing drawingRequest, Database.Entities.SalesArrangementParameters originalParameters)
     {
         var originalAccount = Contracts.SalesArrangementParametersDrawing.Parser.ParseFrom(originalParameters.ParametersBin).RepaymentAccount;
         var requestAccount = drawingRequest.RepaymentAccount;
@@ -116,11 +139,14 @@ internal sealed class UpdateSalesArrangementParametersHandler
 
     private readonly HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
+    private readonly IMediator _mediator;
 
     public UpdateSalesArrangementParametersHandler(
+        IMediator mediator,
         HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         Database.SalesArrangementServiceDbContext dbContext)
     {
+        _mediator = mediator;
         _customerOnSAService = customerOnSAService;
         _dbContext = dbContext;
     }
