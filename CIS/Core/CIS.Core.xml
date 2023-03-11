@@ -204,7 +204,7 @@
         </member>
         <member name="T:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes">
             <summary>
-            Možné způsoby 
+            Možné způsoby
             </summary>
         </member>
         <member name="F:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes.FileSystem">
@@ -581,7 +581,7 @@
             Validační chyba.
             </summary>
             <remarks>
-            Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation. 
+            Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation.
             Může také ošetřovat stavy místo ArgumentException nebo ArgumentNullException a podobně.
             </remarks>
         </member>

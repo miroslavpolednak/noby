@@ -13,7 +13,7 @@ internal sealed class UpdateActiveTasksHandler
     {
         // check if case exists
         var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation)
-            ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // load WorkflowTaskTypes
         var taskTypes = await _codebookService.WorkflowTaskTypes(cancellation);
@@ -37,7 +37,7 @@ internal sealed class UpdateActiveTasksHandler
         var invalidTypeIds = tasksWithInvalidTypeId.Select(t => t.TypeId).Distinct();
         var taskIds = tasksWithInvalidTypeId.Select(t => t.TaskProcessId);
 
-        throw new CisValidationException(13007, $"Found tasks [{string.Join(",", taskIds)}] with invalid TypeId [{string.Join(",", invalidTypeIds)}].");
+        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.WfTaskValidationFailed1, string.Join(",", taskIds));
     }
 
     public async Task replaceActiveTasks(long caseId, RepeatedField<ActiveTask> tasks, CancellationToken cancellation)
@@ -85,22 +85,12 @@ internal sealed class UpdateActiveTasksHandler
 
     private readonly CaseServiceDbContext _dbContext;
     private readonly ICodebookServiceClients _codebookService;
-    private readonly UserService.Clients.IUserServiceClient _userService;
-    private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-
+    
     public UpdateActiveTasksHandler(
         CaseServiceDbContext dbContext,
-        ICodebookServiceClients codebookService,
-        UserService.Clients.IUserServiceClient userService,
-        EasSimulationHT.IEasSimulationHTClient easSimulationHTClient,
-        CIS.Core.Security.ICurrentUserAccessor userAccessor
-        )
+        ICodebookServiceClients codebookService)
     {
         _dbContext = dbContext;
         _codebookService = codebookService;
-        _userService = userService;
-        _easSimulationHTClient = easSimulationHTClient;
-        _userAccessor = userAccessor;
     }
 }
