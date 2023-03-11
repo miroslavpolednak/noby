@@ -23,13 +23,16 @@ internal sealed class CustomerChangeBuilder
 
             if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.BankCode))
             {
-                _request.Drawing.RepaymentAccount.IsAccountNumberMissing = false;
-                _request.Drawing.RepaymentAccount.Prefix = mortgageInstance.Mortgage.PaymentAccount.Prefix;
-                _request.Drawing.RepaymentAccount.Number = mortgageInstance.Mortgage.PaymentAccount.Number;
-                _request.Drawing.RepaymentAccount.BankCode = mortgageInstance.Mortgage.PaymentAccount.BankCode;
+                _request.CustomerChange.RepaymentAccount.Prefix = mortgageInstance.Mortgage.PaymentAccount.Prefix;
+                _request.CustomerChange.RepaymentAccount.Number = mortgageInstance.Mortgage.PaymentAccount.Number;
+                _request.CustomerChange.RepaymentAccount.BankCode = mortgageInstance.Mortgage.PaymentAccount.BankCode;
             }
             else
                 _logger.LogInformation("DrawingBuilder: Account is empty");
+
+            // applicants
+            var customers = await productService.GetCustomersOnProduct(_request.CaseId, cancellationToken);
+            //customers.Customers.Where(t => t.RelationshipCustomerProductTypeId == 1 || t.RelationshipCustomerProductTypeId == 2)
         }
         catch
         {
