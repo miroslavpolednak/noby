@@ -17,6 +17,8 @@ internal sealed class CustomerChangeBuilder
     {
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage
         var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
+        var customerService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.CustomerService.Clients.ICustomerServiceClient>();
+
         try
         {
             var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
@@ -29,10 +31,33 @@ internal sealed class CustomerChangeBuilder
             }
             else
                 _logger.LogInformation("DrawingBuilder: Account is empty");
-
+    
             // applicants
-            var customers = await productService.GetCustomersOnProduct(_request.CaseId, cancellationToken);
-            //customers.Customers.Where(t => t.RelationshipCustomerProductTypeId == 1 || t.RelationshipCustomerProductTypeId == 2)
+            var customers = (await productService.GetCustomersOnProduct(_request.CaseId, cancellationToken))
+                .Customers
+                .Where(t => t.RelationshipCustomerProductTypeId == 1 || t.RelationshipCustomerProductTypeId == 2);
+            
+            foreach (var customer in customers)
+            {
+                var identity = customer.CustomerIdentifiers.First();
+                var customerDetail = await customerService.GetCustomerDetail(identity, cancellationToken);
+                
+                _request.CustomerChange.Applicants.Add(new __SA.SalesArrangementParametersCustomerChange.Types.ApplicantObject
+                {
+                    Identity = identity,
+                    NaturalPerson = new __SA.SalesArrangementParametersCustomerChange.Types.NaturalPersonObject
+                    {
+                        FirstName = customerDetail.NaturalPerson?.FirstName ?? "",
+                        LastName = customerDetail.NaturalPerson?.LastName ?? "",
+                        DateOfBirth = ((DateTime?)customerDetail.NaturalPerson?.DateOfBirth) ?? DateTime.MinValue
+                    },
+                    IdentificationDocument = new()
+                    {
+                        IdentificationDocumentTypeId = customerDetail.IdentificationDocument?.IdentificationDocumentTypeId ?? 0,
+                        Number = customerDetail.IdentificationDocument?.Number ?? ""
+                    }
+                });
+            }
         }
         catch
         {
