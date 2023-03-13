@@ -36,4 +36,7 @@ internal sealed class DocumentOnSAServiceGrpc : Contracts.v1.DocumentOnSAService
         await _mediator.Send(request, context.CancellationToken);
         return new Empty();
     }
+
+    public override async Task<GetDocumentsOnSAListResponse> GetDocumentsOnSAList(GetDocumentsOnSAListRequest request, ServerCallContext context)
+       => await _mediator.Send(request, context.CancellationToken);
 }

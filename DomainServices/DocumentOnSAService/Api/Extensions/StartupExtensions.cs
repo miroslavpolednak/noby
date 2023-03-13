@@ -13,6 +13,8 @@ internal static class StartupExtensions
 
     public static WebApplicationBuilder AddDocumentOnSAServiceService(this WebApplicationBuilder builder)
     {
+        builder.Services.AddAttributedServices(typeof(Program));
+
         // dbcontext
         builder.AddEntityFramework<Database.DocumentOnSAServiceDbContext>(connectionStringKey: "default");
 
