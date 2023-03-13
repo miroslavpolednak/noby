@@ -1,5 +1,5 @@
-﻿using DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetIncomeList;
-using DomainServices.HouseholdService.Api.Database;
+﻿using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetIncomeList;
 using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetObligationList;

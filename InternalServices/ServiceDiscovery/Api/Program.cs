@@ -56,7 +56,6 @@ if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
 
 app.UseRouting();
-app.UseCisLogging();
 app.UseHttpLogging();
 
 app.MapCisHealthChecks();

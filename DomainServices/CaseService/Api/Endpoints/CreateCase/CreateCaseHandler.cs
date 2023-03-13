@@ -37,7 +37,7 @@ internal sealed class CreateCaseHandler
         }
         catch (DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
         {
-            throw new CisAlreadyExistsException(13015, nameof(Database.Entities.Case), newCaseId);
+            throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.CaseAlreadyExist, newCaseId);
         }
 
         // fire notification

@@ -21,6 +21,6 @@ public partial class ResourceIdentifier
             Domain = domain,
             Resource = resource,
             Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(17000, $"Can not find Id for ResourceIdentifier {domain}/{resource}"),
-            Variant = humanUser.IdentityScheme!
+            Variant = resource == "Broker" ? humanUser.IdentityScheme! : null
         };
 }

@@ -72,8 +72,8 @@ internal class ConfigurationManager : IConfigurationManager
 
         return (selectedVersion.Id, selectedVersion.DocumentVersion);
 
-        DocumentTemplateVersionItem? GetRequestedVersion() => documentVersions.FirstOrDefault(d => d.Id == documentKey.VersionId && d.DocumentTemplateTypeId == documentKey.TypeId);
-        DocumentTemplateVersionItem? GetLatestVersion() => documentVersions.FirstOrDefault(d => d.DocumentTemplateTypeId == documentKey.TypeId && d.IsValid);
+        DocumentTemplateVersionItem? GetRequestedVersion() => documentVersions.FirstOrDefault(d => d.Id == documentKey.VersionId && d.DocumentTypeId == documentKey.TypeId);
+        DocumentTemplateVersionItem? GetLatestVersion() => documentVersions.FirstOrDefault(d => d.DocumentTypeId == documentKey.TypeId && d.IsValid);
     }
 
     private static IEnumerable<DataSource> GetDataSources(IEnumerable<DataSource> dataSources) =>

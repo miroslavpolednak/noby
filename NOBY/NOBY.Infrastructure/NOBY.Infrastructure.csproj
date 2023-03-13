@@ -27,7 +27,6 @@
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
-    <ProjectReference Include="..\NOBY.Core\NOBY.Core.csproj" />
   </ItemGroup>
 
 </Project>

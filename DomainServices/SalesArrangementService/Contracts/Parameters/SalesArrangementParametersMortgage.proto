@@ -15,7 +15,7 @@ message SalesArrangementParametersMortgage {
 	google.protobuf.BoolValue AgentConsentWithElCom = 7;
 
 	message LoanRealEstate {
-		int32 RealEstateTypeId = 1;
+		int64 RealEstateTypeId = 1;
 		bool IsCollateral = 2;
 		int32 RealEstatePurchaseTypeId = 3;
 	}

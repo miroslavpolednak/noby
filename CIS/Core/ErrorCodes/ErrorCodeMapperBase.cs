@@ -11,7 +11,7 @@ public abstract class ErrorCodeMapperBase
     /// <summary>
     /// Slovník chybových hlášek [ExceptionCode, ExceptionMessage].
     /// </summary>
-    public static IErrorCodesDictionary Messages { get; private set; }
+    public static IErrorCodesDictionary Messages { get; private set; } = null!;
 
     /// <summary>
     /// Vrátí chybovou hláškou podle zadaného ExceptionCode - ten musí být uvedený v překladovém slovníku Messages.
@@ -38,6 +38,11 @@ public abstract class ErrorCodeMapperBase
     public static CisNotFoundException CreateNotFoundException(int exceptionCode, object? parameter = null)
     {
         return new CisNotFoundException(exceptionCode, GetMessage(exceptionCode, parameter));
+    }
+
+    public static CisAlreadyExistsException CreateAlreadyExistsException(int exceptionCode, object? parameter = null)
+    {
+        return new CisAlreadyExistsException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
     /// <summary>

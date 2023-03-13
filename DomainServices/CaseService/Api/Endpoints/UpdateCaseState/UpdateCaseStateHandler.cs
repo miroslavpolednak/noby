@@ -10,18 +10,24 @@ internal sealed class UpdateCaseStateHandler
     {
         // zjistit zda existuje case
         var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation)
-            ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // overit ze case state existuje
         if (!(await _codebookService.CaseStates(cancellation)).Any(t => t.Id == request.State))
-            throw new CisNotFoundException(13011, nameof(request.State), request.State);
-
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseStateNotFound, request.State);
+        }
+        
         if (entity.State == request.State)
-            throw new CisValidationException(13005, "Case state already set to the same value");
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseStateAlreadySet);
+        }
 
         // Zakázané přechody mezi stavy
         if (entity.State == 6 || entity.State == 2 && request.State == 1)
-            throw new CisValidationException(13006, "Case state change not allowed");
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseStateNotAllowed);
+        }
 
         // update v DB
         entity.State = request.State;
