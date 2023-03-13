@@ -8,9 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="0.7.2.1" />
-        <PackageReference Include="MassTransit" Version="8.0.9" />
-        <PackageReference Include="MassTransit.Kafka" Version="8.0.9" />
+        <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="1.1.0.16-SNAPSHOT" />
+        <PackageReference Include="MassTransit" Version="8.0.13" />
+        <PackageReference Include="MassTransit.Kafka" Version="8.0.13" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     </ItemGroup>
     

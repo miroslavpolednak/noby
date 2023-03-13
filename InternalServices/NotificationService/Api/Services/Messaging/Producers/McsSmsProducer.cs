@@ -44,6 +44,6 @@ public class McsSmsProducer
             // Origin = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",
         };
         
-        await _producer.Produce(sendSms, new ProducerPipe<ISpecificRecord>(headers), cancellationToken);
+        await _producer.Produce(sendSms, new ProducerPipe<IMcsSenderCommand>(headers), cancellationToken);
     }
 }
