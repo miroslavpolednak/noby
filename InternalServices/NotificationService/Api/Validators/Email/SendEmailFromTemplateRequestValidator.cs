@@ -5,8 +5,5 @@ namespace CIS.InternalServices.NotificationService.Api.Validators.Email;
 
 public class SendEmailFromTemplateRequestValidator : AbstractValidator<SendEmailFromTemplateRequest>
 {
-    public SendEmailFromTemplateRequestValidator()
-    {
-        // todo:
-    }    
+    // todo:
 }

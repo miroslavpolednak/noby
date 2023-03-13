@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
             .AddSingleton<GenericClientExceptionInterceptor>()
             .AddScoped<ContextUserForwardingClientInterceptor>()
             .AddScoped<INotificationClient, NotificationClient>()
-            .AddCodeFirstGrpcClient<INotificationService>((provider, options) =>
+            .AddCodeFirstGrpcClient<INotificationService>((_, options) =>
             {
                 // todo: uri from configuration
                 options.Address = new Uri("https://localhost:5003");

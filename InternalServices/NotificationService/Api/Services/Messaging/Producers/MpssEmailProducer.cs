@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Avro.Specific;
 using CIS.Core;
 using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
