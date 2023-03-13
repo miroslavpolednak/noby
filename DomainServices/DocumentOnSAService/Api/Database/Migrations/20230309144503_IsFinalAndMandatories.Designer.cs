@@ -4,6 +4,7 @@ using DomainServices.DocumentOnSAService.Api.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
 {
     [DbContext(typeof(DocumentOnSAServiceDbContext))]
-    partial class DocumentOnSAServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230309144503_IsFinalAndMandatories")]
+    partial class IsFinalAndMandatories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
