@@ -7,10 +7,10 @@ namespace CIS.Core.Exceptions;
 /// Validační chyba.
 /// </summary>
 /// <remarks>
-/// Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation. 
+/// Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation.
 /// Může také ošetřovat stavy místo ArgumentException nebo ArgumentNullException a podobně.
 /// </remarks>
-public class CisValidationException 
+public class CisValidationException
     : Exception
 {
     /// <summary>
@@ -31,7 +31,7 @@ public class CisValidationException
 
     /// <param name="exceptionCode">CIS error kód</param>
     /// <param name="message">Chybová zpráva</param>
-    public CisValidationException(string exceptionCode, string message) 
+    public CisValidationException(string exceptionCode, string message)
         : base(message)
     {
         ArgumentNullException.ThrowIfNullOrEmpty(message);
@@ -53,9 +53,9 @@ public class CisValidationException
     }
 
     /// <param name="errors">Seznam chyb</param>
-    public CisValidationException(IEnumerable<CisExceptionItem> errors) 
+    public CisValidationException(IEnumerable<CisExceptionItem> errors)
         : base(errors.FirstOrDefault()?.Message)
-    { 
+    {
         if (errors is null || !errors.Any())
             throw new ArgumentNullException(nameof(errors), $"No errors has been specified when creating new CisValidationException");
 
