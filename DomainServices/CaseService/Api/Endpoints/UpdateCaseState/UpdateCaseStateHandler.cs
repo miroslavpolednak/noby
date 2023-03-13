@@ -35,7 +35,7 @@ internal sealed class UpdateCaseStateHandler
         await _dbContext.SaveChangesAsync(cancellation);
 
         // fire notification
-        if (entity.State == 1)
+        if (shouldNotifySbAboutStateChange)
         {
             await _mediator.Publish(new Notifications.CaseStateChangedNotification
             {
