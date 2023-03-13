@@ -57,9 +57,8 @@ internal sealed class CustomerChangeBuilder
             var agent = customers.FirstOrDefault(t => t.Agent ?? false)?.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
             if (agent is not null)
             {
-                var agentCustomer = loadedCustomers.FirstOrDefault(t
-                    => t.Identities
-                        .Any(t => t.IdentityScheme == agent.IdentityScheme && t.IdentityId == agent.IdentityId));
+                var agentCustomer = loadedCustomers.FirstOrDefault(t => t.Identities.Any(t => t.IdentityScheme == agent.IdentityScheme && t.IdentityId == agent.IdentityId));
+                // customer jeste nebyl dotazen
                 if (agentCustomer is null)
                 {
                     agentCustomer = await customerService.GetCustomerDetail(agent, cancellationToken);
@@ -67,7 +66,7 @@ internal sealed class CustomerChangeBuilder
 
                 _request.CustomerChange.Agent = new()
                 {
-                    ActualAgent = $"{agentCustomer.NaturalPerson.FirstName} {agentCustomer.NaturalPerson.LastName}"
+                    ActualAgent = $"{agentCustomer.NaturalPerson.LastName} {agentCustomer.NaturalPerson.FirstName}"
                 };
             }
         }
