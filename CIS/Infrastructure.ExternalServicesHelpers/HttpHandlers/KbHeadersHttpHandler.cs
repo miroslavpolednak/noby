@@ -32,8 +32,10 @@ public sealed class KbHeadersHttpHandler
         // trace info
         if (Activity.Current?.Id is not null)
         {
-            request.Headers.Add("X-B3-TraceId", Activity.Current?.RootId);
-            request.Headers.Add("X-B3-SpanId", Activity.Current?.SpanId.ToString());
+            // nova hlavicka
+            request.Headers.Add("b3", $"{Activity.Current.TraceId}-{Activity.Current.SpanId}-1-{Activity.Current.ParentSpanId}");
+            // stara hlavicka
+            request.Headers.Add("X-KB-Trace-Id", Activity.Current?.RootId);
         }
         
         return await base.SendAsync(request, cancellationToken);

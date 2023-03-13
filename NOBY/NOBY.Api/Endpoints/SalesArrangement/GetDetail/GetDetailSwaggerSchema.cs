@@ -16,7 +16,8 @@ internal class GetDetailSwaggerSchema : ISchemaFilter
             typeof(ParametersMortgage),
             typeof(ParametersDrawing),
             typeof(Dto.HUBNDetail),
-            typeof(Dto.GeneralChangeDetail)
+            typeof(Dto.GeneralChangeDetail),
+            typeof(Dto.CustomerChangeDetail)
         };
 
         foreach (var type in possibleTypes)
