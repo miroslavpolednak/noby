@@ -16,6 +16,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Parameters\SalesArrangementParametersCustomerChange.proto" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.22.1" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.51.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.52.0">
@@ -29,6 +33,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Protobuf Include="Parameters\SalesArrangementParametersCustomerChange.proto" GrpcServices="None">
+		  <ProtoRoot>./</ProtoRoot>
+		  <AdditionalImportDirs>../../../CIS/Infrastructure.gRPC.CisTypes/Protos</AdditionalImportDirs>
+		</Protobuf>
 		<Protobuf Include="SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 
 		<Protobuf Include="Parameters/SalesArrangementParametersHUBN.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
