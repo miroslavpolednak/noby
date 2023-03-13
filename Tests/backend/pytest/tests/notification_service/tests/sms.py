@@ -1,7 +1,6 @@
 import pytest
 import requests
 from ..json.request.sms import json_req_sms_basic, json_req_sms_basic_full
-from ..conftest import auth_params
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)

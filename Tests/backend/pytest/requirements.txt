@@ -8,7 +8,7 @@ pyodbc~=4.0.32
 SQLAlchemy~=1.4.36
 
 pymssql~=2.2.5
-
+sqlalchemy
 grpc
 grpcio
 grpcio-tools

@@ -1,6 +1,6 @@
 import pytest
-from request.simulation_mortgage.simulation_mortgage_basic_json import json_req_mortgage_basic_params
-from ...conftest import noby_fat_db_cursor
+
+from Tests.backend.pytest.tests.noby_rest.json.request.simulation_mortgage.simulation_mortgage_basic_json import json_req_mortgage_basic_params
 from ...construct_api.uc_modelace_hypoteky.post_offer_mortgage import post_offer_mortgage
 from ...db_util import select_offer_fat
 
