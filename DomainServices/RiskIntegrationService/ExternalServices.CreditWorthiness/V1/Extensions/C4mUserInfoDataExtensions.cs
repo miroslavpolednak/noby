@@ -17,7 +17,7 @@ public static class C4mUserInfoDataExtensions
     public static Person ToC4mPerson(this C4mUserInfoData userInfo, Identity humanUser)
         => new()
         {
-            Id = createResourceIdentifier("PM", "KBGroupPerson", humanUser),
+            Id = createResourceIdentifier("PM", "KBGroupPerson", humanUser, userInfo.PersonId.ToString()),
             Surname = userInfo.PersonSurname,
             OrgUnit = new OrganizationUnit
             {
@@ -37,6 +37,6 @@ public static class C4mUserInfoDataExtensions
             Domain = domain,
             Resource = resource,
             Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(17000, $"Can not find Id for ResourceIdentifier {domain}/{resource}"),
-            Variant = humanUser.IdentityScheme!
+            Variant = resource == "Broker" ? humanUser.IdentityScheme! : null
         };
 }

@@ -9,6 +9,6 @@ internal class GetTaskListRequestValidator : AbstractValidator<GetTaskListReques
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
-            .WithMessage("Case Id must be > 0").WithErrorCode("13016");
+            .WithErrorCode(ErrorCodeMapper.CaseIdIsEmpty);
     }
 }

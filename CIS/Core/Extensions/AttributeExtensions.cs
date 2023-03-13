@@ -17,7 +17,7 @@ public static class AttributeExtensions
             .First()
             .GetCustomAttribute<TAttribute>();
     }
-    
+
     /// <summary>
     /// Vrací informaci o tom, zda daná enum value obsahuje požadovaný atribut.
     /// </summary>

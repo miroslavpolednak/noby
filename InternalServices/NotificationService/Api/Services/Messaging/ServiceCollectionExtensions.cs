@@ -10,6 +10,7 @@ using cz.kb.osbs.mcs.sender.sendapi.v4.email;
 using cz.kb.osbs.mcs.sender.sendapi.v4.sms;
 using KB.Speed.MassTransit.DependencyInjection;
 using KB.Speed.MassTransit.Kafka;
+using KB.Speed.MassTransit.Tracing;
 using KB.Speed.Messaging.Kafka.DependencyInjection;
 using KB.Speed.Tracing.Extensions;
 using KB.Speed.Tracing.Instrumentations.AspNetCore;
@@ -22,15 +23,14 @@ public static class ServiceCollectionExtensions
 {
     public static WebApplicationBuilder AddMessaging(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSpeedTracing(builder.Configuration, providerBuilder =>
-        {
-            providerBuilder.SetDefaultResourceBuilder()
-                .AddDefaultExporter()
-                .AddSpeedAspNetInstrumentation()
-                .AddSpeedHttpClientInstrumentation()
-                .AddMassTransitInstrumentation();
-        }); 
-        
+        builder.Services
+            .AddSpeedTracing()
+            .AddMassTransitTracingOptions(o =>
+            {
+                o.UseHeaderValidation = false;
+                o.HeaderValidationBehavior = InvalidHeaderBehavior.IgnoreErrors;
+            });
+
         var kafkaConfiguration = builder.GetKafkaConfiguration();
         var appConfiguration = builder.GetAppConfiguration();
         

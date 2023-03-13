@@ -1,5 +1,4 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using CIS.Infrastructure.Telemetry;
 using System.Reflection;
 using NOBY.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -50,7 +49,7 @@ internal static class NobyAppBuilder
             }
             else // custom exception handling
             {
-                appBuilder.UseMiddleware<NOBY.Infrastructure.ErrorHandling.NobyApiExceptionMiddleware>();
+                appBuilder.UseMiddleware<Infrastructure.ErrorHandling.Internals.NobyApiExceptionMiddleware>();
                 appBuilder.UseHsts();
             }
 
@@ -67,7 +66,6 @@ internal static class NobyAppBuilder
             appBuilder.UseAuthentication();
             appBuilder.UseMiddleware<AppSecurityMiddleware>();
             appBuilder.UseAuthorization();
-            appBuilder.UseCisLogging();
             appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware>();
 
             // namapovani API modulu

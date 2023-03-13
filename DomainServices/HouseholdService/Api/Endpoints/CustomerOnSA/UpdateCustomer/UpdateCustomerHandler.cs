@@ -12,7 +12,7 @@ internal sealed class UpdateCustomerHandler
         var entity = await _dbContext.Customers
             .Include(t => t.Identities)
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .FirstOrDefaultAsync(cancellationToken) 
+            .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CustomerOnSANotFound, request.CustomerOnSAId);
 
         // helper aby se nemuselo porad null checkovat
@@ -34,8 +34,7 @@ internal sealed class UpdateCustomerHandler
         var kbIdentity = entity.Identities.FirstOrDefault(t => t.IdentityScheme == IdentitySchemes.Kb);
         if (kbIdentity is not null)
         {
-            await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellationToken);
-            await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP", cancellationToken);
+            await _sulmClient.StartUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
         }
 
         // uz ma KB identitu, ale jeste nema MP identitu
@@ -74,12 +73,12 @@ internal sealed class UpdateCustomerHandler
         return model;
     }
 
-    private readonly SulmService.ISulmClient _sulmClient;
+    private readonly SulmService.ISulmClientHelper _sulmClient;
     private readonly UpdateCustomerService _updateService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
 
     public UpdateCustomerHandler(
-        SulmService.ISulmClient sulmClient,
+        SulmService.ISulmClientHelper sulmClient,
         UpdateCustomerService updateService,
         Database.HouseholdServiceDbContext dbContext)
     {

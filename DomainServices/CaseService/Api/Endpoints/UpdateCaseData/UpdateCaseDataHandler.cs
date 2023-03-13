@@ -10,11 +10,13 @@ internal sealed class UpdateCaseDataHandler
     {
         // zjistit zda existuje case
         var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation)
-            ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // zkontrolovat ProdInstType
         if (!(await _codebookService.ProductTypes(cancellation)).Any(t => t.Id == request.Data.ProductTypeId))
-            throw new CisNotFoundException(13014, nameof(request.Data.ProductTypeId), request.Data.ProductTypeId);
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ProductTypeIdNotFound, request.Data.ProductTypeId);
+        }
 
         var bonusChanged = entity.IsEmployeeBonusRequested != request.Data.IsEmployeeBonusRequested;
 

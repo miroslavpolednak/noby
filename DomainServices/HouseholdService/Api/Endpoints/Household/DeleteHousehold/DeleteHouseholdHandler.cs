@@ -1,5 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
-using DomainServices.HouseholdService.Api.Database;
+﻿using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.DeleteHousehold;
 

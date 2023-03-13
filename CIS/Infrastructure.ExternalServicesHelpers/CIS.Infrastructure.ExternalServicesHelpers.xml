@@ -231,7 +231,7 @@
             </summary>
             <param name="serviceName">Název ExternalServices proxy</param>
         </member>
-        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbHeaders(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbHeaders(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String,System.String)">
             <summary>
             Prida do kazdeho requestu HttpClienta hlavicky vyzadovane v KB.
             </summary>

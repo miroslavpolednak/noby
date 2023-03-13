@@ -18,7 +18,7 @@ internal class GetCaseDetailHandler
             .AsNoTracking()
             .Select(CaseServiceDatabaseExpressions.CaseDetail())
             .FirstOrDefaultAsync(cancellation) 
-            ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
     }
 
     private readonly CaseServiceDbContext _dbContext;

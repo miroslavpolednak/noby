@@ -4,7 +4,7 @@ internal static class DbContextExtensions
 {
     public static async Task<Entities.Household> GetHousehold(this HouseholdServiceDbContext dbContext, int householdId, CancellationToken cancellationToken)
     {
-        return await dbContext.GetHouseholdWithoutCheck(householdId, cancellationToken) 
+        return await dbContext.GetHouseholdWithoutCheck(householdId, cancellationToken)
             ?? throw new CisNotFoundException(16022, $"Household ID {householdId} does not exist.");
     }
 

@@ -3,7 +3,7 @@
 /// <summary>
 /// Implementace <see cref="IPaginableRequest"/>
 /// </summary>
-public sealed class Paginable 
+public sealed class Paginable
     : IPaginableRequest
 {
     public int RecordOffset { get; init; }
@@ -12,6 +12,7 @@ public sealed class Paginable
 
     public bool HasSorting => Sorting is not null && Sorting.Any();
     public Type TypeOfSortingField => typeof(SortField);
+
     public IEnumerable<IPaginableSortingField>? GetSorting() => Sorting;
 
     /// <summary>
@@ -28,7 +29,7 @@ public sealed class Paginable
         PageSize = pageSize;
     }
 
-    public Paginable(int recordOffset, int pageSize, IEnumerable<IPaginableSortingField>? sorting) 
+    public Paginable(int recordOffset, int pageSize, IEnumerable<IPaginableSortingField>? sorting)
         : this(recordOffset, pageSize)
     {
         if (sorting is not null && sorting.Any())
@@ -61,7 +62,7 @@ public sealed class Paginable
             {
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
                 var field = mapper
-                    .FirstOrDefault(x => x.Name.Equals(t.Field, StringComparison.OrdinalIgnoreCase)) 
+                    .FirstOrDefault(x => x.Name.Equals(t.Field, StringComparison.OrdinalIgnoreCase))
                             ?? throw new Exceptions.CisValidationException(13, "Sort Field not allowed");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
                 t.Field = field.TranslateTo;
@@ -85,7 +86,7 @@ public sealed class Paginable
 
     public record MapperField(string Name, string TranslateTo);
 
-    public class SortField 
+    public class SortField
         : IPaginableSortingField
     {
         public string Field { get; internal set; }
@@ -97,6 +98,8 @@ public sealed class Paginable
             Descending = descending;
         }
 
-        internal SortField(IPaginableSortingField field) : this(field.Field, field.Descending) { }
+        internal SortField(IPaginableSortingField field) : this(field.Field, field.Descending)
+        {
+        }
     }
 }

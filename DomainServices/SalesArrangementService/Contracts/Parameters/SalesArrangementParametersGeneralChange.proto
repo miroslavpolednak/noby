@@ -74,7 +74,7 @@ message SalesArrangementParametersGeneralChange {
 	}
 
 	message LoanRealEstatesItem {
-		int32 RealEstateTypeId = 1;
+		int64 RealEstateTypeId = 1;
 		int32 RealEstatePurchaseTypeId = 2;
 	}
 

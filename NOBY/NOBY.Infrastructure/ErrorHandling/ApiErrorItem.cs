@@ -2,14 +2,24 @@
 
 public struct ApiErrorItem
 {
-    public ApiErrorItem(string code, string message, ApiErrorItemServerity severity)
+    public ApiErrorItem(int code)
+    {
+        var item = ErrorCodeMapper.Messages[code];
+
+        this.ErrorCode = code;
+        this.Message = item.Message;
+        this.Description = item.Description;
+        this.Severity = item.Severity;
+    }
+
+    public ApiErrorItem(int code, string message, ApiErrorItemServerity severity)
     {
         this.ErrorCode = code;
         this.Message = message;
         this.Severity = severity;
     }
 
-    public ApiErrorItem(string code, string message, string description, ApiErrorItemServerity severity)
+    public ApiErrorItem(int code, string message, string description, ApiErrorItemServerity severity)
     {
         this.ErrorCode = code;
         this.Message = message;
@@ -20,7 +30,7 @@ public struct ApiErrorItem
     /// <summary>
     /// Kod chyby v rozsahu FE API
     /// </summary>
-    public string ErrorCode { get; set; }
+    public int ErrorCode { get; set; }
 
     /// <summary>
     /// Chybova zprava
@@ -36,13 +46,4 @@ public struct ApiErrorItem
     /// Zavaznost chyby
     /// </summary>
     public ApiErrorItemServerity Severity { get; set; }
-}
-
-/// <summary>
-/// Zavaznost chyby
-/// </summary>
-public enum ApiErrorItemServerity
-{
-    Error = 1,
-    Warning = 2
 }

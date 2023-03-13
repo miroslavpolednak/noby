@@ -16,7 +16,7 @@ internal sealed class DeleteIncomeHandler
     }
 
     private readonly Database.HouseholdServiceDbContext _dbContext;
-    
+
     public DeleteIncomeHandler(Database.HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;

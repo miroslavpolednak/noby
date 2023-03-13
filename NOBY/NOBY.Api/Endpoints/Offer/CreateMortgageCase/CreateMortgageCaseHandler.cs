@@ -20,12 +20,12 @@ internal sealed class CreateMortgageCaseHandler
 
         // chyba pokud simulace je uz nalinkovana na jiny SA
         if (await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.OfferId, cancellationToken) is not null)
-            throw new CisValidationException(ErrorCodes.OfferIdAlreadyLinkedToSalesArrangement, $"OfferId {request.OfferId} has been already linked to another contract");
+            throw new NobyValidationException($"OfferId {request.OfferId} has been already linked to another contract");
         
         // get default saTypeId from productTypeId
         int salesArrangementTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))
             .FirstOrDefault(t => t.ProductTypeId == offerInstance.SimulationInputs.ProductTypeId)
-            ?.Id ?? throw new CisNotFoundException(ErrorCodes.OfferDefaultSalesArrangementTypeIdNotFound, $"Default SalesArrangementTypeId for ProductTypeId {offerInstance.SimulationInputs.ProductTypeId} not found");
+            ?.Id ?? throw new NobyValidationException($"Default SalesArrangementTypeId for ProductTypeId {offerInstance.SimulationInputs.ProductTypeId} not found");
 
         // vytvorit case
         _logger.SharedCreateCaseStarted(offerInstance.OfferId);
