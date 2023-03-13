@@ -187,7 +187,7 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
         });
     }
 
-    private static IdentificationDocument MapIdentificationDocument(IdentificationDocumentFull identificationDocument)
+    private static IdentificationDocument MapIdentificationDocument(IdentificationDocumentFullRequired identificationDocument)
     {
         return new IdentificationDocument
         {

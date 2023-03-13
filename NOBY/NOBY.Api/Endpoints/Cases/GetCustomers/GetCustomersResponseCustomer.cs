@@ -42,7 +42,7 @@ public sealed class GetCustomersResponseCustomer
     /// </summary>
     public string? KBID { get; set; }
 
-    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
+    public SharedDto.IdentificationDocumentFullRequired? IdentificationDocument { get; set; }
 
     public SharedDto.ContactsConfirmedDto? Contacts { get; set; }
 

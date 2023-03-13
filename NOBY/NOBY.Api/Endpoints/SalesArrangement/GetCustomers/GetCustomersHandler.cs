@@ -55,7 +55,7 @@ internal class GetCustomersHandler
                         Street = address.Street,
                         City = address.City,
                         StreetNumber = address.StreetNumber,
-                        CountryId = address.CountryId,
+                        CountryId = address.CountryId ?? 0,
                         HouseNumber = address.HouseNumber,
                         Postcode = address.Postcode
                     };
@@ -69,7 +69,7 @@ internal class GetCustomersHandler
                         Street = address2.Street,
                         City = address2.City,
                         StreetNumber = address2.StreetNumber,
-                        CountryId = address2.CountryId,
+                        CountryId = address2.CountryId ?? 0,
                         HouseNumber = address2.HouseNumber,
                         Postcode = address2.Postcode
                     };

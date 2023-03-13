@@ -1,11 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CIS.Foms.Types;
 
 /// <summary>
 /// Adresa - bydliste, kontaktni atd.
 /// </summary>
-public class Address
+public class AddressRequired
 {
     [JsonIgnore]
     public bool IsPrimary { get; set; }
@@ -15,6 +16,7 @@ public class Address
     /// <summary>
     /// Ulice
     /// </summary>
+    [Required]
     public string Street { get; set; } = string.Empty;
 
     /// <summary>
@@ -35,16 +37,19 @@ public class Address
     /// <summary>
     /// PSČ
     /// </summary>
+    [Required]
     public string Postcode { get; set; } = string.Empty;
 
     /// <summary>
     /// Město/Obec
     /// </summary>
+    [Required]
     public string City { get; set; } = string.Empty;
     
     /// <summary>
     /// 
     /// </summary>
+    [Required]
     public int CountryId { get; set; }
 
     /// <summary>

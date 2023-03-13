@@ -8,7 +8,7 @@ public abstract class BaseCustomerDetail
 
     public JuridicalPerson? JuridicalPerson { get; set; }
 
-    public IdentificationDocumentFull? IdentificationDocument { get; set; }
+    public IdentificationDocumentFullRequired? IdentificationDocument { get; set; }
 
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
 

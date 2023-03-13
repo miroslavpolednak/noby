@@ -74,6 +74,66 @@
             Id adresního bodu
             </summary>
         </member>
+        <member name="T:CIS.Foms.Types.AddressRequired">
+            <summary>
+            Adresa - bydliste, kontaktni atd.
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.AddressRequired.Street">
+            <summary>
+            Ulice
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.AddressRequired.StreetNumber">
+            <summary>
+            Číslo orientační
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.AddressRequired.HouseNumber">
+            <summary>
+            Číslo popisné
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.AddressRequired.EvidenceNumber">
+            <summary>
+            Číslo evidenční
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.AddressRequired.Postcode">
+            <summary>
+            PSČ
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.AddressRequired.City">
+            <summary>
+            Město/Obec
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.AddressRequired.CountryId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.AddressRequired.CityDistrict">
+            <summary>
+            Část obce
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.AddressRequired.PragueDistrict">
+            <summary>
+            Praha obvod
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.AddressRequired.CountrySubdivision">
+            <summary>
+            Název územního celku
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.AddressRequired.AddressPointId">
+            <summary>
+            Id adresního bodu
+            </summary>
+        </member>
         <member name="T:CIS.Foms.Types.CustomerIdentity">
             <summary>
             Identita klienta

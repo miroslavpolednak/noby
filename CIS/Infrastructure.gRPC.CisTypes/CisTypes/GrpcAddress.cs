@@ -12,10 +12,10 @@ public partial class GrpcAddress
             Street = address.Street,
             City = address.City,
             StreetNumber = address.StreetNumber,
-            CountryId = address.CountryId,
+            CountryId = address.CountryId ?? 0,
             HouseNumber = address.HouseNumber,
             Postcode = address.Postcode,
-            AddressTypeId = address.AddressTypeId,
+            AddressTypeId = address.AddressTypeId ?? 0,
             CityDistrict = address.CityDistrict,
             PragueDistrict = address.PragueDistrict,
             CountrySubdivision = address.CountrySubdivision,
@@ -26,7 +26,55 @@ public partial class GrpcAddress
         };
     }
 
+    public static implicit operator Foms.Types.AddressRequired?(GrpcAddress? address)
+    {
+        if (address is null) return null;
+
+        return new Foms.Types.AddressRequired
+        {
+            IsPrimary = address.IsPrimary,
+            Street = address.Street,
+            City = address.City,
+            StreetNumber = address.StreetNumber,
+            CountryId = address.CountryId ?? 0,
+            HouseNumber = address.HouseNumber,
+            Postcode = address.Postcode,
+            AddressTypeId = address.AddressTypeId ?? 0,
+            CityDistrict = address.CityDistrict,
+            PragueDistrict = address.PragueDistrict,
+            CountrySubdivision = address.CountrySubdivision,
+            PrimaryAddressFrom = address.PrimaryAddressFrom,
+            AddressPointId = address.AddressPointId,
+            DeliveryDetails = address.DeliveryDetails,
+            EvidenceNumber = address.EvidenceNumber
+        };
+    }
+    
     public static implicit operator GrpcAddress?(Foms.Types.Address? address)
+    {
+        if (address is null) return null;
+
+        return new GrpcAddress
+        {
+            IsPrimary = address.IsPrimary,
+            DeliveryDetails = address.DeliveryDetails ?? "",
+            EvidenceNumber = address.EvidenceNumber ?? "",
+            StreetNumber = address.StreetNumber ?? "",
+            Street = address.Street ?? "",
+            City = address.City ?? "",
+            CountryId = address.CountryId,
+            HouseNumber = address.HouseNumber ?? "",
+            Postcode = address.Postcode ?? "",
+            AddressTypeId = address.AddressTypeId,
+            CityDistrict = address.CityDistrict ?? string.Empty,
+            PragueDistrict = address.PragueDistrict ?? string.Empty,
+            CountrySubdivision = address.CountrySubdivision ?? string.Empty,
+            PrimaryAddressFrom = address.PrimaryAddressFrom,
+            AddressPointId = address.AddressPointId ?? string.Empty
+        };
+    }
+    
+    public static implicit operator GrpcAddress?(Foms.Types.AddressRequired? address)
     {
         if (address is null) return null;
 

@@ -25,5 +25,5 @@ public sealed class CreateResponse
 
     public SharedDto.ContactsDto? Contacts { get; set; }
 
-    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
+    public SharedDto.IdentificationDocumentFullRequired? IdentificationDocument { get; set; }
 }
