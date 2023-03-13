@@ -1,6 +1,6 @@
 import pytest
 import requests
-from request.sms import json_req_sms_basic, json_req_sms_basic_full
+from ..json.request.sms import json_req_sms_basic, json_req_sms_basic_full
 from ..conftest import auth_params
 
 
