@@ -30,4 +30,9 @@ public interface IDocumentArchiveServiceClient
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisAlreadyExistsException">14015, File with documentid already exist in database</exception>
     Task UploadDocument(UploadDocumentRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k získání seznamu dokumentů z lokálně uložené fronty dokumentů k odeslání nebo již odeslaných nebo dokumentů v chybových stavech
+    /// </summary>
+    Task<GetDocumentsInQueueResponse> GetDocumentsInQueue(GetDocumentsInQueueRequest request, CancellationToken cancellationToken = default);
 }
