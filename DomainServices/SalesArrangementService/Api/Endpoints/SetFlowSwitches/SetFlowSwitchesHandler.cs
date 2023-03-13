@@ -10,7 +10,8 @@ internal sealed class SetFlowSwitchesHandler
     {
         var usedFlowSwitches = request.FlowSwitches.Select(t => t.FlowSwitchId).ToArray();
 
-        var flowSwitches = await _dbContext.FlowSwitches
+        var flowSwitches = await _dbContext
+            .FlowSwitches
             .Where(t => t.SalesArrangementId == request.SalesArrangementId && usedFlowSwitches.Contains(t.FlowSwitchId))
             .ToListAsync(cancellation);
 
@@ -19,24 +20,19 @@ internal sealed class SetFlowSwitchesHandler
             var dbSwitch = flowSwitches.FirstOrDefault(t => t.FlowSwitchId == requestSwitch.FlowSwitchId);
 
             // pridani noveho switche
-            if (dbSwitch is null && requestSwitch.Value.HasValue)
+            if (dbSwitch is null)
             {
                 _dbContext.FlowSwitches.Add(new Database.Entities.FlowSwitch
                 {
                     SalesArrangementId = request.SalesArrangementId,
                     FlowSwitchId = requestSwitch.FlowSwitchId,
-                    Value = requestSwitch.Value!.Value
+                    Value = requestSwitch.Value
                 });
             }
             // update Value
-            else if (dbSwitch is not null && requestSwitch.Value.HasValue && requestSwitch.Value.Value != dbSwitch.Value)
+            else if (dbSwitch is not null && requestSwitch.Value != dbSwitch.Value)
             {
-                dbSwitch.Value = requestSwitch.Value.Value;
-            }
-            // smazani switche
-            else if (dbSwitch is not null && !requestSwitch.Value.HasValue)
-            {
-                _dbContext.FlowSwitches.Remove(dbSwitch);
+                dbSwitch.Value = requestSwitch.Value;
             }
         }
 

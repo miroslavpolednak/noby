@@ -7,5 +7,5 @@ import "google/protobuf/wrappers.proto";
 message FlowSwitch {
 	int32 FlowSwitchId = 1;
 
-	google.protobuf.BoolValue Value = 2;
+	bool Value = 2;
 }
