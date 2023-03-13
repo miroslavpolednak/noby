@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Google.Protobuf;
 using CIS.Foms.Enums;
+using CIS.Foms.Types.Enums;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementParameters;
 
@@ -108,7 +109,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
             };
             flowSwitchesRequest.FlowSwitches.Add(new Contracts.FlowSwitch
             {
-                FlowSwitchId = 1,
+                FlowSwitchId = (int)FlowSwitches.FlowSwitch1,
                 Value = true
             });
             await _mediator.Send(flowSwitchesRequest, cancellation);

@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using CIS.Foms.Types.Enums;
 using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 using __Offer = DomainServices.OfferService.Contracts;
@@ -72,7 +73,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
     /// </summary>
     private async Task setFlowSwitches(int salesArrangementId, __Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellation)
     {
-        if ((offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.MinValue) > DateTime.Now)
+        if (((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.MinValue) > DateTime.Now)
         {
             var flowSwitchesRequest = new Contracts.SetFlowSwitchesRequest
             {
@@ -80,7 +81,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
             };
             flowSwitchesRequest.FlowSwitches.Add(new __SA.FlowSwitch
             {
-                FlowSwitchId = 1,
+                FlowSwitchId = (int)FlowSwitches.FlowSwitch1,
                 Value = true
             });
             await _mediator.Send(flowSwitchesRequest, cancellation);
