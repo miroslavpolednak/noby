@@ -1,18 +1,11 @@
-﻿using __SA = DomainServices.SalesArrangementService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class CustomerChangeBuilder
     : BaseBuilder, ICreateSalesArrangementParametersBuilder
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public CustomerChangeBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-        : base(logger, request)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
     public async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage
@@ -31,17 +24,18 @@ internal sealed class CustomerChangeBuilder
             }
             else
                 _logger.LogInformation("DrawingBuilder: Account is empty");
-    
+
             // applicants
-            var customers = (await productService.GetCustomersOnProduct(_request.CaseId, cancellationToken))
-                .Customers
-                .Where(t => t.RelationshipCustomerProductTypeId == 1 || t.RelationshipCustomerProductTypeId == 2);
-            
-            foreach (var customer in customers)
+            var customers = (await productService.GetCustomersOnProduct(_request.CaseId, cancellationToken)).Customers;
+            var applicants = customers.Where(t => _allowedCustomerRoles.Contains(t.RelationshipCustomerProductTypeId));
+            var loadedCustomers = new List<DomainServices.CustomerService.Contracts.CustomerDetailResponse>();
+
+            foreach (var customer in applicants)
             {
                 var identity = customer.CustomerIdentifiers.First();
                 var customerDetail = await customerService.GetCustomerDetail(identity, cancellationToken);
-                
+                loadedCustomers.Add(customerDetail);
+
                 _request.CustomerChange.Applicants.Add(new __SA.SalesArrangementParametersCustomerChange.Types.ApplicantObject
                 {
                     Identity = identity,
@@ -58,6 +52,24 @@ internal sealed class CustomerChangeBuilder
                     }
                 });
             }
+
+            // agent
+            var agent = customers.FirstOrDefault(t => t.Agent ?? false)?.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+            if (agent is not null)
+            {
+                var agentCustomer = loadedCustomers.FirstOrDefault(t
+                    => t.Identities
+                        .Any(t => t.IdentityScheme == agent.IdentityScheme && t.IdentityId == agent.IdentityId));
+                if (agentCustomer is null)
+                {
+                    agentCustomer = await customerService.GetCustomerDetail(agent, cancellationToken);
+                }
+
+                _request.CustomerChange.Agent = new()
+                {
+                    ActualAgent = $"{agentCustomer.NaturalPerson.FirstName} {agentCustomer.NaturalPerson.LastName}"
+                };
+            }
         }
         catch
         {
@@ -65,5 +77,15 @@ internal sealed class CustomerChangeBuilder
         }
 
         return _request;
+    }
+
+    private static int[] _allowedCustomerRoles = new[] { 1, 2 };
+
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public CustomerChangeBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
+        : base(logger, request)
+    {
+        _httpContextAccessor = httpContextAccessor;
     }
 }

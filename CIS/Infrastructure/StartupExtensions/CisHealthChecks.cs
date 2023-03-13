@@ -8,7 +8,8 @@ public static class CisHealthChecks
         var section = builder.Configuration.GetSection("ConnectionStrings")?.GetChildren();
         if (section != null)
         {
-            foreach (var cs in section.Where(t => !string.IsNullOrEmpty(t.Value)))
+            var elements = section.Where(t => !string.IsNullOrEmpty(t.Value)).ToArray();
+            foreach (var cs in elements)
                 hc.AddSqlServer(cs.Value!, name: cs.Key);
         }
 
