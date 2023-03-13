@@ -13,8 +13,6 @@ using KB.Speed.MassTransit.Kafka;
 using KB.Speed.MassTransit.Tracing;
 using KB.Speed.Messaging.Kafka.DependencyInjection;
 using KB.Speed.Tracing.Extensions;
-using KB.Speed.Tracing.Instrumentations.AspNetCore;
-using KB.Speed.Tracing.Instrumentations.HttpClient;
 using MassTransit;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Messaging;

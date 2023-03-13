@@ -10,6 +10,7 @@ import "Parameters/SalesArrangementParametersHUBN.proto";
 import "Parameters/SalesArrangementParametersMortgage.proto";
 import "Parameters/SalesArrangementParametersDrawing.proto";
 import "Parameters/SalesArrangementParametersGeneralChange.proto";
+import "Parameters/SalesArrangementParametersCustomerChange.proto";
 
 message SalesArrangement {
 	int32 SalesArrangementId = 1;
@@ -59,5 +60,6 @@ message SalesArrangement {
 		DomainServices.SalesArrangementService.SalesArrangementParametersDrawing Drawing = 31;
 		SalesArrangementParametersGeneralChange GeneralChange = 32;
 		SalesArrangementParametersHUBN HUBN = 33;
+		SalesArrangementParametersCustomerChange CustomerChange = 34;
     }
 }

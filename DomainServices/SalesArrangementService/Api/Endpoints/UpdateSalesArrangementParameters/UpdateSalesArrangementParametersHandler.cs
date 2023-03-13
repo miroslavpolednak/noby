@@ -40,7 +40,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
             };
             _dbContext.SalesArrangementsParameters.Add(entity);
         }
-        else if (entity.SalesArrangementParametersType == Database.Entities.SalesArrangementParametersTypes.Drawing)
+        else if (entity.SalesArrangementParametersType == SalesArrangementTypes.Drawing)
         {
             //Pokud se SA nezakládá (parameters v DB = null), tak validuj účet pro čerpání
             ValidateDrawingRepaymentAccount(request.Drawing, entity);
@@ -72,13 +72,14 @@ internal sealed class UpdateSalesArrangementParametersHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    static Database.Entities.SalesArrangementParametersTypes getParameterType(Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase datacase)
+    static SalesArrangementTypes getParameterType(Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase datacase)
         => datacase switch
         {
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => Database.Entities.SalesArrangementParametersTypes.Mortgage,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Drawing => Database.Entities.SalesArrangementParametersTypes.Drawing,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => Database.Entities.SalesArrangementParametersTypes.GeneralChange,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => Database.Entities.SalesArrangementParametersTypes.HUBN,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => SalesArrangementTypes.Mortgage,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Drawing => SalesArrangementTypes.Drawing,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => SalesArrangementTypes.GeneralChange,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => SalesArrangementTypes.HUBN,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange => SalesArrangementTypes.CustomerChange,
             _ => throw new NotImplementedException($"UpdateSalesArrangementParametersRequest.DataOneofCase {datacase} is not implemented")
         };
 
@@ -89,6 +90,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Drawing => request.Drawing,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => request.GeneralChange,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => request.HUBN,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange => request.CustomerChange,
             _ => null
         };
 

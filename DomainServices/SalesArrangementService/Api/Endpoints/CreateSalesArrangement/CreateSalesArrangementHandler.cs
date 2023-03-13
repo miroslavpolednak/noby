@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using CIS.Foms.Types.Enums;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.CreateSalesArrangement;
 
@@ -36,7 +37,7 @@ internal sealed class CreateSalesArrangementHandler
         if (request.DataCase != CreateSalesArrangementRequest.DataOneofCase.None)
         {
             // validace
-            validateDataCase(request.DataCase, request.SalesArrangementTypeId);
+            validateDataCase(request.DataCase, (SalesArrangementTypes)request.SalesArrangementTypeId);
 
             var data = new UpdateSalesArrangementParametersRequest()
             {
@@ -55,6 +56,9 @@ internal sealed class CreateSalesArrangementHandler
                     break;
                 case CreateSalesArrangementRequest.DataOneofCase.HUBN:
                     data.HUBN = request.HUBN;
+                    break;
+                case CreateSalesArrangementRequest.DataOneofCase.CustomerChange:
+                    data.CustomerChange = request.CustomerChange;
                     break;
             }
             var updateMediatrRequest = new UpdateSalesArrangementParametersRequest(data);
@@ -77,13 +81,14 @@ internal sealed class CreateSalesArrangementHandler
         return new CreateSalesArrangementResponse { SalesArrangementId = salesArrangementId };
     }
 
-    static bool validateDataCase(CreateSalesArrangementRequest.DataOneofCase dataCase, int salesArrangementTypeId)
+    static bool validateDataCase(CreateSalesArrangementRequest.DataOneofCase dataCase, SalesArrangementTypes salesArrangementTypeId)
         => salesArrangementTypeId switch
         {
-            >= 1 and <= 5 when dataCase == CreateSalesArrangementRequest.DataOneofCase.Mortgage => true,
-            6 when dataCase == CreateSalesArrangementRequest.DataOneofCase.Drawing => true,
-            7 when dataCase == CreateSalesArrangementRequest.DataOneofCase.GeneralChange => true,
-            8 when dataCase == CreateSalesArrangementRequest.DataOneofCase.HUBN => true,
+            SalesArrangementTypes.Mortgage when dataCase == CreateSalesArrangementRequest.DataOneofCase.Mortgage => true,
+            SalesArrangementTypes.Drawing when dataCase == CreateSalesArrangementRequest.DataOneofCase.Drawing => true,
+            SalesArrangementTypes.GeneralChange when dataCase == CreateSalesArrangementRequest.DataOneofCase.GeneralChange => true,
+            SalesArrangementTypes.HUBN when dataCase == CreateSalesArrangementRequest.DataOneofCase.HUBN => true,
+            SalesArrangementTypes.CustomerChange when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange => true,
             _ => throw new CisValidationException(0, $"CreateSalesArrangementRequest.DataOneofCase is not valid for SalesArrangementTypeId={salesArrangementTypeId}")
         };
 

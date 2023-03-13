@@ -4,8 +4,6 @@ namespace NOBY.Api.Endpoints.Customer.Create;
 
 public sealed class CreateResponse
 {
-    public string ResponseCode { get; set; } = string.Empty;
-
     /// <summary>
     /// Vstupní data se liší od dat z KB CM
     /// </summary>

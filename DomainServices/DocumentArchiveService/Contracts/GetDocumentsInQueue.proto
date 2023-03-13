@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentArchiveService.GetDocumentsInQueue;
+option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message GetDocumentsInQueueRequest {
+
+	repeated string EArchivIds = 1;
+}
+
+message GetDocumentsInQueueResponse{
+	
+	repeated QueuedDocument QueuedDocuments = 1;
+}
+
+message QueuedDocument {
+	
+	string EArchivId = 1;
+	
+	string Filename = 2;
+
+	 // Status dokumentu (100 - k přenosu, 300 chyba přenosu, 400 - úspěšně přeneseno)
+    int32 Status = 3;
+
+	string FormId = 15;
+}

@@ -6,6 +6,7 @@ import "Parameters/SalesArrangementParametersMortgage.proto";
 import "Parameters/SalesArrangementParametersDrawing.proto";
 import "Parameters/SalesArrangementParametersGeneralChange.proto";
 import "Parameters/SalesArrangementParametersHUBN.proto";
+import "Parameters/SalesArrangementParametersCustomerChange.proto";
 
 message UpdateSalesArrangementParametersRequest {
 	int32 SalesArrangementId = 1;
@@ -15,5 +16,6 @@ message UpdateSalesArrangementParametersRequest {
 		DomainServices.SalesArrangementService.SalesArrangementParametersDrawing Drawing = 21;
 		SalesArrangementParametersGeneralChange GeneralChange = 22;
 		SalesArrangementParametersHUBN HUBN = 23;
+		SalesArrangementParametersCustomerChange CustomerChange = 24;
     }
 }

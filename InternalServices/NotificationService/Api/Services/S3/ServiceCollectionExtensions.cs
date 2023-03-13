@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
         var s3Configuration = builder.GetS3Configuration();
         
         builder.Services
-            .AddScoped<IAmazonS3, AmazonS3Client>(provider =>
+            .AddScoped<IAmazonS3, AmazonS3Client>(_ =>
             {
                 var config = new AmazonS3Config
                 {

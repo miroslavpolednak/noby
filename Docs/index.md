@@ -19,6 +19,8 @@
 
 [Jak funguje ServiceDiscovery](./topics/service-discovery.md)
 
+[Registrace periodických jobů a popis funkčnosti](./topics/background-service-job.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

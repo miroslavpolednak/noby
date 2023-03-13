@@ -5,11 +5,12 @@ using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using ExternalServices.Eas.V1;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocumentManually;
 
-public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest>
+public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest, Empty>
 {
     private const string ManualSigningMethodCode = "PHYSICAL";
     /// <summary>
@@ -37,7 +38,7 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         _easClient = easClient;
     }
 
-    public async Task Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
+    public async Task<Empty> Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
     {
         var documentOnSa = await _dbContext.DocumentOnSa.FirstOrDefaultAsync(r => r.DocumentOnSAId == request.DocumentOnSAId!.Value, cancellationToken);
 
@@ -56,6 +57,8 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         await AddSignatureIfNotSetYet(documentOnSa, cancellationToken);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return new Empty();
     }
 
     private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
