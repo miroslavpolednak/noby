@@ -3,7 +3,7 @@
 /// <summary>
 /// Chyba validace názvu prostředí - vyvoláno z konstruktoru value type EnvironmentName
 /// </summary>
-public sealed class CisInvalidEnvironmentNameException 
+public sealed class CisInvalidEnvironmentNameException
     : BaseCisException
 {
     /// <param name="name">Název prostředí</param>

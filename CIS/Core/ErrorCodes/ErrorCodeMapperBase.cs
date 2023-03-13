@@ -40,6 +40,11 @@ public abstract class ErrorCodeMapperBase
         return new CisNotFoundException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
+    public static CisAlreadyExistsException CreateAlreadyExistsException(int exceptionCode, object? parameter = null)
+    {
+        return new CisAlreadyExistsException(exceptionCode, GetMessage(exceptionCode, parameter));
+    }
+
     /// <summary>
     /// Vytvoří vyjímku typu ValidationFound s textem pro daný ExceptionCode.
     /// </summary>
