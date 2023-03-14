@@ -12,7 +12,7 @@ PRAGMA integrity_check;
 -- SET foreign keys To OFF
 PRAGMA foreign_keys = OFF;
 
-CREATE TABLE TestData (TimeCreated TEXT, RecordOrder INTEGER, RecordSource TEXT, RecordData TEXT, PRIMARY KEY (TimeCreated, RecordOrder, RecordSource));
+CREATE TABLE TestData (RecordSource INTEGER, RecordOrder INTEGER, RecordEnvironments INTEGER, TimeCreated TEXT, RecordData TEXT, PRIMARY KEY (RecordSource, RecordOrder));
 
 -- SET foreign keys To ON
 PRAGMA foreign_keys = ON;

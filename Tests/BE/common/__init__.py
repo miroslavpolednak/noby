@@ -8,6 +8,7 @@ from .mssql.DbManager import DbManager as MsSqlDbManager
 
 from .sqlite.DbManager import DbManager as SqliteDbManager
 
+from .enums.EEnvironment import EEnvironment
 from .enums.EService import EService
 from .enums.EServiceType import EServiceType
 

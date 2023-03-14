@@ -6,12 +6,15 @@ import _setup
 
 from typing import List
 
+from common import config, EEnvironment
 from tests.tuning.OptionsResolver import OptionsResolver
 from tests.tuning.data import load_json, save_json, clean_folder, EInputOutput
 
 from E2E import ApiProcessor, ApiReaderOffer, ApiReaderCase
 from DATA.TestDataProvider import TestDataProvider
 # TestDataProvider.reset()
+# TestDataProvider.import_custom(['dev_fat'], EEnvironment.DEV | EEnvironment.FAT)
+
 
 offer_case_json: dict = load_json('case.json', EInputOutput.Input)
 
