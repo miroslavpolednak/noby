@@ -2422,6 +2422,21 @@
             )
             </remarks>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.IsVisible">
+            <summary>
+            Je sekce skrytá?
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.IsActive">
+            <summary>
+            Je sekce aktivní/neaktivní (lze prokliknout)?
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.IsCompleted">
+            <summary>
+            Je v sekci vše splněné?
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.AssessmentReason.Code">
             <summary>
             Kód důvodu

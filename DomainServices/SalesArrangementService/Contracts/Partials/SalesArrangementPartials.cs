@@ -51,3 +51,11 @@ public partial class DeleteSalesArrangementRequest
 public partial class UpdateOfferDocumentIdRequest
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
 { }
+
+public partial class GetFlowSwitchesRequest
+    : MediatR.IRequest<GetFlowSwitchesResponse>, CIS.Core.Validation.IValidatableRequest
+{ }
+
+public partial class SetFlowSwitchesRequest
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
+{ }

@@ -1,6 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Api.Services;
-using Newtonsoft.Json.Linq;
-using System.Collections.Immutable;
+﻿using Newtonsoft.Json.Linq;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using static DomainServices.SalesArrangementService.Api.Services.ValidationTransformationCache;
@@ -137,9 +135,9 @@ internal sealed partial class ValidationTransformationServiceFactory
 
         // instance props
         private JObject? _jsonFormData;
-        private readonly ImmutableDictionary<string, TransformationItem> _transformationMatrix;
+        private readonly IReadOnlyDictionary<string, TransformationItem> _transformationMatrix;
 
-        public ValidationTransformationService(ImmutableDictionary<string, TransformationItem> transformationMatrix)
+        public ValidationTransformationService(IReadOnlyDictionary<string, TransformationItem> transformationMatrix)
         {
             _transformationMatrix = transformationMatrix;
         }

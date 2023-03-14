@@ -47,6 +47,13 @@ internal sealed class SendToCmpHandler
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
+        // check flow switches
+        var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
+        if (!flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.FlowSwitch1))
+        {
+            throw new NobyValidationException(90016);
+        }
+
         await ValidateSalesArrangement(saInstance.SalesArrangementId, request.IgnoreWarnings, cancellationToken);
 
         var customersData = await LoadCustomersData(saInstance.SalesArrangementId, saInstance.CaseId, cancellationToken);

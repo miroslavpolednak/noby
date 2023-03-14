@@ -3,6 +3,8 @@ using System.Text.Json.Serialization;
 using NOBY.Infrastructure.Security;
 using ExternalServices.AddressWhisperer.V1;
 using NOBY.Infrastructure.ErrorHandling.Internals;
+using CIS.Infrastructure.StartupExtensions;
+using NOBY.Infrastructure.Services;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -42,6 +44,9 @@ internal static class NobyServices
                 options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
 
             });
+
+        // flow switches
+        builder.Services.AddFlowSwitches(builder.Configuration.GetConnectionString("default")!);
 
         // add sql distributed cache
         //TODO replace with Redis?
