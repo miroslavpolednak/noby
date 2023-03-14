@@ -44,13 +44,28 @@ internal sealed class GetMortgageHandler
             .Where(t => t.UverId == loan.Id)
             .Select(t => new LoanRealEstate
             {
-                IsCollateral = true,
                 RealEstatePurchaseTypeId = t.UcelKod,
                 RealEstateTypeId = t.NemovitostId
             })
             .ToList();
+
         if (realEstates is not null && realEstates.Any())
         {
+            // zjistit zajisteni
+            var collateral = await _dbContext.Collaterals
+                .AsNoTracking()
+                .Where(t => t.UverId == loan.Id)
+                .Select(t => new { t.NemovitostId })
+                .ToListAsync(cancellation);
+            collateral.ForEach(t =>
+            {
+                var n = realEstates.FirstOrDefault(x => x.RealEstateTypeId == t.NemovitostId);
+                if (n is not null)
+                {
+                    n.IsCollateral = true;
+                }
+            });
+
             mortgage.LoanRealEstates.AddRange(realEstates);
         }
 
