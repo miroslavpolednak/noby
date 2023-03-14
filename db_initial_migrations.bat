@@ -10,7 +10,7 @@
 
 .\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=CIS;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\DatabaseMigrations"
 
-.\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=DocumentGeneratorService;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\DocumentGeneratorService\DatabaseMigrations"
+.\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=DataAggregatorService;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\DataAggregatorService\DatabaseMigrations"
 
 .\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=NotificationService;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\NotificationService\DatabaseMigrations"
 
