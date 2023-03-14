@@ -341,7 +341,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{6D676B53-6AD7-4828-922D-B52A42B5AD4F}"
 	ProjectSection(SolutionItems) = preProject
-		InternalServices\NotificationService\DatabaseMigrations\20221222163946_Initial.sql = InternalServices\NotificationService\DatabaseMigrations\20221222163946_Initial.sql
+		InternalServices\NotificationService\DatabaseMigrations\00001-initial_creation.sql = InternalServices\NotificationService\DatabaseMigrations\00001-initial_creation.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D5315192-5730-455C-B586-D964F840F401}"
