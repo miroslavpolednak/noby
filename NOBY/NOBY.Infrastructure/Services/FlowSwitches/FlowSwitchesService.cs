@@ -38,7 +38,18 @@ internal sealed class FlowSwitchesService
         {
             return groupSwitches is null || groupSwitches.Count == 0
                 ? groupDefaultValue
-                : groupSwitches.All(t => flowSwitchesOnSA.Any(x => x.FlowSwitchId == t.Key && x.Value == t.Value));
+                : groupSwitches.All(t =>
+                {
+                    var f = flowSwitchesOnSA.FirstOrDefault(x => x.FlowSwitchId == t.Key);
+                    if (f is not null)
+                    {
+                        return f.Value == t.Value;
+                    }
+                    else
+                    {
+                        return _flowSwitchesCache.FlowSwitches.First(x => x.FlowSwitchId == t.Key).DefaultValue == t.Value;
+                    }
+                });
         }
     }
 
