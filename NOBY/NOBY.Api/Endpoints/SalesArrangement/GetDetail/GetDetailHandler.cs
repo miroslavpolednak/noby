@@ -80,6 +80,7 @@ internal sealed class GetDetailHandler
             _SA.SalesArrangement.ParametersOneofCase.Drawing => saInstance.Drawing.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.GeneralChange => saInstance.GeneralChange.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.HUBN => saInstance.HUBN.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange => saInstance.CustomerChange.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.None => null,
             _ => throw new NotImplementedException($"getParameters for {saInstance.ParametersCase} not implemented")
         };

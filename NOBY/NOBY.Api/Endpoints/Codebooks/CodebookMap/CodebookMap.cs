@@ -34,6 +34,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.AcademicDegreesBefore(ct));
         AddCodebook((s, ct) => s.ActionCodesSavings(ct));
         AddCodebook((s, ct) => s.ActionCodesSavingsLoan(ct));
+        AddCodebook((s, ct) => s.AddressTypes(ct));
         AddCodebook((s, ct) => s.BankCodes(ct));
         AddCodebook((s, ct) => s.CaseStates(ct));
         AddCodebook((s, ct) => s.ClassificationOfEconomicActivities(ct));

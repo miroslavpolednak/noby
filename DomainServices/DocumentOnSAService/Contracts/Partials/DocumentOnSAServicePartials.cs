@@ -14,3 +14,4 @@ public partial class GetDocumentOnSADataRequest : IRequest<GetDocumentOnSADataRe
 
 public partial class SignDocumentManuallyRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
 
+public partial class GetDocumentsOnSAListRequest :IRequest<GetDocumentsOnSAListResponse>, CIS.Core.Validation.IValidatableRequest { }
