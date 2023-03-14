@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
-using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
 using Codebook = DomainServices.CodebookService.Contracts.Endpoints;
 
