@@ -61,7 +61,7 @@ internal class CustomerManagementDetailProvider
 
         AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.ComponentAddress, customer.PrimaryAddress?.PrimaryAddressFrom);
         AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.ComponentAddress, default);
-        AddAddress(AddressTypes.Abroad, response.Addresses.Add, customer.TemporaryStay?.ComponentAddress, default);
+        AddAddress(AddressTypes.Other, response.Addresses.Add, customer.TemporaryStay?.ComponentAddress, default);
 
         AddContacts(customer, response.Contacts.Add);
 
