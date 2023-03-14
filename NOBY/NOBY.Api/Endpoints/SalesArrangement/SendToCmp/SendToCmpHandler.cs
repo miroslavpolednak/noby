@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using CIS.Foms.Types.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
@@ -48,7 +49,11 @@ internal sealed class SendToCmpHandler
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         // check flow switches
-        await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
+        var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
+        if (!flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.FlowSwitch1))
+        {
+            throw new NobyValidationException();
+        }
 
         await ValidateSalesArrangement(saInstance.SalesArrangementId, request.IgnoreWarnings, cancellationToken);
 
