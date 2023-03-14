@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS dbo.[MigrationHistory]
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SalesArrangement]') AND type in (N'U'))
 	ALTER TABLE [dbo].[SalesArrangement] SET ( SYSTEM_VERSIONING = OFF)
 GO
