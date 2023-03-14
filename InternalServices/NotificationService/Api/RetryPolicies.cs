@@ -8,5 +8,5 @@ public static class RetryPolicies
 
     public static readonly AsyncPolicy ForeverRetryPolicy = Policy
         .Handle<Exception>()
-        .WaitAndRetryForeverAsync(i => _period);
+        .WaitAndRetryForeverAsync(_ => _period);
 }

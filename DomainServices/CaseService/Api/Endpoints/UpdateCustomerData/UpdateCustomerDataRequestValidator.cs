@@ -10,10 +10,10 @@ internal sealed class UpdateCustomerDataRequestValidator
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
-            .WithMessage("CaseId must be > 0").WithErrorCode("13016");
+            .WithErrorCode(ErrorCodeMapper.CaseIdIsEmpty);
 
         RuleFor(t => t.Customer.Name)
             .NotEmpty()
-            .WithMessage("Customer Name must not be empty").WithErrorCode("13012");
+            .WithErrorCode(ErrorCodeMapper.CustomerNameIsEmpty);
     }
 }

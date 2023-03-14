@@ -1,5 +1,5 @@
-﻿using Google.Protobuf;
-using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
+using Google.Protobuf;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncome;
 
@@ -40,14 +40,14 @@ internal sealed class UpdateIncomeHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    static bool? getProofOfIncomeToggle(UpdateIncomeRequest request, CustomerIncomeTypes typeId)
+    private static bool? getProofOfIncomeToggle(UpdateIncomeRequest request, CustomerIncomeTypes typeId)
         => typeId switch
         {
             CustomerIncomeTypes.Employement => request.Employement?.HasProofOfIncome,
             _ => default
         };
 
-    async Task<string?> getIncomeSource(UpdateIncomeRequest request, CustomerIncomeTypes typeId, CancellationToken cancellationToken)
+    private async Task<string?> getIncomeSource(UpdateIncomeRequest request, CustomerIncomeTypes typeId, CancellationToken cancellationToken)
         => typeId switch
         {
             CustomerIncomeTypes.Employement => string.IsNullOrEmpty(request.Employement?.Employer.Name) ? "-" : request.Employement?.Employer.Name,
@@ -57,10 +57,10 @@ internal sealed class UpdateIncomeHandler
             _ => throw new NotImplementedException("This customer income type serializer for getIncomeSource is not implemented")
         };
 
-    async Task<string?> getOtherIncomeName(int? id, CancellationToken cancellationToken)
+    private async Task<string?> getOtherIncomeName(int? id, CancellationToken cancellationToken)
         => id.HasValue ? (await _codebookService.IncomeOtherTypes(cancellationToken)).FirstOrDefault(t => t.Id == id)?.Name : "-";
 
-    static IMessage getDataObject(CustomerIncomeTypes incomeType, UpdateIncomeRequest request)
+    private static IMessage getDataObject(CustomerIncomeTypes incomeType, UpdateIncomeRequest request)
         => incomeType switch
         {
             CustomerIncomeTypes.Employement => request.Employement,

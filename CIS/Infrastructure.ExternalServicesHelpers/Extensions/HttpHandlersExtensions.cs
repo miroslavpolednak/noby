@@ -13,8 +13,8 @@ public static class HttpHandlersExtensions
     /// Prida do kazdeho requestu HttpClienta hlavicky vyzadovane v KB.
     /// </summary>
     /// <param name="appComponent">Hodnota appComp v hlavičce X-KB-Caller-System-Identity. Pokud není vyplněno, je nastavena na "NOBY".</param>
-    public static IHttpClientBuilder AddExternalServicesKbHeaders(this IHttpClientBuilder builder, string? appComponent = null)
-        => builder.AddHttpMessageHandler(b => new HttpHandlers.KbHeadersHttpHandler(appComponent));
+    public static IHttpClientBuilder AddExternalServicesKbHeaders(this IHttpClientBuilder builder, string? appComponent = null, string? appComponentOriginator = null)
+        => builder.AddHttpMessageHandler(b => new HttpHandlers.KbHeadersHttpHandler(appComponent, appComponentOriginator));
 
     /// <summary>
     /// Prida do kazdeho requestu HttpClienta hlavicku s aktualnim uzivatelem vyzadovanou v KB.

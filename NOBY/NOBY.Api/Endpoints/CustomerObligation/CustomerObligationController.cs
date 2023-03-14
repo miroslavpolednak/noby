@@ -54,7 +54,7 @@ public class CustomerObligationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int obligationId, [FromBody] UpdateObligation.UpdateObligationRequest? request)
-        => await _mediator.Send(request?.InfuseId(customerOnSAId, obligationId) ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
+        => await _mediator.Send(request?.InfuseId(customerOnSAId, obligationId) ?? throw new NobyValidationException("Payload is empty"));
 
     /// <summary>
     /// Vytvoření závazku customera
@@ -69,7 +69,7 @@ public class CustomerObligationController : ControllerBase
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<int> Create([FromRoute] int customerOnSAId, [FromBody] CreateObligation.CreateObligationRequest? request)
-        => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
+        => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new NobyValidationException("Payload is empty"));
 
     private readonly IMediator _mediator;
     public CustomerObligationController(IMediator mediator) => _mediator = mediator;

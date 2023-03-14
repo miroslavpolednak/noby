@@ -1,5 +1,5 @@
 # Validace requestů gRPC služeb
-FluentValidation je napojena pomocí *MediatR.IPipelineBehavior* (`CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour`).
+**FluentValidation** je napojena pomocí *MediatR.IPipelineBehavior* (`CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour`).
 Pipeline validuje všechny *MediatR* requesty, které implementují marker interface `CIS.Core.Validation.IValidatableRequest`.
 Ve chvíli, kdy FluentValidation vrátí chybu/y, pipeline vyvolá vyjímku `CisValidationException` obsahující seznam chyb z FluentValidation.
 

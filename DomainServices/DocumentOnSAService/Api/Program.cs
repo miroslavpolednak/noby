@@ -63,8 +63,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
 
-app.UseCisLogging();
-
 //Dont know correct connection
 app.UseServiceDiscovery();
 

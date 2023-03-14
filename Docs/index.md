@@ -9,7 +9,7 @@
 
 [Konfigurace služeb / aplikací](./topics/configuration.md)
 
-[Validace requestu a byznys logiky](./topics/validation.md)
+[Validace HTTP requestu a error handling](./topics/validation.md)
 
 [Autentizace FE a doménových služeb](./topics/authentication.md)
 
@@ -19,7 +19,7 @@
 
 [Jak funguje ServiceDiscovery](./topics/service-discovery.md)
 
-[Error handling na FE API](./topics/feapi-error-handling.md)
+[Registrace periodických jobů a popis funkčnosti](./topics/background-service-job.md)
 
 ## Struktura solution - projekty a adresáře
 

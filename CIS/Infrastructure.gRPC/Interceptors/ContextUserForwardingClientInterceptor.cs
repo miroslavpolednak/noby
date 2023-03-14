@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace CIS.Infrastructure.gRPC;
 
 /// <summary>
-/// Client Interceptor který automaticky přidává hlavičku "mp-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
+/// Client Interceptor který automaticky přidává hlavičku "noby-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
 /// </summary>
 /// <remarks>
 /// TODO toto neni uplne pekna implementace, ale neprisel jsem na jiny zpusob jak v grpc pipeline vyklepat scoped instanci ICurrentUserAccessor a vrazit ji do headeru
@@ -27,15 +27,23 @@ public sealed class ContextUserForwardingClientInterceptor
     {
         using (var serviceScope = _serviceProvider.CreateScope())
         {
-            var serviceProvider = serviceScope.ServiceProvider;
-            var userAccessor = serviceProvider.GetService<Core.Security.ICurrentUserAccessor>();
+            var userAccessor = serviceScope.ServiceProvider.GetService<Core.Security.ICurrentUserAccessor>();
+
             if (userAccessor?.IsAuthenticated ?? false)
             {
                 Metadata metadata = new();
                 if (context.Options.Headers is not null && context.Options.Headers.Any())
                     foreach (var m in context.Options.Headers)
                         metadata.Add(m);
-                metadata.Add(Core.Security.Constants.ContextUserHttpHeaderKey, userAccessor!.User!.Id.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                
+                // ID prihlaseneho uzivatele
+                metadata.Add(Core.Security.SecurityConstants.ContextUserHttpHeaderUserIdKey, userAccessor!.User!.Id.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                
+                // login prihlaseneho uzivatele
+                if (!string.IsNullOrEmpty(userAccessor.User.Login))
+                {
+                    metadata.Add(Core.Security.SecurityConstants.ContextUserHttpHeaderUserIdentKey, userAccessor.User.Login);
+                }
 
                 var newOptions = context.Options.WithHeaders(metadata);
                 var newContext = new ClientInterceptorContext<TRequest, TResponse>(context.Method, context.Host, newOptions);

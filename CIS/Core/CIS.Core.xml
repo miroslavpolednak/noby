@@ -204,7 +204,7 @@
         </member>
         <member name="T:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes">
             <summary>
-            Možné způsoby 
+            Možné způsoby
             </summary>
         </member>
         <member name="F:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes.FileSystem">
@@ -581,7 +581,7 @@
             Validační chyba.
             </summary>
             <remarks>
-            Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation. 
+            Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation.
             Může také ošetřovat stavy místo ArgumentException nebo ArgumentNullException a podobně.
             </remarks>
         </member>
@@ -766,14 +766,24 @@
             Interfaces pro získání informací o přihlášeném uživatel a technickém uživateli služby.
             </summary>
         </member>
-        <member name="T:CIS.Core.Security.Constants">
+        <member name="T:CIS.Core.Security.SecurityConstants">
             <summary>
             Konstanty pro nastavení auth providerů atd.
             </summary>
         </member>
-        <member name="F:CIS.Core.Security.Constants.ContextUserHttpHeaderKey">
+        <member name="F:CIS.Core.Security.SecurityConstants.ContextUserHttpHeaderUserIdKey">
             <summary>
             Klíč pro HTTP hlavičku s informací o v33id aktuálně přihlášeného uživatele.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Security.SecurityConstants.ContextUserHttpHeaderUserIdentKey">
+            <summary>
+            Klíč pro HTTP hlavičku s informací o loginu (CAAS) aktuálně přihlášeného uživatele.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Security.SecurityConstants.ClaimTypeIdent">
+            <summary>
+            Type claimu, který obsahuje login (CAAS login) přihlášeného uživatele
             </summary>
         </member>
         <member name="T:CIS.Core.Security.ICurrentUser">
@@ -784,6 +794,16 @@
         <member name="P:CIS.Core.Security.ICurrentUser.Id">
             <summary>
             v33id
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUser.Login">
+            <summary>
+            Login uzivatele
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUser.DisplayName">
+            <summary>
+            Jmeno a prijmeni uzivatele
             </summary>
         </member>
         <member name="T:CIS.Core.Security.ICurrentUserAccessor">

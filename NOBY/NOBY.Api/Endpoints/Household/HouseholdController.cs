@@ -74,7 +74,7 @@ public class HouseholdController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(Dto.HouseholdInList), StatusCodes.Status200OK)]
     public async Task<Dto.HouseholdInList> Create([FromBody] CreateHousehold.CreateHouseholdRequest? request)
-        => await _mediator.Send(request ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
+        => await _mediator.Send(request ?? throw new NobyValidationException("Payload is empty"));
 
     /// <summary>
     /// Update existující domácnosti
@@ -89,7 +89,7 @@ public class HouseholdController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task Update([FromRoute] int householdId, [FromBody] UpdateHousehold.UpdateHouseholdRequest? request)
-        => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
+        => await _mediator.Send(request?.InfuseId(householdId) ?? throw new NobyValidationException("Payload is empty"));
 
     /// <summary>
     /// Update customeru na domácnosti
@@ -109,7 +109,7 @@ public class HouseholdController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<UpdateCustomers.UpdateCustomersResponse> UpdateCustomers([FromRoute] int householdId, [FromBody] UpdateCustomers.UpdateCustomersRequest? request)
-        => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
+        => await _mediator.Send(request?.InfuseId(householdId) ?? throw new NobyValidationException("Payload is empty"));
 
     private readonly IMediator _mediator;
     public HouseholdController(IMediator mediator) =>  _mediator = mediator;

@@ -172,14 +172,17 @@ public class MpDigiClient
         if (document is null)
             return;
 
-        request.IdentificationDocuments.Add(new IdentificationDocument
+        request.IdentificationDocuments = new List<IdentificationDocument>()
         {
-            Number = document.Number,
-            Type = FastEnum.Parse<IdentificationCardType>(_docTypes.First(d => d.Id == document.IdentificationDocumentTypeId).MpDigiApiCode),
-            ValidTo = document.ValidTo,
-            IssuedBy = document.IssuedBy,
-            IssuedOn = document.IssuedOn,
-            IssuingCountry = _countries.FirstOrDefault(c => c.Id == document.IssuingCountryId)?.ShortName
-        });
+            new IdentificationDocument
+            {
+                Number = document.Number,
+                Type = FastEnum.Parse<IdentificationCardType>(_docTypes.First(d => d.Id == document.IdentificationDocumentTypeId).MpDigiApiCode),
+                ValidTo = document.ValidTo,
+                IssuedBy = document.IssuedBy,
+                IssuedOn = document.IssuedOn,
+                IssuingCountry = _countries.FirstOrDefault(c => c.Id == document.IssuingCountryId)?.ShortName ?? ""
+            }
+        };
     }
 }

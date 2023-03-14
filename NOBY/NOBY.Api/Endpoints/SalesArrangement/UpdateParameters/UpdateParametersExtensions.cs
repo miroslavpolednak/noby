@@ -210,4 +210,70 @@ internal static class UpdateParametersExtensions
 
         return model;
     }
+
+    public static _SA.SalesArrangementParametersCustomerChange ToDomainService(this Dto.CustomerChangeUpdate parameters, _SA.SalesArrangementParametersCustomerChange? originalParameter)
+    {
+        var model = new _SA.SalesArrangementParametersCustomerChange()
+        {
+            Agent = new()
+            {
+                IsActive = parameters.Agent?.IsActive ?? false,
+                ActualAgent = originalParameter?.Agent?.ActualAgent ?? "",
+                NewAgent = parameters.Agent?.NewAgent ?? ""
+            },
+            RepaymentAccount = new()
+            {
+                IsActive = parameters.RepaymentAccount?.IsActive ?? false,
+                OwnerDateOfBirth = parameters.RepaymentAccount?.OwnerDateOfBirth,
+                OwnerFirstName = parameters.RepaymentAccount?.OwnerFirstName,
+                OwnerLastName = parameters.RepaymentAccount?.OwnerLastName,
+                BankCode = parameters.RepaymentAccount?.BankCode,
+                Number = parameters.RepaymentAccount?.Number,
+                Prefix = parameters.RepaymentAccount?.Prefix
+            },
+            CommentToChangeRequest = new()
+            {
+                IsActive = parameters.CommentToChangeRequest?.IsActive ?? false,
+                GeneralComment = parameters.CommentToChangeRequest?.GeneralComment ?? ""
+            }
+        };
+
+        if (parameters.Release is not null)
+        {
+            model.Release = new()
+            {
+                IsActive = parameters.Release.IsActive
+            };
+            if (parameters.Release.Customers is not null)
+                model.Release.Customers.AddRange(parameters.Release.Customers.Select(t => new _SA.SalesArrangementParametersCustomerChange.Types.ReleaseCustomerObject
+                {
+                    Identity = t.Identity ?? new CIS.Foms.Types.CustomerIdentity(),
+                    NaturalPerson = new()
+                    {
+                        FirstName = t.NaturalPerson?.FirstName ?? "",
+                        LastName = t.NaturalPerson?.LastName ?? "",
+                        DateOfBirth = t.NaturalPerson?.DateOfBirth
+                    }
+                }));
+        }
+
+        if (parameters.Add is not null)
+        {
+            model.Add = new()
+            {
+                IsActive = parameters.Add.IsActive
+            };
+            if (parameters.Add.Customers is not null)
+                model.Add.Customers.AddRange(parameters.Add.Customers.Select(t => new _SA.SalesArrangementParametersCustomerChange.Types.AddCustomerObject
+                {
+                    Name = t.Name ?? "",
+                    DateOfBirth = t.DateOfBirth
+                }));
+        }
+
+        if (originalParameter?.Applicants is not null)
+            model.Applicants.AddRange(originalParameter.Applicants);
+
+        return model;
+    }
 }

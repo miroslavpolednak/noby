@@ -19,7 +19,7 @@ internal sealed class HUBNValidator
 
         if (productInstance.Mortgage?.ContractSignedDate is null)
         {
-            throw new CisValidationException(90014, "productInstance.Mortgage?.ContractSignedDate is null");
+            throw new NobyValidationException(90014);
         }
 
         return new HUBNBuilder(_logger, _request, _httpContextAccessor);

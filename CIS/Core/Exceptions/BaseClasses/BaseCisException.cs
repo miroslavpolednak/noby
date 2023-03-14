@@ -5,7 +5,7 @@ namespace CIS.Core.Exceptions;
 /// <summary>
 /// Base třída pro CIS vyjímky. Obsahuje vlastnost ExceptionCode, která určuje o jakou vyjímku se jedná.
 /// </summary>
-public abstract class BaseCisException 
+public abstract class BaseCisException
     : Exception
 {
     /// <summary>

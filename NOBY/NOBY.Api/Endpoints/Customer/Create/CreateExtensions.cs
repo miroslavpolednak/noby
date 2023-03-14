@@ -90,13 +90,7 @@ internal static class CreateExtensions
 
         return model;
     }
-    
-    public static CreateResponse SetResponseCode(this CreateResponse response, bool createOk)
-    {
-        response.ResponseCode = createOk ? "KBCM_CREATED" : "KBCM_IDENTIFIED";
-        return response;
-    }
-    
+
     public static CreateResponse InputDataComparison(this CreateResponse response, CreateRequest originalRequest)
     {
         if (
