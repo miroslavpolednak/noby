@@ -9,6 +9,6 @@ internal sealed class NotifyStarbuildRequestValidator : AbstractValidator<LinkOw
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
-            .WithMessage("CaseId must be > 0").WithErrorCode("13016");
+            .WithErrorCode(ErrorCodeMapper.CaseIdIsEmpty);
     }
 }

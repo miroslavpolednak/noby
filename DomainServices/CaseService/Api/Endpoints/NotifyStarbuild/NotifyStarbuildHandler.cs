@@ -1,6 +1,6 @@
-﻿using DomainServices.CaseService.Api.Database;
-using DomainServices.CaseService.Api.Notifications.Handlers;
+﻿using DomainServices.CaseService.Api.Notifications.Handlers;
 using DomainServices.CaseService.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.CaseService.Api.Endpoints.NotifyStarbuild;
 
@@ -9,41 +9,48 @@ internal sealed class NotifyStarbuildHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(NotifyStarbuildRequest request, CancellationToken cancellationToken)
     {
-        /*var productType = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == notification.ProductTypeId);
-        var caseState = (await _codebookService.CaseStates(cancellationToken)).First(t => t.Id == notification.CaseStateId);
+        // instance Case
+        var caseInstance = await _dbContext
+            .Cases
+            .AsNoTracking()
+            .FirstOrDefaultAsync(t => t.CaseId == request.CaseId, cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
+
+        var productType = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == caseInstance.ProductTypeId);
+        var caseState = (await _codebookService.CaseStates(cancellationToken)).First(t => t.Id == caseInstance.State);
 
         // get current user's login
         var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 
         // get case owner
-        var ownerInstance = await _userService.GetUser(notification.CaseOwnerUserId, cancellationToken);
+        var ownerInstance = await _userService.GetUser(caseInstance.OwnerUserId, cancellationToken);
 
         // vytahnout povolena SATypeId pro tento ProductTypeId
         var allowedSaTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))
-            .Where(t => t.ProductTypeId == notification.ProductTypeId)
+            .Where(t => t.ProductTypeId == caseInstance.ProductTypeId)
             .Select(t => t.Id)
             .ToList();
 
         // get rbcid
-        var saList = await _salesArrangementService.GetSalesArrangementList(notification.CaseId, cancellationToken: cancellationToken);
+        var saList = await _salesArrangementService.GetSalesArrangementList(caseInstance.CaseId, cancellationToken: cancellationToken);
         string? rbcId = saList.SalesArrangements.FirstOrDefault(t => allowedSaTypeId.Contains(t.SalesArrangementTypeId))?.RiskBusinessCaseId;
 
         //TODO login
-        var request = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest
+        var sbRequest = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest
         {
             Login = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous",
-            CaseId = notification.CaseId,
-            ContractNumber = notification.ContractNumber,
-            ClientFullName = notification.ClientName ?? "",
+            CaseId = caseInstance.CaseId,
+            ContractNumber = caseInstance.ContractNumber,
+            ClientFullName = caseInstance.ClientName ?? "",
             CaseStateName = caseState.Name,
-            ProductTypeId = notification.ProductTypeId,
+            ProductTypeId = caseInstance.ProductTypeId,
             OwnerUserCpm = ownerInstance.CPM,
             OwnerUserIcp = ownerInstance.ICP,
             Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId.GetValueOrDefault(),
             RiskBusinessCaseId = rbcId,
-            IsEmployeeBonusRequested = notification.IsEmployeeBonusRequested
+            IsEmployeeBonusRequested = caseInstance.IsEmployeeBonusRequested
         };
-        var result = await _sbWebApiClient.CaseStateChanged(request, cancellationToken);
+        var result = await _sbWebApiClient.CaseStateChanged(sbRequest, cancellationToken);
 
         // ulozit request id
         if (result.RequestId.HasValue)
@@ -51,13 +58,13 @@ internal sealed class NotifyStarbuildHandler
             _dbContext.QueueRequestIds.Add(new Database.Entities.QueueRequestId
             {
                 RequestId = result.RequestId.Value,
-                CaseId = notification.CaseId,
+                CaseId = caseInstance.CaseId,
                 CreatedTime = DateTime.Now
             });
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             _logger.QueueRequestIdSaved(result.RequestId.Value, request.CaseId);
-        }*/
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
