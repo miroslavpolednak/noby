@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using CIS.Foms.Types.Enums;
+﻿using CIS.Foms.Enums;
 using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 using __Offer = DomainServices.OfferService.Contracts;

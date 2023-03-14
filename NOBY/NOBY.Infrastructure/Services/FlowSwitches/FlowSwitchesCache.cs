@@ -7,7 +7,7 @@ internal sealed class FlowSwitchesCache
     : IFlowSwitchesCache
 {
     public IReadOnlyCollection<FlowSwitchDefault> FlowSwitches { get; private set; }
-    public IReadOnlyCollection<FlowSwitchGroup> FlowSwitchesGroups { get; private set; }
+    public IReadOnlyCollection<FlowSwitchGroupDefault> FlowSwitchesGroups { get; private set; }
 
     public FlowSwitchesCache(string connectionString)
     {
@@ -17,7 +17,7 @@ internal sealed class FlowSwitchesCache
         var grid = connection.QueryMultiple(_sqlQuery);
 
         FlowSwitches = grid.Read<FlowSwitchDefault>().ToArray().AsReadOnly();
-        var groups = grid.Read<FlowSwitchGroup>().ToArray();
+        var groups = grid.Read<FlowSwitchGroupDefault>().ToArray();
         var bindings = grid.Read<dynamic>();
 
         foreach (var group in groups)

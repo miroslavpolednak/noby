@@ -4,5 +4,5 @@ public interface IFlowSwitchesService
 {
     List<FlowSwitch> GetDefaultSwitches();
 
-    void GetFlowSwitchesGroups(int SalesArrangementId);
+    Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA);
 }

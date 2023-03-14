@@ -1,5 +1,4 @@
 ﻿using CIS.Foms.Enums;
-using CIS.Foms.Types.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
