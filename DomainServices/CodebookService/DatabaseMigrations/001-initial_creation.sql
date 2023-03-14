@@ -1,217 +1,226 @@
+/****** Object:  Table [dbo].[WorkflowTaskTypeExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[WorkflowTaskTypeExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[WorkflowTaskTypeExtension]
+GO
+/****** Object:  Table [dbo].[WorkflowTaskStateExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[WorkflowTaskStateExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[WorkflowTaskStateExtension]
+GO
+/****** Object:  Table [dbo].[SmsNotificationType]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SmsNotificationType]') AND type in (N'U'))
+DROP TABLE [dbo].[SmsNotificationType]
+GO
+/****** Object:  Table [dbo].[SalesArrangementType]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SalesArrangementType]') AND type in (N'U'))
+DROP TABLE [dbo].[SalesArrangementType]
+GO
+/****** Object:  Table [dbo].[RiskApplicationType]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RiskApplicationType]') AND type in (N'U'))
+DROP TABLE [dbo].[RiskApplicationType]
+GO
+/****** Object:  Table [dbo].[RelationshipCustomerProductTypeExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RelationshipCustomerProductTypeExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[RelationshipCustomerProductTypeExtension]
+GO
+/****** Object:  Table [dbo].[ProfessionCategoryExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ProfessionCategoryExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[ProfessionCategoryExtension]
+GO
+/****** Object:  Table [dbo].[ProductTypeExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ProductTypeExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[ProductTypeExtension]
+GO
+/****** Object:  Table [dbo].[ObligationTypeExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ObligationTypeExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[ObligationTypeExtension]
+GO
+/****** Object:  Table [dbo].[NetMonthEarningsExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[NetMonthEarningsExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[NetMonthEarningsExtension]
+GO
+/****** Object:  Table [dbo].[MaritalStatusExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[MaritalStatusExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[MaritalStatusExtension]
+GO
+/****** Object:  Table [dbo].[IncomeMainTypesAMLExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[IncomeMainTypesAMLExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[IncomeMainTypesAMLExtension]
+GO
+/****** Object:  Table [dbo].[IdentificationDocumentTypeExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[IdentificationDocumentTypeExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[IdentificationDocumentTypeExtension]
+GO
+/****** Object:  Table [dbo].[ChannelExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ChannelExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[ChannelExtension]
+GO
+/****** Object:  Table [dbo].[EducationLevelExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EducationLevelExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[EducationLevelExtension]
+GO
+/****** Object:  Table [dbo].[EA_CIS_EACODEMAIN]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EA_CIS_EACODEMAIN]') AND type in (N'U'))
+DROP TABLE [dbo].[EA_CIS_EACODEMAIN]
+GO
+/****** Object:  Table [dbo].[DocumentTypes]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentTypes]') AND type in (N'U'))
+DROP TABLE [dbo].[DocumentTypes]
+GO
+/****** Object:  Table [dbo].[DocumentTemplateVersion]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentTemplateVersion]') AND type in (N'U'))
+DROP TABLE [dbo].[DocumentTemplateVersion]
+GO
+/****** Object:  Table [dbo].[DocumentTemplateVariant]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentTemplateVariant]') AND type in (N'U'))
+DROP TABLE [dbo].[DocumentTemplateVariant]
+GO
+/****** Object:  Table [dbo].[DocumentOnSAType]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentOnSAType]') AND type in (N'U'))
+DROP TABLE [dbo].[DocumentOnSAType]
+GO
+/****** Object:  Table [dbo].[ContactTypeExtension]    Script Date: 14.03.2023 10:54:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ContactTypeExtension]') AND type in (N'U'))
+DROP TABLE [dbo].[ContactTypeExtension]
+GO
+/****** Object:  Table [dbo].[ContactTypeExtension]    Script Date: 14.03.2023 10:54:30 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
--- table 'SalesArrangementType'
-DROP TABLE IF EXISTS [dbo].[SalesArrangementType];
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'SalesArrangementType')
-BEGIN
-	CREATE TABLE [dbo].[SalesArrangementType](
-		[Id] [int] NOT NULL,
-		[Name] [nvarchar](150) NOT NULL,
-		[ProductTypeId] [int] NULL,
-		[SalesArrangementCategory] [int] NOT NULL
-		CONSTRAINT [PK_SalesArrangementType] PRIMARY KEY CLUSTERED
-		(
-		[Id] ASC
-		)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY];
-
-	INSERT INTO [dbo].[SalesArrangementType]([Id],[Name],[ProductTypeId], [SalesArrangementCategory])
-   VALUES
-    (1, 'Žádost o hypotéční úvěr', 20001, 1),
-	(2, 'Žádost o hypoteční překlenovací úvěry', 20002, 1),
-	(3, 'Žádost o hypoteční úvěr bez příjmu', 20003, 1),
-	(4, 'Žádost o doprodej neúčelové části', 20004, 1),
-	(5, 'Žádost o americkou hypotéku', 20010, 1),
-	(6, 'Žádost o čerpání', NULL, 2),
-	(7, 'Žádost o obecnou změnu', NULL, 2),
-	(8, 'Žádost o změnu HUBN', NULL, 2),
-	(9, 'Žádost o změnu dlužníků', NULL, 2),
-	(10, 'Žádost o změnu detailu dlužníka (3602)', NULL, 2),
-	(11, 'Žádost o přidání spoludlužníka (3602)', NULL, 2);
-END
-
-
--- table 'ProductTypeExtension'
-DROP TABLE IF EXISTS [dbo].[ProductTypeExtension];
-CREATE TABLE [dbo].[ProductTypeExtension](
-	[ProductTypeId] [int] NOT NULL,
-	[MpHomeApiLoanType] [varchar](50) NULL,
-	[KonsDbLoanType] [tinyint] NOT NULL,
-CONSTRAINT [PK_ProductTypeExtension] PRIMARY KEY CLUSTERED 
-(
-	[ProductTypeId] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY];
-GO
-
-	--INSERT INTO [dbo].[ProductTypeExtension]([ProductTypeId],[MpHomeApiLoanType],[KonsDbLoanType])
-	--VALUES
-	--(20001, 'KBMortgage', 3),
-	--(20002, 'KBBridgingMortgageLoan', 4),
-	--(20003, 'KBMortgageWithoutIncome', 5),
-	--(20004, 'KBMortgageLoanNonPurposePart', 6),
-	--(20010, 'KBAmericanMortgage', 7);
-
-	-- dočasné mapování (Do rozšíření KonsDB o ProductTypeId) [https://wiki.kb.cz/pages/viewpage.action?pageId=392883923]
-	INSERT INTO [dbo].[ProductTypeExtension]([ProductTypeId],[MpHomeApiLoanType],[KonsDbLoanType])
-    VALUES
-    (20001, 'KBMortgage', 3),
-	(20002, 'KBMortgage', 4),
-	(20003, 'KBMortgage', 5),
-	(20004, 'KBMortgage', 6),
-	(20010, 'KBMortgage', 7);
-GO
-
--- table 'RelationshipCustomerProductTypeExtension'
-DROP TABLE IF EXISTS [dbo].[RelationshipCustomerProductTypeExtension];
-CREATE TABLE [dbo].[RelationshipCustomerProductTypeExtension](
-    [RelationshipCustomerProductTypeId] [int] NOT NULL,
-    [RdmCode] [varchar](50) NULL,
-	[MpDigiApiCode] [varchar](50) NULL,
-	[NameNoby] [varchar](50) NULL,
-    CONSTRAINT [PK_RelationshipCustomerProductTypeExtension] PRIMARY KEY CLUSTERED
-    (
-    [RelationshipCustomerProductTypeId] ASC
-     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-INSERT INTO [dbo].[RelationshipCustomerProductTypeExtension]([RelationshipCustomerProductTypeId],[RdmCode],[MpDigiApiCode],[NameNoby])
-    VALUES
-    (0, null, 'NotSpecified', 'nezadán'),
-	(1, 'A', 'Owner', 'Hlavní dlužník'),
-	(2, 'S', 'CoDebtor', 'Spoludlužník'),
-	(3, null, 'Accessor', 'Přistupitel'),
-	(4, null, 'HusbandOrWife', 'Manžel-ka'),
-	(5, null, 'LegalRepresentative', 'Zákonný zástupce'),
-	(6, null, 'CollisionGuardian', 'Kolizní opatrovník'),
-	(7, null, 'Guardian', 'Opatrovník'),
-	(8, 'R', 'Guarantor', 'Ručitel'),
-	(9, null, 'GuarantorHusbandOrWife', 'Manžel-ka ručitele'),
-	(11, null, 'Intermediary', 'Sprostředkovatel'),
-	(12, null, 'ManagingDirector', 'Jednatel'),
-	(13, null, 'Child', 'Dítě');
-GO
-
--- table 'WorkflowTaskTypeExtension'
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'WorkflowTaskTypeExtension')
-BEGIN
-    CREATE TABLE [dbo].[WorkflowTaskTypeExtension](
-    [WorkflowTaskTypeId] [int] NOT NULL,
-    [CategoryId] [int] NOT NULL,
-    CONSTRAINT [PK_WorkflowTaskTypeExtension] PRIMARY KEY CLUSTERED
-    (
-    [WorkflowTaskTypeId] ASC
-     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY];
-
-	INSERT INTO [dbo].[WorkflowTaskTypeExtension]([WorkflowTaskTypeId],[CategoryId])
-    VALUES
-    (4220, 1),
-	(42210, 1),
-	(42220, 1),
-	(4245, 2),
-	(4246, 2),
-	(42461, 2),
-	(4247, 2),
-	(42471, 2),
-	(4250, 3),
-	(4251, 3);
-END
-
-
--- table 'WorkflowTaskStateExtension'
--- DROP TABLE IF EXISTS [dbo].[WorkflowTaskStateExtension];
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'WorkflowTaskStateExtension')
-BEGIN
-    CREATE TABLE [dbo].[WorkflowTaskStateExtension](
-    [WorkflowTaskStateId] [int] NOT NULL,
-    [Flag] [tinyint] NOT NULL,
-    CONSTRAINT [PK_WorkflowTaskStateExtension] PRIMARY KEY CLUSTERED
-    (
-    [WorkflowTaskStateId] ASC
-     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY];
-
-	INSERT INTO [dbo].[WorkflowTaskStateExtension]([WorkflowTaskStateId],[Flag])
-    VALUES
-	(0, 1),
-	(30, 1);
-END
-
-
--- table 'ContactTypeExtension'
-DROP TABLE IF EXISTS [dbo].[ContactTypeExtension];
 CREATE TABLE [dbo].[ContactTypeExtension](
-    [ContactTypeId] [int] NOT NULL,
+	[ContactTypeId] [int] NOT NULL,
 	[MpDigiApiCode] [varchar](50) NULL,
-    CONSTRAINT [PK_ContactTypeExtension] PRIMARY KEY CLUSTERED
-    (
-    [ContactTypeId] ASC
-     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+ CONSTRAINT [PK_ContactTypeExtension] PRIMARY KEY CLUSTERED 
+(
+	[ContactTypeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
-INSERT INTO [dbo].[ContactTypeExtension]([ContactTypeId],[MpDigiApiCode])
-    VALUES
-    (1, 'Mobile'),
-	(5, 'Email'),
-	(13, 'Mobile'),
-	(14, 'Email');
+/****** Object:  Table [dbo].[DocumentOnSAType]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
 GO
-
--- table 'ObligationTypeExtension'
-DROP TABLE IF EXISTS [dbo].[ObligationTypeExtension];
-CREATE TABLE [dbo].[ObligationTypeExtension](
-    [ObligationTypeId] [int] NOT NULL,
-	[ObligationProperty] [varchar](50) NULL,
-    CONSTRAINT [PK_ObligationTypeExtension] PRIMARY KEY CLUSTERED
-    (
-    [ObligationTypeId] ASC
-     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DocumentOnSAType](
+	[Id] [int] NOT NULL,
+	[Name] [nvarchar](150) NOT NULL,
+	[SalesArrangementTypeId] [int] NULL,
+	[FormTypeId] [int] NOT NULL,
+ CONSTRAINT [PK_DocumentOnSAType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
-INSERT INTO [dbo].[ObligationTypeExtension]([ObligationTypeId],[ObligationProperty])
-    VALUES
-    (1, 'amount'),
-	(2, 'amount'),
-	(3, 'limit'),
-	(4, 'limit'),
-	(5, 'amount');
+/****** Object:  Table [dbo].[DocumentTemplateVariant]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
 GO
-
-
--- table 'DocumentOnSAType'
-DROP TABLE IF EXISTS [dbo].[DocumentOnSAType];
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'DocumentOnSAType')
-BEGIN
-	CREATE TABLE [dbo].[DocumentOnSAType](
-		[Id] [int] NOT NULL,
-		[Name] [nvarchar](150) NOT NULL,
-		[SalesArrangementTypeId] [int] NULL,
-		[FormTypeId] [int] NOT NULL
-		CONSTRAINT [PK_DocumentOnSAType] PRIMARY KEY CLUSTERED
-		(
-		[Id] ASC
-		)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY];
-
-	INSERT INTO [dbo].[DocumentOnSAType]([Id],[Name],[SalesArrangementTypeId], [FormTypeId])
-   VALUES
-    (1, 'Žádost o poskytnutí úvěru', NULL, 3601001),
-	(2, 'Prohlášení účastníka k žádosti o úvěr (spolužadatelská domácnost)', NULL, 3602001),
-	(3, 'Prohlášení účastníka k žádosti o úvěr (ručitelská domácnost)', NULL, 3602001),
-	(4, 'Žádost o čerpání', 6, 3700001);
-END
-
-
--- table 'IdentificationDocumentTypeExtension'
-DROP TABLE IF EXISTS [dbo].[IdentificationDocumentTypeExtension];
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DocumentTemplateVariant](
+	[Id] [int] NOT NULL,
+	[DocumentTemplateVersionId] [int] NOT NULL,
+	[DocumentVariant] [nvarchar](10) NOT NULL,
+	[Description] [nvarchar](100) NOT NULL,
+ CONSTRAINT [PK_DocumentTemplateVariant] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DocumentTemplateVersion]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DocumentTemplateVersion](
+	[Id] [int] NOT NULL,
+	[DocumentTypeId] [int] NOT NULL,
+	[DocumentVersion] [nvarchar](50) NOT NULL,
+	[FormTypeId] [int] NULL,
+	[ValidFrom] [datetime] NOT NULL,
+	[ValidTo] [datetime] NULL,
+ CONSTRAINT [PK_DocumentTemplateVersion] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DocumentTypes]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DocumentTypes](
+	[Id] [int] NOT NULL,
+	[ShortName] [varchar](20) NOT NULL,
+	[Name] [varchar](200) NOT NULL,
+	[FileName] [varchar](200) NOT NULL,
+	[SalesArrangementTypeId] [int] NULL,
+	[EACodeMainId] [int] NULL,
+	[IsFormIdRequested] [bit] NOT NULL,
+	[ValidFrom] [datetime] NOT NULL,
+	[ValidTo] [datetime] NULL,
+ CONSTRAINT [PK_DocumentTypes] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EA_CIS_EACODEMAIN]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EA_CIS_EACODEMAIN](
+	[kod] [int] NOT NULL,
+	[popis] [varchar](100) NULL,
+	[popis_klient] [varchar](100) NULL,
+	[platnost_od] [date] NULL,
+	[platnost_do] [date] NULL,
+	[kategorie] [varchar](64) NULL,
+	[druh_kb] [varchar](20) NULL,
+	[viditelnost_pro_vlozeni_noby] [int] NULL,
+	[viditelnost_ps_kb_prodejni_sit_kb] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[kod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EducationLevelExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EducationLevelExtension](
+	[EducationLevelId] [int] NOT NULL,
+	[RDMCode] [varchar](10) NULL,
+ CONSTRAINT [PK_EducationLevelExtension] PRIMARY KEY CLUSTERED 
+(
+	[EducationLevelId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ChannelExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelExtension](
+	[ChannelId] [int] NOT NULL,
+	[RdmCbChannelCode] [varchar](50) NULL,
+ CONSTRAINT [PK_ChannelExtension] PRIMARY KEY CLUSTERED 
+(
+	[ChannelId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[IdentificationDocumentTypeExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[IdentificationDocumentTypeExtension](
 	[IdentificationDocumentTypeId] [int] NOT NULL,
 	[MpDigiApiCode] [varchar](20) NULL,
@@ -220,170 +229,154 @@ CREATE TABLE [dbo].[IdentificationDocumentTypeExtension](
 	[IdentificationDocumentTypeId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
-
-	INSERT INTO [dbo].[IdentificationDocumentTypeExtension]([IdentificationDocumentTypeId],[MpDigiApiCode])
-    VALUES
-    (0, 'Undefined'),
-	(1, 'IDCard'),
-	(2, 'Passport'),
-	(3, 'ResidencePermit'),
-	(4, 'Foreign');
 GO
-
-
-/*
-TRUNCATE TABLE [dbo].[RelationshipCustomerProductTypeExtension];
+/****** Object:  Table [dbo].[IncomeMainTypesAMLExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
 GO
-
-INSERT INTO [dbo].[RelationshipCustomerProductTypeExtension]
-           ([RelationshipCustomerProductTypeId],[MpHomeApiContractRelationshipType])
-     VALUES
-           (0,'NotSpecified'),
-		   (1,'Owner'),
-		   (2,'CoDebtor'),
-		   (3,'Accessor'),
-		   (4,'HusbandOrWife'),
-		   (5,'LegalRepresentative'),
-		   (6,'CollisionGuardian'),
-		   (7,'Guardian'),
-		   (8,'Guarantor'),
-		   (9,'GuarantorHusbandOrWife'),
-		   (11,'Intermediary'),
-		   (12,'ManagingDirector'),
-		   (13,'Child');
+SET QUOTED_IDENTIFIER ON
 GO
-*/
-
--- table 'ProfessionCategoryExtension'
-DROP TABLE IF EXISTS [dbo].[ProfessionCategoryExtension];
-CREATE TABLE [dbo].[ProfessionCategoryExtension](
-	[ProfessionCategoryId] [int] NOT NULL,
-	[ProfessionTypeIds] [nvarchar](100) NULL,
-	[IncomeMainTypeAMLIds] [nvarchar](100) NULL
-CONSTRAINT [PK_ProfessionCategoryExtension] PRIMARY KEY CLUSTERED 
-(
-	[ProfessionCategoryId] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY];
-GO
-
-	INSERT INTO [dbo].[ProfessionCategoryExtension]([ProfessionCategoryId],[ProfessionTypeIds],[IncomeMainTypeAMLIds])
-    VALUES
-	(0, '0', NULL),
-    (1, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', '1, 6'),
-	(2, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', '1, 6'),
-	(3, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', '1, 6'),
-	(4, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', '2, 6'),
-	(5, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', '1, 6'),
-	(6, '0, 13, 14', '3, 4, 5'),
-	(7, '0', NULL),
-	(8, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12', '1, 2, 3, 6');
-GO
-
--- table 'NetMonthEarningsExtension'
-DROP TABLE IF EXISTS [dbo].[NetMonthEarningsExtension];
-CREATE TABLE [dbo].[NetMonthEarningsExtension](
-	[NetMonthEarningId] [int] NOT NULL,
-	[RdmCode] [varchar](50) NULL,
-CONSTRAINT [PK_NetMonthEarningsExtension] PRIMARY KEY CLUSTERED 
-(
-	[NetMonthEarningId] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY];
-GO
-
-	INSERT INTO [dbo].[NetMonthEarningsExtension]([NetMonthEarningId],[RdmCode])
-    VALUES
-	(1, 'A'),
-	(2, 'B'),
-	(3, 'C'),
-	(4, 'D'),
-	(5, 'E');
-GO
-
-DROP TABLE IF EXISTS [dbo].IncomeMainTypesAMLExtension;
-CREATE TABLE [dbo].IncomeMainTypesAMLExtension(
-	Id [int] NOT NULL,
-	[RdmCode] [varchar](50) NULL,
-CONSTRAINT [PK_IncomeMainTypesAMLExtension] PRIMARY KEY CLUSTERED 
-(
-	Id ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY];
-GO
-
-	INSERT INTO [dbo].IncomeMainTypesAMLExtension(Id,[RdmCode])
-    VALUES
-	(1, '1'),
-	(2, '2'),
-	(3, '3'),
-	(4, '4'),
-	(5, '5'),
-	(6, '6');
-GO
-
-
--- table 'DocumentTemplateVersion'
-DROP TABLE IF EXISTS [dbo].[DocumentTemplateVersion];
-CREATE TABLE [dbo].[DocumentTemplateVersion](
+CREATE TABLE [dbo].[IncomeMainTypesAMLExtension](
 	[Id] [int] NOT NULL,
-	[DocumentTypeId] [int] NOT NULL,
-	[DocumentVersion] [nvarchar](50) NOT NULL,
-	[FormTypeId] [int] NULL,
-	[ValidFrom] [datetime] NOT NULL,
-	[ValidTo] [datetime] NULL,
-CONSTRAINT [PK_DocumentTemplateVersion] PRIMARY KEY CLUSTERED 
+	[RdmCode] [varchar](50) NULL,
+ CONSTRAINT [PK_IncomeMainTypesAMLExtension] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY];
+) ON [PRIMARY]
 GO
-
-	INSERT INTO [dbo].[DocumentTemplateVersion]([Id], [DocumentTypeId], [DocumentVersion], [FormTypeId], [ValidFrom])
-    VALUES
-	(1, 1, '001', NULL, '2022-01-01'),
-	(2, 2, '001', NULL, '2022-01-01'),
-	(3, 3, '001', NULL, '2022-01-01'),
-	(4, 4, '001', 3601001, '2022-01-01'),
-	(5, 5, '001', 3602001, '2022-01-01'),
-	(6, 6, '001', 3700001, '2022-01-01');
+/****** Object:  Table [dbo].[MaritalStatusExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
 GO
-
-
--- table 'DocumentTemplateVariant'
-DROP TABLE IF EXISTS [dbo].[DocumentTemplateVariant];
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'DocumentTemplateVariant')
-BEGIN
-	CREATE TABLE [dbo].[DocumentTemplateVariant](
-		[Id] [int] NOT NULL,
-		[DocumentTemplateVersionId] [int] NOT NULL,
-		[DocumentVariant] [nvarchar](10) NOT NULL,
-		[Description] [nvarchar](100) NOT NULL
-		CONSTRAINT [PK_DocumentTemplateVariant] PRIMARY KEY CLUSTERED
-		(
-		[Id] ASC
-		)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY];
-
-
-INSERT INTO [dbo].[DocumentTemplateVariant]([Id],[DocumentTemplateVersionId],[DocumentVariant], [Description])
-   VALUES
-    (1, 4, 'A', 'jeden dlužník, zprostředkovatel'),
-	(2, 4, 'B', 'jeden dlužník, bez zprostředkovatele'),
-	(3, 4, 'C', 'dva dlužníci, zprostředkovatel'),
-	(4, 4, 'D', 'dva dlužníci, bez zprostředkovatele'),
-	(5, 5, 'A', 'jeden spoludlužník, zprostředkovatel'),
-	(6, 5, 'B', 'jeden spoludlužník, bez zprostředkovatele'),
-	(7, 5, 'C', 'dva spoludlužníci, zprostředkovatel'),
-	(8, 5, 'D', 'dva spoludlužníci, bez zprostředkovatele'),
-	(9, 9, 'A', 'podepisuje jeden dlužník'),
-	(10, 9, 'B', 'podepisují dva dlužníci'),
-	(11, 9, 'C', 'podepisují tři dlužníci'),
-	(12, 9, 'D', 'podepisují čtyři dlužníci');
-END
-
-
--- table 'SmsNotificationType'
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MaritalStatusExtension](
+	[MaritalStatusId] [int] NOT NULL,
+	[RDMCode] [varchar](10) NULL,
+ CONSTRAINT [PK_MaritalStatusExtension] PRIMARY KEY CLUSTERED 
+(
+	[MaritalStatusId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[NetMonthEarningsExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[NetMonthEarningsExtension](
+	[NetMonthEarningId] [int] NOT NULL,
+	[RdmCode] [varchar](50) NULL,
+ CONSTRAINT [PK_NetMonthEarningsExtension] PRIMARY KEY CLUSTERED 
+(
+	[NetMonthEarningId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ObligationTypeExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ObligationTypeExtension](
+	[ObligationTypeId] [int] NOT NULL,
+	[ObligationProperty] [varchar](50) NULL,
+ CONSTRAINT [PK_ObligationTypeExtension] PRIMARY KEY CLUSTERED 
+(
+	[ObligationTypeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProductTypeExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProductTypeExtension](
+	[ProductTypeId] [int] NOT NULL,
+	[MpHomeApiLoanType] [varchar](50) NULL,
+	[KonsDbLoanType] [tinyint] NOT NULL,
+ CONSTRAINT [PK_ProductTypeExtension] PRIMARY KEY CLUSTERED 
+(
+	[ProductTypeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProfessionCategoryExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProfessionCategoryExtension](
+	[ProfessionCategoryId] [int] NOT NULL,
+	[ProfessionTypeIds] [nvarchar](100) NULL,
+	[IncomeMainTypeAMLIds] [nvarchar](100) NULL,
+ CONSTRAINT [PK_ProfessionCategoryExtension] PRIMARY KEY CLUSTERED 
+(
+	[ProfessionCategoryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RelationshipCustomerProductTypeExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RelationshipCustomerProductTypeExtension](
+	[RelationshipCustomerProductTypeId] [int] NOT NULL,
+	[RdmCode] [varchar](50) NULL,
+	[MpDigiApiCode] [varchar](50) NULL,
+	[NameNoby] [varchar](50) NULL,
+ CONSTRAINT [PK_RelationshipCustomerProductTypeExtension] PRIMARY KEY CLUSTERED 
+(
+	[RelationshipCustomerProductTypeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RiskApplicationType]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RiskApplicationType](
+	[Id] [int] NOT NULL,
+	[Mandant] [tinyint] NOT NULL,
+	[DateFrom] [date] NOT NULL,
+	[DateTo] [date] NULL,
+	[LoanProductsId] [nvarchar](100) NOT NULL,
+	[LoanType] [nvarchar](100) NULL,
+	[MarketingActions] [nvarchar](100) NULL,
+	[LtvFrom] [numeric](16, 4) NULL,
+	[LtvTo] [numeric](16, 4) NULL,
+	[ClusterCode] [nvarchar](50) NOT NULL,
+	[C4mAplTypeId] [nvarchar](50) NOT NULL,
+	[C4mAplTypeName] [nvarchar](100) NOT NULL,
+ CONSTRAINT [PK_RiskApplicationType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SalesArrangementType]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SalesArrangementType](
+	[Id] [int] NOT NULL,
+	[Name] [nvarchar](150) NOT NULL,
+	[ProductTypeId] [int] NULL,
+	[SalesArrangementCategory] [int] NOT NULL,
+ CONSTRAINT [PK_SalesArrangementType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SmsNotificationType]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[SmsNotificationType](
 	[Id] [int] NOT NULL,
 	[Code] [varchar](100) NOT NULL,
@@ -397,55 +390,31 @@ CREATE TABLE [dbo].[SmsNotificationType](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-
-
--- table 'DocumentTypes'
-DROP TABLE IF EXISTS [dbo].[DocumentTypes];
-CREATE TABLE [dbo].[DocumentTypes](
-	[Id] [int] NOT NULL,
-	[ShortName] [varchar](20) NOT NULL,
-	[Name] [varchar](200) NOT NULL,
-	[FileName] [varchar](200) NOT NULL,
-	[SalesArrangementTypeId] [int] NULL,
-	[FormTypeId] [bigint] NULL,
-	[ValidFrom] [datetime] NOT NULL,
-	[ValidTo] [datetime] NULL,
- CONSTRAINT [PK_DocumentTypes] PRIMARY KEY CLUSTERED 
+/****** Object:  Table [dbo].[WorkflowTaskStateExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[WorkflowTaskStateExtension](
+	[WorkflowTaskStateId] [int] NOT NULL,
+	[Flag] [tinyint] NOT NULL,
+ CONSTRAINT [PK_WorkflowTaskStateExtension] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+	[WorkflowTaskStateId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
-
-	INSERT INTO [dbo].[DocumentTypes]([Id], [ShortName], [Name], [FileName], [SalesArrangementTypeId], [FormTypeId], [ValidFrom], [ValidTo])
-    VALUES
-    (1, 'NABIDKA', 'Nabídka hypotečního úvěru', 'Nabidka_hypotecniho_uveru', NULL, NULL, '2022-01-01', NULL),
-	(2, 'KALKULHU', 'Hypoteční úvěr - kalkulace', 'Kalkulace_hypotecniho_uveru', NULL, NULL, '2022-01-01', NULL),
-	(3, 'SPLKALHU', 'Simulace splátkového kalendáře', 'Simulace_splatkoveho_kalendare', NULL, NULL, '2022-01-01', NULL),
-	(4, 'ZADOSTHU', 'Žádost o poskytnutí hypotečního úvěru - první domácnost', 'Zadost_o_poskytnuti_hypotecniho_uveru_d1', NULL, 3601001, '2022-01-01', NULL),
-	(5, 'ZADOSTHD', 'Žádost o poskytnutí hypotečního úvěru - druhá domácnost', 'Zadost_o_poskytnuti_hypotecniho_uveru_d2', NULL, 3602001, '2022-01-01', NULL),
-	(6, 'ZADOCERP', 'Žádost o čerpání hypotečního úvěru', 'Zadost_o_cerpani_hypotecniho_uveru', 6, 3700001, '2022-01-01', NULL),
-	(7, 'SDELUCET', 'Sdělení čísla účtu pro čerpání', 'Sdeleni_cisla_uctu_pro_cerpani', NULL, NULL, '2022-01-01', NULL),
-	(8, 'ZAOZMPAR', 'Žádost o změnu obecná', 'Zadost_o_zmenu_obecna', NULL, NULL, '2022-01-01', NULL),
-	(9, 'ZAOZMDLU', 'Žádost o změnu dlužníka', 'Zadost_o_zmenu_dluznika', NULL, 3602001, '2022-01-01', NULL),
-	(10, 'ZAODHUBN', 'Žádost o změnu - HÚ bez nemovitosti', 'Zadost_o_zmena_hu_bez_nemovitosti', NULL, NULL, '2022-01-01', NULL),
-	(11, 'ZADOOPCI', 'Žádost o změnu Flexi', 'Zadost_o_zmena_Flexi', NULL, NULL, '2022-01-01', NULL);
 GO
-
-
--- table 'ChannelExtension'
-DROP TABLE IF EXISTS [dbo].[ChannelExtension];
-CREATE TABLE [dbo].[ChannelExtension](
-    [ChannelId] [int] NOT NULL,
-	[RdmCbChannelCode] [varchar](50) NULL,
-    CONSTRAINT [PK_ChannelExtension] PRIMARY KEY CLUSTERED
-    (
-    [ChannelId] ASC
-     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+/****** Object:  Table [dbo].[WorkflowTaskTypeExtension]    Script Date: 14.03.2023 10:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[WorkflowTaskTypeExtension](
+	[WorkflowTaskTypeId] [int] NOT NULL,
+	[CategoryId] [int] NOT NULL,
+ CONSTRAINT [PK_WorkflowTaskTypeExtension] PRIMARY KEY CLUSTERED 
+(
+	[WorkflowTaskTypeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
-GO
-
-INSERT INTO [dbo].[ChannelExtension]([ChannelId],[RdmCbChannelCode])
-    VALUES
-    (4, 'CH0001'),
-	(6, 'CH0002');
 GO
