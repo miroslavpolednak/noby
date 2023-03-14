@@ -1,11 +1,15 @@
-﻿namespace DomainServices.CaseService.Api.Notifications.Handlers;
+﻿using DomainServices.CaseService.Api.Database;
+using DomainServices.CaseService.Api.Notifications.Handlers;
+using DomainServices.CaseService.Contracts;
 
-internal sealed class CaseStateChangedHandler
-    : INotificationHandler<CaseStateChangedNotification>
+namespace DomainServices.CaseService.Api.Endpoints.NotifyStarbuild;
+
+internal sealed class NotifyStarbuildHandler
+    : IRequestHandler<NotifyStarbuildRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task Handle(CaseStateChangedNotification notification, CancellationToken cancellationToken)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(NotifyStarbuildRequest request, CancellationToken cancellationToken)
     {
-        var productType = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == notification.ProductTypeId);
+        /*var productType = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == notification.ProductTypeId);
         var caseState = (await _codebookService.CaseStates(cancellationToken)).First(t => t.Id == notification.CaseStateId);
 
         // get current user's login
@@ -44,16 +48,18 @@ internal sealed class CaseStateChangedHandler
         // ulozit request id
         if (result.RequestId.HasValue)
         {
-            _dbContext.QueueRequestIds.Add(new Database.Entities.QueueRequestId 
-            { 
-                RequestId  = result.RequestId.Value,
+            _dbContext.QueueRequestIds.Add(new Database.Entities.QueueRequestId
+            {
+                RequestId = result.RequestId.Value,
                 CaseId = notification.CaseId,
                 CreatedTime = DateTime.Now
             });
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             _logger.QueueRequestIdSaved(result.RequestId.Value, request.CaseId);
-        }
+        }*/
+
+        return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
@@ -64,11 +70,11 @@ internal sealed class CaseStateChangedHandler
     private readonly ILogger<CaseStateChangedHandler> _logger;
     private readonly Database.CaseServiceDbContext _dbContext;
 
-    public CaseStateChangedHandler(
+    public NotifyStarbuildHandler(
         Database.CaseServiceDbContext dbContext,
         ILogger<CaseStateChangedHandler> logger,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        CodebookService.Clients.ICodebookServiceClients codebookService, 
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         UserService.Clients.IUserServiceClient userService,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)

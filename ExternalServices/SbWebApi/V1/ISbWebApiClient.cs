@@ -9,7 +9,7 @@ public interface ISbWebApiClient
     /// <summary>
     /// Notifikace SB o změně stavu Case
     /// </summary>
-    Task CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<CaseStateChangedResponse> CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     const string Version = "V1";
 }

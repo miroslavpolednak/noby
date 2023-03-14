@@ -24,19 +24,22 @@ internal sealed class UpdateCaseStateHandler
         }
 
         // Zakázané přechody mezi stavy
-        if (entity.State == 6 || entity.State == 2 && request.State == 1)
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseStateNotAllowed);
-        }
+        if ((entity.State == 6 || entity.State == 7)
+            || (entity.State == 2 && request.State == 1))
+            throw new CisValidationException(13006, "Case state change not allowed");
+
+        // pokud je true, meli bychom poslat info SB se zmenou stavu
+        bool shouldNotifySbAboutStateChange = request.StateUpdatedInStarbuild == UpdatedInStarbuildStates.Unknown && _starbuildStateUpdateStates.Contains(entity.State);
 
         // update v DB
+        entity.StateUpdatedInStarbuild = (byte)request.StateUpdatedInStarbuild;
         entity.State = request.State;
         entity.StateUpdateTime = _dateTime.Now;
 
         await _dbContext.SaveChangesAsync(cancellation);
 
         // fire notification
-        if (entity.State == 1)
+        if (shouldNotifySbAboutStateChange)
         {
             await _mediator.Publish(new Notifications.CaseStateChangedNotification
             {
@@ -52,6 +55,8 @@ internal sealed class UpdateCaseStateHandler
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
+
+    private static int[] _starbuildStateUpdateStates = new[] { 1, 2, 7, 9 };
 
     private readonly CIS.Core.IDateTime _dateTime;
     private readonly IMediator _mediator;

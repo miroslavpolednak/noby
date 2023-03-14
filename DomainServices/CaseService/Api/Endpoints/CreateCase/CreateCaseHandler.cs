@@ -63,6 +63,7 @@ internal sealed class CreateCaseHandler
         {
             CaseId = caseId,
 
+            StateUpdatedInStarbuild = (int)UpdatedInStarbuildStates.Unknown,
             StateUpdateTime = _dateTime.Now,
             ProductTypeId = request.Data.ProductTypeId,
 

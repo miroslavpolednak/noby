@@ -41,6 +41,7 @@ CREATE TABLE [dbo].[Case](
 	[IsEmployeeBonusRequested] bit NULL,
 	[ProductTypeId] [int] NOT NULL,
 	[State] [int] NOT NULL,
+	[StateUpdatedInStarbuild] [tinyint] NOT NULL default(0),
 	[StateUpdateTime] [datetime] NOT NULL,
 	[CreatedUserName] [nvarchar](100) NULL,
 	[CreatedUserId] [int] NULL,
@@ -79,4 +80,15 @@ WITH
 (
 SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[ActiveTaskHistory])
 )
+GO
+
+CREATE TABLE [dbo].[QueueRequestId](
+	[RequestId] [int] NOT NULL,
+	[CaseId] [bigint] NULL,
+	[CreatedTime] [datetime] NULL,
+ CONSTRAINT [PK_QueueRequestId] PRIMARY KEY CLUSTERED 
+(
+	[QueueRequestId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 GO
