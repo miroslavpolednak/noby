@@ -1,4 +1,6 @@
+DROP TABLE IF EXISTS dbo.[MigrationHistory]
 GO
+
 DROP SEQUENCE IF EXISTS dbo.GenerateDocumentIdSequence;
 GO
 /****** Object:  Table [dbo].[DocumentInterface]    Script Date: 14.03.2023 11:05:25 ******/
