@@ -297,11 +297,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\ServiceDiscovery\DatabaseMigrations\002-seed.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\002-seed.sql
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7}"
-	ProjectSection(SolutionItems) = preProject
-		InternalServices\DocumentGeneratorService\DatabaseMigrations\1-initial_creation.sql = InternalServices\DocumentGeneratorService\DatabaseMigrations\1-initial_creation.sql
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAggregatorService", "DataAggregatorService", "{EAA77847-CE7C-48E3-B918-1626CEB8B32B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregatorService.Api", "InternalServices\DataAggregatorService\Api\CIS.InternalServices.DataAggregatorService.Api.csproj", "{53178B65-D475-4752-9BBF-E7708BC6FB61}"
@@ -339,6 +334,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\DocumentArchiveService\DatabaseMigrations\001-InitialCreate.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\001-InitialCreate.sql
 		DomainServices\DocumentArchiveService\DatabaseMigrations\002-AddSendDocumentOnly.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\002-AddSendDocumentOnly.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{8CA1036B-1B3A-4955-BEBA-8CAC5D721256}"
+	ProjectSection(SolutionItems) = preProject
+		InternalServices\DataAggregatorService\DatabaseMigrations\001-initial_create.sql = InternalServices\DataAggregatorService\DatabaseMigrations\001-initial_create.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\002-initial_seed.sql = InternalServices\DataAggregatorService\DatabaseMigrations\002-initial_seed.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\003-document_variants.sql = InternalServices\DataAggregatorService\DatabaseMigrations\003-document_variants.sql
 	EndProjectSection
 EndProject
 Global
@@ -1255,7 +1257,6 @@ Global
 		{575507BC-3755-40BB-AC02-E7B8823C6F90} = {1AB95406-90FE-4CAA-8536-6846B37A450E}
 		{DA6B2E80-1075-4DE9-A090-A0711F4F92F1} = {6C60ADF4-04DA-46C0-91BE-054BDC00A89E}
 		{DED5BF40-8A83-4B48-AD27-E14BBFE76338} = {376AF902-B4C3-4C31-9CA1-63F154C18A4C}
-		{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7} = {4184CEDA-0D2B-4BEC-8EE1-7D50B6A3E22E}
 		{EAA77847-CE7C-48E3-B918-1626CEB8B32B} = {0DC96AF3-B121-4ACA-92C2-1064CADBC228}
 		{53178B65-D475-4752-9BBF-E7708BC6FB61} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
 		{0E0A617E-7D9E-4F79-983F-3E618505FE72} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
@@ -1272,6 +1273,7 @@ Global
 		{D8B0F8F5-AF3B-4C05-B4B9-8F8AF083E60B} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
 		{8DD02052-0C04-49A1-AF7A-21FEF64B6851} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 		{49E4977C-DD43-424E-89C7-A59324CC0864} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
+		{8CA1036B-1B3A-4955-BEBA-8CAC5D721256} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}
