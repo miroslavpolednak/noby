@@ -28,6 +28,10 @@ grpcurl -insecure -d "{\"DocumentOnSAId\":1}" -H "Authorization: Basic WFhfTk9CW
 ```
 grpcurl -insecure -d "{\"DocumentOnSAId\":1, \"IsDocumentArchived\":true}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "mp-user-id: 1" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/UpdateDocumentOnSA
 ```
+### GetDocumentsOnSAList
+```
+grpcurl -insecure -d "{\"SalesArrangementId\":8}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GetDocumentsOnSAList
+```
 
 ### Migrations
 1) Open Package manager console

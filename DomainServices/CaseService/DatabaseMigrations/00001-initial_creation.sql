@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS dbo.[MigrationHistory]
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Case]') AND type in (N'U'))
 ALTER TABLE [dbo].[Case] SET ( SYSTEM_VERSIONING = OFF  )
 GO

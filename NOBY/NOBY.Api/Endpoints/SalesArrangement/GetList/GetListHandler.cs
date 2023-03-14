@@ -2,7 +2,6 @@
 using DomainServices.SalesArrangementService.Clients;
 using CIS.Core;
 using DomainServices.CodebookService.Clients;
-using DSContracts = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetList;
 

@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS dbo.[MigrationHistory]
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SalesArrangement]') AND type in (N'U'))
 	ALTER TABLE [dbo].[SalesArrangement] SET ( SYSTEM_VERSIONING = OFF)
 GO
@@ -7,7 +10,7 @@ DROP TABLE IF EXISTS [dbo].[SalesArrangementHistory]
 GO
 
 CREATE TABLE [dbo].[SalesArrangement](
-	[SalesArrangementId] [int] IDENTITY(10000,1) NOT NULL,
+	[SalesArrangementId] [int] IDENTITY(20000,1) NOT NULL,
 	[CaseId] [bigint] NOT NULL,
 	[OfferId] [int] NULL,
 	[ResourceProcessId] [uniqueidentifier] NULL,

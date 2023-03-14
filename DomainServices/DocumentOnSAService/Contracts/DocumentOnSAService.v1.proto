@@ -9,6 +9,7 @@ import "StopSigning.proto";
 import "GetDocumentsToSignList.proto";
 import "GetDocumentOnSAData.proto";
 import "SignDocumentManually.proto";
+import "GetDocumentsOnSAList.proto";
 
 //DocumentOnSAService
 service DocumentOnSAService{
@@ -18,4 +19,5 @@ service DocumentOnSAService{
 	rpc GetDocumentsToSignList(DomainServices.DocumentOnSAService.GetDocumentsToSignList.GetDocumentsToSignListRequest) returns(DomainServices.DocumentOnSAService.GetDocumentsToSignList.GetDocumentsToSignListResponse);
 	rpc GetDocumentOnSAData(DomainServices.DocumentOnSAService.GetDocumentOnSAData.GetDocumentOnSADataRequest) returns (DomainServices.DocumentOnSAService.GetDocumentOnSAData.GetDocumentOnSADataResponse);
 	rpc SignDocumentManually(DomainServices.DocumentOnSAService.SignDocumentManually.SignDocumentManuallyRequest) returns (google.protobuf.Empty);
+	rpc GetDocumentsOnSAList(DomainServices.DocumentOnSAService.GetDocumentsOnSAList.GetDocumentsOnSAListRequest) returns (DomainServices.DocumentOnSAService.GetDocumentsOnSAList.GetDocumentsOnSAListResponse);
 }
