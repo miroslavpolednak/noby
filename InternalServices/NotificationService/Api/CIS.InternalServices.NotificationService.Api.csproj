@@ -11,8 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.5" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.103.23" />
-    <PackageReference Include="Confluent.Kafka.DependencyInjection" Version="2.1.2" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.103.25" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.51.0" />
     <PackageReference Include="MailKit" Version="3.6.0" />
     <PackageReference Include="MediatR" Version="12.0.1" />
@@ -32,9 +31,9 @@
 
   <ItemGroup>
     <!-- DO NOT UPGRADE VERSIONS -->
-    <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="0.7.2.1" />
-    <PackageReference Include="MassTransit" Version="8.0.9" />
-    <PackageReference Include="MassTransit.Kafka" Version="8.0.9" />
+    <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="1.1.0.16-SNAPSHOT" />
+    <PackageReference Include="MassTransit" Version="8.0.13" />
+    <PackageReference Include="MassTransit.Kafka" Version="8.0.13" />
   </ItemGroup>
   
   <ItemGroup>

@@ -2,6 +2,7 @@
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CodebookService.Clients;
+using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -22,6 +23,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
     private readonly IDataAggregatorServiceClient _dataAggregatorServiceClient;
     private readonly ICodebookServiceClients _codebookServiceClients;
+    private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly ICurrentUserAccessor _currentUser;
 
     public StartSigningHandler(
@@ -31,6 +33,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         ISalesArrangementServiceClient arrangementServiceClient,
         IDataAggregatorServiceClient dataAggregatorServiceClient,
         ICodebookServiceClients codebookServiceClients,
+        IDocumentArchiveServiceClient documentArchiveServiceClient,
         ICurrentUserAccessor currentUser)
     {
         _dbContext = dbContext;
@@ -39,6 +42,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         _arrangementServiceClient = arrangementServiceClient;
         _dataAggregatorServiceClient = dataAggregatorServiceClient;
         _codebookServiceClients = codebookServiceClients;
+        _documentArchiveServiceClient = documentArchiveServiceClient;
         _currentUser = currentUser;
     }
 
@@ -73,7 +77,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             }
         }, cancellationToken);
 
-        var documentOnSaEntity = MapToEntity(request, houseHold, formIdResponse.FormId, documentData);
+        var documentOnSaEntity = await MapToEntity(request, houseHold, formIdResponse.FormId, documentData, cancellationToken);
 
         await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
 
@@ -123,12 +127,13 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         };
     }
 
-    private __Entity.DocumentOnSa MapToEntity(StartSigningRequest request, __Household.Household houseHold, string formId, GetDocumentDataResponse getDocumentDataResponse)
+    private async Task<__Entity.DocumentOnSa> MapToEntity(StartSigningRequest request, __Household.Household houseHold, string formId, GetDocumentDataResponse getDocumentDataResponse, CancellationToken cancellationToken)
     {
         var entity = new __Entity.DocumentOnSa();
         entity.DocumentTypeId = request.DocumentTypeId!.Value;
         entity.DocumentTemplateVersionId = getDocumentDataResponse.DocumentTemplateVersionId;
         entity.FormId = formId;
+        entity.EArchivId = await _documentArchiveServiceClient.GenerateDocumentId(new(), cancellationToken);
         entity.SalesArrangementId = request.SalesArrangementId!.Value;
         entity.HouseholdId = houseHold.HouseholdId;
         entity.SignatureMethodCode = request.SignatureMethodCode;

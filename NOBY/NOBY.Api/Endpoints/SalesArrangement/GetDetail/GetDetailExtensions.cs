@@ -1,5 +1,6 @@
 ﻿using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto;
+using System.Diagnostics;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetDetail;
@@ -180,6 +181,73 @@ internal static class GetDetailExtensions
                 ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths
             },
             CommentToChangeRequest = new()
+            {
+                IsActive = model.CommentToChangeRequest?.IsActive ?? false,
+                GeneralComment = model.CommentToChangeRequest?.GeneralComment
+            }
+        };
+
+    public static Dto.CustomerChangeDetail ToApiResponse(this _SA.SalesArrangementParametersCustomerChange model)
+        => new()
+        {
+            Applicants = model.Applicants is null ? null : model.Applicants.Select(t => new Dto.CustomerChangeDetailApplicant
+            {
+                Identity = t.Identity,
+                IdentificationDocument = t.IdentificationDocument is null ? null : new()
+                {
+                    IdentificationDocumentTypeId = t.IdentificationDocument.IdentificationDocumentTypeId,
+                    Number = t.IdentificationDocument.Number
+                },
+                NaturalPerson = t.NaturalPerson is null ? null : new()
+                {
+                    FirstName = t.NaturalPerson.FirstName,
+                    LastName = t.NaturalPerson.LastName,
+                    DateOfBirth = t.NaturalPerson.DateOfBirth
+                }
+            }).ToList(),
+            Release = new Dto.CustomerChangeDetailRelease
+            {
+                IsActive = model.Release?.IsActive ?? false,
+                Customers = model.Release?.Customers is null ? null : model.Release.Customers.Select(t => new Dto.CustomerChangeDetailReleaseCustomer
+                {
+                    Identity = t.Identity,
+                    NaturalPerson = new()
+                    {
+                        FirstName = t.NaturalPerson.FirstName,
+                        LastName = t.NaturalPerson.LastName,
+                        DateOfBirth = t.NaturalPerson.DateOfBirth
+                    }
+                }).ToList()
+            },
+            Add = new Dto.CustomerChangeDetailAdd
+            {
+                IsActive = model.Add?.IsActive ?? false,
+                Customers = model.Add?.Customers is null ? null : model.Add.Customers.Select(t => new Dto.CustomerChangeDetailAddCustomer
+                {
+                    DateOfBirth = t.DateOfBirth,
+                    Name = t.Name
+                }).ToList()
+            },
+            Agent = new Dto.CustomerChangeDetailAgent
+            {
+                IsActive = model.Agent?.IsActive ?? false,
+                ActualAgent = model.Agent?.ActualAgent ?? "",
+                NewAgent = model.Agent?.NewAgent
+            },
+            RepaymentAccount = new Dto.PaymentAccount
+            {
+                IsActive = model.RepaymentAccount?.IsActive ?? false,
+                AgreedBankCode = model.RepaymentAccount?.AgreedBankCode,
+                AgreedNumber = model.RepaymentAccount?.AgreedNumber,
+                AgreedPrefix = model.RepaymentAccount?.AgreedPrefix,
+                BankCode = model.RepaymentAccount?.BankCode,
+                Number = model.RepaymentAccount?.Number,
+                OwnerDateOfBirth = model.RepaymentAccount?.OwnerDateOfBirth,
+                OwnerFirstName = model.RepaymentAccount?.OwnerFirstName,
+                OwnerLastName = model.RepaymentAccount?.OwnerLastName,
+                Prefix = model.RepaymentAccount?.Prefix,
+            },
+            CommentToChangeRequest = new CommentToChangeRequest
             {
                 IsActive = model.CommentToChangeRequest?.IsActive ?? false,
                 GeneralComment = model.CommentToChangeRequest?.GeneralComment

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Avro.Specific;
 using CIS.Core;
 using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
@@ -43,7 +42,7 @@ public class McsEmailProducer
             Caller = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",
             // Origin = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",
         };
-        
-        await _producer.Produce(sendEmail, new ProducerPipe<ISpecificRecord>(headers), cancellationToken);
+
+        await _producer.Produce(sendEmail, new ProducerPipe<IMcsSenderCommand>(headers), cancellationToken);
     }
 }

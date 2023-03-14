@@ -6,6 +6,7 @@ import "Parameters/SalesArrangementParametersMortgage.proto";
 import "Parameters/SalesArrangementParametersDrawing.proto";
 import "Parameters/SalesArrangementParametersGeneralChange.proto";
 import "Parameters/SalesArrangementParametersHUBN.proto";
+import "Parameters/SalesArrangementParametersCustomerChange.proto";
 import "NullableGrpcDecimal.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -28,6 +29,7 @@ message CreateSalesArrangementRequest {
 		SalesArrangementParametersDrawing Drawing = 21;
 		SalesArrangementParametersGeneralChange GeneralChange = 22;
 		SalesArrangementParametersHUBN HUBN = 23;
+		SalesArrangementParametersCustomerChange CustomerChange = 24;
     }
 }
 
