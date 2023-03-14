@@ -320,7 +320,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{72288697-BCA0-41AF-A56B-A4075B5FA0FF}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\DocumentOnSAService\DatabaseMigrations\001-InitialCreate.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\001-InitialCreate.sql
-		DomainServices\DocumentOnSAService\DatabaseMigrations\002-IsFinalAndMandatories.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\002-IsFinalAndMandatories.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness", "DomainServices\RiskIntegrationService\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj", "{FF60B12F-B083-46BE-B8DA-FD91ABE2D831}"
@@ -338,7 +337,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{49E4977C-DD43-424E-89C7-A59324CC0864}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\DocumentArchiveService\DatabaseMigrations\001-InitialCreate.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\001-InitialCreate.sql
-		DomainServices\DocumentArchiveService\DatabaseMigrations\002-AddSendDocumentOnly.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\002-AddSendDocumentOnly.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{6D676B53-6AD7-4828-922D-B52A42B5AD4F}"
