@@ -118,4 +118,6 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
     Task UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task NotifyStarbuild(long caseId, string riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken));
 }
