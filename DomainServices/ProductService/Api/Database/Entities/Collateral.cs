@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.ProductService.Api.Database.Entities;
 
-[Table("Nemovitost", Schema = "dbo")]
+[Table("Zabezpeceni", Schema = "dbo")]
 internal sealed class Collateral
 {
     [Key]
