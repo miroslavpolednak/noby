@@ -215,6 +215,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E99-AE46-4B08-A830-1587E93A950E}"
 	ProjectSection(SolutionItems) = preProject
 		Docs\topics\authentication.md = Docs\topics\authentication.md
+		Docs\topics\background-service-job.md = Docs\topics\background-service-job.md
 		Docs\topics\configuration.md = Docs\topics\configuration.md
 		Docs\topics\dataAggregator.md = Docs\topics\dataAggregator.md
 		Docs\topics\database-migrations.md = Docs\topics\database-migrations.md
@@ -245,8 +246,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiTest", "Playgrounds\WebApiTest\WebApiTest\WebApiTest.csproj", "{50AFD0B2-577D-45C0-9844-A8E318AB48A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseMigrations", "DatabaseMigrations\DatabaseMigrations.csproj", "{D04EA6BB-7A06-47AB-8085-DC295BACE3E1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example_MassTransit", "Playgrounds\NotificationService\Example_MassTransit\Example_MassTransit.csproj", "{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{27850C16-B6E6-435B-B0C4-4938D881823F}"
 	ProjectSection(SolutionItems) = preProject
@@ -289,6 +288,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\CodebookService\DatabaseMigrations\001-initial_creation.sql = DomainServices\CodebookService\DatabaseMigrations\001-initial_creation.sql
+		DomainServices\CodebookService\DatabaseMigrations\002-initial_seed.sql = DomainServices\CodebookService\DatabaseMigrations\002-initial_seed.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -320,7 +320,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{72288697-BCA0-41AF-A56B-A4075B5FA0FF}"
 	ProjectSection(SolutionItems) = preProject
-		001-InitialCreate.sql = 001-InitialCreate.sql
+		DomainServices\DocumentOnSAService\DatabaseMigrations\001-InitialCreate.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\001-InitialCreate.sql
+		DomainServices\DocumentOnSAService\DatabaseMigrations\002-IsFinalAndMandatories.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\002-IsFinalAndMandatories.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness", "DomainServices\RiskIntegrationService\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj", "{FF60B12F-B083-46BE-B8DA-FD91ABE2D831}"
@@ -989,14 +990,6 @@ Global
 		{D04EA6BB-7A06-47AB-8085-DC295BACE3E1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D04EA6BB-7A06-47AB-8085-DC295BACE3E1}.Release|x64.ActiveCfg = Release|Any CPU
 		{D04EA6BB-7A06-47AB-8085-DC295BACE3E1}.Release|x64.Build.0 = Release|Any CPU
-		{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578}.Debug|x64.Build.0 = Debug|Any CPU
-		{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578}.Release|x64.ActiveCfg = Release|Any CPU
-		{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578}.Release|x64.Build.0 = Release|Any CPU
 		{D88FFFB8-826B-4626-892C-5A4DE6EB1095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D88FFFB8-826B-4626-892C-5A4DE6EB1095}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D88FFFB8-826B-4626-892C-5A4DE6EB1095}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -1241,7 +1234,6 @@ Global
 		{423B6567-20FA-4DE0-89E6-D7DFD82FDEE2} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
 		{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
 		{50AFD0B2-577D-45C0-9844-A8E318AB48A5} = {B4ABFBCA-9641-4C56-A007-2F9347AB50DD}
-		{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578} = {6AF68A4E-BDE9-4A1A-BA14-4AF3BB038CC2}
 		{27850C16-B6E6-435B-B0C4-4938D881823F} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}
 		{D88FFFB8-826B-4626-892C-5A4DE6EB1095} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 		{18DAE40B-0268-4361-8A64-0B418206BCCE} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
