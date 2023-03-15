@@ -249,7 +249,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseMigrations", "Datab
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{27850C16-B6E6-435B-B0C4-4938D881823F}"
 	ProjectSection(SolutionItems) = preProject
-		DomainServices\HouseholdService\DatabaseMigrations\001-initial_creation.sql = DomainServices\HouseholdService\DatabaseMigrations\001-initial_creation.sql
+		DomainServices\HouseholdService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\HouseholdService\DatabaseMigrations\00001-initial_creation.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.CustomerManagement", "DomainServices\CustomerService\ExternalServices.CustomerManagement\DomainServices.CustomerService.ExternalServices.CustomerManagement.csproj", "{D88FFFB8-826B-4626-892C-5A4DE6EB1095}"
@@ -262,18 +262,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerServ
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{4FDD79BE-4EC7-4394-8088-4F9527AF510D}"
 	ProjectSection(SolutionItems) = preProject
-		DomainServices\OfferService\DatabaseMigrations\001-initial_creation.sql = DomainServices\OfferService\DatabaseMigrations\001-initial_creation.sql
+		DomainServices\OfferService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\OfferService\DatabaseMigrations\00001-initial_creation.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
 	ProjectSection(SolutionItems) = preProject
-		DomainServices\SalesArrangementService\DatabaseMigrations\001-initial_creation.sql = DomainServices\SalesArrangementService\DatabaseMigrations\001-initial_creation.sql
-		DomainServices\SalesArrangementService\DatabaseMigrations\002-initial_seed.sql = DomainServices\SalesArrangementService\DatabaseMigrations\002-initial_seed.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00001-initial_creation.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00002-initial_seed.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00002-initial_seed.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
 	ProjectSection(SolutionItems) = preProject
-		NOBY\DatabaseMigrations\001-initial_creation.sql = NOBY\DatabaseMigrations\001-initial_creation.sql
+		NOBY\DatabaseMigrations\00001-initial_creation.sql = NOBY\DatabaseMigrations\00001-initial_creation.sql
+		NOBY\DatabaseMigrations\00002-HFICH-4866.sql = NOBY\DatabaseMigrations\00002-HFICH-4866.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.ExternalServices.Sdf", "DomainServices\DocumentArchiveService\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj", "{F969A020-76AF-48A6-BF8F-959A58D0C982}"
@@ -282,23 +284,24 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArch
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{575507BC-3755-40BB-AC02-E7B8823C6F90}"
 	ProjectSection(SolutionItems) = preProject
-		DomainServices\CaseService\DatabaseMigrations\001-initial_creation.sql = DomainServices\CaseService\DatabaseMigrations\001-initial_creation.sql
+		DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
 	ProjectSection(SolutionItems) = preProject
-		DomainServices\CodebookService\DatabaseMigrations\001-initial_creation.sql = DomainServices\CodebookService\DatabaseMigrations\001-initial_creation.sql
+		DomainServices\CodebookService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\CodebookService\DatabaseMigrations\00001-initial_creation.sql
+		DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
 	ProjectSection(SolutionItems) = preProject
-		InternalServices\ServiceDiscovery\DatabaseMigrations\001-initial_creation.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\001-initial_creation.sql
-		InternalServices\ServiceDiscovery\DatabaseMigrations\002-seed.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\002-seed.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00001-initial_creation.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00001-initial_creation.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00002-seed.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00002-seed.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7}"
 	ProjectSection(SolutionItems) = preProject
-		InternalServices\DocumentGeneratorService\DatabaseMigrations\1-initial_creation.sql = InternalServices\DocumentGeneratorService\DatabaseMigrations\1-initial_creation.sql
+		InternalServices\DocumentGeneratorService\DatabaseMigrations\00001-initial_creation.sql = InternalServices\DocumentGeneratorService\DatabaseMigrations\00001-initial_creation.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAggregatorService", "DataAggregatorService", "{EAA77847-CE7C-48E3-B918-1626CEB8B32B}"
@@ -319,8 +322,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{72288697-BCA0-41AF-A56B-A4075B5FA0FF}"
 	ProjectSection(SolutionItems) = preProject
-		DomainServices\DocumentOnSAService\DatabaseMigrations\001-InitialCreate.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\001-InitialCreate.sql
-		DomainServices\DocumentOnSAService\DatabaseMigrations\002-IsFinalAndMandatories.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\002-IsFinalAndMandatories.sql
+		DomainServices\DocumentOnSAService\DatabaseMigrations\00001-InitialCreate.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00001-InitialCreate.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness", "DomainServices\RiskIntegrationService\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj", "{FF60B12F-B083-46BE-B8DA-FD91ABE2D831}"
@@ -337,8 +339,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerServ
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{49E4977C-DD43-424E-89C7-A59324CC0864}"
 	ProjectSection(SolutionItems) = preProject
-		DomainServices\DocumentArchiveService\DatabaseMigrations\001-InitialCreate.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\001-InitialCreate.sql
-		DomainServices\DocumentArchiveService\DatabaseMigrations\002-AddSendDocumentOnly.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\002-AddSendDocumentOnly.sql
+		DomainServices\DocumentArchiveService\DatabaseMigrations\00001-InitialCreate.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00001-InitialCreate.sql
+		DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{6D676B53-6AD7-4828-922D-B52A42B5AD4F}"
+	ProjectSection(SolutionItems) = preProject
+		InternalServices\NotificationService\DatabaseMigrations\00001-initial_creation.sql = InternalServices\NotificationService\DatabaseMigrations\00001-initial_creation.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D5315192-5730-455C-B586-D964F840F401}"
+	ProjectSection(SolutionItems) = preProject
+		InternalServices\DataAggregatorService\DatabaseMigrations\00001-initial_create.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00001-initial_create.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql
 	EndProjectSection
 EndProject
 Global
@@ -1263,6 +1276,8 @@ Global
 		{D8B0F8F5-AF3B-4C05-B4B9-8F8AF083E60B} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
 		{8DD02052-0C04-49A1-AF7A-21FEF64B6851} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 		{49E4977C-DD43-424E-89C7-A59324CC0864} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
+		{6D676B53-6AD7-4828-922D-B52A42B5AD4F} = {46414B85-D1B6-411D-B232-C6CC8B35FE57}
+		{D5315192-5730-455C-B586-D964F840F401} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

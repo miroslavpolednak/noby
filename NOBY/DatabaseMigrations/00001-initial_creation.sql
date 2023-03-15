@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS dbo.[MigrationHistory]
+GO
+
 SET ANSI_NULLS ON
 GO
 

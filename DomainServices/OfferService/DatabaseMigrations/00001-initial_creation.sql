@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS dbo.[MigrationHistory]
+GO
+
 DROP TABLE IF EXISTS [dbo].[Offer]
 GO
 

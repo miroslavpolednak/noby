@@ -94,5 +94,9 @@ public interface ISalesArrangementServiceClient
     Task DeleteSalesArrangement(int salesArrangementId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken));
 
     Task UpdateOfferDocumentId(int salesArrangementId, string offerDocumentId, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task<List<FlowSwitch>> GetFlowSwitches(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task SetFlowSwitches(int salesArrangementId, List<FlowSwitch> flowSwitches, CancellationToken cancellationToken = default(CancellationToken));
 }
 

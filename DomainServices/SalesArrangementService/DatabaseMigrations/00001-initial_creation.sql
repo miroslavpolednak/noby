@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS dbo.[MigrationHistory]
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SalesArrangement]') AND type in (N'U'))
 	ALTER TABLE [dbo].[SalesArrangement] SET ( SYSTEM_VERSIONING = OFF)
 GO
@@ -7,7 +10,7 @@ DROP TABLE IF EXISTS [dbo].[SalesArrangementHistory]
 GO
 
 CREATE TABLE [dbo].[SalesArrangement](
-	[SalesArrangementId] [int] IDENTITY(10000,1) NOT NULL,
+	[SalesArrangementId] [int] IDENTITY(20000,1) NOT NULL,
 	[CaseId] [bigint] NOT NULL,
 	[OfferId] [int] NULL,
 	[ResourceProcessId] [uniqueidentifier] NULL,
@@ -92,4 +95,31 @@ CREATE TABLE [dbo].[FormValidationTransformation](
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[FlowSwitch]') AND type in (N'U'))
+	ALTER TABLE [dbo].[FlowSwitch] SET ( SYSTEM_VERSIONING = OFF)
+GO
+DROP TABLE IF EXISTS [dbo].[FlowSwitch]
+GO
+DROP TABLE IF EXISTS [dbo].[FlowSwitchHistory]
+GO
+
+CREATE TABLE [dbo].[FlowSwitch](
+	[SalesArrangementId] [int] NOT NULL,
+	[FlowSwitchId] [int] NOT NULL,
+	[Value] [bit] NOT NULL,
+	[ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
+	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL
+ CONSTRAINT [PK_FlowSwitch] PRIMARY KEY CLUSTERED 
+(
+	[SalesArrangementId] ASC,
+	[FlowSwitchId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+	PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
+) ON [PRIMARY]
+WITH
+(
+	SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[FlowSwitchHistory])
+)
 GO
