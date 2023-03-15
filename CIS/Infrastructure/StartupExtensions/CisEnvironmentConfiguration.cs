@@ -16,9 +16,6 @@ public static class CisEnvironmentConfiguration
         // get env variables
         builder.Configuration.AddCisEnvironmentVariables($"{cisConfiguration.EnvironmentName}_");
 
-        // distributed cache
-        registerDistributedCache(builder);
-
         return builder;
     }
 
@@ -33,9 +30,6 @@ public static class CisEnvironmentConfiguration
 
         // get env variables
         builder.Configuration.AddCisEnvironmentVariables($"{cisConfiguration.EnvironmentName}_");
-
-        // distributed cache
-        registerDistributedCache(builder);
 
         return builder;
     }
@@ -52,14 +46,5 @@ public static class CisEnvironmentConfiguration
         builder.Services.TryAddSingleton(cisConfiguration);
     }
 
-    private static void registerDistributedCache(WebApplicationBuilder builder)
-    {
-        var cacheConfiguration = new CisEnvironmentDistributedCacheConfiguration();
-        builder.Configuration.GetSection(JsonConfigurationKey).GetSection(JsonCacheConfigurationKey).Bind(cacheConfiguration);
-
-        builder.Services.TryAddSingleton<ICisEnvironmentDistributedCacheConfiguration>(cacheConfiguration);
-    }
-
     private const string JsonConfigurationKey = "CisEnvironmentConfiguration";
-    private const string JsonCacheConfigurationKey = "DistributedCache";
 }

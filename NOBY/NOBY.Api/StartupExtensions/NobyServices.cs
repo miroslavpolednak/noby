@@ -48,14 +48,8 @@ internal static class NobyServices
         // flow switches
         builder.Services.AddFlowSwitches(builder.Configuration.GetConnectionString("default")!);
 
-        // add sql distributed cache
-        //TODO replace with Redis?
-        builder.Services.AddDistributedSqlServerCache(options =>
-        {
-            options.SchemaName = "dbo";
-            options.TableName = "AppCache";
-            options.ConnectionString = builder.Configuration.GetConnectionString("distributedCache");
-        });
+        // add distributed cache
+        builder.AddCisDistributedCache();
 
         // ext services
         builder.AddExternalService<IAddressWhispererClient>(CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue, CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue);

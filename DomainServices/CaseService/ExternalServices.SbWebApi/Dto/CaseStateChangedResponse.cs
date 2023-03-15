@@ -1,4 +1,4 @@
-﻿namespace ExternalServices.SbWebApi.Dto;
+﻿namespace DomainServices.CaseService.ExternalServices.SbWebApi.Dto;
 
 public sealed class CaseStateChangedResponse
 {

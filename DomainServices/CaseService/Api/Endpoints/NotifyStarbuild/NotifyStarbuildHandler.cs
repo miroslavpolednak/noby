@@ -1,6 +1,7 @@
-﻿using DomainServices.CaseService.Api.Notifications.Handlers;
+﻿using CIS.Infrastructure.Caching;
+using DomainServices.CaseService.Api.SharedDto;
 using DomainServices.CaseService.Contracts;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace DomainServices.CaseService.Api.Endpoints.NotifyStarbuild;
 
@@ -9,6 +10,12 @@ internal sealed class NotifyStarbuildHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(NotifyStarbuildRequest request, CancellationToken cancellationToken)
     {
+        // bez prihlaseneho uzivatele to nema cenu
+        if (!_userAccessor.IsAuthenticated)
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AuthenticatedUserNotFound);
+        }
+
         // instance Case
         var caseInstance = await _dbContext
             .Cases
@@ -32,8 +39,16 @@ internal sealed class NotifyStarbuildHandler
             .ToList();
 
         // get rbcid
-        var saList = await _salesArrangementService.GetSalesArrangementList(caseInstance.CaseId, cancellationToken: cancellationToken);
-        string? rbcId = saList.SalesArrangements.FirstOrDefault(t => allowedSaTypeId.Contains(t.SalesArrangementTypeId))?.RiskBusinessCaseId;
+        // zkus se kouknout, jestli to rbcid nahodou fakt neexistuje na SA - protoze kdyby jo, tak ho musime poslat do SB
+        if (string.IsNullOrEmpty(request.RiskBusinessCaseId))
+        {
+            var saList = await _salesArrangementService.GetSalesArrangementList(caseInstance.CaseId, cancellationToken: cancellationToken);
+            
+            request.RiskBusinessCaseId = saList
+                .SalesArrangements
+                .FirstOrDefault(t => allowedSaTypeId.Contains(t.SalesArrangementTypeId))?
+                .RiskBusinessCaseId;
+        }
 
         //TODO login
         var sbRequest = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest
@@ -41,13 +56,13 @@ internal sealed class NotifyStarbuildHandler
             Login = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous",
             CaseId = caseInstance.CaseId,
             ContractNumber = caseInstance.ContractNumber,
-            ClientFullName = caseInstance.ClientName ?? "",
+            ClientFullName = $"{caseInstance.FirstNameNaturalPerson} {caseInstance.Name}",
             CaseStateName = caseState.Name,
             ProductTypeId = caseInstance.ProductTypeId,
             OwnerUserCpm = ownerInstance.CPM,
             OwnerUserIcp = ownerInstance.ICP,
             Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId.GetValueOrDefault(),
-            RiskBusinessCaseId = rbcId,
+            RiskBusinessCaseId = request.RiskBusinessCaseId,
             IsEmployeeBonusRequested = caseInstance.IsEmployeeBonusRequested
         };
         var result = await _sbWebApiClient.CaseStateChanged(sbRequest, cancellationToken);
@@ -55,15 +70,15 @@ internal sealed class NotifyStarbuildHandler
         // ulozit request id
         if (result.RequestId.HasValue)
         {
-            _dbContext.QueueRequestIds.Add(new Database.Entities.QueueRequestId
+            await _distributedCache.SetObjectAsync($"CaseStateChanged_{result.RequestId.Value}", new CaseStateChangeRequestId
             {
                 RequestId = result.RequestId.Value,
                 CaseId = caseInstance.CaseId,
                 CreatedTime = DateTime.Now
-            });
-            await _dbContext.SaveChangesAsync(cancellationToken);
-
-            _logger.QueueRequestIdSaved(result.RequestId.Value, request.CaseId);
+            }, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddHours(1),
+            }, cancellationToken);
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
@@ -74,20 +89,20 @@ internal sealed class NotifyStarbuildHandler
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly ILogger<CaseStateChangedHandler> _logger;
     private readonly Database.CaseServiceDbContext _dbContext;
+    private readonly IDistributedCache _distributedCache;
 
     public NotifyStarbuildHandler(
+        IDistributedCache distributedCache,
         Database.CaseServiceDbContext dbContext,
-        ILogger<CaseStateChangedHandler> logger,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         CodebookService.Clients.ICodebookServiceClients codebookService,
         UserService.Clients.IUserServiceClient userService,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
+        _distributedCache = distributedCache;
         _dbContext = dbContext;
-        _logger = logger;
         _userAccessor = userAccessor;
         _codebookService = codebookService;
         _userService = userService;

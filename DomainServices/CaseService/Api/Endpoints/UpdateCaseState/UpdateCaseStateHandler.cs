@@ -11,6 +11,7 @@ internal sealed class UpdateCaseStateHandler
         // zjistit zda existuje case
         var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
+        int currentCaseState = entity.State;
 
         // overit ze case state existuje
         if (!(await _codebookService.CaseStates(cancellation)).Any(t => t.Id == request.State))
@@ -18,18 +19,18 @@ internal sealed class UpdateCaseStateHandler
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseStateNotFound, request.State);
         }
         
-        if (entity.State == request.State)
+        if (currentCaseState == request.State)
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseStateAlreadySet);
         }
 
         // Zakázané přechody mezi stavy
-        if ((entity.State == 6 || entity.State == 7)
-            || (entity.State == 2 && request.State == 1))
-            throw new CisValidationException(13006, "Case state change not allowed");
+        if ((currentCaseState == 6 || currentCaseState == 7)
+            || (currentCaseState == 2 && request.State == 1))
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseStateNotAllowed);
 
         // pokud je true, meli bychom poslat info SB se zmenou stavu
-        bool shouldNotifySbAboutStateChange = request.StateUpdatedInStarbuild == UpdatedInStarbuildStates.Unknown && _starbuildStateUpdateStates.Contains(entity.State);
+        bool shouldNotifySbAboutStateChange = request.StateUpdatedInStarbuild == UpdatedInStarbuildStates.Unknown && _starbuildStateUpdateStates.Contains(currentCaseState);
 
         // update v DB
         entity.StateUpdatedInStarbuild = (byte)request.StateUpdatedInStarbuild;
@@ -41,15 +42,9 @@ internal sealed class UpdateCaseStateHandler
         // fire notification
         if (shouldNotifySbAboutStateChange)
         {
-            await _mediator.Publish(new Notifications.CaseStateChangedNotification
+            await _mediator.Send(new NotifyStarbuildRequest
             {
-                CaseId = request.CaseId,
-                CaseStateId = request.State,
-                ClientName = $"{entity.FirstNameNaturalPerson} {entity.Name}",
-                ProductTypeId = entity.ProductTypeId,
-                CaseOwnerUserId = entity.OwnerUserId,
-                ContractNumber = entity.ContractNumber,
-                IsEmployeeBonusRequested = entity.IsEmployeeBonusRequested
+                CaseId = request.CaseId
             }, cancellation);
         }
 

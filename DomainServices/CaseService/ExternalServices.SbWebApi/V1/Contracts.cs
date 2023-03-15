@@ -17,7 +17,7 @@ using System.Text.Json.Serialization;
 #pragma warning disable 3016 // Disable "CS3016 Arrays as attribute arguments is not CLS-compliant"
 #pragma warning disable 8603 // Disable "CS8603 Possible null reference return"
 
-namespace ExternalServices.SbWebApi.V1.Contracts
+namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts
 {
     using System = global::System;
 

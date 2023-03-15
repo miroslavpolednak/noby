@@ -1,7 +1,7 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
-using ExternalServices.SbWebApi.Dto;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto;
 
-namespace ExternalServices.SbWebApi.V1;
+namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
 public interface ISbWebApiClient 
     : IExternalServiceClient

@@ -3,7 +3,7 @@ using CIS.Infrastructure.ExternalServicesHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using CIS.Foms.Enums;
 
-namespace ExternalServices;
+namespace DomainServices.CaseService.ExternalServices;
 
 public static class StartupExtensions
 {
