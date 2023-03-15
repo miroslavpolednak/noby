@@ -3,7 +3,7 @@ from typing import List
 from .IConfig import IConfig
 from common.mssql.DbConnection import DbConnection as MsSqlDbConnection
 from common.mssql.DbManager import DbManager as MsSqlDbManager
-from common.enums.EEnvironment import EEnvironment
+from common.enums.ETestEnvironment import ETestEnvironment
 from common.enums.EService import EService
 from common.enums.EServiceType import EServiceType
 
@@ -17,9 +17,9 @@ class Config(IConfig):
         return os.getenv("ENV")
 
     @property
-    def environment(self) -> EEnvironment:
+    def environment(self) -> ETestEnvironment:
         """Returns environment [DEV, FAT, SIT] """
-        return EEnvironment[os.getenv("ENV")]
+        return ETestEnvironment[os.getenv("ENV")]
 
     @property
     def server(self) -> str:

@@ -48,6 +48,18 @@ class DbManager():
         db.commit()
         db.close()
 
+    def exec_nonquery(self, sql_commands: List[str]):
+        # connect to DB
+        db = sqlite3.connect(self._path_to_db)
+        cursor = db.cursor()
+
+        for sql in sql_commands:
+            cursor.executescript(sql)
+
+        # commit & close
+        db.commit()
+        db.close()
+
     def exec_query(self, query: str)->List[dict]:
         data = None
         columns = None

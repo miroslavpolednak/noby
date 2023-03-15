@@ -8,11 +8,15 @@ from .mssql.DbManager import DbManager as MsSqlDbManager
 
 from .sqlite.DbManager import DbManager as SqliteDbManager
 
-from .enums.EEnvironment import EEnvironment
+from .enums.ETestEnvironment import ETestEnvironment
+from .enums.ETestLayer import ETestLayer
+from .enums.ETestType import ETestType
+
 from .enums.EService import EService
 from .enums.EServiceType import EServiceType
 
 from .helpers.Convertor import Convertor
+from .helpers.EnumExtensions import EnumExtensions
 from .logging.Log import Log
 
 config:IConfig = ConfigDefault()
