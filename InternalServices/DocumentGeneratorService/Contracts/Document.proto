@@ -1,8 +1,0 @@
-﻿syntax = "proto3";
-
-package CIS.InternalServices.DocumentGeneratorService;
-option csharp_namespace = "CIS.InternalServices.DocumentGeneratorService.Contracts";
-
-message Document {
-	bytes Data = 1;
-}
