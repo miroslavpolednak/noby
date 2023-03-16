@@ -154,6 +154,10 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("loan-application/main-household/sales-arrangement/{salesArrangementId:int}")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<IActionResult> GetLoanApplicationMain(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -170,6 +174,10 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("loan-application/codebtor-household/sales-arrangement/{salesArrangementId:int}")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<IActionResult> GetLoanApplicationCodebtor(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
