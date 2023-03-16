@@ -10,67 +10,67 @@ public class Address
     [JsonIgnore]
     public bool IsPrimary { get; set; }
 
-    public int AddressTypeId { get; set; }
+    public int? AddressTypeId { get; set; }
 
     /// <summary>
     /// Ulice
     /// </summary>
-    public string Street { get; set; } = string.Empty;
+    public string? Street { get; set; }
 
     /// <summary>
     /// Číslo orientační
     /// </summary>
-    public string StreetNumber { get; set; } = string.Empty;
+    public string? StreetNumber { get; set; }
 
     /// <summary>
     /// Číslo popisné
     /// </summary>
-    public string HouseNumber { get; set; } = string.Empty;
+    public string? HouseNumber { get; set; }
 
     /// <summary>
     /// Číslo evidenční
     /// </summary>
-    public string EvidenceNumber { get; set; } = string.Empty;
+    public string? EvidenceNumber { get; set; }
 
     /// <summary>
     /// PSČ
     /// </summary>
-    public string Postcode { get; set; } = string.Empty;
+    public string? Postcode { get; set; }
 
     /// <summary>
     /// Město/Obec
     /// </summary>
-    public string City { get; set; } = string.Empty;
+    public string? City { get; set; }
     
     /// <summary>
     /// 
     /// </summary>
-    public int CountryId { get; set; }
+    public int? CountryId { get; set; }
 
     /// <summary>
     /// Část obce
     /// </summary>
-    public string CityDistrict { get; set; } = string.Empty;
+    public string? CityDistrict { get; set; }
 
-    public string DeliveryDetails { get; set; } = string.Empty;
+    public string? DeliveryDetails { get; set; }
 
     /// <summary>
     /// Praha obvod
     /// </summary>
-    public string PragueDistrict { get; set; } = string.Empty;
+    public string? PragueDistrict { get; set; }
 
     /// <summary>
     /// Název územního celku
     /// </summary>
-    public string CountrySubdivision { get; set; } = string.Empty;
+    public string? CountrySubdivision { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public DateTime PrimaryAddressFrom { get; set; }
+    public DateTime? PrimaryAddressFrom { get; set; }
 
     /// <summary>
     /// Id adresního bodu
     /// </summary>
-    public string AddressPointId { get; set; } = string.Empty;
+    public string? AddressPointId { get; set; }
 
     public override bool Equals(object? obj)
     {

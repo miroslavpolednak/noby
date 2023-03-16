@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using NOBY.Api.Endpoints.Customer.Create.Dto;
 
 namespace NOBY.Api.Endpoints.Customer.Create;
 
@@ -70,8 +71,8 @@ public class CreateRequest
     /// Trvalá adresa v ČR
     /// </summary>
     [Required]
-    public CIS.Foms.Types.AddressRequired? PrimaryAddress { get; set; }
+    public Dto.Address? PrimaryAddress { get; set; }
 
     [Required]
-    public SharedDto.IdentificationDocumentFullRequired? IdentificationDocument { get; set; }
+    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 }

@@ -867,6 +867,66 @@
             Vstupní data se liší od dat z KB CM
             </summary>
         </member>
+        <member name="T:NOBY.Api.Endpoints.Customer.Create.Dto.Address">
+            <summary>
+            Adresa - bydliste, kontaktni atd.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.Street">
+            <summary>
+            Ulice
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.StreetNumber">
+            <summary>
+            Číslo orientační
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.HouseNumber">
+            <summary>
+            Číslo popisné
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.EvidenceNumber">
+            <summary>
+            Číslo evidenční
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.Postcode">
+            <summary>
+            PSČ
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.City">
+            <summary>
+            Město/Obec
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.CountryId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.CityDistrict">
+            <summary>
+            Část obce
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.PragueDistrict">
+            <summary>
+            Praha obvod
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.CountrySubdivision">
+            <summary>
+            Název územního celku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.AddressPointId">
+            <summary>
+            Id adresního bodu
+            </summary>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.Create(NOBY.Api.Endpoints.Customer.Create.CreateRequest,System.Threading.CancellationToken)">
             <summary>
             Založení nového klienta
@@ -3436,12 +3496,12 @@
             Číslo osobního dokladu
             </summary>
         </member>
-        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentFullRequired.IssuingCountryId">
+        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentFull.IssuingCountryId">
             <summary>
             Stát vydání dokladu
             </summary>
         </member>
-        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentFullRequired.IssuedBy">
+        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentFull.IssuedBy">
             <summary>
             Doklad vydal
             </summary>

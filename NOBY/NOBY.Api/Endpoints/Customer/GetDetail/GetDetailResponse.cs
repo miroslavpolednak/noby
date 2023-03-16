@@ -20,5 +20,5 @@ public sealed class GetDetailResponse
     
     public SharedDto.ContactsConfirmedDto? Contacts { get; set; }
     
-    public SharedDto.IdentificationDocumentFullRequired? IdentificationDocument { get; set; }
+    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 }

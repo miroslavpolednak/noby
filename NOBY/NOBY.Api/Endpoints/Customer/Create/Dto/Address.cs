@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace CIS.Foms.Types;
+namespace NOBY.Api.Endpoints.Customer.Create.Dto;
 
 /// <summary>
 /// Adresa - bydliste, kontaktni atd.
 /// </summary>
-public class AddressRequired
+public class Address
 {
     [JsonIgnore]
     public bool IsPrimary { get; set; }
@@ -79,7 +79,7 @@ public class AddressRequired
 
     public override bool Equals(object? obj)
     {
-        var address2 = obj as Address;
+        var address2 = obj as CIS.Foms.Types.Address;
 
         if (stringCompare(this.Street, address2?.Street)
             && stringCompare(this.City, address2?.City)

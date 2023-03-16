@@ -2,7 +2,7 @@
 
 public static class IdentificationDocumentExtensions
 {
-    public static DomainServices.CustomerService.Contracts.IdentificationDocument ToDomainService(this IdentificationDocumentFullRequired document)
+    public static DomainServices.CustomerService.Contracts.IdentificationDocument ToDomainService(this IdentificationDocumentFull document)
        => new()
        {
            IssuingCountryId = document.IssuingCountryId,
@@ -13,7 +13,7 @@ public static class IdentificationDocumentExtensions
            ValidTo = document.ValidTo // ?? DateTime.Today.AddYears(2) // Mock
        };
     
-    public static IdentificationDocumentFullRequired ToResponseDto(this DomainServices.CustomerService.Contracts.IdentificationDocument document)
+    public static IdentificationDocumentFull ToResponseDto(this DomainServices.CustomerService.Contracts.IdentificationDocument document)
         => new()
         {
             IssuingCountryId = document.IssuingCountryId ?? 0,

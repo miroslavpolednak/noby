@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.SharedDto;
 
-public sealed class IdentificationDocumentFullRequired
+public sealed class IdentificationDocumentFull
     : IdentificationDocumentBase
 {
     /// <summary>
