@@ -3,11 +3,11 @@
 internal sealed class DiscoveryServiceClient 
     : IDiscoveryServiceClient
 {
-    public async Task<ImmutableList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IReadOnlyList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default(CancellationToken))
         => await GetServices(getEnvName(), cancellationToken);
 
     // get services nekesujeme, nemel by to byt casty dotaz
-    public async Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IReadOnlyList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken = default(CancellationToken))
         => await _cache.GetServices(environmentName, cancellationToken);
     
     public async Task<DiscoverableService> GetService(ApplicationKey serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken))
@@ -34,7 +34,7 @@ internal sealed class DiscoveryServiceClient
             return serviceFromCache.ServiceUrl;
     }
 
-    public ImmutableList<DiscoverableService> GetServicesSynchronously()
+    public IReadOnlyList<DiscoverableService> GetServicesSynchronously()
     {
         return _cache.GetServices(getEnvName(), default(CancellationToken)).GetAwaiter().GetResult();
     }

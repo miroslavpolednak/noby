@@ -1,6 +1,5 @@
 ﻿using CIS.Core.Exceptions;
 using Grpc.Core;
-using System.Collections.Immutable;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -40,7 +39,7 @@ public static class GrpcExceptionHelpers
         return new RpcException(new Status(statusCode, exception.Message), trailersCollection);
     }
 
-    public static ImmutableList<CisExceptionItem> GetErrorMessagesFromRpcException(this RpcException exception)
+    public static IReadOnlyList<CisExceptionItem> GetErrorMessagesFromRpcException(this RpcException exception)
     {
         List<CisExceptionItem> list = new();
 
@@ -59,7 +58,7 @@ public static class GrpcExceptionHelpers
             }
         }
 
-        return list.ToImmutableList();
+        return list.AsReadOnly();
     }
 
     public static int GetExceptionCodeFromTrailers(this RpcException exception)

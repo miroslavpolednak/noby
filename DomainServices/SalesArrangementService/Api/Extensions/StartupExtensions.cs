@@ -1,6 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using ExternalServices;
-using ExternalServices.SbWebApi.V1;
 
 namespace DomainServices.SalesArrangementService.Api;
 
@@ -10,8 +9,6 @@ internal static class StartupExtensions
     {
         // EAS svc
         builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
-        // sb web api
-        builder.AddExternalService<ISbWebApiClient>();
 
         // dbcontext
         builder.AddEntityFramework<Database.SalesArrangementServiceDbContext>();

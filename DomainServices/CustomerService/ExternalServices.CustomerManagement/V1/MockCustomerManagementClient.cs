@@ -1,6 +1,5 @@
 ﻿using DomainServices.CustomerService.ExternalServices.CustomerManagement.Dto;
 using DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
-using System.Collections.Immutable;
 
 namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1;
 
@@ -25,7 +24,7 @@ internal sealed class MockCustomerManagementClient
         return Task.FromResult(result);
     }
 
-    public Task<ImmutableList<CustomerBaseInfo>> GetList(IEnumerable<long> customerIds, CancellationToken cancellationToken)
+    public Task<IReadOnlyList<CustomerBaseInfo>> GetList(IEnumerable<long> customerIds, CancellationToken cancellationToken)
     {
         var result = new List<CustomerBaseInfo>() {
             new() {
@@ -40,10 +39,10 @@ internal sealed class MockCustomerManagementClient
             }
         };
 
-        return Task.FromResult<ImmutableList<CustomerBaseInfo>>(result.ToImmutableList());
+        return Task.FromResult<IReadOnlyList<CustomerBaseInfo>>(result.AsReadOnly());
     }
 
-    public Task<ImmutableList<CustomerSearchResultRow>> Search(CustomerManagementSearchRequest searchRequest, CancellationToken cancellationToken)
+    public Task<IReadOnlyList<CustomerSearchResultRow>> Search(CustomerManagementSearchRequest searchRequest, CancellationToken cancellationToken)
     {
         var result = new List<CustomerSearchResultRow>()
         {
@@ -62,6 +61,6 @@ internal sealed class MockCustomerManagementClient
             }
         };
 
-        return Task.FromResult<ImmutableList<CustomerSearchResultRow>>(result.ToImmutableList());
+        return Task.FromResult<IReadOnlyList<CustomerSearchResultRow>>(result.AsReadOnly());
     }
 }

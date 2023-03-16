@@ -20,6 +20,7 @@ internal sealed class ErrorCodeMapper
     public const int CaseIdIsEmpty = 13016;
     public const int InvalidCaseState = 13017;
     public const int TargetAmountIsEmpty = 13018;
+    public const int AuthenticatedUserNotFound = 13019;
     public const int CantDeleteCase = 13021;
 
     public static IErrorCodesDictionary Init()
@@ -41,7 +42,8 @@ internal sealed class ErrorCodeMapper
             { InvalidCaseState, "Case State must be > 0" },
             { CaseStateNotFound, "State {PropertyValue} not found" },
             { CaseStateAlreadySet, "Case state already set to the same value" },
-            { CaseStateNotAllowed, "Case state change not allowed" }
+            { CaseStateNotAllowed, "Case state change not allowed" },
+            { AuthenticatedUserNotFound, "Authenticated user has not been passed in auth headers" }
 
         });
 

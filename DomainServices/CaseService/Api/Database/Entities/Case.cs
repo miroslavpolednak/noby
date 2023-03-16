@@ -15,6 +15,7 @@ internal sealed class Case
     public int ProductTypeId { get; set; }
     public int State { get; set; }
     public DateTime StateUpdateTime { get; set; }
+    public byte StateUpdatedInStarbuild { get; set; }
 
     // vlastnik case
     public int OwnerUserId { get; set; }

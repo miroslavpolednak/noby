@@ -16,6 +16,7 @@ import "Messages/DeleteCase.proto";
 import "Messages/GetTaskList.proto";
 import "Messages/UpdateActiveTasks.proto";
 import "Messages/UpdateOfferContacts.proto";
+import "Messages/NotifyStarbuild.proto";
 
 service CaseService {
    rpc CreateCase (CreateCaseRequest) returns (CreateCaseResponse);
@@ -41,4 +42,6 @@ service CaseService {
    rpc UpdateActiveTasks (UpdateActiveTasksRequest) returns (google.protobuf.Empty);
 
    rpc UpdateOfferContacts (UpdateOfferContactsRequest) returns (google.protobuf.Empty);
+
+   rpc NotifyStarbuild (NotifyStarbuildRequest) returns (google.protobuf.Empty);
 }

@@ -14,5 +14,5 @@ public sealed class TestCisEnvironmentConfiguration : Core.Configuration.ICisEnv
 
     public string? InternalServicePassword { get; set; }
 
-    public ICisEnvironmentDistributedCacheConfiguration? DistributedCache => throw new NotImplementedException();
+    public ICisDistributedCacheConfiguration? DistributedCache => throw new NotImplementedException();
 }
