@@ -1,46 +1,63 @@
-﻿namespace NOBY.Api.Endpoints.Customer.Create;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using NOBY.Api.Endpoints.Customer.Create.Dto;
+
+namespace NOBY.Api.Endpoints.Customer.Create;
 
 public class CreateRequest
     : IRequest<CreateResponse>
 {
     /// <summary>
-    /// Příznak tvrdého vytvoření customera. Default:false
+    /// Příznak tvrdého vytvoření customera.
     /// </summary>
+    /// <example>true</example>
+    [DefaultValue(false)]
     public bool HardCreate { get; set; }
 
     /// <summary>
     /// Id customera na sales arrangementu
     /// </summary>
+    /// <example>123456</example>
+    [Required]
     public int CustomerOnSAId { get; set; }
 
     /// <summary>
     /// Datum narození
     /// </summary>
-    public DateTime? BirthDate { get; set; }
+    /// <example>2000-02-01</example>
+    [Required]
+    public DateTime BirthDate { get; set; }
 
     /// <summary>
     /// Jméno
     /// </summary>
+    /// <example>Jidáš</example>
+    [Required]
     public string FirstName { get; set; } = string.Empty;
 
     /// <summary>
     /// Příjmení
     /// </summary>
-    public string LastName { get; set; } = String.Empty;
+    /// <example>Skočdopole</example>
+    [Required]
+    public string LastName { get; set; } = string.Empty;
 
     /// <summary>
     /// Místo narození
     /// </summary>
+    /// <example>Praha</example>
     public string? BirthPlace { get; set; }
 
     /// <summary>
-    /// Pohlaví
+    /// Pohlaví\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Male</li><li>2 - Female</li></ul>
     /// </summary>
+    [Required]
     public int GenderId { get; set; }
 
     /// <summary>
     /// Státní příslušnost/občanství
     /// </summary>
+    /// <example>16</example>
     public int? CitizenshipCountryId { get; set; }
 
     public SharedDto.ContactsDto? Contacts { get; set; }
@@ -53,7 +70,9 @@ public class CreateRequest
     /// <summary>
     /// Trvalá adresa v ČR
     /// </summary>
-    public CIS.Foms.Types.Address? PrimaryAddress { get; set; }
+    [Required]
+    public Dto.Address? PrimaryAddress { get; set; }
 
+    [Required]
     public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 }

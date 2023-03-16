@@ -22,8 +22,8 @@ public class CustomerController : ControllerBase
     [ProducesResponseType(typeof(Create.CreateResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<Create.CreateResponse> Create([FromBody] Create.CreateRequest resquest, CancellationToken cancellationToken)
-        => await _mediator.Send(resquest, cancellationToken);
+    public async Task<Create.CreateResponse> Create([FromBody] Create.CreateRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request, cancellationToken);
 
     /// <summary>
     /// Vyhledávání klientů
@@ -41,8 +41,8 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "Klient" })]
     [ProducesResponseType(typeof(Search.SearchResponse), StatusCodes.Status200OK)]
-    public async Task<Search.SearchResponse> Search([FromBody] Search.SearchRequest resquest, CancellationToken cancellationToken)
-        => await _mediator.Send(resquest, cancellationToken);
+    public async Task<Search.SearchResponse> Search([FromBody] Search.SearchRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request, cancellationToken);
     
     /// <summary>
     /// Detail klienta
