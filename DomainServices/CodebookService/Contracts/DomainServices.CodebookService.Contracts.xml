@@ -14,9 +14,19 @@
             ID developerského projektu
             </summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.DeveloperSearch.DeveloperSearchItem.Description">
+        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.DeveloperSearch.DeveloperSearchItem.DeveloperName">
             <summary>
-            Popis developera
+            Jméno developera
+            </summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.DeveloperSearch.DeveloperSearchItem.DeveloperProjectName">
+            <summary>
+            Jméno developerského projektu
+            </summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.DeveloperSearch.DeveloperSearchItem.DeveloperCIN">
+            <summary>
+            ICO/RČ developera
             </summary>
         </member>
     </members>
