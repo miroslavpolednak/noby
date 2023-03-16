@@ -110,5 +110,7 @@ cleaner=next=Cleaner(next)
 writer=next=Writer(next)
 writer2=next=Writer_sqlite('OFFER',next)
 #Spustíme generování
-pipe.process()
 
+#pipe.process()
+def process():
+    pipe.process()
