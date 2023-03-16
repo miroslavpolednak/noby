@@ -352,6 +352,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 	ProjectSection(SolutionItems) = preProject
 		InternalServices\DataAggregatorService\DatabaseMigrations\00001-initial_create.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00001-initial_create.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00003-documentOnSa.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00003-documentOnSa.sql
 	EndProjectSection
 EndProject
 Global

@@ -11,16 +11,16 @@ internal class DocumentOnSaInfo
         FormIdList = GetFormIdList(documentsOnSa);
     }
 
-    public required int SigningMethodId { get; init; }
+    public required int SignatureMethodId { get; init; }
 
     public DocumentOnSAToSign? FinalDocument { get; }
 
     public DateTime? FirstSignatureDate { get; }
 
-    public List<string> FormIdList { get; }
+    public List<object> FormIdList { get; }
 
     private static DateTime? GetFirstSignatureDate(IEnumerable<DocumentOnSAToSign> documentsOnSa) =>
         documentsOnSa.Where(d => d.IsSigned).OrderBy(d => d.SignatureDateTime).Select(d => d.SignatureDateTime.ToDateTime()).FirstOrDefault();
 
-    private static List<string> GetFormIdList(IEnumerable<DocumentOnSAToSign> documentsOnSa) => documentsOnSa.Select(d => d.FormId).ToList();
+    private static List<object> GetFormIdList(IEnumerable<DocumentOnSAToSign> documentsOnSa) => documentsOnSa.Select(d => new { d.FormId }).ToList<object>();
 }

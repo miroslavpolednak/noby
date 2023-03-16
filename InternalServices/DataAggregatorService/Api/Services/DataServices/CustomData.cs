@@ -15,4 +15,6 @@ internal class CustomData
 
     public IEnumerable<SalesArrangementPayout> SalesArrangementPayoutList =>
         _data.SalesArrangement.Drawing.PayoutList.Select(p => new SalesArrangementPayout(p));
+
+    public DocumentOnSaInfo DocumentOnSa { get; set; } = null!;
 }

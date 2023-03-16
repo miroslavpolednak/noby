@@ -25,9 +25,9 @@ internal class DocumentOnSaServiceWrapper : IServiceWrapper
 
         var response = await _documentOnSAService.GetDocumentsOnSAList(input.SalesArrangementId!.Value, cancellationToken);
 
-        data.DocumentOnSa = new DocumentOnSaInfo(response.DocumentsOnSA)
+        data.Custom.DocumentOnSa = new DocumentOnSaInfo(response.DocumentsOnSA)
         {
-            SigningMethodId = await GetSignatureMethodId(response.DocumentsOnSA, cancellationToken)
+            SignatureMethodId = await GetSignatureMethodId(response.DocumentsOnSA, cancellationToken)
         };
     }
 
