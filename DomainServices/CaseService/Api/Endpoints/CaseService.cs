@@ -44,6 +44,9 @@ internal sealed class CaseService
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateActiveTasks(UpdateActiveTasksRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> NotifyStarbuild(NotifyStarbuildRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     private readonly IMediator _mediator;
     public CaseService(IMediator mediator)
         => _mediator = mediator;

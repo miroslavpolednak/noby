@@ -1,5 +1,4 @@
 ﻿using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
-using System.Collections.Immutable;
 
 namespace DomainServices.CodebookService.Endpoints.ProductTypes;
 
@@ -18,7 +17,7 @@ public class ProductTypesHandler
             var result = await _connectionProviderXxd.ExecuteDapperRawSqlToList<ProductTypeItem>(_sqlQuery, cancellationToken);
 
             // pouze platne loan kinds https://jira.kb.cz/browse/HFICH-2984
-            var loanKinds = (await _mediator.Send(new Contracts.Endpoints.LoanKinds.LoanKindsRequest(), cancellationToken)).Where(t => t.IsValid).Select(t => t.Id).ToImmutableArray();
+            var loanKinds = (await _mediator.Send(new Contracts.Endpoints.LoanKinds.LoanKindsRequest(), cancellationToken)).Where(t => t.IsValid).Select(t => t.Id).ToArray();
 
             // namapovat kategorie z extensions tabulky
             result.ForEach(t =>

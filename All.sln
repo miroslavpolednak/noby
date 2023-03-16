@@ -151,8 +151,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.LogApi", "NOBY\NOBY.Lo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.Clients", "DomainServices\RiskIntegrationService\Clients\DomainServices.RiskIntegrationService.Clients.csproj", "{0C83B5DE-9BAF-4FFE-9A97-83AE072A134C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.SbWebApi", "ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj", "{6903FF67-0347-4AC5-9782-C88C52DADE5C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.EasSimulationHT", "ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj", "{E6AB80FE-1647-4D1C-BEB8-9380964DB3BD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_RiskIntegrationService", "Playgrounds\Console_RiskIntegrationService\Console_RiskIntegrationService.csproj", "{7C6DA138-865C-417A-9AC2-1CA77817BB63}"
@@ -269,11 +267,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\SalesArrangementService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00001-initial_creation.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00002-initial_seed.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00002-initial_seed.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
 	ProjectSection(SolutionItems) = preProject
 		NOBY\DatabaseMigrations\00001-initial_creation.sql = NOBY\DatabaseMigrations\00001-initial_creation.sql
+		NOBY\DatabaseMigrations\00002-HFICH-4866.sql = NOBY\DatabaseMigrations\00002-HFICH-4866.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.ExternalServices.Sdf", "DomainServices\DocumentArchiveService\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj", "{F969A020-76AF-48A6-BF8F-959A58D0C982}"
@@ -283,11 +283,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{575507BC-3755-40BB-AC02-E7B8823C6F90}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql
+		DomainServices\CaseService\DatabaseMigrations\00002-HFICH-4757.sql = DomainServices\CaseService\DatabaseMigrations\00002-HFICH-4757.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\CodebookService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\CodebookService\DatabaseMigrations\00001-initial_creation.sql
+		DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -337,11 +339,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{49E4977C-DD43-424E-89C7-A59324CC0864}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00001-InitialCreate.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00001-InitialCreate.sql
+		DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{6D676B53-6AD7-4828-922D-B52A42B5AD4F}"
 	ProjectSection(SolutionItems) = preProject
-		InternalServices\NotificationService\DatabaseMigrations\20221222163946_Initial.sql = InternalServices\NotificationService\DatabaseMigrations\20221222163946_Initial.sql
+		InternalServices\NotificationService\DatabaseMigrations\00001-initial_creation.sql = InternalServices\NotificationService\DatabaseMigrations\00001-initial_creation.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D5315192-5730-455C-B586-D964F840F401}"
@@ -349,6 +352,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00001-initial_create.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00001-initial_create.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -766,14 +771,6 @@ Global
 		{0C83B5DE-9BAF-4FFE-9A97-83AE072A134C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0C83B5DE-9BAF-4FFE-9A97-83AE072A134C}.Release|x64.ActiveCfg = Release|Any CPU
 		{0C83B5DE-9BAF-4FFE-9A97-83AE072A134C}.Release|x64.Build.0 = Release|Any CPU
-		{6903FF67-0347-4AC5-9782-C88C52DADE5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6903FF67-0347-4AC5-9782-C88C52DADE5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6903FF67-0347-4AC5-9782-C88C52DADE5C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6903FF67-0347-4AC5-9782-C88C52DADE5C}.Debug|x64.Build.0 = Debug|Any CPU
-		{6903FF67-0347-4AC5-9782-C88C52DADE5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6903FF67-0347-4AC5-9782-C88C52DADE5C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6903FF67-0347-4AC5-9782-C88C52DADE5C}.Release|x64.ActiveCfg = Release|Any CPU
-		{6903FF67-0347-4AC5-9782-C88C52DADE5C}.Release|x64.Build.0 = Release|Any CPU
 		{E6AB80FE-1647-4D1C-BEB8-9380964DB3BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E6AB80FE-1647-4D1C-BEB8-9380964DB3BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6AB80FE-1647-4D1C-BEB8-9380964DB3BD}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -1142,6 +1139,14 @@ Global
 		{8DD02052-0C04-49A1-AF7A-21FEF64B6851}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8DD02052-0C04-49A1-AF7A-21FEF64B6851}.Release|x64.ActiveCfg = Release|Any CPU
 		{8DD02052-0C04-49A1-AF7A-21FEF64B6851}.Release|x64.Build.0 = Release|Any CPU
+		{FA440E3E-69ED-4197-B1FA-B705DA129FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA440E3E-69ED-4197-B1FA-B705DA129FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA440E3E-69ED-4197-B1FA-B705DA129FD7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FA440E3E-69ED-4197-B1FA-B705DA129FD7}.Debug|x64.Build.0 = Debug|Any CPU
+		{FA440E3E-69ED-4197-B1FA-B705DA129FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA440E3E-69ED-4197-B1FA-B705DA129FD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA440E3E-69ED-4197-B1FA-B705DA129FD7}.Release|x64.ActiveCfg = Release|Any CPU
+		{FA440E3E-69ED-4197-B1FA-B705DA129FD7}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1208,7 +1213,6 @@ Global
 		{AE3021C4-2C68-4ED5-B39D-CEB7FE96F218} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
 		{0620778C-3839-4F6B-9A3F-FF15B4F5E2E5} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 		{0C83B5DE-9BAF-4FFE-9A97-83AE072A134C} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
-		{6903FF67-0347-4AC5-9782-C88C52DADE5C} = {024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}
 		{E6AB80FE-1647-4D1C-BEB8-9380964DB3BD} = {024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}
 		{7C6DA138-865C-417A-9AC2-1CA77817BB63} = {B4ABFBCA-9641-4C56-A007-2F9347AB50DD}
 		{FC70376D-F556-4758-B80F-81E3DFB7F6AB} = {024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}
@@ -1274,6 +1278,7 @@ Global
 		{49E4977C-DD43-424E-89C7-A59324CC0864} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
 		{6D676B53-6AD7-4828-922D-B52A42B5AD4F} = {46414B85-D1B6-411D-B232-C6CC8B35FE57}
 		{D5315192-5730-455C-B586-D964F840F401} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
+		{FA440E3E-69ED-4197-B1FA-B705DA129FD7} = {1AB95406-90FE-4CAA-8536-6846B37A450E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

@@ -204,5 +204,25 @@
             Role klienta v obchodu
             </summary>
         </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.FlowSwitch1">
+            <summary>
+            Nabídka s platnou garancí
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.FlowSwitch2">
+            <summary>
+            Požadavek na IC
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.FlowSwitch3">
+            <summary>
+            Alespoň jeden příjem na hlavní domácnosti
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.FlowSwitch4">
+            <summary>
+            Alespoň jeden příjem na spoludlužnícké domácnosti
+            </summary>
+        </member>
     </members>
 </doc>

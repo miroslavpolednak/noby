@@ -40,15 +40,10 @@ internal sealed class CreateCaseHandler
             throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.CaseAlreadyExist, newCaseId);
         }
 
-        // fire notification
-        await _mediator.Publish(new Notifications.CaseStateChangedNotification
+        // notify SB about state change
+        await _mediator.Send(new Contracts.NotifyStarbuildRequest
         {
-            CaseId = newCaseId,
-            CaseStateId = defaultCaseState,
-            ClientName = $"{request.Customer?.FirstNameNaturalPerson} {request.Customer?.Name}",
-            ProductTypeId = request.Data.ProductTypeId,
-            CaseOwnerUserId = request.CaseOwnerUserId,
-            IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested
+            CaseId = newCaseId
         }, cancellation);
         
         return new CreateCaseResponse()
@@ -63,6 +58,7 @@ internal sealed class CreateCaseHandler
         {
             CaseId = caseId,
 
+            StateUpdatedInStarbuild = (int)UpdatedInStarbuildStates.Unknown,
             StateUpdateTime = _dateTime.Now,
             ProductTypeId = request.Data.ProductTypeId,
 
