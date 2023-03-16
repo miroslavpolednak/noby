@@ -1,4 +1,5 @@
 {
+    "label": "custom data example",
     "offer": {
         "productTypeId": 20001,
         "loanKindId": 2000,

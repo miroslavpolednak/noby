@@ -99,13 +99,10 @@ class TestDataProvider():
     def load_records(source: ESource = None, environments: ETestEnvironment = None, layers: ETestLayer = None,  types: ETestType = None) -> List[TestDataRecord]:
 
         def to_record(row: dict) -> TestDataRecord:
-            # {'Source': 2, 'Order': 1, 'TestEnvironments': 15, 'TestLayers': 7, 'TestTypes': 15, 'TimeCreated': '2023-03-15T13:18:50', 'SourceName': 'dev_fat/01_SomeOfferAndCase.json'}
-
             source = ESource(row['Source'])
             options = Options(ETestEnvironment(row["TestEnvironments"]), ETestLayer(row["TestLayers"]), ETestType(row["TestTypes"]))
-            time_created = datetime.fromisoformat(row["TimeCreated"])
-           
-            return TestDataRecord(source, row["Order"], options, time_created, row["SourceName"])
+            time_created = datetime.fromisoformat(row["TimeCreated"])           
+            return TestDataRecord(source, row["Order"], options, time_created, row["SourceName"], row["DataJsonLabel"])
 
         where_conditions: List[str] = []
 
@@ -121,8 +118,7 @@ class TestDataProvider():
         if types is not None:
             where_conditions.append(f'[TestTypes] & {types.value} <> 0')
 
-
-        query: str = 'SELECT [Source], [Order], [TestEnvironments], [TestLayers], [TestTypes], [TimeCreated], [SourceName] FROM TestData'
+        query: str = "SELECT [Source], [Order], [TestEnvironments], [TestLayers], [TestTypes], [TimeCreated], [SourceName], json_extract([DataJson], '$.label') AS 'DataJsonLabel' FROM TestData"
 
         if len(where_conditions) > 0:
             where = ' AND '.join(where_conditions)
@@ -132,12 +128,27 @@ class TestDataProvider():
 
         return list(map(to_record, rows))
 
+    @staticmethod
+    def load_record_data(source: ESource, order: int) -> dict:
 
-        
+        query: str = f'SELECT [DataJson] FROM TestData WHERE [Source] = {source.value} AND [Order] = {order}'
+       
+        data_json: dict = TestDataProvider.__db_manager.exec_scalar(query)
+
+        assert data_json is not None, f'Record not found [source: {source.name}, order: {order}]'
+
+        return data_json
 
 
-        
 
+# SELECT json_extract('{
+#     "dogs" : [
+#             { "name" : "Wag", "scores" : [ 7, 9 ] },
+#             { "name" : "Bark", "scores" : [ 3, 4, 8, 7 ] },
+#             { "name" : "Woof", "scores" : [ 3, 2, 1 ] }
+#     ]
+# }', 
+# '$.dogs'
+# );
 
-
-
+# SELECT json_extract([DataJson], '$.label');

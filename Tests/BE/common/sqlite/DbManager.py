@@ -84,4 +84,24 @@ class DbManager():
             rows.append(r)
             
         return rows
+    
+    def exec_scalar(self, query: str):
+        data = None
+        columns = None
 
+        with self.create_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute(query)
+
+            columns = list(map(lambda d: d[0], cursor.description))
+
+            # fetch all data
+            data = cursor.fetchall()
+
+        assert len(columns) == 1, f'Query returns more columns!'
+        assert len(data) <=1, f'Query returns more rows!'
+
+        if len(data) == 0:
+            return None
+
+        return data[0][0]
