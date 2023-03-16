@@ -28,6 +28,7 @@ internal class ServiceMap
         AddService<CustomerServiceWrapper>(DataSource.CustomerService);
         AddService<ProductServiceWrapper>(DataSource.ProductService);
         AddService<HouseholdServiceWrapper>(DataSource.HouseholdService);
+        AddService<DocumentOnSaServiceWrapper>(DataSource.DocumentOnSa);
 
         ConfigureExtensionServices();
     }

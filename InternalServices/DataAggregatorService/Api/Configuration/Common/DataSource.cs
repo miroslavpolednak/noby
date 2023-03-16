@@ -13,5 +13,6 @@ internal enum DataSource
     HouseholdService,
     CustomersOnSa,
     CustomersOnSaDetail,
-    HouseholdWithCustomersService
+    HouseholdWithCustomersService,
+    DocumentOnSa
 }

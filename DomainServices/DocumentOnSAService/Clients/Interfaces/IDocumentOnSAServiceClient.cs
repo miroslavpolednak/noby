@@ -32,4 +32,9 @@ public interface IDocumentOnSAServiceClient
     /// Metoda slouží k zahájení podepisovacího procesu
     /// </summary>
     Task SignDocumentManually(int documentOnSAId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k poskytnutí seznamu všechn dokumentů.
+    /// </summary>
+    Task<GetDocumentsOnSAListResponse> GetDocumentsOnSAList(int salesArrangementId, CancellationToken cancellationToken = default);
 }

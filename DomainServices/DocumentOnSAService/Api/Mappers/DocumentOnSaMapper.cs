@@ -32,7 +32,8 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
                 IsDocumentArchived = documentOnSa.IsDocumentArchived,
                 SignatureMethodCode = documentOnSa.SignatureMethodCode ?? string.Empty,
                 SignatureDateTime = documentOnSa.SignatureDateTime is not null ? Timestamp.FromDateTime(DateTime.SpecifyKind(documentOnSa.SignatureDateTime.Value, DateTimeKind.Utc)) : null,
-                SignatureConfirmedBy = documentOnSa.SignatureConfirmedBy
+                SignatureConfirmedBy = documentOnSa.SignatureConfirmedBy,
+                IsFinal = documentOnSa.IsFinal
             };
         }
     }
