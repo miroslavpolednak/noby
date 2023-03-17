@@ -10,6 +10,7 @@ internal sealed class CisBackgroundService<TBackgroundService>
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly ICisBackgroundServiceConfiguration<TBackgroundService> _options;
     private readonly CrontabSchedule _crontab;
+    private readonly string _serviceName;
 
     public CisBackgroundService(
         ILogger<TBackgroundService> logger,
@@ -20,6 +21,8 @@ internal sealed class CisBackgroundService<TBackgroundService>
         _logger = logger;
         _serviceScopeFactory = serviceScopeFactory;
         _options = options;
+
+        _serviceName = typeof(TBackgroundService).Name;
 
         // parse cron expr.
         _crontab = getCrontabSchedule();
@@ -32,7 +35,7 @@ internal sealed class CisBackgroundService<TBackgroundService>
     {
         if (_options.Disabled)
         {
-            _logger.BackgroundServiceIsDisabled(nameof(TBackgroundService));
+            _logger.BackgroundServiceIsDisabled(_serviceName);
             return;
         }
 
@@ -54,14 +57,15 @@ internal sealed class CisBackgroundService<TBackgroundService>
             }
             catch (Exception ex)
             {
-                _logger.BackgroundServiceExecutionError(nameof(TBackgroundService), ex);
+                _logger.BackgroundServiceExecutionError(_serviceName, ex);
             }
 
             // vypocitat next run
             var next = _crontab.GetNextOccurrence(DateTime.Now);
-            _logger.BackgroundServiceNextRun(nameof(TBackgroundService), next);
+            _logger.BackgroundServiceNextRun(_serviceName, next);
 
-            await Task.Delay((next - DateTime.Now).Milliseconds, stoppingToken);
+            var nextRun = (next - DateTime.Now).Milliseconds;
+            await Task.Delay(nextRun, stoppingToken);
         }
     }
 
@@ -82,6 +86,6 @@ internal sealed class CisBackgroundService<TBackgroundService>
             DayOfWeekStartIndexZero = true,
             Use24HourTimeFormat = true
         });
-        _logger.BackgroundServiceRegistered(nameof(TBackgroundService), cronDescription);
+        _logger.BackgroundServiceRegistered(_serviceName, cronDescription);
     }
 }
