@@ -138,17 +138,3 @@ class TestDataProvider():
         assert data_json is not None, f'Record not found [source: {source.name}, order: {order}]'
 
         return data_json
-
-
-
-# SELECT json_extract('{
-#     "dogs" : [
-#             { "name" : "Wag", "scores" : [ 7, 9 ] },
-#             { "name" : "Bark", "scores" : [ 3, 4, 8, 7 ] },
-#             { "name" : "Woof", "scores" : [ 3, 2, 1 ] }
-#     ]
-# }', 
-# '$.dogs'
-# );
-
-# SELECT json_extract([DataJson], '$.label');
