@@ -39,14 +39,14 @@ internal sealed class CisBackgroundService<TBackgroundService>
             return;
         }
 
-        // prvni run poustime rovnou / bez ohledu na nastaveni scheduleru
-        // chceme to takhle? asi jo.
         while (!stoppingToken.IsCancellationRequested)
         {
             // No further services are started until ExecuteAsync becomes asynchronous, such as by calling await.
             // Avoid performing long, blocking initialization work in ExecuteAsync. Task.Yield is here to eliminate this problem
             // Another benefit is, that Tasks with high priority gonna be processed preferably.
             await Task.Yield();
+
+            await waitUntilNext(stoppingToken);
 
             try
             {
@@ -59,14 +59,17 @@ internal sealed class CisBackgroundService<TBackgroundService>
             {
                 _logger.BackgroundServiceExecutionError(_serviceName, ex);
             }
-
-            // vypocitat next run
-            var next = _crontab.GetNextOccurrence(DateTime.Now);
-            _logger.BackgroundServiceNextRun(_serviceName, next);
-
-            var nextRun = Convert.ToInt32((next - DateTime.Now).TotalMilliseconds);
-            await Task.Delay(nextRun, stoppingToken);
         }
+    }
+
+    private async Task waitUntilNext(CancellationToken stoppingToken)
+    {
+        // vypocitat next run
+        var next = _crontab.GetNextOccurrence(DateTime.Now);
+        _logger.BackgroundServiceNextRun(_serviceName, next);
+
+        var nextRun = Convert.ToInt32((next - DateTime.Now).TotalMilliseconds);
+        await Task.Delay(nextRun, stoppingToken);
     }
 
     private CrontabSchedule getCrontabSchedule()
