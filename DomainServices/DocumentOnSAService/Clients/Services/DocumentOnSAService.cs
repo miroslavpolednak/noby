@@ -47,4 +47,9 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
     {
         await _client.SignDocumentManuallyAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
     }
+
+    public async Task<CreateDocumentOnSAResponse> CreateDocumentOnSA(CreateDocumentOnSARequest request, CancellationToken cancellationToken = default)
+    {
+       return await _client.CreateDocumentOnSAAsync(request, cancellationToken: cancellationToken);
+    }
 }

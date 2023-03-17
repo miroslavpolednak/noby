@@ -1,0 +1,18 @@
+syntax = "proto3";
+package DomainServices.DocumentOnSAService.CreateDocumentOnSA;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "DocumentOnSAToSign.proto";
+
+message CreateDocumentOnSARequest {
+	google.protobuf.Int32Value SalesArrangementId = 1;
+	google.protobuf.Int32Value DocumentTypeId = 2;
+	string FormId = 3;
+	string EArchivId = 4;
+	bool IsFinal = 5;
+}
+
+message CreateDocumentOnSAResponse {
+	DocumentOnSAToSign DocumentOnSa = 1;
+}

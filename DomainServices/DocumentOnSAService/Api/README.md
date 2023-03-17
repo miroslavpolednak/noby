@@ -6,7 +6,7 @@ grpcurl -insecure -d "{\"HouseholdId\":1}" -H "Authorization: Basic WFhfTk9CWV9S
 ```
 ### StartSigning
 ```
-grpcurl -insecure -d "{\"SalesArrangementId\":6,\"DocumentTypeId\":4,\"SignatureMethodCode\":\"PHYSICAL\"}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "mp-user-id: 1" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/StartSigning
+grpcurl -insecure -d "{\"SalesArrangementId\":6,\"DocumentTypeId\":4,\"SignatureMethodCode\":\"PHYSICAL\"}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "noby-user-id: 1" -H "noby-user-ident: 990614w" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/StartSigning
 ```
 ### StopSigning: if you want call this method, it is necessary call start signing first to get DocumentOnSaId 
 ```
@@ -22,17 +22,20 @@ grpcurl -insecure -d "{\"DocumentOnSAId\":1}" -H "Authorization: Basic WFhfTk9CW
 ```
 ### SignDocumentManually
 ```
-grpcurl -insecure -d "{\"DocumentOnSAId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "mp-user-id: 1" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/SignDocumentManually
+grpcurl -insecure -d "{\"DocumentOnSAId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "noby-user-id: 1" -H "noby-user-ident: 990614w" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/SignDocumentManually
 ```
 ### UpdateDocumentOnSa
 ```
-grpcurl -insecure -d "{\"DocumentOnSAId\":1, \"IsDocumentArchived\":true}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "mp-user-id: 1" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/UpdateDocumentOnSA
+grpcurl -insecure -d "{\"DocumentOnSAId\":1, \"IsDocumentArchived\":true}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "noby-user-id: 1" -H "noby-user-ident: 990614w" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/UpdateDocumentOnSA
 ```
 ### GetDocumentsOnSAList
 ```
 grpcurl -insecure -d "{\"SalesArrangementId\":8}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GetDocumentsOnSAList
 ```
-
+### CreateDocumentOnSA
+```
+grpcurl -insecure -d "{\"SalesArrangementId\":20008,\"DocumentTypeId\":5,\"FormId\":\"N00000000000699\",\"EArchivId\":\"KBHXXD00000000000000000000021\",\"IsFinal\":true}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "noby-user-id: 1" -H "noby-user-ident: 990614w" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/CreateDocumentOnSA
+```
 ### Migrations
 1) Open Package manager console
 2) Set project with dbcontext as startpup project (DomainServices.DocumentArchiveService.Api)
