@@ -14,7 +14,7 @@ public sealed class NobyValidationException
 
     public NobyValidationException(int exceptionCode)
     {
-        if (ErrorCodeMapper.Messages.ContainsKey(exceptionCode))
+        if (!ErrorCodeMapper.Messages.ContainsKey(exceptionCode))
         {
             throw new CisNotFoundException(0, $"Error code item #{exceptionCode} not found in ErrorCodeMapper");
         }
@@ -44,7 +44,7 @@ public sealed class NobyValidationException
     {
         ArgumentNullException.ThrowIfNullOrEmpty(message);
 
-        if (ErrorCodeMapper.Messages.ContainsKey(exceptionCode))
+        if (!ErrorCodeMapper.Messages.ContainsKey(exceptionCode))
         {
             throw new ArgumentException($"Error code #{exceptionCode} is already in use in ErrorCodeMapper", nameof(exceptionCode));
         }
@@ -61,7 +61,7 @@ public sealed class NobyValidationException
         ArgumentNullException.ThrowIfNullOrEmpty(message);
         ArgumentNullException.ThrowIfNullOrEmpty(description);
 
-        if (ErrorCodeMapper.Messages.ContainsKey(exceptionCode))
+        if (!ErrorCodeMapper.Messages.ContainsKey(exceptionCode))
         {
             throw new ArgumentException($"Error code #{exceptionCode} is already in use in ErrorCodeMapper", nameof(exceptionCode));
         }
