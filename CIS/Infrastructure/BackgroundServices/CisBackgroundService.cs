@@ -64,17 +64,14 @@ internal sealed class CisBackgroundService<TBackgroundService>
             var next = _crontab.GetNextOccurrence(DateTime.Now);
             _logger.BackgroundServiceNextRun(_serviceName, next);
 
-            var nextRun = (next - DateTime.Now).Milliseconds;
+            var nextRun = Convert.ToInt32((next - DateTime.Now).TotalMilliseconds);
             await Task.Delay(nextRun, stoppingToken);
         }
     }
 
     private CrontabSchedule getCrontabSchedule()
     {
-        var cron = CrontabSchedule.Parse(_options.CronSchedule, new CrontabSchedule.ParseOptions
-        {
-            IncludingSeconds = true
-        });
+        var cron = CrontabSchedule.Parse(_options.CronSchedule);
 
         return cron ?? throw new CIS.Core.Exceptions.CisConfigurationException(0, $"Cron expression '{_options.CronSchedule}' can not be parsed");
     }
