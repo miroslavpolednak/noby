@@ -20,6 +20,16 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
 
     public async Task<GetDocumentDataResponse> Handle(GetDocumentDataRequest request, CancellationToken cancellationToken)
     {
+        //TODO: mock
+        if (request.DocumentTypeId is 4 or 5 && request.DocumentTemplateVariantId is null)
+        {
+            request.DocumentTemplateVariantId = request.DocumentTypeId switch
+            {
+                4 => 2,
+                5 => 6
+            };
+        }
+
         var documentKey = new DocumentKey(request.DocumentTypeId, request.DocumentTemplateVersionId, request.DocumentTemplateVariantId);
         var config = await _configurationManager.LoadDocumentConfiguration(documentKey, cancellationToken);
 
