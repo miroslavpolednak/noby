@@ -1,10 +1,9 @@
-﻿using CIS.Infrastructure.BackgroundServiceJob;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck;
 
 internal sealed class OfferGuaranteeDateToCheckService
-    : IPeriodicBackgroundServiceJob
+    : CIS.Infrastructure.BackgroundServices.ICisBackgroundService
 {
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
