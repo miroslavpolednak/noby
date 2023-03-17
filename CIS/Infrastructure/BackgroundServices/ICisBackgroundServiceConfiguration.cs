@@ -1,7 +1,7 @@
 ﻿namespace CIS.Infrastructure.BackgroundServices;
 
 internal interface ICisBackgroundServiceConfiguration<TBackgroundService>
-    where TBackgroundService : ICisBackgroundService
+    where TBackgroundService : ICisBackgroundServiceJob
 {
     /// <summary>
     /// True pokud je job vypnuty a nema se spoustet

@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.BackgroundServices;
 
-public interface ICisBackgroundService
+public interface ICisBackgroundServiceJob
 {
     Task ExecuteJobAsync(CancellationToken cancellationToken);
 }

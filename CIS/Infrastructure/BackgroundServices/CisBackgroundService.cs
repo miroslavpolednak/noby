@@ -4,7 +4,7 @@ namespace CIS.Infrastructure.BackgroundServices;
 
 internal sealed class CisBackgroundService<TBackgroundService>
     : BackgroundService
-    where TBackgroundService : ICisBackgroundService
+    where TBackgroundService : ICisBackgroundServiceJob
 {
     private readonly ILogger<TBackgroundService> _logger;
     private readonly IServiceScopeFactory _serviceScopeFactory;

@@ -2,7 +2,7 @@
 
 internal sealed class CisBackgroundServiceConfiguration<TBackgroundService>
     : ICisBackgroundServiceConfiguration<TBackgroundService>
-    where TBackgroundService : ICisBackgroundService
+    where TBackgroundService : ICisBackgroundServiceJob
 {
     public bool Disabled { get; set; }
 

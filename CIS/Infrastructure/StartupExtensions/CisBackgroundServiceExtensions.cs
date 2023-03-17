@@ -5,7 +5,7 @@ namespace CIS.Infrastructure.StartupExtensions;
 public static class CisBackgroundServiceExtensions
 {
     public static WebApplicationBuilder AddCisBackgroundService<TBackgroundService>(this WebApplicationBuilder builder)
-       where TBackgroundService : class, ICisBackgroundService
+       where TBackgroundService : class, ICisBackgroundServiceJob
     {
         // nacist konfiguraci sluzby
         string sectionName = $"{_configurationSectionKey}:{typeof(TBackgroundService).Name}";

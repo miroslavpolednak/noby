@@ -3,7 +3,7 @@
 namespace DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck;
 
 internal sealed class OfferGuaranteeDateToCheckService
-    : CIS.Infrastructure.BackgroundServices.ICisBackgroundService
+    : CIS.Infrastructure.BackgroundServices.ICisBackgroundServiceJob
 {
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
