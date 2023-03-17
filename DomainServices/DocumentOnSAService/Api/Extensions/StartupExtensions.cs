@@ -32,7 +32,9 @@ internal static class StartupExtensions
         // EAS svc
         builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
 
-        builder.AddCisPeriodicJob<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
+        // registrace background jobu
+        builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
+        builder.AddCisBackgroundServiceCustomConfiguration<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
        
         return builder;
     }
