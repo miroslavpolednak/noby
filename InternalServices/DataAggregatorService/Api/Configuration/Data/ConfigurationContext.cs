@@ -15,9 +15,13 @@ internal class ConfigurationContext : DbContext
 
     public DbSet<DocumentDataField> DocumentDataFields => Set<DocumentDataField>();
 
+    public DbSet<DocumentDataFieldVariant> DocumentDataFieldVariants => Set<DocumentDataFieldVariant>();
+
     public DbSet<DocumentDynamicInputParameter> DocumentDynamicInputParameters => Set<DocumentDynamicInputParameter>();
 
     public DbSet<DocumentSpecialDataField> DocumentSpecialDataFields => Set<DocumentSpecialDataField>();
+
+    public DbSet<DocumentSpecialDataFieldVariant> DocumentSpecialDataFieldVariants => Set<DocumentSpecialDataFieldVariant>();
 
     public DbSet<DocumentTable> DocumentTables => Set<DocumentTable>();
 
