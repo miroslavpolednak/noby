@@ -28,8 +28,6 @@ internal class ProductFormData : AggregatedData
 
     public int? SalesArrangementStateId => _codebookManager.SalesArrangementStates.First(x => x.Id == SalesArrangement.State).StarbuildId;
 
-    public DateTime FirstSignedDate => (DateTime?)SalesArrangement.FirstSignedDate ?? DateTime.Now;
-
     public int ProductTypeId { get; private set; }
 
     public decimal? InterestRateDiscount => (decimal?)Offer.SimulationInputs.InterestRateDiscount * -1;

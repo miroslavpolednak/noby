@@ -601,7 +601,7 @@
             <param name="exceptionCode">CIS error kód</param>
             <param name="message">Chybová zpráva</param>
         </member>
-        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Immutable.ImmutableList{CIS.Core.Exceptions.CisExceptionItem})">
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IReadOnlyList{CIS.Core.Exceptions.CisExceptionItem})">
             <param name="errors">Seznam chyb</param>
         </member>
         <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IEnumerable{CIS.Core.Exceptions.CisExceptionItem})">

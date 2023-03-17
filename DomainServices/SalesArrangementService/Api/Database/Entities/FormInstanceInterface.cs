@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.SalesArrangementService.Api.Database.Entities;
 
 [Table("FormInstanceInterface", Schema = "dbo")]
-internal class FormInstanceInterface
+internal sealed class FormInstanceInterface
 {
     [Key]
     public string DOCUMENT_ID { get; set; } = null!;

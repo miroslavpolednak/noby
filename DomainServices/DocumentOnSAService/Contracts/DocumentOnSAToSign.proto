@@ -36,4 +36,6 @@ message DocumentOnSAToSign {
 	google.protobuf.Timestamp SignatureDateTime = 13;
 
 	google.protobuf.Int32Value SignatureConfirmedBy = 14;
+
+	bool IsFinal = 15;
 }
