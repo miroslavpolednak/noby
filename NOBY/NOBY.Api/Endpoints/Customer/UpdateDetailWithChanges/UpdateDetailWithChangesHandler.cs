@@ -41,7 +41,7 @@ internal sealed class UpdateDetailWithChangesHandler
         bool identDocExists = false;
         if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
         {
-            var deserializedChangedData = JsonConvert.DeserializeObject<BaseCustomerDetail>(customerOnSA.CustomerChangeData);
+            var deserializedChangedData = JsonConvert.DeserializeObject<UpdateDetailWithChangesRequest>(customerOnSA.CustomerChangeData);
             identDocExists = deserializedChangedData?.IdentificationDocument is not null;
         }
 
