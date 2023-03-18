@@ -15,7 +15,7 @@ internal static class StartupExtensions
         builder.AddEntityFramework<Database.NobyDbContext>(connectionStringKey: "nobyDb");
 
         // background svc
-        builder.AddCisPeriodicJob<BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckService, BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckConfiguration>();
+        builder.AddCisBackgroundService<BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckJob>();
 
         return builder;
     }

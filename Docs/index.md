@@ -21,7 +21,7 @@
 
 [Nastavení a použití Distributed cache](./topics/distributed-cache.md)
 
-[Registrace periodických jobů a popis funkčnosti](./topics/background-service-job.md)
+[Background services / periodické joby](./topics/background-services.md)
 
 ## Struktura solution - projekty a adresáře
 

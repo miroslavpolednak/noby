@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices;
-using DomainServices.DocumentOnSAService.Api.BackgroundServiceJobs.CheckDocumentsArchived;
+using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 using DomainServices.DocumentOnSAService.Api.Configuration;
 using ExternalServices;
 
@@ -32,7 +32,9 @@ internal static class StartupExtensions
         // EAS svc
         builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
 
-        builder.AddCisPeriodicJob<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
+        // registrace background jobu
+        builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
+        builder.AddCisBackgroundServiceCustomConfiguration<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
        
         return builder;
     }

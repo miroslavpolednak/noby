@@ -1,10 +1,9 @@
-﻿using CIS.Infrastructure.BackgroundServiceJob;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck;
 
-internal sealed class OfferGuaranteeDateToCheckService
-    : IPeriodicBackgroundServiceJob
+internal sealed class OfferGuaranteeDateToCheckJob
+    : CIS.Infrastructure.BackgroundServices.ICisBackgroundServiceJob
 {
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
@@ -23,7 +22,7 @@ INNER JOIN (
 
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
 
-    public OfferGuaranteeDateToCheckService(Database.SalesArrangementServiceDbContext dbContext)
+    public OfferGuaranteeDateToCheckJob(Database.SalesArrangementServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }
