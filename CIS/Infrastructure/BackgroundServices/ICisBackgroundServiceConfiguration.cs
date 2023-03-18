@@ -1,6 +1,10 @@
 ﻿namespace CIS.Infrastructure.BackgroundServices;
 
-internal interface ICisBackgroundServiceConfiguration<TBackgroundService>
+/// <summary>
+/// Obecna konfigurace background service.
+/// </summary>
+/// <typeparam name="TBackgroundService">Typ jobu pro ktery je konfigurace platna.</typeparam>
+public interface ICisBackgroundServiceConfiguration<TBackgroundService>
     where TBackgroundService : ICisBackgroundServiceJob
 {
     /// <summary>
