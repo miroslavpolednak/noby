@@ -26,10 +26,7 @@ public static class CaasAuthenticationExtensions
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddCookie(options =>
-            {
-                
-            })
+            .AddCookie()
             .AddOpenIdConnect();
     }
 }
