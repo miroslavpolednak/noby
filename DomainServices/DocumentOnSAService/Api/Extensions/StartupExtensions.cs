@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices;
-using DomainServices.DocumentOnSAService.Api.BackgroundServiceJobs.CheckDocumentsArchived;
+using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 using DomainServices.DocumentOnSAService.Api.Configuration;
 using ExternalServices;
 

@@ -1,4 +1,4 @@
-﻿namespace DomainServices.DocumentOnSAService.Api.BackgroundServiceJobs.CheckDocumentsArchived;
+﻿namespace DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 
 internal sealed class CheckDocumentsArchivedJobConfiguration
 {

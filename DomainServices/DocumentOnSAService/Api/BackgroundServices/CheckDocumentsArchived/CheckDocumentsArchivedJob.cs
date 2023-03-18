@@ -4,7 +4,7 @@ using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace DomainServices.DocumentOnSAService.Api.BackgroundServiceJobs.CheckDocumentsArchived;
+namespace DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 
 internal sealed class CheckDocumentsArchivedJob
     : CIS.Infrastructure.BackgroundServices.ICisBackgroundServiceJob

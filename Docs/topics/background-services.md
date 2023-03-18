@@ -14,7 +14,10 @@ K jobu přistupujeme úplně stejně jako např. ke kontroleru, funguje zde norm
 (scope je zde per job, stejně jako u kontroleru je per request), tedy pokud je potřeba jiný scope než per job, musíme si ho vytvořit.
 
 ## Vytvoření jobu
-Vytvoříme třídu, která bude implementovat rozhraní `CIS.Infrastructure.BackgroundServices.ICisBackgroundServiceJob`.  
+Vytvoříme třídu, která bude implementovat rozhraní `CIS.Infrastructure.BackgroundServices.ICisBackgroundServiceJob`.
+Jedinou metodou toho rozhraní je `ExecuteJobAsync`, která tedy obsahuje kód jobu.
+Do konstruktoru jobu je možné standardně přidat dependency z DI.
+
 Příklad:
 ```csharp
 internal sealed class TestJob : ICisBackgroundServiceJob
@@ -34,32 +37,18 @@ internal sealed class TestJob : ICisBackgroundServiceJob
 ```
 
 ## Konfigurace jobu
-Ke každému jobu je třeba vytvořit konfiguraci, kde každý job má povinnou konfigurační sadu parametrů, která je dána generickým rozhraním  
-```
-CIS.Infrastructure.BackgroundServiceJob.IPeriodicJobConfiguration
-```
-, kde jako generický parametr je typ jobu. Další konfigurační parametry 
-specifické pro job lze přidávat dle libosti.
+Ke každému jobu je třeba vytvořit konfiguraci, kde každý job má povinnou konfigurační sadu parametrů.
+Konfigurace je vždy v *appsettings.json* v sekci **BackgroundServices**.
 
-Příklad:
-```csharp
-public class TestJobConfiguration : IPeriodicJobConfiguration<TestJob>
-{
-    public string SectionName => "TestJobConfiguration";
+Struktura konfigurace v *appsettings.json* je daná rozhraním `CIS.Infrastructure.BackgroundServices.ICisBackgroundServiceConfiguration`, kdy:
+- název celého objektu konfigurace je názvem typu implementovaného jobu.
+- `CronSchedule` je nastavení periodicity spouštění jobu, viz. [Crontab expressions](https://github.com/atifaziz/NCrontab/wiki/Crontab-Expression).
+- `Disabled` pokud je potřeba dočasně job vypnout, je možné tuto vlastnost nastavit na True.
+- `CustomerConfiguration` je objekt, který je nepovinný. Pokud job potřebuje pro svůj běh nějakou další konfiguraci, tento objekt ji bude obsahovat.
 
-    public bool ServiceDisabled { get; set; }
+> Všechny background services - ať už implementující base class z `CIS.Infrastructure.BackgroundServices` nebo vlastní, custom vytvořené služby - musí mít konfiguraci v *appsettings.json* v elementu **BackgroundServices** a v struktuře dané rozhraním `CIS.Infrastructure.BackgroundServices.ICisBackgroundServiceConfiguration`.
 
-    public TimeSpan TickInterval { get; set; } = TimeSpan.FromMinutes(1); //Dafault
-
-    public short SpecificParameterForTestJob { get; set; } = 1000;  //Dafault
-
-}
-```
-
-### Přidání konfigurace do appsettings
-Do appsettings přidáme sekci, která názvem odpovídá parametru SectionName, tedy v našem případě může konfigurace vypadat následovně:
-
-Příklad:
+Ukázka konfigurace v *appsettings.json* pro job s class name "TestJob":
 ```json
 "BackgroundServices": {
     "TestJob": {
@@ -72,9 +61,51 @@ Příklad:
 }
 ```
 
-### Registrace jobu při startupu aplikace
+## Registrace jobu při startupu aplikace
 Registrace se provádí pomocí extension metody `AddCisBackgroundService<TBackgroundService>()` v namespace `CIS.Infrastructure.StartupExtensions`, kde *TBackgroundService* je typem registrovaného jobu.  
+
 Příklad:
 ```csharp
 builder.AddCisBackgroundService<TestJob>();
+```
+
+Existuje také extension metoda pro jednoduchou registraci custom konfigurace daného jobu (pokud je vyžadována).
+Jedná se o metodu `AddCisBackgroundServiceCustomConfiguration<TBackgroundService, TConfiguration>`, 
+kde *TBackgroundService* je typem implementovaného jobu a *TConfiguration* je typem požadované konfigurace.  
+Konfigurace je registrována v ID jako singleton daného typu.
+
+Příklad:
+```csharp
+class TestJobConfiguration {
+    public bool MyCustomProperty { get; set; }
+}
+
+// registrace jobu včetně custom konfigurace
+builder.AddCisBackgroundService<TestJob>();
+// registrace konfigurace do DI
+builder.AddCisBackgroundServiceCustomConfiguration<TestJob, TestJobConfiguration>();
+
+...
+
+// Následně je možné vytáhnout instanci konfigurace z DI v konstruktoru jobu
+internal sealed class TestJob : ICisBackgroundServiceJob
+{
+    public TestJob(TestJobConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+}
+```
+
+## Umístění jobů v rámci projektu aplikace
+Joby umísťujeme do adresáře **BackgroundServices** v rootu aplikace.
+Zde má pak každý job vlastní adresář a v tomto adresáři je třída s implementací. 
+Implementační třída má vždy suffix **Job**.
+
+Umístění pro job "TestJob":
+```
+[BackgroundServices]
+    [Test]
+        TestJob.cs
+        TestJobConfiguration.cs
 ```
