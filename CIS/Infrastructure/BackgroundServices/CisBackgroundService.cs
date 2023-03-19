@@ -74,7 +74,7 @@ internal sealed class CisBackgroundService<TBackgroundService>
 
     private CrontabSchedule getCrontabSchedule()
     {
-        var cron = CrontabSchedule.Parse(_options.CronSchedule);
+        var cron = CrontabSchedule.TryParse(_options.CronSchedule);
 
         return cron ?? throw new CIS.Core.Exceptions.CisConfigurationException(0, $"Cron expression '{_options.CronSchedule}' can not be parsed");
     }
