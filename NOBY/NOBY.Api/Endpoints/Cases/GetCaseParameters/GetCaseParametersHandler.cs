@@ -146,7 +146,7 @@ internal sealed class GetCaseParametersHandler
         var branchUser = await getUserInstance(mortgageData.BranchConsultantId, cancellation);
         var thirdPartyUser = await getUserInstance(mortgageData.ThirdPartyConsultantId, cancellation);
 
-        return new GetCaseParametersResponse
+        var respone = new GetCaseParametersResponse
         {
             FirstAnnuityPaymentDate = mortgageData.FirstAnnuityPaymentDate,
             ProductType = productTypesById[mortgageData.ProductTypeId].ToCodebookItem(),
@@ -193,6 +193,23 @@ internal sealed class GetCaseParametersHandler
                 Icp = thirdPartyUser?.ICP
             }
         };
+
+        if (mortgageData.Statement is not null)
+        {
+            respone.Statement = new StatementDto
+            {
+                Type = mortgageData.Statement?.Type,
+                EmailAddress1 = mortgageData.Statement?.EmailAddress1,
+                EmailAddress2 = mortgageData.Statement?.EmailAddress2,
+                Frequency = mortgageData.Statement?.Frequency
+            };
+            if (mortgageData.Statement!.Address is not null)
+            {
+                respone.Statement.Address = (CIS.Foms.Types.Address)mortgageData.Statement!.Address!;
+            }
+        }
+
+        return respone;
     }
 
     private async Task<DomainServices.UserService.Contracts.User?> getUserInstance(int? userId, CancellationToken cancellationToken)

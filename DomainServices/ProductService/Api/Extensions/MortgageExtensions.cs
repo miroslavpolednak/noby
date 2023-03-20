@@ -87,6 +87,13 @@ internal static class MortgageExtensions
                 BankCode = eLoan.InkasoBanka ?? "",
                 Number = eLoan.InkasoCislo ?? "",
                 Prefix = eLoan.InkasoPredcisli ?? ""
+            },
+            Statement = new StatementObject
+            {
+                Type = eLoan.HuVypisTyp.ToString(),
+                Frequency = eLoan.HuVypisZodb.ToString(),
+                EmailAddress1 = eLoan.VypisEmail1,
+                EmailAddress2 = eLoan.VypisEmail2
             }
         };
 

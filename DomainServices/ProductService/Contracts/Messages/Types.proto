@@ -37,5 +37,5 @@ message StatementObject {
     google.protobuf.StringValue Frequency = 2;
     google.protobuf.StringValue EmailAddress1 = 3;
     google.protobuf.StringValue EmailAddress2 = 4;
-    repeated cis.types.GrpcAddress Address = 5;
+    cis.types.GrpcAddress Address = 5;
 }
