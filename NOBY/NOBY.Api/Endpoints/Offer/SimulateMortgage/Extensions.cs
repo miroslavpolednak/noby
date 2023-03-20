@@ -46,8 +46,7 @@ internal static class Extensions
             BasicParameters = new()
             {
                 FinancialResourcesOwn = request.FinancialResourcesOwn,
-                FinancialResourcesOther = request.FinancialResourcesOther,
-                StatementTypeId = request.StatementTypeId
+                FinancialResourcesOther = request.FinancialResourcesOther
             }
         };
 
