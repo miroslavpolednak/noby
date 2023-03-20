@@ -77,7 +77,6 @@
   <ItemGroup>
     <Folder Include="Endpoints\Document\GeneralDocument\" />
     <Folder Include="Endpoints\Document\Offer\" />
-    <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
     <Folder Include="Endpoints\Document\Shared\DocumentIdManager\" />
     <Folder Include="Endpoints\SalesArrangement\SendToCmp\Dto\" />
   </ItemGroup>

@@ -1,5 +1,4 @@
 ﻿using DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper;
-using Microsoft.Data.SqlClient;
 
 namespace DomainServices.CodebookService.Endpoints.GetDeveloper;
 
@@ -8,8 +7,8 @@ public class GetDeveloperHandler
 {
     public async Task<DeveloperItem> Handle(GetDeveloperRequest request, CancellationToken cancellationToken)
     {
-        return await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<DeveloperItem>(_sqlQuery, new SqlParameter("id", request.DeveloperId), cancellationToken)
-            ?? throw new CIS.Core.Exceptions.CisNotFoundException(20000, $"Developer {request.DeveloperId} not found");
+        return await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<DeveloperItem>(_sqlQuery, new { id = request.DeveloperId }, cancellationToken)
+            ?? throw new CIS.Core.Exceptions.CisNotFoundException(20000, $"DeveloperId {request.DeveloperId} not found");
     }
 
     const string _sqlQuery = @"

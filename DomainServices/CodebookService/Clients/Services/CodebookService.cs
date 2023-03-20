@@ -1,4 +1,5 @@
-﻿using DomainServices.CodebookService.Contracts;
+﻿using Azure.Core;
+using DomainServices.CodebookService.Contracts;
 
 namespace DomainServices.CodebookService.Clients;
 
@@ -11,6 +12,18 @@ internal partial class CodebookService : ICodebookServiceClients
         => await _codebookService.DeveloperSearch(new Contracts.Endpoints.DeveloperSearch.DeveloperSearchRequest
         {
             Term = term
+        }, cancellationToken);
+
+    public async Task<Contracts.Endpoints.GetDeveloper.DeveloperItem> GetDeveloper(int developerId, CancellationToken cancellationToken = default(CancellationToken))
+        => await _codebookService.GetDeveloper(new Contracts.Endpoints.GetDeveloper.GetDeveloperRequest
+        {
+            DeveloperId = developerId
+        }, cancellationToken);
+
+    public async Task<Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem> GetDeveloperProject(int developerProjectId, CancellationToken cancellationToken = default(CancellationToken))
+        => await _codebookService.GetDeveloperProject(new Contracts.Endpoints.GetDeveloperProject.GetDeveloperProjectRequest
+        {
+            DeveloperProjectId = developerProjectId
         }, cancellationToken);
 
     public CodebookService(ICodebookService codebookService, ClientsMemoryCache cache)
