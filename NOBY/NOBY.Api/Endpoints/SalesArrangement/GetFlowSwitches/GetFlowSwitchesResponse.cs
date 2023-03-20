@@ -8,7 +8,15 @@ public sealed class GetFlowSwitchesResponse
     public GetFlowSwitchesResponseItem ScoringSection { get; set; } = null!;
     public GetFlowSwitchesResponseItem SigningSection { get; set; } = null!;
     public GetFlowSwitchesResponseItem EvaluationSection { get; set; } = null!;
-    public GetFlowSwitchesResponseItem SendButton { get; set; } = null!;
+    public GetFlowSwitchesResponseItemButton SendButton { get; set; } = null!;
+}
+
+public sealed class GetFlowSwitchesResponseItemButton
+{
+    /// <summary>
+    /// Je sekce aktivní/neaktivní (lze prokliknout)?
+    /// </summary>
+    public bool IsActive { get; set; }
 }
 
 public sealed class GetFlowSwitchesResponseItem

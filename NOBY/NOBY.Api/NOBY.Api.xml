@@ -97,6 +97,7 @@
             Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.<br/><br/>
             Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
             </remarks>
+            <response code="404">aaaaaa</response>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCustomers(System.Int64,System.Threading.CancellationToken)">
             <summary>
