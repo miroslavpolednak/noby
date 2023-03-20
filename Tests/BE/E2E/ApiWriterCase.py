@@ -53,6 +53,8 @@ class ApiWriterCase():
         res = FeAPI.Offer.create_case(req)
         self.__log.info(f'create_case.res [{res}]')
 
+        assert isinstance(res, dict), f'Invalid response [{res}]'
+
         # set test data
         Processing.set_process_key(self.__case_json, EProcessKey.CASE_ID, res['caseId'])
         Processing.set_process_key(self.__case_json, EProcessKey.SALES_ARRAMGEMENT_ID, res['salesArrangementId'])
@@ -91,6 +93,8 @@ class ApiWriterCase():
                 self.__log.info(f'create_households.req [{req}]')
                 res = FeAPI.Household.create_household(req)
                 self.__log.info(f'create_households.res [{res}]')
+
+                assert isinstance(res, dict), f'Invalid response [{res}]'
 
                 household_id = res['householdId']
                 Processing.set_process_key(household_json, EProcessKey.HOUSEHOLD_ID, household_id)
@@ -165,6 +169,8 @@ class ApiWriterCase():
         self.__log.info(f'create_customers.req [{req}]')
         res = FeAPI.Household.set_household_customers(household_id, req)
         self.__log.info(f'create_customers.res [{res}]')
+
+        assert isinstance(res, dict), f'Invalid response [{res}]'
 
         # set process data (ids of customers on SA)
         Processing.set_process_key(household_json['customer1'], EProcessKey.CUSTOMER_ON_SA_ID, res['customerOnSAId1'])

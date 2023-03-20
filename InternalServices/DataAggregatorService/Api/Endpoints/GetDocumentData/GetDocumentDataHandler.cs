@@ -20,7 +20,17 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
 
     public async Task<GetDocumentDataResponse> Handle(GetDocumentDataRequest request, CancellationToken cancellationToken)
     {
-        var documentKey = new DocumentKey(request.DocumentTypeId, request.DocumentTemplateVersionId);
+        //TODO: mock
+        if (request.DocumentTypeId is 4 or 5 && request.DocumentTemplateVariantId is null)
+        {
+            request.DocumentTemplateVariantId = request.DocumentTypeId switch
+            {
+                4 => 2,
+                5 => 6
+            };
+        }
+
+        var documentKey = new DocumentKey(request.DocumentTypeId, request.DocumentTemplateVersionId, request.DocumentTemplateVariantId);
         var config = await _configurationManager.LoadDocumentConfiguration(documentKey, cancellationToken);
 
         var documentMapper = await LoadDocumentData((DocumentType)request.DocumentTypeId, request.InputParameters, config, cancellationToken);
@@ -29,6 +39,8 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
         {
             DocumentTemplateVersionId = config.DocumentTemplateVersionId,
             DocumentTemplateVersion = config.DocumentTemplateVersion,
+            DocumentTemplateVariantId = config.DocumentTemplateVariantId,
+            DocumentTemplateVariant = config.DocumentTemplateVariant,
             DocumentData = { documentMapper.MapDocumentFieldData() },
             InputParameters = request.InputParameters
         };

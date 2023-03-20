@@ -21,13 +21,19 @@ message GenerateDocumentRequest {
 
 	string DocumentTemplateVersion = 2;
 
-	OutputFileType OutputType = 3;
+	google.protobuf.StringValue DocumentTemplateVariant = 3;
 
-	repeated GenerateDocumentPart Parts = 4;
+	OutputFileType OutputType = 4;
 
-	repeated Signature CustomerSignatures = 5;
+	repeated GenerateDocumentPart Parts = 5;
 
-	DocumentFooter DocumentFooter = 6;
+	repeated Signature CustomerSignatures = 6;
+
+	DocumentFooter DocumentFooter = 7;
+}
+
+message Document {
+	bytes Data = 1;
 }
 
 message GenerateDocumentPart {
@@ -35,9 +41,11 @@ message GenerateDocumentPart {
 
 	string DocumentTemplateVersion = 2;
 
-	google.protobuf.Int32Value Order = 3;
+	google.protobuf.StringValue DocumentTemplateVariant = 3;
 
-	repeated GenerateDocumentPartData Data = 4;
+	google.protobuf.Int32Value Order = 4;
+
+	repeated GenerateDocumentPartData Data = 5;
 }
 
 message GenerateDocumentPartData {

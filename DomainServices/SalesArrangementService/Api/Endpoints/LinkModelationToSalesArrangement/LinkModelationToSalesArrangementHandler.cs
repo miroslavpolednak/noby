@@ -94,7 +94,11 @@ internal sealed class LinkModelationToSalesArrangementHandler
         var saParameters = await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementInstance.SalesArrangementId, cancellation);
         if (saParameters is null)
         {
-            saParameters = new Database.Entities.SalesArrangementParameters();
+            saParameters = new Database.Entities.SalesArrangementParameters
+            {
+                SalesArrangementId = salesArrangementInstance.SalesArrangementId,
+                SalesArrangementParametersType = SalesArrangementTypes.Mortgage
+            };
             _dbContext.SalesArrangementsParameters.Add(saParameters);
         }
         var parametersModel = saParameters?.ParametersBin is not null ? __SA.SalesArrangementParametersMortgage.Parser.ParseFrom(saParameters.ParametersBin) : new __SA.SalesArrangementParametersMortgage();

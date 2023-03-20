@@ -10,7 +10,7 @@ grpcurl -insecure -d "{\"documentId\":\"KBHCWS000000000000000013832943\"}" -H "A
 ```
 ### GetGetDocumentList
 ```
-grpcurl -insecure -d "{\"CaseId\":12345}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30005 DomainServices.DocumentArchiveService.v1.DocumentArchiveService/GetGetDocumentList
+grpcurl -insecure -d "{\"CaseId\":12345}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30005 DomainServices.DocumentArchiveService.v1.DocumentArchiveService/GetGetDocumentList
 ```
 ### UploadDocument 
 **If you want use this call, you have to generate document id (GenerateDocumentId) first and past it as DocumentId parameter!!!** 

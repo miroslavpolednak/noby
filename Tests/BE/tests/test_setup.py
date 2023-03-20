@@ -38,3 +38,14 @@ for node in os.listdir(PATH_TO_GRPC):
     node_path = os.path.join(PATH_TO_GRPC, node)
     if os.path.isdir(node_path):
         sys.path.append(node_path)
+
+
+# --------------------------------------------------------
+# TEST DATA
+# --------------------------------------------------------
+from DATA import TestDataProvider
+# reset DB, import custom and generated data
+TestDataProvider.reset()
+TestDataProvider.import_custom()
+# TestDataProvider.import_generated(datetime.now(), generated) # TODO:
+# --------------------------------------------------------

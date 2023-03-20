@@ -82,7 +82,7 @@ app.UseCisWebRequestLocalization();
 
 app
     // API call
-    .UseNobyApi()
+    .UseNobyApi(appConfiguration)
     // include authentication endpoints
     .UseNobyAuthStrategy()
     // jedna se o SPA call, pust jen tyhle middlewares

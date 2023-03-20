@@ -9,7 +9,7 @@ public sealed class ApiAuthenticationProblemDetail
 
     public ApiAuthenticationProblemDetail(string? redirectUri, string? authenticationScheme)
     {
-        RedirectUri = redirectUri ?? AuthenticationConstants.DefaultSignInUrl;
+        RedirectUri = redirectUri ?? string.Concat(AuthenticationConstants.DefaultSignInUrl, "?", AuthenticationConstants.RedirectUriQueryParameter, "=");
         AuthenticationScheme = authenticationScheme ?? "Unknown";
     }
 

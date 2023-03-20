@@ -20,7 +20,15 @@ internal sealed class GetFlowSwitchesHandler
             SigningSection = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.SigningSection]),
             ScoringSection = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.ScoringSection]),
             EvaluationSection = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.EvaluationSection]),
-            SendButton = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.SendButton])
+            SendButton = createSectionButton(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.SendButton])
+        };
+    }
+
+    private static GetFlowSwitchesResponseItemButton createSectionButton(Infrastructure.Services.FlowSwitches.FlowSwitchGroup group)
+    {
+        return new GetFlowSwitchesResponseItemButton
+        {
+            IsActive = group.IsActive
         };
     }
 

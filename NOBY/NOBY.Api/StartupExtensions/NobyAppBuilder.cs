@@ -4,6 +4,7 @@ using NOBY.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
+using NOBY.Infrastructure.Configuration;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -36,14 +37,14 @@ internal static class NobyAppBuilder
             });
         });
 
-    public static IApplicationBuilder UseNobyApi(this WebApplication app)
+    public static IApplicationBuilder UseNobyApi(this WebApplication app, AppConfiguration appConfiguration)
         => app.MapWhen(_isApiCall, appBuilder =>
         {
             appBuilder.UseHttpLogging();
             appBuilder.UseCisWebApiCors();
 
             // error middlewares
-            if (app.Environment.IsDevelopment())
+            if (appConfiguration.UseDeveloperExceptionPage)
             {
                 appBuilder.UseDeveloperExceptionPage();
             }
@@ -93,7 +94,8 @@ internal static class NobyAppBuilder
             {
                 t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, ([FromServices] IHttpContextAccessor context) =>
                 {
-                    context.HttpContext!.Response.Redirect("/#");
+                    var s = context.HttpContext.Items["my"];
+                    //context.HttpContext!.Response.Redirect("/#");
                 })
                     .RequireAuthorization()
                     .ExcludeFromDescription();

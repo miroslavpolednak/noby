@@ -22,6 +22,11 @@ public static class AuthenticationConstants
     /// </summary>
     public const string CaasAuthScheme = "CaasAuthentication";
 
+    /// <summary>
+    /// Parametr v QueryStringu, ktery pri presmerovani na autentizacni autoritu rika, kde je ulozen redirectUri.
+    /// </summary>
+    public const string RedirectUriQueryParameter = "redirect";
+
     public const string DefaultAuthenticationUrlPrefix = "auth";
     public const string DefaultAuthenticationUrlSegment = "/" + DefaultAuthenticationUrlPrefix;
     public const string DefaultSignInEndpoint = "/signin";

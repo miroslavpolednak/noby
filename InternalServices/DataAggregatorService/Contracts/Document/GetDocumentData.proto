@@ -12,7 +12,9 @@ message GetDocumentDataRequest {
 
 	google.protobuf.Int32Value DocumentTemplateVersionId = 2;
 
-	InputParameters InputParameters = 3;
+	google.protobuf.Int32Value DocumentTemplateVariantId = 3;
+
+	InputParameters InputParameters = 4;
 }
 
 message GetDocumentDataResponse {
@@ -20,7 +22,11 @@ message GetDocumentDataResponse {
 
 	string DocumentTemplateVersion = 2;
 
-	InputParameters InputParameters = 3;
+	google.protobuf.Int32Value DocumentTemplateVariantId = 3;
 
-	repeated DocumentFieldData DocumentData = 4;
+	google.protobuf.StringValue DocumentTemplateVariant = 4;
+
+	InputParameters InputParameters = 5;
+
+	repeated DocumentFieldData DocumentData = 6;
 }

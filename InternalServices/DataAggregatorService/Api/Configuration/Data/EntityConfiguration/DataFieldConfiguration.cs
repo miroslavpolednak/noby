@@ -12,7 +12,7 @@ internal class DataFieldConfiguration : IEntityTypeConfiguration<DataField>
 
         builder.HasOne(x => x.DataService);
 
-        builder.Property(x => x.FieldPath).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.FieldPath).HasMaxLength(250).IsRequired();
 
         builder.HasIndex(x => x.FieldPath).IsUnique();
 

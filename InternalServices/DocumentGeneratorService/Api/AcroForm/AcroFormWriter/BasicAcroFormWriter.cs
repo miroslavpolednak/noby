@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 using System.ComponentModel;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
 
@@ -16,9 +15,9 @@ public class BasicAcroFormWriter : IAcroFormWriter
         _values = values;
     }
 
-    public MergeDocument Write(TemplateLoader templateLoader, string? templateNameModifier = default)
+    public MergeDocument Write(PdfDocument pdfDocument, string? templateNameModifier = default)
     {
-        var document = new MergeDocument(templateLoader.Load(templateNameModifier));
+        var document = new MergeDocument(pdfDocument);
 
         foreach (var value in _values)
         {

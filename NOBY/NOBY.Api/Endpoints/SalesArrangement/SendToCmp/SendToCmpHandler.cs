@@ -47,17 +47,18 @@ internal sealed class SendToCmpHandler
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
+        // pokud je to produktovy SA, tak dal, jinak rovnou odeslat
+        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
+
         // check flow switches
         var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
-        if (!flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.FlowSwitch1))
+        if (saCategory.SalesArrangementCategory == 1
+            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.FlowSwitch1))
         {
             throw new NobyValidationException(90016);
         }
 
         await ValidateSalesArrangement(saInstance.SalesArrangementId, request.IgnoreWarnings, cancellationToken);
-
-        // pokud je to produktovy SA, tak dal, jinak rovnou odeslat
-        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
 
         if (saCategory.SalesArrangementCategory == 1)
         {
