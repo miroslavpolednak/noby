@@ -3,9 +3,7 @@ using DomainServices.UserService.Clients;
 using Microsoft.EntityFrameworkCore;
 using DomainServices.CodebookService.Clients;
 using CIS.Foms.Enums;
-using System.ComponentModel.DataAnnotations;
 using DomainServices.CaseService.Clients;
-using CIS.Core;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangement;
 
@@ -56,21 +54,7 @@ internal sealed class UpdateSalesArrangementHandler
             var ownerInstance = await _userService.GetUser(caseInstance.CaseOwner.UserId, cancellation);
             var productType = (await _codebookService.ProductTypes(cancellation)).First(t => t.Id == caseInstance.Data.ProductTypeId);
 
-            var sbNotifyModel = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest
-            {
-                Login = userLogin ?? "anonymous",
-                CaseId = entity.CaseId,
-                ContractNumber = entity.ContractNumber ?? "",
-                ClientFullName = $"{caseInstance.Customer?.FirstNameNaturalPerson} {caseInstance.Customer?.Name}",
-                CaseStateName = ((CaseStates)caseInstance.State).GetAttribute<DisplayAttribute>()!.Name!,
-                ProductTypeId = caseInstance.Data.ProductTypeId,
-                OwnerUserCpm = ownerInstance.CPM,
-                OwnerUserIcp = ownerInstance.ICP,
-                Mandant = (Mandants)productType.MandantId,
-                RiskBusinessCaseId = request.RiskBusinessCaseId,
-                IsEmployeeBonusRequested = caseInstance.Data.IsEmployeeBonusRequested
-            };
-            await _sbWebApiClient.CaseStateChanged(sbNotifyModel, cancellation);
+            await _caseService.NotifyStarbuild(entity.CaseId, request.RiskBusinessCaseId, cancellation);
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
@@ -83,21 +67,18 @@ internal sealed class UpdateSalesArrangementHandler
     private readonly ICodebookServiceClients _codebookService;
     private readonly IUserServiceClient _userService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
-    private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
 
     public UpdateSalesArrangementHandler(
         ICaseServiceClient caseService,
         ICurrentUserAccessor userAccessor,
         ICodebookServiceClients codebookService,
         IUserServiceClient userService,
-        Database.SalesArrangementServiceDbContext dbContext,
-        ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient)
+        Database.SalesArrangementServiceDbContext dbContext)
     {
         _caseService = caseService;
         _userAccessor = userAccessor;
         _codebookService = codebookService;
         _userService = userService;
         _dbContext = dbContext;
-        _sbWebApiClient = sbWebApiClient;
     }
 }

@@ -1,6 +1,4 @@
-﻿USE [DataAggregatorService]
-GO
-INSERT [dbo].[DataService] ([DataServiceId], [DataServiceName]) VALUES (0, N'General')
+﻿INSERT [dbo].[DataService] ([DataServiceId], [DataServiceName]) VALUES (0, N'General')
 GO
 INSERT [dbo].[DataService] ([DataServiceId], [DataServiceName]) VALUES (1, N'SalesArrangementService')
 GO

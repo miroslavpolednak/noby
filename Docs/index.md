@@ -19,6 +19,8 @@
 
 [Jak funguje ServiceDiscovery](./topics/service-discovery.md)
 
+[Nastavení a použití Distributed cache](./topics/distributed-cache.md)
+
 [Registrace periodických jobů a popis funkčnosti](./topics/background-service-job.md)
 
 ## Struktura solution - projekty a adresáře

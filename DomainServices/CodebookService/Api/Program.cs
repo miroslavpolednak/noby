@@ -26,7 +26,6 @@ builder
     .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program), endpointsType);
-builder.Services.AddCisDistributedCache();
 
 // logging 
 builder

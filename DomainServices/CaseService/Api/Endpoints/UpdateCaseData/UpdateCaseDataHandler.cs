@@ -9,7 +9,9 @@ internal sealed class UpdateCaseDataHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateCaseDataRequest request, CancellationToken cancellation)
     {
         // zjistit zda existuje case
-        var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation)
+        var entity = await _dbContext
+            .Cases
+            .FirstOrDefaultAsync(t => t.CaseId == request.CaseId, cancellation)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // zkontrolovat ProdInstType
@@ -33,14 +35,9 @@ internal sealed class UpdateCaseDataHandler
         {
             try
             {
-                await _mediator.Publish(new Notifications.CaseStateChangedNotification
+                await _mediator.Send(new NotifyStarbuildRequest
                 {
-                    CaseId = request.CaseId,
-                    CaseStateId = entity.State,
-                    ClientName = $"{entity.FirstNameNaturalPerson} {entity.Name}",
-                    ProductTypeId = request.Data.ProductTypeId,
-                    CaseOwnerUserId = entity.OwnerUserId,
-                    IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested
+                    CaseId = request.CaseId
                 }, cancellation);
             }
             catch (Exception ex)

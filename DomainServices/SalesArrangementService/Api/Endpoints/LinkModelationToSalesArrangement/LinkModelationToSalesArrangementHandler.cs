@@ -94,7 +94,11 @@ internal sealed class LinkModelationToSalesArrangementHandler
         var saParameters = await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementInstance.SalesArrangementId, cancellation);
         if (saParameters is null)
         {
-            saParameters = new Database.Entities.SalesArrangementParameters();
+            saParameters = new Database.Entities.SalesArrangementParameters
+            {
+                SalesArrangementId = salesArrangementInstance.SalesArrangementId,
+                SalesArrangementParametersType = SalesArrangementTypes.Mortgage
+            };
             _dbContext.SalesArrangementsParameters.Add(saParameters);
         }
         var parametersModel = saParameters?.ParametersBin is not null ? __SA.SalesArrangementParametersMortgage.Parser.ParseFrom(saParameters.ParametersBin) : new __SA.SalesArrangementParametersMortgage();
@@ -107,7 +111,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         }
 
         // HFICH-2181
-        if (parametersModel.ExpectedDateOfDrawing != null || parametersModel.ExpectedDateOfDrawing == null && offerInstance.SimulationInputs.ExpectedDateOfDrawing > DateTime.Now.AddDays(1))
+        if (parametersModel.ExpectedDateOfDrawing != null || (parametersModel.ExpectedDateOfDrawing == null && offerInstance.SimulationInputs.ExpectedDateOfDrawing > DateTime.Now.AddDays(1)))
         {
             parametersModel.ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing;
             hasChanged = true;

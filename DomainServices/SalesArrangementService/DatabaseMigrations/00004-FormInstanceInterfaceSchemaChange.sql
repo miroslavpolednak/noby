@@ -36,6 +36,12 @@ BEGIN
 END
 GO
 
+IF COL_LENGTH('dbo.FormInstanceInterface', 'STATUS') IS NOT NULL
+BEGIN
+ ALTER TABLE dbo.FormInstanceInterface DROP COLUMN STATUS;
+END
+GO
+
 IF COL_LENGTH('dbo.FormInstanceInterface', 'STORNOVANO') IS NOT NULL
 BEGIN
   EXEC sp_rename 'dbo.FormInstanceInterface.STORNOVANO', 'STORNO';

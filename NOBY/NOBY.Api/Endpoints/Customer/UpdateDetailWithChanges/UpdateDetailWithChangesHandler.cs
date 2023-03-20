@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using NOBY.Api.SharedDto;
 using UserIdentity = CIS.Infrastructure.gRPC.CisTypes.UserIdentity;
 using __Household = DomainServices.HouseholdService.Contracts;
+using NOBY.Api.Endpoints.Customer.Shared;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateDetailWithChanges;
 
@@ -35,8 +36,19 @@ internal sealed class UpdateDetailWithChangesHandler
             ModelComparers.CompareObjects(request.EmailAddress, originalModel.EmailAddress, "EmailAddress", delta);
         if (!(originalModel.MobilePhone?.IsConfirmed ?? false))
             ModelComparers.CompareObjects(request.MobilePhone, originalModel.MobilePhone, "MobilePhone", delta);
-        
-        if (originalModel.CustomerIdentification?.IdentificationMethodId != 1 && originalModel.CustomerIdentification?.IdentificationMethodId != 8)
+
+        // zjistit zda uz existuji changeData a v nich CustomerIdentification
+        bool identDocExists = false;
+        if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
+        {
+            var deserializedChangedData = JsonConvert.DeserializeObject<UpdateDetailWithChangesRequest>(customerOnSA.CustomerChangeData);
+            identDocExists = deserializedChangedData?.IdentificationDocument is not null;
+        }
+
+        // tady schvalne neresime prvni pindu z EA diagramu, protoze bysme museli z customerOnSA json delty udelat objekt a ten teprve kontrolovat. A to by bylo pomalejsi a narocnejsi nez tuhle podminku vzdy znovu projet.
+        if (!identDocExists 
+            && originalModel.CustomerIdentification?.IdentificationMethodId != 1 
+            && originalModel.CustomerIdentification?.IdentificationMethodId != 8)
         {
             delta.CustomerIdentification = new CustomerIdentificationMethod
             {

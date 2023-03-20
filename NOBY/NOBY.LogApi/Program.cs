@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder
     .AddCisEnvironmentConfiguration()
+    .AddCisCoreFeatures()
     .AddCisWebApiCors()
     .AddCisLogging()
     .AddCisHealthChecks();

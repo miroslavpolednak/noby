@@ -107,7 +107,7 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty>
         dynamicValue.DocumentId = await _documentArchiveService.GenerateDocumentId(new(), cancellationToken);
         dynamicValue.FormId = await _documentOnSAService.GenerateFormId(new() { IsFormIdFinal = true }, cancellationToken);
         dynamicValue.DocumentTypeId = await GetDocumentTypeIdForServiceRequest(salesArrangement, cancellationToken);
-
+        
         createdFinalVersionOfDocOnSa.Add(await CreateFinalDocumentOnSa(salesArrangement, dynamicValue, cancellationToken));
 
         return await _formsService.LoadServiceForm(salesArrangement.SalesArrangementId, new List<DynamicFormValues>() { dynamicValue }, cancellationToken);
@@ -155,8 +155,7 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty>
     private async Task<int> GetDocumentType(Household household, CancellationToken cancellationToken)
     {
         var houseHoldType = await _codebookService.HouseholdTypes(cancellationToken);
-        //return houseHoldType.Single(r => r.Id == household.HouseholdTypeId).DocumentType; //ToDo
-        return 4;
+        return houseHoldType.Single(r => r.Id == household.HouseholdTypeId).DocumentTypeId!.Value;
     }
 
     private async Task SaveDataSentence(GetEasFormResponse easFormResponse, Contracts.SalesArrangement salesArrangement, List<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
@@ -211,16 +210,12 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty>
         // map to entities
         var entities = easFormResponse.Forms.Select(f => new Database.Entities.FormInstanceInterface
         {
-            DOCUMENT_ID = f.DynamicFormValues!.DocumentId, //Mock
+            DOCUMENT_ID = f.DynamicFormValues!.DocumentId,
             FORM_TYPE = f.DefaultValues.FormType,
-            // CISLO_SMLOUVY = easFormResponse.ContractNumber,
-            STATUS = 100,
             FORM_KIND = 'N',
-            // FORMID = f.DynamicFormValues.FormId, //Mock
             CPM = user.CPM ?? string.Empty,
             ICP = user.ICP ?? string.Empty,
             CREATED_AT = _dateTime.Now, // what time zone?
-            //HESLO_KOD = f.DefaultValues.PasswordCode,
             STORNO = 0,
             DATA_TYPE = 1,
             JSON_DATA_CLOB = f.Json

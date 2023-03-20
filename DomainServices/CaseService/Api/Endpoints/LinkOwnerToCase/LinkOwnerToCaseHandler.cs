@@ -1,5 +1,6 @@
 ﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.CaseService.Api.Endpoints.LinkOwnerToCase;
 
@@ -9,7 +10,9 @@ internal sealed class LinkOwnerToCaseHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(LinkOwnerToCaseRequest request, CancellationToken cancellation)
     {
         // case entity
-        var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation)
+        var entity = await _dbContext
+            .Cases
+            .FirstOrDefaultAsync(t => t.CaseId == request.CaseId, cancellation)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // overit ze existuje uzivatel

@@ -11,8 +11,6 @@ internal sealed class FormInstanceInterface
 
     public string? FORM_TYPE { get; set; }
 
-    public short? STATUS { get; set; }
-
     public char? FORM_KIND { get; set; }
 
     public string? CPM { get; set; }

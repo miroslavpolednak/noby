@@ -5,20 +5,18 @@ namespace CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 [TransientService, SelfService]
 public class TemplateFileStorage : IDisposable
 {
-    private readonly GeneratorConfiguration _configuration;
-
     private Stream? _fileStream;
 
     public TemplateFileStorage(IOptions<GeneratorConfiguration> configurationOptions)
     {
-        _configuration = configurationOptions.Value;
+        StoragePath = configurationOptions.Value.StoragePath;
     }
 
-    public PdfDocument LoadTemplateFile(string templateName, string templateVersion, string? modifier)
-    {
-        modifier = string.IsNullOrWhiteSpace(modifier) ? null : $"_{modifier}";
+    public string StoragePath { get; }
 
-        var filePath = Path.Combine(_configuration.StoragePath, templateName, $"{templateName}_{templateVersion}{modifier}.pdf");
+    public PdfDocument LoadTemplateFile(string templateName, string templateVersion, string? variant)
+    {
+        var filePath = Path.Combine(StoragePath, templateName, $"{templateName}_{templateVersion}{variant}.pdf");
 
         return LoadPdfDocument(filePath);
     }
