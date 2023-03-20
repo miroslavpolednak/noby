@@ -41,6 +41,9 @@ records = TestDataProvider.load_records(
         types = f_types
     )
 
+records_custom_api = TestDataProvider.load_records_custom_api(f_types)
+records_generated_api = TestDataProvider.load_records_generated_api(f_types)
+
 for r in records:
     print('RECORD ---> ', r)
     print('LABEL  ---> ', r.test_label)

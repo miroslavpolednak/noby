@@ -9,7 +9,7 @@ from typing import List
 from business.offer import Offer
 from business.case import Case
 
-from tests.tuning.data import load_json, save_json, clean_folder, EInputOutput
+from tests.XX_tuning.data import load_json, save_json, clean_folder, EInputOutput
 
 
 # CASE_PATHS: List[str] = [

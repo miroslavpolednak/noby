@@ -3,6 +3,7 @@ from .ESource import ESource
 from .Options import Options
 
 class TestDataRecord():
+
     def __init__(self, source: ESource, order: int, options: Options, time_created: datetime, source_name: str, data_json_label: str):
         self.__source = source
         self.__order = order

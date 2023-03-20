@@ -7,8 +7,8 @@ import _setup
 from typing import List
 
 from common import config, ETestEnvironment
-from tests.tuning.OptionsResolver import OptionsResolver
-from tests.tuning.data import load_json, save_json, clean_folder, EInputOutput
+from tests.XX_tuning.OptionsResolver import OptionsResolver
+from tests.XX_tuning.data import load_json, save_json, clean_folder, EInputOutput
 
 from E2E import ApiProcessor, ApiReaderOffer, ApiReaderCase
 

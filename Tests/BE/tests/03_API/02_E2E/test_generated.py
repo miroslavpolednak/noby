@@ -2,15 +2,11 @@ import pytest
 
 from typing import List
 
-from common import ETestLayer, ETestType
+from common import ETestType, config
 from DATA import TestDataProvider, TestDataRecord, ESource
+from E2E import ApiProcessor, ApiReaderOffer, ApiReaderCase
 
-__SOURCE = ESource.Generator
-__LAYER = ETestLayer.API
-__TYPE = ETestType.COMP_CASE
-
-#TODO: add method to TestDataProvider getRecordsByEnvForApi
-records: List[TestDataRecord] = TestDataProvider.load_records(source=__SOURCE, layers=__LAYER, types=__TYPE)
+records: List[TestDataRecord] = TestDataProvider.load_records_generated_api(ETestType.E2E)
 
 records_by_order = dict()
 for r in records:
@@ -23,9 +19,27 @@ def get_label(order: int):
     return records_by_order[order].test_label
 
 @pytest.mark.parametrize("order", orders, ids=get_label)
-#def test_generated_E2E(order: int):
 def test(order: int):
     """Test API E2E generated."""
-    data_json =  TestDataProvider.load_record_data(__SOURCE, order)
+
+    # load data json
+    data_json =  TestDataProvider.load_record_data(ESource.Generator, order)
     assert data_json is not None
-    #TODO:
+
+    # process & check result
+    result = ApiProcessor(data_json).process()
+    assert isinstance(result, Exception) == False, result
+
+    if 'case_id' in result.keys():
+        case_id = result['case_id']
+
+        # load case & check result
+        case = ApiReaderCase().load(case_id)
+        assert isinstance(case, Exception) == False, case
+
+        # convert case to JSON & check result
+        case_json = case.to_json_value()
+        assert isinstance(case_json, dict), case
+
+        print(f'https://{config.environment.name.lower()}.noby.cz/undefined#/mortgage/case-detail/{case_id}')
+

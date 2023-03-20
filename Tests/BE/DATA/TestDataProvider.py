@@ -3,7 +3,7 @@ import os, json
 from typing import List
 from datetime import datetime
 
-from common import Log, SqliteDbManager, find_folder_tests_be, ETestEnvironment, ETestLayer, ETestType
+from common import Log, SqliteDbManager, find_folder_tests_be, ETestEnvironment, ETestLayer, ETestType, config
 from .model.ESource import ESource
 from .model.Options import Options
 from .model.TestDataEntry import TestDataEntry
@@ -35,7 +35,7 @@ class TestDataProvider():
         subfolders = [ f for f in os.scandir(path_to_folder) if f.is_dir() ]
 
         # sort folders
-        subfolders.sort()
+        subfolders.sort(key= lambda f: f.name)
 
         # search files
         order = 0
@@ -93,6 +93,14 @@ class TestDataProvider():
                            VALUES ({source.value}, {order}, '{param_data_json}', {options.environments.value}, {options.layers.value}, {options.types.value}, '{time_created}', {param_source_name});"""
 
         TestDataProvider.__db_manager.exec_nonquery([sql_command])
+
+    @staticmethod
+    def load_records_custom_api(types: ETestType = None) -> List[TestDataRecord]:
+        return TestDataProvider.load_records(ESource.Custom, config.environment, ETestLayer.API, types)
+
+    @staticmethod
+    def load_records_generated_api(types: ETestType = None) -> List[TestDataRecord]:
+        return TestDataProvider.load_records(ESource.Generator, config.environment, ETestLayer.API, types)
 
 
     @staticmethod
