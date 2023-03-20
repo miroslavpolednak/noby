@@ -22,7 +22,7 @@ public class DeveloperProjectItem
     public string Web { get; set; }
 
     [DataMember(Order = 7)]
-    public int MassValuation { get; set; }
+    public int MassEvaluation { get; set; }
 
     [DataMember(Order = 8)]
     public string Recommandation { get; set; }
