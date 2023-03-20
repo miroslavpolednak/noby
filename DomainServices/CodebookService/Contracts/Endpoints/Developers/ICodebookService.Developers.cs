@@ -1,10 +1,12 @@
 ﻿using ProtoBuf.Grpc;
+using System;
 
 namespace DomainServices.CodebookService.Contracts
 {
     public partial interface ICodebookService
     {
         [OperationContract]
-        Task<List<Endpoints.Developers.DeveloperItem>> Developers(Endpoints.Developers.DevelopersRequest request, CallContext context = default);
+        [Obsolete]
+        Task<List<Endpoints.GetDeveloper.DeveloperItem>> Developers(Endpoints.Developers.DevelopersRequest request, CallContext context = default);
     }
 }

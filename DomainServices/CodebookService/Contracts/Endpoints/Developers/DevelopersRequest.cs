@@ -1,5 +1,4 @@
-﻿
-namespace DomainServices.CodebookService.Contracts.Endpoints.Developers
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.Developers
 {
     [DataContract]
     public class DevelopersRequest : IRequest<List<DeveloperItem>>

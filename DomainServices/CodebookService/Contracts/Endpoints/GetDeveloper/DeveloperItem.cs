@@ -1,4 +1,4 @@
-﻿namespace DomainServices.CodebookService.Contracts.Endpoints.Developers;
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper;
 
 [DataContract]
 public class DeveloperItem
