@@ -37,12 +37,14 @@ internal class DocumentGenerator
         var documentDataRequest = new GetDocumentDataRequest
         {
             DocumentTypeId = (int)documentRequest.DocumentType,
+            DocumentTemplateVariantId = documentRequest.DocumentTemplateVariantId,
             InputParameters = documentRequest.InputParameters
         };
 
         var result = await _dataAggregator.GetDocumentData(documentDataRequest, cancellationToken);
 
         documentRequest.DocumentTemplateVersion = result.DocumentTemplateVersion;
+        documentRequest.DocumentTemplateVariant = result.DocumentTemplateVariant;
         documentRequest.InputParameters = result.InputParameters;
 
         return result.DocumentData;
@@ -53,6 +55,7 @@ internal class DocumentGenerator
         {
             DocumentTypeId = (int)request.DocumentType,
             DocumentTemplateVersion = request.DocumentTemplateVersion,
+            DocumentTemplateVariant = request.DocumentTemplateVariant,
             OutputType = _Document.OutputFileType.Pdfa,
             Parts =
             {

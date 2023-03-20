@@ -146,6 +146,28 @@ public class DocumentController : ControllerBase
     }
 
     /// <summary>
+    /// Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí)
+    /// </summary>
+    /// <remarks>
+    /// Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí) ze šablony k dané SalesArrangement.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=B7ED8950-BAA7-44a2-A069-2593B6D5121E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("customer-change/sales-arrangement/{salesArrangementId:int}")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public Task<IActionResult> GetCustomerChange(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
+
+        return GenerateGeneralDocument(DocumentType.ZAOZMDLU, input, cancellationToken);
+    }
+
+    /// <summary>
     /// Vygenerování dokumentu Žádost o úvěr F3601
     /// </summary>
     /// <remarks>
@@ -162,7 +184,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZADOSTHU, input, "B", cancellationToken);
+        return GenerateGeneralDocument(DocumentType.ZADOSTHU, input, 2, cancellationToken);
     }
 
     /// <summary>
@@ -182,7 +204,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZADOSTHD, input, "B", cancellationToken);
+        return GenerateGeneralDocument(DocumentType.ZADOSTHD, input, 6, cancellationToken);
     }
 
     [Obsolete]
@@ -202,12 +224,12 @@ public class DocumentController : ControllerBase
         return GenerateGeneralDocument(documentType, inputParameters, default, cancellationToken);
     }
 
-    private async Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, string? documentVariant, CancellationToken cancellationToken)
+    private async Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, int? documentVariantId, CancellationToken cancellationToken)
     {
         var request = new GeneralDocument.GetGeneralDocumentRequest
         {
             DocumentType = documentType,
-
+            DocumentTemplateVariantId = documentVariantId,
             InputParameters = inputParameters
         };
 
