@@ -3,4 +3,5 @@
 [DataContract]
 public class GetDeveloperRequest : IRequest<DeveloperItem>
 {
+    public int DeveloperId { get; set; }
 }

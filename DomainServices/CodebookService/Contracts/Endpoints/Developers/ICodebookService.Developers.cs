@@ -7,6 +7,6 @@ namespace DomainServices.CodebookService.Contracts
     {
         [OperationContract]
         [Obsolete]
-        Task<List<Endpoints.GetDeveloper.DeveloperItem>> Developers(Endpoints.Developers.DevelopersRequest request, CallContext context = default);
+        Task<List<Endpoints.Developers.DeveloperItemOld>> Developers(Endpoints.Developers.DevelopersRequest request, CallContext context = default);
     }
 }
