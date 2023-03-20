@@ -163,7 +163,7 @@ internal static class UpdateParametersExtensions
             Applicant = parameters.Applicant,
             CollateralIdentification = new()
             {
-                RealEstateIdentification = parameters.CollateralIdentification?.RealEstateIdentification
+                RealEstateIdentification = parameters.CollateralIdentification?.RealEstateIdentification ?? ""
             },
             LoanAmount = new()
             {
