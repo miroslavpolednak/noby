@@ -29,15 +29,5 @@
             ICO/RČ developera
             </summary>
         </member>
-        <member name="T:DomainServices.CodebookService.Contracts.Endpoints.MyTestCodebook.MyTestCodebookRequest">
-            <summary>
-            Dto objekt musi implementovat MediatR interface IRequest[] s korektni signaturou navratoveho typu, jinak nedojde ke spusteni handleru
-            </summary>
-        </member>
-        <member name="M:DomainServices.CodebookService.Contracts.ICodebookService.MyTestCodebook(DomainServices.CodebookService.Contracts.Endpoints.MyTestCodebook.MyTestCodebookRequest,ProtoBuf.Grpc.CallContext)">
-            <summary>
-            Objekt request musi implementovat MediatR interface IRequest[], jinak nedojde ke spusteni handleru
-            </summary>
-        </member>
     </members>
 </doc>

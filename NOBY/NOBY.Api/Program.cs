@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 #region register services
 // konfigurace aplikace
 var appConfiguration = builder.AddNobyConfig();
-builder.Services.AddSingleton(appConfiguration);
 
 // vlozit do DI vsechny custom services
 builder.Services.AddAttributedServices(typeof(NOBY.Infrastructure.IInfrastructureAssembly), typeof(NOBY.Api.IApiAssembly));
@@ -48,11 +47,14 @@ builder.Services
 
 // add internal services
 builder.Services
-       .AddDataAggregatorService()
-       .AddDocumentGeneratorService();
+    .AddDataAggregatorService()
+    .AddDocumentGeneratorService();
 
 // FOMS services
 builder.AddNobyServices();
+
+// init validacnich zprav
+ErrorCodeMapper.Init();
 
 // authentication
 builder.AddNobyAuthentication(appConfiguration);
@@ -80,7 +82,7 @@ app.UseCisWebRequestLocalization();
 
 app
     // API call
-    .UseNobyApi()
+    .UseNobyApi(appConfiguration)
     // include authentication endpoints
     .UseNobyAuthStrategy()
     // jedna se o SPA call, pust jen tyhle middlewares

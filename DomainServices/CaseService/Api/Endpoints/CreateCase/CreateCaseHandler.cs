@@ -37,18 +37,13 @@ internal sealed class CreateCaseHandler
         }
         catch (DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
         {
-            throw new CisAlreadyExistsException(13015, nameof(Database.Entities.Case), newCaseId);
+            throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.CaseAlreadyExist, newCaseId);
         }
 
-        // fire notification
-        await _mediator.Publish(new Notifications.CaseStateChangedNotification
+        // notify SB about state change
+        await _mediator.Send(new Contracts.NotifyStarbuildRequest
         {
-            CaseId = newCaseId,
-            CaseStateId = defaultCaseState,
-            ClientName = $"{request.Customer?.FirstNameNaturalPerson} {request.Customer?.Name}",
-            ProductTypeId = request.Data.ProductTypeId,
-            CaseOwnerUserId = request.CaseOwnerUserId,
-            IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested
+            CaseId = newCaseId
         }, cancellation);
         
         return new CreateCaseResponse()
@@ -63,6 +58,7 @@ internal sealed class CreateCaseHandler
         {
             CaseId = caseId,
 
+            StateUpdatedInStarbuild = (int)UpdatedInStarbuildStates.Unknown,
             StateUpdateTime = _dateTime.Now,
             ProductTypeId = request.Data.ProductTypeId,
 

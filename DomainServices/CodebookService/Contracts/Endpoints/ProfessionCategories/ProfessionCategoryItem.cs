@@ -16,5 +16,9 @@ public class ProfessionCategoryItem
 
 
     [DataMember(Order = 4)]
-    public List<int> ProfessionIds { get; set; }
+    public List<int> ProfessionTypeIds { get; set; }
+
+
+    [DataMember(Order = 5)]
+    public List<int> IncomeMainTypeAMLIds { get; set; }
 }

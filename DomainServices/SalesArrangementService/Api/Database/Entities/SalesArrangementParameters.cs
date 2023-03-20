@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CIS.Foms.Types.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.SalesArrangementService.Api.Database.Entities;
@@ -12,17 +13,9 @@ internal class SalesArrangementParameters
 
     public int SalesArrangementId { get; set; }
 
-    public SalesArrangementParametersTypes SalesArrangementParametersType { get; set; }
+    public SalesArrangementTypes SalesArrangementParametersType { get; set; }
 
     public string? Parameters { get; set; }
     
     public byte[]? ParametersBin { get; set; }
-}
-
-internal enum SalesArrangementParametersTypes : byte
-{
-    Mortgage = 1,
-    Drawing = 2,
-    GeneralChange = 3,
-    HUBN = 4
 }

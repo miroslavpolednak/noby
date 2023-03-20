@@ -49,3 +49,7 @@ public partial class UpdateActiveTasksRequest
 public partial class UpdateOfferContactsRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class NotifyStarbuildRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+{ }

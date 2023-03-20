@@ -23,9 +23,9 @@ public static class AuthenticationConstants
     public const string CaasAuthScheme = "CaasAuthentication";
 
     /// <summary>
-    /// Type claimu, který obsahuje login (CAAS login) přihlášeného uživatele
+    /// Parametr v QueryStringu, ktery pri presmerovani na autentizacni autoritu rika, kde je ulozen redirectUri.
     /// </summary>
-    public const string ClaimNameLogin = "login";
+    public const string RedirectUriQueryParameter = "redirect";
 
     public const string DefaultAuthenticationUrlPrefix = "auth";
     public const string DefaultAuthenticationUrlSegment = "/" + DefaultAuthenticationUrlPrefix;

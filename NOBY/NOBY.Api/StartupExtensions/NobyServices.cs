@@ -2,6 +2,9 @@
 using System.Text.Json.Serialization;
 using NOBY.Infrastructure.Security;
 using ExternalServices.AddressWhisperer.V1;
+using NOBY.Infrastructure.ErrorHandling.Internals;
+using CIS.Infrastructure.StartupExtensions;
+using NOBY.Infrastructure.Services;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -22,7 +25,7 @@ internal static class NobyServices
 
         builder.Services
             .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(Infrastructure.ErrorHandling.NobyValidationBehavior<,>));
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(NobyValidationBehavior<,>));
 
         // add validators
         builder.Services.Scan(selector => selector
@@ -42,17 +45,14 @@ internal static class NobyServices
 
             });
 
-        // add sql distributed cache
-        //TODO replace with Redis?
-        builder.Services.AddDistributedSqlServerCache(options =>
-        {
-            options.SchemaName = "dbo";
-            options.TableName = "AppCache";
-            options.ConnectionString = builder.Configuration.GetConnectionString("distributedCache");
-        });
+        // flow switches
+        builder.Services.AddFlowSwitches(builder.Configuration.GetConnectionString("default")!);
+
+        // add distributed cache
+        builder.AddCisDistributedCache();
 
         // ext services
-        builder.AddExternalService<IAddressWhispererClient>();
+        builder.AddExternalService<IAddressWhispererClient>(CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue, CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue);
 
         return builder;
     }

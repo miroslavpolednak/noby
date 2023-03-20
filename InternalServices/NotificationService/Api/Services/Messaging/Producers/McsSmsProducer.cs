@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics;
-using Avro.Specific;
 using CIS.Core;
 using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
-using CIS.InternalServices.NotificationService.Mcs.Partials;
+using CIS.InternalServices.NotificationService.Messaging.Partials;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using Headers = CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure.Headers;
@@ -44,6 +43,6 @@ public class McsSmsProducer
             // Origin = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",
         };
         
-        await _producer.Produce(sendSms, new ProducerPipe<ISpecificRecord>(headers), cancellationToken);
+        await _producer.Produce(sendSms, new ProducerPipe<IMcsSenderCommand>(headers), cancellationToken);
     }
 }

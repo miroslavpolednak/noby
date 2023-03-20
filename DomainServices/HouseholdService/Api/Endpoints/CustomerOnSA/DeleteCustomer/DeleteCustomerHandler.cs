@@ -23,17 +23,26 @@ internal sealed class DeleteCustomerHandler
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CantDeleteDebtor);
         }
 
-        // smazat customer + prijmy + obligations + identities
-        await deleteEntities(request.CustomerOnSAId, cancellationToken);
-
         // KB identita pokud existuje
-        var kbIdentity = customer.Identities?.FirstOrDefault(t => t.IdentityScheme == IdentitySchemes.Kb);
+        var kbIdentity = customer
+            .Identities?
+            .FirstOrDefault(t => t.IdentityScheme == IdentitySchemes.Kb);
+
+        // zjistit zda ma customer rozjednany pripad
+        var hasMoreSA = (await _dbContext.CustomersIdentities
+            .CountAsync(t =>
+                t.IdentityScheme == customer.Identities!.First().IdentityScheme
+                && t.IdentityId == customer.Identities!.First().IdentityId
+                , cancellationToken)) > 1;
 
         // SULM
-        if (kbIdentity is not null)
+        if (kbIdentity is not null && !hasMoreSA)
         {
-            await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellationToken);
+            await _sulmClient.StopUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
         }
+
+        // smazat customer + prijmy + obligations + identities
+        await deleteEntities(request.CustomerOnSAId, cancellationToken);
 
         // smazat Agent z SA, pokud je Agent=aktualni CustomerOnSAId
         var saInstance = await _salesArrangementService.GetSalesArrangement(customer.SalesArrangementId, cancellationToken);
@@ -86,12 +95,12 @@ internal sealed class DeleteCustomerHandler
     }
 
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly SulmService.ISulmClient _sulmClient;
+    private readonly SulmService.ISulmClientHelper _sulmClient;
     private readonly Database.HouseholdServiceDbContext _dbContext;
 
     public DeleteCustomerHandler(
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        SulmService.ISulmClient sulmClient,
+        SulmService.ISulmClientHelper sulmClient,
         Database.HouseholdServiceDbContext dbContext)
     {
         _salesArrangementService = salesArrangementService;

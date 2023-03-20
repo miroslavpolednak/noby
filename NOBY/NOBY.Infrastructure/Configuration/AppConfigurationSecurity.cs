@@ -6,7 +6,7 @@ public sealed class AppConfigurationSecurity
     /// What kind of authentication provider to use - referes to DefaultScheme from .AddAuthentication().
     /// Possible values: FomsMockAuthentication
     /// </summary>
-    public string AuthenticationScheme { get; set; } = "";
+    public string AuthenticationScheme { get; set; } = string.Empty!;
 
     /// <summary>
     /// Pocet minut po jejich uplynuti bude uzivatel odhlasen, pokud v te dobe neprovedl aktivni request.
@@ -32,4 +32,9 @@ public sealed class AppConfigurationSecurity
     /// Pokud je nastaveno na True, použije pro oAuth2 backchannel systémovou proxy
     /// </summary>
     public bool UseSystemProxy { get; set; }
+
+    /// <summary>
+    /// Vychozi URL na ktere bude uzivatel presmerovan po uspesnem prihlaseni, pokud neni mozne zjistit jeho puvodni URI.
+    /// </summary>
+    public string DefaultRedirectPathAfterSignIn { get; set; } = "/#";
 }

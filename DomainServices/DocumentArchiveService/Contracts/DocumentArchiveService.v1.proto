@@ -6,6 +6,7 @@ import "GenerateDocumentId.proto";
 import "UploadDocument.proto";
 import "GetDocument.proto";
 import "GetDocumentList.proto";
+import "GetDocumentsInQueue.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
@@ -39,4 +40,6 @@ service DocumentArchiveService{
 		 body: "*"
 		};
 	};
+	// Metoda slouží k získání seznamu dokumentů z lokálně uložené fronty dokumentů k odeslání nebo již odeslaných nebo dokumentů v chybových stavech
+	rpc GetDocumentsInQueue(DomainServices.DocumentArchiveService.GetDocumentsInQueue.GetDocumentsInQueueRequest) returns (DomainServices.DocumentArchiveService.GetDocumentsInQueue.GetDocumentsInQueueResponse);
 }

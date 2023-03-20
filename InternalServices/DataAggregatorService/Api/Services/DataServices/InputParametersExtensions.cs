@@ -30,7 +30,7 @@ public static class InputParametersExtensions
 
     public static void ValidateCustomerIdentity(this InputParameters inputParameters)
     {
-        if (inputParameters.CustomerIdentity is null)
+        if (inputParameters.CustomerIdentity is not null)
             return;
 
         throw new ArgumentNullException(nameof(InputParameters.CustomerIdentity));

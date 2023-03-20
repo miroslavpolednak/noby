@@ -23,16 +23,19 @@ internal sealed class GetSalesArrangementHandler
         {
             switch (parameters.ParameterType)
             {
-                case Database.Entities.SalesArrangementParametersTypes.Mortgage:
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.Mortgage:
                     model.Mortgage = __SA.SalesArrangementParametersMortgage.Parser.ParseFrom(parameters.Bin);
                     break;
-                case Database.Entities.SalesArrangementParametersTypes.Drawing:
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.Drawing:
                     model.Drawing = __SA.SalesArrangementParametersDrawing.Parser.ParseFrom(parameters.Bin);
                     break;
-                case Database.Entities.SalesArrangementParametersTypes.GeneralChange:
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.GeneralChange:
                     model.GeneralChange = __SA.SalesArrangementParametersGeneralChange.Parser.ParseFrom(parameters.Bin);
                     break;
-                case Database.Entities.SalesArrangementParametersTypes.HUBN:
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.HUBN:
+                    model.HUBN = __SA.SalesArrangementParametersHUBN.Parser.ParseFrom(parameters.Bin);
+                    break;
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.CustomerChange:
                     model.HUBN = __SA.SalesArrangementParametersHUBN.Parser.ParseFrom(parameters.Bin);
                     break;
                 default:

@@ -1,9 +1,7 @@
 ﻿using CIS.Core.Types;
 using CIS.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
-using System.Collections.Immutable;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api.Common;
 
@@ -18,9 +16,9 @@ internal sealed class ServicesMemoryCache
         _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 20 });
     }
 
-    public async Task<ImmutableList<Contracts.DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<Contracts.DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
-        ImmutableList<Contracts.DiscoverableService> cacheEntry;
+        IReadOnlyList<Contracts.DiscoverableService> cacheEntry;
         if (!_cache.TryGetValue(environmentName, out cacheEntry!))
         {
             _logger.ServicesNotFoundInCache(environmentName);
@@ -48,7 +46,7 @@ internal sealed class ServicesMemoryCache
         return cacheEntry!;
     }
 
-    private async Task<ImmutableList<Contracts.DiscoverableService>> getServicesFromDb(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
+    private async Task<IReadOnlyList<Contracts.DiscoverableService>> getServicesFromDb(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
         var list = await _connectionProvider
             .ExecuteDapperRawSqlToList<Dto.ServiceModel>(_sqlQuery, new { name = environmentName.ToString() }, cancellationToken);
@@ -67,7 +65,8 @@ internal sealed class ServicesMemoryCache
                 ServiceType = t.ServiceType,
                 ServiceUrl = t.ServiceUrl,
             })
-            .ToImmutableList();
+            .ToArray()
+            .AsReadOnly();
     }
 
     const string _sqlQuery = "SELECT ServiceName, ServiceUrl, ServiceType FROM ServiceDiscovery WHERE EnvironmentName=@name";

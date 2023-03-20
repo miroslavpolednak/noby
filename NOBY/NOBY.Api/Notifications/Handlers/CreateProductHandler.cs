@@ -39,15 +39,6 @@ internal sealed class CreateProductHandler
         // detail offer
         var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken);
 
-        // vytovrit produkt - musi se zalozit pred klientem!
-        var request = new _Product.CreateMortgageRequest
-        {
-            CaseId = notification.CaseId,
-            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
-        };
-        var result = await _productService.CreateMortgage(request, cancellationToken);
-        _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
-
         // zjistit, zda existuje customer v konsDb
         var kbIdentity = notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
         _Cu.CustomerDetailResponse? konsDbCustomer = null;
@@ -84,6 +75,15 @@ internal sealed class CreateProductHandler
                 _logger.LogError("MpDigi updateClient failed");
             }
         }
+
+        // vytovrit produkt - musi se zalozit pred klientem!
+        var request = new _Product.CreateMortgageRequest
+        {
+            CaseId = notification.CaseId,
+            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
+        };
+        var result = await _productService.CreateMortgage(request, cancellationToken);
+        _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
 
         _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
     }

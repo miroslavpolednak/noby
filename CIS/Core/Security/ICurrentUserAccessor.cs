@@ -32,6 +32,6 @@ public interface ICurrentUserAccessor
     /// <summary>
     /// Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
     /// </summary>
-    Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default(CancellationToken)) 
+    Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default(CancellationToken))
         where TDetails : ICurrentUserDetails;
 }

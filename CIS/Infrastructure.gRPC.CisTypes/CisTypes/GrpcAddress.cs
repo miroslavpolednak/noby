@@ -25,7 +25,7 @@ public partial class GrpcAddress
             EvidenceNumber = address.EvidenceNumber
         };
     }
-
+    
     public static implicit operator GrpcAddress?(Foms.Types.Address? address)
     {
         if (address is null) return null;

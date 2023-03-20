@@ -502,11 +502,13 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424127746">Currencies</a>
              - <a href="https://wiki.kb.cz/display/HT/CustomerProfile">CustomerProfiles</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413658556">AddressTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCodes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developers</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects</a>
              - <a href="https://wiki.kb.cz/display/HT/DocumentOnSAType">DocumentOnSATypes</a>
              - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVersion">DocumentTemplateVersions</a>
+             - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVariant">DocumentTemplateVariants</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=450580207">DrawingDurations</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=444604999">DrawingTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=400823251">EaCodesMain</a>
@@ -805,43 +807,50 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.HardCreate">
             <summary>
-            Příznak tvrdého vytvoření customera. Default:false
+            Příznak tvrdého vytvoření customera.
             </summary>
+            <example>true</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.CustomerOnSAId">
             <summary>
             Id customera na sales arrangementu
             </summary>
+            <example>123456</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.BirthDate">
             <summary>
             Datum narození
             </summary>
+            <example>2000-02-01</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.FirstName">
             <summary>
             Jméno
             </summary>
+            <example>Jidáš</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.LastName">
             <summary>
             Příjmení
             </summary>
+            <example>Skočdopole</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.BirthPlace">
             <summary>
             Místo narození
             </summary>
+            <example>Praha</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.GenderId">
             <summary>
-            Pohlaví
+            Pohlaví\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Male</li><li>2 - Female</li></ul>
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.CitizenshipCountryId">
             <summary>
             Státní příslušnost/občanství
             </summary>
+            <example>16</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateRequest.BirthNumber">
             <summary>
@@ -856,6 +865,66 @@
         <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateResponse.IsInputDataDifferent">
             <summary>
             Vstupní data se liší od dat z KB CM
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.Customer.Create.Dto.Address">
+            <summary>
+            Adresa - bydliste, kontaktni atd.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.Street">
+            <summary>
+            Ulice
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.StreetNumber">
+            <summary>
+            Číslo orientační
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.HouseNumber">
+            <summary>
+            Číslo popisné
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.EvidenceNumber">
+            <summary>
+            Číslo evidenční
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.Postcode">
+            <summary>
+            PSČ
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.City">
+            <summary>
+            Město/Obec
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.CountryId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.CityDistrict">
+            <summary>
+            Část obce
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.PragueDistrict">
+            <summary>
+            Praha obvod
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.CountrySubdivision">
+            <summary>
+            Název územního celku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.Dto.Address.AddressPointId">
+            <summary>
+            Id adresního bodu
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.Create(NOBY.Api.Endpoints.Customer.Create.CreateRequest,System.Threading.CancellationToken)">
@@ -1155,6 +1224,19 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks> 
         </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.ValidateFormId(System.Int64,NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Threading.CancellationToken)">
+            <summary>
+            If formId exist on DocumentOnSa, return EArchiveId from documentOnSa
+            </summary>
+            <returns>DocumentOnSa.EArchiveId</returns>
+            <exception cref="T:CIS.Core.Exceptions.CisValidationException">Unable to upload file for selected FormId</exception>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.CheckIfExistFormIdOnDocumentOnSa(NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            This method try to find formId on DocumentOnsa for all salesarragment under the Case
+            </summary>
+            <returns>SalesArrangementId from DocumentOnSa for FormId</returns>
+        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation.Guid">
             <summary>
             GUID dokumentu v dočasném úložišti
@@ -1365,6 +1447,26 @@
             <remarks>
             Vygenerování dokumentu Žádost o HUBN ze šablony k dané SalesArrangement.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0E17AE8A-C137-415b-B4FB-2C0D3995E0DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="salesArrangementId">Sales Arrangement ID</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetLoanApplicationMain(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Vygenerování dokumentu Žádost o úvěr F3601
+            </summary>
+            <remarks>
+            Vygenerování dokumentu Žádost o úvěr F3601 (dlužnická domácnost) ze šablony k dané SalesArrangement.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DD734EDD-1344-43b2-B45E-3407255B993A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="salesArrangementId">Sales Arrangement ID</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetLoanApplicationCodebtor(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Vygenerování dokumentu Žádost o úvěr F3602
+            </summary>
+            <remarks>
+            Vygenerování dokumentu Žádost o úvěr F3602 (spoludlužnická domácnost) k dané SalesArrangement.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=D5159266-11E9-4959-BDFA-71C1FCF46092"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
@@ -1933,6 +2035,66 @@
              </remarks>
              <returns>Seznam závazků na produktu</returns>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetail.RepaymentAccount">
+            <summary>
+            Účet pro splácení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetail.CommentToChangeRequest">
+            <summary>
+            Komentář k žádosti o změnu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailNaturalPerson.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailNaturalPerson.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailNaturalPerson.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailRelease.IsActive">
+            <summary>
+            Sekce aktivní
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAdd.IsActive">
+            <summary>
+            Sekce aktivní
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAddCustomer.Name">
+            <summary>
+            Jméno a příjmení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAddCustomer.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAgent.IsActive">
+            <summary>
+            Sekce aktivní
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAgent.ActualAgent">
+            <summary>
+            Aktuální zmocněnec pro doručování
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAgent.NewAgent">
+            <summary>
+            Nový zmocněnec pro doručování
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.GeneralChangeDetail.Applicant">
             <summary>
             Identita klienta
@@ -2333,11 +2495,6 @@
             Datum, kdy končí garance pro danou simulaci
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.Data">
-            <summary>
-            Data o zadosti - bude se jednat o ruzne objekty podle typu zadosti.
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.Parameters">
             <summary>
             Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.
@@ -2346,8 +2503,31 @@
             OneOf(
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersMortgage
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersDrawing
+            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersGeneralChange
+            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersHUBN
+            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersCustomerChange
             )
             </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItemButton.IsActive">
+            <summary>
+            Je sekce aktivní/neaktivní (lze prokliknout)?
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.IsVisible">
+            <summary>
+            Je sekce skrytá?
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.IsActive">
+            <summary>
+            Je sekce aktivní/neaktivní (lze prokliknout)?
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.IsCompleted">
+            <summary>
+            Je v sekci vše splněné?
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.AssessmentReason.Code">
             <summary>
@@ -2514,6 +2694,16 @@
             Tatáž verze data (timestamp), která se používá pro LoanApplicationSave a CreateAssesment:
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetFlowSwitches(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Detailní informace pro sluníčko
+            </summary>
+            <remarks>
+            Provede vyhodnocení klapek na základě konfigurace v konfiguračním excelu a vrátí informace nutné pro správné zobrazení rozcestníku žádosti (sluníčka).
+            <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2709EE14-C343-4c7f-B733-A092E41EA839"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="salesArrangementId">ID Sales Arrangement</param>
+        </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.Validate(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Validace dat SalesArrangementu - checkform.
@@ -2608,6 +2798,21 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChangeUpdate.CommentToChangeRequest">
+            <summary>
+            Komentář k žádosti o změnu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChangeUpdateAgent.IsActive">
+            <summary>
+            Sekce aktivní
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChangeUpdateAgent.NewAgent">
+            <summary>
+            Nový zmocněnec pro doručování
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.GeneralChangeUpdate.Applicant">
             <summary>
@@ -3195,7 +3400,7 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Login">
             <summary>
-            Login uzivatel z xxvvss databaze.
+            Login uzivatel do CAASu.
             </summary>
             <example>990614w</example>
         </member>

@@ -3,7 +3,7 @@
 public class LoanRealEstateDto
 {
 	/// <example>1</example>
-	public int RealEstateTypeId { get; set; }
+	public long RealEstateTypeId { get; set; }
 
 	/// <example>false</example>
 	public bool IsCollateral { get; set; }

@@ -44,9 +44,15 @@ public sealed class LoggingHttpHandler
             }
 #pragma warning restore CS8604 // Possible null reference argument.
         }
-        else
+        else if (request.Headers is not null)
         {
-            _logger.HttpRequestStarted(request);
+            using (_logger.BeginScope(new Dictionary<string, object>
+            {
+                { "Headers", request.Headers.ToDictionary(x => x.Key, v => string.Join(';', v.Value)) }
+            }))
+            {
+                _logger.HttpRequestStarted(request);
+            }
         }
 
         var response = await base.SendAsync(request, cancellationToken);

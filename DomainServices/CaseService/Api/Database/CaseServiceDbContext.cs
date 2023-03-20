@@ -10,9 +10,9 @@ internal sealed class CaseServiceDbContext
     public CaseServiceDbContext(BaseDbContextAggregate<CaseServiceDbContext> aggregate)
         : base(aggregate) { }
 
-    public DbSet<Case> Cases { get; set; } = null!;
-    public DbSet<ActiveTask> ActiveTasks { get; set; } = null!;
-
+    public DbSet<Case> Cases { get; set; }
+    public DbSet<ActiveTask> ActiveTasks { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.RegisterCisTemporalTable<Case>();

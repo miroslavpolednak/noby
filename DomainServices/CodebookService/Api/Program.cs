@@ -6,6 +6,7 @@ using CIS.Infrastructure.Telemetry;
 using Microsoft.OpenApi.Models;
 using CIS.Infrastructure.Caching;
 using CIS.Infrastructure.Security;
+using CIS.InternalServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 var endpointsType = typeof(DomainServices.CodebookService.Endpoints.IEndpointsAssembly);
@@ -25,7 +26,6 @@ builder
     .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program), endpointsType);
-builder.Services.AddCisDistributedCache();
 
 // logging 
 builder
@@ -75,6 +75,8 @@ builder.UseKestrelWithCustomConfiguration();
 if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
 
+app.UseServiceDiscovery();
+
 app
     .UseSwagger()
     .UseSwaggerUI(c =>
@@ -88,7 +90,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
-app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>
 {

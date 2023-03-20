@@ -29,7 +29,7 @@ internal sealed class CalculateRequestMapper
         if (request.UserIdentity is not null)
         {
             var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-            if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
+            if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
                 requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
             else
                 requestModel.KbGroupPerson = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);

@@ -46,7 +46,7 @@ internal sealed class GetDetailHandler
     async Task<Dto.MortgageDetailDto> getDataInternal(_SA.SalesArrangement saInstance, _Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellationToken)
     {
         if (!saInstance.OfferId.HasValue)
-            throw new CisArgumentException(ErrorCodes.SalesArrangementOfferIdIsNull, $"Offer does not exist for Case #{saInstance.OfferId}", "OfferId");
+            throw new NobyValidationException($"Offer does not exist for Case #{saInstance.OfferId}");
 
         var loanKindName = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.LoanKindId)?.Name ?? "-";
 
@@ -80,6 +80,7 @@ internal sealed class GetDetailHandler
             _SA.SalesArrangement.ParametersOneofCase.Drawing => saInstance.Drawing.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.GeneralChange => saInstance.GeneralChange.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.HUBN => saInstance.HUBN.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange => saInstance.CustomerChange.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.None => null,
             _ => throw new NotImplementedException($"getParameters for {saInstance.ParametersCase} not implemented")
         };

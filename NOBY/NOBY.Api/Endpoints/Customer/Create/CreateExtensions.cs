@@ -30,7 +30,7 @@ internal static class CreateExtensions
         if (request.PrimaryAddress is not null)
         {
             request.PrimaryAddress!.AddressTypeId = (int)CIS.Foms.Enums.AddressTypes.Permanent;
-            model.Addresses.Add(request.PrimaryAddress);
+            model.Addresses.Add(request.PrimaryAddress.ToDomainService());
         }
         // narodnost
         if (request.CitizenshipCountryId.GetValueOrDefault() > 0)
@@ -39,6 +39,28 @@ internal static class CreateExtensions
         return model;
     }
 
+    public static GrpcAddress ToDomainService(this Dto.Address address)
+    {
+        return new GrpcAddress
+        {
+            IsPrimary = address.IsPrimary,
+            DeliveryDetails = address.DeliveryDetails,
+            EvidenceNumber = address.EvidenceNumber,
+            StreetNumber = address.StreetNumber,
+            Street = address.Street,
+            City = address.City,
+            CountryId = address.CountryId,
+            HouseNumber = address.HouseNumber,
+            Postcode = address.Postcode,
+            AddressTypeId = address.AddressTypeId,
+            CityDistrict = address.CityDistrict,
+            PragueDistrict = address.PragueDistrict,
+            CountrySubdivision = address.CountrySubdivision,
+            PrimaryAddressFrom = address.PrimaryAddressFrom,
+            AddressPointId = address.AddressPointId
+        };
+    }
+    
     public static _HO.UpdateCustomerRequest ToUpdateRequest(this _HO.CustomerOnSA customerOnSA, _Cust.CustomerDetailResponse customerKb)
     {
         var model = new _HO.UpdateCustomerRequest
@@ -90,13 +112,7 @@ internal static class CreateExtensions
 
         return model;
     }
-    
-    public static CreateResponse SetResponseCode(this CreateResponse response, bool createOk)
-    {
-        response.ResponseCode = createOk ? "KBCM_CREATED" : "KBCM_IDENTIFIED";
-        return response;
-    }
-    
+
     public static CreateResponse InputDataComparison(this CreateResponse response, CreateRequest originalRequest)
     {
         if (

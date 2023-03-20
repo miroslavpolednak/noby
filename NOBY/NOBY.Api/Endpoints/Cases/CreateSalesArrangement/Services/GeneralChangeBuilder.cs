@@ -39,12 +39,23 @@ internal sealed class GeneralChangeBuilder
             _request.GeneralChange.DrawingDateTo.AgreedDrawingDateTo = (DateTime?)mortgageInstance.Mortgage?.DrawingDateTo ?? DateTime.Now;
             if (mortgageInstance.Mortgage?.PaymentAccount != null)
             {
-                _request.GeneralChange.RepaymentAccount.AgreedPrefix = mortgageInstance.Mortgage.PaymentAccount.Prefix;
-                _request.GeneralChange.RepaymentAccount.AgreedNumber = mortgageInstance.Mortgage.PaymentAccount.Number;
-                _request.GeneralChange.RepaymentAccount.AgreedBankCode = mortgageInstance.Mortgage.PaymentAccount.BankCode;
+                _request.GeneralChange.RepaymentAccount.AgreedPrefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;
+                _request.GeneralChange.RepaymentAccount.AgreedNumber = mortgageInstance.Mortgage.RepaymentAccount.Number;
+                _request.GeneralChange.RepaymentAccount.AgreedBankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode;
             }
             _request.GeneralChange.LoanPaymentAmount.ActualLoanPaymentAmount = (decimal?)mortgageInstance.Mortgage?.LoanPaymentAmount ?? 0M;
             _request.GeneralChange.DueDate.ActualLoanDueDate = (DateTime?)mortgageInstance.Mortgage?.LoanDueDate ?? DateTime.Now;
+
+            // real estates
+            if (mortgageInstance.Mortgage!.LoanRealEstates is not null && mortgageInstance.Mortgage.LoanRealEstates.Any())
+            {
+                _request.GeneralChange.LoanRealEstate = new __SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstateObject();
+                _request.GeneralChange.LoanRealEstate.LoanRealEstates.AddRange(mortgageInstance.Mortgage.LoanRealEstates.Select(t => new __SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstatesItem
+                {
+                    RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
+                    RealEstateTypeId = t.RealEstateTypeId
+                }));
+            }
         }
         catch
         {

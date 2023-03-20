@@ -10,33 +10,38 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
 [TransientService, AsImplementedInterfacesService]
 internal class ConfigurationManager : IConfigurationManager
 {
-    private readonly ConfigurationRepository _repository;
+    private readonly ConfigurationRepositoryFactory _repositoryFactory;
     private readonly ICodebookServiceClients _codebookService;
 
-    public ConfigurationManager(ConfigurationRepository repository, ICodebookServiceClients codebookService)
+    public ConfigurationManager(ConfigurationRepositoryFactory repositoryFactory, ICodebookServiceClients codebookService)
     {
-        _repository = repository;
+        _repositoryFactory = repositoryFactory;
         _codebookService = codebookService;
     }
 
     public async Task<DocumentConfiguration> LoadDocumentConfiguration(DocumentKey documentKey, CancellationToken cancellationToken)
     {
-        var documentVersionData = await GetDocumentVersionData(documentKey, cancellationToken);
+        var repository = _repositoryFactory.CreateDocumentRepository();
 
-        var fields = await _repository.LoadDocumentSourceFields(documentKey.TypeId, documentVersionData.documentVersion);
-        var tables = await _repository.LoadDocumentTables(documentKey.TypeId, documentVersionData.documentVersion);
+        var documentVersionData = await GetDocumentVersionData(documentKey, cancellationToken);
+        var documentVariant = await GetDocumentVariantIfNeeded(documentVersionData.documentVersionId, documentKey.VariantId, cancellationToken);
+
+        var fields = await repository.LoadDocumentSourceFields(documentKey.TypeId, documentVersionData.documentVersion, documentVariant, cancellationToken);
+        var tables = await repository.LoadDocumentTables(documentKey.TypeId, documentVersionData.documentVersion, cancellationToken);
 
         return new DocumentConfiguration
         {
             DocumentTemplateVersionId = documentVersionData.documentVersionId,
             DocumentTemplateVersion = documentVersionData.documentVersion,
+            DocumentTemplateVariantId = documentKey.VariantId,
+            DocumentTemplateVariant = documentVariant,
             InputConfig = new InputConfig
             {
                 DataSources = GetDataSources(UnionFieldAndTableSources()),
-                DynamicInputParameters = await _repository.LoadDocumentDynamicInputFields(documentKey.TypeId, documentVersionData.documentVersion)
+                DynamicInputParameters = await repository.LoadDocumentDynamicInputFields(documentKey.TypeId, documentVersionData.documentVersion, documentVariant, cancellationToken)
             },
             SourceFields = fields,
-            DynamicStringFormats = await _repository.LoadDocumentDynamicStringFormats(documentKey.TypeId, documentVersionData.documentVersion),
+            DynamicStringFormats = await repository.LoadDocumentDynamicStringFormats(documentKey.TypeId, documentVersionData.documentVersion, cancellationToken),
             Tables = tables
         };
 
@@ -46,7 +51,9 @@ internal class ConfigurationManager : IConfigurationManager
 
     public async Task<EasFormConfiguration> LoadEasFormConfiguration(EasFormKey easFormKey, CancellationToken cancellationToken)
     {
-        var fields = await _repository.LoadEasFormSourceFields(easFormKey.RequestTypeId, cancellationToken);
+        var repository = _repositoryFactory.CreateEasFormConfigurationRepository();
+
+        var fields = await repository.LoadEasFormSourceFields(easFormKey.RequestTypeId, cancellationToken);
 
         return new EasFormConfiguration
         {
@@ -54,7 +61,7 @@ internal class ConfigurationManager : IConfigurationManager
             InputConfig = new InputConfig
             {
                 DataSources = GetDataSources(fields.Select(f => f.DataSource)),
-                DynamicInputParameters = await _repository.LoadEasFormDynamicInputFields(easFormKey.RequestTypeId, cancellationToken)
+                DynamicInputParameters = await repository.LoadEasFormDynamicInputFields(easFormKey.RequestTypeId, cancellationToken)
             },
             SourceFields = fields
         };
@@ -72,8 +79,23 @@ internal class ConfigurationManager : IConfigurationManager
 
         return (selectedVersion.Id, selectedVersion.DocumentVersion);
 
-        DocumentTemplateVersionItem? GetRequestedVersion() => documentVersions.FirstOrDefault(d => d.Id == documentKey.VersionId && d.DocumentTemplateTypeId == documentKey.TypeId);
-        DocumentTemplateVersionItem? GetLatestVersion() => documentVersions.FirstOrDefault(d => d.DocumentTemplateTypeId == documentKey.TypeId && d.IsValid);
+        DocumentTemplateVersionItem? GetRequestedVersion() => documentVersions.FirstOrDefault(d => d.Id == documentKey.VersionId && d.DocumentTypeId == documentKey.TypeId);
+        DocumentTemplateVersionItem? GetLatestVersion() => documentVersions.FirstOrDefault(d => d.DocumentTypeId == documentKey.TypeId && d.IsValid);
+    }
+
+    private async Task<string?> GetDocumentVariantIfNeeded(int documentVersionId, int? documentVariantId, CancellationToken cancellationToken)
+    {
+        var documentVariants = await _codebookService.DocumentTemplateVariants(cancellationToken);
+
+        if (documentVariants.Any(v => v.DocumentTemplateVersionId == documentVersionId) && !documentVariantId.HasValue)
+            throw new CisValidationException($"Template Variant is not specified for template version {documentVersionId}");
+
+        var variant = documentVariants.FirstOrDefault(v => v.DocumentTemplateVersionId == documentVersionId && v.Id == documentVariantId);
+
+        if (documentVariantId.HasValue && variant is null)
+            throw new CisValidationException($"Template Variant {documentVariantId} does not exist for template version {documentVersionId}");
+
+        return variant?.DocumentVariant;
     }
 
     private static IEnumerable<DataSource> GetDataSources(IEnumerable<DataSource> dataSources) =>

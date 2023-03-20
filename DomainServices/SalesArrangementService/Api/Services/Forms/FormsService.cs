@@ -1,13 +1,9 @@
 ﻿using CIS.Core.Attributes;
 using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
-using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
-using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using ExternalServices.Eas.V1;
 
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 
@@ -17,17 +13,14 @@ internal sealed class FormsService
     private readonly IMediator _mediator;
     private readonly IDataAggregatorServiceClient _dataAggregator;
     private readonly ICodebookServiceClients _codebookService;
-    private readonly SulmService.ISulmClient _sulmClient;
 
     public FormsService(IMediator mediator,
                         IDataAggregatorServiceClient dataAggregator,
-                        ICodebookServiceClients codebookService,
-                        SulmService.ISulmClient sulmClient)
+                        ICodebookServiceClients codebookService)
     {
         _mediator = mediator;
         _dataAggregator = dataAggregator;
         _codebookService = codebookService;
-        _sulmClient = sulmClient;
     }
 
     public Task<SalesArrangement> LoadSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
@@ -66,19 +59,5 @@ internal sealed class FormsService
         FormValidations.CheckFormData(response.Product);
 
         return response;
-    }
-
-    public async Task CallSulm(ProductData formData, CancellationToken cancellation)
-    {
-        var customersOnSa = formData.CustomersOnSa
-                                    .Select(customer => customer.Identities.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
-                                    .Where(kbIdentity => kbIdentity is not null);
-
-        // HFICH-2426
-        foreach (var kbIdentity in customersOnSa)
-        {
-            await _sulmClient.StopUse(kbIdentity!.IdentityId, "MLAP", cancellation);
-            await _sulmClient.StartUse(kbIdentity.IdentityId, "MLAP", cancellation);
-        }
     }
 }

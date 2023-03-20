@@ -3,7 +3,7 @@
 /// <summary>
 /// Implementace <see cref="IModifiedUser"/> a <see cref="ICreated"/>
 /// </summary>
-public class BaseCreatedWithModifiedUserId 
+public class BaseCreatedWithModifiedUserId
     : BaseCreated, IModifiedUser
 {
     public int? ModifiedUserId { get; set; }

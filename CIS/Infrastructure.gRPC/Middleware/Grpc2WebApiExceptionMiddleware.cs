@@ -27,9 +27,9 @@ public sealed class Grpc2WebApiExceptionMiddleware
             await _next(context);
         }
         
-        catch ( CisAuthorizationException)
+        catch (CisAuthorizationException)
         {
-            await Results.Unauthorized().ExecuteAsync(context);
+            await Results.Forbid().ExecuteAsync(context);
         }
         // neprihlaseny uzivatel
         catch (AuthenticationException)

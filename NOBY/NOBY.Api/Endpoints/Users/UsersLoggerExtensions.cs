@@ -9,12 +9,12 @@ internal static class UsersLoggerExtensions
     {
         _userSigningInAs = LoggerMessage.Define<string?>(
             LogLevel.Debug,
-            new EventId(LoggerEventIdCodes.Endpoints_Users_SigningInAs, nameof(UserSigningInAs)),
+            new EventId(Infrastructure.LoggerEventIdCodes.Endpoints_Users_SigningInAs, nameof(UserSigningInAs)),
             "Signing in as '{Username}'");
 
         _userGetCurrentUserInfo = LoggerMessage.Define<int>(
             LogLevel.Debug,
-            new EventId(LoggerEventIdCodes.Endpoints_Users_GetCurrentUser, nameof(UserGetCurrentUserInfo)),
+            new EventId(Infrastructure.LoggerEventIdCodes.Endpoints_Users_GetCurrentUser, nameof(UserGetCurrentUserInfo)),
             "Try to retrieve info for '{Id}'");
     }
 

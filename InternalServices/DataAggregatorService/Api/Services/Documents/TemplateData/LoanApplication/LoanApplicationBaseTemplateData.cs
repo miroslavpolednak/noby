@@ -1,14 +1,13 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.LoanApplication;
 
 internal class LoanApplicationBaseTemplateData : AggregatedData
 {
-    public string LoanApplicationHeader1 => IsUserBroker() ? string.Empty : "ŽÁDOST O POSKYTNUTÍ ÚVĚRU";
+    public string LoanApplicationHeader1 =>"ŽÁDOST O POSKYTNUTÍ ÚVĚRU";
 
-    public string LoanApplicationHeader2 => IsUserBroker() ? "ŽÁDOST O POSKYTNUTÍ ÚVĚRU A POTVRZENÍ O ZPROSTŘEDKOVÁNÍ" : string.Empty;
+    public string LoanApplicationHeader2 => "ŽÁDOST O POSKYTNUTÍ ÚVĚRU A POTVRZENÍ O ZPROSTŘEDKOVÁNÍ";
 
     public string LoanType => Offer.SimulationInputs.LoanKindId == 2001 ? GetLoanKindName() : GetProductTypeName();
 
@@ -35,8 +34,6 @@ internal class LoanApplicationBaseTemplateData : AggregatedData
         configurator.Countries().DegreesBefore().LoanKinds().LoanPurposes().ProductTypes()
                     .PropertySettlements().IdentificationDocumentTypes().MaritalStatuses();
     }
-
-    private bool IsUserBroker() => User.UserIdentifiers.Any(u => u.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId);
 
     private string GetProductTypeName() =>
         _codebookManager.ProductTypes.Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.ProductTypeId)

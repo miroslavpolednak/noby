@@ -1,10 +1,10 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using CIS.Infrastructure.Telemetry;
 using System.Reflection;
 using NOBY.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
+using NOBY.Infrastructure.Configuration;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -37,22 +37,22 @@ internal static class NobyAppBuilder
             });
         });
 
-    public static IApplicationBuilder UseNobyApi(this WebApplication app)
+    public static IApplicationBuilder UseNobyApi(this WebApplication app, AppConfiguration appConfiguration)
         => app.MapWhen(_isApiCall, appBuilder =>
         {
             appBuilder.UseHttpLogging();
             appBuilder.UseCisWebApiCors();
 
             // error middlewares
-            /*if (app.Environment.IsDevelopment())
+            if (appConfiguration.UseDeveloperExceptionPage)
             {
                 appBuilder.UseDeveloperExceptionPage();
             }
             else // custom exception handling
-            {*/
-                appBuilder.UseMiddleware<NOBY.Infrastructure.ErrorHandling.NobyApiExceptionMiddleware>();
+            {
+                appBuilder.UseMiddleware<Infrastructure.ErrorHandling.Internals.NobyApiExceptionMiddleware>();
                 appBuilder.UseHsts();
-            //}
+            }
 
             // version header
             appBuilder.Use(async (context, next) =>
@@ -67,7 +67,6 @@ internal static class NobyAppBuilder
             appBuilder.UseAuthentication();
             appBuilder.UseMiddleware<AppSecurityMiddleware>();
             appBuilder.UseAuthorization();
-            appBuilder.UseCisLogging();
             appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware>();
 
             // namapovani API modulu
@@ -95,7 +94,8 @@ internal static class NobyAppBuilder
             {
                 t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, ([FromServices] IHttpContextAccessor context) =>
                 {
-                    context.HttpContext!.Response.Redirect("/#");
+                    var s = context.HttpContext.Items["my"];
+                    //context.HttpContext!.Response.Redirect("/#");
                 })
                     .RequireAuthorization()
                     .ExcludeFromDescription();

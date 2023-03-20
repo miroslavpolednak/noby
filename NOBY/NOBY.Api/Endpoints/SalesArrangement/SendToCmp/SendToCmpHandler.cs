@@ -47,28 +47,38 @@ internal sealed class SendToCmpHandler
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
-        await ValidateSalesArrangement(saInstance.SalesArrangementId, request.IgnoreWarnings, cancellationToken);
+        // pokud je to produktovy SA, tak dal, jinak rovnou odeslat
+        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
 
-        var customersData = await LoadCustomersData(saInstance.SalesArrangementId, saInstance.CaseId, cancellationToken);
-
-        foreach (var customerOnSa in customersData.CustomersOnSa)
+        // check flow switches
+        var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
+        if (saCategory.SalesArrangementCategory == 1
+            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.FlowSwitch1))
         {
-            await CreateCustomerMpIfNotExists(customerOnSa, cancellationToken);
-
-            await CreateContractRelationshipIfNotExists(customersData.RedundantCustomersOnProduct, customerOnSa, saInstance.CaseId, cancellationToken);
+            throw new NobyValidationException(90016);
         }
 
-        await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
+        await ValidateSalesArrangement(saInstance.SalesArrangementId, request.IgnoreWarnings, cancellationToken);
+
+        if (saCategory.SalesArrangementCategory == 1)
+        {
+            var customersData = await LoadCustomersData(saInstance.SalesArrangementId, saInstance.CaseId, cancellationToken);
+
+            foreach (var customerOnSa in customersData.CustomersOnSa)
+            {
+                await CreateCustomerMpIfNotExists(customerOnSa, cancellationToken);
+
+                await CreateContractRelationshipIfNotExists(customersData.RedundantCustomersOnProduct, customerOnSa, saInstance.CaseId, cancellationToken);
+            }
+
+            await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
+
+            // update case state
+            await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
+        }
 
         // odeslat do SB
         await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
-
-        // update case state, pokud to neni servisni zadost.
-        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
-        if (saCategory.SalesArrangementCategory == 1)
-        {
-            await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
-        }
     }
 
     private async Task ValidateSalesArrangement(int salesArrangementId, bool ignoreWarnings, CancellationToken cancellationToken)

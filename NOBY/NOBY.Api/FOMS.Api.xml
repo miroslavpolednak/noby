@@ -471,13 +471,15 @@
 			 - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=483360846">CountryCodePhoneIdc</a>
 			 - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424127746">Currencies</a>
              - <a href="https://wiki.kb.cz/display/HT/CustomerProfile">CustomerProfiles</a> - zatím není na FE API implementováno
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a> 
+			 - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413658556">AddressTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCodes</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developers</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects</a>
              - <a href="https://wiki.kb.cz/display/HT/DocumentOnSAType">DocumentOnSATypes</a>
 			 - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVersion">DocumentTemplateVersions</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=450580207">DrawingDurations</a>
+		     - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVariant">DocumentTemplateVariants</a>
+			 - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=450580207">DrawingDurations</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=444604999">DrawingTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=400823251">EaCodesMain</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=419562802">EducationLevels</a>

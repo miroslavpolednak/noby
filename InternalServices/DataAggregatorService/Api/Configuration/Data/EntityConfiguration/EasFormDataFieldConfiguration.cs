@@ -10,7 +10,7 @@ internal class EasFormDataFieldConfiguration : IEntityTypeConfiguration<EasFormD
     {
         builder.HasKey(x => x.EasFormDataFieldId);
 
-        builder.Property(x => x.JsonPropertyName).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.JsonPropertyName).HasMaxLength(250).IsRequired();
 
         builder.HasIndex(x => new { x.EasRequestTypeId, x.EasFormTypeId, x.JsonPropertyName }).IsUnique();
 

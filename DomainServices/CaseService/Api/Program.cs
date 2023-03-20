@@ -43,7 +43,7 @@ builder.Services
     .AddUserService()
     .AddCisServiceDiscovery();
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+builder.Services.AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init());
 builder.Services.AddCisMediatrRollbackCapability();
 
 // add this service
@@ -69,7 +69,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
-app.UseCisLogging();
 
 app.MapCisHealthChecks();
 

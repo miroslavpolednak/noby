@@ -22,7 +22,6 @@ builder
     .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
-builder.Services.AddCisDistributedCache();
 
 // logging 
 builder
@@ -59,7 +58,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCisLogging();
 
 app.MapCisHealthChecks();
 

@@ -3,25 +3,25 @@ using FluentValidation;
 
 namespace DomainServices.CaseService.Api.Endpoints.CreateCase;
 
-internal class CreateCaseRequestValidator 
+internal sealed class CreateCaseRequestValidator 
     : AbstractValidator<CreateCaseRequest>
 {
     public CreateCaseRequestValidator()
     {
         RuleFor(t => t.Data.ProductTypeId)
             .GreaterThan(0)
-            .WithMessage(t => "ProductTypeId must be > 0").WithErrorCode("13002");
+            .WithErrorCode(ErrorCodeMapper.ProductTypeIdIsEmpty);
 
         RuleFor(t => (decimal)t.Data.TargetAmount)
             .GreaterThan(0)
-            .WithMessage("Target amount must be > 0").WithErrorCode("13018");
+            .WithErrorCode(ErrorCodeMapper.TargetAmountIsEmpty);
 
         RuleFor(t => t.CaseOwnerUserId)
             .GreaterThan(0)
-            .WithMessage("CaseOwnerUserId must be > 0").WithErrorCode("13003");
+            .WithErrorCode(ErrorCodeMapper.CaseOwnerIsEmpty);
 
         RuleFor(t => t.Customer.Name)
             .NotEmpty()
-            .WithMessage("Customer Name must not be empty").WithErrorCode("13012");
+            .WithErrorCode(ErrorCodeMapper.CustomerNameIsEmpty);
     }
 }
