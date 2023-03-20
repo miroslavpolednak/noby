@@ -1,13 +1,13 @@
-﻿using CIS.Infrastructure.BackgroundServiceJob;
-using DomainServices.DocumentArchiveService.Clients;
+﻿using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace DomainServices.DocumentOnSAService.Api.BackgroundServiceJobs.CheckDocumentsArchived;
+namespace DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 
-public class CheckDocumentsArchivedJob : IPeriodicBackgroundServiceJob
+internal sealed class CheckDocumentsArchivedJob
+    : CIS.Infrastructure.BackgroundServices.ICisBackgroundServiceJob
 {
     private const short SuccessfullyArchivedStatus = 400;
 
