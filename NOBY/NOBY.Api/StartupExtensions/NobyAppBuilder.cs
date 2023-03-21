@@ -44,6 +44,14 @@ internal static class NobyAppBuilder
             appBuilder.UseHttpLogging();
             appBuilder.UseCisWebApiCors();
 
+            appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware>();
+            // version header
+            appBuilder.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("foms-ver", _appVersion);
+                await next();
+            });
+
             // error middlewares
             if (appConfiguration.UseDeveloperExceptionPage)
             {
@@ -55,21 +63,13 @@ internal static class NobyAppBuilder
                 appBuilder.UseHsts();
             }
 
-            // version header
-            appBuilder.Use(async (context, next) =>
-            {
-                context.Response.Headers.Add("foms-ver", _appVersion);
-                await next();
-            });
-
             appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.HttpOptionsMiddleware>();
 
             // autentizace a autorizace
             appBuilder.UseAuthentication();
             appBuilder.UseMiddleware<AppSecurityMiddleware>();
             appBuilder.UseAuthorization();
-            appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware>();
-
+            
             // namapovani API modulu
             appBuilder
                 .UseRouting()
@@ -95,8 +95,6 @@ internal static class NobyAppBuilder
             {
                 t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, ([FromServices] IHttpContextAccessor context) =>
                 {
-                    var s = context.HttpContext.Items["my"];
-                    //context.HttpContext!.Response.Redirect("/#");
                 })
                     .RequireAuthorization()
                     .ExcludeFromDescription();
