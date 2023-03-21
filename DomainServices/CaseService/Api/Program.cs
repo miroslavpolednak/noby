@@ -31,6 +31,7 @@ builder
 
 // health checks
 builder.AddCisHealthChecks();
+builder.AddCisGrpcHealthChecks();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
@@ -71,6 +72,7 @@ app.UseAuthorization();
 app.UseCisServiceUserContext();
 
 app.MapCisHealthChecks();
+app.MapCisGrpcHealthChecks();
 
 app.MapGrpcService<CaseService>();
 

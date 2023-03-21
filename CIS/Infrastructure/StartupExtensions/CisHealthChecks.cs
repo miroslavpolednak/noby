@@ -5,6 +5,7 @@ public static class CisHealthChecks
     public static WebApplicationBuilder AddCisHealthChecks(this WebApplicationBuilder builder)
     {
         var hc = builder.Services.AddHealthChecks();
+
         var section = builder.Configuration.GetSection("ConnectionStrings")?.GetChildren();
         if (section != null)
         {
