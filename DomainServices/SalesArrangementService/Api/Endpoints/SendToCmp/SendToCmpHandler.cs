@@ -7,6 +7,7 @@ using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
+using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Clients;
@@ -66,13 +67,11 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty>
         var salesArrangement = await _formsService.LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
         var category = await _formsService.LoadSalesArrangementCategory(salesArrangement, cancellationToken);
 
-        var createdFinalVersionOfDocOnSa = new List<CreateDocumentOnSAResponse>();
+        var easFormAndFinalDocOnSaData = await GetEasFormAndFinalDocOnSa(salesArrangement, category, cancellationToken);
 
-        var easFormResponse = await GetEasForm(salesArrangement, category, createdFinalVersionOfDocOnSa, cancellationToken);
+        await SaveDataSentenceAndForm(easFormAndFinalDocOnSaData.easResponse, salesArrangement, easFormAndFinalDocOnSaData.finalVersionsOfDocOnSa, cancellationToken);
 
-        await SaveDataSentence(easFormResponse, salesArrangement, createdFinalVersionOfDocOnSa, cancellationToken);
-
-        //https://jira.kb.cz/browse/HFICH-4684 ToDo remove
+        //https://jira.kb.cz/browse/HFICH-4684 
         await _mediator.Send(new UpdateSalesArrangementStateRequest
         {
             SalesArrangementId = request.SalesArrangementId,
@@ -82,38 +81,49 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty>
         return new Empty();
     }
 
-    private async Task<GetEasFormResponse> GetEasForm(SalesArrangement salesArrangement, SalesArrangementCategories category, List<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
+    private async Task<(GetEasFormResponse easResponse, List<CreateDocumentOnSAResponse> finalVersionsOfDocOnSa)> GetEasFormAndFinalDocOnSa(SalesArrangement salesArrangement, SalesArrangementCategories category, CancellationToken cancellationToken)
     {
         return category switch
         {
-            SalesArrangementCategories.ProductRequest => await ProcessProductRequest(salesArrangement, createdFinalVersionOfDocOnSa, cancellationToken),
-            SalesArrangementCategories.ServiceRequest => await ProcessServiceRequest(salesArrangement, createdFinalVersionOfDocOnSa, cancellationToken),
+            SalesArrangementCategories.ProductRequest => await ProcessProductRequest(salesArrangement, cancellationToken),
+            SalesArrangementCategories.ServiceRequest => await ProcessServiceRequest(salesArrangement, cancellationToken),
             _ => throw new NotImplementedException()
         };
     }
 
-    private async Task<GetEasFormResponse> ProcessProductRequest(SalesArrangement salesArrangement, List<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
+    private async Task<(GetEasFormResponse easResponse, List<CreateDocumentOnSAResponse> finalVersionsOfDocOnSa)> ProcessProductRequest(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
-        var dynamicValues = await CreateDynamicValuesWithFinalDocumentOnSa(salesArrangement, createdFinalVersionOfDocOnSa, cancellationToken);
+        var dynamicValues = await CreateDynamicValuesForProductRequest(salesArrangement, cancellationToken);
 
-        var response = await _formsService.LoadProductForm(salesArrangement, dynamicValues, cancellationToken);
+        var easFormResponse = await _formsService.LoadProductForm(salesArrangement, dynamicValues, cancellationToken);
 
-        return response;
+        // Generate final versions of DocumentOnSa
+        var finalVersionsOfDocOnSa = new List<CreateDocumentOnSAResponse>();
+        foreach (var dynamicValue in dynamicValues)
+        {
+            finalVersionsOfDocOnSa.Add(await CreateFinalDocumentOnSa(salesArrangement, dynamicValue, cancellationToken));
+        }
+        return (easFormResponse, finalVersionsOfDocOnSa);
     }
 
-    private async Task<GetEasFormResponse> ProcessServiceRequest(SalesArrangement salesArrangement, List<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
+    private async Task<(GetEasFormResponse easResponse, List<CreateDocumentOnSAResponse> finalVersionsOfDocOnSa)> ProcessServiceRequest(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var dynamicValue = new DynamicFormValues();
         dynamicValue.DocumentId = await _documentArchiveService.GenerateDocumentId(new(), cancellationToken);
         dynamicValue.FormId = await _documentOnSAService.GenerateFormId(new() { IsFormIdFinal = true }, cancellationToken);
         dynamicValue.DocumentTypeId = await GetDocumentTypeIdForServiceRequest(salesArrangement, cancellationToken);
-        
-        createdFinalVersionOfDocOnSa.Add(await CreateFinalDocumentOnSa(salesArrangement, dynamicValue, cancellationToken));
 
-        return await _formsService.LoadServiceForm(salesArrangement.SalesArrangementId, new List<DynamicFormValues>() { dynamicValue }, cancellationToken);
+        var formResponse = await _formsService.LoadServiceForm(salesArrangement.SalesArrangementId, new List<DynamicFormValues>() { dynamicValue }, cancellationToken);
+
+        var finalVersionsOfDocOnSa = new List<CreateDocumentOnSAResponse>
+        {
+            await CreateFinalDocumentOnSa(salesArrangement, dynamicValue, cancellationToken)
+        };
+
+        return (formResponse, finalVersionsOfDocOnSa);
     }
 
-    private async Task<List<DynamicFormValues>> CreateDynamicValuesWithFinalDocumentOnSa(SalesArrangement salesArrangement, List<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
+    private async Task<List<DynamicFormValues>> CreateDynamicValuesForProductRequest(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var dynamicValues = new List<DynamicFormValues>();
 
@@ -125,9 +135,6 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty>
             dynamicValue.DocumentId = await _documentArchiveService.GenerateDocumentId(new(), cancellationToken);
             dynamicValue.FormId = await _documentOnSAService.GenerateFormId(new() { IsFormIdFinal = true }, cancellationToken);
             dynamicValue.DocumentTypeId = await GetDocumentType(household, cancellationToken);
-
-            createdFinalVersionOfDocOnSa.Add(await CreateFinalDocumentOnSa(salesArrangement, dynamicValue, cancellationToken));
-
             dynamicValues.Add(dynamicValue);
         }
 
@@ -158,37 +165,37 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty>
         return houseHoldType.Single(r => r.Id == household.HouseholdTypeId).DocumentTypeId!.Value;
     }
 
-    private async Task SaveDataSentence(GetEasFormResponse easFormResponse, Contracts.SalesArrangement salesArrangement, List<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
+    private async Task SaveDataSentenceAndForm(GetEasFormResponse easFormResponse, Contracts.SalesArrangement salesArrangement, List<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
     {
-        await SaveDataSentenceFormToEArchive(easFormResponse, salesArrangement, createdFinalVersionOfDocOnSa, cancellationToken);
+        await SaveFormToEArchive(easFormResponse, salesArrangement, createdFinalVersionOfDocOnSa, cancellationToken);
 
         await SaveDataSentence(easFormResponse, salesArrangement, cancellationToken);
     }
 
-    private async Task SaveDataSentenceFormToEArchive(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, List<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
+    private async Task SaveFormToEArchive(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, List<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
     {
         foreach (var documentOnSaResponse in createdFinalVersionOfDocOnSa)
         {
             var generatedDocument = await GenerateDocument(salesArrangement, documentOnSaResponse, cancellationToken);
 
-            await _documentArchiveService.UploadDocument(new()
+            var request = new UploadDocumentRequest();
+            request.BinaryData = generatedDocument.Data;
+            request.SendDocumentOnly = false;
+            request.Metadata = new DocumentMetadata
             {
-                BinaryData = generatedDocument.Data,
-                SendDocumentOnly = false,
-                Metadata = new DocumentArchiveService.Contracts.DocumentMetadata
-                {
-                    CaseId = salesArrangement.CaseId,
-                    DocumentId = documentOnSaResponse.DocumentOnSa.EArchivId,
-                    FormId = documentOnSaResponse.DocumentOnSa.FormId,
-                    EaCodeMainId = int.Parse(easFormResponse.Forms
-                    .Single(s => s.DynamicFormValues.DocumentId == documentOnSaResponse.DocumentOnSa.EArchivId).DefaultValues.PasswordCode,
-                    CultureInfo.InvariantCulture),
-                    Filename = await GetFileName(documentOnSaResponse.DocumentOnSa, cancellationToken),
-                    CreatedOn = _dateTime.Now.Date,
-                    ContractNumber = easFormResponse.ContractNumber,
-                    AuthorUserLogin = _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture)
-                }
-            }, cancellationToken);
+                CaseId = salesArrangement.CaseId,
+                DocumentId = documentOnSaResponse.DocumentOnSa.EArchivId,
+                FormId = documentOnSaResponse.DocumentOnSa.FormId,
+                EaCodeMainId = int.Parse(easFormResponse.Forms
+                   .Single(s => s.DynamicFormValues.DocumentId == documentOnSaResponse.DocumentOnSa.EArchivId).DefaultValues.PasswordCode,
+                   CultureInfo.InvariantCulture),
+                Filename = await GetFileName(documentOnSaResponse.DocumentOnSa, cancellationToken),
+                CreatedOn = _dateTime.Now.Date,
+                ContractNumber = easFormResponse.ContractNumber,
+                AuthorUserLogin = _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture)
+            };
+
+            await _documentArchiveService.UploadDocument(request, cancellationToken);
         }
     }
 
@@ -300,6 +307,6 @@ internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty>
     {
         var templates = await _codebookService.DocumentTypes(cancellationToken);
         var fileName = templates.First(t => t.Id == (int)documentOnSa.DocumentTypeId!).FileName;
-        return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}";
+        return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
     }
 }
