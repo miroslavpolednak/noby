@@ -274,6 +274,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
 	ProjectSection(SolutionItems) = preProject
 		NOBY\DatabaseMigrations\00001-initial_creation.sql = NOBY\DatabaseMigrations\00001-initial_creation.sql
+		NOBY\DatabaseMigrations\00002-HFICH-4866.sql = NOBY\DatabaseMigrations\00002-HFICH-4866.sql
 		NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql = NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql
 	EndProjectSection
 EndProject
