@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
 using NOBY.Infrastructure.Configuration;
+using CIS.Infrastructure.WebApi;
 
 namespace NOBY.Api.StartupExtensions;
 

@@ -58,6 +58,16 @@
             Byte array instance should only be passed to methods which treat the array contents as read-only.
             </summary>
         </member>
+        <member name="M:CIS.Infrastructure.gRPC.CisGrpcHealthChecks.AddCisGrpcHealthChecks(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            Zaregistruje health checky pro gRPC sluzby. Pridava healthcheck na sluzbu jako takovou a databaze v ni pouzite.
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.gRPC.CisGrpcHealthChecks.MapCisGrpcHealthChecks(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder)">
+            <summary>
+            Mapuje gRPC healthcheck endpoint.
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.gRPC.KestrelExtensions">
             <summary>
             Nastavení Kestrel serveru pro gRPC služby.

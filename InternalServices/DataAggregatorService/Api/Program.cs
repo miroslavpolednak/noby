@@ -26,7 +26,6 @@ builder.AddCisEnvironmentConfiguration()
        .AddCisCoreFeatures()
        .AddCisLogging()
        .AddCisTracing()
-       .AddCisHealthChecks()
        .AddCisServiceAuthentication();
 
 builder.Services
@@ -50,7 +49,7 @@ builder.Services
        .AddCisGrpcInfrastructure(typeof(Program))
        .AddGrpcReflection()
        .AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
-
+builder.AddCisGrpcHealthChecks();
 
 
 if (config.UseCacheForConfiguration)
@@ -69,7 +68,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapCisHealthChecks();
+app.MapCisGrpcHealthChecks();
 
 app.MapGrpcService<DataAggregatorServiceGrpc>();
 app.MapGrpcReflectionService();

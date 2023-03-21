@@ -1,11 +1,13 @@
-﻿namespace CIS.Infrastructure.StartupExtensions;
+﻿namespace CIS.Infrastructure.WebApi;
 
 public static class CisHealthChecks
 {
-    public static WebApplicationBuilder AddCisHealthChecks(this WebApplicationBuilder builder)
+    public static IHealthChecksBuilder AddCisHealthChecks(this WebApplicationBuilder builder)
     {
+        // base hc
         var hc = builder.Services.AddHealthChecks();
 
+        // health check na databaze podle dostupnych connection stringu
         var section = builder.Configuration.GetSection("ConnectionStrings")?.GetChildren();
         if (section != null)
         {
@@ -14,7 +16,7 @@ public static class CisHealthChecks
                 hc.AddSqlServer(cs.Value!, name: cs.Key);
         }
 
-        return builder;
+        return hc;
     }
 
     public static IEndpointConventionBuilder MapCisHealthChecks(this IEndpointRouteBuilder endpoints)

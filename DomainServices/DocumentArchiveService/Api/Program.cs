@@ -36,9 +36,6 @@ builder
     .AddCisLogging()
     .AddCisTracing();
 
-// health checks
-builder.AddCisHealthChecks();
-
 builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
@@ -74,14 +71,9 @@ app.UseCisServiceUserContext();
 //Dont know correct connection
 app.UseServiceDiscovery();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
-
-    endpoints.MapGrpcService<DomainServices.DocumentArchiveService.Api.Endpoints.DocumentArchiveServiceGrpc>();
-
-    endpoints.MapGrpcReflectionService();
-});
+app.MapCodeFirstGrpcHealthChecks();
+app.MapGrpcService<DomainServices.DocumentArchiveService.Api.Endpoints.DocumentArchiveServiceGrpc>();
+app.MapGrpcReflectionService();
 
 try
 {

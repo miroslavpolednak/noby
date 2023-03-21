@@ -1,9 +1,6 @@
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using NOBY.LogApi;
-using System.Reflection;
-
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +8,7 @@ builder
     .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures()
     .AddCisWebApiCors()
-    .AddCisLogging()
-    .AddCisHealthChecks();
+    .AddCisLogging();
 
 // nahrat dokumentaci
 var appConfiguration = new AppConfiguration();

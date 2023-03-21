@@ -19,6 +19,8 @@ var webAppOptions = runAsWinSvc
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
 #region register builder
+builder.Services.AddAttributedServices(typeof(Program));
+
 // globalni nastaveni prostredi
 builder
     .AddCisEnvironmentConfiguration()
@@ -28,11 +30,6 @@ builder
 builder
     .AddCisLogging()
     .AddCisTracing();
-
-// health checks
-//builder.AddCisHealthChecks();
-builder.AddCisGrpcHealthChecks();
-builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
 builder.AddCisServiceAuthentication();
@@ -44,17 +41,19 @@ builder.Services
     .AddUserService()
     .AddCisServiceDiscovery();
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init());
 builder.Services.AddCisMediatrRollbackCapability();
 
 // add this service
 builder.AddCaseService();
 
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
+builder.Services
+    .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+    .AddGrpcReflection()
+    .AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    });
+builder.AddCisGrpcHealthChecks();
 #endregion register builder
 
 // kestrel configuration
@@ -71,12 +70,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
 
-//app.MapCisHealthChecks();
 app.MapCisGrpcHealthChecks();
-
-app.MapGrpcService<CaseService>();
-
 app.MapGrpcReflectionService();
+app.MapGrpcService<CaseService>();
 
 try
 {
