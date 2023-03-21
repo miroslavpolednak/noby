@@ -26,3 +26,6 @@ class Codebooks(Base):
             return self.__codebooks[codebook.value]
 
         raise ValueError(f"Codebook '{codebook.value}' not found! [{','.join(self.__codebooks.keys()) } ]")
+
+    def load_codebook(self, codebook: ECodebook) -> List[dict]:        
+        return self.get(f'get-all?q={codebook.value}')

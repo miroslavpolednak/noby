@@ -31,5 +31,9 @@ amount_yerly.register_eval(lambda doc, val:(12*doc['incomes'][0]['amount']))
 
 writer=Writer(next)
 
-pipe.process()
+#pipe.process()
+
+def process():
+    pipe.process()
+
 

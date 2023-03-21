@@ -33,10 +33,14 @@ internal static class NobyServices
             .AddClasses(x => x.AssignableTo(typeof(FluentValidation.IValidator<>)))
             .AsImplementedInterfaces()
             .WithTransientLifetime());
-
+        
         // controllers and validation
         builder.Services
             .AddControllers()
+            .ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressMapClientErrors = true;
+            })
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForNullableDateTime());

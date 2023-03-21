@@ -36,6 +36,8 @@ class ApiWriterOffer():
         self.__log.info(f'create_offer.req [{req}]')
         res = FeAPI.Offer.simulate_mortgage(req)
         self.__log.info(f'create_offer.res [{res}]')
+        
+        assert isinstance(res, dict), f'Invalid response [{res}]'
 
         # set process data
         offer_id: int = res['offerId']

@@ -35,7 +35,7 @@ class ApiReaderCase():
         sales_arrangement_list = FeAPI.SalesArrangement.get_sales_arrangement_list(case_id)
         sales_arrangement_id: int = sales_arrangement_list[0]['salesArrangementId']
 
-        print(f'sales_arrangement_id: {sales_arrangement_id}')
+        # print(f'sales_arrangement_id: {sales_arrangement_id}')
 
         households: dict = self.__load_households(sales_arrangement_id)
         parameters: dict = self.__load_parameters(sales_arrangement_id)
