@@ -5,6 +5,7 @@ using CIS.Infrastructure.CisMediatR;
 using DomainServices;
 using CIS.InternalServices;
 using Microsoft.AspNetCore.HttpLogging;
+using CIS.Infrastructure.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 

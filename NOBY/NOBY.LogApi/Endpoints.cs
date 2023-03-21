@@ -5,7 +5,7 @@ namespace NOBY.LogApi;
 
 internal static class Endpoints
 {
-    public static WebApplication? RegisterLoggerEndpoints(this WebApplication? app)
+    public static WebApplication RegisterLoggerEndpoints(this WebApplication app)
     {
         // logovani standardniho logu
         app.MapPost("/log", (LogModel model, [FromServices] ILogger<Program> logger) =>

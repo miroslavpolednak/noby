@@ -19,7 +19,6 @@ builder.AddCisEnvironmentConfiguration() // globalni nastaveni prostredi
        .AddCisCoreFeatures()
        .AddCisLogging()
        .AddCisTracing()
-       .AddCisHealthChecks()
        .AddCisServiceAuthentication();
 
 builder.Services.Configure<GeneratorConfiguration>(builder.Configuration.GetRequiredSection("GeneratorConfiguration"));
@@ -30,8 +29,14 @@ builder.Services
 
 builder.Services.AddAttributedServices(typeof(Program));
 
-builder.Services.AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
-builder.Services.AddGrpcReflection();
+builder.Services
+    .AddCisGrpcInfrastructure(typeof(Program))
+    .AddGrpcReflection()
+    .AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    });
+builder.AddCisGrpcHealthChecks();
 
 if (runAsWinSvc) builder.Host.UseWindowsService();
 
@@ -43,7 +48,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapCisHealthChecks();
+app.MapCisGrpcHealthChecks();
 
 app.MapGrpcService<DocumentGeneratorService>();
 app.MapGrpcReflectionService();

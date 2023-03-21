@@ -22,8 +22,7 @@ builder.Services.AddAttributedServices(typeof(Program));
 // globalni nastaveni prostredi
 builder
     .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures()
-    .AddCisHealthChecks();
+    .AddCisCoreFeatures();
 
 // logging
 builder
@@ -46,12 +45,14 @@ builder.Services
 builder.Services.AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init());
 builder.AddHouseholdService();
 
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
-
+builder.Services
+    .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+    .AddGrpcReflection()
+    .AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    });
+builder.AddCisGrpcHealthChecks();
 #endregion register builder.Services
 
 // kestrel configuration
@@ -68,12 +69,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
 
-app.MapCisHealthChecks();
-
+app.MapCisGrpcHealthChecks();
+app.MapGrpcReflectionService();
 app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.HouseholdService>();
 app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.CustomerOnSAService>();
-
-app.MapGrpcReflectionService();
 
 try
 {

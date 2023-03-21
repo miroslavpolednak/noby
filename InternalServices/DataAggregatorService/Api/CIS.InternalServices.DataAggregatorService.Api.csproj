@@ -17,10 +17,10 @@
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.18.0" />
     <PackageReference Include="FastMember" Version="1.5.0" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.51.0" />
-    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.51.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.52.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.52.0" />
     <PackageReference Include="MediatR" Version="12.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
     <PackageReference Include="Scrutor" Version="4.2.1" />
   </ItemGroup>

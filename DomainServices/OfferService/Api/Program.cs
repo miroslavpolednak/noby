@@ -25,9 +25,6 @@ builder.AddCisEnvironmentConfiguration();
 builder.AddCisLogging();
 builder.AddCisTracing();
 
-// health checks
-builder.AddCisHealthChecks();
-
 builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
@@ -39,17 +36,16 @@ builder.Services.AddCisServiceDiscovery(); // kvuli auto dotazeni URL pro EAS
 builder.Services.AddCodebookService();
 
 // add my services
-builder.Services.AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init());
 builder.AddOfferService();
 
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
-});
-
-// add BE services
 builder.Services
-    .AddGrpcReflection();
+    .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+    .AddGrpcReflection()
+    .AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    });
+builder.AddCisGrpcHealthChecks();
 #endregion register builder.Services
 
 // kestrel configuration
@@ -67,11 +63,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
 
-app.MapCisHealthChecks();
-
-app.MapGrpcService<OfferService>();
-
+app.MapCisGrpcHealthChecks();
 app.MapGrpcReflectionService();
+app.MapGrpcService<OfferService>();
 
 try
 {

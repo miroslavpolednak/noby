@@ -22,8 +22,7 @@ builder.Services.AddAttributedServices(typeof(Program));
 // globalni nastaveni prostredi
 builder
     .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures()
-    .AddCisHealthChecks();
+    .AddCisCoreFeatures();
 
 // logging 
 builder
@@ -48,14 +47,16 @@ builder.Services
 // Internal services
 builder.Services.AddDataAggregatorService();
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddSalesArrangementService();
 
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
+builder.Services
+    .AddCisGrpcInfrastructure(typeof(Program))
+    .AddGrpcReflection()
+    .AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    });
+builder.AddCisGrpcHealthChecks();
 #endregion register builder.Services
 
 // kestrel configuration
@@ -72,11 +73,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
 
-app.MapCisHealthChecks();
-
-app.MapGrpcService<SalesArrangementService>();
-
+app.MapCisGrpcHealthChecks();
 app.MapGrpcReflectionService();
+app.MapGrpcService<SalesArrangementService>();
 
 try
 {
