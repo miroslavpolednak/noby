@@ -73,16 +73,14 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             {
                 SalesArrangementId = request.SalesArrangementId!.Value,
                 CaseId = salesArrangement.CaseId,
-                UserId = _currentUser.User?.Id
+                UserId = _currentUser.User?.Id,
+                
             }
         }, cancellationToken);
 
         var documentOnSaEntity = await MapToEntity(request, houseHold, formIdResponse.FormId, documentData, cancellationToken);
-
         await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
-
         await _dbContext.SaveChangesAsync(cancellationToken);
-
         return MapToResponse(documentOnSaEntity);
     }
 

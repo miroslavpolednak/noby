@@ -40,7 +40,10 @@ builder.Services
     .AddCodebookService()
     .AddOfferService()
     .AddUserService()
-    .AddHouseholdService();
+    .AddHouseholdService()
+    .AddDocumentArchiveService()
+    .AddDocumentOnSAService()
+    .AddDocumentGeneratorService();
 
 // Internal services
 builder.Services.AddDataAggregatorService();

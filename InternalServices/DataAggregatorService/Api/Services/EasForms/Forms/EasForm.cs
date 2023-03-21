@@ -7,24 +7,24 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Json;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms;
 
-internal abstract class EasForm
+internal abstract class EasForm<TFormData> : IEasForm where TFormData : AggregatedData
 {
-    protected EasForm(AggregatedData formData)
+    protected readonly TFormData _formData;
+
+    protected EasForm(TFormData formData)
     {
-        FormData = formData;
+        _formData = formData;
     }
 
-    public AggregatedData FormData { get; }
-    
-    public abstract IEnumerable<Form> BuildForms(IEnumerable<EasFormSourceField> sourceFields, IEnumerable<DynamicFormValues> dynamicFormValues);
+    public AggregatedData AggregatedData => _formData;
+
+    public abstract IEnumerable<Form> BuildForms(IEnumerable<DynamicFormValues> dynamicFormValues, IEnumerable<EasFormSourceField> sourceFields);
 
     public abstract void SetFormResponseSpecificData(GetEasFormResponse response);
 
-    protected DynamicFormValues? GetDynamicFormValues(IEnumerator<DynamicFormValues> enumerator) => enumerator.MoveNext() ? enumerator.Current : default;
-
     protected string CreateJson(IEnumerable<EasFormSourceField> sourceFieldGroups)
     {
-        var jsonObject = CreateJsonObject(sourceFieldGroups).GetJsonObject(FormData);
+        var jsonObject = CreateJsonObject(sourceFieldGroups).GetJsonObject(_formData);
 
         var jsonOptions = new JsonSerializerOptions
         {
