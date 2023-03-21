@@ -269,12 +269,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00001-initial_creation.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00002-initial_seed.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00002-initial_seed.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql
-		DomainServices\SalesArrangementService\DatabaseMigrations\00004-FormInstanceInterfaceSchemaChange.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00004-FormInstanceInterfaceSchemaChange.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
 	ProjectSection(SolutionItems) = preProject
 		NOBY\DatabaseMigrations\00001-initial_creation.sql = NOBY\DatabaseMigrations\00001-initial_creation.sql
+		NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql = NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.ExternalServices.Sdf", "DomainServices\DocumentArchiveService\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj", "{F969A020-76AF-48A6-BF8F-959A58D0C982}"
