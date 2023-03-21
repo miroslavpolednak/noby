@@ -9,8 +9,12 @@ public static class HealthChecksExtensions
 {
     public static void AddCisGrpcHealthChecks(this WebApplicationBuilder builder)
     {
-        builder.Services.AddGrpcHealthChecks()
-                .AddCheck("Sample", () => HealthCheckResult.Healthy());
+        builder.Services.AddGrpcHealthChecks(configure =>
+        {
+            configure.Services.MapService
+        })
+                .AddCheck("health1", () => HealthCheckResult.Healthy("nene"))
+                .AddCheck("health2", () => HealthCheckResult.Healthy("ahoj"));
     }
 
     public static void MapCisGrpcHealthChecks(this IEndpointRouteBuilder app)

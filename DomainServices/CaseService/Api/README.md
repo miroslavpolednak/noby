@@ -2,6 +2,7 @@
 
 ## grpcurl tests
         grpcurl -insecure 172.30.35.51:5009 list
+        grpcurl -insecure 127.0.0.1:30001 grpc.health.v1.Health/Check
         grpcurl -insecure -d "{\"CaseOwnerUserId\":3048,\"OfferContacts\":{\"EmailForOffer\":\"aaa@aaaa.cz\"},\"Customer\":{\"DateOfBirthNaturalPerson\":{\"year\":2022,\"month\":12,\"day\":18},\"FirstNameNaturalPerson\":\"John\",\"Name\":\"Doe\"},\"Data\":{\"TargetAmount\":{\"units\":3666666},\"ProductTypeId\":20001}}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/CreateCase
         grpcurl -insecure -d "{\"CaseOwnerUserId\":267}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/SearchCases
         grpcurl -insecure -d "{\"CaseOwnerUserId\":267,\"Pagination\":{\"recordOffset\":1,\"pageSize\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/SearchCases
