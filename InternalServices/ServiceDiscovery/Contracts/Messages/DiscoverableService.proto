@@ -4,14 +4,25 @@ package CIS.InternalServices.ServiceDiscovery;
 option csharp_namespace = "CIS.InternalServices.ServiceDiscovery.Contracts";
 
 message DiscoverableService {
-   string ServiceName = 1;
-   string ServiceUrl = 2;
-   ServiceTypes ServiceType = 3;
+	// Název / kód služby
+	string ServiceName = 1;
+
+	// Base URI služby
+	string ServiceUrl = 2;
+
+	// Typ služby: gRPC, REST, Externí služba
+	ServiceTypes ServiceType = 3;
 }
 
 enum ServiceTypes {
    Unknown = 0;
+
+   // gRPC služby
    Grpc = 1;
+
+   // REST služba
    Rest = 2;
+
+   // Služba externího dodavatele
    Proprietary = 3;
 }
