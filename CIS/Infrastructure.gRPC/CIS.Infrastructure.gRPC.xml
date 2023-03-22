@@ -60,12 +60,15 @@
         </member>
         <member name="M:CIS.Infrastructure.gRPC.CisGrpcHealthChecks.AddCisGrpcHealthChecks(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
-            Zaregistruje health checky pro gRPC sluzby. Pridava healthcheck na sluzbu jako takovou a databaze v ni pouzite.
+            Zaregistruje health checky pro gRPC sluzby + registruje healthcheck i pro HTTP1.1.
             </summary>
+            <remarks>
+            Pridava healthcheck na sluzbu jako takovou a databaze v ni pouzite.
+            </remarks>
         </member>
         <member name="M:CIS.Infrastructure.gRPC.CisGrpcHealthChecks.MapCisGrpcHealthChecks(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder)">
             <summary>
-            Mapuje gRPC healthcheck endpoint.
+            Mapuje gRPC a HTTP1.1 healthcheck endpoint.
             </summary>
         </member>
         <member name="T:CIS.Infrastructure.gRPC.KestrelExtensions">
