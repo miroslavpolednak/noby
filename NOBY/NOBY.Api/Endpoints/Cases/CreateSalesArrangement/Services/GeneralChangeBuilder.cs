@@ -37,7 +37,7 @@ internal sealed class GeneralChangeBuilder
 
             _request.GeneralChange.PaymentDay.AgreedPaymentDay = mortgageInstance.Mortgage?.PaymentDay ?? 0;
             _request.GeneralChange.DrawingDateTo.AgreedDrawingDateTo = (DateTime?)mortgageInstance.Mortgage?.DrawingDateTo ?? DateTime.Now;
-            if (mortgageInstance.Mortgage?.PaymentAccount != null)
+            if (mortgageInstance.Mortgage?.RepaymentAccount != null)
             {
                 _request.GeneralChange.RepaymentAccount.AgreedPrefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;
                 _request.GeneralChange.RepaymentAccount.AgreedNumber = mortgageInstance.Mortgage.RepaymentAccount.Number;

@@ -16,7 +16,7 @@ internal sealed class CustomerChangeBuilder
         {
             var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
 
-            if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.BankCode))
+            if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.BankCode))
             {
                 _request.CustomerChange.RepaymentAccount.Prefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;
                 _request.CustomerChange.RepaymentAccount.Number = mortgageInstance.Mortgage.RepaymentAccount.Number;
