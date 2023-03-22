@@ -17,8 +17,8 @@ var appConfiguration = builder.AddNobyConfig();
 builder.Services.AddAttributedServices(typeof(NOBY.Infrastructure.IInfrastructureAssembly), typeof(NOBY.Api.IApiAssembly));
 
 // add CIS pipeline
+builder.AddCisEnvironmentConfiguration();
 builder
-    .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures()
     .AddCisWebApiCors()
     .AddCisLogging()

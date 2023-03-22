@@ -15,7 +15,8 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     ContentRootPath = runAsWinSvc ? AppContext.BaseDirectory : default
 });
 
-builder.AddCisEnvironmentConfiguration() // globalni nastaveni prostredi
+builder.AddCisEnvironmentConfiguration(); // globalni nastaveni prostredi
+builder
        .AddCisCoreFeatures()
        .AddCisLogging()
        .AddCisTracing()

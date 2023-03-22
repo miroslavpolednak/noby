@@ -22,8 +22,8 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 #region register builder.Services
 // globalni nastaveni prostredi
 builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
+    .AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 builder.Services.AddAttributedServices(typeof(Program), endpointsType);
 
 // logging 

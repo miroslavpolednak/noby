@@ -29,8 +29,8 @@ builder.Services.AddSingleton(appConfiguration);
 
 // globalni nastaveni prostredi
 builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
+    .AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 
 // logging 
 builder

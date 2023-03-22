@@ -22,7 +22,8 @@ builder.Configuration.Bind("DataAggregatorConfiguration", config);
 
 builder.Services.AddSingleton(config);
 
-builder.AddCisEnvironmentConfiguration()
+builder.AddCisEnvironmentConfiguration();
+builder
        .AddCisCoreFeatures()
        .AddCisLogging()
        .AddCisTracing()

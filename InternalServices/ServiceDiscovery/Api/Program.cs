@@ -4,7 +4,6 @@ using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.ServiceDiscovery.Api;
 using CIS.InternalServices.ServiceDiscovery.Api.Endpoints;
 using Microsoft.AspNetCore.HttpLogging;
-using Microsoft.OpenApi.Models;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -18,9 +17,8 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 
 #region register builder.Services
 // globalni nastaveni prostredi
-builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
+var envConfiguration = builder.AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // add .NET logging
