@@ -37,7 +37,8 @@ builder.Services
        .AddUserService()
        .AddCustomerService()
        .AddProductService()
-       .AddHouseholdService();
+       .AddHouseholdService()
+       .AddDocumentOnSAService();
 
 builder.Services.AddDbContext<ConfigurationContext>(opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
