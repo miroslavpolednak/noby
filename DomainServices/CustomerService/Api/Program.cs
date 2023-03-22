@@ -25,25 +25,24 @@ builder.AddCisEnvironmentConfiguration();
 builder.AddCisLogging();
 builder.AddCisTracing();
 
-// health checks
-builder.AddCisHealthChecks();
-
 builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
 builder.AddCisServiceAuthentication();
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddCustomerService();
 
 builder.AddExternalService<ExternalServices.MpHome.V1_1.IMpHomeClient>();
 
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
+builder.Services
+    .AddCisGrpcInfrastructure(typeof(Program))
+    .AddGrpcReflection()
+    .AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    });
+builder.AddCisGrpcHealthChecks();
 #endregion register builder.Services
 
 // kestrel configuration
@@ -60,11 +59,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
 
-app.MapCisHealthChecks();
-
+app.MapCisGrpcHealthChecks();
+app.MapGrpcReflectionService(); 
 app.MapGrpcService<CustomerService>();
-
-app.MapGrpcReflectionService();
 
 try
 {

@@ -1,36 +1,32 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
+using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms;
 
-internal class EasServiceForm : EasForm
+internal class EasServiceForm<TFormData> : EasForm<TFormData> where TFormData : AggregatedData
 {
-    public EasServiceForm(ServiceFormData formData) : base(formData)
+    public EasServiceForm(TFormData formData) : base(formData)
     {
     }
 
-    public override IEnumerable<Form> BuildForms(IEnumerable<EasFormSourceField> sourceFields, IEnumerable<DynamicFormValues> dynamicFormValues)
+    public override IEnumerable<Form> BuildForms(IEnumerable<DynamicFormValues> dynamicFormValues, IEnumerable<EasFormSourceField> sourceFields)
     {
-        var dynamicFormValuesEnumerator = dynamicFormValues.GetEnumerator();
+        var dynamicValues = dynamicFormValues.First();
 
-        return sourceFields.GroupBy(f => f.FormType).Select(group =>
+        var easFormType = EasFormTypeFactory.GetEasFormType(dynamicValues.DocumentTypeId);
+
+        yield return new Form
         {
-            var formValues = GetDynamicFormValues(dynamicFormValuesEnumerator);
-
-            ((ServiceFormData)FormData).DynamicFormValues = formValues;
-
-            return new Form
-            {
-                EasFormType = group.Key,
-                DynamicFormValues = formValues,
-                DefaultValues = DefaultValuesFactory.Create(group.Key),
-                Json = CreateJson(group.AsEnumerable())
-            };
-        });
+            EasFormType = easFormType,
+            DynamicFormValues = dynamicValues,
+            DefaultValues = DefaultValuesFactory.Create(easFormType),
+            Json = CreateJson(sourceFields)
+        };
     }
 
     public override void SetFormResponseSpecificData(GetEasFormResponse response)
     {
-        response.ContractNumber = FormData.Case.Data.ContractNumber;
+        response.ContractNumber = _formData.Case.Data.ContractNumber;
     }
 }

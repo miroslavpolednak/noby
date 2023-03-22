@@ -31,8 +31,6 @@ builder.Services.AddHttpLogging(logging =>
 // add mediatr
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-// health checks
-builder.AddCisHealthChecks();
 // logging, tracing
 builder
     .AddCisLogging()
@@ -58,7 +56,7 @@ var app = builder.Build();
 app.UseRouting();
 app.UseHttpLogging();
 
-app.MapCisHealthChecks();
+app.MapCodeFirstGrpcHealthChecks();
 app.MapGrpcService<DiscoveryService>();
 app.MapGrpcReflectionService();
 

@@ -45,6 +45,11 @@ internal sealed class SaveRequestHouseholdCustomerValidator
                                         .GreaterThan(0)
                                         .WithErrorCode("Households.Customers.EmploymentIncomes.MonthlyAmount.Amount");
                                 });
+
+                                x.RuleFor(x => x.EmployerName)
+                                .Cascade(CascadeMode.Stop)
+                                .NotEmpty()
+                                .WithErrorCode("Households.Customers.EmploymentIncomes.EmployerName");
                             });
                     });
 

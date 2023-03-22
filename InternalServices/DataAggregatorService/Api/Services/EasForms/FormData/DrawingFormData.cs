@@ -5,10 +5,8 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Template
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
 [TransientService, SelfService]
-internal class ServiceFormData : AggregatedData
+internal class DrawingFormData : AggregatedData
 {
-    public AggregatedData AggregatedData => this;
-
     public MockValues MockValues { get; } = new();
 
     public DynamicFormValues? DynamicFormValues { get; set; }
