@@ -29,9 +29,11 @@ def test_sms(url_name,  auth_params, auth, json_data):
     )
     resp = resp.json()
     print(resp)
+    assert "notificationId" in resp
+    assert resp["notificationId"] != ""
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
+@pytest.mark.parametrize("url_name", ["uat_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_full_template, json_req_sms_basic_template])
 def test_sms_template(url_name,  auth_params, auth, json_data):
@@ -48,6 +50,8 @@ def test_sms_template(url_name,  auth_params, auth, json_data):
     )
     resp = resp.json()
     print(resp)
+    assert "notificationId" in resp
+    assert resp["notificationId"] != ""
 
 
 @pytest.mark.parametrize("url_name", ["dev_url"])
@@ -72,6 +76,8 @@ def test_sms_combination_security(url_name,  auth_params, auth, json_data):
     )
     resp = resp.json()
     print(resp)
+    assert "notificationId" in resp
+    assert resp["notificationId"] != ""
     # chybi dodelat asserty do databaze
 
 
@@ -95,3 +101,5 @@ def test_sms_basic_security(auth_params, auth, json_data, url_name):
     )
     resp = resp.json()
     print(resp)
+    assert "notificationId" in resp
+    assert resp["notificationId"] != ""
