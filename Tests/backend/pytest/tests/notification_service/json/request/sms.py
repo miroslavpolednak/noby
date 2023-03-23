@@ -4,7 +4,7 @@ json_req_sms_basic= \
   "phoneNumber": "+420607115686",
   "processingPriority": 1,
   "type": "RETENTION",
-  "text": "Testovací sms text"
+  "text": "insg bez logovani"
 }
 
 json_req_sms_basic_full= \
@@ -23,16 +23,16 @@ json_req_sms_basic_full= \
 
 json_req_sms_basic_epsy = \
 {
-  "phoneNumber":"+420607115686",
+  "phoneNumber": "+420607115686",
   "processingPriority": 1,
   "type": "TEST_EPSY",
-  "text": "Testovací sms text epsy"
+  "text": "Testovací sms text epsy s logovanim"
 }
 
 json_req_sms_basic_insg = \
 {
-  "phoneNumber":"+420607115686",
+  "phoneNumber": "+420607115686",
   "processingPriority": 1,
-  "type": "RETENTION",
-  "text": "Testovací sms text insg"
+  "type": "TEST_INSG",
+  "text": "Testovací sms insg s logovanim"
 }
