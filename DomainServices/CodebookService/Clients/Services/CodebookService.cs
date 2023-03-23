@@ -13,6 +13,19 @@ internal partial class CodebookService : ICodebookServiceClients
             Term = term
         }, cancellationToken);
 
+    public async Task<Contracts.Endpoints.GetDeveloper.DeveloperItem> GetDeveloper(int developerId, CancellationToken cancellationToken = default(CancellationToken))
+        => await _codebookService.GetDeveloper(new Contracts.Endpoints.GetDeveloper.GetDeveloperRequest
+        {
+            DeveloperId = developerId
+        }, cancellationToken);
+
+    public async Task<Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem> GetDeveloperProject(int developerId, int developerProjectId, CancellationToken cancellationToken = default(CancellationToken))
+        => await _codebookService.GetDeveloperProject(new Contracts.Endpoints.GetDeveloperProject.GetDeveloperProjectRequest
+        {
+            DeveloperId = developerId,
+            DeveloperProjectId = developerProjectId
+        }, cancellationToken);
+
     public CodebookService(ICodebookService codebookService, ClientsMemoryCache cache)
     {
         _cache = cache;

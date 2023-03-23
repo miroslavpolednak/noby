@@ -57,7 +57,7 @@ Konfigurace služby je možná souborem appsettings.json.
 
         grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:5060 DomainServices.CodebookService/ProductTypes
         grpcurl -insecure -d "{\"Term\":\"filip\"}" -H "Authorization: Basic YTph" 127.0.0.1:5060 DomainServices.CodebookService/DeveloperSearch
-        grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CodebookService/RelationshipCustomerProductTypes
+        grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:5060 DomainServices.CodebookService/RelationshipCustomerProductTypes
         grpcurl -insecure -H "Authorization: Basic YTph" 172.30.35.51:5007 DomainServices.CodebookService/SalesArrangementStates
-        grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService/StatementFrequencies
-        grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService/StatementSubscriptionTypes
+        grpcurl -insecure -d "{\"DeveloperId\":1765}" -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService/GetDeveloper
+        grpcurl -insecure -d "{\"DeveloperId\":1765,\"DeveloperProjectId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService/GetDeveloperProject

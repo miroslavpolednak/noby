@@ -1,7 +1,7 @@
 ﻿namespace DomainServices.CodebookService.Contracts.Endpoints.Developers;
 
 [DataContract]
-public class DeveloperItem
+public class DeveloperItemOld
 {
     [DataMember(Order = 1)]
     public int Id { get; set; }
