@@ -1531,6 +1531,18 @@
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetCustomerChange(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí)
+            </summary>
+            <remarks>
+            Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí) ze šablony k dané SalesArrangement.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=B7ED8950-BAA7-44a2-A069-2593B6D5121E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="salesArrangementId"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetLoanApplicationMain(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Vygenerování dokumentu Žádost o úvěr F3601
