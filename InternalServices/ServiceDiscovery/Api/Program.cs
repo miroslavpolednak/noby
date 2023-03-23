@@ -3,7 +3,6 @@ using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.ServiceDiscovery.Api;
 using CIS.InternalServices.ServiceDiscovery.Api.Endpoints;
-using Microsoft.AspNetCore.HttpLogging;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -22,10 +21,10 @@ var envConfiguration = builder.AddCisCoreFeatures()
 builder.Services.AddAttributedServices(typeof(Program));
 
 // add .NET logging
-builder.Services.AddHttpLogging(logging =>
+/*builder.Services.AddHttpLogging(logging =>
 {
     logging.LoggingFields = HttpLoggingFields.All;
-});
+});*/
 
 // add mediatr
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
@@ -46,6 +45,8 @@ builder.Services.AddGrpc(options =>
 builder.Services
     .AddGrpcReflection()
     .AddServiceDiscoverySwagger();
+
+builder.AddGlobalHealthChecks(envConfiguration);
 #endregion register builder.Services
 
 // kestrel configuration
