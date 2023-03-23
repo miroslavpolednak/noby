@@ -164,7 +164,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZAOZMDLU, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentType.ZAOZMDLU, input, 9, cancellationToken);
     }
 
     /// <summary>

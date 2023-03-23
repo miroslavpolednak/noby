@@ -2,16 +2,19 @@
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.CustomerChange;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.CustomerService.Clients;
-using DomainServices.CustomerService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
 
+[TransientService, SelfService]
 internal class CustomerChangeTemplateData : AggregatedData
 {
-    private IList< CustomerDetailResponse> _customerDetails = null!;
+    private readonly ICustomerServiceClient _customerService;
 
-    public CustomerChangeTemplateData()
+    private IList<CustomerInfo> _customerDetails = null!;
+
+    public CustomerChangeTemplateData(ICustomerServiceClient customerService)
     {
+        _customerService = customerService;
     }
 
     public CustomerInfo Customer1 => GetCustomerInfo(1)!;
@@ -77,11 +80,12 @@ internal class CustomerChangeTemplateData : AggregatedData
 
     public override async Task LoadAdditionalData(CancellationToken cancellationToken)
     {
-        //var customerIdentities = SalesArrangement.CustomerChange.Applicants.Select(a => a.Identity).ToList();
+        var customerIdentities = SalesArrangement.CustomerChange.Applicants.Select(a => a.Identity).ToList();
 
-        //_customerDetails = (await _customerService.GetCustomerList(customerIdentities, cancellationToken)).Customers;
+        var customers = (await _customerService.GetCustomerList(customerIdentities, cancellationToken)).Customers;
+
+        _customerDetails = customers.Select(customer => new CustomerInfo(customer, _codebookManager.DegreesBefore, _codebookManager.Countries)).ToList();
     }
 
-    private CustomerInfo? GetCustomerInfo(int number) => 
-        _customerDetails.Select(customer => new CustomerInfo(customer, _codebookManager.DegreesBefore, _codebookManager.Countries)).ElementAtOrDefault(number - 1);
+    private CustomerInfo? GetCustomerInfo(int number) => _customerDetails.ElementAtOrDefault(number - 1);
 }

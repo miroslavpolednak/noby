@@ -21,4 +21,12 @@ internal class CustomerInfo
     public string FullName => CustomerHelper.FullName(_customer, _degreesBefore);
 
     public string Address => CustomerHelper.FullAddress(_customer, _countries);
+
+    public string? BirthNumberText => string.IsNullOrWhiteSpace(_customer.NaturalPerson.BirthNumber) ? default : "Rodné číslo:";
+
+    public string? BirthNumber => _customer.NaturalPerson.BirthNumber;
+
+    public string? DateOfBirthText => string.IsNullOrWhiteSpace(_customer.NaturalPerson.BirthNumber) ? "Datum narození:" : default;
+
+    public DateTime? DateOfBirth => _customer.NaturalPerson.DateOfBirth;
 }

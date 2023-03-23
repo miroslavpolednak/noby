@@ -292,6 +292,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\CodebookService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\CodebookService\DatabaseMigrations\00001-initial_creation.sql
 		DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql
+		DomainServices\CodebookService\DatabaseMigrations\00003-document_versions_variant.sql = DomainServices\CodebookService\DatabaseMigrations\00003-document_versions_variant.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -355,6 +356,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00003-document_variants.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00003-document_variants.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00004-documentOnSa.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00004-documentOnSa.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00005-customerchange_template.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00005-customerchange_template.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
