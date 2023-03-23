@@ -8,7 +8,7 @@ namespace CIS.Infrastructure.Telemetry.Enrichers;
 /// <summary>
 /// Doda do kontextu log item ID a Login uzivatele
 /// </summary>
-internal class NobyHeadersEnricher
+internal sealed class NobyHeadersEnricher
     : ILogEventEnricher
 {
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)

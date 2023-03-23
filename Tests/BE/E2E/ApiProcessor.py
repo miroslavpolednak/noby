@@ -1,3 +1,5 @@
+import json
+
 from typing import List
 
 from .Processing import Processing
@@ -12,10 +14,17 @@ from .ApiWriterCase import ApiWriterCase
 
 class ApiProcessor():
 
-    def __init__(self, offer_case_json: dict):
-        
+    def __init__(self, data_json: dict | str):
+
         self.__log = Log.getLogger(f'{self.__class__.__name__}_{id(self)}')
-        self.__offer_case_json = offer_case_json
+
+        if isinstance(data_json, str):
+            self.__offer_case_json = json.loads(data_json)
+        elif isinstance(data_json, dict):
+            self.__offer_case_json = data_json
+        else:
+            raise 'ApiProcessor.init - Invalid data json !'
+
 
     @staticmethod
     def process_list(offer_case_jsons: List[dict]) -> List[dict]:
@@ -28,14 +37,14 @@ class ApiProcessor():
 
         return results
 
-    def process(self) -> dict:
+    def process(self) -> dict | Exception:
 
         result: dict = None
 
         try:
             result = self.__process()
         except Exception as e:
-            result = dict(Error = e)
+            result = e
 
         return result
 

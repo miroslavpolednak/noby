@@ -16,4 +16,6 @@ message InputParameters {
 	google.protobuf.Int32Value UserId = 4;
 
 	cis.types.Identity CustomerIdentity = 5;
+
+	google.protobuf.BoolValue IsDocumentFinal = 6;
 }

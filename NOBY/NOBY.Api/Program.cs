@@ -5,6 +5,7 @@ using CIS.Infrastructure.CisMediatR;
 using DomainServices;
 using CIS.InternalServices;
 using Microsoft.AspNetCore.HttpLogging;
+using CIS.Infrastructure.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +17,8 @@ var appConfiguration = builder.AddNobyConfig();
 builder.Services.AddAttributedServices(typeof(NOBY.Infrastructure.IInfrastructureAssembly), typeof(NOBY.Api.IApiAssembly));
 
 // add CIS pipeline
+builder.AddCisEnvironmentConfiguration();
 builder
-    .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures()
     .AddCisWebApiCors()
     .AddCisLogging()
@@ -82,7 +83,7 @@ app.UseCisWebRequestLocalization();
 
 app
     // API call
-    .UseNobyApi()
+    .UseNobyApi(appConfiguration)
     // include authentication endpoints
     .UseNobyAuthStrategy()
     // jedna se o SPA call, pust jen tyhle middlewares

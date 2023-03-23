@@ -11,7 +11,9 @@
 
 [Validace HTTP requestu a error handling](./topics/validation.md)
 
-[Autentizace FE a doménových služeb](./topics/authentication.md)
+[Autentizace doménových služeb](./topics/authentication.md)
+
+[Autentizace FE API](./topics/authentication-feapi.md)
 
 [gRPC služby - technický popis](./topics/grpc-services.md)
 
@@ -21,7 +23,7 @@
 
 [Nastavení a použití Distributed cache](./topics/distributed-cache.md)
 
-[Registrace periodických jobů a popis funkčnosti](./topics/background-service-job.md)
+[Background services / periodické joby](./topics/background-services.md)
 
 ## Struktura solution - projekty a adresáře
 

@@ -1,0 +1,5 @@
+{
+    "environments": ["DEV", "FAT", "SIT1", "UAT"],
+    "layers": ["DS", "API", "WEB"],
+    "types": ["E2E", "COMP_OFFER", "COMP_CASE", "COMP_HOUSEHOLD"]
+}

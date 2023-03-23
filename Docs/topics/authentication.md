@@ -1,4 +1,4 @@
-# Autentizace FE a doménových služeb
+# Autentizace doménových služeb
 
 ## Přihlášený uživatel - fyzická osoba používající FE NOBY
 Instanci přihlášeného uživatele (tj. uživatele sedícího u NOBY aplikace) je možné získat z DI interfacem `ICurrentUserAccessor`.

@@ -6,12 +6,20 @@ option csharp_namespace = "CIS.InternalServices.ServiceDiscovery.Contracts";
 import "Messages/DiscoverableService.proto";
 
 message GetServiceRequest {
-   string Environment = 1;
-   string ServiceName = 2;
-   CIS.InternalServices.ServiceDiscovery.ServiceTypes ServiceType = 3;
+	// Název / kód CisEnvironment prostředí
+	string Environment = 1;
+
+	// Název / kód služby
+	string ServiceName = 2;
+
+	// Typ služby
+	CIS.InternalServices.ServiceDiscovery.ServiceTypes ServiceType = 3;
 }
 
 message GetServiceResponse {
-   CIS.InternalServices.ServiceDiscovery.DiscoverableService Service = 1;
-   string EnvironmentName = 2;
+	// Instance služby
+	CIS.InternalServices.ServiceDiscovery.DiscoverableService Service = 1;
+
+	// Název / kód prostředí pro které je daná instance služby platná
+	string EnvironmentName = 2;
 }

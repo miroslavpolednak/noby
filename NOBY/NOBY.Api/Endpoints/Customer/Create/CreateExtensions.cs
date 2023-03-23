@@ -95,7 +95,12 @@ internal static class CreateExtensions
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList(),
             IsInputDataDifferent = true,
-            Contacts = new()
+            Contacts = new(),
+            LegalCapacity = customer.NaturalPerson?.LegalCapacity is null ? null : new Shared.LegalCapacityItem
+            {
+                RestrictionTypeId = customer.NaturalPerson.LegalCapacity.RestrictionTypeId,
+                RestrictionUntil = customer.NaturalPerson.LegalCapacity.RestrictionUntil
+            }
         };
 
         var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.EmailAddress;

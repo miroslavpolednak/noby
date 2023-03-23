@@ -7,29 +7,21 @@ namespace DomainServices.SalesArrangementService.Api.Database.Entities;
 internal sealed class FormInstanceInterface
 {
     [Key]
-    public string DOKUMENT_ID { get; set; } = null!;
+    public string DOCUMENT_ID { get; set; } = null!;
 
-    public string? TYP_FORMULARE { get; set; }
+    public string? FORM_TYPE { get; set; }
 
-    public string? CISLO_SMLOUVY { get; set; }
-    
-    public Int32? STATUS { get; set; }
-    
-    public char? DRUH_FROMULARE { get; set; }
+    public char? FORM_KIND { get; set; }
 
-    public string? FORMID { get; set; }
-    
     public string? CPM { get; set; }
 
     public string? ICP { get; set; }
 
     public DateTime? CREATED_AT { get; set; }
 
-    public string? HESLO_KOD { get; set; }
+    public short? STORNO { get; set; }
 
-    public Int32? STORNOVANO { get; set; }
-
-    public Int32? TYP_DAT { get; set; }
+    public short? DATA_TYPE { get; set; }
 
     public string? JSON_DATA_CLOB { get; set; }
 }

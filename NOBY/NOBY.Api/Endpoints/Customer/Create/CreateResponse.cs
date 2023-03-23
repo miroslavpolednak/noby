@@ -17,9 +17,7 @@ public sealed class CreateResponse
 
     public bool Updatable { get; set; }
 
-    public bool IsLegallyIncapable { get; set; }
-
-    public DateTime? LegallyIncapableToDate { get; set; }
+    public Shared.LegalCapacityItem? LegalCapacity { get; set; }
 
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
 
