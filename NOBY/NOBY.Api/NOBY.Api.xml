@@ -577,6 +577,8 @@
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequency</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235789">StatementSubscriptionType</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417284324">StatementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/TinFormatByCountry+%28CB_CmTrTinFormat%29+-+MOCK">TinFormatsByCountry</a>
              - <a href="https://wiki.kb.cz/display/HT/TinNoFillReasonsByCountry+%28CB_CmTrTinCountry%29+-+MOCK">TinNoFillReasonsByCountry</a>
@@ -622,16 +624,22 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloper(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
             <summary>
+            Detail developera
+            </summary>
+            <remarks>
             Vrátí detail developera dle developerId na vstupu.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </summary>
+            </remarks>
             <param name="developerId">ID developera</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloperProject(System.Int32,System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
             <summary>
+            Detail developeského projektu
+            </summary>
+            <remarks>
             Vrátí detail developerského projektu dle developerProjectId na vstupu.
             <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </summary>
+            </remarks>
             <param name="developerId">ID developera</param>
         </member>
         <member name="P:NOBY.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchRequest.SearchText">
