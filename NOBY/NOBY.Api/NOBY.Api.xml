@@ -635,16 +635,6 @@
             ICO/RČ developera
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.StatusId">
-            <summary>
-            Id statusu developera
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.StatusText">
-            <summary>
-            Status developera
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.ShowBenefitsPackage">
             <summary>
             Balíček benefitu
@@ -653,6 +643,16 @@
         <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.ShowBenefitsBeyondPackage">
             <summary>
             Benefity nad rámec balíčku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.DeveloperStatus.StatusId">
+            <summary>
+            Id statusu developera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.DeveloperStatus.StatusText">
+            <summary>
+            Status developera
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest.Data">

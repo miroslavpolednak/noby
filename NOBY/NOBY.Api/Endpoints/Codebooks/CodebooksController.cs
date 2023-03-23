@@ -185,8 +185,11 @@ public class CodebooksController : ControllerBase
         {
             Name = developer.Name,
             Cin = developer.Cin,
-            StatusId = developer.StatusId,
-            StatusText = developer.StatusText,
+            Status = new()
+            {
+                StatusId = developer.StatusId,
+                StatusText = developer.StatusText,
+            },
             ShowBenefitsPackage = developer.BenefitPackage && developer.IsBenefitValid,
             ShowBenefitsBeyondPackage = developer.BenefitsBeyondPackage && developer.IsBenefitValid
         };

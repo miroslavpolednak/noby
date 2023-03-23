@@ -12,15 +12,7 @@ public sealed class Developer
     /// </summary>
     public string? Cin { get; set; }
 
-    /// <summary>
-    /// Id statusu developera
-    /// </summary>
-    public int? StatusId { get; set; }
-
-    /// <summary>
-    /// Status developera
-    /// </summary>
-    public string? StatusText { get; set; }
+    public DeveloperStatus? Status { get; set; }
 
     /// <summary>
     /// Balíček benefitu
