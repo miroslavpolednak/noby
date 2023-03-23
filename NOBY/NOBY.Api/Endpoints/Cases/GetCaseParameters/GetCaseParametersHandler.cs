@@ -44,6 +44,8 @@ internal sealed class GetCaseParametersHandler
         var caseStates = await _codebookService.CaseStates(cancellationToken);
         var productTypesById = (await _codebookService.ProductTypes(cancellationToken)).ToDictionary(i => i.Id);
         var loanKindsById = (await _codebookService.LoanKinds(cancellationToken)).ToDictionary(i => i.Id);
+        var statementFrequencies = (await _codebookService.StatementFrequencies(cancellationToken));
+        var statementSubscriptionTypes = (await _codebookService.StatementSubscriptionTypes(cancellationToken));
 
         var mandantId = productTypesById[caseInstance.Data.ProductTypeId].MandantId;
         var loanPurposesById = (await _codebookService.LoanPurposes(cancellationToken)).Where(i => i.MandantId == mandantId).ToDictionary(i => i.Id);
@@ -52,7 +54,7 @@ internal sealed class GetCaseParametersHandler
 
         var response = (caseState.Code == CIS.Foms.Enums.CaseStates.InProgress) ?
             (await GetParamsBeforeHandover(caseInstance, productTypesById, loanKindsById, loanPurposesById, cancellationToken)) :
-            (await GetParamsAfterHandover(caseInstance, productTypesById, loanKindsById, loanPurposesById, cancellationToken));
+            (await GetParamsAfterHandover(caseInstance, productTypesById, loanKindsById, loanPurposesById, statementSubscriptionTypes, statementFrequencies, cancellationToken));
 
         return response;
     }
@@ -138,6 +140,8 @@ internal sealed class GetCaseParametersHandler
         Dictionary<int, cCodebookService.Endpoints.ProductTypes.ProductTypeItem> productTypesById,
         Dictionary<int, cCodebookService.Endpoints.LoanKinds.LoanKindsItem> loanKindsById,
         Dictionary<int, cCodebookService.Endpoints.LoanPurposes.LoanPurposesItem> loanPurposesById,
+        List<cCodebookService.Endpoints.GenericCodebookItemWithCodeAndDefault> statementFrequencies,
+        List<cCodebookService.Endpoints.StatementFrequencies.StatementFrequencyItem> statementSubscriptionTypes,
         CancellationToken cancellation
         )
     {
@@ -146,7 +150,7 @@ internal sealed class GetCaseParametersHandler
         var branchUser = await getUserInstance(mortgageData.BranchConsultantId, cancellation);
         var thirdPartyUser = await getUserInstance(mortgageData.ThirdPartyConsultantId, cancellation);
 
-        return new GetCaseParametersResponse
+        var respone = new GetCaseParametersResponse
         {
             FirstAnnuityPaymentDate = mortgageData.FirstAnnuityPaymentDate,
             ProductType = productTypesById[mortgageData.ProductTypeId].ToCodebookItem(),
@@ -193,6 +197,23 @@ internal sealed class GetCaseParametersHandler
                 Icp = thirdPartyUser?.ICP
             }
         };
+
+        if (mortgageData.Statement is not null)
+        {
+            respone.Statement = new StatementDto
+            {
+                Type = statementSubscriptionTypes.FirstOrDefault(x => x.Id == mortgageData.Statement?.Type)?.Name,
+                Frequency = statementFrequencies.FirstOrDefault(x => x.Id == mortgageData.Statement?.Frequency)?.Name,
+                EmailAddress1 = mortgageData.Statement?.EmailAddress1,
+                EmailAddress2 = mortgageData.Statement?.EmailAddress2
+            };
+            if (mortgageData.Statement!.Address is not null)
+            {
+                respone.Statement.Address = (CIS.Foms.Types.Address)mortgageData.Statement!.Address!;
+            }
+        }
+
+        return respone;
     }
 
     private async Task<DomainServices.UserService.Contracts.User?> getUserInstance(int? userId, CancellationToken cancellationToken)

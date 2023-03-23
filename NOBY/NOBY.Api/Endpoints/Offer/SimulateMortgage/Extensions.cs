@@ -27,9 +27,7 @@ internal static class Extensions
                 Developer = request.Developer is null ? null : new Developer
                 {
                     DeveloperId = request.Developer.DeveloperId,
-                    NewDeveloperCin = request.Developer.NewDeveloperCin,
-                    NewDeveloperName = request.Developer.NewDeveloperName,
-                    NewDeveloperProjectName = request.Developer.NewDeveloperProjectName,
+                    Description = request.Developer.Description,
                     ProjectId = request.Developer.ProjectId
                 },
                 RealEstateInsurance = request.RealEstateInsurance is null ? null : new RealEstateInsurance
@@ -46,8 +44,7 @@ internal static class Extensions
             BasicParameters = new()
             {
                 FinancialResourcesOwn = request.FinancialResourcesOwn,
-                FinancialResourcesOther = request.FinancialResourcesOther,
-                StatementTypeId = request.StatementTypeId
+                FinancialResourcesOther = request.FinancialResourcesOther
             }
         };
 

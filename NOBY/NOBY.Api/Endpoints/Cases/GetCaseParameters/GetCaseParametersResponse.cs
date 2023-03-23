@@ -135,6 +135,8 @@ public sealed class GetCaseParametersResponse
     public BranchConsultantDto? BranchConsultant { get; set; }
 
     public ThirdPartyConsultantDto? ThirdPartyConsultant { get; set; }
+
+    public StatementDto? Statement { get; set; }
 }
 
 public sealed class BranchConsultantDto
