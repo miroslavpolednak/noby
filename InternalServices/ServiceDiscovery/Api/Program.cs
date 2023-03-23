@@ -1,9 +1,9 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using CIS.InternalServices.ServiceDiscovery.Api;
 using CIS.InternalServices.ServiceDiscovery.Api.Endpoints;
 using Microsoft.AspNetCore.HttpLogging;
-using System.Reflection.PortableExecutable;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -17,9 +17,8 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 
 #region register builder.Services
 // globalni nastaveni prostredi
-builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
+var envConfiguration = builder.AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // add .NET logging
@@ -39,11 +38,14 @@ builder
 // add general Dapper repository
 builder.Services.AddDapper(builder.Configuration.GetConnectionString("default")!);
 
+// add GRPC
 builder.Services.AddGrpc(options =>
 {
     options.Interceptors.Add<GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
+}).AddJsonTranscoding();
+builder.Services
+    .AddGrpcReflection()
+    .AddServiceDiscoverySwagger();
 #endregion register builder.Services
 
 // kestrel configuration
@@ -56,9 +58,11 @@ var app = builder.Build();
 app.UseRouting();
 app.UseHttpLogging();
 
-app.MapCodeFirstGrpcHealthChecks();
-app.MapGrpcService<DiscoveryService>();
 app.MapGrpcReflectionService();
+app.MapGlobalHealthChecks();
+app.UseServiceDiscoverySwagger();
+
+app.MapGrpcService<DiscoveryService>();
 
 try
 {

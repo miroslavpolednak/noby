@@ -8,10 +8,16 @@ namespace CIS.Infrastructure.gRPC;
 public static class CisGrpcHealthChecks
 {
     /// <summary>
-    /// Zaregistruje health checky pro gRPC sluzby. Pridava healthcheck na sluzbu jako takovou a databaze v ni pouzite.
+    /// Zaregistruje health checky pro gRPC sluzby + registruje healthcheck i pro HTTP1.1.
     /// </summary>
+    /// <remarks>
+    /// Pridava healthcheck na sluzbu jako takovou a databaze v ni pouzite.
+    /// </remarks>
     public static IHealthChecksBuilder AddCisGrpcHealthChecks(this WebApplicationBuilder builder)
     {
+        // pridat http1 healthcheck kvuli F5
+        builder.Services.AddHealthChecks();
+
         // base check
         var hc = builder.Services
             .AddGrpcHealthChecks()
@@ -30,10 +36,16 @@ public static class CisGrpcHealthChecks
     }
 
     /// <summary>
-    /// Mapuje gRPC healthcheck endpoint.
+    /// Mapuje gRPC a HTTP1.1 healthcheck endpoint.
     /// </summary>
-    public static void MapCisGrpcHealthChecks(this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder MapCisGrpcHealthChecks(this IEndpointRouteBuilder app)
     {
+        // registrace grpc endpointu
         app.MapGrpcHealthChecksService();
+
+        // registrace http1 endpointu
+        app.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);
+
+        return app;
     }
 }
