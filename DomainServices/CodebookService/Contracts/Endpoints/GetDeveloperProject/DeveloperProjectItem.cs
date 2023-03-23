@@ -37,7 +37,7 @@ public class DeveloperProjectItem
     /// Hromadné ocenění
     /// </summary>
     [DataMember(Order = 6)]
-    public string MassEvaluation { get; set; }
+    public string MassEvaluationText { get; set; }
 
     [JsonIgnore]
     [DataMember(Order = 7)]

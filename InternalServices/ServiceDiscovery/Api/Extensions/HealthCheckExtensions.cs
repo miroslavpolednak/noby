@@ -3,6 +3,8 @@ using Grpc.Core;
 using Grpc.Net.ClientFactory;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Text;
+using System.Text.Json;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api;
 
@@ -43,61 +45,70 @@ internal static class HealthCheckExtensions
             [FromServices] GrpcClientFactory grpcClientFactory,
             CancellationToken cancellationToken) =>
         {
-            var result = new List<HealthCheckItem>(_serviceNamesCache!.Count);
+            return Results.Text(await jsonBuilder(grpcClientFactory, cancellationToken), contentType: "application/json");
+        });
 
-            foreach (var service in _serviceNamesCache)
+        return app;
+    }
+
+    private static async Task<string> jsonBuilder(
+        GrpcClientFactory grpcClientFactory,
+        CancellationToken cancellationToken)
+    {
+        using var memoryStream = new MemoryStream();
+        using (var jsonWriter = new Utf8JsonWriter(memoryStream, _jsonWriterOptions))
+        {
+            jsonWriter.WriteStartObject();
+
+            foreach (var service in _serviceNamesCache!)
             {
-                HealthCheckItem check = new()
-                {
-                    ServiceName = service,
-                    Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Unknown
-                };
+                jsonWriter.WriteStartObject(service);
 
                 var client = grpcClientFactory.CreateClient<Grpc.Health.V1.Health.HealthClient>(service);
                 var timer = new Stopwatch();
 
                 try
                 {
+                    timer.Start();
+
                     var response = await client.CheckAsync(
-                        new Grpc.Health.V1.HealthCheckRequest(), 
+                        new Grpc.Health.V1.HealthCheckRequest(),
                         deadline: DateTime.UtcNow.AddSeconds(_deadlineSeconds),
                         cancellationToken: cancellationToken);
 
-                    check.Status = response.Status;
+                    jsonWriter.WriteString("status", response.Status == Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Serving ? _healthyValue : _unhealthyValue);
                 }
                 catch (RpcException ex) when (ex.StatusCode == StatusCode.Unimplemented)
                 {
-                    check.Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.NotServing;
+                    jsonWriter.WriteString("status", _unhealthyValue);
+                    jsonWriter.WriteString("description", "HealthCheck unimplemented");
                 }
                 catch (Exception ex)
                 {
-                    check.Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.NotServing;
+                    jsonWriter.WriteString("status", _unhealthyValue);
+                    jsonWriter.WriteString("description", ex.Message);
                 }
                 finally
                 {
                     timer.Stop();
 
-                    check.Elapsed = timer.ElapsedMilliseconds;
+                    jsonWriter.WriteNumber("totalMilliseconds", timer.ElapsedMilliseconds);
                 }
 
-                result.Add(check);
+                jsonWriter.WriteEndObject();
             }
 
-            return result;
-        });
+            jsonWriter.WriteEndObject();
+        }
 
-        return app;
+        return Encoding.UTF8.GetString(memoryStream.ToArray());
     }
 
+    private static JsonWriterOptions _jsonWriterOptions = new JsonWriterOptions { Indented = true };
+    private const string _healthyValue = "Healthy";
+    private const string _unhealthyValue = "Unhealthy";
     private const int _deadlineSeconds = 5;
-    private const string _sqlQuery = "SELECT ServiceName, ServiceUrl, ServiceType FROM ServiceDiscovery WHERE ServiceName!='CIS:ServiceDiscovery' AND ServiceType=1 AND EnvironmentName=@name";
+    private const string _sqlQuery = "SELECT ServiceName, ServiceUrl, ServiceType FROM ServiceDiscovery WHERE AddToGlobalHealthCheck=1 AND EnvironmentName=@name";
 
     private static IReadOnlyCollection<string>? _serviceNamesCache;
-
-    internal class HealthCheckItem
-    {
-        public string ServiceName { get; set; } = string.Empty;
-        public Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus Status { get; set; }
-        public long Elapsed { get; set; }
-    }
 }

@@ -1,6 +1,3 @@
-DROP TABLE IF EXISTS dbo.[MigrationHistory]
-GO
-
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EasFormSpecialDataField]') AND type in (N'U'))
 ALTER TABLE [dbo].[EasFormSpecialDataField] DROP CONSTRAINT IF EXISTS [FK_EasFormSpecialDataField_EasRequestType_EasRequestTypeId]
 GO

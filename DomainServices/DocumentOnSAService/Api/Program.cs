@@ -44,7 +44,7 @@ builder.AddCisServiceAuthentication();
 builder.AddDocumentOnSAServiceService();
 
 builder.AddDocumentOnSAServiceGrpc();
-
+builder.AddCisGrpcHealthChecks();
 #endregion
 
 // kestrel configuration
@@ -63,7 +63,7 @@ app.UseCisServiceUserContext();
 //Dont know correct connection
 app.UseServiceDiscovery();
 
-app.MapCodeFirstGrpcHealthChecks();
+app.MapCisGrpcHealthChecks();
 app.MapGrpcService<DocumentOnSAServiceGrpc>();
 app.MapGrpcReflectionService();
 

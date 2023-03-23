@@ -1,7 +1,4 @@
-﻿DROP TABLE IF EXISTS dbo.[MigrationHistory]
-GO
-
-/****** Object:  Table [dbo].[GeneratedFormId]    Script Date: 14.03.2023 13:23:01 ******/
+﻿/****** Object:  Table [dbo].[GeneratedFormId]    Script Date: 14.03.2023 13:23:01 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GeneratedFormId]') AND type in (N'U'))
 DROP TABLE [dbo].[GeneratedFormId]
 GO

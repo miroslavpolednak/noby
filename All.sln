@@ -298,6 +298,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 	ProjectSection(SolutionItems) = preProject
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00001-initial_creation.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00001-initial_creation.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00002-seed.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00002-seed.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00003-HFICH-5100.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00003-HFICH-5100.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7}"

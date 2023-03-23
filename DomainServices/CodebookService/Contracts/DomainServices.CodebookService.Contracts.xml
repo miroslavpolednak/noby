@@ -49,7 +49,7 @@
             Stránky projektu
             </summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem.MassEvaluation">
+        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem.MassEvaluationText">
             <summary>
             Hromadné ocenění
             </summary>

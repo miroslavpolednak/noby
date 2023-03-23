@@ -1,6 +1,4 @@
-﻿using CIS.Infrastructure.StartupExtensions;
-using System.Reflection;
-using NOBY.Infrastructure.Security;
+﻿using NOBY.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
@@ -11,13 +9,6 @@ namespace NOBY.Api.StartupExtensions;
 
 internal static class NobyAppBuilder
 {
-    static string _appVersion = "";
-
-    static NobyAppBuilder()
-    {
-        _appVersion = Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
-    }
-
     public static IApplicationBuilder UseNobySpa(this IApplicationBuilder app)
         => app.MapWhen(_isSpaCall, appBuilder => 
         {
@@ -42,17 +33,10 @@ internal static class NobyAppBuilder
         => app.MapWhen(_isApiCall, appBuilder =>
         {
             appBuilder.UseHttpLogging();
-            appBuilder.UseCisWebApiCors();
-
             appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware>();
-            // version header
-            appBuilder.Use(async (context, next) =>
-            {
-                context.Response.Headers.Add("foms-ver", _appVersion);
-                await next();
-            });
+            appBuilder.UseCisSecurityHeaders();
 
-            // error middlewares
+            // detailed error page
             if (appConfiguration.UseDeveloperExceptionPage)
             {
                 appBuilder.UseDeveloperExceptionPage();
@@ -60,10 +44,7 @@ internal static class NobyAppBuilder
             else // custom exception handling
             {
                 appBuilder.UseMiddleware<Infrastructure.ErrorHandling.Internals.NobyApiExceptionMiddleware>();
-                appBuilder.UseHsts();
             }
-
-            appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.HttpOptionsMiddleware>();
 
             // autentizace a autorizace
             appBuilder.UseAuthentication();
