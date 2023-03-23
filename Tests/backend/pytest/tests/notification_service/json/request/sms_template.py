@@ -25,3 +25,17 @@ json_req_sms_full_template= \
   "customId": "123546",
   "documentId": "789456"
 }
+
+
+json_req_sms_basic_template = \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "RETENTION_TEMPLATE",
+  "placeholders": [
+    {
+      "key": "environment",
+      "value": "test"
+    }
+  ]
+}

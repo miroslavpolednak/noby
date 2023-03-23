@@ -8,18 +8,27 @@ Base = declarative_base()
 
 
 # pylint: disable=unused-import
+#
+#
+#
+
+URLS = {
+    "dev_url": "https://ds-notification-dev.vsskb.cz:30016",
+    "sit_url": "https://ds-notification-sit1.vsskb.cz:32016",
+    "uat_url": "https://ds-notification-uat.vsskb.cz:33016",
+}
 
 def pytest_addoption(parser):
-    parser.addoption("--ns--dev-url", action="store", default="https://ds-notification-dev.vsskb.cz:30016",
-                     help="ns dev url")
+    parser.addoption("--ns-url", action="store", default="dev_url",
+                     help="ns url")
 
 
 @pytest.fixture(scope="session")
 def ns_url(request):
     """Fixture pro nastavení URL adresy."""
-
-    url = request.config.getoption("--ns--dev-url")
-    return {"url": url}
+    url_name = request.config.getoption("--ns-url")
+    url = URLS[url_name]
+    return {"url": url, "url_name": url_name}
 
 
 @pytest.fixture(scope="function")

@@ -1,7 +1,7 @@
 
 json_req_sms_basic= \
 {
-  "phoneNumber":"+420607115686",
+  "phoneNumber": "+420607115686",
   "processingPriority": 1,
   "type": "RETENTION",
   "text": "Testovací sms text"
@@ -9,7 +9,7 @@ json_req_sms_basic= \
 
 json_req_sms_basic_full= \
 {
-  "phonenumber": "+420607115686",
+  "phoneNumber": "+420607115686",
   "processingPriority": 1,
   "type": "RETENTION",
   "text": "kratka sms",
@@ -33,6 +33,6 @@ json_req_sms_basic_insg = \
 {
   "phoneNumber":"+420607115686",
   "processingPriority": 1,
-  "type": "TEST_INSG",
+  "type": "RETENTION",
   "text": "Testovací sms text insg"
 }
