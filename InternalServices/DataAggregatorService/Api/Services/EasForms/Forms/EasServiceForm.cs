@@ -14,6 +14,9 @@ internal class EasServiceForm<TFormData> : EasForm<TFormData> where TFormData : 
     {
         var dynamicValues = dynamicFormValues.First();
 
+        dynamicValues.FormId = _formData.Custom.DocumentOnSa.FinalDocument?.FormId;
+        dynamicValues.DocumentId = _formData.Custom.DocumentOnSa.FinalDocument?.EArchivId;
+
         var easFormType = EasFormTypeFactory.GetEasFormType(dynamicValues.DocumentTypeId);
 
         yield return new Form
