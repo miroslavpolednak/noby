@@ -18,7 +18,11 @@ internal class EasProductForm : EasForm<ProductFormData>
         {
             var easFormType = EasFormTypeFactory.GetEasFormType(dynamicValues.DocumentTypeId);
 
+            _formData.Custom.DocumentOnSa.Configure(dynamicValues.DocumentTypeId);
             _formData.HouseholdData.SetHouseholdData(dynamicValues.HouseholdId!.Value);
+
+            dynamicValues.FormId = _formData.Custom.DocumentOnSa.FinalDocument?.FormId;
+            dynamicValues.DocumentId = _formData.Custom.DocumentOnSa.FinalDocument?.EArchivId;
 
             yield return new Form
             {

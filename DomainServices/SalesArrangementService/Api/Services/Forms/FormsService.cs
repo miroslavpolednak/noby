@@ -1,8 +1,10 @@
-﻿using CIS.Core.Attributes;
+﻿using System.Runtime.CompilerServices;
+using CIS.Core.Attributes;
 using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
@@ -11,15 +13,18 @@ namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 internal sealed class FormsService
 {
     private readonly IMediator _mediator;
-    private readonly IDataAggregatorServiceClient _dataAggregator;
+    private readonly IDataAggregatorServiceClient _dataAggregatorService;
+    private readonly IHouseholdServiceClient _householdService;
     private readonly ICodebookServiceClients _codebookService;
 
     public FormsService(IMediator mediator,
-                        IDataAggregatorServiceClient dataAggregator,
+                        IDataAggregatorServiceClient dataAggregatorService,
+                        IHouseholdServiceClient householdService,
                         ICodebookServiceClients codebookService)
     {
         _mediator = mediator;
-        _dataAggregator = dataAggregator;
+        _dataAggregatorService = dataAggregatorService;
+        _householdService = householdService;
         _codebookService = codebookService;
     }
 
@@ -35,9 +40,34 @@ internal sealed class FormsService
         return (SalesArrangementCategories)types.First(t => t.Id == salesArrangement.SalesArrangementTypeId).SalesArrangementCategory;
     }
 
+    public async IAsyncEnumerable<DynamicFormValues> CreateProductDynamicFormValues(SalesArrangement salesArrangement, [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        var householdTypes = await _codebookService.HouseholdTypes(cancellationToken);
+        var houseHolds = await _householdService.GetHouseholdList(salesArrangement.SalesArrangementId, cancellationToken);
+
+        foreach (var household in houseHolds)
+        {
+            yield return new DynamicFormValues
+            {
+                HouseholdId = household.HouseholdId,
+                DocumentTypeId = householdTypes.Single(r => r.Id == household.HouseholdTypeId).DocumentTypeId!.Value
+            };
+        }
+    }
+
+    public async Task<DynamicFormValues> CreateServiceDynamicFormValues(SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
+        var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
+
+        return new DynamicFormValues
+        {
+            DocumentTypeId = documentTypes.Single(d => d.SalesArrangementTypeId == salesArrangement.SalesArrangementTypeId).Id
+        };
+    }
+
     public Task<GetEasFormResponse> LoadServiceForm(int salesArrangementId, IEnumerable<DynamicFormValues> dynamicFormValues, CancellationToken cancellationToken)
     {
-        return _dataAggregator.GetEasForm(new GetEasFormRequest
+        return _dataAggregatorService.GetEasForm(new GetEasFormRequest
         {
             SalesArrangementId = salesArrangementId,
             EasFormRequestType = EasFormRequestType.Service,
@@ -49,7 +79,7 @@ internal sealed class FormsService
     {
         FormValidations.CheckArrangement(salesArrangement);
 
-        var response = await _dataAggregator.GetEasForm(new GetEasFormRequest
+        var response = await _dataAggregatorService.GetEasForm(new GetEasFormRequest
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
             EasFormRequestType = EasFormRequestType.Product,
