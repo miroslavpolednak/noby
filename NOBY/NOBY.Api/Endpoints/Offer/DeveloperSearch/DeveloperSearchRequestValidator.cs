@@ -1,7 +1,6 @@
 ﻿using CIS.Infrastructure.WebApi.Validation;
-using FluentValidation;
 
-namespace NOBY.Api.Endpoints.Codebooks.DeveloperSearch;
+namespace NOBY.Api.Endpoints.Offer.DeveloperSearch;
 
 internal sealed class DeveloperSearchRequestValidator
     : AbstractValidator<DeveloperSearchRequest>
