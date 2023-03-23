@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using NOBY.Api.Endpoints.Customer.Create.Dto;
 
 namespace NOBY.Api.Endpoints.Customer.Create;
 
