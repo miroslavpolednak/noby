@@ -6,5 +6,5 @@ public partial interface ICodebookServiceClients
 
     Task<Contracts.Endpoints.GetDeveloper.DeveloperItem> GetDeveloper(int developerId, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task<Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem> GetDeveloperProject(int developerProjectId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem> GetDeveloperProject(int developerId, int developerProjectId, CancellationToken cancellationToken = default(CancellationToken));
 }

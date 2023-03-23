@@ -591,6 +591,20 @@
             Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloper(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
+            <summary>
+            Vrátí detail developera dle developerId na vstupu.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </summary>
+            <param name="developerId">ID developera</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloperProject(System.Int32,System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
+            <summary>
+            Vrátí detail developerského projektu dle developerProjectId na vstupu.
+            <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </summary>
+            <param name="developerId">ID developera</param>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchRequest.SearchText">
             <summary>
             Text pro vyhledávání
@@ -609,6 +623,36 @@
         <member name="P:NOBY.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchResponse.Rows">
             <summary>
             Kolekce nalezenych projektu.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.Name">
+            <summary>
+            Jméno developera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.Cin">
+            <summary>
+            ICO/RČ developera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.StatusId">
+            <summary>
+            Id statusu developera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.StatusText">
+            <summary>
+            Status developera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.ShowBenefitsPackage">
+            <summary>
+            Balíček benefitu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.ShowBenefitsBeyondPackage">
+            <summary>
+            Benefity nad rámec balíčku
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest.Data">

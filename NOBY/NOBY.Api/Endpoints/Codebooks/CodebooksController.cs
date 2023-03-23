@@ -1,4 +1,6 @@
 ﻿using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper;
+using DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject;
 using DomainServices.CodebookService.Contracts.Endpoints.LoanKinds;
 
 namespace NOBY.Api.Endpoints.Codebooks;
@@ -167,4 +169,39 @@ public class CodebooksController : ControllerBase
     [ProducesResponseType(typeof(DeveloperSearch.DeveloperSearchResponse), StatusCodes.Status200OK)]
     public async Task<DeveloperSearch.DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearch.DeveloperSearchRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
+
+    /// <summary>
+    /// Vrátí detail developera dle developerId na vstupu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </summary>
+    /// <param name="developerId">ID developera</param>
+    [HttpGet("developer/{developerId:int}", Name = "DeveloperGet")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(Dto.Developer), StatusCodes.Status200OK)]
+    public async Task<Dto.Developer> GetDeveloper([FromRoute] int developerId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    {
+        var developer = await svc.GetDeveloper(developerId, cancellationToken);
+        return new Dto.Developer
+        {
+            Name = developer.Name,
+            Cin = developer.Cin,
+            StatusId = developer.StatusId,
+            StatusText = developer.StatusText,
+            ShowBenefitsPackage = developer.BenefitPackage && developer.IsBenefitValid,
+            ShowBenefitsBeyondPackage = developer.BenefitsBeyondPackage && developer.IsBenefitValid
+        };
+    }
+
+    /// <summary>
+    /// Vrátí detail developerského projektu dle developerProjectId na vstupu.
+    /// <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </summary>
+    /// <param name="developerId">ID developera</param>
+    [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}", Name = "DeveloperProjectGet")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(DeveloperProjectItem), StatusCodes.Status200OK)]
+    public async Task<DeveloperProjectItem> GetDeveloperProject([FromRoute] int developerId, [FromRoute] int developerProjectId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    {
+        return await svc.GetDeveloperProject(developerId, developerProjectId, cancellationToken);
+    }
 }
