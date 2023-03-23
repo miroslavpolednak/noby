@@ -45,7 +45,7 @@ builder.Services
     .AddDocumentGeneratorService();
 
 // Internal services
-builder.Services.AddDataAggregatorService("https://localhost:5099");
+builder.Services.AddDataAggregatorService();
 
 builder.AddSalesArrangementService();
 
