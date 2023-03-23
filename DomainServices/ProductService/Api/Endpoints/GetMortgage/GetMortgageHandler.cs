@@ -49,6 +49,24 @@ internal sealed class GetMortgageHandler
             })
             .ToList();
 
+        var statements = await _dbContext.Loans2Statements
+            .AsNoTracking()
+            .Where(t => t.Id == loan.Id)
+            .FirstOrDefaultAsync(cancellation);
+        if (statements is not null)
+        {
+            mortgage.Statement.Address = new()
+            {
+                Street = statements.Ulice ?? "",
+                StreetNumber = statements.CisloDomu4 ?? "",
+                HouseNumber = statements.CisloDomu2 ?? "",
+                Postcode = statements.Psc ?? "",
+                City = statements.Mesto ?? "",
+                AddressPointId = statements.StatPodkategorie ?? "",
+                CountryId = statements.ZemeId
+            };
+        }
+
         if (realEstates is not null && realEstates.Any())
         {
             // zjistit zajisteni

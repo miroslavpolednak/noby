@@ -41,4 +41,5 @@ message MortgageData {
 	cis.types.NullableGrpcDate FirstAnnuityPaymentDate = 30;
 	PaymentAccount RepaymentAccount = 31;
 	repeated LoanRealEstate LoanRealEstates = 32;
+	StatementObject Statement = 33;
 }

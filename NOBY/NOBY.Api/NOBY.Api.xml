@@ -187,6 +187,35 @@
             Výše účelu v Kč
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.Type">
+            <summary>
+            Způsob odběru výpisů
+            </summary>
+            <example>elektronicky</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.Frequency">
+            <summary>
+            Frekvence výpisů
+            </summary>
+            <example>měsíční</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.EmailAddress1">
+            <summary>
+            Emailová adresa 1
+            </summary>
+            <remarks>alda.rajcan@volny.cz</remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.EmailAddress2">
+            <summary>
+            Emailová adresa 2
+            </summary>
+            <remarks>alda.rajcan@volny.cz</remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.Address">
+            <summary>
+            Adresa - bydliste, kontaktni atd.
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ProductType">
             <summary>
             Typ úvěru (číselník).
