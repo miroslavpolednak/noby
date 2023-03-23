@@ -58,12 +58,7 @@ def test_sms_template(url_name,  auth_params, auth, json_data):
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg, json_req_sms_basic_epsy])
 def test_sms_combination_security(url_name,  auth_params, auth, json_data):
-    """Parametry:
-    ns_url: URL adresa pro testování.
-    auth_params: Slovník s ověřovacími parametry.
-    auth: Tuple obsahující uživatelské jméno a heslo.
-    json_data: JSON data pro odesílání SMS.
-    """
+    """test pto kombinaci všech uživatelů s basic sms"""
 
     username = auth[0]
     password = auth[1]
