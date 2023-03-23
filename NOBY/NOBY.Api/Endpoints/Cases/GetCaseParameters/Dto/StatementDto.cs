@@ -6,13 +6,13 @@ public sealed class StatementDto
     /// Způsob odběru výpisů
     /// </summary>
     /// <example>elektronicky</example>
-    public int? Type { get; set; }
+    public string? Type { get; set; }
 
     /// <summary>
     /// Frekvence výpisů
     /// </summary>
     /// <example>měsíční</example>
-    public int? Frequency { get; set; }
+    public string? Frequency { get; set; }
 
     /// <summary>
     /// Emailová adresa 1

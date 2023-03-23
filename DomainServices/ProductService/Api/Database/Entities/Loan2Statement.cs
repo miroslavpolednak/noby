@@ -14,6 +14,6 @@ internal sealed class Loan2Statement
     public string? CisloDomu2 { get; set; }
     public string? Psc { get; set; }
     public string? Mesto { get; set; }
-    public int? ZemeId { get; set; }
+    public short? ZemeId { get; set; }
     public string? StatPodkategorie { get; set; }
 }

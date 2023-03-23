@@ -97,8 +97,8 @@ internal class Loan
 
     public string? InkasoBanka { get; set; }
 
-	public int? HuVypisZodb { get; set; }
-	public int? HuVypisTyp { get; set; }
+	public short? HuVypisZodb { get; set; }
+	public short? HuVypisTyp { get; set; }
 	public string? VypisEmail1 { get; set; }
     public string? VypisEmail2 { get; set; }
 }

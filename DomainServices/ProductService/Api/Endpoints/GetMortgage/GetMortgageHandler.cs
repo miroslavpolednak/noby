@@ -55,14 +55,14 @@ internal sealed class GetMortgageHandler
             .FirstOrDefaultAsync(cancellation);
         if (statements is not null)
         {
-            mortgage.Statement.Address = new CIS.Infrastructure.gRPC.CisTypes.GrpcAddress
+            mortgage.Statement.Address = new()
             {
-                Street = statements.Ulice,
-                StreetNumber = statements.CisloDomu4,
-                HouseNumber = statements.CisloDomu2,
-                Postcode = statements.Psc,
-                City = statements.Mesto,
-                AddressPointId = statements.StatPodkategorie,
+                Street = statements.Ulice ?? "",
+                StreetNumber = statements.CisloDomu4 ?? "",
+                HouseNumber = statements.CisloDomu2 ?? "",
+                Postcode = statements.Psc ?? "",
+                City = statements.Mesto ?? "",
+                AddressPointId = statements.StatPodkategorie ?? "",
                 CountryId = statements.ZemeId
             };
         }
