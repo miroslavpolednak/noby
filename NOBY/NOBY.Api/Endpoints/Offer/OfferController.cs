@@ -118,7 +118,7 @@ public class OfferController : ControllerBase
         => await _mediator.Send(new GetFullPaymentScheduleByOfferId.GetFullPaymentScheduleByOfferIdRequest(offerId), cancellationToken);
     
     /// <summary>
-    /// Vyhledání developerských projektů
+    /// Vyhledání developerských projektů a developerů bez projektu.
     /// </summary>
     /// <remarks>
     /// Vyhledá developerské projekty na základě vyhledávacího textu.<br />
@@ -127,6 +127,7 @@ public class OfferController : ControllerBase
     /// </remarks>
     [HttpPost("mortgage/developer-project/search")]
     [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Modelace" })]
     [ProducesResponseType(typeof(DeveloperSearchResponse), StatusCodes.Status200OK)]
     public async Task<DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearchRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);

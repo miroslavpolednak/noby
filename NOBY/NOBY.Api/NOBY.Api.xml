@@ -610,36 +610,6 @@
             </summary>
             <param name="productTypeId">ID typu produktu</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.DeveloperSearch(NOBY.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchRequest,System.Threading.CancellationToken)">
-            <summary>
-            Vyhledání developerských projektů
-            </summary>
-            <remarks>
-            Vyhledá developerské projekty na základě vyhledávacího textu.<br />
-            Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />
-            Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
-            </remarks>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchRequest.SearchText">
-            <summary>
-            Text pro vyhledávání
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchRequest.Pagination">
-            <summary>
-            Nastaveni strankovani a razeni.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchResponse.Pagination">
-            <summary>
-            Informace o strankovani a razeni.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchResponse.Rows">
-            <summary>
-            Kolekce nalezenych projektu.
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest.Data">
             <summary>
             Detailni informace o prijmu
@@ -1799,6 +1769,26 @@
             Vytvoreni requestu pro zalozeni CASE
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchRequest.SearchText">
+            <summary>
+            Text pro vyhledávání
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchRequest.Pagination">
+            <summary>
+            Nastaveni strankovani a razeni.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchResponse.Pagination">
+            <summary>
+            Informace o strankovani a razeni.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchResponse.Rows">
+            <summary>
+            Kolekce nalezenych projektu.
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.FirstName">
             <summary>
             Jméno
@@ -1885,6 +1875,16 @@
             <i>DS:</i> OfferService/GetMortgageOfferFPSchedule
             </remarks>
             <returns>Plný splátkový kalendář simulace.</returns>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.DeveloperSearch(NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vyhledání developerských projektů a developerů bez projektu.
+            </summary>
+            <remarks>
+            Vyhledá developerské projekty na základě vyhledávacího textu.<br />
+            Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />
+            Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
+            </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest.ResourceProcessId">
             <summary>

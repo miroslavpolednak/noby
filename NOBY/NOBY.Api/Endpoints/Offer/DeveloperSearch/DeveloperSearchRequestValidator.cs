@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.WebApi.Validation;
+using FluentValidation;
 
 namespace NOBY.Api.Endpoints.Offer.DeveloperSearch;
 
