@@ -19,14 +19,11 @@ internal static class OfferApiModuleDtoExtensions
             ExpectedDateOfDrawing = input.ExpectedDateOfDrawing,
             FinancialResourcesOwn = basicParams.FinancialResourcesOwn,
             FinancialResourcesOther = basicParams.FinancialResourcesOther,
-            StatementTypeId = basicParams.StatementTypeId,
             LoanPurposes = input.LoanPurposes?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
             Developer = input.Developer is null ? null : new Dto.Developer
             {
                 DeveloperId = input.Developer.DeveloperId,
-                NewDeveloperProjectName = input.Developer.NewDeveloperProjectName,
-                NewDeveloperCin = input.Developer.NewDeveloperCin,
-                NewDeveloperName = input.Developer.NewDeveloperName,
+                Description = input.Developer.Description,
                 ProjectId = input.Developer.ProjectId
             },
             DrawingDurationId = input.DrawingDurationId,

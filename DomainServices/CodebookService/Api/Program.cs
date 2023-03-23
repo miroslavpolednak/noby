@@ -4,7 +4,6 @@ using DomainServices.CodebookService.Api;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.Telemetry;
 using Microsoft.OpenApi.Models;
-using CIS.Infrastructure.Caching;
 using CIS.Infrastructure.Security;
 using CIS.InternalServices;
 
@@ -23,8 +22,8 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 #region register builder.Services
 // globalni nastaveni prostredi
 builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
+    .AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 builder.Services.AddAttributedServices(typeof(Program), endpointsType);
 
 // logging 
@@ -34,9 +33,6 @@ builder
 
 // add mediatr
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
-
-// health checks
-builder.AddCisHealthChecks();
 
 // add general Dapper repository
 builder.Services
@@ -91,19 +87,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
-
-    endpoints.MapGrpcService<DomainServices.CodebookService.Api.Services.CodebookService>();
-
-    endpoints.MapCodeFirstGrpcReflectionService();
-
-    endpoints.MapCodebookJsonApi();
-});
-
-// print gRPC PROTO file
-//CIS.Infrastructure.gRPC.GrpcHelpers.CreateProtoFileFromContract<Contracts.ICodebookService("d:\\Visual Studio Projects\\MPSS-FOMS\\DomainServices\\CodebookService\\Contracts\\protos\\CodebookService.proto");
+app.MapGrpcService<DomainServices.CodebookService.Api.Services.CodebookService>();
+app.MapCodeFirstGrpcHealthChecks();
+app.MapCodeFirstGrpcReflectionService();
+app.MapCodebookJsonApi();
 
 try
 {

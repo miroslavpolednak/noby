@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace DomainServices.ProductService.Api.Database;
 

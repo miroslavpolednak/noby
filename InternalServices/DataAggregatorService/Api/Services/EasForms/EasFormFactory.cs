@@ -17,26 +17,30 @@ internal class EasFormFactory
         _dataServicesLoader = dataServicesLoader;
     }
 
-    public async Task<EasForm> Create(int salesArrangementId, EasFormConfiguration config, CancellationToken cancellationToken)
+    public async Task<IEasForm> Create(int salesArrangementId, EasFormConfiguration config, CancellationToken cancellationToken)
     {
         var inputParameters = new InputParameters { SalesArrangementId = salesArrangementId };
 
-        var easForm = CreateEasForm(config.EasFormRequestType);
-
-        await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, easForm.FormData, cancellationToken);
-
-        return easForm;
-    }
-
-    private EasForm CreateEasForm(EasFormRequestType requestType)
-    {
-        return requestType switch
+        var easForm = config.EasFormKey.RequestType switch
         {
-            EasFormRequestType.Service => new EasServiceForm(CreateData<ServiceFormData>()),
+            EasFormRequestType.Service => CreateServiceEasForm(config.EasFormKey),
             EasFormRequestType.Product => new EasProductForm(CreateData<ProductFormData>()),
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        TFormData CreateData<TFormData>() where TFormData : AggregatedData => _serviceProvider.GetRequiredService<TFormData>();
+        await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, easForm.AggregatedData, cancellationToken);
+
+        return easForm;
     }
+
+    private IEasForm CreateServiceEasForm(EasFormKey easFormKey)
+    {
+        return easFormKey.EasFormTypes.First() switch
+        {
+            EasFormType.F3700 => new EasServiceForm<DrawingFormData>(CreateData<DrawingFormData>()),
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    private TFormData CreateData<TFormData>() where TFormData : AggregatedData => _serviceProvider.GetRequiredService<TFormData>();
 }

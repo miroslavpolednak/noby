@@ -29,7 +29,7 @@ internal sealed class DrawingBuilder
         {
             var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
 
-            if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.BankCode))
+            if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.BankCode))
             {
                 _request.Drawing.RepaymentAccount.IsAccountNumberMissing = false;
                 _request.Drawing.RepaymentAccount.Prefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;

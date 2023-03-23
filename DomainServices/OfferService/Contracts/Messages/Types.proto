@@ -67,9 +67,7 @@ message ResultFee {
 message Developer {
 	google.protobuf.Int32Value DeveloperId = 1;
 	google.protobuf.Int32Value ProjectId = 2;
-	google.protobuf.StringValue NewDeveloperName = 3;
-	google.protobuf.StringValue NewDeveloperProjectName = 4;
-	google.protobuf.StringValue NewDeveloperCin = 5;
+	google.protobuf.StringValue Description = 3;
 }
 
 message PaymentScheduleSimple {

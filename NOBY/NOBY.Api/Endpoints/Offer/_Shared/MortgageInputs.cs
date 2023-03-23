@@ -65,8 +65,6 @@ public class MortgageInputs
     /// </summary>
     public decimal? FinancialResourcesOther { get; set; }
 
-    public int? StatementTypeId { get; set; }
-
     /// <summary>
     /// uver.indCenotvorbaOdchylka
     /// </summary>

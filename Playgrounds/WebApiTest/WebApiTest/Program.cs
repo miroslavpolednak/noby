@@ -1,14 +1,13 @@
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices;
 using CIS.InternalServices;
-using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // add CIS pipeline
 builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
+    .AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 
 // add domain services
 builder.Services.AddUserService();

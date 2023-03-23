@@ -22,11 +22,11 @@ builder.Configuration.Bind("DataAggregatorConfiguration", config);
 
 builder.Services.AddSingleton(config);
 
-builder.AddCisEnvironmentConfiguration()
+builder.AddCisEnvironmentConfiguration();
+builder
        .AddCisCoreFeatures()
        .AddCisLogging()
        .AddCisTracing()
-       .AddCisHealthChecks()
        .AddCisServiceAuthentication();
 
 builder.Services
@@ -38,7 +38,8 @@ builder.Services
        .AddUserService()
        .AddCustomerService()
        .AddProductService()
-       .AddHouseholdService();
+       .AddHouseholdService()
+       .AddDocumentOnSAService();
 
 builder.Services.AddDbContext<ConfigurationContext>(opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
@@ -50,7 +51,7 @@ builder.Services
        .AddCisGrpcInfrastructure(typeof(Program))
        .AddGrpcReflection()
        .AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
-
+builder.AddCisGrpcHealthChecks();
 
 
 if (config.UseCacheForConfiguration)
@@ -69,7 +70,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapCisHealthChecks();
+app.MapCisGrpcHealthChecks();
 
 app.MapGrpcService<DataAggregatorServiceGrpc>();
 app.MapGrpcReflectionService();

@@ -29,6 +29,7 @@ int runMigration(MigrateOptions o)
         .SqlDatabase(o.ConnecitonString)
         .JournalToSqlTable("dbo", "MigrationHistory")
         .WithScriptsFromFileSystem(folder)
+        .WithTransaction()
         .LogToConsole()
         .Build();
 

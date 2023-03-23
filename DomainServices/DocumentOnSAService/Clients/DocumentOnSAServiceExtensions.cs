@@ -28,7 +28,7 @@ public static class DocumentOnSAServiceExtensions
     {
         services.AddTransient<IDocumentOnSAServiceClient, __Services.DocumentOnSAService>();
 
-        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.DocumentOnSAService.DocumentOnSAServiceClient>(serviceUrl);
+        services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.DocumentOnSAService.DocumentOnSAServiceClient>(serviceUrl);
         return services;
     }
 }

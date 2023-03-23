@@ -49,8 +49,7 @@ internal class HouseholdData
 
         await Task.WhenAll(LoadHouseholdsWrapper(), LoadCustomersWrapper(), LoadIncomesWrapper());
 
-        if (!TrySetHousehold(HouseholdTypes.Main))
-            throw new InvalidOperationException($"SalesArrangement '{salesArrangementId}' does not contain main houselhod");
+        SetHouseholdData(Households.Select(h => h.HouseholdId).FirstOrDefault());
 
         async Task LoadHouseholdsWrapper() => Households = await LoadHouseholds(salesArrangementId, cancellationToken);
         async Task LoadCustomersWrapper() => _customers = await LoadCustomers(CustomersOnSa, cancellationToken);
@@ -71,16 +70,11 @@ internal class HouseholdData
         _legalCapacityTypes = codebookManager.LegalCapacityRestrictionTypes;
     }
     
-    public bool TrySetHousehold(HouseholdTypes householdType)
+    public void SetHouseholdData(int householdId)
     {
-        var household = Households.FirstOrDefault(h => h.HouseholdType == householdType);
+        var household = Households.FirstOrDefault(h => h.HouseholdId == householdId);
 
-        if (household is null)
-            return false;
-
-        HouseholdDto = household;
-
-        return true;
+        HouseholdDto = household ?? throw new InvalidOperationException($"Requested Household ({householdId}) was not found.");
     }
 
     private async Task<List<HouseholdDto>> LoadHouseholds(int salesArrangementId, CancellationToken cancellationToken)

@@ -19,6 +19,11 @@ internal sealed class LoggerBootstraper
     private readonly IServiceProvider _serviceProvider;
 
     const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] {Level:u} - [{TraceId}] [] [{Assembly}] [{Version}] [{MachineName}] [{CisUserId}] [{RequestPath}] - {Message}{NewLine}";
+    static string[] _excludedGrpcRequestPaths = new[]
+    {
+        "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo",
+        "/grpc.health.v1.Health/Check"
+    };
 
     public LoggerBootstraper(HostBuilderContext hostingContext, IServiceProvider serviceProvider, LogBehaviourTypes logType)
     {
@@ -35,10 +40,11 @@ internal sealed class LoggerBootstraper
     public void SetupFilters(LoggerConfiguration loggerConfiguration)
     {
         // global filter to exclude GRPC reflection
-        if (_logType == LogBehaviourTypes.Grpc)
+        //TODO any odstranit az se zbavime code-first grpc!
+        if (_logType == LogBehaviourTypes.Grpc || _logType == LogBehaviourTypes.Any)
         {
             loggerConfiguration
-                .Filter.ByExcluding(Matching.WithProperty("RequestPath", "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo"));
+                .Filter.ByExcluding(Matching.WithProperty<string>("RequestPath", t => _excludedGrpcRequestPaths.Contains(t)));
         }
         
         if (_logType == LogBehaviourTypes.WebApi)

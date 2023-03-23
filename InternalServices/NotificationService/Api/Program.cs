@@ -35,12 +35,11 @@ builder.Services
     });
 
 // Cis
+builder.AddCisEnvironmentConfiguration();
 builder
-    .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures()
     .AddCisLogging()
     .AddCisTracing()
-    .AddCisHealthChecks()
     .AddCisServiceAuthentication();
 
 builder.Services.AddAttributedServices(typeof(Program));
@@ -112,13 +111,11 @@ app
     .UseRouting()
     .UseAuthentication()
     .UseAuthorization()
-    .UseCisServiceUserContext()
-    .UseEndpoints(endpoints =>
-    {
-        endpoints.MapCisHealthChecks();
-        endpoints.MapGrpcService<NotificationService>();
-        endpoints.MapCodeFirstGrpcReflectionService();
-        endpoints.MapControllers();
-    });
+    .UseCisServiceUserContext();
+
+app.MapCodeFirstGrpcHealthChecks();
+app.MapGrpcService<NotificationService>();
+app.MapCodeFirstGrpcReflectionService();
+app.MapControllers();
 
 await app.RunAsync();

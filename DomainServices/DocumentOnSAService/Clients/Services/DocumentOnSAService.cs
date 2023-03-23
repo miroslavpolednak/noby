@@ -47,4 +47,14 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
     {
         await _client.SignDocumentManuallyAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
     }
+
+    public async Task<GetDocumentsOnSAListResponse> GetDocumentsOnSAList(int salesArrangementId, CancellationToken cancellationToken = default)
+    {
+        return await _client.GetDocumentsOnSAListAsync(new GetDocumentsOnSAListRequest { SalesArrangementId = salesArrangementId }, cancellationToken: cancellationToken);
+    }
+
+    public async Task<CreateDocumentOnSAResponse> CreateDocumentOnSA(CreateDocumentOnSARequest request, CancellationToken cancellationToken = default)
+    {
+       return await _client.CreateDocumentOnSAAsync(request, cancellationToken: cancellationToken);
+    }
 }
