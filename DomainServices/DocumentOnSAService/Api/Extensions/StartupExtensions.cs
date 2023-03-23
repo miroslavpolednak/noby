@@ -19,18 +19,17 @@ internal static class StartupExtensions
         // dbcontext
         builder.AddEntityFramework<Database.DocumentOnSAServiceDbContext>(connectionStringKey: "default");
 
-        builder.Services.AddHouseholdService();
-
-        builder.Services.AddSalesArrangementService();
-
-        builder.Services.AddCodebookService();
-
-        builder.Services.AddDataAggregatorService();
-
-        builder.Services.AddDocumentArchiveService();
-
+        builder.Services.AddHouseholdService()
+                    .AddSalesArrangementService()
+                    .AddCodebookService()
+                    .AddDataAggregatorService()
+                    .AddDocumentArchiveService();
+        
         // EAS svc
         builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
+
+        // sulm
+        builder.AddExternalService<ExternalServices.Sulm.V1.ISulmClient>();
 
         // registrace background jobu
         builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
