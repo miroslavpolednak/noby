@@ -22,8 +22,6 @@ internal class ProductFormData : AggregatedData
 
     public DefaultValues DefaultValues3602 { get; } = DefaultValuesFactory.Create(EasFormType.F3602);
 
-    public DynamicFormValues? DynamicFormValues { get; set; }
-
     public ConditionalFormValues ConditionalFormValues { get; private set; } = null!;
 
     public int? SalesArrangementStateId => _codebookManager.SalesArrangementStates.First(x => x.Id == SalesArrangement.State).StarbuildId;

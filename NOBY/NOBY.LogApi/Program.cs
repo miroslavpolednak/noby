@@ -4,8 +4,8 @@ using NOBY.LogApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddCisEnvironmentConfiguration();
 builder
-    .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures()
     .AddCisWebApiCors()
     .AddCisLogging();

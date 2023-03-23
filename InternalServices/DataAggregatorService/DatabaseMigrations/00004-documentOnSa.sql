@@ -3,10 +3,10 @@ INSERT INTO DataService VALUES (12, 'DocumentOnSa')
 SET IDENTITY_INSERT [dbo].[DataField] ON 
 
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (151, 12, 'Custom.DocumentOnSa.FinalDocument.FormId', NULL)
-INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (152, 12, 'Custom.DocumentOnSa.FinalDocument.FormIdList[].FormId', NULL)
+INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (152, 12, 'Custom.DocumentOnSa.FormIdList[].FormId', NULL)
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (153, 12, 'Custom.DocumentOnSa.FinalDocument.EArchivId', NULL)
-INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (154, 12, 'Custom.DocumentOnSa.FinalDocument.SignatureMethodId', NULL)
-INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (155, 12, 'Custom.DocumentOnSa.FinalDocument.FirstSignatureDate', NULL)
+INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (154, 12, 'Custom.DocumentOnSa.SignatureMethodId', NULL)
+INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (155, 12, 'Custom.DocumentOnSa.FirstSignatureDate', NULL)
 
 SET IDENTITY_INSERT [dbo].[DataField] OFF
 

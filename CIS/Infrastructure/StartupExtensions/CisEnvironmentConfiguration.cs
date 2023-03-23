@@ -6,7 +6,7 @@ namespace CIS.Infrastructure.StartupExtensions;
 
 public static class CisEnvironmentConfiguration
 {
-    public static WebApplicationBuilder AddCisEnvironmentConfiguration(this WebApplicationBuilder builder)
+    public static ICisEnvironmentConfiguration AddCisEnvironmentConfiguration(this WebApplicationBuilder builder)
     {
         Configuration.CisEnvironmentConfiguration cisConfiguration = new();
         builder.Configuration.GetSection(JsonConfigurationKey).Bind(cisConfiguration);
@@ -16,10 +16,10 @@ public static class CisEnvironmentConfiguration
         // get env variables
         builder.Configuration.AddCisEnvironmentVariables($"{cisConfiguration.EnvironmentName}_");
 
-        return builder;
+        return cisConfiguration;
     }
 
-    public static WebApplicationBuilder AddCisEnvironmentConfiguration(this WebApplicationBuilder builder, Action<ICisEnvironmentConfiguration> options)
+    public static ICisEnvironmentConfiguration AddCisEnvironmentConfiguration(this WebApplicationBuilder builder, Action<ICisEnvironmentConfiguration> options)
     {
         var cisConfiguration = new Configuration.CisEnvironmentConfiguration();
         builder.Configuration.GetSection(JsonConfigurationKey).Bind(cisConfiguration);
@@ -31,7 +31,7 @@ public static class CisEnvironmentConfiguration
         // get env variables
         builder.Configuration.AddCisEnvironmentVariables($"{cisConfiguration.EnvironmentName}_");
 
-        return builder;
+        return cisConfiguration;
     }
 
     private static void CheckAndRegisterConfiguration(WebApplicationBuilder builder, ICisEnvironmentConfiguration cisConfiguration)

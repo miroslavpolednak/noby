@@ -9,8 +9,6 @@ internal class DrawingFormData : AggregatedData
 {
     public MockValues MockValues { get; } = new();
 
-    public DynamicFormValues? DynamicFormValues { get; set; }
-
     public string? DegreeBefore
     {
         get

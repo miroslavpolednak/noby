@@ -35,8 +35,8 @@ builder.Services
     });
 
 // Cis
+builder.AddCisEnvironmentConfiguration();
 builder
-    .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures()
     .AddCisLogging()
     .AddCisTracing()
