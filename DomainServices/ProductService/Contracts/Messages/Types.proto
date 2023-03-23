@@ -33,8 +33,8 @@ message LoanRealEstate {
 }
 
 message StatementObject {
-    google.protobuf.StringValue Type = 1;
-    google.protobuf.StringValue Frequency = 2;
+    google.protobuf.Int32Value Type = 1;
+    google.protobuf.Int32Value Frequency = 2;
     google.protobuf.StringValue EmailAddress1 = 3;
     google.protobuf.StringValue EmailAddress2 = 4;
     cis.types.GrpcAddress Address = 5;

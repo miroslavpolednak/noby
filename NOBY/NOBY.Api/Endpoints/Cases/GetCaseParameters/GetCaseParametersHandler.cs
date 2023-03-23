@@ -199,9 +199,9 @@ internal sealed class GetCaseParametersHandler
             respone.Statement = new StatementDto
             {
                 Type = mortgageData.Statement?.Type,
+                Frequency = mortgageData.Statement?.Frequency,
                 EmailAddress1 = mortgageData.Statement?.EmailAddress1,
-                EmailAddress2 = mortgageData.Statement?.EmailAddress2,
-                Frequency = mortgageData.Statement?.Frequency
+                EmailAddress2 = mortgageData.Statement?.EmailAddress2
             };
             if (mortgageData.Statement!.Address is not null)
             {
