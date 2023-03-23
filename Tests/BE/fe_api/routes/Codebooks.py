@@ -6,26 +6,21 @@ class Codebooks(Base):
 
     def __init__(self):
         super().__init__(route='codebooks')
-        self.__codebooks: dict = None
+        self.__codebooks: dict = dict()
 
-    def get_codebook(self, codebook: ECodebook) -> List[dict]:
-        # print(f'FeAPI.Codebooks [codebook: {codebook}]')
+    def get_codebook(self, codebook: ECodebook, use_cache: bool = False) -> List[dict]:
 
-        if (self.__codebooks is None):
-            # codebooks separated (AcademicDegreesAfter,AcademicDegreesBefore,BankCodes,...)
-            param_q = ','.join( list(e.value for e in ECodebook))
-            codebooks = self.get(f'get-all?q={param_q}')
-
-            self.__codebooks = dict()
-            for c in codebooks:
-                code = c['code']
-                items = c['codebook']
-                self.__codebooks[code] = items
+        if (codebook.value not in self.__codebooks.keys()) or (use_cache == False):
+            self.__load_codebook(codebook)
 
         if (codebook.value in self.__codebooks.keys()):
             return self.__codebooks[codebook.value]
 
         raise ValueError(f"Codebook '{codebook.value}' not found! [{','.join(self.__codebooks.keys()) } ]")
 
-    def load_codebook(self, codebook: ECodebook) -> List[dict]:        
-        return self.get(f'get-all?q={codebook.value}')
+    def __load_codebook(self, codebook: ECodebook):
+        codebooks = self.get(f'get-all?q={codebook.value}')
+        assert len(codebooks) == 1
+        code = codebooks[0]['code']
+        items = codebooks[0]['codebook']
+        self.__codebooks[code] = items

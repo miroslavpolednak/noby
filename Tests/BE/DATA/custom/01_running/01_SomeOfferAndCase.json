@@ -1,8 +1,8 @@
 {
     "label": "custom data example",
     "offer": {
-        "productTypeId": 20001,
-        "loanKindId": 2000,
+        "productTypeId": "ProductType(type=Mortgage)",
+        "loanKindId": "LoanKind(kind=Standard)",
         "loanAmount": 5000000,
         "loanDuration": 120,
         "fixedRatePeriod": 60,
@@ -10,7 +10,7 @@
         "paymentDay": 15,
         "statementTypeId": 1,
         "isEmployeeBonusRequested": false,
-        "expectedDateOfDrawing": "2023-04-01T00:00:00.0000",
+        "expectedDateOfDrawing": "Date(days=10)",
         "withGuarantee": false,
         "financialResourcesOwn": null,
         "financialResourcesOther": null,
@@ -52,7 +52,7 @@
         "emailForOffer":"j.l@jl",
         "households": [
             {
-                "householdTypeId": 1,
+                "householdTypeId": "HouseholdType(type=Main)",
                 "childrenUpToTenYearsCount": 1,
                 "childrenOverTenYearsCount": 2,
                 "areCustomersPartners": true,
@@ -251,7 +251,7 @@
                 }
             },
             {
-                "householdTypeId": 2
+                "householdTypeId": "HouseholdType(type=Codebtor)"
             }
         ],
         "parameters": {
