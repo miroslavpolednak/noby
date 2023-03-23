@@ -110,7 +110,7 @@ internal sealed partial class ValidationTransformationServiceFactory
 
             TransformationItem getTransformationItem(string key)
             {
-                if (_transformationMatrix.Any(t => t.Key == key))
+                if (_transformationMatrix.ContainsKey(key))
                 {
                     return _transformationMatrix[key];
                 }
