@@ -13,8 +13,8 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Result;
 
 public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, ResultConsumeResponse>
 {
+    private readonly IServiceProvider _provider;
     private readonly IDateTime _dateTime;
-    private readonly NotificationRepository _repository;
     private readonly ICodebookService _codebookService;
     private readonly SmsAuditLogger _auditLogger;
     private readonly ILogger<ConsumeResultHandler> _logger;
@@ -28,14 +28,14 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
     };
 
     public ConsumeResultHandler(
+        IServiceProvider provider,
         IDateTime dateTime,
-        NotificationRepository repository,
         ICodebookService codebookService,
         SmsAuditLogger auditLogger,
         ILogger<ConsumeResultHandler> logger)
     {
+        _provider = provider;
         _dateTime = dateTime;
-        _repository = repository;
         _codebookService = codebookService;
         _auditLogger = auditLogger;
         _logger = logger;
@@ -52,7 +52,9 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
 
         try
         {
-            var result = await _repository.GetResult(id, cancellationToken);
+            await using var scope = _provider.CreateAsyncScope();
+            var repository = scope.ServiceProvider.GetRequiredService<NotificationRepository>();
+            var result = await repository.GetResult(id, cancellationToken);
             result.ResultTimestamp = _dateTime.Now;
             result.State = _map[report.state];
 
@@ -80,8 +82,8 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
             errorSet.UnionWith(errorCodes);
             result.ErrorSet = errorSet;
 
-            await _repository.SaveChanges(cancellationToken);
-            
+            await repository.SaveChanges(cancellationToken);
+
             _logger.LogDebug($"Result updated for notificationId: {id}");
         }
         catch (CisNotFoundException)
