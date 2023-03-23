@@ -5,6 +5,7 @@ from typing import List
 from .Processing import Processing
 
 from common import Log
+from DATA import JsonDataModificator
 
 from business.offer import Offer
 from business.case import Case
@@ -52,6 +53,13 @@ class ApiProcessor():
 
         offer_json: dict = Processing.get_key(self.__offer_case_json, 'offer')
         case_json: dict = Processing.get_key(self.__offer_case_json, 'case')
+
+        # -------------------------------------------------
+        # resolve modifications
+        # -------------------------------------------------
+        offer_json = JsonDataModificator.modify(offer_json)
+        case_json = JsonDataModificator.modify(case_json)
+        # -------------------------------------------------
 
         offer_id: int = None
         case_id: int = None
