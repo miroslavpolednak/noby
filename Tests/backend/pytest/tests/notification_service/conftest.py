@@ -1,4 +1,5 @@
 import datetime
+import pyodbc
 
 import datetime as datetime
 import pytest
@@ -17,6 +18,7 @@ URLS = {
     "sit_url": "https://ds-notification-sit1.vsskb.cz:32016",
     "uat_url": "https://ds-notification-uat.vsskb.cz:33016",
 }
+
 
 def pytest_addoption(parser):
     parser.addoption("--ns-url", action="store", default="dev_url",

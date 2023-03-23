@@ -30,7 +30,8 @@ def test_sms(url_name,  auth_params, auth, json_data):
     resp = resp.json()
     print(resp)
     assert "notificationId" in resp
-    assert resp["notificationId"] != ""
+    notification_id = resp["notificationId"]
+    assert notification_id != ""
 
 
 @pytest.mark.parametrize("url_name", ["uat_url"])
@@ -54,11 +55,11 @@ def test_sms_template(url_name,  auth_params, auth, json_data):
     assert resp["notificationId"] != ""
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
+@pytest.mark.parametrize("url_name", ["dev_url", "uat_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg, json_req_sms_basic_epsy])
 def test_sms_combination_security(url_name,  auth_params, auth, json_data):
-    """test pto kombinaci všech uživatelů s basic sms"""
+    """test pro kombinaci všech uživatelů s basic sms"""
 
     username = auth[0]
     password = auth[1]
@@ -71,9 +72,9 @@ def test_sms_combination_security(url_name,  auth_params, auth, json_data):
     )
     resp = resp.json()
     print(resp)
+    notification_id = resp["notificationId"]
     assert "notificationId" in resp
-    assert resp["notificationId"] != ""
-    # chybi dodelat asserty do databaze
+    assert notification_id != ""
 
 
 #pro testy zabezpeceni, jake sms jsou mozne odespilat pres urcite uzivatele - pouzita vnorena parametrizace
