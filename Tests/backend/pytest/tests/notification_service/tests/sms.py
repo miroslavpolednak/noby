@@ -3,13 +3,13 @@ import requests
 
 from ..conftest import URLS
 from ..json.request.sms_json import json_req_sms_basic, json_req_sms_basic_full, json_req_sms_basic_epsy, \
-    json_req_sms_basic_insg, json_req_sms_bez_logovani, json_req_sms_logovani
+    json_req_sms_basic_insg, json_req_sms_bez_logovani, json_req_sms_logovani, json_req_sms_basic_phone
 from ..json.request.sms_template import json_req_sms_full_template, json_req_sms_basic_template
 
 
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_basic, json_req_sms_basic_full])
+@pytest.mark.parametrize("json_data", [json_req_sms_basic, json_req_sms_basic_phone, json_req_sms_basic_full])
 def test_sms(url_name,  auth_params, auth, json_data):
     """Parametry:
     ns_url: URL adresa pro testování.

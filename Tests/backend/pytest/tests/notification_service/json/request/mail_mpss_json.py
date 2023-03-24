@@ -20,7 +20,7 @@ json_req_mail_mpss_basic_legal = \
         }
       }
     ],
-    "subject": "NS_test_Marek_Mikel_basic_legal",
+    "subject": "NS_test_MIKEL_basic_legal",
     "content": {
       "format": "UTF-8",
       "language": "cz",
@@ -54,7 +54,7 @@ json_req_mail_mpss_basic_natural = \
         }
       }
     ],
-    "subject": "NS_test_Marek_Mikel_natural_basic",
+    "subject": "NS_test_MIKEL_basic_natural",
     "content": {
       "format": "UTF-8",
       "language": "cz",
@@ -112,7 +112,7 @@ json_req_mail_mpss_full_attachments = \
         }
       }
     },
-    "subject": "NS_test_Marek_Mikel_full_attachments",
+    "subject": "NS_test_MIKEL_full_attachments",
     "content": {
       "format": "UTF-8",
       "language": "cz",
@@ -136,6 +136,142 @@ json_req_mail_mpss_full_attachments = \
     "documentId": "documentId_123456"
   }
 
+
+# from, to, mx priloh
+json_req_mail_mpss_max_attachments = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "UTF-8",
+      "language": "cz",
+      "text": "json_req_mail_mpss_basic_legal"
+    },
+    "attachments": [
+      {
+        "filename": "1.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+      {
+        "filename": "2.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+      {
+        "filename": "4.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "5.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "6.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "7.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "8.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },{
+        "filename": "9.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "10.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      }
+    ]
+  }
+
+# from, to, legalPerson, bez priloh
+json_req_mail_mpss_bad_11_attachments = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_bad_11_attachments",
+    "content": {
+      "format": "UTF-8",
+      "language": "cz",
+      "text": "json_req_mail_mpss_bad_11_attachments"
+    },
+    "attachments": [
+      {
+        "filename": "1.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+      {
+        "filename": "2.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+      {
+        "filename": "4.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "5.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "6.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "7.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "8.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },{
+        "filename": "9.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "10.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "11.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      }
+    ]
+  }
 
 # from, to, bcc, cc, replyTo, naturalPerson
 json_req_mail_mpss_full_natural = \
@@ -196,11 +332,11 @@ json_req_mail_mpss_full_natural = \
         }
       }
     },
-    "subject": "Predmet_testy_pardon",
+    "subject": "NS_test_MIKEL_full_natural",
     "content": {
       "format": "UTF-8",
       "language": "cz",
-      "text": "Sorry za spam. Overuji kopie"
+      "text": "json_req_mail_mpss_full_natural"
     },
     "attachments": [],
     "identifier": {
@@ -250,11 +386,11 @@ json_req_mail_mpss_bad_natural_legal = \
         "naturalPerson": {}
       }
     },
-    "subject": "Predmet_testy_pardon",
+    "subject": "NS_test_MIKEL_bad_natural_legal",
     "content": {
       "format": "UTF-8",
       "language": "cz",
-      "text": "Sorry za spam. Overuji kopie"
+      "text": "json_req_mail_mpss_bad_natural_legal"
     },
     "attachments": [],
     "identifier": {

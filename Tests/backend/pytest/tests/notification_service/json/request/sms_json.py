@@ -1,7 +1,19 @@
-
+#phone String
 json_req_sms_basic= \
 {
   "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "RETENTION",
+  "text": "insg bez logovani"
+}
+
+#phone_object
+json_req_sms_basic_phone_object = \
+{
+  "phone": {
+    "countryCode": "+420",
+    "nationalNumber": "607115686"
+  },
   "processingPriority": 1,
   "type": "RETENTION",
   "text": "insg bez logovani"
