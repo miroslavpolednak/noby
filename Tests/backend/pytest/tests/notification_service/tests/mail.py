@@ -4,7 +4,7 @@ import requests
 from ..conftest import URLS
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
     json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural
-from ..json.request.sms import json_req_sms_basic, json_req_sms_basic_full, json_req_sms_basic_epsy, \
+from ..json.request.sms_json import json_req_sms_basic, json_req_sms_basic_full, json_req_sms_basic_epsy, \
     json_req_sms_basic_insg
 from ..json.request.sms_template import json_req_sms_full_template, json_req_sms_basic_template
 

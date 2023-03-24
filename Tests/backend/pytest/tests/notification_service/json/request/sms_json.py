@@ -7,6 +7,22 @@ json_req_sms_basic= \
   "text": "insg bez logovani"
 }
 
+json_req_sms_logovani= \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "TEST_INSG",
+  "text": "insg s logovani"
+}
+
+json_req_sms_bez_logovani= \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "TEST_INSG_NELOG",
+  "text": "insg s logovani"
+}
+
 json_req_sms_basic_full= \
 {
   "phoneNumber": "+420607115686",
