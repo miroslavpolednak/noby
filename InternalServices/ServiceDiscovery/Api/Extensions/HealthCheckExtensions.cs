@@ -48,7 +48,10 @@ internal static class HealthCheckExtensions
             var isAllHealthy = healthCheckResults.All(t => t.Status == Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Serving);
 
             return Results.Text(jsonBuilder(healthCheckResults, isAllHealthy), "application/json", isAllHealthy ? 200 : 503);
-        });
+        })
+            .WithTags("Monitoring")
+            .WithName("Globální HealthCheck endpoint sdružující HC všech služeb v NOBY.")
+            .WithOpenApi();
 
         return app;
     }
