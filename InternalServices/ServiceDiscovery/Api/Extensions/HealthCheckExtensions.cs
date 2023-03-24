@@ -3,7 +3,6 @@ using Grpc.Core;
 using Grpc.Net.ClientFactory;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Text;
 using System.Text.Json;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api;
@@ -45,63 +44,113 @@ internal static class HealthCheckExtensions
             [FromServices] GrpcClientFactory grpcClientFactory,
             CancellationToken cancellationToken) =>
         {
-            return Results.Text(await jsonBuilder(grpcClientFactory, cancellationToken), contentType: "application/json");
+            var healthCheckResults = await getHealthCheckResults(grpcClientFactory, cancellationToken);
+            var isAllHealthy = healthCheckResults.All(t => t.Status == Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Serving);
+
+            return Results.Text(jsonBuilder(healthCheckResults, isAllHealthy), "application/json", isAllHealthy ? 200 : 503);
         });
 
         return app;
     }
 
-    private static async Task<string> jsonBuilder(
-        GrpcClientFactory grpcClientFactory,
-        CancellationToken cancellationToken)
+    /// <summary>
+    /// Projit vsechny endpointy healthchecku a ziskat jejich statusy
+    /// </summary>
+    private static async Task<List<HealthCheckResult>> getHealthCheckResults(GrpcClientFactory grpcClientFactory, CancellationToken cancellationToken)
+    {
+        List<HealthCheckResult> results = new();
+
+        foreach (var service in _serviceNamesCache!)
+        {
+            var result = new HealthCheckResult
+            {
+                ServiceName = service,
+                Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Unknown
+            };
+            results.Add(result);
+
+            var client = grpcClientFactory.CreateClient<Grpc.Health.V1.Health.HealthClient>(service);
+            var timer = new Stopwatch();
+
+            try
+            {
+                timer.Start();
+
+                var response = await client.CheckAsync(
+                    new Grpc.Health.V1.HealthCheckRequest(),
+                    deadline: DateTime.UtcNow.AddSeconds(_deadlineSeconds),
+                    cancellationToken: cancellationToken);
+
+                result.Status = response.Status;
+            }
+            catch (RpcException ex) when (ex.StatusCode == StatusCode.Unimplemented)
+            {
+                result.Description = "HealthCheck unimplemented";
+                result.Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.NotServing;
+            }
+            catch (Exception ex)
+            {
+                result.Description = ex.Message;
+                result.Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.NotServing;
+            }
+            finally
+            {
+                timer.Stop();
+
+                result.ElapsedMilliseconds = timer.ElapsedMilliseconds;
+            }
+        }
+
+        return results;
+    }
+
+    /// <summary>
+    /// Vytvoreni JSON stringu na response
+    /// </summary>
+    private static ReadOnlySpan<byte> jsonBuilder(List<HealthCheckResult> healthCheckResults, bool healthy)
     {
         using var memoryStream = new MemoryStream();
         using (var jsonWriter = new Utf8JsonWriter(memoryStream, _jsonWriterOptions))
         {
             jsonWriter.WriteStartObject();
+            
+            jsonWriter.WriteString("status", healthy ? _healthyValue : _unhealthyValue);
+            jsonWriter.WriteNumber("totalMilliseconds", healthCheckResults.Sum(t => t.ElapsedMilliseconds));
 
-            foreach (var service in _serviceNamesCache!)
+            jsonWriter.WriteStartObject("results");
+
+            foreach (var results in healthCheckResults)
             {
-                jsonWriter.WriteStartObject(service);
+                jsonWriter.WriteStartObject(results.ServiceName);
 
-                var client = grpcClientFactory.CreateClient<Grpc.Health.V1.Health.HealthClient>(service);
-                var timer = new Stopwatch();
+                jsonWriter.WriteString("status", results.Status == Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Serving ? _healthyValue : _unhealthyValue);
+                
+                jsonWriter.WriteNumber("totalMilliseconds", results.ElapsedMilliseconds);
 
-                try
+                if (!string.IsNullOrEmpty(results.Description))
                 {
-                    timer.Start();
-
-                    var response = await client.CheckAsync(
-                        new Grpc.Health.V1.HealthCheckRequest(),
-                        deadline: DateTime.UtcNow.AddSeconds(_deadlineSeconds),
-                        cancellationToken: cancellationToken);
-
-                    jsonWriter.WriteString("status", response.Status == Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Serving ? _healthyValue : _unhealthyValue);
-                }
-                catch (RpcException ex) when (ex.StatusCode == StatusCode.Unimplemented)
-                {
-                    jsonWriter.WriteString("status", _unhealthyValue);
-                    jsonWriter.WriteString("description", "HealthCheck unimplemented");
-                }
-                catch (Exception ex)
-                {
-                    jsonWriter.WriteString("status", _unhealthyValue);
-                    jsonWriter.WriteString("description", ex.Message);
-                }
-                finally
-                {
-                    timer.Stop();
-
-                    jsonWriter.WriteNumber("totalMilliseconds", timer.ElapsedMilliseconds);
+                    jsonWriter.WriteString("description", results.Description);
                 }
 
                 jsonWriter.WriteEndObject();
             }
 
             jsonWriter.WriteEndObject();
+            jsonWriter.WriteEndObject();
         }
 
-        return Encoding.UTF8.GetString(memoryStream.ToArray());
+        return memoryStream.ToArray().AsSpan();
+    }
+
+    private sealed class HealthCheckResult
+    {
+        public string ServiceName = string.Empty;
+        
+        public Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus Status;
+        
+        public long ElapsedMilliseconds;
+        
+        public string? Description;
     }
 
     private static JsonWriterOptions _jsonWriterOptions = new JsonWriterOptions { Indented = true };
