@@ -1,6 +1,6 @@
 
 # from, to, legalPerson, bez priloh
-json_req_mail_mpss_basic = \
+json_req_mail_mpss_basic_legal = \
   {
     "from": {
       "value": "notification-service@mpss.cz",
@@ -20,11 +20,11 @@ json_req_mail_mpss_basic = \
         }
       }
     ],
-    "subject": "Předmět - od mary bez priloh",
+    "subject": "NS_test_Marek_Mikel_basic_legal",
     "content": {
       "format": "UTF-8",
       "language": "cz",
-      "text": "Sorry za spam. Testuji legal Person. Marek"
+      "text": "json_req_mail_mpss_basic_legal"
     },
     "attachments": []
   }
@@ -46,17 +46,19 @@ json_req_mail_mpss_basic_natural = \
       {
         "value": "marek.mikel@mpss.cz",
         "party": {
-          "legalPerson": {
-            "name": "Marek Mikel"
+        "naturalPerson": {
+        "firstName": "Marek",
+        "middleName": "Bozi",
+        "surname": "Mikel"
           }
         }
       }
     ],
-    "subject": "Předmět - od mary bez priloh",
+    "subject": "NS_test_Marek_Mikel_natural_basic",
     "content": {
       "format": "UTF-8",
       "language": "cz",
-      "text": "Sorry za spam. Testuji natural person. Marek"
+      "text": "json_req_mail_mpss_basic_natural"
     },
     "attachments": []
   }
@@ -74,7 +76,7 @@ json_req_mail_mpss_full_attachments = \
     },
     "to": [
       {
-        "value": "jakub.vana@mpss.cz",
+        "value": "marek.mikel@mpss.cz",
         "party": {
         "legalPerson": {
           "name": "Notifikace"
@@ -110,11 +112,11 @@ json_req_mail_mpss_full_attachments = \
         }
       }
     },
-    "subject": "Predmet_testy_pardon_LEGAL",
+    "subject": "NS_test_Marek_Mikel_full_attachments",
     "content": {
       "format": "UTF-8",
       "language": "cz",
-      "text": "Sorry za spam. Overuji kopie a identifier. Marek"
+      "text": "json_req_mail_mpss_full_attachments"
     },
     "attachments": [
       {
@@ -136,7 +138,7 @@ json_req_mail_mpss_full_attachments = \
 
 
 # from, to, bcc, cc, replyTo, naturalPerson
-json_req_mail_mpss_natural = \
+json_req_mail_mpss_full_natural = \
   {
     "from": {
       "value": "notification-service@mpss.cz",
@@ -210,7 +212,7 @@ json_req_mail_mpss_natural = \
   }
 
 # fucker naturalPerson
-json_req_mail_mpss_bad_natural = \
+json_req_mail_mpss_bad_natural_legal = \
   {
     "from": {
       "value": "notification-service@mpss.cz",
@@ -222,7 +224,7 @@ json_req_mail_mpss_bad_natural = \
       {
         "value": "marek.mikel@mpss.cz",
         "party": {
-          "naturalPerson": {}
+          "legalPerson": {}
         }
       }
     ],
