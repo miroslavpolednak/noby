@@ -23,6 +23,7 @@ internal class DocumentDataFactory
             DocumentType.ZADOSTHD => _serviceProvider.GetRequiredService<LoanApplication3602TemplateData>(),
             DocumentType.ZAOZMPAR => new GeneralChangeTemplateData(),
             DocumentType.ZAODHUBN => new HUBNTemplateData(),
+            DocumentType.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeTemplateData>(),
             _ => new AggregatedData()
         };
 }

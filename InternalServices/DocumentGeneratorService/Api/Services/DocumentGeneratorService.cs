@@ -13,6 +13,12 @@ internal class DocumentGeneratorService : Contracts.V1.DocumentGeneratorService.
 
     public override Task<Contracts.Document> GenerateDocument(GenerateDocumentRequest request, ServerCallContext context)
     {
+        //TODO: mock
+        if (request.DocumentTypeId is 4 or 5 && string.IsNullOrWhiteSpace(request.DocumentTemplateVariant))
+        {
+            request.DocumentTemplateVariant = "B";
+        }
+
         return _documentManager.GenerateDocument(request);
     }
 }
