@@ -17,6 +17,10 @@ internal class DocumentGeneratorService : Contracts.V1.DocumentGeneratorService.
         if (request.DocumentTypeId is 4 or 5 && string.IsNullOrWhiteSpace(request.DocumentTemplateVariant))
         {
             request.DocumentTemplateVariant = "B";
+            foreach (var part in request.Parts)
+            {
+                part.DocumentTemplateVariant = "B";
+            }
         }
 
         return _documentManager.GenerateDocument(request);
