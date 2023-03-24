@@ -173,6 +173,10 @@ json_req_mail_mpss_max_attachments = \
         "filename": "2.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       },
+{
+        "filename": "3.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
       {
         "filename": "4.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
@@ -192,7 +196,8 @@ json_req_mail_mpss_max_attachments = \
 {
         "filename": "8.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
-      },{
+      },
+      {
         "filename": "9.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       },
@@ -237,6 +242,10 @@ json_req_mail_mpss_bad_11_attachments = \
       },
       {
         "filename": "2.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "3.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       },
       {
