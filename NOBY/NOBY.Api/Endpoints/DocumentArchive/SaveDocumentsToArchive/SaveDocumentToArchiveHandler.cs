@@ -1,5 +1,6 @@
 ﻿using CIS.Core;
 using CIS.Core.Security;
+using DomainServices.CaseService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
@@ -13,6 +14,8 @@ namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 public class SaveDocumentToArchiveHandler
     : IRequestHandler<SaveDocumentsToArchiveRequest>
 {
+    private const string defaultContractNumber = "HF00111111125";
+
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDateTime _dateTime;
@@ -20,6 +23,7 @@ public class SaveDocumentToArchiveHandler
     private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
     private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
     private readonly IMediator _mediator;
+    private readonly ICaseServiceClient _caseServiceClient;
 
     public SaveDocumentToArchiveHandler(
         IDocumentArchiveServiceClient client,
@@ -28,9 +32,9 @@ public class SaveDocumentToArchiveHandler
         ITempFileManager tempFileManager,
         ISalesArrangementServiceClient salesArrangementServiceClient,
         IDocumentOnSAServiceClient documentOnSAServiceClient,
-        IMediator mediator)
+        IMediator mediator,
+        ICaseServiceClient caseServiceClient)
     {
-
         _client = client;
         _currentUserAccessor = currentUserAccessor;
         _dateTime = dateTime;
@@ -38,12 +42,12 @@ public class SaveDocumentToArchiveHandler
         _salesArrangementServiceClient = salesArrangementServiceClient;
         _documentOnSAServiceClient = documentOnSAServiceClient;
         _mediator = mediator;
+        _caseServiceClient = caseServiceClient;
     }
 
     public async Task Handle(SaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-
         var filePaths = new List<string>();
         var filesToUpload = new List<UploadDocumentRequest>();
 
@@ -54,9 +58,7 @@ public class SaveDocumentToArchiveHandler
                 eArchiveIdFromDocumentOnSa = await ValidateFormId(request.CaseId, docInfo, cancellationToken);
 
             var filePath = _tempFileManager.ComposeFilePath(docInfo.Guid!.Value.ToString());
-
             _tempFileManager.CheckIfDocumentExist(filePath);
-
             filePaths.Add(filePath);
 
             var file = await _tempFileManager.GetDocument(filePath, cancellationToken);
@@ -65,10 +67,10 @@ public class SaveDocumentToArchiveHandler
                 await _client.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken)
                 : eArchiveIdFromDocumentOnSa;
 
-            filesToUpload.Add(MapRequest(file, documentId, request.CaseId, docInfo));
+            filesToUpload.Add(await MapRequest(file, documentId, request.CaseId, docInfo, cancellationToken));
         }
 
-        filesToUpload.ForEach(async fileToUpload => await _client.UploadDocument(fileToUpload, cancellationToken));
+        await Task.WhenAll(filesToUpload.Select(file => _client.UploadDocument(file, cancellationToken)));
         _tempFileManager.BatchDelete(filePaths);
     }
 
@@ -121,7 +123,7 @@ public class SaveDocumentToArchiveHandler
         return salesArrangementIdWithFormIdFromDocSa;
     }
 
-    private UploadDocumentRequest MapRequest(byte[] file, string documentId, long caseId, DocumentsInformation documentInformation)
+    private async Task<UploadDocumentRequest> MapRequest(byte[] file, string documentId, long caseId, DocumentsInformation documentInformation, CancellationToken cancellationToken)
     {
         return new UploadDocumentRequest
         {
@@ -136,7 +138,14 @@ public class SaveDocumentToArchiveHandler
                 CreatedOn = _dateTime.Now.Date,
                 Description = documentInformation.Description ?? string.Empty,
                 FormId = documentInformation.FormId ?? string.Empty,
+                ContractNumber = await GetContractNumber(caseId, cancellationToken)
             }
         };
+    }
+
+    private async Task<string> GetContractNumber(long caseId, CancellationToken cancellationToken)
+    {
+        var caseDetail = await _caseServiceClient.GetCaseDetail(caseId, cancellationToken);
+        return caseDetail.Data?.ContractNumber ?? defaultContractNumber;
     }
 }
