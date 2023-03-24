@@ -137,7 +137,7 @@ json_req_mail_mpss_full_attachments = \
   }
 
 
-# from, to, mx priloh
+# from, to, max priloh
 json_req_mail_mpss_max_attachments = \
   {
     "from": {

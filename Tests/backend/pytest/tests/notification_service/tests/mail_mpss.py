@@ -5,9 +5,6 @@ from ..conftest import URLS
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
     json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural, json_req_mail_mpss_bad_natural_legal, \
     json_req_mail_mpss_max_attachments, json_req_mail_mpss_bad_11_attachments
-from ..json.request.sms_json import json_req_sms_basic, json_req_sms_basic_full, json_req_sms_basic_epsy, \
-    json_req_sms_basic_insg
-from ..json.request.sms_template import json_req_sms_full_template, json_req_sms_basic_template
 
 
 @pytest.mark.parametrize("url_name", ["dev_url"])
@@ -75,6 +72,7 @@ def test_mail_11_attachments(url_name,  auth_params, auth, json_data):
     assert "notificationId" in resp
     notification_id = resp["notificationId"]
     assert notification_id != ""
+
 
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_NOBY_RMT_USR_TEST"], indirect=True)
