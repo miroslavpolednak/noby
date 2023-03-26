@@ -40,7 +40,7 @@ json_req_sms_basic_full= \
   "phoneNumber": "+420607115686",
   "processingPriority": 1,
   "type": "RETENTION",
-  "text": "kratka sms",
+  "text": "kratka sms bez cehokoliv vice",
   "identifier": {
     "identity": "992474q",
     "identityScheme": "2"
