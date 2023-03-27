@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Types;
 using CIS.Infrastructure.WebApi.Types;
 
-namespace NOBY.Api.Endpoints.Codebooks.DeveloperSearch;
+namespace NOBY.Api.Endpoints.Offer.DeveloperSearch;
 
 internal sealed class DeveloperSearchHandler
     : IRequestHandler<DeveloperSearchRequest, DeveloperSearchResponse>
