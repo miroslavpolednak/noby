@@ -16,7 +16,8 @@ internal class UpdateParametersSwagerSchema : ISchemaFilter
             typeof(ParametersMortgage),
             typeof(ParametersDrawing),
             typeof(Dto.HUBNUpdate),
-            typeof(Dto.GeneralChangeUpdate)
+            typeof(Dto.GeneralChangeUpdate),
+            typeof(Dto.CustomerChangeUpdate)
         };
 
         foreach (var type in possibleTypes)

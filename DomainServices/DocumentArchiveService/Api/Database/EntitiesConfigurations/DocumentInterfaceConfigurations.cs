@@ -34,7 +34,7 @@ public class DocumentInterfaceConfigurations : IEntityTypeConfiguration<Document
          .HasColumnType("bigint");
 
         builder.Property(e => e.CreatedOn)
-        .HasColumnName("DATUM_PRIJETI")
+        .HasColumnName("CREATED_ON")
         .HasColumnType("datetime");
 
         builder.Property(e => e.AuthorUserLogin)

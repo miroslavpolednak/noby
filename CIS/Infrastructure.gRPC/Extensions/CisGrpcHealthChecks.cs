@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -32,6 +34,14 @@ public static class CisGrpcHealthChecks
                 hc.AddSqlServer(cs.Value!, name: cs.Key);
         }
 
+        // nepublikovat automaticky, delame to obracene
+        builder.Services.Configure<HealthCheckPublisherOptions>(options =>
+        {
+            options.Predicate = reg => false;
+            options.Delay = TimeSpan.FromDays(2);
+            options.Period = TimeSpan.FromDays(2);
+        });
+
         return hc;
     }
 
@@ -44,7 +54,15 @@ public static class CisGrpcHealthChecks
         app.MapGrpcHealthChecksService();
 
         // registrace http1 endpointu
-        app.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);
+        app.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, new HealthCheckOptions
+        {
+            ResultStatusCodes =
+            {
+                [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+            }
+        });
 
         return app;
     }

@@ -533,8 +533,8 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413658556">AddressTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCodes</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developers</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developers [Deprecated]</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects [Deprecated]</a>
              - <a href="https://wiki.kb.cz/display/HT/DocumentOnSAType">DocumentOnSATypes</a>
              - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVersion">DocumentTemplateVersions</a>
              - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVariant">DocumentTemplateVariants</a>
@@ -577,6 +577,8 @@
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequencies</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235789">StatementSubscriptionTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417284324">StatementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/TinFormatByCountry+%28CB_CmTrTinFormat%29+-+MOCK">TinFormatsByCountry</a>
              - <a href="https://wiki.kb.cz/display/HT/TinNoFillReasonsByCountry+%28CB_CmTrTinCountry%29+-+MOCK">TinNoFillReasonsByCountry</a>
@@ -609,6 +611,56 @@
             FixedRatePeriod s filtrací na product
             </summary>
             <param name="productTypeId">ID typu produktu</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloper(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
+            <summary>
+            Detail developera
+            </summary>
+            <remarks>
+            Vrátí detail developera dle developerId na vstupu.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="developerId">ID developera</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloperProject(System.Int32,System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
+            <summary>
+            Detail developeského projektu
+            </summary>
+            <remarks>
+            Vrátí detail developerského projektu dle developerProjectId na vstupu.
+            <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="developerId">ID developera</param>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.Name">
+            <summary>
+            Jméno developera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.Cin">
+            <summary>
+            ICO/RČ developera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.ShowBenefitsPackage">
+            <summary>
+            Balíček benefitu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.Developer.ShowBenefitsBeyondPackage">
+            <summary>
+            Benefity nad rámec balíčku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.DeveloperStatus.StatusId">
+            <summary>
+            Id statusu developera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.DeveloperStatus.StatusText">
+            <summary>
+            Status developera
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest.Data">
             <summary>
@@ -1448,6 +1500,18 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0E17AE8A-C137-415b-B4FB-2C0D3995E0DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetCustomerChange(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí)
+            </summary>
+            <remarks>
+            Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí) ze šablony k dané SalesArrangement.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=B7ED8950-BAA7-44a2-A069-2593B6D5121E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="salesArrangementId"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetLoanApplicationMain(System.Int32,System.Threading.CancellationToken)">
             <summary>

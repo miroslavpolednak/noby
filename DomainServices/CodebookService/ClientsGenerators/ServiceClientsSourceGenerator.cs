@@ -8,7 +8,7 @@ namespace DomainServices.CodebookService.ClientsGenerators
     [Generator]
     public sealed class ServiceClientsSourceGenerator : ISourceGenerator
     {
-        private static string[] _hardcodedCodebooks = new[] { "DeveloperSearch", "Reset" };
+        private static string[] _hardcodedCodebooks = new[] { "GetDeveloper", "GetDeveloperProject", "DeveloperSearch", "Reset" };
 
         public void Initialize(GeneratorInitializationContext context)
         {

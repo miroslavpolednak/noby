@@ -17,7 +17,7 @@ namespace DomainServices.DocumentArchiveService.Api.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -43,7 +43,7 @@ namespace DomainServices.DocumentArchiveService.Api.Database.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime")
-                        .HasColumnName("DATUM_PRIJETI");
+                        .HasColumnName("CREATED_ON");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(254)")

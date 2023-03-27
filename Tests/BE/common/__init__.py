@@ -17,6 +17,7 @@ from .enums.EServiceType import EServiceType
 
 from .helpers.Convertor import Convertor
 from .helpers.EnumExtensions import EnumExtensions
+from .helpers.DictExtensions import DictExtensions
 from .logging.Log import Log
 
 config:IConfig = ConfigDefault()

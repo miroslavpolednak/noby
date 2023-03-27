@@ -1,6 +1,3 @@
-DROP TABLE IF EXISTS dbo.[MigrationHistory]
-GO
-
 /****** Object:  Table [dbo].[WorkflowTaskTypeExtension]    Script Date: 14.03.2023 10:54:30 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[WorkflowTaskTypeExtension]') AND type in (N'U'))
 DROP TABLE [dbo].[WorkflowTaskTypeExtension]

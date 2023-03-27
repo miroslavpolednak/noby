@@ -94,6 +94,8 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.WorkSectors(ct));
         AddCodebook((s, ct) => s.ProductTypes(ct));
         AddCodebook((s, ct) => s.IncomeMainTypesAML(ct));
+        AddCodebook((s, ct) => s.StatementSubscriptionTypes(ct));
+        AddCodebook((s, ct) => s.StatementFrequencies(ct));
     }
 
     private void AddCodebook<TReturn>(Expression<Func<ICodebookServiceClients, CancellationToken, TReturn>> expression, Func<IEnumerable<object>, IEnumerable<object>> customizeResult = default!) where TReturn : Task

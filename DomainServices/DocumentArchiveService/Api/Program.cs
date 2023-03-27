@@ -50,7 +50,7 @@ builder.AddDocumentArchiveGrpc();
 
 // add grpc swagger 
 builder.AddDocumentArchiveGrpcSwagger();
-
+builder.AddCisGrpcHealthChecks();
 #endregion register builder
 
 // kestrel configuration
@@ -71,7 +71,7 @@ app.UseCisServiceUserContext();
 //Dont know correct connection
 app.UseServiceDiscovery();
 
-app.MapCodeFirstGrpcHealthChecks();
+app.MapCisGrpcHealthChecks();
 app.MapGrpcService<DomainServices.DocumentArchiveService.Api.Endpoints.DocumentArchiveServiceGrpc>();
 app.MapGrpcReflectionService();
 

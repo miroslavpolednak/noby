@@ -1,7 +1,4 @@
-DROP TABLE IF EXISTS dbo.[MigrationHistory]
-GO
-
-DROP TABLE IF EXISTS [dbo].[ServiceDiscovery]
+DROP TABLE IF EXISTS [dbo].[ServiceDiscovery];
 GO
 
 CREATE TABLE [dbo].[ServiceDiscovery](

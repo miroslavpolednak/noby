@@ -36,7 +36,7 @@ internal static class NobyServices
         
         // controllers and validation
         builder.Services
-            .AddControllers()
+            .AddControllers(x => x.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None }))
             .ConfigureApiBehaviorOptions(options =>
             {
                 options.SuppressMapClientErrors = true;

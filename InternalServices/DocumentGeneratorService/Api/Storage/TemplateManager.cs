@@ -66,7 +66,7 @@ public class TemplateManager : IDisposable
         var templateTypes = await _codebookService.DocumentTypes();
 
         var type = templateTypes.FirstOrDefault(t => t.Id == documentTypeId) ??
-                   throw new CisArgumentException(401, $"Unsupported template with Id {documentTypeId}", nameof(documentTypeId));
+                   throw new CisValidationException(401, $"Unsupported template with Id {documentTypeId}");
 
         return type.ShortName;
     }
@@ -76,7 +76,7 @@ public class TemplateManager : IDisposable
         var templateVersions = await _codebookService.DocumentTemplateVersions();
 
         var version = templateVersions.FirstOrDefault(t => t.DocumentTypeId == documentTypeId && t.DocumentVersion.Equals(templateVersion, StringComparison.InvariantCultureIgnoreCase)) ??
-                      throw new CisArgumentException(402, $"Unsupported template (id: {documentTypeId}) version {templateVersion}", nameof(templateVersion));
+                      throw new CisValidationException(402, $"Unsupported template (id: {documentTypeId}) version {templateVersion}");
 
         return version.Id;
     }
@@ -91,7 +91,7 @@ public class TemplateManager : IDisposable
         var exists = variants.Any(v => v.DocumentTemplateVersionId == templateVersionId && v.DocumentVariant == templateVariant);
 
         if (!exists)
-            throw new CisArgumentException(402, $"Unsupported variant {templateVariant} (Version id: {templateVersionId})", nameof(templateVariant));
+            throw new CisValidationException(402, $"Unsupported variant {templateVariant} (Version id: {templateVersionId})");
     }
 
     private async Task<MergeDocument> PrepareFinalDocument(int templateTypeId, string templateVersion, string? templateVariant)

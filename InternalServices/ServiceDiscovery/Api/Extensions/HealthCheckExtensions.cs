@@ -3,6 +3,7 @@ using Grpc.Core;
 using Grpc.Net.ClientFactory;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api;
 
@@ -43,61 +44,123 @@ internal static class HealthCheckExtensions
             [FromServices] GrpcClientFactory grpcClientFactory,
             CancellationToken cancellationToken) =>
         {
-            var result = new List<HealthCheckItem>(_serviceNamesCache!.Count);
+            var healthCheckResults = await getHealthCheckResults(grpcClientFactory, cancellationToken);
+            var isAllHealthy = healthCheckResults.All(t => t.Status == Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Serving);
 
-            foreach (var service in _serviceNamesCache)
-            {
-                HealthCheckItem check = new()
-                {
-                    ServiceName = service,
-                    Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Unknown
-                };
-
-                var client = grpcClientFactory.CreateClient<Grpc.Health.V1.Health.HealthClient>(service);
-                var timer = new Stopwatch();
-
-                try
-                {
-                    var response = await client.CheckAsync(
-                        new Grpc.Health.V1.HealthCheckRequest(), 
-                        deadline: DateTime.UtcNow.AddSeconds(_deadlineSeconds),
-                        cancellationToken: cancellationToken);
-
-                    check.Status = response.Status;
-                }
-                catch (RpcException ex) when (ex.StatusCode == StatusCode.Unimplemented)
-                {
-                    check.Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.NotServing;
-                }
-                catch (Exception ex)
-                {
-                    check.Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.NotServing;
-                }
-                finally
-                {
-                    timer.Stop();
-
-                    check.Elapsed = timer.ElapsedMilliseconds;
-                }
-
-                result.Add(check);
-            }
-
-            return result;
-        });
+            return Results.Text(jsonBuilder(healthCheckResults, isAllHealthy), "application/json", isAllHealthy ? 200 : 503);
+        })
+            .WithTags("Monitoring")
+            .WithName("Globální HealthCheck endpoint sdružující HC všech služeb v NOBY.")
+            .WithOpenApi();
 
         return app;
     }
 
+    /// <summary>
+    /// Projit vsechny endpointy healthchecku a ziskat jejich statusy
+    /// </summary>
+    private static async Task<List<HealthCheckResult>> getHealthCheckResults(GrpcClientFactory grpcClientFactory, CancellationToken cancellationToken)
+    {
+        List<HealthCheckResult> results = new();
+
+        foreach (var service in _serviceNamesCache!)
+        {
+            var result = new HealthCheckResult
+            {
+                ServiceName = service,
+                Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Unknown
+            };
+            results.Add(result);
+
+            var client = grpcClientFactory.CreateClient<Grpc.Health.V1.Health.HealthClient>(service);
+            var timer = new Stopwatch();
+
+            try
+            {
+                timer.Start();
+
+                var response = await client.CheckAsync(
+                    new Grpc.Health.V1.HealthCheckRequest(),
+                    deadline: DateTime.UtcNow.AddSeconds(_deadlineSeconds),
+                    cancellationToken: cancellationToken);
+
+                result.Status = response.Status;
+            }
+            catch (RpcException ex) when (ex.StatusCode == StatusCode.Unimplemented)
+            {
+                result.Description = "HealthCheck unimplemented";
+                result.Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.NotServing;
+            }
+            catch (Exception ex)
+            {
+                result.Description = ex.Message;
+                result.Status = Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.NotServing;
+            }
+            finally
+            {
+                timer.Stop();
+
+                result.ElapsedMilliseconds = timer.ElapsedMilliseconds;
+            }
+        }
+
+        return results;
+    }
+
+    /// <summary>
+    /// Vytvoreni JSON stringu na response
+    /// </summary>
+    private static ReadOnlySpan<byte> jsonBuilder(List<HealthCheckResult> healthCheckResults, bool healthy)
+    {
+        using var memoryStream = new MemoryStream();
+        using (var jsonWriter = new Utf8JsonWriter(memoryStream, _jsonWriterOptions))
+        {
+            jsonWriter.WriteStartObject();
+            
+            jsonWriter.WriteString("status", healthy ? _healthyValue : _unhealthyValue);
+            jsonWriter.WriteNumber("totalMilliseconds", healthCheckResults.Sum(t => t.ElapsedMilliseconds));
+
+            jsonWriter.WriteStartObject("results");
+
+            foreach (var results in healthCheckResults)
+            {
+                jsonWriter.WriteStartObject(results.ServiceName);
+
+                jsonWriter.WriteString("status", results.Status == Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Serving ? _healthyValue : _unhealthyValue);
+                
+                jsonWriter.WriteNumber("totalMilliseconds", results.ElapsedMilliseconds);
+
+                if (!string.IsNullOrEmpty(results.Description))
+                {
+                    jsonWriter.WriteString("description", results.Description);
+                }
+
+                jsonWriter.WriteEndObject();
+            }
+
+            jsonWriter.WriteEndObject();
+            jsonWriter.WriteEndObject();
+        }
+
+        return memoryStream.ToArray().AsSpan();
+    }
+
+    private sealed class HealthCheckResult
+    {
+        public string ServiceName = string.Empty;
+        
+        public Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus Status;
+        
+        public long ElapsedMilliseconds;
+        
+        public string? Description;
+    }
+
+    private static JsonWriterOptions _jsonWriterOptions = new JsonWriterOptions { Indented = true };
+    private const string _healthyValue = "Healthy";
+    private const string _unhealthyValue = "Unhealthy";
     private const int _deadlineSeconds = 5;
-    private const string _sqlQuery = "SELECT ServiceName, ServiceUrl, ServiceType FROM ServiceDiscovery WHERE ServiceName!='CIS:ServiceDiscovery' AND ServiceType=1 AND EnvironmentName=@name";
+    private const string _sqlQuery = "SELECT ServiceName, ServiceUrl, ServiceType FROM ServiceDiscovery WHERE AddToGlobalHealthCheck=1 AND EnvironmentName=@name";
 
     private static IReadOnlyCollection<string>? _serviceNamesCache;
-
-    internal class HealthCheckItem
-    {
-        public string ServiceName { get; set; } = string.Empty;
-        public Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus Status { get; set; }
-        public long Elapsed { get; set; }
-    }
 }
