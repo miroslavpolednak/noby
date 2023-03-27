@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.Codebooks.DeveloperSearch;
+﻿namespace NOBY.Api.Endpoints.Offer.DeveloperSearch;
 
 public sealed class DeveloperSearchResponse
 {

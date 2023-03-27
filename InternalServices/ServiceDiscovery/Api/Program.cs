@@ -20,12 +20,6 @@ var envConfiguration = builder.AddCisCoreFeatures()
     .AddCisEnvironmentConfiguration();
 builder.Services.AddAttributedServices(typeof(Program));
 
-// add .NET logging
-/*builder.Services.AddHttpLogging(logging =>
-{
-    logging.LoggingFields = HttpLoggingFields.All;
-});*/
-
 // add mediatr
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 

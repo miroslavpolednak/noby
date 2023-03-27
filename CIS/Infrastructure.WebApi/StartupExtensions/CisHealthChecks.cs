@@ -1,4 +1,7 @@
-﻿namespace CIS.Infrastructure.WebApi;
+﻿using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+namespace CIS.Infrastructure.WebApi;
 
 public static class CisHealthChecks
 {
@@ -21,6 +24,14 @@ public static class CisHealthChecks
 
     public static IEndpointConventionBuilder MapCisHealthChecks(this IEndpointRouteBuilder endpoints)
     {
-        return endpoints.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);
+        return endpoints.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, new HealthCheckOptions
+        {
+            ResultStatusCodes =
+            {
+                [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+            }
+        });
     }
 }
