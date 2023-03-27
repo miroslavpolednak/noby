@@ -103,10 +103,12 @@ internal class FormsDocumentService
 
         foreach (var documentDataDto in documentDataDtos)
         {
-            var documentPartData = new GenerateDocumentPartData();
-            documentPartData.Key = documentDataDto.FieldName;
-
-            documentPartData.StringFormat = documentDataDto.StringFormat;
+            var documentPartData = new GenerateDocumentPartData
+            {
+                Key = documentDataDto.FieldName,
+                StringFormat = documentDataDto.StringFormat,
+                TextAlign = (TextAlign)(documentDataDto.TextAlign ?? 0)
+            };
 
             switch (documentDataDto.ValueCase)
             {

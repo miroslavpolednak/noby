@@ -16,6 +16,15 @@ enum OutputFileType {
 	OpenForm = 2;
 }
 
+enum TextAlign {
+	Unkwnon = 0;
+	Left = 1;
+	Center = 2;
+	Right = 3;
+	Justify = 4;
+	FullJustify = 5;
+}
+
 message GenerateDocumentRequest {
 	int32 DocumentTypeId = 1;
 
@@ -61,4 +70,6 @@ message GenerateDocumentPartData {
 		bool LogicalValue = 7;
 		GenericTable Table = 8;
 	}
+
+	TextAlign TextAlign = 9;
 }
