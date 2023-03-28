@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace CIS.Infrastructure.WebApi;
 
-public class JsonConverterForNullableDateTime
+public sealed class JsonConverterForNullableDateTime
     : JsonConverter<DateTime?>
 {
     public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
