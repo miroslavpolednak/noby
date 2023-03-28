@@ -28,9 +28,9 @@ enum TextAlign {
 message GenerateDocumentRequest {
 	int32 DocumentTypeId = 1;
 
-	string DocumentTemplateVersion = 2;
+	int32 DocumentTemplateVersionId = 2;
 
-	google.protobuf.StringValue DocumentTemplateVariant = 3;
+	google.protobuf.Int32Value DocumentTemplateVariantId = 3;
 
 	OutputFileType OutputType = 4;
 
@@ -50,9 +50,9 @@ message Document {
 message GenerateDocumentPart {
 	int32 DocumentTypeId = 1;
 
-	string DocumentTemplateVersion = 2;
+	int32 DocumentTemplateVersionId = 2;
 
-	google.protobuf.StringValue DocumentTemplateVariant = 3;
+	google.protobuf.Int32Value DocumentTemplateVariantId = 3;
 
 	google.protobuf.Int32Value Order = 4;
 

@@ -19,14 +19,13 @@ public class TemplateManager : IDisposable
 
     public string StoragePath => _fileStorage.StoragePath;
 
-    public async Task<PdfDocument> LoadTemplate(int documentTypeId, string templateVersion, string? templateVariant)
+    public async Task<PdfDocument> LoadTemplate(int documentTypeId, int templateVersionId, int? templateVariantId)
     {
-        var versionId = await LoadTemplateVersionId(documentTypeId, templateVersion);
         var templateTypeName = await LoadTemplateTypeName(documentTypeId);
+        var versionName = await LoadTemplateVersionName(documentTypeId, templateVersionId);
+        var variantName = await LoadTemplateVariantName(templateVersionId, templateVariantId);
 
-        await CheckTemplateVariant(versionId, templateVariant);
-
-        return _fileStorage.LoadTemplateFile(templateTypeName, templateVersion, templateVariant);
+        return _fileStorage.LoadTemplateFile(templateTypeName, versionName, variantName);
     }
 
     public void DrawTemplate(Document template)
@@ -38,9 +37,9 @@ public class TemplateManager : IDisposable
         _documentStreams.Add(memoryStream);
     }
 
-    public async Task<FinalDocument> CreateFinalDocument(int documentTypeId, string templateVersion, string? templateVariant)
+    public async Task<FinalDocument> CreateFinalDocument(int documentTypeId, int templateVersionId, int? templateVariantId)
     {
-        var document = await PrepareFinalDocument(documentTypeId, templateVersion, templateVariant);
+        var document = await PrepareFinalDocument(documentTypeId, templateVersionId, templateVariantId);
 
         var finalDocument = new FinalDocument(document);
 
@@ -71,36 +70,38 @@ public class TemplateManager : IDisposable
         return type.ShortName;
     }
 
-    private async Task<int> LoadTemplateVersionId(int documentTypeId, string templateVersion)
+    private async Task<string> LoadTemplateVersionName(int documentTypeId, int templateVersionId)
     {
         var templateVersions = await _codebookService.DocumentTemplateVersions();
 
-        var version = templateVersions.FirstOrDefault(t => t.DocumentTypeId == documentTypeId && t.DocumentVersion.Equals(templateVersion, StringComparison.InvariantCultureIgnoreCase)) ??
-                      throw new CisValidationException(402, $"Unsupported template (id: {documentTypeId}) version {templateVersion}");
+        var version = templateVersions.FirstOrDefault(t => t.DocumentTypeId == documentTypeId && t.Id == templateVersionId)
+                      ?? throw new CisValidationException(402, $"Unsupported template (id: {documentTypeId}) version id {templateVersionId}");
 
-        return version.Id;
+        return version.DocumentVersion;
     }
 
-    private async Task CheckTemplateVariant(int templateVersionId, string? templateVariant)
+    private async Task<string> LoadTemplateVariantName(int templateVersionId, int? templateVariantId)
     {
-        if (string.IsNullOrWhiteSpace(templateVariant))
-            return;
+        if (!templateVariantId.HasValue)
+            return string.Empty;
 
-        var variants = await _codebookService.DocumentTemplateVariants();
+        var templateVariants = await _codebookService.DocumentTemplateVariants();
 
-        var exists = variants.Any(v => v.DocumentTemplateVersionId == templateVersionId && v.DocumentVariant == templateVariant);
+        var variant = templateVariants.FirstOrDefault(v => v.DocumentTemplateVersionId == templateVersionId && v.Id == templateVariantId)
+                      ?? throw new CisValidationException(402, $"Unsupported variant {templateVariantId} (Version id: {templateVersionId})");
 
-        if (!exists)
-            throw new CisValidationException(402, $"Unsupported variant {templateVariant} (Version id: {templateVersionId})");
+        return variant.DocumentVariant;
     }
 
-    private async Task<MergeDocument> PrepareFinalDocument(int templateTypeId, string templateVersion, string? templateVariant)
+    private async Task<MergeDocument> PrepareFinalDocument(int templateTypeId, int templateVersionId, int? templateVariantId)
     {
-        var templateTypeName = await LoadTemplateTypeName(templateTypeId);
+        var typeName = await LoadTemplateTypeName(templateTypeId);
+        var versionName = await LoadTemplateVersionName(templateTypeId, templateVersionId);
+        var variantName = await LoadTemplateVariantName(templateVersionId, templateVariantId);
 
         return new MergeDocument
         {
-            Title = $"{templateTypeName}_{templateVersion}{templateVariant}",
+            Title = $"{typeName}_{versionName}{variantName}",
             Author = nameof(DocumentGeneratorService),
             Form = { Output = FormOutput.Flatten }
         };
