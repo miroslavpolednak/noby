@@ -38,9 +38,6 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
         return new GetDocumentDataResponse
         {
             DocumentTemplateVersionId = config.DocumentTemplateVersionId,
-            DocumentTemplateVersion = config.DocumentTemplateVersion,
-            DocumentTemplateVariantId = config.DocumentTemplateVariantId,
-            DocumentTemplateVariant = config.DocumentTemplateVariant,
             DocumentData = { documentMapper.MapDocumentFieldData() },
             InputParameters = request.InputParameters
         };

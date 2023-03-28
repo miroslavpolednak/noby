@@ -32,9 +32,6 @@ internal class ConfigurationManager : IConfigurationManager
         return new DocumentConfiguration
         {
             DocumentTemplateVersionId = documentVersionData.documentVersionId,
-            DocumentTemplateVersion = documentVersionData.documentVersion,
-            DocumentTemplateVariantId = documentKey.VariantId,
-            DocumentTemplateVariant = documentVariant,
             InputConfig = new InputConfig
             {
                 DataSources = GetDataSources(UnionFieldAndTableSources()),

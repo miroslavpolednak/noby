@@ -3,6 +3,8 @@ using ceTe.DynamicPDF.Merger.Forms;
 using ceTe.DynamicPDF.PageElements;
 using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.Endpoints.DocumentTemplateVariants;
+using DomainServices.CodebookService.Contracts.Endpoints.DocumentTemplateVersions;
 using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
@@ -18,6 +20,8 @@ public class PdfFooter
     private readonly CultureInfo _cultureInfo;
 
     private List<DocumentTypeItem> _templateTypes = null!;
+    private List<DocumentTemplateVersionItem> _templateVersions = null!;
+    private List<DocumentTemplateVariantItem> _templateVariants = null!;
 
     public PdfFooter(ICodebookServiceClients codebookService)
     {
@@ -30,6 +34,8 @@ public class PdfFooter
     public async Task FillFooter(FinalDocument finalDocument, GenerateDocumentRequest request)
     {
         _templateTypes = await _codebookService.DocumentTypes();
+        _templateVersions = await _codebookService.DocumentTemplateVersions();
+        _templateVariants = await _codebookService.DocumentTemplateVariants();
 
         FillFooterIdentifiers(finalDocument.Document.Form.Fields, request);
         FillFooterPageNumber(finalDocument);
@@ -98,18 +104,23 @@ public class PdfFooter
             GetCaseIdIdentifier(footer.CaseId),
             GetOfferIdIdentifier(footer.OfferId),
             footer.DocumentId,
-            GetDocumentNameIdentifier(request.DocumentTypeId, request.DocumentTemplateVersion),
+            GetDocumentNameIdentifier(request.DocumentTypeId, request.DocumentTemplateVersionId, request.DocumentTemplateVariantId),
             GetDocumentDate()
         };
 
         return string.Join(" | ", identifiers.Where(str => !string.IsNullOrWhiteSpace(str)));
     }
 
-    private string GetDocumentNameIdentifier(int documentTypeId, string templateVersion)
+    private string GetDocumentNameIdentifier(int documentTypeId, int documentTemplateVersionId, int? documentTemplateVariantId)
     {
         var templateName = _templateTypes.First(t => t.Id == documentTypeId).ShortName;
+        var versionName = _templateVersions.First(t => t.Id == documentTemplateVersionId).DocumentVersion;
 
-        return $"{templateName} {templateVersion}";
+        var variantName = string.Empty;
+        if (documentTemplateVariantId.HasValue)
+            variantName = _templateVariants.First(t => t.Id == documentTemplateVariantId).DocumentVariant;
+
+        return $"{templateName} {versionName}{variantName}";
     }
 
     private string? GetCaseIdIdentifier(long? caseId) =>

@@ -14,9 +14,9 @@ public class TemplateFileStorage : IDisposable
 
     public string StoragePath { get; }
 
-    public PdfDocument LoadTemplateFile(string templateName, string templateVersion, string? variant)
+    public PdfDocument LoadTemplateFile(string templateName, string templateVersion, string? templateVariant)
     {
-        var filePath = Path.Combine(StoragePath, templateName, $"{templateName}_{templateVersion}{variant}.pdf");
+        var filePath = Path.Combine(StoragePath, templateName, $"{templateName}_{templateVersion}{templateVariant}.pdf");
 
         return LoadPdfDocument(filePath);
     }
