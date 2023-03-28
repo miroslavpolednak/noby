@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Exceptions;
 using System.ComponentModel;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
+using TextAlign = CIS.InternalServices.DocumentGeneratorService.Contracts.TextAlign;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
 
@@ -26,10 +27,26 @@ public class BasicAcroFormWriter : IAcroFormWriter
             if (field is null)
                 throw new CisArgumentException(400, $"Unknown key {value.Key} for selected template.", nameof(value.Key));
 
+            if (value.TextAlign != TextAlign.Unkwnon)
+            {
+                CreateAlignedText(pdfDocument, document, value);
+                field.Value = string.Empty;
+
+                continue;
+            }
+
             field.Value = GetFieldValue(value);
         }
 
         return document;
+    }
+
+    private void CreateAlignedText(PdfDocument pdfDocument, Document document, GenerateDocumentPartData data)
+    {
+        var pdfFormField = pdfDocument.Form.Fields[data.Key];
+        var page = document.Pages[pdfFormField.GetOriginalPageNumber() - 1];
+
+        pdfFormField.CreateLabel(page, 2, 0, GetFieldValue(data), pdfFormField.Font, pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
     }
 
     private string GetFieldValue(GenerateDocumentPartData value)

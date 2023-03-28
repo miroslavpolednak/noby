@@ -6,6 +6,8 @@ public class DocumentDataDto
 
     public string? StringFormat { get; set; }
 
+    public byte? TextAlign { get; set; }
+
     public string Text { get; set; } = null!;
 
     public DateOnlyDto? Date { get; set; }

@@ -159,20 +159,6 @@ public class CodebooksController : ControllerBase
             .ToList();
 
     /// <summary>
-    /// Vyhledání developerských projektů
-    /// </summary>
-    /// <remarks>
-    /// Vyhledá developerské projekty na základě vyhledávacího textu.<br />
-    /// Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />
-    /// Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
-    /// </remarks>
-    [HttpPost("developer-project/search")]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(DeveloperSearch.DeveloperSearchResponse), StatusCodes.Status200OK)]
-    public async Task<DeveloperSearch.DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearch.DeveloperSearchRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
-
-    /// <summary>
     /// Detail developera
     /// </summary>
     /// <remarks>

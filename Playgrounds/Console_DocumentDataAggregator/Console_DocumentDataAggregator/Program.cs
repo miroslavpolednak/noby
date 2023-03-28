@@ -44,20 +44,20 @@ await GenerateDocument(dataAggregatorService, serviceProvider.GetRequiredService
 
 Console.ReadKey();
 
-static async Task GenerateDocument(IDataAggregatorServiceClient dataAggregator, IDocumentGeneratorServiceClient documentGeneratorService)
+static async Task GenerateDocument(IDataAggregatorServiceClient dataAggregatorService, IDocumentGeneratorServiceClient documentGeneratorService)
 {
-    var input = new InputParameters { SalesArrangementId = 20002, UserId = 3048 };
+    var inputParameters = new InputParameters { SalesArrangementId = 20002, UserId = 3048 };
 
     var documentType = DocumentTemplateType.ZADOSTHU;
 
     var dataRequest = new GetDocumentDataRequest
     {
-        DocumentTypeId = (int)documentType,
+        DocumentTypeId = (int)DocumentTemplateType.ZADOSTHU,
         DocumentTemplateVariantId = 4,
-        InputParameters = input
+        InputParameters = inputParameters
     };
 
-    var data = await dataAggregator.GetDocumentData(dataRequest);
+    var data = await dataAggregatorService.GetDocumentData(dataRequest);
 
     var request = new GenerateDocumentRequest
     {
@@ -78,8 +78,8 @@ static async Task GenerateDocument(IDataAggregatorServiceClient dataAggregator, 
         },
         DocumentFooter = new DocumentFooter
         {
-            CaseId = input.CaseId,
-            OfferId = input.OfferId,
+            CaseId = inputParameters.CaseId,
+            OfferId = inputParameters.OfferId,
             //ArchiveId = 123456789
         }
     };
@@ -96,11 +96,15 @@ static async Task BuildForms(IDataAggregatorServiceClient dataAggregator)
     var request = new GetEasFormRequest
     {
         SalesArrangementId = 1248,
-        EasFormRequestType = EasFormRequestType.Service,
-        DynamicFormValues = { new DynamicFormValues
+        EasFormRequestType = EasFormRequestType.Product,
+        DynamicFormValues =
         {
-            DocumentTypeId = 6
-        } }
+            new DynamicFormValues
+            {
+                DocumentTypeId = 4,
+                HouseholdId = 123
+            }
+        }
     };
 
     var response = await dataAggregator.GetEasForm(request);

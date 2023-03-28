@@ -43,6 +43,7 @@ internal class DocumentMapper
             {
                 FieldName = sourceData.AcroFieldName,
                 StringFormat = stringFormat,
+                TextAlign = sourceData.TextAlign
             };
 
             SetDocumentFieldDataValue(fieldData, sourceData.Value);

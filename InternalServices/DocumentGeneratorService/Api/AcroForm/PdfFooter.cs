@@ -68,7 +68,7 @@ public class PdfFooter
                                                         field.Height,
                                                         field.Font,
                                                         field.FontSize,
-                                                        TextAlign.Right);
+                                                        Pdf.TextAlign.Right);
 
         finalDocument.Document.Template = new Template { Elements = { pageNumberingLabel } }; ;
 

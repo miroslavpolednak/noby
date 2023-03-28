@@ -25,6 +25,8 @@
 
 [Background services / periodické joby](./topics/background-services.md)
 
+[DataAggregator](./topics/dataAggregator.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

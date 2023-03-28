@@ -79,7 +79,8 @@ internal class DocumentGenerator
         var partData = new _Document.GenerateDocumentPartData
         {
             Key = fieldData.FieldName,
-            StringFormat = fieldData.StringFormat
+            StringFormat = fieldData.StringFormat,
+            TextAlign = (_Document.TextAlign)(fieldData.TextAlign ?? 0)
         };
 
         switch (fieldData.ValueCase)

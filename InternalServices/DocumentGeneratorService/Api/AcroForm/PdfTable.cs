@@ -94,7 +94,7 @@ public class PdfTable
     private static void ApplyTableStyle(Table2 table, PdfFormField placeholderField)
     {
         table.Border.Width = 0f;
-        table.CellDefault.Align = TextAlign.Center;
+        table.CellDefault.Align = Pdf.TextAlign.Center;
         table.CellDefault.VAlign = VAlign.Center;
         table.CellDefault.Font = placeholderField.Font;
         table.CellDefault.FontSize = placeholderField.FontSize;
@@ -156,7 +156,7 @@ public class PdfTable
         {
             Font = Font.LoadSystemFont(new System.Drawing.Font(table.CellDefault.Font.Name, 9)),
             FontSize = table.CellDefault.FontSize ?? 10,
-            Align = TextAlign.Justify
+            Align = Pdf.TextAlign.Justify
         };
     }
 }

@@ -22,7 +22,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
     private readonly IDataAggregatorServiceClient _dataAggregatorServiceClient;
-    private readonly ICodebookServiceClients _codebookServiceClients;
+    private readonly ICodebookServiceClients _codebookServiceClient;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly ICurrentUserAccessor _currentUser;
 
@@ -32,7 +32,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         IHouseholdServiceClient householdClient,
         ISalesArrangementServiceClient arrangementServiceClient,
         IDataAggregatorServiceClient dataAggregatorServiceClient,
-        ICodebookServiceClients codebookServiceClients,
+        ICodebookServiceClients codebookServiceClient,
         IDocumentArchiveServiceClient documentArchiveServiceClient,
         ICurrentUserAccessor currentUser)
     {
@@ -41,7 +41,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         _householdClient = householdClient;
         _arrangementServiceClient = arrangementServiceClient;
         _dataAggregatorServiceClient = dataAggregatorServiceClient;
-        _codebookServiceClients = codebookServiceClients;
+        _codebookServiceClient = codebookServiceClient;
         _documentArchiveServiceClient = documentArchiveServiceClient;
         _currentUser = currentUser;
     }
@@ -86,7 +86,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
     private async Task ValidateRequest(StartSigningRequest request, CancellationToken cancellationToken)
     {
-        var signingMethods = await _codebookServiceClients.SigningMethodsForNaturalPerson(cancellationToken);
+        var signingMethods = await _codebookServiceClient.SigningMethodsForNaturalPerson(cancellationToken);
         if (!signingMethods.Any(r => r.Code.ToUpper() == request.SignatureMethodCode.ToUpper()))
         {
             throw new CisNotFoundException(19002, $"SignatureMethod {request.SignatureMethodCode} does not exist.");

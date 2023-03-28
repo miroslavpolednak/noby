@@ -7,6 +7,7 @@ internal static class SwaggerExtensions
     public static IServiceCollection AddServiceDiscoverySwagger(this IServiceCollection services)
     {
         services.AddGrpcSwagger();
+        services.AddEndpointsApiExplorer();
 
         services.AddSwaggerGen(c =>
         {

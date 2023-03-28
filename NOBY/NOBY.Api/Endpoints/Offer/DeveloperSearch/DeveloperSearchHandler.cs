@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Types;
 using CIS.Infrastructure.WebApi.Types;
 
-namespace NOBY.Api.Endpoints.Codebooks.DeveloperSearch;
+namespace NOBY.Api.Endpoints.Offer.DeveloperSearch;
 
 internal sealed class DeveloperSearchHandler
     : IRequestHandler<DeveloperSearchRequest, DeveloperSearchResponse>
@@ -10,9 +10,7 @@ internal sealed class DeveloperSearchHandler
     {
         // vytvorit informaci o strankovani / razeni
         var paginable = Paginable
-            .FromRequest(request.Pagination)
-            .EnsureAndTranslateSortFields(sortingMapper)
-            .SetDefaultSort("DeveloperName", true);
+            .FromRequest(request.Pagination);
 
         var result = await _codebookService.DeveloperSearch(request.SearchText!, cancellationToken);
 
@@ -27,11 +25,6 @@ internal sealed class DeveloperSearchHandler
             Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Count)
         };
     }
-
-    private static List<Paginable.MapperField> sortingMapper = new()
-    {
-        new ("developerName", "DeveloperName")
-    };
 
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
 

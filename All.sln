@@ -355,6 +355,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00001-initial_create.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00001-initial_create.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00003-document_variants.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00003-document_variants.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00004-documentOnSa.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00004-documentOnSa.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00005-customerchange_template.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00005-customerchange_template.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00006-document_text_align.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00006-document_text_align.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
