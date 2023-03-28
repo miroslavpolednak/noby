@@ -110,6 +110,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         var generateDocumentRequest = new GenerateDocumentRequest();
         generateDocumentRequest.DocumentTypeId = documentOnSaData.DocumentTypeId!.Value;
         generateDocumentRequest.DocumentTemplateVersion = documentTemplateVersion;
+        generateDocumentRequest.ForPreview = false;
         generateDocumentRequest.OutputType = OutputFileType.Pdfa;
         generateDocumentRequest.Parts.Add(CreateDocPart(documentOnSaData, documentTemplateVersion));
         generateDocumentRequest.DocumentFooter = CreateFooter(documentOnSa);

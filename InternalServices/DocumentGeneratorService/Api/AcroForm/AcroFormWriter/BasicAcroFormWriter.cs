@@ -25,7 +25,7 @@ public class BasicAcroFormWriter : IAcroFormWriter
             var field = document.Form.Fields[value.Key];
 
             if (field is null)
-                throw new CisArgumentException(400, $"Unknown key {value.Key} for selected template.", nameof(value.Key));
+                throw new CisValidationException(400, $"Unknown key {value.Key} for selected template.");
 
             if (value.TextAlign != TextAlign.Unkwnon)
             {

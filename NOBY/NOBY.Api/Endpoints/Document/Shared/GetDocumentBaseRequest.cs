@@ -14,4 +14,6 @@ internal class GetDocumentBaseRequest : IRequest<ReadOnlyMemory<byte>>
     public string? DocumentTemplateVariant { get; set; }
 
     public required InputParameters InputParameters { get; set; }
+
+    public bool? ForPreview { get; set; }
 }

@@ -56,6 +56,7 @@ internal class DocumentGenerator
             DocumentTypeId = (int)request.DocumentType,
             DocumentTemplateVersion = request.DocumentTemplateVersion,
             DocumentTemplateVariant = request.DocumentTemplateVariant,
+            ForPreview = request.ForPreview,
             OutputType = _Document.OutputFileType.Pdfa,
             Parts =
             {

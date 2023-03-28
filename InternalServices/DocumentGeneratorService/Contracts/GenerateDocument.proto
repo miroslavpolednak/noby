@@ -39,6 +39,8 @@ message GenerateDocumentRequest {
 	repeated Signature CustomerSignatures = 6;
 
 	DocumentFooter DocumentFooter = 7;
+
+	google.protobuf.BoolValue ForPreview = 8;
 }
 
 message Document {
