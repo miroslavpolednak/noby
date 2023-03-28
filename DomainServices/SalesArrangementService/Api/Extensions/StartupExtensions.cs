@@ -12,7 +12,7 @@ internal static class StartupExtensions
 
         // dbcontext
         builder.AddEntityFramework<Database.SalesArrangementServiceDbContext>();
-        builder.AddEntityFramework<Database.NobyDbContext>(connectionStringKey: "nobyDb");
+        builder.AddEntityFramework<Database.DocumentArchiveService.DocumentArchiveServiceDbContext>(connectionStringKey: "documentArchiveDb");
 
         // background svc
         builder.AddCisBackgroundService<BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckJob>();

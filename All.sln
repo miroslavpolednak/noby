@@ -276,6 +276,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		NOBY\DatabaseMigrations\00001-initial_creation.sql = NOBY\DatabaseMigrations\00001-initial_creation.sql
 		NOBY\DatabaseMigrations\00002-HFICH-4866.sql = NOBY\DatabaseMigrations\00002-HFICH-4866.sql
 		NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql = NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql
+		NOBY\DatabaseMigrations\00004-DropFormInstanceInterface.sql = NOBY\DatabaseMigrations\00004-DropFormInstanceInterface.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.ExternalServices.Sdf", "DomainServices\DocumentArchiveService\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj", "{F969A020-76AF-48A6-BF8F-959A58D0C982}"
@@ -291,15 +292,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\CodebookService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\CodebookService\DatabaseMigrations\00001-initial_creation.sql
-		DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00002-initial_seed.sql
-		DomainServices\CodebookService\DatabaseMigrations\00003-document_versions_variant.sql = DomainServices\CodebookService\DatabaseMigrations\00003-document_versions_variant.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
 	ProjectSection(SolutionItems) = preProject
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00001-initial_creation.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00001-initial_creation.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00002-seed.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00002-seed.sql
-		InternalServices\ServiceDiscovery\DatabaseMigrations\00003-HFICH-5100.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00003-HFICH-5100.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7}"
@@ -344,6 +342,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00001-InitialCreate.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00001-InitialCreate.sql
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00002-ColumnRenaming.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00002-ColumnRenaming.sql
+		DomainServices\DocumentArchiveService\DatabaseMigrations\00003-AddFormInstanceInterface.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00003-AddFormInstanceInterface.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{6D676B53-6AD7-4828-922D-B52A42B5AD4F}"
