@@ -83,10 +83,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
     {
         var documentOnSaData = await _documentOnSaClient.GetDocumentOnSAData(documentOnSa.DocumentOnSAId!.Value, cancellationToken);
 
-        var documentTemplateVersions = await _codebookServiceClients.DocumentTemplateVersions(cancellationToken);
-        var documentTemplateVersion = documentTemplateVersions.Single(r => r.Id == documentOnSaData.DocumentTemplateVersionId).DocumentVersion;
-
-        var generateDocumentRequest = CreateDocumentRequest(documentOnSa, documentOnSaData, documentTemplateVersion);
+        var generateDocumentRequest = CreateDocumentRequest(documentOnSa, documentOnSaData);
 
         var resutl = await _documentGeneratorServiceClient.GenerateDocument(generateDocumentRequest, cancellationToken);
 
@@ -105,14 +102,18 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}";
     }
 
-    private static GenerateDocumentRequest CreateDocumentRequest(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, DomainServices.DocumentOnSAService.Contracts.GetDocumentOnSADataResponse documentOnSaData, string documentTemplateVersion)
+    private static GenerateDocumentRequest CreateDocumentRequest(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, DomainServices.DocumentOnSAService.Contracts.GetDocumentOnSADataResponse documentOnSaData)
     {
-        var generateDocumentRequest = new GenerateDocumentRequest();
-        generateDocumentRequest.DocumentTypeId = documentOnSaData.DocumentTypeId!.Value;
-        generateDocumentRequest.DocumentTemplateVersion = documentTemplateVersion;
-        generateDocumentRequest.OutputType = OutputFileType.Pdfa;
-        generateDocumentRequest.Parts.Add(CreateDocPart(documentOnSaData, documentTemplateVersion));
-        generateDocumentRequest.DocumentFooter = CreateFooter(documentOnSa);
+        var generateDocumentRequest = new GenerateDocumentRequest
+        {
+            DocumentTypeId = documentOnSaData.DocumentTypeId!.Value,
+            DocumentTemplateVersionId = documentOnSaData.DocumentTemplateVersionId!.Value,
+            ForPreview = false,
+            OutputType = OutputFileType.Pdfa,
+            Parts = { CreateDocPart(documentOnSaData) },
+            DocumentFooter = CreateFooter(documentOnSa)
+        };
+
         return generateDocumentRequest;
     }
 
@@ -124,14 +125,16 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         };
     }
 
-    private static GenerateDocumentPart CreateDocPart(DomainServices.DocumentOnSAService.Contracts.GetDocumentOnSADataResponse documentOnSaData, string documentTemplateVersion)
+    private static GenerateDocumentPart CreateDocPart(DomainServices.DocumentOnSAService.Contracts.GetDocumentOnSADataResponse documentOnSaData)
     {
-        var docPart = new GenerateDocumentPart();
-        docPart.DocumentTypeId = documentOnSaData.DocumentTypeId!.Value;
-        docPart.DocumentTemplateVersion = documentTemplateVersion;
         var documentDataDtos = JsonConvert.DeserializeObject<List<DocumentDataDto>>(documentOnSaData.Data);
-        docPart.Data.AddRange(CreateData(documentDataDtos));
-        return docPart;
+
+        return new GenerateDocumentPart
+        {
+            DocumentTypeId = documentOnSaData.DocumentTypeId!.Value,
+            DocumentTemplateVersionId = documentOnSaData.DocumentTemplateVersionId!.Value,
+            Data = { CreateData(documentDataDtos) }
+        };
     }
 
     private static IEnumerable<GenerateDocumentPartData> CreateData(List<DocumentDataDto>? documentDataDtos)

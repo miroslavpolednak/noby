@@ -4,12 +4,6 @@ internal class DocumentConfiguration
 {
     public required int DocumentTemplateVersionId { get; init; }
 
-    public required string DocumentTemplateVersion { get; init; }
-
-    public int? DocumentTemplateVariantId { get; init; }
-
-    public string? DocumentTemplateVariant { get; init; }
-
     public required InputConfig InputConfig { get; init; }
 
     public required IReadOnlyCollection<DocumentSourceField> SourceFields { get; init; }

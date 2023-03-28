@@ -178,6 +178,7 @@ internal class FormsDocumentService
         {
             DocumentTypeId = documentOnSaData.DocumentTypeId!.Value,
             DocumentTemplateVersion = documentTemplateVersion,
+            ForPreview = false,
             OutputType = OutputFileType.Pdfa,
             Parts = { CreateDocPart(documentOnSaData, documentTemplateVersion) },
             DocumentFooter = CreateFooter(salesArrangement)

@@ -43,8 +43,7 @@ internal class DocumentGenerator
 
         var result = await _dataAggregator.GetDocumentData(documentDataRequest, cancellationToken);
 
-        documentRequest.DocumentTemplateVersion = result.DocumentTemplateVersion;
-        documentRequest.DocumentTemplateVariant = result.DocumentTemplateVariant;
+        documentRequest.DocumentTemplateVersionId = result.DocumentTemplateVersionId;
         documentRequest.InputParameters = result.InputParameters;
 
         return result.DocumentData;
@@ -54,16 +53,17 @@ internal class DocumentGenerator
         new()
         {
             DocumentTypeId = (int)request.DocumentType,
-            DocumentTemplateVersion = request.DocumentTemplateVersion,
-            DocumentTemplateVariant = request.DocumentTemplateVariant,
+            DocumentTemplateVersionId = request.DocumentTemplateVersionId,
+            DocumentTemplateVariantId = request.DocumentTemplateVariantId,
+            ForPreview = request.ForPreview,
             OutputType = _Document.OutputFileType.Pdfa,
             Parts =
             {
                 new _Document.GenerateDocumentPart
                 {
                     DocumentTypeId = (int)request.DocumentType,
-                    DocumentTemplateVersion = request.DocumentTemplateVersion,
-                    DocumentTemplateVariant = request.DocumentTemplateVariant,
+                    DocumentTemplateVersionId = request.DocumentTemplateVersionId,
+                    DocumentTemplateVariantId = request.DocumentTemplateVariantId,
                     Data = { documentData.Select(CreateDocumentPartData) }
                 }
             },

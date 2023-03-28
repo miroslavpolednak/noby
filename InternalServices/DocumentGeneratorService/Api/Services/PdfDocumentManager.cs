@@ -1,8 +1,10 @@
-﻿using ceTe.DynamicPDF.Xmp;
+﻿using ceTe.DynamicPDF.PageElements;
+using ceTe.DynamicPDF.Xmp;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
 using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 using Google.Protobuf;
+using Path = System.IO.Path;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
 
@@ -36,7 +38,7 @@ internal class PdfDocumentManager
     {
         foreach (var documentPart in parts)
         {
-            var template = await _templateManager.LoadTemplate(documentPart.DocumentTypeId, documentPart.DocumentTemplateVersion, documentPart.DocumentTemplateVariant);
+            var template = await _templateManager.LoadTemplate(documentPart.DocumentTypeId, documentPart.DocumentTemplateVersionId, documentPart.DocumentTemplateVariantId);
 
             var document = _pdfAcroFormWriterFactory.Create(documentPart.Data).Write(template);
             
@@ -46,9 +48,12 @@ internal class PdfDocumentManager
 
     private async Task<Document> PrepareFinalPdf(OutputFileType outputFileType, GenerateDocumentRequest request)
     {
-        var finalDocument = await _templateManager.CreateFinalDocument(request.DocumentTypeId, request.DocumentTemplateVersion, request.DocumentTemplateVariant);
+        var finalDocument = await _templateManager.CreateFinalDocument(request.DocumentTypeId, request.DocumentTemplateVersionId, request.DocumentTemplateVariantId);
 
         await _pdfFooter.FillFooter(finalDocument, request);
+
+        if (request.ForPreview ?? true)
+            AddWatermark(finalDocument.Document);
 
         if (outputFileType is OutputFileType.Pdfa or OutputFileType.Unknown)
             ArchiveDocument(finalDocument.Document);
@@ -75,6 +80,20 @@ internal class PdfDocumentManager
         };
 
         document.OutputIntents.Add(outputIntents);
+    }
+
+    private static void AddWatermark(Document document)
+    {
+        var textWatermark = new TextWatermark("Pouze pro informaci", Font.LoadSystemFont("Arial"), 68)
+        {
+            TextColor = new RgbColor(192, 192, 192),
+            Angle = 45,
+            Position = WatermarkPosition.Center
+        };
+
+        document.Template ??= new Template();
+
+        document.Template.Elements.Add(textWatermark);
     }
 
     private static Task<ByteString> ConvertPdfToByteString(Document document)
