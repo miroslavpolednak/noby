@@ -343,6 +343,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00001-InitialCreate.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00001-InitialCreate.sql
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00002-ColumnRenaming.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00002-ColumnRenaming.sql
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00003-AddFormInstanceInterface.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00003-AddFormInstanceInterface.sql
+		DomainServices\DocumentArchiveService\DatabaseMigrations\00004-CreatedAtRename.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00004-CreatedAtRename.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{6D676B53-6AD7-4828-922D-B52A42B5AD4F}"
@@ -355,9 +356,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00001-initial_create.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00001-initial_create.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00002-initial_seed.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00003-document_variants.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00003-document_variants.sql
-		InternalServices\DataAggregatorService\DatabaseMigrations\00004-documentOnSa.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00004-documentOnSa.sql
-		InternalServices\DataAggregatorService\DatabaseMigrations\00005-customerchange_template.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00005-customerchange_template.sql
-		InternalServices\DataAggregatorService\DatabaseMigrations\00006-document_text_align.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00006-document_text_align.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
