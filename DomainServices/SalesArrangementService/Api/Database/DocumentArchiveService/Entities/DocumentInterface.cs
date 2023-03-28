@@ -1,4 +1,4 @@
-﻿namespace DomainServices.DocumentArchiveService.Api.Database.Entities;
+﻿namespace DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.Entities;
 
 public class DocumentInterface
 {

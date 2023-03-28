@@ -11,8 +11,11 @@ using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
+using DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.Entities;
 using DomainServices.SalesArrangementService.Api.Endpoints.SendToCmp;
 using DomainServices.SalesArrangementService.Contracts;
+using DomainServices.UserService.Clients;
+using DomainServices.UserService.Contracts;
 using Newtonsoft.Json;
 
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
@@ -26,13 +29,15 @@ internal class FormsDocumentService
     private readonly ICodebookServiceClients _codebookService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDateTime _dateTime;
+    private readonly IUserServiceClient _userService;
 
     public FormsDocumentService(IDocumentOnSAServiceClient documentOnSAService,
                                 IDocumentArchiveServiceClient documentArchiveService,
                                 IDocumentGeneratorServiceClient documentGeneratorService,
                                 ICodebookServiceClients codebookService,
                                 ICurrentUserAccessor currentUserAccessor,
-                                IDateTime dateTime)
+                                IDateTime dateTime,
+                                IUserServiceClient userService)
     {
         _documentOnSAService = documentOnSAService;
         _documentArchiveService = documentArchiveService;
@@ -40,6 +45,58 @@ internal class FormsDocumentService
         _codebookService = codebookService;
         _currentUserAccessor = currentUserAccessor;
         _dateTime = dateTime;
+        _userService = userService;
+    }
+
+    /// <summary>
+    /// Prepare DocumentInterface (Form) with FormInstanceInterface (data sentense) entities.
+    /// </summary>
+    public async Task<DocumentInterface[]> PrepareEntities(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, IReadOnlyCollection<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
+    {
+        var formsWithDataSentenses = createdFinalVersionOfDocOnSa.OrderBy(r => r.DocumentOnSa.EArchivId)
+                 .Zip(easFormResponse.Forms.OrderBy(r => r.DynamicFormValues.DocumentTypeId),
+                 (docOnSa, form) => new { docOnSa, form });
+
+        // load user
+        var user = await _userService.GetUser(salesArrangement.Created.UserId!.Value, cancellationToken);
+
+        return await Task.WhenAll(
+            formsWithDataSentenses
+            .Select(r => PrepareEntity(r.docOnSa, r.form, salesArrangement, easFormResponse.ContractNumber, user, cancellationToken))
+            );
+    }
+
+    private async Task<DocumentInterface> PrepareEntity(CreateDocumentOnSAResponse docOnSa, Form form, SalesArrangement salesArrangement, string contractNumber, User user, CancellationToken cancellationToken)
+    {
+        var entity = new DocumentInterface();
+        entity.DocumentId = docOnSa.DocumentOnSa.EArchivId;
+        var generatedDocument = await GenerateDocument(salesArrangement, docOnSa, cancellationToken);
+        entity.DocumentData = generatedDocument.Data.ToArrayUnsafe();
+        entity.FileName = await GetFileName(docOnSa.DocumentOnSa, cancellationToken);
+        entity.FileNameSuffix = Path.GetExtension(entity.FileName)[1..];
+        entity.CaseId = salesArrangement.CaseId;
+        entity.AuthorUserLogin = _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture);
+        entity.ContractNumber = contractNumber;
+        entity.FormId = docOnSa.DocumentOnSa.FormId;
+        entity.CreatedOn = _dateTime.Now.Date;
+        entity.EaCodeMainId = int.Parse(form.DefaultValues.PasswordCode, CultureInfo.InvariantCulture);
+        entity.Kdv = 1; // true
+        entity.SendDocumentOnly = 0; //false
+        entity.DataSentence = new FormInstanceInterface
+        {
+            DocumentId = form.DynamicFormValues.DocumentId,
+            FormType = form.DefaultValues.FormType,
+            FormKind = "N",
+            Cpm = user.CPM ?? string.Empty,
+            Icp = user.ICP ?? string.Empty,
+            Status = 100,
+            CreatedAt = _dateTime.Now,
+            Storno = 0,
+            DataType = 1,
+            JsonDataClob = form.Json
+        };
+
+        return entity;
     }
 
     public async Task<CreateDocumentOnSAResponse> CreateFinalDocumentOnSa(int salesArrangementId, DynamicFormValues dynamicValue, CancellationToken cancellationToken)
@@ -56,36 +113,7 @@ internal class FormsDocumentService
         return await _documentOnSAService.CreateDocumentOnSA(request, cancellationToken);
     }
 
-    public async Task SaveFormToEArchive(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, IEnumerable<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
-    {
-        foreach (var documentOnSaResponse in createdFinalVersionOfDocOnSa)
-        {
-            var generatedDocument = await GenerateDocument(salesArrangement, documentOnSaResponse, cancellationToken);
-
-            var request = new UploadDocumentRequest
-            {
-                BinaryData = generatedDocument.Data,
-                SendDocumentOnly = false,
-                Metadata = new DocumentMetadata
-                {
-                    CaseId = salesArrangement.CaseId,
-                    DocumentId = documentOnSaResponse.DocumentOnSa.EArchivId,
-                    FormId = documentOnSaResponse.DocumentOnSa.FormId,
-                    EaCodeMainId = int.Parse(easFormResponse.Forms
-                                                            .Single(s => s.DynamicFormValues.DocumentId == documentOnSaResponse.DocumentOnSa.EArchivId).DefaultValues.PasswordCode,
-                                             CultureInfo.InvariantCulture),
-                    Filename = await GetFileName(documentOnSaResponse.DocumentOnSa, cancellationToken),
-                    CreatedOn = _dateTime.Now.Date,
-                    ContractNumber = easFormResponse.ContractNumber,
-                    AuthorUserLogin = _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture)
-                }
-            };
-
-            await _documentArchiveService.UploadDocument(request, cancellationToken);
-        }
-    }
-
-    private async Task<Document> GenerateDocument(SalesArrangement salesArrangement, CreateDocumentOnSAResponse documentOnSaResponse, CancellationToken cancellationToken)
+    public async Task<Document> GenerateDocument(SalesArrangement salesArrangement, CreateDocumentOnSAResponse documentOnSaResponse, CancellationToken cancellationToken)
     {
         var documentOnSaData = await _documentOnSAService.GetDocumentOnSAData(documentOnSaResponse.DocumentOnSa.DocumentOnSAId!.Value, cancellationToken);
 
