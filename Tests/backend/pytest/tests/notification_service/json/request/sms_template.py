@@ -22,8 +22,8 @@ json_req_sms_full_template = \
     "identity": "992474q",
     "identityScheme": "2"
   },
-  "customId": "123546",
-  "documentId": "789456"
+  "customId": "CustomID_123546",
+  "documentId": "DocumentID_789456"
 }
 
 

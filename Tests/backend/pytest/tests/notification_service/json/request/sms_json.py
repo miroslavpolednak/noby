@@ -4,7 +4,15 @@ json_req_sms_basic= \
   "phoneNumber": "+420607115686",
   "processingPriority": 1,
   "type": "RETENTION",
-  "text": "insg bez logovani"
+  "text": "insg bez logování a chci háčky a čárky"
+}
+
+json_req_sms_sb= \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "TEST_SB",
+  "text": "SB test sms 2"
 }
 
 #phone_object
@@ -41,6 +49,20 @@ json_req_sms_basic_full= \
   "processingPriority": 1,
   "type": "RETENTION",
   "text": "kratka sms bez cehokoliv vice",
+  "identifier": {
+    "identity": "992474q",
+    "identityScheme": "2"
+  },
+  "customId": "CustomID_876",
+  "documentId": "DocumentID_876"
+}
+
+json_req_sms_basic_full_for_search= \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "RETENTION",
+  "text": "sms pro search",
   "identifier": {
     "identity": "992474q",
     "identityScheme": "2"
