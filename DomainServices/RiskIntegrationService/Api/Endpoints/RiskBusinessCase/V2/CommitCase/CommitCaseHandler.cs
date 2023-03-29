@@ -1,6 +1,6 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts;
-using _cl = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1.Contracts;
+using _cl = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1;
 using CIS.Core.Configuration;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CommitCase;
@@ -44,7 +44,7 @@ internal sealed class CommitCaseHandler
         if (request.UserIdentity != null)
         {
             var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellationToken);
-            if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
+            if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
                 requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
             else
                 requestModel.Creator = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
@@ -54,7 +54,7 @@ internal sealed class CommitCaseHandler
         if (request.Approver != null)
         {
             var approverInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.Approver, cancellationToken);
-            if (Helpers.IsDealerSchema(request.Approver!.IdentityScheme))
+            if (Helpers.IsDealerSchema(approverInstance.DealerCompanyId))
                 throw new CisValidationException(17010, $"Approver can't be dealer.");
             else
                 requestModel.Approver = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(approverInstance, request.Approver);

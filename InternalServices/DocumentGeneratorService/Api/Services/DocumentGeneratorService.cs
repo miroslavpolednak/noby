@@ -1,5 +1,4 @@
-﻿using CIS.Core.Exceptions;
-using Grpc.Core;
+﻿using Grpc.Core;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
 
@@ -12,15 +11,24 @@ internal class DocumentGeneratorService : Contracts.V1.DocumentGeneratorService.
         _documentManager = documentManager;
     }
 
-    public override async Task<Contracts.Document> GenerateDocument(GenerateDocumentRequest request, ServerCallContext context)
+    public override Task<Contracts.Document> GenerateDocument(GenerateDocumentRequest request, ServerCallContext context)
     {
-        try
+        //TODO: mock
+        if (request.DocumentTypeId is 4 or 5 && request.DocumentTemplateVariantId is null)
         {
-            return await _documentManager.GenerateDocument(request);
+            var variantId = request.DocumentTypeId switch
+            {
+                4 => 2,
+                5 => 6
+            };
+
+            request.DocumentTemplateVariantId = variantId;
+            foreach (var part in request.Parts)
+            {
+                part.DocumentTemplateVariantId = variantId;
+            }
         }
-        catch (Exception e)
-        {
-            throw new CisException(0, e.StackTrace!);
-        }
+
+        return _documentManager.GenerateDocument(request);
     }
 }

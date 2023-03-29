@@ -1,5 +1,4 @@
 ﻿using __SA = DomainServices.SalesArrangementService.Contracts;
-using __Pr = DomainServices.ProductService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
@@ -16,9 +15,9 @@ internal sealed class DrawingBuilder
 
     public async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
-        _request.Drawing = new __SA.SalesArrangementParametersDrawing
+        _request.Drawing = new()
         {
-            RepaymentAccount = new __SA.SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingRepaymentAccount
+            RepaymentAccount = new()
             {
                 IsAccountNumberMissing = true
             }
@@ -30,12 +29,12 @@ internal sealed class DrawingBuilder
         {
             var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
 
-            if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.BankCode))
+            if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.BankCode))
             {
                 _request.Drawing.RepaymentAccount.IsAccountNumberMissing = false;
-                _request.Drawing.RepaymentAccount.Prefix = mortgageInstance.Mortgage.PaymentAccount.Prefix;
-                _request.Drawing.RepaymentAccount.Number = mortgageInstance.Mortgage.PaymentAccount.Number;
-                _request.Drawing.RepaymentAccount.BankCode = mortgageInstance.Mortgage.PaymentAccount.BankCode;
+                _request.Drawing.RepaymentAccount.Prefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;
+                _request.Drawing.RepaymentAccount.Number = mortgageInstance.Mortgage.RepaymentAccount.Number;
+                _request.Drawing.RepaymentAccount.BankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode;
             }
             else
                 _logger.LogInformation("DrawingBuilder: Account is empty");

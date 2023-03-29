@@ -3,6 +3,7 @@ from typing import List
 from .IConfig import IConfig
 from common.mssql.DbConnection import DbConnection as MsSqlDbConnection
 from common.mssql.DbManager import DbManager as MsSqlDbManager
+from common.enums.ETestEnvironment import ETestEnvironment
 from common.enums.EService import EService
 from common.enums.EServiceType import EServiceType
 
@@ -16,9 +17,19 @@ class Config(IConfig):
         return os.getenv("ENV")
 
     @property
+    def environment(self) -> ETestEnvironment:
+        """Returns environment [DEV, FAT, SIT] """
+        return ETestEnvironment[os.getenv("ENV")]
+
+    @property
     def server(self) -> str:
         """Returns server"""
         return os.getenv("SERVER")
+
+    @property
+    def fe_api_url(self) -> str:
+        """Returns FeAPI URL"""
+        return os.getenv("FE_API_URL")
 
     @property
     def is_discovery_db_connection(self) -> MsSqlDbConnection:

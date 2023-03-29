@@ -21,9 +21,9 @@ internal sealed class SaveHandler
     }
 
     private readonly Mappers.SaveRequestMapper _requestMapper;
-    private readonly Clients.LoanApplication.V1.ILoanApplicationClient _client;
+    private readonly ExternalServices.LoanApplication.V1.ILoanApplicationClient _client;
 
-    public SaveHandler(Clients.LoanApplication.V1.ILoanApplicationClient client, Mappers.SaveRequestMapper requestMapper)
+    public SaveHandler(ExternalServices.LoanApplication.V1.ILoanApplicationClient client, Mappers.SaveRequestMapper requestMapper)
     {
         _requestMapper = requestMapper;
         _client = client;

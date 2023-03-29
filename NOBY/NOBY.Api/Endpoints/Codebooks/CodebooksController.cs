@@ -1,4 +1,6 @@
 ﻿using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper;
+using DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject;
 using DomainServices.CodebookService.Contracts.Endpoints.LoanKinds;
 
 namespace NOBY.Api.Endpoints.Codebooks;
@@ -29,10 +31,13 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424127746">Currencies</a>
     /// - <a href="https://wiki.kb.cz/display/HT/CustomerProfile">CustomerProfiles</a> - zatím není na FE API implementováno
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413658556">AddressTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCodes</a>
-    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developers</a>
-    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developers [Deprecated]</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects [Deprecated]</a>
     /// - <a href="https://wiki.kb.cz/display/HT/DocumentOnSAType">DocumentOnSATypes</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVersion">DocumentTemplateVersions</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVariant">DocumentTemplateVariants</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=450580207">DrawingDurations</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=444604999">DrawingTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=400823251">EaCodesMain</a>
@@ -43,6 +48,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405524365">Genders</a>
     /// - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> - zatím není na FE API implementováno
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392871926">IdentificationDocumentTypes</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/IdentificationSubjectMethod+%28CB_IdentificationMethodType%29+-+MOCK">IdentificationSubjectMethods</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426158089">IncomeMainTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967686">IncomeMainTypesAML</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216188">IncomeForeignTypes</a>
@@ -71,7 +77,13 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequencies</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235789">StatementSubscriptionTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417284324">StatementTypes</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/TinFormatByCountry+%28CB_CmTrTinFormat%29+-+MOCK">TinFormatsByCountry</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/TinNoFillReasonsByCountry+%28CB_CmTrTinCountry%29+-+MOCK">TinNoFillReasonsByCountry</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/WorkflowProcessStateNoby">WorkflowProcessStatesNoby</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby">WorkflowTaskStatesNoby</a>
     /// - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskCategory">WorkflowTaskCategories</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440871662">WorkflowTaskStates</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440879561">WorkflowTaskTypes</a>
@@ -101,10 +113,10 @@ public class CodebooksController : ControllerBase
     }
 
     /// <summary>
-    /// Ciselnik fixace uveru.
+    /// Číselník fixace úvěru.
     /// </summary>
-    /// <returns>Kolekce dob fixaci v mesicich.</returns>
-    /// <param name="productTypeId">ID typu produktu, pro ktery se maji vratit fixace.</param>
+    /// <returns>Kolekce dob fixací v měsících.</returns>
+    /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit fixace.</param>
     [HttpGet("fixation-period-length")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<int>), StatusCodes.Status200OK)]
@@ -116,9 +128,9 @@ public class CodebooksController : ControllerBase
             .ToList();
 
     /// <summary>
-    /// Ciselnik druhu uveru.
+    /// Číselník druhu úveru.
     /// </summary>
-    /// <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
+    /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
     [HttpGet("product-loan-kinds")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<LoanKindsItem>), StatusCodes.Status200OK)]
@@ -136,7 +148,7 @@ public class CodebooksController : ControllerBase
     }
 
     /// <summary>
-    /// FixedRatePeriod s filtraci na product
+    /// FixedRatePeriod s filtrací na product
     /// </summary>
     /// <param name="productTypeId">ID typu produktu</param>
     [HttpGet("fixed-rate-periods")]
@@ -144,21 +156,53 @@ public class CodebooksController : ControllerBase
     [ProducesResponseType(typeof(List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>), StatusCodes.Status200OK)]
     public async Task<List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
-            .Where(t => t.ProductTypeId == productTypeId && t.IsNewProduct && t.IsValid)
+            .Where(t => t.ProductTypeId == productTypeId && t.IsNewProduct)
             .DistinctBy(t => new { t.FixedRatePeriod, t.MandantId })
             .ToList();
 
     /// <summary>
-    /// Vyhledání developerských projektů
+    /// Detail developera
     /// </summary>
     /// <remarks>
-    /// Vyhledá developerské projekty na základě vyhledávacího textu.<br />
-    /// Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />
-    /// Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
+    /// Vrátí detail developera dle developerId na vstupu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("developer-project/search")]
+    /// <param name="developerId">ID developera</param>
+    [HttpGet("developer/{developerId:int}", Name = "DeveloperGet")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(DeveloperSearch.DeveloperSearchResponse), StatusCodes.Status200OK)]
-    public async Task<DeveloperSearch.DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearch.DeveloperSearchRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    [ProducesResponseType(typeof(Dto.Developer), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<Dto.Developer> GetDeveloper([FromRoute] int developerId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    {
+        var developer = await svc.GetDeveloper(developerId, cancellationToken);
+        return new Dto.Developer
+        {
+            Name = developer.Name,
+            Cin = developer.Cin,
+            Status = new()
+            {
+                StatusId = developer.StatusId,
+                StatusText = developer.StatusText,
+            },
+            ShowBenefitsPackage = developer.BenefitPackage && developer.IsBenefitValid,
+            ShowBenefitsBeyondPackage = developer.BenefitsBeyondPackage && developer.IsBenefitValid
+        };
+    }
+
+    /// <summary>
+    /// Detail developeského projektu
+    /// </summary>
+    /// <remarks>
+    /// Vrátí detail developerského projektu dle developerProjectId na vstupu.
+    /// <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="developerId">ID developera</param>
+    [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}", Name = "DeveloperProjectGet")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(DeveloperProjectItem), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<DeveloperProjectItem> GetDeveloperProject([FromRoute] int developerId, [FromRoute] int developerProjectId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    {
+        return await svc.GetDeveloperProject(developerId, developerProjectId, cancellationToken);
+    }
 }

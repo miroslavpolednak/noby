@@ -29,6 +29,7 @@ internal class DocumentMapper
         return _configuration.SourceFields
                              .GroupBy(f => CollectionPathHelper.GetCollectionPath(f.FieldPath))
                              .SelectMany(group => FieldParser.ISourceFieldParser.Create(group.Key).GetFields(group, _aggregatedData))
+                             .Where(f => f.Value is not null && (f.Value is not string str || !string.IsNullOrWhiteSpace(str)))
                              .Select(ParseDocumentFieldData);
 
         DocumentFieldData ParseDocumentFieldData(DocumentSourceFieldData sourceData)
@@ -42,6 +43,7 @@ internal class DocumentMapper
             {
                 FieldName = sourceData.AcroFieldName,
                 StringFormat = stringFormat,
+                TextAlign = sourceData.TextAlign
             };
 
             SetDocumentFieldDataValue(fieldData, sourceData.Value);
@@ -69,9 +71,6 @@ internal class DocumentMapper
             case bool logicalValue:
                 fieldData.LogicalValue = logicalValue;
                 break;
-
-            default:
-                throw new NotImplementedException();
         }
     }
 
@@ -85,7 +84,7 @@ internal class DocumentMapper
                 continue;
 
             if (collectionSource is not IEnumerable collection)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException($"Path {table.CollectionSourcePath} does not return IEnumerable.");
 
             yield return new DocumentFieldData
             {

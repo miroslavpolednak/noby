@@ -5,6 +5,7 @@ using CIS.Infrastructure.CisMediatR;
 using DomainServices;
 using CIS.InternalServices;
 using Microsoft.AspNetCore.HttpLogging;
+using CIS.Infrastructure.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +17,8 @@ var appConfiguration = builder.AddNobyConfig();
 builder.Services.AddAttributedServices(typeof(NOBY.Infrastructure.IInfrastructureAssembly), typeof(NOBY.Api.IApiAssembly));
 
 // add CIS pipeline
+builder.AddCisEnvironmentConfiguration();
 builder
-    .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures()
     .AddCisWebApiCors()
     .AddCisLogging()
@@ -40,22 +41,24 @@ builder.Services
     .AddCustomerService()
     .AddProductService()
     .AddCaseService()
+    .AddDocumentOnSAService()
     .AddSalesArrangementService()
     .AddRiskIntegrationService()
     .AddDocumentArchiveService();
 
 // add internal services
 builder.Services
-       .AddDocumentGeneratorService()
-       .AddDataAggregator(builder.Configuration.GetConnectionString("dataAggregator")!);
+    .AddDataAggregatorService()
+    .AddDocumentGeneratorService();
 
 // FOMS services
-builder
-    .AddNobyServices()
-    .AddNobyDatabase();
+builder.AddNobyServices();
+
+// init validacnich zprav
+ErrorCodeMapper.Init();
 
 // authentication
-builder.AddFomsAuthentication(appConfiguration);
+builder.AddNobyAuthentication(appConfiguration);
 
 // swagger
 if (appConfiguration.EnableSwaggerUi)
@@ -80,15 +83,17 @@ app.UseCisWebRequestLocalization();
 
 app
     // API call
-    .UseFomsApi()
+    .UseNobyApi(appConfiguration)
+    // include authentication endpoints
+    .UseNobyAuthStrategy()
     // jedna se o SPA call, pust jen tyhle middlewares
-    .UseFomsSpa()
+    .UseNobySpa()
     // health check call - neni treba poustet celou pipeline
-    .UseFomsHealthChecks();
+    .UseNobyHealthChecks();
 
 // swagger
 if (appConfiguration.EnableSwaggerUi)
-    app.UseFomsSwagger();
+    app.UseNobySwagger();
 
 try
 {

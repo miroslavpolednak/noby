@@ -16,7 +16,7 @@ public interface IPaginableResponse
     /// </summary>
     /// <example>0</example>
     int RecordOffset { get; }
-    
+
     /// <summary>
     /// Celkový počet záznamů nalezených bez ohledu na stránkování.
     /// </summary>

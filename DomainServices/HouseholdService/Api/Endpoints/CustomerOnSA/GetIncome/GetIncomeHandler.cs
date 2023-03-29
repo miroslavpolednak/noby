@@ -8,8 +8,10 @@ internal sealed class GetIncomeHandler
     public async Task<Income> Handle(GetIncomeRequest request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.CustomersIncomes
+            .AsNoTracking()
             .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16029, $"Income ID {request.IncomeId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.IncomeNotFound, request.IncomeId);
 
         var model = new Income
         {
@@ -27,18 +29,22 @@ internal sealed class GetIncomeHandler
         {
             switch (entity.IncomeTypeId)
             {
-                case CIS.Foms.Enums.CustomerIncomeTypes.Employement:
+                case CustomerIncomeTypes.Employement:
                     model.Employement = IncomeDataEmployement.Parser.ParseFrom(entity.DataBin);
                     break;
-                case CIS.Foms.Enums.CustomerIncomeTypes.Other:
+
+                case CustomerIncomeTypes.Other:
                     model.Other = IncomeDataOther.Parser.ParseFrom(entity.DataBin);
                     break;
-                case CIS.Foms.Enums.CustomerIncomeTypes.Enterprise:
+
+                case CustomerIncomeTypes.Enterprise:
                     model.Entrepreneur = IncomeDataEntrepreneur.Parser.ParseFrom(entity.DataBin);
                     break;
-                case CIS.Foms.Enums.CustomerIncomeTypes.Rent:
+
+                case CustomerIncomeTypes.Rent:
                     model.Rent = IncomeDataRent.Parser.ParseFrom(entity.DataBin);
                     break;
+
                 default:
                     throw new NotImplementedException("This customer income type deserializer is not implemented");
             }

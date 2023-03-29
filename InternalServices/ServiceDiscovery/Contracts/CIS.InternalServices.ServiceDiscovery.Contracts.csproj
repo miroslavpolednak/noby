@@ -2,10 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-	<Company>Wookiee.Apps s.r.o.</Company>
     <Product>Common Infrastructure Solution</Product>
     <Authors>Filip Tuma</Authors>
-	<LangVersion>preview</LangVersion>
 	<Nullable>enable</Nullable>
 	<Platforms>AnyCPU;x64</Platforms>
 	<ImplicitUsings>enable</ImplicitUsings>
@@ -14,21 +12,18 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>CIS.InternalServices.ServiceDiscovery.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="ClearCache.proto" />
-	  <None Remove="DiscoverableService.proto" />
-	  <None Remove="GetService.proto" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.21.12" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.51.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.51.0">
+		<PackageReference Include="Google.Protobuf" Version="3.22.1" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.52.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.52.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.4" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -37,9 +32,15 @@
 	
 	<ItemGroup>
 		<Protobuf Include="ServiceDiscovery.v1.proto" GrpcServices="Both" />
-		<Protobuf Include="GetService.proto" GrpcServices="None" />
-		<Protobuf Include="DiscoverableService.proto" GrpcServices="None" />
-		<Protobuf Include="ClearCache.proto" GrpcServices="None" />
-		<Protobuf Include="GetServices.proto" GrpcServices="None" />
+		<Protobuf Include="Messages/GetService.proto" GrpcServices="None" />
+		<Protobuf Include="Messages/DiscoverableService.proto" GrpcServices="None" />
+		<Protobuf Include="Messages/ClearCache.proto" GrpcServices="None" />
+		<Protobuf Include="Messages/GetServices.proto" GrpcServices="None" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="CIS.InternalServices.ServiceDiscovery.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>

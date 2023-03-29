@@ -10,16 +10,16 @@ internal sealed class ServicesMemoryCache
 
     public static DiscoverableService? GetServiceFromCache(ApplicationEnvironmentName environmentName, ApplicationKey serviceName, Contracts.ServiceTypes serviceType)
     {
-        if (_cache.TryGetValue(environmentName, out ImmutableList<DiscoverableService>? cacheEntry))
+        if (_cache.TryGetValue(environmentName, out IReadOnlyList<DiscoverableService>? cacheEntry))
         {
             return cacheEntry?.FirstOrDefault(t => t.ServiceName == serviceName && t.ServiceType == serviceType);
         }
         return null;
     }
 
-    public async Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
-        ImmutableList<DiscoverableService>? cacheEntry;
+        IReadOnlyList<DiscoverableService>? cacheEntry;
         if (!_cache.TryGetValue(environmentName, out cacheEntry))
         {
             SemaphoreSlim mylock = _locks.GetOrAdd(environmentName, k => new SemaphoreSlim(1, 1));
@@ -43,7 +43,7 @@ internal sealed class ServicesMemoryCache
         return cacheEntry!;
     }
 
-    private async Task<ImmutableList<DiscoverableService>> getServicesFromRemote(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
+    private async Task<IReadOnlyList<DiscoverableService>> getServicesFromRemote(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
         var result = await _service.GetServicesAsync(
             new Contracts.GetServicesRequest
@@ -54,7 +54,8 @@ internal sealed class ServicesMemoryCache
         return result
             .Services
             .Select(t => new DiscoverableService(t.ServiceName, t.ServiceUrl, t.ServiceType))
-            .ToImmutableList();
+            .ToArray()
+            .AsReadOnly();
     }
 
     private readonly Contracts.v1.DiscoveryService.DiscoveryServiceClient _service;

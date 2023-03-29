@@ -1,10 +1,10 @@
-﻿using CIS.Core.Attributes;
+﻿using System.Runtime.CompilerServices;
+using CIS.Core.Attributes;
 using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DataAggregator;
-using CIS.InternalServices.DataAggregator.EasForms;
-using DomainServices.CaseService.Clients;
+using CIS.InternalServices.DataAggregatorService.Clients;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
@@ -13,108 +13,81 @@ namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 internal sealed class FormsService
 {
     private readonly IMediator _mediator;
-    private readonly IDataAggregator _dataAggregator;
+    private readonly IDataAggregatorServiceClient _dataAggregatorService;
+    private readonly IHouseholdServiceClient _householdService;
     private readonly ICodebookServiceClients _codebookService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly Eas.IEasClient _easClient;
-    private readonly SulmService.ISulmClient _sulmClient;
 
     public FormsService(IMediator mediator,
-                        IDataAggregator dataAggregator,
-                        ICodebookServiceClients codebookService,
-                        ICaseServiceClient caseService,
-                        Eas.IEasClient easClient,
-                        SulmService.ISulmClient sulmClient)
+                        IDataAggregatorServiceClient dataAggregatorService,
+                        IHouseholdServiceClient householdService,
+                        ICodebookServiceClients codebookService)
     {
         _mediator = mediator;
-        _dataAggregator = dataAggregator;
+        _dataAggregatorService = dataAggregatorService;
+        _householdService = householdService;
         _codebookService = codebookService;
-        _caseService = caseService;
-        _easClient = easClient;
-        _sulmClient = sulmClient;
     }
 
-    public async Task<SalesArrangementCategories> LoadSalesArrangementCategory(int salesArrangementId, CancellationToken cancellationToken)
+    public Task<SalesArrangement> LoadSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
     {
-        var salesArrangement = await _mediator.Send(new GetSalesArrangementRequest { SalesArrangementId = salesArrangementId }, cancellationToken);
+        return _mediator.Send(new GetSalesArrangementRequest { SalesArrangementId = salesArrangementId }, cancellationToken);
+    }
 
+    public async Task<SalesArrangementCategories> LoadSalesArrangementCategory(SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
         var types = await _codebookService.SalesArrangementTypes(cancellationToken);
 
         return (SalesArrangementCategories)types.First(t => t.Id == salesArrangement.SalesArrangementTypeId).SalesArrangementCategory;
     }
 
-    public async Task<IEasForm<IServiceFormData>> LoadServiceForm(int salesArrangementId)
+    public async IAsyncEnumerable<DynamicFormValues> CreateProductDynamicFormValues(SalesArrangement salesArrangement, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        var serviceForm = await _dataAggregator.GetEasForm<IServiceFormData>(salesArrangementId);
+        var householdTypes = await _codebookService.HouseholdTypes(cancellationToken);
+        var houseHolds = await _householdService.GetHouseholdList(salesArrangement.SalesArrangementId, cancellationToken);
 
-        return serviceForm;
-    }
-
-    public async Task<IEasForm<IProductFormData>> LoadProductForm(int salesArrangementId)
-    {
-        var productForm = await _dataAggregator.GetEasForm<IProductFormData>(salesArrangementId);
-
-        FormValidations.CheckFormData(productForm.FormData);
-
-        return productForm;
-    }
-
-    public async Task AddFirstSignatureDate(IProductFormData formData)
-    {
-        await _easClient.AddFirstSignatureDate((int)formData.SalesArrangement.CaseId, (int)formData.SalesArrangement.CaseId, DateTime.Now.Date);
-    }
-
-    public async Task CallSulm(IProductFormData formData, CancellationToken cancellation)
-    {
-        var customersOnSa = formData.HouseholdData
-                                    .CustomersOnSa
-                                    .Select(customer => customer.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
-                                    .Where(kbIdentity => kbIdentity is not null);
-
-        // HFICH-2426
-        foreach (var kbIdentity in customersOnSa)
+        foreach (var household in houseHolds)
         {
-            await _sulmClient.StopUse(kbIdentity.IdentityId, "MLAP", cancellation);
-            await _sulmClient.StartUse(kbIdentity.IdentityId, "MLAP", cancellation);
+            yield return new DynamicFormValues
+            {
+                HouseholdId = household.HouseholdId,
+                DocumentTypeId = householdTypes.Single(r => r.Id == household.HouseholdTypeId).DocumentTypeId!.Value
+            };
         }
     }
 
-    public async Task UpdateContractNumber(IProductFormData formData, CancellationToken cancellationToken)
+    public async Task<DynamicFormValues> CreateServiceDynamicFormValues(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
-        if (!string.IsNullOrEmpty(formData.SalesArrangement.ContractNumber))
-            return;
+        var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
 
-        var mainHousehold = formData.HouseholdData.Households.Single(i => i.HouseholdType == HouseholdTypes.Main);
-        var mainCustomerOnSa = formData.HouseholdData.CustomersOnSa.Single(i => i.CustomerOnSAId == mainHousehold.CustomerOnSaId1!.Value);
-
-        var identityMp = mainCustomerOnSa.CustomerIdentifiers.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
-        var contractNumber = await _easClient.GetContractNumber(identityMp.IdentityId, (int)formData.SalesArrangement.CaseId);
-
-        await UpdateSalesArrangement(formData.SalesArrangement, contractNumber, cancellationToken);
-        await UpdateCase(formData.SalesArrangement.CaseId, contractNumber, cancellationToken);
+        return new DynamicFormValues
+        {
+            DocumentTypeId = documentTypes.Single(d => d.SalesArrangementTypeId == salesArrangement.SalesArrangementTypeId).Id
+        };
     }
 
-    private async Task UpdateSalesArrangement(SalesArrangement entity, string contractNumber, CancellationToken cancellationToken)
+    public Task<GetEasFormResponse> LoadServiceForm(int salesArrangementId, IEnumerable<DynamicFormValues> dynamicFormValues, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new UpdateSalesArrangementRequest
-                             {
-                                 SalesArrangementId = entity.SalesArrangementId,
-                                 ContractNumber = contractNumber,
-                                 RiskBusinessCaseId = entity.RiskBusinessCaseId,
-                                 FirstSignedDate = entity.FirstSignedDate,
-                                 SalesArrangementSignatureTypeId = entity.SalesArrangementSignatureTypeId
-                             },
-                             cancellationToken);
-
-        entity.ContractNumber = contractNumber;
+        return _dataAggregatorService.GetEasForm(new GetEasFormRequest
+        {
+            SalesArrangementId = salesArrangementId,
+            EasFormRequestType = EasFormRequestType.Service,
+            DynamicFormValues = { dynamicFormValues }
+        }, cancellationToken);
     }
 
-    private async Task UpdateCase(long caseId, string contractNumber, CancellationToken cancellationToken)
+    public async Task<GetEasFormResponse> LoadProductForm(SalesArrangement salesArrangement, IEnumerable<DynamicFormValues> dynamicFormValues, CancellationToken cancellationToken)
     {
-        var caseDetail = await _caseService.GetCaseDetail(caseId, cancellationToken);
+        FormValidations.CheckArrangement(salesArrangement);
 
-        caseDetail.Data.ContractNumber = contractNumber;
+        var response = await _dataAggregatorService.GetEasForm(new GetEasFormRequest
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            EasFormRequestType = EasFormRequestType.Product,
+            DynamicFormValues = { dynamicFormValues }
+        }, cancellationToken);
 
-        await _caseService.UpdateCaseData(caseId, caseDetail.Data, cancellationToken);
+        FormValidations.CheckFormData(response.Product);
+
+        return response;
     }
 }

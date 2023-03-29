@@ -12,6 +12,8 @@ public class DocumentArchiveDbContext : BaseDbContext<DocumentArchiveDbContext>
 
     public DbSet<DocumentInterface> DocumentInterface { get; set; }
 
+    public DbSet<FormInstanceInterface> FormInstanceInterface { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Program).Assembly);

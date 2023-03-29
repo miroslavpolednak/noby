@@ -10,30 +10,30 @@ internal sealed class UpdateObligationRequestValidator
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
-            .WithMessage("CustomerOnSAId must be > 0").WithErrorCode("16024");
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSAIdIsEmpty);
 
         RuleFor(t => t.ObligationTypeId)
             .MustAsync(async (t, token) => !t.HasValue || (await codebookService.ObligationTypes(token)).Any(x => x.Id == t.Value))
-            .WithMessage("ObligationTypeId is not valid").WithErrorCode("16048");
+            .WithErrorCode(ErrorCodeMapper.ObligationTypeIsEmpty);
 
         RuleFor(t => t.CreditCardLimit)
             .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 1 && r.ObligationTypeId.GetValueOrDefault() != 2)
-            .WithMessage("CreditCardLimit not allowed for current ObligationTypeId").WithErrorCode("16049");
+            .WithErrorCode(ErrorCodeMapper.CreditCardLimitNotAllowed);
 
         RuleFor(t => t.LoanPrincipalAmount)
             .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 3 && r.ObligationTypeId.GetValueOrDefault() != 4)
-            .WithMessage("LoanPrincipalAmount not allowed for current ObligationTypeId").WithErrorCode("16050");
+            .WithErrorCode(ErrorCodeMapper.LoanPrincipalAmountNotAllowed);
 
         RuleFor(t => t.InstallmentAmount)
             .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 3 && r.ObligationTypeId.GetValueOrDefault() != 4)
-            .WithMessage("InstallmentAmount not allowed for current ObligationTypeId").WithErrorCode("16051");
+            .WithErrorCode(ErrorCodeMapper.InstallmentAmountNotAllowed);
 
         RuleFor(t => t.Creditor)
             .ChildRules(v =>
             {
                 v.RuleFor(t => t.CreditorId)
                     .Must((creditor, t) => string.IsNullOrEmpty(creditor.CreditorId) || string.IsNullOrEmpty(creditor.Name))
-                    .WithMessage("Creditor.CreditorId and Creditor.Name can't be set in the same time").WithErrorCode("16052");
+                    .WithErrorCode(ErrorCodeMapper.CreditorIdAndNameInSameTime);
             });
 
         /*RuleFor(t => t.Request.Correction)

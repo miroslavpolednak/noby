@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.Infrastructure.gRPC;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
@@ -7,15 +6,9 @@ using CIS.Infrastructure.Logging;
 
 namespace DomainServices.OfferService.Clients;
 
-internal class ExceptionInterceptor : Interceptor
+internal sealed class ExceptionInterceptor 
+    : Interceptor
 {
-    private readonly ILogger<ExceptionInterceptor> _logger;
-
-    public ExceptionInterceptor(ILogger<ExceptionInterceptor> logger)
-    {
-        _logger = logger;
-    }
-
     public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(TRequest request, 
         ClientInterceptorContext<TRequest, TResponse> context, 
         AsyncUnaryCallContinuation<TRequest, TResponse> continuation)
@@ -36,5 +29,12 @@ internal class ExceptionInterceptor : Interceptor
             _logger.ExtServiceUnavailable("OfferService", ex);
             throw new CisServiceUnavailableException("OfferService/dependant_service", methodFullName, ex.Message);
         }
+    }
+
+    private readonly ILogger<ExceptionInterceptor> _logger;
+
+    public ExceptionInterceptor(ILogger<ExceptionInterceptor> logger)
+    {
+        _logger = logger;
     }
 }

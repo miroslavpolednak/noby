@@ -10,44 +10,42 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.101.50" />
-    <PackageReference Include="Confluent.Kafka.DependencyInjection" Version="2.1.1" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.51.0" />
-    <PackageReference Include="MailKit" Version="3.4.3" />
-    <PackageReference Include="MediatR" Version="11.1.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.5" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.103.32" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.52.0" />
+    <PackageReference Include="MailKit" Version="3.6.0" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
     <PackageReference Include="Polly" Version="7.2.3" />
-    <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.179" />
-    <PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.179" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
-    <PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
+    <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.1.1" />
+    <PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.10.1" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- DO NOT UPGRADE VERSIONS -->
-    <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="0.7.2.1" />
-    <PackageReference Include="MassTransit" Version="8.0.9" />
-    <PackageReference Include="MassTransit.Kafka" Version="8.0.9" />
+    <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="1.1.0.16-SNAPSHOT" />
+    <PackageReference Include="MassTransit" Version="8.0.13" />
+    <PackageReference Include="MassTransit.Kafka" Version="8.0.13" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
-    <ProjectReference Include="..\..\..\CIS\ExternalServicesHelpers\CIS.ExternalServicesHelpers.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
+    <ProjectReference Include="..\..\..\NOBY\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
     <ProjectReference Include="..\..\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
     <ProjectReference Include="..\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
-    <ProjectReference Include="..\Mcs\CIS.InternalServices.NotificationService.Mcs.csproj" />
+    <ProjectReference Include="..\Messaging\CIS.InternalServices.NotificationService.Messaging.csproj" />
   </ItemGroup>
 
 </Project>

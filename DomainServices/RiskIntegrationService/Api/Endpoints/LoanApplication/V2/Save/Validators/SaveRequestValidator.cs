@@ -43,10 +43,6 @@ internal sealed class SaveRequestValidator
             RuleForEach(t => t.ProductRelations)
                 .ChildRules(x =>
                 {
-                    x.RuleFor(x => x.ProductType)
-                        .NotEmpty()
-                        .WithErrorCode("ProductRelations.ProductType");
-
                     x.RuleFor(x => x.RelationType)
                         .NotEmpty()
                         .WithErrorCode("ProductRelations.");
@@ -54,8 +50,7 @@ internal sealed class SaveRequestValidator
                     x.RuleFor(x => x.RemainingExposure)
                         .Cascade(CascadeMode.Stop)
                         .NotEmpty()
-                        .WithErrorCode("ProductRelations.RemainingExposure")
-                        .GreaterThan(0);
+                        .WithErrorCode("ProductRelations.RemainingExposure");
 
                     x.RuleFor(x => x.Customers)
                         .NotEmpty()

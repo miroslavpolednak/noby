@@ -1,8 +1,6 @@
 ﻿using DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Clients;
 using Microsoft.EntityFrameworkCore;
-using Grpc.Core;
-using CIS.Infrastructure.gRPC;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetMortgageOfferFPSchedule;
 
@@ -11,10 +9,12 @@ internal sealed class GetMortgageOfferFPScheduleHandler
 {
     public async Task<GetMortgageOfferFPScheduleResponse> Handle(GetMortgageOfferFPScheduleRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.Offers
-           .AsNoTracking()
-           .Where(t => t.OfferId == request.OfferId)
-           .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
+        var entity = await _dbContext
+            .Offers
+            .AsNoTracking()
+            .Where(t => t.OfferId == request.OfferId)
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OfferNotFound, request.OfferId);
 
         // load codebook DrawingDuration for remaping Id -> DrawingDuration
         var drawingDurationsById = (await _codebookService.DrawingDurations(cancellationToken)).ToDictionary(i => i.Id);
@@ -27,7 +27,7 @@ internal sealed class GetMortgageOfferFPScheduleHandler
 
         // get simulation outputs
         var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters, drawingDurationsById, drawingTypeById).ToEasSimulationFullPaymentScheduleRequest();
-        var easSimulationRes = await _easSimulationHTClient.RunSimulationHT(easSimulationReq);
+        var easSimulationRes = await _easSimulationHTClient.RunSimulationHT(easSimulationReq, cancellationToken);
 
         var fullPaymentSchedule = easSimulationRes.ToFullPaymentSchedule();
 

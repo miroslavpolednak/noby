@@ -10,18 +10,18 @@ public class PhoneValidator : AbstractValidator<Phone>
     {
         RuleFor(phone => phone.CountryCode)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Phone.CountryCodeRequired)
+                .WithErrorCode(ErrorCodes.Validation.Phone.CountryCodeRequired)
                 .WithMessage($"{nameof(Phone.CountryCode)} required.")
             .Matches(new Regex(@"^((\+?[0-9]{1,3})|([0-9]{1,5}))$"))
-                .WithErrorCode(ErrorCodes.Phone.CountryCodeInvalid)
+                .WithErrorCode(ErrorCodes.Validation.Phone.CountryCodeInvalid)
                 .WithMessage($"Invalid {nameof(Phone.CountryCode)}.");
         
         RuleFor(phone => phone.NationalNumber)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Phone.NationalNumberRequired)
+                .WithErrorCode(ErrorCodes.Validation.Phone.NationalNumberRequired)
                 .WithMessage($"{nameof(Phone.NationalNumber)} required.")
             .Matches(new Regex(@"^[0-9]{1,14}$"))
-                .WithErrorCode(ErrorCodes.Phone.NationalNumberInvalid)
+                .WithErrorCode(ErrorCodes.Validation.Phone.NationalNumberInvalid)
                 .WithMessage($"Invalid {nameof(Phone.NationalNumber)}.");
     }
 }

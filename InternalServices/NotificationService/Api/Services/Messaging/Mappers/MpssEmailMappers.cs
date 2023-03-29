@@ -11,7 +11,7 @@ public static class MpssEmailMappers
 
     public static MpssSendApi.v1.EmailAddress MapToMpss(this EmailAddress emailAddress)
     {
-        return new MpssSendApi.v1.EmailAddress
+        return new ()
         {
             party = emailAddress.Party.MapToMpss(),
             value = emailAddress.Value
@@ -20,7 +20,7 @@ public static class MpssEmailMappers
 
     public static MpssSendApi.v1.Party MapToMpss(this Party party)
     {
-        return new MpssSendApi.v1.Party
+        return new ()
         {
             legalPerson = party.LegalPerson?.MapToMpss(),
             naturalPerson = party.NaturalPerson?.MapToMpss()
@@ -29,7 +29,7 @@ public static class MpssEmailMappers
 
     public static MpssSendApi.v1.LegalPerson MapToMpss(this LegalPerson legalPerson)
     {
-        return new MpssSendApi.v1.LegalPerson
+        return new ()
         {
             name = legalPerson.Name 
         };
@@ -37,7 +37,7 @@ public static class MpssEmailMappers
 
     public static MpssSendApi.v1.NaturalPerson MapToMpss(this NaturalPerson naturalPerson)
     {
-        return new MpssSendApi.v1.NaturalPerson
+        return new ()
         {
             surname = naturalPerson.Surname,
             firstName = naturalPerson.FirstName,
@@ -47,7 +47,7 @@ public static class MpssEmailMappers
 
     public static MpssSendApi.v1.Content MapToMpss(this EmailContent emailContent)
     {
-        return new MpssSendApi.v1.Content
+        return new ()
         {
             charset = "UTF-8",
             format = emailContent.Format,
@@ -55,12 +55,20 @@ public static class MpssEmailMappers
             text = emailContent.Text
         };
     }
+
+    public static MpssSendApi.v1.NotificationConsumer MapToMpss(string consumerId)
+    {
+        return new()
+        {
+            consumerId = consumerId
+        };
+    }
     
     public static MpssSendApi.v1.Attachment MapToMpss(string objectKey, string filename)
     {
-        return new MpssSendApi.v1.Attachment
+        return new ()
         {
-            s3Content = new MpssSendApi.v1.S3Content
+            s3Content = new ()
             {
                 filename = filename,
                 objectKey = objectKey

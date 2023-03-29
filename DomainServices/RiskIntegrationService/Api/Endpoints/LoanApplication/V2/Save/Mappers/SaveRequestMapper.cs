@@ -1,8 +1,8 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
 using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 using CIS.Core.Security;
-using DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
 using CIS.Core.Configuration;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
@@ -59,7 +59,7 @@ internal sealed class SaveRequestMapper
         if (request.UserIdentity is not null)
         {
             var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-            if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
+            if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
                 requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
             else
                 requestModel.Person = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);

@@ -1,7 +1,9 @@
 using CIS.Core;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Globalization;
 
 namespace CIS.Infrastructure.gRPC;
 
@@ -78,18 +80,26 @@ public static class StartupExtensions
     /// - FluentValidation through MediatR pipelines
     /// </summary>
     /// <param name="assemblyType">Typ, který je v hlavním projektu - typicky Program.cs</param>
-    public static IServiceCollection AddCisGrpcInfrastructure(this IServiceCollection services, Type assemblyType)
+    /// <param name="validationMessages">Slovník pro překládání chybových kódů ve FluentValidation na naše error messages. [ExceptionCode, Message]</param>
+    public static IServiceCollection AddCisGrpcInfrastructure(this IServiceCollection services, Type assemblyType, CIS.Core.ErrorCodes.IErrorCodesDictionary? validationMessages = null)
     {
         services
-            .AddMediatR(assemblyType.Assembly)
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(CisMediatR.GrpcValidationBehavior<,>));
 
         // add validators
         services.Scan(selector => selector
             .FromAssembliesOf(assemblyType)
-            .AddClasses(x => x.AssignableTo(typeof(FluentValidation.IValidator<>)))
+            .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
             .AsImplementedInterfaces()
             .WithTransientLifetime());
+
+        // set default validator translation language
+        if (validationMessages is not null)
+        {
+            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo(ExceptionHandling.FluentValidationLanguageManager.DefaultLanguage);
+            ValidatorOptions.Global.LanguageManager = new ExceptionHandling.FluentValidationLanguageManager(validationMessages);
+        }
 
         return services;
     }

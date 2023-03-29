@@ -9,9 +9,9 @@ Každá služba / aplikace má vlastní adresář s migračními skripty - ten s
   [DatabaseMigrations]
 ```
 
-Konvence pro pojmenování SQL skriptů je `{číslo-pořadí skriptu}-{JIRA task (pokud existuje)}-{popis}.sql`, např.:
+Konvence pro pojmenování SQL skriptů je `{číslo-pořadí skriptu:00000}-{JIRA task (pokud existuje)}-{popis}.sql`, např.:
 ```
-2-HFICH-1587-pridani_noveho_sloupce.sql
+00002-HFICH-1587-pridani_noveho_sloupce.sql
 ```
 Číslo pro pořadí skriptů je manuálně udržované a není třeba aby se jednalo o souvislou řadu, ani nevadí pokud se budou čísla duplikovat.
 Jedná se pouze o hint pro migrační tool v jakém pořadí skripty případně pouštět.

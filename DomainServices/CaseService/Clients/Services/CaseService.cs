@@ -54,9 +54,9 @@ internal sealed class CaseService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateCaseCustomer(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateCustomerData(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken))
     {
-        await _service.UpdateCaseCustomerAsync(
+        await _service.UpdateCustomerDataAsync(
             new()
             {
                 CaseId = caseId,
@@ -110,6 +110,16 @@ internal sealed class CaseService
             {
                 CaseId = caseId,
                 OfferContacts = contacts
+            }, cancellationToken: cancellationToken);
+    }
+
+    public async Task NotifyStarbuild(long caseId, string? riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        await _service.NotifyStarbuildAsync(
+            new()
+            {
+                CaseId = caseId,
+                RiskBusinessCaseId = riskBusinessCaseId
             }, cancellationToken: cancellationToken);
     }
 

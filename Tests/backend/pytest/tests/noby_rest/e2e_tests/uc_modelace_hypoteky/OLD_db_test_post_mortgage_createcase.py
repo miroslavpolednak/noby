@@ -2,12 +2,12 @@ import requests
 from sqlalchemy import null
 from Tests.backend.pytest.tests.noby_rest.db_util import select_offer_fat, select_create_case_fat, select_product_konsdb_fat
 from Tests.backend.pytest.tests.noby_rest.construct_api.uc_modelace_hypoteky.post_offer_mortgage import post_offer_mortgage_loan_kind_2000, post_offer_mortgage_loan_kind_2001
-from Tests.backend.pytest.tests.noby_rest.construct_api.uc_modelace_hypoteky.OLD_post_mortgage_createcase import post_create_case
+from Tests.backend.pytest.tests.noby_rest.construct_api.uc_modelace_hypoteky.OLD_post_mortgage_createcase import post_create_case_old
 
 
 # TODO: až bude modelace d1.3 hotova, dodelat test, nyní padá a dodělat constructAPI(je částečně hotové, ověřit)
-def test_post_create_case(webapi_url, get_cookies, post_create_case, konsdb_fat_db_cursor, noby_fat_db_cursor):
-    resp = post_create_case
+def test_post_create_case(webapi_url, get_cookies, post_create_case_old, konsdb_fat_db_cursor, noby_fat_db_cursor):
+    resp = post_create_case_old
     case = resp.json()
     assert resp.status_code == 200, resp.content
     print(case)

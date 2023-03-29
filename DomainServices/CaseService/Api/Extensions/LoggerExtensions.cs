@@ -5,6 +5,8 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, long, Exception> _newCaseIdCreated;
     private static readonly Action<ILogger, CIS.Core.Types.Paginable, Exception> _searchCasesStart;
     private static readonly Action<ILogger, long, int, Exception> _updateCaseStateStart;
+    private static readonly Action<ILogger, long, Exception> _caseStateChangedFailed;
+    private static readonly Action<ILogger, int, long, Exception> _queueRequestIdSaved;
 
     static LoggerExtensions()
     {
@@ -22,6 +24,16 @@ internal static class LoggerExtensions
             LogLevel.Debug,
             new EventId(LoggerEventIdCodes.UpdateCaseStateStart, nameof(UpdateCaseStateStart)),
             "Update Case #{CaseId} state to {State}");
+
+        _caseStateChangedFailed = LoggerMessage.Define<long>(
+            LogLevel.Warning,
+            new EventId(LoggerEventIdCodes.UpdateCaseStateStart, nameof(CaseStateChangedFailed)),
+            "CaseStateChanged failed for {CaseId}");
+
+        _queueRequestIdSaved = LoggerMessage.Define<int, long>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.QueueRequestIdSaved, nameof(QueueRequestIdSaved)),
+            "Saved RequestId {RequestId} for Case {CaseId}");
     }
 
     public static void NewCaseIdCreated(this ILogger logger, long caseId)
@@ -32,4 +44,10 @@ internal static class LoggerExtensions
 
     public static void UpdateCaseStateStart(this ILogger logger, long caseId, int state)
         => _updateCaseStateStart(logger, caseId, state, null!);
+
+    public static void CaseStateChangedFailed(this ILogger logger, long caseId, Exception ex)
+        => _caseStateChangedFailed(logger, caseId, ex);
+
+    public static void QueueRequestIdSaved(this ILogger logger, int requestId, long caseId)
+        => _queueRequestIdSaved(logger, requestId, caseId, null!);
 }

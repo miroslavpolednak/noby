@@ -8,7 +8,7 @@ internal static class StartupExtensions
     public static WebApplicationBuilder AddHouseholdService(this WebApplicationBuilder builder)
     {
         // EAS svc
-        builder.AddExternalService<ExternalServices.Eas.R21.IEasClient>();
+        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
         // sulm
         builder.AddExternalService<ExternalServices.Sulm.V1.ISulmClient>();
 

@@ -1,7 +1,7 @@
 ﻿namespace NOBY.Api.Endpoints.Cases;
 
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
-internal class CasesModelConverter
+internal sealed class CasesModelConverter
 {
     public async Task<Dto.CaseModel> FromContract(DomainServices.CaseService.Contracts.Case model)
     {
@@ -21,7 +21,7 @@ internal class CasesModelConverter
 	{
 		var converted = new Dto.CaseModel
 		{
-
+			OfferContacts = new(),
 			CaseId = model.CaseId,
 			State = (CIS.Foms.Enums.CaseStates)model.State,
 			StateName = _caseStates.First(x => x.Id == model.State).Name,
@@ -34,12 +34,20 @@ internal class CasesModelConverter
 			DateOfBirth = model.Customer?.DateOfBirthNaturalPerson,
 			CustomerIdentity = model.Customer?.Identity,
 			FirstName = model.Customer?.FirstNameNaturalPerson,
-			LastName = model.Customer?.Name,
-            EmailForOffer = model.OfferContacts?.EmailForOffer,
-            PhoneNumberForOffer = model.OfferContacts?.PhoneNumberForOffer
+			LastName = model.Customer?.Name
 		};
 
-		if (model.Tasks is not null && model.Tasks.Any())
+        if (!string.IsNullOrEmpty(model.OfferContacts?.EmailForOffer))
+            converted.OfferContacts.EmailAddress = new() { EmailAddress = model.OfferContacts?.EmailForOffer };
+
+        if (!string.IsNullOrEmpty(model.OfferContacts?.PhoneNumberForOffer?.PhoneNumber))
+            converted.OfferContacts.MobilePhone = new()
+            {
+                PhoneNumber = model.OfferContacts.PhoneNumberForOffer.PhoneNumber,
+                PhoneIDC = model.OfferContacts.PhoneNumberForOffer.PhoneIDC
+            };
+
+        if (model.Tasks is not null && model.Tasks.Any())
 		{
 			converted.ActiveTasks = model.Tasks
 				.Join(_taskTypes, i => i.TypeId, o => o.Id, (task, i) => i.CategoryId)

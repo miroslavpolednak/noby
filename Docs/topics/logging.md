@@ -6,10 +6,6 @@ Vždy se používá pouze instance `ILogger` nebo `ILoggerFactory` z DI - nikdy 
 Nastavení *Serilogu* je společné pro všechny projekty, jedná se o extension metodu do startup aplikace:
 ```csharp
 builder.AddCisLogging()
-...
-var app = builder.Build();
-...
-app.UseCisLogging();
 ```
 
 ## Druhy logů
@@ -46,6 +42,8 @@ Standardně používáme tyto Serilog Sinks: **ApplicationInsights, Seq, File, C
 
 Nastavení těchto sinků je společné pro všechny služby, nicméně je možné jednotlivé Sinky zapínat v *appsettings.json*, nastavovat jejich connection string atd.
 Konfigurace jednotlivých Sinků je v *appsettings.json* v sekci "**CisTelemetry**". Struktura konfigurace viz. `CIS.Infrastructure.Telemetry.Configuration.CisTelemetryConfiguration`.
+
+Důležité je správně nastavit **LogType** v konfiguraci logování, který ovlivňuje jaká URL se budou pro logování ignorovat (např. health check, gRPC reflection).
 
 ```json
   "CisTelemetry": {
@@ -86,16 +84,13 @@ Automaticky přidáváme do kontextu záznamu logu tyto informace:
 - **Version** - verze spuštěné aplikace.  
 - **CisEnvironment** - aplikační prostředí ve kterém je aplikace spouštěna.  
 - **CisAppKey** - název spuštěné aplikace.
-- **CisUserId** - viz. níže.
+- **CisUserId** - ID (v33id) aktuálně přihlášeného uživatele do frontendové aplikace.
+- **CisUserIdent** - login aktuálně přihlášeného uživatele do frontendové aplikace. Login je uložen ve formátu [schema]=[username].
 
-Důležité je správně nastavit **LogType** v konfiguraci logování (v appsettings.json), který ovlivňuje jaký middleware se použije pro nastavení kontextových informací v záznamu logu.
-Oba middleware nastavují *Serilog* tak, aby ignoroval Health Check requesty.
-
-**LoggerCisUserGrpcMiddleware**  
-*LogType = Grpc*. Do kontextu každého záznamu vloží klíč **CisUserId** s hodnotou v33id z HTTP headeru **mp-user-id**. Zároveň *Serilog* ignoruje requesty na gRPC Reflection.
-
-**LoggerCisUserWebapiMiddleware**  
-*LogType = WebApi*. Do kontextu každého záznamu vloží klíč **CisUserId** s hodnotou ID uživatele z **ICurrentUserAccessor.User.Id**. Zároveň *Serilog* loguje pouze requesty s URL začínající na "/api/".
+## Custom Serilog enrichers
+**NobyHeadersEnricher**
+Do kontextu každého záznamu vloží klíč **CisUserId** s hodnotou z HTTP headeru **noby-user-id**.  
+Do kontextu každého záznamu vloží klíč **CisUserIdent** s hodnotou z HTTP headeru **noby-user-ident**.
 
 ## Automatické logování MediatR requestů v gRPC službách
 Registrací logování se do *MediatR* pipeline automaticky přidá `CIS.Infrastructure.CisMediatR.PayloadLoggerBehavior`.
@@ -118,11 +113,12 @@ Zároveň pokud je potřeba v daném projektu logovat vlastní události, vytvo�
 Výsledkem by mělo být, že nikde v kódu nebude logování defaultními *ILogger* metodami.
 
 # Tracing
-Tracing zajišťuje implementace **OpenTelemetry** (https://opentelemetry.io/). Zatím není kam exportovat data, takže není žádná vizualizace requestu.
+Tracing zajišťuje implementace **OpenTelemetry** (https://opentelemetry.io/).
+Zatím není kam exportovat data, takže není žádná vizualizace requestu.
 
-OT zajišťuje propagaci Trace a Span pomocí standardního Activity API v .NETu napříč všemi službami použitými v daném requestu.
+OT zajišťuje propagaci **Trace** a **Span** pomocí standardního *Activity API* v .NETu napříč všemi službami použitými v daném requestu.
 Trace se inicializuje na první aplikaci v systému NOBY - většinou tedy na FE API. 
-Pokud se jedná o request z FE API, vrací se po ukončení requestu TraceId v HTTP headeru odpovědi na frontend. Toto je zajištěno middlewarem `CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware`.
+Pokud se jedná o request z FE API, vrací se po ukončení requestu **TraceId** v HTTP headeru odpovědi na frontend. Toto je zajištěno middlewarem `CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware`.
 
 Nastavení tracingu je pomocí extension metody ve startupu aplikace:
 ```csharp

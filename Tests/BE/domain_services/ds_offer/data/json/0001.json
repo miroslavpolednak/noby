@@ -12,8 +12,8 @@
     "SimulationInputs": {
         "ExpectedDateOfDrawing": {
             "year": 2023,
-            "month": 1,
-            "day": 3
+            "month": 2,
+            "day": 20
         },
         "ProductTypeId": 20001,
         "LoanKindId": 2000,

@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 using System.ComponentModel;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
+using TextAlign = CIS.InternalServices.DocumentGeneratorService.Contracts.TextAlign;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
 
@@ -16,21 +16,37 @@ public class BasicAcroFormWriter : IAcroFormWriter
         _values = values;
     }
 
-    public MergeDocument Write(TemplateLoader templateLoader, string? templateNameModifier = default)
+    public MergeDocument Write(PdfDocument pdfDocument, string? templateNameModifier = default)
     {
-        var document = new MergeDocument(templateLoader.Load(templateNameModifier));
+        var document = new MergeDocument(pdfDocument);
 
         foreach (var value in _values)
         {
             var field = document.Form.Fields[value.Key];
 
             if (field is null)
-                throw new CisArgumentException(400, $"Unknown key {value.Key} for selected template.", nameof(value.Key));
+                throw new CisValidationException(400, $"Unknown key {value.Key} for selected template.");
+
+            if (value.TextAlign != TextAlign.Unkwnon)
+            {
+                CreateAlignedText(pdfDocument, document, value);
+                field.Value = string.Empty;
+
+                continue;
+            }
 
             field.Value = GetFieldValue(value);
         }
 
         return document;
+    }
+
+    private void CreateAlignedText(PdfDocument pdfDocument, Document document, GenerateDocumentPartData data)
+    {
+        var pdfFormField = pdfDocument.Form.Fields[data.Key];
+        var page = document.Pages[pdfFormField.GetOriginalPageNumber() - 1];
+
+        pdfFormField.CreateLabel(page, 2, 0, GetFieldValue(data), pdfFormField.Font, pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
     }
 
     private string GetFieldValue(GenerateDocumentPartData value)
@@ -42,14 +58,14 @@ public class BasicAcroFormWriter : IAcroFormWriter
             GenerateDocumentPartData.ValueOneofCase.Date => GetFormattedString<DateTime>(value.Date, value.StringFormat),
             GenerateDocumentPartData.ValueOneofCase.Number => GetFormattedString(value.Number, value.StringFormat),
             GenerateDocumentPartData.ValueOneofCase.DecimalNumber => GetFormattedString<decimal>(value.DecimalNumber, value.StringFormat),
-            GenerateDocumentPartData.ValueOneofCase.LogicalValue => GetFormattedString(value.LogicalValue),
+            GenerateDocumentPartData.ValueOneofCase.LogicalValue => GetFormattedString(value.LogicalValue, value.StringFormat),
             _ => throw new InvalidEnumArgumentException(nameof(value.ValueCase), (int)value.ValueCase, typeof(GenerateDocumentPartData.ValueOneofCase))
         };
     }
 
     private static string GetFormattedString(string text, string? format) => format is null ? text : string.Format(format, text);
 
-    private static string GetFormattedString(bool boolean) => boolean ? "Yes" : "No";
+    private static string GetFormattedString(bool boolean, string? format) => format ?? (boolean ? "Yes" : "No");
 
     private string GetFormattedString<TValue>(TValue value, string? format) where TValue : notnull => _fieldFormatProvider.Format(value, format);
 }

@@ -1,6 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Api.Services;
-using Newtonsoft.Json.Linq;
-using System.Collections.Immutable;
+﻿using Newtonsoft.Json.Linq;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using static DomainServices.SalesArrangementService.Api.Services.ValidationTransformationCache;
 
@@ -8,7 +7,7 @@ namespace DomainServices.SalesArrangementService.Api.Services;
 
 internal sealed partial class ValidationTransformationServiceFactory
 {
-    private class ValidationTransformationService
+    private sealed class ValidationTransformationService
         : IValidationTransformationService
     {
         public List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.Error[]>? errors)
@@ -53,7 +52,7 @@ internal sealed partial class ValidationTransformationServiceFactory
         {
             ValidationTransformationCache.TransformationItem titem;
             var message = new Contracts.ValidationMessageNoby();
-            
+
             var matches = _arrayIndexesRegex.Matches(item.Parameter);
             if (matches.Any())
             {
@@ -65,33 +64,53 @@ internal sealed partial class ValidationTransformationServiceFactory
                         case "seznam_ucastniku":
                             return getJsonValue($"seznam_ucastniku[{m.Groups["idx"].Value}].klient.jmeno") + " " + getJsonValue($"seznam_ucastniku[{m.Groups["idx"].Value}].klient.prijmeni_nazev");
                         default:
-                            return (Convert.ToInt32(m.Groups["idx"].Value) + 1).ToString();
+                            return (Convert.ToInt32(m.Groups["idx"].Value, CultureInfo.InvariantCulture) + 1).ToString(CultureInfo.InvariantCulture);
                     }
                 }).ToArray();
-                message.Message = string.Format(titem.Text, arguments);
+                message.ParameterName = string.Format(CultureInfo.InvariantCulture, titem.Text, arguments);
             }
             else
             {
                 titem = getTransformationItem(item.Parameter);
-                message.Message = titem.Text;
+                message.ParameterName = titem.Text;
             }
 
-            message.ParameterName = titem.Name;
+            message.Message = getMessage();
             message.Category = titem.Category;
-            
+            message.CategoryOrder = titem.CategoryOrder;
+
             // severity
             if (titem.AlterSeverity == Database.FormValidationTransformationAlterSeverity.Ignore)
                 message.Severity = Contracts.ValidationMessageNoby.Types.NobySeverity.None;
             else if (titem.AlterSeverity == Database.FormValidationTransformationAlterSeverity.AlterToWarning)
                 message.Severity = Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
             else
-                message.Severity = item.ErrorQueue == "A" ? Contracts.ValidationMessageNoby.Types.NobySeverity.Error : Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
-
+            {
+                message.Severity = item.ErrorQueue switch
+                {
+                    "A" => Contracts.ValidationMessageNoby.Types.NobySeverity.Error,
+                    "I" => Contracts.ValidationMessageNoby.Types.NobySeverity.Warning,
+                    _ => Contracts.ValidationMessageNoby.Types.NobySeverity.None
+                };
+            }
+            
             return message;
+
+            string getMessage()
+            {
+                if (string.IsNullOrEmpty(item.Value))
+                {
+                    return string.IsNullOrEmpty(item.AdditionalInformation) ? item.Message : $"{item.Message} ({item.AdditionalInformation})";
+                }
+                else
+                {
+                    return string.IsNullOrEmpty(item.AdditionalInformation) ? $"'{item.Value}' {item.Message}" : $"'{item.Value}' {item.Message} ({item.AdditionalInformation})";
+                }
+            }
 
             TransformationItem getTransformationItem(string key)
             {
-                if (_transformationMatrix.Any(t => t.Key == key))
+                if (_transformationMatrix.ContainsKey(key))
                 {
                     return _transformationMatrix[key];
                 }
@@ -100,7 +119,6 @@ internal sealed partial class ValidationTransformationServiceFactory
                     // polozka neexistuje v transformacni tabulce... co s tim?
                     return new TransformationItem
                     {
-                        Name = item.Parameter,
                         Category = "-unknown-",
                         Text = item.Message
                     };
@@ -117,9 +135,9 @@ internal sealed partial class ValidationTransformationServiceFactory
 
         // instance props
         private JObject? _jsonFormData;
-        private readonly ImmutableDictionary<string, TransformationItem> _transformationMatrix;
+        private readonly IReadOnlyDictionary<string, TransformationItem> _transformationMatrix;
 
-        public ValidationTransformationService(ImmutableDictionary<string, TransformationItem> transformationMatrix)
+        public ValidationTransformationService(IReadOnlyDictionary<string, TransformationItem> transformationMatrix)
         {
             _transformationMatrix = transformationMatrix;
         }

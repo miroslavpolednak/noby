@@ -11,17 +11,28 @@ internal class CreateMortgageCaseRollback
 {
     public async Task ExecuteRollback(Exception exception, CreateMortgageCaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
+        _logger.RollbackHandlerStarted(nameof(CreateMortgageCaseRollback));
+
         // smazat domacnost a customery
         if (_bag.ContainsKey(BagKeyHouseholdId))
+        {
             await _householdService.DeleteHousehold((int)_bag[BagKeyHouseholdId]!, true, cancellationToken);
+            _logger.RollbackHandlerStepDone(BagKeyHouseholdId, _bag[BagKeyHouseholdId]!);
+        }
 
         // smazat SA
         if (_bag.ContainsKey(BagKeySalesArrangementId))
+        {
             await _salesArrangementService.DeleteSalesArrangement((int)_bag[BagKeySalesArrangementId]!, true, cancellationToken);
+            _logger.RollbackHandlerStepDone(BagKeySalesArrangementId, _bag[BagKeySalesArrangementId]!);
+        }
 
         // smazat case
         if (_bag.ContainsKey(BagKeyCaseId))
+        {
             await _caseService.DeleteCase((long)_bag[BagKeyCaseId]!, cancellationToken);
+            _logger.RollbackHandlerStepDone(BagKeyCaseId, _bag[BagKeyCaseId]!);
+        }
     }
 
     public const string BagKeyCaseId = "CaseId";

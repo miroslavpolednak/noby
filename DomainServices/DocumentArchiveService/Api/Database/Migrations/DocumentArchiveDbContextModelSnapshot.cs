@@ -17,7 +17,7 @@ namespace DomainServices.DocumentArchiveService.Api.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -43,7 +43,7 @@ namespace DomainServices.DocumentArchiveService.Api.Database.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime")
-                        .HasColumnName("DATUM_PRIJETI");
+                        .HasColumnName("CREATED_ON");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(254)")
@@ -94,6 +94,10 @@ namespace DomainServices.DocumentArchiveService.Api.Database.Migrations
                         .HasColumnType("tinyint")
                         .HasColumnName("KDV");
 
+                    b.Property<byte>("SendDocumentOnly")
+                        .HasColumnType("tinyint")
+                        .HasColumnName("SEND_DOCUMENT_ONLY");
+
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -107,6 +111,69 @@ namespace DomainServices.DocumentArchiveService.Api.Database.Migrations
                     b.HasKey("DocumentId");
 
                     b.ToTable("DocumentInterface");
+                });
+
+            modelBuilder.Entity("DomainServices.DocumentArchiveService.Api.Database.Entities.FormInstanceInterface", b =>
+                {
+                    b.Property<string>("DocumentId")
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("DOCUMENT_ID");
+
+                    b.Property<string>("Cpm")
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("CPM");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CREATED_AT");
+
+                    b.Property<byte?>("DataType")
+                        .HasColumnType("tinyint")
+                        .HasColumnName("DATA_TYPE");
+
+                    b.Property<string>("FormKind")
+                        .HasColumnType("char(1)")
+                        .HasColumnName("FORM_KIND");
+
+                    b.Property<string>("FormType")
+                        .HasColumnType("varchar(7)")
+                        .HasColumnName("FORM_TYPE");
+
+                    b.Property<string>("Icp")
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("ICP");
+
+                    b.Property<string>("JsonDataClob")
+                        .HasColumnType("varchar(max)")
+                        .HasColumnName("JSON_DATA_CLOB");
+
+                    b.Property<short?>("Status")
+                        .HasColumnType("smallint")
+                        .HasColumnName("STATUS");
+
+                    b.Property<byte?>("Storno")
+                        .HasColumnType("tinyint")
+                        .HasColumnName("STORNO");
+
+                    b.HasKey("DocumentId");
+
+                    b.ToTable("FormInstanceInterface");
+                });
+
+            modelBuilder.Entity("DomainServices.DocumentArchiveService.Api.Database.Entities.FormInstanceInterface", b =>
+                {
+                    b.HasOne("DomainServices.DocumentArchiveService.Api.Database.Entities.DocumentInterface", "Document")
+                        .WithOne("DataSentence")
+                        .HasForeignKey("DomainServices.DocumentArchiveService.Api.Database.Entities.FormInstanceInterface", "DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Document");
+                });
+
+            modelBuilder.Entity("DomainServices.DocumentArchiveService.Api.Database.Entities.DocumentInterface", b =>
+                {
+                    b.Navigation("DataSentence");
                 });
 #pragma warning restore 612, 618
         }

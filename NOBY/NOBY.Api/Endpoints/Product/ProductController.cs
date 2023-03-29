@@ -1,6 +1,5 @@
 ﻿using NOBY.Api.Endpoints.Product.GetProductObligationList.Dto;
 using Swashbuckle.AspNetCore.Annotations;
-using GetProductObligationListRequest = NOBY.Api.Endpoints.Product.GetProductObligationList.GetProductObligationListRequest;
 
 namespace NOBY.Api.Endpoints.Product;
 
@@ -23,6 +22,7 @@ public class ProductController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
     [ProducesResponseType(typeof(List<GetCustomersOnProduct.GetCustomersOnProductCustomer>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<GetCustomersOnProduct.GetCustomersOnProductCustomer>> GetCustomersOnProduct([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomersOnProduct.GetCustomersOnProductRequest(caseId), cancellationToken);
 
@@ -30,13 +30,19 @@ public class ProductController : ControllerBase
     /// Vrátí seznam závazků na daném produktu
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> ProductService/GetProductObligationList<br />
+    ///Seznam z závazků načtený z KonsDB.<br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=058D1B76-375C-4747-90DB-D4E3BE5C46F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Seznam závazků na produktu</returns>
     [HttpGet("{caseId:long}/obligations")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
     [ProducesResponseType(typeof(List<ProductObligation>), StatusCodes.Status200OK)]
-    public async Task<List<ProductObligation>> GetProductObligations([FromRoute] long caseId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetProductObligationList.GetProductObligationListRequest(caseId), cancellationToken);
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetProductObligations([FromRoute] long caseId, CancellationToken cancellationToken)
+    {
+        var items = await _mediator.Send(new GetProductObligationList.GetProductObligationListRequest(caseId), cancellationToken);
+
+        return items.Any() ? Ok(items) : NoContent();
+    }
 }

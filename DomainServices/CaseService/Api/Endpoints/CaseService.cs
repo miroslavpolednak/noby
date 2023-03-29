@@ -29,7 +29,7 @@ internal sealed class CaseService
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCaseState(UpdateCaseStateRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCaseCustomer(UpdateCaseCustomerRequest request, ServerCallContext context)
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCustomerData(UpdateCustomerDataRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<GetCaseCountsResponse> GetCaseCounts(GetCaseCountsRequest request, ServerCallContext context)
@@ -42,6 +42,9 @@ internal sealed class CaseService
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateActiveTasks(UpdateActiveTasksRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> NotifyStarbuild(NotifyStarbuildRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     private readonly IMediator _mediator;

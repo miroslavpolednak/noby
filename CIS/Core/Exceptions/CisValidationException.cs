@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace CIS.Core.Exceptions;
 
@@ -7,16 +6,16 @@ namespace CIS.Core.Exceptions;
 /// Validační chyba.
 /// </summary>
 /// <remarks>
-/// Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation. 
+/// Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation.
 /// Může také ošetřovat stavy místo ArgumentException nebo ArgumentNullException a podobně.
 /// </remarks>
-public class CisValidationException 
+public class CisValidationException
     : Exception
 {
-    // <summary>
+    /// <summary>
     /// Seznam chyb.
     /// </summary>
-    public ImmutableList<CisExceptionItem> Errors { get; init; }
+    public IReadOnlyList<CisExceptionItem> Errors { get; init; }
 
     /// <param name="message">Chybová zpráva</param>
     public CisValidationException(string message)
@@ -31,20 +30,20 @@ public class CisValidationException
 
     /// <param name="exceptionCode">CIS error kód</param>
     /// <param name="message">Chybová zpráva</param>
-    public CisValidationException(string exceptionCode, string message) 
+    public CisValidationException(string exceptionCode, string message)
         : base(message)
     {
         ArgumentNullException.ThrowIfNullOrEmpty(message);
 
-        this.Errors = new List<CisExceptionItem>
+        this.Errors = new CisExceptionItem[1]
         {
             new(exceptionCode, message)
-        }.ToImmutableList();
+        }.AsReadOnly();
     }
 
     /// <param name="errors">Seznam chyb</param>
-    public CisValidationException(ImmutableList<CisExceptionItem> errors)
-        : base(errors.FirstOrDefault()?.Message)
+    public CisValidationException(IReadOnlyList<CisExceptionItem> errors)
+        : base(errors is null ? string.Empty : errors[0].Message)
     {
         if (errors is null || !errors.Any())
             throw new ArgumentNullException(nameof(errors), $"No errors has been specified when creating new CisValidationException");
@@ -53,12 +52,12 @@ public class CisValidationException
     }
 
     /// <param name="errors">Seznam chyb</param>
-    public CisValidationException(IEnumerable<CisExceptionItem> errors) 
+    public CisValidationException(IEnumerable<CisExceptionItem> errors)
         : base(errors.FirstOrDefault()?.Message)
-    { 
+    {
         if (errors is null || !errors.Any())
             throw new ArgumentNullException(nameof(errors), $"No errors has been specified when creating new CisValidationException");
 
-        this.Errors = errors.ToImmutableList();
+        this.Errors = errors.ToArray().AsReadOnly();
     }
 }

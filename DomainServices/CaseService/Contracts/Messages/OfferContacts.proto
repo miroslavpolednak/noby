@@ -7,5 +7,10 @@ message OfferContacts {
 	string EmailForOffer = 1;
 
 	// Telefon (pouze pro účel nabídky)
-	string PhoneNumberForOffer = 2;
+	Phone PhoneNumberForOffer = 2;
+}
+
+message Phone {
+	string PhoneNumber = 1;
+	string PhoneIDC = 2;
 }

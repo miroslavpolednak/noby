@@ -12,14 +12,16 @@ internal static class CaseServiceDatabaseExpressions
             CaseId = t.CaseId,
             State = t.State,
             StateUpdatedOn = t.StateUpdateTime,
+            StateUpdatedInStarbuild = (Contracts.UpdatedInStarbuildStates)t.StateUpdatedInStarbuild,
             CaseOwner = new CIS.Infrastructure.gRPC.CisTypes.UserInfo(t.OwnerUserId, t.OwnerUserName),
-            Data = new Contracts.CaseData
+            Data = new()
             {
                 ProductTypeId = t.ProductTypeId,
                 TargetAmount = t.TargetAmount,
+                IsEmployeeBonusRequested = t.IsEmployeeBonusRequested,
                 ContractNumber = t.ContractNumber ?? ""
             },
-            Customer = new Contracts.CustomerData
+            Customer = new()
             {
                 Identity = !t.CustomerIdentityId.HasValue ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(t.CustomerIdentityId, t.CustomerIdentityScheme),
                 DateOfBirthNaturalPerson = t.DateOfBirthNaturalPerson,
@@ -27,10 +29,14 @@ internal static class CaseServiceDatabaseExpressions
                 Name = t.Name ?? "",
                 Cin = t.Cin ?? ""
             },
-            OfferContacts = new Contracts.OfferContacts
+            OfferContacts = new()
             {
                 EmailForOffer = t.EmailForOffer ?? "",
-                PhoneNumberForOffer = t.PhoneNumberForOffer ?? ""
+                PhoneNumberForOffer = new()
+                {
+                    PhoneNumber = t.PhoneNumberForOffer ?? "",
+                    PhoneIDC = t.PhoneIDCForOffer ?? ""
+                }
             },
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime)
         };

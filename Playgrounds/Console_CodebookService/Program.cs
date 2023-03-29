@@ -25,7 +25,3 @@ var service = serviceProvider.GetService<DomainServices.CodebookService.Clients.
 Console.WriteLine("RUN 1");
 var result = await service.ProductTypes();
 Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result));
-
-Console.WriteLine("RUN 2");
-var result2 = await service.MyTestCodebook();
-Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result2));

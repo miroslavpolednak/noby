@@ -1,4 +1,4 @@
-﻿namespace CIS.Infrastructure.StartupExtensions;
+﻿namespace CIS.Infrastructure.WebApi;
 
 public static class CisWebApiCors
 {

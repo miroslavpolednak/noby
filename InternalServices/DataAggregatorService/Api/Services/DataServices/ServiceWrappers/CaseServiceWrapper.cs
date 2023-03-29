@@ -12,11 +12,12 @@ internal class CaseServiceWrapper : IServiceWrapper
         _caseService = caseService;
     }
 
+    public DataSource DataSource => DataSource.CaseService;
+
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
-        if (!input.CaseId.HasValue)
-            throw new ArgumentNullException(nameof(InputParameters.CaseId));
+        input.ValidateCaseId();
 
-        data.Case = await _caseService.GetCaseDetail(input.CaseId.Value, cancellationToken);
+        data.Case = await _caseService.GetCaseDetail(input.CaseId!.Value, cancellationToken);
     }
 }

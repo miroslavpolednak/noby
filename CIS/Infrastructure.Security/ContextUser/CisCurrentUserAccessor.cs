@@ -1,5 +1,5 @@
-﻿using CIS.Core.Results;
-using CIS.Core.Security;
+﻿using CIS.Core.Security;
+using System.Security.Claims;
 
 namespace CIS.Infrastructure.Security.ContextUser;
 
@@ -15,6 +15,13 @@ public sealed class CisCurrentContextUserAccessor
     public CisCurrentContextUserAccessor(IHttpContextAccessor? httpContext)
     {
         _httpContext = httpContext;
+    }
+
+    public IEnumerable<Claim> Claims
+    {
+#pragma warning disable CS8603 // Possible null reference return.
+        get => _httpContext!.HttpContext?.User.Claims;
+#pragma warning restore CS8603 // Possible null reference return.
     }
 
     public ICurrentUser? User

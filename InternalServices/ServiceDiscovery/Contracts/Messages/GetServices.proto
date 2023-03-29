@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.ServiceDiscovery;
+
+option csharp_namespace = "CIS.InternalServices.ServiceDiscovery.Contracts";
+
+import "Messages/DiscoverableService.proto";
+
+message GetServicesRequest {
+	// Název / kód CisEnvironment prostředí
+	string Environment = 1;
+
+	// Typ služby
+	CIS.InternalServices.ServiceDiscovery.ServiceTypes ServiceType = 2;
+}
+
+message GetServicesResponse {
+	// Služby nalezené pro dané prostředí
+	repeated CIS.InternalServices.ServiceDiscovery.DiscoverableService Services = 1;
+
+	// Název / kód prostředí pro které je daná instance služby platná
+	string EnvironmentName = 2;
+}

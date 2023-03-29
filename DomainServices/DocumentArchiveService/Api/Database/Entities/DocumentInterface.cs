@@ -35,4 +35,8 @@ public class DocumentInterface
     public string? FolderDocumentId { get; set; }
 
     public short Kdv { get; set; }
+
+    public short SendDocumentOnly { get; set; }
+
+    public FormInstanceInterface? DataSentence { get; set; }
 }

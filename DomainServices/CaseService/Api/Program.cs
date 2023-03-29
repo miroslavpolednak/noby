@@ -6,6 +6,7 @@ using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
 using CIS.InternalServices;
 using DomainServices.CaseService.Api.Endpoints;
+using CIS.Infrastructure.CisMediatR;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -18,19 +19,17 @@ var webAppOptions = runAsWinSvc
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
 #region register builder
+builder.Services.AddAttributedServices(typeof(Program));
+
 // globalni nastaveni prostredi
 builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
+    .AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 
 // logging 
 builder
     .AddCisLogging()
     .AddCisTracing();
-
-// health checks
-builder.AddCisHealthChecks();
-builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
 builder.AddCisServiceAuthentication();
@@ -42,15 +41,19 @@ builder.Services
     .AddUserService()
     .AddCisServiceDiscovery();
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+builder.Services.AddCisMediatrRollbackCapability();
+
 // add this service
 builder.AddCaseService();
 
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
+builder.Services
+    .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+    .AddGrpcReflection()
+    .AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    });
+builder.AddCisGrpcHealthChecks();
 #endregion register builder
 
 // kestrel configuration
@@ -66,13 +69,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
-app.UseCisLogging();
 
-app.MapCisHealthChecks();
-
-app.MapGrpcService<CaseService>();
-
+app.MapCisGrpcHealthChecks();
 app.MapGrpcReflectionService();
+app.MapGrpcService<CaseService>();
 
 try
 {

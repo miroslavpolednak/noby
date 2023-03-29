@@ -2,8 +2,7 @@
 using System.Runtime.InteropServices;
 using CIS.Core.Attributes;
 using CIS.Core.Security;
-using CIS.Foms.Enums;
-using CIS.InternalServices.DataAggregator.Configuration;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CodebookService.Clients;
 
 namespace NOBY.Api.Endpoints.Document.Shared;
@@ -21,19 +20,6 @@ public class DocumentManager
     }
 
     public int UserId => _userAccessor.User!.Id;
-
-    internal async Task<TRequest> CreateRequest<TRequest>(DocumentTemplateType templateType, InputParameters inputParameters, CancellationToken cancellationToken)
-        where TRequest : GetDocumentBaseRequest, new()
-    {
-        var templateVersion = await GetTemplateVersion((int)templateType, cancellationToken);
-
-        return new TRequest
-        {
-            TemplateType = templateType,
-            TemplateVersion = templateVersion,
-            InputParameters = inputParameters
-        };
-    }
 
     internal InputParameters GetOfferInput(int offerId) =>
         new()
@@ -61,27 +47,18 @@ public class DocumentManager
     {
         var nameParts = new[]
         {
-            await GetTemplateShortName(),
+            await GetTemplateFileName(),
             baseRequest.InputParameters.CaseId?.ToString(CultureInfo.InvariantCulture),
             DateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)
         };
 
         return string.Join("_", nameParts.Where(str => !string.IsNullOrWhiteSpace(str))) + ".pdf";
 
-        async Task<string> GetTemplateShortName()
+        async Task<string> GetTemplateFileName()
         {
-            var templates = await _codebookService.DocumentTemplateTypes(cancellationToken);
+            var templates = await _codebookService.DocumentTypes(cancellationToken);
 
-            return templates.First(t => t.Id == (int)baseRequest.TemplateType).ShortName;
+            return templates.First(t => t.Id == (int)baseRequest.DocumentType).FileName;
         }
-    }
-
-    private async Task<string> GetTemplateVersion(int templateTypeId, CancellationToken cancellationToken)
-    {
-        var versions = await _codebookService.DocumentTemplateVersions(cancellationToken);
-
-        return versions.Where(x => x.DocumentTemplateTypeId == templateTypeId)
-                       .Select(x => x.DocumentVersion)
-                       .FirstOrDefault() ?? throw new CisValidationException($"Document Version was not found for template type {templateTypeId}");
     }
 }

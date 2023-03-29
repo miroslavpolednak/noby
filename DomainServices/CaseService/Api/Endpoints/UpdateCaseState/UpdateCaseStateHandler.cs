@@ -10,39 +10,48 @@ internal sealed class UpdateCaseStateHandler
     {
         // zjistit zda existuje case
         var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation)
-            ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
+        int currentCaseState = entity.State;
 
         // overit ze case state existuje
         if (!(await _codebookService.CaseStates(cancellation)).Any(t => t.Id == request.State))
-            throw new CisNotFoundException(13011, nameof(request.State), request.State);
-
-        if (entity.State == request.State)
-            throw new CisValidationException(13005, "Case state already set to the same value");
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseStateNotFound, request.State);
+        }
+        
+        if (currentCaseState == request.State)
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseStateAlreadySet);
+        }
 
         // Zakázané přechody mezi stavy
-        if (entity.State == 6 || entity.State == 2 && request.State == 1)
-            throw new CisValidationException(13006, "Case state change not allowed");
+        if ((currentCaseState == 6 || currentCaseState == 7)
+            || (currentCaseState == 2 && request.State == 1))
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseStateNotAllowed);
+
+        // pokud je true, meli bychom poslat info SB se zmenou stavu
+        bool shouldNotifySbAboutStateChange = request.StateUpdatedInStarbuild == UpdatedInStarbuildStates.Unknown && _starbuildStateUpdateStates.Contains(currentCaseState);
 
         // update v DB
+        entity.StateUpdatedInStarbuild = (byte)request.StateUpdatedInStarbuild;
         entity.State = request.State;
         entity.StateUpdateTime = _dateTime.Now;
 
         await _dbContext.SaveChangesAsync(cancellation);
-        
+
         // fire notification
-        if (entity.State == 1)
-            await _mediator.Publish(new Notifications.CaseStateChangedNotification
+        if (shouldNotifySbAboutStateChange)
+        {
+            await _mediator.Send(new NotifyStarbuildRequest
             {
-                CaseId = request.CaseId,
-                CaseStateId = request.State,
-                ClientName = $"{entity.FirstNameNaturalPerson} {entity.Name}",
-                ProductTypeId = entity.ProductTypeId,
-                CaseOwnerUserId = entity.OwnerUserId,
-                ContractNumber = entity.ContractNumber
+                CaseId = request.CaseId
             }, cancellation);
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
+
+    private static int[] _starbuildStateUpdateStates = new[] { 1, 2, 7, 9 };
 
     private readonly CIS.Core.IDateTime _dateTime;
     private readonly IMediator _mediator;

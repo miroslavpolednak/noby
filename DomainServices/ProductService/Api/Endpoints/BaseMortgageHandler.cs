@@ -57,15 +57,4 @@ internal class BaseMortgageHandler
         // call endpoint
         await _mpHomeClient.UpdateLoan(loanId, mortgageRequest);
     }
-
-    /// <summary>
-    /// Returns mapping LoanType -> ProductTypeId
-    /// </summary>
-    protected async Task<Dictionary<int, int>> GetMapLoanTypeToProductTypeId()
-    {
-        var list = await _codebookService.ProductTypes();
-#pragma warning disable CS8629 // Nullable value type may be null.
-        return list.Where(i => i.KonsDbLoanType.HasValue).ToDictionary(i => i.KonsDbLoanType.Value, i => i.Id);
-#pragma warning restore CS8629 // Nullable value type may be null.
-    }
 }

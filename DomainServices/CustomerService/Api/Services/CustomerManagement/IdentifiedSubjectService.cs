@@ -1,4 +1,5 @@
-﻿using CIS.Core.Exceptions;
+﻿using System.Globalization;
+using CIS.Core.Exceptions;
 using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
@@ -8,11 +9,13 @@ using FastEnumUtility;
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
-internal class IdentifiedSubjectService
+internal sealed class IdentifiedSubjectService
 {
+    private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
     private readonly ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient _identifiedSubjectClient;
     private readonly ICodebookServiceClients _codebook;
     private readonly CustomerManagementErrorMap _errorMap;
+    private readonly ExternalServices.Kyc.V1.IKycClient _kycClient;
 
     private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
     private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
@@ -20,11 +23,13 @@ internal class IdentifiedSubjectService
     private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
     private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public IdentifiedSubjectService(ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap)
+    public IdentifiedSubjectService(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
     {
+        _customerManagement = customerManagement;
         _identifiedSubjectClient = identifiedSubjectClient;
         _codebook = codebook;
         _errorMap = errorMap;
+        _kycClient = kycClient;
     }
 
     public async Task<Identity> CreateSubject(CreateCustomerRequest request, CancellationToken cancellationToken)
@@ -49,12 +54,68 @@ internal class IdentifiedSubjectService
             // todo: error_code
             throw new CisArgumentException(9999999, "Customer does not have KB Identity", "IdentityId");
         }
-        
+
+        var customer = await _customerManagement.GetDetail(customerId.IdentityId, cancellationToken);
+
         var identifiedSubject = BuildUpdateRequest(request);
 
         await _identifiedSubjectClient.UpdateIdentifiedSubject(customerId.IdentityId, identifiedSubject, cancellationToken);
+        
+        // https://jira.kb.cz/browse/HFICH-3555
+        await callSetSocialCharacteristics(customerId.IdentityId, request, cancellationToken);
+        await callSetKyc(customerId.IdentityId, request, customer.IsPoliticallyExposed, cancellationToken);
     }
-    
+
+    private async Task callSetKyc(long customerId, UpdateCustomerRequest request, bool? isPoliticallyExposed, CancellationToken cancellationToken)
+    {
+        var model = new ExternalServices.Kyc.V1.Contracts.Kyc
+        {
+            IsUSPerson = request.NaturalPerson?.IsUSPerson ?? false
+        };
+
+        // jedine v tomto pripade se muze do CM poslat neco v IsPoliticallyExposed
+        if (!isPoliticallyExposed.HasValue && (request.NaturalPerson?.IsUSPerson ?? false))
+        {
+            model.IsPoliticallyExposed = false;
+        }
+
+        if (request.NaturalPerson?.TaxResidence is not null)
+        {
+#pragma warning disable CS8601 // Possible null reference assignment.
+            model.TaxResidence = new ExternalServices.Kyc.V1.Contracts.TaxResidence
+            {
+                ResidenceCountries = request.NaturalPerson?.TaxResidence?.ResidenceCountries?.Select(x => new ExternalServices.Kyc.V1.Contracts.TaxResidenceCountry
+                {
+                    Tin = x.Tin,
+                    TinMissingReasonDescription = x.TinMissingReasonDescription,
+                    CountryCode = _countries.FirstOrDefault(c => c.Id == x.CountryId)?.ShortName
+                }).ToList(),
+                ValidFrom = request.NaturalPerson!.TaxResidence.ValidFrom
+            };
+#pragma warning restore CS8601 // Possible null reference assignment.
+        }
+
+        await _kycClient.SetKyc(customerId, model, cancellationToken);
+    }
+
+    private async Task callSetSocialCharacteristics(long customerId, UpdateCustomerRequest request, CancellationToken cancellationToken)
+    {
+        //! Honza rika, ze neni treba posilat nic jineho nez Education
+        var model = new ExternalServices.Kyc.V1.Contracts.SocialCharacteristics
+        {
+            Education = new()
+            {
+                Code = (await _codebook.EducationLevels(cancellationToken)).FirstOrDefault(t => t.Id == request.NaturalPerson?.EducationLevelId)?.RdmCode ?? ""
+            }/*,
+            MaritalStatus = new()
+            {
+                Code = _maritals.FirstOrDefault(t => t.Id == request.NaturalPerson?.MaritalStatusStateId)?.RdmMaritalStatusCode ?? ""
+            }*/
+        };
+
+        await _kycClient.SetSocialCharacteristics(customerId, model, cancellationToken);
+    }
+
     private Task InitializeCodebooks(CancellationToken cancellationToken)
     {
         return Task.WhenAll(Genders(), Titles(), Countries(), Maritals(), DocTypes());
@@ -75,9 +136,11 @@ internal class IdentifiedSubjectService
                 LegalStatus = __Contracts.PartyLegalStatus.P,
                 NaturalPersonAttributes = CreateNaturalPersonAttributes(request.NaturalPerson)
             },
-            PrimaryAddress = CreatePrimaryAddress(request.Addresses),
-            ContactAddress = CreateContactAddress(request.Addresses),
+            PrimaryAddress = CreateAddress(request.Addresses, AddressTypes.Permanent, CreatePrimaryAddress),
+            ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
+            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Other, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
+            CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
             PrimaryEmail = CreatePrimaryEmail(request.Contacts)
         };
@@ -92,14 +155,16 @@ internal class IdentifiedSubjectService
                 LegalStatus = __Contracts.PartyLegalStatus.P,
                 NaturalPersonAttributes = CreateNaturalPersonAttributes(request.NaturalPerson)
             },
-            PrimaryAddress = CreatePrimaryAddress(request.Addresses),
-            ContactAddress = CreateContactAddress(request.Addresses),
+            PrimaryAddress = CreateAddress(request.Addresses, AddressTypes.Permanent, CreatePrimaryAddress),
+            ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
+            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Other, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
+            CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
             PrimaryEmail = CreatePrimaryEmail(request.Contacts)
         };
     }
-    
+
     private __Contracts.NaturalPersonAttributes CreateNaturalPersonAttributes(NaturalPerson naturalPerson)
     {
         var citizenshipCodes = naturalPerson.CitizenshipCountriesId.Select(id => _countries.First(c => c.Id == id).ShortName).ToList();
@@ -120,37 +185,14 @@ internal class IdentifiedSubjectService
         };
     }
 
-    private __Contracts.PrimaryAddress? CreatePrimaryAddress(IEnumerable<GrpcAddress> addresses)
+    private TAddress? CreateAddress<TAddress>(IEnumerable<GrpcAddress> addresses, AddressTypes addressType, Func<__Contracts.Address, DateTime?, TAddress> factory)
     {
-        var primaryAddress = addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Permanent);
+        var address = addresses.FirstOrDefault(a => a.AddressTypeId == (int)addressType);
 
-        if (primaryAddress is null)
+        if (address is null)
             return default;
 
-        return new()
-        {
-            Address = CreateAddress(primaryAddress),
-            PrimaryAddressFrom = primaryAddress.PrimaryAddressFrom
-        };
-    }
-
-    private __Contracts.ContactAddress? CreateContactAddress(IEnumerable<GrpcAddress> addresses)
-    {
-        var contactAddress = addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Mailing);
-
-        if (contactAddress is null)
-            return default;
-
-        return new()
-        {
-            Confirmed = true,
-            Address = CreateAddress(contactAddress)
-        };
-    }
-
-    private __Contracts.Address CreateAddress(GrpcAddress address)
-    {
-        return new()
+        var parsedAddress = new __Contracts.Address
         {
             City = address.City,
             PostCode = address.Postcode.ToCMString(),
@@ -165,7 +207,26 @@ internal class IdentifiedSubjectService
             CountrySubdivision = address.CountrySubdivision.ToCMString(),
             AddressPointId = address.AddressPointId.ToCMString()
         };
+
+        return factory(parsedAddress, address.PrimaryAddressFrom);
     }
+
+    private static __Contracts.PrimaryAddress CreatePrimaryAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+        new()
+        {
+            Address = address,
+            PrimaryAddressFrom = primaryAddressFrom
+        };  
+    
+    private static __Contracts.ContactAddress CreateContactAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+        new()
+        {
+            Address = address,
+            Confirmed = true
+        };
+
+    private static __Contracts.TemporaryStayAddress CreateTemporaryStayAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+        new() { Address = address };
 
     private __Contracts.IdentificationDocument? CreateIdentificationDocument(Contracts.IdentificationDocument? document)
     {
@@ -179,26 +240,33 @@ internal class IdentifiedSubjectService
             IssuedBy = document.IssuedBy.ToCMString(),
             IssuingCountryCode = _countries.FirstOrDefault(c => c.Id == document.IssuingCountryId)?.ShortName,
             IssuedOn = document.IssuedOn,
-            ValidTo = document.ValidTo
+            ValidTo = document.ValidTo,
+        };
+    }
+
+    private __Contracts.CustomerIdentification? CreateCustomerIdentification(CustomerIdentification? customerIdentification)
+    {
+        if (customerIdentification is null)
+            return default;
+
+        return new __Contracts.CustomerIdentification
+        {
+            IdentificationMethodCode = customerIdentification.IdentificationMethodId.ToString(CultureInfo.InvariantCulture),
+            IdentificationDate = customerIdentification.IdentificationDate,
+            CzechIdentificationNumber = customerIdentification.CzechIdentificationNumber.ToCMString()
         };
     }
 
     private static __Contracts.PrimaryPhone? CreatePrimaryPhone(IEnumerable<Contact> contacts)
     {
         var phone = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil);
-
-        if (phone is null || string.IsNullOrWhiteSpace(phone.Value))
+        if (string.IsNullOrWhiteSpace(phone?.Mobile?.PhoneNumber))
             return default;
-
-        var phoneNumber = phone.Value.Replace(" ", "");
-
-        var phoneIDC = phoneNumber[..Math.Max(0, phoneNumber.Length - 9)];
-        phoneNumber = phoneNumber.Substring(phoneIDC.Length, phoneNumber.Length - phoneIDC.Length);
 
         return new()
         {
-            PhoneIDC = phoneIDC,
-            PhoneNumber = phoneNumber
+            PhoneIDC = phone.Mobile.PhoneIDC,
+            PhoneNumber = phone.Mobile.PhoneNumber
         };
     }
 
@@ -211,7 +279,7 @@ internal class IdentifiedSubjectService
 
         return new()
         {
-            EmailAddress = email.Value
+            EmailAddress = email.Email.EmailAddress
         };
     }
 }

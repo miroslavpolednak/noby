@@ -6,35 +6,20 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateOblig
 internal sealed class CreateObligationRequestValidator
     : AbstractValidator<CreateObligationRequest>
 {
-    public CreateObligationRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public CreateObligationRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService, Database.HouseholdServiceDbContext dbContext)
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
-            .WithMessage("CustomerOnSAId must be > 0").WithErrorCode("16024");
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSAIdIsEmpty);
 
-        RuleFor(t => t.ObligationTypeId)
-            .MustAsync(async (t, token) => !t.HasValue || (await codebookService.ObligationTypes(token)).Any(x => x.Id == t.Value))
-            .WithMessage("ObligationTypeId is not valid").WithErrorCode("16048");
+        RuleFor(t => t)
+            .SetValidator(new Validators.ObligationValidator(codebookService));
 
-        RuleFor(t => t.CreditCardLimit)
-            .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 1 && r.ObligationTypeId.GetValueOrDefault() != 2)
-            .WithMessage("CreditCardLimit not allowed for current ObligationTypeId").WithErrorCode("16049");
-
-        RuleFor(t => t.LoanPrincipalAmount)
-            .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 3 && r.ObligationTypeId.GetValueOrDefault() != 4)
-            .WithMessage("LoanPrincipalAmount not allowed for current ObligationTypeId").WithErrorCode("16050");
-
-        RuleFor(t => t.InstallmentAmount)
-            .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 3 && r.ObligationTypeId.GetValueOrDefault() != 4)
-            .WithMessage("InstallmentAmount not allowed for current ObligationTypeId").WithErrorCode("16051");
-
-        RuleFor(t => t.Creditor)
-            .ChildRules(v =>
-            {
-                v.RuleFor(t => t.CreditorId)
-                    .Must((creditor, t) => string.IsNullOrEmpty(creditor.CreditorId) || string.IsNullOrEmpty(creditor.Name))
-                    .WithMessage("Creditor.CreditorId and Creditor.Name can't be set in the same time").WithErrorCode("16052");
-            });
+        // customer nenalezen v DB
+        RuleFor(t => t.CustomerOnSAId)
+            .MustAsync(async (customerOnSAId, cancellationToken) => await dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerOnSAId, cancellationToken))
+            .WithErrorCode(ErrorCodeMapper.CustomerOnSANotFound)
+            .ThrowCisException(GrpcValidationBehaviorExceptionTypes.CisNotFoundException);
 
         /*RuleFor(t => t.Request.Correction)
             .ChildRules(v =>

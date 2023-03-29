@@ -18,8 +18,8 @@ Konfigurace se načítá z *appsettings.json* a je popsána [zde](grpc-services-
 	"DefaultApplicationKey": "DS:CaseService",
 	"EnvironmentName": "FAT",
 	"ServiceDiscoveryUrl": "https://172.30.35.51:31000",
-	"InternalServicesLogin": "a",
-	"InternalServicePassword": "a"
+	"InternalServicesLogin": "XX_NOBY_RMT_USR_TEST",
+	"InternalServicePassword": "ppmlesnrTWYSDYGDR!98538535634544"
 }
 ```
 Při startupu se pak načíta a vkládá do DI pomocí této extension metody:

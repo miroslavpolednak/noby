@@ -4,13 +4,6 @@ namespace DomainServices.ProductService.Clients;
 
 public interface IProductServiceClient
 {
-    //Task<IServiceCallResult> CreateProductInstance(long caseId, int ProductInstanceTypeId, CancellationToken cancellationToken = default(CancellationToken));
-    //Task<IServiceCallResult> GetHousingSavingsInstance(long productInstanceId, CancellationToken cancellationToken = default(CancellationToken));
-    //Task<IServiceCallResult> GetHousingSavingsInstanceBasicDetail(long productInstanceId, CancellationToken cancellationToken = default(CancellationToken));
-    //Task<IServiceCallResult> GetProductInstanceList(long caseId, CancellationToken cancellationToken = default(CancellationToken));
-    //Task<IServiceCallResult> UpdateHousingSavingsInstance(long productInstanceId, CancellationToken cancellationToken = default(CancellationToken));
-
-
     /// <summary>
     /// Seznam produktů dle ID obchodního případu
     /// </summary>

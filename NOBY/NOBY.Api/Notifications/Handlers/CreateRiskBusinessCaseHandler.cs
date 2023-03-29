@@ -1,10 +1,6 @@
 ﻿using DomainServices.SalesArrangementService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.CaseService.Clients;
-using _Case = DomainServices.CaseService.Contracts;
-using _SA = DomainServices.SalesArrangementService.Contracts;
-using _HO = DomainServices.HouseholdService.Contracts;
-using _Offer = DomainServices.OfferService.Contracts;
 using CIS.Foms.Enums;
 using DomainServices.HouseholdService.Clients;
 
@@ -51,7 +47,7 @@ internal class CreateRiskBusinessCaseHandler
         await _salesArrangementService.UpdateLoanAssessmentParameters(notification.SalesArrangementId, null, riskSegment, null, saInstance.RiskBusinessCaseExpirationDate, cancellationToken);
 
         // get rbcId
-        var createRBCResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateResponse>(await _riskBusinessCaseService.CreateCase(notification.SalesArrangementId, offerInstance.ResourceProcessId, cancellationToken));
+        var createRBCResponse = await _riskBusinessCaseService.CreateCase(notification.SalesArrangementId, offerInstance.ResourceProcessId, cancellationToken);
 
         // ulozit na SA
         await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, createRBCResponse.RiskBusinessCaseId, null, cancellationToken);
@@ -86,7 +82,7 @@ internal class CreateRiskBusinessCaseHandler
                 }
             };
 
-            return ServiceCallResult.ResolveAndThrowIfError<string>(await _loanApplicationService.Save(loanApplicationRequest, cancellationToken));
+            return await _loanApplicationService.Save(loanApplicationRequest, cancellationToken);
         }
         #endregion local fce
     }

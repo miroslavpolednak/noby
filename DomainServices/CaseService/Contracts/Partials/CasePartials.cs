@@ -3,7 +3,7 @@
 namespace DomainServices.CaseService.Contracts;
 
 public partial class CreateCaseRequest
-    : MediatR.IRequest<CreateCaseResponse>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<CreateCaseResponse>, CIS.Core.Validation.IValidatableRequest, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 { }
 
 public partial class GetCaseDetailRequest
@@ -26,7 +26,7 @@ public partial class UpdateCaseStateRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 
-public partial class UpdateCaseCustomerRequest
+public partial class UpdateCustomerDataRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 
@@ -47,5 +47,9 @@ public partial class UpdateActiveTasksRequest
 { }
 
 public partial class UpdateOfferContactsRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+{ }
+
+public partial class NotifyStarbuildRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }

@@ -7,30 +7,30 @@ public class SendSmsRequestValidator : AbstractValidator<SendSmsRequest>
 {
     public SendSmsRequestValidator()
     {
-        RuleFor(request => request.Phone)
+        RuleFor(request => request.PhoneNumber)
             .NotNull()
-                .WithErrorCode(ErrorCodes.SendSms.PhoneRequired)
-                .WithMessage($"{nameof(SendSmsRequest.Phone)} required.")
-            .SetValidator(new PhoneValidator())
-                .WithErrorCode(ErrorCodes.SendSms.PhoneInvalid)
-                .WithMessage(nameof(SendSmsRequest.Phone));
+                .WithErrorCode(ErrorCodes.Validation.SendSms.PhoneNumberRequired)
+                .WithMessage($"{nameof(SendSmsRequest.PhoneNumber)} required.")
+            .SetValidator(new PhoneNumberValidator())
+                .WithErrorCode(ErrorCodes.Validation.SendSms.PhoneNumberInvalid)
+                .WithMessage($"Invalid {nameof(SendSmsRequest.PhoneNumber)}.");
 
         RuleFor(request => request.ProcessingPriority)
             .GreaterThan(0)
-                .WithErrorCode(ErrorCodes.SendSms.ProcessPriorityInvalid)
-                .WithMessage(nameof(SendSmsRequest.ProcessingPriority));
+                .WithErrorCode(ErrorCodes.Validation.SendSms.ProcessPriorityInvalid)
+                .WithMessage($"Invalid {nameof(SendSmsRequest.ProcessingPriority)}.");
 
         RuleFor(request => request.Type)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.SendSms.TypeInvalid)
+                .WithErrorCode(ErrorCodes.Validation.SendSms.TypeInvalid)
                 .WithMessage($"Invalid {nameof(SendSmsRequest.Type)}.");
 
         RuleFor(request => request.Text)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.SendSms.TextRequired)
+                .WithErrorCode(ErrorCodes.Validation.SendSms.TextRequired)
                 .WithMessage($"{nameof(SendSmsRequest.Text)} required.")
             .MaximumLength(480)
-                .WithErrorCode(ErrorCodes.SendSms.TextLengthLimitExceeded)
+                .WithErrorCode(ErrorCodes.Validation.SendSms.TextLengthLimitExceeded)
                 .WithMessage($"Maximum length of {nameof(SendSmsRequest.Text)} is 480.");
     }    
 }

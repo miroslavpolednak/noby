@@ -32,3 +32,15 @@
     - python -m pytest --no-header -vv
     - python -m pytest --no-header -vv -s
     - spouštět ze složky Test/BE (inicializační soubor '/Tests/BE/tests/__init__.py' zajistí načtení stubs)
+
+https://www.programiz.com/python-programming/online-compiler/
+
+### Modifications (regex)
+
+https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285
+
+    - Date(days=10)
+    - ProductType(type=Mortgage) [Mortgage, MortgageBridging, MortgageWithoutIncome, MortgageNonPurposePart, MortgageAmerican]
+    - LoanKind(kind=Standard)    [Standard, MortgageWithoutRealty]
+    - HouseholdType(type=Mai)    [Main, Codebtor, Garantor]
+    

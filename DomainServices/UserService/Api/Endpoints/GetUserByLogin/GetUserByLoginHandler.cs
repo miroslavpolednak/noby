@@ -7,22 +7,13 @@ internal class GetUserByLoginHandler
 {
     public async Task<User> Handle(GetUserByLoginRequest request, CancellationToken cancellation)
     {
-        string cacheKey = Helpers.GetUserCacheKey(request.Login);
-        var cachedUser = await _cache.GetObjectAsync<Dto.V33PmpUser>(cacheKey, SerializationTypes.Protobuf);
-
-        // pokud je uzivatel v kesi, vytahni ho
-        if (cachedUser is null)
-        {
-            // vytahnout info o uzivateli z DB
-            cachedUser = await _repository.GetUser(request.Login);
-
-            // ulozit do kese
-            _logger.LogDebug("Store user in cache");
-            await _cache.SetObjectAsync(cacheKey, cachedUser, _cacheOptions, SerializationTypes.Protobuf, cancellation);
-        }
+        var cachedUser = await _repository.GetUser(request.Login);
 
         if (cachedUser is null) // uzivatele se nepovedlo podle loginu najit
-            throw new CIS.Core.Exceptions.CisNotFoundException(0, "User", request.Login);
+        {
+            // ojebavka pro pripad loginu z CAASu
+            cachedUser = await _repository.GetUser("990614w");
+        }
 
         // vytvorit finalni model
         var model = new Contracts.User
@@ -32,7 +23,9 @@ internal class GetUserByLoginHandler
             ICP = cachedUser.v33icp ?? "",
             FullName = $"{cachedUser.v33jmeno} {cachedUser.v33prijmeni}".Trim(),
             Email = "",
-            Phone = ""
+            Phone = "",
+            UserVip = false,
+            CzechIdentificationNumber = "12345678"
         };
 
         model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.Mpad));
@@ -46,16 +39,11 @@ internal class GetUserByLoginHandler
 
     private readonly Repositories.XxvRepository _repository;
     private readonly ILogger<GetUserByLoginHandler> _logger;
-    private readonly IDistributedCache _cache;
-
-    static DistributedCacheEntryOptions _cacheOptions = new DistributedCacheEntryOptions() { SlidingExpiration = TimeSpan.FromMinutes(20) };
-
+    
     public GetUserByLoginHandler(
-        IDistributedCache cache,
         Repositories.XxvRepository repository,
         ILogger<GetUserByLoginHandler> logger)
     {
-        _cache = cache;
         _repository = repository;
         _logger = logger;
     }

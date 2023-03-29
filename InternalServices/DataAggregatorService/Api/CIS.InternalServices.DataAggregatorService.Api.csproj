@@ -4,20 +4,25 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Version>1.0.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Endpoints\GetDocumentData\" />
     <Folder Include="Endpoints\GetEasForm\" />
+    <Folder Include="Services\Documents\TemplateData\LoanApplication\" />
+    <Folder Include="Services\Documents\TemplateData\CustomerChange\" />
+    <Folder Include="Services\EasForms\Forms\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FastMember" Version="1.5.0" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.51.0" />
-    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.51.0" />
-    <PackageReference Include="MediatR" Version="11.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.52.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.52.0" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
+    <PackageReference Include="Scrutor" Version="4.2.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +32,7 @@
     <ProjectReference Include="..\..\..\DomainServices\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
+    <ProjectReference Include="..\..\..\DomainServices\DocumentOnSAService\Clients\DomainServices.DocumentOnSAService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\OfferService\Clients\DomainServices.OfferService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\ProductService\Clients\DomainServices.ProductService.Clients.csproj" />

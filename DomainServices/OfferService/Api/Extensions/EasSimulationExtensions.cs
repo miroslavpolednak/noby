@@ -1,7 +1,7 @@
 ﻿using DomainServices.CodebookService.Contracts.Endpoints.DrawingDurations;
 using DomainServices.CodebookService.Contracts.Endpoints.DrawingTypes;
 using _OS = DomainServices.OfferService.Contracts;
-using EasWrapper = ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper;
+using EasWrapper = ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
 
 namespace DomainServices.OfferService.Api;
 

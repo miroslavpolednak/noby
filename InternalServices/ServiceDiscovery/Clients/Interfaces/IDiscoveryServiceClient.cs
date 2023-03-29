@@ -2,9 +2,9 @@
 
 public interface IDiscoveryServiceClient
 {
-    Task<ImmutableList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default(CancellationToken));
+    Task<IReadOnlyList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default(CancellationToken));
 
-    Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IReadOnlyList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken = default(CancellationToken));
 
     Task<DiscoverableService> GetService(ApplicationKey serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -12,5 +12,5 @@ public interface IDiscoveryServiceClient
 
     string GetServiceUrlSynchronously(ApplicationKey serviceName, Contracts.ServiceTypes serviceType);
 
-    ImmutableList<DiscoverableService> GetServicesSynchronously();
+    IReadOnlyList<DiscoverableService> GetServicesSynchronously();
 }

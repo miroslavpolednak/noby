@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentOnSAService.SignDocumentManually;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message SignDocumentManuallyRequest{
+
+	google.protobuf.Int32Value DocumentOnSAId = 1;
+} 
+

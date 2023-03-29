@@ -8,14 +8,14 @@ namespace NOBY.Api.StartupExtensions;
 
 public static class NobyAuthentication
 {
-    public static AuthenticationBuilder AddFomsAuthentication(this WebApplicationBuilder builder, AppConfiguration configuration)
+    public static AuthenticationBuilder AddNobyAuthentication(this WebApplicationBuilder builder, AppConfiguration configuration)
     {
         // its mandatory to have auth scheme
-        if (string.IsNullOrEmpty(configuration.AuthenticationScheme))
+        if (string.IsNullOrEmpty(configuration.Security?.AuthenticationScheme))
             throw new ArgumentException($"Authentication scheme is not specified. Please add correct NOBY.AuthenticationScheme in appsettings.json");
 
         // set up data protection
-        string connectionString = builder.Configuration.GetConnectionString("dataProtection");
+        var connectionString = builder.Configuration.GetConnectionString("dataProtection");
         if (!string.IsNullOrEmpty(connectionString))
         {
             builder.Services.AddDbContext<DataProtectionKeysContext>(options => options.UseSqlServer(connectionString));
@@ -26,7 +26,7 @@ public static class NobyAuthentication
         }
 
         // set up auth provider
-        switch (configuration.AuthenticationScheme)
+        switch (configuration.Security.AuthenticationScheme)
         {
             case AuthenticationConstants.CaasAuthScheme:
                 return builder.Services.AddFomsCaasAuthentication();
@@ -41,7 +41,7 @@ public static class NobyAuthentication
 
             // not existing auth scheme
             default:
-                throw new NotImplementedException($"Authentication scheme '{configuration.AuthenticationScheme}' not implemented");
+                throw new NotImplementedException($"Authentication scheme '{configuration.Security.AuthenticationScheme}' not implemented");
         }
     }
 }

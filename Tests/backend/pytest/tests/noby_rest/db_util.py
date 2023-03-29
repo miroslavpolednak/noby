@@ -1,14 +1,3 @@
-# razeni dle urciteho parametru
-def sort_response_id(resps):
-    return sorted(resps, key=lambda resp: resp['id'])
-
-
-def sort_response_productTypeId(resps):
-    return sorted(resps, key=lambda resp: resp['productTypeId'])
-
-
-def sort_response_paymentDay(resps):
-    return sorted(resps, key=lambda resp: resp['paymentDay'])
 
 # selekty do databazi
 def select_product_konsdb_fat(konsdb_fat_db_cursor, case_id):

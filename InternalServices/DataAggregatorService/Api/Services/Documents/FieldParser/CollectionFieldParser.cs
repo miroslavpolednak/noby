@@ -17,17 +17,22 @@ internal class CollectionFieldParser : ISourceFieldParser
     public IEnumerable<DocumentSourceFieldData> GetFields(IEnumerable<DocumentSourceField> sourceFields, AggregatedData aggregatedData)
     {
         if (MapperHelper.GetValue(aggregatedData, _collectionPath) is not IEnumerable collection)
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"Path '{_collectionPath}' does not return IEnumerable.");
 
         return collection.Cast<object>().SelectMany((value, index) => GetCollectionValues(value, index, sourceFields));
     }
 
     private static IEnumerable<DocumentSourceFieldData> GetCollectionValues(object value, int index, IEnumerable<DocumentSourceField> sourceFields) =>
-        sourceFields.Select(sourceField => new DocumentSourceFieldData
+        sourceFields.Select(sourceField =>
         {
-            SourceFieldId = sourceField.SourceFieldId,
-            AcroFieldName = sourceField.AcroFieldName + (index + 1),
-            StringFormat = sourceField.StringFormat,
-            Value = MapperHelper.GetValue(value, CollectionPathHelper.GetCollectionMemberPath(sourceField.FieldPath))
+            var fieldPath = CollectionPathHelper.GetCollectionMemberPath(sourceField.FieldPath);
+
+            return new DocumentSourceFieldData
+            {
+                SourceFieldId = sourceField.SourceFieldId,
+                AcroFieldName = sourceField.AcroFieldName + (index + 1),
+                StringFormat = sourceField.StringFormat,
+                Value = string.Empty.Equals(fieldPath) ? value : MapperHelper.GetValue(value, fieldPath)
+            };
         });
 }

@@ -2,6 +2,8 @@
 package DomainServices.ProductService;
 option csharp_namespace = "DomainServices.ProductService.Contracts";
 
+import "GrpcAddress.proto";
+import "google/protobuf/wrappers.proto";
 import "GrpcDecimal.proto";
 
 message Relationship {
@@ -22,6 +24,18 @@ message PaymentAccount {
 
 message PaymentSymbols {
     string VariableSymbol = 1;
-    string ConstantSymbol = 2;
-    string SpecificSymbol = 3;
+}
+
+message LoanRealEstate {
+    int64 RealEstateTypeId = 1;
+    bool IsCollateral = 2;
+    int32 RealEstatePurchaseTypeId = 3;
+}
+
+message StatementObject {
+    google.protobuf.Int32Value Type = 1;
+    google.protobuf.Int32Value Frequency = 2;
+    google.protobuf.StringValue EmailAddress1 = 3;
+    google.protobuf.StringValue EmailAddress2 = 4;
+    cis.types.GrpcAddress Address = 5;
 }

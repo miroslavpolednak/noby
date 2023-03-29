@@ -26,22 +26,36 @@ public class SmtpAdapterService
 
         var message = new MimeMessage();
         message.From.Add(MailboxAddress.Parse(from));
-        message.ReplyTo.Add(MailboxAddress.Parse(replyTo));
+
+        if (!string.IsNullOrEmpty(replyTo))
+        {
+            message.ReplyTo.Add(MailboxAddress.Parse(replyTo));
+        }
+        
         message.Subject = subject;
         
         foreach (var t in to)
         {
-            message.To.Add(MailboxAddress.Parse(t));
+            if (!string.IsNullOrEmpty(t))
+            {
+                message.To.Add(MailboxAddress.Parse(t));
+            }
         }
         
         foreach (var c in cc)
         {
-            message.To.Add(MailboxAddress.Parse(c));
+            if (!string.IsNullOrEmpty(c))
+            {
+                message.Cc.Add(MailboxAddress.Parse(c));
+            }
         }
         
         foreach (var b in bcc)
         {
-            message.To.Add(MailboxAddress.Parse(b));
+            if (!string.IsNullOrEmpty(b))
+            {
+                message.Bcc.Add(MailboxAddress.Parse(b));
+            }
         }
 
         var bodyBuilder = new BodyBuilder();

@@ -1,10 +1,15 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
-public class IdentifyByIdentityRequest
+public sealed class IdentifyByIdentityRequest
     : IRequest
 {
+    /// <summary>
+    /// Identita klienta
+    /// </summary>
+    [Required]
     public CIS.Foms.Types.CustomerIdentity? CustomerIdentity { get; set; }
 
     [JsonIgnore]

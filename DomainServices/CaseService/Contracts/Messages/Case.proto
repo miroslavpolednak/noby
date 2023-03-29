@@ -8,6 +8,7 @@ import "Messages/OfferContacts.proto";
 import "Messages/CaseData.proto";
 import "GrpcDateTime.proto";
 import "ModificationStamp.proto";
+import "Messages/UpdatedInStarbuildStates.proto";
 
 message Case {
 	int64 CaseId =  1;
@@ -17,24 +18,26 @@ message Case {
 	
 	// Stav Case
 	int32 State = 3;
+
+	UpdatedInStarbuildStates StateUpdatedInStarbuild = 4;
 	
 	// Cas posledni zmeny stavu Case
-	cis.types.GrpcDateTime StateUpdatedOn = 4;
+	cis.types.GrpcDateTime StateUpdatedOn = 5;
 	
 	// Hlavni klient Case
 	CustomerData Customer = 6;
 
 	// kontaktni informace
-	OfferContacts OfferContacts = 10;
+	OfferContacts OfferContacts = 7;
 
 	// Poradce vlastnici Case
-	cis.types.UserInfo CaseOwner = 7;
+	cis.types.UserInfo CaseOwner = 8;
 
 	// Uzivatel, ktery Case vytvoril
-	cis.types.ModificationStamp Created = 8;
+	cis.types.ModificationStamp Created = 9;
 
 	// Aktivni tasky workflow na danem Case
-	repeated ActiveTask Tasks = 9;
+	repeated ActiveTask Tasks = 10;
 }
 
 message ActiveTask {

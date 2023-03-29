@@ -15,11 +15,11 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     ContentRootPath = runAsWinSvc ? AppContext.BaseDirectory : default
 });
 
-builder.AddCisEnvironmentConfiguration() // globalni nastaveni prostredi
+builder.AddCisEnvironmentConfiguration(); // globalni nastaveni prostredi
+builder
        .AddCisCoreFeatures()
        .AddCisLogging()
        .AddCisTracing()
-       .AddCisHealthChecks()
        .AddCisServiceAuthentication();
 
 builder.Services.Configure<GeneratorConfiguration>(builder.Configuration.GetRequiredSection("GeneratorConfiguration"));
@@ -30,8 +30,14 @@ builder.Services
 
 builder.Services.AddAttributedServices(typeof(Program));
 
-builder.Services.AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
-builder.Services.AddGrpcReflection();
+builder.Services
+    .AddCisGrpcInfrastructure(typeof(Program))
+    .AddGrpcReflection()
+    .AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    });
+builder.AddCisGrpcHealthChecks();
 
 if (runAsWinSvc) builder.Host.UseWindowsService();
 
@@ -43,16 +49,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCisLogging();
+app.MapCisGrpcHealthChecks();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
-
-    endpoints.MapGrpcService<DocumentGeneratorService>();
-
-    endpoints.MapGrpcReflectionService();
-});
+app.MapGrpcService<DocumentGeneratorService>();
+app.MapGrpcReflectionService();
 
 try
 {

@@ -1,9 +1,7 @@
-﻿using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+﻿using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
-using DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
-using DomainServices.RiskIntegrationService.Contracts.Shared;
-
+using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
 internal sealed class ProductChildMapper
@@ -41,7 +39,7 @@ internal sealed class ProductChildMapper
             RepaymentPeriodEnd = product.RepaymentPeriodEnd,
             HomeCurrencyIncome = product.HomeCurrencyIncome,
             HomeCurrencyResidence = product.HomeCurrencyResidence,
-            FinancingType = "01",
+            FinancingType = await transformFinancingTypes(product.FinancingTypes),
             DeveloperCode = product.DeveloperId.ToString(),
             ProjectCode = product.DeveloperProjectId.ToString()
         };
@@ -60,7 +58,7 @@ internal sealed class ProductChildMapper
             .Select(t => new _C4M.LoanApplicationProductRelation
             {
                 ProductId = getProductId(t),
-                ProductType = t.ProductType,
+                ProductType = getProductType(t),
                 RelationType = t.RelationType,
                 Value = new _C4M.LoanApplicationProductRelationValue
                 {
@@ -81,9 +79,9 @@ internal sealed class ProductChildMapper
             })
             .ToList();
 
-        _C4M.ResourceIdentifier getProductId(_V2.LoanApplicationProductRelation relation)
+        _C4M.ResourceIdentifier? getProductId(_V2.LoanApplicationProductRelation relation)
         {
-            if (string.IsNullOrEmpty(relation.BankAccount?.Number))
+            if (!string.IsNullOrEmpty(relation.CbcbContractId))
             {
                 return new _C4M.ResourceIdentifier
                 {
@@ -92,17 +90,30 @@ internal sealed class ProductChildMapper
                     Domain = "EIS",
                     Resource = "CBCBContract"
                 };
-            }
-            else
-            {
+            } else if (!string.IsNullOrEmpty(relation.BankAccount?.Number)) {
                 return new _C4M.ResourceIdentifier
                 {
                     Id = String.IsNullOrEmpty(relation.BankAccount.NumberPrefix) ? relation.BankAccount.Number : $"{relation.BankAccount.NumberPrefix}-{relation.BankAccount.Number}",
-                    Instance = relation.BankAccount.BankCode == "7990" ? "MPSS" : "KBCZ",
+                    Instance = relation.BankAccount.BankCode switch {
+                        "7990" => "MPSS",
+                        "0100" => "KBCZ",
+                        _ => throw new CisValidationException(17008, $"Transofrmation for BankCode={relation.BankAccount.BankCode} does not exist")
+                    },
                     Domain = "PCP",
                     Resource = "LoanSoldProduct"
                 };
+            } else
+            {
+                return null;
             }
+        }
+
+        string getProductType(_V2.LoanApplicationProductRelation relation)
+        {
+            if (!string.IsNullOrWhiteSpace(relation.ProductType))
+                return relation.ProductType;
+
+            return relation.BankAccount?.BankCode == "0100" ? "KBGROUP" : "OFI";
         }
     }
 
@@ -144,7 +155,32 @@ internal sealed class ProductChildMapper
                     Code = purposes.FirstOrDefault(x => x.C4mId.HasValue && x.Id == t.LoanPurposeId)?.C4mId ?? -1
                 })
                 .ToList();
-    
+
+    private async Task<string> transformFinancingTypes(List<int>? financingTypes)
+    {
+        if (financingTypes != null && financingTypes.Any())
+        {
+            var realEstates = (await _codebookService.RealEstatePurchaseTypes(_cancellationToken))
+                .Where(t => financingTypes.Contains(t.Id))
+                .Distinct();
+
+            if (realEstates.Count() == 1)
+                return realEstates.First().Code;
+            else if (realEstates.All(t => _financingTypeGroups["000001"].Contains(t.Code)))
+                return "000001";
+            else if (realEstates.All(t => _financingTypeGroups["000003"].Contains(t.Code)))
+                return "000003";
+        }
+
+        return "000000";
+    }
+
+    private Dictionary<string, List<string>> _financingTypeGroups = new() { 
+        { "000001", new List<string>() { "000001", "000002" } },
+        { "000003", new List<string>() { "000003", "000004", "000005", "000006" } }
+    };
+
+
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly CancellationToken _cancellationToken;
     private readonly _RAT.RiskApplicationTypeItem _riskApplicationType;

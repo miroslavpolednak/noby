@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.Core.Results;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Contracts;
 
@@ -10,7 +9,6 @@ public interface ICustomerServiceClient
     /// <summary>
     /// Kontrola zda klient v KB CM splňuje plně identifikovaný profil.
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="ProfileCheckResponse"/> - OK;</returns>
     /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
     /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
     /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
@@ -20,7 +18,6 @@ public interface ICustomerServiceClient
     /// <summary>
     /// Vytvoreni klienta v CM nebo MP (podle schematu)
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="CreateCustomerResponse"/> - OK;</returns>
     /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
     /// <exception cref="CisAlreadyExistsException">KonsDB - 11017 Partner already exists in KonsDB.</exception>
     /// <exception cref="Grpc.Core.RpcException">Customer already exists in KB CM or state registry is unavailable, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
@@ -31,14 +28,14 @@ public interface ICustomerServiceClient
     /// <summary>
     /// Uprava klienta v CM nebo MP (podle schematu)
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="UpdateCustomerResponse"/> - OK;</returns>
     /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
     Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default);
-    
+
+    Task UpdateCustomerIdentifiers(UpdateCustomerIdentifiersRequest request, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Detail customera podle identity
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="CustomerDetailResponse"/> - OK;</returns>
     /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
     /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
     /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
@@ -48,7 +45,6 @@ public interface ICustomerServiceClient
     /// <summary>
     /// Vyhledaní customeru podle identities
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="CustomerListResponse"/> - OK;</returns>
     /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
     /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
     /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
@@ -58,7 +54,6 @@ public interface ICustomerServiceClient
     /// <summary>
     /// Vyhledaní customeru
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="SearchCustomersResponse"/> - OK;</returns>
     /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
     /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
     /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>

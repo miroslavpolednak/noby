@@ -16,28 +16,47 @@ enum OutputFileType {
 	OpenForm = 2;
 }
 
+enum TextAlign {
+	Unkwnon = 0;
+	Left = 1;
+	Center = 2;
+	Right = 3;
+	Justify = 4;
+	FullJustify = 5;
+}
+
 message GenerateDocumentRequest {
-	int32 TemplateTypeId = 1;
+	int32 DocumentTypeId = 1;
 
-	google.protobuf.StringValue TemplateVersion = 2;
+	int32 DocumentTemplateVersionId = 2;
 
-	OutputFileType OutputType = 3;
+	google.protobuf.Int32Value DocumentTemplateVariantId = 3;
 
-	repeated GenerateDocumentPart Parts = 4;
+	OutputFileType OutputType = 4;
 
-	repeated Signature CustomerSignatures = 5;
+	repeated GenerateDocumentPart Parts = 5;
 
-	DocumentFooter DocumentFooter = 6;
+	repeated Signature CustomerSignatures = 6;
+
+	DocumentFooter DocumentFooter = 7;
+
+	google.protobuf.BoolValue ForPreview = 8;
+}
+
+message Document {
+	bytes Data = 1;
 }
 
 message GenerateDocumentPart {
-	int32 TemplateTypeId = 1;
+	int32 DocumentTypeId = 1;
 
-	google.protobuf.StringValue TemplateVersion = 2;
+	int32 DocumentTemplateVersionId = 2;
 
-	google.protobuf.Int32Value Order = 3;
+	google.protobuf.Int32Value DocumentTemplateVariantId = 3;
 
-	repeated GenerateDocumentPartData Data = 4;
+	google.protobuf.Int32Value Order = 4;
+
+	repeated GenerateDocumentPartData Data = 5;
 }
 
 message GenerateDocumentPartData {
@@ -53,4 +72,6 @@ message GenerateDocumentPartData {
 		bool LogicalValue = 7;
 		GenericTable Table = 8;
 	}
+
+	TextAlign TextAlign = 9;
 }

@@ -1,19 +1,17 @@
 ﻿using CIS.Core;
 using CIS.Core.Configuration;
-using CIS.Core.Exceptions;
 using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.InternalServices;
-using CIS.InternalServices.DataAggregator;
-using CIS.InternalServices.DataAggregator.Configuration;
-using CIS.InternalServices.DataAggregator.Documents;
-using CIS.InternalServices.DataAggregator.EasForms;
+using CIS.InternalServices.DataAggregatorService.Clients;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using Console_CustomerService;
 using Console_DocumentDataAggregator;
-using DomainServices;
 using Microsoft.Extensions.DependencyInjection;
+using _Document = CIS.InternalServices.DocumentGeneratorService.Contracts;
+using _DataAggregator = CIS.InternalServices.DataAggregatorService.Contracts;
 
 Console.WriteLine("Hello, World!");
 
@@ -21,10 +19,9 @@ var services = new ServiceCollection();
 
 services.AddTransient<ICurrentUserAccessor, MockCurrentUserAccessor>();
 services.AddSingleton<ICisEnvironmentConfiguration>(new CisEnvironmentConfiguration());
-services.AddDataAggregator("Data Source=localhost;Initial Catalog=DataAggregator;Persist Security Info=True;User ID=SA;Password=Test123456;TrustServerCertificate=True");
-//services.AddDocumentGeneratorService("https://localhost:5009");
-services.AddDocumentGeneratorService();
+services.AddDocumentGeneratorService("https://localhost:5009");
 services.AddCisServiceDiscovery("https://localhost:5005");
+services.AddDataAggregatorService("https://localhost:5099");
 
 var foundServices = services
                     .Where(t => t is { Lifetime: ServiceLifetime.Singleton, ImplementationInstance: IIsServiceDiscoverable })
@@ -40,45 +37,52 @@ foundServices.ForEach(instance =>
 
 var serviceProvider = services.BuildServiceProvider();
 
-var dataAggregator = serviceProvider.GetRequiredService<IDataAggregator>();
+var dataAggregatorService = serviceProvider.GetRequiredService<IDataAggregatorServiceClient>();
 
-//await GenerateDocument(dataAggregator, serviceProvider.GetRequiredService<IDocumentGeneratorServiceClient>());
-await BuildForms(dataAggregator);
+await GenerateDocument(dataAggregatorService, serviceProvider.GetRequiredService<IDocumentGeneratorServiceClient>());
+//await BuildForms(dataAggregatorService);
 
 Console.ReadKey();
 
-static async Task GenerateDocument(IDataAggregator dataAggregator, IDocumentGeneratorServiceClient documentGeneratorService)
+static async Task GenerateDocument(IDataAggregatorServiceClient dataAggregatorService, IDocumentGeneratorServiceClient documentGeneratorService)
 {
-    var input = new InputParameters { OfferId = 1160, UserId = 3048 };
-    //var input = new InputParameters { SalesArrangementId = 97 };
+    var inputParameters = new InputParameters { SalesArrangementId = 20002, UserId = 3048 };
 
-    var documentType = DocumentTemplateType.KALKULHU;
+    var documentType = DocumentTemplateType.ZADOSTHU;
 
-    var data = await dataAggregator.GetDocumentData(documentType, "001A", input);
+    var dataRequest = new GetDocumentDataRequest
+    {
+        DocumentTypeId = (int)DocumentTemplateType.ZADOSTHU,
+        DocumentTemplateVariantId = 4,
+        InputParameters = inputParameters
+    };
+
+    var data = await dataAggregatorService.GetDocumentData(dataRequest);
 
     var request = new GenerateDocumentRequest
     {
-        TemplateTypeId = (int)documentType,
-        TemplateVersion = "001A",
+        DocumentTypeId = (int)documentType,
+        DocumentTemplateVersionId = data.DocumentTemplateVersionId,
+        DocumentTemplateVariantId = dataRequest.DocumentTemplateVariantId,
         OutputType = OutputFileType.OpenForm,
         Parts =
         {
             new GenerateDocumentPart
             {
-                TemplateTypeId = (int)documentType,
-                TemplateVersion = "001A"
+                DocumentTypeId = (int)documentType,
+                DocumentTemplateVersionId = data.DocumentTemplateVersionId,
+                DocumentTemplateVariantId = dataRequest.DocumentTemplateVariantId,
+                Data = { data.DocumentData.Select(CreateDocumentPartData) }
             }
 
         },
         DocumentFooter = new DocumentFooter
         {
-            CaseId = input.CaseId,
-            OfferId = input.OfferId,
+            CaseId = inputParameters.CaseId,
+            OfferId = inputParameters.OfferId,
             //ArchiveId = 123456789
         }
     };
-
-    request.Parts.First().FillDocumentPart(data);
 
     var result = await documentGeneratorService.GenerateDocument(request);
 
@@ -87,21 +91,116 @@ static async Task GenerateDocument(IDataAggregator dataAggregator, IDocumentGene
     result.Data.WriteTo(fileStream);
 }
 
-static async Task BuildForms(IDataAggregator dataAggregator)
+static async Task BuildForms(IDataAggregatorServiceClient dataAggregator)
 {
-    var easForm = await dataAggregator.GetEasForm<IProductFormData>(97);
-    return;
-    try
+    var request = new GetEasFormRequest
     {
-        var test = easForm.BuildForms(Enumerable.Range(1, 3).Select(c => new DynamicFormValues
+        SalesArrangementId = 1248,
+        EasFormRequestType = EasFormRequestType.Product,
+        DynamicFormValues =
         {
-            DocumentId = $"ID{c}",
-            FormId = $"Form{c}"
-        }));
-    }
-    catch (Exception e)
+            new DynamicFormValues
+            {
+                DocumentTypeId = 4,
+                HouseholdId = 123
+            }
+        }
+    };
+
+    var response = await dataAggregator.GetEasForm(request);
+}
+
+static GenerateDocumentPartData CreateDocumentPartData(DocumentFieldData fieldData)
+{
+    var partData = new GenerateDocumentPartData
     {
-        Console.WriteLine(e);
-        throw;
+        Key = fieldData.FieldName,
+        StringFormat = fieldData.StringFormat
+    };
+
+    switch (fieldData.ValueCase)
+    {
+        case DocumentFieldData.ValueOneofCase.None:
+            break;
+
+        case DocumentFieldData.ValueOneofCase.Text:
+            partData.Text = fieldData.Text;
+            break;
+
+        case DocumentFieldData.ValueOneofCase.Date:
+            partData.Date = fieldData.Date;
+            break;
+
+        case DocumentFieldData.ValueOneofCase.Number:
+            partData.Number = fieldData.Number;
+            break;
+
+        case DocumentFieldData.ValueOneofCase.DecimalNumber:
+            partData.DecimalNumber = fieldData.DecimalNumber;
+            break;
+
+        case DocumentFieldData.ValueOneofCase.LogicalValue:
+            partData.LogicalValue = fieldData.LogicalValue;
+            break;
+
+        case DocumentFieldData.ValueOneofCase.Table:
+            partData.Table = new _Document.GenericTable
+            {
+                Rows =
+                    {
+                        fieldData.Table.Rows.Select(row => new _Document.GenericTableRow
+                        {
+                            Values = { row.Values.Select(CreateTableRowValue) }
+                        })
+                    },
+                Columns =
+                    {
+                        fieldData.Table.Columns.Select(column => new _Document.GenericTableColumn
+                        {
+                            Header = column.Header,
+                            StringFormat = column.StringFormat,
+                            WidthPercentage = column.WidthPercentage
+                        })
+                    },
+                ConcludingParagraph = fieldData.Table.ConcludingParagraph
+            };
+            break;
+
+        default:
+            throw new NotImplementedException();
     }
+
+    return partData;
+}
+
+static _Document.GenericTableRowValue CreateTableRowValue(_DataAggregator.GenericTableRowValue value)
+{
+    var tableRowValue = new _Document.GenericTableRowValue();
+
+    switch (value.ValueCase)
+    {
+        case _DataAggregator.GenericTableRowValue.ValueOneofCase.None:
+            break;
+
+        case _DataAggregator.GenericTableRowValue.ValueOneofCase.Text:
+            tableRowValue.Text = value.Text;
+            break;
+
+        case _DataAggregator.GenericTableRowValue.ValueOneofCase.Date:
+            tableRowValue.Date = value.Date;
+            break;
+
+        case _DataAggregator.GenericTableRowValue.ValueOneofCase.Number:
+            tableRowValue.Number = value.Number;
+            break;
+
+        case _DataAggregator.GenericTableRowValue.ValueOneofCase.DecimalNumber:
+            tableRowValue.DecimalNumber = value.DecimalNumber;
+            break;
+
+        default:
+            throw new NotImplementedException();
+    }
+
+    return tableRowValue;
 }

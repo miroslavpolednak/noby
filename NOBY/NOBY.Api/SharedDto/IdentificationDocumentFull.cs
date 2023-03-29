@@ -1,21 +1,29 @@
-﻿namespace NOBY.Api.SharedDto;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class IdentificationDocumentFull
+namespace NOBY.Api.SharedDto;
+
+public sealed class IdentificationDocumentFull
     : IdentificationDocumentBase
 {
     /// <summary>
     /// Stát vydání dokladu
     /// </summary>
-    public int? IssuingCountryId { get; set; }
+    [Required]
+    public int IssuingCountryId { get; set; }
 
     /// <summary>
     /// Doklad vydal
     /// </summary>
+    [Required]
     public string IssuedBy { get; set; } = string.Empty;
 
-    public DateTime? ValidTo { get; set; }
+    [Required]
+    public DateTime ValidTo { get; set; }
 
-    public DateTime? IssuedOn { get; set; }
+    [Required]
+    public DateTime IssuedOn { get; set; }
 
     public string? RegisterPlace { get; set; }
+
+    public CustomerIdentificationObject? CustomerIdentification { get; set; }
 }

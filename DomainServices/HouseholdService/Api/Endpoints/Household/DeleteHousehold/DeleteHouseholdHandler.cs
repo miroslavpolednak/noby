@@ -1,48 +1,58 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.DeleteHousehold;
 
+//TODO tady by asi mel byt nejaky rollback, kdyz se nepodari smazat customer? Co se ma mazat driv - customer nebo household?
 internal sealed class DeleteHouseholdHandler
     : IRequestHandler<DeleteHouseholdRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteHouseholdRequest request, CancellationToken cancellationToken)
     {
-        var householdInstance = await _dbContext.Households
+        var household = await _dbContext
+            .Households
+            .AsNoTracking()
             .Where(t => t.HouseholdId == request.HouseholdId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16022, $"Household ID {request.HouseholdId} does not exist.");
+            .Select(t => new { t.CustomerOnSAId1, t.CustomerOnSAId2, t.HouseholdTypeId })
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.HouseholdNotFound, request.HouseholdId);
 
-        if (householdInstance.HouseholdTypeId == CIS.Foms.Enums.HouseholdTypes.Main && !request.HardDelete)
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
-            throw new CisArgumentException(16032, "Can't delete Debtor household", "HouseholdId");
-#pragma warning restore CA2208 // Instantiate argument exceptions correctly
+        // kontrola ze to neni main household
+        if (household.HouseholdTypeId == HouseholdTypes.Main && !request.HardDelete)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CantDeleteDebtorHousehold);
 
         // smazat domacnost
-        _dbContext.Households.Remove(householdInstance);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext
+            .Households
+            .Where(t => t.HouseholdId == request.HouseholdId)
+            .ExecuteDeleteAsync(cancellationToken);
 
         // smazat customerOnSA
-        if (householdInstance.CustomerOnSAId1.HasValue)
+        if (household.CustomerOnSAId1.HasValue)
+        {
             await _mediator.Send(new DeleteCustomerRequest
             {
-                CustomerOnSAId = householdInstance.CustomerOnSAId1.Value,
+                CustomerOnSAId = household.CustomerOnSAId1.Value,
                 HardDelete = request.HardDelete
             }, cancellationToken);
+        }
 
-        if (householdInstance.CustomerOnSAId2.HasValue)
+        if (household.CustomerOnSAId2.HasValue)
+        {
             await _mediator.Send(new DeleteCustomerRequest
             {
-                CustomerOnSAId = householdInstance.CustomerOnSAId2.Value,
+                CustomerOnSAId = household.CustomerOnSAId2.Value,
                 HardDelete = request.HardDelete
             }, cancellationToken);
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
     private readonly IMediator _mediator;
-    private readonly Database.HouseholdServiceDbContext _dbContext;
+    private readonly HouseholdServiceDbContext _dbContext;
 
-    public DeleteHouseholdHandler(Database.HouseholdServiceDbContext dbContext, IMediator mediator)
+    public DeleteHouseholdHandler(HouseholdServiceDbContext dbContext, IMediator mediator)
     {
         _dbContext = dbContext;
         _mediator = mediator;

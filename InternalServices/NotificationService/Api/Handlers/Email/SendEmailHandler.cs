@@ -1,12 +1,14 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Contracts.Email;
-using cz.kb.osbs.mcs.sender.sendapi.v4.email;
 using MediatR;
+using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
 
@@ -15,46 +17,61 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
     private readonly IDateTime _dateTime;
     private readonly MpssEmailProducer _mpssEmailProducer;
     private readonly McsEmailProducer _mcsEmailProducer;
+    private readonly UserAdapterService _userAdapterService;
     private readonly NotificationRepository _repository;
     private readonly S3AdapterService _s3Service;
+    private readonly S3Buckets _buckets;
+    private readonly HashSet<string> _mcsSenders;
+    private readonly HashSet<string> _mpssSenders;
     private readonly ILogger<SendEmailHandler> _logger;
 
     public SendEmailHandler(
         IDateTime dateTime,
         MpssEmailProducer mpssEmailProducer,
         McsEmailProducer mcsEmailProducer,
+        UserAdapterService userAdapterService,
         NotificationRepository repository,
         S3AdapterService s3Service,
+        IOptions<AppConfiguration> options,
         ILogger<SendEmailHandler> logger)
     {
         _dateTime = dateTime;
         _mpssEmailProducer = mpssEmailProducer;
         _mcsEmailProducer = mcsEmailProducer;
+        _userAdapterService = userAdapterService;
         _repository = repository;
         _s3Service = s3Service;
+        _buckets = options.Value.S3Buckets;
+        _mcsSenders = options.Value.EmailSenders.Mcs.Select(e => e.ToLowerInvariant()).ToHashSet();
+        _mpssSenders = options.Value.EmailSenders.Mpss.Select(e => e.ToLowerInvariant()).ToHashSet();
         _logger = logger;
     }
     
     public async Task<SendEmailResponse> Handle(SendEmailRequest request, CancellationToken cancellationToken)
     {
-        var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
-        var host = request.From.Value.ToLowerInvariant().Split('@').Last();
+        var username = _userAdapterService
+            .CheckSendEmailAccess()
+            .GetUsername();
         
-        // todo: Buckets to configuration
-        var bucketName = host == "kb.cz" ? Buckets.Mcs : Buckets.Mpss;
+        var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
+        var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
+        var bucketName = _mcsSenders.Contains(domainName)
+            ? _buckets.Mcs
+            : (_mpssSenders.Contains(domainName) ? _buckets.Mpss : throw new ArgumentException(domainName));
         
         try
         {
             foreach (var attachment in request.Attachments)
             {
-                var objectKey = await _s3Service.UploadFile(attachment.Binary, bucketName);
+                var content = Convert.FromBase64String(attachment.Binary);
+                var objectKey = await _s3Service.UploadFile(content, bucketName);
                 attachmentKeyFilenames.Add(new (objectKey, attachment.Filename));
             }
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Could not upload attachments.");
-            throw new CisServiceUnavailableException("Todo", nameof(SendEmailHandler), "Todo");
+            _logger.LogError(e, $"Could not upload attachments to S3 bucket {bucketName}.");
+            throw new CisServiceServerErrorException(ErrorCodes.Internal.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
         }
 
         var result = _repository.NewEmailResult();
@@ -63,14 +80,30 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         result.CustomId = request.CustomId;
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
+
+        result.CreatedBy = username;
         
         try
         {
-            if (host == "kb.cz")
+            await _repository.AddResult(result, cancellationToken);
+            await _repository.SaveChanges(cancellationToken);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Could not create EmailResult.");
+            throw new CisServiceServerErrorException(ErrorCodes.Internal.CreateEmailResultFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
+        }
+
+        try
+        {
+            var consumerId = _userAdapterService.GetConsumerId();
+            
+            if (_mcsSenders.Contains(domainName))
             {
-                var sendEmail = new SendEmail
+                var sendEmail = new McsSendApi.v4.email.SendEmail
                 {
                     id = result.Id.ToString(),
+                    notificationConsumer = McsEmailMappers.MapToMcs(consumerId),
                     sender = request.From.MapToMcs(),
                     to = request.To.MapToMcs().ToList(),
                     bcc = request.Bcc.MapToMcs().ToList(),
@@ -84,13 +117,13 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
                 };
                 
                 await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
-                result.HandoverToMcsTimestamp = _dateTime.Now;
             }
-            else
+            else if (_mpssSenders.Contains(domainName))
             {
                 var sendEmail = new MpssSendApi.v1.email.SendEmail
                 {
                     id = result.Id.ToString(),
+                    notificationConsumer = MpssEmailMappers.MapToMpss(consumerId),
                     sender = request.From.MapToMpss(),
                     to = request.To.MapToMpss().ToList(),
                     bcc = request.Bcc.MapToMpss().ToList(),
@@ -105,19 +138,19 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
                 
                 await _mpssEmailProducer.SendEmail(sendEmail, cancellationToken);
             }
-            
-            await _repository.AddResult(result, cancellationToken);
-            await _repository.SaveChanges(cancellationToken);
+            else
+            {
+                throw new ArgumentException(domainName);
+            }
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Could not produce message {nameof(SendEmail)} to KAFKA.");
-            throw new CisServiceUnavailableException("Todo", nameof(SendEmailHandler), "Todo");
+            _logger.LogError(e, "Could not produce message SendEmail to KAFKA.");
+            _repository.DeleteResult(result);
+            await _repository.SaveChanges(cancellationToken);
+            throw new CisServiceServerErrorException(ErrorCodes.Internal.ProduceSendEmailError, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
         }
 
-        return new SendEmailResponse
-        {
-            NotificationId = result.Id
-        };
+        return new SendEmailResponse { NotificationId = result.Id };
     }
 }

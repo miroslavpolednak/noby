@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "NullableGrpcDate.proto";
+
+message CustomerIdentification {
+	int32 IdentificationMethodId = 1;
+
+	cis.types.NullableGrpcDate IdentificationDate = 2;
+
+	google.protobuf.StringValue CzechIdentificationNumber = 3;
+}

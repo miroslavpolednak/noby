@@ -12,15 +12,15 @@ message GetDocumentDataRequest {
 
 	google.protobuf.Int32Value DocumentTemplateVersionId = 2;
 
-	InputParameters InputParameters = 3;
+	google.protobuf.Int32Value DocumentTemplateVariantId = 3;
+
+	InputParameters InputParameters = 4;
 }
 
 message GetDocumentDataResponse {
 	int32 DocumentTemplateVersionId = 1;
 
-	string DocumentTemplateVersion = 2;
+	InputParameters InputParameters = 2;
 
-	InputParameters InputParameters = 3;
-
-	repeated DocumentFieldData DocumentData = 4;
+	repeated DocumentFieldData DocumentData = 3;
 }

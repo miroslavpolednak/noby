@@ -30,7 +30,7 @@ internal static class CreateExtensions
         if (request.PrimaryAddress is not null)
         {
             request.PrimaryAddress!.AddressTypeId = (int)CIS.Foms.Enums.AddressTypes.Permanent;
-            model.Addresses.Add(request.PrimaryAddress);
+            model.Addresses.Add(request.PrimaryAddress.ToDomainService());
         }
         // narodnost
         if (request.CitizenshipCountryId.GetValueOrDefault() > 0)
@@ -39,6 +39,28 @@ internal static class CreateExtensions
         return model;
     }
 
+    public static GrpcAddress ToDomainService(this Dto.Address address)
+    {
+        return new GrpcAddress
+        {
+            IsPrimary = address.IsPrimary,
+            DeliveryDetails = address.DeliveryDetails,
+            EvidenceNumber = address.EvidenceNumber,
+            StreetNumber = address.StreetNumber,
+            Street = address.Street,
+            City = address.City,
+            CountryId = address.CountryId,
+            HouseNumber = address.HouseNumber,
+            Postcode = address.Postcode,
+            AddressTypeId = address.AddressTypeId,
+            CityDistrict = address.CityDistrict,
+            PragueDistrict = address.PragueDistrict,
+            CountrySubdivision = address.CountrySubdivision,
+            PrimaryAddressFrom = address.PrimaryAddressFrom,
+            AddressPointId = address.AddressPointId
+        };
+    }
+    
     public static _HO.UpdateCustomerRequest ToUpdateRequest(this _HO.CustomerOnSA customerOnSA, _Cust.CustomerDetailResponse customerKb)
     {
         var model = new _HO.UpdateCustomerRequest
@@ -66,28 +88,41 @@ internal static class CreateExtensions
         customer.NaturalPerson?.FillResponseDto(person);
         person.IsBrSubscribed = customer.NaturalPerson?.IsBrSubscribed;
 
-        return new CreateResponse
+        var model = new CreateResponse
         {
             NaturalPerson = person,
             JuridicalPerson = null,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
-            Contacts = customer.Contacts?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList(),
-            IsInputDataDifferent = true
+            IsInputDataDifferent = true,
+            Contacts = new(),
+            LegalCapacity = customer.NaturalPerson?.LegalCapacity is null ? null : new Shared.LegalCapacityItem
+            {
+                RestrictionTypeId = customer.NaturalPerson.LegalCapacity.RestrictionTypeId,
+                RestrictionUntil = customer.NaturalPerson.LegalCapacity.RestrictionUntil
+            }
         };
+
+        var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.EmailAddress;
+        if (!string.IsNullOrEmpty(email))
+            model.Contacts.EmailAddress = new() { EmailAddress = email };
+
+        var phone = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
+        if (!string.IsNullOrEmpty(phone))
+            model.Contacts.MobilePhone = new()
+            {
+                PhoneNumber = phone,
+                PhoneIDC = customer.Contacts!.First(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil).Mobile.PhoneIDC
+            };
+
+        return model;
     }
-    
-    public static CreateResponse SetResponseCode(this CreateResponse response, bool createOk)
-    {
-        response.ResponseCode = createOk ? "KBCM_CREATED" : "KBCM_IDENTIFIED";
-        return response;
-    }
-    
+
     public static CreateResponse InputDataComparison(this CreateResponse response, CreateRequest originalRequest)
     {
         if (
-            !stringCompare(originalRequest.Mobile, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value)
-            || !stringCompare(originalRequest.Email, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value)
+            !stringCompare(originalRequest.Contacts?.MobilePhone?.PhoneNumber, response.Contacts?.MobilePhone?.PhoneNumber)
+            || !stringCompare(originalRequest.Contacts?.EmailAddress?.EmailAddress, response.Contacts?.EmailAddress?.EmailAddress)
             || originalRequest.BirthDate != response.NaturalPerson?.DateOfBirth
             || !stringCompare(originalRequest.BirthNumber, response.NaturalPerson?.BirthNumber)
             || !stringCompare(originalRequest.BirthPlace, response.NaturalPerson?.PlaceOfBirth)

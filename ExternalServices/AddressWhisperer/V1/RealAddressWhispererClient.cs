@@ -47,7 +47,7 @@ internal class RealAddressWhispererClient
                 XElement? baseNode;
 
                 if (country == "CZ" || country == "SK")
-                    baseNode = nodes!.FirstOrDefault(t => t.Attribute(_ns3 + "type")?.Value.Contains("Ruian") ?? false);
+                    baseNode = nodes!.FirstOrDefault(t => t.Attribute(_ns3 + "type")?.Value == "nsDto:SlovakRuianAddressPointRepresentation");
                 else
                     baseNode = nodes!.FirstOrDefault(t => t.Attribute(_ns3 + "type")?.Value == "nsDto:ComponentAddressPointRepresentation");
 
@@ -59,7 +59,7 @@ internal class RealAddressWhispererClient
                         CityDistrict = baseNode.Element(_ns2 + "cityDistrict")?.Value,
                         Country = baseNode.Element(_ns2 + "country")?.Value,
                         HouseNumber = baseNode.Element(_ns2 + "landRegisterNumber")?.Value,
-                        Postcode = baseNode.Element(_ns2 + "postcode")?.Value,
+                        Postcode = baseNode.Element(_ns2 + "postCode")?.Value,
                         Street = baseNode.Element(_ns2 + "street")?.Value,
                         StreetNumber = baseNode.Element(_ns2 + "streetNumber")?.Value,
                         EvidenceNumber = baseNode.Element(_ns2 + "evidenceNumber")?.Value,

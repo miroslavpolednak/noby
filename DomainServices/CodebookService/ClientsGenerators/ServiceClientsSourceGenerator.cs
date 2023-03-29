@@ -6,9 +6,9 @@ using System.Text;
 namespace DomainServices.CodebookService.ClientsGenerators
 {
     [Generator]
-    public class ServiceClientsSourceGenerator : ISourceGenerator
+    public sealed class ServiceClientsSourceGenerator : ISourceGenerator
     {
-        private static string[] _hardcodedCodebooks = new[] { "DeveloperSearch", "Reset" };
+        private static string[] _hardcodedCodebooks = new[] { "GetDeveloper", "GetDeveloperProject", "DeveloperSearch", "Reset" };
 
         public void Initialize(GeneratorInitializationContext context)
         {
@@ -28,7 +28,7 @@ namespace DomainServices.CodebookService.ClientsGenerators
                 .Where(t => t is IMethodSymbol)
                 .Cast<IMethodSymbol>()
                 .Where(t => !_hardcodedCodebooks.Contains(t.OriginalDefinition.Name))
-                .Select(t => new Endpoint(t.OriginalDefinition.Name, t.OriginalDefinition.ReturnType.ToString(), t.OriginalDefinition.Parameters.Count() == 2 ? t.OriginalDefinition.Parameters[0].ToString() : ""))
+                .Select(t => new Endpoint(t.OriginalDefinition.Name, t.OriginalDefinition.ReturnType.ToString(), t.OriginalDefinition.Parameters.Count() == 2 ? t.OriginalDefinition.Parameters[0].Type.ToString() : ""))
                 .ToList();
 
             var sbImpl = new StringBuilder();
@@ -42,8 +42,8 @@ namespace DomainServices.CodebookService.ClientsGenerators
             endpoints.ForEach(m =>
             {
                 // implementation
-                sbImpl.AppendLine($"public async {m.ReturnType} {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken))");
-                sbImpl.AppendLine($"=> await _cache.GetOrCreate(\"{m.MethodName}\", async () => await _codebookService.{m.MethodName}(new {m.RequestDtoType}(), cancellationToken));");
+                sbImpl.Append($"public async {m.ReturnType} {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken))");
+                sbImpl.AppendLine($" => await _cache.GetOrCreate(\"{m.MethodName}\", async () => await _codebookService.{m.MethodName}(new {m.RequestDtoType}(), cancellationToken));");
 
                 // interface
                 sbInterface.AppendLine($"{m.ReturnType} {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken));");

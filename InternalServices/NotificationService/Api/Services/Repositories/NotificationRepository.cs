@@ -1,6 +1,5 @@
 ﻿using CIS.Core.Attributes;
 using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using Microsoft.EntityFrameworkCore;
 using Result = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction.Result;
@@ -22,8 +21,8 @@ public class NotificationRepository
         Id = Guid.NewGuid(),
         Channel = NotificationChannel.Email, 
         State = NotificationState.InProgress,
-        HandoverToMcsTimestamp = null,
-        ErrorSet = new HashSet<string>(),
+        ResultTimestamp = null,
+        ErrorSet = new HashSet<ResultError>(),
     };
 
     public Entities.SmsResult NewSmsResult() => new()
@@ -31,8 +30,8 @@ public class NotificationRepository
         Id = Guid.NewGuid(),
         Channel = NotificationChannel.Sms,
         State = NotificationState.InProgress,
-        HandoverToMcsTimestamp = null,
-        ErrorSet = new HashSet<string>()
+        ResultTimestamp = null,
+        ErrorSet = new HashSet<ResultError>()
     };
 
     public async Task AddResult(Result result, CancellationToken token = default)
@@ -42,9 +41,8 @@ public class NotificationRepository
     
     public async Task<Result> GetResult(Guid id, CancellationToken token = default)
     {
-        // todo: Cis Exception code 300-399
         return await _dbContext.Results.FindAsync(new object?[] { id }, token)
-            ?? throw new CisNotFoundException(399, $"Result with id = '{id}' not found.");
+               ?? throw new CisNotFoundException(ErrorCodes.Internal.ResultNotFound, $"Result with id = '{id}' not found.");
     }
 
     public async Task<IEnumerable<Result>> SearchResultsBy(string? identity, string? identityScheme, string? customId, string? documentId)
@@ -55,6 +53,11 @@ public class NotificationRepository
             .Where(r => string.IsNullOrEmpty(customId) || r.CustomId == customId)
             .Where(r => string.IsNullOrEmpty(documentId) || r.DocumentId == documentId)
             .ToListAsync();
+    }
+
+    public void DeleteResult(Result result)
+    {
+        _dbContext.Remove(result);
     }
     
     public async Task<int> SaveChanges(CancellationToken token = default)

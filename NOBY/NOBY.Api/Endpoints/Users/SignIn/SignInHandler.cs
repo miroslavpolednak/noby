@@ -5,9 +5,9 @@ using System.Security.Claims;
 namespace NOBY.Api.Endpoints.Users.SignIn;
 
 internal sealed class SignInHandler 
-    : AsyncRequestHandler<SignInRequest>
+    : IRequestHandler<SignInRequest>
 {
-    protected override async Task Handle(SignInRequest request, CancellationToken cancellationToken)
+    public async Task Handle(SignInRequest request, CancellationToken cancellationToken)
     {
         _logger.UserSigningInAs(request.Login);
 
@@ -16,9 +16,9 @@ internal sealed class SignInHandler
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, userInstance.FullName),
-            new Claim(ClaimTypes.NameIdentifier, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture)),
-            new Claim(ClaimTypes.Spn, userInstance.CPM),
+            // natvrdo zadat login, protoze request.Login obsahuje CPM
+            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, "KBUID=A09FK3"),
+            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture))
         };
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

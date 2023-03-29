@@ -10,21 +10,35 @@ public class AppSecurityMiddleware
     public AppSecurityMiddleware(RequestDelegate next) =>
         _next = next;
 
-    public async Task Invoke(HttpContext context, DomainServices.UserService.Clients.IUserServiceClient userService)
+    public async Task Invoke(
+        HttpContext context, 
+        DomainServices.UserService.Clients.IUserServiceClient userService, 
+        Configuration.AppConfiguration configuration)
     {
-        //TODO v net5 nefunguje context.GetEndpoint(). Jak tohle vyresit lepe?
-        if (!_anonymousUrl.Contains(context.Request.Path.ToString()))
+        bool authenticateUser = true;
+
+        if (configuration.Security!.AuthenticationScheme != AuthenticationConstants.CaasAuthScheme)
+        {
+            //TODO v net5 nefunguje context.GetEndpoint(). Jak tohle vyresit lepe?
+            authenticateUser = !_anonymousUrl.Contains(context.Request.Path.ToString());
+        }
+
+        if (authenticateUser)
         {
             if (context.User?.Identity is null || !context.User.Identity.IsAuthenticated)
                 throw new System.Security.Authentication.AuthenticationException("User Identity not found in HttpContext");
 
             // zjistit login uzivatele
-            var login = (context.User.Identity as ClaimsIdentity)?.Claims.FirstOrDefault(t => t.Type == ClaimTypes.Spn)?.Value;
-            if (string.IsNullOrEmpty(login))
+            var userIdClaimValue = (context.User.Identity as ClaimsIdentity)?
+                .Claims
+                .FirstOrDefault(t => t.Type == CIS.Core.Security.SecurityConstants.ClaimTypeId)?
+                .Value;
+
+            if (!int.TryParse(userIdClaimValue, out int userId))
                 throw new System.Security.Authentication.AuthenticationException("User login is empty");
 
             // ziskat instanci uzivatele z xxv
-            var result = await userService.GetUserByLogin(login);
+            var result = await userService.GetUser(userId);
 
             // vlozit FOMS uzivatele do contextu
             context.User = new NobyUser(context.User.Identity, result);

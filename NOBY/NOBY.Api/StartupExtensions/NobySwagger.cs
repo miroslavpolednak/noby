@@ -1,9 +1,7 @@
 ﻿using System.Reflection;
 using System.Text;
-using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
-using NOBY.Api.Endpoints.Codebooks.GetAll;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.StartupExtensions;
@@ -22,7 +20,12 @@ internal static class NobySwagger
         // konfigurace pro generátor JSON souboru
         builder.Services.AddSwaggerGen(x =>
         {
-            x.SwaggerDoc("v1", new OpenApiInfo { Title = "NOBY FRONTEND API", Version = "v1" });
+            x.SwaggerDoc("v1", new OpenApiInfo 
+            { 
+                Title = "NOBY FRONTEND API", 
+                Version = "v1", 
+                Description = "Obecná specifikace error handlingu na úrovni FE API na [https://wiki.kb.cz/display/HT/FE+API%3A+Popis+error+Handlingu](https://wiki.kb.cz/display/HT/FE+API%3A+Popis+error+Handlingu). \n\nSpecifikace HTTP/SOAP hlaviček [https://wiki.kb.cz/pages/viewpage.action?pageId=513345095](https://wiki.kb.cz/pages/viewpage.action?pageId=513345095)"
+            });
 
             // zapojení rozšířených anotací nad controllery
             x.EnableAnnotations();
@@ -32,7 +35,7 @@ internal static class NobySwagger
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();
 
-            x.CustomSchemaIds(type => type.ToString());
+            x.CustomSchemaIds(type => type.ToString().Replace('+', '_'));
 
             // generate the XML docs that'll drive the swagger docs
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
@@ -41,14 +44,11 @@ internal static class NobySwagger
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
             
             x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
-            x.SchemaFilter<Endpoints.SalesArrangement.GetDetail.MortgageDetailSwaggerSchema>();
-            x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.SalesArrangementParametersSwagerSchema>();
+            x.SchemaFilter<Endpoints.SalesArrangement.GetDetail.GetDetailSwaggerSchema> ();
+            x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwagerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
         });
-
-        // Adds FluentValidationRules staff to Swagger.
-        builder.Services.AddFluentValidationRulesToSwagger();
 
         return builder;
     }
@@ -64,10 +64,10 @@ internal static class NobySwagger
 
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
-            if (context.Type != typeof(GetAllResponseItem))
+            if (context.Type != typeof(Endpoints.Codebooks.GetAll.GetAllResponseItem))
                 return;
 
-            var codebookCollectionProperty = schema.Properties[nameof(GetAllResponseItem.Codebook).ToLowerInvariant()];
+            var codebookCollectionProperty = schema.Properties[nameof(Endpoints.Codebooks.GetAll.GetAllResponseItem.Codebook).ToLowerInvariant()];
 
             foreach (var type in _getAllResponsePossibleTypes)
             {

@@ -4,10 +4,10 @@ namespace NOBY.Api.Endpoints.Codebooks.CodebookMap;
 
 public class CodebookEndpoint<TReturn> : ICodebookEndpoint where TReturn : class
 {
-    private readonly Func<ICodebookServiceClients, Delegate> _endpointCallFactory;
+    private readonly Func<ICodebookServiceClients, CancellationToken, Task<List<TReturn>>> _endpointCallFactory;
     private readonly Func<IEnumerable<object>, IEnumerable<object>>? _resultCustomizer;
 
-    public CodebookEndpoint(string code, Func<ICodebookServiceClients, Delegate> endpointCallFactory, Func<IEnumerable<object>, IEnumerable<object>>? resultCustomizer)
+    public CodebookEndpoint(string code, Func<ICodebookServiceClients, CancellationToken, Task<List<TReturn>>> endpointCallFactory, Func<IEnumerable<object>, IEnumerable<object>>? resultCustomizer)
     {
         _endpointCallFactory = endpointCallFactory;
         _resultCustomizer = resultCustomizer;
@@ -30,8 +30,6 @@ public class CodebookEndpoint<TReturn> : ICodebookEndpoint where TReturn : class
 
     private Task<List<TReturn>> CallEndpoint(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
-        var endpointCall = (Func<CancellationToken, Task<List<TReturn>>>)_endpointCallFactory(codebookService);
-
-        return endpointCall(cancellationToken);
+        return _endpointCallFactory(codebookService, cancellationToken);
     }
 }

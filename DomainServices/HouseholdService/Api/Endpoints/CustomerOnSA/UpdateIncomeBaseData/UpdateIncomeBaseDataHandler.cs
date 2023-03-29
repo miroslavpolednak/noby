@@ -9,7 +9,8 @@ internal sealed class UpdateIncomeBaseDataHandler
     {
         var entity = await _dbContext.CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16029, $"Income ID {request.IncomeId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.IncomeNotFound, request.IncomeId);
 
         // base data
         entity.Sum = request.BaseData?.Sum;

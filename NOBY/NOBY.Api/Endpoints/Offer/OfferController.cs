@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using NOBY.Api.Endpoints.Offer.DeveloperSearch;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Offer;
 
@@ -8,62 +9,64 @@ public class OfferController : ControllerBase
 {
     private readonly IMediator _mediator;
     public OfferController(IMediator mediator) =>  _mediator = mediator;
-    
+
     /// <summary>
-    /// Simulace KB hypoteky.
+    /// Simulace KB hypotéky.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> OfferService/SimulateMortgage
+    /// Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.
     /// </remarks>
     /// <param name="request">Nastaveni simulace.</param>
-    /// <returns>ID vytvorene simulace a jeji vysledky.</returns>
+    /// <returns>ID vytvořené simulace a její výsledky.</returns>
     [HttpPost("mortgage")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(SimulateMortgage.SimulateMortgageResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<SimulateMortgage.SimulateMortgageResponse> SimulateMortgage([FromBody] SimulateMortgage.SimulateMortgageRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
     
     /// <summary>
-    /// Detail provedene simulace dle ID simulace.
+    /// Detail provedené simulace dle ID simulace.
     /// </summary>
     /// <remarks>
     /// <i>DS:</i> OfferService/GetMortgageData
     /// </remarks>
-    /// <returns>Vstupy a vystupy ulozene simulace.</returns>
+    /// <returns>Vstupy a výstupy uložené simulace.</returns>
     [HttpGet("mortgage/{offerId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.GetMortgageResponse> GetMortgageByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageByOfferId.GetMortgageByOfferIdRequest(offerId), cancellationToken);
     
     /// <summary>
-    /// Detail provedene simulace dle ID Sales Arrangement.
+    /// Detail provedené simulace dle ID Sales Arrangement.
     /// </summary>
     /// <remarks>
-    /// Stejny endpoint jako GetMortgageByOfferId, jen podle jineho ID.<br/>
+    /// Stejný endpoint jako GetMortgageByOfferId, jen podle jiného ID.<br/>
     /// <i>DS:</i> SalesArrangementService/GetSalesArrangement (to get OfferId)<br/>
     /// <i>DS:</i> OfferService/GetMortgageData
     /// </remarks>
-    /// <returns>Vstupy a vystupy ulozene simulace.</returns>
+    /// <returns>Vstupy a výstupy uložené simulace.</returns>
     [HttpGet("mortgage/sales-arrangement/{salesArrangementId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.GetMortgageResponse> GetMortgageBySalesArrangementId([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageBySalesArrangement.GetMortgageBySalesArrangementRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
-    /// Vytvoreni noveho pripadu (hypoteky) ze simulace.
+    /// Vytvoření nového případu (hypotéky) ze simulace.
     /// </summary>
     /// <remarks>
-    /// Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA.<br/>
-    /// V pripade identifikovaneho klienta navic vytvorit Product, RiskBusinessCaseId.<br/>
-    /// Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.<br/>
-    /// Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/><br/>
+    /// Vytvoří nový Case, Sales Arrangement, Household, CustomerOnSA.<br/>
+    /// V případe identifikovaného klienta navíc vytvořit Product, RiskBusinessCaseId.<br/>
+    /// Pokud je identifikován klient, v request modelu musí být naplněna vlastnost customer.<br/>
+    /// Pokud se jedná o anonymní případ, musi být vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/><br/>
     /// <i>DS:</i> OfferService/GetMortgageData<br/>
     /// <i>DS:</i> SalesArrangement/GetSalesArrangementByOfferId<br/>
     /// <i>DS:</i> CaseService/CreateCase<br/>
@@ -73,18 +76,18 @@ public class OfferController : ControllerBase
     /// <i>DS:</i> SalesArrangement/CreateCustomerOnSA
     /// </remarks>
     /// <param name="request">Identifikace klienta a ID simulace.</param>
-    /// <returns>ID nove vytvoreneho Case</returns>
+    /// <returns>ID nově vytvořeného Case</returns>
     [HttpPost("mortgage/create-case")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(CreateMortgageCase.CreateMortgageCaseResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<CreateMortgageCase.CreateMortgageCaseResponse> CreateMortgageCase([FromBody] CreateMortgageCase.CreateMortgageCaseRequest request)
         => await _mediator.Send(request);
 
     /// <summary>
-    /// Nalinkuje novou modelaci na stavajici SA.
+    /// Nalinkuje novou modelaci na stávající SA.
     /// </summary>
     /// <remarks>
     /// Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
@@ -109,7 +112,23 @@ public class OfferController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Modelace" })]
     [ProducesResponseType(typeof(Dto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.GetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetFullPaymentScheduleByOfferId.GetFullPaymentScheduleByOfferIdRequest(offerId), cancellationToken);
+    
+    /// <summary>
+    /// Vyhledání developerských projektů a developerů bez projektu.
+    /// </summary>
+    /// <remarks>
+    /// Vyhledá developerské projekty na základě vyhledávacího textu.<br />
+    /// Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />
+    /// Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
+    /// </remarks>
+    [HttpPost("mortgage/developer-project/search")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Modelace" })]
+    [ProducesResponseType(typeof(DeveloperSearchResponse), StatusCodes.Status200OK)]
+    public async Task<DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearchRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request, cancellationToken);
 }

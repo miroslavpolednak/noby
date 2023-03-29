@@ -10,7 +10,7 @@ internal sealed class RealIdentifiedSubjectBrClient : IIdentifiedSubjectBrClient
     public async Task<CreateIdentifiedSubjectResponse> CreateIdentifiedSubject(IdentifiedSubject request, bool hardCreate, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + "/public/v1/identified-subject" + (hardCreate ? "?hardCreate=true" : ""), request, cancellationToken)
+            .PostAsJsonAsync(_httpClient.BaseAddress + _baseAddress + (hardCreate ? "?hardCreate=true" : ""), request, cancellationToken)
             .ConfigureAwait(false);
 
         return (await Common.Helpers.ProcessResponse<CreateIdentifiedSubjectResponse>(StartupExtensions.ServiceName, response, cancellationToken));
@@ -19,7 +19,7 @@ internal sealed class RealIdentifiedSubjectBrClient : IIdentifiedSubjectBrClient
     public async Task UpdateIdentifiedSubject(long customerId, IdentifiedSubject request, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .PutAsJsonAsync($"{_httpClient.BaseAddress}/public/v1/identified-subject/{customerId}", request, cancellationToken)
+            .PutAsJsonAsync($"{_httpClient.BaseAddress}{_baseAddress}/{customerId}", request, cancellationToken)
             .ConfigureAwait(false);
 
         if (response.StatusCode != HttpStatusCode.NoContent)
@@ -34,6 +34,8 @@ internal sealed class RealIdentifiedSubjectBrClient : IIdentifiedSubjectBrClient
             };
         }
     }
+
+    const string _baseAddress = "/v1/identified-subject";
 
     private readonly HttpClient _httpClient;
     public RealIdentifiedSubjectBrClient(HttpClient httpClient)

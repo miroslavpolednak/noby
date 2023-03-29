@@ -2,10 +2,11 @@
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentArchiveService.Api.Database.Entities;
 using Microsoft.EntityFrameworkCore;
+using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.UploadDocument;
 
-public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest>
+public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest, Empty>
 {
     private readonly DocumentArchiveDbContext _context;
 
@@ -14,7 +15,7 @@ public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest>
         _context = context;
     }
 
-    public async Task<Unit> Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
+    public async Task<Empty> Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
     {
         if (await _context.DocumentInterface.AnyAsync(e => e.DocumentId == request.Metadata.DocumentId, cancellationToken))
         {
@@ -23,16 +24,17 @@ public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest>
 
         await _context.DocumentInterface.AddAsync(MapToEntity(request), cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return Unit.Value;
+
+        return new Empty();
     }
 
-    private DocumentInterface MapToEntity(UploadDocumentRequest request)
+    private static DocumentInterface MapToEntity(UploadDocumentRequest request)
     {
         var entity = new DocumentInterface();
         entity.DocumentId = request.Metadata.DocumentId;
         entity.DocumentData = request.BinaryData.ToByteArray();
         entity.FileName = request.Metadata.Filename;
-        entity.FileNameSuffix = Path.GetExtension(request.Metadata.Filename);
+        entity.FileNameSuffix = Path.GetExtension(request.Metadata.Filename).Substring(1);
         entity.Description = request.Metadata.Description;
         entity.CaseId = request.Metadata.CaseId!.Value;
         entity.CreatedOn = request.Metadata.CreatedOn;
@@ -51,7 +53,15 @@ public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest>
             entity.FolderDocument = request.Metadata.FolderDocument;
         }
         entity.FolderDocumentId = request.Metadata.FolderDocumentId;
-        entity.Kdv = (short)request.Kdv;
+        entity.Kdv = MapToShortWithTrueDefault(request.NotifyStarBuild);
+        entity.SendDocumentOnly = MapToShortWithTrueDefault(request.SendDocumentOnly);
         return entity;
     }
+
+    private static short MapToShortWithTrueDefault(bool? value) => value switch
+    {
+        true => 1,
+        false => 0,
+        null => 1
+    };
 }

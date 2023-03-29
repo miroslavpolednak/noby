@@ -11,14 +11,14 @@ FOLDER_BE = 'BE'
 def find_folder_tests_be():
     current_folder = os.path.dirname(__file__)
     assert FOLDER_BE in current_folder, f'Folder [{FOLDER_BE}] not found in current path [{current_folder}]!'
-    i = current_folder.index(FOLDER_BE)
+    i = current_folder.rindex(FOLDER_BE)
     return current_folder[0 : i + len(FOLDER_BE)]
 
 PATH_TO_TESTS_BE:str = find_folder_tests_be()
-PATH_TO_GRPC:str = f'{PATH_TO_TESTS_BE}/grpc'
+PATH_TO_GRPC:str = f'{PATH_TO_TESTS_BE}\\grpc'
 
 #Load .env variables
-load_dotenv(f'{PATH_TO_TESTS_BE}/.env')
+load_dotenv(f'{PATH_TO_TESTS_BE}\\.env')
 
 # #Import Stubs CIS
 # sys.path.append(f'{PATH_TO_GRPC}/CisTypes')
@@ -38,3 +38,14 @@ for node in os.listdir(PATH_TO_GRPC):
     node_path = os.path.join(PATH_TO_GRPC, node)
     if os.path.isdir(node_path):
         sys.path.append(node_path)
+
+
+# --------------------------------------------------------
+# TEST DATA
+# --------------------------------------------------------
+from DATA import TestDataProvider
+# reset DB, import custom and generated data
+TestDataProvider.reset()
+TestDataProvider.import_custom()
+# TestDataProvider.import_generated(datetime.now(), generated) # TODO:
+# --------------------------------------------------------

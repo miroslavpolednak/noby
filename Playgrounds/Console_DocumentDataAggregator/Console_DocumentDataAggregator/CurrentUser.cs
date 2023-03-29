@@ -3,4 +3,6 @@
 public class CurrentUser : CIS.Core.Security.ICurrentUser
 {
     public int Id => 500;
+    public string Login => "test";
+    public string? DisplayName => "test";
 }

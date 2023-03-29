@@ -20,13 +20,13 @@ message.Subject = "Test Email Subject";
 var bodyBuilder = new BodyBuilder();
 bodyBuilder.HtmlBody =  "<h1>Example HTML email with attachments</h1>";
 
-var filenames = new[] { "attachment1.txt", "attachment2.txt" };
+var filenames = new[] { "image.png", "attachment1.txt", "attachment2.txt" };
 
 foreach (var filename in filenames)
 {
-    bodyBuilder.Attachments.Add(filename, File.ReadAllBytes(Path.Combine("./", filename)));
+    var data = File.ReadAllBytes(Path.Combine("./", filename));
+    bodyBuilder.Attachments.Add(filename, data);
 }
-
 
 message.Body = bodyBuilder.ToMessageBody();
 

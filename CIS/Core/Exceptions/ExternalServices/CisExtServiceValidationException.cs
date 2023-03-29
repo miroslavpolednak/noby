@@ -1,6 +1,4 @@
-﻿using System.Collections.Immutable;
-
-namespace CIS.Core.Exceptions.ExternalServices;
+﻿namespace CIS.Core.Exceptions.ExternalServices;
 
 /// <summary>
 /// HTTP 400. Chyba, která vzniká při volání API třetích stran. Pokud API vrátí HTTP 4xx, vytáhneme z odpovědi chybu a vyvoláme tuto vyjímku. Podporuje seznam chyb.

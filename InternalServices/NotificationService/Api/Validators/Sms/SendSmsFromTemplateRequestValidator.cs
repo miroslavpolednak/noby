@@ -7,29 +7,42 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SendSmsFrom
 {
     public SendSmsFromTemplateRequestValidator()
     {
-        RuleFor(request => request.Phone)
+        RuleFor(request => request.PhoneNumber)
             .NotNull()
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.PhoneRequired)
-                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Phone)} required.")
-            .SetValidator(new PhoneValidator())
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.PhoneInvalid)
-                .WithMessage(nameof(SendSmsFromTemplateRequest.Phone));
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PhoneNumberRequired)
+                .WithMessage($"{nameof(SendSmsFromTemplateRequest.PhoneNumber)} required.")
+            .SetValidator(new PhoneNumberValidator())
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PhoneNumberInvalid)
+                .WithMessage($"Invalid {nameof(SendSmsRequest.PhoneNumber)}.");
         
         RuleFor(request => request.ProcessingPriority)
             .GreaterThan(0)
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.ProcessPriorityInvalid)
-                .WithMessage(nameof(SendSmsFromTemplateRequest.ProcessingPriority));
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.ProcessPriorityInvalid)
+                .WithMessage($"Invalid {nameof(SendSmsRequest.ProcessingPriority)}.");
         
         RuleFor(request => request.Type)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.TypeInvalid)
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.TypeInvalid)
                 .WithMessage($"Invalid {nameof(SendSmsFromTemplateRequest.Type)}.");
 
         RuleFor(request => request.Placeholders)
             .NotNull()
-                .WithErrorCode(ErrorCodes.SendSmsFromTemplate.PlaceholdersRequired)
-                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} required.");
-        
-        // todo: validate placeholders
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PlaceholdersRequired)
+                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} required.")
+            .Must(placeholders =>
+            {
+                return placeholders.Select(p => p.Value).All(p => p.Length > 0);
+            })
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PlaceholdersInvalid)
+                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} must contain non-empty values.")
+            .Must(placeholders =>
+            {
+                var totalCount = placeholders.Count;
+                var uniqueCount = placeholders.Select(p => p.Key).Distinct().Count();
+
+                return totalCount == uniqueCount;
+            })
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PlaceholdersInvalid)
+                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} must contain unique keys.");
     }
 }

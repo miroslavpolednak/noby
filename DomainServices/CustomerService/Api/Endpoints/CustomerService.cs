@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DomainServices.CustomerService.Api.Endpoints;
@@ -21,6 +22,9 @@ internal class CustomerService : Contracts.V1.CustomerService.CustomerServiceBas
 
     public override Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, ServerCallContext context)
         => _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Empty> UpdateCustomerIdentifiers(UpdateCustomerIdentifiersRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
 
     public override Task<CustomerDetailResponse> GetCustomerDetail(CustomerDetailRequest request, ServerCallContext context)
         => _mediator.Send(request, context.CancellationToken);

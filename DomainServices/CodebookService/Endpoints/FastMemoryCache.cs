@@ -7,7 +7,7 @@ namespace DomainServices.CodebookService.Endpoints;
 public sealed class FastMemoryCache
 {
     //TODO zatim se mi to nechce datavat do appsettings
-    public const int AbsoluteExpirationInMinutes = 1;
+    public const int AbsoluteExpirationInMinutes = 10;
 
     private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
@@ -22,8 +22,7 @@ public sealed class FastMemoryCache
     internal static async Task<List<TItem>> GetOrCreate<TItem>(string key, Func<Task<List<TItem>>> createItems)
         where TItem : class
     {
-        List<TItem> cacheEntry;
-        if (!_cache.TryGetValue(key, out cacheEntry))
+        if (!_cache.TryGetValue(key, out List<TItem>? cacheEntry))
         {
             SemaphoreSlim mylock = _locks.GetOrAdd(key, k => new SemaphoreSlim(1, 1));
 

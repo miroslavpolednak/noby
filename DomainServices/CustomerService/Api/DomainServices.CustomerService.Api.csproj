@@ -1,26 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Platforms>AnyCPU;x64</Platforms>
+<PropertyGroup>
+	  <TargetFramework>net7.0</TargetFramework>
+	  <Authors>Filip Tuma</Authors>
+	  <Product>MPSS DomainServices</Product>
+	  <LangVersion>preview</LangVersion>
+	  <Nullable>enable</Nullable>
+	  <Platforms>AnyCPU;x64</Platforms>
+	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Version>1.0.0.0</Version>
   </PropertyGroup>
+
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
   
   <ItemGroup>
 	<PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="MediatR" Version="11.1.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
-	<PackageReference Include="Grpc.AspNetCore" Version="2.51.0" />
-	<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.51.0" />
-    <PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
+	<PackageReference Include="Grpc.AspNetCore" Version="2.52.0" />
+	<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.52.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.10.1" />
   </ItemGroup>
 
   <ItemGroup>
 	  <ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
-	  <ProjectReference Include="..\..\..\CIS\ExternalServicesHelpers\CIS.ExternalServicesHelpers.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
@@ -31,6 +36,7 @@
 	<ProjectReference Include="..\ExternalServices.CustomerManagement\DomainServices.CustomerService.ExternalServices.CustomerManagement.csproj" />
 	<ProjectReference Include="..\ExternalServices.CustomerProfile\DomainServices.CustomerService.ExternalServices.CustomerProfile.csproj" />
 	<ProjectReference Include="..\ExternalServices.IdentifiedSubjectBr\DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.csproj" />
+	<ProjectReference Include="..\ExternalServices.Kyc\DomainServices.CustomerService.ExternalServices.Kyc.csproj" />
   </ItemGroup>
 
   <ItemGroup>

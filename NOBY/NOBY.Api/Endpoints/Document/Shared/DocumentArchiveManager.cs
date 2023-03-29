@@ -1,8 +1,8 @@
 ﻿using CIS.Core.Attributes;
 using CIS.Core.Configuration;
+using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
-using DomainServices.UserService.Clients;
 using Google.Protobuf;
 using NOBY.Api.Endpoints.Document.Shared.DocumentIdManager;
 
@@ -13,21 +13,21 @@ internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocu
 {
     private readonly TDocumentIdManager _documentIdManager;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly IUserServiceClient _userServiceClient;
+    private readonly ICodebookServiceClients _codebookService;
     private readonly ICisEnvironmentConfiguration _environmentConfiguration;
 
     public DocumentArchiveManager(TDocumentIdManager documentIdManager,
                                   IDocumentArchiveServiceClient documentArchiveService,
-                                  IUserServiceClient userServiceClient,
+                                  ICodebookServiceClients codebookService,
                                   ICisEnvironmentConfiguration environmentConfiguration)
     {
         _documentIdManager = documentIdManager;
         _documentArchiveService = documentArchiveService;
-        _userServiceClient = userServiceClient;
+        _codebookService = codebookService;
         _environmentConfiguration = environmentConfiguration;
     }
 
-    public Task<string> GetDocumentId(TEntityId entityId, CancellationToken cancellationToken) =>
+    public Task<DocumentInfo> GetDocumentInfo(TEntityId entityId, CancellationToken cancellationToken) =>
         _documentIdManager.LoadDocumentId(entityId, cancellationToken);
 
     public Task<string> GenerateDocumentId(CancellationToken cancellationToken)
@@ -42,7 +42,14 @@ internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocu
 
     public async Task<ReadOnlyMemory<byte>> GetDocument(string documentId, GetDocumentBaseRequest documentRequest, CancellationToken cancellationToken)
     {
-        var response = await _documentArchiveService.GetDocument(new GetDocumentRequest { DocumentId = documentId }, cancellationToken);
+        var request = new GetDocumentRequest
+        {
+            DocumentId = documentId,
+            UserLogin = documentRequest.InputParameters.UserId.ToString(),
+            WithContent = true
+        };
+
+        var response = await _documentArchiveService.GetDocument(request, cancellationToken);
 
         documentRequest.InputParameters.CaseId = response.Metadata.CaseId;
 
@@ -51,7 +58,7 @@ internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocu
 
     public async Task SaveDocumentToArchive(TEntityId entityId, DocumentArchiveData archiveData, CancellationToken cancellationToken)
     {
-        var user = await _userServiceClient.GetUser(archiveData.UserId, cancellationToken);
+        var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
 
         var request = new UploadDocumentRequest
         {
@@ -60,10 +67,11 @@ internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocu
             {
                 DocumentId = archiveData.DocumentId,
                 CaseId = archiveData.CaseId,
-                AuthorUserLogin = user.CPM,
-                EaCodeMainId = 605469,
+                AuthorUserLogin = archiveData.UserId.ToString(),
+                EaCodeMainId = documentTypes.First(d => d.Id == archiveData.DocumentTypeId).EACodeMainId,
                 Filename = archiveData.FileName,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.Now,
+                ContractNumber = string.IsNullOrWhiteSpace(archiveData.ContractNumber) ? "HF00111111125" : archiveData.ContractNumber
             }
         };
 

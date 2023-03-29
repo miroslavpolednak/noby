@@ -1,7 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Contracts;
-using Grpc.Core;
-using CIS.Infrastructure.gRPC;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetTaskList;
 
@@ -35,7 +33,7 @@ internal sealed class GetTaskListHandler
         };
 
         // load tasks
-        var easTasks = await _easSimulationHTClient.FindTasks(header, messsage);
+        var easTasks = await _easSimulationHTClient.FindTasks(header, messsage, cancellation);
         var tasks = easTasks.Select(i => i.ToWorkflowTask()).ToArray();
 
         // check tasks
@@ -60,27 +58,17 @@ internal sealed class GetTaskListHandler
         var tasksWithInvalidTypeId = tasks.Where(t => !taskTypeIds.Contains(t.TypeId));
         var tasksWithInvalidStateId = tasks.Where(t => !taskStateIds.Contains(t.StateId));
 
-        if (!(tasksWithInvalidTypeId.Any() || tasksWithInvalidStateId.Any()))
-            return;
-
-        var invalidTypeIds = tasksWithInvalidTypeId.Select(t => t.TypeId).Distinct();
-        var invalidStateIds = tasksWithInvalidStateId.Select(t => t.StateId).Distinct();
-
-        var message = string.Empty;
-
         if (tasksWithInvalidTypeId.Any())
         {
             var taskIds = tasksWithInvalidTypeId.Select(t => t.TaskId);
-            message += $"Found tasks [{string.Join(",", taskIds)}] with invalid TypeId [{string.Join(",", invalidTypeIds)}].";
+            throw new CisValidationException(ErrorCodeMapper.WfTaskValidationFailed1, string.Join(",", taskIds));
         }
 
         if (tasksWithInvalidStateId.Any())
         {
             var taskIds = tasksWithInvalidStateId.Select(t => t.TaskId);
-            message += $"Found tasks [{string.Join(",", taskIds)}] with invalid StateId [{string.Join(",", invalidStateIds)}].";
+            throw new CisValidationException(ErrorCodeMapper.WfTaskValidationFailed2, string.Join(",", taskIds));
         }
-
-        throw new CisValidationException(13008, message);
     }
 
     private static string GetLogin(UserService.Contracts.User user)
@@ -96,7 +84,6 @@ internal sealed class GetTaskListHandler
         return identity ?? string.Empty;
     }
 
-    private readonly ILogger<GetTaskListHandler> _logger;
     private readonly ICodebookServiceClients _codebookService;
     private readonly UserService.Clients.IUserServiceClient _userService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
@@ -104,7 +91,6 @@ internal sealed class GetTaskListHandler
     private readonly IMediator _mediator;
 
     public GetTaskListHandler(
-        ILogger<GetTaskListHandler> logger,
         ICodebookServiceClients codebookService,
         UserService.Clients.IUserServiceClient userService,
         EasSimulationHT.IEasSimulationHTClient easSimulationHTClient,
@@ -112,7 +98,6 @@ internal sealed class GetTaskListHandler
         IMediator mediator
         )
     {
-        _logger = logger;
         _codebookService = codebookService;
         _userService = userService;
         _easSimulationHTClient = easSimulationHTClient;

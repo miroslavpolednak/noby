@@ -1,8 +1,10 @@
-﻿using ceTe.DynamicPDF.Xmp;
+﻿using ceTe.DynamicPDF.PageElements;
+using ceTe.DynamicPDF.Xmp;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
 using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 using Google.Protobuf;
+using Path = System.IO.Path;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
 
@@ -36,21 +38,22 @@ internal class PdfDocumentManager
     {
         foreach (var documentPart in parts)
         {
-            var acroFormWriter = _pdfAcroFormWriterFactory.Create(documentPart.Data);
+            var template = await _templateManager.LoadTemplate(documentPart.DocumentTypeId, documentPart.DocumentTemplateVersionId, documentPart.DocumentTemplateVariantId);
 
-            var templateLoader = await _templateManager.CreateLoader(documentPart.TemplateTypeId, documentPart.TemplateVersion);
-
-            var template = acroFormWriter.Write(templateLoader);
+            var document = _pdfAcroFormWriterFactory.Create(documentPart.Data).Write(template);
             
-            _templateManager.DrawTemplate(template);
+            _templateManager.DrawTemplate(document);
         }
     }
 
     private async Task<Document> PrepareFinalPdf(OutputFileType outputFileType, GenerateDocumentRequest request)
     {
-        var finalDocument = await _templateManager.CreateFinalDocument(request.TemplateTypeId, request.TemplateVersion);
+        var finalDocument = await _templateManager.CreateFinalDocument(request.DocumentTypeId, request.DocumentTemplateVersionId, request.DocumentTemplateVariantId);
 
         await _pdfFooter.FillFooter(finalDocument, request);
+
+        if (request.ForPreview ?? true)
+            AddWatermark(finalDocument.Document);
 
         if (outputFileType is OutputFileType.Pdfa or OutputFileType.Unknown)
             ArchiveDocument(finalDocument.Document);
@@ -58,25 +61,39 @@ internal class PdfDocumentManager
         return finalDocument.Document;
     }
 
-    private static void ArchiveDocument(Document document)
+    private void ArchiveDocument(Document document)
     {
         var xmp = new XmpMetadata();
 
-        xmp.AddSchema(new PdfASchema(PdfAStandard.PDF_A_1a_2005));
+        xmp.AddSchema(new PdfASchema(PdfAStandard.PdfA2a));
 
         xmp.DublinCore.Title.DefaultText = document.Title;
         xmp.DublinCore.Creators.Add(document.Author);
         xmp.DublinCore.Title.AddLang("cs-cz", "PDF/A1 Dokument");
 
         document.XmpMetadata = xmp;
-
-        var iccProfile = new IccProfile("D:\\Users\\992589l\\Downloads\\AdobeICCProfilesCS4Win_end-user\\Adobe ICC Profiles (end-user)\\CMYK\\CoatedFOGRA27.icc");
+        
+        var iccProfile = new IccProfile(Path.Combine(_templateManager.StoragePath, "ICC\\CoatedFOGRA27.icc"));
         var outputIntents = new OutputIntent("", "CoatedFOGRA27", "https://www.adobe.com/", "CMYK", iccProfile)
         {
             Version = OutputIntentVersion.PDF_A
         };
 
         document.OutputIntents.Add(outputIntents);
+    }
+
+    private static void AddWatermark(Document document)
+    {
+        var textWatermark = new TextWatermark("Pouze pro informaci", Font.LoadSystemFont("Arial"), 68)
+        {
+            TextColor = new RgbColor(192, 192, 192),
+            Angle = -45,
+            Position = WatermarkPosition.Center
+        };
+
+        document.Template ??= new Template();
+
+        document.Template.Elements.Add(textWatermark);
     }
 
     private static Task<ByteString> ConvertPdfToByteString(Document document)

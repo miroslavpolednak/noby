@@ -3,13 +3,13 @@ using FluentValidation;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetMortgageOfferFPSchedule;
 
-internal class GetMortgageOfferFPScheduleRequestValidator 
+internal sealed class GetMortgageOfferFPScheduleRequestValidator 
     : AbstractValidator<GetMortgageOfferFPScheduleRequest>
 {
     public GetMortgageOfferFPScheduleRequestValidator()
     {
         RuleFor(t => t.OfferId)
             .GreaterThan(0)
-            .WithMessage("OfferId is not specified").WithErrorCode("10001");
+            .WithErrorCode(ErrorCodeMapper.OfferIdIsEmpty);
     }
 }

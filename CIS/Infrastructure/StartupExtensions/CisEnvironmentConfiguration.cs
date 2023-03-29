@@ -6,7 +6,7 @@ namespace CIS.Infrastructure.StartupExtensions;
 
 public static class CisEnvironmentConfiguration
 {
-    public static WebApplicationBuilder AddCisEnvironmentConfiguration(this WebApplicationBuilder builder)
+    public static ICisEnvironmentConfiguration AddCisEnvironmentConfiguration(this WebApplicationBuilder builder)
     {
         Configuration.CisEnvironmentConfiguration cisConfiguration = new();
         builder.Configuration.GetSection(JsonConfigurationKey).Bind(cisConfiguration);
@@ -16,13 +16,10 @@ public static class CisEnvironmentConfiguration
         // get env variables
         builder.Configuration.AddCisEnvironmentVariables($"{cisConfiguration.EnvironmentName}_");
 
-        // distributed cache
-        registerDistributedCache(builder);
-
-        return builder;
+        return cisConfiguration;
     }
 
-    public static WebApplicationBuilder AddCisEnvironmentConfiguration(this WebApplicationBuilder builder, Action<ICisEnvironmentConfiguration> options)
+    public static ICisEnvironmentConfiguration AddCisEnvironmentConfiguration(this WebApplicationBuilder builder, Action<ICisEnvironmentConfiguration> options)
     {
         var cisConfiguration = new Configuration.CisEnvironmentConfiguration();
         builder.Configuration.GetSection(JsonConfigurationKey).Bind(cisConfiguration);
@@ -34,10 +31,7 @@ public static class CisEnvironmentConfiguration
         // get env variables
         builder.Configuration.AddCisEnvironmentVariables($"{cisConfiguration.EnvironmentName}_");
 
-        // distributed cache
-        registerDistributedCache(builder);
-
-        return builder;
+        return cisConfiguration;
     }
 
     private static void CheckAndRegisterConfiguration(WebApplicationBuilder builder, ICisEnvironmentConfiguration cisConfiguration)
@@ -52,14 +46,5 @@ public static class CisEnvironmentConfiguration
         builder.Services.TryAddSingleton(cisConfiguration);
     }
 
-    private static void registerDistributedCache(WebApplicationBuilder builder)
-    {
-        var cacheConfiguration = new CisEnvironmentDistributedCacheConfiguration();
-        builder.Configuration.GetSection(JsonConfigurationKey).GetSection(JsonCacheConfigurationKey).Bind(cacheConfiguration);
-
-        builder.Services.TryAddSingleton<ICisEnvironmentDistributedCacheConfiguration>(cacheConfiguration);
-    }
-
     private const string JsonConfigurationKey = "CisEnvironmentConfiguration";
-    private const string JsonCacheConfigurationKey = "DistributedCache";
 }

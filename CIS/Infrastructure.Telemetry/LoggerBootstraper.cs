@@ -19,6 +19,11 @@ internal sealed class LoggerBootstraper
     private readonly IServiceProvider _serviceProvider;
 
     const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] {Level:u} - [{TraceId}] [] [{Assembly}] [{Version}] [{MachineName}] [{CisUserId}] [{RequestPath}] - {Message}{NewLine}";
+    static string[] _excludedGrpcRequestPaths = new[]
+    {
+        "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo",
+        "/grpc.health.v1.Health/Check"
+    };
 
     public LoggerBootstraper(HostBuilderContext hostingContext, IServiceProvider serviceProvider, LogBehaviourTypes logType)
     {
@@ -35,17 +40,20 @@ internal sealed class LoggerBootstraper
     public void SetupFilters(LoggerConfiguration loggerConfiguration)
     {
         // global filter to exclude GRPC reflection
-        if (_logType == LogBehaviourTypes.Grpc)
+        //TODO any odstranit az se zbavime code-first grpc!
+        if (_logType == LogBehaviourTypes.Grpc || _logType == LogBehaviourTypes.Any)
         {
             loggerConfiguration
-                .Filter.ByExcluding(Matching.WithProperty("RequestPath", "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo"));
+                .Filter.ByExcluding(Matching.WithProperty<string>("RequestPath", t => _excludedGrpcRequestPaths.Contains(t)));
         }
+        
         if (_logType == LogBehaviourTypes.WebApi)
         {
             // cokoliv jineho nez /api zahazovat
             loggerConfiguration
                 .Filter.ByExcluding(Matching.WithProperty<string>("RequestPath", t => !t.StartsWith("/api/", StringComparison.OrdinalIgnoreCase)));
         }
+        
         // remove health checks from logging
         loggerConfiguration
             .Filter.ByExcluding(Matching.WithProperty("RequestPath", CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl));
@@ -55,7 +63,9 @@ internal sealed class LoggerBootstraper
     {
         loggerConfiguration
             .ReadFrom.Configuration(_generalConfiguration)
+            .Enrich.With(_serviceProvider.GetRequiredService<Enrichers.NobyHeadersEnricher>())
             .Enrich.WithSpan()
+            .Enrich.WithClientIp()
             .Enrich.FromLogContext()
             .Enrich.WithMachineName()
             .Enrich.WithProperty("Assembly", $"{_assemblyName!.Name}")
@@ -66,6 +76,7 @@ internal sealed class LoggerBootstraper
         {
             if (!string.IsNullOrEmpty(_cisConfiguration.EnvironmentName))
                 loggerConfiguration.Enrich.WithProperty("CisEnvironment", _cisConfiguration.EnvironmentName);
+
             if (!string.IsNullOrEmpty(_cisConfiguration.DefaultApplicationKey))
                 loggerConfiguration.Enrich.WithProperty("CisAppKey", _cisConfiguration.DefaultApplicationKey);
         }
@@ -88,7 +99,7 @@ internal sealed class LoggerBootstraper
         {
             loggerConfiguration
                 .WriteTo
-                .Seq(configuration.Seq.ServerUrl);
+                .Seq(configuration.Seq.ServerUrl, eventBodyLimitBytes: 1048576);
         }
 
         // logovani do souboru

@@ -1,4 +1,5 @@
-﻿using Google.Protobuf;
+﻿using CIS.Foms.Enums;
+using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 using __Offer = DomainServices.OfferService.Contracts;
 using __SA = DomainServices.SalesArrangementService.Contracts;
@@ -56,10 +57,34 @@ internal sealed class LinkModelationToSalesArrangementHandler
         {
             ContractNumber = caseInstance.Data.ContractNumber,
             ProductTypeId = caseInstance.Data.ProductTypeId,
-            TargetAmount = offerInstance.SimulationInputs.LoanAmount
+            TargetAmount = offerInstance.SimulationInputs.LoanAmount,
+            IsEmployeeBonusRequested = offerInstance.SimulationInputs.IsEmployeeBonusRequested
         }, cancellation);
 
+        // nastavit flowSwitches
+        await setFlowSwitches(request.SalesArrangementId, offerInstance, cancellation);
+
         return new Google.Protobuf.WellKnownTypes.Empty();
+    }
+
+    /// <summary>
+    /// Nastaveni flow switches v podle toho jak je nastavena simulace / sa
+    /// </summary>
+    private async Task setFlowSwitches(int salesArrangementId, __Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellation)
+    {
+        if (((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.MinValue) > DateTime.Now)
+        {
+            var flowSwitchesRequest = new Contracts.SetFlowSwitchesRequest
+            {
+                SalesArrangementId = salesArrangementId
+            };
+            flowSwitchesRequest.FlowSwitches.Add(new __SA.FlowSwitch
+            {
+                FlowSwitchId = (int)FlowSwitches.FlowSwitch1,
+                Value = true
+            });
+            await _mediator.Send(flowSwitchesRequest, cancellation);
+        }
     }
 
     private async Task updateParameters(Database.Entities.SalesArrangement salesArrangementInstance, __Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellation)
@@ -69,7 +94,11 @@ internal sealed class LinkModelationToSalesArrangementHandler
         var saParameters = await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementInstance.SalesArrangementId, cancellation);
         if (saParameters is null)
         {
-            saParameters = new Database.Entities.SalesArrangementParameters();
+            saParameters = new Database.Entities.SalesArrangementParameters
+            {
+                SalesArrangementId = salesArrangementInstance.SalesArrangementId,
+                SalesArrangementParametersType = SalesArrangementTypes.Mortgage
+            };
             _dbContext.SalesArrangementsParameters.Add(saParameters);
         }
         var parametersModel = saParameters?.ParametersBin is not null ? __SA.SalesArrangementParametersMortgage.Parser.ParseFrom(saParameters.ParametersBin) : new __SA.SalesArrangementParametersMortgage();
@@ -82,7 +111,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         }
 
         // HFICH-2181
-        if (parametersModel.ExpectedDateOfDrawing != null || parametersModel.ExpectedDateOfDrawing == null && offerInstance.SimulationInputs.ExpectedDateOfDrawing > DateTime.Now.AddDays(1))
+        if (parametersModel.ExpectedDateOfDrawing != null || (parametersModel.ExpectedDateOfDrawing == null && offerInstance.SimulationInputs.ExpectedDateOfDrawing > DateTime.Now.AddDays(1)))
         {
             parametersModel.ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing;
             hasChanged = true;
@@ -99,12 +128,15 @@ internal sealed class LinkModelationToSalesArrangementHandler
     private readonly CaseService.Clients.ICaseServiceClient _caseService;
     private readonly OfferService.Clients.IOfferServiceClient _offerService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
+    private readonly IMediator _mediator;
 
     public LinkModelationToSalesArrangementHandler(
+        IMediator mediator,
         CaseService.Clients.ICaseServiceClient caseService,
         Database.SalesArrangementServiceDbContext dbContext,
         OfferService.Clients.IOfferServiceClient offerService)
     {
+        _mediator = mediator;
         _caseService = caseService;
         _dbContext = dbContext;
         _offerService = offerService;

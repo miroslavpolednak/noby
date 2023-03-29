@@ -57,7 +57,7 @@ public class MpDigiClient
 
         var partnerRequest = MapToPartnerRequest(request);
 
-        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest);
+        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest, cancellationToken);
 
         return new Identity(mpIdentity.IdentityId, IdentitySchemes.Mp);
     }
@@ -71,14 +71,14 @@ public class MpDigiClient
         if (!exists)
         {
             // todo: error code
-            throw new CisAlreadyExistsException(9999999, "Partner does not exist in KonsDB."); 
+            throw new CisNotFoundException(9999999, "Partner does not exist in KonsDB."); 
         }
         
         await InitializeCodebooks(cancellationToken);
 
         var partnerRequest = MapToPartnerRequest(request);
         
-        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest);
+        await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest, cancellationToken);
     }
 
     private async Task<bool> PartnerExists(long partnerId, CancellationToken cancellationToken)
@@ -105,12 +105,7 @@ public class MpDigiClient
 
     private ContactRequest MapToContactRequest(Contact contact)
     {
-        return new ContactRequest
-        {
-            Type = FastEnum.Parse<ContactType>(_contactTypes.First(x => x.Id == contact.ContactTypeId).MpDigiApiCode),
-            Primary = true,
-            Value = contact.Value
-        };
+        return contact.ToExternalService(_contactTypes);
     }
     
     private PartnerRequest MapToPartnerRequest(CreateCustomerRequest request)
@@ -177,14 +172,17 @@ public class MpDigiClient
         if (document is null)
             return;
 
-        request.IdentificationDocuments.Add(new IdentificationDocument
+        request.IdentificationDocuments = new List<IdentificationDocument>()
         {
-            Number = document.Number,
-            Type = FastEnum.Parse<IdentificationCardType>(_docTypes.First(d => d.Id == document.IdentificationDocumentTypeId).MpDigiApiCode),
-            ValidTo = document.ValidTo,
-            IssuedBy = document.IssuedBy,
-            IssuedOn = document.IssuedOn,
-            IssuingCountry = _countries.FirstOrDefault(c => c.Id == document.IssuingCountryId)?.ShortName
-        });
+            new IdentificationDocument
+            {
+                Number = document.Number,
+                Type = FastEnum.Parse<IdentificationCardType>(_docTypes.First(d => d.Id == document.IdentificationDocumentTypeId).MpDigiApiCode),
+                ValidTo = document.ValidTo,
+                IssuedBy = document.IssuedBy,
+                IssuedOn = document.IssuedOn,
+                IssuingCountry = _countries.FirstOrDefault(c => c.Id == document.IssuingCountryId)?.ShortName ?? ""
+            }
+        };
     }
 }

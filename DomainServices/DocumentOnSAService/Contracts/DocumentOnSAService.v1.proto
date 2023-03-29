@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentOnSAService.v1;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts.v1";
+
+import "google/protobuf/empty.proto";
+import "GenerateFormId.proto";
+import "StartSigning.proto";
+import "StopSigning.proto";
+import "GetDocumentsToSignList.proto";
+import "GetDocumentOnSAData.proto";
+import "SignDocumentManually.proto";
+import "GetDocumentsOnSAList.proto";
+import "CreateDocumentOnSA.proto";
+
+//DocumentOnSAService
+service DocumentOnSAService{
+	rpc GenerateFormId(DomainServices.DocumentOnSAService.GenerateFormId.GenerateFormIdRequest) returns (DomainServices.DocumentOnSAService.GenerateFormId.GenerateFormIdResponse);
+	rpc StartSigning(DomainServices.DocumentOnSAService.StartSigning.StartSigningRequest) returns(DomainServices.DocumentOnSAService.StartSigning.StartSigningResponse);
+	rpc StopSigning(DomainServices.DocumentOnSAService.StopSigning.StopSigningRequest) returns(google.protobuf.Empty);
+	rpc GetDocumentsToSignList(DomainServices.DocumentOnSAService.GetDocumentsToSignList.GetDocumentsToSignListRequest) returns(DomainServices.DocumentOnSAService.GetDocumentsToSignList.GetDocumentsToSignListResponse);
+	rpc GetDocumentOnSAData(DomainServices.DocumentOnSAService.GetDocumentOnSAData.GetDocumentOnSADataRequest) returns (DomainServices.DocumentOnSAService.GetDocumentOnSAData.GetDocumentOnSADataResponse);
+	rpc SignDocumentManually(DomainServices.DocumentOnSAService.SignDocumentManually.SignDocumentManuallyRequest) returns (google.protobuf.Empty);
+	rpc GetDocumentsOnSAList(DomainServices.DocumentOnSAService.GetDocumentsOnSAList.GetDocumentsOnSAListRequest) returns (DomainServices.DocumentOnSAService.GetDocumentsOnSAList.GetDocumentsOnSAListResponse);
+	rpc CreateDocumentOnSA(DomainServices.DocumentOnSAService.CreateDocumentOnSA.CreateDocumentOnSARequest) returns (DomainServices.DocumentOnSAService.CreateDocumentOnSA.CreateDocumentOnSAResponse);
+}

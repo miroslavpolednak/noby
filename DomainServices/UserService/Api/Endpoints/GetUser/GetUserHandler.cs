@@ -21,8 +21,13 @@ internal class GetUserHandler
             ICP = userInstance.v33icp ?? "",
             FullName = $"{userInstance.v33jmeno} {userInstance.v33prijmeni}".Trim(),
             Email = "",
-            Phone = ""
+            Phone = "",
+            UserVip = false,
+            CzechIdentificationNumber = "12345678"
         };
+
+        model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity("A09FK3", CIS.Foms.Enums.UserIdentitySchemes.KbUid));
+
         model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.Mpad));
 
         // https://jira.kb.cz/browse/HFICH-2276

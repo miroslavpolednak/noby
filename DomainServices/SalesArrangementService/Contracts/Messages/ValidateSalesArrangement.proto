@@ -2,6 +2,8 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+
 message ValidateSalesArrangementRequest {
 	int32 SalesArrangementId = 1;
 }
@@ -29,7 +31,8 @@ message ValidationMessageNoby {
     }
 
     NobySeverity Severity = 1;
-    string Category = 2;
-    string ParameterName = 3;
-    string Message = 4;
+    google.protobuf.StringValue Category = 2;
+    google.protobuf.Int32Value CategoryOrder = 3;
+    string ParameterName = 4;
+    string Message = 5;
 }

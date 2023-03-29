@@ -11,7 +11,7 @@ public static class McsEmailMappers
 
     public static McsSendApi.v4.EmailAddress MapToMcs(this EmailAddress emailAddress)
     {
-        return new McsSendApi.v4.EmailAddress
+        return new ()
         {
             party = emailAddress.Party.MapToMcs(),
             value = emailAddress.Value
@@ -20,7 +20,7 @@ public static class McsEmailMappers
 
     public static McsSendApi.v4.Party MapToMcs(this Party party)
     {
-        return new McsSendApi.v4.Party
+        return new ()
         {
             legalPerson = party.LegalPerson?.MapToMcs(),
             naturalPerson = party.NaturalPerson?.MapToMcs()
@@ -29,7 +29,7 @@ public static class McsEmailMappers
 
     public static McsSendApi.v4.LegalPerson MapToMcs(this LegalPerson legalPerson)
     {
-        return new McsSendApi.v4.LegalPerson
+        return new ()
         {
             name = legalPerson.Name 
         };
@@ -37,7 +37,7 @@ public static class McsEmailMappers
 
     public static McsSendApi.v4.NaturalPerson MapToMcs(this NaturalPerson naturalPerson)
     {
-        return new McsSendApi.v4.NaturalPerson
+        return new ()
         {
             surname = naturalPerson.Surname,
             firstName = naturalPerson.FirstName,
@@ -47,7 +47,7 @@ public static class McsEmailMappers
 
     public static McsSendApi.v4.Content MapToMcs(this EmailContent emailContent)
     {
-        return new McsSendApi.v4.Content
+        return new ()
         {
             charset = "UTF-8",
             format = emailContent.Format,
@@ -55,12 +55,20 @@ public static class McsEmailMappers
             text = emailContent.Text
         };
     }
+
+    public static McsSendApi.v4.NotificationConsumer MapToMcs(string consumerId)
+    {
+        return new()
+        {
+            consumerId = consumerId
+        };
+    }
     
     public static McsSendApi.v4.Attachment MapToMcs(string objectKey, string filename)
     {
-        return new McsSendApi.v4.Attachment
+        return new ()
         {
-            s3Content = new McsSendApi.v4.S3Content
+            s3Content = new ()
             {
                 filename = filename,
                 objectKey = objectKey

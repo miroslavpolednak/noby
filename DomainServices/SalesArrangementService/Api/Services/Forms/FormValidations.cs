@@ -1,7 +1,5 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DataAggregator.EasForms;
-using DomainServices.HouseholdService.Contracts;
-using Household = CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest.Household;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 
@@ -9,18 +7,16 @@ internal static class FormValidations
 {
     private const string StringJoinSeparator = ",";
 
-    public static void CheckFormData(IProductFormData formData)
+    public static void CheckFormData(ProductData formData)
     {
-        CheckArrangement(formData.SalesArrangement);
+        CheckCustomersOnSA(formData.CustomersOnSa);
 
-        CheckCustomersOnSA(formData.HouseholdData.CustomersOnSa);
+        CheckHouseholds(formData.Households, formData.CustomersOnSa);
 
-        CheckHouseholds(formData.HouseholdData.Households, formData.HouseholdData.CustomersOnSa);
-
-        CheckIncomes(formData.HouseholdData.Incomes);
+        CheckIncomes(formData.EmployementIncomes);
     }
 
-    private static void CheckArrangement(Contracts.SalesArrangement arrangement)
+    public static void CheckArrangement(Contracts.SalesArrangement arrangement)
     {
         // check mandatory fields of SalesArrangement
         var saMandatoryFields = new List<(string Field, bool Valid)>
@@ -44,46 +40,17 @@ internal static class FormValidations
         }
     }
 
-    private static void CheckIncomes(Dictionary<int, Income> incomesById)
-    {
-        // check mandatory fields of Incomes
-        string[] FindInvalidFields(Income income)
-        {
-            // Kontrolují se pouze příjmy ze zaměstnání
-            if (income.IncomeTypeId != 1)
-            {
-                return Array.Empty<string>();
-            }
-
-            var employmentMandatoryFields = new List<(string Field, bool Valid)>
-            {
-                //("EmploymentTypeId", (income.Employement?.Job?.EmploymentTypeId).HasValue  ),
-                ("IsInProbationaryPeriod", (income.Employement?.Job?.IsInProbationaryPeriod).HasValue ),
-                ("IsInTrialPeriod", (income.Employement?.Job?.IsInTrialPeriod).HasValue )
-            };
-
-            return employmentMandatoryFields.Where(i => !i.Valid).Select(i => i.Field).ToArray();
-        }
-
-        var invalidIncomes = incomesById.Select(i => new { Id = i.Key, InvalidFields = FindInvalidFields(i.Value) }).Where(i => i.InvalidFields.Length > 0).ToArray();
-        if (invalidIncomes.Length > 0)
-        {
-            var details = invalidIncomes.Select(i => $"{i.Id}[{string.Join(StringJoinSeparator, i.InvalidFields)}]");
-            throw new CisValidationException(18066, $"Income mandatory fields not provided [{string.Join(StringJoinSeparator, details)}].");
-        }
-    }
-
-    private static void CheckCustomersOnSA(List<CustomerOnSA> customersOnSa)
+    private static void CheckCustomersOnSA(IList<ProductCustomerOnSa> customersOnSa)
     {
         // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
 
         // check if each customer contains Mp identity and also Kb identity
-        var customerIds = customersOnSa.Select(x => x.CustomerOnSAId).ToList();
+        var customerIds = customersOnSa.Select(x => x.CustomerOnSaId).ToList();
 
-        var customerIdentities = customersOnSa.SelectMany(c => c.CustomerIdentifiers.Select(i => new { c.CustomerOnSAId, Identity = i })).ToList();
+        var customerIdentities = customersOnSa.SelectMany(c => c.Identities.Select(i => new { c.CustomerOnSaId, Identity = i })).ToList();
 
-        var customerIdsWithIdentityMp = customerIdentities.Where(i => i.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Mp).Select(i => i.CustomerOnSAId);
-        var customerIdsWithIdentityKb = customerIdentities.Where(i => i.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Kb).Select(i => i.CustomerOnSAId);
+        var customerIdsWithIdentityMp = customerIdentities.Where(i => i.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Mp).Select(i => i.CustomerOnSaId);
+        var customerIdsWithIdentityKb = customerIdentities.Where(i => i.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Kb).Select(i => i.CustomerOnSaId);
 
         var customerIdsWithoutIdentityMp = customerIds.Where(id => !customerIdsWithIdentityMp.Contains(id));
         var customerIdsWithoutIdentityKb = customerIds.Where(id => !customerIdsWithIdentityKb.Contains(id));
@@ -96,17 +63,17 @@ internal static class FormValidations
         }
     }
 
-    private static void CheckHouseholds(List<Household> households, List<CustomerOnSA> customersOnSa)
+    private static void CheckHouseholds(IList<ProductHousehold> households, IList<ProductCustomerOnSa> customersOnSa)
     {
         // check if each household type is represented at most once
-        var duplicitHouseholdTypeIds = households.GroupBy(i => i.HouseholdType).Where(g => g.Count() > 1).Select(i => i.Key);
+        var duplicitHouseholdTypeIds = households.GroupBy(i => i.HouseholdTypeId).Where(g => g.Count() > 1).Select(i => i.Key);
         if (duplicitHouseholdTypeIds.Any())
         {
             throw new CisValidationException(18068, $"Sales arrangement contains duplicit household types [{string.Join(StringJoinSeparator, duplicitHouseholdTypeIds)}].");
         }
 
         // check if MAIN household is available
-        var mainHouseholdCount = households.Count(i => i.HouseholdType == CIS.Foms.Enums.HouseholdTypes.Main);
+        var mainHouseholdCount = households.Count(i => i.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main);
         if (mainHouseholdCount != 1)
         {
             throw new CisValidationException(18069, $"Sales arrangement must contain just one '{CIS.Foms.Enums.HouseholdTypes.Main}' household.");
@@ -120,7 +87,7 @@ internal static class FormValidations
         }
 
         // check if CustomerOnSAId1 is available on Main households
-        var mainHousehold = households.Single(i => i.HouseholdType == CIS.Foms.Enums.HouseholdTypes.Main);
+        var mainHousehold = households.Single(i => i.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main);
         if (!mainHousehold.CustomerOnSaId1.HasValue)
         {
             throw new CisValidationException(18071, $"Main household´s CustomerOnSAId1 not defined [{mainHousehold.HouseholdId}].");
@@ -136,7 +103,7 @@ internal static class FormValidations
         }
 
         // check if customers on SA correspond to customers on households
-        var arrangementCustomerIds = customersOnSa.Select(i => i.CustomerOnSAId);
+        var arrangementCustomerIds = customersOnSa.Select(i => i.CustomerOnSaId);
         var householdCustomerIds = households.Where(i => i.CustomerOnSaId1.HasValue).Select(i => i.CustomerOnSaId1!.Value)
             .Concat(households.Where(i => i.CustomerOnSaId2.HasValue).Select(i => i.CustomerOnSaId2!.Value));
 
@@ -149,5 +116,16 @@ internal static class FormValidations
         {
             throw new CisValidationException(18073, $"Customers [{string.Join(StringJoinSeparator, customerIdsInvalid)}] on sales arrangement don't correspond to customers on households.");
         }
+    }
+
+    private static void CheckIncomes(IList<ProductEmployementIncome> incomes)
+    {
+        var invalidIncomes = incomes.Where(i => !i.IsInProbationaryPeriodHasValue || !i.IsInTrialPeriodHasValue).ToList();
+
+        if (invalidIncomes.Count <= 0)
+            return;
+
+        var details = string.Join(StringJoinSeparator, invalidIncomes.Select(i => $"{i.IncomeId}"));
+        throw new CisValidationException(18066, $"Income mandatory fields not provided [{string.Join(StringJoinSeparator, details)}].");
     }
 }

@@ -26,8 +26,8 @@ builder.Services.AddSingleton(appConfiguration);
 
 // globalni nastaveni prostredi
 builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
+    .AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 
 // logging 
 builder
@@ -35,7 +35,6 @@ builder
     .AddCisTracing();
 
 // health checks
-builder.AddCisHealthChecks();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
@@ -73,13 +72,12 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
-app.UseCisLogging();
 
-app.MapCisHealthChecks();
+app.MapCodeFirstGrpcHealthChecks();
 
 app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.CustomersExposureService>();
 app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseService>();
-app.MapGrpcService< DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.CreditWorthinessService>();
+app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.CreditWorthinessService>();
 app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.LoanApplicationService>();
 app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.TestServiceGrpc>();
 

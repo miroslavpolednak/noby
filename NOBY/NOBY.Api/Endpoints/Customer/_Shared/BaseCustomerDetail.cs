@@ -12,7 +12,12 @@ public abstract class BaseCustomerDetail
 
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
 
-    public List<CustomerContact>? Contacts { get; set; }
+    public CustomerIdentificationMethod? CustomerIdentification { get; set; }
+
+    /// <summary>
+    /// Objekt právního omezení	
+    /// </summary>
+    public LegalCapacityItem? LegalCapacity { get; set; }
 
     /// <summary>
     /// Přihlášen k aktualizaci dat ze základních registrů
@@ -50,32 +55,14 @@ public abstract class BaseCustomerDetail
     public bool? IsUSPerson { get; set; }
 }
 
-internal static class BaseCustomerDetailExtensions
+internal interface ICustomerDetailConfirmedContacts
 {
-    public static TCustomerDetail FillResponseDto<TCustomerDetail>(this DomainServices.CustomerService.Contracts.CustomerDetailResponse dsCustomer, TCustomerDetail newCustomer)
-        where TCustomerDetail : BaseCustomerDetail
-    {
-        NaturalPerson person = new();
-        dsCustomer.NaturalPerson?.FillResponseDto(person);
-        person.EducationLevelId = dsCustomer.NaturalPerson?.EducationLevelId;
-        //person.ProfessionCategoryId = customer.NaturalPerson?
-        //person.ProfessionId = customer.NaturalPerson ?;
-        //person.NetMonthEarningAmountId = customer.NaturalPerson
-        //person.NetMonthEarningTypeId = customer.NaturalPerson ?;
+    PhoneNumberConfirmedDto? MobilePhone { get; set; }
+    EmailAddressConfirmedDto? EmailAddress { get; set; }
+}
 
-        newCustomer.IsBrSubscribed = dsCustomer.NaturalPerson?.IsBrSubscribed;
-        //newCustomer.HasRelationshipWithCorporate = customer.NaturalPerson?.HasRelationshipWithCorporate,
-        //newCustomer.HasRelationshipWithKB = customer.NaturalPerson?.HasRelationshipWithKB,
-        //newCustomer.HasRelationshipWithKBEmployee = customer.NaturalPerson?.HasRelationshipWithKBEmployee,
-        //newCustomer.IsUSPerson = customer.NaturalPerson?.IsUSPerson,
-        //newCustomer.IsAddressWhispererUsed = customer.NaturalPerson?.AddressWhispererUsed,
-        //newCustomer.IsPoliticallyExposed = customer.NaturalPerson?.IsPoliticallyExposed,
-        newCustomer.NaturalPerson = person;
-        newCustomer.JuridicalPerson = null;
-        newCustomer.IdentificationDocument = dsCustomer.IdentificationDocument?.ToResponseDto();
-        newCustomer.Contacts = dsCustomer.Contacts?.ToResponseDto();
-        newCustomer.Addresses = dsCustomer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList();
-
-        return newCustomer;
-    }
+internal interface ICustomerDetailContacts
+{
+    PhoneNumberDto? MobilePhone { get; set; }
+    EmailAddressDto? EmailAddress { get; set; }
 }

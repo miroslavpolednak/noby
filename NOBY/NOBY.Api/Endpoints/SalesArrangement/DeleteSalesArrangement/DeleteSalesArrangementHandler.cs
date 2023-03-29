@@ -1,9 +1,9 @@
 ﻿namespace NOBY.Api.Endpoints.SalesArrangement.DeleteSalesArrangement;
 
 internal sealed class DeleteSalesArrangementHandler
-    : AsyncRequestHandler<DeleteSalesArrangementRequest>
+    : IRequestHandler<DeleteSalesArrangementRequest>
 {
-    protected override async Task Handle(DeleteSalesArrangementRequest request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         await _salesArrangementService.DeleteSalesArrangement(request.SalesArrangementId, cancellationToken: cancellationToken);
     }

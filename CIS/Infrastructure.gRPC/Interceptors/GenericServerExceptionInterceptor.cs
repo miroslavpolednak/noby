@@ -35,12 +35,19 @@ public sealed class GenericServerExceptionInterceptor
             _logger.ExtServiceUnavailable(ex.ServiceName, ex);
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"Service '{ex.ServiceName}' unavailable");
         }
+        // 403
+        catch (CisAuthorizationException ex)
+        {
+            setHttpStatus(StatusCodes.Status403Forbidden);
+            _logger.ServiceAuthorizationFailed(ex);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.PermissionDenied, "Service authorization failed: " + ex.Message);
+        }
         // 500 z volane externi sluzby
         catch (CisServiceServerErrorException ex)
         {
-            setHttpStatus(StatusCodes.Status424FailedDependency);
+            setHttpStatus(StatusCodes.Status500InternalServerError);
             _logger.ExtServiceUnavailable(ex.ServiceName, ex);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"Service '{ex.ServiceName}' failed with HTTP 500");
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"Service '{ex.ServiceName}' failed with HTTP 500");
         }
         catch (CisNotFoundException e) // entity neexistuje
         {
@@ -57,6 +64,7 @@ public sealed class GenericServerExceptionInterceptor
         catch (CisValidationException e)
         {
             setHttpStatus(StatusCodes.Status400BadRequest);
+            _logger.LogValidationResults(e);
             throw GrpcExceptionHelpers.CreateRpcException(e);
         }
         catch (BaseCisException e)

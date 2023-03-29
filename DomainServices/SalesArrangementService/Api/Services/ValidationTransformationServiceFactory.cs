@@ -1,6 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Api.Services;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Immutable;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Services;
 
@@ -14,23 +12,24 @@ internal sealed partial class ValidationTransformationServiceFactory
         var transformationMatrix = ValidationTransformationCache.GetOrCreate(formId, () =>
             _dbContext.FormValidationTransformations
                 .AsNoTracking()
-                .Where(t => t.FormId == formId.ToString())
+                .Where(t => t.FormId == formId.ToString(System.Globalization.CultureInfo.InvariantCulture))
                 .Select(t => new
                 {
-                    Category = t.Category,
-                    Text = t.Text,
-                    Name = t.FieldName,
-                    AlterSeverity = t.AlterSeverity,
+                    t.Category,
+                    t.Text,
+                    t.CategoryOrder,
+                    t.AlterSeverity,
                     Path = t.FieldPath
                 })
                 .ToList()
-                .ToImmutableDictionary(k => k.Path, v => new ValidationTransformationCache.TransformationItem
+                .ToDictionary(k => k.Path, v => new ValidationTransformationCache.TransformationItem
                 {
                     Category = v.Category,
+                    CategoryOrder = v.CategoryOrder,
                     Text = v.Text,
-                    Name = v.Name,
                     AlterSeverity = v.AlterSeverity
                 })
+                .AsReadOnly()
         );
 
         return formId switch

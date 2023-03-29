@@ -1,54 +1,59 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using DomainServices.ProductService.Api.Database;
 using DomainServices.ProductService.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetProductObligationList;
 
-internal sealed class GetProductObligationListHandler
-    : IRequestHandler<Contracts.GetProductObligationListRequest, GetProductObligationListResponse>
+internal sealed class GetProductObligationListHandler : IRequestHandler<GetProductObligationListRequest, GetProductObligationListResponse>
 {
-    public async Task<GetProductObligationListResponse> Handle(
-        Contracts.GetProductObligationListRequest request,
-        CancellationToken cancellation)
+    private readonly LoanRepository _loanRepository;
+    private readonly ProductServiceDbContext _dbContext;
+
+    public GetProductObligationListHandler(LoanRepository loanRepository, ProductServiceDbContext dbContext)
     {
-        // todo: replace Mock with KonsDB https://jira.kb.cz/browse/HFICH-2867
+        _loanRepository = loanRepository;
+        _dbContext = dbContext;
+    }
 
-        await Task.Delay(TimeSpan.FromMilliseconds(10), cancellation);
+    public async Task<GetProductObligationListResponse> Handle(GetProductObligationListRequest request, CancellationToken cancellation)
+    {
+        // check if loan exists (against KonsDB)
+        var loanExists = await _loanRepository.ExistsLoan(request.ProductId, cancellation);
+        if (!loanExists)
+            throw new CisNotFoundException(12001, nameof(Database.Entities.Loan), request.ProductId);
 
-        // todo: do not return obligations where:
-        // todo: ObligationTypeId is null or
-        // todo: Amount is null or
-        // todo: CreditorName is null
-        // todo: log those obligations
-        // Mock Data
-        var productObligations = Enumerable
-            .Range(1, 3)
-            .Select(i => new GetProductObligationItem
-            {
-                ProductObligationId = i,
-                ObligationTypeId = i,
-                Amount = new GrpcDecimal(67000, 0),
-                CreditorName = "Komerční banka",
-                PaymentSymbols = new PaymentSymbols { VariableSymbol = "750504444" },
-                PaymentAccount = new PaymentAccount
-                {
-                    Prefix = "107",
-                    Number = "71286260207",
-                    BankCode = "0100"
-                }
-            })
-            .ToList();
+        var obligations = await _dbContext.Obligations.Where(o => o.LoanId == request.ProductId && o.ObligationTypeId != 0 && o.Amount > 0 && o.CreditorName != null).ToListAsync(cancellation);
 
-        return new GetProductObligationListResponse
+        var responseItems = obligations.Select(obligation =>
         {
-            ProductObligations =
+            var item = new GetProductObligationItem
             {
-                productObligations[0],
-                productObligations[1],
-                productObligations[2],
-                productObligations[0],
-                productObligations[1],
-                productObligations[2],
+                ProductObligationId = new ProductObligationId
+                {
+                    LoanId = obligation.LoanId,
+                    LoanPurpose = obligation.LoanPurposeId
+                },
+                ObligationTypeId = obligation.ObligationTypeId,
+                Amount = obligation.Amount,
+                CreditorName = obligation.CreditorName
+            };
+
+            if (!string.IsNullOrWhiteSpace(obligation.AccountNumber))
+            {
+                item.PaymentAccount = new PaymentAccount
+                {
+                    Prefix = obligation.AccountNumberPrefix ?? string.Empty,
+                    Number = obligation.AccountNumber ?? string.Empty,
+                    BankCode = obligation.BankCode ?? string.Empty
+                };
             }
-        };
+
+            if (!string.IsNullOrWhiteSpace(obligation.VariableSymbol))
+                item.PaymentSymbols = new PaymentSymbols { VariableSymbol = obligation.VariableSymbol };
+
+            return item;
+        });
+
+        return new GetProductObligationListResponse { ProductObligations = { responseItems } };
     }
 }

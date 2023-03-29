@@ -1,13 +1,12 @@
 ﻿using DomainServices.SalesArrangementService.Clients;
 using _Ca = DomainServices.CaseService.Contracts;
-using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.LinkModelation;
 
-internal class LinkModelationHandler
-    : AsyncRequestHandler<LinkModelationRequest>
+internal sealed class LinkModelationHandler
+    : IRequestHandler<LinkModelationRequest>
 {
-    protected override async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)
+    public async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)
     {
         // get SA data
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
@@ -18,20 +17,25 @@ internal class LinkModelationHandler
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
 
         // update kontaktu
-        await _caseService.UpdateOfferContacts(saInstance.CaseId, new _Ca.OfferContacts
+        var offerContacts = new _Ca.OfferContacts
         {
-            EmailForOffer = request.EmailForOffer ?? "",
-            PhoneNumberForOffer = request.PhoneNumberForOffer ?? ""
-        }, cancellationToken);
+            EmailForOffer = request.OfferContacts?.EmailAddress?.EmailAddress ?? "",
+            PhoneNumberForOffer = new _Ca.Phone
+            {
+                PhoneNumber = request.OfferContacts?.MobilePhone?.PhoneNumber ?? "",
+                PhoneIDC = request.OfferContacts?.MobilePhone?.PhoneIDC ?? ""
+            }
+        };
+        await _caseService.UpdateOfferContacts(saInstance.CaseId, offerContacts, cancellationToken);
 
         // update customer
         if (caseInstance.Customer?.Identity is null || caseInstance.Customer.Identity.IdentityId == 0)
         {
-            await _caseService.UpdateCaseCustomer(saInstance.CaseId, new _Ca.CustomerData
+            await _caseService.UpdateCustomerData(saInstance.CaseId, new _Ca.CustomerData
             {
                 DateOfBirthNaturalPerson = request.DateOfBirth,
                 FirstNameNaturalPerson = request.FirstName ?? "",
-                Name = request.LastName ?? ""
+                Name = request.LastName ?? "",
             }, cancellationToken);
         }
     }

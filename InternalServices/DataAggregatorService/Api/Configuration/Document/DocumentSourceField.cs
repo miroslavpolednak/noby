@@ -13,4 +13,6 @@ internal class DocumentSourceField
     public string? StringFormat { get; init; }
 
     public string? DefaultTextIfNull { get; init; }
+
+    public byte? TextAlign { get; init; }
 }

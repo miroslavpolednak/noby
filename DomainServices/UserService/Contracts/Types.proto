@@ -19,6 +19,8 @@ message User {
 	string FullName = 4;
 	string Phone = 5;
 	string Email = 6;
+	bool UserVip = 7;
+	string CzechIdentificationNumber = 8;
 
-	repeated cis.types.UserIdentity UserIdentifiers = 7;
+	repeated cis.types.UserIdentity UserIdentifiers = 9;
 }

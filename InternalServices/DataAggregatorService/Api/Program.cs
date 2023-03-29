@@ -3,6 +3,7 @@ using CIS.Infrastructure.Security;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices;
+using CIS.InternalServices.DataAggregatorService.Api;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.Data;
 using CIS.InternalServices.DataAggregatorService.Api.Endpoints;
 using DomainServices;
@@ -16,11 +17,16 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     ContentRootPath = runAsWinSvc ? AppContext.BaseDirectory : default
 });
 
-builder.AddCisEnvironmentConfiguration()
+var config = new DataAggregatorConfiguration();
+builder.Configuration.Bind("DataAggregatorConfiguration", config);
+
+builder.Services.AddSingleton(config);
+
+builder.AddCisEnvironmentConfiguration();
+builder
        .AddCisCoreFeatures()
        .AddCisLogging()
        .AddCisTracing()
-       .AddCisHealthChecks()
        .AddCisServiceAuthentication();
 
 builder.Services
@@ -32,14 +38,27 @@ builder.Services
        .AddUserService()
        .AddCustomerService()
        .AddProductService()
-       .AddHouseholdService();
+       .AddHouseholdService()
+       .AddDocumentOnSAService();
 
 builder.Services.AddDbContext<ConfigurationContext>(opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.Services.AddAttributedServices(typeof(Program));
 
-builder.Services.AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
-builder.Services.AddGrpcReflection();
+builder.Services
+       .AddAttributedServices(typeof(Program))
+       .AddCisGrpcInfrastructure(typeof(Program))
+       .AddGrpcReflection()
+       .AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
+builder.AddCisGrpcHealthChecks();
+
+
+if (config.UseCacheForConfiguration)
+{
+    builder.Services.AddMemoryCache();
+    builder.Services.Decorate<IConfigurationManager, CachedConfigurationManager>();
+}
 
 if (runAsWinSvc) builder.Host.UseWindowsService();
 
@@ -51,8 +70,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCisLogging();
-app.MapCisHealthChecks();
+app.MapCisGrpcHealthChecks();
 
 app.MapGrpcService<DataAggregatorServiceGrpc>();
 app.MapGrpcReflectionService();

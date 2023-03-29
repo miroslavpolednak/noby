@@ -13,7 +13,11 @@ public static class StartupExtensions
         where TClient : class, V1.IAddressWhispererClient
         => builder.AddAddressWhisperer<TClient>(V1.IAddressWhispererClient.Version);
 
-    private static WebApplicationBuilder AddAddressWhisperer<TClient>(this WebApplicationBuilder builder, string version)
+    public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder, string kbHeaderAppComponent, string kbHeaderAppComponentOriginator)
+        where TClient : class, V1.IAddressWhispererClient
+        => builder.AddAddressWhisperer<TClient>(V1.IAddressWhispererClient.Version, kbHeaderAppComponent, kbHeaderAppComponentOriginator);
+
+    private static WebApplicationBuilder AddAddressWhisperer<TClient>(this WebApplicationBuilder builder, string version, string? kbHeaderAppComponent = null, string? kbHeaderAppComponentOriginator = null)
         where TClient : class, IExternalServiceClient
     {
         var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
@@ -27,6 +31,8 @@ public static class StartupExtensions
             case (V1.IAddressWhispererClient.Version, ServiceImplementationTypes.Real):
                 builder
                     .AddExternalServiceRestClient<V1.IAddressWhispererClient, V1.RealAddressWhispererClient>()
+                    .AddExternalServicesKbHeaders(kbHeaderAppComponent, kbHeaderAppComponentOriginator)
+                    .AddExternalServicesKbPartyHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 

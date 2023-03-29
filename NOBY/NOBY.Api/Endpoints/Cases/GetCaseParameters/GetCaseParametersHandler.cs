@@ -1,5 +1,6 @@
 ﻿using DomainServices.ProductService.Contracts;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
+using NOBY.Api.Endpoints.Offer.SimulateMortgage;
 using cCodebookService = DomainServices.CodebookService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
@@ -43,6 +44,8 @@ internal sealed class GetCaseParametersHandler
         var caseStates = await _codebookService.CaseStates(cancellationToken);
         var productTypesById = (await _codebookService.ProductTypes(cancellationToken)).ToDictionary(i => i.Id);
         var loanKindsById = (await _codebookService.LoanKinds(cancellationToken)).ToDictionary(i => i.Id);
+        var statementFrequencies = (await _codebookService.StatementFrequencies(cancellationToken));
+        var statementSubscriptionTypes = (await _codebookService.StatementSubscriptionTypes(cancellationToken));
 
         var mandantId = productTypesById[caseInstance.Data.ProductTypeId].MandantId;
         var loanPurposesById = (await _codebookService.LoanPurposes(cancellationToken)).Where(i => i.MandantId == mandantId).ToDictionary(i => i.Id);
@@ -51,7 +54,7 @@ internal sealed class GetCaseParametersHandler
 
         var response = (caseState.Code == CIS.Foms.Enums.CaseStates.InProgress) ?
             (await GetParamsBeforeHandover(caseInstance, productTypesById, loanKindsById, loanPurposesById, cancellationToken)) :
-            (await GetParamsAfterHandover(caseInstance, productTypesById, loanKindsById, loanPurposesById, cancellationToken));
+            (await GetParamsAfterHandover(caseInstance, productTypesById, loanKindsById, loanPurposesById, statementSubscriptionTypes, statementFrequencies, cancellationToken));
 
         return response;
     }
@@ -88,8 +91,7 @@ internal sealed class GetCaseParametersHandler
         var offerInstance = offerId.HasValue ? await _offerService.GetMortgageOfferDetail(offerId.Value, cancellation) : null;
 
         // load User
-        var userId = caseInstance.CaseOwner?.UserId;
-        var userInstance = userId.HasValue ? await _userService.GetUser(userId.Value, cancellation) : null;
+        var userInstance = await getUserInstance(caseInstance.CaseOwner?.UserId, cancellation);
 
         return new GetCaseParametersResponse
         {
@@ -122,8 +124,14 @@ internal sealed class GetCaseParametersHandler
             // LoanInterestRateRefix
             // LoanInterestRateValidFromRefix
             // FixedRatePeriodRefix
-            Cpm = userInstance?.CPM,
-            Icp = userInstance?.ICP,
+            FirstAnnuityPaymentDate = offerInstance.SimulationResults.AnnuityPaymentsDateFrom,
+            BranchConsultant = new BranchConsultantDto
+            {
+                BranchName = "Pobocka XXX",
+                ConsultantName = userInstance?.FullName,
+                Cpm = userInstance?.CPM,
+                Icp = userInstance?.ICP
+            }
         };
     }
 
@@ -132,13 +140,19 @@ internal sealed class GetCaseParametersHandler
         Dictionary<int, cCodebookService.Endpoints.ProductTypes.ProductTypeItem> productTypesById,
         Dictionary<int, cCodebookService.Endpoints.LoanKinds.LoanKindsItem> loanKindsById,
         Dictionary<int, cCodebookService.Endpoints.LoanPurposes.LoanPurposesItem> loanPurposesById,
+        List<cCodebookService.Endpoints.GenericCodebookItemWithCodeAndDefault> statementFrequencies,
+        List<cCodebookService.Endpoints.StatementFrequencies.StatementFrequencyItem> statementSubscriptionTypes,
         CancellationToken cancellation
         )
     {
         var mortgageData = (await _productService.GetMortgage(caseInstance.CaseId, cancellation)).Mortgage;
 
-        return new GetCaseParametersResponse
+        var branchUser = await getUserInstance(mortgageData.BranchConsultantId, cancellation);
+        var thirdPartyUser = await getUserInstance(mortgageData.ThirdPartyConsultantId, cancellation);
+
+        var respone = new GetCaseParametersResponse
         {
+            FirstAnnuityPaymentDate = mortgageData.FirstAnnuityPaymentDate,
             ProductType = productTypesById[mortgageData.ProductTypeId].ToCodebookItem(),
             ContractNumber = mortgageData.ContractNumber,
             LoanAmount = mortgageData.LoanAmount,
@@ -168,8 +182,52 @@ internal sealed class GetCaseParametersHandler
             LoanInterestRateRefix = mortgageData.LoanInterestRateRefix,
             LoanInterestRateValidFromRefix = mortgageData.LoanInterestRateValidFromRefix,
             FixedRatePeriodRefix = mortgageData.FixedRatePeriodRefix,
-            Cpm = mortgageData.Cpm,
-            Icp = mortgageData.Icp,
+            BranchConsultant = new BranchConsultantDto
+            {
+                BranchName = "Pobocka XXX",
+                ConsultantName = branchUser?.FullName,
+                Cpm = branchUser?.CPM,
+                Icp = branchUser?.ICP
+            },
+            ThirdPartyConsultant = new ThirdPartyConsultantDto
+            {
+                BranchName = "Spolecnost XXX",
+                ConsultantName = thirdPartyUser?.FullName,
+                Cpm = thirdPartyUser?.CPM,
+                Icp = thirdPartyUser?.ICP
+            }
         };
+
+        if (mortgageData.Statement is not null)
+        {
+            respone.Statement = new StatementDto
+            {
+                Type = statementSubscriptionTypes.FirstOrDefault(x => x.Id == mortgageData.Statement?.Type)?.Name,
+                Frequency = statementFrequencies.FirstOrDefault(x => x.Id == mortgageData.Statement?.Frequency)?.Name,
+                EmailAddress1 = mortgageData.Statement?.EmailAddress1,
+                EmailAddress2 = mortgageData.Statement?.EmailAddress2
+            };
+            if (mortgageData.Statement!.Address is not null)
+            {
+                respone.Statement.Address = (CIS.Foms.Types.Address)mortgageData.Statement!.Address!;
+            }
+        }
+
+        return respone;
+    }
+
+    private async Task<DomainServices.UserService.Contracts.User?> getUserInstance(int? userId, CancellationToken cancellationToken)
+    {
+        if (!userId.HasValue)
+            return null;
+
+        try
+        {
+            return await _userService.GetUser(userId.Value, cancellationToken);
+        }
+        catch 
+        {
+            return null;
+        }
     }
 }

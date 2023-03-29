@@ -31,7 +31,8 @@ public class ProfessionCategoriesHandler
             result.ForEach(t =>
             {
                 var ext = extMapperById.ContainsKey(t.Id) ? extMapperById[t.Id] : null;
-                t.ProfessionIds = ext?.ProfessionIds?.ParseIDs();
+                t.ProfessionTypeIds = ext?.ProfessionTypeIds?.ParseIDs();
+                t.IncomeMainTypeAMLIds = ext?.IncomeMainTypeAMLIds?.ParseIDs();
             });
 
             return result;
@@ -41,11 +42,12 @@ public class ProfessionCategoriesHandler
     private class ExtensionMapper
     {
         public int ProfessionCategoryId { get; set; }
-        public string? ProfessionIds { get; set; }
+        public string? ProfessionTypeIds { get; set; }
+        public string? IncomeMainTypeAMLIds { get; set; }
     }
     
     // dotaz na rozsirene vlastnosti codebooku mimo SB
-    const string _sqlQueryExtension = "SELECT ProfessionCategoryId, ProfessionIds FROM dbo.ProfessionCategoryExtension";
+    const string _sqlQueryExtension = "SELECT ProfessionCategoryId, ProfessionTypeIds, IncomeMainTypeAMLIds FROM dbo.ProfessionCategoryExtension";
 
     // dotaz na codebook do SB
     // const string _sqlQuery = @"";

@@ -10,7 +10,7 @@ public class CisEnvironmentConfiguration : ICisEnvironmentConfiguration
 
     public string? ServiceDiscoveryUrl => "https://localhost:5005";
 
-    public string? InternalServicesLogin => "a";
+    public string? InternalServicesLogin => "XX_NOBY_RMT_USR_TEST";
 
-    public string? InternalServicePassword => "a";
+    public string? InternalServicePassword => "ppmlesnrTWYSDYGDR!98538535634544";
 }

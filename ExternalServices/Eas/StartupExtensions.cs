@@ -10,8 +10,8 @@ public static class StartupExtensions
     internal const string ServiceName = "EAS";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
-        where TClient : class, Eas.R21.IEasClient
-        => builder.AddEas<TClient>(Eas.R21.IEasClient.Version);
+        where TClient : class, Eas.V1.IEasClient
+        => builder.AddEas<TClient>(Eas.V1.IEasClient.Version);
 
     private static WebApplicationBuilder AddEas<TClient>(this WebApplicationBuilder builder, string version)
         where TClient : class, IExternalServiceClient
@@ -20,12 +20,12 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (Eas.R21.IEasClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<Eas.R21.IEasClient, Eas.R21.MockEasClient>();
+            case (Eas.V1.IEasClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddScoped<Eas.V1.IEasClient, Eas.V1.MockEasClient>();
                 break;
 
-            case (Eas.R21.IEasClient.Version, ServiceImplementationTypes.Real):
-                builder.Services.AddTransient<Eas.R21.IEasClient, Eas.R21.RealEasClient>();
+            case (Eas.V1.IEasClient.Version, ServiceImplementationTypes.Real):
+                builder.Services.AddScoped<Eas.V1.IEasClient, Eas.V1.RealEasClient>();
                 break;
 
             default:

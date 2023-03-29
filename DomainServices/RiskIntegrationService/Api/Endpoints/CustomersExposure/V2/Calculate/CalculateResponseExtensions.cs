@@ -1,5 +1,5 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1.Contracts;
 using _CB = DomainServices.CodebookService.Contracts.Endpoints;
 using DomainServices.RiskIntegrationService.Contracts.Shared;
 

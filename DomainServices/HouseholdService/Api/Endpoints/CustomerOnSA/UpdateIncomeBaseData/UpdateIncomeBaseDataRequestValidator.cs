@@ -10,7 +10,7 @@ internal sealed class UpdateIncomeBaseDataRequestValidator
     {
         RuleFor(t => t.IncomeId)
             .GreaterThan(0)
-            .WithMessage("IncomeId must be > 0").WithErrorCode("16055");
+            .WithErrorCode(ErrorCodeMapper.IncomeIdIsEmpty);
 
         RuleFor(t => t.BaseData)
             .SetInheritanceValidator(v =>

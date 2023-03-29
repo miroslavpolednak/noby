@@ -10,7 +10,6 @@ public interface ICaseServiceClient
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13002; ProductTypeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; CaseOwnerUserId must be > 0</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13004; Unable to get CaseId from SB</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13018; Target amount must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13012; Customer Name must not be empty</exception>
     /// <exception cref="CIS.Core.Exceptions.CisAlreadyExistsException">Code: 13015; Case #{} already exists</exception>
@@ -87,7 +86,7 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task UpdateCaseCustomer(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateCustomerData(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Smazani case
@@ -118,4 +117,6 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
     Task UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task NotifyStarbuild(long caseId, string riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken));
 }

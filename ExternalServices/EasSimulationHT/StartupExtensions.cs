@@ -10,8 +10,8 @@ public static class StartupExtensions
     internal const string ServiceName = "EasSimulationHT";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
-        where TClient : class, EasSimulationHT.V6.IEasSimulationHTClient
-        => builder.AddEasSimulationHT<TClient>(EasSimulationHT.V6.IEasSimulationHTClient.Version);
+        where TClient : class, EasSimulationHT.V1.IEasSimulationHTClient
+        => builder.AddEasSimulationHT<TClient>(EasSimulationHT.V1.IEasSimulationHTClient.Version);
 
     private static WebApplicationBuilder AddEasSimulationHT<TClient>(this WebApplicationBuilder builder, string version)
         where TClient : class, IExternalServiceClient
@@ -20,12 +20,12 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (EasSimulationHT.V6.IEasSimulationHTClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<EasSimulationHT.V6.IEasSimulationHTClient, EasSimulationHT.V6.MockEasSimulationHTClient>();
+            case (EasSimulationHT.V1.IEasSimulationHTClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddScoped<EasSimulationHT.V1.IEasSimulationHTClient, EasSimulationHT.V1.MockEasSimulationHTClient>();
                 break;
 
-            case (EasSimulationHT.V6.IEasSimulationHTClient.Version, ServiceImplementationTypes.Real):
-                builder.Services.AddTransient<EasSimulationHT.V6.IEasSimulationHTClient, EasSimulationHT.V6.RealEasSimulationHTClient>();
+            case (EasSimulationHT.V1.IEasSimulationHTClient.Version, ServiceImplementationTypes.Real):
+                builder.Services.AddScoped<EasSimulationHT.V1.IEasSimulationHTClient, EasSimulationHT.V1.RealEasSimulationHTClient>();
                 break;
 
             default:

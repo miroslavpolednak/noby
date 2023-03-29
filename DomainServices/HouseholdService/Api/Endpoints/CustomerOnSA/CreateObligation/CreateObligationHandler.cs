@@ -7,10 +7,6 @@ internal sealed class CreateObligationHandler
 {
     public async Task<CreateObligationResponse> Handle(CreateObligationRequest request, CancellationToken cancellationToken)
     {
-        // check customer existence
-        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId, cancellationToken))
-            throw new CisNotFoundException(16020, "CustomerOnSA", request.CustomerOnSAId);
-
         var entity = new Database.Entities.CustomerOnSAObligation
         {
             CustomerOnSAId = request.CustomerOnSAId,

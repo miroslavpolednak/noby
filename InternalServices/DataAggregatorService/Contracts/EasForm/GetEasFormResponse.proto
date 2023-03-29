@@ -3,7 +3,9 @@
 package CIS.InternalServices.DataAggregatorService;
 option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "EasForm/DynamicFormValues.proto";
+import "EasForm/ProductData.proto";
 
 enum EasFormType {
     EasFormTypeUnknown = 0;
@@ -14,12 +16,26 @@ enum EasFormType {
 
 message GetEasFormResponse {
     repeated Form Forms = 1;
+
+    string ContractNumber = 2;
+
+    oneof FormData {
+        ProductData Product = 3;
+    }
 }
 
 message Form {
     EasFormType EasFormType = 1;
 
-    optional DynamicFormValues DynamicFormValues = 2;
+    DynamicFormValues DynamicFormValues = 2;
 
-    string Json = 3;
+    optional DefaultValues DefaultValues = 3;
+
+    string Json = 4;
+}
+
+message DefaultValues {
+    string FormType = 1;
+
+    google.protobuf.Int32Value EaCodeMainId = 2;
 }

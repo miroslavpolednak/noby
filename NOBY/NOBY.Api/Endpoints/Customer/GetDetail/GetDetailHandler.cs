@@ -1,11 +1,10 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Clients;
 using NOBY.Api.SharedDto;
-using contracts = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.GetDetail;
 
-internal class GetDetailHandler
+internal sealed class GetDetailHandler
     : IRequestHandler<GetDetailRequest, GetDetailResponse>
 {
     public async Task<GetDetailResponse> Handle(GetDetailRequest request, CancellationToken cancellationToken)
@@ -21,6 +20,11 @@ internal class GetDetailHandler
         {
             NaturalPerson = person,
             JuridicalPerson = null,
+            LegalCapacity = result.NaturalPerson?.LegalCapacity is null ? null : new Shared.LegalCapacityItem
+            {
+                RestrictionTypeId = result.NaturalPerson.LegalCapacity.RestrictionTypeId,
+                RestrictionUntil = result.NaturalPerson.LegalCapacity.RestrictionUntil
+            },
             IdentificationDocument = result.IdentificationDocument?.ToResponseDto(),
             Contacts = result.Contacts?.ToResponseDto(),
             Addresses = result.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList()

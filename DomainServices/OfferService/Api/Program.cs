@@ -7,7 +7,7 @@ using CIS.InternalServices;
 using DomainServices;
 using DomainServices.OfferService.Api.Endpoints;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
+bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
 //TODO workaround until .NET6 UseWindowsService() will work with WebApplication
 var webAppOptions = runAsWinSvc
@@ -25,9 +25,6 @@ builder.AddCisEnvironmentConfiguration();
 builder.AddCisLogging();
 builder.AddCisTracing();
 
-// health checks
-builder.AddCisHealthChecks();
-
 builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
@@ -39,17 +36,16 @@ builder.Services.AddCisServiceDiscovery(); // kvuli auto dotazeni URL pro EAS
 builder.Services.AddCodebookService();
 
 // add my services
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddOfferService();
 
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
-});
-
-// add BE services
 builder.Services
-    .AddGrpcReflection();
+    .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+    .AddGrpcReflection()
+    .AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    });
+builder.AddCisGrpcHealthChecks();
 #endregion register builder.Services
 
 // kestrel configuration
@@ -66,13 +62,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
-app.UseCisLogging();
 
-app.MapCisHealthChecks();
-
-app.MapGrpcService<OfferService>();
-
+app.MapCisGrpcHealthChecks();
 app.MapGrpcReflectionService();
+app.MapGrpcService<OfferService>();
 
 try
 {

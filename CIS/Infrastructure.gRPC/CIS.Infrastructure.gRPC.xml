@@ -52,6 +52,25 @@
             Helpery pro vytváření RpcException.
             </summary>
         </member>
+        <member name="M:CIS.Infrastructure.gRPC.ByteStringExtensions.ToArrayUnsafe(Google.Protobuf.ByteString)">
+            <summary>
+            This method is memory efficient, there is no data copy (ToArray do copy of data).  
+            Byte array instance should only be passed to methods which treat the array contents as read-only.
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.gRPC.CisGrpcHealthChecks.AddCisGrpcHealthChecks(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            Zaregistruje health checky pro gRPC sluzby + registruje healthcheck i pro HTTP1.1.
+            </summary>
+            <remarks>
+            Pridava healthcheck na sluzbu jako takovou a databaze v ni pouzite.
+            </remarks>
+        </member>
+        <member name="M:CIS.Infrastructure.gRPC.CisGrpcHealthChecks.MapCisGrpcHealthChecks(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder)">
+            <summary>
+            Mapuje gRPC a HTTP1.1 healthcheck endpoint.
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.gRPC.KestrelExtensions">
             <summary>
             Nastavení Kestrel serveru pro gRPC služby.
@@ -73,13 +92,14 @@
             Nepouzivat primo, je public pouze pro ServiceDiscovery nebo jine specialni pripady.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type)">
+        <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type,CIS.Core.ErrorCodes.IErrorCodesDictionary)">
             <summary>
             Zaregistruje do DI:
             - MediatR
             - FluentValidation through MediatR pipelines
             </summary>
             <param name="assemblyType">Typ, který je v hlavním projektu - typicky Program.cs</param>
+            <param name="validationMessages">Slovník pro překládání chybových kódů ve FluentValidation na naše error messages. [ExceptionCode, Message]</param>
         </member>
         <member name="M:CIS.Infrastructure.gRPC.GrpcHelpers.HasBinaryHeaderSuffix(System.String)">
             <summary>
@@ -88,7 +108,7 @@
         </member>
         <member name="T:CIS.Infrastructure.gRPC.ContextUserForwardingClientInterceptor">
             <summary>
-            Client Interceptor který automaticky přidává hlavičku "mp-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
+            Client Interceptor který automaticky přidává hlavičku "noby-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
             </summary>
             <remarks>
             TODO toto neni uplne pekna implementace, ale neprisel jsem na jiny zpusob jak v grpc pipeline vyklepat scoped instanci ICurrentUserAccessor a vrazit ji do headeru

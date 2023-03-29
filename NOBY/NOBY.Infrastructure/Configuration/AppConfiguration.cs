@@ -3,10 +3,14 @@
 public class AppConfiguration
 {
     /// <summary>
-    /// What kind of authentication provider to use - referes to DefaultScheme from .AddAuthentication().
-    /// Possible values: FomsMockAuthentication
+    /// Nastaveni autentizace uzivatele.
     /// </summary>
-    public string AuthenticationScheme { get; set; } = "";
+    public AppConfigurationSecurity? Security { get; set; }
+
+    /// <summary>
+    /// Pokud je nastaveno na true, vynecha se exception middleware a zobrazuje se detailni stranka s popisem chyby.
+    /// </summary>
+    public bool UseDeveloperExceptionPage { get; set; }
 
     /// <summary>
     /// When set to false, Swagger middleware is not added to pipeline.

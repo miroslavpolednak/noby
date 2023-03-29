@@ -4,13 +4,26 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Template
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents;
 
-internal static class DocumentDataFactory
+[TransientService, SelfService]
+internal class DocumentDataFactory
 {
-    public static AggregatedData Create(DocumentType documentType) =>
+    private readonly IServiceProvider _serviceProvider;
+
+    public DocumentDataFactory(IServiceProvider serviceProvider)
+    {
+        _serviceProvider = serviceProvider;
+    }
+
+    public AggregatedData Create(DocumentType documentType) =>
         documentType switch
         {
             DocumentType.NABIDKA or DocumentType.KALKULHU => new OfferTemplateData(),
-            DocumentType.ZADOCERP => new LoanApplicationTemplateData(),
+            DocumentType.ZADOCERP => new DrawingTemplateData(),
+            DocumentType.ZADOSTHU => _serviceProvider.GetRequiredService<LoanApplication3601TemplateData>(),
+            DocumentType.ZADOSTHD => _serviceProvider.GetRequiredService<LoanApplication3602TemplateData>(),
+            DocumentType.ZAOZMPAR => new GeneralChangeTemplateData(),
+            DocumentType.ZAODHUBN => new HUBNTemplateData(),
+            DocumentType.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeTemplateData>(),
             _ => new AggregatedData()
         };
 }

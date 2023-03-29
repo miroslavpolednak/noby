@@ -8,7 +8,7 @@ internal static class StartupExtensions
     public static WebApplicationBuilder AddOfferService(this WebApplicationBuilder builder)
     {
         // EAS EasSimulationHT svc
-        builder.AddExternalService<ExternalServices.EasSimulationHT.V6.IEasSimulationHTClient>();
+        builder.AddExternalService<ExternalServices.EasSimulationHT.V1.IEasSimulationHTClient>();
 
         // dbcontext
         builder.AddEntityFramework<Database.OfferServiceDbContext>();

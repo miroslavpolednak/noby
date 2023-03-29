@@ -9,7 +9,7 @@ namespace CIS.InternalServices.NotificationService.Contracts.Sms;
 public class SendSmsRequest : IRequest<SendSmsResponse>, IValidatableRequest
 {
     [ProtoMember(1)]
-    public Phone Phone { get; set; } = default!;
+    public string PhoneNumber { get; set; } = default!;
     
     [ProtoMember(2)]
     public int? ProcessingPriority { get; set; }
@@ -21,11 +21,11 @@ public class SendSmsRequest : IRequest<SendSmsResponse>, IValidatableRequest
     public string Text { get; set; } = string.Empty;
 
     [ProtoMember(5)]
-    public Identifier Identifier { get; set; } = default!;
+    public Identifier? Identifier { get; set; }
     
     [ProtoMember(6)]
-    public string CustomId { get; set; } = string.Empty;
+    public string? CustomId { get; set; }
     
     [ProtoMember(7)]
-    public string DocumentId { get; set; } = string.Empty;
+    public string? DocumentId { get; set; }
 }

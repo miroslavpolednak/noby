@@ -55,6 +55,9 @@
           "200": {
             "description": "Success"
           },
+          "201": {
+            "description": "Success"
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -95,29 +98,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Success"
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -134,6 +114,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -201,6 +201,9 @@
           "200": {
             "description": "Success"
           },
+          "201": {
+            "description": "Success"
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -241,29 +244,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Success"
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -280,6 +260,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -360,26 +360,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -396,6 +376,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -681,6 +681,9 @@
           "200": {
             "description": "Success"
           },
+          "201": {
+            "description": "Success"
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -721,29 +724,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Success"
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -760,6 +740,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -856,26 +856,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -892,6 +872,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -965,6 +965,26 @@
               }
             }
           },
+          "201": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactIdResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactIdResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactIdResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -1005,46 +1025,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContactIdResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContactIdResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContactIdResponse"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -1061,6 +1041,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -1186,26 +1186,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -1222,6 +1202,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -1303,26 +1303,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -1339,6 +1319,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -1436,26 +1436,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -1472,6 +1452,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -1569,8 +1569,105 @@
               }
             }
           },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/1.1/foms/Partner/{partnerId}/kbId": {
+      "put": {
+        "tags": [
+          "Partner"
+        ],
+        "summary": "Updatuje KB ID partnera v KonsDB na základě partnerId.",
+        "operationId": "FomsUpdateKBId",
+        "parameters": [
+          {
+            "name": "partnerId",
+            "in": "path",
+            "description": "Id partnera",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "kbId",
+            "in": "query",
+            "description": "KB Id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1605,6 +1702,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -1760,6 +1877,9 @@
           "200": {
             "description": "Success"
           },
+          "204": {
+            "description": "Success"
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -1800,29 +1920,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "Success"
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -1839,6 +1936,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -1935,26 +2052,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -1971,6 +2068,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -2067,26 +2184,6 @@
               }
             }
           },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -2103,6 +2200,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -2369,7 +2486,8 @@
           "FOMS",
           "EForms",
           "MPHome_eId",
-          "MPHome_UnsecuredLoan"
+          "MPHome_UnsecuredLoan",
+          "StarBuildHF"
         ],
         "type": "string"
       },
@@ -2517,7 +2635,8 @@
           "Undefined",
           "IDCard",
           "Passport",
-          "ResidencePermit"
+          "ResidencePermit",
+          "Foreign"
         ],
         "type": "string"
       },
@@ -2628,6 +2747,22 @@
         },
         "additionalProperties": false
       },
+      "LoanPurpose": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Suma",
+            "format": "double"
+          },
+          "loanPurposeId": {
+            "type": "integer",
+            "description": "ID účelu úvěru",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "LoanRequest": {
         "required": [
           "partnerId",
@@ -2685,12 +2820,6 @@
             "description": "DruhUveru",
             "format": "int32"
           },
-          "loanPurposeId": {
-            "type": "integer",
-            "description": "UcelUveruId",
-            "format": "int32",
-            "nullable": true
-          },
           "expected1stDrawDate": {
             "type": "string",
             "description": "Předpokládané datum 1. čerpání",
@@ -2705,8 +2834,61 @@
           },
           "consultantId": {
             "type": "integer",
-            "description": "IdPoradce",
+            "description": "IdPoradce (v33id)",
             "format": "int64",
+            "nullable": true
+          },
+          "repaymentAccountNumber": {
+            "type": "string",
+            "description": "Účet pro splácení - číslo",
+            "nullable": true
+          },
+          "repaymentAccountPrefix": {
+            "type": "string",
+            "description": "Účet pro splácení - předčíslí",
+            "nullable": true
+          },
+          "repaymentAccountBank": {
+            "type": "string",
+            "description": "Účet pro splácení - banka",
+            "nullable": true
+          },
+          "installmentDay": {
+            "type": "integer",
+            "description": "Den splácení",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanPurposes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanPurpose"
+            },
+            "description": "Účely úvěru",
+            "nullable": true
+          },
+          "productCodeUv": {
+            "type": "integer",
+            "description": "Typ produktu uv",
+            "format": "int32",
+            "nullable": true
+          },
+          "serviceBranchId": {
+            "type": "integer",
+            "description": "ID pobočky obsluhy (v33id)",
+            "format": "int64",
+            "nullable": true
+          },
+          "repaymentStartDate": {
+            "type": "string",
+            "description": "Počátek splácení",
+            "format": "date-time",
+            "nullable": true
+          },
+          "estimatedDuePaymentDate": {
+            "type": "string",
+            "description": "Datum předpokládané splatnosti",
+            "format": "date-time",
             "nullable": true
           },
           "savingId": {
@@ -2844,12 +3026,6 @@
             "description": "DruhUveru",
             "format": "int32"
           },
-          "loanPurposeId": {
-            "type": "integer",
-            "description": "UcelUveruId",
-            "format": "int32",
-            "nullable": true
-          },
           "expected1stDrawDate": {
             "type": "string",
             "description": "Předpokládané datum 1. čerpání",
@@ -2864,8 +3040,61 @@
           },
           "consultantId": {
             "type": "integer",
-            "description": "IdPoradce",
+            "description": "IdPoradce (v33id)",
             "format": "int64",
+            "nullable": true
+          },
+          "repaymentAccountNumber": {
+            "type": "string",
+            "description": "Účet pro splácení - číslo",
+            "nullable": true
+          },
+          "repaymentAccountPrefix": {
+            "type": "string",
+            "description": "Účet pro splácení - předčíslí",
+            "nullable": true
+          },
+          "repaymentAccountBank": {
+            "type": "string",
+            "description": "Účet pro splácení - banka",
+            "nullable": true
+          },
+          "installmentDay": {
+            "type": "integer",
+            "description": "Den splácení",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanPurposes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanPurpose"
+            },
+            "description": "Účely úvěru",
+            "nullable": true
+          },
+          "productCodeUv": {
+            "type": "integer",
+            "description": "Typ produktu uv",
+            "format": "int32",
+            "nullable": true
+          },
+          "serviceBranchId": {
+            "type": "integer",
+            "description": "ID pobočky obsluhy (v33id)",
+            "format": "int64",
+            "nullable": true
+          },
+          "repaymentStartDate": {
+            "type": "string",
+            "description": "Počátek splácení",
+            "format": "date-time",
+            "nullable": true
+          },
+          "estimatedDuePaymentDate": {
+            "type": "string",
+            "description": "Datum předpokládané splatnosti",
+            "format": "date-time",
             "nullable": true
           },
           "relationships": {
@@ -3000,6 +3229,12 @@
             "description": "KB party ID",
             "format": "int64",
             "nullable": true
+          },
+          "kycStatus": {
+            "type": "integer",
+            "description": "KYC Status",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3021,11 +3256,8 @@
       },
       "PartnerRequest": {
         "required": [
-          "addresses",
-          "contacts",
           "ecommunication",
           "gender",
-          "identificationDocuments",
           "lastname",
           "name",
           "pep",
@@ -3117,26 +3349,35 @@
             "format": "int64",
             "nullable": true
           },
+          "kycStatus": {
+            "type": "integer",
+            "description": "KYC Status",
+            "format": "int32",
+            "nullable": true
+          },
           "identificationDocuments": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/IdentificationDocument"
             },
-            "description": "Seznam dokladů"
+            "description": "Seznam dokladů",
+            "nullable": true
           },
           "addresses": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AddressData"
             },
-            "description": "Seznam adres"
+            "description": "Seznam adres",
+            "nullable": true
           },
           "contacts": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ContactRequest"
             },
-            "description": "Sezname kontaktů"
+            "description": "Sezname kontaktů",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3240,6 +3481,12 @@
             "format": "int64",
             "nullable": true
           },
+          "kycStatus": {
+            "type": "integer",
+            "description": "KYC Status",
+            "format": "int32",
+            "nullable": true
+          },
           "dataSource": {
             "$ref": "#/components/schemas/EtlDataSourceType"
           },
@@ -3292,7 +3539,9 @@
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {
+          
+        }
       },
       "ResultStatus": {
         "enum": [

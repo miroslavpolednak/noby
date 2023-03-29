@@ -1,55 +1,172 @@
 ﻿using CIS.Core.Attributes;
-using CIS.InternalServices.DataAggregator;
-using CIS.InternalServices.DataAggregator.Documents;
+using CIS.InternalServices.DataAggregatorService.Clients;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
-using __Document = CIS.InternalServices.DocumentGeneratorService.Contracts;
+using _Document = CIS.InternalServices.DocumentGeneratorService.Contracts;
 
 namespace NOBY.Api.Endpoints.Document.Shared;
 
 [TransientService, SelfService]
 internal class DocumentGenerator
 {
-    private readonly IDataAggregator _dataAggregator;
+    private readonly IDataAggregatorServiceClient _dataAggregator;
     private readonly IDocumentGeneratorServiceClient _documentGenerator;
 
-    public DocumentGenerator(IDataAggregator dataAggregator, IDocumentGeneratorServiceClient documentGenerator)
+    public DocumentGenerator(IDataAggregatorServiceClient dataAggregator, IDocumentGeneratorServiceClient documentGenerator)
     {
         _dataAggregator = dataAggregator;
         _documentGenerator = documentGenerator;
     }
 
-    public async Task<__Document.GenerateDocumentRequest> CreateRequest(GetDocumentBaseRequest request)
+    public async Task<_Document.GenerateDocumentRequest> CreateRequest(GetDocumentBaseRequest request, CancellationToken cancellationToken)
     {
-        var documentData = await _dataAggregator.GetDocumentData(request.TemplateType, request.TemplateVersion, request.InputParameters);
+        var documentData = await GenerateDocumentData(request, cancellationToken);
 
         return Create(request, documentData);
     }
 
-    public async Task<ReadOnlyMemory<byte>> GenerateDocument(__Document.GenerateDocumentRequest generateDocumentRequest, CancellationToken cancellationToken)
+    public async Task<ReadOnlyMemory<byte>> GenerateDocument(_Document.GenerateDocumentRequest generateDocumentRequest, CancellationToken cancellationToken)
     {
         var document = await _documentGenerator.GenerateDocument(generateDocumentRequest, cancellationToken);
 
         return document.Data.Memory;
     }
 
-    private static __Document.GenerateDocumentRequest Create(GetDocumentBaseRequest request, IEnumerable<DocumentFieldData> documentData) =>
+    private async Task<ICollection<DocumentFieldData>> GenerateDocumentData(GetDocumentBaseRequest documentRequest, CancellationToken cancellationToken)
+    {
+        var documentDataRequest = new GetDocumentDataRequest
+        {
+            DocumentTypeId = (int)documentRequest.DocumentType,
+            DocumentTemplateVariantId = documentRequest.DocumentTemplateVariantId,
+            InputParameters = documentRequest.InputParameters
+        };
+
+        var result = await _dataAggregator.GetDocumentData(documentDataRequest, cancellationToken);
+
+        documentRequest.DocumentTemplateVersionId = result.DocumentTemplateVersionId;
+        documentRequest.InputParameters = result.InputParameters;
+
+        return result.DocumentData;
+    }
+
+    private static _Document.GenerateDocumentRequest Create(GetDocumentBaseRequest request, IEnumerable<DocumentFieldData> documentData) =>
         new()
         {
-            TemplateTypeId = (int)request.TemplateType,
-            TemplateVersion = request.TemplateVersion,
-            OutputType = __Document.OutputFileType.OpenForm,
+            DocumentTypeId = (int)request.DocumentType,
+            DocumentTemplateVersionId = request.DocumentTemplateVersionId,
+            DocumentTemplateVariantId = request.DocumentTemplateVariantId,
+            ForPreview = request.ForPreview,
+            OutputType = _Document.OutputFileType.Pdfa,
             Parts =
             {
-                new __Document.GenerateDocumentPart
+                new _Document.GenerateDocumentPart
                 {
-                    TemplateTypeId = (int)request.TemplateType,
-                    TemplateVersion = request.TemplateVersion
-                }.FillDocumentPart(documentData)
+                    DocumentTypeId = (int)request.DocumentType,
+                    DocumentTemplateVersionId = request.DocumentTemplateVersionId,
+                    DocumentTemplateVariantId = request.DocumentTemplateVariantId,
+                    Data = { documentData.Select(CreateDocumentPartData) }
+                }
             },
-            DocumentFooter = new __Document.DocumentFooter
+            DocumentFooter = new _Document.DocumentFooter
             {
                 CaseId = request.InputParameters.CaseId,
                 OfferId = request.InputParameters.OfferId
             }
         };
+
+    private static _Document.GenerateDocumentPartData CreateDocumentPartData(DocumentFieldData fieldData)
+    {
+        var partData = new _Document.GenerateDocumentPartData
+        {
+            Key = fieldData.FieldName,
+            StringFormat = fieldData.StringFormat,
+            TextAlign = (_Document.TextAlign)(fieldData.TextAlign ?? 0)
+        };
+
+        switch (fieldData.ValueCase)
+        {
+            case DocumentFieldData.ValueOneofCase.None:
+                break;
+
+            case DocumentFieldData.ValueOneofCase.Text:
+                partData.Text = fieldData.Text;
+                break;
+
+            case DocumentFieldData.ValueOneofCase.Date:
+                partData.Date = fieldData.Date;
+                break;
+
+            case DocumentFieldData.ValueOneofCase.Number:
+                partData.Number = fieldData.Number;
+                break;
+
+            case DocumentFieldData.ValueOneofCase.DecimalNumber:
+                partData.DecimalNumber = fieldData.DecimalNumber;
+                break;
+
+            case DocumentFieldData.ValueOneofCase.LogicalValue:
+                partData.LogicalValue = fieldData.LogicalValue;
+                break;
+
+            case DocumentFieldData.ValueOneofCase.Table:
+                partData.Table = new _Document.GenericTable
+                {
+                    Rows =
+                    {
+                        fieldData.Table.Rows.Select(row => new _Document.GenericTableRow
+                        {
+                            Values = { row.Values.Select(CreateTableRowValue) }
+                        })
+                    },
+                    Columns =
+                    {
+                        fieldData.Table.Columns.Select(column => new _Document.GenericTableColumn
+                        {
+                            Header = column.Header,
+                            StringFormat = column.StringFormat,
+                            WidthPercentage = column.WidthPercentage
+                        })
+                    },
+                    ConcludingParagraph = fieldData.Table.ConcludingParagraph
+                };
+                break;
+
+            default:
+                throw new NotImplementedException();
+        }
+
+        return partData;
+    }
+
+    private static _Document.GenericTableRowValue CreateTableRowValue(GenericTableRowValue value)
+    {
+        var tableRowValue = new _Document.GenericTableRowValue();
+
+        switch (value.ValueCase)
+        {
+            case GenericTableRowValue.ValueOneofCase.None:
+                break;
+
+            case GenericTableRowValue.ValueOneofCase.Text:
+                tableRowValue.Text = value.Text;
+                break;
+
+            case GenericTableRowValue.ValueOneofCase.Date:
+                tableRowValue.Date = value.Date;
+                break;
+
+            case GenericTableRowValue.ValueOneofCase.Number:
+                tableRowValue.Number = value.Number;
+                break;
+
+            case GenericTableRowValue.ValueOneofCase.DecimalNumber:
+                tableRowValue.DecimalNumber = value.DecimalNumber;
+                break;
+
+            default:
+                throw new NotImplementedException();
+        }
+
+        return tableRowValue;
+    }
 }

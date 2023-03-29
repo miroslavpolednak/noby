@@ -1,0 +1,79 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "GrpcDate.proto";
+import "NullableGrpcDate.proto";
+import "Identity.proto";
+
+message SalesArrangementParametersCustomerChange {
+	repeated ApplicantObject Applicants = 1;
+	ReleaseObject Release = 2;
+	AddObject Add = 3;
+	AgentObject Agent = 4;
+	PaymentAccountObject RepaymentAccount = 5;
+	CommentToChangeRequestObject CommentToChangeRequest = 6;
+
+	message ApplicantObject {
+		cis.types.Identity Identity = 1;
+		NaturalPersonObject NaturalPerson = 2;
+		IdentificationDocumentObject IdentificationDocument = 3;
+	}
+
+	message NaturalPersonObject {
+		string FirstName = 1;
+		string LastName = 2;
+		cis.types.GrpcDate DateOfBirth = 3;
+	}
+
+	message IdentificationDocumentObject {
+		int32 IdentificationDocumentTypeId = 1;
+		string Number = 2;
+	}
+
+	message ReleaseObject {
+		bool IsActive = 1;
+		repeated ReleaseCustomerObject Customers = 2;
+	}
+
+	message ReleaseCustomerObject {
+		cis.types.Identity Identity = 1;
+		NaturalPersonObject NaturalPerson = 2;
+	}
+
+	message AddObject {
+		bool IsActive = 1;
+		repeated AddCustomerObject Customers = 2;
+	}
+
+	message AddCustomerObject {
+		string Name = 1;
+		cis.types.GrpcDate DateOfBirth = 2;
+	}
+
+	message AgentObject {
+		bool IsActive = 1;
+		string ActualAgent = 2;
+		google.protobuf.StringValue NewAgent = 3;
+	}
+
+	message PaymentAccountObject {
+		bool IsActive = 1;
+		string AgreedPrefix = 2;
+		string AgreedNumber = 3;
+		string AgreedBankCode = 4;
+		google.protobuf.StringValue Prefix = 5;
+		google.protobuf.StringValue Number = 6;
+		google.protobuf.StringValue BankCode = 7;
+		google.protobuf.StringValue OwnerFirstName = 8;
+		google.protobuf.StringValue OwnerLastName = 9;
+		cis.types.NullableGrpcDate OwnerDateOfBirth = 10;
+	}
+
+
+	message CommentToChangeRequestObject {
+		bool IsActive = 1;
+		google.protobuf.StringValue GeneralComment = 2;
+	}
+}

@@ -6,7 +6,7 @@
 ## grpcurl tests
         grpcurl -insecure 172.30.35.51:31006 list DomainServices.OfferService.v1.OfferService
        
-        grpcurl -insecure -d "{\"OfferId\":6}" -H "Authorization: Basic YTph" 172.30.35.51:31006 DomainServices.OfferService.v1.OfferService/GetOffer
+        grpcurl -insecure -d "{\"OfferId\":6}" -H "Authorization: Basic YTph" 172.30.35.51:30006 DomainServices.OfferService.v1.OfferService/GetOffer
         grpcurl -insecure -d "{\"OfferId\":6}" -H "Authorization: Basic YTph" 172.30.35.51:31006 DomainServices.OfferService.v1.OfferService/GetMortgageOffer
         grpcurl -insecure -d "{\"OfferId\":6}" -H "Authorization: Basic YTph" 172.30.35.51:31006 DomainServices.OfferService.v1.OfferService/GetMortgageOfferDetail
         grpcurl -insecure -d "{\"OfferId\":6}" -H "Authorization: Basic YTph" 172.30.35.51:31006 DomainServices.OfferService.v1.OfferService/GetMortgageOfferFPSchedule

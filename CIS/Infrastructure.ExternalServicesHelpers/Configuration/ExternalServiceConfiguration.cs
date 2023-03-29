@@ -1,5 +1,4 @@
 ﻿using CIS.Foms.Enums;
-using System.Text.Json.Serialization;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 
@@ -14,7 +13,17 @@ public class ExternalServiceConfiguration<TClient>
     /// Zapne logovani request a response payloadu a hlavicek. Default: true
     /// </summary>
     /// <remarks>Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.</remarks>
-    public bool LogPayloads { get; set; } = true;
+    public bool UseLogging { get; set; } = true;
+
+    /// <summary>
+    /// True = do logu se ulozi plny payload odpovedi externi sluzby
+    /// </summary>
+    public bool LogRequestPayload { get; set; } = true;
+
+    /// <summary>
+    /// True = do logu se ulozi plny request poslany do externi sluzby
+    /// </summary>
+    public bool LogResponsePayload { get; set; } = true;
 
     /// <summary>
     /// Default request timeout in seconds
