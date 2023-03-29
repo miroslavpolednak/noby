@@ -44,9 +44,6 @@ internal static class NobyServices
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForNullableDateTime());
-                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
-
             });
 
         // flow switches

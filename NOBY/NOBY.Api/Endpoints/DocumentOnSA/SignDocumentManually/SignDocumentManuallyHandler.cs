@@ -191,7 +191,7 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
     {
         return new IdentificationDocument
         {
-            IdentificationDocumentTypeId = identificationDocument.IdentificationDocumentTypeId,
+            IdentificationDocumentTypeId = identificationDocument.IdentificationDocumentTypeId.GetValueOrDefault(),
             IssuingCountryId = identificationDocument.IssuingCountryId,
             Number = identificationDocument.Number ?? string.Empty,
             ValidTo = identificationDocument.ValidTo,

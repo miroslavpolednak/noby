@@ -8,10 +8,14 @@ public sealed class JsonConverterForNullableDateTime
 {
     public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TryGetDateTime(out DateTime d))
-            return d;
-        else
+        if (reader.TokenType == JsonTokenType.Null)
+        {
             return null;
+        }
+        else
+        {
+            return reader.TryGetDateTime(out DateTime d) ? d : null;
+        }
     }
 
     // This method will be ignored on serialization, and the default typeof(DateTime) converter is used instead.
