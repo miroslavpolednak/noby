@@ -13,6 +13,8 @@ from business.case import Case
 from .ApiWriterOffer import ApiWriterOffer
 from .ApiWriterCase import ApiWriterCase
 
+from .workflow.WorkflowStep import WorkflowStep
+
 class ApiProcessor():
 
     def __init__(self, data_json: dict | str):
@@ -51,8 +53,12 @@ class ApiProcessor():
 
     def __process(self) -> dict:
 
+        #self.__process_workflow()
+
+        
         offer_json: dict = Processing.get_key(self.__offer_case_json, 'offer')
         case_json: dict = Processing.get_key(self.__offer_case_json, 'case')
+        
 
         # -------------------------------------------------
         # resolve modifications
@@ -83,11 +89,30 @@ class ApiProcessor():
             
             case_id = build_result
 
+        #self.__process_workflow()
 
         return dict(
             offer_id = offer_id,
             case_id = case_id,
         )
+
+
+    def __process_workflow(self) -> dict:
+
+        workflow_json: List[dict] = Processing.get_key(self.__offer_case_json, 'workflow')
+
+        if (workflow_json is None):
+            return None
+
+        assert isinstance(workflow_json, list)
+
+        steps: List[WorkflowStep] = list(map(lambda i: WorkflowStep(i), workflow_json))
+
+        print(f'Workflow steps [{len(steps)}]:')
+
+        for s in steps:
+            print(s)
+            
 
     # def read_case(case_id) -> Case | Exception:
 

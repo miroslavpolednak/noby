@@ -1,0 +1,310 @@
+{
+    "label": "Offer & Case - workflow",
+    "offer": {
+        "productTypeId": "ProductType(type=Mortgage)",
+        "loanKindId": "LoanKind(kind=Standard)",
+        "loanAmount": 5000000,
+        "loanDuration": 120,
+        "fixedRatePeriod": 60,
+        "collateralAmount": 1000000,
+        "paymentDay": 15,
+        "statementTypeId": 1,
+        "isEmployeeBonusRequested": false,
+        "expectedDateOfDrawing": "Date(days=10)",
+        "withGuarantee": false,
+        "financialResourcesOwn": null,
+        "financialResourcesOther": null,
+        "drawingTypeId": 2,
+        "drawingDurationId": null,
+        "loanPurposes": [
+            {
+                "id": 202,
+                "sum": 3000000
+            },
+            {
+                "id": 203,
+                "sum": 2000000
+            }
+        ],
+        "interestRateDiscount": 0,
+        "interestRateDiscountToggle": false,
+        "marketingActions": {
+            "domicile": true,
+            "healthRiskInsurance": true,
+            "realEstateInsurance": false,
+            "incomeLoanRatioDiscount": false,
+            "userVip": false
+        },
+        "developer": null,
+        "riskLifeInsurance": {
+            "sum": null,
+            "frequency": null
+        },
+        "realEstateInsurance": {
+            "sum": null,
+            "frequency": null
+        },
+        "resourceProcessId": "127532f3-093f-4e28-abb4-ed409bd97d43",
+        "fees": []
+    },
+    "case": {
+        "phoneNumberForOffer":"+420 111555999",
+        "emailForOffer":"j.l@jl",
+        "households": [
+            {
+                "householdTypeId": "HouseholdType(type=Main)",
+                "childrenUpToTenYearsCount": 1,
+                "childrenOverTenYearsCount": 2,
+                "areCustomersPartners": true,
+                "customer1": {
+                    "firstName": "JAN",
+                    "lastName": "Novák",
+                    "dateOfBirth": "1980-01-01T00:00:00",
+                    "identity": {
+                        "id": 0,
+                        "scheme": 0
+                    },
+                    "roleId": 1,
+                    "incomes": [
+                        {
+                            "sum": 25000,
+                            "currencyCode": "CZK",
+                            "incomeTypeId": 1,
+                            "data": {
+                                "employer": {
+                                    "name": "ABC",
+                                    "cin": "123456789",
+                                    "birthNumber": null,
+                                    "countryId": 1
+                                },
+                                "job": {
+                                    "jobDescription": "HR",
+                                    "firstWorkContractSince": "2023-02-22T00:00:00.000Z",
+                                    "employmentTypeId": 2,
+                                    "currentWorkContractSince": null,
+                                    "currentWorkContractTo": null,
+                                    "grossAnnualIncome": 300000,
+                                    "isInTrialPeriod": true,
+                                    "isInProbationaryPeriod": false
+                                },
+                                "wageDeduction": {
+                                    "deductionDecision": 20000,
+                                    "deductionPayments": 10000,
+                                    "deductionOther": 3000
+                                },
+                                "incomeConfirmation": {
+                                    "confirmationDate": "2023-02-06T00:00:00.000Z",
+                                    "confirmationPerson": "Barča",
+                                    "confirmationContact": "777555333",
+                                    "isIssuedByExternalAccountant": true
+                                },
+                                "hasProofOfIncome": true,
+                                "foreignIncomeTypeId": 2,
+                                "hasWageDeduction": true,
+                                "cin": null,
+                                "birthNumber": null,
+                                "countryOfResidenceId": null,
+                                "incomeOtherTypeId": null
+                            }
+                        },
+                        {
+                            "sum": 1000000,
+                            "currencyCode": "CZK",
+                            "incomeTypeId": 2,
+                            "data": {
+                                "employer": {
+                                    "name": null,
+                                    "cin": null,
+                                    "birthNumber": null,
+                                    "countryId": null
+                                },
+                                "job": {
+                                    "jobDescription": null,
+                                    "firstWorkContractSince": null,
+                                    "employmentTypeId": null,
+                                    "currentWorkContractSince": null,
+                                    "currentWorkContractTo": null,
+                                    "grossAnnualIncome": null,
+                                    "isInTrialPeriod": false,
+                                    "isInProbationaryPeriod": false
+                                },
+                                "wageDeduction": {
+                                    "deductionDecision": null,
+                                    "deductionPayments": null,
+                                    "deductionOther": null
+                                },
+                                "incomeConfirmation": {
+                                    "confirmationDate": null,
+                                    "confirmationPerson": null,
+                                    "confirmationContact": null,
+                                    "isIssuedByExternalAccountant": false
+                                },
+                                "hasProofOfIncome": false,
+                                "foreignIncomeTypeId": null,
+                                "hasWageDeduction": false,
+                                "cin": null,
+                                "birthNumber": "111555999",
+                                "countryOfResidenceId": 27,
+                                "incomeOtherTypeId": null
+                            }
+                        },
+                        {
+                            "sum": 80000,
+                            "currencyCode": "CZK",
+                            "incomeTypeId": 3,
+                            "data": {
+                                "employer": {
+                                    "name": null,
+                                    "cin": null,
+                                    "birthNumber": null,
+                                    "countryId": null
+                                },
+                                "job": {
+                                    "jobDescription": null,
+                                    "firstWorkContractSince": null,
+                                    "employmentTypeId": null,
+                                    "currentWorkContractSince": null,
+                                    "currentWorkContractTo": null,
+                                    "grossAnnualIncome": null,
+                                    "isInTrialPeriod": false,
+                                    "isInProbationaryPeriod": false
+                                },
+                                "wageDeduction": {
+                                    "deductionDecision": null,
+                                    "deductionPayments": null,
+                                    "deductionOther": null
+                                },
+                                "incomeConfirmation": {
+                                    "confirmationDate": null,
+                                    "confirmationPerson": null,
+                                    "confirmationContact": null,
+                                    "isIssuedByExternalAccountant": false
+                                },
+                                "hasProofOfIncome": false,
+                                "foreignIncomeTypeId": null,
+                                "hasWageDeduction": false,
+                                "cin": null,
+                                "birthNumber": null,
+                                "countryOfResidenceId": null,
+                                "incomeOtherTypeId": null
+                            }
+                        },
+                        {
+                            "sum": 30000,
+                            "currencyCode": "CZK",
+                            "incomeTypeId": 4,
+                            "data": {
+                                "employer": {
+                                    "name": null,
+                                    "cin": null,
+                                    "birthNumber": null,
+                                    "countryId": null
+                                },
+                                "job": {
+                                    "jobDescription": null,
+                                    "firstWorkContractSince": null,
+                                    "employmentTypeId": null,
+                                    "currentWorkContractSince": null,
+                                    "currentWorkContractTo": null,
+                                    "grossAnnualIncome": null,
+                                    "isInTrialPeriod": false,
+                                    "isInProbationaryPeriod": false
+                                },
+                                "wageDeduction": {
+                                    "deductionDecision": null,
+                                    "deductionPayments": null,
+                                    "deductionOther": null
+                                },
+                                "incomeConfirmation": {
+                                    "confirmationDate": null,
+                                    "confirmationPerson": null,
+                                    "confirmationContact": null,
+                                    "isIssuedByExternalAccountant": false
+                                },
+                                "hasProofOfIncome": false,
+                                "foreignIncomeTypeId": null,
+                                "hasWageDeduction": false,
+                                "cin": null,
+                                "birthNumber": null,
+                                "countryOfResidenceId": null,
+                                "incomeOtherTypeId": 3
+                            }
+                        }
+                    ],
+                    "obligations": []
+                },
+                "customer2": {
+                    "firstName": "JANA",
+                    "lastName": "Nováková",
+                    "dateOfBirth": "1980-01-01T00:00:00",
+                    "identity": {
+                        "id": 0,
+                        "scheme": 0
+                    },
+                    "roleId": 2
+                },
+                "expenses": {
+                    "savingExpenseAmount": 10000,
+                    "insuranceExpenseAmount": 3000,
+                    "housingExpenseAmount": 10000,
+                    "otherExpenseAmount": 7500
+                }
+            },
+            {
+                "householdTypeId": "HouseholdType(type=Codebtor)"
+            }
+        ],
+        "parameters": {
+            "expectedDateOfDrawing": "2023-04-01T00:00:00.000Z",
+            "incomeCurrencyCode": "CAD",
+            "residencyCurrencyCode": "CZK",
+            "contractSignatureTypeId": 2,
+            "loanRealEstates": [
+                {
+                    "realEstateTypeId": 1,
+                    "isCollateral": true,
+                    "realEstatePurchaseTypeId": 1
+                },
+                {
+                    "realEstateTypeId": 5,
+                    "isCollateral": false,
+                    "realEstatePurchaseTypeId": 2
+                }
+            ],
+            "agent": null,
+            "agentConsentWithElCom": false
+        }
+    },
+    "workflow": [
+        {
+            "path": "households[0].customer1.incomes[0]",
+            "type": "remove"
+        },
+        {
+            "path": "households[0].customer1.incomes[0]",
+            "type": "edit",
+            "data": {}
+        },
+        {
+            "path": "parameters",
+            "type": "edit",
+            "data": {
+                "expectedDateOfDrawing": "2023-04-01T00:00:00.000Z",
+                "incomeCurrencyCode": "CAD",
+                "residencyCurrencyCode": "CZK",
+                "contractSignatureTypeId": 2,
+                "agent": null,
+                "agentConsentWithElCom": false
+            }
+        },
+        {
+            "path": "parameters.loanRealEstates",
+            "type": "add",
+            "data": {
+                "realEstateTypeId": 5,
+                "isCollateral": false,
+                "realEstatePurchaseTypeId": 2
+            }
+        }
+    ]
+}
