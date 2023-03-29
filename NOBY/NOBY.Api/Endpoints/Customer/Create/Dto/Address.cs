@@ -11,7 +11,7 @@ public class Address
     [JsonIgnore]
     public bool IsPrimary { get; set; }
 
-    public int AddressTypeId { get; set; }
+    public int? AddressTypeId { get; set; }
 
     /// <summary>
     /// Ulice

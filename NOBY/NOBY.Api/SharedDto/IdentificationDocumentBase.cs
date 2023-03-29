@@ -8,7 +8,7 @@ public class IdentificationDocumentBase
     /// Typ osobního dokladu - číselník IdentificationDocumentType - (CIS_TYPY_DOKLADOV)
     /// </summary>
     [Required]
-    public int IdentificationDocumentTypeId { get; set; }
+    public int? IdentificationDocumentTypeId { get; set; }
 
     /// <summary>
     /// Číslo osobního dokladu

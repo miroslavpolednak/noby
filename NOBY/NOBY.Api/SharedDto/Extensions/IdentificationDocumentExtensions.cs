@@ -6,7 +6,7 @@ public static class IdentificationDocumentExtensions
        => new()
        {
            IssuingCountryId = document.IssuingCountryId,
-           IdentificationDocumentTypeId = document.IdentificationDocumentTypeId,
+           IdentificationDocumentTypeId = document.IdentificationDocumentTypeId.GetValueOrDefault(),
            IssuedBy = document.IssuedBy,
            Number = document.Number,
            IssuedOn = document.IssuedOn, // ?? DateTime.Today.AddYears(-1), //Mock HFICH-4410

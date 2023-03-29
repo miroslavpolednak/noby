@@ -51,7 +51,7 @@ internal static class UpdateParametersExtensions
                 IdentificationDocument = parameters.Agent?.IdentificationDocument is null ? null : new()
                 {
                     Number = parameters.Agent.IdentificationDocument.Number,
-                    IdentificationDocumentTypeId = parameters.Agent.IdentificationDocument.IdentificationDocumentTypeId
+                    IdentificationDocumentTypeId = parameters.Agent.IdentificationDocument.IdentificationDocumentTypeId.GetValueOrDefault()
                 }
             }
         };

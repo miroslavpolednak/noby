@@ -15,7 +15,7 @@ builder.AddCisDistributedCache();
 
 Nastavení cache je v *appsettings.json*, struktura je dle `CIS.Core.Configuration.ICisDistributedCacheConfiguration`:
 ```json
-"DistributedCache": {
+"CisDistributedCache": {
 	"CacheType": "MsSql",
 	"SerializationType": "Json",
 	"KeyPrefix": ""
