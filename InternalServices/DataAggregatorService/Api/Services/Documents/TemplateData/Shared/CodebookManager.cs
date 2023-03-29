@@ -44,6 +44,8 @@ public class CodebookManager : ICodebookManagerConfigurator
 
     public List<Codebook.LegalCapacityRestrictionTypes.LegalCapacityRestrictionTypeItem> LegalCapacityRestrictionTypes { get; private set; } = null!;
 
+    public List<Codebook.DocumentTypes.DocumentTypeItem> DocumentTypes { get; private set; } = null!;
+
     public Task Load(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
         return Task.WhenAll(_codebooksToLoad.Select(call => call(codebookService, cancellationToken)));
@@ -171,6 +173,13 @@ public class CodebookManager : ICodebookManagerConfigurator
     ICodebookManagerConfigurator ICodebookManagerConfigurator.LegalCapacityRestrictionTypes()
     {
         _codebooksToLoad.Add(async (service, ct) => LegalCapacityRestrictionTypes = await service.LegalCapacityRestrictionTypes(ct));
+
+        return this;
+    }
+    
+    ICodebookManagerConfigurator ICodebookManagerConfigurator.DocumentTypes()
+    {
+        _codebooksToLoad.Add(async (service, ct) => DocumentTypes = await service.DocumentTypes(ct));
 
         return this;
     }

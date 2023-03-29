@@ -79,7 +79,7 @@ internal class FormsDocumentService
         entity.ContractNumber = contractNumber;
         entity.FormId = docOnSa.DocumentOnSa.FormId;
         entity.CreatedOn = _dateTime.Now.Date;
-        entity.EaCodeMainId = int.Parse(form.DefaultValues.PasswordCode, CultureInfo.InvariantCulture);
+        entity.EaCodeMainId = form.DefaultValues.EaCodeMainId ?? 0;
         entity.Kdv = 1; // true
         entity.SendDocumentOnly = 0; //false
         entity.DataSentence = new FormInstanceInterface
