@@ -20,7 +20,12 @@ internal static class NobySwagger
         // konfigurace pro generátor JSON souboru
         builder.Services.AddSwaggerGen(x =>
         {
-            x.SwaggerDoc("v1", new OpenApiInfo { Title = "NOBY FRONTEND API", Version = "v1" });
+            x.SwaggerDoc("v1", new OpenApiInfo 
+            { 
+                Title = "NOBY FRONTEND API", 
+                Version = "v1", 
+                Description = "Obecná specifikace error handlingu na úrovni FE API na [https://wiki.kb.cz/display/HT/FE+API%3A+Popis+error+Handlingu](https://wiki.kb.cz/display/HT/FE+API%3A+Popis+error+Handlingu). \n\nSpecifikace HTTP/SOAP hlaviček [https://wiki.kb.cz/pages/viewpage.action?pageId=513345095](https://wiki.kb.cz/pages/viewpage.action?pageId=513345095)"
+            });
 
             // zapojení rozšířených anotací nad controllery
             x.EnableAnnotations();
