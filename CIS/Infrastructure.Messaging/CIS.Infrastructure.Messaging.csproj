@@ -21,4 +21,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Core\CIS.Core.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Kafka\Internals\" />
+	</ItemGroup>
 </Project>

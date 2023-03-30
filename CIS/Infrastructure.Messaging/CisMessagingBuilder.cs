@@ -1,4 +1,5 @@
-﻿using KB.Speed.Messaging.Kafka.DependencyInjection;
+﻿using CIS.Infrastructure.Messaging.Kafka;
+using KB.Speed.Messaging.Kafka.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 
 namespace CIS.Infrastructure.Messaging;
@@ -6,21 +7,21 @@ namespace CIS.Infrastructure.Messaging;
 internal sealed class CisMessagingBuilder
     : ICisMessagingBuilder
 {
-    private readonly WebApplicationBuilder _builder;
+    public ICisMessagingKafkaBuilder AddKafka()
+    {
+        var configuration = AppBuilder.GetKafkaRiderConfiguration();
+
+        AppBuilder.Services.AddAvroSerializerConfiguration();
+        AppBuilder.Services.AddAvroDeserializerConfiguration();
+        AppBuilder.Services.AddApicurioSchemaRegistry();
+
+        return new CisMessagingKafkaBuilder(this, configuration);
+    }
+
+    internal readonly WebApplicationBuilder AppBuilder;
 
     public CisMessagingBuilder(WebApplicationBuilder builder)
     {
-        _builder = builder;
-    }
-
-    public Kafka.ICisMessagingKafkaBuilder AddKafka()
-    {
-        var kafkaBuilder = new Kafka.CisMessagingKafkaBuilder(_builder);
-
-        _builder.Services.AddAvroSerializerConfiguration();
-        _builder.Services.AddAvroDeserializerConfiguration();
-        _builder.Services.AddApicurioSchemaRegistry();
-
-        return kafkaBuilder;
+        AppBuilder = builder;
     }
 }

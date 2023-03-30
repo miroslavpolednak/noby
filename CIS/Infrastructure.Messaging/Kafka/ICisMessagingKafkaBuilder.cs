@@ -1,6 +1,12 @@
-﻿namespace CIS.Infrastructure.Messaging.Kafka;
+﻿using MassTransit;
+
+namespace CIS.Infrastructure.Messaging.Kafka;
 
 public interface ICisMessagingKafkaBuilder
 {
-    ICisMessagingKafkaBuilder AddRider();
+    ICisMessagingKafkaBuilder AddConsumers(Action<IRiderRegistrationConfigurator> action);
+
+    ICisMessagingKafkaBuilder AddConsumersToTopic(Action<IKafkaFactoryConfigurator, IRiderRegistrationContext> action);
+
+    ICisMessagingBuilder Build();
 }
