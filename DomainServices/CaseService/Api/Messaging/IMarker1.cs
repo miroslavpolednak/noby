@@ -14,3 +14,10 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4
     {
     }
 }
+
+namespace cz.kb.osbs.mcs.notificationreport.eventapi.v3.report
+{
+    public partial class NotificationReport : IMarker1
+    {
+    }
+}

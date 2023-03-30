@@ -41,6 +41,7 @@ internal sealed class CisMessagingKafkaBuilder
 
                 rider.UsingKafka((context, k) =>
                 {
+                    k.Debug = "security,broker";
                     k.CreateKafkaHost(_configuration);
 
                     foreach (var action in _configurationActions)
