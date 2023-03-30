@@ -44,7 +44,7 @@ internal static class StartupExtensions
             })
             .AddConsumersToTopic((f, c) =>
             {
-                f.AddTopic<IMarker1>(c, "NOBY_DS-PERF_MCS_mock_result-event-priv", "example-multiple-type-consumer");
+                f.AddTopic<IMarker1, Messaging.SendEmail.SendEmailConsumer, cz.kb.osbs.mcs.sender.sendapi.v4.SendEmail>(c, "NOBY_DS-PERF_MCS_mock_result-event-priv", "example-multiple-type-consumer");
             });
 
         return builder;

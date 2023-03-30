@@ -21,60 +21,33 @@ public static class Extensions
         where TMarker : class, ISpecificRecord
         where TConsumer : class, IConsumer
         where TAvro : class, ISpecificRecord, TMarker
-        => addTopic<TMarker, TConsumer, TAvro, TConsumer, TAvro>(factoryConfigurator, context, 1, topic, groupId);
+        => addTopic<TMarker, TConsumer, TAvro, TConsumer, TAvro, TConsumer, TAvro>(factoryConfigurator, context, 1, topic, groupId);
 
-    internal static void addTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2>(
-        this IKafkaFactoryConfigurator factoryConfigurator, 
-        IRiderRegistrationContext context, 
-        int consumersCount,
-        string topic, 
+    public static void AddTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2>(
+        this IKafkaFactoryConfigurator factoryConfigurator,
+        IRiderRegistrationContext context,
+        string topic,
         string groupId)
         where TMarker : class, ISpecificRecord
         where TConsumer1 : class, IConsumer
         where TAvro1 : class, ISpecificRecord, TMarker
         where TConsumer2 : class, IConsumer
         where TAvro2 : class, ISpecificRecord, TMarker
-    {
-        
-        // 2. configure multi type consumers
-        var multipleTypeConfigBuilder = new MultipleTypeConfigBuilder<TMarker>();
+        => addTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer1, TAvro1>(factoryConfigurator, context, 2, topic, groupId);
 
-        for (int i = 1; i <= consumersCount; i++)
-        {
-#pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
-            _ = i switch
-            {
-                1 => addToBuilder<TAvro1>(multipleTypeConfigBuilder),
-                2 => addToBuilder<TAvro1>(multipleTypeConfigBuilder),
-            };
-#pragma warning restore CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
-        }
-
-        var multipleTypeConfig = multipleTypeConfigBuilder.Build();
-
-        factoryConfigurator.TopicEndpoint<TMarker>(topic, groupId, conf =>
-        {
-            var schemaRegistryClient = context.GetRequiredService<ISchemaRegistryClient>();
-            var valueDeserializer = new MultipleTypeDeserializer<TMarker>(multipleTypeConfig, schemaRegistryClient);
-
-            conf.SetValueDeserializer(valueDeserializer.AsSyncOverAsync());
-            conf.SetHeadersDeserializer(new HeaderDeserializer());
-
-            for (int i = 1; i <= consumersCount; i++)
-            {
-                conf.ConfigureConsumer<TConsumer1>(context);
-                conf.ConfigureConsumer<TConsumer2>(context);
-            }
-        });
-
-        bool addToBuilder<T>(MultipleTypeConfigBuilder<TMarker> builder)
-            where T : class, ISpecificRecord, TMarker
-        {
-            var avroInstance = Activator.CreateInstance<T>();
-            builder.AddType<T>(avroInstance.Schema);
-            return true;
-        }
-    }
+    public static void AddTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3>(
+        this IKafkaFactoryConfigurator factoryConfigurator,
+        IRiderRegistrationContext context,
+        string topic,
+        string groupId)
+        where TMarker : class, ISpecificRecord
+        where TConsumer1 : class, IConsumer
+        where TAvro1 : class, ISpecificRecord, TMarker
+        where TConsumer2 : class, IConsumer
+        where TAvro2 : class, ISpecificRecord, TMarker
+        where TConsumer3 : class, IConsumer
+        where TAvro3 : class, ISpecificRecord, TMarker
+        => addTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3>(factoryConfigurator, context, 3, topic, groupId);
 
     public static Configuration.IKafkaRiderConfiguration GetKafkaRiderConfiguration(this WebApplicationBuilder builder)
     {
@@ -111,5 +84,72 @@ public static class Extensions
                 });
             }
         });
+    }
+
+    private static void addTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3>(
+        this IKafkaFactoryConfigurator factoryConfigurator,
+        IRiderRegistrationContext context,
+        int consumersCount,
+        string topic,
+        string groupId)
+        where TMarker : class, ISpecificRecord
+        where TConsumer1 : class, IConsumer
+        where TAvro1 : class, ISpecificRecord, TMarker
+        where TConsumer2 : class, IConsumer
+        where TAvro2 : class, ISpecificRecord, TMarker
+        where TConsumer3 : class, IConsumer
+        where TAvro3 : class, ISpecificRecord, TMarker
+    {
+        var multipleTypeConfigBuilder = new MultipleTypeConfigBuilder<TMarker>();
+
+        for (int i = 1; i <= consumersCount; i++)
+        {
+#pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
+            _ = i switch
+            {
+                1 => addToBuilder<TAvro1>(),
+                2 => addToBuilder<TAvro2>(),
+                3 => addToBuilder<TAvro3>()
+            };
+#pragma warning restore CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
+        }
+
+        var multipleTypeConfig = multipleTypeConfigBuilder.Build();
+
+        factoryConfigurator.TopicEndpoint<TMarker>(topic, groupId, conf =>
+        {
+            var schemaRegistryClient = context.GetRequiredService<ISchemaRegistryClient>();
+            var valueDeserializer = new MultipleTypeDeserializer<TMarker>(multipleTypeConfig, schemaRegistryClient);
+
+            conf.SetValueDeserializer(valueDeserializer.AsSyncOverAsync());
+            conf.SetHeadersDeserializer(new HeaderDeserializer());
+
+            for (int i = 1; i <= consumersCount; i++)
+            {
+#pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
+                _ = i switch
+                {
+                    1 => addToConfigurator<TConsumer1>(),
+                    2 => addToConfigurator<TConsumer2>(),
+                    3 => addToConfigurator<TConsumer3>()
+                };
+#pragma warning restore CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
+            }
+
+            bool addToConfigurator<T>()
+                where T : class, IConsumer
+            {
+                conf.ConfigureConsumer<T>(context);
+                return true;
+            }
+        });
+
+        bool addToBuilder<T>()
+            where T : class, ISpecificRecord, TMarker
+        {
+            var avroInstance = Activator.CreateInstance<T>();
+            multipleTypeConfigBuilder.AddType<T>(avroInstance.Schema);
+            return true;
+        }
     }
 }
