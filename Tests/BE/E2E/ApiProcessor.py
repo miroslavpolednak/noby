@@ -53,7 +53,7 @@ class ApiProcessor():
 
     def __process(self) -> dict:
 
-        #self.__process_workflow()
+        self.__process_workflow()
 
         
         offer_json: dict = Processing.get_key(self.__offer_case_json, 'offer')
@@ -108,10 +108,18 @@ class ApiProcessor():
 
         steps: List[WorkflowStep] = list(map(lambda i: WorkflowStep(i), workflow_json))
 
-        print(f'Workflow steps [{len(steps)}]:')
-
+        # print(f'Workflow steps [{len(steps)}]:')
         for s in steps:
-            print(s)
+            # print(s)
+            self.__process_workflow_step(s)
+
+    def __process_workflow_step(self, workflow_step: WorkflowStep):
+
+            
+        print('process_workflow_step', workflow_step)
+
+
+        
             
 
     # def read_case(case_id) -> Case | Exception:

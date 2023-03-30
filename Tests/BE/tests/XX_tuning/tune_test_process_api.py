@@ -24,7 +24,7 @@ TestDataProvider.import_custom()
 # load records
 records = TestDataProvider.load_records_custom_api(ETestType.E2E)
 
-# records = [records[-1]] # last item
+records = [records[-1]] # last item
 
 for record_to_test in records:
     with LogFileContext(record_to_test.log_file_name) as log_file_context:

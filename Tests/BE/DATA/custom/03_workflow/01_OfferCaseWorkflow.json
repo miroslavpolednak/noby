@@ -277,16 +277,16 @@
     },
     "workflow": [
         {
-            "path": "households[0].customer1.incomes[0]",
+            "path": "case.households[0].customer1.incomes[0]",
             "type": "remove"
         },
         {
-            "path": "households[0].customer1.incomes[0]",
+            "path": "case.households[0].customer1.incomes[0]",
             "type": "edit",
             "data": {}
         },
         {
-            "path": "parameters",
+            "path": "case.parameters",
             "type": "edit",
             "data": {
                 "expectedDateOfDrawing": "2023-04-01T00:00:00.000Z",
@@ -298,7 +298,7 @@
             }
         },
         {
-            "path": "parameters.loanRealEstates",
+            "path": "case.parameters.loanRealEstates",
             "type": "add",
             "data": {
                 "realEstateTypeId": 5,
