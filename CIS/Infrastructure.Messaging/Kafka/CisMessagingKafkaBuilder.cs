@@ -7,7 +7,13 @@ internal sealed class CisMessagingKafkaBuilder
 {
     public ICisMessagingKafkaBuilder AddConsumers(Action<IRiderRegistrationConfigurator> action)
     {
-        _riderActions.Add(action);
+        _riderConsumerActions.Add(action);
+        return this;
+    }
+
+    public ICisMessagingKafkaBuilder AddProducers(Action<IRiderRegistrationConfigurator> action)
+    {
+        _riderProducerActions.Add(action);
         return this;
     }
 
@@ -19,10 +25,9 @@ internal sealed class CisMessagingKafkaBuilder
 
     public ICisMessagingBuilder Build()
     {
-        //TODO dodelat producer check
-        if (_riderActions.Count == 0)
+        if (_riderConsumerActions.Count == 0 && _riderProducerActions.Count == 0)
         {
-            throw new Core.Exceptions.CisConfigurationException(0, "Kafka Consumers collection is empty");
+            throw new Core.Exceptions.CisConfigurationException(0, "Kafka Consumers and Producers collection is empty");
         }
 
         _builder.AppBuilder.Services.AddMassTransit(configurator =>
@@ -34,15 +39,21 @@ internal sealed class CisMessagingKafkaBuilder
 
             configurator.AddRider(rider =>
             {
-                foreach (var action in _riderActions)
+                foreach (var action in _riderConsumerActions)
+                {
+                    action(rider);
+                }
+
+                foreach (var action in _riderProducerActions)
                 {
                     action(rider);
                 }
 
                 rider.UsingKafka((context, k) =>
                 {
-                    k.Debug = "security,broker";
                     k.CreateKafkaHost(_configuration);
+
+                    k.UseSendFilter(typeof(Filters.KbHeadersSendFilter<>), context);
 
                     foreach (var action in _configurationActions)
                     {
@@ -58,7 +69,8 @@ internal sealed class CisMessagingKafkaBuilder
     private readonly Configuration.IKafkaRiderConfiguration _configuration;
     private readonly CisMessagingBuilder _builder;
 
-    private List<Action<IRiderRegistrationConfigurator>> _riderActions = new();
+    private List<Action<IRiderRegistrationConfigurator>> _riderConsumerActions = new();
+    private List<Action<IRiderRegistrationConfigurator>> _riderProducerActions = new();
     private List<Action<IKafkaFactoryConfigurator, IRiderRegistrationContext>> _configurationActions = new();
 
     public CisMessagingKafkaBuilder(CisMessagingBuilder builder, Configuration.IKafkaRiderConfiguration configuration)

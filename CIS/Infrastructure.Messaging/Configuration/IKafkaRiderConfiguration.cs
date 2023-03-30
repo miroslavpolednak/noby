@@ -4,17 +4,19 @@ namespace CIS.Infrastructure.Messaging.Configuration;
 
 public interface IKafkaRiderConfiguration
 {
-    string BootstrapServers { get; set; }
+    string BootstrapServers { get; }
     
-    string SslKeyLocation { get; set; }
+    string? SslKeyLocation { get; }
     
-    string SslKeyPassword { get; set; }
+    string? SslKeyPassword { get; }
     
-    SecurityProtocol SecurityProtocol { get; set; }
+    SecurityProtocol SecurityProtocol { get; }
     
-    string SslCaLocation { get; set; }
+    string? SslCaLocation { get; }
     
-    string SslCaCertificateStores { get; set; }
+    string? SslCaCertificateStores { get; }
     
-    string SslCertificateLocation { get; set; }
+    string? SslCertificateLocation { get; }
+
+    string? Debug { get; }
 }
