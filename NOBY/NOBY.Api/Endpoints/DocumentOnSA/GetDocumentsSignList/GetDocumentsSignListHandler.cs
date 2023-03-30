@@ -28,6 +28,7 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
     {
         var documentTypes = await _codebookServiceClient.DocumentTypes(cancellationToken);
         var eACodeMains = await _codebookServiceClient.EaCodesMain(cancellationToken);
+        var signatureStates = await _codebookServiceClient.SignatureStatesNoby(cancellationToken);
 
         var response = new GetDocumentsSignListResponse();
         response.Data = result.DocumentsOnSAToSign
@@ -40,7 +41,7 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                 IsSigned = s.IsSigned,
                 SignatureMethodCode = s.SignatureMethodCode,
                 SignatureDateTime = s.SignatureDateTime is not null ? s.SignatureDateTime.ToDateTime() : null,
-                SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new() { DocumentOnSAId = s.DocumentOnSAId, EArchivId = s.EArchivId, IsSigned = s.IsSigned }),
+                SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new() { DocumentOnSAId = s.DocumentOnSAId, EArchivId = s.EArchivId, IsSigned = s.IsSigned }, signatureStates),
                 EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(s.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains)
             }).ToList();
 

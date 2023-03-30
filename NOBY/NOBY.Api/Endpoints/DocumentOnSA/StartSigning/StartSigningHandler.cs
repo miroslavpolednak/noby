@@ -34,6 +34,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
         var documentTypes = await _codebookServiceClient.DocumentTypes(cancellationToken);
         var eACodeMains = await _codebookServiceClient.EaCodesMain(cancellationToken);
+        var signatureStates = await _codebookServiceClient.SignatureStatesNoby(cancellationToken);
 
         return new StartSigningResponse
         {
@@ -47,7 +48,9 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
                 DocumentOnSAId = result.DocumentOnSa.DocumentOnSAId,
                 EArchivId = result.DocumentOnSa.EArchivId,
                 IsSigned = result.DocumentOnSa.IsSigned
-            }),
+            },
+            signatureStates
+            ),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(result.DocumentOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains)
         };
     }

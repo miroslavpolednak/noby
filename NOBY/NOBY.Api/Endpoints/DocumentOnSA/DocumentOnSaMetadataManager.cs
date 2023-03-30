@@ -1,7 +1,6 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
+﻿using DomainServices.CodebookService.Contracts;
+using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.EaCodesMain;
-using FastEnumUtility;
-using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -14,14 +13,24 @@ public static class DocumentOnSaMetadataManager
         return new EACodeMainItemDto { Id = docType.EACodeMainId!.Value, DocumentType = eaCodeMain.Name, Category = eaCodeMain.Category };
     }
 
-    public static SignatureStateDto GetSignatureState(DocumentOnSAInfo docSa) => docSa switch
+    public static SignatureStateDto GetSignatureState(DocumentOnSAInfo docSa, List<GenericCodebookItem> signatureStates) => docSa switch
     {
-        DocumentOnSAInfo doc when doc.DocumentOnSAId is null => new SignatureStateDto { Id = (int)SignatureStateE.Ready, Name = SignatureStateE.Ready.FastToString() },
-        DocumentOnSAInfo doc when doc.DocumentOnSAId is not null && doc.IsSigned == false => new SignatureStateDto { Id = (int)SignatureStateE.InTheProcess, Name = SignatureStateE.InTheProcess.FastToString() },
-        DocumentOnSAInfo doc when doc.IsSigned && string.IsNullOrEmpty(doc.EArchivId) => new SignatureStateDto { Id = (int)SignatureStateE.WaitingForScan, Name = SignatureStateE.WaitingForScan.FastToString() },
-        DocumentOnSAInfo doc when doc.IsSigned && !string.IsNullOrEmpty(doc.EArchivId) => new SignatureStateDto { Id = (int)SignatureStateE.Signed, Name = SignatureStateE.Signed.FastToString() },
-        _ => new SignatureStateDto { Id = (int)SignatureStateE.Unknown, Name = SignatureStateE.Unknown.FastToString() }
+        // ready (připraveno) 1
+        DocumentOnSAInfo doc when doc.DocumentOnSAId is null => GetSignatureState(1, signatureStates),
+        // InTheProcess (v procesu) 2
+        DocumentOnSAInfo doc when doc.DocumentOnSAId is not null && doc.IsSigned == false => GetSignatureState(2, signatureStates),
+        // WaitingForScan (čeká na sken) 3
+        DocumentOnSAInfo doc when doc.IsSigned && string.IsNullOrEmpty(doc.EArchivId) => GetSignatureState(3, signatureStates),
+        // Signed (podepsáno) 4
+        DocumentOnSAInfo doc when doc.IsSigned && !string.IsNullOrEmpty(doc.EArchivId) => GetSignatureState(4, signatureStates),
+        _ => new SignatureStateDto { Id = 0, Name = "Unknown" }
     };
+
+    private static SignatureStateDto GetSignatureState(int stateId, List<GenericCodebookItem> signatureStates)
+    {
+        var signatureState = signatureStates.Single(s => s.Id == stateId);
+        return new SignatureStateDto { Id = signatureState.Id, Name = signatureState.Name };
+    }
 }
 
 public class EACodeMainItemDto
