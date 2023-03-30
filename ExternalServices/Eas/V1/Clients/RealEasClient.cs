@@ -2,7 +2,6 @@
 using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
 using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
-using CIS.Infrastructure.Logging;
 using CIS.Infrastructure.Telemetry;
 using ExternalServices.Eas.Dto;
 using ExternalServices.Eas.V1.CheckFormV2;

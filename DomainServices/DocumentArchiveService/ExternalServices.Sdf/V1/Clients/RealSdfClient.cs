@@ -104,7 +104,7 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
         {
             if (exp.Message.Contains("DocumentNotFound"))
             {
-                throw new CisNotFoundException(14003, "Unable to get/find document(s) from eArchive (SCP/SDF)");
+                throw new CisNotFoundException(14003, "Unable to get/find document(s) from eArchive (CSP/SDF)");
             }
             else if (exp.Message.Contains("Invalid username/password specified"))
             {
