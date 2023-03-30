@@ -11,7 +11,7 @@ public class Address
     [JsonIgnore]
     public bool IsPrimary { get; set; }
 
-    public int AddressTypeId { get; set; }
+    public int? AddressTypeId { get; set; }
 
     /// <summary>
     /// Ulice
@@ -57,12 +57,12 @@ public class Address
     /// </summary>
     public string CityDistrict { get; set; } = string.Empty;
 
-    public string DeliveryDetails { get; set; } = string.Empty;
+    public string? DeliveryDetails { get; set; }
 
     /// <summary>
     /// Praha obvod
     /// </summary>
-    public string PragueDistrict { get; set; } = string.Empty;
+    public string? PragueDistrict { get; set; }
 
     /// <summary>
     /// Název územního celku

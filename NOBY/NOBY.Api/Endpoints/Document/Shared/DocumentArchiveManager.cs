@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Attributes;
 using CIS.Core.Configuration;
+using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using Google.Protobuf;
@@ -12,18 +13,21 @@ internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocu
 {
     private readonly TDocumentIdManager _documentIdManager;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
+    private readonly ICodebookServiceClients _codebookService;
     private readonly ICisEnvironmentConfiguration _environmentConfiguration;
 
     public DocumentArchiveManager(TDocumentIdManager documentIdManager,
                                   IDocumentArchiveServiceClient documentArchiveService,
+                                  ICodebookServiceClients codebookService,
                                   ICisEnvironmentConfiguration environmentConfiguration)
     {
         _documentIdManager = documentIdManager;
         _documentArchiveService = documentArchiveService;
+        _codebookService = codebookService;
         _environmentConfiguration = environmentConfiguration;
     }
 
-    public Task<string> GetDocumentId(TEntityId entityId, CancellationToken cancellationToken) =>
+    public Task<DocumentInfo> GetDocumentInfo(TEntityId entityId, CancellationToken cancellationToken) =>
         _documentIdManager.LoadDocumentId(entityId, cancellationToken);
 
     public Task<string> GenerateDocumentId(CancellationToken cancellationToken)
@@ -54,6 +58,8 @@ internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocu
 
     public async Task SaveDocumentToArchive(TEntityId entityId, DocumentArchiveData archiveData, CancellationToken cancellationToken)
     {
+        var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
+
         var request = new UploadDocumentRequest
         {
             BinaryData = ByteString.CopyFrom(archiveData.DocumentData.Span),
@@ -62,9 +68,10 @@ internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocu
                 DocumentId = archiveData.DocumentId,
                 CaseId = archiveData.CaseId,
                 AuthorUserLogin = archiveData.UserId.ToString(),
-                EaCodeMainId = 605469,
+                EaCodeMainId = documentTypes.First(d => d.Id == archiveData.DocumentTypeId).EACodeMainId,
                 Filename = archiveData.FileName,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.Now,
+                ContractNumber = string.IsNullOrWhiteSpace(archiveData.ContractNumber) ? "HF00111111125" : archiveData.ContractNumber
             }
         };
 

@@ -50,7 +50,7 @@ public class DocumentController : ControllerBase
     /// Vygenerování dokumentu kalkulace ze šablony
     /// </summary>
     /// <remarks>
-    /// Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br />Výstup je bez vodoznaku</br><br />
+    /// Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
@@ -70,7 +70,7 @@ public class DocumentController : ControllerBase
     /// Vygenerování dokumentu splátkový kalendář ze šablony
     /// </summary>
     /// <remarks>
-    /// Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br />Výstup je bez vodoznaku</br><br />
+    /// Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="offerId">Offer ID</param>

@@ -1,13 +1,17 @@
 ﻿using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
+using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms;
 
 internal class EasProductForm : EasForm<ProductFormData>
 {
-    public EasProductForm(ProductFormData formData) : base(formData)
+    private readonly List<DocumentTypeItem> _documentTypes;
+
+    public EasProductForm(ProductFormData formData, List<DocumentTypeItem> documentTypes) : base(formData)
     {
+        _documentTypes = documentTypes;
     }
 
     public override IEnumerable<Form> BuildForms(IEnumerable<DynamicFormValues> dynamicFormValues, IEnumerable<EasFormSourceField> sourceFields)
@@ -28,7 +32,7 @@ internal class EasProductForm : EasForm<ProductFormData>
             {
                 EasFormType = easFormType,
                 DynamicFormValues = dynamicValues,
-                DefaultValues = DefaultValuesFactory.Create(easFormType),
+                DefaultValues = EasFormTypeFactory.CreateDefaultValues(easFormType, _documentTypes),
                 Json = CreateJson(sourceFieldsGroup[easFormType])
             };
         }

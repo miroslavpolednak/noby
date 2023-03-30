@@ -26,7 +26,7 @@ public static class CustomerHelper
 
         return $"{address.Street} {CombineHouseAndStreetNumber(address.HouseNumber, address.StreetNumber)}, " +
                $"{address.Postcode} {address.City}, " +
-               $"{countries.First(c => c.Id == address.CountryId).LongName}";
+               $"{countries.Where(c => c.Id == address.CountryId).Select(c => c.LongName).FirstOrDefault("No country")}";
     }
 
     private static string CombineHouseAndStreetNumber(string houseNumber, string streetNumber) => 

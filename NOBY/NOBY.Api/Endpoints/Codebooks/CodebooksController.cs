@@ -29,7 +29,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405522415">Countries</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=483360846">CountryCodePhoneIdc</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424127746">Currencies</a>
-    /// - <a href="https://wiki.kb.cz/display/HT/CustomerProfile">CustomerProfiles</a> - zatím není na FE API implementováno
+    /// - <a href="https://wiki.kb.cz/display/HT/CustomerProfile">CustomerProfiles</a> 
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413658556">AddressTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCodes</a>
@@ -46,13 +46,13 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405524365">Genders</a>
-    /// - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> - zatím není na FE API implementováno
+    /// - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> 
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392871926">IdentificationDocumentTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/IdentificationSubjectMethod+%28CB_IdentificationMethodType%29+-+MOCK">IdentificationSubjectMethods</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426158089">IncomeMainTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967686">IncomeMainTypesAML</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216188">IncomeForeignTypes</a>
-    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440881532">IncomeOtherTypes</a> - zatím není na FE API implementováno
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440881532">IncomeOtherTypes</a> 
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216289">JobTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424118208">LegalCapacityRestrictionTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413109663">LoanPurposes</a>
@@ -60,9 +60,9 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413108848">LoanInterestRateAnnouncedTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/Mandant">Mandants</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417279748">MaritalStatuses</a>
-    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417279748">MarketingActions</a>  - zatím není na FE API implementováno
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417279748">MarketingActions</a> - zatím není na FE API implementováno
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967710">NetMonthEarnings</a>
-    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324">ObligationCorrectionTypes</a> - zatím není na FE API implementováno
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324">ObligationCorrectionTypes</a> 
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426150084">ObligationTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=409432393">FormTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046178">PaymentDays</a>
@@ -82,6 +82,8 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417284324">StatementTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/TinFormatByCountry+%28CB_CmTrTinFormat%29+-+MOCK">TinFormatsByCountry</a>
     /// - <a href="https://wiki.kb.cz/display/HT/TinNoFillReasonsByCountry+%28CB_CmTrTinCountry%29+-+MOCK">TinNoFillReasonsByCountry</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/WorkflowProcessStateNoby">WorkflowProcessStatesNoby</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby">WorkflowTaskStatesNoby</a>
     /// - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskCategory">WorkflowTaskCategories</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440871662">WorkflowTaskStates</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440879561">WorkflowTaskTypes</a>

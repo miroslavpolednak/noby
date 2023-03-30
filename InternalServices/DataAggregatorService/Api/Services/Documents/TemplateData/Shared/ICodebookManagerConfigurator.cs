@@ -20,4 +20,5 @@ public interface ICodebookManagerConfigurator
     ICodebookManagerConfigurator EmploymentTypes();
     ICodebookManagerConfigurator ObligationTypes();
     ICodebookManagerConfigurator LegalCapacityRestrictionTypes();
+    ICodebookManagerConfigurator DocumentTypes();
 }

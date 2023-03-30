@@ -87,7 +87,7 @@ internal class PdfDocumentManager
         var textWatermark = new TextWatermark("Pouze pro informaci", Font.LoadSystemFont("Arial"), 68)
         {
             TextColor = new RgbColor(192, 192, 192),
-            Angle = 45,
+            Angle = -45,
             Position = WatermarkPosition.Center
         };
 
