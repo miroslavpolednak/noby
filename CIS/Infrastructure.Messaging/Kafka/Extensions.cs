@@ -1,6 +1,4 @@
-﻿using Avro.Specific;
-using CIS.Infrastructure.Messaging.Kafka.Internals;
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;

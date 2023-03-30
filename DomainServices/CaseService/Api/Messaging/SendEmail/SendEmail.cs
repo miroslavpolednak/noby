@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v4
+namespace cz.kb.osbs.mcs.sender.sendapi.v4.email
 {
 	using System;
 	using System.Collections.Generic;
@@ -25,147 +25,147 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4
 				"ill be sent to all recipients through the same defined channels and the same att" +
 				"ached documents.E.g. if there is need to send different attachments, then multip" +
 				"le notifications has to be created.. ## Timing when notification is sent to reci" +
-				"pient. CDM entity name(s): Notification,DeliveryTiming.\",\"namespace\":\"DomainServ" +
-				"ices.CaseService.Api.Messaging.Kafka\",\"fields\":[{\"name\":\"attachments\",\"default\":" +
-				"null,\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Attachment\"" +
-				",\"doc\":\" This element is choice - only one of the child fields can be filled.\",\"" +
-				"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"binary\",\"defaul" +
-				"t\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Binary\",\"doc\":\"Verze dokumentuDo" +
-				"cument can change over time. Document version captures document in a given time." +
-				"Verze dokumentu (SLV 24-001, kapitola 01, bod 38 [1]) je nositelem vlastniho obs" +
-				"ahu dokumentu. Kazdy dokument ma alespon jednu verzi. K jednomu dokumentu muze b" +
-				"yt N verzi dokumentu. Verze jsou vyuziti pri postupnem vyvoji obsahu jednoho dok" +
-				"umentu (smlouva ve verzi 1, smlouva ve verzi 2 atp.)Reprezentuji postupny vyvoj " +
-				"dokumentu. Dalsi verze plne nahrazuje verzi predchozi, ktera se stava timto nepl" +
-				"atnou.. ## Represents any content.. ## Represents activity of content generation" +
-				". Used to hold relationships to entities involved.. ## Version information about" +
-				" content template. CDM entity name(s): DocumentVersion,Content,ContentGeneration" +
-				",ContentTemplateVersion.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields" +
-				"\":[{\"name\":\"binary\",\"doc\":\"Content in base64 binary format. CDM attribute class " +
-				"name: ContentBinary.\",\"type\":\"bytes\"},{\"name\":\"filename\",\"doc\":\"Name of the file" +
-				" in which the content is stored. As on filesystem. Full file name, suffix is inc" +
-				"luded.E.g. consumerLoanContract2410.pdfNazev souboru s priponou windows complain" +
-				"t podobe: https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs" +
-				".85).aspx#naming_conventions. CDM attribute class name: ContentFilename.\",\"type\"" +
-				":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,255}$\"}}]}]},{\"nam" +
-				"e\":\"document\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Document\",\"" +
-				"doc\":\"Dokument z DMSX. Identifikovan je pres dokumentID. Volitelne je mozne spec" +
-				"ifikovat verzi dokumentu. Pokud verze nebude zadana, vezme se posledni.. ## Obsa" +
-				"h dokumentu/souborDMS: Rendition. ## DokumentDocument is any paper or electronic" +
-				" record or information.Dokument je kazdy pisemny, obrazovy, zvukovy, elektronick" +
-				"y nebo jiny zaznam, at jiz v podobe analogove ci digitalni, ktery vznikl z cinno" +
-				"sti puvodce.. ## Verze dokumentuDocument can change over time. Document version " +
-				"captures document in a given time.Verze dokumentu (SLV 24-001, kapitola 01, bod " +
-				"38 [1]) je nositelem vlastniho obsahu dokumentu. Kazdy dokument ma alespon jednu" +
-				" verzi. K jednomu dokumentu muze byt N verzi dokumentu. Verze jsou vyuziti pri p" +
-				"ostupnem vyvoji obsahu jednoho dokumentu (smlouva ve verzi 1, smlouva ve verzi 2" +
-				" atp.)Reprezentuji postupny vyvoj dokumentu. Dalsi verze plne nahrazuje verzi pr" +
-				"edchozi, ktera se stava timto neplatnou.. ## Unique identifier of document. Does" +
-				" not change with document version.Multi identifier - there are at least two sepa" +
-				"rate identifiers used for documents across bank. CDM entity name(s): DocumentCon" +
-				"tent,Document,DocumentVersion,DocumentId.\",\"namespace\":\"cz.kb.osbs.mcs.sender.se" +
-				"ndapi.v4\",\"fields\":[{\"name\":\"fileExtension\",\"doc\":\"File extension of document co" +
-				"ntent stored.E.g. exe, pdf, docx. CDM attribute class name: DocumentContentFileE" +
-				"xtension. Codebook type: CB_FileExtension.\",\"type\":{\"type\":\"string\",\"avro.java.s" +
-				"tring\":\"String\"}},{\"name\":\"id\",\"doc\":\"Unique identifier of document. Does not ch" +
-				"ange with document version. Multi identifier.Jednoznacny identifikator dokumentu" +
-				". DMS: ChronicleID, RootDocID. Pokud je dokument vkladany do DMS uprostred sveho" +
-				" zivotniho cyklu, je zadouci, aby konzument pri jeho ulozeni vyplnoval docId v p" +
-				"ripade, ze vyhovuje formatu = cerpa ze stejne rady IGS docId.Escudo:. CDM attrib" +
-				"ute class name: DocumentIdId.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"Strin" +
-				"g\",\"pattern\":\"^.{0,30}$\"}},{\"name\":\"version\",\"doc\":\"Version of document. Only co" +
-				"ntains identifier of version, e.g 14Called \'business\' version, as this document " +
-				"version must be increased by explicit consumer.Ciselne oznaceni verze v kompeten" +
-				"ci DMS. Viz INS 22-011. CDM attribute class name: DocumentVersionVersion.\",\"defa" +
-				"ult\":null,\"type\":[\"null\",\"int\"]}]}]},{\"name\":\"s3Content\",\"default\":null,\"type\":[" +
-				"\"null\",{\"type\":\"record\",\"name\":\"S3Content\",\"doc\":\"Relation betwwe bucket and con" +
-				"tent - describes, how contents are stored/managed on buckets. Every content mana" +
-				"ged on bucket has its unique objectKey.. ## Represents any content. CDM entity n" +
-				"ame(s): ContentInBucket,Content.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\"" +
-				",\"fields\":[{\"name\":\"filename\",\"doc\":\"Name of the file in which the content is st" +
-				"ored. As on filesystem. Full file name, suffix is included.E.g. consumerLoanCont" +
-				"ract2410.pdfNazev souboru s priponou windows complaint podobe: https://msdn.micr" +
-				"osoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx#naming_convention" +
-				"s. CDM attribute class name: ContentFilename.\",\"type\":{\"type\":\"string\",\"avro.jav" +
-				"a.string\":\"String\",\"pattern\":\"^.{0,255}$\"}},{\"name\":\"objectKey\",\"doc\":\" CDM attr" +
-				"ibute class name: ContentInBucketObjectKey.\",\"type\":{\"type\":\"string\",\"avro.java." +
-				"string\":\"String\",\"pattern\":\"^.{0,100}$\"}}]}]}]}}]},{\"name\":\"bcc\",\"default\":null," +
-				"\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"EmailAddress\",\"d" +
-				"oc\":\"Represents email address.. ## Email as a contact on party.. ## \'PartyInBank" +
-				"Role\'Party role is description of relationship of (any view on) party to KB or K" +
-				"BGroup. I.e. has information about any view on party in context of KB (or other " +
-				"KB group entity) in SPECIFIC CONTEXT/role. CDM entity name(s): EmailAddress,Emai" +
-				"lContact,PartyRole.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"" +
-				"name\":\"party\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Party\",\"doc" +
-				"\":\" This element is choice - only one of the child fields can be filled.\",\"names" +
-				"pace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"legalPerson\",\"defaul" +
-				"t\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"LegalPerson\",\"doc\":\"Juridical pe" +
-				"rson that is NOT <b>fixed</b> to <b>exactly one </b>natural person. CDM entity n" +
-				"ame(s): LegalPerson.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{" +
-				"\"name\":\"name\",\"doc\":\"Official name of juridical person. CDM attribute class name" +
-				": JuridicalPersonName.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pat" +
-				"tern\":\"^.{0,255}$\"}}]}]},{\"name\":\"naturalPerson\",\"default\":null,\"type\":[\"null\",{" +
-				"\"type\":\"record\",\"name\":\"NaturalPerson\",\"doc\":\"Flesh and blood party - human bein" +
-				"g.Fyzicka osobaE.g. Jozko Mrkvicka. CDM entity name(s): NaturalPerson.\",\"namespa" +
-				"ce\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"firstName\",\"doc\":\"Firs" +
-				"t name of the NaturalPerson. CDM attribute class name: NaturalPersonFirstName.\"," +
-				"\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,40}$\"}},{\"na" +
-				"me\":\"middleName\",\"doc\":\"Middle name of the natural person. CDM attribute class n" +
-				"ame: NaturalPersonMiddleName.\",\"default\":null,\"type\":[\"null\",{\"type\":\"string\",\"a" +
-				"vro.java.string\":\"String\",\"pattern\":\"^.{0,40}$\"}]},{\"name\":\"surname\",\"doc\":\"Surn" +
-				"ame of the NaturalPerson. CDM attribute class name: NaturalPersonSurname.\",\"type" +
-				"\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,80}$\"}}]}]}]}]},{" +
-				"\"name\":\"value\",\"doc\":\"Textual email addressE.g. jozko.mrkvicka@gmail.com. CDM at" +
-				"tribute class name: EmailAddressValue.\",\"type\":{\"type\":\"string\",\"avro.java.strin" +
-				"g\":\"String\",\"pattern\":\"^.{0,255}$\"}}]}}]},{\"name\":\"cc\",\"default\":null,\"type\":[\"n" +
-				"ull\",{\"type\":\"array\",\"items\":\"cz.kb.osbs.mcs.sender.sendapi.v4.EmailAddress\"}]}," +
-				"{\"name\":\"content\",\"type\":{\"type\":\"record\",\"name\":\"Content\",\"doc\":\"Represents any" +
-				" content. CDM entity name(s): Content.\",\"namespace\":\"cz.kb.osbs.mcs.sender.senda" +
-				"pi.v4\",\"fields\":[{\"name\":\"charset\",\"doc\":\"Charset of content. CDM attribute clas" +
-				"s name: ContentCharset. Codebook type: CB_CharacterSet.\",\"default\":null,\"type\":[" +
-				"\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"format\",\"doc\":\"F" +
-				"ormat of content stored. CDM attribute class name: ContentFormat. Codebook type:" +
-				" CB_MIMEType.\",\"default\":null,\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\"" +
-				":\"String\"}]},{\"name\":\"language\",\"doc\":\"Language of content. Codebook value. CDM " +
-				"attribute class name: ContentLanguage. Codebook type: CB_ContentLanguage.\",\"defa" +
-				"ult\":null,\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\"" +
-				":\"text\",\"doc\":\"Content in text format. CDM attribute class name: ContentText.\",\"" +
-				"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}},{\"name\":\"deliveryConfirm" +
-				"ation\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"EmailConfirmation\"" +
-				",\"doc\":\"Represents email address. CDM entity name(s): EmailAddress.\",\"namespace\"" +
-				":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"value\",\"doc\":\"Textual ema" +
-				"il addressE.g. jozko.mrkvicka@gmail.com. CDM attribute class name: EmailAddressV" +
-				"alue.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,255}$" +
-				"\"}}]}]},{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"patter" +
-				"n\":\"^.{0,100}$\"}},{\"name\":\"kBCustomer\",\"default\":null,\"type\":[\"null\",{\"type\":\"re" +
-				"cord\",\"name\":\"KBCustomer\",\"doc\":\"Customer is a party role. It is view on party f" +
-				"rom banks perspective and context that party had/has/will have or is even only r" +
-				"elated to a product or service from KB.(party has some relationship to bank in c" +
-				"ontext of Customer Management). CDM entity name(s): KBCustomer.\",\"namespace\":\"cz" +
-				".kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"id\",\"doc\":\"Unique identifier " +
-				"of the customer.KBI_ID, sometimes also refered to as KBID e.g. in CB_IdentitySch" +
-				"eme. CDM attribute class name: KBCustomerId.\",\"type\":{\"type\":\"string\",\"avro.java" +
-				".string\":\"String\",\"pattern\":\"[1-9][0-9]*\"}}]}]},{\"name\":\"latestOn\",\"doc\":\"Time, " +
-				"before which notification should be sent to recipient . CDM attribute class name" +
-				": DeliveryTimingLatestOn.\",\"default\":null,\"type\":[\"null\",{\"type\":\"long\",\"logical" +
-				"Type\":\"timestamp-millis\"}]},{\"name\":\"notificationConsumer\",\"type\":{\"type\":\"recor" +
-				"d\",\"name\":\"NotificationConsumer\",\"doc\":\"ConsumerID bude prirazeno pri registraci" +
-				" konzumenta na Sender.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":" +
-				"[{\"name\":\"consumerId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}},{" +
-				"\"name\":\"processingPriority\",\"doc\":\"Priority of notification that determines orde" +
-				"r in which notification are sent.e.g. high or standard. CDM attribute class name" +
-				": NotificationProcessingPriority.\",\"default\":null,\"type\":[\"null\",\"int\"]},{\"name\"" +
-				":\"readConfirmation\",\"default\":null,\"type\":[\"null\",\"cz.kb.osbs.mcs.sender.sendapi" +
-				".v4.EmailConfirmation\"]},{\"name\":\"replyTo\",\"default\":null,\"type\":[\"null\",\"cz.kb." +
-				"osbs.mcs.sender.sendapi.v4.EmailAddress\"]},{\"name\":\"sender\",\"type\":\"cz.kb.osbs.m" +
-				"cs.sender.sendapi.v4.EmailAddress\"},{\"name\":\"soonestOn\",\"doc\":\"Time, after which" +
-				" notification should be sent to recipient . CDM attribute class name: DeliveryTi" +
-				"mingSoonestOn.\",\"default\":null,\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"time" +
-				"stamp-millis\"}]},{\"name\":\"subject\",\"doc\":\"Name/title of notification. CDM attrib" +
-				"ute class name: NotificationSubject.\",\"type\":{\"type\":\"string\",\"avro.java.string\"" +
-				":\"String\",\"pattern\":\"^.{0,400}$\"}},{\"name\":\"to\",\"default\":null,\"type\":[\"null\",{\"" +
-				"type\":\"array\",\"items\":\"cz.kb.osbs.mcs.sender.sendapi.v4.EmailAddress\"}]}],\"javaA" +
-				"nnotation\":\"cz.kb.api.common.annotation.ConfluentSchemaRegistryCompatible\"}");
+				"pient. CDM entity name(s): Notification,DeliveryTiming.\",\"namespace\":\"cz.kb.osbs" +
+				".mcs.sender.sendapi.v4.email\",\"fields\":[{\"name\":\"attachments\",\"default\":null,\"ty" +
+				"pe\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Attachment\",\"doc\":\"" +
+				" This element is choice - only one of the child fields can be filled.\",\"namespac" +
+				"e\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"binary\",\"default\":null," +
+				"\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Binary\",\"doc\":\"Verze dokumentuDocument c" +
+				"an change over time. Document version captures document in a given time.Verze do" +
+				"kumentu (SLV 24-001, kapitola 01, bod 38 [1]) je nositelem vlastniho obsahu doku" +
+				"mentu. Kazdy dokument ma alespon jednu verzi. K jednomu dokumentu muze byt N ver" +
+				"zi dokumentu. Verze jsou vyuziti pri postupnem vyvoji obsahu jednoho dokumentu (" +
+				"smlouva ve verzi 1, smlouva ve verzi 2 atp.)Reprezentuji postupny vyvoj dokument" +
+				"u. Dalsi verze plne nahrazuje verzi predchozi, ktera se stava timto neplatnou.. " +
+				"## Represents any content.. ## Represents activity of content generation. Used t" +
+				"o hold relationships to entities involved.. ## Version information about content" +
+				" template. CDM entity name(s): DocumentVersion,Content,ContentGeneration,Content" +
+				"TemplateVersion.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"nam" +
+				"e\":\"binary\",\"doc\":\"Content in base64 binary format. CDM attribute class name: Co" +
+				"ntentBinary.\",\"type\":\"bytes\"},{\"name\":\"filename\",\"doc\":\"Name of the file in whic" +
+				"h the content is stored. As on filesystem. Full file name, suffix is included.E." +
+				"g. consumerLoanContract2410.pdfNazev souboru s priponou windows complaint podobe" +
+				": https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).asp" +
+				"x#naming_conventions. CDM attribute class name: ContentFilename.\",\"type\":{\"type\"" +
+				":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,255}$\"}}]}]},{\"name\":\"docu" +
+				"ment\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Document\",\"doc\":\"Do" +
+				"kument z DMSX. Identifikovan je pres dokumentID. Volitelne je mozne specifikovat" +
+				" verzi dokumentu. Pokud verze nebude zadana, vezme se posledni.. ## Obsah dokume" +
+				"ntu/souborDMS: Rendition. ## DokumentDocument is any paper or electronic record " +
+				"or information.Dokument je kazdy pisemny, obrazovy, zvukovy, elektronicky nebo j" +
+				"iny zaznam, at jiz v podobe analogove ci digitalni, ktery vznikl z cinnosti puvo" +
+				"dce.. ## Verze dokumentuDocument can change over time. Document version captures" +
+				" document in a given time.Verze dokumentu (SLV 24-001, kapitola 01, bod 38 [1]) " +
+				"je nositelem vlastniho obsahu dokumentu. Kazdy dokument ma alespon jednu verzi. " +
+				"K jednomu dokumentu muze byt N verzi dokumentu. Verze jsou vyuziti pri postupnem" +
+				" vyvoji obsahu jednoho dokumentu (smlouva ve verzi 1, smlouva ve verzi 2 atp.)Re" +
+				"prezentuji postupny vyvoj dokumentu. Dalsi verze plne nahrazuje verzi predchozi," +
+				" ktera se stava timto neplatnou.. ## Unique identifier of document. Does not cha" +
+				"nge with document version.Multi identifier - there are at least two separate ide" +
+				"ntifiers used for documents across bank. CDM entity name(s): DocumentContent,Doc" +
+				"ument,DocumentVersion,DocumentId.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4" +
+				"\",\"fields\":[{\"name\":\"fileExtension\",\"doc\":\"File extension of document content st" +
+				"ored.E.g. exe, pdf, docx. CDM attribute class name: DocumentContentFileExtension" +
+				". Codebook type: CB_FileExtension.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"" +
+				"String\"}},{\"name\":\"id\",\"doc\":\"Unique identifier of document. Does not change wit" +
+				"h document version. Multi identifier.Jednoznacny identifikator dokumentu. DMS: C" +
+				"hronicleID, RootDocID. Pokud je dokument vkladany do DMS uprostred sveho zivotni" +
+				"ho cyklu, je zadouci, aby konzument pri jeho ulozeni vyplnoval docId v pripade, " +
+				"ze vyhovuje formatu = cerpa ze stejne rady IGS docId.Escudo:. CDM attribute clas" +
+				"s name: DocumentIdId.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"patt" +
+				"ern\":\"^.{0,30}$\"}},{\"name\":\"version\",\"doc\":\"Version of document. Only contains i" +
+				"dentifier of version, e.g 14Called \'business\' version, as this document version " +
+				"must be increased by explicit consumer.Ciselne oznaceni verze v kompetenci DMS. " +
+				"Viz INS 22-011. CDM attribute class name: DocumentVersionVersion.\",\"default\":nul" +
+				"l,\"type\":[\"null\",\"int\"]}]}]},{\"name\":\"s3Content\",\"default\":null,\"type\":[\"null\",{" +
+				"\"type\":\"record\",\"name\":\"S3Content\",\"doc\":\"Relation betwwe bucket and content - d" +
+				"escribes, how contents are stored/managed on buckets. Every content managed on b" +
+				"ucket has its unique objectKey.. ## Represents any content. CDM entity name(s): " +
+				"ContentInBucket,Content.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields" +
+				"\":[{\"name\":\"filename\",\"doc\":\"Name of the file in which the content is stored. As" +
+				" on filesystem. Full file name, suffix is included.E.g. consumerLoanContract2410" +
+				".pdfNazev souboru s priponou windows complaint podobe: https://msdn.microsoft.co" +
+				"m/en-us/library/windows/desktop/aa365247(v=vs.85).aspx#naming_conventions. CDM a" +
+				"ttribute class name: ContentFilename.\",\"type\":{\"type\":\"string\",\"avro.java.string" +
+				"\":\"String\",\"pattern\":\"^.{0,255}$\"}},{\"name\":\"objectKey\",\"doc\":\" CDM attribute cl" +
+				"ass name: ContentInBucketObjectKey.\",\"type\":{\"type\":\"string\",\"avro.java.string\":" +
+				"\"String\",\"pattern\":\"^.{0,100}$\"}}]}]}]}}]},{\"name\":\"bcc\",\"default\":null,\"type\":[" +
+				"\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"EmailAddress\",\"doc\":\"Rep" +
+				"resents email address.. ## Email as a contact on party.. ## \'PartyInBankRole\'Par" +
+				"ty role is description of relationship of (any view on) party to KB or KBGroup. " +
+				"I.e. has information about any view on party in context of KB (or other KB group" +
+				" entity) in SPECIFIC CONTEXT/role. CDM entity name(s): EmailAddress,EmailContact" +
+				",PartyRole.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"p" +
+				"arty\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Party\",\"doc\":\" This" +
+				" element is choice - only one of the child fields can be filled.\",\"namespace\":\"c" +
+				"z.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"legalPerson\",\"default\":null," +
+				"\"type\":[\"null\",{\"type\":\"record\",\"name\":\"LegalPerson\",\"doc\":\"Juridical person tha" +
+				"t is NOT <b>fixed</b> to <b>exactly one </b>natural person. CDM entity name(s): " +
+				"LegalPerson.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"" +
+				"name\",\"doc\":\"Official name of juridical person. CDM attribute class name: Juridi" +
+				"calPersonName.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^" +
+				".{0,255}$\"}}]}]},{\"name\":\"naturalPerson\",\"default\":null,\"type\":[\"null\",{\"type\":\"" +
+				"record\",\"name\":\"NaturalPerson\",\"doc\":\"Flesh and blood party - human being.Fyzick" +
+				"a osobaE.g. Jozko Mrkvicka. CDM entity name(s): NaturalPerson.\",\"namespace\":\"cz." +
+				"kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"firstName\",\"doc\":\"First name o" +
+				"f the NaturalPerson. CDM attribute class name: NaturalPersonFirstName.\",\"type\":{" +
+				"\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,40}$\"}},{\"name\":\"mid" +
+				"dleName\",\"doc\":\"Middle name of the natural person. CDM attribute class name: Nat" +
+				"uralPersonMiddleName.\",\"default\":null,\"type\":[\"null\",{\"type\":\"string\",\"avro.java" +
+				".string\":\"String\",\"pattern\":\"^.{0,40}$\"}]},{\"name\":\"surname\",\"doc\":\"Surname of t" +
+				"he NaturalPerson. CDM attribute class name: NaturalPersonSurname.\",\"type\":{\"type" +
+				"\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,80}$\"}}]}]}]}]},{\"name\":\"" +
+				"value\",\"doc\":\"Textual email addressE.g. jozko.mrkvicka@gmail.com. CDM attribute " +
+				"class name: EmailAddressValue.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"Stri" +
+				"ng\",\"pattern\":\"^.{0,255}$\"}}]}}]},{\"name\":\"cc\",\"default\":null,\"type\":[\"null\",{\"t" +
+				"ype\":\"array\",\"items\":\"cz.kb.osbs.mcs.sender.sendapi.v4.EmailAddress\"}]},{\"name\":" +
+				"\"content\",\"type\":{\"type\":\"record\",\"name\":\"Content\",\"doc\":\"Represents any content" +
+				". CDM entity name(s): Content.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"" +
+				"fields\":[{\"name\":\"charset\",\"doc\":\"Charset of content. CDM attribute class name: " +
+				"ContentCharset. Codebook type: CB_CharacterSet.\",\"default\":null,\"type\":[\"null\",{" +
+				"\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"format\",\"doc\":\"Format of" +
+				" content stored. CDM attribute class name: ContentFormat. Codebook type: CB_MIME" +
+				"Type.\",\"default\":null,\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String" +
+				"\"}]},{\"name\":\"language\",\"doc\":\"Language of content. Codebook value. CDM attribut" +
+				"e class name: ContentLanguage. Codebook type: CB_ContentLanguage.\",\"default\":nul" +
+				"l,\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"text\"," +
+				"\"doc\":\"Content in text format. CDM attribute class name: ContentText.\",\"type\":{\"" +
+				"type\":\"string\",\"avro.java.string\":\"String\"}}]}},{\"name\":\"deliveryConfirmation\",\"" +
+				"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"EmailConfirmation\",\"doc\":\"" +
+				"Represents email address. CDM entity name(s): EmailAddress.\",\"namespace\":\"cz.kb." +
+				"osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"value\",\"doc\":\"Textual email addre" +
+				"ssE.g. jozko.mrkvicka@gmail.com. CDM attribute class name: EmailAddressValue.\",\"" +
+				"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,255}$\"}}]}]}," +
+				"{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0" +
+				",100}$\"}},{\"name\":\"kBCustomer\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"n" +
+				"ame\":\"KBCustomer\",\"doc\":\"Customer is a party role. It is view on party from bank" +
+				"s perspective and context that party had/has/will have or is even only related t" +
+				"o a product or service from KB.(party has some relationship to bank in context o" +
+				"f Customer Management). CDM entity name(s): KBCustomer.\",\"namespace\":\"cz.kb.osbs" +
+				".mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"id\",\"doc\":\"Unique identifier of the c" +
+				"ustomer.KBI_ID, sometimes also refered to as KBID e.g. in CB_IdentityScheme. CDM" +
+				" attribute class name: KBCustomerId.\",\"type\":{\"type\":\"string\",\"avro.java.string\"" +
+				":\"String\",\"pattern\":\"[1-9][0-9]*\"}}]}]},{\"name\":\"latestOn\",\"doc\":\"Time, before w" +
+				"hich notification should be sent to recipient . CDM attribute class name: Delive" +
+				"ryTimingLatestOn.\",\"default\":null,\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"t" +
+				"imestamp-millis\"}]},{\"name\":\"notificationConsumer\",\"type\":{\"type\":\"record\",\"name" +
+				"\":\"NotificationConsumer\",\"doc\":\"ConsumerID bude prirazeno pri registraci konzume" +
+				"nta na Sender.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\"" +
+				":\"consumerId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}},{\"name\":\"" +
+				"processingPriority\",\"doc\":\"Priority of notification that determines order in whi" +
+				"ch notification are sent.e.g. high or standard. CDM attribute class name: Notifi" +
+				"cationProcessingPriority.\",\"default\":null,\"type\":[\"null\",\"int\"]},{\"name\":\"readCo" +
+				"nfirmation\",\"default\":null,\"type\":[\"null\",\"cz.kb.osbs.mcs.sender.sendapi.v4.Emai" +
+				"lConfirmation\"]},{\"name\":\"replyTo\",\"default\":null,\"type\":[\"null\",\"cz.kb.osbs.mcs" +
+				".sender.sendapi.v4.EmailAddress\"]},{\"name\":\"sender\",\"type\":\"cz.kb.osbs.mcs.sende" +
+				"r.sendapi.v4.EmailAddress\"},{\"name\":\"soonestOn\",\"doc\":\"Time, after which notific" +
+				"ation should be sent to recipient . CDM attribute class name: DeliveryTimingSoon" +
+				"estOn.\",\"default\":null,\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-mi" +
+				"llis\"}]},{\"name\":\"subject\",\"doc\":\"Name/title of notification. CDM attribute clas" +
+				"s name: NotificationSubject.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String" +
+				"\",\"pattern\":\"^.{0,400}$\"}},{\"name\":\"to\",\"default\":null,\"type\":[\"null\",{\"type\":\"a" +
+				"rray\",\"items\":\"cz.kb.osbs.mcs.sender.sendapi.v4.EmailAddress\"}]}],\"javaAnnotatio" +
+				"n\":\"cz.kb.api.common.annotation.ConfluentSchemaRegistryCompatible\"}");
 		private IList<cz.kb.osbs.mcs.sender.sendapi.v4.Attachment> _attachments;
 		private IList<cz.kb.osbs.mcs.sender.sendapi.v4.EmailAddress> _bcc;
 		private IList<cz.kb.osbs.mcs.sender.sendapi.v4.EmailAddress> _cc;

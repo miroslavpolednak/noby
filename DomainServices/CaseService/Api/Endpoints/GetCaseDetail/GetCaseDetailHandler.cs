@@ -1,4 +1,5 @@
-﻿using cz.kb.osbs.mcs.sender.sendapi.v4;
+﻿using cz.kb.osbs.mcs.sender.sendapi.v4.email;
+using cz.kb.osbs.mcs.sender.sendapi.v4;
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Api.Messaging;
 using DomainServices.CaseService.Contracts;
@@ -56,9 +57,8 @@ internal class GetCaseDetailHandler
     private readonly CaseServiceDbContext _dbContext;
     private readonly ITopicProducer<IMarker1> _producer;
 
-    public GetCaseDetailHandler(CaseServiceDbContext dbContext, ITopicProducer<IMarker1> producer)
+    public GetCaseDetailHandler(CaseServiceDbContext dbContext)
     {
-        _producer = producer;
         _dbContext = dbContext;
     }
 }

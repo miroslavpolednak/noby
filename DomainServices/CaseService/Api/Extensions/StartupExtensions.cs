@@ -45,11 +45,11 @@ internal static class StartupExtensions
             })
             .AddProducers(t =>
             {
-                t.AddProducers<IMarker1, cz.kb.osbs.mcs.sender.sendapi.v4.SendEmail>("NOBY_DS-PERF_MCS_mock_result-event-priv");
+                t.AddProducers<IMarker1, cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail>("NOBY_DS-PERF_MCS_mock_sender-command-priv");
             })
             .AddConsumersToTopic((f, c) =>
             {
-                f.AddTopic<IMarker1, Messaging.SendEmail.SendEmailConsumer, cz.kb.osbs.mcs.sender.sendapi.v4.SendEmail, Messaging.NotificationReport.NotificationReportConsumer, cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport>(c, "NOBY_DS-PERF_MCS_mock_result-event-priv", "example-multiple-type-consumer");
+                f.AddTopic<IMarker1, Messaging.SendEmail.SendEmailConsumer, cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail, Messaging.NotificationReport.NotificationReportConsumer, cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport>(c, "NOBY_DS-PERF_MCS_mock_sender-command-priv", "example-multiple-type-consumer");
             })
             .Build();
 

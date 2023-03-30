@@ -8,7 +8,7 @@ namespace DomainServices.CaseService.Api.Messaging
     }
 }
 
-namespace cz.kb.osbs.mcs.sender.sendapi.v4
+namespace cz.kb.osbs.mcs.sender.sendapi.v4.email
 {
     public partial class SendEmail : IMarker1
     {
