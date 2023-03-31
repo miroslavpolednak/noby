@@ -98,3 +98,10 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_DB.zip'
     replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_DB.zip'
+    ArtifactName: 'drop'
+    publishLocation: 'FilePath'
+    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\DomainServices\$(Build.DefinitionName)\$(Build.BuildNumber)'
