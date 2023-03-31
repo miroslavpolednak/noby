@@ -90,3 +90,11 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'FilePath'
     TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\DomainServices\$(Build.DefinitionName)\$(Build.BuildNumber)'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)\DomainServices\CaseService\DatabaseMigrations'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_DB.zip'
+    replaceExistingArchive: true
