@@ -22,7 +22,7 @@ json_req_mail_mpss_basic_legal = \
     ],
     "subject": "NS_test_MIKEL_basic_legal",
     "content": {
-      "format": "UTF-8",
+      "format": "text/plain",
       "language": "cz",
       "text": "json_req_mail_mpss_basic_legal"
     },
@@ -56,7 +56,7 @@ json_req_mail_mpss_basic_natural = \
     ],
     "subject": "NS_test_MIKEL_basic_natural",
     "content": {
-      "format": "UTF-8",
+      "format": "text/plain",
       "language": "cz",
       "text": "json_req_mail_mpss_basic_natural"
     },
@@ -114,7 +114,7 @@ json_req_mail_mpss_full_attachments = \
     },
     "subject": "NS_test_MIKEL_full_attachments",
     "content": {
-      "format": "UTF-8",
+      "format": "text/plain",
       "language": "cz",
       "text": "json_req_mail_mpss_full_attachments"
     },
@@ -160,7 +160,7 @@ json_req_mail_mpss_max_attachments = \
     ],
     "subject": "NS_test_MIKEL_basic_legal",
     "content": {
-      "format": "UTF-8",
+      "format": "text/plain",
       "language": "cz",
       "text": "json_req_mail_mpss_basic_legal"
     },
@@ -231,7 +231,7 @@ json_req_mail_mpss_bad_11_attachments = \
     ],
     "subject": "NS_test_MIKEL_bad_11_attachments",
     "content": {
-      "format": "UTF-8",
+      "format": "text/plain",
       "language": "cz",
       "text": "json_req_mail_mpss_bad_11_attachments"
     },
@@ -343,7 +343,7 @@ json_req_mail_mpss_full_natural = \
     },
     "subject": "NS_test_MIKEL_full_natural",
     "content": {
-      "format": "UTF-8",
+      "format": "text/plain",
       "language": "cz",
       "text": "json_req_mail_mpss_full_natural"
     },
@@ -397,7 +397,7 @@ json_req_mail_mpss_bad_natural_legal = \
     },
     "subject": "NS_test_MIKEL_bad_natural_legal",
     "content": {
-      "format": "UTF-8",
+      "format": "text/plain",
       "language": "cz",
       "text": "json_req_mail_mpss_bad_natural_legal"
     },
