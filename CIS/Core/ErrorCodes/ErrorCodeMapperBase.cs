@@ -56,6 +56,11 @@ public abstract class ErrorCodeMapperBase
         return new CisValidationException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
+    public static CisConfigurationException CreateConfigurationException(int exceptionCode, object? parameter = null)
+    {
+        return new CisConfigurationException(exceptionCode, GetMessage(exceptionCode, parameter));
+    }
+
     /// <summary>
     /// Inicializuje kolekci chybových hlášek Messages. Tato kolekce je private, lze ji tedy z child třídy nastavit jen touto metodou.
     /// </summary>
