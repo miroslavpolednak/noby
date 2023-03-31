@@ -57,8 +57,9 @@ internal class GetCaseDetailHandler
     private readonly CaseServiceDbContext _dbContext;
     private readonly ITopicProducer<IMarker1> _producer;
 
-    public GetCaseDetailHandler(CaseServiceDbContext dbContext)
+    public GetCaseDetailHandler(CaseServiceDbContext dbContext, ITopicProducer<IMarker1> producer)
     {
+        _producer = producer;
         _dbContext = dbContext;
     }
 }
