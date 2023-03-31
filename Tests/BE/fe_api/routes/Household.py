@@ -14,6 +14,9 @@ class Household(Base):
     def create_household(self, request: dict) -> dict:
         return self.post('', request)
 
+    def delete_household(self, household_id: int) -> dict:
+        return self.delete(str(household_id))
+
     def set_household_parameters(self, household_id: int, request: dict) -> dict:
         return self.put(str(household_id), request)
 

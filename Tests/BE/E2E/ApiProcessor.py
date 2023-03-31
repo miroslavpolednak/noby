@@ -14,6 +14,7 @@ from .ApiWriterOffer import ApiWriterOffer
 from .ApiWriterCase import ApiWriterCase
 
 from .workflow.WorkflowStep import WorkflowStep
+from .workflow.EWorkflowEntity import EWorkflowEntity
 
 class ApiProcessor():
 
@@ -27,6 +28,9 @@ class ApiProcessor():
             self.__offer_case_json = data_json
         else:
             raise 'ApiProcessor.init - Invalid data json !'
+
+        self.__api_writer_offer: ApiWriterOffer = None
+        self.__api_writer_case: ApiWriterCase = None
 
 
     @staticmethod
@@ -53,13 +57,11 @@ class ApiProcessor():
 
     def __process(self) -> dict:
 
-        self.__process_workflow()
+        #self.__process_workflow()
 
-        
         offer_json: dict = Processing.get_key(self.__offer_case_json, 'offer')
         case_json: dict = Processing.get_key(self.__offer_case_json, 'case')
         
-
         # -------------------------------------------------
         # resolve modifications
         # -------------------------------------------------
@@ -72,7 +74,8 @@ class ApiProcessor():
 
         if (offer_json is not None):
             offer = Offer.from_json(offer_json)
-            build_result = ApiWriterOffer(offer).build()
+            self.__api_writer_offer = ApiWriterOffer(offer)
+            build_result = self.__api_writer_offer.build()
 
             if isinstance(build_result, Exception):
                 raise build_result
@@ -81,15 +84,15 @@ class ApiProcessor():
 
         if (case_json is not None):
             case = Case.from_json(case_json)
-
-            build_result = ApiWriterCase(case, offer_id).build()
+            self.__api_writer_case = ApiWriterCase(case, offer_id)
+            build_result = self.__api_writer_case.build()
 
             if isinstance(build_result, Exception):
                 raise build_result
             
             case_id = build_result
 
-        #self.__process_workflow()
+        self.__process_workflow()
 
         return dict(
             offer_id = offer_id,
@@ -106,21 +109,18 @@ class ApiProcessor():
 
         assert isinstance(workflow_json, list)
 
-        steps: List[WorkflowStep] = list(map(lambda i: WorkflowStep(i), workflow_json))
+        workflow_steps: List[WorkflowStep] = list(map(lambda i: WorkflowStep(i), workflow_json))
 
-        # print(f'Workflow steps [{len(steps)}]:')
-        for s in steps:
-            # print(s)
-            self.__process_workflow_step(s)
+        for step in workflow_steps:
+            # log workflow
+            log_message_details: str = f'path: {step.path}'
+            if step.data is not None:
+                log_message_details += f' , data: {step.data}'  
+            log_message: str = f'WORKFLOW - {step.entity.name}.{step.type.name} [{log_message_details}]'
+            self.__log.info(log_message)
 
-    def __process_workflow_step(self, workflow_step: WorkflowStep):
-
-            
-        print('process_workflow_step', workflow_step)
-
-
-        
-            
+            # exec workflow
+            self.__api_writer_case.process_workflow_step(step)
 
     # def read_case(case_id) -> Case | Exception:
 

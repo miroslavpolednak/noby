@@ -277,6 +277,60 @@
     },
     "workflow": [
         {
+            "path": "case.households",
+            "type": "add",
+            "data": {
+                "householdTypeId": "HouseholdType(type=Codebtor)"
+            }
+
+        },
+        {
+            "path": "case.households",
+            "type": "add",
+            "data": {
+                "householdTypeId": "HouseholdType(type=Codebtor)"
+            }
+        },
+        {
+            "path": "case.households[3]",
+            "type": "remove"
+        },
+        {
+            "path": "case.households",
+            "type": "add",
+            "data": {
+                "householdTypeId": "HouseholdType(type=Codebtor)"
+            }
+        },
+        {
+            "path": "case.households",
+            "type": "add",
+            "data": {
+                "householdTypeId": "HouseholdType(type=Codebtor)"
+            }
+        },
+        {
+            "path": "case.households",
+            "type": "add",
+            "data": {
+                "householdTypeId": "HouseholdType(type=Codebtor)"
+            }
+        },
+        {
+            "path": "case.households",
+            "type": "add",
+            "data": {
+                "householdTypeId": "HouseholdType(type=Codebtor)"
+            }
+        },
+        {
+            "path": "case.households",
+            "type": "add",
+            "data": {
+                "householdTypeId": "HouseholdType(type=Codebtor)"
+            }
+        },
+        {
             "path": "case.households[0].customer1.incomes[0]",
             "type": "remove"
         },

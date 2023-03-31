@@ -3,6 +3,7 @@ from typing import List
 from common import EnumExtensions
 from .EWorkflowType import EWorkflowType
 from .EWorkflowEntity import EWorkflowEntity
+from DATA import JsonDataModificator
 
 class WorkflowStep():
 
@@ -34,7 +35,8 @@ class WorkflowStep():
         self.__path = path
         self.__entity = workflow_entity
         self.__type = workflow_type
-        self.__data = data
+        #self.__data = data
+        self.__data = None if data is None else JsonDataModificator.modify(data) 
         
 
     def __recognize_entity(self, path: str) -> EWorkflowEntity | None:
@@ -65,7 +67,7 @@ class WorkflowStep():
         return self.__data
 
     def __str__ (self):
-        return f'WorkflowStep [path: {self.__path} | entity: {self.__entity} | type: {self.__type} | data: {self.__data}]'
+        return f'WorkflowStep [path: {self.__path} | entity: {self.__entity.name} | type: {self.__type.name} | data: {self.__data}]'
 
         
         
