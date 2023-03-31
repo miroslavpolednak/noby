@@ -19,6 +19,7 @@ internal static class StartupExtensions
             .GetSection("AppConfiguration")
             .Get<Configuration.AppConfiguration>()
             ?? throw new CisConfigurationNotFound("AppConfiguration");
+        appConfiguration.Validate();
 
         // EAS svc
         builder.AddExternalService<Ext1.Eas.V1.IEasClient>();
@@ -40,16 +41,13 @@ internal static class StartupExtensions
             .AddKafka()
             .AddConsumers(t =>
             {
-                t.AddConsumer<Messaging.SendEmail.SendEmailConsumer>();
-                t.AddConsumer<Messaging.NotificationReport.NotificationReportConsumer>();
-            })
-            .AddProducers(t =>
-            {
-                t.AddProducers<IMarker1, cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail>("NOBY_DS-PERF_MCS_mock_sender-command-priv");
+                t.AddConsumer<Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer>();
+                t.AddConsumer<Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer>();
             })
             .AddConsumersToTopic((f, c) =>
             {
-                f.AddTopic<IMarker1, Messaging.SendEmail.SendEmailConsumer, cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail, Messaging.NotificationReport.NotificationReportConsumer, cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport>(c, "NOBY_DS-PERF_MCS_mock_sender-command-priv", "example-multiple-type-consumer-2");
+                f.AddTopic<IMarker1, Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer, cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.MainLoanProcessChanged>(c, appConfiguration.MainLoanProcessChangedTopic!);
+                f.AddTopic<IMarker2, Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer, cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.CaseStateChanged_ProcessingCompleted>(c, appConfiguration.CaseStateChangedProcessingCompletedTopic!);
             })
             .Build();
 

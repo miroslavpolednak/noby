@@ -10,51 +10,51 @@ namespace CIS.Infrastructure.Messaging.Kafka;
 
 public static class ProducerExtensions
 {
-    public static IRiderRegistrationConfigurator AddProducers<TMarker, TAvro>(
+    public static IRiderRegistrationConfigurator AddProducers<TTopicMarker, TAvro>(
         this IRiderRegistrationConfigurator rider,
         string topic)
-        where TMarker : class, ISpecificRecord
-        where TAvro : class, ISpecificRecord, TMarker
-        => addProducers<TMarker, TAvro, TAvro, TAvro, TAvro>(rider, 1, topic);
+        where TTopicMarker : class, ISpecificRecord
+        where TAvro : class, ISpecificRecord, TTopicMarker
+        => addProducers<TTopicMarker, TAvro, TAvro, TAvro, TAvro>(rider, 1, topic);
 
-    public static IRiderRegistrationConfigurator AddProducers<TMarker, TAvro1, TAvro2>(
+    public static IRiderRegistrationConfigurator AddProducers<TTopicMarker, TAvro1, TAvro2>(
         this IRiderRegistrationConfigurator rider,
         string topic)
-        where TMarker : class, ISpecificRecord
-        where TAvro1 : class, ISpecificRecord, TMarker
-        where TAvro2 : class, ISpecificRecord, TMarker
-        => addProducers<TMarker, TAvro1, TAvro2, TAvro1, TAvro1>(rider, 2, topic);
+        where TTopicMarker : class, ISpecificRecord
+        where TAvro1 : class, ISpecificRecord, TTopicMarker
+        where TAvro2 : class, ISpecificRecord, TTopicMarker
+        => addProducers<TTopicMarker, TAvro1, TAvro2, TAvro1, TAvro1>(rider, 2, topic);
 
-    public static IRiderRegistrationConfigurator AddProducers<TMarker, TAvro1, TAvro2, TAvro3>(
+    public static IRiderRegistrationConfigurator AddProducers<TTopicMarker, TAvro1, TAvro2, TAvro3>(
         this IRiderRegistrationConfigurator rider,
         string topic)
-        where TMarker : class, ISpecificRecord
-        where TAvro1 : class, ISpecificRecord, TMarker
-        where TAvro2 : class, ISpecificRecord, TMarker
-        where TAvro3 : class, ISpecificRecord, TMarker
-        => addProducers<TMarker, TAvro1, TAvro2, TAvro3, TAvro1>(rider, 3, topic);
+        where TTopicMarker : class, ISpecificRecord
+        where TAvro1 : class, ISpecificRecord, TTopicMarker
+        where TAvro2 : class, ISpecificRecord, TTopicMarker
+        where TAvro3 : class, ISpecificRecord, TTopicMarker
+        => addProducers<TTopicMarker, TAvro1, TAvro2, TAvro3, TAvro1>(rider, 3, topic);
 
-    public static IRiderRegistrationConfigurator AddProducers<TMarker, TAvro1, TAvro2, TAvro3, TAvro4>(
+    public static IRiderRegistrationConfigurator AddProducers<TTopicMarker, TAvro1, TAvro2, TAvro3, TAvro4>(
         this IRiderRegistrationConfigurator rider,
         string topic)
-        where TMarker : class, ISpecificRecord
-        where TAvro1 : class, ISpecificRecord, TMarker
-        where TAvro2 : class, ISpecificRecord, TMarker
-        where TAvro3 : class, ISpecificRecord, TMarker
-        where TAvro4 : class, ISpecificRecord, TMarker
-        => addProducers<TMarker, TAvro1, TAvro2, TAvro3, TAvro4>(rider, 4, topic);
+        where TTopicMarker : class, ISpecificRecord
+        where TAvro1 : class, ISpecificRecord, TTopicMarker
+        where TAvro2 : class, ISpecificRecord, TTopicMarker
+        where TAvro3 : class, ISpecificRecord, TTopicMarker
+        where TAvro4 : class, ISpecificRecord, TTopicMarker
+        => addProducers<TTopicMarker, TAvro1, TAvro2, TAvro3, TAvro4>(rider, 4, topic);
 
-    private static IRiderRegistrationConfigurator addProducers<TMarker, TAvro1, TAvro2, TAvro3, TAvro4>(
+    private static IRiderRegistrationConfigurator addProducers<TTopicMarker, TAvro1, TAvro2, TAvro3, TAvro4>(
         IRiderRegistrationConfigurator rider, 
         int producersCount, 
         string topic)
-        where TMarker : class, ISpecificRecord
-        where TAvro1 : class, ISpecificRecord, TMarker
-        where TAvro2 : class, ISpecificRecord, TMarker
-        where TAvro3 : class, ISpecificRecord, TMarker
-        where TAvro4 : class, ISpecificRecord, TMarker
+        where TTopicMarker : class, ISpecificRecord
+        where TAvro1 : class, ISpecificRecord, TTopicMarker
+        where TAvro2 : class, ISpecificRecord, TTopicMarker
+        where TAvro3 : class, ISpecificRecord, TTopicMarker
+        where TAvro4 : class, ISpecificRecord, TTopicMarker
     {
-        var multipleTypeConfigBuilder = new MultipleTypeConfigBuilder<TMarker>();
+        var multipleTypeConfigBuilder = new MultipleTypeConfigBuilder<TTopicMarker>();
 
         for (int i = 1; i <= producersCount; i++)
         {
@@ -71,7 +71,7 @@ public static class ProducerExtensions
 
         var multipleTypeConfig = multipleTypeConfigBuilder.Build();
 
-        rider.AddProducer<TMarker>(topic, (riderContext, conf) =>
+        rider.AddProducer<TTopicMarker>(topic, (riderContext, conf) =>
         {
             var schemaRegistryClient = riderContext.GetRequiredService<ISchemaRegistryClient>();
             var originalSerializerConfig = riderContext
@@ -83,14 +83,14 @@ public static class ProducerExtensions
                 AutoRegisterSchemas = originalSerializerConfig.AutoRegisterSchemas
             };
 
-            var valueSerializer = new MultipleTypeSerializer<TMarker>(multipleTypeConfig, schemaRegistryClient, serializerConfig);
+            var valueSerializer = new MultipleTypeSerializer<TTopicMarker>(multipleTypeConfig, schemaRegistryClient, serializerConfig);
             conf.SetValueSerializer(valueSerializer.AsSyncOverAsync());
         });
 
         return rider;
 
         bool addToBuilder<T>()
-            where T : class, ISpecificRecord, TMarker
+            where T : class, ISpecificRecord, TTopicMarker
         {
             var avroInstance = Activator.CreateInstance<T>();
             multipleTypeConfigBuilder.AddType<T>(avroInstance.Schema);

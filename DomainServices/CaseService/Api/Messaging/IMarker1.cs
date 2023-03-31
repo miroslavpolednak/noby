@@ -8,16 +8,9 @@ namespace DomainServices.CaseService.Api.Messaging
     }
 }
 
-namespace cz.kb.osbs.mcs.sender.sendapi.v4.email
+namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1
 {
-    public partial class SendEmail : IMarker1
-    {
-    }
-}
-
-namespace cz.kb.osbs.mcs.notificationreport.eventapi.v3.report
-{
-    public partial class NotificationReport : IMarker1
+    public partial class MainLoanProcessChanged : IMarker1
     {
     }
 }

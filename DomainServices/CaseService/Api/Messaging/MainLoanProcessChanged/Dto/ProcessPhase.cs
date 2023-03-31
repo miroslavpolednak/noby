@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v4
+namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged
 {
 	using System;
 	using System.Collections.Generic;
@@ -14,39 +14,49 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4
 	using global::Avro.Specific;
 	
 	/// <summary>
-	/// ConsumerID bude prirazeno pri registraci konzumenta na Sender.
+	/// 
 	/// </summary>
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
-	public partial class NotificationConsumer : global::Avro.Specific.ISpecificRecord
+	public partial class ProcessPhase : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"NotificationConsumer\",\"doc\":\"ConsumerID bude prirazeno p" +
-				"ri registraci konzumenta na Sender.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi." +
-				"v4\",\"fields\":[{\"name\":\"consumerId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"S" +
-				"tring\"}}]}");
-		private string _consumerId;
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""ProcessPhase"",""doc"":"""",""namespace"":""cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged"",""fields"":[{""name"":""code"",""type"":""int""},{""name"":""name"",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,255}$""}}]}");
+		private int _code;
+		private string _name;
 		public virtual global::Avro.Schema Schema
 		{
 			get
 			{
-				return NotificationConsumer._SCHEMA;
+				return ProcessPhase._SCHEMA;
 			}
 		}
-		public string consumerId
+		public int code
 		{
 			get
 			{
-				return this._consumerId;
+				return this._code;
 			}
 			set
 			{
-				this._consumerId = value;
+				this._code = value;
+			}
+		}
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				this._name = value;
 			}
 		}
 		public virtual object Get(int fieldPos)
 		{
 			switch (fieldPos)
 			{
-			case 0: return this.consumerId;
+			case 0: return this.code;
+			case 1: return this.name;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Get()");
 			};
 		}
@@ -54,7 +64,8 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4
 		{
 			switch (fieldPos)
 			{
-			case 0: this.consumerId = (System.String)fieldValue; break;
+			case 0: this.code = (System.Int32)fieldValue; break;
+			case 1: this.name = (System.String)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

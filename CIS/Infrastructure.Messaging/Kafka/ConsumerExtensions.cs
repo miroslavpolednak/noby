@@ -10,75 +10,75 @@ namespace CIS.Infrastructure.Messaging.Kafka;
 
 public static class ConsumerExtensions
 {
-    public static IKafkaFactoryConfigurator AddTopic<TMarker, TConsumer, TAvro>(
+    public static IKafkaFactoryConfigurator AddTopic<TTopicMarker, TConsumer, TAvro>(
         this IKafkaFactoryConfigurator factoryConfigurator,
         IRiderRegistrationContext context,
         string topic,
-        string groupId)
-        where TMarker : class, ISpecificRecord
+        string? groupId = null)
+        where TTopicMarker : class, ISpecificRecord
         where TConsumer : class, IConsumer
-        where TAvro : class, ISpecificRecord, TMarker
-        => addTopic<TMarker, TConsumer, TAvro, TConsumer, TAvro, TConsumer, TAvro, TConsumer, TAvro>(factoryConfigurator, context, 1, topic, groupId);
+        where TAvro : class, ISpecificRecord, TTopicMarker
+        => addTopic<TTopicMarker, TConsumer, TAvro, TConsumer, TAvro, TConsumer, TAvro, TConsumer, TAvro>(factoryConfigurator, context, 1, topic, groupId);
 
-    public static IKafkaFactoryConfigurator AddTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2>(
+    public static IKafkaFactoryConfigurator AddTopic<TTopicMarker, TConsumer1, TAvro1, TConsumer2, TAvro2>(
         this IKafkaFactoryConfigurator factoryConfigurator,
         IRiderRegistrationContext context,
         string topic,
-        string groupId)
-        where TMarker : class, ISpecificRecord
+        string? groupId = null)
+        where TTopicMarker : class, ISpecificRecord
         where TConsumer1 : class, IConsumer
-        where TAvro1 : class, ISpecificRecord, TMarker
+        where TAvro1 : class, ISpecificRecord, TTopicMarker
         where TConsumer2 : class, IConsumer
-        where TAvro2 : class, ISpecificRecord, TMarker
-        => addTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer1, TAvro1, TConsumer1, TAvro1>(factoryConfigurator, context, 2, topic, groupId);
+        where TAvro2 : class, ISpecificRecord, TTopicMarker
+        => addTopic<TTopicMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer1, TAvro1, TConsumer1, TAvro1>(factoryConfigurator, context, 2, topic, groupId);
 
-    public static IKafkaFactoryConfigurator AddTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3>(
+    public static IKafkaFactoryConfigurator AddTopic<TTopicMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3>(
         this IKafkaFactoryConfigurator factoryConfigurator,
         IRiderRegistrationContext context,
         string topic,
-        string groupId)
-        where TMarker : class, ISpecificRecord
+        string? groupId = null)
+        where TTopicMarker : class, ISpecificRecord
         where TConsumer1 : class, IConsumer
-        where TAvro1 : class, ISpecificRecord, TMarker
+        where TAvro1 : class, ISpecificRecord, TTopicMarker
         where TConsumer2 : class, IConsumer
-        where TAvro2 : class, ISpecificRecord, TMarker
+        where TAvro2 : class, ISpecificRecord, TTopicMarker
         where TConsumer3 : class, IConsumer
-        where TAvro3 : class, ISpecificRecord, TMarker
-        => addTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3, TConsumer1, TAvro1>(factoryConfigurator, context, 3, topic, groupId);
+        where TAvro3 : class, ISpecificRecord, TTopicMarker
+        => addTopic<TTopicMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3, TConsumer1, TAvro1>(factoryConfigurator, context, 3, topic, groupId);
 
-    public static IKafkaFactoryConfigurator AddTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3, TConsumer4, TAvro4>(
+    public static IKafkaFactoryConfigurator AddTopic<TTopicMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3, TConsumer4, TAvro4>(
         this IKafkaFactoryConfigurator factoryConfigurator,
         IRiderRegistrationContext context,
         string topic,
-        string groupId)
-        where TMarker : class, ISpecificRecord
+        string? groupId = null)
+        where TTopicMarker : class, ISpecificRecord
         where TConsumer1 : class, IConsumer
-        where TAvro1 : class, ISpecificRecord, TMarker
+        where TAvro1 : class, ISpecificRecord, TTopicMarker
         where TConsumer2 : class, IConsumer
-        where TAvro2 : class, ISpecificRecord, TMarker
+        where TAvro2 : class, ISpecificRecord, TTopicMarker
         where TConsumer3 : class, IConsumer
-        where TAvro3 : class, ISpecificRecord, TMarker
+        where TAvro3 : class, ISpecificRecord, TTopicMarker
         where TConsumer4 : class, IConsumer
-        where TAvro4 : class, ISpecificRecord, TMarker
-        => addTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3, TConsumer4, TAvro4>(factoryConfigurator, context, 4, topic, groupId);
+        where TAvro4 : class, ISpecificRecord, TTopicMarker
+        => addTopic<TTopicMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3, TConsumer4, TAvro4>(factoryConfigurator, context, 4, topic, groupId);
 
-    private static IKafkaFactoryConfigurator addTopic<TMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3, TConsumer4, TAvro4>(
+    private static IKafkaFactoryConfigurator addTopic<TTopicMarker, TConsumer1, TAvro1, TConsumer2, TAvro2, TConsumer3, TAvro3, TConsumer4, TAvro4>(
         IKafkaFactoryConfigurator factoryConfigurator,
         IRiderRegistrationContext context,
         int consumersCount,
         string topic,
-        string groupId)
-        where TMarker : class, ISpecificRecord
+        string? groupId)
+        where TTopicMarker : class, ISpecificRecord
         where TConsumer1 : class, IConsumer
-        where TAvro1 : class, ISpecificRecord, TMarker
+        where TAvro1 : class, ISpecificRecord, TTopicMarker
         where TConsumer2 : class, IConsumer
-        where TAvro2 : class, ISpecificRecord, TMarker
+        where TAvro2 : class, ISpecificRecord, TTopicMarker
         where TConsumer3 : class, IConsumer
-        where TAvro3 : class, ISpecificRecord, TMarker
+        where TAvro3 : class, ISpecificRecord, TTopicMarker
         where TConsumer4 : class, IConsumer
-        where TAvro4 : class, ISpecificRecord, TMarker
+        where TAvro4 : class, ISpecificRecord, TTopicMarker
     {
-        var multipleTypeConfigBuilder = new MultipleTypeConfigBuilder<TMarker>();
+        var multipleTypeConfigBuilder = new MultipleTypeConfigBuilder<TTopicMarker>();
 
         for (int i = 1; i <= consumersCount; i++)
         {
@@ -95,10 +95,13 @@ public static class ConsumerExtensions
 
         var multipleTypeConfig = multipleTypeConfigBuilder.Build();
 
-        factoryConfigurator.TopicEndpoint<TMarker>(topic, groupId, conf =>
+        // get groupId
+        var environmentConfiguration = context.GetRequiredService<CIS.Core.Configuration.ICisEnvironmentConfiguration>();
+        
+        factoryConfigurator.TopicEndpoint<TTopicMarker>(topic, groupId ?? environmentConfiguration.EnvironmentName, conf =>
         {
             var schemaRegistryClient = context.GetRequiredService<ISchemaRegistryClient>();
-            var valueDeserializer = new MultipleTypeDeserializer<TMarker>(multipleTypeConfig, schemaRegistryClient);
+            var valueDeserializer = new MultipleTypeDeserializer<TTopicMarker>(multipleTypeConfig, schemaRegistryClient);
 
             conf.SetValueDeserializer(valueDeserializer.AsSyncOverAsync());
             conf.SetHeadersDeserializer(new HeaderDeserializer());
@@ -127,7 +130,7 @@ public static class ConsumerExtensions
         return factoryConfigurator;
 
         bool addToBuilder<T>()
-            where T : class, ISpecificRecord, TMarker
+            where T : class, ISpecificRecord, TTopicMarker
         {
             var avroInstance = Activator.CreateInstance<T>();
             multipleTypeConfigBuilder.AddType<T>(avroInstance.Schema);
