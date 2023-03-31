@@ -5,7 +5,6 @@ using DomainServices.CaseService.ExternalServices;
 using Ext1 = ExternalServices;
 using Ext2 = DomainServices.CaseService.ExternalServices;
 using CIS.Infrastructure.Messaging;
-using CIS.Infrastructure.Messaging.Kafka;
 using DomainServices.CaseService.Api.Messaging;
 
 namespace DomainServices.CaseService.Api;
@@ -39,16 +38,14 @@ internal static class StartupExtensions
         // kafka messaging
         builder.AddCisMessaging()
             .AddKafka()
-            .AddConsumers(t =>
-            {
-                t.AddConsumer<Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer>();
-                t.AddConsumer<Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer>();
-            })
-            .AddConsumersToTopic((f, c) =>
-            {
-                f.AddTopic<IMarker1, Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer, cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.MainLoanProcessChanged>(c, appConfiguration.MainLoanProcessChangedTopic!);
-                f.AddTopic<IMarker2, Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer, cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.CaseStateChanged_ProcessingCompleted>(c, appConfiguration.CaseStateChangedProcessingCompletedTopic!);
-            })
+            //.AddConsumer<Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer>()
+            //.AddConsumer<Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer>()
+            //.AddConsumerTopic<IMarker1>(appConfiguration.MainLoanProcessChangedTopic!)
+            //.AddConsumerTopic<IMarker2>(appConfiguration.CaseStateChangedProcessingCompletedTopic!)
+            .AddProducers<IMarkerTest>("NOBY_DS-PERF_MCS_mock_sender-command-priv")
+            .AddConsumer<Messaging.SendEmail.SendEmailConsumer>()
+            .AddConsumer<Messaging.SendEmail.NotificationReportConsumer>()
+            .AddConsumerTopic<IMarkerTest>("NOBY_DS-PERF_MCS_mock_sender-command-priv")
             .Build();
 
         return builder;

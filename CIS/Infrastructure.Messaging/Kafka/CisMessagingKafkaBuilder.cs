@@ -1,31 +1,72 @@
-﻿using MassTransit;
+﻿using Avro.Specific;
+using MassTransit;
+using static MassTransit.Monitoring.Performance.BuiltInCounters;
+using System.Text.RegularExpressions;
 
 namespace CIS.Infrastructure.Messaging.Kafka;
 
 internal sealed class CisMessagingKafkaBuilder
     : ICisMessagingKafkaBuilder
 {
-    public ICisMessagingKafkaBuilder AddConsumers(Action<IRiderRegistrationConfigurator> action)
+    public ICisMessagingKafkaBuilder AddConsumerTopic<TTopicMarker>(string topic, string? groupId = null)
+        where TTopicMarker : class, ISpecificRecord
     {
-        _riderConsumerActions.Add(action);
+        var consumers = getTypes<TTopicMarker>();
+        if (consumers.Count() == 0)
+        {
+            throw new ArgumentException("TTopicMarker", $"No consumer contracts implementing {typeof(TTopicMarker)} found");
+        }
+
+        _kafkaConfigurationActions.Add((configurator, context) =>
+        {
+            configurator.AddTopic<TTopicMarker>(context, consumers, _consumerImplementations, topic, groupId);
+        });
         return this;
     }
 
-    public ICisMessagingKafkaBuilder AddProducers(Action<IRiderRegistrationConfigurator> action)
+    public ICisMessagingKafkaBuilder AddConsumer<TConsumer>()
+        where TConsumer : class, IConsumer
     {
-        _riderProducerActions.Add(action);
+        _riderConfigurationActions.Add(configurator =>
+        {
+            configurator.AddConsumer<TConsumer>();
+        });
+        _consumerImplementations.Add(typeof(TConsumer));
         return this;
     }
 
-    public ICisMessagingKafkaBuilder AddConsumersToTopic(Action<IKafkaFactoryConfigurator, IRiderRegistrationContext> action)
+    public ICisMessagingKafkaBuilder AddProducers<TTopicMarker>(string topic)
+        where TTopicMarker : class, ISpecificRecord
     {
-        _configurationActions.Add(action);
+        var producers = getTypes<TTopicMarker>();
+        if (producers.Count() == 0)
+        {
+            throw new ArgumentException("TTopicMarker", $"No producer contracts implementing {typeof(TTopicMarker)} found");
+        }
+
+        _riderConfigurationActions.Add(configurator =>
+        {
+            configurator.AddProducers<TTopicMarker>(producers, topic);
+        });
+
+        return this;
+    }
+
+    public ICisMessagingKafkaBuilder AddRiderConfiguration(Action<IRiderRegistrationConfigurator> configuration)
+    {
+        _riderConfigurationActions.Add(configuration);
+        return this;
+    }
+
+    public ICisMessagingKafkaBuilder AddRiderKafkaConfiguration(Action<IKafkaFactoryConfigurator, IRiderRegistrationContext> configuration)
+    {
+        _kafkaConfigurationActions.Add(configuration);
         return this;
     }
 
     public ICisMessagingBuilder Build()
     {
-        if (_riderConsumerActions.Count == 0 && _riderProducerActions.Count == 0)
+        if (_riderConfigurationActions.Count == 0)
         {
             throw new Core.Exceptions.CisConfigurationException(0, "Kafka Consumers and Producers collection is empty");
         }
@@ -39,12 +80,7 @@ internal sealed class CisMessagingKafkaBuilder
 
             configurator.AddRider(rider =>
             {
-                foreach (var action in _riderConsumerActions)
-                {
-                    action(rider);
-                }
-
-                foreach (var action in _riderProducerActions)
+                foreach (var action in _riderConfigurationActions)
                 {
                     action(rider);
                 }
@@ -55,7 +91,7 @@ internal sealed class CisMessagingKafkaBuilder
 
                     k.UseSendFilter(typeof(Filters.KbHeadersSendFilter<>), context);
 
-                    foreach (var action in _configurationActions)
+                    foreach (var action in _kafkaConfigurationActions)
                     {
                         action(k, context);
                     }
@@ -66,12 +102,20 @@ internal sealed class CisMessagingKafkaBuilder
         return _builder;
     }
 
+    private static IEnumerable<Type> getTypes<T>()
+    {
+        return System.Reflection.Assembly.GetEntryAssembly()!
+            .GetTypes()
+            .Where(type => typeof(T).IsAssignableFrom(type) && !type.IsInterface)
+            .ToList();
+    }
+
     private readonly Configuration.IKafkaRiderConfiguration _configuration;
     private readonly CisMessagingBuilder _builder;
 
-    private List<Action<IRiderRegistrationConfigurator>> _riderConsumerActions = new();
-    private List<Action<IRiderRegistrationConfigurator>> _riderProducerActions = new();
-    private List<Action<IKafkaFactoryConfigurator, IRiderRegistrationContext>> _configurationActions = new();
+    private List<Type> _consumerImplementations = new();
+    private List<Action<IRiderRegistrationConfigurator>> _riderConfigurationActions = new();
+    private List<Action<IKafkaFactoryConfigurator, IRiderRegistrationContext>> _kafkaConfigurationActions = new();
 
     public CisMessagingKafkaBuilder(CisMessagingBuilder builder, Configuration.IKafkaRiderConfiguration configuration)
     {

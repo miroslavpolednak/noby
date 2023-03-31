@@ -1,14 +1,13 @@
-﻿using Avro.Specific;
-using Confluent.SchemaRegistry;
+﻿using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
 using CIS.Infrastructure.Messaging.Kafka.Internals.Abstraction;
 using Schema = Avro.Schema;
 
 namespace CIS.Infrastructure.Messaging.Kafka.Internals;
 
-public abstract class MultipleTypeInfo
+public sealed class MultipleTypeInfo
 {
-    protected MultipleTypeInfo(Type messageType, Schema schema)
+    public MultipleTypeInfo(Type messageType, Schema schema)
     {
         MessageType = messageType ?? throw new ArgumentNullException(nameof(messageType));
         Schema = schema ?? throw new ArgumentNullException(nameof(schema));
@@ -18,24 +17,22 @@ public abstract class MultipleTypeInfo
     
     public Schema Schema { get; }
 
-    public abstract IReaderWrapper CreateReader(Schema writerSchema);
-
-    public abstract ISerializerWrapper CreateSerializer(ISchemaRegistryClient schemaRegistryClient,
-        AvroSerializerConfig serializerConfig);
-}
-
-public sealed class MultipleTypeInfo<T> : MultipleTypeInfo
-    where T : ISpecificRecord
-{
-    public MultipleTypeInfo(Type messageType, Schema schema) : base(messageType, schema)
+    public IReaderWrapper CreateReader(Type messageType, Schema writerSchema)
     {
+        Type t = typeof(ReaderWrapper<>);
+        var constructed = t.MakeGenericType(messageType);
+        return (IReaderWrapper)Activator.CreateInstance(constructed, writerSchema, Schema)!;
     }
 
-    public override IReaderWrapper CreateReader(Schema writerSchema) => new ReaderWrapper<T>(writerSchema, Schema);
-
-    public override ISerializerWrapper CreateSerializer(ISchemaRegistryClient schemaRegistryClient, AvroSerializerConfig serializerConfig)
+    public ISerializerWrapper CreateSerializer(Type messageType, ISchemaRegistryClient schemaRegistryClient,
+        AvroSerializerConfig serializerConfig)
     {
-        var inner = new AvroSerializer<T>(schemaRegistryClient, serializerConfig);
-        return new SerializerWrapper<T>(inner);
+        Type t1 = typeof(AvroSerializer<>);
+        var constructed1 = t1.MakeGenericType(messageType);
+        var inner = Activator.CreateInstance(constructed1, schemaRegistryClient, serializerConfig)!;
+
+        Type t2 = typeof(SerializerWrapper<>);
+        var constructed2 = t2.MakeGenericType(messageType);
+        return (ISerializerWrapper)Activator.CreateInstance(constructed2, inner)!;
     }
 }

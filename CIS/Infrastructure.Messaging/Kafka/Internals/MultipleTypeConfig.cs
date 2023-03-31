@@ -19,7 +19,7 @@ public sealed class MultipleTypeConfig
         {
             throw new ArgumentException($"Unexpected type {writerSchema.Fullname}. Supported types need to be added to this {nameof(MultipleTypeConfig)} instance", nameof(writerSchema));
         }
-        return type.CreateReader(writerSchema);
+        return type.CreateReader(type.MessageType, writerSchema);
     }
 
     public IEnumerable<MultipleTypeInfo> Types => _types.AsEnumerable();

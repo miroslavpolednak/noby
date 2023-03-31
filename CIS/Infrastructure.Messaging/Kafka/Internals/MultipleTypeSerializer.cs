@@ -27,7 +27,7 @@ public sealed class MultipleTypeSerializer<T> : IAsyncSerializer<T>
     {
         foreach (var typeInfo in _typeConfig.Types)
         {
-            var serializer = typeInfo.CreateSerializer(_schemaRegistryClient, _serializerConfig);
+            var serializer = typeInfo.CreateSerializer(typeInfo.MessageType, _schemaRegistryClient, _serializerConfig);
             _serializers[typeInfo.Schema.Fullname] = serializer;
         }
     }

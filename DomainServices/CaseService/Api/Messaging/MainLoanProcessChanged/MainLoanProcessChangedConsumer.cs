@@ -13,7 +13,7 @@ internal sealed class MainLoanProcessChangedConsumer
         _dbContext = dbContext;
     }
 
-    public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.MainLoanProcessChanged> context)
+    public Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.MainLoanProcessChanged> context)
     {
         var state = context.Message.state switch
         {
@@ -34,5 +34,7 @@ internal sealed class MainLoanProcessChangedConsumer
         entity.State = state;
 
         _dbContext.SaveChanges();
+
+        return Task.CompletedTask;
     }
 }

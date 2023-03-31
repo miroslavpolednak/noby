@@ -1,5 +1,4 @@
 ﻿using Avro;
-using Avro.Specific;
 
 namespace CIS.Infrastructure.Messaging.Kafka.Internals;
 
@@ -7,8 +6,7 @@ public sealed class MultipleTypeConfigBuilder<TBase>
 {
     private readonly List<MultipleTypeInfo> _types = new();
     
-    public MultipleTypeConfigBuilder<TBase> AddType<T>(Schema readerSchema)
-        where T : TBase, ISpecificRecord
+    public MultipleTypeConfigBuilder<TBase> AddType(Type messageType, Schema readerSchema)
     {
         if (readerSchema is null)
         {
@@ -19,8 +17,7 @@ public sealed class MultipleTypeConfigBuilder<TBase>
         {
             throw new ArgumentException($"A type based on schema with the full name \"{readerSchema.Fullname}\" has already been added");
         }
-        var messageType = typeof(T);
-        var mapping = new MultipleTypeInfo<T>(messageType, readerSchema);
+        var mapping = new MultipleTypeInfo(messageType, readerSchema);
         _types.Add(mapping);
         return this;
     }
