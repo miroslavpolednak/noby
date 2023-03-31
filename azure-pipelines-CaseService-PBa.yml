@@ -96,7 +96,7 @@ steps:
     rootFolderOrFile: '$(Build.SourcesDirectory)\DomainServices\CaseService\DatabaseMigrations'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_DB.zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_DB.zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
