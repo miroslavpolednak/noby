@@ -62,16 +62,16 @@ static async Task GenerateDocument(IDataAggregatorServiceClient dataAggregatorSe
     var request = new GenerateDocumentRequest
     {
         DocumentTypeId = (int)documentType,
-        DocumentTemplateVersion = data.DocumentTemplateVersion,
-        DocumentTemplateVariant = data.DocumentTemplateVariant,
+        DocumentTemplateVersionId = data.DocumentTemplateVersionId,
+        DocumentTemplateVariantId = dataRequest.DocumentTemplateVariantId,
         OutputType = OutputFileType.OpenForm,
         Parts =
         {
             new GenerateDocumentPart
             {
                 DocumentTypeId = (int)documentType,
-                DocumentTemplateVersion = data.DocumentTemplateVersion,
-                DocumentTemplateVariant = data.DocumentTemplateVariant,
+                DocumentTemplateVersionId = data.DocumentTemplateVersionId,
+                DocumentTemplateVariantId = dataRequest.DocumentTemplateVariantId,
                 Data = { data.DocumentData.Select(CreateDocumentPartData) }
             }
 

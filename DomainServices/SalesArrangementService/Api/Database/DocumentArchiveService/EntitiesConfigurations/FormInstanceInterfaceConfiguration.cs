@@ -18,6 +18,10 @@ public class FormInstanceInterfaceConfiguration : IEntityTypeConfiguration<FormI
         .HasColumnType("varchar(7)")
         .HasColumnName("FORM_TYPE");
 
+       builder.Property(e => e.CreatedAt)
+       .HasColumnName("CREATED_AT")
+       .HasColumnType("datetime2");
+
         builder.Property(e => e.Status)
        .HasColumnType("smallint")
        .HasColumnName("STATUS");

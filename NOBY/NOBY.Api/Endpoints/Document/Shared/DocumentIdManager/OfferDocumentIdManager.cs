@@ -13,11 +13,15 @@ internal class OfferDocumentIdManager : IDocumentIdManager<int>
         _salesArrangementService = salesArrangementService;
     }
 
-    public async Task<string> LoadDocumentId(int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<DocumentInfo> LoadDocumentId(int salesArrangementId, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
 
-        return salesArrangement.OfferDocumentId;
+        return new DocumentInfo
+        {
+            DocumentId = salesArrangement.OfferDocumentId,
+            ContractNumber = salesArrangement.ContractNumber
+        };
     }
 
     public Task UpdateDocumentId(int salesArrangementId, string documentId, CancellationToken cancellationToken)

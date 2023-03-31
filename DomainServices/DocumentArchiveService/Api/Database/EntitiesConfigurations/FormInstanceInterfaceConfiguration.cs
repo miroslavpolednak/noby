@@ -22,6 +22,10 @@ public class FormInstanceInterfaceConfiguration : IEntityTypeConfiguration<FormI
        .HasColumnType("smallint")
        .HasColumnName("STATUS");
 
+        builder.Property(e => e.CreatedAt)
+        .HasColumnName("CREATED_AT")
+        .HasColumnType("datetime2");
+
         builder.Property(e => e.FormKind)
         .HasColumnType("char(1)")
         .HasColumnName("FORM_KIND");

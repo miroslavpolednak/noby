@@ -44,20 +44,20 @@ internal static class CreateExtensions
         return new GrpcAddress
         {
             IsPrimary = address.IsPrimary,
-            DeliveryDetails = address.DeliveryDetails,
-            EvidenceNumber = address.EvidenceNumber,
-            StreetNumber = address.StreetNumber,
-            Street = address.Street,
-            City = address.City,
+            DeliveryDetails = address.DeliveryDetails ?? "",
+            EvidenceNumber = address.EvidenceNumber ?? "",
+            StreetNumber = address.StreetNumber ?? "",
+            Street = address.Street ?? "",
+            City = address.City ?? "",
             CountryId = address.CountryId,
-            HouseNumber = address.HouseNumber,
-            Postcode = address.Postcode,
+            HouseNumber = address.HouseNumber ?? "",
+            Postcode = address.Postcode ?? "",
             AddressTypeId = address.AddressTypeId,
-            CityDistrict = address.CityDistrict,
-            PragueDistrict = address.PragueDistrict,
-            CountrySubdivision = address.CountrySubdivision,
+            CityDistrict = address.CityDistrict ?? "",
+            PragueDistrict = address.PragueDistrict ?? "",
+            CountrySubdivision = address.CountrySubdivision ?? "",
             PrimaryAddressFrom = address.PrimaryAddressFrom,
-            AddressPointId = address.AddressPointId
+            AddressPointId = address.AddressPointId ?? ""
         };
     }
     

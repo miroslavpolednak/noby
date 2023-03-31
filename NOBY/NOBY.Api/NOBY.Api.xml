@@ -529,7 +529,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405522415">Countries</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=483360846">CountryCodePhoneIdc</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424127746">Currencies</a>
-             - <a href="https://wiki.kb.cz/display/HT/CustomerProfile">CustomerProfiles</a> - zatím není na FE API implementováno
+             - <a href="https://wiki.kb.cz/display/HT/CustomerProfile">CustomerProfiles</a> 
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413658556">AddressTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCodes</a>
@@ -546,13 +546,13 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405524365">Genders</a>
-             - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> - zatím není na FE API implementováno
+             - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> 
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392871926">IdentificationDocumentTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/IdentificationSubjectMethod+%28CB_IdentificationMethodType%29+-+MOCK">IdentificationSubjectMethods</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426158089">IncomeMainTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967686">IncomeMainTypesAML</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216188">IncomeForeignTypes</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440881532">IncomeOtherTypes</a> - zatím není na FE API implementováno
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440881532">IncomeOtherTypes</a> 
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216289">JobTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424118208">LegalCapacityRestrictionTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413109663">LoanPurposes</a>
@@ -560,9 +560,9 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413108848">LoanInterestRateAnnouncedTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/Mandant">Mandants</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417279748">MaritalStatuses</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417279748">MarketingActions</a>  - zatím není na FE API implementováno
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417279748">MarketingActions</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967710">NetMonthEarnings</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324">ObligationCorrectionTypes</a> - zatím není na FE API implementováno
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324">ObligationCorrectionTypes</a> 
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426150084">ObligationTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=409432393">FormTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046178">PaymentDays</a>
@@ -582,6 +582,8 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417284324">StatementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/TinFormatByCountry+%28CB_CmTrTinFormat%29+-+MOCK">TinFormatsByCountry</a>
              - <a href="https://wiki.kb.cz/display/HT/TinNoFillReasonsByCountry+%28CB_CmTrTinCountry%29+-+MOCK">TinNoFillReasonsByCountry</a>
+             - <a href="https://wiki.kb.cz/display/HT/WorkflowProcessStateNoby">WorkflowProcessStatesNoby</a>
+             - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby">WorkflowTaskStatesNoby</a>
              - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskCategory">WorkflowTaskCategories</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440871662">WorkflowTaskStates</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440879561">WorkflowTaskTypes</a>
@@ -1354,7 +1356,7 @@
             Vygenerování dokumentu z uložených dat dokumentu na sales arrangementu příp. z archivu
             </summary>
             <remarks>
-            Pro započaté podepisovací procesy je požadováno zobrazovat náhledy a poskytovat dokumenty ke stažení.<br /><br />
+            Pro započaté podepisovací procesy je požadováno zobrazovat náhledy a poskytovat dokumenty ke stažení.<br /> Slouží pro podepisování - neobsahuje vodoznak. <br/><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=F950B198-2C67-48e5-B1FE-C091131E6A63"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId"></param>
@@ -1442,22 +1444,22 @@
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetOffer(System.Int32,System.Threading.CancellationToken)">
-             <summary>
-             Vygenerování dokumentu nabídka ze šablony
-             </summary>
-             <remarks>
-            Vygenerování dokumentu nabídka ze šablony k dané SalesArrangement. Pokud dokument pro tuto nabídku byl již vygenerován a byl uložen do eArchiv-u, tak je dokument načten z eArchiv-u..<br /><br />
-             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=01EE50D6-556E-47e8-ADD8-673A844864C2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
-             </remarks>
-             <param name="salesArrangementId">Sales Arrangement ID</param>
+            <summary>
+            Vygenerování dokumentu nabídka ze šablony
+            </summary>
+            <remarks>
+            Vygenerování dokumentu nabídka ze šablony k dané SalesArrangement. Pokud dokument pro tuto nabídku byl již vygenerován a byl uložen do eArchiv-u, tak je dokument načten z eArchiv-u.<br />Výstup je bez vodoznaku<br/><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=01EE50D6-556E-47e8-ADD8-673A844864C2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetCalculation(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Vygenerování dokumentu kalkulace ze šablony
             </summary>
             <remarks>
-            Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+            Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="offerId">Offer ID</param>
         </member>
@@ -1466,8 +1468,8 @@
             Vygenerování dokumentu splátkový kalendář ze šablony
             </summary>
             <remarks>
-            Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+            Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="offerId">Offer ID</param>
         </member>
@@ -1476,7 +1478,7 @@
             Vygenerování dokumentu Žádost o čerpání
             </summary>
             <remarks>
-            Vygenerování dokumentu Žádost o čerpání ze šablony k dané SalesArrangement.<br /><br />
+            Vygenerování dokumentu Žádost o čerpání ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FF4A4806-9638-4287-8A4F-4CA027677E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20\" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
@@ -1486,7 +1488,7 @@
             Vygenerování dokumentu Žádost o obecnou změnu
             </summary>
             <remarks>
-            Vygenerování dokumentu Žádost o obecnou změnu ze šablony k dané SalesArrangement.<br /><br />
+            Vygenerování dokumentu Žádost o obecnou změnu ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=176277CE-66F6-4abd-93E6-57F113B5AF16"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
@@ -1496,7 +1498,7 @@
             Vygenerování dokumentu Žádost o HUBN
             </summary>
             <remarks>
-            Vygenerování dokumentu Žádost o HUBN ze šablony k dané SalesArrangement.<br /><br />
+            Vygenerování dokumentu Žádost o HUBN ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0E17AE8A-C137-415b-B4FB-2C0D3995E0DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
@@ -1506,7 +1508,7 @@
             Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí)
             </summary>
             <remarks>
-            Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí) ze šablony k dané SalesArrangement.<br /><br />
+            Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí) ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=B7ED8950-BAA7-44a2-A069-2593B6D5121E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId"></param>
@@ -1518,7 +1520,7 @@
             Vygenerování dokumentu Žádost o úvěr F3601
             </summary>
             <remarks>
-            Vygenerování dokumentu Žádost o úvěr F3601 (dlužnická domácnost) ze šablony k dané SalesArrangement.<br /><br />
+            Vygenerování dokumentu Žádost o úvěr F3601 (dlužnická domácnost) ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DD734EDD-1344-43b2-B45E-3407255B993A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
@@ -1528,7 +1530,7 @@
             Vygenerování dokumentu Žádost o úvěr F3602
             </summary>
             <remarks>
-            Vygenerování dokumentu Žádost o úvěr F3602 (spoludlužnická domácnost) k dané SalesArrangement.<br /><br />
+            Vygenerování dokumentu Žádost o úvěr F3602 (spoludlužnická domácnost) k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=D5159266-11E9-4959-BDFA-71C1FCF46092"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>

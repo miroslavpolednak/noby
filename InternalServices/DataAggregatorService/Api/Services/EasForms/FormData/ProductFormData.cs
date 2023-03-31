@@ -18,9 +18,9 @@ internal class ProductFormData : AggregatedData
 
     public MockValues MockValues { get; } = new();
 
-    public DefaultValues DefaultValues3601 { get; } = DefaultValuesFactory.Create(EasFormType.F3601);
+    public DefaultValues DefaultValues3601 { get; private set; } = null!;
 
-    public DefaultValues DefaultValues3602 { get; } = DefaultValuesFactory.Create(EasFormType.F3602);
+    public DefaultValues DefaultValues3602 { get; private set; } = null!;
 
     public ConditionalFormValues ConditionalFormValues { get; private set; } = null!;
 
@@ -42,6 +42,9 @@ internal class ProductFormData : AggregatedData
 
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
+        DefaultValues3601 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3601, _codebookManager.DocumentTypes);
+        DefaultValues3602 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3602, _codebookManager.DocumentTypes);
+
         ProductTypeId = GetProductTypeId();
 
         ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(ProductTypeId, Offer.SimulationInputs.LoanKindId), this);
@@ -53,7 +56,7 @@ internal class ProductFormData : AggregatedData
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        configurator.ProductTypes().DrawingTypes().DrawingDurations().SalesArrangementStates().SalesArrangementTypes();
+        configurator.ProductTypes().DrawingTypes().DrawingDurations().SalesArrangementStates().SalesArrangementTypes().DocumentTypes();
 
         HouseholdData.ConfigureCodebooks(configurator);
     }

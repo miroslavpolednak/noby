@@ -23,8 +23,8 @@ public class DocumentController : ControllerBase
     /// Vygenerování dokumentu nabídka ze šablony
     /// </summary>
     /// <remarks>
-    ///Vygenerování dokumentu nabídka ze šablony k dané SalesArrangement. Pokud dokument pro tuto nabídku byl již vygenerován a byl uložen do eArchiv-u, tak je dokument načten z eArchiv-u..<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=01EE50D6-556E-47e8-ADD8-673A844864C2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+    /// Vygenerování dokumentu nabídka ze šablony k dané SalesArrangement. Pokud dokument pro tuto nabídku byl již vygenerován a byl uložen do eArchiv-u, tak je dokument načten z eArchiv-u.<br />Výstup je bez vodoznaku<br/><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=01EE50D6-556E-47e8-ADD8-673A844864C2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("offer/sales-arrangement/{salesArrangementId:int}")]
@@ -37,7 +37,8 @@ public class DocumentController : ControllerBase
         var request = new Offer.GetOfferRequest
         {
             DocumentType = DocumentType.NABIDKA,
-            InputParameters = _documentManager.GetSalesArrangementInput(salesArrangementId)
+            InputParameters = _documentManager.GetSalesArrangementInput(salesArrangementId),
+            ForPreview = false
         };
 
         var memory = await _mediator.Send(request, cancellationToken);
@@ -49,8 +50,8 @@ public class DocumentController : ControllerBase
     /// Vygenerování dokumentu kalkulace ze šablony
     /// </summary>
     /// <remarks>
-    /// Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+    /// Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
     [HttpGet("calculation/offer/{offerId:int}")]
@@ -62,15 +63,15 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetOfferInput(offerId);
 
-        return GenerateGeneralDocument(DocumentType.KALKULHU, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentType.KALKULHU, input, false, cancellationToken);
     }
 
     /// <summary>
     /// Vygenerování dokumentu splátkový kalendář ze šablony
     /// </summary>
     /// <remarks>
-    /// Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+    /// Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
     [HttpGet("payment-schedule/offer/{offerId:int}")]
@@ -82,14 +83,14 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetOfferInput(offerId);
 
-        return GenerateGeneralDocument(DocumentType.SPLKALHU, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentType.SPLKALHU, input, false, cancellationToken);
     }
 
     /// <summary>
     /// Vygenerování dokumentu Žádost o čerpání
     /// </summary>
     /// <remarks>
-    /// Vygenerování dokumentu Žádost o čerpání ze šablony k dané SalesArrangement.<br /><br />
+    /// Vygenerování dokumentu Žádost o čerpání ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FF4A4806-9638-4287-8A4F-4CA027677E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20\" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
@@ -109,7 +110,7 @@ public class DocumentController : ControllerBase
     /// Vygenerování dokumentu Žádost o obecnou změnu
     /// </summary>
     /// <remarks>
-    /// Vygenerování dokumentu Žádost o obecnou změnu ze šablony k dané SalesArrangement.<br /><br />
+    /// Vygenerování dokumentu Žádost o obecnou změnu ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=176277CE-66F6-4abd-93E6-57F113B5AF16"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
@@ -129,7 +130,7 @@ public class DocumentController : ControllerBase
     /// Vygenerování dokumentu Žádost o HUBN
     /// </summary>
     /// <remarks>
-    /// Vygenerování dokumentu Žádost o HUBN ze šablony k dané SalesArrangement.<br /><br />
+    /// Vygenerování dokumentu Žádost o HUBN ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0E17AE8A-C137-415b-B4FB-2C0D3995E0DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
@@ -149,7 +150,7 @@ public class DocumentController : ControllerBase
     /// Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí)
     /// </summary>
     /// <remarks>
-    /// Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí) ze šablony k dané SalesArrangement.<br /><br />
+    /// Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí) ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=B7ED8950-BAA7-44a2-A069-2593B6D5121E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId"></param>
@@ -171,7 +172,7 @@ public class DocumentController : ControllerBase
     /// Vygenerování dokumentu Žádost o úvěr F3601
     /// </summary>
     /// <remarks>
-    /// Vygenerování dokumentu Žádost o úvěr F3601 (dlužnická domácnost) ze šablony k dané SalesArrangement.<br /><br />
+    /// Vygenerování dokumentu Žádost o úvěr F3601 (dlužnická domácnost) ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DD734EDD-1344-43b2-B45E-3407255B993A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
@@ -191,7 +192,7 @@ public class DocumentController : ControllerBase
     /// Vygenerování dokumentu Žádost o úvěr F3602
     /// </summary>
     /// <remarks>
-    /// Vygenerování dokumentu Žádost o úvěr F3602 (spoludlužnická domácnost) k dané SalesArrangement.<br /><br />
+    /// Vygenerování dokumentu Žádost o úvěr F3602 (spoludlužnická domácnost) k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=D5159266-11E9-4959-BDFA-71C1FCF46092"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
@@ -221,15 +222,26 @@ public class DocumentController : ControllerBase
 
     private Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, CancellationToken cancellationToken)
     {
-        return GenerateGeneralDocument(documentType, inputParameters, default, cancellationToken);
+        return GenerateGeneralDocument(documentType, inputParameters, default, default, cancellationToken);
     }
 
-    private async Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, int? documentVariantId, CancellationToken cancellationToken)
+    private Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, bool forPreview, CancellationToken cancellationToken)
+    {
+        return GenerateGeneralDocument(documentType, inputParameters, default, forPreview, cancellationToken);
+    }
+
+    private Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, int? documentVariantId, CancellationToken cancellationToken)
+    {
+        return GenerateGeneralDocument(documentType, inputParameters, documentVariantId, default, cancellationToken);
+    }
+
+    private async Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, int? documentVariantId, bool? forPreview, CancellationToken cancellationToken)
     {
         var request = new GeneralDocument.GetGeneralDocumentRequest
         {
             DocumentType = documentType,
             DocumentTemplateVariantId = documentVariantId,
+            ForPreview = forPreview,
             InputParameters = inputParameters
         };
 

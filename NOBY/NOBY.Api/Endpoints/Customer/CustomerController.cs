@@ -1,5 +1,4 @@
-﻿using NOBY.Infrastructure.ErrorHandling;
-using Swashbuckle.AspNetCore.Annotations;
+﻿using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Customer;
 

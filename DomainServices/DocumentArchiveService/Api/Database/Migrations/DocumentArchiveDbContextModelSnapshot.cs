@@ -124,7 +124,8 @@ namespace DomainServices.DocumentArchiveService.Api.Database.Migrations
                         .HasColumnName("CPM");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CREATED_AT");
 
                     b.Property<byte?>("DataType")
                         .HasColumnType("tinyint")

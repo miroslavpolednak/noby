@@ -68,6 +68,9 @@ internal class FormsDocumentService
 
     private async Task<DocumentInterface> PrepareEntity(CreateDocumentOnSAResponse docOnSa, Form form, SalesArrangement salesArrangement, string contractNumber, User user, CancellationToken cancellationToken)
     {
+        var identity = user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.Mpad)
+             ?? user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.KbUid);
+        
         var entity = new DocumentInterface();
         entity.DocumentId = docOnSa.DocumentOnSa.EArchivId;
         var generatedDocument = await GenerateDocument(salesArrangement, docOnSa, cancellationToken);
@@ -75,11 +78,11 @@ internal class FormsDocumentService
         entity.FileName = await GetFileName(docOnSa.DocumentOnSa, cancellationToken);
         entity.FileNameSuffix = Path.GetExtension(entity.FileName)[1..];
         entity.CaseId = salesArrangement.CaseId;
-        entity.AuthorUserLogin = _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture);
+        entity.AuthorUserLogin = identity?.Identity ?? user.Id.ToString(CultureInfo.InvariantCulture);
         entity.ContractNumber = contractNumber;
         entity.FormId = docOnSa.DocumentOnSa.FormId;
         entity.CreatedOn = _dateTime.Now.Date;
-        entity.EaCodeMainId = int.Parse(form.DefaultValues.PasswordCode, CultureInfo.InvariantCulture);
+        entity.EaCodeMainId = form.DefaultValues.EaCodeMainId ?? 0;
         entity.Kdv = 1; // true
         entity.SendDocumentOnly = 0; //false
         entity.DataSentence = new FormInstanceInterface
@@ -117,10 +120,7 @@ internal class FormsDocumentService
     {
         var documentOnSaData = await _documentOnSAService.GetDocumentOnSAData(documentOnSaResponse.DocumentOnSa.DocumentOnSAId!.Value, cancellationToken);
 
-        var documentTemplateVersions = await _codebookService.DocumentTemplateVersions(cancellationToken);
-        var documentTemplateVersion = documentTemplateVersions.Single(r => r.Id == documentOnSaData.DocumentTemplateVersionId).DocumentVersion;
-
-        var generateDocumentRequest = CreateDocumentRequest(documentOnSaData, salesArrangement, documentTemplateVersion);
+        var generateDocumentRequest = CreateDocumentRequest(documentOnSaData, salesArrangement);
 
         return await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
     }
@@ -172,24 +172,25 @@ internal class FormsDocumentService
         return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
     }
 
-    private static GenerateDocumentRequest CreateDocumentRequest(GetDocumentOnSADataResponse documentOnSaData, SalesArrangement salesArrangement, string documentTemplateVersion)
+    private static GenerateDocumentRequest CreateDocumentRequest(GetDocumentOnSADataResponse documentOnSaData, SalesArrangement salesArrangement)
     {
         return new GenerateDocumentRequest
         {
             DocumentTypeId = documentOnSaData.DocumentTypeId!.Value,
-            DocumentTemplateVersion = documentTemplateVersion,
+            DocumentTemplateVersionId = documentOnSaData.DocumentTemplateVersionId!.Value,
+            ForPreview = false,
             OutputType = OutputFileType.Pdfa,
-            Parts = { CreateDocPart(documentOnSaData, documentTemplateVersion) },
+            Parts = { CreateDocPart(documentOnSaData) },
             DocumentFooter = CreateFooter(salesArrangement)
         };
     }
 
-    private static GenerateDocumentPart CreateDocPart(GetDocumentOnSADataResponse documentOnSaData, string documentTemplateVersion)
+    private static GenerateDocumentPart CreateDocPart(GetDocumentOnSADataResponse documentOnSaData)
     {
         var docPart = new GenerateDocumentPart
         {
             DocumentTypeId = documentOnSaData.DocumentTypeId!.Value,
-            DocumentTemplateVersion = documentTemplateVersion
+            DocumentTemplateVersionId = documentOnSaData.DocumentTemplateVersionId!.Value
         };
 
         var documentDataDtos = JsonConvert.DeserializeObject<List<DocumentDataDto>>(documentOnSaData.Data);

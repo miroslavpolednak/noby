@@ -84,7 +84,7 @@ public static class DistributedCachingStartupExtensions
     /// <summary>
     /// Nazev sekce v appsettings.json kde je konfigurace kese
     /// </summary>
-    private const string JsonCacheConfigurationKey = "DistributedCache";
+    private const string JsonCacheConfigurationKey = "CisDistributedCache";
 
     /// <summary>
     /// Nazev connection stringu v appsettings.json kde je CS na redis nebo mssql
