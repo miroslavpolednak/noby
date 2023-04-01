@@ -38,14 +38,10 @@ internal static class StartupExtensions
         // kafka messaging
         builder.AddCisMessaging()
             .AddKafka()
-            //.AddConsumer<Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer>()
-            //.AddConsumer<Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer>()
-            //.AddConsumerTopic<IMarker1>(appConfiguration.MainLoanProcessChangedTopic!)
-            //.AddConsumerTopic<IMarker2>(appConfiguration.CaseStateChangedProcessingCompletedTopic!)
-            .AddProducers<IMarkerTest>("NOBY_DS-PERF_MCS_mock_sender-command-priv")
-            .AddConsumer<Messaging.SendEmail.SendEmailConsumer>()
-            .AddConsumer<Messaging.SendEmail.NotificationReportConsumer>()
-            .AddConsumerTopic<IMarkerTest>("NOBY_DS-PERF_MCS_mock_sender-command-priv")
+            .AddConsumer<Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer>()
+            .AddConsumer<Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer>()
+            .AddConsumerTopic<IMarker1>(appConfiguration.MainLoanProcessChangedTopic!)
+            .AddConsumerTopic<IMarker2>(appConfiguration.CaseStateChangedProcessingCompletedTopic!)
             .Build();
 
         return builder;
