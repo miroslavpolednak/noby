@@ -14,7 +14,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
             .Where(t => t.SalesArrangementId == request.SalesArrangementId)
             .Select(t => new { t.State, t.OfferGuaranteeDateTo })
             .FirstOrDefaultAsync(cancellation))
-            ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
         // kontrolovat pokud je zmocnenec, tak zda existuje?
         if (request.DataCase == Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage)
@@ -23,12 +23,13 @@ internal sealed class UpdateSalesArrangementParametersHandler
             {
                 var customersOnSA = await _customerOnSAService.GetCustomerList(request.SalesArrangementId, cancellation);
                 if (!customersOnSA.Any(t => t.CustomerOnSAId == request.Mortgage.Agent))
-                    throw new CisNotFoundException(18078, $"Agent {request.Mortgage.Agent} not found amoung customersOnSA for SAID {request.SalesArrangementId}");
+                    throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AgentNotFound, request.Mortgage.Agent);
             }
         }
 
         // instance parametru, pokud existuje
-        var entity = await _dbContext.SalesArrangementsParameters
+        var entity = await _dbContext
+            .SalesArrangementsParameters
             .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation);
 
         if (entity is null)
@@ -134,7 +135,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
                              string.Equals(originalAccount.BankCode, requestAccount.BankCode);
 
         if (!isAccountEqual)
-            throw new CisValidationException("18081", "Repayment account cannot be changed with IsAccountNumberMissing set to false");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.RepaymentAccountCantChange);
 
         requestAccount.IsAccountNumberMissing = false;
     }

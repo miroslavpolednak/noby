@@ -35,7 +35,7 @@ internal sealed class UpdateCaseStateHandler
         // update v DB
         entity.StateUpdatedInStarbuild = (byte)request.StateUpdatedInStarbuild;
         entity.State = request.State;
-        entity.StateUpdateTime = _dateTime.Now;
+        entity.StateUpdateTime = _dbContext.CisDateTime.Now;
 
         await _dbContext.SaveChangesAsync(cancellation);
 
@@ -53,18 +53,15 @@ internal sealed class UpdateCaseStateHandler
 
     private static int[] _starbuildStateUpdateStates = new[] { 1, 2, 7, 9 };
 
-    private readonly CIS.Core.IDateTime _dateTime;
     private readonly IMediator _mediator;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly CaseServiceDbContext _dbContext;
 
     public UpdateCaseStateHandler(
-        CIS.Core.IDateTime dateTime,
         IMediator mediator,
         CodebookService.Clients.ICodebookServiceClients codebookService,
         CaseServiceDbContext dbContext)
     {
-        _dateTime = dateTime;
         _mediator = mediator;
         _codebookService = codebookService;
         _dbContext = dbContext;

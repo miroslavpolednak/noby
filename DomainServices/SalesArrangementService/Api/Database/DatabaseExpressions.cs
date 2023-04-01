@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Api.Database;
 
-internal static class SalesArrangementServiceRepositoryExpressions
+internal static class DatabaseExpressions
 {
     public static Expression<Func<Entities.SalesArrangement, Contracts.SalesArrangement>> SalesArrangementDetail()
     {
