@@ -7,6 +7,10 @@
     <RootNamespace>CIS.InternalServices.NotificationService.Clients</RootNamespace>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Grpc.Net.Client" Version="2.52.0" />
     <PackageReference Include="protobuf-net.Grpc" Version="1.1.1" />

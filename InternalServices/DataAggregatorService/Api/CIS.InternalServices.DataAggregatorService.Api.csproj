@@ -7,7 +7,12 @@
     <Version>1.0.0.0</Version>
   </PropertyGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
+	</PropertyGroup>
+
+	<ItemGroup>
     <Folder Include="Endpoints\GetDocumentData\" />
     <Folder Include="Endpoints\GetEasForm\" />
     <Folder Include="Services\Documents\TemplateData\LoanApplication\" />
