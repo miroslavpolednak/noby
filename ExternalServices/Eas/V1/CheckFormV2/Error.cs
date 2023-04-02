@@ -1,6 +1,6 @@
 ﻿namespace ExternalServices.Eas.V1.CheckFormV2;
 
-public sealed class Error
+public sealed class ErrorDto
 {
     public string Value { get; set; } = string.Empty;
 

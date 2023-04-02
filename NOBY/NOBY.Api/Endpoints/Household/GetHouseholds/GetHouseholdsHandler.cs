@@ -1,6 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
-using contracts = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.GetHouseholds;
 

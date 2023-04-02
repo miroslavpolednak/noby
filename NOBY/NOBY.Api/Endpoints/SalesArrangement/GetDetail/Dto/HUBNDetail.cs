@@ -33,7 +33,7 @@ public sealed class HUBNDetail
     /// Identifikace zajištění
     /// </summary>
     [Required]
-    public CollateralIdentification CollateralIdentification { get; set; }
+    public CollateralIdentification CollateralIdentification { get; set; } = null!;
 
     /// <summary>
     /// Předpokládaný termín prvního čerpání

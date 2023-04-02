@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Users.GetCurrentUser;
 
-internal class GetCurrentUserHandler
+internal sealed class GetCurrentUserHandler
     : IRequestHandler<GetCurrentUserRequest, GetCurrentUserResponse>
 {
     public async Task<GetCurrentUserResponse> Handle(GetCurrentUserRequest request, CancellationToken cancellationToken)

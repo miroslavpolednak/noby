@@ -53,7 +53,7 @@ internal static class NobySwagger
         return builder;
     }
 
-    private class CodebookGetAllSchemaFilter : ISchemaFilter
+    private sealed class CodebookGetAllSchemaFilter : ISchemaFilter
     {
         private readonly List<Type> _getAllResponsePossibleTypes;
 
@@ -76,7 +76,7 @@ internal static class NobySwagger
         }
     }
 
-    private class EnumValuesDescriptionSchemaFilter : ISchemaFilter
+    private sealed class EnumValuesDescriptionSchemaFilter : ISchemaFilter
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {

@@ -57,7 +57,7 @@ public sealed class GeneralChangeDetail
     /// Účel úvěru
     /// </summary>
     [Required]
-    public LoanPurpose LoanPurpose { get; set; }
+    public LoanPurpose LoanPurpose { get; set; } = null!;
 
     /// <summary>
     /// Podmínky čerpání a další podmínky

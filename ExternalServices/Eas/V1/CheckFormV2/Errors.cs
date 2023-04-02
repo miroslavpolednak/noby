@@ -4,7 +4,7 @@ namespace ExternalServices.Eas.V1.CheckFormV2
 {
     public class Errors
     {
-        public Dictionary<string, Error[]> errors { get; set; } = null!;
+        public Dictionary<string, ErrorDto[]> errors { get; set; } = null!;
 
         public static Errors Parse(string formData)
         {

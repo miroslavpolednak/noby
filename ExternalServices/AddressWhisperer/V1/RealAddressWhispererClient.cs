@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace ExternalServices.AddressWhisperer.V1;
 
-internal class RealAddressWhispererClient
+internal sealed class RealAddressWhispererClient
     : IAddressWhispererClient
 {
     public async Task<Dto.AddressDetail?> GetAddressDetail(string sessionId, string addressId, string title, string country, CancellationToken cancellationToken)
