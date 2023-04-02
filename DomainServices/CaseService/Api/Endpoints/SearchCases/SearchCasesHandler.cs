@@ -52,8 +52,8 @@ internal sealed class SearchCasesHandler
                 .Where(x => x.CaseId == t.CaseId)
                 .Select(x => new ActiveTask 
                 { 
-                    TaskProcessId = x.TaskProcessId, 
-                    TypeId = x.TaskTypeId 
+                    TaskId = x.TaskProcessId, 
+                    TaskTypeId = x.TaskTypeId 
                 })
                 .ToList()
         ));

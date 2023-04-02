@@ -5,12 +5,29 @@ option csharp_namespace = "DomainServices.CaseService.Contracts";
 import "GrpcDate.proto";
 
 message WorkflowTask {
-	int32 TaskId = 1;
-	int32 TaskProcessId = 2;
-	int32 TypeId = 3;
-	string Name = 4;
-	int32 StateId = 5;
+	int32 TaskIdSb = 1;
+
+	int32 TaskId = 2;
+
+	int32 TaskTypeId = 3;
+
+	string TaskTypeName = 4;
+
+	int32 StateIdSb = 5;
+
 	cis.types.GrpcDate CreatedOn = 6;
+
+	int32 PhaseTypeId = 7;
+
+	string SignatureType = 8;
+
+	string TaskSubtypeName = 9;
+
+	int32 ProcessId = 10;
+
+	string ProcessNameShort = 11;
+
+	bool Cancelled = 12;
 }
 
 message GetTaskListRequest {

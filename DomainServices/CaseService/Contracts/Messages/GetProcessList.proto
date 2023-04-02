@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "GrpcDate.proto";
+
+message GetProcessListRequest {
+	int64 CaseId = 1;
+}
+
+message GetProcessListResponse {
+	repeated ProcessTask Processes = 1;
+}
+
+message ProcessTask {
+	int32 ProcessIdSB = 1;
+
+	int32 ProcessId = 2;
+
+	cis.types.GrpcDate CreatedOn = 3;
+
+	string ProcessNameLong = 4;
+
+	string StateName = 5;
+}

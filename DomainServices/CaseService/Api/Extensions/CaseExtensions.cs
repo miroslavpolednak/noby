@@ -11,23 +11,71 @@ internal static class CaseExtensions
 
         var task = new WorkflowTask
         {
-            TaskId = int.Parse(dict["ukol_id"]),
-            TaskProcessId = int.Parse(dict["ukol_sada"]),
-            TypeId = int.Parse(dict["ukol_typ"]),
-            Name = dict["ukol_nazov"],
+            TaskIdSb = int.Parse(dict["ukol_id"]),
+            TaskId = int.Parse(dict["ukol_sada"]),
             CreatedOn = DateTime.Parse(dict["ukol_dat_start_proces"]),
-            StateId = int.Parse(dict["ukol_stav_poz"]),
+            TaskTypeId = int.Parse(dict["ukol_typ_noby"]),
+            TaskTypeName = dict["ukol_nazev_noby"],
+            TaskSubtypeName = dict["ukol_oznaceni_noby"],
+            ProcessId = int.Parse(dict["ukol_top_proces_sada"]),
+            ProcessNameShort = dict["ukol_top_proces_nazev_noby"],
+            StateIdSb = int.Parse(dict["ukol_stav_poz"]),
+            Cancelled = Convert.ToBoolean(Convert.ToInt16(dict["ukol_stornovano"]))
         };
 
+        task.PhaseTypeId = GetPhaseTypeId(task.TaskTypeId, dict);
+        task.SignatureType = GetSignatureType(task.TaskTypeId, dict);
+
         return task;
+    }
+
+    public static ProcessTask ToProcessTask(this Ext1.EasSimulationHTWrapper.WFS_FindItem easTask)
+    {
+        var dict = easTask.task.ToDictionary(i => i.mtdt_def, i => i.mtdt_val);
+
+        return new ProcessTask
+        {
+            ProcessIdSB = int.Parse(dict["ukol_id"]),
+            ProcessId = int.Parse(dict["ukol_sada"]),
+            CreatedOn = DateTime.Parse(dict["ukol_dat_start_proces"]),
+            ProcessNameLong = dict["ukol_proces_nazev_noby"],
+            StateName = dict["ukol_proces_oznacenie_noby"]
+        };
     }
 
     public static ActiveTask ToUpdateTaskItem(this WorkflowTask workflowTask)
     {
         return new ActiveTask
         {
-            TaskProcessId = workflowTask.TaskProcessId,
-            TypeId = workflowTask.TypeId
+            TaskId = workflowTask.TaskId,
+            TaskTypeId = workflowTask.TaskTypeId
+        };
+    }
+
+    private static int GetPhaseTypeId(int taskTypeId, IReadOnlyDictionary<string, string> dict)
+    {
+        return taskTypeId switch
+        {
+            1 => int.Parse(dict["ukol_dozadani_stav"]),
+            2 => int.Parse(dict["ukol_overeni_ic_stav"]),
+            6 => int.Parse(dict["ukol_podpis_stav"]),
+            3 or 4 or 7 or 8 => 1,
+            _ => throw new ArgumentOutOfRangeException(nameof(taskTypeId), taskTypeId, null)
+        };
+    }
+
+    private static string GetSignatureType(int taskTypeId, IReadOnlyDictionary<string, string> dict)
+    {
+        if (taskTypeId != 6)
+            return "unknown";
+
+        var signatureTypeId = int.Parse(dict["ukol_podpis_dokument_metoda"]);
+
+        return signatureTypeId switch
+        {
+            1 => "paper",
+            2 => "digital",
+            _ => "unknown"
         };
     }
 }

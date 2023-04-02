@@ -55,8 +55,8 @@ internal sealed class GetTaskListHandler
 
     private static void CheckTasks(WorkflowTask[] tasks, int[] taskTypeIds, int[] taskStateIds)
     {
-        var tasksWithInvalidTypeId = tasks.Where(t => !taskTypeIds.Contains(t.TypeId));
-        var tasksWithInvalidStateId = tasks.Where(t => !taskStateIds.Contains(t.StateId));
+        var tasksWithInvalidTypeId = tasks.Where(t => !taskTypeIds.Contains(t.TaskTypeId));
+        var tasksWithInvalidStateId = tasks.Where(t => !taskStateIds.Contains(t.StateIdSb));
 
         if (tasksWithInvalidTypeId.Any())
         {

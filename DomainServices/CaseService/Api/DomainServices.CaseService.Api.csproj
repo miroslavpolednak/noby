@@ -39,4 +39,8 @@
 		<ProjectReference Include="..\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Endpoints\GetProcessList\" />
+	</ItemGroup>
+
 </Project>
