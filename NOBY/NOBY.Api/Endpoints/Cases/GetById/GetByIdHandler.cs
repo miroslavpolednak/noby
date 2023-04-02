@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Cases.GetById;
 
-internal class GetByIdHandler
+internal sealed class GetByIdHandler
     : IRequestHandler<GetByIdRequest, Dto.CaseModel>
 {
     public async Task<Dto.CaseModel> Handle(GetByIdRequest request, CancellationToken cancellationToken)

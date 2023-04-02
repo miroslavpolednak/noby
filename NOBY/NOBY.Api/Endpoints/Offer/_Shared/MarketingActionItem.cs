@@ -12,5 +12,5 @@ public sealed class MarketingActionItem
 
 	public decimal? Deviation { get; set; }
 
-	public string Name { get; set; }
+	public string Name { get; set; } = string.Empty;
 }

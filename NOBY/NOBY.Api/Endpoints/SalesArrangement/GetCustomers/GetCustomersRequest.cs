@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCustomers;
 
-internal record GetCustomersRequest(int SalesArrangementId)
+internal sealed record GetCustomersRequest(int SalesArrangementId)
     : IRequest<List<Dto.CustomerListItem>>
 {
 }

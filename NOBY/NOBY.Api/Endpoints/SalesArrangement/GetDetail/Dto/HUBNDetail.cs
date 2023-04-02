@@ -15,7 +15,7 @@ public sealed class HUBNDetail
     /// Výše úvěru
     /// </summary>
     [Required]
-    public LoanAmount LoanAmount { get; set; }
+    public LoanAmount LoanAmount { get; set; } = null!;
 
     /// <summary>
     /// Účely úvěru
@@ -39,19 +39,19 @@ public sealed class HUBNDetail
     /// Předpokládaný termín prvního čerpání
     /// </summary>
     [Required]
-    public ExpectedDateOfDrawing ExpectedDateOfDrawing { get; set; }
+    public ExpectedDateOfDrawing ExpectedDateOfDrawing { get; set; } = null!;
 
     /// <summary>
     /// Lhůta ukončení čerpání
     /// </summary>
     [Required]
-    public DrawingDateTo DrawingDateTo { get; set; }
+    public DrawingDateTo DrawingDateTo { get; set; } = null!;
 
     /// <summary>
     /// Komentář k žádosti o změnu
     /// </summary>
     [Required]
-    public CommentToChangeRequest CommentToChangeRequest { get; set; }
+    public CommentToChangeRequest CommentToChangeRequest { get; set; } = null!;
 }
 
 public sealed class LoanAmount

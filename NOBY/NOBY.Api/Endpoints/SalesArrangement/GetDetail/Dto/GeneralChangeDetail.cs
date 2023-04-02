@@ -15,43 +15,43 @@ public sealed class GeneralChangeDetail
     /// Zajištění
     /// </summary>
     [Required]
-    public Collateral Collateral { get; set; }
+    public Collateral Collateral { get; set; } = null!;
 
     /// <summary>
     /// Den splácení
     /// </summary>
     [Required]
-    public PaymentDay PaymentDay { get; set; }
+    public PaymentDay PaymentDay { get; set; } = null!;
 
     /// <summary>
     /// Lhůta ukončení čerpání
     /// </summary>
     [Required]
-    public DrawingDateToExtended DrawingDateTo { get; set; }
+    public DrawingDateToExtended DrawingDateTo { get; set; } = null!;
 
     /// <summary>
     /// Účet pro splácení
     /// </summary>
     [Required]
-    public PaymentAccount RepaymentAccount { get; set; }
+    public PaymentAccount RepaymentAccount { get; set; } = null!;
 
     /// <summary>
     /// Výše měsíční splátky
     /// </summary>
     [Required]
-    public LoanPaymentAmount LoanPaymentAmount { get; set; }
+    public LoanPaymentAmount LoanPaymentAmount { get; set; } = null!;
 
     /// <summary>
     /// Splatnost
     /// </summary>
     [Required]
-    public DueDate DueDate { get; set; }
+    public DueDate DueDate { get; set; } = null!;
 
     /// <summary>
     /// Objekty úvěru
     /// </summary>
     [Required]
-    public LoanRealEstate LoanRealEstate { get; set; }
+    public LoanRealEstate LoanRealEstate { get; set; } = null!;
 
     /// <summary>
     /// Účel úvěru
@@ -63,13 +63,13 @@ public sealed class GeneralChangeDetail
     /// Podmínky čerpání a další podmínky
     /// </summary>
     [Required]
-    public DrawingAndOtherConditions DrawingAndOtherConditions { get; set; }
+    public DrawingAndOtherConditions DrawingAndOtherConditions { get; set; } = null!;
 
     /// <summary>
     /// Komentář k žádosti o změnu
     /// </summary>
     [Required]
-    public CommentToChangeRequest CommentToChangeRequest { get; set; }
+    public CommentToChangeRequest CommentToChangeRequest { get; set; } = null!;
 }
 
 /// <summary>

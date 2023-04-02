@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Offer.GetFullPaymentScheduleByOfferId;
 
-internal class GetFullPaymentScheduleRequestValidator
+internal sealed class GetFullPaymentScheduleRequestValidator
     : AbstractValidator<GetFullPaymentScheduleByOfferIdRequest>
 {
     public GetFullPaymentScheduleRequestValidator()

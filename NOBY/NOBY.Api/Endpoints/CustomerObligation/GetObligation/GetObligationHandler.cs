@@ -3,7 +3,7 @@ using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.CustomerObligation.GetObligation;
 
-internal class GetObligationHandler
+internal sealed class GetObligationHandler
     : IRequestHandler<GetObligationRequest, Dto.ObligationFullDto>
 {
     public async Task<Dto.ObligationFullDto> Handle(GetObligationRequest request, CancellationToken cancellationToken)

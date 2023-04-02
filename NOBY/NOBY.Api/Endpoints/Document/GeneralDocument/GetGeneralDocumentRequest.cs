@@ -2,6 +2,6 @@
 
 namespace NOBY.Api.Endpoints.Document.GeneralDocument;
 
-internal class GetGeneralDocumentRequest : GetDocumentBaseRequest
+internal sealed class GetGeneralDocumentRequest : GetDocumentBaseRequest
 {
 }

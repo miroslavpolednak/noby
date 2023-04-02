@@ -13,5 +13,9 @@ internal sealed class ReaderWrapper<T> : IReaderWrapper
         _reader = new SpecificReader<T>(writerSchema, readerSchema);
     }
 
+#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable CS8604 // Possible null reference argument.
     public object Read(BinaryDecoder decoder) => _reader.Read(default, decoder);
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8603 // Possible null reference return.
 }
