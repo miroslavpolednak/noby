@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.LinkModelationToSalesArrangement;
 
-internal class LinkModelationToSalesArrangementRequestValidator
+internal sealed class LinkModelationToSalesArrangementRequestValidator
     : AbstractValidator<Contracts.LinkModelationToSalesArrangementRequest>
 {
     public LinkModelationToSalesArrangementRequestValidator()

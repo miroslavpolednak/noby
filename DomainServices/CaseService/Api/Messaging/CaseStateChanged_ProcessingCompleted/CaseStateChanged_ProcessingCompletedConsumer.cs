@@ -24,7 +24,7 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
         var cache = await _distributedCache.GetObjectAsync<SharedDto.CaseStateChangeRequestId>($"CaseStateChanged_{context.Message.workflowInputProcessingContext.requestId}");
         if (cache is null)
         {
-            throw new ArgumentNullException("cache", $"RequestId {context.Message.workflowInputProcessingContext.requestId} not found in cache");
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RequestNotFoundInCache, context.Message.workflowInputProcessingContext.requestId);
         }
 
         var entity = _dbContext.Cases

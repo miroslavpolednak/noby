@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementState;
 
-internal class UpdateSalesArrangementStateRequestValidator
+internal sealed class UpdateSalesArrangementStateRequestValidator
     : AbstractValidator<Contracts.UpdateSalesArrangementStateRequest>
 {
     public UpdateSalesArrangementStateRequestValidator()

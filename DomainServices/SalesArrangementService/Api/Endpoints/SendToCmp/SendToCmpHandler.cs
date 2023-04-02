@@ -8,7 +8,7 @@ using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.SendToCmp;
 
-internal class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty>
+internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty>
 {
     private readonly FormsService _formsService;
     private readonly FormsDocumentService _formsDocumentService;

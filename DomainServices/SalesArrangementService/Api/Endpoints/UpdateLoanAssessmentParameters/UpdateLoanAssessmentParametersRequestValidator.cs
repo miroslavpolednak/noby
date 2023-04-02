@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateLoanAssessmentParameters;
 
-internal class UpdateLoanAssessmentParametersRequestValidator
+internal sealed class UpdateLoanAssessmentParametersRequestValidator
     : AbstractValidator<Contracts.UpdateLoanAssessmentParametersRequest>
 {
     public UpdateLoanAssessmentParametersRequestValidator()

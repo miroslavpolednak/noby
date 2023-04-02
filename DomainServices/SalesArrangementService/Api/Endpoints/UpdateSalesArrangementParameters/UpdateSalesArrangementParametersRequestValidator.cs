@@ -60,7 +60,7 @@ internal class SalesArrangementParametersMortgageValidator
     }
 };
 
-internal class MortgageLoanRealEstateValidator
+internal sealed class MortgageLoanRealEstateValidator
     : AbstractValidator<Contracts.SalesArrangementParametersMortgage.Types.LoanRealEstate>
 {
     public MortgageLoanRealEstateValidator(CodebookService.Clients.ICodebookServiceClients codebookService)

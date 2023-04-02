@@ -21,7 +21,7 @@ public sealed class KbHeadersSendFilter<T>
 
     public async Task Send(SendContext<T> context, IPipe<SendContext<T>> next)
     {
-        context.Headers.Set("b3", $"{Activity.Current.TraceId}-{Activity.Current.SpanId}-1-{Activity.Current.ParentSpanId}");
+        context.Headers.Set("b3", $"{Activity.Current!.TraceId}-{Activity.Current.SpanId}-1-{Activity.Current.ParentSpanId}");
         context.Headers.Set("X_HYPHEN_KB_HYPHEN_Orig_HYPHEN_System_HYPHEN_Identity", $$"""{"app":"{{DefaultAppValue}}","appComp":"{{DefaultAppCompOriginatorValue}}"}""");
         context.Headers.Set("X_HYPHEN_KB_HYPHEN_Caller_HYPHEN_System_HYPHEN_Identity", $$"""{"app":"{{DefaultAppValue}}","appComp":"{{_environmentConfiguration.DefaultApplicationKey}}"}""");
         context.Headers.Set("messaging.id", Guid.NewGuid().ToString("N"));

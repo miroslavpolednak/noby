@@ -24,7 +24,7 @@ internal sealed class MainLoanProcessChangedConsumer
 
         if (long.TryParse(context.Message.@case.caseId.id, out long caseId))
         {
-            throw new ArgumentOutOfRangeException("caseId", $"Message CaseId {context.Message.@case.caseId.id} is not in valid format");
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.KafkaMessageIncorrectFormat, context.Message.@case.caseId.id);
         }
 
         var entity = _dbContext.Cases

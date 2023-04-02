@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement;
 
-internal class ValidateSalesArrangementRequestValidator
+internal sealed class ValidateSalesArrangementRequestValidator
     : AbstractValidator<Contracts.ValidateSalesArrangementRequest>
 {
     public ValidateSalesArrangementRequestValidator()

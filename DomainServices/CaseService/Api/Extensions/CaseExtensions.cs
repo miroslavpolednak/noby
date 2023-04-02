@@ -11,12 +11,12 @@ internal static class CaseExtensions
 
         var task = new WorkflowTask
         {
-            TaskId = int.Parse(dict["ukol_id"]),
-            TaskProcessId = int.Parse(dict["ukol_sada"]),
-            TypeId = int.Parse(dict["ukol_typ"]),
+            TaskId = int.Parse(dict["ukol_id"], CultureInfo.InvariantCulture),
+            TaskProcessId = int.Parse(dict["ukol_sada"], CultureInfo.InvariantCulture),
+            TypeId = int.Parse(dict["ukol_typ"], CultureInfo.InvariantCulture),
             Name = dict["ukol_nazov"],
-            CreatedOn = DateTime.Parse(dict["ukol_dat_start_proces"]),
-            StateId = int.Parse(dict["ukol_stav_poz"]),
+            CreatedOn = DateTime.Parse(dict["ukol_dat_start_proces"], CultureInfo.InvariantCulture),
+            StateId = int.Parse(dict["ukol_stav_poz"], CultureInfo.InvariantCulture),
         };
 
         return task;

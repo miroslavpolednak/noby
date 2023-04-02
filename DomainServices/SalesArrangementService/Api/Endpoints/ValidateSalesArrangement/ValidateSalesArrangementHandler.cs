@@ -4,7 +4,7 @@ using CIS.InternalServices.DataAggregatorService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement;
 
-internal class ValidateSalesArrangementHandler
+internal sealed class ValidateSalesArrangementHandler
     : IRequestHandler<ValidateSalesArrangementRequest, ValidateSalesArrangementResponse>
 {
     private static readonly int[] ValidCommonValues = { 0, 6 };
