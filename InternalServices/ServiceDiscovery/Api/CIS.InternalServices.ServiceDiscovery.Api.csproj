@@ -14,11 +14,8 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
-	
-	<ItemGroup>
-		<InternalsVisibleTo Include="CIS.InternalServices.ServiceDiscovery.Tests" />
-	</ItemGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="Dapper" Version="2.0.123" />
