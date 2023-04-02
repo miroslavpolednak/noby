@@ -14,7 +14,7 @@ internal sealed class CustomerManagementErrorMap
         MapErrors();
     }
 
-    public long ResolveAndThrowIfError(__Contracts.CreateIdentifiedSubjectResponse response)
+    public static long ResolveAndThrowIfError(__Contracts.CreateIdentifiedSubjectResponse response)
     {
         switch (response.ResponseCode)
         {

@@ -155,7 +155,7 @@ internal class CustomerManagementDetailProvider
         };
     }
 
-    private CustomerIdentification? CreateCustomerIdentification(__Contracts.CustomerIdentification? customerIdentification)
+    private static CustomerIdentification? CreateCustomerIdentification(__Contracts.CustomerIdentification? customerIdentification)
     {
         if (customerIdentification is null)
             return default;

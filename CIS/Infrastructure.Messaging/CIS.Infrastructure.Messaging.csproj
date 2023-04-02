@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net7.0</TargetFramework>
+	  <OutputType>Library</OutputType>
+	  <Product>Common Infrastructure Solution</Product>
+	  <Authors>Filip Tuma</Authors>
+	  <Nullable>enable</Nullable>
+	  <Platforms>AnyCPU;x64</Platforms>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<!-- DO NOT UPGRADE VERSIONS -->
+		<PackageReference Include="KB.Speed.MassTransit.Kafka" Version="1.1.0.16-SNAPSHOT" />
+		<PackageReference Include="MassTransit" Version="8.0.13" />
+		<PackageReference Include="MassTransit.Kafka" Version="8.0.13" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Core\CIS.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Kafka\Internals\" />
+	</ItemGroup>
+</Project>

@@ -1,10 +1,9 @@
 ﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetCaseDetail;
 
-internal class GetCaseDetailHandler
+internal sealed class GetCaseDetailHandler
     : IRequestHandler<GetCaseDetailRequest, Case>
 {
     /// <summary>

@@ -130,9 +130,9 @@ internal sealed class UpdateSalesArrangementParametersHandler
             return;
         }
 
-        var isAccountEqual = string.Equals(originalAccount.Prefix, requestAccount.Prefix, StringComparison.InvariantCultureIgnoreCase) &&
-                             string.Equals(originalAccount.Number, requestAccount.Number, StringComparison.InvariantCultureIgnoreCase) &&
-                             string.Equals(originalAccount.BankCode, requestAccount.BankCode);
+        var isAccountEqual = string.Equals(originalAccount.Prefix, requestAccount.Prefix, StringComparison.OrdinalIgnoreCase) &&
+                             string.Equals(originalAccount.Number, requestAccount.Number, StringComparison.OrdinalIgnoreCase) &&
+                             string.Equals(originalAccount.BankCode, requestAccount.BankCode, StringComparison.OrdinalIgnoreCase);
 
         if (!isAccountEqual)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.RepaymentAccountCantChange);
