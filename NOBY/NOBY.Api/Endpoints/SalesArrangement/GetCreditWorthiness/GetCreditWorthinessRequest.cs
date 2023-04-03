@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetCreditWorthiness;
 
-internal record GetCreditWorthinessRequest(int SalesArrangementId)
+internal sealed record GetCreditWorthinessRequest(int SalesArrangementId)
     : IRequest<GetCreditWorthinessResponse>
 {
 }

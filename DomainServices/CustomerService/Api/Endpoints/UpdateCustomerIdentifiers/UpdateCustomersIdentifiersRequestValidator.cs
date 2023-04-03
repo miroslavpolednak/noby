@@ -2,7 +2,7 @@
 
 namespace DomainServices.CustomerService.Api.Endpoints.UpdateCustomerIdentifiers;
 
-internal class UpdateCustomersIdentifiersRequestValidator : AbstractValidator<UpdateCustomerIdentifiersRequest>
+internal sealed class UpdateCustomersIdentifiersRequestValidator : AbstractValidator<UpdateCustomerIdentifiersRequest>
 {
     public UpdateCustomersIdentifiersRequestValidator()
     {

@@ -2,7 +2,6 @@
 using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
 using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
-using CIS.Infrastructure.Logging;
 using CIS.Infrastructure.Telemetry;
 using ExternalServices.Eas.Dto;
 using ExternalServices.Eas.V1.CheckFormV2;
@@ -11,7 +10,7 @@ using System.ServiceModel.Channels;
 
 namespace ExternalServices.Eas.V1;
 
-internal class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, IEAS_WS_SB_Services>, IEasClient
+internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, IEAS_WS_SB_Services>, IEasClient
 {
     private readonly ILogger<RealEasClient> _logger;
     private readonly IAuditLogger _auditLogger;

@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetDetail;
 
-internal record GetDetailRequest(int SalesArrangementId)
+internal sealed record GetDetailRequest(int SalesArrangementId)
     : IRequest<GetDetailResponse>
 {
 }

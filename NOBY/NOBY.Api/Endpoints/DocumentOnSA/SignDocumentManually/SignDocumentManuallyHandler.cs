@@ -18,7 +18,7 @@ using System.Text.Unicode;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 
-internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest>
+internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest>
 {
     private readonly IDocumentOnSAServiceClient _documentOnSaClient;
 

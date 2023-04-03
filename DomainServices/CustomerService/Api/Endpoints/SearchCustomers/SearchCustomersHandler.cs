@@ -4,7 +4,7 @@ using DomainServices.CustomerService.Api.Services.KonsDb;
 
 namespace DomainServices.CustomerService.Api.Endpoints.SearchCustomers;
 
-internal class SearchCustomersHandler : IRequestHandler<SearchCustomersRequest, SearchCustomersResponse>
+internal sealed class SearchCustomersHandler : IRequestHandler<SearchCustomersRequest, SearchCustomersResponse>
 {
     private readonly CustomerManagementSearchProvider _cmSearchProvider;
     private readonly KonsDbSearchProvider _konsDbSearchProvider;

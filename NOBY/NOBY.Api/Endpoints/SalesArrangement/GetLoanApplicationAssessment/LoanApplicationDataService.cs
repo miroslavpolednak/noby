@@ -18,7 +18,7 @@ using DomainServices.HouseholdService.Clients;
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
-internal class LoanApplicationDataService
+internal sealed class LoanApplicationDataService
 {
 
     #region Construction

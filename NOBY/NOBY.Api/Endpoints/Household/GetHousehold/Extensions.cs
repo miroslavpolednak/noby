@@ -1,11 +1,11 @@
-﻿using contracts = DomainServices.HouseholdService.Contracts;
+﻿using __Contracts = DomainServices.HouseholdService.Contracts;
 using NOBY.Api.Endpoints.CustomerObligation;
 
 namespace NOBY.Api.Endpoints.Household.GetHousehold;
 
 internal static class Extensions
 {
-    public static GetHouseholdResponse ToApiResponse(this contracts.Household household)
+    public static GetHouseholdResponse ToApiResponse(this __Contracts.Household household)
         => new GetHouseholdResponse
         {
             Data = household.Data?.mapData(),
@@ -13,7 +13,7 @@ internal static class Extensions
             HouseholdId = household.HouseholdId
         };
 
-    public static CustomerInHousehold? ToApiResponse(this contracts.CustomerOnSA model)
+    public static CustomerInHousehold? ToApiResponse(this __Contracts.CustomerOnSA model)
         => new CustomerInHousehold()
         {
             CustomerOnSAId = model.CustomerOnSAId,
@@ -36,7 +36,7 @@ internal static class Extensions
             Obligations = model.Obligations is null ? null : model.Obligations.Select(x => x.ToApiResponse()).ToList()
         };
 
-    static Dto.HouseholdExpenses? mapExpenses(this contracts.Expenses model)
+    static Dto.HouseholdExpenses? mapExpenses(this __Contracts.Expenses model)
         => new Dto.HouseholdExpenses()
             {
                 InsuranceExpenseAmount = model.InsuranceExpenseAmount,
@@ -45,7 +45,7 @@ internal static class Extensions
                 OtherExpenseAmount = model.OtherExpenseAmount
             };
 
-    static Dto.HouseholdData? mapData(this contracts.HouseholdData model)
+    static Dto.HouseholdData? mapData(this __Contracts.HouseholdData model)
         => new Dto.HouseholdData()
             {
                 AreBothPartnersDeptors = model.AreBothPartnersDeptors,

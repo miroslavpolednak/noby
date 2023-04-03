@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Endpoints.SearchCustomers;
 
-internal class SearchCustomersRequestValidator : AbstractValidator<SearchCustomersRequest>
+internal sealed class SearchCustomersRequestValidator : AbstractValidator<SearchCustomersRequest>
 {
     public SearchCustomersRequestValidator()
     {

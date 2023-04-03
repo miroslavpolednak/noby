@@ -8,7 +8,7 @@ internal interface IDocumentArchiveRepository
 }
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.AsImplementedInterfacesService]
-internal class DocumentArchiveRepository : IDocumentArchiveRepository
+internal sealed class DocumentArchiveRepository : IDocumentArchiveRepository
 {
     private readonly DocumentArchiveServiceDbContext _dbContext;
 

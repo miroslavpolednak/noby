@@ -3,7 +3,7 @@ using DSContracts = DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.GetMortgageByOfferId;
 
-internal class GetMortgageByOfferIdHandler
+internal sealed class GetMortgageByOfferIdHandler
     : IRequestHandler<GetMortgageByOfferIdRequest, Dto.GetMortgageResponse>
 {
     public async Task<Dto.GetMortgageResponse> Handle(GetMortgageByOfferIdRequest request, CancellationToken cancellationToken)

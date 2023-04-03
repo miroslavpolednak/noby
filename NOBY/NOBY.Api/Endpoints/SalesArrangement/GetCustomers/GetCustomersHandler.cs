@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCustomers;
 
-internal class GetCustomersHandler
+internal sealed class GetCustomersHandler
     : IRequestHandler<GetCustomersRequest, List<Dto.CustomerListItem>>
 {
     //TODO tohle se bude nejspis cele predelavat, nema smysl to moc resit

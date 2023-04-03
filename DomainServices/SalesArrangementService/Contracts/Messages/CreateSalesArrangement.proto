@@ -7,7 +7,6 @@ import "Parameters/SalesArrangementParametersDrawing.proto";
 import "Parameters/SalesArrangementParametersGeneralChange.proto";
 import "Parameters/SalesArrangementParametersHUBN.proto";
 import "Parameters/SalesArrangementParametersCustomerChange.proto";
-import "NullableGrpcDecimal.proto";
 import "google/protobuf/wrappers.proto";
 
 message CreateSalesArrangementRequest {

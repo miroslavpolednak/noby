@@ -2,6 +2,6 @@
 
 namespace NOBY.Api.Endpoints.Document.Offer;
 
-internal class GetOfferRequest : GetDocumentBaseRequest
+internal sealed class GetOfferRequest : GetDocumentBaseRequest
 {
 }

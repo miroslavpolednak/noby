@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Api.Dto;
 
-internal class C4mUserInfoData
+internal sealed class C4mUserInfoData
 {
     public long PersonId { get; set; }
     public string PersonSurname { get; set; } = String.Empty;

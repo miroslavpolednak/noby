@@ -10,7 +10,7 @@ internal static class CasesLoggerExtensions
     {
         _searchPaginableSettings = LoggerMessage.Define<Paginable?>(
             LogLevel.Debug,
-            new EventId(Infrastructure.LoggerEventIdCodes.Endpoints_Case_SearchPaginableSettings, nameof(SearchPaginableSettings)),
+            new EventId(Infrastructure.LoggerEventIdCodes.EndpointsCaseSearchPaginableSettings, nameof(SearchPaginableSettings)),
             "Search pagination set to {Pagination}");
     }
 

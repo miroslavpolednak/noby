@@ -60,15 +60,25 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
 
     public void Dispose()
     {
-        if (_client.State == CommunicationState.Faulted)
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
         {
-            _client.Abort();
-        }
-        else
-        {
-            _client.Close();
+            if (_client.State == CommunicationState.Faulted)
+            {
+                _client.Abort();
+            }
+            else
+            {
+                _client.Close();
+            }
         }
     }
+
     protected abstract Binding CreateBinding();
     protected abstract string ServiceName { get; }
 
@@ -78,19 +88,18 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
         {
             return await fce();
         }
-        catch (InvalidOperationException ex)
+        catch (Exception ex) when (ex is InvalidOperationException || ex is EndpointNotFoundException)
         {
-            _logger.LogError(ex, ex.Message);
-            throw new CIS.Core.Exceptions.CisServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
-        }
-        catch (EndpointNotFoundException ex)
-        {
-            _logger.LogError("Endpoint '{uri}' not found", _configuration.ServiceUrl);
-            throw new CIS.Core.Exceptions.CisServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
+            _logger.ExtServiceUnavailable(ServiceName, ex);
+            throw new CisServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
         }
         catch (Exception e)
         {
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+#pragma warning disable CA2254 // Template should be a static expression
             _logger.LogError(e, e.Message);
+#pragma warning restore CA2254 // Template should be a static expression
+#pragma warning restore CA1848 // Use the LoggerMessage delegates
             throw;
         }
     }

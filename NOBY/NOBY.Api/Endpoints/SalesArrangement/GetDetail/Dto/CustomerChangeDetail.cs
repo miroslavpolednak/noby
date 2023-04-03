@@ -111,7 +111,7 @@ public sealed class CustomerChangeDetailAgent
     /// Aktuální zmocněnec pro doručování
     /// </summary>
     [Required]
-    public string ActualAgent { get; set; }
+    public string ActualAgent { get; set; } = string.Empty;
 
     /// <summary>
     /// Nový zmocněnec pro doručování

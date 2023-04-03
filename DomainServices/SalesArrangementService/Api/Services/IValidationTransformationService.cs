@@ -2,5 +2,5 @@
 
 internal interface IValidationTransformationService
 {
-    List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.Error[]>? errors);
+    List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.ErrorDto[]>? errors);
 }

@@ -130,7 +130,7 @@ internal static class Extensions
                         return new cLA.LoanApplicationEmploymentIncome
                         {
                             EmployerIdentificationNumber = new List<string?> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
-                            EmployerName = i.Employement?.Employer?.Name,
+                            EmployerName = i.Employement?.Employer?.Name ?? "",
                             Address = new cRS.AddressDetail
                             {
                                 CountryId = i.Employement?.Employer?.CountryId,

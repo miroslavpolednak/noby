@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
+using FluentValidation;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.SetFlowSwitches;
 
@@ -9,10 +10,10 @@ internal sealed class SetFlowSwitchesRequestValidator
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementId must be > 0").WithErrorCode("18010");
+            .WithErrorCode(ErrorCodeMapper.SalesArrangementIdIsEmpty);
 
         RuleFor(t => t.FlowSwitches)
             .NotNull()
-            .WithMessage("FlowSwitches collection must not be empty").WithErrorCode("0");
+            .WithErrorCode(ErrorCodeMapper.FlowSwitchesIsEmpty);
     }
 }

@@ -26,9 +26,9 @@ internal static class HelperExtensions
         => !string.IsNullOrEmpty(resourceIdentifier) ? resourceIdentifier.Split(".").Last() : null;
 
     public static string ToEnvironmentId(this long salesArrangementId, string environmentName)
-        => environmentName.ToLower() switch
+        => environmentName.ToLower(System.Globalization.CultureInfo.InvariantCulture) switch
         {
-            "prod" => salesArrangementId.ToString(),
+            "prod" => salesArrangementId.ToString(System.Globalization.CultureInfo.InvariantCulture),
             _ => $"{environmentName}{salesArrangementId}"
         };
 }

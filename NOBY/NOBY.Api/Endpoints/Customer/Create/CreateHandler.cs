@@ -12,12 +12,10 @@ internal sealed class CreateHandler
     {
         // vytvorit customera v CM
         long kbId;
-        bool createOk = false;
         try
         {
             var createResult = await _customerService.CreateCustomer(request.ToDomainService(Mandants.Kb), cancellationToken);
             kbId = createResult.CreatedCustomerIdentity.IdentityId;
-            createOk = true;
         }
         // V případě, že existoval jeden klient
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11023")
