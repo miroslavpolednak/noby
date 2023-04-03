@@ -121,6 +121,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
                 IsSigned = documentOnSaEntity.IsSigned,
                 IsDocumentArchived = documentOnSaEntity.IsDocumentArchived,
                 SignatureMethodCode = documentOnSaEntity.SignatureMethodCode ?? string.Empty,
+                EArchivId = documentOnSaEntity.EArchivId,
             }
         };
     }
