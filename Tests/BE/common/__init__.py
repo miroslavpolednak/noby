@@ -19,7 +19,9 @@ from .helpers.Convertor import Convertor
 from .helpers.EnumExtensions import EnumExtensions
 from .helpers.DictExtensions import DictExtensions
 from .logging.Log import Log
+from .logging.LogFolderContext import LogFolderContext
 from .logging.LogFileContext import LogFileContext
+
 
 config:IConfig = ConfigDefault()
 

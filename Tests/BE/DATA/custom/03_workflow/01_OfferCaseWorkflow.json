@@ -277,18 +277,44 @@
     },
     "workflow": [
         {
-            "path": "case.households",
-            "type": "add",
+            "path": "case.households[0]",
+            "type": "edit",
             "data": {
-                "householdTypeId": "HouseholdType(type=Codebtor)"
+                "childrenUpToTenYearsCount": 2,
+                "childrenOverTenYearsCount": 1,
+                "areCustomersPartners": true,
+                "expenses": {
+                    "savingExpenseAmount": 11000,
+                    "insuranceExpenseAmount": 3300,
+                    "housingExpenseAmount": 5000,
+                    "otherExpenseAmount": 5700
+                }
             }
-
         },
         {
             "path": "case.households",
             "type": "add",
             "data": {
-                "householdTypeId": "HouseholdType(type=Codebtor)"
+                "householdTypeId": "HouseholdType(type=Codebtor)",
+                "childrenUpToTenYearsCount": 1,
+                "childrenOverTenYearsCount": 1,
+                "areCustomersPartners": true
+            }
+        },
+        {
+            "path": "case.households",
+            "type": "add",
+            "data": {
+                "householdTypeId": "HouseholdType(type=Codebtor)",
+                "childrenUpToTenYearsCount": 1,
+                "childrenOverTenYearsCount": 1,
+                "areCustomersPartners": true,
+                "expenses": {
+                    "savingExpenseAmount": 1000,
+                    "insuranceExpenseAmount": 2000,
+                    "housingExpenseAmount": 3000,
+                    "otherExpenseAmount": 4000
+                }
             }
         },
         {

@@ -4,7 +4,7 @@ import jsonpath_ng
 from .EProcessKey import EProcessKey
 from .Processing import Processing
 
-from business.case import Case, Household
+from business.case import Case, Household, Expenses
 
 from business.codebooks import EHouseholdType
 from fe_api import FeAPI
@@ -46,6 +46,10 @@ class ApiWriterCase():
 
     def __add_household(self, workflow_step: WorkflowStep):
 
+        # ------------------------------------------------------------------------
+        # create_household
+        # ------------------------------------------------------------------------
+
         # get process data
         sales_arrangement_id = Processing.get_process_key(self.__case_json, EProcessKey.SALES_ARRAMGEMENT_ID)
         household_type_id = Processing.get_key(workflow_step.data, 'householdTypeId')
@@ -55,15 +59,82 @@ class ApiWriterCase():
         
         householdId = Processing.get_key(res, 'householdId')
         householdTypeId = Processing.get_key(res, 'householdTypeId')
-        household = Household.from_json(dict(householdId = householdId, householdTypeId = householdTypeId))
+        household = Household.from_json(dict(
+            householdId = householdId,
+            householdTypeId = householdTypeId,
+            childrenUpToTenYearsCount = 0,
+            childrenOverTenYearsCount = 0,
+            areCustomersPartners = False,
+            expenses = Expenses.get_default().to_json_value()
+        ))
 
         json_households: list = Processing.get_key(self.__case_json, 'households')
-        js = household.to_json_value()
+        json_household = household.to_json_value()
+        json_households.append(json_household)
 
-        json_households.append(js)
+        # ------------------------------------------------------------------------
+        # set_household_parameters
+        # ------------------------------------------------------------------------
+
+        # build data by current state
+        data = dict(
+            childrenUpToTenYearsCount = Processing.get_key(json_household, 'childrenUpToTenYearsCount'),
+            childrenOverTenYearsCount = Processing.get_key(json_household, 'childrenOverTenYearsCount'),
+            areCustomersPartners = Processing.get_key(json_household, 'areCustomersPartners'),
+            expenses = Processing.get_key(json_household, 'expenses')
+        )
+
+        # modify data by workflow data
+        data = DictExtensions.modify_json(data, workflow_step.data)
+
+        # build request from data
+        req = dict(
+                data = dict(
+                    childrenUpToTenYearsCount = Processing.get_key(data, 'childrenUpToTenYearsCount'),
+                    childrenOverTenYearsCount = Processing.get_key(data, 'childrenOverTenYearsCount'),
+                    areCustomersPartners = Processing.get_key(data, 'areCustomersPartners'),
+                ),
+                expenses = Processing.get_key(data, 'expenses')
+            )
+
+        # call FE API endpoint
+        res = FeAPI.Household.set_household_parameters(householdId, req)
+
+        # upgrade current state by workflow data
+        DictExtensions.modify_json(json_household, data)
 
     def __edit_household(self, workflow_step: WorkflowStep):
-        pass
+        json_household: dict = self.__find_json_by_path(workflow_step.path)
+
+        householdId: int = Processing.get_process_key(json_household, EProcessKey.HOUSEHOLD_ID)
+        householdId =  Processing.get_key(json_household, 'householdId') if householdId is None else householdId     
+
+        # build data by current state
+        data = dict(
+            childrenUpToTenYearsCount = Processing.get_key(json_household, 'childrenUpToTenYearsCount'),
+            childrenOverTenYearsCount = Processing.get_key(json_household, 'childrenOverTenYearsCount'),
+            areCustomersPartners = Processing.get_key(json_household, 'areCustomersPartners'),
+            expenses = Processing.get_key(json_household, 'expenses')
+        )
+
+        # modify data by workflow data
+        data = DictExtensions.modify_json(data, workflow_step.data)
+
+        # build request from data
+        req = dict(
+                data = dict(
+                    childrenUpToTenYearsCount = Processing.get_key(data, 'childrenUpToTenYearsCount'),
+                    childrenOverTenYearsCount = Processing.get_key(data, 'childrenOverTenYearsCount'),
+                    areCustomersPartners = Processing.get_key(data, 'areCustomersPartners'),
+                ),
+                expenses = Processing.get_key(data, 'expenses')
+            )
+
+        # call FE API endpoint
+        res = FeAPI.Household.set_household_parameters(householdId, req)
+
+        # upgrade current state by workflow data
+        DictExtensions.modify_json(json_household, workflow_step.data)
 
     def __remove_household(self, workflow_step: WorkflowStep):
         json_household = self.__find_json_by_path(workflow_step.path)

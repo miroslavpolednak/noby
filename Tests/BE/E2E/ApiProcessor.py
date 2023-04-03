@@ -4,7 +4,7 @@ from typing import List
 
 from .Processing import Processing
 
-from common import Log
+from common import Log, config
 from DATA import JsonDataModificator
 
 from business.offer import Offer
@@ -81,7 +81,9 @@ class ApiProcessor():
                 raise build_result
             
             offer_id = build_result
-
+            # offer_link = f'https://{config.environment.name.lower()}.noby.cz/undefined#/mortgage/case-detail/{offer_id}'
+            # self.__log.info(f'LINK to OFFER: {offer_link}')
+            
         if (case_json is not None):
             case = Case.from_json(case_json)
             self.__api_writer_case = ApiWriterCase(case, offer_id)
@@ -91,6 +93,8 @@ class ApiProcessor():
                 raise build_result
             
             case_id = build_result
+            case_link = f'https://{config.environment.name.lower()}.noby.cz/undefined#/mortgage/case-detail/{case_id}'
+            self.__log.info(f'LINK to CASE: {case_link}')
 
         self.__process_workflow()
 

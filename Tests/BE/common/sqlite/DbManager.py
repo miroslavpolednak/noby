@@ -2,6 +2,9 @@ import sqlite3
 from typing import List
 
 class DbManager():
+
+    __ENCODING: str ='utf-8'
+
     def __init__(self, path_to_db: str):
         self._path_to_db = path_to_db
         
@@ -13,9 +16,13 @@ class DbManager():
         return self._path_to_db
 
     @staticmethod
-    def get_file_content(path_to_file: str):
+    def get_file_content(path_to_file: str, encoding: str = None):
+
+        if encoding is None:
+            encoding = DbManager.__ENCODING
+
         file_content = None
-        with open(path_to_file, 'r') as f:
+        with open(path_to_file, 'r', encoding=encoding) as f:
             file_content = f.read()
         return file_content
 
