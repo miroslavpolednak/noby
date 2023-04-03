@@ -1,5 +1,4 @@
-﻿using System.Data;
-using CIS.InternalServices.NotificationService.Api.Configuration;
+﻿using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using FluentValidation;
 using Microsoft.Extensions.Options;
@@ -56,7 +55,7 @@ public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
             .NotEmpty()
                 .WithErrorCode(ErrorCodes.Validation.SendEmail.ContentRequired)
                 .WithMessage($"{nameof(SendEmailRequest.Content)} required.")
-            .SetValidator(new EmailContentValidator())
+            .SetValidator(new EmailContentValidator(options))
                 .WithErrorCode(ErrorCodes.Validation.SendEmail.ContentInvalid)
                 .WithMessage($"Invalid {nameof(SendEmailRequest.Content)}.");
 

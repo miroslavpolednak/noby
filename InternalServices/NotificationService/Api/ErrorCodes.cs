@@ -41,25 +41,27 @@ public static class ErrorCodes
 
         public static class EmailContent
         {
-            public const string FormatRequired = "315";
-            public const string LanguageRequired = "316";
-            public const string TextRequired = "317";
+            public const string FormatRequired = "316";
+            public const string FormatInvalid = "317";
+            public const string LanguageRequired = "318";
+            public const string LanguageInvalid = "319";
+            public const string TextRequired = "320";
         }
 
         public static class EmailAttachment
         {
-            public const string BinaryRequired = "318";
-            public const string BinaryInvalid = "319";
-            public const string FilenameRequired = "320";
-            public const string FilenameLengthLimitExceeded = "321";
+            public const string BinaryRequired = "321";
+            public const string BinaryInvalid = "322";
+            public const string FilenameRequired = "323";
+            public const string FilenameLengthLimitExceeded = "324";
         }
 
         public static class Phone
         {
-            public const string CountryCodeRequired = "322";
-            public const string CountryCodeInvalid = "323";
-            public const string NationalNumberRequired = "324";
-            public const string NationalNumberInvalid = "325";
+            public const string CountryCodeRequired = "325";
+            public const string CountryCodeInvalid = "326";
+            public const string NationalNumberRequired = "327";
+            public const string NationalNumberInvalid = "328";
         }
 
         public static class SearchResult
