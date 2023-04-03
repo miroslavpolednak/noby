@@ -81,7 +81,8 @@ public static class ErrorCodes
             public const string SubjectInvalid = "348";
             public const string ContentRequired = "349";
             public const string ContentInvalid = "350";
-            public const string AttachmentsInvalid = "351";
+            public const string AttachmentsCountLimitExceeded = "351";
+            public const string AttachmentsInvalid = "352";
         }
 
         public static class SendSms

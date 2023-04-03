@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Api.Configuration;
+﻿using System.Data;
+using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using FluentValidation;
 using Microsoft.Extensions.Options;
@@ -59,6 +60,11 @@ public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
                 .WithErrorCode(ErrorCodes.Validation.SendEmail.ContentInvalid)
                 .WithMessage($"Invalid {nameof(SendEmailRequest.Content)}.");
 
+        RuleFor(request => request.Attachments.Count)
+            .LessThanOrEqualTo(10)
+                .WithErrorCode(ErrorCodes.Validation.SendEmail.AttachmentsCountLimitExceeded)
+                .WithMessage($"Maximum count of {nameof(SendEmailRequest.Attachments)} is 10.");
+        
         RuleForEach(request => request.Attachments)
             .SetValidator(new EmailAttachmentValidator())
                 .WithErrorCode(ErrorCodes.Validation.SendEmail.AttachmentsInvalid)
