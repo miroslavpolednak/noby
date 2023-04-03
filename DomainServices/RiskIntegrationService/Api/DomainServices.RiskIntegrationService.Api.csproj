@@ -15,6 +15,7 @@
 		<AnalysisMode>Recommended</AnalysisMode>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>DomainServices.RiskIntegrationService.Api.xml</DocumentationFile>
+		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
 
 	<ItemGroup>

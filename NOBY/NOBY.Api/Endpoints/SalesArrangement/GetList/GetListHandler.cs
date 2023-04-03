@@ -5,7 +5,7 @@ using DomainServices.CodebookService.Clients;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetList;
 
-internal class GetListHandler
+internal sealed class GetListHandler
     : IRequestHandler<GetListRequest, List<Dto.SalesArrangementListItem>>
 {
     public async Task<List<Dto.SalesArrangementListItem>> Handle(GetListRequest request, CancellationToken cancellationToken)

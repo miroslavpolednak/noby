@@ -13,21 +13,40 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 
 ### Remarks
 Např. pokud mám vrátit detail klienta, ale v CM je více klientů se stejným ID.
-### Properties
+### Constructors
 
-<a name='CIS.Core.Exceptions.CisConflictException.Errors'></a>
+<a name='CIS.Core.Exceptions.CisConflictException.CisConflictException(int,string)'></a>
 
-## CisConflictException.Errors Property
-
-Seznam chyb.
+## CisConflictException(int, string) Constructor
 
 ```csharp
-public System.Collections.Immutable.IImmutableList<(string Key,string Message)>? Errors { get; set; }
+public CisConflictException(int exceptionCode, string message);
 ```
+#### Parameters
 
-#### Property Value
-[System.Collections.Immutable.IImmutableList&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Immutable.IImmutableList-1 'System.Collections.Immutable.IImmutableList`1')[&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.ValueTuple 'System.ValueTuple')[System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')[,](https://docs.microsoft.com/en-us/dotnet/api/System.ValueTuple 'System.ValueTuple')[System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.ValueTuple 'System.ValueTuple')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Immutable.IImmutableList-1 'System.Collections.Immutable.IImmutableList`1')
+<a name='CIS.Core.Exceptions.CisConflictException.CisConflictException(int,string).exceptionCode'></a>
 
-### Remarks
-Key: CIS error kód <br/>  
-Message: chybová zpráva
+`exceptionCode` [System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
+
+CIS error kód
+
+<a name='CIS.Core.Exceptions.CisConflictException.CisConflictException(int,string).message'></a>
+
+`message` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+Chybová zpráva
+
+<a name='CIS.Core.Exceptions.CisConflictException.CisConflictException(string)'></a>
+
+## CisConflictException(string) Constructor
+
+```csharp
+public CisConflictException(string message);
+```
+#### Parameters
+
+<a name='CIS.Core.Exceptions.CisConflictException.CisConflictException(string).message'></a>
+
+`message` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+Chybová zpráva

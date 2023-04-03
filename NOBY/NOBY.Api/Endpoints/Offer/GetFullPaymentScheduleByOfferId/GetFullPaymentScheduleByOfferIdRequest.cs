@@ -2,6 +2,6 @@
 
 namespace NOBY.Api.Endpoints.Offer.GetFullPaymentScheduleByOfferId;
 
-internal record GetFullPaymentScheduleByOfferIdRequest(int OfferId)
+internal sealed record GetFullPaymentScheduleByOfferIdRequest(int OfferId)
     : IRequest<Dto.GetFullPaymentScheduleResponse>
 { }

@@ -1,6 +1,9 @@
-/****** Object:  Table [dbo].[FlowSwitch]    Script Date: 14.03.2023 21:41:22 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[FlowSwitch]') AND type in (N'U'))
-DROP TABLE [dbo].[FlowSwitch]
+ALTER TABLE [dbo].[FlowSwitch] SET ( SYSTEM_VERSIONING = OFF  )
+GO
+DROP TABLE IF EXISTS [dbo].[FlowSwitch]
+GO
+DROP TABLE IF EXISTS [dbo].[FlowSwitchHistory]
 GO
 
 /****** Object:  Table [dbo].[FlowSwitch]    Script Date: 14.03.2023 21:41:22 ******/

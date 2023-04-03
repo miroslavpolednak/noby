@@ -2,6 +2,7 @@
 using CIS.Core.Extensions;
 using CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
 using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+using CIS.Infrastructure.Logging;
 using ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
 using System.ServiceModel.Channels;
 
@@ -37,7 +38,7 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
 
             if ((result.errorInfo?.kodChyby ?? 0) != 0)
             {
-                _logger.LogWarning($"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]");
+                _logger.ExtServiceResponseError($"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]");
                 throw new CisValidationException(10020, result.errorInfo!.textChyby);
             }
             return result;

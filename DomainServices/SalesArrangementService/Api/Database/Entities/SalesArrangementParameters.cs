@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.SalesArrangementService.Api.Database.Entities;
 
 [Table("SalesArrangementParameters", Schema = "dbo")]
-internal class SalesArrangementParameters
+internal sealed class SalesArrangementParameters
     : CIS.Core.Data.BaseCreatedWithModifiedUserId
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

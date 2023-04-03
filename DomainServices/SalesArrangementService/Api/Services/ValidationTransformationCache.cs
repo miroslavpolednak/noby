@@ -28,7 +28,7 @@ internal static class ValidationTransformationCache
 
     internal static IReadOnlyDictionary<string, TransformationItem> GetOrCreate(int key, Func<IReadOnlyDictionary<string, TransformationItem>> createItems)
     {
-        IReadOnlyDictionary<string, TransformationItem> cacheEntry;
+        IReadOnlyDictionary<string, TransformationItem>? cacheEntry;
         if (!_cache.TryGetValue(key, out cacheEntry))
         {
             SemaphoreSlim mylock = _locks.GetOrAdd(key, k => new SemaphoreSlim(1, 1));
@@ -56,6 +56,6 @@ internal static class ValidationTransformationCache
                 mylock.Release();
             }
         }
-        return cacheEntry;
+        return cacheEntry!;
     }
 }

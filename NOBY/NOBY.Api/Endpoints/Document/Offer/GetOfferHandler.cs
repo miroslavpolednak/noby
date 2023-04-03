@@ -3,7 +3,7 @@ using NOBY.Api.Endpoints.Document.Shared.DocumentIdManager;
 
 namespace NOBY.Api.Endpoints.Document.Offer;
 
-internal class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnlyMemory<byte>>
+internal sealed class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnlyMemory<byte>>
 {
     private readonly DocumentGenerator _documentGenerator;
     private readonly DocumentManager _documentManager;

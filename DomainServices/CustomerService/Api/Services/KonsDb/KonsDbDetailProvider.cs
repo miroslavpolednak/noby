@@ -134,7 +134,7 @@ public class KonsDbDetailProvider
         }
     }
 
-    private IEnumerable<Identity> GetIdentities(long partnerId, long? kbId)
+    private static IEnumerable<Identity> GetIdentities(long partnerId, long? kbId)
     {
         yield return new Identity(partnerId, IdentitySchemes.Mp);
 
@@ -149,7 +149,7 @@ public class KonsDbDetailProvider
             FirstName = partner.FirstName ?? string.Empty,
             LastName = partner.LastName ?? string.Empty,
             GenderId = partner.GenderId,
-            DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, partner.DegreeBefore, StringComparison.InvariantCultureIgnoreCase))?.Id,
+            DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, partner.DegreeBefore, StringComparison.OrdinalIgnoreCase))?.Id,
             BirthNumber = partner.BirthNumber ?? string.Empty,
             DateOfBirth = partner.BirthDate,
             PlaceOfBirth = partner.PlaceOfBirth ?? string.Empty,

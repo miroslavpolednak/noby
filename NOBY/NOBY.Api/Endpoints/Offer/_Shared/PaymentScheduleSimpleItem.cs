@@ -2,8 +2,8 @@
 
 public class PaymentScheduleSimpleItem
 {
-    public string PaymentNumber { get; set; }
-    public string Date { get; set; }
-    public string Type { get; set; }
-    public string Amount { get; set; }
+    public string PaymentNumber { get; set; } = string.Empty;
+    public string Date { get; set; } = string.Empty;
+    public string Type { get; set; } = string.Empty;
+    public string Amount { get; set; } = string.Empty;
 }

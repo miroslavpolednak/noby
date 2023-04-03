@@ -7,6 +7,10 @@
 	  <Version>1.0.0.0</Version>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />

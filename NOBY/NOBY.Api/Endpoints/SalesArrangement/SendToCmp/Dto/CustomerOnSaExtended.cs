@@ -3,7 +3,7 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp.Dto;
 
-internal class CustomerOnSaExtended
+internal sealed class CustomerOnSaExtended
 {
     public required Identity IdentityMp { get; init; }
 

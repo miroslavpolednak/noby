@@ -42,7 +42,7 @@ internal sealed class RealMpHomeClient
 
     public async Task UpdatePartnerKbId(long partnerId, long kbId, CancellationToken cancellationToken = default)
     {
-        var address = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}/foms/Partner/{partnerId}/kbId", "kbId", partnerId.ToString());
+        var address = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}/foms/Partner/{partnerId}/kbId", "kbId", partnerId.ToString(System.Globalization.CultureInfo.InvariantCulture));
 
         var response = await _httpClient.PutAsync(address, default, cancellationToken);
 

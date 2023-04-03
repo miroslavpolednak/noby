@@ -6,7 +6,7 @@ using DomainServices.SalesArrangementService.Clients;
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.AsImplementedInterfacesServiceAttribute]
-internal class CreateMortgageCaseRollback
+internal sealed class CreateMortgageCaseRollback
     : IRollbackAction<CreateMortgageCaseRequest>
 {
     public async Task ExecuteRollback(Exception exception, CreateMortgageCaseRequest request, CancellationToken cancellationToken = default(CancellationToken))

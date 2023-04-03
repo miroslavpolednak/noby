@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Address.GetAddressDetail;
 
-internal class GetAddressDetailRequestValidator
+internal sealed class GetAddressDetailRequestValidator
     : AbstractValidator<GetAddressDetailRequest>
 {
     public GetAddressDetailRequestValidator()

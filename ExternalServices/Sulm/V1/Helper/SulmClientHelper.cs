@@ -2,7 +2,7 @@
 
 namespace ExternalServices.Sulm.V1;
 
-internal class SulmClientHelper
+internal sealed class SulmClientHelper
     : ISulmClientHelper
 {
     public async Task StartUse(long kbCustomerId, string purposeCode, CancellationToken cancellationToken = default(CancellationToken))

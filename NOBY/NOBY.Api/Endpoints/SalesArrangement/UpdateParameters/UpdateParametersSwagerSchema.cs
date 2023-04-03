@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
-internal class UpdateParametersSwagerSchema : ISchemaFilter
+internal sealed class UpdateParametersSwagerSchema : ISchemaFilter
 {
     public void Apply(OpenApiSchema schema, SchemaFilterContext context)
     {

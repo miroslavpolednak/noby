@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Types.Enums;
-using DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.CreateSalesArrangement;
 
@@ -8,10 +7,6 @@ internal sealed class CreateSalesArrangementHandler
 {
     public async Task<CreateSalesArrangementResponse> Handle(CreateSalesArrangementRequest request, CancellationToken cancellation)
     {
-        // validace product instance type
-        _ = (await _codebookService.SalesArrangementTypes(cancellation)).FirstOrDefault(t => t.Id == request.SalesArrangementTypeId)
-            ?? throw new CisNotFoundException(18005, $"SalesArrangementTypeId {request.SalesArrangementTypeId} does not exist.");
-
         // validace na existenci case
         //TODO je nejaka spojitost mezi ProductTypeId a SalesArrangementTypeId, ktera by se dala zkontrolovat?
         await _caseService.GetCaseDetail(request.CaseId, cancellation);
@@ -22,7 +17,7 @@ internal sealed class CreateSalesArrangementHandler
             SalesArrangementSignatureTypeId = request.SalesArrangementSignatureTypeId,
             CaseId = request.CaseId,
             SalesArrangementTypeId = request.SalesArrangementTypeId,
-            StateUpdateTime = _dateTime.Now,
+            StateUpdateTime = _dbContext.CisDateTime.Now,
             ContractNumber = request.ContractNumber,
             ChannelId = 4 //TODO jak ziskat ChannelId? Z instance uzivatele? Az bude pripravena xxvvss asi...
         };
@@ -31,7 +26,8 @@ internal sealed class CreateSalesArrangementHandler
         saEntity.State = (await _codebookService.SalesArrangementStates(cancellation)).First(t => t.IsDefault).Id;
 
         // ulozit do DB
-        var salesArrangementId = await _repository.CreateSalesArrangement(saEntity, cancellation);
+        _dbContext.SalesArrangements.Add(saEntity);
+        await _dbContext.SaveChangesAsync(cancellation);
 
         // params
         if (request.DataCase != CreateSalesArrangementRequest.DataOneofCase.None)
@@ -41,7 +37,7 @@ internal sealed class CreateSalesArrangementHandler
 
             var data = new UpdateSalesArrangementParametersRequest()
             {
-                SalesArrangementId = salesArrangementId
+                SalesArrangementId = saEntity.SalesArrangementId
             };
             switch (request.DataCase)
             {
@@ -71,14 +67,14 @@ internal sealed class CreateSalesArrangementHandler
         {
             await _mediator.Send(new LinkModelationToSalesArrangementRequest(new()
             {
-                SalesArrangementId = salesArrangementId,
+                SalesArrangementId = saEntity.SalesArrangementId,
                 OfferId = request.OfferId.Value
             }), cancellation);
         }
 
-        _logger.EntityCreated(nameof(Database.Entities.SalesArrangement), salesArrangementId);
+        _logger.EntityCreated(nameof(Database.Entities.SalesArrangement), saEntity.SalesArrangementId);
 
-        return new CreateSalesArrangementResponse { SalesArrangementId = salesArrangementId };
+        return new CreateSalesArrangementResponse { SalesArrangementId = saEntity.SalesArrangementId };
     }
 
     static bool validateDataCase(CreateSalesArrangementRequest.DataOneofCase dataCase, SalesArrangementTypes salesArrangementTypeId)
@@ -89,32 +85,29 @@ internal sealed class CreateSalesArrangementHandler
             SalesArrangementTypes.GeneralChange when dataCase == CreateSalesArrangementRequest.DataOneofCase.GeneralChange => true,
             SalesArrangementTypes.HUBN when dataCase == CreateSalesArrangementRequest.DataOneofCase.HUBN => true,
             SalesArrangementTypes.CustomerChange when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange => true,
-            _ => throw new CisValidationException(0, $"CreateSalesArrangementRequest.DataOneofCase is not valid for SalesArrangementTypeId={salesArrangementTypeId}")
+            _ => throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.DataObjectIsNotValid, salesArrangementTypeId)
         };
 
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly OfferService.Clients.IOfferServiceClient _offerService;
     private readonly CaseService.Clients.ICaseServiceClient _caseService;
-    private readonly Database.SalesArrangementServiceRepository _repository;
+    private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly ILogger<CreateSalesArrangementHandler> _logger;
-    private readonly CIS.Core.IDateTime _dateTime;
     private readonly IMediator _mediator;
 
     public CreateSalesArrangementHandler(
         IMediator mediator,
-        CIS.Core.IDateTime dateTime,
         OfferService.Clients.IOfferServiceClient offerService,
         CaseService.Clients.ICaseServiceClient caseService,
         CodebookService.Clients.ICodebookServiceClients codebookService,
-        Database.SalesArrangementServiceRepository repository,
+        Database.SalesArrangementServiceDbContext dbContext,
         ILogger<CreateSalesArrangementHandler> logger)
     {
         _mediator = mediator;
-        _dateTime = dateTime;
         _offerService = offerService;
         _caseService = caseService;
         _codebookService = codebookService;
-        _repository = repository;
+        _dbContext = dbContext;
         _logger = logger;
     }
 }

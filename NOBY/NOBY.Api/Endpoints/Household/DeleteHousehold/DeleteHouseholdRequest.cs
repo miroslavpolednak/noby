@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Household.DeleteHousehold;
 
-internal record DeleteHouseholdRequest(int HouseholdId)
+internal sealed record DeleteHouseholdRequest(int HouseholdId)
     : IRequest<int>
 {
 }

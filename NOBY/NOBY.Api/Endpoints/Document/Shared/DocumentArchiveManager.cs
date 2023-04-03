@@ -9,7 +9,7 @@ using NOBY.Api.Endpoints.Document.Shared.DocumentIdManager;
 namespace NOBY.Api.Endpoints.Document.Shared;
 
 [TransientService, SelfService]
-internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocumentIdManager : IDocumentIdManager<TEntityId>
+internal sealed class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocumentIdManager : IDocumentIdManager<TEntityId>
 {
     private readonly TDocumentIdManager _documentIdManager;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
@@ -67,7 +67,7 @@ internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocu
             {
                 DocumentId = archiveData.DocumentId,
                 CaseId = archiveData.CaseId,
-                AuthorUserLogin = archiveData.UserId.ToString(),
+                AuthorUserLogin = archiveData.UserId.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 EaCodeMainId = documentTypes.First(d => d.Id == archiveData.DocumentTypeId).EACodeMainId,
                 Filename = archiveData.FileName,
                 CreatedOn = DateTime.Now,

@@ -1,5 +1,6 @@
 ﻿using CIS.Core;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
 
 namespace ExternalServices.Sulm.V1;
@@ -53,14 +54,14 @@ internal sealed class RealSulmClient
         return new Dto.StartUseRequest
         {
             channelCode = ISulmClient.GetChannelCode(userIdentities),
-            clientId = kbCustomerId.ToString(),
+            clientId = kbCustomerId.ToString(System.Globalization.CultureInfo.InvariantCulture),
             userIdType = identity.Scheme.GetAttribute<DisplayAttribute>()!.Name!,
             userId = identity.Identity,
             purposeCode = purposeCode
         };
     }
 
-    private async Task processUnsuccessfulResult(HttpResponseMessage response, CancellationToken cancellationToken)
+    private static async Task processUnsuccessfulResult(HttpResponseMessage response, CancellationToken cancellationToken)
     {
         var result = await response.Content.ReadFromJsonAsync<Dto.Error>(cancellationToken: cancellationToken);
         if (result is null)
