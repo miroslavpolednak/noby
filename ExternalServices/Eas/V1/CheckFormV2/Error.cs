@@ -1,17 +1,16 @@
-﻿namespace ExternalServices.Eas.V1.CheckFormV2
+﻿namespace ExternalServices.Eas.V1.CheckFormV2;
+
+public sealed class ErrorDto
 {
-    public class Error
-    {
-        public string Value { get; set; }
+    public string Value { get; set; } = string.Empty;
 
-        public int ErrorCode { get; set; }
+    public int ErrorCode { get; set; }
 
-        public string ErrorMessage { get; set; }
+    public string ErrorMessage { get; set; } = string.Empty;
 
-        public string AdditionalInformation { get; set; }
+    public string AdditionalInformation { get; set; } = string.Empty;
 
-        public string ErrorQueue { get; set; }
+    public string ErrorQueue { get; set; } = string.Empty;
 
-        public bool Severity { get; set; }
-    }
+    public bool Severity { get; set; }
 }

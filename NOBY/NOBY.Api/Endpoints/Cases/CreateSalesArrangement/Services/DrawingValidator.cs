@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
-internal class DrawingValidator
+internal sealed class DrawingValidator
     : BaseValidator, ICreateSalesArrangementParametersValidator
 {
     private readonly IHttpContextAccessor _httpContextAccessor;

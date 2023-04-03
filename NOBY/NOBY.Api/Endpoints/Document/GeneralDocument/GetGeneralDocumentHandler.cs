@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Document.GeneralDocument;
 
-internal class GetGeneralDocumentHandler : IRequestHandler<GetGeneralDocumentRequest, ReadOnlyMemory<byte>>
+internal sealed class GetGeneralDocumentHandler : IRequestHandler<GetGeneralDocumentRequest, ReadOnlyMemory<byte>>
 {
     private readonly DocumentGenerator _documentGenerator;
 

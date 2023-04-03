@@ -267,6 +267,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00001-initial_creation.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00002-initial_seed.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00002-initial_seed.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00004-validation_ignore_formid_list.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00004-validation_ignore_formid_list.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00005-HFICH-5270_ignore_businessid.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00005-HFICH-5270_ignore_businessid.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
@@ -361,6 +363,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.Messaging", "CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj", "{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1146,6 +1150,14 @@ Global
 		{FA440E3E-69ED-4197-B1FA-B705DA129FD7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA440E3E-69ED-4197-B1FA-B705DA129FD7}.Release|x64.ActiveCfg = Release|Any CPU
 		{FA440E3E-69ED-4197-B1FA-B705DA129FD7}.Release|x64.Build.0 = Release|Any CPU
+		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Debug|x64.Build.0 = Debug|Any CPU
+		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Release|x64.ActiveCfg = Release|Any CPU
+		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1277,6 +1289,7 @@ Global
 		{6D676B53-6AD7-4828-922D-B52A42B5AD4F} = {46414B85-D1B6-411D-B232-C6CC8B35FE57}
 		{D5315192-5730-455C-B586-D964F840F401} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
 		{FA440E3E-69ED-4197-B1FA-B705DA129FD7} = {1AB95406-90FE-4CAA-8536-6846B37A450E}
+		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

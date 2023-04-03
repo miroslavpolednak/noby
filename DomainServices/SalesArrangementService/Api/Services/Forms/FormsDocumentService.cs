@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 
 [ScopedService, SelfService]
-internal class FormsDocumentService
+internal sealed class FormsDocumentService
 {
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;

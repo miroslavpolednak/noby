@@ -2,7 +2,7 @@
 
 namespace DomainServices.RiskIntegrationService.Api.GlobalValidators;
 
-internal class IdentityValidator
+internal sealed class IdentityValidator
     : AbstractValidator<Contracts.Shared.Identity?>
 {
     public IdentityValidator()

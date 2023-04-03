@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Document.Shared.DocumentIdManager;
 
-internal class DocumentInfo
+internal sealed class DocumentInfo
 {
     public required string DocumentId { get; init; }
 

@@ -43,7 +43,7 @@ internal static class StartupExtensions
 
         // databases
         builder.Services
-            .AddDapper<Data.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxv"));
+            .AddDapper<Data.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxv")!);
 
         return builder;
     }

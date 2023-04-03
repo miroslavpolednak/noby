@@ -3,9 +3,7 @@
   <PropertyGroup>
 	  <TargetFramework>net7.0</TargetFramework>
 	  <Authors>Filip Tuma</Authors>
-	  <Company>Wookiee.Apps s.r.o.</Company>
 	  <Product>MPSS DomainServices</Product>
-	  <LangVersion>preview</LangVersion>
 	  <Nullable>enable</Nullable>
 	  <Platforms>AnyCPU;x64</Platforms>
 	  <ImplicitUsings>enable</ImplicitUsings>
@@ -14,6 +12,7 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
 	
 	<ItemGroup>

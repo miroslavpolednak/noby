@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Household.DeleteHousehold;
 
-internal class DeleteHouseholdHandler
+internal sealed class DeleteHouseholdHandler
     : IRequestHandler<DeleteHouseholdRequest, int>
 {
     public async Task<int> Handle(DeleteHouseholdRequest request, CancellationToken cancellationToken)

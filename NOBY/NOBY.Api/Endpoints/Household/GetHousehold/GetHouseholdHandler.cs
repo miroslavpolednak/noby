@@ -1,9 +1,8 @@
 ﻿using DomainServices.HouseholdService.Clients;
-using contracts = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.GetHousehold;
 
-internal class GetHouseholdHandler
+internal sealed class GetHouseholdHandler
     : IRequestHandler<GetHouseholdRequest, GetHouseholdResponse>
 {
     public async Task<GetHouseholdResponse> Handle(GetHouseholdRequest request, CancellationToken cancellationToken)

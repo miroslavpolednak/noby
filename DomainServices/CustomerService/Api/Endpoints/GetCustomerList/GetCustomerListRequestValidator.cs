@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Endpoints.GetCustomerList;
 
-internal class GetCustomerListRequestValidator : AbstractValidator<CustomerListRequest>
+internal sealed class GetCustomerListRequestValidator : AbstractValidator<CustomerListRequest>
 {
     public GetCustomerListRequestValidator()
     {

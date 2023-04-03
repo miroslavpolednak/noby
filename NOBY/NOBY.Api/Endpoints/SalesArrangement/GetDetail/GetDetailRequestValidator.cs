@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetDetail;
 
-internal class GetDetailRequestValidator
+internal sealed class GetDetailRequestValidator
     : AbstractValidator<GetDetailRequest>
 {
     public GetDetailRequestValidator()

@@ -13,7 +13,7 @@ internal sealed class GetSalesArrangementsListHandler
             .AsNoTracking()
             .Where(t => t.CaseId == request.CaseId)
             .OrderByDescending(t => t.SalesArrangementId)
-            .Select(SalesArrangementServiceRepositoryExpressions.SalesArrangementDetail())
+            .Select(DatabaseExpressions.SalesArrangementDetail())
             .ToListAsync(cancellation);
 
         GetSalesArrangementListResponse model = new();

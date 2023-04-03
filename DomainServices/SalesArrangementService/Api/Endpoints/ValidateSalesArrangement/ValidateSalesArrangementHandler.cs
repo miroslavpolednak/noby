@@ -4,7 +4,7 @@ using CIS.InternalServices.DataAggregatorService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement;
 
-internal class ValidateSalesArrangementHandler
+internal sealed class ValidateSalesArrangementHandler
     : IRequestHandler<ValidateSalesArrangementRequest, ValidateSalesArrangementResponse>
 {
     private static readonly int[] ValidCommonValues = { 0, 6 };
@@ -85,7 +85,8 @@ internal class ValidateSalesArrangementHandler
         if (!ValidCommonValues.Contains(checkFormResult.CommonValue))
         {
             var message = $"Check form common error [CommonValue: {checkFormResult.CommonValue}, CommonText: {checkFormResult.CommonText}]";
-            throw new CisValidationException(checkFormResult.CommonValue == 2 ? 18041 : 18040, message);
+
+            throw new CisValidationException(checkFormResult.CommonValue == 2 ? ErrorCodeMapper.SendAndValidateForm2 : ErrorCodeMapper.SendAndValidateForm1, message);
         }
 
         var transformationService = _transformationServiceFactory.CreateService(checkFormData.formular_id);

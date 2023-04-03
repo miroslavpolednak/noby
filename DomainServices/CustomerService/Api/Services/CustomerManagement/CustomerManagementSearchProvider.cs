@@ -6,7 +6,7 @@ using DomainServices.CustomerService.Api.Extensions;
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
-internal class CustomerManagementSearchProvider
+internal sealed class CustomerManagementSearchProvider
 {
     private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClients _codebook;

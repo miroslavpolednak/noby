@@ -55,8 +55,8 @@ internal static class GrpcExtensions
                                     Id = "basic"
                                 }
                             },
-                            new string[] {}
-                    }
+                            Array.Empty<string>()
+        }
                 });
         });
 
