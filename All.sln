@@ -267,6 +267,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00001-initial_creation.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00002-initial_seed.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00002-initial_seed.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00004-validation_ignore_formid_list.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00004-validation_ignore_formid_list.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00005-HFICH-5270_ignore_businessid.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00005-HFICH-5270_ignore_businessid.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
@@ -362,7 +364,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.Infrastructure.Messaging", "CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj", "{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.Messaging", "CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj", "{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
