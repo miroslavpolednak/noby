@@ -6,10 +6,10 @@
 Chyba validace názvu aplikace - vyvoláno z konstruktoru value type ApplicationKey
 
 ```csharp
-public sealed class CisInvalidApplicationKeyException : CIS.Core.Exceptions.BaseCisArgumentException
+public sealed class CisInvalidApplicationKeyException : CIS.Core.Exceptions.BaseCisException
 ```
 
-Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; [System.Exception](https://docs.microsoft.com/en-us/dotnet/api/System.Exception 'System.Exception') &#129106; [System.SystemException](https://docs.microsoft.com/en-us/dotnet/api/System.SystemException 'System.SystemException') &#129106; [System.ArgumentException](https://docs.microsoft.com/en-us/dotnet/api/System.ArgumentException 'System.ArgumentException') &#129106; [BaseCisArgumentException](CIS.Core.Exceptions.BaseCisArgumentException.md 'CIS.Core.Exceptions.BaseCisArgumentException') &#129106; CisInvalidApplicationKeyException
+Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; [System.Exception](https://docs.microsoft.com/en-us/dotnet/api/System.Exception 'System.Exception') &#129106; [BaseCisException](CIS.Core.Exceptions.BaseCisException.md 'CIS.Core.Exceptions.BaseCisException') &#129106; CisInvalidApplicationKeyException
 ### Constructors
 
 <a name='CIS.Core.Exceptions.CisInvalidApplicationKeyException.CisInvalidApplicationKeyException(string)'></a>

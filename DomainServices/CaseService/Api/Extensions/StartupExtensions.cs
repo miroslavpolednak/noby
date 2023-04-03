@@ -42,6 +42,7 @@ internal static class StartupExtensions
             .AddConsumer<Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer>()
             .AddConsumerTopic<IMarker1>(appConfiguration.MainLoanProcessChangedTopic!)
             .AddConsumerTopic<IMarker2>(appConfiguration.CaseStateChangedProcessingCompletedTopic!)
+            .AddProducers<IMarker1>(appConfiguration.MainLoanProcessChangedTopic!)
             .Build();
 
         return builder;

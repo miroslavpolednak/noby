@@ -6,7 +6,7 @@ using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerMana
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
-internal class CustomerManagementDetailProvider
+internal sealed class CustomerManagementDetailProvider
 {
     private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClients _codebook;

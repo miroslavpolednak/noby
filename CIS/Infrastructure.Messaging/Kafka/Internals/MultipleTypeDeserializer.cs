@@ -7,7 +7,9 @@ using CIS.Infrastructure.Messaging.Kafka.Internals.Abstraction;
 
 namespace CIS.Infrastructure.Messaging.Kafka.Internals;
 
+#pragma warning disable CA1001 // Types that own disposable fields should be disposable, https://stackoverflow.com/questions/32033416/do-i-need-to-dispose-a-semaphoreslim
 public sealed class MultipleTypeDeserializer<T> : IAsyncDeserializer<T>
+#pragma warning restore CA1001 // Types that own disposable fields should be disposable
 {
     private const byte MagicByte = 0;
     private readonly ISchemaRegistryClient _schemaRegistryClient;

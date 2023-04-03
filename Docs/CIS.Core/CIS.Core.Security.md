@@ -6,7 +6,7 @@ Interfaces pro získání informací o přihlášeném uživatel a technickém u
 
 | Classes | |
 | :--- | :--- |
-| [Constants](CIS.Core.Security.Constants.md 'CIS.Core.Security.Constants') | Konstanty pro nastavení auth providerů atd. |
+| [SecurityConstants](CIS.Core.Security.SecurityConstants.md 'CIS.Core.Security.SecurityConstants') | Konstanty pro nastavení auth providerů atd. |
 
 | Interfaces | |
 | :--- | :--- |

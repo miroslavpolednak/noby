@@ -59,21 +59,31 @@ CIS.Foms.Enums.ServiceImplementationTypes ImplementationType { get; set; }
 #### Property Value
 [CIS.Foms.Enums.ServiceImplementationTypes](https://docs.microsoft.com/en-us/dotnet/api/CIS.Foms.Enums.ServiceImplementationTypes 'CIS.Foms.Enums.ServiceImplementationTypes')
 
-<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogPayloads'></a>
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogRequestPayload'></a>
 
-## IExternalServiceConfiguration.LogPayloads Property
+## IExternalServiceConfiguration.LogRequestPayload Property
 
-Zapne logovani request a response payloadu a hlavicek. Default: true
+True = do logu se ulozi plny payload odpovedi externi sluzby
 
 ```csharp
-bool LogPayloads { get; set; }
+bool LogRequestPayload { get; set; }
 ```
 
 #### Property Value
 [System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
 
-### Remarks
-Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogResponsePayload'></a>
+
+## IExternalServiceConfiguration.LogResponsePayload Property
+
+True = do logu se ulozi plny request poslany do externi sluzby
+
+```csharp
+bool LogResponsePayload { get; set; }
+```
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
 
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Password'></a>
 
@@ -103,6 +113,22 @@ System.Nullable<int> RequestTimeout { get; set; }
 
 ### Remarks
 Default is set to 10 seconds
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseLogging'></a>
+
+## IExternalServiceConfiguration.UseLogging Property
+
+Zapne logovani request a response payloadu a hlavicek. Default: true
+
+```csharp
+bool UseLogging { get; set; }
+```
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
+
+### Remarks
+Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.
 
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Username'></a>
 
