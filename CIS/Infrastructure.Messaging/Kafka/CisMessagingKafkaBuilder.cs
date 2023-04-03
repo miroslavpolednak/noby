@@ -1,7 +1,5 @@
 ﻿using Avro.Specific;
 using MassTransit;
-using static MassTransit.Monitoring.Performance.BuiltInCounters;
-using System.Text.RegularExpressions;
 
 namespace CIS.Infrastructure.Messaging.Kafka;
 
@@ -12,9 +10,9 @@ internal sealed class CisMessagingKafkaBuilder
         where TTopicMarker : class, ISpecificRecord
     {
         var consumers = getTypes<TTopicMarker>();
-        if (consumers.Count() == 0)
+        if (!consumers.Any())
         {
-            throw new ArgumentException("TTopicMarker", $"No consumer contracts implementing {typeof(TTopicMarker)} found");
+            throw new Core.Exceptions.CisArgumentException(0, $"No consumer contracts implementing {typeof(TTopicMarker)} found", "consumers");
         }
 
         _kafkaConfigurationActions.Add((configurator, context) =>
@@ -39,9 +37,9 @@ internal sealed class CisMessagingKafkaBuilder
         where TTopicMarker : class, ISpecificRecord
     {
         var producers = getTypes<TTopicMarker>();
-        if (producers.Count() == 0)
+        if (!producers.Any())
         {
-            throw new ArgumentException("TTopicMarker", $"No producer contracts implementing {typeof(TTopicMarker)} found");
+            throw new Core.Exceptions.CisArgumentException(0, $"No producer contracts implementing {typeof(TTopicMarker)} found", "producers");
         }
 
         _riderConfigurationActions.Add(configurator =>

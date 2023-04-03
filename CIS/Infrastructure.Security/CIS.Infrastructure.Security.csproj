@@ -21,14 +21,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Content Remove="DefaultDocumentation.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="DefaultDocumentation.json" />
-	</ItemGroup>
-	
-	<ItemGroup>
 		<PackageReference Include="Novell.Directory.Ldap.NETStandard" Version="4.0.0-beta4" />
 	</ItemGroup>
 

@@ -8,3 +8,4 @@ defaultdocumentation -j "./CIS/Infrastructure.CisMediatR/DefaultDocumentation.js
 defaultdocumentation -j "./CIS/Infrastructure.Security/DefaultDocumentation.json"
 defaultdocumentation -j "./CIS/Infrastructure.Telemetry/DefaultDocumentation.json"
 defaultdocumentation -j "./CIS/Infrastructure.WebApi/DefaultDocumentation.json"
+defaultdocumentation -j "./CIS/Infrastructure.Messaging/DefaultDocumentation.json"
