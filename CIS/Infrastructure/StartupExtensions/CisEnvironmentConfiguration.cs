@@ -46,5 +46,5 @@ public static class CisEnvironmentConfiguration
         builder.Services.TryAddSingleton(cisConfiguration);
     }
 
-    private const string JsonConfigurationKey = "CisEnvironmentConfiguration";
+    public const string JsonConfigurationKey = "CisEnvironmentConfiguration";
 }

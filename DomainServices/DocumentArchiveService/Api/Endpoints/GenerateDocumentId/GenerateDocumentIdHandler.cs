@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Configuration;
 using CIS.Infrastructure.Data;
 using DomainServices.DocumentArchiveService.Api.Database;
+using DomainServices.DocumentArchiveService.Api.Database.Repositories;
 using DomainServices.DocumentArchiveService.Contracts;
 using FastEnumUtility;
 
@@ -11,16 +12,16 @@ internal sealed class GenerateDocumentIdHandler
 {
     private readonly AppConfiguration _configuration;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
-    private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _connectionProvider;
+    private readonly IDocumentSequenceRepository _documentSequenceRepository;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
     public GenerateDocumentIdHandler(
-        CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> connectionProvider,
+        IDocumentSequenceRepository documentSequenceRepository,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         AppConfiguration configuration,
         ICisEnvironmentConfiguration cisEnvironment)
     {
-        _connectionProvider = connectionProvider;
+        _documentSequenceRepository = documentSequenceRepository;
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;
         _cisEnvironment = cisEnvironment;
@@ -31,7 +32,7 @@ internal sealed class GenerateDocumentIdHandler
         var envName = request.EnvironmentName == EnvironmentNames.Unknown ? FastEnum.Parse<EnvironmentNames>(ConvertToEnvEnumStr(_cisEnvironment.EnvironmentName!))
                                                                           : request.EnvironmentName;
 
-        long seq = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<long>("SELECT NEXT VALUE FOR dbo.GenerateDocumentIdSequence", cancellation);
+        long seq = await _documentSequenceRepository.GetNextDocumentSeqValue(cancellation);
 
         return new Contracts.GenerateDocumentIdResponse
         {
@@ -41,7 +42,7 @@ internal sealed class GenerateDocumentIdHandler
 
     private static string ConvertToEnvEnumStr(string enumStr)
     {
-        enumStr =enumStr.ToLower();
+        enumStr = enumStr.ToLower();
         if (string.IsNullOrEmpty(enumStr) || enumStr.Length < 1)
         {
             return string.Empty;

@@ -362,7 +362,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.Infrastructure.Messaging", "CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj", "{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.Messaging", "CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj", "{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D82D72DD-125A-4023-8A6F-D950BE363BD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.DocumentArchiveService.Tests", "DomainServices\DocumentArchiveService\Tests\DomainServices.DocumentArchiveService.Tests\DomainServices.DocumentArchiveService.Tests.csproj", "{525199C6-C932-4365-BC9C-3E92A07C8BD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1156,6 +1160,14 @@ Global
 		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Release|x64.ActiveCfg = Release|Any CPU
 		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Release|x64.Build.0 = Release|Any CPU
+		{525199C6-C932-4365-BC9C-3E92A07C8BD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{525199C6-C932-4365-BC9C-3E92A07C8BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{525199C6-C932-4365-BC9C-3E92A07C8BD2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{525199C6-C932-4365-BC9C-3E92A07C8BD2}.Debug|x64.Build.0 = Debug|Any CPU
+		{525199C6-C932-4365-BC9C-3E92A07C8BD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{525199C6-C932-4365-BC9C-3E92A07C8BD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{525199C6-C932-4365-BC9C-3E92A07C8BD2}.Release|x64.ActiveCfg = Release|Any CPU
+		{525199C6-C932-4365-BC9C-3E92A07C8BD2}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1288,6 +1300,8 @@ Global
 		{D5315192-5730-455C-B586-D964F840F401} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
 		{FA440E3E-69ED-4197-B1FA-B705DA129FD7} = {1AB95406-90FE-4CAA-8536-6846B37A450E}
 		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
+		{D82D72DD-125A-4023-8A6F-D950BE363BD2} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
+		{525199C6-C932-4365-BC9C-3E92A07C8BD2} = {D82D72DD-125A-4023-8A6F-D950BE363BD2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}
