@@ -9,8 +9,8 @@ public static class IdentificationDocumentExtensions
            IdentificationDocumentTypeId = document.IdentificationDocumentTypeId.GetValueOrDefault(),
            IssuedBy = document.IssuedBy,
            Number = document.Number,
-           IssuedOn = document.IssuedOn, // ?? DateTime.Today.AddYears(-1), //Mock HFICH-4410
-           ValidTo = document.ValidTo // ?? DateTime.Today.AddYears(2) //Mock
+           IssuedOn = document.IssuedOn,
+           ValidTo = document.ValidTo
        };
     
     public static IdentificationDocumentFull ToResponseDto(this DomainServices.CustomerService.Contracts.IdentificationDocument document)
