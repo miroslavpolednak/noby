@@ -25,8 +25,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AlreadyLinkedToOffer, request.SalesArrangementId);
 
         // validace na existenci offer
-        var offerInstance = await _offerService.GetMortgageOffer(request.OfferId, cancellation)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OfferNotFound, request.OfferId);
+        var offerInstance = await _offerService.GetMortgageOffer(request.OfferId, cancellation);
 
         // kontrola, zda simulace neni nalinkovana na jiny SA
         if (await _dbContext.SalesArrangements.AnyAsync(t => t.OfferId == request.OfferId, cancellation))
@@ -35,8 +34,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // Kontrola, že nová Offer má GuaranteeDateFrom větší nebo stejné jako původně nalinkovaná offer
         if (salesArrangementInstance.OfferId.HasValue)
         {
-            var offerInstanceOld = await _offerService.GetMortgageOffer(salesArrangementInstance.OfferId.Value, cancellation)
-                ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OfferNotFound, salesArrangementInstance.OfferId);
+            var offerInstanceOld = await _offerService.GetMortgageOffer(salesArrangementInstance.OfferId.Value, cancellation);
             if ((DateTime)offerInstance.SimulationInputs.GuaranteeDateFrom < (DateTime)offerInstanceOld.SimulationInputs.GuaranteeDateFrom)
                 throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InvalidGuaranteeDateFrom);
         }

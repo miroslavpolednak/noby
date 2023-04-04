@@ -134,7 +134,7 @@ public class CustomerController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task GetDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateDetailWithChanges.UpdateDetailWithChangesRequest request, CancellationToken cancellationToken)
+    public async Task UpdateDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateDetailWithChanges.UpdateDetailWithChangesRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
 
     private readonly IMediator _mediator;

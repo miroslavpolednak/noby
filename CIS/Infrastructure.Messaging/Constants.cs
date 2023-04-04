@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.Messaging;
 
-internal class Constants
+internal static class Constants
 {
     /// <summary>
     /// Nazev elementu v appsettings.json, ve kterem je konfigurace Kafky

@@ -11,6 +11,7 @@ public static class ServiceLoggerExtensions
     private static readonly Action<ILogger, Exception> _serviceAuthorizationFailed;
     private static readonly Action<ILogger, string, Exception> _extServiceUnavailable;
     private static readonly Action<ILogger, Exception> _extServiceAuthenticationFailed;
+    private static readonly Action<ILogger, string, Exception> _extServiceResponseError;
 
     static ServiceLoggerExtensions()
     {
@@ -33,6 +34,11 @@ public static class ServiceLoggerExtensions
             LogLevel.Warning,
             new EventId(EventIdCodes.ExtServiceAuthenticationFailed, nameof(ExtServiceAuthenticationFailed)),
             "Authentication failed");
+
+        _extServiceResponseError = LoggerMessage.Define<string>(
+            LogLevel.Warning,
+            new EventId(EventIdCodes.ExtServiceResponseError, nameof(ExtServiceResponseError)),
+            "Error returned from ext.service: {Message}");
     }
 
     /// <summary>
@@ -57,4 +63,13 @@ public static class ServiceLoggerExtensions
     /// <param name="parentServiceName">Název doménové služby, ze které je služba třetí strany volaná.</param>
     public static void ExtServiceUnavailable(this ILogger logger, string parentServiceName, Exception ex)
         => _extServiceUnavailable(logger, parentServiceName, ex);
+
+    /// <summary>
+    /// Pokud služba třetí strany vrátí nestandardní chybové hlášení - ne 500 nebo 400 a chceme to zalogovat.
+    /// </summary>
+    /// <remarks>
+    /// Jedná se třeba o služby EAS, které nemají žádný error handling.
+    /// </remarks>
+    public static void ExtServiceResponseError(this ILogger logger, string message)
+        => _extServiceResponseError(logger, message, null!);
 }

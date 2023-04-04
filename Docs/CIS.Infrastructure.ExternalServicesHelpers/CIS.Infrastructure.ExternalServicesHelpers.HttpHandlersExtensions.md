@@ -58,26 +58,48 @@ Název ExternalServices proxy
 #### Returns
 [Microsoft.Extensions.DependencyInjection.IHttpClientBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.DependencyInjection.IHttpClientBuilder 'Microsoft.Extensions.DependencyInjection.IHttpClientBuilder')
 
-<a name='CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbHeaders(thisMicrosoft.Extensions.DependencyInjection.IHttpClientBuilder,string)'></a>
+<a name='CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbHeaders(thisMicrosoft.Extensions.DependencyInjection.IHttpClientBuilder,string,string)'></a>
 
-## HttpHandlersExtensions.AddExternalServicesKbHeaders(this IHttpClientBuilder, string) Method
+## HttpHandlersExtensions.AddExternalServicesKbHeaders(this IHttpClientBuilder, string, string) Method
 
 Prida do kazdeho requestu HttpClienta hlavicky vyzadovane v KB.
 
 ```csharp
-public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddExternalServicesKbHeaders(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, string? appComponent=null);
+public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddExternalServicesKbHeaders(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, string? appComponent=null, string? appComponentOriginator=null);
 ```
 #### Parameters
 
-<a name='CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbHeaders(thisMicrosoft.Extensions.DependencyInjection.IHttpClientBuilder,string).builder'></a>
+<a name='CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbHeaders(thisMicrosoft.Extensions.DependencyInjection.IHttpClientBuilder,string,string).builder'></a>
 
 `builder` [Microsoft.Extensions.DependencyInjection.IHttpClientBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.DependencyInjection.IHttpClientBuilder 'Microsoft.Extensions.DependencyInjection.IHttpClientBuilder')
 
-<a name='CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbHeaders(thisMicrosoft.Extensions.DependencyInjection.IHttpClientBuilder,string).appComponent'></a>
+<a name='CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbHeaders(thisMicrosoft.Extensions.DependencyInjection.IHttpClientBuilder,string,string).appComponent'></a>
 
 `appComponent` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
 
 Hodnota appComp v hlavičce X-KB-Caller-System-Identity. Pokud není vyplněno, je nastavena na "NOBY".
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbHeaders(thisMicrosoft.Extensions.DependencyInjection.IHttpClientBuilder,string,string).appComponentOriginator'></a>
+
+`appComponentOriginator` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+#### Returns
+[Microsoft.Extensions.DependencyInjection.IHttpClientBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.DependencyInjection.IHttpClientBuilder 'Microsoft.Extensions.DependencyInjection.IHttpClientBuilder')
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbPartyHeaders(thisMicrosoft.Extensions.DependencyInjection.IHttpClientBuilder)'></a>
+
+## HttpHandlersExtensions.AddExternalServicesKbPartyHeaders(this IHttpClientBuilder) Method
+
+Prida do kazdeho requestu HttpClienta hlavicku s aktualnim uzivatelem vyzadovanou v KB.
+
+```csharp
+public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddExternalServicesKbPartyHeaders(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder);
+```
+#### Parameters
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbPartyHeaders(thisMicrosoft.Extensions.DependencyInjection.IHttpClientBuilder).builder'></a>
+
+`builder` [Microsoft.Extensions.DependencyInjection.IHttpClientBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.DependencyInjection.IHttpClientBuilder 'Microsoft.Extensions.DependencyInjection.IHttpClientBuilder')
 
 #### Returns
 [Microsoft.Extensions.DependencyInjection.IHttpClientBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.DependencyInjection.IHttpClientBuilder 'Microsoft.Extensions.DependencyInjection.IHttpClientBuilder')

@@ -1,5 +1,7 @@
 ﻿using DomainServices.CaseService.Api.Database;
+using DomainServices.CaseService.Api.Messaging;
 using DomainServices.CaseService.Contracts;
+using MassTransit;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetCaseDetail;
 

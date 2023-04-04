@@ -1048,7 +1048,7 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=6452CB93-41C7-450f-A20F-E8CB5208F1DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.GetDetailWithChanges(System.Int32,NOBY.Api.Endpoints.Customer.UpdateDetailWithChanges.UpdateDetailWithChangesRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.UpdateDetailWithChanges(System.Int32,NOBY.Api.Endpoints.Customer.UpdateDetailWithChanges.UpdateDetailWithChangesRequest,System.Threading.CancellationToken)">
             <summary>
             Uložení dat klienta (pro uložení změn lokálně)
             </summary>
