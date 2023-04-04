@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using static DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService;
 
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
-public class IntegrationTestBase : IClassFixture<GrpcTestFixture<Program>>
-{
 
+public abstract class IntegrationTestBase : IClassFixture<GrpcTestFixture<Program>>
+{
     public IntegrationTestBase(GrpcTestFixture<Program> fixture)
     {
         Fixture = fixture;

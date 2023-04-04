@@ -1,5 +1,4 @@
 ﻿using DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
-using FluentAssertions;
 using NSubstitute;
 
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests;

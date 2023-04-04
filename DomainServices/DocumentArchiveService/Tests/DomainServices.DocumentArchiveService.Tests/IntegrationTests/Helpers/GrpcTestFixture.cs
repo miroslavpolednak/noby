@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Configuration;
 using CIS.Infrastructure.Configuration;
 using DomainServices.DocumentArchiveService.Api.Database.Repositories;
+using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -11,10 +12,14 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using System.Net.Http.Headers;
+using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Clients;
+using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1;
+using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Repositories;
+using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Clients;
 
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
 
-public class GrpcTestFixture<TStartup> : WebApplicationFactory<TStartup>where TStartup : class
+public class GrpcTestFixture<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
 {
     internal GrpcChannel GrpcChannel { get; }
 
@@ -52,6 +57,13 @@ public class GrpcTestFixture<TStartup> : WebApplicationFactory<TStartup>where TS
 
             services.RemoveAll<ICisEnvironmentConfiguration>().AddSingleton<ICisEnvironmentConfiguration>(cisEnvConfiguration!);
             
+            // Use exist mock mock of sdf 
+            services.RemoveAll<ISdfClient>().AddSingleton<ISdfClient, MockSdfClient>();
+
+            // Use exist mock of Tcp
+            services.RemoveAll<IDocumentServiceRepository>().AddSingleton<IDocumentServiceRepository, MockDocumentServiceRepository>();
+            services.RemoveAll<ITcpClient>().AddSingleton<ITcpClient, TcpClientMock>();
+
             // fake logger
             services.RemoveAll<ILoggerFactory>().AddSingleton<ILoggerFactory, NullLoggerFactory>();
 

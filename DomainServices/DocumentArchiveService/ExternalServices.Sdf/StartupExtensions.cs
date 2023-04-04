@@ -8,7 +8,7 @@ using CIS.Infrastructure.ExternalServicesHelpers;
 namespace DomainServices.DocumentArchiveService.ExternalServices.Sdf;
 public static class StartupExtensions
 {
-    internal const string ServiceName = "Sdf";
+    public const string ServiceName = "Sdf";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
        where TClient : class, ISdfClient
