@@ -6,6 +6,10 @@ public class AppConfiguration
 
     public EmailSenders EmailSenders { get; set; } = null!;
     
+    public HashSet<string> EmailFormats { get; set; } = new();
+    
+    public HashSet<string> EmailLanguageCodes { get; set; } = new();
+    
     public KafkaTopics KafkaTopics { get; set; } = null!;
 
     public S3Buckets S3Buckets { get; set; } = null!;

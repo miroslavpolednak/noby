@@ -1,5 +1,4 @@
 ﻿using CIS.Core.ErrorCodes;
-using CIS.Foms.Enums;
 
 namespace DomainServices.SalesArrangementService.Api;
 
@@ -7,7 +6,6 @@ internal sealed class ErrorCodeMapper
     : ErrorCodeMapperBase
 {
     public const int SalesArrangementNotFound = 18000;
-    public const int OfferNotFound = 18001;
     public const int SalesArrangementTypeNotFound = 18005;
     public const int SalesArrangementStateNotFound = 18006;
     public const int AlreadyInSalesArrangementState = 18007;
@@ -60,7 +58,6 @@ internal sealed class ErrorCodeMapper
             { SalesArrangementIdIsEmpty, "SalesArrangementId must be > 0" },
             { OfferIdIsEmpty, "OfferId must be > 0" },
             { AlreadyLinkedToOffer, "SalesArrangement {PropertyValue} is already linked to the same Offer" },
-            { OfferNotFound, "Offer ID {PropertyValue} does not exist." },
             { AlreadyLinkedToAnotherSA, "Offer {request.OfferId} is already linked to another SA" },
             { InvalidGuaranteeDateFrom, "Old offer GuaranteeDateFrom > than new GuaranteeDateFrom" },
             { FlowSwitchesIsEmpty, "FlowSwitches collection must not be empty" },
