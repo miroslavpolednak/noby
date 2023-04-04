@@ -18,4 +18,3 @@ internal sealed class CisEnvironmentVariablesConfigurationSource
         return new CisEnvironmentVariablesConfigurationProvider(Prefix);
     }
 }
-
