@@ -119,7 +119,7 @@ internal sealed class CustomerManagementErrorMap
         }
     }
 
-    private record Error
+    private sealed record Error
     {
         public int ErrorCode { get; init; }
 

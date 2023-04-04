@@ -24,7 +24,7 @@ public sealed class MultipleTypeInfo
         return (IReaderWrapper)Activator.CreateInstance(constructed, writerSchema, Schema)!;
     }
 
-    public ISerializerWrapper CreateSerializer(Type messageType, ISchemaRegistryClient schemaRegistryClient,
+    public static ISerializerWrapper CreateSerializer(Type messageType, ISchemaRegistryClient schemaRegistryClient,
         AvroSerializerConfig serializerConfig)
     {
         Type t1 = typeof(AvroSerializer<>);

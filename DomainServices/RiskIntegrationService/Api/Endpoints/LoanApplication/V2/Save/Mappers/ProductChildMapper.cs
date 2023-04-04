@@ -93,7 +93,8 @@ internal sealed class ProductChildMapper
             } else if (!string.IsNullOrEmpty(relation.BankAccount?.Number)) {
                 return new _C4M.ResourceIdentifier
                 {
-                    Id = String.IsNullOrEmpty(relation.BankAccount.NumberPrefix) ? relation.BankAccount.Number : $"{relation.BankAccount.NumberPrefix}-{relation.BankAccount.Number}",
+                    // pozadavek je na 16 nebo 6 + 10, coz nemusi byt stejne kdyz bude Number > 10
+                    Id = string.IsNullOrEmpty(relation.BankAccount.NumberPrefix) ? relation.BankAccount.Number.PadLeft(16, '0') : relation.BankAccount.NumberPrefix.PadLeft(6, '0') + relation.BankAccount.Number.PadLeft(10, '0'),
                     Instance = relation.BankAccount.BankCode switch {
                         "7990" => "MPSS",
                         "0100" => "KBCZ",

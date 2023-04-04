@@ -64,16 +64,14 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
 
             if (r.return_val != 0)
             {
-                var message = $"Incorrect inputs to EAS NewKlient {r.return_val}: {r.return_info}";
-                _logger.LogInformation(message);
-                throw new CIS.Core.Exceptions.CisValidationException(9105, message);
+                throw new CIS.Core.Exceptions.CisValidationException(9105, $"Incorrect inputs to EAS NewKlient {r.return_val}: {r.return_info}");
             }
 
             var differentProps = ModelExtensions.FindDifferentProps(request[0], r);
             if (differentProps.Length > 0)
             {
                 var message = $"Detected differences between input and output data during call EAS NewKlient [{String.Join(",", differentProps)}]";
-                _logger.LogInformation(message);
+                _logger.ExtServiceResponseError(message);
                 _auditLogger.Log(message);
             }
 
@@ -96,11 +94,7 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
             //TODO jak ma vypadat chyba vracena z EAS?
             if (result.commonResult?.return_val != 0)
             {
-                var message = $"An error occurred when calling the EAS Get_CaseId function – {result.commonResult?.return_val ?? 0}: {result.commonResult?.return_text ?? "Unknown error"}";
-
-                _logger.LogInformation(message);
-
-                throw new CIS.Core.Exceptions.CisValidationException(9102, message);
+                throw new CIS.Core.Exceptions.CisValidationException(9102, $"An error occurred when calling the EAS Get_CaseId function – {result.commonResult?.return_val ?? 0}: {result.commonResult?.return_text ?? "Unknown error"}");
             }
 
             return result.caseId;
@@ -125,10 +119,7 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
 
             if (result.SIM_error != 0)
             {
-                var message = $"Error occured during call external service EAS [{result.SIM_error} : {result.SIM_error_text}]";
-                _logger.LogWarning(message);
-
-                throw new CIS.Core.Exceptions.CisValidationException(9103, message);
+                throw new CIS.Core.Exceptions.CisValidationException(9103, $"Error occured during call external service EAS [{result.SIM_error} : {result.SIM_error_text}]");
             }
             return result;
         });

@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;
 
-public enum SignatureState
+public enum SignatureStateE
 {
     Unknown = 0,
     Ready = 1,

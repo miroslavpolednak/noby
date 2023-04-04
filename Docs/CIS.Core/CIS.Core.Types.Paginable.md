@@ -35,7 +35,7 @@ public CIS.Core.Types.Paginable EnsureAndTranslateSortFields(System.Collections.
 
 #### Exceptions
 
-[CisArgumentException](CIS.Core.Exceptions.CisArgumentException.md 'CIS.Core.Exceptions.CisArgumentException')  
+[CisValidationException](CIS.Core.Exceptions.CisValidationException.md 'CIS.Core.Exceptions.CisValidationException')  
 Sort Field not allowed
 
 <a name='CIS.Core.Types.Paginable.FromRequest(CIS.Core.Types.IPaginableRequest,int,int)'></a>
