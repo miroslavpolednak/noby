@@ -1,4 +1,6 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Common;
+﻿using System.Text.RegularExpressions;
+using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Contracts.Common;
 
 namespace CIS.InternalServices.NotificationService.Api.Helpers;
 
@@ -22,6 +24,28 @@ public static class PhoneNumberExtensions
         {
             CountryCode = code,
             NationalNumber = number
+        };
+    }
+
+    public static Phone ParsePhoneByChatGpt(this string value)
+    {
+        var normalizedPhoneNumber = value.NormalizePhoneNumber();
+        var regex = new Regex(@"^\+(?<CountryCode>\d{1,3})(?<NationalDestinationCode>\d{2,3})(?<SubscriberNumber>\d{4,})$");
+        var match = regex.Match(normalizedPhoneNumber);
+
+        if (!match.Success)
+        {
+            throw new CisValidationException($"PhoneNumber ${value} not in standard E. 164");
+        }
+        
+        var countryCode = match.Groups["CountryCode"].Value;
+        var nationalDestinationCode = match.Groups["NationalDestinationCode"].Value;
+        var subscriberNumber = match.Groups["SubscriberNumber"].Value;
+        
+        return new Phone
+        {
+            CountryCode = countryCode,
+            NationalNumber = nationalDestinationCode +subscriberNumber
         };
     }
     

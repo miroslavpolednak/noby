@@ -140,6 +140,7 @@ internal sealed class FormsDocumentService
 
             switch (documentDataDto.ValueCase)
             {
+                case 0: break;
                 case 3:
                     documentPartData.Text = documentDataDto.Text ?? string.Empty;
                     break;

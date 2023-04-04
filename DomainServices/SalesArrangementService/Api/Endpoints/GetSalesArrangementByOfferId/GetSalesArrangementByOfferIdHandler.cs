@@ -13,8 +13,7 @@ internal sealed class GetSalesArrangementByOfferIdHandler
             .Where(t => t.OfferId == request.OfferId)
             .AsNoTracking()
             .Select(DatabaseExpressions.SalesArrangementDetail())
-            .FirstOrDefaultAsync(cancellation)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.OfferId);
+            .FirstOrDefaultAsync(cancellation);
 
         return new GetSalesArrangementByOfferIdResponse
         {

@@ -2,6 +2,8 @@
 {
     internal class CisEnvironmentConfiguration : CIS.Core.Configuration.ICisEnvironmentConfiguration
     {
+        public bool DisableServiceDiscovery { get; set; }
+
         public string? DefaultApplicationKey { get; set; }
 
         public string? EnvironmentName { get; set; }

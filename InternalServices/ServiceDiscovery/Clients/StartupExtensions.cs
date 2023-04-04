@@ -23,15 +23,28 @@ public static class StartupExtensions
     /// Hledá singleton instance v DI, které implementují interface IIsServiceDiscoverable. Pokud takové najde, pokusí se k nim ze SD zjistit URI a doplnit je.
     /// </remarks>
     /// <exception cref="CisArgumentNullException">Do not call UseServiceDiscovery() unless AddCisServiceDiscovery() has been called before. nebo Service Discovery can not find service URL.</exception>
+    /// <exception cref="CisArgumentException">Service Discovery can not find {ServiceName} {ServiceType} service URL</exception>
     public static WebApplication UseServiceDiscovery(this WebApplication builder)
     {
         if (_serviceCollection is null)
+        {
             throw new CisArgumentException(0, "Do not call UseServiceDiscovery() unless AddCisServiceDiscovery() has been called before.", nameof(_serviceCollection));
+        }
+        
+        // jestlize je generalne vypnuta SD, nic nedelej
+        var configuration = builder.Services.GetRequiredService<Core.Configuration.ICisEnvironmentConfiguration>();
+        if (configuration.DisableServiceDiscovery)
+        {
+            return builder;
+        };
 
-            // najit vsechny implementace, ktere maji tento interface
+        // najit vsechny implementace, ktere maji tento interface
         var foundServices = _serviceCollection!
-            .Where(t => t.Lifetime == ServiceLifetime.Singleton && t.ImplementationInstance is not null && t.ImplementationInstance is Core.IIsServiceDiscoverable)
-            .Select(t => t.ImplementationInstance as Core.IIsServiceDiscoverable)
+            .Where(t => 
+                t.Lifetime == ServiceLifetime.Singleton 
+                && t.ImplementationInstance is not null 
+                && t.ImplementationInstance is IIsServiceDiscoverable)
+            .Select(t => t.ImplementationInstance as IIsServiceDiscoverable)
             .Where(t => t is not null && t.UseServiceDiscovery)
             .ToList();
 
@@ -43,7 +56,8 @@ public static class StartupExtensions
 
             foundServices.ForEach(instance =>
             {
-                var service = servicesInServiceDiscovery.FirstOrDefault(t => t.ServiceName == instance!.ServiceName && t.ServiceType == (__Contracts.ServiceTypes)instance.ServiceType);
+                var service = servicesInServiceDiscovery
+                .FirstOrDefault(t => t.ServiceName == instance!.ServiceName && t.ServiceType == (__Contracts.ServiceTypes)instance.ServiceType);
 
                 // nastavit URL ze ServiceDiscovery
                 instance!.ServiceUrl = new Uri(service?.ServiceUrl

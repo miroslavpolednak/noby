@@ -12,4 +12,6 @@ public sealed class CisEnvironmentConfiguration
     public string? InternalServicesLogin { get; set; }
 
     public string? InternalServicePassword { get; set; }
+
+    public bool DisableServiceDiscovery { get; set; }
 }

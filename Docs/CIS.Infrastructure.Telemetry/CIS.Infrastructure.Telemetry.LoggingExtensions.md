@@ -44,21 +44,3 @@ Pri ukonceni aplikaci se ujisti, ze vsechny sinky jsou vyprazdnene
 ```csharp
 public static void CloseAndFlush();
 ```
-
-<a name='CIS.Infrastructure.Telemetry.LoggingExtensions.UseCisLogging(thisMicrosoft.AspNetCore.Builder.IApplicationBuilder)'></a>
-
-## LoggingExtensions.UseCisLogging(this IApplicationBuilder) Method
-
-Podle nastavení v appsettings.json zařazuje middleware pro logování buď gRPC nebo Webapi.
-
-```csharp
-public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseCisLogging(this Microsoft.AspNetCore.Builder.IApplicationBuilder webApplication);
-```
-#### Parameters
-
-<a name='CIS.Infrastructure.Telemetry.LoggingExtensions.UseCisLogging(thisMicrosoft.AspNetCore.Builder.IApplicationBuilder).webApplication'></a>
-
-`webApplication` [Microsoft.AspNetCore.Builder.IApplicationBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Builder.IApplicationBuilder 'Microsoft.AspNetCore.Builder.IApplicationBuilder')
-
-#### Returns
-[Microsoft.AspNetCore.Builder.IApplicationBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Builder.IApplicationBuilder 'Microsoft.AspNetCore.Builder.IApplicationBuilder')
