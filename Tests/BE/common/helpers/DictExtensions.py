@@ -24,6 +24,12 @@ class DictExtensions():
                 yield from (f'[{i}]{p}' for p in DictExtensions.__get_json_paths(value))
 
     @staticmethod
+    def to_string(data: dict)->str:
+        import json
+        data_text = json.dumps(data, indent = 4, ensure_ascii = False)
+        return data_text
+
+    @staticmethod
     def get_json_paths(json: dict|list):
         paths: List[str] = [s[1:] if s.startswith('.') else s for s in DictExtensions.__get_json_paths(json)]
         return paths

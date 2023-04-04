@@ -1,6 +1,8 @@
-import os
+import os, shutil
 from typing import List
 from logging import Logger, basicConfig, getLogger, LogRecord, Filter, Formatter, FileHandler, StreamHandler, INFO
+
+# https://realpython.com/python-logging/
 
 class LogFilter(Filter):
     # https://docs.python.org/3/library/logging.html#filter-objects
@@ -9,6 +11,7 @@ class LogFilter(Filter):
         # hasLogger = Log.hasLogger(record.name)
         # print (f'Logger: {record.name}')
         return True
+
 
 class Log():
 
@@ -23,6 +26,8 @@ class Log():
 
     __loggers_by_name = dict()
     __file_handlers_by_name = dict()
+
+    __basic_config_done = False
 
     @staticmethod
     def __get_logs_folder_path() -> str:
@@ -52,6 +57,9 @@ class Log():
 
     @staticmethod
     def config():
+        if Log.__basic_config_done is True:
+            return
+
         basicConfig(
             format=Log.__default_formatter._fmt,
             datefmt=Log.__default_formatter.datefmt,
@@ -61,6 +69,8 @@ class Log():
                 StreamHandler()
             ]
         )
+
+        Log.__basic_config_done = True
 
     @staticmethod
     def getLogger(name: str) -> Logger:
@@ -90,31 +100,15 @@ class Log():
 
         if loggers is None:
             loggers = Log.__loggers_by_name.values()
-
-        #Log.__file_handlers_by_name.keys()
         
+        for log_file_name in Log.__file_handlers_by_name.keys():
+            Log.__file_handlers_by_name[log_file_name] = Log.__create_file_handler(log_file_name)
+
         for logger in loggers:
-
-            # create dict of logger's file handlers by file name            
-            handlers_by_file_name = { os.path.basename(h.baseFilename) : h for h in logger.handlers if isinstance(h, FileHandler)}
-
-            # logger.handlers.clear()
-
-            # # add file handler to logger
-            # for log_file_name in Log.__file_handlers_by_name.keys():
-            #     logger.handlers.append(Log.__file_handlers_by_name[log_file_name])
-            
-            # add file handler to logger if not found
+            logger.handlers.clear()
             for log_file_name in Log.__file_handlers_by_name.keys():
-                if log_file_name not in handlers_by_file_name.keys():
-                    logger.handlers.append(Log.__file_handlers_by_name[log_file_name])
-            
-            # remove file handler from logger if not found
-            for log_file_name in handlers_by_file_name.keys():
-                #handler = handlers_by_file_name[log_file_name]
-                #print(handler) 
-                if log_file_name not in Log.__file_handlers_by_name.keys():
-                    logger.handlers.remove(handlers_by_file_name[log_file_name])
+                logger.handlers.append(Log.__file_handlers_by_name[log_file_name])
+
 
     @staticmethod
     def fileHandlerAdd(file_name: str):
@@ -143,21 +137,39 @@ class Log():
 
 
     @staticmethod
-    def setSubfolder(subfolder_name: str = None, delete_others: bool = False):
+    def subfolderAdd(subfolder_name: str, delete_others: bool = False):
+        assert subfolder_name is not None
 
-        if (subfolder_name is not None and delete_others is True):
+        if delete_others is True:
             Log.__delete_subfolders()
     
         Log.__logs_subfolder = subfolder_name
 
-        for log_file_name in Log.__file_handlers_by_name.keys():
-            Log.__file_handlers_by_name[log_file_name] = Log.__create_file_handler(log_file_name)
+        # add subfolder handler 
+        log_file_name = Log.__to_file_name_with_extension(subfolder_name)
+        Log.__file_handlers_by_name[log_file_name] = Log.__create_file_handler(log_file_name)
+
+        # reset handlers
+        Log.__reset_file_handlers()
+
+        
+    @staticmethod
+    def subfolderRemove(subfolder_name: str):
+        assert subfolder_name is not None
+
+        Log.__logs_subfolder = None
+
+        # remove subfolder handler
+        log_file_name = Log.__to_file_name_with_extension(subfolder_name)
+        del Log.__file_handlers_by_name[log_file_name]
+        
+        # reset handlers
+        Log.__reset_file_handlers()
+
 
     @staticmethod
     def __delete_subfolders():
-
-        from common import find_folder_tests_be
-        logs_folder_path = os.path.join(find_folder_tests_be(), Log.__logs_folder)
+        logs_folder_path = Log.__get_logs_folder_path()
 
         # quit if folder not exists
         if not os.path.exists(logs_folder_path):
@@ -165,7 +177,7 @@ class Log():
 
         subfolders = [ f for f in os.scandir(logs_folder_path) if f.is_dir() ]
         for folder in subfolders:
-            os.remove(folder)
+            shutil.rmtree(folder)
 
     @staticmethod
     def __to_file_name_with_extension(file_name: str) -> str:
@@ -173,14 +185,8 @@ class Log():
             return file_name
         return file_name + Log.__file_name_extension
 
-#TODO: setSubfolder (MainLog, delete_subfolders)
-
-# Log.getLogger('MyLog').debug('My DEBUG')
-# Log.getLogger('MyLog').info('My INFO')
-# Log.getLogger('MyLog').warn('My WARN')
-# Log.getLogger('MyLog').warning('My WARNING')
-# Log.getLogger('MyLog').error('My ERROR')
-# Log.getLogger('MyLog').fatal('My FATAL')
-# Log.getLogger('MyLog').critical('My CRITICAL')
-
-# https://realpython.com/python-logging/
+    @staticmethod
+    def save_snapshot(file_name, json_string: str):
+        file_path = Log.__to_file_path(file_name)
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(json_string)

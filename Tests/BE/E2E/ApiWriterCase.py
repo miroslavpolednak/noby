@@ -15,9 +15,10 @@ from .workflow.EWorkflowType import EWorkflowType
 
 class ApiWriterCase():
 
-    def __init__(self, case: Case, offer_id: int):
+    def __init__(self, case: Case, offer_id: int, handle_create_snapshot = None):
 
         self.__log = Log.getLogger(f'{self.__class__.__name__}_{id(self)}')
+        self.__handle_create_snapshot = handle_create_snapshot
 
         self.__case = case
         self.__case_json = case.to_json_value()
@@ -29,20 +30,32 @@ class ApiWriterCase():
             f'{EWorkflowEntity.CASE_HOUSEHOLDS.name}_{EWorkflowType.REMOVE.name}': lambda step: self.__remove_household(workflow_step=step),
         }
 
+    def __create_snapshot(self, order: int, workflow_step: WorkflowStep = None):
+
+        if self.__handle_create_snapshot is None:
+            return
+
+        case_id = Processing.get_process_key(self.__case_json, EProcessKey.CASE_ID)
+
+        self.__handle_create_snapshot(case_id, order, workflow_step)
+
 
     def build(self) -> int | Exception:
         try:
             self.__create_case()
+            self.__create_snapshot(0)
+
         except Exception as e:
             return e
 
         return Processing.get_process_key(self.__case_json, EProcessKey.CASE_ID)
 
-    def process_workflow_step(self, workflow_step: WorkflowStep):
+    def process_workflow_step(self, order: int, workflow_step: WorkflowStep):
         workflow_key: str = f'{workflow_step.entity.name}_{workflow_step.type.name}'
         assert workflow_key in self.__WORKFLOW_DISPATCHES.keys(), f'Workflow is not supported [entity: {workflow_step.entity.name}, type: {workflow_step.type.name}]'
         workflow_fce = self.__WORKFLOW_DISPATCHES[workflow_key]
         workflow_fce(workflow_step)
+        self.__create_snapshot(order, workflow_step)
 
     def __add_household(self, workflow_step: WorkflowStep):
 

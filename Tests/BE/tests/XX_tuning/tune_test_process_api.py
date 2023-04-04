@@ -4,7 +4,7 @@ import _setup
 
 import datetime
 from DATA import TestDataProvider, TestDataRecord
-from common import config, ETestType, LogFileContext, LogFolderContext
+from common import config, ETestType, LogFileContext, LogFolderContext, DictExtensions
 from E2E import ApiProcessor, ApiReaderOffer, ApiReaderCase
 
 
@@ -22,6 +22,8 @@ TestDataProvider.import_custom()
 # PROCESS
 # --------------------------------------------------------
 
+clear_logs: bool = True
+
 # load records
 records = TestDataProvider.load_records_custom_api(ETestType.E2E)
 
@@ -32,22 +34,22 @@ def process_record(record_to_test: TestDataRecord):
     data_json = TestDataProvider.load_record_data(record_to_test.source, record_to_test.order)
     print(data_json)
 
-    result = ApiProcessor(data_json).process()
+    result = ApiProcessor(data_json, snapshot_file_name=record_to_test.log_file_name).process()
 
-    if isinstance(result, Exception):
-        print('Error: ', result)
-        quit()
+    # if isinstance(result, Exception):
+    #     print('Error: ', result)
+    #     quit()
 
     print('Result: ', result)
 
-    if 'case_id' in result.keys():
-        case_id = result['case_id']
-        case = ApiReaderCase().load(case_id)
-        case_json = case.to_json_value()
-        print(f'https://{config.environment.name.lower()}.noby.cz/undefined#/mortgage/case-detail/{case_id}')
+    # if 'case_id' in result.keys():
+    #     case_id = result['case_id']
+    #     case = ApiReaderCase().load(case_id)
+    #     case_json = case.to_json_value()
+    #     print(f'https://{config.environment.name.lower()}.noby.cz/undefined#/mortgage/case-detail/{case_id}')
 
 def process():
-    #with LogFolderContext():
+    with LogFolderContext(clear_logs):
         for record_to_test in records:
             with LogFileContext(record_to_test.log_file_name) as log_file_context:
                 process_record(record_to_test)
