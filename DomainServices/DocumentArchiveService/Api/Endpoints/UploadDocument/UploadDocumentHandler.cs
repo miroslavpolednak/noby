@@ -19,7 +19,7 @@ public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentReques
     {
         if (await _context.DocumentInterface.AnyAsync(e => e.DocumentId == request.Metadata.DocumentId, cancellationToken))
         {
-            throw new CisAlreadyExistsException(14015, "File with documentid already exist in database");
+           throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.FileWithDocumentidExist);
         }
 
         await _context.DocumentInterface.AddAsync(MapToEntity(request), cancellationToken);

@@ -15,7 +15,7 @@ internal sealed class GenerateDocumentIdValidator
         {
             RuleFor(t => t.EnvironmentName)
                 .IsInEnum()
-                .WithMessage("Unknown EnvironmentName.").WithErrorCode("14009");
+                .WithErrorCode(ErrorCodeMapper.UnknownEnvironmentName);
         });
     }
 }
