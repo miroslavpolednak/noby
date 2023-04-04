@@ -1,33 +1,183 @@
-from typing import List
+from typing import List, Any
+import jsonpath_ng
 
 from .EProcessKey import EProcessKey
 from .Processing import Processing
 
-from business.case import Case
+from business.case import Case, Household, Expenses
 
 from business.codebooks import EHouseholdType
 from fe_api import FeAPI
-from common import Log
+from common import Log, DictExtensions
+from .workflow.WorkflowStep import WorkflowStep
+from .workflow.EWorkflowEntity import EWorkflowEntity
+from .workflow.EWorkflowType import EWorkflowType
 
 class ApiWriterCase():
 
-    def __init__(self, case: Case, offer_id: int):
+    def __init__(self, case: Case, offer_id: int, handle_create_snapshot = None):
 
         self.__log = Log.getLogger(f'{self.__class__.__name__}_{id(self)}')
+        self.__handle_create_snapshot = handle_create_snapshot
 
         self.__case = case
         self.__case_json = case.to_json_value()
         self.__offer_id = offer_id
 
+        self.__WORKFLOW_DISPATCHES = {
+            f'{EWorkflowEntity.CASE_HOUSEHOLDS.name}_{EWorkflowType.ADD.name}': lambda step: self.__add_household(workflow_step=step),
+            f'{EWorkflowEntity.CASE_HOUSEHOLDS.name}_{EWorkflowType.EDIT.name}': lambda step: self.__edit_household(workflow_step=step),
+            f'{EWorkflowEntity.CASE_HOUSEHOLDS.name}_{EWorkflowType.REMOVE.name}': lambda step: self.__remove_household(workflow_step=step),
+        }
+
+    def __create_snapshot(self, order: int, workflow_step: WorkflowStep = None):
+
+        if self.__handle_create_snapshot is None:
+            return
+
+        case_id = Processing.get_process_key(self.__case_json, EProcessKey.CASE_ID)
+
+        self.__handle_create_snapshot(case_id, order, workflow_step)
+
 
     def build(self) -> int | Exception:
-
         try:
             self.__create_case()
+            self.__create_snapshot(0)
+
         except Exception as e:
             return e
 
         return Processing.get_process_key(self.__case_json, EProcessKey.CASE_ID)
+
+    def process_workflow_step(self, order: int, workflow_step: WorkflowStep):
+        workflow_key: str = f'{workflow_step.entity.name}_{workflow_step.type.name}'
+        assert workflow_key in self.__WORKFLOW_DISPATCHES.keys(), f'Workflow is not supported [entity: {workflow_step.entity.name}, type: {workflow_step.type.name}]'
+        workflow_fce = self.__WORKFLOW_DISPATCHES[workflow_key]
+        workflow_fce(workflow_step)
+        self.__create_snapshot(order, workflow_step)
+
+    def __add_household(self, workflow_step: WorkflowStep):
+
+        # ------------------------------------------------------------------------
+        # create_household
+        # ------------------------------------------------------------------------
+
+        # get process data
+        sales_arrangement_id = Processing.get_process_key(self.__case_json, EProcessKey.SALES_ARRAMGEMENT_ID)
+        household_type_id = Processing.get_key(workflow_step.data, 'householdTypeId')
+
+        req = dict(salesArrangementId = sales_arrangement_id, householdTypeId =  household_type_id)
+        res = FeAPI.Household.create_household(req)
+        
+        householdId = Processing.get_key(res, 'householdId')
+        householdTypeId = Processing.get_key(res, 'householdTypeId')
+        household = Household.from_json(dict(
+            householdId = householdId,
+            householdTypeId = householdTypeId,
+            childrenUpToTenYearsCount = 0,
+            childrenOverTenYearsCount = 0,
+            areCustomersPartners = False,
+            expenses = Expenses.get_default().to_json_value()
+        ))
+
+        json_households: list = Processing.get_key(self.__case_json, 'households')
+        json_household = household.to_json_value()
+        json_households.append(json_household)
+
+        # ------------------------------------------------------------------------
+        # set_household_parameters
+        # ------------------------------------------------------------------------
+
+        # build data by current state
+        data = dict(
+            childrenUpToTenYearsCount = Processing.get_key(json_household, 'childrenUpToTenYearsCount'),
+            childrenOverTenYearsCount = Processing.get_key(json_household, 'childrenOverTenYearsCount'),
+            areCustomersPartners = Processing.get_key(json_household, 'areCustomersPartners'),
+            expenses = Processing.get_key(json_household, 'expenses')
+        )
+
+        # modify data by workflow data
+        data = DictExtensions.modify_json(data, workflow_step.data)
+
+        # build request from data
+        req = dict(
+                data = dict(
+                    childrenUpToTenYearsCount = Processing.get_key(data, 'childrenUpToTenYearsCount'),
+                    childrenOverTenYearsCount = Processing.get_key(data, 'childrenOverTenYearsCount'),
+                    areCustomersPartners = Processing.get_key(data, 'areCustomersPartners'),
+                ),
+                expenses = Processing.get_key(data, 'expenses')
+            )
+
+        # call FE API endpoint
+        res = FeAPI.Household.set_household_parameters(householdId, req)
+
+        # upgrade current state by workflow data
+        DictExtensions.modify_json(json_household, data)
+
+    def __edit_household(self, workflow_step: WorkflowStep):
+        json_household: dict = self.__find_json_by_path(workflow_step.path)
+
+        householdId: int = Processing.get_process_key(json_household, EProcessKey.HOUSEHOLD_ID)
+        householdId =  Processing.get_key(json_household, 'householdId') if householdId is None else householdId     
+
+        # build data by current state
+        data = dict(
+            childrenUpToTenYearsCount = Processing.get_key(json_household, 'childrenUpToTenYearsCount'),
+            childrenOverTenYearsCount = Processing.get_key(json_household, 'childrenOverTenYearsCount'),
+            areCustomersPartners = Processing.get_key(json_household, 'areCustomersPartners'),
+            expenses = Processing.get_key(json_household, 'expenses')
+        )
+
+        # modify data by workflow data
+        data = DictExtensions.modify_json(data, workflow_step.data)
+
+        # build request from data
+        req = dict(
+                data = dict(
+                    childrenUpToTenYearsCount = Processing.get_key(data, 'childrenUpToTenYearsCount'),
+                    childrenOverTenYearsCount = Processing.get_key(data, 'childrenOverTenYearsCount'),
+                    areCustomersPartners = Processing.get_key(data, 'areCustomersPartners'),
+                ),
+                expenses = Processing.get_key(data, 'expenses')
+            )
+
+        # call FE API endpoint
+        res = FeAPI.Household.set_household_parameters(householdId, req)
+
+        # upgrade current state by workflow data
+        DictExtensions.modify_json(json_household, workflow_step.data)
+
+    def __remove_household(self, workflow_step: WorkflowStep):
+        json_household = self.__find_json_by_path(workflow_step.path)
+        householdId = Processing.get_key(json_household, 'householdId')
+        # call FE API endpoint
+        res = FeAPI.Household.delete_household(householdId)
+        json_households = self.__find_json_by_path(workflow_step.path, True)
+        json_households.remove(json_household)
+
+    def __to_path_without_indexer(self, path: str) -> str:
+        if not path.endswith(']'):
+            return path
+        index_bracket_open = path.rindex('[')
+        return path[:index_bracket_open]
+
+    def __find_json_by_path(self, path: str, remove_indexer: bool = False) -> Any:
+        if remove_indexer:
+            path = self.__to_path_without_indexer(path)
+
+        prefix: str = 'case.' 
+        if path.startswith(prefix):
+            path = path[len(prefix):]
+
+        jsonpath_expr = jsonpath_ng.parse(path)
+        matches = jsonpath_expr.find(self.__case_json)
+        matches_count = len(matches)
+        assert matches_count == 1
+        value_current = matches[0].value
+        return value_current
+            
 
 
     def __create_case(self):
@@ -49,10 +199,7 @@ class ApiWriterCase():
         )
 
         # call FE API endpoint
-        self.__log.info(f'create_case.req [{req}]')
         res = FeAPI.Offer.create_case(req)
-        self.__log.info(f'create_case.res [{res}]')
-
         assert isinstance(res, dict), f'Invalid response [{res}]'
 
         # set test data
@@ -90,9 +237,7 @@ class ApiWriterCase():
                 )
 
                 # call FE API endpoint
-                self.__log.info(f'create_households.req [{req}]')
                 res = FeAPI.Household.create_household(req)
-                self.__log.info(f'create_households.res [{res}]')
 
                 assert isinstance(res, dict), f'Invalid response [{res}]'
 
@@ -115,9 +260,7 @@ class ApiWriterCase():
             )
 
             # call FE API endpoint
-            self.__log.info(f'create_households_parameters.req [{req}]')
             res = FeAPI.Household.set_household_parameters(household_id, req)
-            self.__log.info(f'create_households_parameters.res [{res}]')
             
         # set test data (ids of customers)
         customers = FeAPI.SalesArrangement.get_customers(sales_arrangement_id)
@@ -166,10 +309,7 @@ class ApiWriterCase():
         )
 
         # call FE API endpoint
-        self.__log.info(f'create_customers.req [{req}]')
         res = FeAPI.Household.set_household_customers(household_id, req)
-        self.__log.info(f'create_customers.res [{res}]')
-
         assert isinstance(res, dict), f'Invalid response [{res}]'
 
         # set process data (ids of customers on SA)
@@ -274,9 +414,7 @@ class ApiWriterCase():
             )
 
             # call FE API endpoint
-            self.__log.info(f'create_incomes.req [{req}]')
             res = FeAPI.CustomerOnSa.create_income(customer_on_sa_id, req)
-            self.__log.info(f'create_incomes.res [{res}]')
 
             income_id: int = res
             Processing.set_process_key(income_json, EProcessKey.INCOME_ID, income_id)
@@ -327,9 +465,7 @@ class ApiWriterCase():
             )
 
             # call FE API endpoint
-            self.__log.info(f'create_obligations.req [{req}]')
             res = FeAPI.CustomerOnSa.create_obligation(customer_on_sa_id, req)
-            self.__log.info(f'create_obligations.res [{res}]')
 
             obligation_id: int = res
             Processing.set_process_key(obligation_json, EProcessKey.OBLIGATION_ID, obligation_id)
@@ -366,6 +502,4 @@ class ApiWriterCase():
         )
 
         # call FE API endpoint
-        self.__log.info(f'create_parameters.req [{req}]')
         res = FeAPI.SalesArrangement.set_parameters(sales_arrangement_id, req)
-        self.__log.info(f'create_parameters.res [{res}]')

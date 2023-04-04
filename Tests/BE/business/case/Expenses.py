@@ -46,6 +46,16 @@ class Expenses(Base):
     def _get_json_keys(self):
         return JSON_KEYS
 
+    @staticmethod
+    def get_default():
+        js_dict: dict = dict(
+                savingExpenseAmount = None,
+                insuranceExpenseAmount = None,
+                housingExpenseAmount = None,
+                otherExpenseAmount = None
+            )
+        return Expenses(js_dict = js_dict)
+
 
 # --------------------------------------------------------------------------------------------
 #             "expenses": {

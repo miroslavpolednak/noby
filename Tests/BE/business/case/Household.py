@@ -18,7 +18,7 @@ DISPATCHES = {
             'expenses': lambda value: Expenses.from_json(value), 
         }
 
-JSON_KEYS = ['householdTypeId','childrenUpToTenYearsCount','childrenOverTenYearsCount','areCustomersPartners','customer1','customer2','expenses']
+JSON_KEYS = ['householdId','householdTypeId','childrenUpToTenYearsCount','childrenOverTenYearsCount','areCustomersPartners','customer1','customer2','expenses']
 
 class Household(Base):
 
