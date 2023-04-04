@@ -4,6 +4,7 @@ using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using CIS.Infrastructure.ExternalServicesHelpers;
+using CIS.Core.ErrorCodes;
 
 namespace DomainServices.DocumentArchiveService.ExternalServices.Sdf;
 public static class StartupExtensions
@@ -13,6 +14,9 @@ public static class StartupExtensions
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
        where TClient : class, ISdfClient
     {
+        //Init error messages
+        ErrorCodeMapper.Init();
+
         string version = getVersion<TClient>();
         var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
 

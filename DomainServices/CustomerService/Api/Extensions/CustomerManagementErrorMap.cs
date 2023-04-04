@@ -34,7 +34,7 @@ internal sealed class CustomerManagementErrorMap
                 }
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.NOT_FOUND_IN_BR:
-                throw new CisValidationException(11024, "KB CM: Unable to identify customer in state registry ");
+                throw new CisValidationException(11025, "KB CM: Unable to identify customer in state registry ");
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.UNAVAILABLE_BR:
                 throw new CisValidationException(11026, "KB CM: State registry is unavailable");
