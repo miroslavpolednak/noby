@@ -28,6 +28,14 @@ public static class ServiceCollectionExtensions
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailSenders)}.{nameof(EmailSenders.Mpss)} cannot be empty.")
             
             .Validate(config =>
+                config?.EmailFormats?.Any() ?? false,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailFormats)} cannot be empty.")
+            
+            .Validate(config =>
+                    config?.EmailLanguageCodes?.Any() ?? false,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailLanguageCodes)} cannot be empty.")
+            
+            .Validate(config =>
                 !string.IsNullOrEmpty(config?.KafkaTopics?.McsResult),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.McsResult)} required.")
             .Validate(config =>
