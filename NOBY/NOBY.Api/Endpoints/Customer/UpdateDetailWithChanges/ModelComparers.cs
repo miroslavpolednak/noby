@@ -38,7 +38,9 @@ internal static class ModelComparers
     {
         if (!_basicCompareLogic.Compare(original, request).AreEqual)
         {
+#pragma warning disable CS8601 // Possible null reference assignment.
             delta[propertyName] = request;
+#pragma warning restore CS8601 // Possible null reference assignment.
         }
     }
 

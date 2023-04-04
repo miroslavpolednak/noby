@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 
 [ScopedService, SelfService]
-internal class FormsDocumentService
+internal sealed class FormsDocumentService
 {
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
@@ -140,6 +140,7 @@ internal class FormsDocumentService
 
             switch (documentDataDto.ValueCase)
             {
+                case 0: break;
                 case 3:
                     documentPartData.Text = documentDataDto.Text ?? string.Empty;
                     break;

@@ -55,10 +55,15 @@ public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
             .NotEmpty()
                 .WithErrorCode(ErrorCodes.Validation.SendEmail.ContentRequired)
                 .WithMessage($"{nameof(SendEmailRequest.Content)} required.")
-            .SetValidator(new EmailContentValidator())
+            .SetValidator(new EmailContentValidator(options))
                 .WithErrorCode(ErrorCodes.Validation.SendEmail.ContentInvalid)
                 .WithMessage($"Invalid {nameof(SendEmailRequest.Content)}.");
 
+        RuleFor(request => request.Attachments.Count)
+            .LessThanOrEqualTo(10)
+                .WithErrorCode(ErrorCodes.Validation.SendEmail.AttachmentsCountLimitExceeded)
+                .WithMessage($"Maximum count of {nameof(SendEmailRequest.Attachments)} is 10.");
+        
         RuleForEach(request => request.Attachments)
             .SetValidator(new EmailAttachmentValidator())
                 .WithErrorCode(ErrorCodes.Validation.SendEmail.AttachmentsInvalid)

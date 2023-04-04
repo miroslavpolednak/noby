@@ -13,6 +13,7 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
   
   <ItemGroup>

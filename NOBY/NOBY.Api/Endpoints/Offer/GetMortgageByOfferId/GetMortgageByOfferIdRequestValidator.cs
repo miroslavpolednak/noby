@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Offer.GetMortgageByOfferId;
 
-internal class GetMortgageByOfferIdRequestValidator
+internal sealed class GetMortgageByOfferIdRequestValidator
     : AbstractValidator<GetMortgageByOfferIdRequest>
 {
     public GetMortgageByOfferIdRequestValidator()

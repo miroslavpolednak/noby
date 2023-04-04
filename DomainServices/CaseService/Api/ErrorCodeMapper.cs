@@ -22,6 +22,8 @@ internal sealed class ErrorCodeMapper
     public const int TargetAmountIsEmpty = 13018;
     public const int AuthenticatedUserNotFound = 13019;
     public const int CantDeleteCase = 13021;
+    public const int RequestNotFoundInCache = 13024;
+    public const int KafkaMessageIncorrectFormat = 13025;
 
     public static IErrorCodesDictionary Init()
     {
@@ -43,7 +45,9 @@ internal sealed class ErrorCodeMapper
             { CaseStateNotFound, "State {PropertyValue} not found" },
             { CaseStateAlreadySet, "Case state already set to the same value" },
             { CaseStateNotAllowed, "Case state change not allowed" },
-            { AuthenticatedUserNotFound, "Authenticated user has not been passed in auth headers" }
+            { AuthenticatedUserNotFound, "Authenticated user has not been passed in auth headers" },
+            { RequestNotFoundInCache, "RequestId {PropertyValue} not found in cache" },
+            { KafkaMessageIncorrectFormat, "Message CaseId {PropertyValue} is not in valid format" }
 
         });
 

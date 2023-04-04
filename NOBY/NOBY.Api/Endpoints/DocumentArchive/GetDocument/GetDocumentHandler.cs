@@ -25,7 +25,7 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
         var result = await _client.GetDocument(new()
         {
             DocumentId = request.DocumentId,
-            UserLogin = user is null ? "Unknow NOBY user" : user.Id.ToString(),
+            UserLogin = user is null ? "Unknow NOBY user" : user.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),
             WithContent = true
         }, cancellationToken);
 

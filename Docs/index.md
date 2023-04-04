@@ -64,6 +64,9 @@ Podpora pro vytváření REST služeb.
 [CIS.Infrastructure.ExternalServicesHelpers](CIS.Infrastructure.ExternalServicesHelpers/index.md)  
 Podpora pro konzumaci REST a SOAP služeb třetích stran.
 
+[CIS.Infrastructure.Messaging](CIS.Infrastructure.Messaging/index.md)  
+Podpora a helpery pro messaging - aktálně Kafku.
+
 ### DomainServices
 Obsahuje byznysové služby. Každá služba obsluhuje vlastní byznys doménu, např. klient, domácnost, smlouva.
 Jedná se o **gRPC** služby, které ale mohou v některých případech vystavovat i **REST** rozhraní pomocí *gRPC Transcoding*.

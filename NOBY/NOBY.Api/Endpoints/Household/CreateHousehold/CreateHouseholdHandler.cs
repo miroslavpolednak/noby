@@ -4,7 +4,7 @@ using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.CreateHousehold;
 
-internal class CreateHouseholdHandler
+internal sealed class CreateHouseholdHandler
     : IRequestHandler<CreateHouseholdRequest, Dto.HouseholdInList>
 {
     public async Task<Dto.HouseholdInList> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)

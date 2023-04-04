@@ -3,7 +3,7 @@
 
 ## ContextUserForwardingClientInterceptor Class
 
-Client Interceptor který automaticky přidává hlavičku "mp-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
+Client Interceptor který automaticky přidává hlavičku "noby-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
 
 ```csharp
 public sealed class ContextUserForwardingClientInterceptor : Grpc.Core.Interceptors.Interceptor

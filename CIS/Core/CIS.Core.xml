@@ -83,6 +83,12 @@
             <remarks>Pokud není zadáno, nebude fungovat automatické dohledávání adres služeb v Clients projektech.</remarks>
             <example>https://177.0.0.55:30000</example>
         </member>
+        <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.DisableServiceDiscovery">
+            <summary>
+            Pokud je nastaveno na True, nebude se v infrastruktuře služeb automaticky dotahovat URL návazných komponent z ServiceDiscovery.
+            </summary>
+            <remarks>Pravděpodobně se použije pouze pro infra testy.</remarks>
+        </member>
         <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.InternalServicesLogin">
             <summary>
             Login uživatele pod kterým se daná služba autentizuje do ostatních služeb v rámci NOBY

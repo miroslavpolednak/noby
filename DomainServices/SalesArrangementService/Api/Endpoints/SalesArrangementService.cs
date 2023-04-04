@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.SalesArrangementService.Api.Endpoints;
 
 [Authorize]
-internal class SalesArrangementService : Contracts.v1.SalesArrangementService.SalesArrangementServiceBase
+internal sealed class SalesArrangementService : Contracts.v1.SalesArrangementService.SalesArrangementServiceBase
 {
     private readonly IMediator _mediator;
 

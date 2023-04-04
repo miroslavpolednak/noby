@@ -8,6 +8,11 @@
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	<DocumentationFile>InternalServices.DocumentGeneratorService.Api.xml</DocumentationFile>
   </PropertyGroup>
+
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
+	</PropertyGroup>
 	
   <ItemGroup>
     <PackageReference Include="ceTe.DynamicPDF.CoreSuite.NET" Version="11.41.0" />

@@ -22,12 +22,11 @@ internal sealed class GetFlowSwitchesHandler
         if (flowSwitches is null || flowSwitches.Count == 0)
         {
             if (!(await _dbContext.SalesArrangements.AnyAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)))
-                throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
+                throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
         }
 
         var response = new __SA.GetFlowSwitchesResponse();
         response.FlowSwitches.AddRange(flowSwitches);
-        
         return response;
     }
 

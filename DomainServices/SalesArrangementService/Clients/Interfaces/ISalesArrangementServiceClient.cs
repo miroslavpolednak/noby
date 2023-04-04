@@ -33,7 +33,7 @@ public interface ISalesArrangementServiceClient
     /// Vraci detail nalinkovaneho Sales Arrangement na zaklade OfferId
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement unavailable</exception>
-    Task<SalesArrangement> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<SalesArrangement?> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Napojeni OfferInstance na SA

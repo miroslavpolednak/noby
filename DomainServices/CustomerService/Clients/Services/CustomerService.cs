@@ -3,7 +3,7 @@ using DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.CustomerService.Clients.Services;
 
-internal class CustomerService : ICustomerServiceClient
+internal sealed class CustomerService : ICustomerServiceClient
 {
     private readonly Contracts.V1.CustomerService.CustomerServiceClient _service;
 

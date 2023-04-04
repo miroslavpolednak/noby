@@ -6,7 +6,7 @@ using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerMana
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
-internal class CustomerManagementDetailProvider
+internal sealed class CustomerManagementDetailProvider
 {
     private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClients _codebook;
@@ -109,7 +109,7 @@ internal class CustomerManagementDetailProvider
             ProfessionCategoryId = customer.Kyc?.NaturalPersonKyc?.Employment?.CategoryCode,
             ProfessionId = _professionTypes.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.Employment?.ProfessionCode == t.RdmCode)?.Id,
             NetMonthEarningAmountId = _netMonthEarnings.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.NetMonthEarningCode == t.RdmCode)?.Id,
-            NetMonthEarningTypeId = _incomeMainTypesAML.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.MainSourceOfEarnings?.Code.ToString() == t.RdmCode)?.Id,
+            NetMonthEarningTypeId = _incomeMainTypesAML.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.MainSourceOfEarnings?.Code.ToString(System.Globalization.CultureInfo.InvariantCulture) == t.RdmCode)?.Id,
             TaxResidence = new NaturalPersonTaxResidence
             {
                 ValidFrom = customer.TaxResidence?.ValidFrom
@@ -155,7 +155,7 @@ internal class CustomerManagementDetailProvider
         };
     }
 
-    private CustomerIdentification? CreateCustomerIdentification(__Contracts.CustomerIdentification? customerIdentification)
+    private static CustomerIdentification? CreateCustomerIdentification(__Contracts.CustomerIdentification? customerIdentification)
     {
         if (customerIdentification is null)
             return default;
