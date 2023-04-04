@@ -21,7 +21,11 @@ class Base():
     def __build_url(self, route: str):
         return f'{config.fe_api_url}/{self.__route}/{route}'
 
-    def __handle_request(self, method: str, route: str, login: str = None, json: dict = None) -> Response:
+    def __to_log_level(self, res: Response) -> int:
+        log_level: int = INFO if res.status_code == 200 else WARNING
+        return log_level
+
+    def __handle_request(self, method: str, route: str, login: str = None, json_data: dict = None) -> Response:
 
         res: Response = None
 
@@ -32,10 +36,13 @@ class Base():
         
             url = self.__build_url(route)
             cookies = Base.get_cookies(login)
-            res = request(url=url, method=method, cookies=cookies, json=json)
+            res = request(url=url, method=method, cookies=cookies, json=json_data)
 
-            log_level: int = INFO if res.status_code == 200 else WARNING
-            self._log.log(log_level, f'HandleRequest [url: {url}, method: {method}, login: {login}, status_code: {res.status_code}]]')
+            log_message: str = f'REQ - {method} {url} [login: {login}]'
+            if json_data is not None:
+                #log_message += f' [data: {json.dumps(json_data, indent = 4)}]'
+                log_message += f' [data: {json_data}]'
+            self._log.log(self.__to_log_level(res), log_message)
 
         except Exception as e:
             message = f'Error occured while FeAPI request [url: {url}, method: {method}, login: {login}]. Error: {str(e)}'
@@ -46,25 +53,31 @@ class Base():
             
         return res
 
-    def __handle_response(self, res: Response) -> dict:
-        if (len(res.content) == 0):
-            return None
-        return json.loads(res.content)
+    def __handle_response(self, res: Response) -> dict:        
+        content = None if len(res.content) == 0 else json.loads(res.content)
+  
+        log_message: str = f'RES - {res.status_code}'
+        if content is not None:
+            #log_message += f' [data: {json.dumps(content, indent = 4)}]'
+            log_message += f' [data: {content}]'
+        self._log.log(self.__to_log_level(res), log_message)
+
+        return content
 
     def get(self, route: str, login: str = None) -> dict:
         response = self.__handle_request(method='GET', route=route, login=login)
         return self.__handle_response(response)
-        content_json = json.loads(response.content)
-        return content_json
 
     def post(self, route: str, data: dict, login: str = None) -> dict:
-        response = self.__handle_request(method='POST', route=route, login=login, json=data)
+        response = self.__handle_request(method='POST', route=route, login=login, json_data=data)
         return self.__handle_response(response)
-        content_json = json.loads(response.content)
-        return content_json
 
     def put(self, route: str, data: dict, login: str = None) -> dict:
-        response = self.__handle_request(method='PUT', route=route, login=login, json=data)
+        response = self.__handle_request(method='PUT', route=route, login=login, json_data=data)
+        return self.__handle_response(response)
+
+    def delete(self, route: str, login: str = None) -> dict:
+        response = self.__handle_request(method='DELETE', route=route, login=login)
         return self.__handle_response(response)
 
     @staticmethod

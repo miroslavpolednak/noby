@@ -40,6 +40,14 @@ class TestDataRecord():
     def test_label(self) -> str:
         return self.__create_test_label()
 
+    @property
+    def log_file_name(self) -> str:
+        file_name: str = f'{self.__source.name}_{str(self.__order).zfill(3)}'
+        # invalid file name char '/' !
+        # if self.__source_name is not None:
+        #     file_name += f'_[{self.__source_name}]'
+        return file_name
+
     def __create_test_label(self) -> str:
         label: str = f'{self.__order}'
 
