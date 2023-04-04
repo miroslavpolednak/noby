@@ -38,7 +38,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Api\DomainServices.DocumentArchiveService.Api.csproj" />
-    <ProjectReference Include="..\..\Clients\DomainServices.DocumentArchiveService.Clients.csproj" />
   </ItemGroup>
 
 </Project>

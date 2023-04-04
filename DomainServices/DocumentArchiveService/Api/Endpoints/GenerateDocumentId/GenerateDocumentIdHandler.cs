@@ -1,6 +1,4 @@
 ﻿using CIS.Core.Configuration;
-using CIS.Infrastructure.Data;
-using DomainServices.DocumentArchiveService.Api.Database;
 using DomainServices.DocumentArchiveService.Api.Database.Repositories;
 using DomainServices.DocumentArchiveService.Contracts;
 using FastEnumUtility;
@@ -30,7 +28,7 @@ internal sealed class GenerateDocumentIdHandler
     public async Task<Contracts.GenerateDocumentIdResponse> Handle(GenerateDocumentIdRequest request, CancellationToken cancellation)
     {
         var envName = request.EnvironmentName == EnvironmentNames.Unknown ? FastEnum.Parse<EnvironmentNames>(ConvertToEnvEnumStr(_cisEnvironment.EnvironmentName!))
-                                                                          : request.EnvironmentName;
+                                                                            : request.EnvironmentName;
 
         long seq = await _documentSequenceRepository.GetNextDocumentSeqValue(cancellation);
 

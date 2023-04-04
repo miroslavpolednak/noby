@@ -2,7 +2,7 @@
 using FluentAssertions;
 using NSubstitute;
 
-namespace DomainServices.DocumentArchiveService.Tests;
+namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests;
 public class GenerateDocumentIdTests : IntegrationTestBase
 {
     public GenerateDocumentIdTests(GrpcTestFixture<Program> fixture)
@@ -21,5 +21,8 @@ public class GenerateDocumentIdTests : IntegrationTestBase
 
         response.DocumentId.Should().NotBeEmpty();
         response.DocumentId.Should().Contain("1");
+        response.DocumentId.Should().Contain("KBH");
+        response.DocumentId.Should().Contain("D");
+        response.DocumentId.Should().HaveLength(29);
     }
 }

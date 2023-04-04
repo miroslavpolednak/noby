@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using System.Net.Http.Headers;
 
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
 
-public class GrpcTestFixture<TStartup> : WebApplicationFactory<TStartup>, IDisposable where TStartup : class
+public class GrpcTestFixture<TStartup> : WebApplicationFactory<TStartup>where TStartup : class
 {
     internal GrpcChannel GrpcChannel { get; }
 
@@ -26,7 +28,7 @@ public class GrpcTestFixture<TStartup> : WebApplicationFactory<TStartup>, IDispo
 
         SetAuthenticationHeader(client);
 
-        GrpcChannel = GrpcChannel.ForAddress(client.BaseAddress, new GrpcChannelOptions
+        GrpcChannel = GrpcChannel.ForAddress(client.BaseAddress!, new GrpcChannelOptions
         {
             HttpClient = client
         });
@@ -49,6 +51,10 @@ public class GrpcTestFixture<TStartup> : WebApplicationFactory<TStartup>, IDispo
                           .Get<CisEnvironmentConfiguration>();
 
             services.RemoveAll<ICisEnvironmentConfiguration>().AddSingleton<ICisEnvironmentConfiguration>(cisEnvConfiguration!);
+            
+            // fake logger
+            services.RemoveAll<ILoggerFactory>().AddSingleton<ILoggerFactory, NullLoggerFactory>();
+
             services.RemoveAll<IDocumentSequenceRepository>().AddSingleton(DocumentSequenceRepository);
         });
     }
