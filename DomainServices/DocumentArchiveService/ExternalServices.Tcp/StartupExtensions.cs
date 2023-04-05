@@ -19,6 +19,8 @@ public static class StartupExtensions
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
        where TClient : class, IDocumentServiceRepository
     {
+        ErrorCodeMapper.Init();
+
         string version = getVersion<TClient>();
 
         var configuration = builder.Configuration.GetSection(GetSectionName(version))

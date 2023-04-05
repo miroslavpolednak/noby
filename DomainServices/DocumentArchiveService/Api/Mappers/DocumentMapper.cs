@@ -87,7 +87,7 @@ public class DocumentMapper : IDocumentMapper
         };
     }
 
-    private IEnumerable<int> GetMinorCodes(string minorCodes)
+    private static IEnumerable<int> GetMinorCodes(string minorCodes)
     {
         if (string.IsNullOrWhiteSpace(minorCodes))
         {

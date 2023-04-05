@@ -42,7 +42,7 @@ class JsonDataModificator():
 
         assert isinstance(input_json_data, dict), "Parameter 'input_json_data' must be DICT"
 
-        json_paths = [s[1:] for s in DictExtensions.get_json_paths(input_json_data)]
+        json_paths = DictExtensions.get_json_paths(input_json_data)
 
         output_json_data = input_json_data.copy()
 
