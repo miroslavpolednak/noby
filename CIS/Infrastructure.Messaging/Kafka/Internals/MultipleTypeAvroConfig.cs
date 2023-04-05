@@ -3,11 +3,11 @@ using CIS.Infrastructure.Messaging.Kafka.Internals.Abstraction;
 
 namespace CIS.Infrastructure.Messaging.Kafka.Internals;
 
-public sealed class MultipleTypeConfig
+public sealed class MultipleTypeAvroConfig
 {
-    private readonly MultipleTypeInfo[] _types;
+    private readonly MultipleTypeAvroInfo[] _types;
 
-    internal MultipleTypeConfig(MultipleTypeInfo[] types)
+    internal MultipleTypeAvroConfig(MultipleTypeAvroInfo[] types)
     {
         _types = types;
     }
@@ -17,10 +17,10 @@ public sealed class MultipleTypeConfig
         var type = _types.SingleOrDefault(x => x.Schema.Fullname == writerSchema.Fullname);
         if (type == null)
         {
-            throw new ArgumentException($"Unexpected type {writerSchema.Fullname}. Supported types need to be added to this {nameof(MultipleTypeConfig)} instance", nameof(writerSchema));
+            throw new ArgumentException($"Unexpected type {writerSchema.Fullname}. Supported types need to be added to this {nameof(MultipleTypeAvroConfig)} instance", nameof(writerSchema));
         }
         return type.CreateReader(type.MessageType, writerSchema);
     }
 
-    public IEnumerable<MultipleTypeInfo> Types => _types.AsEnumerable();
+    public IEnumerable<MultipleTypeAvroInfo> Types => _types.AsEnumerable();
 }

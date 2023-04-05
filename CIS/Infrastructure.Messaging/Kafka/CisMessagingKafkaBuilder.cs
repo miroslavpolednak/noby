@@ -1,24 +1,30 @@
 ﻿using Avro.Specific;
+using Confluent.SchemaRegistry;
 using MassTransit;
 
 namespace CIS.Infrastructure.Messaging.Kafka;
 
-internal sealed class CisMessagingKafkaBuilder
-    : ICisMessagingKafkaBuilder
+internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
 {
-    public ICisMessagingKafkaBuilder AddConsumerTopic<TTopicMarker>(string topic, string? groupId = null)
+    public ICisMessagingKafkaBuilder AddConsumerTopicAvro<TTopicMarker>(string topic, string? groupId = null)
         where TTopicMarker : class, ISpecificRecord
     {
-        var consumers = getTypes<TTopicMarker>();
-        if (!consumers.Any())
+        var multipleTypes = getTypes<TTopicMarker>();
+        if (!multipleTypes.Any())
         {
             throw new Core.Exceptions.CisArgumentException(0, $"No consumer contracts implementing {typeof(TTopicMarker)} found", "consumers");
         }
 
         _kafkaConfigurationActions.Add((configurator, context) =>
         {
-            configurator.AddTopic<TTopicMarker>(context, consumers, _consumerImplementations, topic, groupId);
+            configurator.AddTopicEndpoint<TTopicMarker>(SchemaType.Avro, context, multipleTypes, _consumerImplementations, topic, groupId);
         });
+        return this;
+    }
+
+    public ICisMessagingKafkaBuilder AddConsumerTopicJson<TTopicMarker>(string topic, string? groupId = null) where TTopicMarker : class
+    {
+        // TODO: implement
         return this;
     }
 
@@ -33,23 +39,29 @@ internal sealed class CisMessagingKafkaBuilder
         return this;
     }
 
-    public ICisMessagingKafkaBuilder AddProducers<TTopicMarker>(string topic)
+    public ICisMessagingKafkaBuilder AddProducerAvro<TTopicMarker>(string topic)
         where TTopicMarker : class, ISpecificRecord
     {
-        var producers = getTypes<TTopicMarker>();
-        if (!producers.Any())
+        var multipleTypes = getTypes<TTopicMarker>();
+        if (!multipleTypes.Any())
         {
             throw new Core.Exceptions.CisArgumentException(0, $"No producer contracts implementing {typeof(TTopicMarker)} found", "producers");
         }
 
         _riderConfigurationActions.Add(configurator =>
         {
-            configurator.AddProducers<TTopicMarker>(producers, topic);
+            configurator.AddProducerAvro<TTopicMarker>(multipleTypes, topic);
         });
 
         return this;
     }
 
+    public ICisMessagingKafkaBuilder AddProducerJson<TTopicMarker>(string topic) where TTopicMarker : class
+    {
+        // TODO: implement
+        return this;
+    }
+    
     public ICisMessagingKafkaBuilder AddRiderConfiguration(Action<IRiderRegistrationConfigurator> configuration)
     {
         _riderConfigurationActions.Add(configuration);
