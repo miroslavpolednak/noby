@@ -66,6 +66,43 @@ json_req_sms_basic_full= \
   "documentId": "DocumentID_876"
 }
 
+json_req_sms_bad_basic_without_identifier= \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "RETENTION",
+  "text": "kratka sms bez cehokoliv vice",
+  "identifier": {},
+  "customId": "CustomID_876",
+  "documentId": "DocumentID_876"
+}
+
+json_req_sms_bad_basic_without_identifier_scheme= \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "RETENTION",
+  "text": "kratka sms bez cehokoliv vice",
+    "identifier": {
+    "identity": "992474q"
+  },
+  "customId": "CustomID_876",
+  "documentId": "DocumentID_876"
+}
+
+json_req_sms_bad_basic_without_identifier_identity= \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "RETENTION",
+  "text": "kratka sms bez cehokoliv vice",
+    "identifier": {
+    "identityScheme": "2"
+  },
+  "customId": "CustomID_876",
+  "documentId": "DocumentID_876"
+}
+
 json_req_sms_basic_full_for_search= \
 {
   "phoneNumber": "+420607115686",

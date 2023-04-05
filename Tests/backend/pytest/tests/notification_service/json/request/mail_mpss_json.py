@@ -29,6 +29,104 @@ json_req_mail_mpss_basic_legal = \
     "attachments": []
   }
 
+# withnout parameters identifiers
+json_req_mail_bad_identifier_mpss_basic = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "application/html",
+      "language": "cz",
+      "text": "json_req_mail_mpss_basic_legal"
+    },
+  "identifier": {},
+    "attachments": []
+  }
+
+# withnout parameters identifier.identityScheme
+json_req_mail_bad_identifier_scheme_mpss_basic = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "application/html",
+      "language": "cz",
+      "text": "json_req_mail_mpss_basic_legal"
+    },
+  "identifier": {
+    "identity": "992472q"
+  },
+    "attachments": []
+  }
+
+# withnout parameters identifier.identity
+json_req_mail_bad_identifier_identity_mpss_basic = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "application/html",
+      "language": "cz",
+      "text": "json_req_mail_mpss_basic_legal"
+    },
+  "identifier": {
+    "identityScheme": "2"
+  },
+    "attachments": []
+  }
+
+
 # from, to, naturalPerson, bez priloh
 json_req_mail_mpss_basic_natural = \
   {
