@@ -46,7 +46,8 @@ public class BasicAcroFormWriter : IAcroFormWriter
         var pdfFormField = pdfDocument.Form.Fields[data.Key];
         var page = document.Pages[pdfFormField.GetOriginalPageNumber() - 1];
 
-        pdfFormField.CreateLabel(page, 2, 0, GetFieldValue(data), pdfFormField.Font, pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
+        var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), Font.LoadSystemFont(pdfFormField.Font.Name), pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
+        label.Width -= 2;
     }
 
     private string GetFieldValue(GenerateDocumentPartData value)
