@@ -34,4 +34,9 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task SignIn([FromBody] SignIn.SignInRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
+
+    [HttpGet("mpss-cookie")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<string> GetMpssSecurityCookie(CancellationToken cancellationToken)
+        => await _mediator.Send(new GetMpssSecurityCookie.GetMpssSecurityCookieRequest(), cancellationToken);
 }
