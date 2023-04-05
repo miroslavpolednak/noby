@@ -47,10 +47,10 @@ public class GetDocumentTests : IntegrationTestBase
     {
         var client = CreateClient();
 
-        var response = await client.GetDocumentAsync(new() { DocumentId = "KBHMockedId" }, default);
+        var response = await client.GetDocumentAsync(new() { DocumentId = "KBHMockedId", WithContent = false }, default);
 
         response.Should().NotBeNull();
-        response.Content.Should().BeNull();
+        response.Content.BinaryData.Should().BeEmpty();
         response.Metadata.Should().NotBeNull();
         response.Metadata.CaseId.Should().Be(132456L);
         response.Metadata.DocumentId.Should().Be("TestDocId");

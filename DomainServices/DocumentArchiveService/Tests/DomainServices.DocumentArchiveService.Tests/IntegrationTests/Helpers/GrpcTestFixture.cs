@@ -80,7 +80,9 @@ public class GrpcTestFixture<TStartup> : WebApplicationFactory<TStartup> where T
 
         var authenticationString = $"{login}:{password}";
         var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(authenticationString));
-
+        // added noby specific header 
+        client.DefaultRequestHeaders.Add("noby-user-id","3048");
+        client.DefaultRequestHeaders.Add("noby-user-ident", "KBUID=A09FK3");
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
     }
 

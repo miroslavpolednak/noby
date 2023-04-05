@@ -20,7 +20,9 @@ public abstract class IntegrationTestBase : IClassFixture<GrpcTestFixture<Progra
         // Example of how to set interceptor, if you don't want use interceptor, just pass channel to client instance instead of invoker
         // If you register this GenericClientExceptionInterceptor you will get our CisException instead of default RpcException
         var exceptionInterceptor = Fixture.Services.GetRequiredService<GenericClientExceptionInterceptor>();
-        var invoker = channel.Intercept(exceptionInterceptor);
+        var userForwardingInterceptor = Fixture.Services.GetRequiredService<ContextUserForwardingClientInterceptor>();
+        
+        var invoker = channel.Intercept(exceptionInterceptor, userForwardingInterceptor);
 
         return new DocumentArchiveServiceClient(invoker);
     }

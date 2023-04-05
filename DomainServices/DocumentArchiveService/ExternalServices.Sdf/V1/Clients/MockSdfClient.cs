@@ -111,7 +111,7 @@ public class MockSdfClient : ISdfClient
         return Task.FromResult(new GetDocumentByExternalIdOutput
         {
             Metadata = mockValues.ToArray(),
-            FileContent = Convert.FromBase64String("VGhpcyBpcyBhIHRlc3Q="),
+            FileContent = query.WithContent ? Convert.FromBase64String("VGhpcyBpcyBhIHRlc3Q="): null,
             DmsDocInfo = new DmsDocumentInfo { MimeType = "text/plain" }
         });
     }
