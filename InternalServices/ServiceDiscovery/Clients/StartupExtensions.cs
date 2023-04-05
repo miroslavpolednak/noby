@@ -1,4 +1,5 @@
 ﻿using CIS.Core;
+using CIS.Core.Configuration;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.Configuration;
 using Microsoft.AspNetCore.Builder;
@@ -30,14 +31,10 @@ public static class StartupExtensions
         {
             throw new CisArgumentException(0, "Do not call UseServiceDiscovery() unless AddCisServiceDiscovery() has been called before.", nameof(_serviceCollection));
         }
-        
-        // jestlize je generalne vypnuta SD, nic nedelej
-        var configuration = builder.Services.GetRequiredService<Core.Configuration.ICisEnvironmentConfiguration>();
-        if (configuration.DisableServiceDiscovery)
-        {
-            return builder;
-        };
 
+        // konfigurace prostredi - kvuli tomu, kdybysme chteli vypnout SD
+        var configuration = builder.Services.GetRequiredService<ICisEnvironmentConfiguration>();
+        
         // najit vsechny implementace, ktere maji tento interface
         var foundServices = _serviceCollection!
             .Where(t => 
@@ -48,9 +45,23 @@ public static class StartupExtensions
             .Where(t => t is not null && t.UseServiceDiscovery)
             .ToList();
 
-        if (foundServices.Any())
+        // nejsou zadne auto discover sluzby
+        if (!foundServices.Any())
         {
-             var servicesInServiceDiscovery = builder.Services
+            return builder;
+        }
+
+        // vypnuta SD, stejne musim nastavit URL - pro testovani
+        if (configuration.DisableServiceDiscovery)
+        {
+            foundServices.ForEach(instance =>
+            {
+                instance!.ServiceUrl = new Uri(GrpcServiceUriSettingsConstants.EmptyUriAddress);
+            });
+        }
+        else // regulerni beh
+        {
+            var servicesInServiceDiscovery = builder.Services
                 .GetRequiredService<__Client.IDiscoveryServiceClient>()
                 .GetServicesSynchronously();
 
@@ -60,8 +71,14 @@ public static class StartupExtensions
                 .FirstOrDefault(t => t.ServiceName == instance!.ServiceName && t.ServiceType == (__Contracts.ServiceTypes)instance.ServiceType);
 
                 // nastavit URL ze ServiceDiscovery
-                instance!.ServiceUrl = new Uri(service?.ServiceUrl
-                    ?? throw new CisArgumentException(0, $"Service Discovery can not find {instance.ServiceName} {(__Contracts.ServiceTypes)instance.ServiceType} service URL", nameof(instance)));
+                if (Uri.TryCreate(service?.ServiceUrl, UriKind.Absolute, out var serviceUri))
+                {
+                    instance!.ServiceUrl = serviceUri;
+                }
+                else
+                {
+                    throw new CisArgumentException(0, $"Service Discovery can not find {instance!.ServiceName} {(__Contracts.ServiceTypes)instance.ServiceType} service URL", nameof(instance));
+                }
             });
         }
 
@@ -70,26 +87,49 @@ public static class StartupExtensions
 
     public static IServiceCollection AddCisServiceDiscovery(this IServiceCollection services, bool validateServiceCertificate = false)
     {
-        services.TryAddSingleton<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>(provider =>
+        // najit instanci konfigurace
+        var configuration = services
+            .Where(t =>
+                t.Lifetime == ServiceLifetime.Singleton
+                && t.ImplementationInstance is not null
+                && t.ImplementationInstance is ICisEnvironmentConfiguration)
+            .Select(t => t.ImplementationInstance as ICisEnvironmentConfiguration)
+            .FirstOrDefault();
+
+        // pokud se nema pouzivat SD, tak registrovat prazdny settings
+        if (configuration?.DisableServiceDiscovery ?? false)
+        {
+            services.TryAddSingleton<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>, GrpcServiceUriSettingsEmpty<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>();
+        }
+        else
+        {
+            services.TryAddSingleton<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>(provider =>
             {
-                string url = provider.GetService<Core.Configuration.ICisEnvironmentConfiguration>()?.ServiceDiscoveryUrl ?? "";
+                var configuration = provider.GetService<ICisEnvironmentConfiguration>();
+
+                string url = provider.GetService<ICisEnvironmentConfiguration>()?.ServiceDiscoveryUrl ?? "";
                 return new GrpcServiceUriSettingsDirect<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>(url);
             });
-        services.registerServices(validateServiceCertificate);
+            services.registerServices(validateServiceCertificate);
+        }
+
+        _serviceCollection ??= services;
+
         return services;
     }
 
     public static IServiceCollection AddCisServiceDiscovery(this IServiceCollection services, string serviceUrl, bool validateServiceCertificate = false)
     {
         services.TryAddSingleton<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>(new GrpcServiceUriSettingsDirect<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>(serviceUrl));
+        
+        _serviceCollection ??= services;
         services.registerServices(validateServiceCertificate);
+        
         return services;
     }
     
     private static IServiceCollection registerServices(this IServiceCollection services, bool validateServiceCertificate)
     {
-        _serviceCollection ??= services;
-
         // cache
         services.TryAddTransient<__Client.ServicesMemoryCache>();
         

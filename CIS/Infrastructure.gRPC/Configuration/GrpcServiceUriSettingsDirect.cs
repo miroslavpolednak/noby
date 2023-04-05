@@ -17,6 +17,13 @@ public sealed class GrpcServiceUriSettingsDirect<TService>
         if (string.IsNullOrEmpty(serviceUrl))
             throw new ArgumentNullException(nameof(serviceUrl), $"Service URL in GrpcServiceUriSettingsDirect for {typeof(TService)} is empty or null");
 
-        ServiceUrl = new Uri(serviceUrl) ?? throw new ArgumentNullException(nameof(serviceUrl), $"Service URL in GrpcServiceUriSettingsDirect for {typeof(TService)} is empty or null");
+        if (Uri.TryCreate(serviceUrl, UriKind.Absolute, out Uri? serviceUri))
+        {
+            ServiceUrl = serviceUri!;
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(serviceUrl), $"Service URL in GrpcServiceUriSettingsDirect for {typeof(TService)} is empty or null");
+        }
     }
 }
