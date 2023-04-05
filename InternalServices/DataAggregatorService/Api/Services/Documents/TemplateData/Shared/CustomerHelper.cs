@@ -17,6 +17,11 @@ public static class CustomerHelper
         return $"{customerDetail.NaturalPerson.FirstName} {customerDetail.NaturalPerson.LastName}, {degree}";
     }
 
+    public static string NameWithDateOfBirth(string fullName, DateTime dateOfBirth)
+    {
+        return $"{fullName}, datum narození: {dateOfBirth.ToString("d", CultureProvider.GetProvider())}";
+    }
+
     public static string FullAddress(CustomerDetailResponse customerDetail, ICollection<CountriesItem> countries)
     {
         var address = customerDetail.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Permanent);
