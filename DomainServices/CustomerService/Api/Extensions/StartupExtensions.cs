@@ -1,4 +1,8 @@
-﻿using CIS.Infrastructure.StartupExtensions;
+﻿using CIS.Infrastructure.Messaging;
+using CIS.Infrastructure.StartupExtensions;
+using DomainServices.CustomerService.Api.Messaging.Abstraction;
+using DomainServices.CustomerService.Api.Messaging.PartyCreated;
+using DomainServices.CustomerService.Api.Messaging.PartyUpdated;
 using DomainServices.CustomerService.ExternalServices;
 
 namespace DomainServices.CustomerService.Api.Extensions;
@@ -17,6 +21,13 @@ internal static class StartupExtensions
         // CodebookService
         builder.Services.AddCodebookService();
 
+        builder.AddCisMessaging()
+            .AddKafka()
+            .AddConsumer<PartyCreatedConsumer>()
+            .AddConsumer<PartyUpdatedConsumer>()
+            .AddConsumerTopic<ICustomerManagementEvent>("")
+            .Build();
+        
         return builder;
     }
 }
