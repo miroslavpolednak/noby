@@ -53,8 +53,8 @@ public class SalesArrangementController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task DeleteSalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
-        => await _mediator.Send(new DeleteSalesArrangement.DeleteSalesArrangementRequest(salesArrangementId), cancellationToken);
+    public async Task DeleteSalesArrangement([FromRoute] int salesArrangementId)
+        => await _mediator.Send(new DeleteSalesArrangement.DeleteSalesArrangementRequest(salesArrangementId));
 
     /// <summary>
     /// Vrací vyhodnocení dané úvěrové žádosti
