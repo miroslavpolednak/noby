@@ -89,7 +89,7 @@ def test_mail_negative(url_name,  auth_params, auth, json_data):
         auth=(username, password),
         verify=False
     )
-    assert resp.status_code == 403
+    assert resp.status_code == 400
 
 
 #pro testy zabezpeceni, jake sms jsou mozne odespilat pres urcite uzivatele - pouzita vnorena parametrizace

@@ -7,6 +7,15 @@ json_req_sms_basic= \
   "text": "insg bez logování a chci háčky a čárky"
 }
 
+
+json_req_sms_basic_alex= \
+{
+  "phoneNumber": "+420728310176",
+  "processingPriority": 1,
+  "type": "RETENTION",
+  "text": "TEST od Marka Mikela - Alexi, napis mi na teams ze ti sms prisla. melo by to fungovat"
+}
+
 json_req_sms_sb= \
 {
   "phoneNumber": "+420607115686",

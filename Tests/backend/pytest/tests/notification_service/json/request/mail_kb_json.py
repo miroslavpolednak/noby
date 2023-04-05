@@ -21,7 +21,7 @@ json_req_mail_kb_bad_11_attachments = \
     ],
     "subject": "NS_test_MIKEL_bad_11_attachments_kb",
     "content": {
-      "format": "text/plain",
+      "format": "application/html",
       "language": "cz",
       "text": "json_req_mail_mpss_bad_11_attachments_kb"
     },
