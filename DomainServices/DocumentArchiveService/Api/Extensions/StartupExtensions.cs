@@ -27,7 +27,7 @@ internal static class StartupExtensions
             throw new ArgumentNullException(nameof(builder));
         }
 
-        builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+        builder.Services.AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init());
 
         builder.AddExternalService<ISdfClient>();
 

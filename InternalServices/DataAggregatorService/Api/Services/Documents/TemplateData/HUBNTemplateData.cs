@@ -5,7 +5,7 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Temp
 
 internal class HUBNTemplateData : AggregatedData
 {
-    public string PaymentAccount => Mortgage.PaymentAccount.Prefix + "-" + Mortgage.PaymentAccount.Number;
+    public string PaymentAccount => BankAccountHelper.AccountNumber(Mortgage.PaymentAccount.Prefix, Mortgage.PaymentAccount.Number, Mortgage.PaymentAccount.BankCode);
 
     public string FullName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 

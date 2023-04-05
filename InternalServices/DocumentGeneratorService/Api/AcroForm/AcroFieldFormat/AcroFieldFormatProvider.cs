@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormatters;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
 
@@ -50,6 +49,7 @@ public class AcroFieldFormatProvider : IFormatProvider, ICustomFormatter
             return formattable.ToString(format, _cultureInfo);
         }
 
+        
         return arg.ToString() ?? string.Empty;
     }
 

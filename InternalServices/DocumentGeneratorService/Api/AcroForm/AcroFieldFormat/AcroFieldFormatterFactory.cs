@@ -1,6 +1,6 @@
 ﻿using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat.Formatters;
 
-namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormatters;
+namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
 
 internal static class AcroFieldFormatterFactory
 {
@@ -19,6 +19,7 @@ internal static class AcroFieldFormatterFactory
         new()
         {
             { CustomFormatterKeys.MonthsToYears, MonthsToYearsFormatter.Instance },
-            { CustomFormatterKeys.Percentage, PercentageFormatter.Instance }
+            { CustomFormatterKeys.Percentage, PercentageFormatter.Instance },
+            { CustomFormatterKeys.Currency, CurrencyFormatter.Instance }
         };
 }
