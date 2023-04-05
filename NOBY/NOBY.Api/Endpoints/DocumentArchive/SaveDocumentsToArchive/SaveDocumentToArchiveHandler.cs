@@ -133,7 +133,7 @@ public class SaveDocumentToArchiveHandler
         var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
         var identity = user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.Mpad)
             ?? user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.KbUid);
-        
+
         return new UploadDocumentRequest
         {
             BinaryData = ByteString.CopyFrom(file),
@@ -155,6 +155,9 @@ public class SaveDocumentToArchiveHandler
     private async Task<string> GetContractNumber(long caseId, CancellationToken cancellationToken)
     {
         var caseDetail = await _caseServiceClient.GetCaseDetail(caseId, cancellationToken);
-        return caseDetail.Data?.ContractNumber ?? defaultContractNumber;
+        if (string.IsNullOrWhiteSpace(caseDetail?.Data?.ContractNumber))
+            return defaultContractNumber;
+        
+        return caseDetail.Data.ContractNumber;
     }
 }
