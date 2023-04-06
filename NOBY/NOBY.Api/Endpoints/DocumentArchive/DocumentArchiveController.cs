@@ -75,8 +75,8 @@ public class DocumentArchiveController : ControllerBase
     [HttpPost("document")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    public async Task<Guid> UploadDocument(IFormFile file, CancellationToken cancellationToken)
-          => await _mediator.Send(new UploadDocumentRequest(file), cancellationToken);
+    public async Task<Guid> UploadDocument(IFormFile file)
+          => await _mediator.Send(new UploadDocumentRequest(file));
 
     /// <summary>
     /// Uložení dokumentů ke Case-u do archivu
@@ -90,11 +90,9 @@ public class DocumentArchiveController : ControllerBase
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> SaveDocumentsToArchive(
      [FromRoute] long caseId,
-     [FromBody] SaveDocumentsToArchiveRequest request,
-     CancellationToken cancellationToken)
+     [FromBody] SaveDocumentsToArchiveRequest request)
     {
-        await _mediator.Send(request?.InfuseCaseId(caseId) ?? throw new NobyValidationException("Payload is empty"), 
-                             cancellationToken);
+        await _mediator.Send(request?.InfuseCaseId(caseId) ?? throw new NobyValidationException("Payload is empty"));
         return Accepted();
     }
 }

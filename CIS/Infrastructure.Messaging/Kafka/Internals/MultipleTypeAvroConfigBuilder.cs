@@ -2,11 +2,11 @@
 
 namespace CIS.Infrastructure.Messaging.Kafka.Internals;
 
-public sealed class MultipleTypeConfigBuilder<TBase>
+public sealed class MultipleTypeAvroConfigBuilder<TBase>
 {
-    private readonly List<MultipleTypeInfo> _types = new();
+    private readonly List<MultipleTypeAvroInfo> _types = new();
     
-    public MultipleTypeConfigBuilder<TBase> AddType(Type messageType, Schema readerSchema)
+    public MultipleTypeAvroConfigBuilder<TBase> AddType(Type messageType, Schema readerSchema)
     {
         if (readerSchema is null)
         {
@@ -17,10 +17,10 @@ public sealed class MultipleTypeConfigBuilder<TBase>
         {
             throw new ArgumentException($"A type based on schema with the full name \"{readerSchema.Fullname}\" has already been added");
         }
-        var mapping = new MultipleTypeInfo(messageType, readerSchema);
+        var mapping = new MultipleTypeAvroInfo(messageType, readerSchema);
         _types.Add(mapping);
         return this;
     }
 
-    public MultipleTypeConfig Build() => new(_types.ToArray());
+    public MultipleTypeAvroConfig Build() => new(_types.ToArray());
 }

@@ -49,6 +49,12 @@ public static class GrpcExceptionHelpers
             var ids = codes.Split(',');
             for (int i = 0; i < ids.Length; i++)
             {
+                // takovy kod uz v kolekci je
+                if (list.Any(t => t.ExceptionCode == ids[i]))
+                {
+                    continue;
+                }
+
                 if (int.TryParse(ids[i], out int code))
                 {
                     var message = TryConvertTrailerValueToString(exception.Trailers?.GetValueBytes($"ciserr-{code}-bin"));

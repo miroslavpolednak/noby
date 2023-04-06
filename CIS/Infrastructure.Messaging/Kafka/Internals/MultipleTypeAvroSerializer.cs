@@ -6,18 +6,19 @@ using CIS.Infrastructure.Messaging.Kafka.Internals.Abstraction;
 
 namespace CIS.Infrastructure.Messaging.Kafka.Internals;
 
-public sealed class MultipleTypeSerializer<T> : IAsyncSerializer<T>
+public sealed class MultipleTypeAvroSerializer<T> : IAsyncSerializer<T>
 {
-    private readonly MultipleTypeConfig _typeConfig;
+    private readonly MultipleTypeAvroConfig _typeAvroConfig;
     private readonly ISchemaRegistryClient _schemaRegistryClient;
     private readonly AvroSerializerConfig _serializerConfig;
     private readonly Dictionary<string, ISerializerWrapper> _serializers = new();
 
-    public MultipleTypeSerializer(MultipleTypeConfig typeConfig,
+    public MultipleTypeAvroSerializer(
+        MultipleTypeAvroConfig typeAvroConfig,
         ISchemaRegistryClient schemaRegistryClient,
         AvroSerializerConfig serializerConfig)
     {
-        _typeConfig = typeConfig;
+        _typeAvroConfig = typeAvroConfig;
         _schemaRegistryClient = schemaRegistryClient;
         _serializerConfig = serializerConfig;
         InitialiseSerializers();
@@ -25,9 +26,9 @@ public sealed class MultipleTypeSerializer<T> : IAsyncSerializer<T>
 
     private void InitialiseSerializers()
     {
-        foreach (var typeInfo in _typeConfig.Types)
+        foreach (var typeInfo in _typeAvroConfig.Types)
         {
-            var serializer = MultipleTypeInfo.CreateSerializer(typeInfo.MessageType, _schemaRegistryClient, _serializerConfig);
+            var serializer = MultipleTypeAvroInfo.CreateAvroSerializer(typeInfo.MessageType, _schemaRegistryClient, _serializerConfig);
             _serializers[typeInfo.Schema.Fullname] = serializer;
         }
     }
@@ -46,7 +47,7 @@ public sealed class MultipleTypeSerializer<T> : IAsyncSerializer<T>
         if (!_serializers.TryGetValue(fullName, out var serializer))
         {
             throw new ArgumentException(
-                $"Unexpected type {fullName}. All types to be serialized need to be registered in the {nameof(MultipleTypeConfig)} that is supplied to this instance of {nameof(MultipleTypeSerializer<T>)}",
+                $"Unexpected type {fullName}. All types to be serialized need to be registered in the {nameof(MultipleTypeAvroConfig)} that is supplied to this instance of {nameof(MultipleTypeAvroSerializer<T>)}",
                 nameof(data));
         }
 

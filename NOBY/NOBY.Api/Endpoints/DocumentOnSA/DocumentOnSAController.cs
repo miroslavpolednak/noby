@@ -53,9 +53,8 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<StartSigningResponse> StartSigning(
          [FromRoute] int salesArrangementId,
-         [FromBody] StartSigningRequest request,
-         CancellationToken cancellationToken)
-    => await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId), cancellationToken);
+         [FromBody] StartSigningRequest request)
+    => await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
 
     /// <summary>
     /// Zrušit podepisování dokumentu
@@ -73,9 +72,8 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task StopSigning(
         [FromRoute] int salesArrangementId,
-        [FromRoute] int documentOnSAId,
-        CancellationToken cancellationToken)
-    => await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId), cancellationToken);
+        [FromRoute] int documentOnSAId)
+    => await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId));
 
     /// <summary>
     /// Manuální podpis DocumentOnSA
@@ -91,9 +89,8 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task SignDocumentManually(
         [FromRoute] int salesArrangementId,
-        [FromRoute] int documentOnSAId,
-        CancellationToken cancellationToken)
-     => await _mediator.Send(new SignDocumentManuallyRequest(salesArrangementId, documentOnSAId), cancellationToken);
+        [FromRoute] int documentOnSAId)
+     => await _mediator.Send(new SignDocumentManuallyRequest(salesArrangementId, documentOnSAId));
 
     /// <summary>
     /// Vygenerování dokumentu z uložených dat dokumentu na sales arrangementu příp. z archivu
@@ -134,10 +131,9 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SearchDocumentsOnSa(
              [FromRoute] int salesArrangementId,
-             [FromBody] SearchRequest request,
-             CancellationToken cancellationToken)
+             [FromBody] SearchRequest request)
     {
-        var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId), cancellationToken);
+        var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
 
         if (result.FormIds is null || !result.FormIds.Any())
             return NoContent();
