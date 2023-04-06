@@ -7,6 +7,7 @@ import "Parameters/SalesArrangementParametersDrawing.proto";
 import "Parameters/SalesArrangementParametersGeneralChange.proto";
 import "Parameters/SalesArrangementParametersHUBN.proto";
 import "Parameters/SalesArrangementParametersCustomerChange.proto";
+import "Parameters/SalesArrangementParametersCustomerChange3602.proto";
 
 message UpdateSalesArrangementParametersRequest {
 	int32 SalesArrangementId = 1;
@@ -17,5 +18,8 @@ message UpdateSalesArrangementParametersRequest {
 		SalesArrangementParametersGeneralChange GeneralChange = 22;
 		SalesArrangementParametersHUBN HUBN = 23;
 		SalesArrangementParametersCustomerChange CustomerChange = 24;
+		SalesArrangementParametersCustomerChange3602 CustomerChange3602A = 25;
+		SalesArrangementParametersCustomerChange3602 CustomerChange3602B = 26;
+		SalesArrangementParametersCustomerChange3602 CustomerChange3602C = 27;
     }
 }
