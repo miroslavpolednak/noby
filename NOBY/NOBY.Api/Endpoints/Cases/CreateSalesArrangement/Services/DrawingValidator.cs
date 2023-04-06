@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+﻿using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+
+namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class DrawingValidator
     : BaseValidator, ICreateSalesArrangementParametersValidator

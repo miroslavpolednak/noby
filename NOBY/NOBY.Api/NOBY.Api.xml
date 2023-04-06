@@ -2130,6 +2130,16 @@
              </remarks>
              <returns>Seznam závazků na produktu</returns>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChange3602Detail.HouseholdId">
+            <summary>
+            ID domacnosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChange3602Detail.IsSpouseInDebt">
+            <summary>
+            Přistupující manžel/ka?
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetail.RepaymentAccount">
             <summary>
             Účet pro splácení
@@ -2601,6 +2611,7 @@
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersGeneralChange
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersHUBN
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersCustomerChange
+            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersCustomerChange3602
             )
             </remarks>
         </member>
@@ -2893,6 +2904,11 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChange3602Update.IsSpouseInDebt">
+            <summary>
+            Přistupující manžel/ka?
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChangeUpdate.CommentToChangeRequest">
             <summary>

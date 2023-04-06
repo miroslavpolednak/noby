@@ -48,6 +48,7 @@ public sealed class GetDetailResponse
     /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersGeneralChange
     /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersHUBN
     /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersCustomerChange
+    /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersCustomerChange3602
     /// )
     /// </remarks>
     public object? Parameters { get; set; }
