@@ -5,14 +5,15 @@ from ..conftest import URLS
 from ..json.request.sms_json import json_req_sms_basic, json_req_sms_basic_full, json_req_sms_basic_epsy, \
     json_req_sms_basic_insg, json_req_sms_bez_logovani, json_req_sms_logovani, json_req_sms_sb, json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
-    json_req_sms_bad_basic_without_identifier_identity
+    json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_uat
 from ..json.request.sms_template import json_req_sms_full_template, json_req_sms_basic_template, \
     json_req_sms_full_template_uat, json_req_sms_basic_template_uat
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_basic])
+@pytest.mark.parametrize("url_name, json_data", [
+    ("dev_url", json_req_sms_basic),
+    ("uat_url", json_req_sms_basic_uat)])
 def test_sms(url_name,  auth_params, auth, json_data):
     """uvodni test pro zakladni napln sms bez priloh
     """

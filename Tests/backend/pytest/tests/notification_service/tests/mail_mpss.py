@@ -4,7 +4,7 @@ import requests
 from ..conftest import URLS
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
     json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural, json_req_mail_mpss_bad_natural_legal, \
-    json_req_mail_mpss_max_attachments, json_req_mail_mpss_bad_11_attachments, json_req_mail_bad_mpss_basic, \
+    json_req_mail_mpss_max_attachments, json_req_mail_mpss_bad_11_attachments, json_req_mail_bad_identifier_identity_mpss_basic, \
     json_req_mail_bad_identifier_mpss_basic, json_req_mail_bad_identifier_identity_mpss_basic, \
     json_req_mail_bad_identifier_scheme_mpss_basic
 
@@ -98,7 +98,7 @@ def test_mail_negative(url_name,  auth_params, auth, json_data):
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth, json_data",
                          [
-                            ("XX_INSG_RMT_USR_TEST", json_req_mail_mpss_bad_natural_legal, json_req_mail_bad_mpss_basic)
+                            ("XX_INSG_RMT_USR_TEST", json_req_mail_mpss_bad_natural_legal, json_req_mail_bad_identifier_identity_mpss_basic)
 ], indirect=["auth"])
 def test_mail_bad_request(auth_params, auth, json_data, url_name):
     username = auth[0]

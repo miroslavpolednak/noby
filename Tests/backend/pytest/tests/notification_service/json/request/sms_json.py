@@ -7,6 +7,14 @@ json_req_sms_basic= \
   "text": "insg bez logování a chci háčky a čárky"
 }
 
+json_req_sms_basic_uat= \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "RETENTION",
+  "text": "UAT insg bez logování a chci háčky a čárky"
+}
+
 
 json_req_sms_basic_alex= \
 {

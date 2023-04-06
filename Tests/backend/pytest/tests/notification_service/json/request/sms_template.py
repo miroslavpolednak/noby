@@ -49,7 +49,7 @@ json_req_sms_full_template_uat = \
   "placeholders": [
     {
       "key": "date_from",
-      "value": "uat_dneska"
+      "value": "UAT dneska"
     },
     {
       "key": "date_to",
@@ -77,7 +77,7 @@ json_req_sms_basic_template_uat = \
   "placeholders": [
     {
       "key": "environment",
-      "value": "test_uat"
+      "value": "UAT test"
     }
   ]
 }
