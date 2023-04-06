@@ -24,8 +24,8 @@ public class OfferController : ControllerBase
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(SimulateMortgage.SimulateMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<SimulateMortgage.SimulateMortgageResponse> SimulateMortgage([FromBody] SimulateMortgage.SimulateMortgageRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    public async Task<SimulateMortgage.SimulateMortgageResponse> SimulateMortgage([FromBody] SimulateMortgage.SimulateMortgageRequest request)
+        => await _mediator.Send(request);
     
     /// <summary>
     /// Detail provedené simulace dle ID simulace.
@@ -129,6 +129,6 @@ public class OfferController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Modelace" })]
     [ProducesResponseType(typeof(DeveloperSearchResponse), StatusCodes.Status200OK)]
-    public async Task<DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearchRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    public async Task<DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearchRequest request)
+        => await _mediator.Send(request);
 }

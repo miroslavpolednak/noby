@@ -21,8 +21,8 @@ public class AddressController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(AddressSearch.AddressSearchResponse), StatusCodes.Status200OK)]
-    public async Task<AddressSearch.AddressSearchResponse> AddressSearch([FromBody] AddressSearch.AddressSearchRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    public async Task<AddressSearch.AddressSearchResponse> AddressSearch([FromBody] AddressSearch.AddressSearchRequest request)
+        => await _mediator.Send(request);
 
     /// <summary>
     /// Získání detailu adresy přes AddressWhispererBEService
@@ -35,6 +35,6 @@ public class AddressController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(GetAddressDetail.GetAddressDetailResponse), StatusCodes.Status200OK)]
-    public async Task<GetAddressDetail.GetAddressDetailResponse> GetAddressDetail([FromBody] GetAddressDetail.GetAddressDetailRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    public async Task<GetAddressDetail.GetAddressDetailResponse> GetAddressDetail([FromBody] GetAddressDetail.GetAddressDetailRequest request)
+        => await _mediator.Send(request);
 }
