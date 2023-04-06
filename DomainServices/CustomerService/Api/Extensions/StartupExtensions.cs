@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.Messaging;
+﻿using CIS.Core.Exceptions;
+using CIS.Infrastructure.Messaging;
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.CustomerService.Api.Messaging.Abstraction;
 using DomainServices.CustomerService.Api.Messaging.PartyCreated;
@@ -11,6 +12,13 @@ internal static class StartupExtensions
 {
     public static WebApplicationBuilder AddCustomerService(this WebApplicationBuilder builder)
     {
+        var appConfiguration = builder.Configuration
+            .GetSection("AppConfiguration")
+            .Get<Configuration.AppConfiguration>()
+            ?? throw new CisConfigurationNotFound("AppConfiguration");
+        
+        appConfiguration.Validate();
+        
         builder.Services.AddDapper(builder.Configuration.GetConnectionString("KonsDb")!);
 
         builder.AddExternalService<ExternalServices.CustomerManagement.V1.ICustomerManagementClient>();
@@ -25,7 +33,7 @@ internal static class StartupExtensions
             .AddKafka()
             .AddConsumer<PartyCreatedConsumer>()
             .AddConsumer<PartyUpdatedConsumer>()
-            .AddConsumerTopic<ICustomerManagementEvent>("")
+            .AddConsumerTopicJson<ICustomerManagementEvent>(appConfiguration.CustomerManagementEventTopic)
             .Build();
         
         return builder;
