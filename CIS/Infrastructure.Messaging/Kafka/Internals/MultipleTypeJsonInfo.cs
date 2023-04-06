@@ -25,11 +25,12 @@ public sealed class MultipleTypeJsonInfo
         return (ISerializerWrapper)Activator.CreateInstance(constructed2, inner)!;
     }
     
-    public static IDeserializerWrapper CreateJsonDeserializer(Type messageType, ISchemaRegistryClient schemaRegistryClient)
+    public static IDeserializerWrapper CreateJsonDeserializer(Type messageType, ISchemaRegistryClient schemaRegistryClient,
+        JsonDeserializerConfig deserializerConfig)
     {
         Type t1 = typeof(JsonDeserializer<>);
         var constructed1 = t1.MakeGenericType(messageType);
-        var inner = Activator.CreateInstance(constructed1, schemaRegistryClient)!;
+        var inner = Activator.CreateInstance(constructed1, schemaRegistryClient, deserializerConfig)!;
 
         Type t2 = typeof(JsonDeserializerWrapper<>);
         var constructed2 = t2.MakeGenericType(messageType);

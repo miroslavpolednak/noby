@@ -100,12 +100,15 @@ public static class KafkaExtensions
     {
         // get groupId
         var environmentConfiguration = context.GetRequiredService<CIS.Core.Configuration.ICisEnvironmentConfiguration>();
+        var deserializerConfig = context
+            .GetRequiredService<IOptions<KB.Speed.Messaging.Kafka.SerDes.Json.JsonDeserializerConfig>>()
+            .Value;
 
         factoryConfigurator.TopicEndpoint<TTopicMarker>(topic, groupId ?? environmentConfiguration.DefaultApplicationKey, conf =>
         {
             var schemaRegistryClient = context.GetRequiredService<ISchemaRegistryClient>();
             var multipleTypeConfig = CreateMultipleTypeJsonConfig<TTopicMarker>();
-            var valueDeserializer = new MultipleTypeJsonDeserializer<TTopicMarker>(multipleTypeConfig, schemaRegistryClient);
+            var valueDeserializer = new MultipleTypeJsonDeserializer<TTopicMarker>(multipleTypeConfig, schemaRegistryClient, deserializerConfig);
 
             conf.SetValueDeserializer(valueDeserializer.AsSyncOverAsync());
             conf.SetHeadersDeserializer(new HeaderDeserializer());

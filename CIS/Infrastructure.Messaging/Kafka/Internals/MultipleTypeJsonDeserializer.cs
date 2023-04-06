@@ -1,6 +1,7 @@
 ﻿using CIS.Infrastructure.Messaging.Kafka.Internals.Abstraction;
 using Confluent.Kafka;
 using Confluent.SchemaRegistry;
+using KB.Speed.Messaging.Kafka.SerDes.Json;
 
 namespace CIS.Infrastructure.Messaging.Kafka.Internals;
 
@@ -8,14 +9,17 @@ public sealed class MultipleTypeJsonDeserializer<T> : IAsyncDeserializer<T>
 {
     private readonly MultipleTypeJsonConfig _typeJsonConfig;
     private readonly ISchemaRegistryClient _schemaRegistryClient;
+    private readonly JsonDeserializerConfig _deserializerConfig;
     private readonly Dictionary<Type, IDeserializerWrapper> _deserializers = new();
     
     public MultipleTypeJsonDeserializer(
         MultipleTypeJsonConfig typeJsonConfig,
-        ISchemaRegistryClient schemaRegistryClient)
+        ISchemaRegistryClient schemaRegistryClient,
+        JsonDeserializerConfig deserializerConfig)
     {
         _typeJsonConfig = typeJsonConfig;
         _schemaRegistryClient = schemaRegistryClient;
+        _deserializerConfig = deserializerConfig;
         InitialiseSerializers();
     }
     
@@ -23,7 +27,7 @@ public sealed class MultipleTypeJsonDeserializer<T> : IAsyncDeserializer<T>
     {
         foreach (var typeInfo in _typeJsonConfig.Types)
         {
-            var deserializer = MultipleTypeJsonInfo.CreateJsonDeserializer(typeInfo.MessageType, _schemaRegistryClient);
+            var deserializer = MultipleTypeJsonInfo.CreateJsonDeserializer(typeInfo.MessageType, _schemaRegistryClient, _deserializerConfig);
             _deserializers[typeInfo.MessageType] = deserializer;
         }
     }
