@@ -13,7 +13,8 @@ public sealed class MultipleTypeAvroSerializer<T> : IAsyncSerializer<T>
     private readonly AvroSerializerConfig _serializerConfig;
     private readonly Dictionary<string, ISerializerWrapper> _serializers = new();
 
-    public MultipleTypeAvroSerializer(MultipleTypeAvroConfig typeAvroConfig,
+    public MultipleTypeAvroSerializer(
+        MultipleTypeAvroConfig typeAvroConfig,
         ISchemaRegistryClient schemaRegistryClient,
         AvroSerializerConfig serializerConfig)
     {

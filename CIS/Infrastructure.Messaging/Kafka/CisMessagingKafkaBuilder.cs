@@ -1,5 +1,4 @@
 ﻿using Avro.Specific;
-using Confluent.SchemaRegistry;
 using MassTransit;
 
 namespace CIS.Infrastructure.Messaging.Kafka;
@@ -9,22 +8,19 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
     public ICisMessagingKafkaBuilder AddConsumerTopicAvro<TTopicMarker>(string topic, string? groupId = null)
         where TTopicMarker : class, ISpecificRecord
     {
-        var multipleTypes = getTypes<TTopicMarker>();
-        if (!multipleTypes.Any())
-        {
-            throw new Core.Exceptions.CisArgumentException(0, $"No consumer contracts implementing {typeof(TTopicMarker)} found", "consumers");
-        }
-
         _kafkaConfigurationActions.Add((configurator, context) =>
         {
-            configurator.AddTopicEndpoint<TTopicMarker>(SchemaType.Avro, context, multipleTypes, _consumerImplementations, topic, groupId);
+            configurator.AddTopicEndpointAvro<TTopicMarker>(context, _consumerImplementations, topic, groupId);
         });
         return this;
     }
 
     public ICisMessagingKafkaBuilder AddConsumerTopicJson<TTopicMarker>(string topic, string? groupId = null) where TTopicMarker : class
     {
-        // TODO: implement
+        _kafkaConfigurationActions.Add((configurator, context) =>
+        {
+            configurator.AddTopicEndpointJson<TTopicMarker>(context, _consumerImplementations, topic, groupId);
+        });
         return this;
     }
 
@@ -42,23 +38,20 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
     public ICisMessagingKafkaBuilder AddProducerAvro<TTopicMarker>(string topic)
         where TTopicMarker : class, ISpecificRecord
     {
-        var multipleTypes = getTypes<TTopicMarker>();
-        if (!multipleTypes.Any())
-        {
-            throw new Core.Exceptions.CisArgumentException(0, $"No producer contracts implementing {typeof(TTopicMarker)} found", "producers");
-        }
-
         _riderConfigurationActions.Add(configurator =>
         {
-            configurator.AddProducerAvro<TTopicMarker>(multipleTypes, topic);
+            configurator.AddProducerAvro<TTopicMarker>(topic);
         });
-
         return this;
     }
 
-    public ICisMessagingKafkaBuilder AddProducerJson<TTopicMarker>(string topic) where TTopicMarker : class
+    public ICisMessagingKafkaBuilder AddProducerJson<TTopicMarker>(string topic)
+        where TTopicMarker : class
     {
-        // TODO: implement
+        _riderConfigurationActions.Add(configurator =>
+        {
+            configurator.AddProducerJson<TTopicMarker>(topic);
+        });
         return this;
     }
     
@@ -110,14 +103,6 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
         });
 
         return _builder;
-    }
-
-    private static IEnumerable<Type> getTypes<T>()
-    {
-        return System.Reflection.Assembly.GetEntryAssembly()!
-            .GetTypes()
-            .Where(type => typeof(T).IsAssignableFrom(type) && !type.IsInterface)
-            .ToList();
     }
 
     private readonly Configuration.IKafkaRiderConfiguration _configuration;

@@ -16,11 +16,10 @@ public static class KafkaExtensions
 {
     internal static IRiderRegistrationConfigurator AddProducerAvro<TTopicMarker>(
         this IRiderRegistrationConfigurator rider,
-        IEnumerable<Type> multipleTypes,
         string topic)
         where TTopicMarker : class, ISpecificRecord
     {
-        var multipleTypeConfig = CreateMultipleTypeAvroConfig<TTopicMarker>(multipleTypes);
+        var multipleTypeConfig = CreateMultipleTypeAvroConfig<TTopicMarker>();
 
         rider.AddProducer<TTopicMarker>(topic, (riderContext, conf) =>
         {
@@ -43,11 +42,10 @@ public static class KafkaExtensions
 
     internal static IRiderRegistrationConfigurator AddProducerJson<TTopicMarker>(
         this IRiderRegistrationConfigurator rider,
-        IEnumerable<Type> multipleTypes,
         string topic)
         where TTopicMarker : class
     {
-        var multipleTypeConfig = CreateMultipleTypeJsonConfig<TTopicMarker>(multipleTypes);
+        var multipleTypeConfig = CreateMultipleTypeJsonConfig<TTopicMarker>();
         
         rider.AddProducer<TTopicMarker>(topic, (riderContext, conf) =>
         {
@@ -63,11 +61,9 @@ public static class KafkaExtensions
         return rider;
     }
     
-    internal static IKafkaFactoryConfigurator AddTopicEndpoint<TTopicMarker>(
+    internal static IKafkaFactoryConfigurator AddTopicEndpointAvro<TTopicMarker>(
         this IKafkaFactoryConfigurator factoryConfigurator,
-        SchemaType schemaType,
         IRiderRegistrationContext context,
-        IEnumerable<Type> multipleTypes,
         IEnumerable<Type> consumerImplementations,
         string topic,
         string? groupId)
@@ -79,12 +75,8 @@ public static class KafkaExtensions
         factoryConfigurator.TopicEndpoint<TTopicMarker>(topic, groupId ?? environmentConfiguration.DefaultApplicationKey, conf =>
         {
             var schemaRegistryClient = context.GetRequiredService<ISchemaRegistryClient>();
-            IAsyncDeserializer<TTopicMarker> valueDeserializer = schemaType switch
-            {
-                SchemaType.Avro => new MultipleTypeAvroDeserializer<TTopicMarker>(CreateMultipleTypeAvroConfig<TTopicMarker>(multipleTypes), schemaRegistryClient),
-                SchemaType.Json => new MultipleTypeJsonDeserializer<TTopicMarker>(CreateMultipleTypeJsonConfig<TTopicMarker>(multipleTypes), schemaRegistryClient),
-                _ => throw new NotSupportedException()
-            };
+            var multipleTypeConfig = CreateMultipleTypeAvroConfig<TTopicMarker>();
+            var valueDeserializer = new MultipleTypeAvroDeserializer<TTopicMarker>(multipleTypeConfig, schemaRegistryClient);
 
             conf.SetValueDeserializer(valueDeserializer.AsSyncOverAsync());
             conf.SetHeadersDeserializer(new HeaderDeserializer());
@@ -98,9 +90,55 @@ public static class KafkaExtensions
         return factoryConfigurator;
     }
 
-    internal static MultipleTypeAvroConfig CreateMultipleTypeAvroConfig<TTopicMarker>(IEnumerable<Type> types)
+    internal static IKafkaFactoryConfigurator AddTopicEndpointJson<TTopicMarker>(
+        this IKafkaFactoryConfigurator factoryConfigurator,
+        IRiderRegistrationContext context,
+        IEnumerable<Type> consumerImplementations,
+        string topic,
+        string? groupId)
+        where TTopicMarker : class
+    {
+        // get groupId
+        var environmentConfiguration = context.GetRequiredService<CIS.Core.Configuration.ICisEnvironmentConfiguration>();
+
+        factoryConfigurator.TopicEndpoint<TTopicMarker>(topic, groupId ?? environmentConfiguration.DefaultApplicationKey, conf =>
+        {
+            var schemaRegistryClient = context.GetRequiredService<ISchemaRegistryClient>();
+            var multipleTypeConfig = CreateMultipleTypeJsonConfig<TTopicMarker>();
+            var valueDeserializer = new MultipleTypeJsonDeserializer<TTopicMarker>(multipleTypeConfig, schemaRegistryClient);
+
+            conf.SetValueDeserializer(valueDeserializer.AsSyncOverAsync());
+            conf.SetHeadersDeserializer(new HeaderDeserializer());
+
+            foreach (var impl in consumerImplementations)
+            {
+                conf.ConfigureConsumer(context, impl);
+            }
+        });
+
+        return factoryConfigurator;
+    }
+    
+    
+    internal static IEnumerable<Type> GetContractTypes<TTopicMarker>()
+    {
+        var types = System.Reflection.Assembly.GetEntryAssembly()!
+            .GetTypes()
+            .Where(type => typeof(TTopicMarker).IsAssignableFrom(type) && !type.IsInterface)
+            .ToList();
+        
+        if (!types.Any())
+        {
+            throw new Core.Exceptions.CisArgumentException(0, $"No contracts implementing {typeof(TTopicMarker)} found.");
+        }
+
+        return types;
+    }
+    
+    internal static MultipleTypeAvroConfig CreateMultipleTypeAvroConfig<TTopicMarker>()
         where TTopicMarker : class, ISpecificRecord
     {
+        var types = GetContractTypes<TTopicMarker>();
         var multipleTypeConfigBuilder = new MultipleTypeAvroConfigBuilder<TTopicMarker>();
 
         foreach (var t in types)
@@ -112,9 +150,10 @@ public static class KafkaExtensions
         return multipleTypeConfigBuilder.Build();
     }
 
-    internal static MultipleTypeJsonConfig CreateMultipleTypeJsonConfig<TTopicMarker>(IEnumerable<Type> types)
+    internal static MultipleTypeJsonConfig CreateMultipleTypeJsonConfig<TTopicMarker>()
         where TTopicMarker : class
     {
+        var types = GetContractTypes<TTopicMarker>();
         var multipleTypeConfigBuilder = new MultipleTypeJsonConfigBuilder<TTopicMarker>();
 
         foreach (var t in types)
