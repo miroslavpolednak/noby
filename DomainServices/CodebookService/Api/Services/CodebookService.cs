@@ -18,6 +18,9 @@ public partial class CodebookService
     public async Task<Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem> GetDeveloperProject(Contracts.Endpoints.GetDeveloperProject.GetDeveloperProjectRequest request, CallContext context = default)
         => await _mediator.Send(request, context.CancellationToken);
 
+    public async Task<Contracts.Endpoints.GetOperator.GetOperatorItem> GetOperator(Contracts.Endpoints.GetOperator.GetOperatorRequest request, CallContext context = default)
+        => await _mediator.Send(request, context.CancellationToken);
+
     public ValueTask Reset(CancellationToken cancellationToken = default)
     {
         FastMemoryCache.Reset();

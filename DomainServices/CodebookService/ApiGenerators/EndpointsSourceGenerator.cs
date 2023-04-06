@@ -9,7 +9,7 @@ namespace DomainServices.CodebookService.ApiGenerators
     [Generator]
     public class EndpointsSourceGenerator : ISourceGenerator
     {
-        private static string[] _hardcodedCodebooks = new[] { "GetDeveloper", "GetDeveloperProject", "DeveloperSearch", "Reset" };
+        private static string[] _hardcodedCodebooks = new[] { "GetDeveloper", "GetDeveloperProject", "DeveloperSearch", "Reset", "GetOperator" };
         private static readonly Regex _castCamelCaseToDashDelimitedRegex = new Regex(@"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", RegexOptions.Compiled);
 
         public void Initialize(GeneratorInitializationContext context)
