@@ -36,16 +36,4 @@ public sealed class MultipleTypeAvroInfo
         var constructed2 = t2.MakeGenericType(messageType);
         return (ISerializerWrapper)Activator.CreateInstance(constructed2, inner)!;
     }
-    
-    public static ISerializerWrapper CreateJsonSerializer(Type messageType, ISchemaRegistryClient schemaRegistryClient,
-        JsonSerializerConfig serializerConfig)
-    {
-        Type t1 = typeof(JsonSerializer<>);
-        var constructed1 = t1.MakeGenericType(messageType);
-        var inner = Activator.CreateInstance(constructed1, schemaRegistryClient, serializerConfig)!;
-
-        Type t2 = typeof(JsonSerializerWrapper<>);
-        var constructed2 = t2.MakeGenericType(messageType);
-        return (ISerializerWrapper)Activator.CreateInstance(constructed2, inner)!;
-    }
 }
