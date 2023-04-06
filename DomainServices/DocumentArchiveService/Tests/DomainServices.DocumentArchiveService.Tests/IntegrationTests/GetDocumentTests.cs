@@ -5,7 +5,7 @@ using DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests;
 public class GetDocumentTests : IntegrationTestBase
 {
-    public GetDocumentTests(GrpcTestFixture<Program> fixture)
+    public GetDocumentTests(WebApplicationFactoryFixture<Program> fixture)
         : base(fixture)
     {
     }
@@ -13,7 +13,7 @@ public class GetDocumentTests : IntegrationTestBase
     [Fact]
     public async Task GetDocumentTests_FromTcp_WithContent_ShouldReturnTcpMockData()
     {
-        var client = CreateClient();
+        var client = CreateGrpcClient();
 
         var response = await client.GetDocumentAsync(new() { DocumentId = "NotSdfPrefixMockedId", WithContent = true }, default);
 
@@ -45,7 +45,7 @@ public class GetDocumentTests : IntegrationTestBase
     [Fact]
     public async Task GetDocumentTests_FromSdf_WithoutData_ShouldReturnExternalServiceMockData()
     {
-        var client = CreateClient();
+        var client = CreateGrpcClient();
 
         var response = await client.GetDocumentAsync(new() { DocumentId = "KBHMockedId", WithContent = false }, default);
 

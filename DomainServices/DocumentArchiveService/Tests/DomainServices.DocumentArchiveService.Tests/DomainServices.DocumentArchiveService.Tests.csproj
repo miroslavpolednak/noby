@@ -23,6 +23,7 @@
     <PackageReference Include="Grpc.Net.Client" Version="2.52.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="7.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
     <PackageReference Include="NSubstitute" Version="5.0.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
@@ -38,6 +39,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Api\DomainServices.DocumentArchiveService.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UnitTests\" />
   </ItemGroup>
 
 </Project>

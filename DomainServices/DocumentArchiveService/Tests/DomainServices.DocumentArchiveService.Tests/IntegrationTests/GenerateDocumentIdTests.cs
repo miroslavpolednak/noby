@@ -4,17 +4,17 @@ using NSubstitute;
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests;
 public class GenerateDocumentIdTests : IntegrationTestBase
 {
-    public GenerateDocumentIdTests(GrpcTestFixture<Program> fixture)
+    public GenerateDocumentIdTests(WebApplicationFactoryFixture<Program> fixture)
        : base(fixture)
     {
         // Mock external dependencies
-        Fixture.DocumentSequenceRepository.GetNextDocumentSeqValue(Arg.Any<CancellationToken>()).Returns(1);
+        DocumentSequenceRepository.GetNextDocumentSeqValue(Arg.Any<CancellationToken>()).Returns(1);
     }
 
     [Fact]
     public async Task CreateDocumentId_Should_Success()
     {
-        var client = CreateClient();
+        var client = CreateGrpcClient();
 
         var response = await client.GenerateDocumentIdAsync(new(), default);
 
