@@ -102,15 +102,16 @@ public class CasesController : ControllerBase
         => await _mediator.Send(request, cancellationToken);
 
     /// <summary>
-    /// Seznam workflow tasku dotažený z SB.
+    /// Seznam workflow tasků dotažený z SB.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> CaseService/GetTaskList<br/>
+    /// Operace získá ze Starbuildu seznam úkolů a procesů k danému case ID. <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Seznam wf tasks z SB.</returns>
     [HttpGet("{caseId:long}/tasks")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(OperationId = "getTasksByCaseId", Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(GetTaskList.GetTaskListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetTaskList.GetTaskListResponse> GetTaskList([FromRoute] long caseId, CancellationToken cancellationToken)

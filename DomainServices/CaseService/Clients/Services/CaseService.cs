@@ -3,7 +3,7 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Clients.Services;
 
-internal sealed class CaseService 
+internal sealed class CaseService
     : ICaseServiceClient
 {
     public async Task<long> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken))
@@ -101,6 +101,13 @@ internal sealed class CaseService
                 CaseId = caseId
             }, cancellationToken: cancellationToken);
         return result.Tasks.ToList();
+    }
+
+    public async Task<IList<ProcessTask>> GetProcessList(long caseId, CancellationToken cancellationToken = default)
+    {
+        var result = await _service.GetProcessListAsync(new GetProcessListRequest { CaseId = caseId }, cancellationToken: cancellationToken);
+
+        return result.Processes;
     }
 
     public async Task UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default(CancellationToken))
