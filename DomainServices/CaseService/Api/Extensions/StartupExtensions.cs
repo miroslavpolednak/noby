@@ -40,8 +40,8 @@ internal static class StartupExtensions
             .AddKafka()
             .AddConsumer<Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer>()
             .AddConsumer<Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer>()
-            .AddConsumerTopic<IMarker1>(appConfiguration.MainLoanProcessChangedTopic!)
-            .AddConsumerTopic<IMarker2>(appConfiguration.CaseStateChangedProcessingCompletedTopic!)
+            .AddConsumerTopicAvro<IMarker1>(appConfiguration.MainLoanProcessChangedTopic!)
+            .AddConsumerTopicAvro<IMarker2>(appConfiguration.CaseStateChangedProcessingCompletedTopic!)
             .Build();
 
         return builder;
