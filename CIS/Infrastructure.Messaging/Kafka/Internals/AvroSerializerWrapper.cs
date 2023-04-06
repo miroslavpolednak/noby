@@ -4,11 +4,11 @@ using CIS.Infrastructure.Messaging.Kafka.Internals.Abstraction;
 
 namespace CIS.Infrastructure.Messaging.Kafka.Internals;
 
-internal sealed class SerializerWrapper<T> : ISerializerWrapper
+internal sealed class AvroSerializerWrapper<T> : ISerializerWrapper
 {
     private readonly AvroSerializer<T> _inner;
 
-    public SerializerWrapper(AvroSerializer<T> inner)
+    public AvroSerializerWrapper(AvroSerializer<T> inner)
     {
         _inner = inner;
     }

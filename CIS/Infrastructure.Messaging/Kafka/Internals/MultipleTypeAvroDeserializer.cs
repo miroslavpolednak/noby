@@ -8,18 +8,18 @@ using CIS.Infrastructure.Messaging.Kafka.Internals.Abstraction;
 namespace CIS.Infrastructure.Messaging.Kafka.Internals;
 
 #pragma warning disable CA1001 // Types that own disposable fields should be disposable, https://stackoverflow.com/questions/32033416/do-i-need-to-dispose-a-semaphoreslim
-public sealed class MultipleTypeDeserializer<T> : IAsyncDeserializer<T>
+public sealed class MultipleTypeAvroDeserializer<T> : IAsyncDeserializer<T>
 #pragma warning restore CA1001 // Types that own disposable fields should be disposable
 {
     private const byte MagicByte = 0;
     private readonly ISchemaRegistryClient _schemaRegistryClient;
-    private readonly MultipleTypeConfig _typeConfig;
+    private readonly MultipleTypeAvroConfig _typeAvroConfig;
     private readonly ConcurrentDictionary<int, IReaderWrapper> _readers = new();
     private readonly SemaphoreSlim _semaphore = new(1);
 
-    public MultipleTypeDeserializer(MultipleTypeConfig typeConfig, ISchemaRegistryClient schemaRegistryClient)
+    public MultipleTypeAvroDeserializer(MultipleTypeAvroConfig typeAvroConfig, ISchemaRegistryClient schemaRegistryClient)
     {
-        _typeConfig = typeConfig;
+        _typeAvroConfig = typeAvroConfig;
         _schemaRegistryClient = schemaRegistryClient;
     }
     
@@ -68,7 +68,7 @@ public sealed class MultipleTypeDeserializer<T> : IAsyncDeserializer<T>
                 var registrySchema = await _schemaRegistryClient.GetSchemaAsync(schemaId)
                     .ConfigureAwait(continueOnCapturedContext: false);
                 var avroSchema = Avro.Schema.Parse(registrySchema.SchemaString);
-                reader = _typeConfig.CreateReader(avroSchema);
+                reader = _typeAvroConfig.CreateReader(avroSchema);
                 _readers[schemaId] = reader;
             }
             
