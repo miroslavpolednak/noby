@@ -17,12 +17,12 @@ internal sealed class LinkModelationToSalesArrangementHandler
             .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
-        // instance Case
-        var caseInstance = await _caseService.GetCaseDetail(salesArrangementInstance.CaseId, cancellation);
-
         // kontrola zda SA uz neni nalinkovan na stejnou Offer na kterou je request
         if (salesArrangementInstance.OfferId == request.OfferId)
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AlreadyLinkedToOffer, request.SalesArrangementId);
+
+        // instance Case
+        var caseInstance = await _caseService.GetCaseDetail(salesArrangementInstance.CaseId, cancellation);
 
         // validace na existenci offer
         var offerInstance = await _offerService.GetMortgageOffer(request.OfferId, cancellation);
