@@ -13,6 +13,8 @@ internal sealed class CisMessagingBuilder
 
         AppBuilder.Services.AddAvroSerializerConfiguration();
         AppBuilder.Services.AddAvroDeserializerConfiguration();
+        AppBuilder.Services.AddJsonSerializerConfiguration();
+        AppBuilder.Services.AddJsonDeserializerConfiguration();
         AppBuilder.Services.AddApicurioSchemaRegistry();
 
         return new CisMessagingKafkaBuilder(this, configuration);

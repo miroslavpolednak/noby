@@ -161,7 +161,8 @@ public static class KafkaExtensions
 
         foreach (var t in types)
         {
-            multipleTypeConfigBuilder.AddType(t);
+            var jsonInstance = Activator.CreateInstance(t)!;
+            multipleTypeConfigBuilder.AddType(t, jsonInstance.ToString()!);
         }
 
         return multipleTypeConfigBuilder.Build();
@@ -204,6 +205,7 @@ public static class KafkaExtensions
                     sslConfig.KeyLocation = configuration.SslKeyLocation;
                     sslConfig.KeyPassword = configuration.SslKeyPassword;
                     sslConfig.SslCaCertificateStores = configuration.SslCaCertificateStores;
+                    sslConfig.EndpointIdentificationAlgorithm = SslEndpointIdentificationAlgorithm.None;
                 });
             }
         });
