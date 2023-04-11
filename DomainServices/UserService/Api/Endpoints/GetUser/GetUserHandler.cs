@@ -17,8 +17,8 @@ internal class GetUserHandler
         var model = new Contracts.User
         {
             Id = userInstance.v33id,
-            CPM = userInstance.v33cpm ?? "",
-            ICP = userInstance.v33icp ?? "",
+            CPM = "99806569", //Mock because of CheckForm/DV + CaseStateChanged; userInstance.v33cpm ?? "",
+            ICP = "114306569", //Mock because of CheckForm/DV + CaseStateChanged; userInstance.v33icp ?? "",
             FullName = $"{userInstance.v33jmeno} {userInstance.v33prijmeni}".Trim(),
             Email = "",
             Phone = "",
