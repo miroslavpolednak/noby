@@ -16,4 +16,8 @@
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dto\FindTasks\" />
+  </ItemGroup>
+
 </Project>
