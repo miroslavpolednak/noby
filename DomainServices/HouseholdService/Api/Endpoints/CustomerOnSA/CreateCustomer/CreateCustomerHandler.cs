@@ -21,7 +21,7 @@ internal sealed class CreateCustomerHandler
             Name = request.Customer.Name ?? "",
             DateOfBirthNaturalPerson = request.Customer.DateOfBirthNaturalPerson,
             SalesArrangementId = request.SalesArrangementId,
-            CustomerRoleId = (CIS.Foms.Enums.CustomerRoles)request.CustomerRoleId,
+            CustomerRoleId = (CustomerRoles)request.CustomerRoleId,
             LockedIncomeDateTime = request.Customer?.LockedIncomeDateTime,
             MaritalStatusId = request.Customer?.MaritalStatusId,
             Identities = request.Customer?.CustomerIdentifiers?.Select(t => new CustomerOnSAIdentity(t)).ToList()

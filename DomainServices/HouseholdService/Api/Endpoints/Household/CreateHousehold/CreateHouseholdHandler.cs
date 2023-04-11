@@ -15,7 +15,7 @@ internal sealed class CreateHouseholdHandler
         {
             SalesArrangementId = request.SalesArrangementId,
             CaseId = saInstance.CaseId,
-            HouseholdTypeId = (CIS.Foms.Enums.HouseholdTypes)request.HouseholdTypeId,
+            HouseholdTypeId = (HouseholdTypes)request.HouseholdTypeId,
             CustomerOnSAId1 = request.CustomerOnSAId1,
             CustomerOnSAId2 = request.CustomerOnSAId2,
             ChildrenOverTenYearsCount = request.Data?.ChildrenOverTenYearsCount,

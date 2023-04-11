@@ -14,6 +14,11 @@ internal sealed class GetIncomeListHandler
             .Select(CustomerOnSAServiceExpressions.Income())
             .ToListAsync(cancellationToken);
 
+        if (!list.Any() && !_dbContext.Customers.Any(t => t.CustomerOnSAId == request.CustomerOnSAId))
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CustomerOnSANotFound, request.CustomerOnSAId);
+        }
+
         _logger.FoundItems(list.Count, nameof(Database.Entities.CustomerOnSAIncome));
 
         var response = new Contracts.GetIncomeListResponse();
