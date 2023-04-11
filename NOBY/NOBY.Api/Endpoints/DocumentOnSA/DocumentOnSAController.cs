@@ -6,6 +6,8 @@ using NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
 using System.Net.Mime;
 using NOBY.Api.Endpoints.DocumentOnSA.Search;
+using DomainServices.SalesArrangementService.Contracts;
+using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -107,13 +109,32 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocumentOnSa(
-        [FromRoute] int salesArrangementId, 
-        [FromRoute] int documentOnSAId, 
+        [FromRoute] int salesArrangementId,
+        [FromRoute] int documentOnSAId,
         CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(new GetDocumentOnSADataRequest(salesArrangementId, documentOnSAId), cancellationToken);
         return File(response.FileData, response.ContentType, response.Filename);
     }
+
+    /// <summary>
+    /// Detail podepisovaného dokumentu
+    /// </summary>
+    /// <remarks>
+    /// Vrátí informace o podepisovaném dokumentu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FA259E3F-5B8D-4ade-9F1A-7C1A943F1029"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId"></param>
+    /// <param name="documentOnSAId"></param>
+    [HttpGet("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}")]
+    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetDocumentOnSADetailResponse> GetDocumentOnSaDetail(
+        [FromRoute] int salesArrangementId,
+        [FromRoute] int documentOnSAId,
+        CancellationToken cancellationToken)
+    => await _mediator.Send(new GetDocumentOnSADetailRequest(salesArrangementId, documentOnSAId), cancellationToken);
 
     /// <summary>
     /// Vyhledání dokumentů na základě hlavního hesla (eArchivu)
@@ -140,4 +161,7 @@ public class DocumentOnSAController : ControllerBase
 
         return Ok(result);
     }
+
+
+
 }

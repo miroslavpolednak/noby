@@ -131,9 +131,7 @@ public class SaveDocumentToArchiveHandler
     private async Task<UploadDocumentRequest> MapRequest(byte[] file, string documentId, long caseId, DocumentsInformation documentInformation, CancellationToken cancellationToken)
     {
         var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
-        var identity = user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.Mpad)
-            ?? user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.KbUid);
-
+        
         return new UploadDocumentRequest
         {
             BinaryData = ByteString.CopyFrom(file),
@@ -143,7 +141,7 @@ public class SaveDocumentToArchiveHandler
                 DocumentId = documentId,
                 EaCodeMainId = documentInformation.EaCodeMainId,
                 Filename = documentInformation.FileName,
-                AuthorUserLogin = identity?.Identity ?? user.Id.ToString(CultureInfo.InvariantCulture),
+                AuthorUserLogin = user.CPM ?? user.Id.ToString(CultureInfo.InvariantCulture),
                 CreatedOn = _dateTime.Now.Date,
                 Description = documentInformation.Description ?? string.Empty,
                 FormId = documentInformation.FormId ?? string.Empty,
