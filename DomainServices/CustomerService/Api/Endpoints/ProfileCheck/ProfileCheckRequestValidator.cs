@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Endpoints.ProfileCheck;
 
-internal class ProfileCheckRequestValidator : AbstractValidator<ProfileCheckRequest>
+internal abstract class ProfileCheckRequestValidator : AbstractValidator<ProfileCheckRequest>
 {
     public ProfileCheckRequestValidator()
     {

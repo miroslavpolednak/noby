@@ -40,6 +40,11 @@ public abstract class ErrorCodeMapperBase
         return new CisNotFoundException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
+    public static CisArgumentException CreateArgumentException(int exceptionCode, object? parameter = null)
+    {
+        return new CisArgumentException(exceptionCode, GetMessage(exceptionCode, parameter));
+    }
+
     public static CisAlreadyExistsException CreateAlreadyExistsException(int exceptionCode, object? parameter = null)
     {
         return new CisAlreadyExistsException(exceptionCode, GetMessage(exceptionCode, parameter));
@@ -54,6 +59,11 @@ public abstract class ErrorCodeMapperBase
     public static CisValidationException CreateValidationException(int exceptionCode, object? parameter = null)
     {
         return new CisValidationException(exceptionCode, GetMessage(exceptionCode, parameter));
+    }
+
+    public static CisConfigurationException CreateConfigurationException(int exceptionCode, object? parameter = null)
+    {
+        return new CisConfigurationException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
     /// <summary>

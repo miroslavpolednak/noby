@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.GetSalesArrangementList;
 
-internal class GetSalesArrangementListRequestValidator
+internal sealed class GetSalesArrangementListRequestValidator
     : AbstractValidator<Contracts.GetSalesArrangementListRequest>
 {
     public GetSalesArrangementListRequestValidator()

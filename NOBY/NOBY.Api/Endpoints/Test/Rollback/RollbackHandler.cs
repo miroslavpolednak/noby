@@ -10,7 +10,7 @@ public class RollbackHandler
 {
     public async Task<RollbackResponse> Handle(RollbackRequest request, CancellationToken cancellationToken)
     {
-        _bag.Add("id", request.Id?.ToString());
+        _bag.Add("id", request.Id?.ToString(System.Globalization.CultureInfo.InvariantCulture));
 
         throw new CisValidationException(1, "ahoj");
 

@@ -28,11 +28,6 @@ internal sealed class GetProductObligationListHandler : IRequestHandler<GetProdu
         {
             var item = new GetProductObligationItem
             {
-                ProductObligationId = new ProductObligationId
-                {
-                    LoanId = obligation.LoanId,
-                    LoanPurpose = obligation.LoanPurposeId
-                },
                 ObligationTypeId = obligation.ObligationTypeId,
                 Amount = obligation.Amount,
                 CreditorName = obligation.CreditorName

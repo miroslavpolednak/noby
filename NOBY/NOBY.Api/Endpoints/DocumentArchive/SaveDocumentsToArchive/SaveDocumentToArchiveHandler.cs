@@ -5,8 +5,10 @@ using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.UserService.Clients;
 using Google.Protobuf;
 using NOBY.Api.Endpoints.Shared;
+using System.Globalization;
 using _DocOnSa = NOBY.Api.Endpoints.DocumentOnSA.Search;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
@@ -24,6 +26,7 @@ public class SaveDocumentToArchiveHandler
     private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
     private readonly IMediator _mediator;
     private readonly ICaseServiceClient _caseServiceClient;
+    private readonly IUserServiceClient _userServiceClient;
 
     public SaveDocumentToArchiveHandler(
         IDocumentArchiveServiceClient client,
@@ -33,7 +36,8 @@ public class SaveDocumentToArchiveHandler
         ISalesArrangementServiceClient salesArrangementServiceClient,
         IDocumentOnSAServiceClient documentOnSAServiceClient,
         IMediator mediator,
-        ICaseServiceClient caseServiceClient)
+        ICaseServiceClient caseServiceClient,
+        IUserServiceClient userServiceClient)
     {
         _client = client;
         _currentUserAccessor = currentUserAccessor;
@@ -43,6 +47,7 @@ public class SaveDocumentToArchiveHandler
         _documentOnSAServiceClient = documentOnSAServiceClient;
         _mediator = mediator;
         _caseServiceClient = caseServiceClient;
+        _userServiceClient = userServiceClient;
     }
 
     public async Task Handle(SaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
@@ -125,6 +130,10 @@ public class SaveDocumentToArchiveHandler
 
     private async Task<UploadDocumentRequest> MapRequest(byte[] file, string documentId, long caseId, DocumentsInformation documentInformation, CancellationToken cancellationToken)
     {
+        var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
+        var identity = user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.Mpad)
+            ?? user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.KbUid);
+
         return new UploadDocumentRequest
         {
             BinaryData = ByteString.CopyFrom(file),
@@ -134,7 +143,7 @@ public class SaveDocumentToArchiveHandler
                 DocumentId = documentId,
                 EaCodeMainId = documentInformation.EaCodeMainId,
                 Filename = documentInformation.FileName,
-                AuthorUserLogin = _currentUserAccessor.User is not null ? _currentUserAccessor.User.Id.ToString() : "Unknow NOBY user",
+                AuthorUserLogin = identity?.Identity ?? user.Id.ToString(CultureInfo.InvariantCulture),
                 CreatedOn = _dateTime.Now.Date,
                 Description = documentInformation.Description ?? string.Empty,
                 FormId = documentInformation.FormId ?? string.Empty,
@@ -146,6 +155,9 @@ public class SaveDocumentToArchiveHandler
     private async Task<string> GetContractNumber(long caseId, CancellationToken cancellationToken)
     {
         var caseDetail = await _caseServiceClient.GetCaseDetail(caseId, cancellationToken);
-        return caseDetail.Data?.ContractNumber ?? defaultContractNumber;
+        if (string.IsNullOrWhiteSpace(caseDetail?.Data?.ContractNumber))
+            return defaultContractNumber;
+        
+        return caseDetail.Data.ContractNumber;
     }
 }

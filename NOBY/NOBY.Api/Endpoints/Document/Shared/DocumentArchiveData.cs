@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Document.Shared;
 
-internal class DocumentArchiveData
+internal sealed class DocumentArchiveData
 {
     public required string DocumentId { get; init; }
 

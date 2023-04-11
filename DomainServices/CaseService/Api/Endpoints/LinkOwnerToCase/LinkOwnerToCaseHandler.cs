@@ -1,6 +1,5 @@
 ﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.CaseService.Api.Endpoints.LinkOwnerToCase;
 

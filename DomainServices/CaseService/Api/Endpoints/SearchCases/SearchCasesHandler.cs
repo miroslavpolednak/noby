@@ -83,7 +83,7 @@ internal sealed class SearchCasesHandler
             if (request.SearchTerm.Length < 8 && int.TryParse(request.SearchTerm, out int searchCaseId))
                 query = query.Where(t => t.CaseId == searchCaseId);
             else
-                query = query.Where(t => t.Name.Contains(request.SearchTerm) || t.ContractNumber.Contains(request.SearchTerm));
+                query = query.Where(t => t.Name.Contains(request.SearchTerm) || t.ContractNumber!.Contains(request.SearchTerm));
         }
 
         return adjustPaging(query, paginable);

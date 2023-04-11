@@ -54,11 +54,11 @@ internal sealed class MockEasClient
 
     public Task<CommonResponse?> AddFirstSignatureDate(int caseId, DateTime firstSignatureDate, CancellationToken cancellationToken)
     {
-        return null;
+        return null!;
     }
 
     public Task<CheckFormV2.Response> CheckFormV2(CheckFormData formData, CancellationToken cancellationToken)
     {
-        return null;
+        return null!;
     }
 }

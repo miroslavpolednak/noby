@@ -25,8 +25,8 @@ public class CasesController : ControllerBase
     [ProducesResponseType(typeof(CreateSalesArrangement.CreateSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request.InfuseId(caseId), cancellationToken);
+    public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request)
+        => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>
     /// Detail dlužníků a spoludlužníků pro daný case
@@ -98,8 +98,8 @@ public class CasesController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "Case" })]
     [ProducesResponseType(typeof(Search.SearchResponse), StatusCodes.Status200OK)]
-    public async Task<Search.SearchResponse> Search([FromBody] Search.SearchRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    public async Task<Search.SearchResponse> Search([FromBody] Search.SearchRequest request)
+        => await _mediator.Send(request);
 
     /// <summary>
     /// Seznam workflow tasků dotažený z SB.

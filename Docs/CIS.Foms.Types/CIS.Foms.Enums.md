@@ -60,3 +60,36 @@ Role klienta v obchodu
 ```csharp
 public enum CustomerRoles : System.Byte
 ```
+
+<a name='CIS.Foms.Enums.FlowSwitches'></a>
+
+## FlowSwitches Enum
+
+```csharp
+public enum FlowSwitches
+```
+### Fields
+
+<a name='CIS.Foms.Enums.FlowSwitches.FlowSwitch1'></a>
+
+`FlowSwitch1` 1
+
+Nabídka s platnou garancí
+
+<a name='CIS.Foms.Enums.FlowSwitches.FlowSwitch2'></a>
+
+`FlowSwitch2` 2
+
+Požadavek na IC
+
+<a name='CIS.Foms.Enums.FlowSwitches.FlowSwitch3'></a>
+
+`FlowSwitch3` 3
+
+Alespoň jeden příjem na hlavní domácnosti
+
+<a name='CIS.Foms.Enums.FlowSwitches.FlowSwitch4'></a>
+
+`FlowSwitch4` 4
+
+Alespoň jeden příjem na spoludlužnícké domácnosti

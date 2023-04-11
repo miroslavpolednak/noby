@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCreditWorthiness;
 
-internal class GetCreditWorthinessHandler
+internal sealed class GetCreditWorthinessHandler
     : IRequestHandler<GetCreditWorthinessRequest, GetCreditWorthinessResponse>
 {
     public async Task<GetCreditWorthinessResponse> Handle(GetCreditWorthinessRequest request, CancellationToken cancellationToken)

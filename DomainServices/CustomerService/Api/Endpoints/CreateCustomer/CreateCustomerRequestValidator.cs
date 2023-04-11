@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Endpoints.CreateCustomer;
 
-internal class CreateCustomerRequestValidator : AbstractValidator<CreateCustomerRequest>
+internal sealed class CreateCustomerRequestValidator : AbstractValidator<CreateCustomerRequest>
 {
     public CreateCustomerRequestValidator()
     {

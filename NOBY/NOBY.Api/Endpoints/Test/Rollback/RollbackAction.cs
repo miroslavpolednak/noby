@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Test.Rollback;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.AsImplementedInterfacesServiceAttribute]
-internal class RollbackAction
+internal sealed class RollbackAction
     : IRollbackAction<RollbackRequest>
 {
     private readonly IRollbackBag _bag;

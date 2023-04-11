@@ -11,16 +11,16 @@ internal static class CaseExtensions
 
         var task = new WorkflowTask
         {
-            TaskIdSb = int.Parse(dict["ukol_id"]),
-            TaskId = int.Parse(dict["ukol_sada"]),
-            CreatedOn = DateTime.Parse(dict["ukol_dat_start_proces"]),
-            TaskTypeId = int.Parse(dict["ukol_typ_noby"]),
+            TaskIdSb = int.Parse(dict["ukol_id"], CultureInfo.InvariantCulture),
+            TaskId = int.Parse(dict["ukol_sada"], CultureInfo.InvariantCulture),
+            CreatedOn = DateTime.Parse(dict["ukol_dat_start_proces"], CultureInfo.InvariantCulture),
+            TaskTypeId = int.Parse(dict["ukol_typ_noby"], CultureInfo.InvariantCulture),
             TaskTypeName = dict["ukol_nazev_noby"],
             TaskSubtypeName = dict["ukol_oznaceni_noby"],
-            ProcessId = int.Parse(dict["ukol_top_proces_sada"]),
+            ProcessId = int.Parse(dict["ukol_top_proces_sada"], CultureInfo.InvariantCulture),
             ProcessNameShort = dict["ukol_top_proces_nazev_noby"],
-            StateIdSb = int.Parse(dict["ukol_stav_poz"]),
-            Cancelled = Convert.ToBoolean(Convert.ToInt16(dict["ukol_stornovano"]))
+            StateIdSb = int.Parse(dict["ukol_stav_poz"], CultureInfo.InvariantCulture),
+            Cancelled = Convert.ToBoolean(Convert.ToInt16(dict["ukol_stornovano"], CultureInfo.InvariantCulture))
         };
 
         task.PhaseTypeId = GetPhaseTypeId(task.TaskTypeId, dict);
@@ -35,9 +35,9 @@ internal static class CaseExtensions
 
         return new ProcessTask
         {
-            ProcessIdSB = int.Parse(dict["ukol_id"]),
-            ProcessId = int.Parse(dict["ukol_sada"]),
-            CreatedOn = DateTime.Parse(dict["ukol_dat_start_proces"]),
+            ProcessIdSB = int.Parse(dict["ukol_id"], CultureInfo.InvariantCulture),
+            ProcessId = int.Parse(dict["ukol_sada"], CultureInfo.InvariantCulture),
+            CreatedOn = DateTime.Parse(dict["ukol_dat_start_proces"], CultureInfo.InvariantCulture),
             ProcessNameLong = dict["ukol_proces_nazev_noby"],
             StateName = dict["ukol_proces_oznacenie_noby"]
         };
@@ -56,9 +56,9 @@ internal static class CaseExtensions
     {
         return taskTypeId switch
         {
-            1 => int.Parse(dict["ukol_dozadani_stav"]),
-            2 => int.Parse(dict["ukol_overeni_ic_stav"]),
-            6 => int.Parse(dict["ukol_podpis_stav"]),
+            1 => int.Parse(dict["ukol_dozadani_stav"], CultureInfo.InvariantCulture),
+            2 => int.Parse(dict["ukol_overeni_ic_stav"], CultureInfo.InvariantCulture),
+            6 => int.Parse(dict["ukol_podpis_stav"], CultureInfo.InvariantCulture),
             3 or 4 or 7 or 8 => 1,
             _ => throw new ArgumentOutOfRangeException(nameof(taskTypeId), taskTypeId, null)
         };
@@ -69,7 +69,7 @@ internal static class CaseExtensions
         if (taskTypeId != 6)
             return "unknown";
 
-        var signatureTypeId = int.Parse(dict["ukol_podpis_dokument_metoda"]);
+        var signatureTypeId = int.Parse(dict["ukol_podpis_dokument_metoda"], CultureInfo.InvariantCulture);
 
         return signatureTypeId switch
         {

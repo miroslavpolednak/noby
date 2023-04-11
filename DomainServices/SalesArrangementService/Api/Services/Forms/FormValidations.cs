@@ -30,13 +30,13 @@ internal static class FormValidations
 
         if (invalidSaMandatoryFields.Length > 0)
         {
-            throw new CisValidationException(18064, $"Sales arrangement mandatory fields not provided [{string.Join(StringJoinSeparator, invalidSaMandatoryFields)}].");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation1, string.Join(StringJoinSeparator, invalidSaMandatoryFields));
         }
 
         // check if Offer exists
         if (!arrangement.OfferId.HasValue)
         {
-            throw new CisNotFoundException(18065, $"Sales Arrangement #{arrangement.SalesArrangementId} is not linked to Offer");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation2, arrangement.SalesArrangementId);
         }
     }
 
@@ -59,7 +59,7 @@ internal static class FormValidations
 
         if (customerIdsInvalid.Any())
         {
-            throw new CisValidationException(18067, $"Sales arrangement customers [{string.Join(StringJoinSeparator, customerIdsInvalid)}] don't contain both [KB,MP] identities.");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation3, string.Join(StringJoinSeparator, customerIdsInvalid));
         }
     }
 
@@ -69,28 +69,28 @@ internal static class FormValidations
         var duplicitHouseholdTypeIds = households.GroupBy(i => i.HouseholdTypeId).Where(g => g.Count() > 1).Select(i => i.Key);
         if (duplicitHouseholdTypeIds.Any())
         {
-            throw new CisValidationException(18068, $"Sales arrangement contains duplicit household types [{string.Join(StringJoinSeparator, duplicitHouseholdTypeIds)}].");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation4, string.Join(StringJoinSeparator, duplicitHouseholdTypeIds));
         }
 
         // check if MAIN household is available
         var mainHouseholdCount = households.Count(i => i.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main);
         if (mainHouseholdCount != 1)
         {
-            throw new CisValidationException(18069, $"Sales arrangement must contain just one '{CIS.Foms.Enums.HouseholdTypes.Main}' household.");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation5);
         }
 
         // check if any household contains CustomerOnSAId2 without CustomerOnSAId1
         var invalidHouseholdIds = households.Where(i => !i.CustomerOnSaId1.HasValue && i.CustomerOnSaId2.HasValue).Select(i => i.HouseholdId);
         if (invalidHouseholdIds.Any())
         {
-            throw new CisValidationException(18070, $"Sales arrangement contains households [{string.Join(StringJoinSeparator, invalidHouseholdIds)}] with CustomerOnSAId2 but without CustomerOnSAId1.");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation6, string.Join(StringJoinSeparator, invalidHouseholdIds));
         }
 
         // check if CustomerOnSAId1 is available on Main households
         var mainHousehold = households.Single(i => i.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main);
         if (!mainHousehold.CustomerOnSaId1.HasValue)
         {
-            throw new CisValidationException(18071, $"Main household´s CustomerOnSAId1 not defined [{mainHousehold.HouseholdId}].");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation7, mainHousehold.HouseholdId);
         }
 
         // check if the same CustomerOnSA belongs to only one household
@@ -99,7 +99,7 @@ internal static class FormValidations
            .GroupBy(i => i).Where(i => i.Count() > 1).Select(i => i.Key);
         if (duplicitCustomerOnSAIds.Any())
         {
-            throw new CisValidationException(18072, $"Sales arrangement households contain duplicit customers [{string.Join(StringJoinSeparator, duplicitCustomerOnSAIds)}] on sales arrangement.");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation8, string.Join(StringJoinSeparator, duplicitCustomerOnSAIds));
         }
 
         // check if customers on SA correspond to customers on households
@@ -114,7 +114,7 @@ internal static class FormValidations
 
         if (customerIdsInvalid.Any())
         {
-            throw new CisValidationException(18073, $"Customers [{string.Join(StringJoinSeparator, customerIdsInvalid)}] on sales arrangement don't correspond to customers on households.");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation10, string.Join(StringJoinSeparator, customerIdsInvalid));
         }
     }
 
@@ -126,6 +126,6 @@ internal static class FormValidations
             return;
 
         var details = string.Join(StringJoinSeparator, invalidIncomes.Select(i => $"{i.IncomeId}"));
-        throw new CisValidationException(18066, $"Income mandatory fields not provided [{string.Join(StringJoinSeparator, details)}].");
+        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation9, string.Join(StringJoinSeparator, details));
     }
 }

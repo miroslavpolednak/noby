@@ -11,4 +11,5 @@ Extension metody pro logování.
 | [EventIdCodes](CIS.Infrastructure.Logging.EventIdCodes.md 'CIS.Infrastructure.Logging.EventIdCodes') | Kódy událostí v logu |
 | [LoggerExtensions](CIS.Infrastructure.Logging.LoggerExtensions.md 'CIS.Infrastructure.Logging.LoggerExtensions') | |
 | [RequestResponseLoggerExtensions](CIS.Infrastructure.Logging.RequestResponseLoggerExtensions.md 'CIS.Infrastructure.Logging.RequestResponseLoggerExtensions') | Extension metody pro ILogger pro logování HTTP requestů a responsů. |
+| [RollbackLoggerExtensions](CIS.Infrastructure.Logging.RollbackLoggerExtensions.md 'CIS.Infrastructure.Logging.RollbackLoggerExtensions') | |
 | [ServiceLoggerExtensions](CIS.Infrastructure.Logging.ServiceLoggerExtensions.md 'CIS.Infrastructure.Logging.ServiceLoggerExtensions') | Extension metody pro ILogger v týkající se handlingu webových služeb třetích stran. |

@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 
 [ScopedService, SelfService]
-internal class FormsDocumentService
+internal sealed class FormsDocumentService
 {
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
@@ -68,6 +68,9 @@ internal class FormsDocumentService
 
     private async Task<DocumentInterface> PrepareEntity(CreateDocumentOnSAResponse docOnSa, Form form, SalesArrangement salesArrangement, string contractNumber, User user, CancellationToken cancellationToken)
     {
+        var identity = user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.Mpad)
+             ?? user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.KbUid);
+        
         var entity = new DocumentInterface();
         entity.DocumentId = docOnSa.DocumentOnSa.EArchivId;
         var generatedDocument = await GenerateDocument(salesArrangement, docOnSa, cancellationToken);
@@ -75,7 +78,7 @@ internal class FormsDocumentService
         entity.FileName = await GetFileName(docOnSa.DocumentOnSa, cancellationToken);
         entity.FileNameSuffix = Path.GetExtension(entity.FileName)[1..];
         entity.CaseId = salesArrangement.CaseId;
-        entity.AuthorUserLogin = _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture);
+        entity.AuthorUserLogin = identity?.Identity ?? user.Id.ToString(CultureInfo.InvariantCulture);
         entity.ContractNumber = contractNumber;
         entity.FormId = docOnSa.DocumentOnSa.FormId;
         entity.CreatedOn = _dateTime.Now.Date;
@@ -137,6 +140,7 @@ internal class FormsDocumentService
 
             switch (documentDataDto.ValueCase)
             {
+                case 0: break;
                 case 3:
                     documentPartData.Text = documentDataDto.Text ?? string.Empty;
                     break;

@@ -8,19 +8,21 @@ internal class GeneralChangeTemplateData : AggregatedData
 {
     protected SalesArrangementParametersGeneralChange GeneralChange => SalesArrangement.GeneralChange;
 
-    public string PaymentAccount => Mortgage.PaymentAccount.Prefix + "-" + Mortgage.PaymentAccount.Number;
+    public string PaymentAccount => BankAccountHelper.AccountNumber(Mortgage.PaymentAccount.Prefix, Mortgage.PaymentAccount.Number, Mortgage.PaymentAccount.BankCode);
 
     public string FullName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
     public string PermanentAddress => CustomerHelper.FullAddress(Customer, _codebookManager.Countries);
 
-    public string RepaymentAccount => GeneralChange.RepaymentAccount.Prefix + "-" + GeneralChange.RepaymentAccount.Number;
+    public string RepaymentAccount => 
+        BankAccountHelper.AccountNumber(GeneralChange.RepaymentAccount.Prefix, GeneralChange.RepaymentAccount.Number, GeneralChange.RepaymentAccount.BankCode);
 
-    public string RepaymentAccountOwner => $"{GeneralChange.RepaymentAccount.OwnerFirstName} {GeneralChange.RepaymentAccount.OwnerLastName}";
+    public string RepaymentAccountOwner =>
+        CustomerHelper.NameWithDateOfBirth($"{GeneralChange.RepaymentAccount.OwnerFirstName} {GeneralChange.RepaymentAccount.OwnerLastName}", GeneralChange.RepaymentAccount.OwnerDateOfBirth);
 
-    public string RealEstateTypes => string.Join(", ", GetRealEstateTypes());
+    public string RealEstateTypes => string.Join("; ", GetRealEstateTypes());
 
-    public string RealEstatePurchaseTypes => string.Join(", ", GetRealEstatePurchaseTypes());
+    public string RealEstatePurchaseTypes => string.Join("; ", GetRealEstatePurchaseTypes());
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {

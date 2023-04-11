@@ -17,6 +17,11 @@ public static class CustomerHelper
         return $"{customerDetail.NaturalPerson.FirstName} {customerDetail.NaturalPerson.LastName}, {degree}";
     }
 
+    public static string NameWithDateOfBirth(string fullName, DateTime dateOfBirth)
+    {
+        return $"{fullName}, datum narození: {dateOfBirth.ToString("d", CultureProvider.GetProvider())}";
+    }
+
     public static string FullAddress(CustomerDetailResponse customerDetail, ICollection<CountriesItem> countries)
     {
         var address = customerDetail.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Permanent);
@@ -26,7 +31,7 @@ public static class CustomerHelper
 
         return $"{address.Street} {CombineHouseAndStreetNumber(address.HouseNumber, address.StreetNumber)}, " +
                $"{address.Postcode} {address.City}, " +
-               $"{countries.First(c => c.Id == address.CountryId).LongName}";
+               $"{countries.Where(c => c.Id == address.CountryId).Select(c => c.LongName).FirstOrDefault("No country")}";
     }
 
     private static string CombineHouseAndStreetNumber(string houseNumber, string streetNumber) => 

@@ -8,6 +8,13 @@ internal sealed class SimulateMortgageHandler
 {
     public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellationToken)
     {
+        // HFICH-5024
+        if ((request.Developer?.DeveloperId != null && request.Developer?.ProjectId != null && !string.IsNullOrEmpty(request.Developer?.Description))
+            || (request.Developer?.DeveloperId != null && request.Developer?.ProjectId == null && string.IsNullOrEmpty(request.Developer?.Description)))
+        {
+            throw new CisValidationException(90001, "Invalid developer parameters combination");
+        }
+
         // datum garance
         DateTime guaranteeDateFrom;
         if (!request.WithGuarantee.GetValueOrDefault())

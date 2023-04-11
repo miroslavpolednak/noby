@@ -4,7 +4,7 @@ using DomainServices.SalesArrangementService.Clients;
 namespace NOBY.Api.Endpoints.Document.Shared.DocumentIdManager;
 
 [TransientService, SelfService]
-internal class OfferDocumentIdManager : IDocumentIdManager<int>
+internal sealed class OfferDocumentIdManager : IDocumentIdManager<int>
 {
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 

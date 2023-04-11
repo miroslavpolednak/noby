@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Address.AddressSearch;
 
-internal class AddressSearchRequestValidator
+internal sealed class AddressSearchRequestValidator
     : AbstractValidator<AddressSearchRequest>
 {
     public AddressSearchRequestValidator()

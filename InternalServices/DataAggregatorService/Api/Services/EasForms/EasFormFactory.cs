@@ -21,9 +21,13 @@ internal class EasFormFactory
         _codebookService = codebookService;
     }
 
-    public async Task<IEasForm> Create(int salesArrangementId, EasFormConfiguration config, CancellationToken cancellationToken)
+    public async Task<IEasForm> Create(int salesArrangementId, int userId, EasFormConfiguration config, CancellationToken cancellationToken)
     {
-        var inputParameters = new InputParameters { SalesArrangementId = salesArrangementId };
+        var inputParameters = new InputParameters
+        {
+            SalesArrangementId = salesArrangementId,
+            UserId = userId
+        };
 
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
 

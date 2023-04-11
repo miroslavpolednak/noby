@@ -160,7 +160,7 @@ public class MpDigiClient
         return _titles.FirstOrDefault(t => t.Id == naturalPerson.DegreeBeforeId)?.Name;
     }
 
-    private long? ExtractKbId(RepeatedField<Identity> identities)
+    private static long? ExtractKbId(RepeatedField<Identity> identities)
     {
         return identities
             .Where(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb)

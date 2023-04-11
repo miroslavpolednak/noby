@@ -10,7 +10,7 @@ internal sealed partial class ValidationTransformationServiceFactory
     private sealed class ValidationTransformationService
         : IValidationTransformationService
     {
-        public List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.Error[]>? errors)
+        public List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.ErrorDto[]>? errors)
         {
             // no errors -> empty list
             if (errors is null || !errors.Any()) return new List<Contracts.ValidationMessage>(0);

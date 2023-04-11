@@ -9,7 +9,7 @@ namespace NOBY.Api.Notifications.Handlers;
 /// <summary>
 /// Zalozi RiskBusinessCase pro dany Sales Arrangement
 /// </summary>
-internal class CreateRiskBusinessCaseHandler
+internal sealed class CreateRiskBusinessCaseHandler
     : INotificationHandler<MainCustomerUpdatedNotification>
 {
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)

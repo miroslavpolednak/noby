@@ -1,1 +1,0 @@
-.\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=CIS;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\DatabaseMigrations"

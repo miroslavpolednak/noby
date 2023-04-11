@@ -40,7 +40,7 @@ internal sealed class IdentifiedSubjectService
 
         var response = await _identifiedSubjectClient.CreateIdentifiedSubject(identifiedSubject, request.HardCreate, cancellationToken);
 
-        return new Identity(_errorMap.ResolveAndThrowIfError(response), IdentitySchemes.Kb);
+        return new Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response), IdentitySchemes.Kb);
     }
 
     public async Task UpdateSubject(UpdateCustomerRequest request, CancellationToken cancellationToken)
@@ -244,7 +244,7 @@ internal sealed class IdentifiedSubjectService
         };
     }
 
-    private __Contracts.CustomerIdentification? CreateCustomerIdentification(CustomerIdentification? customerIdentification)
+    private static __Contracts.CustomerIdentification? CreateCustomerIdentification(CustomerIdentification? customerIdentification)
     {
         if (customerIdentification is null)
             return default;

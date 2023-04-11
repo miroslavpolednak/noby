@@ -22,11 +22,6 @@ internal sealed class GetProductObligationListHandler : IRequestHandler<GetProdu
                        .Select(p => new ProductObligation
                        {
                            ObligationTypeId = p.ObligationTypeId,
-                           ProductObligationId = new ProductObligationId
-                           {
-                               LoanId = p.ProductObligationId.LoanId,
-                               LoanPurpose = p.ProductObligationId.LoanPurpose
-                           },
                            Amount = p.Amount,
                            CreditorName = p.CreditorName,
                            PaymentAccount = new BankAccount

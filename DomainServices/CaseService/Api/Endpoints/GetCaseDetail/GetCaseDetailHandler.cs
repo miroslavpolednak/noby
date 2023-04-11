@@ -1,10 +1,11 @@
 ﻿using DomainServices.CaseService.Api.Database;
+using DomainServices.CaseService.Api.Messaging;
 using DomainServices.CaseService.Contracts;
-using Microsoft.EntityFrameworkCore;
+using MassTransit;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetCaseDetail;
 
-internal class GetCaseDetailHandler
+internal sealed class GetCaseDetailHandler
     : IRequestHandler<GetCaseDetailRequest, Case>
 {
     /// <summary>
