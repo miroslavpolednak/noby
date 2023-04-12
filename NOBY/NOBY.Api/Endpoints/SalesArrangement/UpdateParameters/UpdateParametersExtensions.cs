@@ -5,6 +5,15 @@ namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
 internal static class UpdateParametersExtensions
 {
+    public static _SA.SalesArrangementParametersCustomerChange3602 ToDomainService(this Dto.CustomerChange3602Update parameters, _SA.SalesArrangementParametersCustomerChange3602 originalParameters)
+    {
+        return new _SA.SalesArrangementParametersCustomerChange3602
+        {
+            HouseholdId = originalParameters.HouseholdId,
+            IsSpouseInDebt = parameters.IsSpouseInDebt
+        };
+    }
+
     public static _SA.SalesArrangementParametersMortgage ToDomainService(this ParametersMortgage parameters)
     {
         var model = new _SA.SalesArrangementParametersMortgage

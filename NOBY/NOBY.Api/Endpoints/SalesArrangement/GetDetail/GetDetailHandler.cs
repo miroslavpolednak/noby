@@ -1,7 +1,6 @@
 ﻿using DomainServices.CaseService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using _Offer = DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetDetail;
 
@@ -12,21 +11,8 @@ internal sealed class GetDetailHandler
     {
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-
         var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
         
-        var parameters = getParameters(saInstance);
-        /*Dto.MortgageDetailDto? data = null;
-        if (saInstance.SalesArrangementTypeId == 1)
-        {
-            // get mortgage data
-            var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken);
-
-            data = await getDataInternal(saInstance, offerInstance, cancellationToken);
-            if (!data.ExpectedDateOfDrawing.HasValue)
-                data.ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing;
-        }*/
-
         return new GetDetailResponse()
         {
             ProductTypeId = caseInstance.Data.ProductTypeId,
@@ -37,39 +23,7 @@ internal sealed class GetDetailHandler
             CreatedTime = saInstance.Created.DateTime,
             OfferGuaranteeDateFrom = saInstance.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = saInstance.OfferGuaranteeDateTo,
-            //Data = data,
-            Parameters = parameters
-        };
-    }
-
-    //TODO tohle se musi predelat az se bude vedet jak - rozdeleni mezi ProductSvc a Noby entity
-    async Task<Dto.MortgageDetailDto> getDataInternal(_SA.SalesArrangement saInstance, _Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellationToken)
-    {
-        if (!saInstance.OfferId.HasValue)
-            throw new NobyValidationException($"Offer does not exist for Case #{saInstance.OfferId}");
-
-        var loanKindName = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.LoanKindId)?.Name ?? "-";
-
-        // create response object
-        return new Dto.MortgageDetailDto()
-        {
-            ContractNumber = saInstance.ContractNumber,
-            LoanKindName = loanKindName,
-            LoanAmount = offerInstance.SimulationResults.LoanAmount,
-            LoanInterestRate = offerInstance.SimulationResults.LoanInterestRateProvided,
-            ContractSignedDate = offerInstance.SimulationResults.ContractSignedDate,
-            DrawingDateTo = offerInstance.SimulationResults.DrawingDateTo,
-            LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount,
-            LoanKindId = offerInstance.SimulationInputs.LoanKindId,
-            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod!.Value,
-            ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing,
-            LoanDueDate = offerInstance.SimulationResults.LoanDueDate,
-            PaymentDay = offerInstance.SimulationInputs.PaymentDay,
-            LoanPurposes = offerInstance.SimulationInputs.LoanPurposes is null ? null : offerInstance.SimulationInputs.LoanPurposes.Select(x => new Dto.MortgageDetailLoanPurpose
-            {
-                LoanPurposeId = x.LoanPurposeId,
-                Sum = x.Sum
-            }).ToList()
+            Parameters = getParameters(saInstance)
         };
     }
 
@@ -81,6 +35,9 @@ internal sealed class GetDetailHandler
             _SA.SalesArrangement.ParametersOneofCase.GeneralChange => saInstance.GeneralChange.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.HUBN => saInstance.HUBN.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.CustomerChange => saInstance.CustomerChange.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602A => saInstance.CustomerChange3602A.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602B => saInstance.CustomerChange3602B.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602C => saInstance.CustomerChange3602C.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.None => null,
             _ => throw new NotImplementedException($"getParameters for {saInstance.ParametersCase} not implemented")
         };

@@ -10,6 +10,7 @@ import "Parameters/SalesArrangementParametersMortgage.proto";
 import "Parameters/SalesArrangementParametersDrawing.proto";
 import "Parameters/SalesArrangementParametersGeneralChange.proto";
 import "Parameters/SalesArrangementParametersCustomerChange.proto";
+import "Parameters/SalesArrangementParametersCustomerChange3602.proto";
 
 message SalesArrangement {
 	int32 SalesArrangementId = 1;
@@ -60,5 +61,8 @@ message SalesArrangement {
 		SalesArrangementParametersGeneralChange GeneralChange = 32;
 		SalesArrangementParametersHUBN HUBN = 33;
 		SalesArrangementParametersCustomerChange CustomerChange = 34;
+		SalesArrangementParametersCustomerChange3602 CustomerChange3602A = 35;
+		SalesArrangementParametersCustomerChange3602 CustomerChange3602B = 36;
+		SalesArrangementParametersCustomerChange3602 CustomerChange3602C = 37;
     }
 }

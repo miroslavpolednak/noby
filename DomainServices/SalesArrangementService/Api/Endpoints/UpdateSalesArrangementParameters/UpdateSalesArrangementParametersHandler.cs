@@ -84,6 +84,9 @@ internal sealed class UpdateSalesArrangementParametersHandler
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => SalesArrangementTypes.GeneralChange,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => SalesArrangementTypes.HUBN,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange => SalesArrangementTypes.CustomerChange,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602A => SalesArrangementTypes.CustomerChange3602A,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602B => SalesArrangementTypes.CustomerChange3602B,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602C => SalesArrangementTypes.CustomerChange3602C,
             _ => throw new NotImplementedException($"UpdateSalesArrangementParametersRequest.DataOneofCase {datacase} is not implemented")
         };
 
@@ -95,6 +98,9 @@ internal sealed class UpdateSalesArrangementParametersHandler
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => request.GeneralChange,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => request.HUBN,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange => request.CustomerChange,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602A => request.CustomerChange3602A,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602B => request.CustomerChange3602B,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602C => request.CustomerChange3602C,
             _ => null
         };
 

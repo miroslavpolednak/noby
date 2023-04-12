@@ -1,19 +1,12 @@
-﻿using __SA = DomainServices.SalesArrangementService.Contracts;
+﻿using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class GeneralChangeBuilder
-    : BaseBuilder, ICreateSalesArrangementParametersBuilder
+    : BaseBuilder
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public GeneralChangeBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-        : base(logger, request)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
-    public async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
         _request.GeneralChange = new __SA.SalesArrangementParametersGeneralChange
         {
@@ -63,5 +56,10 @@ internal sealed class GeneralChangeBuilder
         }
 
         return _request;
+    }
+
+    public GeneralChangeBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
+    : base(logger, request, httpContextAccessor)
+    {
     }
 }

@@ -1,6 +1,8 @@
 ﻿using CIS.Foms.Types.Enums;
+using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class CreateSalesArrangementParametersFactory
@@ -29,6 +31,9 @@ internal sealed class CreateSalesArrangementParametersFactory
             SalesArrangementTypes.GeneralChange => new GeneralChangeValidator(_logger, request, _httpContextAccessor),
             SalesArrangementTypes.HUBN => new HUBNValidator(_logger, request, _httpContextAccessor),
             SalesArrangementTypes.CustomerChange => new CustomerChangeValidator(_logger, request, _httpContextAccessor),
+            SalesArrangementTypes.CustomerChange3602A => new CustomerChange3602AValidator(_logger, request, _httpContextAccessor),
+            SalesArrangementTypes.CustomerChange3602B => new CustomerChange3602BValidator(_logger, request, _httpContextAccessor),
+            SalesArrangementTypes.CustomerChange3602C => new CustomerChange3602CValidator(_logger, request, _httpContextAccessor),
             _ => throw new NotImplementedException($"Create Builder not implemented for SalesArrangementTypeId={salesArrangementTypeId}")
         };
     }
