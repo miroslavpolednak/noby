@@ -11,6 +11,8 @@ internal sealed class CustomerChange3602BBuilder
     {
         var mediator = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<IMediator>();
         var salesArrangementService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient>();
+        var customerOnSAService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient>();
+        var householdService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.HouseholdService.Clients.IHouseholdServiceClient>();
 
         // zalozit household
         var householdResult = await mediator.Send(new Endpoints.Household.CreateHousehold.CreateHouseholdRequest
@@ -18,6 +20,15 @@ internal sealed class CustomerChange3602BBuilder
             SalesArrangementId = salesArrangementId,
             HouseholdTypeId = (int)HouseholdTypes.Codebtor
         }, cancellationToken);
+
+        // vytvorit klienta
+        var createCustomerResult = await customerOnSAService.CreateCustomer(new DomainServices.HouseholdService.Contracts.CreateCustomerRequest
+        {
+            CustomerRoleId = (int)CustomerRoles.Codebtor,
+            SalesArrangementId = salesArrangementId
+        }, cancellationToken);
+
+        await householdService.LinkCustomerOnSAToHousehold(householdResult.HouseholdId, createCustomerResult.CustomerOnSAId, null, cancellationToken);
 
         // update parametru
         await salesArrangementService.UpdateSalesArrangementParameters(new()
