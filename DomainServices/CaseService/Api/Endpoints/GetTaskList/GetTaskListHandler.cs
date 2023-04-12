@@ -1,40 +1,37 @@
-﻿using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CaseService.Api.Services;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Contracts;
+using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
+using DomainServices.CaseService.Api.Database;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetTaskList;
 
 internal sealed class GetTaskListHandler
     : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
 {
-    public async Task<GetTaskListResponse> Handle(GetTaskListRequest request, CancellationToken cancellation)
+    public async Task<GetTaskListResponse> Handle(GetTaskListRequest request, CancellationToken cancellationToken)
     {
-        var caseId = (int)request.CaseId;
-
         // check if case exists
-        //await _repository.EnsureExistingCase(caseId, cancellation);
-
-        // load user
-        var user = await _userService.GetUser(_userAccessor.User!.Id, cancellation);
+        await CheckIfCaseExists(request.CaseId, cancellationToken);
 
         // load codebooks
-        var taskTypes = await _codebookService.WorkflowTaskTypes(cancellation);
-        var taskStates = await _codebookService.WorkflowTaskStates(cancellation);
+        var taskTypes = await _codebookService.WorkflowTaskTypes(cancellationToken);
 
         var taskTypeIds = taskTypes.Select(i => i.Id).ToArray();
-        var taskStateIds = taskStates.Where(i => !i.Flag.HasFlag(CodebookService.Contracts.Endpoints.WorkflowTaskStates.EWorkflowTaskStateFlag.Inactive)).Select(i => i.Id).ToArray();
+        var taskStateIds = await _commonDataProvider.GetValidTaskStateIds(cancellationToken);
 
-        // request data
-        var header = new EasSimulationHT.EasSimulationHTWrapper.WFS_Header { system = "NOBY", login = GetLogin(user) };
-        var messsage = new EasSimulationHT.EasSimulationHTWrapper.WFS_Find_ByCaseId
+        var sbRequest = new FindByCaseIdRequest
         {
-            case_id = caseId,
-            task_state = taskStateIds,
-            search_pattern = "LoanProcessSubtasks",
+            HeaderLogin = await _commonDataProvider.GetCurrentLogin(cancellationToken),
+            CaseId = request.CaseId,
+            TaskStates = taskStateIds,
+            SearchPattern = "LoanProcessSubtasks"
         };
 
-        // load tasks
-        var easTasks = await _easSimulationHTClient.FindTasks(header, messsage, cancellation);
-        var tasks = easTasks.Select(i => i.ToWorkflowTask()).ToArray();
+        var foundTasks = await _sbWebApiClient.FindTasksByCaseId(sbRequest, cancellationToken);
+
+        var tasks = foundTasks.Tasks.Select(taskData => taskData.ToWorkflowTask()).ToList();
 
         // check tasks
         CheckTasks(tasks, taskTypeIds, taskStateIds);
@@ -42,10 +39,10 @@ internal sealed class GetTaskListHandler
         // update active tasks
         var updateRequest = new UpdateActiveTasksRequest
         {
-            CaseId = caseId
+            CaseId = request.CaseId
         };
         updateRequest.Tasks.AddRange(tasks.Select(i => i.ToUpdateTaskItem()));
-        await _mediator.Send(updateRequest, cancellation);
+        await _mediator.Send(updateRequest, cancellationToken);
 
         // response
         var response = new GetTaskListResponse();
@@ -53,7 +50,7 @@ internal sealed class GetTaskListHandler
         return response;
     }
 
-    private static void CheckTasks(WorkflowTask[] tasks, int[] taskTypeIds, int[] taskStateIds)
+    private static void CheckTasks(ICollection<WorkflowTask> tasks, int[] taskTypeIds, ICollection<int> taskStateIds)
     {
         var tasksWithInvalidTypeId = tasks.Where(t => !taskTypeIds.Contains(t.TaskTypeId));
         var tasksWithInvalidStateId = tasks.Where(t => !taskStateIds.Contains(t.StateIdSb));
@@ -71,37 +68,33 @@ internal sealed class GetTaskListHandler
         }
     }
 
-    private static string GetLogin(UserService.Contracts.User user)
+    private async Task CheckIfCaseExists(long caseId, CancellationToken cancellationToken)
     {
-        if (!string.IsNullOrWhiteSpace(user.CPM) && !string.IsNullOrWhiteSpace(user.ICP))
-        {
-            // "login": "CPM: 99811022 ICP: 128911022"
-            return $"CPM: {user.CPM} ICP: {user.ICP}";
-        }
+        var caseExists = await _dbContext.Cases.AnyAsync(c => c.CaseId == caseId, cancellationToken);
 
-        var identity = user.UserIdentifiers.FirstOrDefault()?.Identity;
+        if (caseExists)
+            return;
 
-        return identity ?? string.Empty;
+        throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, caseId);
     }
 
+    private readonly CaseServiceDbContext _dbContext;
+    private readonly SbWebApiCommonDataProvider _commonDataProvider;
     private readonly ICodebookServiceClients _codebookService;
-    private readonly UserService.Clients.IUserServiceClient _userService;
-    private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
+    private readonly ISbWebApiClient _sbWebApiClient;
     private readonly IMediator _mediator;
 
     public GetTaskListHandler(
+        CaseServiceDbContext dbContext,
+        SbWebApiCommonDataProvider commonDataProvider,
         ICodebookServiceClients codebookService,
-        UserService.Clients.IUserServiceClient userService,
-        EasSimulationHT.IEasSimulationHTClient easSimulationHTClient,
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        IMediator mediator
-        )
+        ISbWebApiClient sbWebApiClient,
+        IMediator mediator)
     {
+        _dbContext = dbContext;
+        _commonDataProvider = commonDataProvider;
         _codebookService = codebookService;
-        _userService = userService;
-        _easSimulationHTClient = easSimulationHTClient;
-        _userAccessor = userAccessor;
+        _sbWebApiClient = sbWebApiClient;
         _mediator = mediator;
     }
 }

@@ -1,45 +1,48 @@
 ﻿using DomainServices.CaseService.Contracts;
-using Ext1 = ExternalServices.EasSimulationHT.V1;
 
 namespace DomainServices.CaseService.Api;
 
 internal static class CaseExtensions
 {
-    public static WorkflowTask ToWorkflowTask(this Ext1.EasSimulationHTWrapper.WFS_FindItem easTask)
+    public static WorkflowTask ToWorkflowTask(this IReadOnlyDictionary<string, string> taskData)
     {
-        var dict = easTask.task.ToDictionary(i => i.mtdt_def, i => i.mtdt_val);
-
         var task = new WorkflowTask
         {
-            TaskIdSb = int.Parse(dict["ukol_id"], CultureInfo.InvariantCulture),
-            TaskId = int.Parse(dict["ukol_sada"], CultureInfo.InvariantCulture),
-            CreatedOn = DateTime.Parse(dict["ukol_dat_start_proces"], CultureInfo.InvariantCulture),
-            TaskTypeId = int.Parse(dict["ukol_typ_noby"], CultureInfo.InvariantCulture),
-            TaskTypeName = dict["ukol_nazev_noby"],
-            TaskSubtypeName = dict["ukol_oznaceni_noby"],
-            ProcessId = int.Parse(dict["ukol_top_proces_sada"], CultureInfo.InvariantCulture),
-            ProcessNameShort = dict["ukol_top_proces_nazev_noby"],
-            StateIdSb = int.Parse(dict["ukol_stav_poz"], CultureInfo.InvariantCulture),
-            Cancelled = Convert.ToBoolean(Convert.ToInt16(dict["ukol_stornovano"], CultureInfo.InvariantCulture))
+            TaskIdSb = taskData.GetInteger("ukol_id"),
+            TaskId = taskData.GetInteger("ukol_sada"),
+            CreatedOn = taskData.GetDate("ukol_dat_start_proces"),
+            TaskTypeId = taskData.GetInteger("ukol_typ_noby"),
+            TaskTypeName = taskData["ukol_nazev_noby"],
+            TaskSubtypeName = taskData["ukol_oznaceni_noby"],
+            ProcessId = taskData.GetInteger("ukol_top_proces_sada"),
+            ProcessNameShort = taskData["ukol_top_proces_nazev_noby"],
+            StateIdSb = taskData.GetInteger("ukol_stav_poz"),
+            Cancelled = taskData.GetBoolean("ukol_stornovano")
         };
 
-        task.PhaseTypeId = GetPhaseTypeId(task.TaskTypeId, dict);
-        task.SignatureType = GetSignatureType(task.TaskTypeId, dict);
+        task.PhaseTypeId = GetPhaseTypeId(task.TaskTypeId, taskData);
+        task.SignatureType = GetSignatureType(task.TaskTypeId, taskData);
 
         return task;
     }
 
-    public static ProcessTask ToProcessTask(this Ext1.EasSimulationHTWrapper.WFS_FindItem easTask)
+    public static ProcessTask ToProcessTask(this IReadOnlyDictionary<string, string> taskData)
     {
-        var dict = easTask.task.ToDictionary(i => i.mtdt_def, i => i.mtdt_val);
-
         return new ProcessTask
         {
-            ProcessIdSB = int.Parse(dict["ukol_id"], CultureInfo.InvariantCulture),
-            ProcessId = int.Parse(dict["ukol_sada"], CultureInfo.InvariantCulture),
-            CreatedOn = DateTime.Parse(dict["ukol_dat_start_proces"], CultureInfo.InvariantCulture),
-            ProcessNameLong = dict["ukol_proces_nazev_noby"],
-            StateName = dict["ukol_proces_oznacenie_noby"]
+            ProcessIdSB = taskData.GetInteger("ukol_id"),
+            ProcessId = taskData.GetInteger("ukol_sada"),
+            CreatedOn = taskData.GetDate("ukol_dat_start_proces"),
+            ProcessNameLong = taskData["ukol_proces_nazev_noby"],
+            StateName = taskData["ukol_proces_oznacenie_noby"]
+        };
+    }
+
+    public static TaskDetailItem ToTaskDetail(this IReadOnlyDictionary<string, string> taskData)
+    {
+        return new TaskDetailItem
+        {
+            ProcessNameLong = taskData["ukol_typ_proces_noby_oznaceni"],
         };
     }
 
@@ -52,24 +55,24 @@ internal static class CaseExtensions
         };
     }
 
-    private static int GetPhaseTypeId(int taskTypeId, IReadOnlyDictionary<string, string> dict)
+    private static int GetPhaseTypeId(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
     {
         return taskTypeId switch
         {
-            1 => int.Parse(dict["ukol_dozadani_stav"], CultureInfo.InvariantCulture),
-            2 => int.Parse(dict["ukol_overeni_ic_stav"], CultureInfo.InvariantCulture),
-            6 => int.Parse(dict["ukol_podpis_stav"], CultureInfo.InvariantCulture),
+            1 => taskData.GetInteger("ukol_dozadani_stav"),
+            2 => taskData.GetInteger("ukol_overeni_ic_stav"),
+            6 => taskData.GetInteger("ukol_podpis_stav"),
             3 or 4 or 7 or 8 => 1,
             _ => throw new ArgumentOutOfRangeException(nameof(taskTypeId), taskTypeId, null)
         };
     }
 
-    private static string GetSignatureType(int taskTypeId, IReadOnlyDictionary<string, string> dict)
+    private static string GetSignatureType(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
     {
         if (taskTypeId != 6)
             return "unknown";
 
-        var signatureTypeId = int.Parse(dict["ukol_podpis_dokument_metoda"], CultureInfo.InvariantCulture);
+        var signatureTypeId = taskData.GetInteger("ukol_podpis_dokument_metoda");
 
         return signatureTypeId switch
         {

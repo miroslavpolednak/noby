@@ -38,6 +38,9 @@ public partial class DeleteCaseRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 
+public partial class GetTaskDetailRequest : MediatR.IRequest<GetTaskDetailResponse>
+{ }
+
 public partial class GetTaskListRequest
     : MediatR.IRequest<GetTaskListResponse>, CIS.Core.Validation.IValidatableRequest
 { }

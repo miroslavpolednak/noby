@@ -2,7 +2,7 @@
 
 public sealed class FindByTaskIdRequest : RequestBase
 {
-    public required int TaskSbId { get; init; }
+    public required int TaskIdSb { get; init; }
 
     public ICollection<int>? TaskStates { get; init; }
 }

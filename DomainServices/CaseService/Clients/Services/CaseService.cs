@@ -22,6 +22,11 @@ internal sealed class CaseService
         return result.CaseCounts.ToList();
     }
 
+    public Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default)
+    {
+        return _service.GompleteTaskAsync(request, cancellationToken: cancellationToken).ResponseAsync;
+    }
+
     public async Task<Case> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
         return await _service.GetCaseDetailAsync(
@@ -91,6 +96,11 @@ internal sealed class CaseService
             {
                 CaseId = caseId
             }, cancellationToken: cancellationToken);
+    }
+
+    public Task<GetTaskDetailResponse> GetTaskDetail(int taskIdSb, CancellationToken cancellationToken = default)
+    {
+        return _service.GetTaskDetailAsync(new GetTaskDetailRequest { TaskIdSb = taskIdSb }, cancellationToken: cancellationToken).ResponseAsync;
     }
 
     public async Task<List<WorkflowTask>> GetTaskList(long caseId, CancellationToken cancellationToken = default(CancellationToken))

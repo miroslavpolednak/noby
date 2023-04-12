@@ -1,45 +1,39 @@
-﻿using CIS.Core.Security;
-using DomainServices.CaseService.Api.Database;
+﻿using DomainServices.CaseService.Api.Database;
+using DomainServices.CaseService.Api.Services;
 using DomainServices.CaseService.Contracts;
-using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStates;
-using DomainServices.UserService.Clients;
-using ExternalServices.EasSimulationHT.V1;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
+using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetProcessList;
 
 internal class GetProcessListHandler : IRequestHandler<GetProcessListRequest, GetProcessListResponse>
 {
     private readonly CaseServiceDbContext _dbContext;
-    private readonly IUserServiceClient _userService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IEasSimulationHTClient _easSimulationService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly SbWebApiCommonDataProvider _commonDataProvider;
+    private readonly ISbWebApiClient _sbWebApiClient;
 
-    public GetProcessListHandler(CaseServiceDbContext dbContext, IUserServiceClient userService, ICurrentUserAccessor currentUserAccessor, IEasSimulationHTClient easSimulationService, ICodebookServiceClients codebookService)
+    public GetProcessListHandler(CaseServiceDbContext dbContext, SbWebApiCommonDataProvider commonDataProvider, ISbWebApiClient sbWebApiClient)
     {
         _dbContext = dbContext;
-        _userService = userService;
-        _currentUserAccessor = currentUserAccessor;
-        _easSimulationService = easSimulationService;
-        _codebookService = codebookService;
+        _commonDataProvider = commonDataProvider;
+        _sbWebApiClient = sbWebApiClient;
     }
 
     public async Task<GetProcessListResponse> Handle(GetProcessListRequest request, CancellationToken cancellationToken)
     {
         await CheckIfCaseExists(request.CaseId, cancellationToken);
 
-        var header = new EasSimulationHT.EasSimulationHTWrapper.WFS_Header { system = "NOBY", login = await GetLogin(cancellationToken) };
-        var message = new EasSimulationHT.EasSimulationHTWrapper.WFS_Find_ByCaseId
+        var sbRequest = new FindByCaseIdRequest
         {
-            case_id = (int)request.CaseId,
-            task_state = await GetActiveTaskStateIds(cancellationToken),
-            search_pattern = "MainLoanProcessTasks",
+            HeaderLogin = await _commonDataProvider.GetCurrentLogin(cancellationToken),
+            CaseId = request.CaseId,
+            TaskStates = await _commonDataProvider.GetValidTaskStateIds(cancellationToken),
+            SearchPattern = "MainLoanProcessTasks"
         };
 
-        var tasks = await _easSimulationService.FindTasks(header, message, cancellationToken);
+        var foundTasks = await _sbWebApiClient.FindTasksByCaseId(sbRequest, cancellationToken);
 
-        return new GetProcessListResponse { Processes = { tasks.Select(t => t.ToProcessTask()) } };
+        return new GetProcessListResponse { Processes = { foundTasks.Tasks.Select(t => t.ToProcessTask()) } };
     }
 
     private async Task CheckIfCaseExists(long caseId, CancellationToken cancellationToken)
@@ -50,29 +44,5 @@ internal class GetProcessListHandler : IRequestHandler<GetProcessListRequest, Ge
             return;
 
         throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, caseId);
-    }
-
-    private async Task<string> GetLogin(CancellationToken cancellationToken)
-    {
-        var user = await _userService.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
-
-        if (!string.IsNullOrWhiteSpace(user.CPM) && !string.IsNullOrWhiteSpace(user.ICP))
-        {
-            // "login": "CPM: 99811022 ICP: 128911022"
-            return $"CPM: {user.CPM} ICP: {user.ICP}";
-        }
-
-        var identity = user.UserIdentifiers.FirstOrDefault()?.Identity;
-
-        return identity ?? string.Empty;
-    }
-
-    private async Task<int[]> GetActiveTaskStateIds(CancellationToken cancellationToken)
-    {
-        var taskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
-
-        return taskStates.Where(i => !i.Flag.HasFlag(EWorkflowTaskStateFlag.Inactive))
-                         .Select(i => i.Id)
-                         .ToArray();
     }
 }

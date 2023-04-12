@@ -73,7 +73,7 @@ internal sealed class RealSbWebApiClient : ISbWebApiClient
             Header = RequestHelper.MapEasHeader(request.HeaderLogin),
             Message = new WFS_Find_ByTaskId
             {
-                Task_id = request.TaskSbId,
+                Task_id = request.TaskIdSb,
                 Task_state = request.TaskStates
             }
         };

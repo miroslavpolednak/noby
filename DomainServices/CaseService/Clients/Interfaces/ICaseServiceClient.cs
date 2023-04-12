@@ -121,4 +121,8 @@ public interface ICaseServiceClient
     Task UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default(CancellationToken));
 
     Task NotifyStarbuild(long caseId, string riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default);
+
+    Task<GetTaskDetailResponse> GetTaskDetail(int taskIdSb, CancellationToken cancellationToken = default);
 }
