@@ -17,7 +17,8 @@ internal static class CaseExtensions
             ProcessId = taskData.GetInteger("ukol_top_proces_sada"),
             ProcessNameShort = taskData["ukol_top_proces_nazev_noby"],
             StateIdSb = taskData.GetInteger("ukol_stav_poz"),
-            Cancelled = taskData.GetBoolean("ukol_stornovano")
+            Cancelled = taskData.GetBoolean("ukol_stornovano"),
+            PerformerLogin = taskData.GetValueOrDefault("ukol_op_zpracovatel")
         };
 
         task.PhaseTypeId = GetPhaseTypeId(task.TaskTypeId, taskData);
@@ -30,9 +31,10 @@ internal static class CaseExtensions
     {
         return new ProcessTask
         {
-            ProcessIdSB = taskData.GetInteger("ukol_id"),
+            ProcessIdSb = taskData.GetInteger("ukol_id"),
             ProcessId = taskData.GetInteger("ukol_sada"),
             CreatedOn = taskData.GetDate("ukol_dat_start_proces"),
+            ProcessTypeId = taskData.GetInteger("ukol_proces_typ_noby"),
             ProcessNameLong = taskData["ukol_proces_nazev_noby"],
             StateName = taskData["ukol_proces_oznacenie_noby"]
         };

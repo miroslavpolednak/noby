@@ -3,6 +3,7 @@ package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "GrpcDate.proto";
+import "google/protobuf/wrappers.proto";
 
 message WorkflowTask {
 	int32 TaskIdSb = 1;
@@ -28,6 +29,8 @@ message WorkflowTask {
 	string ProcessNameShort = 11;
 
 	bool Cancelled = 12;
+
+	google.protobuf.StringValue PerformerLogin = 13;
 }
 
 message GetTaskListRequest {

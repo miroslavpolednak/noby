@@ -13,13 +13,15 @@ message GetProcessListResponse {
 }
 
 message ProcessTask {
-	int32 ProcessIdSB = 1;
+	int32 ProcessIdSb = 1;
 
 	int32 ProcessId = 2;
 
 	cis.types.GrpcDate CreatedOn = 3;
 
-	string ProcessNameLong = 4;
+	int32 ProcessTypeId = 4;
 
-	string StateName = 5;
+	string ProcessNameLong = 5;
+
+	string StateName = 6;
 }

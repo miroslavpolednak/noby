@@ -33,7 +33,10 @@ internal class GetProcessListHandler : IRequestHandler<GetProcessListRequest, Ge
 
         var foundTasks = await _sbWebApiClient.FindTasksByCaseId(sbRequest, cancellationToken);
 
-        return new GetProcessListResponse { Processes = { foundTasks.Tasks.Select(t => t.ToProcessTask()) } };
+        return new GetProcessListResponse
+        {
+            Processes = { foundTasks.Tasks.Select(taskData => taskData.ToProcessTask()) }
+        };
     }
 
     private async Task CheckIfCaseExists(long caseId, CancellationToken cancellationToken)
