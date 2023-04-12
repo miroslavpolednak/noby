@@ -49,7 +49,7 @@ internal sealed class ErrorCodeMapper
             { HouseholdTypeIdNotFound, "HouseholdTypeId {PropertyValue} does not exist." },
             { HouseholdNotFound, "Household ID {PropertyValue} does not exist." },
             { CantDeleteDebtorHousehold, "Can't delete Debtor household" },
-            { CustomerNotOnSA, "CustomerOnSA #1 ID {PropertyValue} does not exist in selected SA." },
+            { CustomerNotOnSA, "CustomerOnSA {PropertyValue} does not exist in selected SA." },
             { HouseholdIdIsEmpty, "HouseholdId must be > 0" },
             { CustomerRoleIdIsEmpty, "CustomerRoleId must be > 0" },
             { CustomerRoleNotFound, "CustomerRoleId {PropertyValue} does not exist." },

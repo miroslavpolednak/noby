@@ -18,5 +18,15 @@ public enum SalesArrangementTypes : byte
     HUBN = 8,
 
     [EnumMember]
-    CustomerChange = 9
+    CustomerChange = 9,
+
+    // absolutne netusim jak tyhle ptakoviny pojmenovat...
+    [EnumMember]
+    CustomerChange3602A = 10,
+
+    [EnumMember]
+    CustomerChange3602B = 11,
+
+    [EnumMember]
+    CustomerChange3602C = 12
 }

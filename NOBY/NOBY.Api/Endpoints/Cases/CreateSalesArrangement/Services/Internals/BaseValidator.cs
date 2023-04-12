@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 
 internal abstract class BaseValidator
 {

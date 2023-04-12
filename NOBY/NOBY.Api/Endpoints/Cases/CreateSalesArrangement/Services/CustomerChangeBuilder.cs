@@ -1,12 +1,13 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
+using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class CustomerChangeBuilder
-    : BaseBuilder, ICreateSalesArrangementParametersBuilder
+    : BaseBuilder
 {
-    public async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage
         var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
@@ -80,11 +81,8 @@ internal sealed class CustomerChangeBuilder
 
     private static int[] _allowedCustomerRoles = new[] { 1, 2 };
 
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
     public CustomerChangeBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-        : base(logger, request)
+        : base(logger, request, httpContextAccessor)
     {
-        _httpContextAccessor = httpContextAccessor;
     }
 }

@@ -1,12 +1,18 @@
-﻿using NOBY.Api.Endpoints.SalesArrangement.Dto;
-using NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto;
-using System.Diagnostics;
+﻿using DomainServices.SalesArrangementService.Contracts;
+using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetDetail;
 
 internal static class GetDetailExtensions
 {
+    public static SalesArrangementParametersCustomerChange3602 ToApiResponse(this _SA.SalesArrangementParametersCustomerChange3602 parameters)
+        => new()
+        {
+            HouseholdId = parameters.HouseholdId,
+            IsSpouseInDebt = parameters.IsSpouseInDebt
+        };
+
     public static ParametersMortgage ToApiResponse(this _SA.SalesArrangementParametersMortgage mortgage)
         => new()
         {

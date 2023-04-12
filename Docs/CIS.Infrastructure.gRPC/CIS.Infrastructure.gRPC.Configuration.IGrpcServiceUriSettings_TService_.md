@@ -17,6 +17,7 @@ public interface IGrpcServiceUriSettings<TService>
 
 Derived  
 &#8627; [GrpcServiceUriSettingsDirect&lt;TService&gt;](CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsDirect_TService_.md 'CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsDirect<TService>')  
+&#8627; [GrpcServiceUriSettingsEmpty&lt;TService&gt;](CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsEmpty_TService_.md 'CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsEmpty<TService>')  
 &#8627; [GrpcServiceUriSettingsServiceDiscovery&lt;TService&gt;](CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsServiceDiscovery_TService_.md 'CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsServiceDiscovery<TService>')
 
 ### Remarks

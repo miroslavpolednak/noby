@@ -218,6 +218,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\database.md = Docs\topics\database.md
 		Docs\topics\distributed-cache.md = Docs\topics\distributed-cache.md
 		Docs\topics\documentation.md = Docs\topics\documentation.md
+		Docs\topics\external-services-rest.md = Docs\topics\external-services-rest.md
+		Docs\topics\external-services-soap.md = Docs\topics\external-services-soap.md
 		Docs\topics\external-services.md = Docs\topics\external-services.md
 		Docs\topics\feapi-error-handling.md = Docs\topics\feapi-error-handling.md
 		Docs\topics\grpc-service-startup.md = Docs\topics\grpc-service-startup.md
@@ -296,6 +298,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00003-document_versions_variant.sql = DomainServices\CodebookService\DatabaseMigrations\00003-document_versions_variant.sql
 		DomainServices\CodebookService\DatabaseMigrations\00004-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_creation.sql = DomainServices\CodebookService\DatabaseMigrations\00004-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_creation.sql
 		DomainServices\CodebookService\DatabaseMigrations\00005-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00005-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_seed.sql
+		DomainServices\CodebookService\DatabaseMigrations\00006-HFICH-5335_CustomerChange3602.sql = DomainServices\CodebookService\DatabaseMigrations\00006-HFICH-5335_CustomerChange3602.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"

@@ -2,7 +2,6 @@
 using DomainServices.HouseholdService.Clients;
 using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
-using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
@@ -11,15 +10,30 @@ internal sealed class IdentifyByIdentityHandler
 {
     public async Task Handle(IdentifyByIdentityRequest request, CancellationToken cancellationToken)
     {
-        // crm customer
-        var customerInstance = await _customerService.GetCustomerDetail(request.CustomerIdentity!, cancellationToken);
         // customer On SA
         var customerOnSaInstance = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
+
+        // validate two same identities on household
+        if (customerOnSaInstance.CustomerIdentifiers?.Any() ?? false)
+        {
+            var customersInHousehold = await _customerOnSAService.GetCustomerList(customerOnSaInstance.SalesArrangementId, cancellationToken);
+            foreach (var customer in customersInHousehold.Where(t => t.CustomerOnSAId != customerOnSaInstance.CustomerOnSAId))
+            {
+                var customerDetail = await _customerOnSAService.GetCustomer(customer.CustomerOnSAId, cancellationToken);
+                if (customerOnSaInstance.CustomerIdentifiers.Any(x => customerDetail.CustomerIdentifiers.Any(t => t.IdentityScheme == x.IdentityScheme && t.IdentityId == x.IdentityId)))
+                {
+                    throw new NobyValidationException("Identity already present on SalesArrangement customers");
+                }
+            }
+        }
+
+        // crm customer
+        var customerInstance = await _customerService.GetCustomerDetail(request.CustomerIdentity!, cancellationToken);        
         // SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(customerOnSaInstance.SalesArrangementId, cancellationToken);
 
         if (customerOnSaInstance.CustomerIdentifiers is not null && customerOnSaInstance.CustomerIdentifiers.Any())
-            throw new CisValidationException(0, "CustomerOnSA has been already identified");
+            throw new NobyValidationException("CustomerOnSA has been already identified");
 
         var modelToUpdate = new _HO.UpdateCustomerRequest
         {
