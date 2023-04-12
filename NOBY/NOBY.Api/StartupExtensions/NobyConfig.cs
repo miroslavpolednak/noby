@@ -15,13 +15,6 @@ internal static class NobyConfig
         // register to DI
         builder.Services.AddSingleton(appConfiguration);
 
-        // init mpss.security
-        if (string.IsNullOrEmpty(appConfiguration.MpssSecurityDllPath))
-        {
-            throw new CisConfigurationNotFound("MpssSecurityDllPath");
-        }
-        MPSS.Security.Noby.Portal.Init(appConfiguration.MpssSecurityDllEnvironment, appConfiguration.MpssSecurityDllPath);
-
         return appConfiguration;
     }
 }

@@ -3516,6 +3516,15 @@
             Slouží pro vytvoření auth cookie v případe, že aplikace není napojena na CAAS.
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetMpssSecurityCookie(System.Threading.CancellationToken)">
+            <summary>
+            Získání obsahu auth cookie pro ePodpisy.
+            </summary>
+            <remarks>
+            Endpoint vrací obsah MPSS.Security cookie, která slouží pro autentizaci ePodpisů na základě údajů získaných z UserService. Cookie je generovaná z projektu MPSS.Security.Noby, což je klon standardní MPSS.Security dll.
+            </remarks>
+            <returns>BASE64 obsah cookie, který se musí předat ePodpis widgetu</returns>
+        </member>
         <member name="T:NOBY.Api.Notifications.Handlers.CreateRiskBusinessCaseHandler">
             <summary>
             Zalozi RiskBusinessCase pro dany Sales Arrangement

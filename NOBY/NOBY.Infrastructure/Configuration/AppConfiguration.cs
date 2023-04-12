@@ -26,9 +26,4 @@ public sealed class AppConfiguration
     /// ID prostredi pro ktere se ma nahrat config pro MPSS.Security.dll
     /// </summary>
     public int? MpssSecurityDllEnvironment { get; set; }
-
-    /// <summary>
-    /// Cesta ke konfiguracnimu souboru pro MPSS.Security.dll
-    /// </summary>
-    public string? MpssSecurityDllPath { get; set; }
 }

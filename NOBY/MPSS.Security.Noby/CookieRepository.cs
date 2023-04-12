@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace MPSS.Security.Noby;
+﻿namespace MPSS.Security.Noby;
 
 /// <summary>
 /// Repository pro praci s kolekci cookies.
@@ -13,10 +11,10 @@ internal sealed class CookieRepository
     /// <param name="user">Instance uzivatele (identity).</param>
     /// <param name="validator">Instance cookie validatoru.</param>
     /// <returns>Zasifrovana cookie pro ulozeni do response kolekce.</returns>
-    public static string GetCookieForWrite(MpssUser user, CookieValidator validator, Configuration config)
+    public static string GetCookieForWrite(MpssUser user, CookieValidator validator, Configuration config, ILogger<IPortal> logger)
     {
         // zasifrovani objektu
-        ISecurityCookieFormatter formatter = SecurityCookieFactory.GetFormatter(config);
+        ISecurityCookieFormatter formatter = SecurityCookieFactory.GetFormatter(config, logger);
 #pragma warning disable CS8604 // Possible null reference argument.
         return formatter.Encode(user.Identity as IdentityBase, validator);
 #pragma warning restore CS8604 // Possible null reference argument.
@@ -28,13 +26,13 @@ internal sealed class CookieRepository
     /// </summary>
     /// <param name="applicationId">ID volajici aplikace (0=neznama aplikace)</param>
     /// <returns>Vraci instanci uzivatele ze SecurityCookie. Pokud neni uzivatel autentifikovan, vraci IsAuthenticated=false.</returns>
-    public static MpssUser GetSession(HttpContext context, string cookie, Configuration config)
+    public static MpssUser GetSession(HttpContext context, string cookie, Configuration config, ILogger<IPortal> logger)
     {
         // vytvorit cookie validator - trida obsahujici validacni informace o pozadavku
         CookieValidator validator = new CookieValidator(context);
 
         // dekodovani cookie
-        ISecurityCookieFormatter formatter = SecurityCookieFactory.GetFormatter(Portal.Configuration);
+        ISecurityCookieFormatter formatter = SecurityCookieFactory.GetFormatter(config, logger);
         MpssUser user = formatter.Decode(cookie, validator);
         if (user == null)
             return null!;

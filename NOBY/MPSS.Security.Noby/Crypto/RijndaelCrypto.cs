@@ -16,12 +16,17 @@ internal class RijndaelCrypto : ICrypto
 
     private ICryptoTransform GetEncryptor()
     {
-        return CreateEncryptor(config.RijndealPassword, config.RijndaelPwdIterations, config.RijndaelStrength, config.RijndaelVector, config.RijndaelSalt);
+        return CreateEncryptor(config.RijndealPassword, config.RijndaelPwdIterations, config.RijndaelStrength, getB(config.RijndaelVector), getB(config.RijndaelSalt));
     }
 
     private ICryptoTransform GetDecryptor()
     {
-        return CreateDecryptor(config.RijndealPassword, config.RijndaelPwdIterations, config.RijndaelStrength, config.RijndaelVector, config.RijndaelSalt);
+        return CreateDecryptor(config.RijndealPassword, config.RijndaelPwdIterations, config.RijndaelStrength, getB(config.RijndaelVector), getB(config.RijndaelSalt));
+    }
+
+    private byte[] getB(string s)
+    {
+        return ASCIIEncoding.ASCII.GetBytes(s);
     }
 
     /// <summary>

@@ -8,10 +8,12 @@ internal class SecurityCookieStringFormatter : ISecurityCookieFormatter
     /// <summary>
     /// Globalni konfigurace pro soucasnou instanci tridy
     /// </summary>
-    private Configuration currentConfiguration;
+    private readonly Configuration currentConfiguration;
+    private readonly ILogger<IPortal> _logger;
 
-    public SecurityCookieStringFormatter(Configuration configuration)
+    public SecurityCookieStringFormatter(Configuration configuration, ILogger<IPortal> logger)
     {
+        _logger = logger;
         this.currentConfiguration = configuration;
     }
 
@@ -39,8 +41,7 @@ internal class SecurityCookieStringFormatter : ISecurityCookieFormatter
         catch (Exception err) // chyba pri dekodovani
         {
             // logovat mozny utok
-            Log.LoggerFactory.WriteLog(err, "MPSS.Security.Core.SecurityCookieFormatter", "Decode", 2, "SecCookie decryption: " + cookieValue, Portal.Configuration.ApplicationId, Portal.Configuration.EnvironmentId);
-
+            _logger.LogInformation($"SecurityCookieFormatter: decryption: {cookieValue} - {err.Message}");
             return null;
         }
 
@@ -52,22 +53,15 @@ internal class SecurityCookieStringFormatter : ISecurityCookieFormatter
         catch (Exception err) // chyba pri deserializace
         {
             // logovat mozny utok
-            Log.LoggerFactory.WriteLog(err, "MPSS.Security.Core.SecurityCookieFormatter", "Decode", 2, "SecCookie deserialization 1: " + err.Message, Portal.Configuration.ApplicationId, Portal.Configuration.EnvironmentId);
-            Log.LoggerFactory.WriteLog(err, "MPSS.Security.Core.SecurityCookieFormatter", "Decode", 2, "SecCookie deserialization 2: " + cookieValue, Portal.Configuration.ApplicationId, Portal.Configuration.EnvironmentId);
+            _logger.LogInformation(err, "SecurityCookieFormatter: deserialization 1: " + err.Message);
+            _logger.LogInformation(err, "SecurityCookieFormatter: deserialization 2: " + cookieValue);
 
             return null;
         }
 
         // pokud je cookie v poradku
-        if (SecurityCookieFactory.Check(cookie, validator, this.currentConfiguration))
-        {
-            MpssUser user = new MpssUser(cookie.Identity);
-            return user;
-        }
-        else
-        {
-            return null;
-        }
+        MpssUser user = new MpssUser(cookie.Identity);
+        return user;
     }
 
     /// <summary>
