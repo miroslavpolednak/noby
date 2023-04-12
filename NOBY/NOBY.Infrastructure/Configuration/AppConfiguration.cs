@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Infrastructure.Configuration;
 
-public class AppConfiguration
+public sealed class AppConfiguration
 {
     /// <summary>
     /// Nastaveni autentizace uzivatele.
@@ -21,4 +21,9 @@ public class AppConfiguration
     /// Folder where temp files gonna be stored  
     /// </summary>
     public string FileTempFolderLocation { get; set; } = Path.Combine(Path.GetTempPath(), "Noby");
+
+    /// <summary>
+    /// ID prostredi pro ktere se ma nahrat config pro MPSS.Security.dll
+    /// </summary>
+    public int? MpssSecurityDllEnvironment { get; set; }
 }
