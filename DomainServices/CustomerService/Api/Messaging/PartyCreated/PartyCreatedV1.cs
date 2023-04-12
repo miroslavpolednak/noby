@@ -120,7 +120,7 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyCreated
 
         [System.Text.Json.Serialization.JsonPropertyName("genderCode")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public NaturalPersonAttributesGenderCode GenderCode { get; set; }
 
@@ -130,7 +130,7 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyCreated
 
         [System.Text.Json.Serialization.JsonPropertyName("birthDate")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset BirthDate { get; set; }
 
@@ -209,7 +209,7 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyCreated
 
         [System.Text.Json.Serialization.JsonPropertyName("deathDate")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset DeathDate { get; set; }
 
@@ -219,7 +219,7 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyCreated
 
         [System.Text.Json.Serialization.JsonPropertyName("isLegallyIncapable")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public bool IsLegallyIncapable { get; set; }
 
 
@@ -279,7 +279,7 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyCreated
 
         [System.Text.Json.Serialization.JsonPropertyName("establishedOn")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset EstablishedOn { get; set; }
 
@@ -360,7 +360,7 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyCreated
 
         [System.Text.Json.Serialization.JsonPropertyName("establishedOn")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset EstablishedOn { get; set; }
 
@@ -437,7 +437,7 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyCreated
     /// PartyCreated event message. Event is triggered when new subject in bank was created.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.7.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Anonymous
+    public partial class PartyCreatedV1
     {
         /// <summary>
         /// Customer ID, KBID
@@ -475,7 +475,7 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyCreated
 
         [System.Text.Json.Serialization.JsonPropertyName("sourceOfChange")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public SourceOfChange SourceOfChange { get; set; }
 
@@ -555,9 +555,9 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyCreated
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.7.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    internal class DateFormatConverter : System.Text.Json.Serialization.JsonConverter<System.DateTime>
+    internal class DateFormatConverter : System.Text.Json.Serialization.JsonConverter<System.DateTimeOffset>
     {
-        public override System.DateTime Read(ref System.Text.Json.Utf8JsonReader reader, System.Type typeToConvert, System.Text.Json.JsonSerializerOptions options)
+        public override System.DateTimeOffset Read(ref System.Text.Json.Utf8JsonReader reader, System.Type typeToConvert, System.Text.Json.JsonSerializerOptions options)
         {
             var dateTime = reader.GetString();
             if (dateTime == null)
@@ -565,12 +565,12 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyCreated
                 throw new System.Text.Json.JsonException("Unexpected JsonTokenType.Null");
             }
 
-            return System.DateTime.Parse(dateTime);
+            return System.DateTimeOffset.Parse(dateTime);
         }
 
-        public override void Write(System.Text.Json.Utf8JsonWriter writer, System.DateTime value, System.Text.Json.JsonSerializerOptions options)
+        public override void Write(System.Text.Json.Utf8JsonWriter writer, System.DateTimeOffset value, System.Text.Json.JsonSerializerOptions options)
         {
-            writer.WriteStringValue(value.ToString("yyyy-MM-dd"));
+            writer.WriteStringValue(value.ToString("O"));
         }
     }
 }

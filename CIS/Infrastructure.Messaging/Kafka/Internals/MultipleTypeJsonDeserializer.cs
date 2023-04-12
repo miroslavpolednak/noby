@@ -1,8 +1,10 @@
 ﻿using System.Text;
+using CIS.Infrastructure.Messaging.Exceptions;
 using CIS.Infrastructure.Messaging.Kafka.Internals.Abstraction;
 using Confluent.Kafka;
 using Confluent.SchemaRegistry;
 using KB.Speed.Messaging.Kafka.SerDes.Json;
+using Microsoft.Extensions.Logging;
 
 namespace CIS.Infrastructure.Messaging.Kafka.Internals;
 
@@ -38,9 +40,7 @@ public sealed class MultipleTypeJsonDeserializer<T> : IAsyncDeserializer<T>
         var payloadId = GetPayloadId(context);
         if (!_deserializers.TryGetValue(payloadId, out var serializer))
         {
-            throw new ArgumentException(
-                $"All types to be deserialized need to be registered in the {nameof(MultipleTypeJsonConfig)} that is supplied to this instance of {nameof(MultipleTypeJsonDeserializer<T>)}",
-                nameof(data));
+            throw new KafkaMessageTypeNotSupportedException(payloadId);
         }
 
         return (T)await serializer.DeserializeAsync(data.ToArray(), context);
