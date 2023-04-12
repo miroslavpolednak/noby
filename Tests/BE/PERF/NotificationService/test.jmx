@@ -13,9 +13,9 @@
             <stringProp name="Argument.value">1</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="identity" elementType="Argument">
-            <stringProp name="Argument.name">identity</stringProp>
-            <stringProp name="Argument.value">1190</stringProp>
+          <elementProp name="customId" elementType="Argument">
+            <stringProp name="Argument.name">customId</stringProp>
+            <stringProp name="Argument.value">10002</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="duration" elementType="Argument">
@@ -234,12 +234,14 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;SMS: jednoduchá&quot;,&#xd;
   &quot;phoneNumber&quot;: &quot;+420607115686&quot;,&#xd;
   &quot;processingPriority&quot;: 1,&#xd;
   &quot;type&quot;: &quot;PERF_NO_AUDIT&quot;,&#xd;
   &quot;text&quot;: &quot;SMS bez auditního logu z vlákna ${__threadNum}, iterace ${__counter(TRUE)}.&quot;,&#xd;
   &quot;identifier&quot;: {&#xd;
-    &quot;identity&quot;: &quot;${__javaScript(${identity}+5)}&quot;,&#xd;
+    &quot;identity&quot;: &quot;1000&quot;,&#xd;
     &quot;identityScheme&quot;: &quot;2&quot;&#xd;
   }&#xd;
 }</stringProp>
@@ -291,12 +293,14 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;SMS: auditní log&quot;,&#xd;
   &quot;phoneNumber&quot;: &quot;+420607115686&quot;,&#xd;
   &quot;processingPriority&quot;: 1,&#xd;
   &quot;type&quot;: &quot;PERF_AUDIT&quot;,&#xd;
   &quot;text&quot;: &quot;SMS s auditnim logem z vlakna ${__threadNum}, iterace ${__counter(TRUE)}.&quot;,&#xd;
   &quot;identifier&quot;: {&#xd;
-    &quot;identity&quot;: &quot;${__javaScript(${identity}+6)}&quot;,&#xd;
+    &quot;identity&quot;: &quot;1000&quot;,&#xd;
     &quot;identityScheme&quot;: &quot;2&quot;&#xd;
   }&#xd;
 }</stringProp>
@@ -348,17 +352,17 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;SMS: z template bez proměnných&quot;,&#xd;
   &quot;phoneNumber&quot;: &quot;+420607115686&quot;,&#xd;
   &quot;processingPriority&quot;: 1,&#xd;
   &quot;type&quot;: &quot;PERF_NO_AUDIT_NO_VARIABLES&quot;,&#xd;
   &quot;placeholders&quot;: [&#xd;
   ],&#xd;
   &quot;identifier&quot;: {&#xd;
-    &quot;identity&quot;: &quot;${__javaScript(${identity}+7)}&quot;,&#xd;
+    &quot;identity&quot;: &quot;1000&quot;,&#xd;
     &quot;identityScheme&quot;: &quot;2&quot;&#xd;
-  },&#xd;
-  &quot;customId&quot;: &quot;123546&quot;,&#xd;
-  &quot;documentId&quot;: &quot;789456&quot;&#xd;
+  }&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -408,6 +412,8 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;SMS: z template, 3 proměnné&quot;,&#xd;
   &quot;phoneNumber&quot;: &quot;+420607115686&quot;,&#xd;
   &quot;processingPriority&quot;: 1,&#xd;
   &quot;type&quot;: &quot;PERF_NO_AUDIT&quot;,&#xd;
@@ -426,11 +432,9 @@ if(ctx.getThreadNum()==0)
     }&#xd;
   ],&#xd;
   &quot;identifier&quot;: {&#xd;
-    &quot;identity&quot;: &quot;${__javaScript(${identity}+8)}&quot;,&#xd;
+    &quot;identity&quot;: &quot;1000&quot;,&#xd;
     &quot;identityScheme&quot;: &quot;2&quot;&#xd;
-  },&#xd;
-  &quot;customId&quot;: &quot;123546&quot;,&#xd;
-  &quot;documentId&quot;: &quot;789456&quot;&#xd;
+  }&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -480,7 +484,9 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value"> {&#xd;
-    &quot;from&quot;: {&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;Email: velký&quot;,&#xd;
+  &quot;from&quot;: {&#xd;
       &quot;value&quot;: &quot;notification-service@kb.cz&quot;,&#xd;
       &quot;party&quot;: {&#xd;
         &quot;legalPerson&quot;: {&#xd;
@@ -531,6 +537,15 @@ if(ctx.getThreadNum()==0)
             <stringProp name="throughput">${__javaScript(${requestsPerHour}/40/60*5)}</stringProp>
           </ConstantThroughputTimer>
           <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">def empty=&apos;Request byl nahrazen tímto textem, protože byl příliš dlouhý a znehybňoval JMeter.&apos;
+prev.setQueryString(empty);</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
         </hashTree>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="KB Mail malý" enabled="true">
@@ -554,7 +569,9 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value"> {&#xd;
-    &quot;from&quot;: {&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;Email: malý&quot;,&#xd;
+  &quot;from&quot;: {&#xd;
       &quot;value&quot;: &quot;notification-service@kb.cz&quot;,&#xd;
       &quot;party&quot;: {&#xd;
         &quot;legalPerson&quot;: {&#xd;
@@ -628,7 +645,9 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value"> {&#xd;
-    &quot;from&quot;: {&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;Email: 1 příloha&quot;,&#xd;
+  &quot;from&quot;: {&#xd;
       &quot;value&quot;: &quot;notification-service@kb.cz&quot;,&#xd;
       &quot;party&quot;: {&#xd;
         &quot;legalPerson&quot;: {&#xd;
@@ -684,6 +703,15 @@ if(ctx.getThreadNum()==0)
             <intProp name="calcMode">0</intProp>
           </ConstantThroughputTimer>
           <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">def empty=&apos;Request byl nahrazen tímto textem, protože byl příliš dlouhý a znehybňoval JMeter.&apos;
+prev.setQueryString(empty);</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
         </hashTree>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Email se dvěma přílohami" enabled="true">
@@ -707,7 +735,9 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value"> {&#xd;
-    &quot;from&quot;: {&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;Email: 2 přílohy&quot;,&#xd;
+  &quot;from&quot;: {&#xd;
       &quot;value&quot;: &quot;notification-service@kb.cz&quot;,&#xd;
       &quot;party&quot;: {&#xd;
         &quot;legalPerson&quot;: {&#xd;
@@ -766,6 +796,104 @@ if(ctx.getThreadNum()==0)
             <stringProp name="throughput">${__javaScript(${requestsPerHour}/40/60*5)}</stringProp>
             <intProp name="calcMode">0</intProp>
           </ConstantThroughputTimer>
+          <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">def empty=&apos;Request byl nahrazen tímto textem, protože byl příliš dlouhý a znehybňoval JMeter.&apos;
+prev.setQueryString(empty);
+
+
+
+
+</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Získat výsledky" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">10</stringProp>
+        <stringProp name="ThreadGroup.delay">${__javaScript(${duration}+10)}</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Získat výsledky - HTTP Request" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${server}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/v1/notification/result/search?customId=${customId}</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">import groovy.json.JsonSlurper;
+
+def response=prev.getResponseDataAsString();
+
+def jsonSlurper=new JsonSlurper();
+data = jsonSlurper.parseText(response);
+
+def outputData=&apos;&apos;; 
+
+def messageTypes=[:];
+
+for(item in data)
+{
+  //outputData+=item.notificationId+&apos;\t\t&apos;+item.state+&apos;\n&apos;;
+
+  if(!messageTypes.containsKey(item.documentId))
+  {
+	messageTypes[item.documentId]=[:];  	
+  }
+  
+  if(messageTypes[item.documentId].containsKey(item.state))
+  	messageTypes[item.documentId][item.state]+=1;
+  else
+  	messageTypes[item.documentId][item.state]=1;
+}
+
+def output=&apos;Results:\n\n&apos;;
+
+messageTypes.each
+{ 
+	type, states -&gt; 
+	output+=type+&apos;:\n&apos;
+	states.each{ s, num -&gt; output+=s+&apos;: &apos;+num+&apos;\n&apos;;}
+	output+=&apos;========================================\n\n&apos;
+}
+
+//Tohoto by bylo asi příliš:
+//output+=&apos;========================================\n\n&apos;+outputData;
+
+
+prev.setResponseData(output.getBytes(&apos;UTF-8&apos;));</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223PostProcessor>
           <hashTree/>
         </hashTree>
       </hashTree>
