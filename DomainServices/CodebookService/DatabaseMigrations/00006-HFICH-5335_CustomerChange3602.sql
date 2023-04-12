@@ -1,3 +1,5 @@
+DELETE FROM [dbo].[SalesArrangementType] WHERE Id IN (10,11);
+
 INSERT INTO [dbo].[SalesArrangementType] (Id, [Name], SalesArrangementCategory) VALUES 
 	(10, N'Údaje o přistupujícím k dluhu (3602)', 2),
 	(11, N'Žádost o přidání spoludlužníka (3602)', 2),
