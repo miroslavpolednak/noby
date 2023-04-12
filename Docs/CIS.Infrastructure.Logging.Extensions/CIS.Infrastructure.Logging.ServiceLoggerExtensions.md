@@ -31,6 +31,28 @@ public static void ExtServiceAuthenticationFailed(this Microsoft.Extensions.Logg
 
 `ex` [System.Exception](https://docs.microsoft.com/en-us/dotnet/api/System.Exception 'System.Exception')
 
+<a name='CIS.Infrastructure.Logging.ServiceLoggerExtensions.ExtServiceResponseError(thisMicrosoft.Extensions.Logging.ILogger,string)'></a>
+
+## ServiceLoggerExtensions.ExtServiceResponseError(this ILogger, string) Method
+
+Pokud služba třetí strany vrátí nestandardní chybové hlášení - ne 500 nebo 400 a chceme to zalogovat.
+
+```csharp
+public static void ExtServiceResponseError(this Microsoft.Extensions.Logging.ILogger logger, string message);
+```
+#### Parameters
+
+<a name='CIS.Infrastructure.Logging.ServiceLoggerExtensions.ExtServiceResponseError(thisMicrosoft.Extensions.Logging.ILogger,string).logger'></a>
+
+`logger` [Microsoft.Extensions.Logging.ILogger](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.Logging.ILogger 'Microsoft.Extensions.Logging.ILogger')
+
+<a name='CIS.Infrastructure.Logging.ServiceLoggerExtensions.ExtServiceResponseError(thisMicrosoft.Extensions.Logging.ILogger,string).message'></a>
+
+`message` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+### Remarks
+Jedná se třeba o služby EAS, které nemají žádný error handling.
+
 <a name='CIS.Infrastructure.Logging.ServiceLoggerExtensions.ExtServiceUnavailable(thisMicrosoft.Extensions.Logging.ILogger,string,System.Exception)'></a>
 
 ## ServiceLoggerExtensions.ExtServiceUnavailable(this ILogger, string, Exception) Method
