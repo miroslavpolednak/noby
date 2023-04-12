@@ -72,7 +72,7 @@ public static class KafkaExtensions
         // get groupId
         var environmentConfiguration = context.GetRequiredService<CIS.Core.Configuration.ICisEnvironmentConfiguration>();
 
-        factoryConfigurator.TopicEndpoint<TTopicMarker>(topic, groupId ?? environmentConfiguration.DefaultApplicationKey, conf =>
+        factoryConfigurator.TopicEndpoint<TTopicMarker>(topic, groupId ?? getDefaultGroupId(environmentConfiguration), conf =>
         {
             var schemaRegistryClient = context.GetRequiredService<ISchemaRegistryClient>();
             var multipleTypeConfig = CreateMultipleTypeAvroConfig<TTopicMarker>();
@@ -104,7 +104,7 @@ public static class KafkaExtensions
             .GetRequiredService<IOptions<KB.Speed.Messaging.Kafka.SerDes.Json.JsonDeserializerConfig>>()
             .Value;
 
-        factoryConfigurator.TopicEndpoint<TTopicMarker>(topic, groupId ?? environmentConfiguration.DefaultApplicationKey, conf =>
+        factoryConfigurator.TopicEndpoint<TTopicMarker>(topic, groupId ?? getDefaultGroupId(environmentConfiguration), conf =>
         {
             var schemaRegistryClient = context.GetRequiredService<ISchemaRegistryClient>();
             var multipleTypeConfig = CreateMultipleTypeJsonConfig<TTopicMarker>();
@@ -121,7 +121,6 @@ public static class KafkaExtensions
 
         return factoryConfigurator;
     }
-    
     
     internal static IEnumerable<Type> GetContractTypes<TTopicMarker>()
     {
@@ -207,5 +206,10 @@ public static class KafkaExtensions
                 });
             }
         });
+    }
+
+    private static string getDefaultGroupId(Core.Configuration.ICisEnvironmentConfiguration environmentConfiguration)
+    {
+        return $"NOBY.{environmentConfiguration!.DefaultApplicationKey}-{environmentConfiguration.EnvironmentName}";
     }
 }
