@@ -64,11 +64,11 @@ def test_sms_sb(url_name,  auth_params, auth, json_data):
 
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data, expected_events", [
-    (json_req_sms_logovani, 4),
-    (json_req_sms_bez_logovani, 0)
+@pytest.mark.parametrize("json_data, expected_results", [
+    (json_req_sms_logovani, True),
+    (json_req_sms_bez_logovani, False)
 ])
-def test_sms_log(url_name,  auth_params, auth, json_data, expected_events):
+def test_sms_log(url_name,  auth_params, auth, json_data, expected_results):
     """test logovani - zalogujeme, nezalogujeme do seq"""
 
     username = auth[0]
@@ -86,7 +86,11 @@ def test_sms_log(url_name,  auth_params, auth, json_data, expected_events):
     notification_id = resp["notificationId"]
     assert notification_id != ""
 
-def test_seq_log():
+
+@pytest.mark.parametrize("expected_results", [
+    (True)
+])
+def test_seq_log(expected_results):
     # Přihlášení
     # Vytvoření nového objektu Session
     notification_id = 'e0fa60ef-28b6-481c-9b11-60be53766516'
@@ -118,8 +122,11 @@ def test_seq_log():
               "Grouping": "Inferred", "ExplicitGroupName": None, "OwnerId": "user-admin",
               "Links": {"Create": "api/signals/"}})
     print(resp.json())
-    #TODO: dodelat assert na Events a expected_events!!!
-    assert resp.json()['Events'] == 1
+
+    if expected_results:
+        assert len(resp.json()['Events']) > 0, "Pole 'Events' je prázdné"
+    else:
+        assert len(resp.json()['Events']) == 0, "Pole 'Events' není prázdné"
 
 
 @pytest.mark.parametrize("url_name", ["dev_url", "uat_url"])
