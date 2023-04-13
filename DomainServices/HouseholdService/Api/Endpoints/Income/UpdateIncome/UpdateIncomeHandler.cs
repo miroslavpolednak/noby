@@ -1,7 +1,7 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 using Google.Protobuf;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncome;
+namespace DomainServices.HouseholdService.Api.Endpoints.Income.UpdateIncome;
 
 internal sealed class UpdateIncomeHandler
     : IRequestHandler<UpdateIncomeRequest, Google.Protobuf.WellKnownTypes.Empty>

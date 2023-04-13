@@ -1,6 +1,6 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncomeBaseData;
+namespace DomainServices.HouseholdService.Api.Endpoints.Income.UpdateIncomeBaseData;
 
 internal sealed class UpdateIncomeBaseDataHandler
     : IRequestHandler<UpdateIncomeBaseDataRequest, Google.Protobuf.WellKnownTypes.Empty>

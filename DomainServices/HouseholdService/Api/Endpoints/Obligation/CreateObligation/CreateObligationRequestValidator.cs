@@ -1,7 +1,7 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateObligation;
+namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.CreateObligation;
 
 internal sealed class CreateObligationRequestValidator
     : AbstractValidator<CreateObligationRequest>

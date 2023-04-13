@@ -1,6 +1,6 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteIncome;
+namespace DomainServices.HouseholdService.Api.Endpoints.Income.DeleteIncome;
 
 internal sealed class DeleteIncomeHandler
     : IRequestHandler<DeleteIncomeRequest, Google.Protobuf.WellKnownTypes.Empty>

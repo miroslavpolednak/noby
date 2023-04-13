@@ -1,7 +1,7 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 using Google.Protobuf;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncome;
+namespace DomainServices.HouseholdService.Api.Endpoints.Income.CreateIncome;
 
 internal sealed class CreateIncomeHandler
     : IRequestHandler<CreateIncomeRequest, CreateIncomeResponse>

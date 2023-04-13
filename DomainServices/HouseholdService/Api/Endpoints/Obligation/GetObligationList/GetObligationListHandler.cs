@@ -1,17 +1,18 @@
 ﻿using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Api.Endpoints.Income.GetIncomeList;
 using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetIncomeList;
+namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.GetObligationList;
 
-internal sealed class GetIncomeListHandler
-    : IRequestHandler<GetIncomeListRequest, Contracts.GetIncomeListResponse>
+internal sealed class GetObligationListHandler
+    : IRequestHandler<GetObligationListRequest, GetObligationListResponse>
 {
-    public async Task<Contracts.GetIncomeListResponse> Handle(GetIncomeListRequest request, CancellationToken cancellationToken)
+    public async Task<GetObligationListResponse> Handle(GetObligationListRequest request, CancellationToken cancellationToken)
     {
-        var list = await _dbContext.CustomersIncomes
+        var list = await _dbContext.CustomersObligations
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .Select(CustomerOnSAServiceExpressions.Income())
+            .Select(CustomerOnSAServiceExpressions.Obligation())
             .ToListAsync(cancellationToken);
 
         if (!list.Any() && !_dbContext.Customers.Any(t => t.CustomerOnSAId == request.CustomerOnSAId))
@@ -21,15 +22,15 @@ internal sealed class GetIncomeListHandler
 
         _logger.FoundItems(list.Count, nameof(Database.Entities.CustomerOnSAIncome));
 
-        var response = new Contracts.GetIncomeListResponse();
-        response.Incomes.AddRange(list);
+        var response = new GetObligationListResponse();
+        response.Obligations.AddRange(list);
         return response;
     }
 
     private readonly HouseholdServiceDbContext _dbContext;
     private readonly ILogger<GetIncomeListHandler> _logger;
 
-    public GetIncomeListHandler(
+    public GetObligationListHandler(
         HouseholdServiceDbContext dbContext,
         ILogger<GetIncomeListHandler> logger)
     {

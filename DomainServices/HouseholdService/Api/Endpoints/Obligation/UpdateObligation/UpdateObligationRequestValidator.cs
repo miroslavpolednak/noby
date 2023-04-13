@@ -1,10 +1,9 @@
-﻿using DomainServices.HouseholdService.Contracts;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateObligation;
+namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.UpdateObligation;
 
 internal sealed class UpdateObligationRequestValidator
-    : AbstractValidator<Obligation>
+    : AbstractValidator<Contracts.Obligation>
 {
     public UpdateObligationRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
     {

@@ -1,6 +1,6 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateObligation;
+namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.CreateObligation;
 
 internal sealed class CreateObligationHandler
     : IRequestHandler<CreateObligationRequest, CreateObligationResponse>
