@@ -97,6 +97,8 @@ def test_get_sms_notification_id_states(url_name,  auth_params, auth, json_data)
     assert resp['state'] == 'Delivered'
 
 
+
+#TODO: koukni na response GET search, ve swagger vraci i vyparsovane parametry
 @pytest.mark.parametrize("url_name", ["uat_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_full_for_search])
