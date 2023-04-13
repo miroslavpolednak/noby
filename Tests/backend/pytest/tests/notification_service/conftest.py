@@ -3,15 +3,12 @@ import pyodbc
 
 import datetime as datetime
 import pytest
+import requests
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-
 # pylint: disable=unused-import
-#
-#
-#
 
 URLS = {
     "dev_url": "https://ds-notification-dev.vsskb.cz:30016",
@@ -72,6 +69,27 @@ def get_password(auth_params, username):
 
     return auth_params[username]
 
+
+@pytest.fixture(scope="module")
+def authenticated_seqlog_session():
+    session = requests.Session()
+
+    response = session.post(
+        url="http://172.30.35.51:6341/api/users/login",
+        json={
+             "Username": "seqadmin",
+            "Password": "Rud514",
+            "NewPassword": "",
+        },
+        verify=False,  # Přeskočit ověření certifikátu
+    )
+
+    if response.status_code != 200:
+        raise ValueError("Přihlášení se nezdařilo")
+
+    return session
+
+
 @pytest.fixture()
 def tomorrow_datetime():
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1))
@@ -82,3 +100,7 @@ def get_current_date():
     today = (datetime.date.today())
     reformat_today = today.strftime("%Y-%m-%dT%H:%M:%S")
     return reformat_today
+
+
+def greater_than_zero(items_count):
+    return items_count > 0
