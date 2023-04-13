@@ -17,6 +17,9 @@ internal sealed class CustomerOnSAService
     public override async Task<Contracts.CustomerOnSA> GetCustomer(GetCustomerRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    public override async Task<GetCustomersByIdentityResponse> GetCustomersByIdentity(GetCustomersByIdentityRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     public override async Task<GetCustomerListResponse> GetCustomerList(GetCustomerListRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
