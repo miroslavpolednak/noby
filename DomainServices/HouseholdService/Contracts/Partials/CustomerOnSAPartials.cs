@@ -28,6 +28,10 @@ public partial class GetCustomerRequest
     : MediatR.IRequest<CustomerOnSA>
 { }
 
+public partial class GetCustomersByIdentityRequest
+    : MediatR.IRequest<GetCustomersByIdentityResponse>
+{ }
+
 public partial class GetCustomerListRequest
     : MediatR.IRequest<GetCustomerListResponse>
 { }

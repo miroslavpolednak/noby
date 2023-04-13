@@ -1,11 +1,11 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetIncome;
+namespace DomainServices.HouseholdService.Api.Endpoints.Income.GetIncome;
 
 internal sealed class GetIncomeHandler
-    : IRequestHandler<GetIncomeRequest, Income>
+    : IRequestHandler<GetIncomeRequest, Contracts.Income>
 {
-    public async Task<Income> Handle(GetIncomeRequest request, CancellationToken cancellationToken)
+    public async Task<Contracts.Income> Handle(GetIncomeRequest request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.CustomersIncomes
             .AsNoTracking()
@@ -13,7 +13,7 @@ internal sealed class GetIncomeHandler
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.IncomeNotFound, request.IncomeId);
 
-        var model = new Income
+        var model = new Contracts.Income
         {
             IncomeId = entity.CustomerOnSAIncomeId,
             IncomeTypeId = (int)entity.IncomeTypeId,

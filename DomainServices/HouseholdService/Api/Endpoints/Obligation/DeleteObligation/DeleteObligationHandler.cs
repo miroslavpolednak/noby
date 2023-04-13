@@ -1,6 +1,6 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteObligation;
+namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.DeleteObligation;
 
 internal sealed class DeleteObligationHandler
     : IRequestHandler<DeleteObligationRequest, Google.Protobuf.WellKnownTypes.Empty>

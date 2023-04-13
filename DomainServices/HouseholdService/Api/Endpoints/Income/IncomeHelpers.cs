@@ -1,4 +1,4 @@
-﻿namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA;
+﻿namespace DomainServices.HouseholdService.Api.Endpoints.Income;
 
 internal static class IncomeHelpers
 {

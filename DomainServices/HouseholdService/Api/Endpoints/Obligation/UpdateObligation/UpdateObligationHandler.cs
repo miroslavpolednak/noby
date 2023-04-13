@@ -1,11 +1,9 @@
-﻿using DomainServices.HouseholdService.Contracts;
-
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateObligation;
+﻿namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.UpdateObligation;
 
 internal sealed class UpdateObligationHandler
-    : IRequestHandler<Obligation, Google.Protobuf.WellKnownTypes.Empty>
+    : IRequestHandler<Contracts.Obligation, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Obligation request, CancellationToken cancellationToken)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.Obligation request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.CustomersObligations
             .Where(t => t.CustomerOnSAObligationId == request.ObligationId)

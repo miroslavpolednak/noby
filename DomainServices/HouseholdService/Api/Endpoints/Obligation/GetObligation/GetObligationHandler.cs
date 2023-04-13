@@ -1,11 +1,11 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetObligation;
+namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.GetObligation;
 
 internal sealed class GetObligationHandler
-    : IRequestHandler<GetObligationRequest, Obligation>
+    : IRequestHandler<GetObligationRequest, Contracts.Obligation>
 {
-    public async Task<Obligation> Handle(GetObligationRequest request, CancellationToken cancellationToken)
+    public async Task<Contracts.Obligation> Handle(GetObligationRequest request, CancellationToken cancellationToken)
     {
         var model = await _dbContext.CustomersObligations
             .AsNoTracking()

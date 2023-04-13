@@ -1,7 +1,7 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncomeBaseData;
+namespace DomainServices.HouseholdService.Api.Endpoints.Income.UpdateIncomeBaseData;
 
 internal sealed class UpdateIncomeBaseDataRequestValidator
     : AbstractValidator<UpdateIncomeBaseDataRequest>
