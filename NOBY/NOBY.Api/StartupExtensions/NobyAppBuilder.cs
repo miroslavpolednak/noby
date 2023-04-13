@@ -79,7 +79,9 @@ internal static class NobyAppBuilder
                 {
                 })
                     .RequireAuthorization()
-                    .ExcludeFromDescription();
+                    .WithDescription("Přihlášení uživatele / redirect na auth provider.")
+                    .WithTags("Authentication")
+                    .WithOpenApi();
 
                 // sign out
                 t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint, 
@@ -96,7 +98,9 @@ internal static class NobyAppBuilder
                     context.HttpContext!.Response.Redirect("/");
                 })
                     .RequireAuthorization()
-                    .ExcludeFromDescription();
+                    .WithDescription("Odhlášení uživatele.")
+                    .WithTags("Authentication")
+                    .WithOpenApi();
             });
         });
 
