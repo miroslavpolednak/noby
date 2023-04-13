@@ -34,4 +34,16 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task SignIn([FromBody] SignIn.SignInRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
+
+    /// <summary>
+    /// Získání obsahu auth cookie pro ePodpisy.
+    /// </summary>
+    /// <remarks>
+    /// Endpoint vrací obsah MPSS.Security cookie, která slouží pro autentizaci ePodpisů na základě údajů získaných z UserService. Cookie je generovaná z projektu MPSS.Security.Noby, což je klon standardní MPSS.Security dll.
+    /// </remarks>
+    /// <returns>BASE64 obsah cookie, který se musí předat ePodpis widgetu</returns>
+    [HttpGet("mpss-cookie")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<string> GetMpssSecurityCookie(CancellationToken cancellationToken)
+        => await _mediator.Send(new GetMpssSecurityCookie.GetMpssSecurityCookieRequest(), cancellationToken);
 }

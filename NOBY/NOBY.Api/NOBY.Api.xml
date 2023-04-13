@@ -538,7 +538,6 @@
              - <a href="https://wiki.kb.cz/display/HT/DocumentOnSAType">DocumentOnSATypes</a>
              - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVersion">DocumentTemplateVersions</a>
              - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVariant">DocumentTemplateVariants</a>
-             - <a href="https://wiki.kb.cz/display/HT/DocumentType">DocumentTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=450580207">DrawingDurations</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=444604999">DrawingTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=400823251">EaCodesMain</a>
@@ -1363,17 +1362,6 @@
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSaDetail(System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Detail podepisovaného dokumentu
-            </summary>
-            <remarks>
-            Vrátí informace o podepisovaném dokumentu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FA259E3F-5B8D-4ade-9F1A-7C1A943F1029"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <param name="salesArrangementId"></param>
-            <param name="documentOnSAId"></param>
-        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SearchDocumentsOnSa(System.Int32,NOBY.Api.Endpoints.DocumentOnSA.Search.SearchRequest)">
             <summary>
             Vyhledání dokumentů na základě hlavního hesla (eArchivu)
@@ -1388,31 +1376,6 @@
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData.DocumentDataDto.Table">
             <summary>
             This is not supported yet
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.DocumentOnSAId">
-            <summary>
-            Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.DocumentTypeId">
-            <summary>
-            Typ dokumentu. Číselník DocumentOnSAType.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.FormId">
-            <summary>
-            Businessové modré ID
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.SignatureMethodCode">
-            <summary>
-            Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.SignatureDateTime">
-            <summary>
-            Timestamp, kdy došlo k podpisu celého dokumentu.
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.DocumentOnSAId">
@@ -2167,16 +2130,6 @@
              </remarks>
              <returns>Seznam závazků na produktu</returns>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChange3602Detail.HouseholdId">
-            <summary>
-            ID domacnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChange3602Detail.IsSpouseInDebt">
-            <summary>
-            Přistupující manžel/ka?
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetail.RepaymentAccount">
             <summary>
             Účet pro splácení
@@ -2648,7 +2601,6 @@
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersGeneralChange
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersHUBN
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersCustomerChange
-            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersCustomerChange3602
             )
             </remarks>
         </member>
@@ -2941,11 +2893,6 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChange3602Update.IsSpouseInDebt">
-            <summary>
-            Přistupující manžel/ka?
-            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChangeUpdate.CommentToChangeRequest">
             <summary>
@@ -3568,6 +3515,15 @@
             <remarks>
             Slouží pro vytvoření auth cookie v případe, že aplikace není napojena na CAAS.
             </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetMpssSecurityCookie(System.Threading.CancellationToken)">
+            <summary>
+            Získání obsahu auth cookie pro ePodpisy.
+            </summary>
+            <remarks>
+            Endpoint vrací obsah MPSS.Security cookie, která slouží pro autentizaci ePodpisů na základě údajů získaných z UserService. Cookie je generovaná z projektu MPSS.Security.Noby, což je klon standardní MPSS.Security dll.
+            </remarks>
+            <returns>BASE64 obsah cookie, který se musí předat ePodpis widgetu</returns>
         </member>
         <member name="T:NOBY.Api.Notifications.Handlers.CreateRiskBusinessCaseHandler">
             <summary>
