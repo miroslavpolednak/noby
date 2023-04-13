@@ -27,7 +27,11 @@ internal static class StartupExtensions
         builder.AddExternalService<ExternalServices.Kyc.V1.IKycClient>();
 
         // CodebookService
-        builder.Services.AddCodebookService();
+        builder.Services
+            .AddCodebookService()
+            .AddHouseholdService()
+            .AddSalesArrangementService()
+            .AddCaseService();
 
         builder.AddCisMessaging()
             .AddKafka()
