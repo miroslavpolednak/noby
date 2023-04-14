@@ -13,6 +13,8 @@ internal sealed class CustomerChangeBuilder
         var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         var customerService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.CustomerService.Clients.ICustomerServiceClient>();
 
+        _request.CustomerChange = new __SA.SalesArrangementParametersCustomerChange();
+
         try
         {
             var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
