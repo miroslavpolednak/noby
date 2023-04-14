@@ -14,8 +14,8 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
 
     public CaseStateChanged_ProcessingCompletedConsumer(CaseServiceDbContext dbContext, IDistributedCache distributedCache, ILogger<CaseStateChanged_ProcessingCompletedConsumer> logger)
     {
-        _distributedCache = distributedCache;
         _dbContext = dbContext;
+        _distributedCache = distributedCache;
         _logger = logger;
     }
 
@@ -27,8 +27,8 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RequestNotFoundInCache, context.Message.workflowInputProcessingContext.requestId);
         }
 
-        var entity = _dbContext.Cases
-            .FirstOrDefault(t => t.CaseId == cache.CaseId)
+        var entity = (await _dbContext.Cases
+            .FirstOrDefaultAsync(t => t.CaseId == cache.CaseId, context.CancellationToken))
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, cache.CaseId);
 
         if (context.Message.workflowInputProcessingContext.requestProcessingResult == cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.RequestProcessingResultEnum.OK )
@@ -44,6 +44,6 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
             _logger.StarbuildStateUpdateFailed(cache.CaseId, cache.CaseState);
         }
         
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync(context.CancellationToken);
     }
 }

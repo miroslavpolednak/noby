@@ -13,7 +13,7 @@ internal sealed class MainLoanProcessChangedConsumer
         _dbContext = dbContext;
     }
 
-    public Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.MainLoanProcessChanged> context)
+    public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.MainLoanProcessChanged> context)
     {
         var state = context.Message.state switch
         {
@@ -27,14 +27,12 @@ internal sealed class MainLoanProcessChangedConsumer
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.KafkaMessageIncorrectFormat, context.Message.@case.caseId.id);
         }
 
-        var entity = _dbContext.Cases
-            .FirstOrDefault(t => t.CaseId == caseId)
+        var entity = (await _dbContext.Cases
+            .FirstOrDefaultAsync(t => t.CaseId == caseId, context.CancellationToken))
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, caseId);
 
         entity.State = state;
 
-        _dbContext.SaveChanges();
-
-        return Task.CompletedTask;
+        await _dbContext.SaveChangesAsync(context.CancellationToken);
     }
 }
