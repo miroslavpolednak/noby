@@ -13,17 +13,20 @@ internal sealed class CustomerChangeBuilder
         var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         var customerService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.CustomerService.Clients.ICustomerServiceClient>();
 
-        _request.CustomerChange = new __SA.SalesArrangementParametersCustomerChange();
-
+        _request.CustomerChange = new();
+        
         try
         {
             var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
 
             if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.BankCode))
             {
-                _request.CustomerChange.RepaymentAccount.Prefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;
-                _request.CustomerChange.RepaymentAccount.Number = mortgageInstance.Mortgage.RepaymentAccount.Number;
-                _request.CustomerChange.RepaymentAccount.BankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode;
+                _request.CustomerChange.RepaymentAccount = new()
+                {
+                    Prefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix,
+                    Number = mortgageInstance.Mortgage.RepaymentAccount.Number,
+                    BankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode
+                };
             }
             else
                 _logger.LogInformation("DrawingBuilder: Account is empty");
