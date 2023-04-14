@@ -11,24 +11,28 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyUpdated;
 
 public class PartyUpdatedConsumer : IConsumer<PartyUpdatedV1>
 {
-    private readonly IServiceProvider _serviceProvider;
-    public PartyUpdatedConsumer(IServiceProvider serviceProvider)
+    private readonly ICodebookServiceClients _codebookClient;
+    private readonly ICustomerOnSAServiceClient _customerOnSaClient;
+    private readonly ISalesArrangementServiceClient _salesArrangementClient;
+    private readonly ICaseServiceClient _caseClient;
+    public PartyUpdatedConsumer(
+        ICodebookServiceClients codebookClient,
+        ICustomerOnSAServiceClient customerOnSaClient,
+        ISalesArrangementServiceClient salesArrangementClient,
+        ICaseServiceClient caseClient)
     {
-        _serviceProvider = serviceProvider;
+        _codebookClient = codebookClient;
+        _customerOnSaClient = customerOnSaClient;
+        _salesArrangementClient = salesArrangementClient;
+        _caseClient = caseClient;
     }
     
     public async Task Consume(ConsumeContext<PartyUpdatedV1> context)
     {
         var message = context.Message;
         var party = message.NewParty;
-        
-        using var scope = _serviceProvider.CreateScope();
-        var codebookClient = scope.ServiceProvider.GetRequiredService<ICodebookServiceClients>();
-        var customerOnSaClient = scope.ServiceProvider.GetRequiredService<ICustomerOnSAServiceClient>();
-        var salesArrangementClient = scope.ServiceProvider.GetRequiredService<ISalesArrangementServiceClient>();
-        var caseClient = scope.ServiceProvider.GetRequiredService<ICaseServiceClient>();
 
-        var maritalStatuses = await codebookClient.MaritalStatuses(context.CancellationToken);
+        var maritalStatuses = await _codebookClient.MaritalStatuses(context.CancellationToken);
         var maritalStatusId = maritalStatuses.FirstOrDefault(m => m.RdmMaritalStatusCode == party.NaturalPersonAttributes.MaritalStatusCode)?.Id;
         
         var identity = new Identity
@@ -37,15 +41,15 @@ public class PartyUpdatedConsumer : IConsumer<PartyUpdatedV1>
             IdentityScheme = Identity.Types.IdentitySchemes.Kb
         };
         
-        var customerOnSas = await customerOnSaClient.GetCustomersByIdentity(identity, context.CancellationToken);
+        var customerOnSas = await _customerOnSaClient.GetCustomersByIdentity(identity, context.CancellationToken);
 
         foreach (var customerOnSa in customerOnSas)
         {
             // Update Case
             if (customerOnSa.CustomerRoleId == 1)
             {
-                var salesArrangement = await salesArrangementClient.GetSalesArrangement(customerOnSa.SalesArrangementId, context.CancellationToken);
-                var @case = await caseClient.GetCaseDetail(salesArrangement.CaseId, context.CancellationToken);
+                var salesArrangement = await _salesArrangementClient.GetSalesArrangement(customerOnSa.SalesArrangementId, context.CancellationToken);
+                var @case = await _caseClient.GetCaseDetail(salesArrangement.CaseId, context.CancellationToken);
                 var customerData = new CustomerData
                 {
                     Cin = @case.Customer.Cin,
@@ -54,7 +58,7 @@ public class PartyUpdatedConsumer : IConsumer<PartyUpdatedV1>
                     Name = party.NaturalPersonAttributes.Surname,
                     DateOfBirthNaturalPerson = party.NaturalPersonAttributes.BirthDate.Date
                 };
-                await caseClient.UpdateCustomerData(salesArrangement.CaseId, customerData, context.CancellationToken);
+                await _caseClient.UpdateCustomerData(salesArrangement.CaseId, customerData, context.CancellationToken);
             }
             
             // Update CustomerOnSA
@@ -70,8 +74,7 @@ public class PartyUpdatedConsumer : IConsumer<PartyUpdatedV1>
                 }
             };
             
-            await customerOnSaClient.UpdateCustomer(updateCustomer, context.CancellationToken);
+            await _customerOnSaClient.UpdateCustomer(updateCustomer, context.CancellationToken);
         }
-        
     }
 }
