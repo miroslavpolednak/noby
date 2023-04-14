@@ -6,12 +6,15 @@ namespace CIS.Infrastructure.Messaging.Kafka.Internals;
 
 public sealed class MultipleTypeJsonInfo
 {
-    public MultipleTypeJsonInfo(Type messageType)
+    public MultipleTypeJsonInfo(Type messageType, string payloadId)
     {
         MessageType = messageType ?? throw new ArgumentNullException(nameof(messageType));
+        PayloadId = payloadId ?? throw new ArgumentNullException(nameof(payloadId));
     }
 
     public Type MessageType { get; }
+    
+    public string PayloadId { get; }
 
     public static ISerializerWrapper CreateJsonSerializer(Type messageType, ISchemaRegistryClient schemaRegistryClient,
         JsonSerializerConfig serializerConfig)
