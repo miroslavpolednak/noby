@@ -24,6 +24,6 @@ internal sealed class CustomerChangeValidator
             throw new NobyValidationException(90014);
         }
 
-        return new HUBNBuilder(_logger, _request, _httpContextAccessor);
+        return new CustomerChangeBuilder(_logger, _request, _httpContextAccessor);
     }
 }
