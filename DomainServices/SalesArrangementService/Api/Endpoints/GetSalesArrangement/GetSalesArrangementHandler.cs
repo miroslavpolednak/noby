@@ -42,7 +42,7 @@ internal sealed class GetSalesArrangementHandler
                     model.HUBN = __SA.SalesArrangementParametersHUBN.Parser.ParseFrom(parameters.Bin);
                     break;
                 case SalesArrangementTypes.CustomerChange:
-                    model.HUBN = __SA.SalesArrangementParametersHUBN.Parser.ParseFrom(parameters.Bin);
+                    model.CustomerChange = __SA.SalesArrangementParametersCustomerChange.Parser.ParseFrom(parameters.Bin);
                     break;
                 case SalesArrangementTypes.CustomerChange3602A:
                     model.CustomerChange3602A = __SA.SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(parameters.Bin);
