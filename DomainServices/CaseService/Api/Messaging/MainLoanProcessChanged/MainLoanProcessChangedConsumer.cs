@@ -7,10 +7,12 @@ internal sealed class MainLoanProcessChangedConsumer
     : IConsumer<cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.MainLoanProcessChanged>
 {
     private readonly CaseServiceDbContext _dbContext;
+    private readonly ILogger<MainLoanProcessChangedConsumer> _logger;
 
-    public MainLoanProcessChangedConsumer(CaseServiceDbContext dbContext)
+    public MainLoanProcessChangedConsumer(CaseServiceDbContext dbContext, ILogger<MainLoanProcessChangedConsumer> logger)
     {
         _dbContext = dbContext;
+        _logger = logger;
     }
 
     public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.MainLoanProcessChanged> context)
@@ -24,14 +26,18 @@ internal sealed class MainLoanProcessChangedConsumer
 
         if (long.TryParse(context.Message.@case.caseId.id, out long caseId))
         {
-            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.KafkaMessageIncorrectFormat, context.Message.@case.caseId.id);
+            _logger.KafkaMessageIncorrectFormat(context.Message.@case.caseId.id);
         }
 
-        var entity = (await _dbContext.Cases
-            .FirstOrDefaultAsync(t => t.CaseId == caseId, context.CancellationToken))
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, caseId);
+        var entity = await _dbContext.Cases
+            .FirstOrDefaultAsync(t => t.CaseId == caseId, context.CancellationToken);
 
-        entity.State = state;
+        if (entity is null)
+        {
+            _logger.KafkaCaseIdNotFound(caseId);
+        }
+
+        entity!.State = state;
 
         await _dbContext.SaveChangesAsync(context.CancellationToken);
     }
