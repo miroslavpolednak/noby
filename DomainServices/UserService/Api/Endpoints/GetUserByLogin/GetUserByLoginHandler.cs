@@ -1,4 +1,5 @@
 ﻿using DomainServices.UserService.Contracts;
+using Google.Protobuf;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserByLogin;
 
@@ -34,17 +35,26 @@ internal class GetUserByLoginHandler
         if (model.CPM == "99999943")
             model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.BrokerId));
 
+        if (_distributedCache is not null)
+        {
+            await _distributedCache.SetAsync(Helpers.CreateUserCacheKey(model.Id), model.ToByteArray(), new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTimeOffset.Now.AddHours(1),
+            },
+            cancellation);
+        }
+
         return model;
     }
 
     private readonly Repositories.XxvRepository _repository;
-    private readonly ILogger<GetUserByLoginHandler> _logger;
-    
+    private readonly IDistributedCache? _distributedCache;
+
     public GetUserByLoginHandler(
         Repositories.XxvRepository repository,
-        ILogger<GetUserByLoginHandler> logger)
+        IDistributedCache? distributedCache)
     {
         _repository = repository;
-        _logger = logger;
+        _distributedCache = distributedCache;
     }
 }
