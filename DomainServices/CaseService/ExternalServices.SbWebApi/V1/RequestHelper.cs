@@ -6,6 +6,19 @@ namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
 internal static class RequestHelper
 {
+    public static async Task<int> ProcessResponse(HttpResponseMessage response, CancellationToken cancellationToken, [CallerMemberName] string callerName = "")
+    {
+        if (!response.IsSuccessStatusCode)
+            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+
+        var responseObject = await response.Content.ReadFromJsonAsync<CommonResult>(cancellationToken: cancellationToken);
+
+        if (responseObject is null)
+            throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, callerName, nameof(CommonResult));
+
+        return responseObject.Return_val ?? 0;
+    }
+
     public static async Task<TResponse> ProcessResponse<TResponse>(HttpResponseMessage response,
                                                                    Func<TResponse, CommonResult?> commonResultGetter,
                                                                    CancellationToken cancellationToken,

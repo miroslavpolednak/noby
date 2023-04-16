@@ -42,9 +42,21 @@ internal static class CaseExtensions
 
     public static TaskDetailItem ToTaskDetail(this IReadOnlyDictionary<string, string> taskData)
     {
+        var taskType = taskData.GetInteger("ukol_typ_noby");
+
+        int? orderId = taskType switch
+        {
+            1 when taskData.GetInteger("ukol_dozadani_typ") == 5 => taskData.GetInteger("ukol_dozadani_order_id"),
+            3 when taskData.GetInteger("ukol_konzultace_oblast") is 1 or 7 => taskData.GetInteger("ukol_konzultace_order_id"),
+            _ => null
+        };
+
         return new TaskDetailItem
         {
             ProcessNameLong = taskData["ukol_typ_proces_noby_oznaceni"],
+            SentToCustomer = taskType == 1 ? taskData.GetBoolean("ukol_dozadani_prijemce_typ") : null,
+            OrderId = orderId,
+            TaskDocumentIds = { taskData["wfl_refobj_dokumenty"].Split(',', StringSplitOptions.RemoveEmptyEntries) }
         };
     }
 

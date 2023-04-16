@@ -42,6 +42,23 @@ internal sealed class RealSbWebApiClient : ISbWebApiClient
         };
     }
 
+    public async Task<int> CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default)
+    {
+        var sbRequest = new WFS_Manage_CompleteTask
+        {
+            Task_id = request.TaskIdSb,
+            Metadata = new List<WFS_MetadataItem>
+            {
+                new() { Mtdt_def = "ukol_dozadani_odpoved_oz", Mtdt_val = request.TaskUserResponse ?? string.Empty },
+                new() { Mtdt_def = "wfl_refobj_dokumenty", Mtdt_val = string.Join(",", request.TaskDocumentIds) }
+            }
+        };
+
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/completetask", sbRequest, cancellationToken);
+
+        return await RequestHelper.ProcessResponse(httpResponse, cancellationToken);
+    }
+
     public async Task<FindTasksResponse> FindTasksByCaseId(FindByCaseIdRequest request, CancellationToken cancellationToken = default)
     {
         var easRequest = new WFS_Request_ByCaseId

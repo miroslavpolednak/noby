@@ -24,7 +24,7 @@ internal sealed class CaseService
 
     public Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default)
     {
-        return _service.GompleteTaskAsync(request, cancellationToken: cancellationToken).ResponseAsync;
+        return _service.CompleteTaskAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
 
     public async Task<Case> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken))

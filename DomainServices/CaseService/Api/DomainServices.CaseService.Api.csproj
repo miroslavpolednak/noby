@@ -44,6 +44,7 @@
 	<ItemGroup>
 		<Folder Include="Endpoints\GetTaskDetail\" />
 		<Folder Include="Endpoints\GetProcessList\" />
+		<Folder Include="Endpoints\CompleteTask\" />
 	</ItemGroup>
 
 </Project>

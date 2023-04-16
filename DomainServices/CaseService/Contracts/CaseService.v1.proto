@@ -22,7 +22,7 @@ import "Messages/UpdateOfferContacts.proto";
 import "Messages/NotifyStarbuild.proto";
 
 service CaseService {
-   rpc GompleteTask (CompleteTaskRequest) returns (google.protobuf.Empty);
+   rpc CompleteTask (CompleteTaskRequest) returns (google.protobuf.Empty);
 
    rpc CreateCase (CreateCaseRequest) returns (CreateCaseResponse);
    

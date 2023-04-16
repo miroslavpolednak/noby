@@ -2,6 +2,9 @@
 
 namespace DomainServices.CaseService.Contracts;
 
+public partial class CompleteTaskRequest : MediatR.IRequest
+{ }
+
 public partial class CreateCaseRequest
     : MediatR.IRequest<CreateCaseResponse>, CIS.Core.Validation.IValidatableRequest, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 { }
