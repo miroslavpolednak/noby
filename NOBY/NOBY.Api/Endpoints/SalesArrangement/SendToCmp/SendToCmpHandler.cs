@@ -78,7 +78,17 @@ internal sealed class SendToCmpHandler
         }
 
         // odeslat do SB
-        await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+        try
+        {
+            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+        }
+        catch when (saCategory.SalesArrangementCategory == 1)
+        {
+            //CaseState rollback
+            await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InProgress, cancellationToken);
+
+            throw;
+        }
     }
 
     private async Task ValidateSalesArrangement(int salesArrangementId, bool ignoreWarnings, CancellationToken cancellationToken)
