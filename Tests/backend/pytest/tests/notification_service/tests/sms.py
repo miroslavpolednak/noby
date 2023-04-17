@@ -64,7 +64,7 @@ def test_sms_sb(url_name,  auth_params, auth, json_data):
 
 
 
-#TODO: dořešit bez logovani - vraci to log reálně, i když aplikace seqadmin ne
+#TODO: dořešit assert. je to dle https://wiki.kb.cz/pages/viewpage.action?pageId=507386569 Text auditního logu - to nesmí být v events
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data, expected_results", [
