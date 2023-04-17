@@ -49,7 +49,8 @@ public class HouseholdController : ControllerBase
     /// Smazani domacnosti
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> SalesArrangementService/DeleteHousehold
+    /// Slouží ke smazání domácnosti včetně navázaných customerů.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C97B19D9-A165-409d-B6FF-28029D23D517"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
     /// </remarks>
     /// <param name="householdId">ID domacnosti</param>
     /// <returns>ID smazané domacnosti</returns>
@@ -65,11 +66,10 @@ public class HouseholdController : ControllerBase
     /// Vytvořeni nové domacnosti
     /// </summary>
     /// <remarks>
-    /// Vytvoří nový household zavoláním DS: SalesArrangementService/CreateHousehold a zároveň vytvoří prvního CustomerOnSA s rolí odpovídající vytvářené domácnosti (Spolužadatel na spolužadatelské a ručitel na ručitelské domácnosti) pomocí volání DS: SalesArrangementService/CreateCustomer.<br/>
-    /// Prázdná obálka CustomerOnSA je vytvářena, protože neexistuje businessově prázdná domácnost bez členů domácnosti.
+    /// Vytvoření domácnosti i s CustomerOnSA, aby domácnost nebyla prázdná.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0C28E9E5-7AC1-4265-8342-FCE63B33967F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
     /// </remarks>
-    /// <returns>Nove HouseholdId, typ domacnosti a nazev typu domacnosti</returns>
-    [HttpPost("")]
+    [HttpPost("", Name = "householdCreate")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(Dto.HouseholdInList), StatusCodes.Status200OK)]
@@ -97,7 +97,7 @@ public class HouseholdController : ControllerBase
     /// <remarks>
     /// Založí, smaže nebo updatuje CustomerOnSAId1 a CustomerOnSAId2 podle objektu v requestu Customer1 a Customer2.<br /><br />
     /// Zavoláním lockedIncome = true se zapíše timestamp zamknutí příjmů. Při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp.<br /><br />
-    /// V případě, že se mění Cutomer na daném householdu, dojde k znevalidnění rozběhnutých či skončených podepisovacích proseců (nutno znovu podepsat).<br /><br />
+    /// V případě, že se mění Customer na daném householdu, dojde k znevalidnění rozběhnutých či skončených podepisovacích proseců (nutno znovu podepsat).<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF47934C-D0C7-46da-B13E-C3E648389EFB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="householdId">ID domácnosti</param>

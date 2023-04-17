@@ -31,11 +31,20 @@ internal sealed class CreateHouseholdHandler
         }, cancellationToken);
 
         // vlozit customera na household
-        await _householdService.UpdateHousehold(new _HO.UpdateHouseholdRequest
+        await _householdService.LinkCustomerOnSAToHousehold(householdId, customerResponse.CustomerOnSAId, null, cancellationToken);
+
+        // HFICH-5233
+        if (request.HouseholdTypeId == (int)HouseholdTypes.Codebtor)
         {
-            HouseholdId = householdId,
-            CustomerOnSAId1 = customerResponse.CustomerOnSAId
-        }, cancellationToken);
+            await _salesArrangementService.SetFlowSwitches(request.SalesArrangementId, new()
+            {
+                new()
+                { 
+                    FlowSwitchId = (int)FlowSwitches.Was3602CodebtorChangedAfterSigning, 
+                    Value = true 
+                }
+            }, cancellationToken);
+        }
 
         return new Dto.HouseholdInList
         {
@@ -45,6 +54,7 @@ internal sealed class CreateHouseholdHandler
         };
     }
 
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICodebookServiceClients _codebookService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
@@ -52,10 +62,12 @@ internal sealed class CreateHouseholdHandler
     public CreateHouseholdHandler(
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService,
-        ICodebookServiceClients codebookService)
+        ICodebookServiceClients codebookService,
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _codebookService = codebookService;
         _householdService = householdService;
         _customerOnSAService = customerOnSAService;
+        _salesArrangementService = salesArrangementService;
     }
 }
