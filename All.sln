@@ -299,6 +299,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00004-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_creation.sql = DomainServices\CodebookService\DatabaseMigrations\00004-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_creation.sql
 		DomainServices\CodebookService\DatabaseMigrations\00005-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00005-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_seed.sql
 		DomainServices\CodebookService\DatabaseMigrations\00006-HFICH-5335_CustomerChange3602.sql = DomainServices\CodebookService\DatabaseMigrations\00006-HFICH-5335_CustomerChange3602.sql
+		DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5306_differences_confl_X_migrations.sql = DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5306_differences_confl_X_migrations.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -374,7 +375,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.Messaging", "CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj", "{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSS.Security.Noby", "NOBY\MPSS.Security.Noby\MPSS.Security.Noby.csproj", "{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MPSS.Security.Noby", "NOBY\MPSS.Security.Noby\MPSS.Security.Noby.csproj", "{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
