@@ -53,7 +53,7 @@ internal sealed class SendToCmpHandler
         // check flow switches
         var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
         if (saCategory.SalesArrangementCategory == 1
-            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.FlowSwitch1))
+            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed))
         {
             throw new NobyValidationException(90016);
         }
