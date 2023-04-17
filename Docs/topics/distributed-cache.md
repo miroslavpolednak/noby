@@ -32,7 +32,14 @@ Způsob uložení objektu do cache - enum `ICisDistributedCacheConfiguration.Ser
 Prefix klíče při nastavení Redis provider.
 
 ## Použití Distributed cache v aplikaci
-Cache se používá standardním způsobem, tj. instancí `IDistributedCache` z DI.  
+Cache se používá standardním způsobem, tj. instancí `IDistributedCache` z DI.
+
+```csharp
+private readonly IDistributedCache _distributedCache;
+// ctr
+public MyClass(IDistributedCache distributedCache) => _distributedCache = distributedCache;
+```
+
 Nad tímto interfacem existují pomocné extension metody, které umožňují jednoduché ukládání objektů z a do cache.
 Tyto extension metody jsou:
 

@@ -9,7 +9,7 @@ public static class CisEnvironmentConfiguration
     public static ICisEnvironmentConfiguration AddCisEnvironmentConfiguration(this WebApplicationBuilder builder)
     {
         Configuration.CisEnvironmentConfiguration cisConfiguration = new();
-        builder.Configuration.GetSection(JsonConfigurationKey).Bind(cisConfiguration);
+        builder.Configuration.GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName).Bind(cisConfiguration);
 
         CheckAndRegisterConfiguration(builder, cisConfiguration);
 
@@ -22,7 +22,7 @@ public static class CisEnvironmentConfiguration
     public static ICisEnvironmentConfiguration AddCisEnvironmentConfiguration(this WebApplicationBuilder builder, Action<ICisEnvironmentConfiguration> options)
     {
         var cisConfiguration = new Configuration.CisEnvironmentConfiguration();
-        builder.Configuration.GetSection(JsonConfigurationKey).Bind(cisConfiguration);
+        builder.Configuration.GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName).Bind(cisConfiguration);
 
         options.Invoke(cisConfiguration);
 
@@ -45,6 +45,4 @@ public static class CisEnvironmentConfiguration
 
         builder.Services.TryAddSingleton(cisConfiguration);
     }
-
-    private const string JsonConfigurationKey = "CisEnvironmentConfiguration";
 }

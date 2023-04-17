@@ -1,5 +1,5 @@
-﻿using DomainServices.UserService.Api.Endpoints.GetUserByLogin;
-using DomainServices.UserService.Contracts;
+﻿using DomainServices.UserService.Contracts;
+using Google.Protobuf;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUser;
 
@@ -8,6 +8,17 @@ internal class GetUserHandler
 {
     public async Task<Contracts.User> Handle(GetUserRequest request, CancellationToken cancellation)
     {
+        // zkusit cache
+        string cacheKey = Helpers.CreateUserCacheKey(request.UserId);
+        if (_distributedCache is not null)
+        {
+            var cachedBytes = await _distributedCache.GetAsync(cacheKey, cancellation);
+            if (cachedBytes != null)
+            {
+                return Contracts.User.Parser.ParseFrom(cachedBytes);
+            }
+        }
+
         // vytahnout info o uzivateli z DB
         var userInstance = await _repository.GetUser(request.UserId);
         if (userInstance is null)
@@ -34,17 +45,26 @@ internal class GetUserHandler
         if (model.CPM == "99999943")
             model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.BrokerId));
 
+        if (_distributedCache is not null)
+        {
+            await _distributedCache.SetAsync(cacheKey, model.ToByteArray(), new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTimeOffset.Now.AddHours(1),
+            },
+            cancellation);
+        }
+
         return model;
     }
 
     private readonly Repositories.XxvRepository _repository;
-    private readonly ILogger<GetUserByLoginHandler> _logger;
+    private readonly IDistributedCache? _distributedCache;
 
     public GetUserHandler(
         Repositories.XxvRepository repository,
-        ILogger<GetUserByLoginHandler> logger)
+        IDistributedCache? distributedCache)
     {
         _repository = repository;
-        _logger = logger;
+        _distributedCache = distributedCache;
     }
 }
