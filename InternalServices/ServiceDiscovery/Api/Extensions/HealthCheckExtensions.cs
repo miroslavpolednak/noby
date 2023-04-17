@@ -3,6 +3,7 @@ using Grpc.Core;
 using Grpc.Net.ClientFactory;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net;
 using System.Text.Json;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api;
@@ -41,13 +42,20 @@ internal static class HealthCheckExtensions
     public static WebApplication MapGlobalHealthChecks(this WebApplication app)
     {
         app.MapGet(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, async (
-            [FromServices] GrpcClientFactory grpcClientFactory,
+            [FromServices] GrpcClientFactory? grpcClientFactory,
             CancellationToken cancellationToken) =>
         {
-            var healthCheckResults = await getHealthCheckResults(grpcClientFactory, cancellationToken);
-            var isAllHealthy = healthCheckResults.All(t => t.Status == Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Serving);
+            if (grpcClientFactory is null)
+            {
+                return Results.Text("No services added to HealthCheck endpoint. Add services using AddToGlobalHealthCheck=1 in ServiceDiscovery table.", statusCode: (int)HttpStatusCode.NoContent);
+            }
+            else
+            {
+                var healthCheckResults = await getHealthCheckResults(grpcClientFactory, cancellationToken);
+                var isAllHealthy = healthCheckResults.All(t => t.Status == Grpc.Health.V1.HealthCheckResponse.Types.ServingStatus.Serving);
 
-            return Results.Text(jsonBuilder(healthCheckResults, isAllHealthy), "application/json", isAllHealthy ? 200 : 503);
+                return Results.Text(jsonBuilder(healthCheckResults, isAllHealthy), "application/json", isAllHealthy ? 200 : 503);
+            }
         })
             .WithTags("Monitoring")
             .WithName("Globální HealthCheck endpoint sdružující HC všech služeb v NOBY.")

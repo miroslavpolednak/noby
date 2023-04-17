@@ -92,8 +92,6 @@ INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl],
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'FAT', N'CIS:ServiceDiscovery', N'https://ds-discovery-fat.vsskb.cz:31000', 1)
 GO
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'FAT', N'CIS:Storage', N'https://172.30.35.51:5004', 1)
-GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'FAT', N'DS:CaseService', N'https://ds-discovery-fat.vsskb.cz:31001', 1)
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'FAT', N'DS:CodebookService', N'https://ds-discovery-fat.vsskb.cz:31003', 1)
@@ -175,8 +173,6 @@ GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'SIT1', N'CIS:NotificationService', N'https://172.30.35.51:32016', 2)
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'SIT1', N'CIS:ServiceDiscovery', N'https://172.30.35.51:32000', 1)
-GO
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'SIT1', N'CIS:Storage', N'https://172.30.35.51:5004', 1)
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'SIT1', N'DS:CaseService', N'https://172.30.35.51:32001', 1)
 GO
@@ -260,8 +256,6 @@ INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl],
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'CIS:ServiceDiscovery', N'https://172.30.35.52:33000', 1)
 GO
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'CIS:Storage', N'https://172.30.35.52:5004', 1)
-GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'DS:CaseService', N'https://172.30.35.52:33001', 1)
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'DS:CodebookService', N'https://172.30.35.52:33003', 1)
@@ -343,8 +337,6 @@ GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'PREPROD', N'CIS:NotificationService', N'https://adpra189.vsskb.cz:38016', 2)
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'PREPROD', N'CIS:ServiceDiscovery', N'https://adpra189.vsskb.cz:38000', 1)
-GO
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'PREPROD', N'CIS:Storage', N'https://adpra189.vsskb.cz:5004', 1)
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'PREPROD', N'DS:CaseService', N'https://adpra189.vsskb.cz:38001', 1)
 GO

@@ -17,7 +17,8 @@ internal sealed class UpdateParametersSwagerSchema : ISchemaFilter
             typeof(ParametersDrawing),
             typeof(Dto.HUBNUpdate),
             typeof(Dto.GeneralChangeUpdate),
-            typeof(Dto.CustomerChangeUpdate)
+            typeof(Dto.CustomerChangeUpdate),
+            typeof(Dto.CustomerChange3602Update)
         };
 
         foreach (var type in possibleTypes)
