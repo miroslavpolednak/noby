@@ -23,9 +23,9 @@ internal sealed class CustomerChangeBuilder
             {
                 _request.CustomerChange.RepaymentAccount = new()
                 {
-                    Prefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix,
-                    Number = mortgageInstance.Mortgage.RepaymentAccount.Number,
-                    BankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode
+                    AgreedPrefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix,
+                    AgreedNumber = mortgageInstance.Mortgage.RepaymentAccount.Number,
+                    AgreedBankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode
                 };
             }
             else
