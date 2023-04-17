@@ -117,7 +117,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
             };
             flowSwitchesRequest.FlowSwitches.Add(new Contracts.FlowSwitch
             {
-                FlowSwitchId = (int)FlowSwitches.FlowSwitch1,
+                FlowSwitchId = (int)FlowSwitches.IsOfferGuaranteed,
                 Value = true
             });
             await _mediator.Send(flowSwitchesRequest, cancellation);

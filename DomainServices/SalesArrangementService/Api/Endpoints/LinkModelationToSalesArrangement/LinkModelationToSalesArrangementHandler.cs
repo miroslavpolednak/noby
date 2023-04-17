@@ -80,7 +80,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
             };
             flowSwitchesRequest.FlowSwitches.Add(new __SA.FlowSwitch
             {
-                FlowSwitchId = (int)FlowSwitches.FlowSwitch1,
+                FlowSwitchId = (int)FlowSwitches.IsOfferGuaranteed,
                 Value = true
             });
             await _mediator.Send(flowSwitchesRequest, cancellation);

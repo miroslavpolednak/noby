@@ -144,24 +144,34 @@
             Role klienta v obchodu
             </summary>
         </member>
-        <member name="F:CIS.Foms.Enums.FlowSwitches.FlowSwitch1">
+        <member name="F:CIS.Foms.Enums.FlowSwitches.IsOfferGuaranteed">
             <summary>
             Nabídka s platnou garancí
             </summary>
         </member>
-        <member name="F:CIS.Foms.Enums.FlowSwitches.FlowSwitch2">
+        <member name="F:CIS.Foms.Enums.FlowSwitches.CustomerIdentifiedOnMainHousehold">
             <summary>
-            Požadavek na IC
+            Identifikovaní klienti na hlavní domácnosti
             </summary>
         </member>
-        <member name="F:CIS.Foms.Enums.FlowSwitches.FlowSwitch3">
+        <member name="F:CIS.Foms.Enums.FlowSwitches.CustomerIdentifiedOnCodebtorHousehold">
             <summary>
-            Alespoň jeden příjem na hlavní domácnosti
+            Identifikovaní klienti na spolužadatelské domácnosti
             </summary>
         </member>
-        <member name="F:CIS.Foms.Enums.FlowSwitches.FlowSwitch4">
+        <member name="F:CIS.Foms.Enums.FlowSwitches.Was3601MainChangedAfterSigning">
             <summary>
-            Alespoň jeden příjem na spoludlužnícké domácnosti
+            3601 pro hlavní domácnost byla změněna po podpisu
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.Was3602CodebtorChangedAfterSigning">
+            <summary>
+            3602 pro spoludlužnickou domácnost byla změněna po podpisu
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.ParametersSavedAtLeastOnce">
+            <summary>
+            Došlo k uložení parametrů na žádosti
             </summary>
         </member>
     </members>
