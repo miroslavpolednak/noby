@@ -39,9 +39,23 @@ internal sealed class UpdateCustomersHandler
             {
                 case (int)HouseholdTypes.Main:
                     flowSwitchesToSet.Add(new() { FlowSwitchId = (int)FlowSwitches.Was3601MainChangedAfterSigning, Value = true });
+
+                    // HFICH-5396
+                    flowSwitchesToSet.Add(new() 
+                    { 
+                        FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnMainHousehold, 
+                        Value = c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false
+                    });
                     break;
                 case (int)HouseholdTypes.Codebtor:
                     flowSwitchesToSet.Add(new() { FlowSwitchId = (int)FlowSwitches.Was3602CodebtorChangedAfterSigning, Value = true });
+
+                    // HFICH-5396
+                    flowSwitchesToSet.Add(new()
+                    {
+                        FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnCodebtorHousehold,
+                        Value = c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false
+                    });
                     break;
                 default:
                     throw new NobyValidationException("Unsupported HouseholdType");
