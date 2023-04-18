@@ -32,7 +32,7 @@ internal class LoanApplicationBaseTemplateData : AggregatedData
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
         configurator.Countries().DegreesBefore().LoanKinds().LoanPurposes().ProductTypes()
-                    .PropertySettlements().IdentificationDocumentTypes().MaritalStatuses();
+                    .PropertySettlements().IdentificationDocumentTypes().MaritalStatuses().EducationLevels();
     }
 
     private string GetProductTypeName() =>

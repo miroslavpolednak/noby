@@ -87,7 +87,7 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
     {
         base.ConfigureCodebooks(configurator);
 
-        configurator.DrawingTypes().DrawingDurations().EducationLevels().SignatureTypes().RealEstateTypes().PurchaseTypes();
+        configurator.DrawingTypes().DrawingDurations().SignatureTypes().RealEstateTypes().PurchaseTypes();
     }
 
     private string GetDrawingType() =>
