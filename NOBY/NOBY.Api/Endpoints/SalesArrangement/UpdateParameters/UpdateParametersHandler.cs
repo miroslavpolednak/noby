@@ -78,9 +78,13 @@ internal sealed class UpdateParametersHandler
         await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken);
 
         // nastavit flowSwitch ParametersSavedAtLeastOnce
-        await _salesArrangementService.SetFlowSwitches(request.SalesArrangementId, new List<_SA.FlowSwitch>
+        await _salesArrangementService.SetFlowSwitches(request.SalesArrangementId, new()
         {
-            new _SA.FlowSwitch { FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce, Value = true }
+            new() 
+            { 
+                FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce, 
+                Value = true 
+            }
         }, cancellationToken);
     }
 
