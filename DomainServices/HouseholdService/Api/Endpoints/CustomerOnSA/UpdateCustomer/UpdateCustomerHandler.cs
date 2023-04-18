@@ -46,30 +46,21 @@ internal sealed class UpdateCustomerHandler
         // uz ma KB identitu, ale jeste nema MP identitu
         if (!entity.Identities.Any(t => t.IdentityScheme == IdentitySchemes.Mp) && kbIdentity is not null)
         {
-            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, kbIdentity.IdentityScheme, cancellationToken);
-
             // zavolat EAS
             await _updateService.TryCreateMpIdentity(entity, cancellationToken);
         }
-        // nove byl customer identifikovan KB identitou
-        else if (!alreadyKbUpdatedCustomer && kbIdentity is not null)
-        {
-            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, IdentitySchemes.Kb, cancellationToken);
-        }
-        // customer zije zatim jen v NOBY, mohu updatovat maritalState
-        else if (!alreadyKbUpdatedCustomer)
-        {
-            entity.MaritalStatusId = request.Customer.MaritalStatusId;
-        }
 
         // update CustomerOnSA
+        entity.DateOfBirthNaturalPerson = request.Customer.DateOfBirthNaturalPerson;
+        entity.FirstNameNaturalPerson = request.Customer.FirstNameNaturalPerson ?? "";
+        entity.Name = request.Customer.Name ?? "";
+        entity.MaritalStatusId = request.Customer.MaritalStatusId;
         entity.LockedIncomeDateTime = request.Customer.LockedIncomeDateTime;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // response instance
         var model = new UpdateCustomerResponse();
-
         model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new CIS.Infrastructure.gRPC.CisTypes.Identity
         {
             IdentityScheme = (CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes)(int)t.IdentityScheme,

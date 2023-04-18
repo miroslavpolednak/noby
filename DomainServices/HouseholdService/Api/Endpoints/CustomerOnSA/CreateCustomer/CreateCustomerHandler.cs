@@ -1,6 +1,8 @@
-﻿using DomainServices.HouseholdService.Api.Database.Entities;
+﻿using DomainServices.CustomerService.Clients;
+using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
 using Google.Protobuf;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
@@ -27,42 +29,30 @@ internal sealed class CreateCustomerHandler
             Identities = request.Customer?.CustomerIdentifiers?.Select(t => new CustomerOnSAIdentity(t)).ToList()
         };
 
-        bool containsKbIdentity = request
+        var kbIdentity = request
             .Customer?
             .CustomerIdentifiers?
-            .Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false;
+            .FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
 
         bool containsMpIdentity = request
             .Customer?
             .CustomerIdentifiers?
             .Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp) ?? false;
 
-        // provolat sulm
-        if (containsKbIdentity)
+        // kontrola zda customer existuje v CM
+        if (kbIdentity is not null)
         {
-            var kbIdentityId = request
-                .Customer!
-                .CustomerIdentifiers
-                .First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
-                .IdentityId;
+            await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
-            await _sulmClient.StartUse(kbIdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
-        }
+            // provolat sulm
+            await _sulmClient.StartUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
 
-        // uz ma KB identitu, ale jeste nema MP identitu
-        if (containsKbIdentity && !containsMpIdentity)
-        {
-            var identity = entity.Identities!.First(t => t.IdentityScheme == IdentitySchemes.Kb);
-            await _updateService.GetCustomerAndUpdateEntity(entity, identity.IdentityId, identity.IdentityScheme, cancellationToken);
-
-            // zavolat EAS
-            await _updateService.TryCreateMpIdentity(entity, cancellationToken);
-        }
-        // nove byl customer identifikovan KB identitou
-        else if (containsKbIdentity)
-        {
-            var kbIdentityId = entity.Identities!.First(t => t.IdentityScheme == IdentitySchemes.Kb).IdentityId;
-            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentityId, IdentitySchemes.Kb, cancellationToken);
+            // uz ma KB identitu, ale jeste nema MP identitu
+            if (!containsMpIdentity)
+            {
+                // zavolat EAS
+                await _updateService.TryCreateMpIdentity(entity, cancellationToken);
+            }
         }
 
         // additional data - set defaults
@@ -103,18 +93,21 @@ internal sealed class CreateCustomerHandler
     }
 
     private readonly SulmService.ISulmClientHelper _sulmClient;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ICustomerServiceClient _customerService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly UpdateCustomerService _updateService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateCustomerHandler> _logger;
 
     public CreateCustomerHandler(
-        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
+        ICustomerServiceClient customerService,
+        ISalesArrangementServiceClient salesArrangementService,
         SulmService.ISulmClientHelper sulmClient,
         UpdateCustomerService updateService,
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateCustomerHandler> logger)
     {
+        _customerService = customerService;
         _salesArrangementService = salesArrangementService;
         _sulmClient = sulmClient;
         _updateService = updateService;
