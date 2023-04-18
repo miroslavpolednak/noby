@@ -50,4 +50,4 @@ INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'UcelPorizeni', 'B')
 INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'UcelPorizeni', 'C')
 INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'UcelPorizeni', 'D')
 
-UPDATE DataField
+UPDATE DataField SET DefaultStringFormat = '{0:CustomCurrency}' WHERE DataFieldId = 87
