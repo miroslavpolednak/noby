@@ -2928,7 +2928,8 @@
             Update dat SalesArrangement-u
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
+            Aktualizuje parametry SalesArrangementu. Aktualizovat lze pouze produktovou žádost. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=18E19FC4-9238-4249-B43E-A26A9FBBC32C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.SendToCmp(System.Int32,System.Boolean)">
