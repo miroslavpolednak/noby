@@ -54,7 +54,7 @@ internal sealed class FormsDocumentService
     public async Task<DocumentInterface[]> PrepareEntities(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, IReadOnlyCollection<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
     {
         var formsWithDataSentenses = createdFinalVersionOfDocOnSa.OrderBy(r => r.DocumentOnSa.EArchivId)
-                 .Zip(easFormResponse.Forms.OrderBy(r => r.DynamicFormValues.DocumentTypeId),
+                 .Zip(easFormResponse.Forms.OrderBy(r => r.DynamicFormValues.DocumentId),
                  (docOnSa, form) => new { docOnSa, form });
 
         // load user
