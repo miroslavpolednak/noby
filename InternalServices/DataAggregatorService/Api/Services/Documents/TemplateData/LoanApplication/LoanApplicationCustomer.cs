@@ -74,8 +74,8 @@ internal class LoanApplicationCustomer
 
     private string GetContacts()
     {
-        var email = _customer.Contacts.FirstOrDefault(c => c.ContactTypeId == 1);
-        var phone = _customer.Contacts.FirstOrDefault(c => c.ContactTypeId == 5);
+        var email = _customer.Contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email);
+        var phone = _customer.Contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil);
 
         if (email is not null && phone is not null)
             return $"telefon: {phone.Mobile?.PhoneIDC}{phone.Mobile?.PhoneNumber} | e-mail: {email.Email?.EmailAddress}";
