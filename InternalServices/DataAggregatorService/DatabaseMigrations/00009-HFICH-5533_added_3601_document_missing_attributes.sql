@@ -49,3 +49,5 @@ INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'UcelPorizeni', 'A')
 INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'UcelPorizeni', 'B')
 INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'UcelPorizeni', 'C')
 INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'UcelPorizeni', 'D')
+
+UPDATE DataField
