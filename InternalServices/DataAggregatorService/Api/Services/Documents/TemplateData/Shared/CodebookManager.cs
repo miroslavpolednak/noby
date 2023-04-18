@@ -46,6 +46,10 @@ public class CodebookManager : ICodebookManagerConfigurator
 
     public List<Codebook.DocumentTypes.DocumentTypeItem> DocumentTypes { get; private set; } = null!;
 
+    public List<Codebook.EducationLevels.EducationLevelItem> EducationLevels { get; private set; } = null!;
+
+    public List<Codebook.SignatureTypes.SignatureTypeItem> SignatureTypes { get; private set; } = null!;
+
     public Task Load(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
         return Task.WhenAll(_codebooksToLoad.Select(call => call(codebookService, cancellationToken)));
@@ -180,6 +184,20 @@ public class CodebookManager : ICodebookManagerConfigurator
     ICodebookManagerConfigurator ICodebookManagerConfigurator.DocumentTypes()
     {
         _codebooksToLoad.Add(async (service, ct) => DocumentTypes = await service.DocumentTypes(ct));
+
+        return this;
+    }
+
+    ICodebookManagerConfigurator ICodebookManagerConfigurator.EducationLevels()
+    {
+        _codebooksToLoad.Add(async (service, ct) => EducationLevels = await service.EducationLevels(ct));
+
+        return this;
+    }
+
+    ICodebookManagerConfigurator ICodebookManagerConfigurator.SignatureTypes()
+    {
+        _codebooksToLoad.Add(async (service, ct) => SignatureTypes = await service.SignatureTypes(ct));
 
         return this;
     }
