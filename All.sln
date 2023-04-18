@@ -271,6 +271,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00004-validation_ignore_formid_list.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00004-validation_ignore_formid_list.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00005-HFICH-5270_ignore_businessid.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00005-HFICH-5270_ignore_businessid.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00006-json_ignore_max_date_error.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00006-json_ignore_max_date_error.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
