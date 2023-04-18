@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
@@ -75,6 +76,16 @@ internal sealed class UpdateParametersHandler
         }
 
         await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken);
+
+        // nastavit flowSwitch ParametersSavedAtLeastOnce
+        await _salesArrangementService.SetFlowSwitches(request.SalesArrangementId, new()
+        {
+            new() 
+            { 
+                FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce, 
+                Value = true 
+            }
+        }, cancellationToken);
     }
 
     static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions

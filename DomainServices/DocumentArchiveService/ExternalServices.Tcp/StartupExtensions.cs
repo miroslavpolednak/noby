@@ -7,6 +7,7 @@ using DomainServices.DocumentArchiveService.ExternalServices.Tcp.Data;
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1;
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Clients;
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Repositories;
+using Google.Rpc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,7 +60,7 @@ public static class StartupExtensions
 
     private static string GetSectionName(string version)
     {
-        return $"{Constants.ExternalServicesConfigurationSectionName}:{ServiceName}:{version}";
+        return $"{CIS.Core.CisGlobalConstants.ExternalServicesConfigurationSectionName}:{ServiceName}:{version}";
     }
 
     private static void ValidateConfiguration(TcpConfiguration? configuration, string version)
