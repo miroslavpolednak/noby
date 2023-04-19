@@ -1,5 +1,4 @@
 ﻿using DomainServices.CaseService.Clients;
-using DomainServices.CaseService.Contracts.v1;
 using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;
@@ -15,8 +14,6 @@ internal sealed class CreateCustomerHandler
 {
     public async Task<CreateCustomerResponse> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
-        var model = new CreateCustomerResponse();
-
         // check existing SalesArrangementId
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
@@ -79,17 +76,18 @@ internal sealed class CreateCustomerHandler
         // ulozit do DB
         _dbContext.Customers.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
+        _logger.EntityCreated(nameof(Database.Entities.CustomerOnSA), entity.CustomerOnSAId);
 
         // update case detailu
         if (kbIdentity is not null && entity.CustomerRoleId == CustomerRoles.Debtor)
         {
-            await updateCase(salesArrangement.CaseId, entity, cancellationToken);
+            await updateCase(salesArrangement.CaseId, entity, kbIdentity, cancellationToken);
         }
 
-        model.CustomerOnSAId = entity.CustomerOnSAId;
-
-        _logger.EntityCreated(nameof(Database.Entities.CustomerOnSA), entity.CustomerOnSAId);
-
+        var model = new CreateCustomerResponse
+        {
+            CustomerOnSAId = entity.CustomerOnSAId
+        };
         if (entity.Identities is not null)
         {
             model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new CIS.Infrastructure.gRPC.CisTypes.Identity
@@ -102,7 +100,7 @@ internal sealed class CreateCustomerHandler
         return model;
     }
 
-    private async Task updateCase(long caseId, Database.Entities.CustomerOnSA entity, CancellationToken cancellationToken)
+    private async Task updateCase(long caseId, Database.Entities.CustomerOnSA entity, CIS.Infrastructure.gRPC.CisTypes.Identity identity, CancellationToken cancellationToken)
     {
         // update case service
         await _caseService.UpdateCustomerData(caseId, new CaseService.Contracts.CustomerData
@@ -110,7 +108,7 @@ internal sealed class CreateCustomerHandler
             DateOfBirthNaturalPerson = entity.DateOfBirthNaturalPerson,
             FirstNameNaturalPerson = entity.FirstNameNaturalPerson,
             Name = entity.Name,
-            Identity = new CIS.Infrastructure.gRPC.CisTypes.Identity(entity.Identities![0].IdentityId, entity.Identities[0].IdentityScheme)
+            Identity = identity
         }, cancellationToken);
     }
 
