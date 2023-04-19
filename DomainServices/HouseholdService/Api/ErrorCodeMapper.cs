@@ -6,6 +6,7 @@ internal sealed class ErrorCodeMapper
     : ErrorCodeMapperBase
 {
     public const int SalesArrangementIdIsEmpty =        16010;
+    public const int IdentityAlreadyExistOnCustomer =   16011;
     public const int CustomerNotOnSA =                  16019;
     public const int CustomerOnSANotFound =             16020;
     public const int CustomerRoleNotFound =             16021;
@@ -37,6 +38,7 @@ internal sealed class ErrorCodeMapper
     {
         SetMessages(new Dictionary<int, string>()
         {
+            { IdentityAlreadyExistOnCustomer, "Some of request identities already exists on CustomerOnSA with different ID" },
             { CustomerOnSAIdIsEmpty, "CustomerOnSAId must be > 0" },
             { IncomeTypeIdIsEmpty , "IncomeTypeId must be > 0" },
             { EmployementCinBirthNo , "Only one of values can be set [Employement.Employer.Cin, Employement.Employer.BirthNumber]" },

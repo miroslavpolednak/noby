@@ -1,5 +1,4 @@
 ﻿using ExternalServices.AddressWhisperer;
-using System.Text.Json.Serialization;
 using NOBY.Infrastructure.Security;
 using ExternalServices.AddressWhisperer.V1;
 using NOBY.Infrastructure.ErrorHandling.Internals;

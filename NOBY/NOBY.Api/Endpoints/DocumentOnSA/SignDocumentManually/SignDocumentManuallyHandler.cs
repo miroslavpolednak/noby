@@ -182,7 +182,6 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
             CityDistrict = address.CityDistrict ?? string.Empty,
             PragueDistrict = address.PragueDistrict ?? string.Empty,
             CountrySubdivision = address.CountrySubdivision ?? string.Empty,
-            PrimaryAddressFrom = address.PrimaryAddressFrom,
             AddressPointId = address.AddressPointId ?? string.Empty
         });
     }

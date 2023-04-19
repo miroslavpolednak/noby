@@ -205,16 +205,6 @@
             Vloží do kontextu logovaného záznamu klíče Payload a Headers s odpovídajícími objekty. Pokud např. response payload neobsahuje, není tento klíč do kontextu logovaného záznamu vložen.
             </remarks>
         </member>
-        <member name="F:CIS.Infrastructure.ExternalServicesHelpers.Constants.ExternalServicesConfigurationSectionName">
-            <summary>
-            Name of section in appsettings.json which holds configuration settings for external services.
-            </summary>
-        </member>
-        <member name="F:CIS.Infrastructure.ExternalServicesHelpers.Constants.ExternalServicesServiceDiscoveryKeyPrefix">
-            <summary>
-            Prefix for service's Key in ServiceDiscovery database.
-            </summary>
-        </member>
         <member name="M:CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfiguration``1(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,System.String)">
             <summary>
             Načtení konfigurace externí služby a její vložení do DI.

@@ -34,6 +34,9 @@ builder.AddCisServiceAuthentication();
 // add services
 builder.Services.AddCisServiceDiscovery();
 
+// add distributed cache
+builder.AddCisDistributedCache();
+
 builder.AddUserService();
 
 builder.Services

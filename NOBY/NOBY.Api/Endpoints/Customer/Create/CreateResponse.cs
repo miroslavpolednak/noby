@@ -9,6 +9,11 @@ public sealed class CreateResponse
     /// </summary>
     public bool IsInputDataDifferent { get; set; }
 
+    /// <summary>
+    /// Klient byl při založení ztotožněn v základních registrech
+    /// </summary>
+    public bool IsVerified { get; set; }
+
     public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
 
     public NaturalPersonModel? NaturalPerson { get; set; }

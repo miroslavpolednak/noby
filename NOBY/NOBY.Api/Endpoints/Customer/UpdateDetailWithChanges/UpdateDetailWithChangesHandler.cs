@@ -111,7 +111,6 @@ internal sealed class UpdateDetailWithChangesHandler
         additionalData.HasRelationshipWithKBEmployee = request.HasRelationshipWithKBEmployee.GetValueOrDefault();
         additionalData.IsUSPerson = request.IsUSPerson.GetValueOrDefault();
         additionalData.IsPoliticallyExposed = request.IsUSPerson.GetValueOrDefault();
-        additionalData.IsAddressWhispererUsed = request.IsAddressWhispererUsed.GetValueOrDefault();
 
         return additionalData;
     }
