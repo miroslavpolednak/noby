@@ -62,7 +62,7 @@ public class SaveDocumentToArchiveHandler
             if (!string.IsNullOrWhiteSpace(docInfo.FormId))
                 eArchiveIdFromDocumentOnSa = await ValidateFormId(request.CaseId, docInfo, cancellationToken);
 
-            var filePath = _tempFileManager.ComposeFilePath(docInfo.Guid!.Value.ToString());
+            var filePath = _tempFileManager.ComposeFilePath(docInfo.DocumentInformation.Guid!.Value.ToString());
             _tempFileManager.CheckIfDocumentExist(filePath);
             filePaths.Add(filePath);
 
@@ -113,7 +113,7 @@ public class SaveDocumentToArchiveHandler
             var response = await _mediator.Send(new _DocOnSa.SearchRequest
             {
                 SalesArrangementId = salesArrangement.SalesArrangementId,
-                EACodeMainId = docInfo.EaCodeMainId
+                EACodeMainId = docInfo.DocumentInformation.EaCodeMainId
             }, cancellationToken);
 
             var findResult = response.FormIds.FirstOrDefault(f => f.FormId == docInfo.FormId);
@@ -139,11 +139,11 @@ public class SaveDocumentToArchiveHandler
             {
                 CaseId = caseId,
                 DocumentId = documentId,
-                EaCodeMainId = documentInformation.EaCodeMainId,
-                Filename = documentInformation.FileName,
+                EaCodeMainId = documentInformation.DocumentInformation.EaCodeMainId,
+                Filename = documentInformation.DocumentInformation.FileName,
                 AuthorUserLogin = user.CPM ?? user.Id.ToString(CultureInfo.InvariantCulture),
                 CreatedOn = _dateTime.Now.Date,
-                Description = documentInformation.Description ?? string.Empty,
+                Description = documentInformation.DocumentInformation.Description ?? string.Empty,
                 FormId = documentInformation.FormId ?? string.Empty,
                 ContractNumber = await GetContractNumber(caseId, cancellationToken)
             }

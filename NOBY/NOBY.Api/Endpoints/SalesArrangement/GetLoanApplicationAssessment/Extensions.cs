@@ -140,7 +140,7 @@ internal static class Extensions
                             {
                                 Amount = iil.Sum is not null ? (decimal)iil.Sum! : default(decimal),
                             },
-                            ProofTypeId = 1, // Default = 1 (PVP - Potvrzení o příjmu), ProofType(CIS_TYP_POTVRDENIE_PRIJMU)
+                            ProofTypeId = 6,
                             IncomeForeignTypeId = i.Employement?.ForeignIncomeTypeId,
                             GrossAnnualIncome = i.Employement?.Job?.GrossAnnualIncome,
                             ConfirmationPerson = i.Employement?.IncomeConfirmation?.ConfirmationPerson,

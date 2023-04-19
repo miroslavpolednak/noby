@@ -290,7 +290,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{575507BC-3755-40BB-AC02-E7B8823C6F90}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql
-		DomainServices\CaseService\DatabaseMigrations\00002-HFICH-4757.sql = DomainServices\CaseService\DatabaseMigrations\00002-HFICH-4757.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
@@ -302,6 +301,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00005-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00005-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_seed.sql
 		DomainServices\CodebookService\DatabaseMigrations\00006-HFICH-5335_CustomerChange3602.sql = DomainServices\CodebookService\DatabaseMigrations\00006-HFICH-5335_CustomerChange3602.sql
 		DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5306_differences_confl_X_migrations.sql = DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5306_differences_confl_X_migrations.sql
+		DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5459.sql = DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5459.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"

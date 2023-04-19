@@ -90,7 +90,6 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.TinNoFillReasonsByCountry(ct));
         AddCodebook((s, ct) => s.RealEstateTypes(ct), c => c.Cast<Codebook.RealEstateTypes.RealEstateTypeItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.RealEstatePurchaseTypes(ct));
-        AddCodebook((s, ct) => s.WorkflowProcessStatesNoby(ct));
         AddCodebook((s, ct) => s.WorkflowTaskStatesNoby(ct));
         AddCodebook((s, ct) => s.WorkflowTaskCategories(ct));
         AddCodebook((s, ct) => s.WorkflowTaskStates(ct));
