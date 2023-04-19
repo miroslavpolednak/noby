@@ -12,10 +12,12 @@ internal sealed class CreateHandler
     {
         // vytvorit customera v CM
         long kbId;
+        bool isVerified = false;
         try
         {
             var createResult = await _customerService.CreateCustomer(request.ToDomainService(Mandants.Kb), cancellationToken);
             kbId = createResult.CreatedCustomerIdentity.IdentityId;
+            isVerified = !request.HardCreate;
         }
         // V případě, že existoval jeden klient
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11023")
@@ -61,7 +63,7 @@ internal sealed class CreateHandler
 
         // vytvorit response z API
         var model = customerKb
-            .ToResponseDto()
+            .ToResponseDto(isVerified)
             .InputDataComparison(request);
 
         // pokud je vse OK, zalozit customera v konsDb

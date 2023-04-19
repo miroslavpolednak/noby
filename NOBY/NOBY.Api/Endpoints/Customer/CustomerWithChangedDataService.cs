@@ -71,7 +71,6 @@ internal sealed class CustomerWithChangedDataService
         newCustomer.HasRelationshipWithKB = customerOnSA.CustomerAdditionalData?.HasRelationshipWithKB;
         newCustomer.HasRelationshipWithKBEmployee = customerOnSA.CustomerAdditionalData?.HasRelationshipWithKBEmployee;
         newCustomer.IsUSPerson = customerOnSA.CustomerAdditionalData?.IsUSPerson;
-        newCustomer.IsAddressWhispererUsed = customerOnSA.CustomerAdditionalData?.IsAddressWhispererUsed;
         newCustomer.IsPoliticallyExposed = customerOnSA.CustomerAdditionalData?.IsPoliticallyExposed;
 
         newCustomer.NaturalPerson = person;

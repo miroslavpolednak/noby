@@ -922,6 +922,11 @@
             Vstupní data se liší od dat z KB CM
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Create.CreateResponse.IsVerified">
+            <summary>
+            Klient byl při založení ztotožněn v základních registrech
+            </summary>
+        </member>
         <member name="T:NOBY.Api.Endpoints.Customer.Create.Dto.Address">
             <summary>
             Adresa - bydliste, kontaktni atd.
@@ -1192,11 +1197,6 @@
         <member name="P:NOBY.Api.Endpoints.Customer.Shared.BaseCustomerDetail.IsBrSubscribed">
             <summary>
             Přihlášen k aktualizaci dat ze základních registrů
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Shared.BaseCustomerDetail.IsAddressWhispererUsed">
-            <summary>
-            Příznak podle kterého zobrazujeme na FE výsledek z našeptávače
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Shared.BaseCustomerDetail.HasRelationshipWithKB">

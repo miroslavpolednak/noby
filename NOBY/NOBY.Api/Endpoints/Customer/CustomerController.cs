@@ -14,7 +14,7 @@ public class CustomerController : ControllerBase
     /// Na výstupu je Customer objekt s kompletními daty z KB CM.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("customer")]
+    [HttpPost("customer", Name = "customerCreate")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]

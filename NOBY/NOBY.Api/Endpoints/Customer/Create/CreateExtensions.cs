@@ -56,7 +56,6 @@ internal static class CreateExtensions
             CityDistrict = address.CityDistrict ?? "",
             PragueDistrict = address.PragueDistrict ?? "",
             CountrySubdivision = address.CountrySubdivision ?? "",
-            PrimaryAddressFrom = address.PrimaryAddressFrom,
             AddressPointId = address.AddressPointId ?? ""
         };
     }
@@ -82,7 +81,7 @@ internal static class CreateExtensions
         return model;
     }
 
-    public static CreateResponse ToResponseDto(this _Cust.CustomerDetailResponse customer)
+    public static CreateResponse ToResponseDto(this _Cust.CustomerDetailResponse customer, bool isVerified)
     {
         GetDetail.Dto.NaturalPersonModel person = new();
         customer.NaturalPerson?.FillResponseDto(person);
@@ -92,6 +91,7 @@ internal static class CreateExtensions
         {
             NaturalPerson = person,
             JuridicalPerson = null,
+            IsVerified = isVerified,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList(),
             IsInputDataDifferent = true,
