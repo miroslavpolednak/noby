@@ -42,7 +42,16 @@ internal sealed class GetSalesArrangementHandler
                     model.HUBN = __SA.SalesArrangementParametersHUBN.Parser.ParseFrom(parameters.Bin);
                     break;
                 case SalesArrangementTypes.CustomerChange:
-                    model.HUBN = __SA.SalesArrangementParametersHUBN.Parser.ParseFrom(parameters.Bin);
+                    model.CustomerChange = __SA.SalesArrangementParametersCustomerChange.Parser.ParseFrom(parameters.Bin);
+                    break;
+                case SalesArrangementTypes.CustomerChange3602A:
+                    model.CustomerChange3602A = __SA.SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(parameters.Bin);
+                    break;
+                case SalesArrangementTypes.CustomerChange3602B:
+                    model.CustomerChange3602B = __SA.SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(parameters.Bin);
+                    break;
+                case SalesArrangementTypes.CustomerChange3602C:
+                    model.CustomerChange3602C = __SA.SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(parameters.Bin);
                     break;
                 default:
                     throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, parameters.ParameterType);

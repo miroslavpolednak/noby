@@ -81,7 +81,7 @@ public class WebApplicationFactoryFixture<TStartup> : WebApplicationFactory<TSta
             if (CisWebFactoryConfiguration.UseMockCisEnvironmentConfiguration)
             {
                 var config = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-                var cisEnvConfiguration = config.GetSection(CIS.Infrastructure.StartupExtensions.CisEnvironmentConfiguration.JsonConfigurationKey)
+                var cisEnvConfiguration = config.GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName)
                               .Get<CisEnvironmentConfiguration>();
 
                 services.RemoveAll<ICisEnvironmentConfiguration>().AddSingleton<ICisEnvironmentConfiguration>(cisEnvConfiguration!);

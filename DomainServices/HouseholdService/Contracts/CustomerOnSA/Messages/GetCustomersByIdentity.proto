@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+import "Identity.proto";
+import "Messages/CustomerOnSA.proto";
+
+message GetCustomersByIdentityRequest {
+    cis.types.Identity CustomerIdentifier = 1;
+}
+
+message GetCustomersByIdentityResponse {
+    repeated DomainServices.HouseholdService.CustomerOnSA Customers = 1;
+}

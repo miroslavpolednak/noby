@@ -14,101 +14,101 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1
 	using global::Avro.Specific;
 	
 	/// <summary>
-	/// Schema belongs to API ProcessEvents.v1. Root type description: Process represents of one process instance. Process is a group of related activities that fulfills goal and delivers clearly specified value to a customer (process output).. ## General entity for any event. CDM entity name(s): Process,Event.
+	/// Process represents of one process instance. Process is a group of related activities that fulfills goal and delivers clearly specified value to a customer (process output).. ## General entity for any event. CDM entity name(s): Process,Event.
 	/// </summary>
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class MainLoanProcessChanged : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"MainLoanProcessChanged\",\"doc\":\"Schema belongs to API Pro" +
-				"cessEvents.v1. Root type description: Process represents of one process instance" +
-				". Process is a group of related activities that fulfills goal and delivers clear" +
-				"ly specified value to a customer (process output).. ## General entity for any ev" +
-				"ent. CDM entity name(s): Process,Event.\",\"namespace\":\"cz.mpss.api.starbuild.mort" +
-				"gage.workflow.processevents.v1\",\"fields\":[{\"name\":\"case\",\"type\":{\"type\":\"record\"" +
-				",\"name\":\"Case\",\"doc\":\"Obchodni pripadCase is group of activities or record about" +
-				" them that is from business perspective perceived as of enough importance to be " +
-				"recorded, monitored a informed about.Can be any bank\'s agenda.E.g. fufilling cli" +
-				"ent\'s request, sale of one productExamples:- consumer loan origination- loan dra" +
-				"wing- administrative action on the product- recovery- complaint handlingCase has" +
-				" some attributes, that are common for any case category and are mandatory. Addit" +
-				"ionally, specific case categories can have additional data.In wmt it is called b" +
-				"usiness request (there is child entity for it).. ## Case that encompasses proces" +
-				"s(es) related to loan risk assessmentC4M: Business Case. CDM entity name(s): Cas" +
-				"e,LoanRiskCase.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.workflow.processeve" +
-				"nts.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"caseId\",\"type\":{\"type\":\"record" +
-				"\",\"name\":\"CaseId\",\"doc\":\"Multiattribute representing unique identifier of case.I" +
-				"t is multiattribute because there is multiple case management solutions running " +
-				"now. CDM entity name(s): CaseId.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.wo" +
-				"rkflow.processevents.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"id\",\"doc\":\"Un" +
-				"ique identifier of case id itself. CDM attribute class name: CaseIdId.\",\"type\":{" +
-				"\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,36}$\"}}]}},{\"name\":\"" +
-				"loanRiskCase\",\"type\":{\"type\":\"record\",\"name\":\"RiskBusinessCaseId\",\"doc\":\"\",\"name" +
-				"space\":\"cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocess" +
-				"changed\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"Stri" +
-				"ng\"}}]}},{\"name\":\"mortgageInstance\",\"type\":{\"type\":\"record\",\"name\":\"MortgageInst" +
-				"ance\",\"doc\":\"Mortgage product instance. CDM entity name(s): MortgageInstance.\",\"" +
-				"namespace\":\"cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanpro" +
-				"cesschanged\",\"fields\":[{\"name\":\"Starbuild\",\"type\":{\"type\":\"record\",\"name\":\"Starb" +
-				"uildInstanceId\",\"doc\":\"Multiattribute property of marketable item instance.Multi" +
-				"attribute: Identifiers of marketable item instances are not yet unified, there i" +
-				"s no one central catalogue.This also covers identifiers valid for only some part" +
-				" of marketable item instance lifecycle, e.g. proposed product.E.g. PCP identifie" +
-				"rs, TSS identifiers.#CZ#Viceatributova promenna instanci prodejnych polozek. Vic" +
-				"eatributovost: Identifikatory instanci prodejych polozek zatim nejsou sjednoceny" +
-				". Neexistujce centralni katalog. Pokryva tez identifikatory, ktere jsou platne p" +
-				"ouze pro nektere casti zivotniho cyklu instanci prodejnych polozek (napriklad na" +
-				"vrhovany produkt). Priklad: PCP identifikator, TSS identifikator. CDM entity nam" +
-				"e(s): InstanceId.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.workflow.processe" +
-				"vents.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"id\",\"doc\":\"Identifier of pro" +
-				"duct instance item itself.#CZ#Vlastni identifikator instance prodejne polozky. C" +
-				"DM attribute class name: InstanceIdId.\",\"type\":{\"type\":\"string\",\"avro.java.strin" +
-				"g\":\"String\",\"pattern\":\"^.{0,30}$\"}}]}}]}}]}},{\"name\":\"currentTask\",\"type\":{\"type" +
-				"\":\"record\",\"name\":\"CurrentTask\",\"doc\":\"Task is a unit of work that usually perfo" +
-				"rms 1 role in 1 time in 1 place.Lombardi: task instance, wmt:.... CDM entity nam" +
-				"e(s): Task.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.workflow.processevents." +
-				"v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"id\",\"doc\":\"Identifier of a task in" +
-				"stance within a \'BPM\' system where task originates. Not unique across BPM system" +
-				" instances.In IBM BAW also known as: tkiid, taskId. CDM attribute class name: Ta" +
-				"skId.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,50}$\"" +
-				"}},{\"name\":\"name\",\"doc\":\"Runtime name of the task. Typically,  what is presented" +
-				" to users in task/work queue.In IBM BAW also known as: subject.Note: Limited to " +
-				"255 chars due to column definition in BAW internal database (BPMDB). CDM attribu" +
-				"te class name: TaskName.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"p" +
-				"attern\":\"^.{0,255}$\"}},{\"name\":\"type\",\"type\":\"int\"}]}},{\"name\":\"eventId\",\"doc\":\"" +
-				"Unique identifier of event. CDM attribute class name: EventId.\",\"type\":{\"type\":\"" +
-				"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,100}$\"}},{\"name\":\"id\",\"doc\":" +
-				"\"Unique identifier of process instance within a workflow system. CDM attribute c" +
-				"lass name: ProcessId.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"patt" +
-				"ern\":\"^.{0,128}$\"}},{\"name\":\"name\",\"doc\":\"Name of the process instance, created " +
-				"at runtime. CDM attribute class name: ProcessName.\",\"type\":{\"type\":\"string\",\"avr" +
-				"o.java.string\":\"String\",\"pattern\":\"^.{0,400}$\"}},{\"name\":\"occurredOn\",\"doc\":\"Dat" +
-				"e and time when event occurred. CDM attribute class name: EventOccurredOn.\",\"typ" +
-				"e\":{\"type\":\"long\",\"logicalType\":\"local-timestamp-millis\"}},{\"name\":\"processData\"" +
-				",\"type\":{\"type\":\"record\",\"name\":\"ProcessData\",\"doc\":\"Process data represent data" +
-				" that are needed for the process execution. For example to guide flow of the pro" +
-				"cess based on data.These are typically needed on the \'edges\' of activities in th" +
-				"e process. Edge meaning when a task is \'entered (input variables)\' and \'exited (" +
-				"output variables)\'. CDM entity name(s): ProcessData.\",\"namespace\":\"cz.mpss.api.s" +
-				"tarbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged\",\"fields\":[{\"" +
-				"name\":\"private\",\"type\":{\"type\":\"record\",\"name\":\"BusinessObject\",\"doc\":\"Data that" +
-				" the task or process carries \'inside\'. These are typically data that are needed " +
-				"for process or task runtime, such as used in UIs, make business decisions inside" +
-				" the process or to integrate external services and interfaces. CDM entity name(s" +
-				"): BusinessObject.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.workflow.process" +
-				"events.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"mainLoanProcessData\",\"type\"" +
-				":{\"type\":\"record\",\"name\":\"MainLoanProcessData\",\"doc\":\"\",\"namespace\":\"cz.mpss.api" +
-				".starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged\",\"fields\":[" +
-				"{\"name\":\"processPhase\",\"type\":{\"type\":\"record\",\"name\":\"ProcessPhase\",\"doc\":\"\",\"n" +
-				"amespace\":\"cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanproc" +
-				"esschanged\",\"fields\":[{\"name\":\"code\",\"type\":\"int\"},{\"name\":\"name\",\"type\":{\"type\"" +
-				":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,255}$\"}}]}}]}}]}}]}},{\"nam" +
-				"e\":\"state\",\"doc\":\"Runtime state of the process within the BPM engine. More of a " +
-				"lifecycle state of the process intance within the BPM engine.Not necesarilly \'bu" +
-				"siness\' state of the process.  CDM attribute class name: ProcessState.\",\"type\":{" +
-				"\"type\":\"enum\",\"name\":\"ProcessStateEnum\",\"doc\":\"\",\"namespace\":\"cz.mpss.api.starbu" +
-				"ild.mortgage.workflow.processevents.v1\",\"symbols\":[\"ACTIVE\",\"COMPLETED\",\"DELETED" +
-				"\",\"FAILED\",\"SUSPENDED\",\"TERMINATED\"]}},{\"name\":\"type\",\"type\":\"int\"}],\"javaAnnota" +
-				"tion\":\"cz.kb.api.common.annotation.ConfluentSchemaRegistryCompatible\"}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"MainLoanProcessChanged\",\"doc\":\"Process represents of one" +
+				" process instance. Process is a group of related activities that fulfills goal a" +
+				"nd delivers clearly specified value to a customer (process output).. ## General " +
+				"entity for any event. CDM entity name(s): Process,Event.\",\"namespace\":\"cz.mpss.a" +
+				"pi.starbuild.mortgage.workflow.processevents.v1\",\"fields\":[{\"name\":\"case\",\"type\"" +
+				":{\"type\":\"record\",\"name\":\"Case\",\"doc\":\"Obchodni pripadCase is group of activitie" +
+				"s or record about them that is from business perspective perceived as of enough " +
+				"importance to be recorded, monitored a informed about.Can be any bank\'s agenda.E" +
+				".g. fufilling client\'s request, sale of one productExamples:- consumer loan orig" +
+				"ination- loan drawing- administrative action on the product- recovery- complaint" +
+				" handlingCase has some attributes, that are common for any case category and are" +
+				" mandatory. Additionally, specific case categories can have additional data.In w" +
+				"mt it is called business request (there is child entity for it).. ## Case that e" +
+				"ncompasses process(es) related to loan risk assessmentC4M: Business Case. CDM en" +
+				"tity name(s): Case,LoanRiskCase.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.wo" +
+				"rkflow.processevents.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"caseId\",\"type" +
+				"\":{\"type\":\"record\",\"name\":\"CaseId\",\"doc\":\"Multiattribute representing unique ide" +
+				"ntifier of case.It is multiattribute because there is multiple case management s" +
+				"olutions running now. CDM entity name(s): CaseId.\",\"namespace\":\"cz.mpss.api.star" +
+				"build.mortgage.workflow.processevents.v1.mainloanprocesschanged\",\"fields\":[{\"nam" +
+				"e\":\"id\",\"doc\":\"Unique identifier of case id itself. CDM attribute class name: Ca" +
+				"seIdId.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,36}" +
+				"$\"}}]}},{\"name\":\"loanRiskCase\",\"type\":{\"type\":\"record\",\"name\":\"RiskBusinessCaseI" +
+				"d\",\"doc\":\"\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.workflow.processevents.v" +
+				"1.mainloanprocesschanged\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.j" +
+				"ava.string\":\"String\"}}]}},{\"name\":\"mortgageInstance\",\"type\":{\"type\":\"record\",\"na" +
+				"me\":\"MortgageInstance\",\"doc\":\"Mortgage product instance. CDM entity name(s): Mor" +
+				"tgageInstance.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.workflow.processeven" +
+				"ts.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"Starbuild\",\"type\":{\"type\":\"reco" +
+				"rd\",\"name\":\"StarbuildInstanceId\",\"doc\":\"Multiattribute property of marketable it" +
+				"em instance.Multiattribute: Identifiers of marketable item instances are not yet" +
+				" unified, there is no one central catalogue.This also covers identifiers valid f" +
+				"or only some part of marketable item instance lifecycle, e.g. proposed product.E" +
+				".g. PCP identifiers, TSS identifiers.#CZ#Viceatributova promenna instanci prodej" +
+				"nych polozek. Viceatributovost: Identifikatory instanci prodejych polozek zatim " +
+				"nejsou sjednoceny. Neexistujce centralni katalog. Pokryva tez identifikatory, kt" +
+				"ere jsou platne pouze pro nektere casti zivotniho cyklu instanci prodejnych polo" +
+				"zek (napriklad navrhovany produkt). Priklad: PCP identifikator, TSS identifikato" +
+				"r. CDM entity name(s): InstanceId.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage." +
+				"workflow.processevents.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"id\",\"doc\":\"" +
+				"Identifier of product instance item itself.#CZ#Vlastni identifikator instance pr" +
+				"odejne polozky. CDM attribute class name: InstanceIdId.\",\"type\":{\"type\":\"string\"" +
+				",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,30}$\"}}]}}]}}]}},{\"name\":\"currentTa" +
+				"sk\",\"type\":{\"type\":\"record\",\"name\":\"CurrentTask\",\"doc\":\"Task is a unit of work t" +
+				"hat usually performs 1 role in 1 time in 1 place.Lombardi: task instance, wmt:.." +
+				".. CDM entity name(s): Task.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.workfl" +
+				"ow.processevents.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"id\",\"doc\":\"Identi" +
+				"fier of a task instance within a \'BPM\' system where task originates. Not unique " +
+				"across BPM system instances.In IBM BAW also known as: tkiid, taskId. CDM attribu" +
+				"te class name: TaskId.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pat" +
+				"tern\":\"^.{0,50}$\"}},{\"name\":\"name\",\"doc\":\"Runtime name of the task. Typically,  " +
+				"what is presented to users in task/work queue.In IBM BAW also known as: subject." +
+				"Note: Limited to 255 chars due to column definition in BAW internal database (BP" +
+				"MDB). CDM attribute class name: TaskName.\",\"type\":{\"type\":\"string\",\"avro.java.st" +
+				"ring\":\"String\",\"pattern\":\"^.{0,255}$\"}},{\"name\":\"type\",\"type\":\"int\"}]}},{\"name\":" +
+				"\"eventId\",\"doc\":\"Unique identifier of event. CDM attribute class name: EventId.\"" +
+				",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,100}$\"}},{\"" +
+				"name\":\"id\",\"doc\":\"Unique identifier of process instance within a workflow system" +
+				". CDM attribute class name: ProcessId.\",\"type\":{\"type\":\"string\",\"avro.java.strin" +
+				"g\":\"String\",\"pattern\":\"^.{0,128}$\"}},{\"name\":\"name\",\"doc\":\"Name of the process i" +
+				"nstance, created at runtime. CDM attribute class name: ProcessName.\",\"type\":{\"ty" +
+				"pe\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,400}$\"}},{\"name\":\"occur" +
+				"redOn\",\"doc\":\"Date and time when event occurred. CDM attribute class name: Event" +
+				"OccurredOn.\",\"type\":{\"type\":\"long\",\"logicalType\":\"local-timestamp-millis\"}},{\"na" +
+				"me\":\"processData\",\"type\":{\"type\":\"record\",\"name\":\"ProcessData\",\"doc\":\"Process da" +
+				"ta represent data that are needed for the process execution. For example to guid" +
+				"e flow of the process based on data.These are typically needed on the \'edges\' of" +
+				" activities in the process. Edge meaning when a task is \'entered (input variable" +
+				"s)\' and \'exited (output variables)\'. CDM entity name(s): ProcessData.\",\"namespac" +
+				"e\":\"cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschan" +
+				"ged\",\"fields\":[{\"name\":\"private\",\"type\":{\"type\":\"record\",\"name\":\"BusinessObject\"" +
+				",\"doc\":\"Data that the task or process carries \'inside\'. These are typically data" +
+				" that are needed for process or task runtime, such as used in UIs, make business" +
+				" decisions inside the process or to integrate external services and interfaces. " +
+				"CDM entity name(s): BusinessObject.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage" +
+				".workflow.processevents.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"mainLoanPr" +
+				"ocessData\",\"type\":{\"type\":\"record\",\"name\":\"MainLoanProcessData\",\"doc\":\"\",\"namesp" +
+				"ace\":\"cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocessch" +
+				"anged\",\"fields\":[{\"name\":\"processPhase\",\"type\":{\"type\":\"record\",\"name\":\"ProcessP" +
+				"hase\",\"doc\":\"\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.workflow.processevent" +
+				"s.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"code\",\"type\":\"int\"},{\"name\":\"nam" +
+				"e\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,255}$\"}}]" +
+				"}}]}}]}}]}},{\"name\":\"state\",\"doc\":\"Runtime state of the process within the BPM e" +
+				"ngine. More of a lifecycle state of the process intance within the BPM engine.No" +
+				"t necesarilly \'business\' state of the process.  CDM attribute class name: Proces" +
+				"sState.\",\"type\":{\"type\":\"enum\",\"name\":\"ProcessStateEnum\",\"doc\":\"\",\"namespace\":\"c" +
+				"z.mpss.api.starbuild.mortgage.workflow.processevents.v1\",\"symbols\":[\"ACTIVE\",\"CO" +
+				"MPLETED\",\"DELETED\",\"FAILED\",\"SUSPENDED\",\"TERMINATED\"]}},{\"name\":\"type\",\"type\":\"i" +
+				"nt\"}],\"javaAnnotation\":\"cz.kb.api.common.annotation.ConfluentSchemaRegistryCompa" +
+				"tible\"}");
 		private cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged.Case _case;
 		private cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged.CurrentTask _currentTask;
 		/// <summary>

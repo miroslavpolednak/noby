@@ -25,11 +25,6 @@ public abstract class BaseCustomerDetail
     public bool? IsBrSubscribed { get; set; }
 
     /// <summary>
-    /// Příznak podle kterého zobrazujeme na FE výsledek z našeptávače
-    /// </summary>
-    public bool? IsAddressWhispererUsed { get; set; }
-
-    /// <summary>
     /// Zvláštní vztah ke Komerční bance
     /// </summary>
     public bool? HasRelationshipWithKB { get; set; }

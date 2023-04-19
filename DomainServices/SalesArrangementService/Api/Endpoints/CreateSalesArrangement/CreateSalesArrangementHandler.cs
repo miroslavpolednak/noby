@@ -56,6 +56,15 @@ internal sealed class CreateSalesArrangementHandler
                 case CreateSalesArrangementRequest.DataOneofCase.CustomerChange:
                     data.CustomerChange = request.CustomerChange;
                     break;
+                case CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602A:
+                    data.CustomerChange3602A = request.CustomerChange3602A;
+                    break;
+                case CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602B:
+                    data.CustomerChange3602B = request.CustomerChange3602B;
+                    break;
+                case CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602C:
+                    data.CustomerChange3602C = request.CustomerChange3602C;
+                    break;
             }
             var updateMediatrRequest = new UpdateSalesArrangementParametersRequest(data);
 
@@ -85,6 +94,9 @@ internal sealed class CreateSalesArrangementHandler
             SalesArrangementTypes.GeneralChange when dataCase == CreateSalesArrangementRequest.DataOneofCase.GeneralChange => true,
             SalesArrangementTypes.HUBN when dataCase == CreateSalesArrangementRequest.DataOneofCase.HUBN => true,
             SalesArrangementTypes.CustomerChange when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange => true,
+            SalesArrangementTypes.CustomerChange3602A when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602A => true,
+            SalesArrangementTypes.CustomerChange3602B when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602B => true,
+            SalesArrangementTypes.CustomerChange3602C when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602C => true,
             _ => throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.DataObjectIsNotValid, salesArrangementTypeId)
         };
 

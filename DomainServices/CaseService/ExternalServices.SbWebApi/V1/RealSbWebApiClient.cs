@@ -1,22 +1,22 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto;
+﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
+using DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts;
 
 namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
-internal sealed class RealSbWebApiClient
-    : ISbWebApiClient
+internal sealed class RealSbWebApiClient : ISbWebApiClient
 {
+    private readonly HttpClient _httpClient;
+
+    public RealSbWebApiClient(HttpClient httpClient) => _httpClient = httpClient;
+
     public async Task<CaseStateChangedResponse> CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         // vytvoreni EAS requestu
-        var easRequest = new Contracts.WFS_Request_CaseStateChanged
+        var easRequest = new WFS_Request_CaseStateChanged
         {
-            Header = new Contracts.WFS_Header
-            {
-                System = "NOBY",
-                Login = request.Login
-            },
-            Message = new Contracts.WFS_Event_CaseStateChanged
+            Header = RequestHelper.MapEasHeader(request.Login),
+            Message = new WFS_Event_CaseStateChanged
             {
                 Client_benefits = 0,
                 Case_id = request.CaseId,
@@ -32,31 +32,60 @@ internal sealed class RealSbWebApiClient
             }
         };
 
-        var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/eventreport/casestatechanged", easRequest, cancellationToken)
-            .ConfigureAwait(false);
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/eventreport/casestatechanged", easRequest, cancellationToken);
 
-        if (response.IsSuccessStatusCode)
+        var responseObject = await RequestHelper.ProcessResponse<WFS_Event_Response>(httpResponse, x => x.Result, cancellationToken);
+
+        return new CaseStateChangedResponse
         {
-            var result = await response.Content.ReadFromJsonAsync<Contracts.WFS_Event_Response>(cancellationToken: cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(CaseStateChanged), nameof(Contracts.WFS_Event_Response));
-
-            // neco je spatne ve WS
-            if ((result.Result?.Return_val ?? 0) != 0)
-                throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName}.CaseStateChanged: {result.Result?.Return_text}");
-
-            return new CaseStateChangedResponse
-            {
-                RequestId = result.Request_id
-            };
-        }
-        else
-        {
-            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
-        }
+            RequestId = responseObject.Request_id
+        };
     }
 
-    private readonly HttpClient _httpClient;
-    public RealSbWebApiClient(HttpClient httpClient)
-        => _httpClient = httpClient;
+    public async Task<FindTasksResponse> FindTasksByCaseId(FindByCaseIdRequest request, CancellationToken cancellationToken = default)
+    {
+        var easRequest = new WFS_Request_ByCaseId
+        {
+            Header = RequestHelper.MapEasHeader(request.HeaderLogin),
+            Message = new WFS_Find_ByCaseId
+            {
+                Case_id = request.CaseId,
+                Search_pattern = request.SearchPattern,
+                Task_state = request.TaskStates
+            }
+        };
+
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/findtasks/bycaseid", easRequest, cancellationToken);
+
+        var responseObject = await RequestHelper.ProcessResponse<WFS_Find_Response>(httpResponse, x => x.Result, cancellationToken);
+
+        return new FindTasksResponse
+        {
+            ItemsFound = responseObject.Items_found ?? 0,
+            Tasks = RequestHelper.MapTasksToDictionary(responseObject.Tasks)
+        };
+    }
+
+    public async Task<FindTasksResponse> FindTasksByTaskId(FindByTaskIdRequest request, CancellationToken cancellationToken = default)
+    {
+        var easRequest = new WFS_Request_ByTaskId
+        {
+            Header = RequestHelper.MapEasHeader(request.HeaderLogin),
+            Message = new WFS_Find_ByTaskId
+            {
+                Task_id = request.TaskSbId,
+                Task_state = request.TaskStates
+            }
+        };
+
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/findtasks/bytaskid", easRequest, cancellationToken);
+
+        var responseObject = await RequestHelper.ProcessResponse<WFS_Find_Response>(httpResponse, x => x.Result, cancellationToken);
+
+        return new FindTasksResponse
+        {
+            ItemsFound = responseObject.Items_found ?? 0,
+            Tasks = RequestHelper.MapTasksToDictionary(responseObject.Tasks)
+        };
+    }
 }

@@ -54,7 +54,7 @@ internal sealed class FormsDocumentService
     public async Task<DocumentInterface[]> PrepareEntities(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, IReadOnlyCollection<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
     {
         var formsWithDataSentenses = createdFinalVersionOfDocOnSa.OrderBy(r => r.DocumentOnSa.EArchivId)
-                 .Zip(easFormResponse.Forms.OrderBy(r => r.DynamicFormValues.DocumentTypeId),
+                 .Zip(easFormResponse.Forms.OrderBy(r => r.DynamicFormValues.DocumentId),
                  (docOnSa, form) => new { docOnSa, form });
 
         // load user
@@ -68,9 +68,6 @@ internal sealed class FormsDocumentService
 
     private async Task<DocumentInterface> PrepareEntity(CreateDocumentOnSAResponse docOnSa, Form form, SalesArrangement salesArrangement, string contractNumber, User user, CancellationToken cancellationToken)
     {
-        var identity = user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.Mpad)
-             ?? user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.KbUid);
-        
         var entity = new DocumentInterface();
         entity.DocumentId = docOnSa.DocumentOnSa.EArchivId;
         var generatedDocument = await GenerateDocument(salesArrangement, docOnSa, cancellationToken);
@@ -78,7 +75,7 @@ internal sealed class FormsDocumentService
         entity.FileName = await GetFileName(docOnSa.DocumentOnSa, cancellationToken);
         entity.FileNameSuffix = Path.GetExtension(entity.FileName)[1..];
         entity.CaseId = salesArrangement.CaseId;
-        entity.AuthorUserLogin = identity?.Identity ?? user.Id.ToString(CultureInfo.InvariantCulture);
+        entity.AuthorUserLogin = user.CPM ?? user.Id.ToString(CultureInfo.InvariantCulture);
         entity.ContractNumber = contractNumber;
         entity.FormId = docOnSa.DocumentOnSa.FormId;
         entity.CreatedOn = _dateTime.Now.Date;

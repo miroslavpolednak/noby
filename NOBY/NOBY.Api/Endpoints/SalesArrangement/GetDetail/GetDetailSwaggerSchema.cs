@@ -17,7 +17,8 @@ internal sealed class GetDetailSwaggerSchema : ISchemaFilter
             typeof(ParametersDrawing),
             typeof(Dto.HUBNDetail),
             typeof(Dto.GeneralChangeDetail),
-            typeof(Dto.CustomerChangeDetail)
+            typeof(Dto.CustomerChangeDetail),
+            typeof(Dto.CustomerChange3602Detail)
         };
 
         foreach (var type in possibleTypes)

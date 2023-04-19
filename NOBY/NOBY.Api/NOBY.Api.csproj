@@ -48,6 +48,7 @@
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+	<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,6 +72,7 @@
     <ProjectReference Include="..\..\ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj" />
     <ProjectReference Include="..\..\InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj" />
     <ProjectReference Include="..\..\InternalServices\DocumentGeneratorService\Clients\CIS.InternalServices.DocumentGeneratorService.Clients.csproj" />
+    <ProjectReference Include="..\MPSS.Security.Noby\MPSS.Security.Noby.csproj" />
     <ProjectReference Include="..\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
   </ItemGroup>
 

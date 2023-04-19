@@ -17,9 +17,8 @@ internal class DataServicesLoader
 
     public async Task LoadData(InputConfig inputConfig, InputParameters parameters, AggregatedData aggregatedData, CancellationToken cancellationToken = default)
     {
-        var status = new DataLoaderStatus
+        var status = new DataLoaderStatus(inputConfig.GetAllDataSources())
         {
-            RemainingDataSources = inputConfig.DataSources.Concat(inputConfig.DynamicInputParameters.Select(i => i.SourceDataSource)).Distinct().ToList(),
             RelatedInputParameters = inputConfig.DynamicInputParameters.ToList(),
             AggregatedData = aggregatedData,
             InputParameters = parameters
@@ -35,14 +34,14 @@ internal class DataServicesLoader
         await aggregatedData.LoadAdditionalData(cancellationToken);
     }
 
-    private async Task ProcessRemainingDataSources(DataLoaderStatus status, CancellationToken cancellationToken)
+    private Task ProcessRemainingDataSources(DataLoaderStatus status, CancellationToken cancellationToken)
     {
         var dataSources = status.GetRemainingDataSources();
 
         if (!dataSources.Any())
             throw new InvalidOperationException("An input parameter for the remaining data services is missing.");
 
-        await Task.WhenAll(dataSources.Select(Load));
+        return Task.WhenAll(dataSources.Select(Load));
 
         async Task Load(DataSource dataSource)
         {

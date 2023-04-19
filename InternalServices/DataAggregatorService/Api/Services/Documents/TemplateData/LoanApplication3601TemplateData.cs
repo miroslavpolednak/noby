@@ -3,6 +3,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Template
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
+using DomainServices.HouseholdService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
 
@@ -10,10 +11,12 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Temp
 internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
 {
     private readonly ICustomerServiceClient _customerService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
 
-    public LoanApplication3601TemplateData(ICustomerServiceClient customerService)
+    public LoanApplication3601TemplateData(ICustomerServiceClient customerService, ICustomerOnSAServiceClient customerOnSAService)
     {
         _customerService = customerService;
+        _customerOnSAService = customerOnSAService;
     }
 
     public decimal? LoanPurposes210 => Offer.SimulationInputs.LoanPurposes.Where(x => x.LoanPurposeId == 210).Select(x => (decimal?)x.Sum).FirstOrDefault();
@@ -42,6 +45,14 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
 
     public string HeaderHouseholdExpenses => CustomerOnSaCodebtor is null ? "Výdaje domácnosti žadatele (měsíčně)" : "Výdaje domácnosti žadatele a spolužadatele (měsíčně)";
 
+    public string AgentName { get; private set; } = null!;
+
+    public string SignatureType => GetSignatureType();
+
+    public string RealEstateTypes => string.Join("; ", GetRealEstateTypes());
+
+    public string RealEstatePurchaseTypes => string.Join("; ", GetRealEstatePurchaseTypes());
+
     public override async Task LoadAdditionalData(CancellationToken cancellationToken)
     {
         var debtorIdentity = CustomerOnSaDebtor.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
@@ -50,21 +61,33 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
         var requestedIdentities = new[] { debtorIdentity, codebtorIdentity }.Where(identity => identity is not null).Cast<Identity>();
 
         var response = await _customerService.GetCustomerList(requestedIdentities, cancellationToken);
-
+        
         DebtorCustomer = CreateCustomer(debtorIdentity.IdentityId);
 
         if (codebtorIdentity is not null)
             CodebtorCustomer = CreateCustomer(codebtorIdentity.IdentityId);
 
-        LoanApplicationCustomer CreateCustomer(long id) => new(GetDetail(id), _codebookManager.DegreesBefore, _codebookManager.Countries, _codebookManager.IdentificationDocumentTypes);
+        AgentName = await LoadAgentName(cancellationToken);
+
+        LoanApplicationCustomer CreateCustomer(long id) => new(GetDetail(id), _codebookManager.DegreesBefore, _codebookManager.Countries, _codebookManager.IdentificationDocumentTypes, _codebookManager.EducationLevels);
         CustomerDetailResponse GetDetail(long id) => response.Customers.First(c => c.Identities.Any(i => i.IdentityId == id));
+    }
+
+    private async Task<string> LoadAgentName(CancellationToken cancellationToken)
+    {
+        if (!SalesArrangement.Mortgage.Agent.HasValue)
+            return string.Empty;
+
+        var customerOnSa = await _customerOnSAService.GetCustomer(SalesArrangement.Mortgage.Agent.Value, cancellationToken);
+
+        return $"{customerOnSa.FirstNameNaturalPerson} {customerOnSa.Name}";
     }
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
         base.ConfigureCodebooks(configurator);
 
-        configurator.DrawingTypes().DrawingDurations();
+        configurator.DrawingTypes().DrawingDurations().SignatureTypes().RealEstateTypes().PurchaseTypes();
     }
 
     private string GetDrawingType() =>
@@ -87,4 +110,24 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
                                .Select(m => m.Name)
                                .First();
     }
+
+    private string GetSignatureType()
+    {
+        if (!SalesArrangement.Mortgage.ContractSignatureTypeId.HasValue)
+            return string.Empty;
+
+        return _codebookManager.SignatureTypes.Where(s => s.Id == SalesArrangement.Mortgage.ContractSignatureTypeId.Value)
+                               .Select(s => s.Name)
+                               .First();
+    }
+
+    private IEnumerable<string> GetRealEstateTypes() =>
+        SalesArrangement.Mortgage
+                        .LoanRealEstates
+                        .Join(_codebookManager.RealEstateTypes, x => x.RealEstateTypeId, y => y.Id, (_, y) => y.Name);
+
+    private IEnumerable<string> GetRealEstatePurchaseTypes() =>
+        SalesArrangement.Mortgage
+                        .LoanRealEstates
+                        .Join(_codebookManager.PurchaseTypes, x => x.RealEstatePurchaseTypeId, y => y.Id, (_, y) => y.Name);
 }

@@ -16,15 +16,23 @@ internal sealed class GetSalesArrangementsListHandler
             .Select(DatabaseExpressions.SalesArrangementDetail())
             .ToListAsync(cancellation);
 
+        // kontrola na existenci case - kvuli efektivite jen pokud se nevrati zadny SA
+        if (!list.Any())
+        {
+            await _caseService.GetCaseDetail(request.CaseId, cancellation);
+        }
+        
         GetSalesArrangementListResponse model = new();
         model.SalesArrangements.AddRange(list);
         return model;
     }
 
+    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
     private readonly SalesArrangementServiceDbContext _dbContext;
 
-    public GetSalesArrangementsListHandler(SalesArrangementServiceDbContext dbContext)
+    public GetSalesArrangementsListHandler(SalesArrangementServiceDbContext dbContext, CaseService.Clients.ICaseServiceClient caseService)
     {
         _dbContext = dbContext;
+        _caseService = caseService;
     }
 }

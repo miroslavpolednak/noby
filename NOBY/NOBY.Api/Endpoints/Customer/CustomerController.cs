@@ -14,15 +14,15 @@ public class CustomerController : ControllerBase
     /// Na výstupu je Customer objekt s kompletními daty z KB CM.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("customer")]
+    [HttpPost("customer", Name = "customerCreate")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(Create.CreateResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<Create.CreateResponse> Create([FromBody] Create.CreateRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    public async Task<Create.CreateResponse> Create([FromBody] Create.CreateRequest request)
+        => await _mediator.Send(request);
 
     /// <summary>
     /// Vyhledávání klientů
@@ -55,8 +55,8 @@ public class CustomerController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Klient" })]
     [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
-    public async Task<GetDetail.GetDetailResponse> GetDetail([FromBody] CIS.Foms.Types.CustomerIdentity request, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetDetail.GetDetailRequest(request.Id, request.Scheme), cancellationToken);
+    public async Task<GetDetail.GetDetailResponse> GetDetail([FromBody] CIS.Foms.Types.CustomerIdentity request)
+        => await _mediator.Send(new GetDetail.GetDetailRequest(request.Id, request.Scheme));
 
     /// <summary>
     /// Identifikace klienta
@@ -72,8 +72,8 @@ public class CustomerController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] IdentifyByIdentity.IdentifyByIdentityRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
+    public async Task IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] IdentifyByIdentity.IdentifyByIdentityRequest request)
+        => await _mediator.Send(request.InfuseId(customerOnSAId));
 
     /// <summary>
     /// Identifikace klienta
@@ -89,8 +89,8 @@ public class CustomerController : ControllerBase
     [ProducesResponseType(typeof(Search.Dto.CustomerInList), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<Search.Dto.CustomerInList> Identify([FromBody] Identify.IdentifyRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    public async Task<Search.Dto.CustomerInList> Identify([FromBody] Identify.IdentifyRequest request)
+        => await _mediator.Send(request);
 
     /// <summary>
     /// Profile check s profilem identifikovaný
@@ -103,8 +103,8 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(ProfileCheck.ProfileCheckResponse), StatusCodes.Status200OK)]
-    public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] CIS.Foms.Types.CustomerIdentity request, CancellationToken cancellationToken)
-        => await _mediator.Send(new ProfileCheck.ProfileCheckRequest(request.Id, request.Scheme), cancellationToken);
+    public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] CIS.Foms.Types.CustomerIdentity request)
+        => await _mediator.Send(new ProfileCheck.ProfileCheckRequest(request.Id, request.Scheme));
 
     /// <summary>
     /// Získání dat klienta (s lokálními změnami)
@@ -134,8 +134,8 @@ public class CustomerController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task UpdateDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateDetailWithChanges.UpdateDetailWithChangesRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
+    public async Task UpdateDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateDetailWithChanges.UpdateDetailWithChangesRequest request)
+        => await _mediator.Send(request.InfuseId(customerOnSAId));
 
     private readonly IMediator _mediator;
     public CustomerController(IMediator mediator) =>  _mediator = mediator;

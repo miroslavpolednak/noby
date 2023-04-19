@@ -17,4 +17,6 @@ message GetEasFormRequest {
 	int32 SalesArrangementId = 2;
 
 	repeated DynamicFormValues DynamicFormValues = 3;
+
+	int32 UserId = 4;
 }

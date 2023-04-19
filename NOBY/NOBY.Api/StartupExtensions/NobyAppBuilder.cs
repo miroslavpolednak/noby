@@ -74,19 +74,33 @@ internal static class NobyAppBuilder
 
             appBuilder.UseEndpoints(t =>
             {
+                // sign in
                 t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, ([FromServices] IHttpContextAccessor context) =>
                 {
                 })
                     .RequireAuthorization()
-                    .ExcludeFromDescription();
+                    .WithDescription("Přihlášení uživatele / redirect na auth provider.")
+                    .WithTags("Authentication")
+                    .WithOpenApi();
 
-                t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint, ([FromServices] IHttpContextAccessor context) =>
+                // sign out
+                t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint, 
+                    ([FromServices] IHttpContextAccessor context, [FromServices] AppConfiguration configuration) =>
                 {
                     context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                    context.HttpContext!.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+
+                    if (configuration.Security!.AuthenticationScheme == AuthenticationConstants.CaasAuthScheme)
+                    {
+                        context.HttpContext!.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+                    }
+
+                    // redirect to root?
+                    context.HttpContext!.Response.Redirect("/");
                 })
                     .RequireAuthorization()
-                    .ExcludeFromDescription();
+                    .WithDescription("Odhlášení uživatele.")
+                    .WithTags("Authentication")
+                    .WithOpenApi();
             });
         });
 

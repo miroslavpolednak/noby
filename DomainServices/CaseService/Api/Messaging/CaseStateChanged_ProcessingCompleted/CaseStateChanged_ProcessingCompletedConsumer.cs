@@ -14,8 +14,8 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
 
     public CaseStateChanged_ProcessingCompletedConsumer(CaseServiceDbContext dbContext, IDistributedCache distributedCache, ILogger<CaseStateChanged_ProcessingCompletedConsumer> logger)
     {
-        _distributedCache = distributedCache;
         _dbContext = dbContext;
+        _distributedCache = distributedCache;
         _logger = logger;
     }
 
@@ -24,14 +24,20 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
         var cache = await _distributedCache.GetObjectAsync<SharedDto.CaseStateChangeRequestId>($"CaseStateChanged_{context.Message.workflowInputProcessingContext.requestId}");
         if (cache is null)
         {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RequestNotFoundInCache, context.Message.workflowInputProcessingContext.requestId);
+            _logger.RequestNotFoundInCache(context.Message.workflowInputProcessingContext.requestId);
+            return;
         }
 
-        var entity = _dbContext.Cases
-            .FirstOrDefault(t => t.CaseId == cache.CaseId)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, cache.CaseId);
+        var entity = (await _dbContext.Cases
+            .FirstOrDefaultAsync(t => t.CaseId == cache.CaseId, context.CancellationToken));
 
-        if (context.Message.workflowInputProcessingContext.requestProcessingResult == cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.RequestProcessingResultEnum.OK )
+        if (entity is null)
+        {
+            _logger.KafkaCaseIdNotFound(cache.CaseId);
+            return;
+        }
+
+        if (context.Message.workflowInputProcessingContext.requestProcessingResult == cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.RequestProcessingResultEnum.OK)
         {
             entity.State = cache.CaseState;
             entity.StateUpdatedInStarbuild = (byte)Contracts.UpdatedInStarbuildStates.Ok;
@@ -40,10 +46,10 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
         {
             entity.State = cache.CaseState;
             entity.StateUpdatedInStarbuild = (byte)Contracts.UpdatedInStarbuildStates.Error;
-            
+
             _logger.StarbuildStateUpdateFailed(cache.CaseId, cache.CaseState);
         }
-        
-        _dbContext.SaveChanges();
+
+        await _dbContext.SaveChangesAsync(context.CancellationToken);
     }
 }

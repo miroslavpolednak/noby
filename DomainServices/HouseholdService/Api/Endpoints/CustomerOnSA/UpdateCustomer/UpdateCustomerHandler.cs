@@ -24,6 +24,12 @@ internal sealed class UpdateCustomerHandler
         // vychazim z toho, ze identitu klienta nelze menit. Tj. z muze prijit prazdna kolekce CustomerIdentifiers v requestu, ale to neznamena, ze jiz existujici identity na COnSA odstranim.
         if (request.Customer.CustomerIdentifiers is not null && request.Customer.CustomerIdentifiers.Any())
         {
+            // kontrola, zda dane schema jiz nema s jinym ID
+            if (request.Customer.CustomerIdentifiers.Any(t => entity.Identities.Any(x => (int)x.IdentityScheme == (int)t.IdentityScheme && x.IdentityId != t.IdentityId)))
+            {
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.IdentityAlreadyExistOnCustomer);
+            }
+
             var existingSchemas = entity.Identities.Select(t => (int)t.IdentityScheme).ToList();
             var newSchemasToAdd = request.Customer.CustomerIdentifiers.Where(t => !existingSchemas.Contains((int)t.IdentityScheme)).ToList();
 
@@ -32,7 +38,7 @@ internal sealed class UpdateCustomerHandler
 
         // provolat sulm - pokud jiz ma nebo mu byla akorat pridana KB identita
         var kbIdentity = entity.Identities.FirstOrDefault(t => t.IdentityScheme == IdentitySchemes.Kb);
-        if (kbIdentity is not null)
+        if (!alreadyKbUpdatedCustomer && kbIdentity is not null)
         {
             await _sulmClient.StartUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
         }

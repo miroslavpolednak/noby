@@ -214,6 +214,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\database.md = Docs\topics\database.md
 		Docs\topics\distributed-cache.md = Docs\topics\distributed-cache.md
 		Docs\topics\documentation.md = Docs\topics\documentation.md
+		Docs\topics\external-services-rest.md = Docs\topics\external-services-rest.md
+		Docs\topics\external-services-soap.md = Docs\topics\external-services-soap.md
 		Docs\topics\external-services.md = Docs\topics\external-services.md
 		Docs\topics\feapi-error-handling.md = Docs\topics\feapi-error-handling.md
 		Docs\topics\grpc-service-startup.md = Docs\topics\grpc-service-startup.md
@@ -265,6 +267,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00004-validation_ignore_formid_list.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00004-validation_ignore_formid_list.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00005-HFICH-5270_ignore_businessid.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00005-HFICH-5270_ignore_businessid.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00006-json_ignore_max_date_error.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00006-json_ignore_max_date_error.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
@@ -273,6 +276,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		NOBY\DatabaseMigrations\00002-HFICH-4866.sql = NOBY\DatabaseMigrations\00002-HFICH-4866.sql
 		NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql = NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql
 		NOBY\DatabaseMigrations\00004-DropFormInstanceInterface.sql = NOBY\DatabaseMigrations\00004-DropFormInstanceInterface.sql
+		NOBY\DatabaseMigrations\00005-HFICH-5400.sql = NOBY\DatabaseMigrations\00005-HFICH-5400.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.ExternalServices.Sdf", "DomainServices\DocumentArchiveService\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj", "{F969A020-76AF-48A6-BF8F-959A58D0C982}"
@@ -292,6 +296,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00003-document_versions_variant.sql = DomainServices\CodebookService\DatabaseMigrations\00003-document_versions_variant.sql
 		DomainServices\CodebookService\DatabaseMigrations\00004-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_creation.sql = DomainServices\CodebookService\DatabaseMigrations\00004-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_creation.sql
 		DomainServices\CodebookService\DatabaseMigrations\00005-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00005-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_seed.sql
+		DomainServices\CodebookService\DatabaseMigrations\00006-HFICH-5335_CustomerChange3602.sql = DomainServices\CodebookService\DatabaseMigrations\00006-HFICH-5335_CustomerChange3602.sql
+		DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5306_differences_confl_X_migrations.sql = DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5306_differences_confl_X_migrations.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -360,6 +366,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00005-customerchange_template.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00005-customerchange_template.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00006-document_text_align.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00006-document_text_align.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00007-HFICH-5249_fixed_generalchange_document.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00007-HFICH-5249_fixed_generalchange_document.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00008-CMP_ICP_removed_mock.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00008-CMP_ICP_removed_mock.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00009-HFICH-5533_added_3601_document_missing_attributes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00009-HFICH-5533_added_3601_document_missing_attributes.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -369,6 +377,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D82D72DD-125A-4023-8A6F-D950BE363BD2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.Tests", "DomainServices\DocumentArchiveService\Tests\DomainServices.DocumentArchiveService.Tests\DomainServices.DocumentArchiveService.Tests.csproj", "{525199C6-C932-4365-BC9C-3E92A07C8BD2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MPSS.Security.Noby", "NOBY\MPSS.Security.Noby\MPSS.Security.Noby.csproj", "{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1154,6 +1164,14 @@ Global
 		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Release|x64.ActiveCfg = Release|Any CPU
 		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}.Release|x64.Build.0 = Release|Any CPU
+		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E}.Debug|x64.Build.0 = Debug|Any CPU
+		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E}.Release|x64.ActiveCfg = Release|Any CPU
+		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E}.Release|x64.Build.0 = Release|Any CPU
 		{525199C6-C932-4365-BC9C-3E92A07C8BD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{525199C6-C932-4365-BC9C-3E92A07C8BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{525199C6-C932-4365-BC9C-3E92A07C8BD2}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -1292,6 +1310,7 @@ Global
 		{D5315192-5730-455C-B586-D964F840F401} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
 		{FA440E3E-69ED-4197-B1FA-B705DA129FD7} = {1AB95406-90FE-4CAA-8536-6846B37A450E}
 		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
+		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 		{D82D72DD-125A-4023-8A6F-D950BE363BD2} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
 		{525199C6-C932-4365-BC9C-3E92A07C8BD2} = {D82D72DD-125A-4023-8A6F-D950BE363BD2}
 	EndGlobalSection

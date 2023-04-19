@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+﻿using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+
+namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class CustomerChangeValidator
     : BaseValidator, ICreateSalesArrangementParametersValidator
@@ -22,6 +24,6 @@ internal sealed class CustomerChangeValidator
             throw new NobyValidationException(90014);
         }
 
-        return new HUBNBuilder(_logger, _request, _httpContextAccessor);
+        return new CustomerChangeBuilder(_logger, _request, _httpContextAccessor);
     }
 }

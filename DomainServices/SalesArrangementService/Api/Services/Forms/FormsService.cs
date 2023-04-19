@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using CIS.Core.Attributes;
+using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
@@ -16,16 +17,19 @@ internal sealed class FormsService
     private readonly IDataAggregatorServiceClient _dataAggregatorService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICodebookServiceClients _codebookService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public FormsService(IMediator mediator,
                         IDataAggregatorServiceClient dataAggregatorService,
                         IHouseholdServiceClient householdService,
-                        ICodebookServiceClients codebookService)
+                        ICodebookServiceClients codebookService,
+                        ICurrentUserAccessor currentUserAccessor)
     {
         _mediator = mediator;
         _dataAggregatorService = dataAggregatorService;
         _householdService = householdService;
         _codebookService = codebookService;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public Task<SalesArrangement> LoadSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
@@ -70,6 +74,7 @@ internal sealed class FormsService
         return _dataAggregatorService.GetEasForm(new GetEasFormRequest
         {
             SalesArrangementId = salesArrangementId,
+            UserId = _currentUserAccessor.User!.Id,
             EasFormRequestType = EasFormRequestType.Service,
             DynamicFormValues = { dynamicFormValues }
         }, cancellationToken);
@@ -82,6 +87,7 @@ internal sealed class FormsService
         var response = await _dataAggregatorService.GetEasForm(new GetEasFormRequest
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
+            UserId = _currentUserAccessor.User!.Id,
             EasFormRequestType = EasFormRequestType.Product,
             DynamicFormValues = { dynamicFormValues }
         }, cancellationToken);

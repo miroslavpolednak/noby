@@ -17,6 +17,6 @@ internal class CurrencyFormatter : IAcroFieldFormatter
 
         var numberFormatInfo = NumberFormatInfo.GetInstance(formatProvider);
 
-        return decimalNumber.ToString($"0.## {numberFormatInfo.CurrencySymbol}", numberFormatInfo);
+        return string.Format(numberFormatInfo, "{0:#,#.##}" + $" {numberFormatInfo.CurrencySymbol}", decimalNumber);
     }
 }

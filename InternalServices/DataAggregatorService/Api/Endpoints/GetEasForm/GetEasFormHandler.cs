@@ -18,7 +18,7 @@ internal class GetEasFormHandler : IRequestHandler<GetEasFormRequest, GetEasForm
     {
         var config = await _configurationManager.LoadEasFormConfiguration(GetEasFormKey(request), cancellationToken);
 
-        var easForm = await _easFormFactory.Create(request.SalesArrangementId, config, cancellationToken);
+        var easForm = await _easFormFactory.Create(request.SalesArrangementId, request.UserId, config, cancellationToken);
 
         var response = new GetEasFormResponse
         {

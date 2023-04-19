@@ -15,6 +15,11 @@ internal sealed class GetCustomerListHandler
             .Select(CustomerOnSAServiceExpressions.CustomerDetail())
             .ToListAsync(cancellationToken);
 
+        if (!customers.Any())
+        {
+            await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+        }
+
         var ids = customers.Select(t => t.CustomerOnSAId).ToList();
 
         var identities = await _dbContext.CustomersIdentities
@@ -37,10 +42,12 @@ internal sealed class GetCustomerListHandler
         return model;
     }
 
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly HouseholdServiceDbContext _dbContext;
 
-    public GetCustomerListHandler(HouseholdServiceDbContext dbContext)
+    public GetCustomerListHandler(HouseholdServiceDbContext dbContext, SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _dbContext = dbContext;
+        _salesArrangementService = salesArrangementService;
     }
 }

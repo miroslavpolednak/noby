@@ -32,13 +32,6 @@ internal sealed class UpdateCustomersHandler
             }
         }
 
-        // hlavni domacnost - hlavni klient ma modre ID -> spustime vlacek na vytvoreni produktu atd. (pokud jeste neexistuje)
-        if (c1.CustomerOnSAId.HasValue && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
-        {
-            var notification = new Notifications.MainCustomerUpdatedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, c1.CustomerOnSAId!.Value, c1.Identities);
-            await _mediator.Publish(notification, cancellationToken);
-        }
-
         return new UpdateCustomersResponse
         {
             CustomerOnSAId1 = c1.CustomerOnSAId,
@@ -130,16 +123,13 @@ internal sealed class UpdateCustomersHandler
     private readonly DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly IMediator _mediator;
 
     public UpdateCustomersHandler(
-        IMediator mediator,
         IHouseholdServiceClient householdService,
         ICustomerOnSAServiceClient customerOnSAService,
         DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSAService
         )
     {
-        _mediator = mediator;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;
         _documentOnSAService = documentOnSAService;

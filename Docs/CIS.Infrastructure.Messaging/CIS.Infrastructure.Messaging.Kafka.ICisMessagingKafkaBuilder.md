@@ -30,34 +30,34 @@ Typ consumera implementující interface IConsumer
 [ICisMessagingKafkaBuilder](CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.md 'CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder')
 
 ### Remarks
-Pro správné přidání konzumera je nutné ještě zavolat metodu AddConsumerTopic!
+Pro správné přidání konzumera je nutné ještě zavolat metodu AddConsumerTopicAvro nebo AddConsumerTopicJson!
 
-<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopic_TTopicMarker_(string,string)'></a>
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopicAvro_TTopicMarker_(string,string)'></a>
 
-## ICisMessagingKafkaBuilder.AddConsumerTopic<TTopicMarker>(string, string) Method
+## ICisMessagingKafkaBuilder.AddConsumerTopicAvro<TTopicMarker>(string, string) Method
 
-Přidání consumerů do pipeline Kafky. Je to druhý krok po AddConsumer().
+Přidání consumerů do pipeline Kafky pro AVRO. Je to druhý krok po AddConsumer().
 
 ```csharp
-CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder AddConsumerTopic<TTopicMarker>(string topic, string? groupId=null)
+CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder AddConsumerTopicAvro<TTopicMarker>(string topic, string? groupId=null)
     where TTopicMarker : class, Avro.Specific.ISpecificRecord;
 ```
 #### Type parameters
 
-<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopic_TTopicMarker_(string,string).TTopicMarker'></a>
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopicAvro_TTopicMarker_(string,string).TTopicMarker'></a>
 
 `TTopicMarker`
 
 Marker interface označující všechny consumery, kteří patří do skupiny daného topicu.
 #### Parameters
 
-<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopic_TTopicMarker_(string,string).topic'></a>
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopicAvro_TTopicMarker_(string,string).topic'></a>
 
 `topic` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
 
 Název topicu ze kterého se budou přijímat zprávy.
 
-<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopic_TTopicMarker_(string,string).groupId'></a>
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopicAvro_TTopicMarker_(string,string).groupId'></a>
 
 `groupId` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
 
@@ -69,26 +69,94 @@ Název skupiny v Kafce. Pokud je prázdné, doplňmuje se automaticky název apl
 ### Remarks
 Každý consumer avro kontrakt (tj. třída implementující ISpecificRecord) musí implementovat interface TTopicMarker, metoda ho díky tomu sama najde a přidá do pipeline.
 
-<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddProducers_TTopicMarker_(string)'></a>
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopicJson_TTopicMarker_(string,string)'></a>
 
-## ICisMessagingKafkaBuilder.AddProducers<TTopicMarker>(string) Method
+## ICisMessagingKafkaBuilder.AddConsumerTopicJson<TTopicMarker>(string, string) Method
 
-Přidání producerů do pipeline Kafky.
+Přidání consumerů do pipeline Kafky pro JSON. Je to druhý krok po AddConsumer().
 
 ```csharp
-CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder AddProducers<TTopicMarker>(string topic)
+CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder AddConsumerTopicJson<TTopicMarker>(string topic, string? groupId=null)
+    where TTopicMarker : class;
+```
+#### Type parameters
+
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopicJson_TTopicMarker_(string,string).TTopicMarker'></a>
+
+`TTopicMarker`
+
+Marker interface označující všechny consumery, kteří patří do skupiny daného topicu.
+#### Parameters
+
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopicJson_TTopicMarker_(string,string).topic'></a>
+
+`topic` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+Název topicu ze kterého se budou přijímat zprávy.
+
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopicJson_TTopicMarker_(string,string).groupId'></a>
+
+`groupId` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+Název skupiny v Kafce. Pokud je prázdné, doplňmuje se automaticky název aplikace.
+
+#### Returns
+[ICisMessagingKafkaBuilder](CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.md 'CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder')
+
+### Remarks
+Každý consumer json kontrakt musí implementovat interface TTopicMarker, metoda ho díky tomu sama najde a přidá do pipeline.
+
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddProducerAvro_TTopicMarker_(string)'></a>
+
+## ICisMessagingKafkaBuilder.AddProducerAvro<TTopicMarker>(string) Method
+
+Přidání producerů do pipeline Kafky pro AVRO.
+
+```csharp
+CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder AddProducerAvro<TTopicMarker>(string topic)
     where TTopicMarker : class, Avro.Specific.ISpecificRecord;
 ```
 #### Type parameters
 
-<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddProducers_TTopicMarker_(string).TTopicMarker'></a>
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddProducerAvro_TTopicMarker_(string).TTopicMarker'></a>
 
 `TTopicMarker`
 
 Marker interface označující všechny producery, kteří patří do skupiny daného topicu.
 #### Parameters
 
-<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddProducers_TTopicMarker_(string).topic'></a>
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddProducerAvro_TTopicMarker_(string).topic'></a>
+
+`topic` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+Název topicu do kterého se budou posílat zprávy.
+
+#### Returns
+[ICisMessagingKafkaBuilder](CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.md 'CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder')
+
+### Remarks
+Každý producer musí implementovat interface TTopicMarker, metoda ho díky tomu sama najde a přidá do pipeline.
+
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddProducerJson_TTopicMarker_(string)'></a>
+
+## ICisMessagingKafkaBuilder.AddProducerJson<TTopicMarker>(string) Method
+
+Přidání producerů do pipeline Kafky pro JSON.
+
+```csharp
+CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder AddProducerJson<TTopicMarker>(string topic)
+    where TTopicMarker : class;
+```
+#### Type parameters
+
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddProducerJson_TTopicMarker_(string).TTopicMarker'></a>
+
+`TTopicMarker`
+
+Marker interface označující všechny producery, kteří patří do skupiny daného topicu.
+#### Parameters
+
+<a name='CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddProducerJson_TTopicMarker_(string).topic'></a>
 
 `topic` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
 

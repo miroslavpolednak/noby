@@ -6,6 +6,7 @@ import "google/protobuf/empty.proto";
 import "Messages/CustomerOnSA.proto";
 import "Messages/CreateCustomer.proto";
 import "Messages/GetCustomer.proto";
+import "Messages/GetCustomersByIdentity.proto";
 import "Messages/GetCustomerList.proto";
 import "Messages/UpdateCustomer.proto";
 import "Messages/CreateIncome.proto";
@@ -32,6 +33,9 @@ service CustomerOnSAService {
 	
 	// get single
 	rpc GetCustomer (GetCustomerRequest) returns (CustomerOnSA);
+	
+	// get by identity
+	rpc GetCustomersByIdentity (GetCustomersByIdentityRequest) returns (GetCustomersByIdentityResponse);
 	
 	// get list
 	rpc GetCustomerList (GetCustomerListRequest) returns (GetCustomerListResponse);

@@ -53,7 +53,7 @@ internal sealed class SendToCmpHandler
         // check flow switches
         var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
         if (saCategory.SalesArrangementCategory == 1
-            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.FlowSwitch1))
+            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed))
         {
             throw new NobyValidationException(90016);
         }
@@ -78,7 +78,17 @@ internal sealed class SendToCmpHandler
         }
 
         // odeslat do SB
-        await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+        try
+        {
+            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+        }
+        catch when (saCategory.SalesArrangementCategory == 1)
+        {
+            //CaseState rollback
+            await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InProgress, cancellationToken);
+
+            throw;
+        }
     }
 
     private async Task ValidateSalesArrangement(int salesArrangementId, bool ignoreWarnings, CancellationToken cancellationToken)

@@ -6,6 +6,8 @@ using NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
 using System.Net.Mime;
 using NOBY.Api.Endpoints.DocumentOnSA.Search;
+using DomainServices.SalesArrangementService.Contracts;
+using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -53,9 +55,8 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<StartSigningResponse> StartSigning(
          [FromRoute] int salesArrangementId,
-         [FromBody] StartSigningRequest request,
-         CancellationToken cancellationToken)
-    => await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId), cancellationToken);
+         [FromBody] StartSigningRequest request)
+    => await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
 
     /// <summary>
     /// Zrušit podepisování dokumentu
@@ -73,9 +74,8 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task StopSigning(
         [FromRoute] int salesArrangementId,
-        [FromRoute] int documentOnSAId,
-        CancellationToken cancellationToken)
-    => await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId), cancellationToken);
+        [FromRoute] int documentOnSAId)
+    => await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId));
 
     /// <summary>
     /// Manuální podpis DocumentOnSA
@@ -91,9 +91,8 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task SignDocumentManually(
         [FromRoute] int salesArrangementId,
-        [FromRoute] int documentOnSAId,
-        CancellationToken cancellationToken)
-     => await _mediator.Send(new SignDocumentManuallyRequest(salesArrangementId, documentOnSAId), cancellationToken);
+        [FromRoute] int documentOnSAId)
+     => await _mediator.Send(new SignDocumentManuallyRequest(salesArrangementId, documentOnSAId));
 
     /// <summary>
     /// Vygenerování dokumentu z uložených dat dokumentu na sales arrangementu příp. z archivu
@@ -110,13 +109,32 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocumentOnSa(
-        [FromRoute] int salesArrangementId, 
-        [FromRoute] int documentOnSAId, 
+        [FromRoute] int salesArrangementId,
+        [FromRoute] int documentOnSAId,
         CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(new GetDocumentOnSADataRequest(salesArrangementId, documentOnSAId), cancellationToken);
         return File(response.FileData, response.ContentType, response.Filename);
     }
+
+    /// <summary>
+    /// Detail podepisovaného dokumentu
+    /// </summary>
+    /// <remarks>
+    /// Vrátí informace o podepisovaném dokumentu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FA259E3F-5B8D-4ade-9F1A-7C1A943F1029"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId"></param>
+    /// <param name="documentOnSAId"></param>
+    [HttpGet("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}")]
+    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetDocumentOnSADetailResponse> GetDocumentOnSaDetail(
+        [FromRoute] int salesArrangementId,
+        [FromRoute] int documentOnSAId,
+        CancellationToken cancellationToken)
+    => await _mediator.Send(new GetDocumentOnSADetailRequest(salesArrangementId, documentOnSAId), cancellationToken);
 
     /// <summary>
     /// Vyhledání dokumentů na základě hlavního hesla (eArchivu)
@@ -134,14 +152,16 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SearchDocumentsOnSa(
              [FromRoute] int salesArrangementId,
-             [FromBody] SearchRequest request,
-             CancellationToken cancellationToken)
+             [FromBody] SearchRequest request)
     {
-        var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId), cancellationToken);
+        var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
 
         if (result.FormIds is null || !result.FormIds.Any())
             return NoContent();
 
         return Ok(result);
     }
+
+
+
 }
