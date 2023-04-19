@@ -70,26 +70,38 @@ public enum FlowSwitches
 ```
 ### Fields
 
-<a name='CIS.Foms.Enums.FlowSwitches.FlowSwitch1'></a>
+<a name='CIS.Foms.Enums.FlowSwitches.CustomerIdentifiedOnCodebtorHousehold'></a>
 
-`FlowSwitch1` 1
+`CustomerIdentifiedOnCodebtorHousehold` 3
+
+Identifikovaní klienti na spolužadatelské domácnosti
+
+<a name='CIS.Foms.Enums.FlowSwitches.CustomerIdentifiedOnMainHousehold'></a>
+
+`CustomerIdentifiedOnMainHousehold` 2
+
+Identifikovaní klienti na hlavní domácnosti
+
+<a name='CIS.Foms.Enums.FlowSwitches.IsOfferGuaranteed'></a>
+
+`IsOfferGuaranteed` 1
 
 Nabídka s platnou garancí
 
-<a name='CIS.Foms.Enums.FlowSwitches.FlowSwitch2'></a>
+<a name='CIS.Foms.Enums.FlowSwitches.ParametersSavedAtLeastOnce'></a>
 
-`FlowSwitch2` 2
+`ParametersSavedAtLeastOnce` 6
 
-Požadavek na IC
+Došlo k uložení parametrů na žádosti
 
-<a name='CIS.Foms.Enums.FlowSwitches.FlowSwitch3'></a>
+<a name='CIS.Foms.Enums.FlowSwitches.Was3601MainChangedAfterSigning'></a>
 
-`FlowSwitch3` 3
+`Was3601MainChangedAfterSigning` 4
 
-Alespoň jeden příjem na hlavní domácnosti
+3601 pro hlavní domácnost byla změněna po podpisu
 
-<a name='CIS.Foms.Enums.FlowSwitches.FlowSwitch4'></a>
+<a name='CIS.Foms.Enums.FlowSwitches.Was3602CodebtorChangedAfterSigning'></a>
 
-`FlowSwitch4` 4
+`Was3602CodebtorChangedAfterSigning` 5
 
-Alespoň jeden příjem na spoludlužnícké domácnosti
+3602 pro spoludlužnickou domácnost byla změněna po podpisu
