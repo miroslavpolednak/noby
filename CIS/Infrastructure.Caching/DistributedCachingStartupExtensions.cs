@@ -71,9 +71,12 @@ public static class DistributedCachingStartupExtensions
     /// </summary>
     private static string getConnectionString(WebApplicationBuilder builder)
     {
-        return builder.Configuration
-            .GetConnectionString(CacheConnectionStringKey)
-            ?? throw new Core.Exceptions.CisConfigurationNotFound($"{CacheConnectionStringKey} connection string not found");
+        var cs = builder.Configuration.GetConnectionString(CacheConnectionStringKey);
+        if (string.IsNullOrEmpty(cs)) 
+        {
+            throw new Core.Exceptions.CisConfigurationNotFound($"{CacheConnectionStringKey} connection string not found");
+        }
+        return cs;
     }
 
     /// <summary>
