@@ -15,6 +15,9 @@ internal sealed class UpdateCustomersHandler
         // zkontrolovat, zda neni customer jiz v jine domacnosti
         await checkDoubledCustomers(householdInstance.SalesArrangementId, request, cancellationToken);
 
+        // kolekce flow switches, kterou na konci ulozime na SA
+        var flowSwitchesToSet = new List<DomainServices.SalesArrangementService.Contracts.FlowSwitch>();
+
         var c1 = await crudCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken);
         var c2 = await crudCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken);
 
@@ -30,6 +33,39 @@ internal sealed class UpdateCustomersHandler
             {
                 await _documentOnSAService.StopSigning(document.DocumentOnSAId!.Value, cancellationToken);
             }
+
+            // HFICH-4165
+            switch (householdInstance.HouseholdTypeId)
+            {
+                case (int)HouseholdTypes.Main:
+                    flowSwitchesToSet.Add(new() { FlowSwitchId = (int)FlowSwitches.Was3601MainChangedAfterSigning, Value = true });
+
+                    // HFICH-5396
+                    flowSwitchesToSet.Add(new() 
+                    { 
+                        FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnMainHousehold, 
+                        Value = c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false
+                    });
+                    break;
+                case (int)HouseholdTypes.Codebtor:
+                    flowSwitchesToSet.Add(new() { FlowSwitchId = (int)FlowSwitches.Was3602CodebtorChangedAfterSigning, Value = true });
+
+                    // HFICH-5396
+                    flowSwitchesToSet.Add(new()
+                    {
+                        FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnCodebtorHousehold,
+                        Value = c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false
+                    });
+                    break;
+                default:
+                    throw new NobyValidationException("Unsupported HouseholdType");
+            }
+        }
+
+        // pokud jsou nejake flow switches k nastaveni
+        if (flowSwitchesToSet.Any())
+        {
+            await _salesArrangementService.SetFlowSwitches(householdInstance.SalesArrangementId, flowSwitchesToSet, cancellationToken);
         }
 
         return new UpdateCustomersResponse
@@ -123,15 +159,17 @@ internal sealed class UpdateCustomersHandler
     private readonly DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
 
     public UpdateCustomersHandler(
         IHouseholdServiceClient householdService,
         ICustomerOnSAServiceClient customerOnSAService,
-        DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSAService
-        )
+        DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSAService,
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;
         _documentOnSAService = documentOnSAService;
+        _salesArrangementService = salesArrangementService;
     }
 }
