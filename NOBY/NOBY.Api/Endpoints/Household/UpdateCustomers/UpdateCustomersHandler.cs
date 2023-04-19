@@ -4,7 +4,6 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using __SA = DomainServices.SalesArrangementService.Contracts;
 using __HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.CustomerService.Clients;
 #endregion usings
