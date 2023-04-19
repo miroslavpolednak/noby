@@ -44,7 +44,6 @@ public class WebApplicationFactoryFixture<TStartup> : WebApplicationFactory<TSta
         return (TService)Activator.CreateInstance(typeof(TService), new object[] { invoker })!;
     }
 
-
     public WebApplicationFactoryFixture<TStartup> ConfigureCisTestOptions(Action<CisWebApplicationFactoryOptions>? options)
     {
         options?.Invoke(CisWebFactoryConfiguration);
@@ -86,14 +85,13 @@ public class WebApplicationFactoryFixture<TStartup> : WebApplicationFactory<TSta
 
                 services.RemoveAll<ICisEnvironmentConfiguration>().AddSingleton<ICisEnvironmentConfiguration>(cisEnvConfiguration!);
             }
-           
+
             // fake logger
             if (CisWebFactoryConfiguration.UseNullLogger)
                 services.RemoveAll<ILoggerFactory>().AddSingleton<ILoggerFactory, NullLoggerFactory>();
 
             if (CisWebFactoryConfiguration.UseDbContextAutoMock)
                 AutoMockDbContexts(services);
-
 
             _configureServices?.Invoke(services);
         });
