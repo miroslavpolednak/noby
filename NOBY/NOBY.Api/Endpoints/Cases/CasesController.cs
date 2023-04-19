@@ -1,4 +1,7 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using System.ComponentModel.DataAnnotations;
+using DomainServices.CaseService.Contracts;
+using NOBY.Api.Endpoints.Cases.UpdateTaskDetail;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Cases;
 
@@ -117,6 +120,38 @@ public class CasesController : ControllerBase
     public async Task<GetTaskList.GetTaskListResponse> GetTaskList([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetTaskList.GetTaskListRequest(caseId), cancellationToken);
 
+    /// <summary>
+    /// Detail workflow tasku dotažený ze SB.
+    /// </summary>
+    /// <remarks>
+    /// Detail workflow tasku dotažený ze SB. <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&o=90CD722E-8955-43e6-9924-DC5FDDF6ED15"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <returns></returns>
+    [HttpGet("{caseId:long}/tasks/{taskId:long}")]
+    [Produces("application/json")]
+    [SwaggerOperation(OperationId = "getTaskDetail", Tags = new[] { "Case" })]
+    [ProducesResponseType(typeof(GetTaskDetailResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetTaskDetail.GetTaskDetailResponse> GetTaskDetail([FromRoute] long caseId, [FromRoute] long taskId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetTaskDetail.GetTaskDetailRequest(caseId, taskId), cancellationToken);
+    
+    /// <summary>
+    /// Update workflow tasku do SB
+    /// </summary>
+    /// <remarks>
+    /// Update workflow tasku do SB. <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <returns></returns>
+    [HttpGet("{caseId:long}/tasks/{taskId:int}")]
+    [Produces("application/json")]
+    [SwaggerOperation(OperationId = "taskDetailUpdate", Tags = new[] { "Case" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task UpdateTaskDetail([FromRoute] long caseId, [FromRoute] long taskId, [FromBody] UpdateTaskDetailRequest? request,CancellationToken cancellationToken)
+        => await _mediator.Send(request?.InfuseIds(caseId, taskId) ?? throw new NobyValidationException("Payload is empty"), cancellationToken);
+    
     /// <summary>
     /// Parametry Case-u.
     /// </summary>
