@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Exceptions;
+using CIS.Testing;
 using DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
 
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests;

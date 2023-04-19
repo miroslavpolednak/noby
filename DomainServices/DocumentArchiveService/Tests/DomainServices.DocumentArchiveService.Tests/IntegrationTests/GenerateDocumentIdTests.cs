@@ -1,4 +1,5 @@
-﻿using DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
+﻿using CIS.Testing;
+using DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
 using NSubstitute;
 
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests;

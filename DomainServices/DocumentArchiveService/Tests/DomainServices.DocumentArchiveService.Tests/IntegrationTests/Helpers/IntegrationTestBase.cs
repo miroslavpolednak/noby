@@ -1,7 +1,5 @@
-﻿using DomainServices.UserService.Contracts;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using _CIS = CIS.Infrastructure.gRPC.CisTypes;
 using static DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService;
 using DomainServices.DocumentArchiveService.Api.Database.Entities;
 using DomainServices.DocumentArchiveService.Api.Database.Repositories;
@@ -12,9 +10,8 @@ using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Clients;
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Repositories;
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.EntityFrameworkCore;
-using DomainServices.DocumentArchiveService.Api.Database;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using CIS.Testing;
+using DomainServices.UserService.Clients.Services;
 
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
 
@@ -22,14 +19,12 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
 {
     //Mocks
     internal IDocumentSequenceRepository DocumentSequenceRepository { get; }
-    internal IUserServiceClient UserServiceClient { get; }
 
     public IntegrationTestBase(WebApplicationFactoryFixture<Program> fixture)
     {
         Fixture = fixture;
 
         DocumentSequenceRepository = Substitute.For<IDocumentSequenceRepository>();
-        UserServiceClient = Substitute.For<IUserServiceClient>();
 
         ConfigureWebHost();
 
@@ -41,6 +36,46 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
     protected DocumentArchiveServiceClient CreateGrpcClient()
     {
         return Fixture.CreateGrpcClient<DocumentArchiveServiceClient>();
+    }
+
+    private void ConfigureWebHost()
+    {
+        Fixture
+        // This configuration is optional, everything is set correctly by default.
+       .ConfigureCisTestOptions(options =>
+       {
+           // If you set this property to false, you have to manually register in memory database, if you don't do it, regular database gonna be used and this is terrible wrong.  
+           // Example of how to do it manually is shown below
+           options.UseDbContextAutoMock = true; // default
+           options.UseNullLogger = true; // default
+           options.UseNobyAuthenticationHeader = true; // default
+           // Example of custom header, it is necessary create new instance  
+           options.Header = new() { { "test", "Test" } }; // default is null
+       })
+       .ConfigureServices(services =>
+       {
+           // This mock is necessary for mock of service discovery
+           services.RemoveAll<IUserServiceClient>().AddSingleton<IUserServiceClient, MockUserService>();
+
+           // Use exist mock of sdf 
+           services.RemoveAll<ISdfClient>().AddSingleton<ISdfClient, MockSdfClient>();
+
+           // Use exist mock of Tcp
+           services.RemoveAll<IDocumentServiceRepository>().AddSingleton<IDocumentServiceRepository, MockDocumentServiceRepository>();
+           services.RemoveAll<ITcpClient>().AddSingleton<ITcpClient, TcpClientMock>();
+
+           // mock dapper call repository
+           services.RemoveAll<IDocumentSequenceRepository>().AddSingleton(DocumentSequenceRepository);
+
+           // Example of manual register of db context with inmemory database
+           //var dbName = Guid.NewGuid().ToString();// unique db name for every test class
+           //services.RemoveAll<DbContextOptions<DocumentArchiveDbContext>>()
+           //      .AddDbContext<DocumentArchiveDbContext>(options =>
+           //      {
+           //          options.UseInMemoryDatabase(dbName);
+           //          options.ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+           //      });
+       });
     }
 
     protected DocumentInterface CreateDocumentInterfaceEntity(
@@ -77,62 +112,8 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         };
     }
 
-    protected static User CreateUser(
-        int id = 3048,
-        string czechIdentificationNumber = "12345678",
-        string fullName = "Filip Tůma",
-        string CPM = "99614w",
-        string identity = """{ "identity": "990614w", "identityScheme": "Mpad" }""",
-        _CIS.UserIdentity.Types.UserIdentitySchemes dentityScheme = _CIS.UserIdentity.Types.UserIdentitySchemes.Mpad
-        )
-    {
-        var user = new User
-        {
-            Id = id,
-            CzechIdentificationNumber = czechIdentificationNumber,
-            FullName = fullName,
-            CPM = CPM,
-        };
-
-        user.UserIdentifiers.Add(new _CIS.UserIdentity
-        {
-            Identity = identity,
-            IdentityScheme = dentityScheme
-
-        });
-        return user;
-    }
-
-    private void ConfigureWebHost()
-    {
-        Fixture
-       .ConfigureServices(services =>
-        {
-            // Use exist mock of sdf 
-            services.RemoveAll<ISdfClient>().AddSingleton<ISdfClient, MockSdfClient>();
-
-            // Use exist mock of Tcp
-            services.RemoveAll<IDocumentServiceRepository>().AddSingleton<IDocumentServiceRepository, MockDocumentServiceRepository>();
-            services.RemoveAll<ITcpClient>().AddSingleton<ITcpClient, TcpClientMock>();
-
-            // mock dapper call repository
-            services.RemoveAll<IDocumentSequenceRepository>().AddSingleton(DocumentSequenceRepository);
-
-            // Mock of grpc call to other grpc services
-            services.RemoveAll<IUserServiceClient>().AddSingleton(UserServiceClient);
-
-            var dbName = Guid.NewGuid().ToString();// unique db name for every test class
-            services.RemoveAll<DbContextOptions<DocumentArchiveDbContext>>()
-                  .AddDbContext<DocumentArchiveDbContext>(options =>
-                  {
-                      options.UseInMemoryDatabase(dbName);
-                      options.ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-                  });
-        });
-    }
     private void CreateGlobalMocks()
     {
-        var user = CreateUser();
-        UserServiceClient.GetUser(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(user);
+       // Some global mocks
     }
 }

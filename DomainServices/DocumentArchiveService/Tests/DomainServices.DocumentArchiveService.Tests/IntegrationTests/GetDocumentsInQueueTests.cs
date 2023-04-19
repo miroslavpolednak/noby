@@ -1,4 +1,5 @@
-﻿using DomainServices.DocumentArchiveService.Api.Database;
+﻿using CIS.Testing;
+using DomainServices.DocumentArchiveService.Api.Database;
 using DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 
