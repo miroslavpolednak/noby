@@ -1,9 +1,12 @@
-﻿using DomainServices.CustomerService.Clients;
+﻿using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Contracts.v1;
+using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using Google.Protobuf;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
 
@@ -15,7 +18,7 @@ internal sealed class CreateCustomerHandler
         var model = new CreateCustomerResponse();
 
         // check existing SalesArrangementId
-        await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+        var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         var entity = new Database.Entities.CustomerOnSA
         {
@@ -76,6 +79,13 @@ internal sealed class CreateCustomerHandler
         // ulozit do DB
         _dbContext.Customers.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        // update case detailu
+        if (kbIdentity is not null && entity.CustomerRoleId == CustomerRoles.Debtor)
+        {
+            await updateCase(salesArrangement.CaseId, entity, cancellationToken);
+        }
+
         model.CustomerOnSAId = entity.CustomerOnSAId;
 
         _logger.EntityCreated(nameof(Database.Entities.CustomerOnSA), entity.CustomerOnSAId);
@@ -92,6 +102,19 @@ internal sealed class CreateCustomerHandler
         return model;
     }
 
+    private async Task updateCase(long caseId, Database.Entities.CustomerOnSA entity, CancellationToken cancellationToken)
+    {
+        // update case service
+        await _caseService.UpdateCustomerData(caseId, new CaseService.Contracts.CustomerData
+        {
+            DateOfBirthNaturalPerson = entity.DateOfBirthNaturalPerson,
+            FirstNameNaturalPerson = entity.FirstNameNaturalPerson,
+            Name = entity.Name,
+            Identity = new CIS.Infrastructure.gRPC.CisTypes.Identity(entity.Identities![0].IdentityId, entity.Identities[0].IdentityScheme)
+        }, cancellationToken);
+    }
+
+    private readonly ICaseServiceClient _caseService;
     private readonly SulmService.ISulmClientHelper _sulmClient;
     private readonly ICustomerServiceClient _customerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -104,9 +127,11 @@ internal sealed class CreateCustomerHandler
         ISalesArrangementServiceClient salesArrangementService,
         SulmService.ISulmClientHelper sulmClient,
         UpdateCustomerService updateService,
+        ICaseServiceClient caseService,
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateCustomerHandler> logger)
     {
+        _caseService = caseService;
         _customerService = customerService;
         _salesArrangementService = salesArrangementService;
         _sulmClient = sulmClient;

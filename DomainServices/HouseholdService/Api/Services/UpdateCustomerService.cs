@@ -1,5 +1,4 @@
-﻿using DomainServices.CaseService.Clients;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using ExternalServices.Eas.V1;
 
@@ -37,25 +36,22 @@ internal sealed class UpdateCustomerService
             {
                 CustomerOnSAId = entity.CustomerOnSAId,
                 IdentityId = id.Value,
-                IdentityScheme = CIS.Foms.Enums.IdentitySchemes.Mp,
+                IdentityScheme = IdentitySchemes.Mp,
             });
         }
     }
 
     private readonly ICodebookServiceClients _codebookService;
-    private readonly ICaseServiceClient _caseService;
     private readonly ICustomerServiceClient _customerService;
     private readonly IEasClient _easClient;
 
     public UpdateCustomerService(
         IEasClient easClient,
-        ICaseServiceClient caseService,
         ICustomerServiceClient customerService,
         ICodebookServiceClients codebookService)
     {
         _codebookService = codebookService;
         _easClient = easClient;
-        _caseService = caseService;
         _customerService = customerService;
     }
 }
