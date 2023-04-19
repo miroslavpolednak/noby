@@ -1292,22 +1292,22 @@
             </summary>
             <returns>SalesArrangementId from DocumentOnSa for FormId</returns>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation.Guid">
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.Guid">
             <summary>
             GUID dokumentu v dočasném úložišti
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation.FileName">
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.FileName">
             <summary>
             Jméno souboru
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation.EaCodeMainId">
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.EaCodeMainId">
             <summary>
             Id EA kódu
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation.Description">
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.Description">
             <summary>
             Popis dokumentu
             </summary>
