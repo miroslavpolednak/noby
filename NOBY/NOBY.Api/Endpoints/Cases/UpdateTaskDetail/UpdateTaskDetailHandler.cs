@@ -31,8 +31,8 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
                     CaseId = request.CaseId,
                     ContractNumber = caseDetail.Data.ContractNumber,
                     Completeness = 0,
-                    Description = attachment.Description,
-                    Filename = attachment.FileName,
+                    Description = attachment.DocumentInformation.Description,
+                    Filename = attachment.DocumentInformation.FileName,
                     Priority = "",
                     Status = "",
                     CreatedOn = DateTime.Now,
@@ -46,7 +46,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
                     AuthorUserLogin = "",
                     FolderDocumentId = "",
                     PledgeAgreementNumber = "",
-                    EaCodeMainId = attachment.EaCodeMainId
+                    EaCodeMainId = attachment.DocumentInformation.EaCodeMainId
                 },
                 NotifyStarBuild = false
             }, cancellationToken);
