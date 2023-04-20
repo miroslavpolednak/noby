@@ -64,14 +64,14 @@ def test_sms_sb(url_name,  auth_params, auth, json_data):
     assert notification_id != ""
 
 
-#TODO: dořešit assert. je to dle https://wiki.kb.cz/pages/viewpage.action?pageId=507386569 Text auditního logu - to nesmí být v events
+#TODO: dořešit hlášku, když True je False a obráceně
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("custom_id, json_data, expected_results", [
-    ("loguji", json_req_sms_logovani, greater_than_zero),
-    ("neloguji", json_req_sms_bez_logovani, 0)
+@pytest.mark.parametrize("custom_id, json_data, expected_result", [
+    ("loguji", json_req_sms_logovani, True),
+    ("neloguji", json_req_sms_bez_logovani, False)
 ])
-def test_sms_log(url_name,  auth_params, auth, custom_id, json_data, expected_results, authenticated_seqlog_session):
+def test_sms_log(url_name,  auth_params, auth, custom_id, json_data, expected_result, authenticated_seqlog_session):
     """test logovani - zalogujeme, nezalogujeme do seq"""
 
     username = auth[0]
@@ -107,12 +107,14 @@ def test_sms_log(url_name,  auth_params, auth, custom_id, json_data, expected_re
     print(resp.json())
 
     events = resp.json()['Events']
-    if callable(expected_results):
-        assert expected_results(
-            len(events)), f"Očekávaná podmínka nebyla splněna: počet položek je {len(events)}, ale měl být větší než 0"
+    if expected_result:
+        assert any(
+            any(prop["Name"] == "SmsType" for prop in event["Properties"]) for event in
+            events if "Properties" in event), f"Failed for custom_id: {custom_id}"
     else:
-        assert len(
-            events) == expected_results, f"Očekávaný počet položek se neshoduje: {len(events)} != {expected_results}"
+        assert all(
+            not any(prop["Name"] == "SmsType" for prop in event["Properties"]) for event in
+            events if "Properties" in event), f"Failed for custom_id: {custom_id}"
 
 
 @pytest.mark.parametrize("url_name", ["dev_url", "uat_url"])
