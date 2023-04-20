@@ -6,6 +6,7 @@ import pytest
 import requests
 
 from ..conftest import URLS, greater_than_zero
+from ..json.request.seg_log import json_req_basic_log
 from ..json.request.sms_json import json_req_sms_basic, json_req_sms_basic_full, json_req_sms_basic_epsy, \
     json_req_sms_basic_insg, json_req_sms_bez_logovani, json_req_sms_logovani, json_req_sms_sb, json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
@@ -101,20 +102,23 @@ def test_sms_log(url_name,  auth_params, auth, custom_id, json_data, expected_re
 
     resp = authenticated_seqlog_session.post(
         url,
-        json={"Title": "New Signal", "Description": None, "Filters": [], "Columns": [], "IsWatched": False, "Id": None,
-              "Grouping": "Inferred", "ExplicitGroupName": None, "OwnerId": "user-admin",
-              "Links": {"Create": "api/signals/"}})
+        json=json_req_basic_log
+    )
     print(resp.json())
 
     events = resp.json()['Events']
+    result = any(
+        any(prop["Name"] == "SmsType" for prop in event["Properties"]) for event in
+        events if "Properties" in event)
+
     if expected_result:
         assert any(
             any(prop["Name"] == "SmsType" for prop in event["Properties"]) for event in
-            events if "Properties" in event), f"Failed for custom_id: {custom_id}"
+            events if "Properties" in event), f"Failed for custom_id: {custom_id}. Expected: {expected_result}, Got: {result}"
     else:
         assert all(
             not any(prop["Name"] == "SmsType" for prop in event["Properties"]) for event in
-            events if "Properties" in event), f"Failed for custom_id: {custom_id}"
+            events if "Properties" in event), f"Failed for custom_id: {custom_id}. Expected: {expected_result}, Got: {result}"
 
 
 @pytest.mark.parametrize("url_name", ["dev_url", "uat_url"])
