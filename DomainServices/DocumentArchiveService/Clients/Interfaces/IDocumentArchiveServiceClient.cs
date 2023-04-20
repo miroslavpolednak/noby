@@ -35,4 +35,9 @@ public interface IDocumentArchiveServiceClient
     /// Metoda slouží k získání seznamu dokumentů z lokálně uložené fronty dokumentů k odeslání nebo již odeslaných nebo dokumentů v chybových stavech
     /// </summary>
     Task<GetDocumentsInQueueResponse> GetDocumentsInQueue(GetDocumentsInQueueRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k nastavení stavu dokumentu ve frontě.
+    /// </summary>
+    Task SetDocumentStatusInQueue(SetDocumentStatusInQueueRequest request, CancellationToken cancellationToken = default);
 }
