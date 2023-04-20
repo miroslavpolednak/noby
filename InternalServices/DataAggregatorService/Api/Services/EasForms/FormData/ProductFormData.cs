@@ -3,6 +3,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest.ConditionalValues;
+using DomainServices.OfferService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
@@ -39,6 +40,8 @@ internal class ProductFormData : AggregatedData
     public long? MpIdentityId => GetMpIdentityId();
 
     public bool IsEmployeeBonusRequested => Offer.SimulationInputs.IsEmployeeBonusRequested == true;
+
+    public IEnumerable<ResultFee> OfferFees => Offer.AdditionalSimulationResults.Fees.Where(f => f.UsageText.Contains('F', StringComparison.InvariantCultureIgnoreCase));
 
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {

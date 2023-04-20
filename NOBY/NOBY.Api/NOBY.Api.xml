@@ -187,7 +187,19 @@
             Výše účelu v Kč
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.Type">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.TypeId">
+            <summary>
+            Id typu výpisů
+            </summary>
+            <example>2</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.TypeName">
+            <summary>
+            Způsob odběru výpisů
+            </summary>
+            <example>elektronicky</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.SubscriptionType">
             <summary>
             Způsob odběru výpisů
             </summary>
@@ -1698,14 +1710,29 @@
             <param name="householdId">ID domácnosti</param>
             <returns>CustomerOnSAId nalinkovanych customeru</returns>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.CustomerDto.LockedIncome">
+        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.Dto.CustomerDto.LockedIncome">
             <summary>
             Příznak zamknutí příjmů daného CustomerOnSA
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.CustomerDto.Identity">
+        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.Dto.CustomerDto.Identity">
             <summary>
             Identita klienta, pokud se ma zalozit novy CustomerOnSA
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.setFlowSwitches(System.Int32,System.Int32,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Nastavit flowSwitches na SalesArrangementu
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.checkDoubledCustomers(System.Int32,NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest,System.Threading.CancellationToken)">
+            <summary>
+            Kontrola zda nektery z customeru jiz nema pouzitou stejnou identitu
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.deleteRelationships(System.Int64,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Upravit relationship v KonsDb
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer1">

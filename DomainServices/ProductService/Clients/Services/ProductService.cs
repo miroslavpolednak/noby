@@ -50,14 +50,26 @@ internal class ProductService : IProductServiceClient
         await _service.UpdateMortgageAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task CreateContractRelationship(CreateContractRelationshipRequest request, CancellationToken cancellationToken = default)
+    public async Task CreateContractRelationship(long partnerId, long productId, int contractRelationshipTypeId, CancellationToken cancellationToken = default)
     {
-        await _service.CreateContractRelationshipAsync(request, cancellationToken: cancellationToken);
+        await _service.CreateContractRelationshipAsync(new CreateContractRelationshipRequest
+        {
+            ProductId = productId,
+            Relationship = new Relationship
+            {
+                ContractRelationshipTypeId = contractRelationshipTypeId,
+                PartnerId = partnerId
+            }
+        }, cancellationToken: cancellationToken);
     }
 
-    public async Task DeleteContractRelationship(DeleteContractRelationshipRequest request, CancellationToken cancellationToken = default)
+    public async Task DeleteContractRelationship(long partnerId, long productId, CancellationToken cancellationToken = default)
     {
-        await _service.DeleteContractRelationshipAsync(request, cancellationToken: cancellationToken);
+        await _service.DeleteContractRelationshipAsync(new DeleteContractRelationshipRequest
+        {
+            PartnerId = partnerId,
+            ProductId = productId,
+        }, cancellationToken: cancellationToken);
     }
 
     public async Task<GetCustomersOnProductResponse> GetCustomersOnProduct(long productId, CancellationToken cancellationToken = default)
