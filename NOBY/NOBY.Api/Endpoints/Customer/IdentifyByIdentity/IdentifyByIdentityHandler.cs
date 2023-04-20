@@ -4,7 +4,6 @@ using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CIS.Foms.Enums;
-using DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
@@ -48,6 +47,10 @@ internal sealed class IdentifyByIdentityHandler
         {
             var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers);
             await _mediator.Publish(notification, cancellationToken);
+        }
+        else // vytvoreni klienta v konsDb. Pro dluznika se to dela v notification, pro ostatni se to dubluje tady
+        {
+            await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResult.CustomerIdentifiers, cancellationToken);
         }
 
         // HFICH-5396
@@ -124,6 +127,7 @@ internal sealed class IdentifyByIdentityHandler
         return await _customerOnSAService.UpdateCustomer(modelToUpdate, cancellationToken);
     }
 
+    private readonly Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
     private readonly IHouseholdServiceClient _householdService;
     private readonly IMediator _mediator;
     private readonly ICustomerServiceClient _customerService;
@@ -132,11 +136,13 @@ internal sealed class IdentifyByIdentityHandler
 
     public IdentifyByIdentityHandler(
         IMediator mediator,
+        Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerServiceClient customerService,
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService)
     {
+        _createOrUpdateCustomerKonsDb = createOrUpdateCustomerKonsDb;
         _householdService = householdService;
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;

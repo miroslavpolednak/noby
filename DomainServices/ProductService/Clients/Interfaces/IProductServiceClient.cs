@@ -33,12 +33,12 @@ public interface IProductServiceClient
     /// <summary>
     /// Vytvoření vazby customer/product
     /// </summary>
-    Task CreateContractRelationship(CreateContractRelationshipRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task CreateContractRelationship(long partnerId, long productId, int contractRelationshipTypeId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Odstranění vazby customer/product
     /// </summary>
-    Task DeleteContractRelationship(DeleteContractRelationshipRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task DeleteContractRelationship(long partnerId, long productId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Seznam klientu k produktu z KonsDB

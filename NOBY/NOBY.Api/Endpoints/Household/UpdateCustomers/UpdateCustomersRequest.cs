@@ -11,12 +11,12 @@ public class UpdateCustomersRequest
     /// <summary>
     /// ID hlavniho frajera v domacnosti
     /// </summary>
-    public CustomerDto? Customer1 { get; set; }
+    public Dto.CustomerDto? Customer1 { get; set; }
 
     /// <summary>
     /// ID spoludluznika
     /// </summary>
-    public CustomerDto? Customer2 { get; set; }
+    public Dto.CustomerDto? Customer2 { get; set; }
 
     internal UpdateCustomersRequest InfuseId(int householdId)
     {
