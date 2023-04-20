@@ -373,6 +373,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00007-HFICH-5249_fixed_generalchange_document.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00007-HFICH-5249_fixed_generalchange_document.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00008-CMP_ICP_removed_mock.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00008-CMP_ICP_removed_mock.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00009-HFICH-5533_added_3601_document_missing_attributes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00009-HFICH-5533_added_3601_document_missing_attributes.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00010-Fixed_bad_offer_label.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00010-Fixed_bad_offer_label.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
