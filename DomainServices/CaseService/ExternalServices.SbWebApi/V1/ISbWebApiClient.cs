@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CaseStateChanged;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CreateTask;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
 
 namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
@@ -23,4 +24,9 @@ public interface ISbWebApiClient
     /// Získání podúkolů ze SB podle Task SB-ID.
     /// </summary>
     Task<FindTasksResponse> FindTasksByTaskId(FindByTaskIdRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// založení workflow úkolu
+    /// </summary>
+    Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken));
 }

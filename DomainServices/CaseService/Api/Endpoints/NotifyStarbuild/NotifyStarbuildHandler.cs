@@ -51,7 +51,7 @@ internal sealed class NotifyStarbuildHandler
         }
 
         //TODO login
-        var sbRequest = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest
+        var sbRequest = new ExternalServices.SbWebApi.Dto.CaseStateChanged.CaseStateChangedRequest
         {
             Login = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous",
             CaseId = caseInstance.CaseId,
