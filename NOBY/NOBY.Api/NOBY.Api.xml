@@ -1795,14 +1795,29 @@
             <param name="householdId">ID domácnosti</param>
             <returns>CustomerOnSAId nalinkovanych customeru</returns>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.CustomerDto.LockedIncome">
+        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.Dto.CustomerDto.LockedIncome">
             <summary>
             Příznak zamknutí příjmů daného CustomerOnSA
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.CustomerDto.Identity">
+        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.Dto.CustomerDto.Identity">
             <summary>
             Identita klienta, pokud se ma zalozit novy CustomerOnSA
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.setFlowSwitches(System.Int32,System.Int32,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Nastavit flowSwitches na SalesArrangementu
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.checkDoubledCustomers(System.Int32,NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest,System.Threading.CancellationToken)">
+            <summary>
+            Kontrola zda nektery z customeru jiz nema pouzitou stejnou identitu
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.deleteRelationships(System.Int64,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Upravit relationship v KonsDb
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer1">
@@ -3577,9 +3592,6 @@
             <example>CZK</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.ContractSignatureTypeId">
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.SalesArrangementSignatureTypeId">
             <example>1</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.Agent">

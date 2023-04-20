@@ -4,7 +4,7 @@ namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
 internal static class Extensions
 {
-    public static CustomerOnSABase ToDomainServiceRequest(this CustomerDto customer, CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime? lockedIncomeDateTime = null)
+    public static CustomerOnSABase ToDomainServiceRequest(this Dto.CustomerDto customer, CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime? lockedIncomeDateTime = null)
     {
         var model = new CustomerOnSABase
         {

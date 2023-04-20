@@ -200,22 +200,13 @@ internal sealed class SendToCmpHandler
             return;
         }
 
-        var createRequest = new CreateContractRelationshipRequest
+        var relationshipTypeId = (CustomerRoles)customerOnSa.Customer.CustomerRoleId switch
         {
-            ProductId = caseId,
-            Relationship = new Relationship
-            {
-                PartnerId = customerOnSa.IdentityMp.IdentityId,
-                ContractRelationshipTypeId = (CustomerRoles)customerOnSa.Customer.CustomerRoleId switch
-                {
-                    CustomerRoles.Debtor => 1,
-                    CustomerRoles.Codebtor => 2,
-                    _ => 0
-                }
-            }
+            CustomerRoles.Debtor => 1,
+            CustomerRoles.Codebtor => 2,
+            _ => 0
         };
-
-        await RunTaskAndIgnoreMpHomeErrors(_productService.CreateContractRelationship(createRequest, cancellationToken));
+        await RunTaskAndIgnoreMpHomeErrors(_productService.CreateContractRelationship(customerOnSa.IdentityMp.IdentityId, caseId, relationshipTypeId, cancellationToken));
 
         bool IdentityPredicate(Identity identity) => identity.IdentityId == customerOnSa.IdentityMp.IdentityId && identity.IdentityScheme == Identity.Types.IdentitySchemes.Mp;
     }
@@ -224,11 +215,7 @@ internal sealed class SendToCmpHandler
     {
         foreach (var redundantCustomerOnProduct in redundantCustomersOnProduct)
         {
-            await _productService.DeleteContractRelationship(new DeleteContractRelationshipRequest
-            {
-                PartnerId = redundantCustomerOnProduct.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId,
-                ProductId = caseId
-            }, cancellationToken);
+            await _productService.DeleteContractRelationship(redundantCustomerOnProduct.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId, caseId, cancellationToken);
         }
     }
 

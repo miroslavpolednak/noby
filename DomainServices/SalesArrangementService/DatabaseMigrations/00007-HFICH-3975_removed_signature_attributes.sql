@@ -1,0 +1,1 @@
+ALTER TABLE SalesArrangement DROP COLUMN FirstSignedDate, SalesArrangementSignatureTypeId
