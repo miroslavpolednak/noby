@@ -34,9 +34,10 @@ public static class DistributedCachingStartupExtensions
         WebApplicationBuilder builder, 
         ICisDistributedCacheConfiguration distributedCacheConfiguration)
     {
+        var cs = getConnectionString(builder);
         builder.Services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = getConnectionString(builder);
+            options.Configuration = cs;
             options.InstanceName = distributedCacheConfiguration.KeyPrefix + ":";
         });
 
@@ -45,9 +46,10 @@ public static class DistributedCachingStartupExtensions
 
     private static WebApplicationBuilder registerMsSql(WebApplicationBuilder builder)
     {
+        var cs = getConnectionString(builder);
         builder.Services.AddDistributedSqlServerCache(options =>
         {
-            options.ConnectionString = getConnectionString(builder);
+            options.ConnectionString = cs;
             options.SchemaName = "dbo";
             options.TableName = MsSqlCacheTableName;
         });

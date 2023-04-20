@@ -1718,7 +1718,7 @@
             Kontrola zda nektery z customeru jiz nema pouzitou stejnou identitu
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.changeRelationships(NOBY.Api.Endpoints.Household.UpdateCustomers.Dto.CrudResult,System.Int64,NOBY.Api.Endpoints.Household.UpdateCustomers.Dto.CustomerDto,CIS.Foms.Enums.CustomerRoles,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.deleteRelationships(System.Int64,System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Upravit relationship v KonsDb
             </summary>

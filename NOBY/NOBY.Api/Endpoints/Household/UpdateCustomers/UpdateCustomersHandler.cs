@@ -23,12 +23,10 @@ internal sealed class UpdateCustomersHandler
         var allCustomers = await checkDoubledCustomers(householdInstance.SalesArrangementId, request, cancellationToken);
 
         // process customer1
-        var c1 = await crudCustomer(request.Customer1, salesArrangement.SalesArrangementId, householdInstance.CustomerOnSAId1, CustomerRoles.Debtor, allCustomers, cancellationToken);
-        await changeRelationships(c1, salesArrangement.CaseId, request.Customer1, CustomerRoles.Debtor, cancellationToken);
+        var c1 = await crudCustomer(request.Customer1, salesArrangement.SalesArrangementId, salesArrangement.CaseId, householdInstance.CustomerOnSAId1, CustomerRoles.Debtor, allCustomers, cancellationToken);
     
         // process customer2
-        var c2 = await crudCustomer(request.Customer2, salesArrangement.SalesArrangementId, householdInstance.CustomerOnSAId2, CustomerRoles.Codebtor, allCustomers, cancellationToken);
-        await changeRelationships(c2, salesArrangement.CaseId, request.Customer2, CustomerRoles.Codebtor, cancellationToken);
+        var c2 = await crudCustomer(request.Customer2, salesArrangement.SalesArrangementId, salesArrangement.CaseId, householdInstance.CustomerOnSAId2, CustomerRoles.Codebtor, allCustomers, cancellationToken);
 
         // linkovani novych nebo zmenenych CustomerOnSAId na household
         if (householdInstance.CustomerOnSAId1 != c1.OnHouseholdCustomerOnSAId || householdInstance.CustomerOnSAId2 != c2.OnHouseholdCustomerOnSAId) 
@@ -134,6 +132,7 @@ internal sealed class UpdateCustomersHandler
     private async Task<Dto.CrudResult> crudCustomer(
         Dto.CustomerDto? customer,
         int salesArrangementId,
+        long caseId,
         int? customerOnSAId,
         CustomerRoles customerRole,
         List<__HO.CustomerOnSA> allCustomers,
@@ -143,24 +142,26 @@ internal sealed class UpdateCustomersHandler
         if (customer is null && customerOnSAId.HasValue)
         {
             await _customerOnSAService.DeleteCustomer(customerOnSAId.Value, cancellationToken: cancellationToken);
+            await deleteRelationships(caseId, getMpId(customerOnSAId.Value), cancellationToken);
 
-            return (new Dto.CrudResult(true)).SetDeleted(allCustomers, customerOnSAId.Value);
+            return new Dto.CrudResult(true);
         }
         else if (customer is not null)
         {
-            Dto.CrudResult result = new();
             bool customerIdChanged = customer.CustomerOnSAId != customerOnSAId && customerOnSAId.HasValue;
 
             // smazat existujiciho, je nahrazen novym
             if (customerIdChanged)
             {
                 await _customerOnSAService.DeleteCustomer(customerOnSAId!.Value, cancellationToken: cancellationToken);
-                result.SetDeleted(allCustomers, customerOnSAId!.Value);
+                await deleteRelationships(caseId, getMpId(customerOnSAId!.Value), cancellationToken);
             }
 
             // update stavajiciho
             if (customer.CustomerOnSAId.HasValue)
             {
+                var result = new Dto.CrudResult(customerIdChanged, customer.CustomerOnSAId.Value);
+                
                 try
                 {
                     var currentCustomerInstance = allCustomers.First(t => t.CustomerOnSAId == customer.CustomerOnSAId!.Value);
@@ -172,17 +173,15 @@ internal sealed class UpdateCustomersHandler
                         }, cancellationToken))
                         .CustomerIdentifiers;
 
-                    return new Dto.CrudResult(customerIdChanged, customer.CustomerOnSAId.Value)
-                    {
-                        Identities = identities
-                    };
+                    result.Identities = identities;
                 }
                 catch (CisArgumentException ex) when (ex.ExceptionCode == "16033")
                 {
                     // osetrena vyjimka, kdy je klient identifikovan KB identitou, ale nepodarilo se vytvorit identitu v MP
                     //TODO je otazka, jak se zde zachovat?
-                    return new Dto.CrudResult(customerIdChanged, customer.CustomerOnSAId.Value);
                 }
+
+                return result;
             }
             else // vytvoreni noveho
             {
@@ -193,66 +192,41 @@ internal sealed class UpdateCustomersHandler
                     Customer = customer.ToDomainServiceRequest()
                 }, cancellationToken);
 
-                return (new Dto.CrudResult(true, createResult.CustomerOnSAId)
+                return new Dto.CrudResult(true, createResult.CustomerOnSAId)
                 {
                     Identities = createResult.CustomerIdentifiers
-                }).SetCreated();
+                };
             }
         }
         else
         {
             return new Dto.CrudResult();
         }
+
+        long? getMpId(int customerOnSAId)
+        {
+            return allCustomers
+                .First(t => t.CustomerOnSAId == customerOnSAId)
+                .CustomerIdentifiers?
+                .FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)?
+                .IdentityId;
+        }
     }
 
     /// <summary>
     /// Upravit relationship v KonsDb
     /// </summary>
-    private async Task changeRelationships(Dto.CrudResult result, long caseId, Dto.CustomerDto? requestCustomer, CustomerRoles customerRole, CancellationToken cancellationToken)
+    private async Task deleteRelationships(long caseId, long? partnerId, CancellationToken cancellationToken)
     {
-        // smazat vazbu
-        if (result.DeletedPartnerId.HasValue)
+        if (!partnerId.HasValue) return;
+
+        try
         {
-            try
-            {
-                await _productService.DeleteContractRelationship(result.DeletedPartnerId.Value, caseId, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation($"Can not delete relationship for #{result.DeletedPartnerId} in Case {caseId}: {ex.Message}");
-            }
+            await _productService.DeleteContractRelationship(partnerId.Value, caseId, cancellationToken);
         }
-
-        // vytvorit vazbu
-        if (result.CreatedPartnerId.HasValue)
+        catch (Exception ex)
         {
-            try
-            {
-                var createRequest = new DomainServices.CustomerService.Contracts.CreateCustomerRequest
-                {
-                    NaturalPerson = new DomainServices.CustomerService.Contracts.NaturalPerson
-                    {
-                        FirstName = requestCustomer!.FirstName,
-                        LastName = requestCustomer.LastName,
-                        DateOfBirth = requestCustomer.DateOfBirth
-                    }
-                };
-                createRequest.Identities.AddRange(result.Identities);
-                await _customerService.CreateCustomer(createRequest, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation($"Can not create client for Case {caseId}: {ex.Message}");
-            }
-
-            try
-            {
-                await _productService.CreateContractRelationship(result.CreatedPartnerId.Value, caseId, customerRole == CustomerRoles.Debtor ? 1 : 2, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation($"Can not create relationship for #{result.DeletedPartnerId} in Case {caseId}: {ex.Message}");
-            }
+            _logger.LogInformation($"Can not delete relationship for #{partnerId} in Case {caseId}: {ex.Message}");
         }
     }
 
