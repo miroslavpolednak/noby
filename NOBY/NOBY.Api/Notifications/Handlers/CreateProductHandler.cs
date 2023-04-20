@@ -1,6 +1,5 @@
 ﻿using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using _Cu = DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
 using _Product = DomainServices.ProductService.Contracts;
@@ -40,41 +39,7 @@ internal sealed class CreateProductHandler
         var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken);
 
         // zjistit, zda existuje customer v konsDb
-        var kbIdentity = notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
-        _Cu.CustomerDetailResponse? konsDbCustomer = null;
-        try
-        {
-            //TODO rollbackovat i vytvoreni klienta?
-            konsDbCustomer = await _customerService.GetCustomerDetail(mpIdentity!, cancellationToken);
-        }
-        catch (CisNotFoundException) // klient nenalezen v konsDb
-        {
-        }
-
-        // klient nenalezen v konsDb, zaloz ho tam
-        if (konsDbCustomer is null)
-        {
-            try
-            {
-                await createClientInKonsDb(kbIdentity, mpIdentity!, cancellationToken);
-            }
-            catch 
-            {
-                _logger.LogError("MpDigi createClient failed");
-            }
-        }
-        // ma klient v konsDb KB identitu? pokud ne, tak ho updatuj
-        else if (konsDbCustomer.Identities.All(t => t.IdentityScheme != Identity.Types.IdentitySchemes.Kb))
-        {
-            try
-            {
-                await updateClientInKonsDb(mpIdentity!, kbIdentity, cancellationToken);
-            }
-            catch 
-            {
-                _logger.LogError("MpDigi updateClient failed");
-            }
-        }
+        await _createOrUpdateCustomerKonsDb.CreateOrUpdate(notification.CustomerIdentifiers, cancellationToken);
 
         // vytovrit produkt - musi se zalozit pred klientem!
         var request = new _Product.CreateMortgageRequest
@@ -88,61 +53,7 @@ internal sealed class CreateProductHandler
         _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
     }
 
-    private Task updateClientInKonsDb(Identity mpIdentity, Identity kbIdentity, CancellationToken cancellationToken)
-    {
-        var request = new _Cu.UpdateCustomerIdentifiersRequest
-        {
-            Mandant = Mandants.Mp,
-            CustomerIdentities = { mpIdentity, kbIdentity }
-        };
-
-        return _customerService.UpdateCustomerIdentifiers(request, cancellationToken);
-    }
-
-    private async Task createClientInKonsDb(Identity kbIdentity, Identity mpIdentity, CancellationToken cancellationToken)
-    {
-        // pokud neexistuje customer v konsDb, tak ho vytvor
-        var customerDetail = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
-
-        // zalozit noveho klienta
-        var request = new _Cu.CreateCustomerRequest
-        {
-            Identities =
-            {
-                mpIdentity,
-                kbIdentity
-            },
-            HardCreate = true,
-            NaturalPerson = customerDetail.NaturalPerson,
-            Mandant = Mandants.Mp
-        };
-
-        if (customerDetail.IdentificationDocument is not null)
-            request.IdentificationDocument = new _Cu.IdentificationDocument
-            {
-                IssuedBy = customerDetail.IdentificationDocument.IssuedBy,
-                IssuedOn = customerDetail.IdentificationDocument.IssuedOn,
-                IssuingCountryId = customerDetail.IdentificationDocument.IssuingCountryId,
-                Number = customerDetail.IdentificationDocument.Number,
-                RegisterPlace = customerDetail.IdentificationDocument.RegisterPlace,
-                IdentificationDocumentTypeId = customerDetail.IdentificationDocument.IdentificationDocumentTypeId,
-                ValidTo = customerDetail.IdentificationDocument.ValidTo
-            };
-        if (customerDetail.Addresses is not null && customerDetail.Addresses.Any())
-            request.Addresses.Add(customerDetail.Addresses.Where(x => x.AddressTypeId == 1).Select(x => new GrpcAddress
-            {
-                Street = x.Street,
-                City = x.City,
-                AddressTypeId = x.AddressTypeId,
-                HouseNumber = x.HouseNumber,
-                StreetNumber = x.StreetNumber,
-                EvidenceNumber = x.EvidenceNumber,
-                Postcode = x.Postcode
-            }));
-
-        await _customerService.CreateCustomer(request, cancellationToken);
-    }
-
+    private readonly Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
     private readonly IRollbackBag _bag;
     private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
     private readonly IOfferServiceClient _offerService;
@@ -151,6 +62,7 @@ internal sealed class CreateProductHandler
     private readonly ILogger<CreateProductHandler> _logger;
 
     public CreateProductHandler(
+        Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
         IRollbackBag bag,
         DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
         IOfferServiceClient offerService,
@@ -158,6 +70,7 @@ internal sealed class CreateProductHandler
         IProductServiceClient productService,
         ILogger<CreateProductHandler> logger)
     {
+        _createOrUpdateCustomerKonsDb = createOrUpdateCustomerKonsDb;
         _bag = bag;
         _customerService = customerService;
         _offerService = offerService;
