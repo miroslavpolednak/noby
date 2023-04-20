@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace NOBY.Infrastructure.Services.CreateOrUpdateCustomerKonsDb;
 
-[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.AsImplementedInterfacesServiceAttribute]
+[CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 public sealed class CreateOrUpdateCustomerKonsDbService
 {
     public async Task CreateOrUpdate(IEnumerable<Identity> identities, CancellationToken cancellationToken)
