@@ -12,3 +12,5 @@ public partial class GenerateDocumentIdRequest : IRequest<Contracts.GenerateDocu
 public partial class UploadDocumentRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest{ }
 
 public partial class GetDocumentsInQueueRequest : IRequest<GetDocumentsInQueueResponse>{ }
+
+public partial class SetDocumentStatusInQueueRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
