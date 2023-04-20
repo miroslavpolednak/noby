@@ -271,6 +271,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00003-HFICH-4866.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00004-validation_ignore_formid_list.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00004-validation_ignore_formid_list.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00005-HFICH-5270_ignore_businessid.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00005-HFICH-5270_ignore_businessid.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00006-json_ignore_max_date_error.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00006-json_ignore_max_date_error.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
@@ -289,7 +290,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{575507BC-3755-40BB-AC02-E7B8823C6F90}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql
-		DomainServices\CaseService\DatabaseMigrations\00002-HFICH-4757.sql = DomainServices\CaseService\DatabaseMigrations\00002-HFICH-4757.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
@@ -301,6 +301,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00005-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00005-WorkflowTaskStatesNoby_WorkflowProcessStatesNoby_seed.sql
 		DomainServices\CodebookService\DatabaseMigrations\00006-HFICH-5335_CustomerChange3602.sql = DomainServices\CodebookService\DatabaseMigrations\00006-HFICH-5335_CustomerChange3602.sql
 		DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5306_differences_confl_X_migrations.sql = DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5306_differences_confl_X_migrations.sql
+		DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5459.sql = DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5459.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -370,6 +371,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00006-document_text_align.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00006-document_text_align.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00007-HFICH-5249_fixed_generalchange_document.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00007-HFICH-5249_fixed_generalchange_document.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00008-CMP_ICP_removed_mock.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00008-CMP_ICP_removed_mock.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00009-HFICH-5533_added_3601_document_missing_attributes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00009-HFICH-5533_added_3601_document_missing_attributes.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00011-HFICH-5624_OfferFees.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00011-HFICH-5624_OfferFees.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
