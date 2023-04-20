@@ -1,73 +1,46 @@
-﻿using CIS.Core.Security;
-using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
-using NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto;
-using NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
+using NOBY.Api.Endpoints.Cases.Dto;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
 namespace NOBY.Api.Endpoints.Cases.GetTaskDetail;
 
 internal sealed class GetTaskDetailHandler : IRequestHandler<GetTaskDetailRequest, GetTaskDetailResponse>
 {
+    private readonly WorkflowMapper _mapper;
     private readonly ICaseServiceClient _caseService;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public async Task<GetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
     {
         var taskList = await _caseService.GetTaskList(request.CaseId, cancellationToken);
+        var task = taskList.FirstOrDefault(t => t.TaskId == request.TaskId) ?? throw new CisNotFoundException(0, "TODO");
 
-        var task = taskList.FirstOrDefault(t => t.TaskId == request.TaskId) 
-                   ?? throw new CisNotFoundException(0, "TODO");
+        var taskDetails = await _caseService.GetTaskDetail(task.TaskIdSb, cancellationToken);
+        var taskDetail = taskDetails.TaskDetails.FirstOrDefault(t => t.TaskObject.TaskId == task.TaskId)?.TaskDetail ?? throw new CisNotFoundException(0, "TODO");
 
-        // TODO
-        
+        var documentIds = taskDetail.TaskDocumentIds.ToHashSet();
         var documentListResponse = await _documentArchiveService.GetDocumentList(new DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest
         {
-            CaseId = request.CaseId,
-            ContractNumber = "",
-            CreatedOn = DateTime.Now,
-            OrderId = 0,
-            UserLogin = "",
-            AuthorUserLogin = "",
-            FolderDocumentId = "",
-            PledgeAgreementNumber = ""
+            CaseId = request.CaseId
         }, cancellationToken);
+
+        var taskDetailDto = await _mapper.Map(task, taskDetail, cancellationToken);
+        var taskDto = await _mapper.Map(task, cancellationToken);
         
         return new GetTaskDetailResponse
         {
-            TaskDetail = new WorkflowTaskDetail
-            {
-                TaskIdSB = task.TaskIdSb,
-                PerformerLogin = "",
-                PerformerName = "",
-                ProcessNameLong = "",
-                SentToCustomer = false,
-                OrderId = 0,
-                TaskCommunication = new List<TaskCommunicationItem>()
-            },
-            Task = new WorkflowTask
-            {
-                TaskId = task.TaskId,
-                CreatedOn = task.CreatedOn,
-                TaskTypeId = task.TaskTypeId,
-                TaskTypeName = task.TaskTypeName,
-                TaskSubtypeName = task.TaskSubtypeName,
-                ProcessId = task.ProcessId,
-                ProcessNameShort = task.ProcessNameShort,
-                // StateId = taskState.Id,
-                // StateName = taskState.Name,
-                // StateFilter = Enum.Parse<StateFilter>(taskState.Filter, true),
-                // StateIndicator = Enum.Parse<StateIndicator>(taskState.Indicator, true)
-            },
+            TaskDetail = taskDetailDto,
+            Task = taskDto,
             Documents = documentListResponse.Metadata
+                .Where(m => documentIds.Contains(m.DocumentId))
                 .Select(m => new DocumentsMetadata
                 {
                     DocumentId = m.DocumentId,
                     Description = m.Description,
                     CreatedOn = m.CreatedOn,
                     FileName = m.Filename,
-                    // UploadStatus = m.Status,
+                    UploadStatus =  UploadStatus.Ok, // TODO: https://jira.kb.cz/browse/HFICH-5592
                     EaCodeMainId = m.EaCodeMainId
                 })
                 .ToList()
@@ -75,12 +48,12 @@ internal sealed class GetTaskDetailHandler : IRequestHandler<GetTaskDetailReques
     }
     
     public GetTaskDetailHandler(
+        WorkflowMapper mapper,
         ICaseServiceClient caseService,
-        IDocumentArchiveServiceClient documentArchiveService,
-        ICurrentUserAccessor currentUserAccessor)
+        IDocumentArchiveServiceClient documentArchiveService)
     {
+        _mapper = mapper;
         _caseService = caseService;
         _documentArchiveService = documentArchiveService;
-        _currentUserAccessor = currentUserAccessor;
     }
 }
