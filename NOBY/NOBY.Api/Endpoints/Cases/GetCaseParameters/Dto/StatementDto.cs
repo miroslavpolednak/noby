@@ -2,11 +2,26 @@
 
 public sealed class StatementDto
 {
+    [Obsolete]
+    public string? Type { get; set; }
+
+    /// <summary>
+    /// Id typu výpisů
+    /// </summary>
+    /// <example>2</example>
+    public int? TypeId { get; set; }
+
     /// <summary>
     /// Způsob odběru výpisů
     /// </summary>
     /// <example>elektronicky</example>
-    public string? Type { get; set; }
+    public string? TypeName { get; set; }
+
+    /// <summary>
+    /// Způsob odběru výpisů
+    /// </summary>
+    /// <example>elektronicky</example>
+    public string? SubscriptionType { get; set; }
 
     /// <summary>
     /// Frekvence výpisů

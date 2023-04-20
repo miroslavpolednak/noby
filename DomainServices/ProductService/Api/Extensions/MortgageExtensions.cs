@@ -90,8 +90,9 @@ internal static class MortgageExtensions
             },
             Statement = new StatementObject
             {
-                Type = eLoan.HuVypisTyp,
-                Frequency = eLoan.HuVypisZodb,
+                TypeId = eLoan.HuVypisTyp,
+                SubscriptionTypeId = eLoan.HuVypisZodb,
+                FrequencyId = eLoan.HuVypisZodb,
                 EmailAddress1 = eLoan.VypisEmail1,
                 EmailAddress2 = eLoan.VypisEmail2
             }
