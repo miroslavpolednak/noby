@@ -10,6 +10,24 @@ public class CasesController : ControllerBase
     public CasesController(IMediator mediator) =>  _mediator = mediator;
 
     /// <summary>
+    /// Vytvoření nového workflow tasku do SB.
+    /// </summary>
+    /// <remarks>
+    /// Vytvoření nového workflow tasku do SB.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
+    [HttpPost("{caseId:long}/tasks")]
+    [Consumes("application/json")]
+    [Produces("text/plain")]
+    [SwaggerOperation(Tags = new[] { "Case" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<int> CreateTask([FromRoute] long caseId, [FromBody] CreateTask.CreateTaskRequest request)
+        => await _mediator.Send(request.InfuseId(caseId));
+
+    /// <summary>
     /// Vytvoření servisního SalesArrangement-u
     /// </summary>
     /// <remarks>

@@ -24,6 +24,7 @@ internal sealed class ErrorCodeMapper
     public const int CantDeleteCase = 13021;
     public const int TaskTypeIdIsEmpty = 13027;
     public const int ProcessIdIsEmpty = 13028;
+    public const int TaskTypeIdNotAllowed = 13029;
 
     public static IErrorCodesDictionary Init()
     {
@@ -47,7 +48,8 @@ internal sealed class ErrorCodeMapper
             { CaseStateNotAllowed, "Case state change not allowed" },
             { AuthenticatedUserNotFound, "Authenticated user has not been passed in auth headers" },
             { TaskTypeIdIsEmpty, "TaskTypeId must be > 0" },
-            { ProcessIdIsEmpty, "ProcessId must be > 0" }
+            { ProcessIdIsEmpty, "ProcessId must be > 0" },
+            { TaskTypeIdNotAllowed, "TaskTypeId is not allowed" }
         });
 
         return Messages;
