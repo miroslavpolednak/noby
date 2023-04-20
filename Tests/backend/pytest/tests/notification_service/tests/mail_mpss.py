@@ -1,3 +1,5 @@
+import itertools
+
 import pytest
 import requests
 
@@ -56,7 +58,7 @@ def test_mail_max_attachments(url_name,  auth_params, auth, json_data):
 
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_11_attachments])
+@pytest.mark.parametrize("json_data", json_req_mail_mpss_bad_11_attachments)
 def test_mail_11_attachments(url_name,  auth_params, auth, json_data):
     """max priloh klady test, ale MCS zařízne"""
 
@@ -94,12 +96,10 @@ def test_mail_negative(url_name,  auth_params, auth, json_data):
     assert resp.status_code == 400
 
 
-#pro testy zabezpeceni, jake sms jsou mozne odespilat pres urcite uzivatele - pouzita vnorena parametrizace
+# pro testy zabezpeceni, jake sms jsou mozne odespilat pres urcite uzivatele - pouzita vnorena parametrizace
 @pytest.mark.parametrize("url_name", ["dev_url"])
-@pytest.mark.parametrize("auth, json_data",
-                         [
-                            ("XX_INSG_RMT_USR_TEST", json_req_mail_mpss_bad_natural_legal, json_req_mail_bad_identifier_identity_mpss_basic)
-], indirect=["auth"])
+@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_natural_legal])
 def test_mail_bad_request(auth_params, auth, json_data, url_name):
     username = auth[0]
     password = auth[1]
@@ -124,9 +124,10 @@ def test_mail_bad_request(auth_params, auth, json_data, url_name):
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth, json_data",
                          [
-                            ("XX_INSG_RMT_USR_TEST", json_req_mail_bad_identifier_mpss_basic, json_req_mail_bad_identifier_scheme_mpss_basic, json_req_mail_bad_identifier_identity_mpss_basic)
+                            ("XX_INSG_RMT_USR_TEST", (json_req_mail_bad_identifier_mpss_basic, json_req_mail_bad_identifier_scheme_mpss_basic, json_req_mail_bad_identifier_identity_mpss_basic))
 ], indirect=["auth"])
-def test_mail_bad_request(auth_params, auth, json_data, url_name):
+
+def test_mail_bad_identifier_request(auth_params, auth, json_data, url_name):
     username = auth[0]
     password = auth[1]
     session = requests.session()
