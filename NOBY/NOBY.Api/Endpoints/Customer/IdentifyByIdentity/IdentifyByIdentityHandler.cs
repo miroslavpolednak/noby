@@ -4,10 +4,6 @@ using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CIS.Foms.Enums;
-using DomainServices.HouseholdService.Contracts;
-using MediatR;
-using System.Threading;
-using CIS.Infrastructure.gRPC.CisTypes;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
