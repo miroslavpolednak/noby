@@ -1,3 +1,4 @@
+import uuid
 from time import sleep
 from urllib.parse import urlencode, quote
 
@@ -63,19 +64,21 @@ def test_sms_sb(url_name,  auth_params, auth, json_data):
     assert notification_id != ""
 
 
-
 #TODO: dořešit assert. je to dle https://wiki.kb.cz/pages/viewpage.action?pageId=507386569 Text auditního logu - to nesmí být v events
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data, expected_results", [
-    (json_req_sms_logovani, greater_than_zero),
-    (json_req_sms_bez_logovani, 0)
+@pytest.mark.parametrize("custom_id, json_data, expected_results", [
+    ("loguji", json_req_sms_logovani, greater_than_zero),
+    ("neloguji", json_req_sms_bez_logovani, 0)
 ])
-def test_sms_log(url_name,  auth_params, auth, json_data, expected_results, authenticated_seqlog_session):
+def test_sms_log(url_name,  auth_params, auth, custom_id, json_data, expected_results, authenticated_seqlog_session):
     """test logovani - zalogujeme, nezalogujeme do seq"""
 
     username = auth[0]
     password = auth[1]
+    #vytvoření unikátního ID pro customId pro dohledani logu
+    uuid_str = uuid.uuid4().hex
+    unique_custom_id = f"{uuid_str[:4]}{custom_id}{uuid_str[4:8]}"
     session = requests.session()
     resp = session.post(
         URLS[url_name] + "/v1/notification/sms",
@@ -91,7 +94,7 @@ def test_sms_log(url_name,  auth_params, auth, json_data, expected_results, auth
     sleep(2)
 
     #Kontrola v seq logu
-    params = {"filter": f"@Message like '%{notification_id}%' ci", "shortCircuitAfter": 100}
+    params = {"filter": f"@Message like '%{unique_custom_id}%' ci or @Exception like '%{unique_custom_id}%' ci or @Message like '%{notification_id}%' ci or @Exception like '%{notification_id}%' ci", "shortCircuitAfter": 100}
 
     encoded_params = "&".join(f"{key}={quote(str(value), safe='')}" for key, value in params.items())
     url = f"http://172.30.35.51:6341/api/events/signal?{encoded_params}"
@@ -139,7 +142,6 @@ def test_sms_combination_security(url_name,  auth_params, auth, json_data):
                          [
                              ("XX_INSG_RMT_USR_TEST", json_req_sms_basic_insg),
                              ("XX_EPSY_RMT_USR_TEST", json_req_sms_basic_epsy)
-
                          ], indirect=["auth"])
 def test_sms_basic_security(auth_params, auth, json_data, url_name):
     """
