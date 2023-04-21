@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto;
+﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CaseStateChanged;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CreateTask;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
 using DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts;
 
@@ -22,6 +23,41 @@ internal sealed class RealSbWebApiClient : ISbWebApiClient
 
         var responseObject = await RequestHelper.ProcessResponse<WFS_Event_Response>(httpResponse, x => x.Result, cancellationToken);
     }
+    
+    public async Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        var easRequest = new WFS_Request_CreateTask
+        {
+            Header = RequestHelper.MapEasHeader(request.Login),
+            Message = new WFS_Manage_CreateTask
+            {
+                Task_type = request.TaskTypeId,
+                Parent_task_set = request.ProcessId,
+                Metadata = request.Metadata.Select(t => new WFS_MetadataItem
+                {
+                    Mtdt_def = t.Key,
+                    Mtdt_val = t.Value
+                }).ToList()
+            }
+        };
+
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/createtask", easRequest, cancellationToken);
+
+        var responseObject = await RequestHelper.ProcessResponse<WFS_Manage_CreateTask_Response>(httpResponse, x => x.Result, cancellationToken);
+
+        if ((responseObject.Result?.Return_val ?? -1) == 0)
+        {
+            return new CreateTaskResponse
+            {
+                TaskIdSB = responseObject.Task_id.GetValueOrDefault(),
+                //TaskId = responseObject
+            };
+        }
+        else
+        {
+            throw new CisExtServiceServerErrorException(StartupExtensions.ServiceName, _httpClient.BaseAddress + "/wfs/managetask/createtask", responseObject.Result.Return_text);
+        }
+    }
 
     public async Task<CaseStateChangedResponse> CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
@@ -29,7 +65,7 @@ internal sealed class RealSbWebApiClient : ISbWebApiClient
         var easRequest = new WFS_Request_CaseStateChanged
         {
             Header = RequestHelper.MapEasHeader(request.Login),
-            Message = new WFS_Event_CaseStateChanged
+            Message = new()
             {
                 Client_benefits = 0,
                 Case_id = request.CaseId,

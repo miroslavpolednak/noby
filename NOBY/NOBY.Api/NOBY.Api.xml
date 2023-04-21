@@ -87,6 +87,7 @@
             Seznam URL služeb zaregistrovaných v ServiceDiscovery
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.Cases.CasesController.CreateTask(System.Int64,NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest)" -->
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateSalesArrangement(System.Int64,NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest)">
             <summary>
             Vytvoření servisního SalesArrangement-u
@@ -181,6 +182,30 @@
             <remarks>
             https://wiki.kb.cz/pages/viewpage.action?pageId=424119307#id-%C4%8Cerp%C3%A1ni%C5%BD%C3%A1dosto%C4%8Derp%C3%A1n%C3%AD-Kontrolyp%C5%99edformul%C3%A1%C5%99em%C4%8Derp%C3%A1n%C3%AD
             </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.TaskTypeId">
+            <summary>
+            ID typu úkolu (Předání na specialistu = 7, Konzultace = 3)
+            </summary>
+            <example>7</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.TaskSubtypeId">
+            <summary>
+            ID typu konzultace
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.ProcessId">
+            <summary>
+            ID nadřazeného procesu
+            </summary>
+            <example>24556</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.TaskUserRequest">
+            <summary>
+            Text požadavku
+            </summary>
+            <example>Prosím o pomoc s tímto případem.</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.LoanPurposeItem.Sum">
             <summary>

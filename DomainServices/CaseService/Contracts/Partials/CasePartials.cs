@@ -57,3 +57,7 @@ public partial class NotifyStarbuildRequest
 public partial class CancelTaskRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class CreateTaskRequest
+    : MediatR.IRequest<CreateTaskResponse>, CIS.Core.Validation.IValidatableRequest
+{ }
