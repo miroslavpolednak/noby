@@ -23,6 +23,11 @@ public sealed class AppConfiguration
     public string FileTempFolderLocation { get; set; } = Path.Combine(Path.GetTempPath(), "Noby");
 
     /// <summary>
+    /// Max allowed file size for upload [MB]
+    /// </summary>
+    public int MaxFileSize { get; set; } = 20;
+
+    /// <summary>
     /// ID prostredi pro ktere se ma nahrat config pro MPSS.Security.dll
     /// </summary>
     public int? MpssSecurityDllEnvironment { get; set; }
