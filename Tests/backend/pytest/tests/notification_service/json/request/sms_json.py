@@ -142,3 +142,12 @@ json_req_sms_basic_insg = \
   "type": "TEST_INSG",
   "text": "Testovací sms insg s logovanim"
 }
+
+#TODO: jeste nema MCS v db
+json_req_sms_basic_sb = \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "TEST_SB",
+  "text": "Testovací sms sb s logovanim"
+}

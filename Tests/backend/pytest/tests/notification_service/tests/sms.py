@@ -121,7 +121,9 @@ def test_sms_log(url_name,  auth_params, auth, custom_id, json_data, expected_re
             events if "Properties" in event), f"Failed for custom_id: {custom_id}. Expected: {expected_result}, Got: {result}"
 
 
-@pytest.mark.parametrize("url_name", ["dev_url", "uat_url"])
+
+#NOBY vraci okej, ale v databázi padnou kombinace, ktere nemaji pro sebe MCS kod
+@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg, json_req_sms_basic_epsy])
 def test_sms_combination_security(url_name,  auth_params, auth, json_data):
@@ -168,6 +170,27 @@ def test_sms_basic_security(auth_params, auth, json_data, url_name):
     assert "notificationId" in resp
     assert resp["notificationId"] != ""
 
+
+@pytest.mark.parametrize("url_name", ["dev_url"])
+@pytest.mark.parametrize("auth, json_data",
+                         [
+                             ("XX_NOBY_RMT_USR_TEST", json_req_sms_basic_insg)
+                         ], indirect=["auth"])
+def test_sms_bad_basic_security(auth_params, auth, json_data, url_name):
+    """
+   Testuje zabezpečení: kladné testy pro usery a jejich msc type kody.
+   Použita vnorena parametrizace pro různé uživatele a type sms.
+   """
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/sms",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    assert resp.status_code == 403
 
 @pytest.mark.skip
 @pytest.mark.parametrize("url_name", ["uat_url"])

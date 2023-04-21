@@ -706,7 +706,7 @@ json_req_mail_mpss_bad_natural_legal = \
     "subject": "NS_test_MIKEL_bad_natural_legal",
     "content": {
       "format": "application/mht",
-      "language": "cz",
+      "language": "cs",
       "text": "json_req_mail_mpss_bad_natural_legal"
     },
     "attachments": [],
