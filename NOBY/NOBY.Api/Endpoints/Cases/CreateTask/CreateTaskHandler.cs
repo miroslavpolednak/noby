@@ -14,7 +14,7 @@ internal sealed class CreateTaskHandler
         {
             ProcessId = request.ProcessId,
             TaskTypeId = request.TaskTypeId,
-            TaskRequest = request.TaskUserRequest,
+            TaskRequest = request.TaskUserRequest ?? "",
             TaskSubtypeId = request.TaskSubtypeId
         }, cancellationToken);
 

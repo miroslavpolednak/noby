@@ -1,7 +1,6 @@
 ﻿namespace DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CreateTask;
 
 public sealed class CreateTaskRequest
-    : RequestBase
 {
     public int TaskTypeId { get; set; }
     public int ProcessId { get; set; }

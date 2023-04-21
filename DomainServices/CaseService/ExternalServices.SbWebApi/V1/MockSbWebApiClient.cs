@@ -1,5 +1,4 @@
-﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CancelTask;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CaseStateChanged;
+﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CaseStateChanged;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CreateTask;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
 
@@ -32,7 +31,7 @@ internal sealed class MockSbWebApiClient
         });
     }
 
-    public Task CancelTask(CancelTaskRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default(CancellationToken))
     {
         return Task.CompletedTask;
     }

@@ -1,7 +1,6 @@
 ﻿namespace DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CaseStateChanged;
 
 public sealed class CaseStateChangedRequest
-    : RequestBase
 {
     public long CaseId { get; set; }
 

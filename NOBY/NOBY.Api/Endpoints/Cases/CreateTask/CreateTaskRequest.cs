@@ -39,7 +39,8 @@ public sealed class CreateTaskRequest
     /// Text požadavku
     /// </summary>
     /// <example>Prosím o pomoc s tímto případem.</example>
-    public string? TaskUserRequest { get; set; }
+    [Required]
+    public string TaskUserRequest { get; set; } = string.Empty;
 
     public List<string>? Attachments { get; set; }
 }

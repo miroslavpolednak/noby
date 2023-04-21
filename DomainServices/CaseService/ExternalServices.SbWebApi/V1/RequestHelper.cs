@@ -21,8 +21,9 @@ internal static class RequestHelper
 
         var commonResult = commonResultGetter(responseObject);
 
-        if ((commonResult?.Return_val ?? 0) != 0)
-            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName}.{callerName}: {commonResult?.Return_text}");
+        int returnVal = commonResult?.Return_val ?? 0;
+        if (returnVal != 0)
+            throw new CisExtServiceValidationException(returnVal, $"{StartupExtensions.ServiceName}.{callerName}: {returnVal}: {commonResult?.Return_text}");
 
         return responseObject;
     }

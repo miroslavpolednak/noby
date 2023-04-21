@@ -120,7 +120,7 @@ public interface ICaseServiceClient
 
     Task NotifyStarbuild(long caseId, string riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task CancelTask(int taskSBId, CancellationToken cancellationToken = default(CancellationToken));
+    Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default(CancellationToken));
     
     Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken));
 }

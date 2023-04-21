@@ -26,9 +26,6 @@ internal sealed class NotifyStarbuildHandler
         var productType = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == caseInstance.ProductTypeId);
         var caseState = (await _codebookService.CaseStates(cancellationToken)).First(t => t.Id == caseInstance.State);
 
-        // get current user's login
-        var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
-
         // get case owner
         var ownerInstance = await _userService.GetUser(caseInstance.OwnerUserId, cancellationToken);
 
@@ -53,7 +50,6 @@ internal sealed class NotifyStarbuildHandler
         //TODO login
         var sbRequest = new ExternalServices.SbWebApi.Dto.CaseStateChanged.CaseStateChangedRequest
         {
-            Login = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous",
             CaseId = caseInstance.CaseId,
             ContractNumber = caseInstance.ContractNumber,
             ClientFullName = $"{caseInstance.FirstNameNaturalPerson} {caseInstance.Name}",

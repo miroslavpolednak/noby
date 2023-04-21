@@ -27,5 +27,5 @@ public interface ISbWebApiClient
     /// </summary>
     Task<Dto.CreateTask.CreateTaskResponse> CreateTask(Dto.CreateTask.CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task CancelTask(Dto.CancelTask.CancelTaskRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default(CancellationToken));
 }

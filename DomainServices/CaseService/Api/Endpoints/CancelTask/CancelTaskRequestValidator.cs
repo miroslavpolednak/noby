@@ -10,6 +10,6 @@ internal sealed class CancelTaskRequestValidator
     {
         RuleFor(t => t.TaskIdSB)
             .GreaterThan(0)
-            .WithErrorCode(ErrorCodeMapper.TaskIdSbIsEmpty);
+            .WithErrorCode(ErrorCodeMapper.TaskIdSBIsEmpty);
     }
 }

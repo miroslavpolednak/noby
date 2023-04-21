@@ -1,7 +1,5 @@
-﻿using DomainServices.CaseService.Api.Database;
-using DomainServices.CaseService.Contracts;
+﻿using DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
-using DomainServices.UserService.Clients;
 
 namespace DomainServices.CaseService.Api.Endpoints.CreateTask;
 
@@ -25,15 +23,11 @@ internal sealed class CreateTaskHandler
             metadata.Add("wfl_refobj_dokumenty", string.Join(",", request.TaskDocumentsId) + ",");
         }
 
-        // get current user's login
-        var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
-
         var result = await _sbWebApi.CreateTask(new ExternalServices.SbWebApi.Dto.CreateTask.CreateTaskRequest
         {
             ProcessId = request.ProcessId,
             TaskTypeId = request.TaskTypeId,
-            Metadata = metadata,
-            Login = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous",
+            Metadata = metadata
         }, cancellationToken);
 
         return new CreateTaskResponse
@@ -50,16 +44,10 @@ internal sealed class CreateTaskHandler
         };
     }
 
-    private readonly CaseServiceDbContext _dbContext;
     private readonly ISbWebApiClient _sbWebApi;
-    private readonly IUserServiceClient _userService;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
-    public CreateTaskHandler(ISbWebApiClient sbWebApi, IUserServiceClient userService, CIS.Core.Security.ICurrentUserAccessor userAccessor, CaseServiceDbContext dbContext)
+    public CreateTaskHandler(ISbWebApiClient sbWebApi)
     {
-        _userAccessor = userAccessor;
-        _dbContext = dbContext;
-        _userService = userService;
         _sbWebApi = sbWebApi;
     }
 }
