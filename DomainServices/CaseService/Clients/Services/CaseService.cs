@@ -123,6 +123,14 @@ internal sealed class CaseService
             }, cancellationToken: cancellationToken);
     }
 
+    public async Task CancelTask(int taskSBId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        await _service.CancelTaskAsync(new CancelTaskRequest
+        {
+            TaskIdSB = taskSBId
+        }, cancellationToken: cancellationToken);
+    }
+
     private readonly Contracts.v1.CaseService.CaseServiceClient _service;
     public CaseService(Contracts.v1.CaseService.CaseServiceClient service)
         => _service = service;
