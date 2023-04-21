@@ -7,6 +7,7 @@ import "UploadDocument.proto";
 import "GetDocument.proto";
 import "GetDocumentList.proto";
 import "GetDocumentsInQueue.proto";
+import "SetDocumentStatusInQueue.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
@@ -40,6 +41,10 @@ service DocumentArchiveService{
 		 body: "*"
 		};
 	};
+	
 	// Metoda slouží k získání seznamu dokumentů z lokálně uložené fronty dokumentů k odeslání nebo již odeslaných nebo dokumentů v chybových stavech
 	rpc GetDocumentsInQueue(DomainServices.DocumentArchiveService.GetDocumentsInQueue.GetDocumentsInQueueRequest) returns (DomainServices.DocumentArchiveService.GetDocumentsInQueue.GetDocumentsInQueueResponse);
+	
+	// Metoda slouží k nastavení stavu dokumentu ve frontě.
+	rpc SetDocumentStatusInQueue(DomainServices.DocumentArchiveService.SetDocumentStatusInQueue.SetDocumentStatusInQueueRequest) returns (google.protobuf.Empty);
 }
