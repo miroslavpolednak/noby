@@ -1290,6 +1290,14 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks> 
         </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.SetDocumentStatusInQueue(System.String,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Slouží k nastavení stavu dokumentu ve frontě
+            </summary>
+            <remarks>
+            Nastavení stavu dokumentu ve frontě pro uložení do eArchiv-u
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.ValidateFormId(System.Int64,NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Threading.CancellationToken)">
             <summary>
             If formId exist on DocumentOnSa, return EArchiveId from documentOnSa
