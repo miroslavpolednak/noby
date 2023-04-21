@@ -10,6 +10,19 @@ internal sealed class RealSbWebApiClient : ISbWebApiClient
 
     public RealSbWebApiClient(HttpClient httpClient) => _httpClient = httpClient;
 
+    public async Task CancelTask(int taskSBId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        // vytvoreni EAS requestu
+        var easRequest = new WFS_Request_CaseStateChanged
+        {
+            Header = RequestHelper.MapEasHeader(request.Login)
+        };
+
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/eventreport/casestatechanged", easRequest, cancellationToken);
+
+        var responseObject = await RequestHelper.ProcessResponse<WFS_Event_Response>(httpResponse, x => x.Result, cancellationToken);
+    }
+
     public async Task<CaseStateChangedResponse> CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         // vytvoreni EAS requestu
