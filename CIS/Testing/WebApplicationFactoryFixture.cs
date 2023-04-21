@@ -4,7 +4,6 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -13,7 +12,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using System.Net.Http.Headers;
 using Grpc.Core.Interceptors;
 using CIS.Infrastructure.Configuration;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace CIS.Testing;
 public class WebApplicationFactoryFixture<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
