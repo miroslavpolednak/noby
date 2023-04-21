@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Attributes;
 using CIS.Core.Security;
 using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStatesNoby;
 using DomainServices.UserService.Clients;
@@ -44,6 +45,34 @@ public class WorkflowMapper
         return list;
     }
 
+    public async Task<NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail> Map(WorkflowTask task, TaskDetailItem taskDetailItem, CancellationToken cancellationToken)
+    {
+        var performer = await _codebookService.GetOperator(task.PerformerLogin, cancellationToken);
+
+        var taskDetail = new NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail
+        {
+            TaskIdSB = task.TaskIdSb,
+            PerformerLogin = performer?.PerformerLogin ?? string.Empty,
+            PerformerName = performer?.PerformerName ?? string.Empty,
+            ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
+            SentToCustomer = taskDetailItem.SentToCustomer ?? false,
+            OrderId = taskDetailItem.OrderId ?? 0
+        };
+
+        taskDetail.TaskCommunication.AddRange(taskDetailItem.TaskCommunication.Select(Map));
+        
+        return taskDetail;
+    }
+
+    private NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem Map(TaskCommunicationItem taskCommunicationItem)
+    {
+        return new NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem
+        {
+            TaskRequest = taskCommunicationItem.TaskRequest,
+            TaskResponse = taskCommunicationItem.TaskResponse
+        };
+    }
+    
     private NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTask MapInternal(WorkflowTask task,
         WorkflowTaskStateNobyItem taskState)
     {
