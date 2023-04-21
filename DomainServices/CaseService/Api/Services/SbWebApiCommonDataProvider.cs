@@ -1,4 +1,5 @@
-﻿using CIS.Core.Security;
+﻿using CIS.Core.Attributes;
+using CIS.Core.Security;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStates;
 using DomainServices.UserService.Clients;
@@ -6,6 +7,7 @@ using DomainServices.UserService.Contracts;
 
 namespace DomainServices.CaseService.Api.Services;
 
+[ScopedService, SelfService]
 internal class SbWebApiCommonDataProvider
 {
     private readonly ICodebookServiceClients _codebookService;
