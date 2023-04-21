@@ -16,6 +16,16 @@ public class DocumentsMetadata
     public string? Description { get; set; }
 
     public DateOnly CreatedOn { get; set; }
+    
+    /// <summary>
+    /// Stav přenosu dokumentu do eArchivu. \n\n<small>Enum Values</small><ul><li>0 - Uloženo v eArchivu</li><li>1 - Ve zpracování</li><li>2 - Chyba</li></ul>
+    /// </summary>
+    public UploadStatus UploadStatus { get; set; }
 }
 
-
+public enum UploadStatus
+{
+    Ok = 1,
+    InProgress = 2,
+    Error = 3
+}

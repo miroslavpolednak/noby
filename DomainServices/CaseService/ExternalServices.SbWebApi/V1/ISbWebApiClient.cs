@@ -15,6 +15,12 @@ public interface ISbWebApiClient
     Task<CaseStateChangedResponse> CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
+    /// Zašle odpověď do workflow úkolu Dožádání.
+    /// </summary>
+    /// <returns>Kód, který se vrátil z SB</returns>
+    Task<int> CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Získání seznamu úkolů a podúkolů ze SB podle Case ID.
     /// </summary>
     Task<FindTasksResponse> FindTasksByCaseId(FindByCaseIdRequest request, CancellationToken cancellationToken = default);

@@ -2,6 +2,9 @@
 
 namespace DomainServices.CaseService.Contracts;
 
+public partial class CompleteTaskRequest : MediatR.IRequest
+{ }
+
 public partial class CreateCaseRequest
     : MediatR.IRequest<CreateCaseResponse>, CIS.Core.Validation.IValidatableRequest, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 { }
@@ -38,8 +41,14 @@ public partial class DeleteCaseRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 
+public partial class GetTaskDetailRequest : MediatR.IRequest<GetTaskDetailResponse>
+{ }
+
 public partial class GetTaskListRequest
     : MediatR.IRequest<GetTaskListResponse>, CIS.Core.Validation.IValidatableRequest
+{ }
+
+public partial class GetProcessListRequest : MediatR.IRequest<GetProcessListResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 
 public partial class UpdateActiveTasksRequest

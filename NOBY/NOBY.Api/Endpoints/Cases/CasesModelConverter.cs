@@ -50,7 +50,7 @@ internal sealed class CasesModelConverter
         if (model.Tasks is not null && model.Tasks.Any())
 		{
 			converted.ActiveTasks = model.Tasks
-				.Join(_taskTypes, i => i.TypeId, o => o.Id, (task, i) => i.CategoryId)
+				.Join(_taskTypes, i => i.TaskTypeId, o => o.Id, (task, i) => i.CategoryId)
 				.GroupBy(k => k)
 				.Select(t => new Dto.TaskModel
 				{

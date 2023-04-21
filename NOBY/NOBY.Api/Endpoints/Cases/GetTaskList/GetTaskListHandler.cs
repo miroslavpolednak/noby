@@ -1,37 +1,68 @@
-﻿namespace NOBY.Api.Endpoints.Cases.GetTaskList;
+﻿using DomainServices.CaseService.Clients;
+using NOBY.Api.Endpoints.Cases.Dto;
+using NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
 
-internal sealed class GetTaskListHandler
-    : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
+namespace NOBY.Api.Endpoints.Cases.GetTaskList;
+
+internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
 {
+    private readonly WorkflowMapper _mapper;
+    private readonly ICaseServiceClient _caseService;
+
+    public GetTaskListHandler(WorkflowMapper mapper, ICaseServiceClient caseService)
+    {
+        _mapper = mapper;
+        _caseService = caseService;
+    }
+
     public async Task<GetTaskListResponse> Handle(GetTaskListRequest request, CancellationToken cancellationToken)
     {
-        var result = await _caseService.GetTaskList(request.CaseId, cancellationToken);
+        var workflowTasks = LoadWorkflowTasks(request.CaseId, cancellationToken);
+        var workflowProcesses = LoadWorkflowProcesses(request.CaseId, cancellationToken);
 
-        var taskTypes = await _codebookService.WorkflowTaskTypes(cancellationToken);
+        //Temporary mock - The old answer must be used to avoid violating FE
+        var newResponse = new GetTaskListResponseNew
+        {
+            Tasks = await workflowTasks,
+            Processes = await workflowProcesses
+        };
 
         return new GetTaskListResponse
         {
-            Tasks = result?.Select(t => new Dto.WorkflowTask
+            Tasks = newResponse.Tasks?.Select(t => new WorkflowTask
             {
-                StateId = t.StateId,
-                CreatedOn = t.CreatedOn,
-                Name = t.Name,
-                CategoryId = taskTypes.FirstOrDefault(x => x.Id == t.TypeId)?.CategoryId ?? 0,
                 TaskId = t.TaskId,
-                TaskProcessId = t.TaskProcessId,
-                TypeId = t.TypeId
+                TaskProcessId = t.ProcessId,
+                Name = t.TaskTypeName,
+                TypeId = t.TaskTypeId,
+                CategoryId = 0,
+                CreatedOn = t.CreatedOn,
+                StateId = t.StateId
             }).ToList()
         };
     }
 
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
-
-    public GetTaskListHandler(
-        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService)
+    private async Task<List<Dto.WorkflowTaskNew>?> LoadWorkflowTasks(long caseId, CancellationToken cancellationToken)
     {
-        _codebookService = codebookService;
-        _caseService = caseService;
+        var tasks = await _caseService.GetTaskList(caseId, cancellationToken);
+        
+        if (!tasks.Any())
+            return default;
+
+        return await _mapper.Map(tasks, cancellationToken);
+    }
+
+    private async Task<List<WorkflowProcess>> LoadWorkflowProcesses(long caseId, CancellationToken cancellationToken)
+    {
+        var processes = await _caseService.GetProcessList(caseId, cancellationToken);
+
+        return processes.Select(p => new WorkflowProcess
+        {
+            ProcessId = p.ProcessId,
+            CreatedOn = p.CreatedOn,
+            ProcessNameLong = p.ProcessNameLong,
+            StateName = p.StateName,
+            StateIndicator = (StateIndicator)p.StateIndicator
+        }).ToList();
     }
 }
