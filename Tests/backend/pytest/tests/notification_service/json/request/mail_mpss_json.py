@@ -23,13 +23,74 @@ json_req_mail_mpss_basic_legal = \
     "subject": "NS_test_MIKEL_basic_legal",
     "content": {
       "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_basic_legal"
+    },
+    "attachments": []
+  }
+
+# obsahuje špatně format a jazyk
+json_req_mail_mpss_bad_format_language = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "text",
       "language": "cz",
       "text": "json_req_mail_mpss_basic_legal"
     },
     "attachments": []
   }
 
-# withnout parameters identifiers
+
+# obsahuje špatně content format
+json_req_mail_mpss_bad_content_format = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "text",
+      "language": "cs",
+      "text": "json_req_mail_mpss_basic_legal"
+    },
+    "attachments": []
+  }
+
+# bez parameters identifiers
 json_req_mail_bad_identifier_mpss_basic = \
   {
     "from": {
@@ -53,7 +114,7 @@ json_req_mail_bad_identifier_mpss_basic = \
     "subject": "NS_test_MIKEL_basic_legal",
     "content": {
       "format": "application/html",
-      "language": "cz",
+      "language": "cs",
       "text": "json_req_mail_mpss_basic_legal"
     },
   "identifier": {},
@@ -84,7 +145,7 @@ json_req_mail_bad_identifier_scheme_mpss_basic = \
     "subject": "NS_test_MIKEL_basic_legal",
     "content": {
       "format": "application/html",
-      "language": "cz",
+      "language": "cs",
       "text": "json_req_mail_mpss_basic_legal"
     },
   "identifier": {
@@ -117,7 +178,7 @@ json_req_mail_bad_identifier_identity_mpss_basic = \
     "subject": "NS_test_MIKEL_basic_legal",
     "content": {
       "format": "application/html",
-      "language": "cz",
+      "language": "cs",
       "text": "json_req_mail_mpss_basic_legal"
     },
   "identifier": {
@@ -342,7 +403,7 @@ json_req_mail_mpss_bad_11_attachments = \
         "filename": "2.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       },
-{
+      {
         "filename": "3.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       },
@@ -350,30 +411,31 @@ json_req_mail_mpss_bad_11_attachments = \
         "filename": "4.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       },
-{
+      {
         "filename": "5.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       },
-{
+      {
         "filename": "6.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       },
-{
+      {
         "filename": "7.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       },
-{
+      {
         "filename": "8.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
-      },{
+      },
+      {
         "filename": "9.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       },
-{
+      {
         "filename": "10.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       },
-{
+      {
         "filename": "11.txt",
         "binary": "77u/YXR0YWNobWVudCAx"
       }
