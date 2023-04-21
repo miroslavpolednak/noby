@@ -1466,6 +1466,14 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks> 
         </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.SetDocumentStatusInQueue(System.String,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Slouží k nastavení stavu dokumentu ve frontě
+            </summary>
+            <remarks>
+            Nastavení stavu dokumentu ve frontě pro uložení do eArchiv-u
+            </remarks>
+        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocumentList.DocumentsMetadata.UploadStatus">
             <summary>
             Stav přenosu dokumentu do eArchivu. \n\n<small>Enum Values</small><ul><li>0 - Uloženo v eArchivu</li><li>1 - Ve zpracování</li><li>2 - Chyba</li></ul>
