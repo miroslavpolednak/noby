@@ -20,7 +20,7 @@ internal sealed  class UpdateCommentHandler : IRequestHandler<UpdateCommentReque
         var mortgageParameters = new SalesArrangementParametersMortgage
         {
             Agent = salesArrangement.Mortgage.Agent,
-            Comment = request.Comment.Comment ?? string.Empty,
+            Comment = request.Comment.Text ?? string.Empty,
             IncomeCurrencyCode = salesArrangement.Mortgage.IncomeCurrencyCode,
             ResidencyCurrencyCode = salesArrangement.Mortgage.ResidencyCurrencyCode,
             ContractSignatureTypeId = salesArrangement.Mortgage.ContractSignatureTypeId,

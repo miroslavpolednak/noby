@@ -6,5 +6,5 @@ public class Comment
     /// Komentář k žádosti
     /// </summary>
     /// <example>Tvrdí, že není politicky exponovaná osoba, ale já myslím, že je.</example>
-    public string? Comment { get; set; }
+    public string? Text { get; set; }
 }

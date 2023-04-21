@@ -10,7 +10,7 @@ internal sealed class UpdateCommentRequestValidator : AbstractValidator<UpdateCo
             .GreaterThan(0)
             .WithMessage("SalesArrangementId must be > 0");
 
-        RuleFor(t => t.Comment.Comment)
+        RuleFor(t => t.Comment.Text)
             .MaximumLength(500);
     }
 }
