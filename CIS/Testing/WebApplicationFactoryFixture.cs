@@ -68,7 +68,7 @@ public class WebApplicationFactoryFixture<TStartup> : WebApplicationFactory<TSta
         {
             if (CisWebFactoryConfiguration.UseTestAppsettings)
                 config.SetBasePath(Directory.GetCurrentDirectory())
-                     .AddJsonFile(CisWebFactoryConfiguration.AppsettingsName, optional: false);
+                     .AddJsonFile(CisWebFactoryConfiguration.AppSettingsName, optional: false);
 
             _configureAppConfiguration?.Invoke(context, config);
         }).

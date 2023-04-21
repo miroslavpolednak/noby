@@ -36,7 +36,7 @@ public class CisWebApplicationFactoryOptions
     /// </summary>
     public bool UseMockCisEnvironmentConfiguration { get; set; } = true;
 
-    public string AppsettingsName { get; set; } = "appsettings.Testing.json";
+    public string AppSettingsName { get; set; } = "appsettings.Testing.json";
 
     /// <summary>
     /// Currently we have only EfInMemoryMockAdapter, others going to be added soon.
