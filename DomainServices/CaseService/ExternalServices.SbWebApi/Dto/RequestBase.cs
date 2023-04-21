@@ -2,5 +2,8 @@
 
 public abstract class RequestBase
 {
-    public required string HeaderLogin { get; init; }
+    /// <summary>
+    /// Login uživatele - ČPM.
+    /// </summary>
+    public string Login { get; set; } = string.Empty;
 }

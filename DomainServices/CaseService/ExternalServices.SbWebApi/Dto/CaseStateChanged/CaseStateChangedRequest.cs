@@ -1,12 +1,8 @@
 ﻿namespace DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CaseStateChanged;
 
 public sealed class CaseStateChangedRequest
+    : RequestBase
 {
-    /// <summary>
-    /// Login uživatele - ČPM.
-    /// </summary>
-    public string Login { get; set; } = string.Empty;
-
     public long CaseId { get; set; }
 
     /// <summary>
