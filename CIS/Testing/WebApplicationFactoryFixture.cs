@@ -91,43 +91,16 @@ public class WebApplicationFactoryFixture<TStartup> : WebApplicationFactory<TSta
                 services.RemoveAll<ILoggerFactory>().AddSingleton<ILoggerFactory, NullLoggerFactory>();
 
             if (CisWebFactoryConfiguration.UseDbContextAutoMock)
-                AutoMockDbContexts(services);
+                CisWebFactoryConfiguration.DbMockAdapter.MockDatabase<TStartup>(services);
 
             _configureServices?.Invoke(services);
         });
     }
 
-    private static void AutoMockDbContexts(IServiceCollection services)
+    protected override void Dispose(bool disposing)
     {
-        var dbContextTypes = typeof(TStartup).Assembly.GetTypes().Where(t => typeof(DbContext).IsAssignableFrom(t));
-        var addDbContextMethod = typeof(EntityFrameworkServiceCollectionExtensions).GetMethods().Where(i => i.Name == "AddDbContext" && i.IsGenericMethod == true).First();
-
-        foreach (var dbContextType in dbContextTypes)
-        {
-            // Remove existing dbContext(real db) 
-            var dbContextOptions = typeof(DbContextOptions<>).MakeGenericType(dbContextType);
-            var dbContextDescriptor = services.SingleOrDefault(
-                                    d => d.ServiceType == dbContextOptions);
-
-            if (dbContextDescriptor is not null)
-            {
-                services.Remove(dbContextDescriptor);
-            }
-
-            //Dynamically register db context with in memory db
-            var dbName = Guid.NewGuid().ToString(); // db is unique per test class 
-            var addDbContextGenericMethod = addDbContextMethod.MakeGenericMethod(dbContextType);
-            var optionsAction = new Action<DbContextOptionsBuilder>(options =>
-            {
-                options.UseInMemoryDatabase(dbName);
-                options.ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-            });
-
-            // Create AddDbContext parameters
-            object[] parametersArray = new object[] { services, optionsAction, ServiceLifetime.Scoped, ServiceLifetime.Scoped };
-            // Call AddDbContext with parameters
-            addDbContextGenericMethod?.Invoke(services, parametersArray);
-        }
+        base.Dispose(disposing);
+        CisWebFactoryConfiguration.DbMockAdapter.Dispose(disposing);
     }
 
     private HttpClient CreateHttpClient()

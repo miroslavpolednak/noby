@@ -1,4 +1,6 @@
-﻿namespace CIS.Testing;
+﻿using CIS.Testing.Database;
+
+namespace CIS.Testing;
 public class CisWebApplicationFactoryOptions
 {
     /// <summary>
@@ -35,4 +37,9 @@ public class CisWebApplicationFactoryOptions
     public bool UseMockCisEnvironmentConfiguration { get; set; } = true;
 
     public string AppsettingsName { get; set; } = "appsettings.Testing.json";
+
+    /// <summary>
+    /// Currently we have only EfInMemoryMockAdapter, others going to be added soon.
+    /// </summary>
+    public IDbMockAdapter DbMockAdapter { get; set; } = new EfInMemoryMockAdapter();
 }
