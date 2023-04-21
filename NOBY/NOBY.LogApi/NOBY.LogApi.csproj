@@ -11,6 +11,19 @@
 		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<DocumentationFile>NOBY.LogApi.xml</DocumentationFile>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<PublishDocumentationFile>true</PublishDocumentationFile>
+		<NoWarn>1701;1702;CS1573</NoWarn>
+	</PropertyGroup>
+	
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
+	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	  <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+	</ItemGroup>
+
 	<ItemGroup>
 	  <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 	  <ProjectReference Include="..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />

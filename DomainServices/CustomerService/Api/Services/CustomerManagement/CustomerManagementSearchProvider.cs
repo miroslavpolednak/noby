@@ -6,7 +6,7 @@ using DomainServices.CustomerService.Api.Extensions;
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
-internal class CustomerManagementSearchProvider
+internal sealed class CustomerManagementSearchProvider
 {
     private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClients _codebook;
@@ -61,8 +61,8 @@ internal class CustomerManagementSearchProvider
             FirstName = searchRequest.NaturalPerson?.FirstName.ToCMString(),
             Name = searchRequest.NaturalPerson?.LastName.ToCMString(),
             BirthEstablishedDate = searchRequest.NaturalPerson?.DateOfBirth,
-            Email = searchRequest.Email.ToCMString(),
-            PhoneNumber = searchRequest.PhoneNumber.ToCMString(),
+            Email = $"{searchRequest.Email?.EmailAddress}".ToCMString(),
+            PhoneNumber = $"{searchRequest.MobilePhone?.PhoneIDC}{searchRequest.MobilePhone?.PhoneNumber}".ToCMString(),
             ShowOnlyIdentified = searchRequest.SearchOnlyIdentified ?? true
         };
 

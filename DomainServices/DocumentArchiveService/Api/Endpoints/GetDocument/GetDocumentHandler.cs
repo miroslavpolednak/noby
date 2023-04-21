@@ -10,7 +10,7 @@ using Ixtent.ContentServer.ExtendedServices.Model.WebService;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocument;
 
-internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumentResponse>
+internal sealed class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumentResponse>
 {
     private const string DocumentPrefix = "KBH";
     private readonly ISdfClient _sdfClient;
@@ -32,7 +32,7 @@ internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocum
 
     public async Task<GetDocumentResponse> Handle(GetDocumentRequest request, CancellationToken cancellationToken)
     {
-        if (request.DocumentId.StartsWith(DocumentPrefix))
+        if (request.DocumentId.StartsWith(DocumentPrefix, StringComparison.InvariantCultureIgnoreCase))
         {
             var cspResponse = await LoadFromCspArchive(request, cancellationToken);
             return MapCspResponse(cspResponse);
@@ -56,6 +56,7 @@ internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocum
         {
             response.Content.BinaryData = ByteString.CopyFrom(await _tcpClient.DownloadFile(tcpResult.Url, cancellationToken));
         }
+
         response.Content.MineType = tcpResult.MimeType ?? string.Empty;
         return response;
     }
@@ -72,7 +73,7 @@ internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocum
         {
             response.Content.BinaryData = ByteString.CopyFrom(cspResponse.FileContent);
         }
-        response.Content.MineType = cspResponse.DmsDocInfo.MimeType;
+        response.Content.MineType = cspResponse.DmsDocInfo?.MimeType ?? string.Empty;
         return response;
     }
 

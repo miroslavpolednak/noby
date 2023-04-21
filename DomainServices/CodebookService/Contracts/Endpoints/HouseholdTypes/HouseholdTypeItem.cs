@@ -17,4 +17,7 @@ public class HouseholdTypeItem
 
     [DataMember(Order = 4)]
     public string RdmCode { get; set; }
+
+    [DataMember(Order = 5)]
+    public int? DocumentTypeId { get; set; }
 }

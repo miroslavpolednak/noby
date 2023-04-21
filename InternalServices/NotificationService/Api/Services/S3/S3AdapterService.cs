@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Amazon.S3;
+﻿using Amazon.S3;
 using Amazon.S3.Model;
 using CIS.Core.Attributes;
 
@@ -15,7 +14,7 @@ public class S3AdapterService
         _s3Client = s3Client;
     }
     
-    public async Task<string> UploadFile(byte [] content, string bucketName)
+    public async Task<string> UploadFile(byte [] content, string bucketName, CancellationToken token = default)
     {
         var key = Guid.NewGuid().ToString();
         using var memoryStream = new MemoryStream(content);
@@ -27,12 +26,12 @@ public class S3AdapterService
             InputStream = memoryStream
         };
         
-        var putResponse = await _s3Client.PutObjectAsync(putRequest);
+        var putResponse = await _s3Client.PutObjectAsync(putRequest, token);
         
         return key;
     }
 
-    public async Task<byte[]> GetFile(string key, string bucketName)
+    public async Task<byte[]> GetFile(string key, string bucketName, CancellationToken token = default)
     {
         var getRequest = new GetObjectRequest
         {
@@ -40,9 +39,9 @@ public class S3AdapterService
             BucketName = bucketName
         };
         
-        var response = await _s3Client.GetObjectAsync(getRequest);
+        var response = await _s3Client.GetObjectAsync(getRequest, token);
         using var memoryStream = new MemoryStream();
-        await response.ResponseStream.CopyToAsync(memoryStream);
+        await response.ResponseStream.CopyToAsync(memoryStream, token);
 
         return memoryStream.ToArray();
     }

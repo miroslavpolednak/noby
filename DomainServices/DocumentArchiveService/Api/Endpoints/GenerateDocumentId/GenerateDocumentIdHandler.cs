@@ -41,7 +41,7 @@ internal sealed class GenerateDocumentIdHandler
 
     private static string ConvertToEnvEnumStr(string enumStr)
     {
-        enumStr =enumStr.ToLower();
+        enumStr = enumStr.ToLower();
         if (string.IsNullOrEmpty(enumStr) || enumStr.Length < 1)
         {
             return string.Empty;
@@ -75,11 +75,11 @@ internal sealed class GenerateDocumentIdHandler
         string? serviceUser = _serviceUserAccessor.User?.Name;
 
         if (_configuration.ServiceUser2LoginBinding is null || !_configuration.ServiceUser2LoginBinding.Any())
-            throw new CisConfigurationException(14012, "ServiceUser2LoginBinding configuration is not set");
+            throw ErrorCodeMapper.CreateConfigurationException(ErrorCodeMapper.ServiceUser2LoginBindingConfigurationNotSet);
 
         if (_configuration.ServiceUser2LoginBinding.ContainsKey(serviceUser ?? "_default"))
             return _configuration.ServiceUser2LoginBinding[serviceUser ?? "_default"];
         else
-            throw new CisConfigurationException(14013, $"ServiceUser '{serviceUser}' not found in ServiceUser2LoginBinding configuration and no _default has been set");
+            throw ErrorCodeMapper.CreateConfigurationException(ErrorCodeMapper.ServiceUserNotFoundInServiceUser2LoginBinding, serviceUser);
     }
 }

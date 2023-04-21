@@ -18,7 +18,7 @@ public class DocumentOnSa : ICreated
 
     public int SalesArrangementId { get; set; }
 
-    public int HouseholdId { get; set; }
+    public int? HouseholdId { get; set; }
 
     public bool IsValid { get; set; }
 
@@ -26,7 +26,7 @@ public class DocumentOnSa : ICreated
 
     public bool IsDocumentArchived { get; set; }
 
-    public string SignatureMethodCode { get; set; } = null!;
+    public string? SignatureMethodCode { get; set; } = null!;
 
     public DateTime? SignatureDateTime { get; set; }
 
@@ -39,4 +39,6 @@ public class DocumentOnSa : ICreated
     public DateTime CreatedTime { get; set; }
 
     public string Data { get; set; } = null!;
+
+    public bool IsFinal { get; set; }
 }

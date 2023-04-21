@@ -25,9 +25,6 @@ builder.AddCisEnvironmentConfiguration();
 builder.AddCisLogging();
 builder.AddCisTracing();
 
-// health checks
-builder.AddCisHealthChecks();
-
 builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
@@ -39,14 +36,16 @@ builder.Services
     .AddCisServiceDiscovery()
     .AddCaseService();
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddProductService();
 
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
+builder.Services
+    .AddCisGrpcInfrastructure(typeof(Program))
+    .AddGrpcReflection()
+    .AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    });
+builder.AddCisGrpcHealthChecks();
 #endregion register builder.Services
 
 // kestrel configuration
@@ -62,13 +61,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
-app.UseCisLogging();
 
-app.MapCisHealthChecks();
-
-app.MapGrpcService<ProductService>();
-
+app.MapCisGrpcHealthChecks();
 app.MapGrpcReflectionService();
+app.MapGrpcService<ProductService>();
 
 try
 {

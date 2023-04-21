@@ -29,16 +29,13 @@ builder.Services.AddSingleton(appConfiguration);
 
 // globalni nastaveni prostredi
 builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
+    .AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 
 // logging 
 builder
     .AddCisLogging()
     .AddCisTracing();
-
-// health checks
-builder.AddCisHealthChecks();
 
 // authentication
 builder.AddCisServiceAuthentication();
@@ -47,7 +44,7 @@ builder.AddCisServiceAuthentication();
 builder.AddDocumentOnSAServiceService();
 
 builder.AddDocumentOnSAServiceGrpc();
-
+builder.AddCisGrpcHealthChecks();
 #endregion
 
 // kestrel configuration
@@ -63,19 +60,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
 
-app.UseCisLogging();
-
 //Dont know correct connection
 app.UseServiceDiscovery();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
-
-    endpoints.MapGrpcService<DocumentOnSAServiceGrpc>();
-
-    endpoints.MapGrpcReflectionService();
-});
+app.MapCisGrpcHealthChecks();
+app.MapGrpcService<DocumentOnSAServiceGrpc>();
+app.MapGrpcReflectionService();
 
 try
 {

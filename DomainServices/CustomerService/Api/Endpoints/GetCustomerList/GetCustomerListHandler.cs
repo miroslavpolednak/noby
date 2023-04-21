@@ -4,7 +4,7 @@ using DomainServices.CustomerService.Api.Services.KonsDb;
 
 namespace DomainServices.CustomerService.Api.Endpoints.GetCustomerList;
 
-internal class GetCustomerListHandler : IRequestHandler<CustomerListRequest, CustomerListResponse>
+internal sealed class GetCustomerListHandler : IRequestHandler<CustomerListRequest, CustomerListResponse>
 {
     private readonly CustomerManagementDetailProvider _cmDetailProvider;
     private readonly KonsDbDetailProvider _konsDbDetailProvider;

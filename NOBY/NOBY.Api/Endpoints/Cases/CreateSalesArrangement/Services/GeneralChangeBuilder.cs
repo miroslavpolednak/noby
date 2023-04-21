@@ -1,19 +1,12 @@
-﻿using __SA = DomainServices.SalesArrangementService.Contracts;
+﻿using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class GeneralChangeBuilder
-    : BaseBuilder, ICreateSalesArrangementParametersBuilder
+    : BaseBuilder
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public GeneralChangeBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-        : base(logger, request)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
-    public async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
         _request.GeneralChange = new __SA.SalesArrangementParametersGeneralChange
         {
@@ -37,14 +30,25 @@ internal sealed class GeneralChangeBuilder
 
             _request.GeneralChange.PaymentDay.AgreedPaymentDay = mortgageInstance.Mortgage?.PaymentDay ?? 0;
             _request.GeneralChange.DrawingDateTo.AgreedDrawingDateTo = (DateTime?)mortgageInstance.Mortgage?.DrawingDateTo ?? DateTime.Now;
-            if (mortgageInstance.Mortgage?.PaymentAccount != null)
+            if (mortgageInstance.Mortgage?.RepaymentAccount != null)
             {
-                _request.GeneralChange.RepaymentAccount.AgreedPrefix = mortgageInstance.Mortgage.PaymentAccount.Prefix;
-                _request.GeneralChange.RepaymentAccount.AgreedNumber = mortgageInstance.Mortgage.PaymentAccount.Number;
-                _request.GeneralChange.RepaymentAccount.AgreedBankCode = mortgageInstance.Mortgage.PaymentAccount.BankCode;
+                _request.GeneralChange.RepaymentAccount.AgreedPrefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;
+                _request.GeneralChange.RepaymentAccount.AgreedNumber = mortgageInstance.Mortgage.RepaymentAccount.Number;
+                _request.GeneralChange.RepaymentAccount.AgreedBankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode;
             }
             _request.GeneralChange.LoanPaymentAmount.ActualLoanPaymentAmount = (decimal?)mortgageInstance.Mortgage?.LoanPaymentAmount ?? 0M;
             _request.GeneralChange.DueDate.ActualLoanDueDate = (DateTime?)mortgageInstance.Mortgage?.LoanDueDate ?? DateTime.Now;
+
+            // real estates
+            if (mortgageInstance.Mortgage!.LoanRealEstates is not null && mortgageInstance.Mortgage.LoanRealEstates.Any())
+            {
+                _request.GeneralChange.LoanRealEstate = new __SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstateObject();
+                _request.GeneralChange.LoanRealEstate.LoanRealEstates.AddRange(mortgageInstance.Mortgage.LoanRealEstates.Select(t => new __SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstatesItem
+                {
+                    RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
+                    RealEstateTypeId = t.RealEstateTypeId
+                }));
+            }
         }
         catch
         {
@@ -52,5 +56,10 @@ internal sealed class GeneralChangeBuilder
         }
 
         return _request;
+    }
+
+    public GeneralChangeBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
+    : base(logger, request, httpContextAccessor)
+    {
     }
 }

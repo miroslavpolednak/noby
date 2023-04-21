@@ -3,11 +3,11 @@
 namespace DomainServices.CodebookService.Endpoints.Developers;
 
 public class DevelopersHandler
-    : IRequestHandler<DevelopersRequest, List<DeveloperItem>>
+    : IRequestHandler<DevelopersRequest, List<DeveloperItemOld>>
 {
-    public async Task<List<DeveloperItem>> Handle(DevelopersRequest request, CancellationToken cancellationToken)
+    public async Task<List<DeveloperItemOld>> Handle(DevelopersRequest request, CancellationToken cancellationToken)
     {
-        return await FastMemoryCache.GetOrCreate<DeveloperItem>(nameof(DevelopersHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<DeveloperItem>(_sqlQuery, cancellationToken));
+        return await FastMemoryCache.GetOrCreate<DeveloperItemOld>(nameof(DevelopersHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<DeveloperItemOld>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"

@@ -64,9 +64,6 @@ public class Address
     /// </summary>
     public string? CountrySubdivision { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public DateTime? PrimaryAddressFrom { get; set; }
-
     /// <summary>
     /// Id adresního bodu
     /// </summary>

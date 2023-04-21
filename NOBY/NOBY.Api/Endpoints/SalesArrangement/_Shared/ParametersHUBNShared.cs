@@ -21,7 +21,7 @@ public sealed class LoanRealEstateItemExtended
     /// <summary>
     /// Typ nemovitosti
     /// </summary>
-    public int RealEstateTypeId { get; set; }
+    public long RealEstateTypeId { get; set; }
 
     /// <summary>
     /// Slouží k zajištění

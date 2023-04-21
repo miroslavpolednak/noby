@@ -1,6 +1,7 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
-using CIS.Infrastructure.Telemetry;
+using CIS.InternalServices.NotificationService.Api.Helpers;
+using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
@@ -19,7 +20,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
     private readonly UserAdapterService _userAdapterService;
     private readonly NotificationRepository _repository;
     private readonly ICodebookService _codebookService;
-    private readonly IAuditLogger _auditLogger;
+    private readonly SmsAuditLogger _auditLogger;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
@@ -28,7 +29,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         UserAdapterService userAdapterService,
         NotificationRepository repository,
         ICodebookService codebookService,
-        IAuditLogger auditLogger,
+        SmsAuditLogger auditLogger,
         ILogger<SendSmsHandler> logger)
     {
         _dateTime = dateTime;
@@ -42,12 +43,16 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
     
     public async Task<SendSmsResponse> Handle(SendSmsRequest request, CancellationToken cancellationToken)
     {
+        var username = _userAdapterService
+            .CheckSendSmsAccess()
+            .GetUsername();
+        
         var smsTypes = await _codebookService.SmsNotificationTypes(new SmsNotificationTypesRequest(), cancellationToken);
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {string.Join(',', smsTypes.Select(s => s.Code))}");
-
-        var auditEnabled = smsType.IsAuditLogEnabled;
+        
         var result = _repository.NewSmsResult();
+        var phone = request.PhoneNumber.ParsePhone();
         result.Identity = request.Identifier?.Identity;
         result.IdentityScheme = request.Identifier?.IdentityScheme;
         result.CustomId = request.CustomId;
@@ -56,10 +61,10 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 
         result.Type = request.Type;
         result.Text = request.Text;
-        result.CountryCode = request.Phone.CountryCode;
-        result.PhoneNumber = request.Phone.NationalNumber;
+        result.CountryCode = phone.CountryCode;
+        result.PhoneNumber = phone.NationalNumber;
 
-        result.CreatedBy = _userAdapterService.GetUsername();
+        result.CreatedBy = username;
         
         try
         {
@@ -77,7 +82,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {
             id = result.Id.ToString(),
-            phone = request.Phone.Map(),
+            phone = phone.Map(),
             type = smsType.McsCode,
             text = request.Text,
             processingPriority = request.ProcessingPriority,
@@ -86,25 +91,13 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         
         try
         {
-            if (auditEnabled)
-            {
-                _auditLogger.Log("todo - Producing message SendSMS to KAFKA.");
-            }
-            
+            _auditLogger.LogKafkaProducing(smsType, username);
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
-
-            if (auditEnabled)
-            {
-                _auditLogger.Log("todo - Produced message SendSMS to KAFKA.");
-            }
+            _auditLogger.LogKafkaProduced(smsType, result.Id, username);
         }
         catch (Exception e)
         {
-            if (auditEnabled)
-            {
-                _auditLogger.Log("todo - Could not produce message SendSMS to KAFKA.");
-            }
-            
+            _auditLogger.LogKafkaError(smsType, username);
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);

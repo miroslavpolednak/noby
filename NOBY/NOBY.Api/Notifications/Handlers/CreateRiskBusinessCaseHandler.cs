@@ -9,7 +9,7 @@ namespace NOBY.Api.Notifications.Handlers;
 /// <summary>
 /// Zalozi RiskBusinessCase pro dany Sales Arrangement
 /// </summary>
-internal class CreateRiskBusinessCaseHandler
+internal sealed class CreateRiskBusinessCaseHandler
     : INotificationHandler<MainCustomerUpdatedNotification>
 {
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
@@ -50,7 +50,7 @@ internal class CreateRiskBusinessCaseHandler
         var createRBCResponse = await _riskBusinessCaseService.CreateCase(notification.SalesArrangementId, offerInstance.ResourceProcessId, cancellationToken);
 
         // ulozit na SA
-        await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, createRBCResponse.RiskBusinessCaseId, null, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, createRBCResponse.RiskBusinessCaseId, cancellationToken);
 
         #region local fce
         async Task<string> getRiskSegment()

@@ -10,7 +10,7 @@ public class LoanApplicationEmploymentIncome
     public int? WorkSectorId { get; set; }
 
     [ProtoMember(3)]
-    public string? EmployerName { get; set; }
+    public string EmployerName { get; set; } = default!;
 
     [ProtoMember(4)]
     public int? ClassificationOfEconomicActivityId { get; set; }

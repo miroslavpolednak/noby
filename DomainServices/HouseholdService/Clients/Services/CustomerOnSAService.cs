@@ -1,8 +1,9 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
-internal sealed class CustomerOnSAService 
+internal sealed class CustomerOnSAService
     : ICustomerOnSAServiceClient
 {
     public async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
@@ -29,6 +30,16 @@ internal sealed class CustomerOnSAService
             }, cancellationToken: cancellationToken);
     }
 
+    public async Task<List<CustomerOnSA>> GetCustomersByIdentity(Identity identity, CancellationToken cancellationToken = default)
+    {
+        var result = await _service.GetCustomersByIdentityAsync(
+            new()
+            {
+                CustomerIdentifier = identity
+            }, cancellationToken: cancellationToken);
+        return result.Customers.ToList();
+    }
+
     public async Task<List<CustomerOnSA>> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.GetCustomerListAsync(
@@ -50,6 +61,7 @@ internal sealed class CustomerOnSAService
     }
 
     #region Income
+
     public async Task<int> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.CreateIncomeAsync(request, cancellationToken: cancellationToken);
@@ -93,9 +105,11 @@ internal sealed class CustomerOnSAService
     {
         await _service.UpdateIncomeBaseDataAsync(request, cancellationToken: cancellationToken);
     }
+
     #endregion Income
 
     #region Obligation
+
     public async Task<int> CreateObligation(CreateObligationRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.CreateObligationAsync(request, cancellationToken: cancellationToken);
@@ -134,8 +148,10 @@ internal sealed class CustomerOnSAService
     {
         await _service.UpdateObligationAsync(request, cancellationToken: cancellationToken);
     }
+
     #endregion Obligation
 
     private readonly Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient _service;
+
     public CustomerOnSAService(Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient service) => _service = service;
 }

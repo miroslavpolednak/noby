@@ -23,13 +23,14 @@ public abstract class BaseDbContext<TDbContext>
     /// </summary>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
-        await addInterfaceFields(cancellationToken);
+        addInterfaceFields();
         return await base.SaveChangesAsync(cancellationToken);
     }
 
     public override int SaveChanges()
     {
-        throw new NotImplementedException("Use async version of SaveChanges() method!");
+        addInterfaceFields();
+        return base.SaveChanges();
     }
 
     #region DateOnly conversions
@@ -65,7 +66,7 @@ public abstract class BaseDbContext<TDbContext>
     }
     #endregion DateOnly conversions
 
-    private async Task addInterfaceFields(CancellationToken cancellationToken)
+    private void addInterfaceFields()
     {
         foreach (var entry in this.ChangeTracker.Entries())
         {
@@ -76,9 +77,8 @@ public abstract class BaseDbContext<TDbContext>
                     {
                         if (CurrentUser!.IsAuthenticated)
                         {
-                            await CurrentUser.EnsureDetails(cancellationToken);
                             obj1.CreatedUserId = CurrentUser!.User!.Id;
-                            obj1.CreatedUserName = CurrentUser!.UserDetails!.DisplayName;
+                            obj1.CreatedUserName = CurrentUser!.User!.DisplayName;
                         }
                         obj1.CreatedTime = CisDateTime.Now;
                     }
@@ -86,9 +86,8 @@ public abstract class BaseDbContext<TDbContext>
                     {
                         if (CurrentUser!.IsAuthenticated)
                         {
-                            await CurrentUser.EnsureDetails(cancellationToken);
                             obj2.ModifiedUserId = CurrentUser!.User!.Id;
-                            obj2.ModifiedUserName = CurrentUser!.UserDetails!.DisplayName;
+                            obj2.ModifiedUserName = CurrentUser!.User!.DisplayName;
                         }
                     }
                     break;
@@ -98,9 +97,8 @@ public abstract class BaseDbContext<TDbContext>
                     {
                         if (CurrentUser!.IsAuthenticated)
                         {
-                            await CurrentUser.EnsureDetails(cancellationToken);
                             obj3.ModifiedUserId = CurrentUser!.User!.Id;
-                            obj3.ModifiedUserName = CurrentUser!.UserDetails!.DisplayName;
+                            obj3.ModifiedUserName = CurrentUser!.User!.DisplayName;
                         }
                     }
                     break;

@@ -11,6 +11,6 @@ internal sealed class LinkCustomerOnSAToHouseholdRequestValidator
         RuleFor(t => t.CustomerOnSAId1)
             .NotNull()
             .When(t => t.CustomerOnSAId2.HasValue)
-            .WithMessage("CustomerOnSAId1 is not set although CustomerOnSAId2 is.").WithErrorCode("16056");
+            .WithErrorCode(ErrorCodeMapper.Customer2WithoutCustomer1);
     }
 }

@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net7.0</TargetFramework>
+	  <OutputType>Library</OutputType>
+	  <Product>Common Infrastructure Solution</Product>
+	  <Authors>Filip Tuma</Authors>
+	  <Nullable>enable</Nullable>
+	  <Platforms>AnyCPU;x64</Platforms>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<Title>Messaging helpers (Kafka)</Title>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>CIS.Infrastructure.Messaging.xml</DocumentationFile>
+		<OutputType>Library</OutputType>
+		<DisableDefaultDocumentation Condition=" '$(Configuration)' != 'Debug' ">true</DisableDefaultDocumentation>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Content Include="DefaultDocumentation.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- DO NOT UPGRADE VERSIONS -->
+		<PackageReference Include="KB.Speed.MassTransit.Kafka" Version="1.1.0.16-SNAPSHOT" />
+		<PackageReference Include="MassTransit" Version="8.0.13" />
+		<PackageReference Include="MassTransit.Kafka" Version="8.0.13" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Core\CIS.Core.csproj" />
+	</ItemGroup>
+</Project>

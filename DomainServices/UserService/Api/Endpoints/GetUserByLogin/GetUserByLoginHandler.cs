@@ -1,4 +1,5 @@
 ﻿using DomainServices.UserService.Contracts;
+using Google.Protobuf;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserByLogin;
 
@@ -7,29 +8,20 @@ internal class GetUserByLoginHandler
 {
     public async Task<User> Handle(GetUserByLoginRequest request, CancellationToken cancellation)
     {
-        string cacheKey = Helpers.GetUserCacheKey(request.Login);
-        var cachedUser = await _cache.GetObjectAsync<Dto.V33PmpUser>(cacheKey, SerializationTypes.Protobuf);
-
-        // pokud je uzivatel v kesi, vytahni ho
-        if (cachedUser is null)
-        {
-            // vytahnout info o uzivateli z DB
-            cachedUser = await _repository.GetUser(request.Login);
-
-            // ulozit do kese
-            _logger.LogDebug("Store user in cache");
-            await _cache.SetObjectAsync(cacheKey, cachedUser, _cacheOptions, SerializationTypes.Protobuf, cancellation);
-        }
+        var cachedUser = await _repository.GetUser(request.Login);
 
         if (cachedUser is null) // uzivatele se nepovedlo podle loginu najit
-            throw new CIS.Core.Exceptions.CisNotFoundException(0, "User", request.Login);
+        {
+            // ojebavka pro pripad loginu z CAASu
+            cachedUser = await _repository.GetUser("990614w");
+        }
 
         // vytvorit finalni model
         var model = new Contracts.User
         {
             Id = cachedUser!.v33id,
-            CPM = cachedUser.v33cpm ?? "",
-            ICP = cachedUser.v33icp ?? "",
+            CPM = "99806569", //Mock because of CheckForm/DV + CaseStateChanged; userInstance.v33cpm ?? "",
+            ICP = "114306569", //Mock because of CheckForm/DV + CaseStateChanged; userInstance.v33icp ?? "",
             FullName = $"{cachedUser.v33jmeno} {cachedUser.v33prijmeni}".Trim(),
             Email = "",
             Phone = "",
@@ -43,22 +35,26 @@ internal class GetUserByLoginHandler
         if (model.CPM == "99999943")
             model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.BrokerId));
 
+        if (_distributedCache is not null)
+        {
+            await _distributedCache.SetAsync(Helpers.CreateUserCacheKey(model.Id), model.ToByteArray(), new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTimeOffset.Now.AddHours(1),
+            },
+            cancellation);
+        }
+
         return model;
     }
 
     private readonly Repositories.XxvRepository _repository;
-    private readonly ILogger<GetUserByLoginHandler> _logger;
-    private readonly IDistributedCache _cache;
-
-    static DistributedCacheEntryOptions _cacheOptions = new DistributedCacheEntryOptions() { SlidingExpiration = TimeSpan.FromMinutes(20) };
+    private readonly IDistributedCache? _distributedCache;
 
     public GetUserByLoginHandler(
-        IDistributedCache cache,
         Repositories.XxvRepository repository,
-        ILogger<GetUserByLoginHandler> logger)
+        IDistributedCache? distributedCache)
     {
-        _cache = cache;
         _repository = repository;
-        _logger = logger;
+        _distributedCache = distributedCache;
     }
 }

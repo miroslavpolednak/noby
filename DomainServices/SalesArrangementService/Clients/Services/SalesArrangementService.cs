@@ -70,15 +70,14 @@ internal sealed class SalesArrangementService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, DateTime? firstSignedDate, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken))
     {
          await _service.UpdateSalesArrangementAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,
                 ContractNumber = contractNumber ?? "",
-                RiskBusinessCaseId = riskBusinessCaseId ?? "",
-                FirstSignedDate = firstSignedDate,
+                RiskBusinessCaseId = riskBusinessCaseId ?? ""
             }, cancellationToken: cancellationToken);
     }
 
@@ -136,6 +135,26 @@ internal sealed class SalesArrangementService
                 SalesArrangementId = salesArrangementId,
                 OfferDocumentId = offerDocumentId
             }, cancellationToken: cancellationToken);
+    }
+
+    public async Task<List<FlowSwitch>> GetFlowSwitches(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        return (await _service.GetFlowSwitchesAsync(
+            new()
+            {
+                SalesArrangementId = salesArrangementId
+            }, cancellationToken: cancellationToken)).FlowSwitches.ToList();
+    }
+
+    public async Task SetFlowSwitches(int salesArrangementId, List<FlowSwitch> flowSwitches, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        var request = new SetFlowSwitchesRequest
+        {
+            SalesArrangementId = salesArrangementId
+        };
+        request.FlowSwitches.AddRange(flowSwitches);
+
+        await _service.SetFlowSwitchesAsync(request, cancellationToken: cancellationToken);
     }
 
     private readonly Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service;

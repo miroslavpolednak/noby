@@ -1,11 +1,9 @@
-﻿using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
-using NOBY.Api.SharedDto;
+﻿using NOBY.Api.SharedDto;
 
 namespace NOBY.Api.Endpoints.Product.GetProductObligationList.Dto;
 
 public class ProductObligation
 {
-    public int? ProductObligationId { get; set; }
     public int ObligationTypeId { get; set; }
     public decimal Amount { get; set; }
     public string CreditorName { get; set; } = null!;

@@ -7,18 +7,18 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SendSmsFrom
 {
     public SendSmsFromTemplateRequestValidator()
     {
-        RuleFor(request => request.Phone)
+        RuleFor(request => request.PhoneNumber)
             .NotNull()
-                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PhoneRequired)
-                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Phone)} required.")
-            .SetValidator(new PhoneValidator())
-                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PhoneInvalid)
-                .WithMessage(nameof(SendSmsFromTemplateRequest.Phone));
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PhoneNumberRequired)
+                .WithMessage($"{nameof(SendSmsFromTemplateRequest.PhoneNumber)} required.")
+            .SetValidator(new PhoneNumberValidator())
+                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PhoneNumberInvalid)
+                .WithMessage($"Invalid {nameof(SendSmsRequest.PhoneNumber)}.");
         
         RuleFor(request => request.ProcessingPriority)
             .GreaterThan(0)
                 .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.ProcessPriorityInvalid)
-                .WithMessage(nameof(SendSmsFromTemplateRequest.ProcessingPriority));
+                .WithMessage($"Invalid {nameof(SendSmsRequest.ProcessingPriority)}.");
         
         RuleFor(request => request.Type)
             .NotEmpty()

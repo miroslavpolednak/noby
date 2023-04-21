@@ -7,8 +7,12 @@ internal static class Helpers
     const string _mpInstanceName = "MPSS";
     private static string[] _kbGroupPersonValues = new[] { "KBAD", "MPAD" };
 
+    public static bool IsDealerSchema(int? dealerCompanyId)
+        => dealerCompanyId != null;
+
+    [Obsolete("jeste bude upresneno co s tim")]
     public static bool IsDealerSchema(string? schemaToCheck)
-        => string.IsNullOrEmpty(schemaToCheck) ? throw new CisArgumentException(17011, "IsKbGroupPerson() input parameter is null", nameof(schemaToCheck)) : !_kbGroupPersonValues.Contains(schemaToCheck);
+            => string.IsNullOrEmpty(schemaToCheck) ? throw new CisArgumentException(17011, "IsKbGroupPerson() input parameter is null", nameof(schemaToCheck)) : !_kbGroupPersonValues.Contains(schemaToCheck);
 
     public static string GetResourceIdentifierInstanceForDealer(string? identityScheme)
         => string.IsNullOrEmpty(identityScheme) ? throw new CisArgumentException(17012, "GetResourceIdentifierInstanceForDealer() input parameter is null", nameof(identityScheme)) : _kbPersonSchemas.Contains(identityScheme) ? _kbInstanceName : _mpInstanceName;

@@ -71,7 +71,6 @@ internal sealed class CustomerWithChangedDataService
         newCustomer.HasRelationshipWithKB = customerOnSA.CustomerAdditionalData?.HasRelationshipWithKB;
         newCustomer.HasRelationshipWithKBEmployee = customerOnSA.CustomerAdditionalData?.HasRelationshipWithKBEmployee;
         newCustomer.IsUSPerson = customerOnSA.CustomerAdditionalData?.IsUSPerson;
-        newCustomer.IsAddressWhispererUsed = customerOnSA.CustomerAdditionalData?.IsAddressWhispererUsed;
         newCustomer.IsPoliticallyExposed = customerOnSA.CustomerAdditionalData?.IsPoliticallyExposed;
 
         newCustomer.NaturalPerson = person;
@@ -97,14 +96,14 @@ internal sealed class CustomerWithChangedDataService
         if (newCustomer is ICustomerDetailConfirmedContacts)
         {
             var contactsDetail = (ICustomerDetailConfirmedContacts)newCustomer;
-            contactsDetail.PrimaryEmail = getEmail<EmailAddressConfirmedDto>(dsCustomer);
-            contactsDetail.PrimaryPhoneNumber = getPhone<PhoneNumberConfirmedDto>(dsCustomer);
+            contactsDetail.EmailAddress = getEmail<EmailAddressConfirmedDto>(dsCustomer);
+            contactsDetail.MobilePhone = getPhone<PhoneNumberConfirmedDto>(dsCustomer);
         }
         else if (newCustomer is ICustomerDetailContacts)
         {
             var contactsDetail = (ICustomerDetailContacts)newCustomer;
-            contactsDetail.PrimaryEmail = getEmail<EmailAddressDto>(dsCustomer);
-            contactsDetail.PrimaryPhoneNumber = getPhone<PhoneNumberDto>(dsCustomer);
+            contactsDetail.EmailAddress = getEmail<EmailAddressDto>(dsCustomer);
+            contactsDetail.MobilePhone = getPhone<PhoneNumberDto>(dsCustomer);
         }
 
         return newCustomer;
@@ -119,7 +118,7 @@ internal sealed class CustomerWithChangedDataService
             var newPhone = (TPhone)Activator.CreateInstance(typeof(TPhone))!;
             newPhone.IsConfirmed = phone.IsConfirmed;
             newPhone.PhoneNumber = phone.Mobile.PhoneNumber;
-            newPhone.PhoneIDC = phone.Mobile.PhoneNumber;
+            newPhone.PhoneIDC = phone.Mobile.PhoneIDC;
             return newPhone;
         }
         else
@@ -130,11 +129,11 @@ internal sealed class CustomerWithChangedDataService
         where TEmail : IEmailAddressDto
     {
         var email = dsCustomer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email);
-        if (!string.IsNullOrEmpty(email?.Email?.Address))
+        if (!string.IsNullOrEmpty(email?.Email?.EmailAddress))
         {
             var newEmail = (TEmail)Activator.CreateInstance(typeof(TEmail))!;
             newEmail.IsConfirmed = email.IsConfirmed;
-            newEmail.EmailAddress = email.Email.Address;
+            newEmail.EmailAddress = email.Email.EmailAddress;
             return newEmail;
         }
         else

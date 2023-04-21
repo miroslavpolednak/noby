@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
+using FluentValidation;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.CreateSalesArrangement;
 
@@ -9,18 +10,15 @@ internal sealed class CreateSalesArrangementRequestValidator
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
-            .WithMessage("Case Id must be > 0").WithErrorCode("18008");
+            .WithErrorCode(ErrorCodeMapper.CaseIdIsEmpty);
 
         RuleFor(t => t.SalesArrangementTypeId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementTypeId must be > 0").WithErrorCode("18009");
+            .WithErrorCode(ErrorCodeMapper.SalesArrangementTypeIdIsEmpty);
 
-        RuleFor(t => t.SalesArrangementSignatureTypeId)
-            .MustAsync(async (id, cancellation) =>
-            {
-                return id.HasValue ? (await codebookService.SignatureTypes(cancellation)).Any(t => t.Id == id) : true;
-            })
-            .WithMessage("SalesArrangementSignatureTypeId not found").WithErrorCode("99999"); // TODO: Error code
+        RuleFor(t => t.SalesArrangementTypeId)
+            .MustAsync(async (t, cancellationToken) => (await codebookService.SalesArrangementTypes(cancellationToken)).Any(c => c.Id == t))
+            .WithErrorCode(ErrorCodeMapper.SalesArrangementTypeNotFound);
     }
 }
 

@@ -1,20 +1,15 @@
-﻿using CIS.Infrastructure.StartupExtensions;
-using CIS.Infrastructure.Telemetry;
-using System.Reflection;
-using NOBY.Infrastructure.Security;
+﻿using NOBY.Infrastructure.Security;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication;
+using NOBY.Infrastructure.Configuration;
+using CIS.Infrastructure.WebApi;
 
 namespace NOBY.Api.StartupExtensions;
 
 internal static class NobyAppBuilder
 {
-    static string _appVersion = "";
-
-    static NobyAppBuilder()
-    {
-        _appVersion = Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
-    }
-
-    public static IApplicationBuilder UseFomsSpa(this IApplicationBuilder app)
+    public static IApplicationBuilder UseNobySpa(this IApplicationBuilder app)
         => app.MapWhen(_isSpaCall, appBuilder => 
         {
             appBuilder.UseSpaStaticFiles();
@@ -24,7 +19,7 @@ internal static class NobyAppBuilder
             });
         });
 
-    public static IApplicationBuilder UseFomsHealthChecks(this IApplicationBuilder app)
+    public static IApplicationBuilder UseNobyHealthChecks(this IApplicationBuilder app)
         => app.MapWhen(_isHealthCheck, appBuilder =>
         {
             appBuilder.UseRouting();
@@ -34,38 +29,28 @@ internal static class NobyAppBuilder
             });
         });
 
-    public static IApplicationBuilder UseFomsApi(this WebApplication app)
+    public static IApplicationBuilder UseNobyApi(this WebApplication app, AppConfiguration appConfiguration)
         => app.MapWhen(_isApiCall, appBuilder =>
         {
             appBuilder.UseHttpLogging();
-            appBuilder.UseCisWebApiCors();
+            appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware>();
+            appBuilder.UseCisSecurityHeaders();
 
-            // error middlewares
-            /*if (app.Environment.IsDevelopment())
+            // detailed error page
+            if (appConfiguration.UseDeveloperExceptionPage)
             {
                 appBuilder.UseDeveloperExceptionPage();
             }
             else // custom exception handling
-            {*/
-                appBuilder.UseMiddleware<NOBY.Infrastructure.ErrorHandling.NobyApiExceptionMiddleware>();
-                appBuilder.UseHsts();
-            //}
-
-            // version header
-            appBuilder.Use(async (context, next) =>
             {
-                context.Response.Headers.Add("foms-ver", _appVersion);
-                await next();
-            });
-
-            appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.HttpOptionsMiddleware>();
+                appBuilder.UseMiddleware<Infrastructure.ErrorHandling.Internals.NobyApiExceptionMiddleware>();
+            }
 
             // autentizace a autorizace
             appBuilder.UseAuthentication();
             appBuilder.UseMiddleware<AppSecurityMiddleware>();
-            appBuilder.UseCisLogging();
-            appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware>();
-
+            appBuilder.UseAuthorization();
+            
             // namapovani API modulu
             appBuilder
                 .UseRouting()
@@ -75,7 +60,60 @@ internal static class NobyAppBuilder
                 });
         });
 
-    public static IApplicationBuilder UseFomsSwagger(this IApplicationBuilder app)
+    /// <summary>
+    /// routy pro autentizaci a signout uzivatele
+    /// </summary>
+    public static IApplicationBuilder UseNobyAuthStrategy(this IApplicationBuilder app)
+        => app
+        .UseWhen(_isAuthCall, (appBuilder) =>
+        {
+            appBuilder.UseRouting();
+
+            appBuilder.UseAuthentication();
+            appBuilder.UseAuthorization();
+
+            appBuilder.UseEndpoints(t =>
+            {
+                // sign in
+                t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, ([FromServices] IHttpContextAccessor context) =>
+                {
+                })
+                    .RequireAuthorization()
+                    .WithDescription("Přihlášení uživatele / redirect na auth provider.")
+                    .WithTags("Authentication")
+                    .WithName("signIn")
+                    .WithOpenApi();
+
+                // sign out
+                t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint, 
+                    ([FromServices] IHttpContextAccessor context, [FromServices] AppConfiguration configuration, [FromQuery] string? redirect) =>
+                {
+                    string redirectUrl = Uri.TryCreate(redirect, UriKind.Absolute, out var uri) ? uri.ToString() : "/";
+
+                    context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    if (configuration.Security!.AuthenticationScheme == AuthenticationConstants.CaasAuthScheme)
+                    {
+                        context.HttpContext!.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+                    }
+
+                    // redirect to root?
+                    context.HttpContext!.Response.Redirect(redirectUrl);
+                })
+                    .RequireAuthorization()
+                    .WithDescription("Odhlášení uživatele.")
+                    .WithTags("Authentication")
+                    .WithName("signOut")
+                    .WithOpenApi(generatedOperation =>
+                    {
+                        var parameter = generatedOperation.Parameters[0];
+                        parameter.Description = "Absolutní URI kam má být uživatel přesměrován po odhlášení";
+                        return generatedOperation;
+                    });
+            });
+        });
+
+    public static IApplicationBuilder UseNobySwagger(this IApplicationBuilder app)
         => app
         .UseSwagger()
         .UseSwaggerUI(c =>
@@ -86,9 +124,15 @@ internal static class NobyAppBuilder
     private static readonly Func<HttpContext, bool> _isApiCall = (HttpContext context) 
         => context.Request.Path.StartsWithSegments("/api");
 
+    private static readonly Func<HttpContext, bool> _isAuthCall = (HttpContext context)
+        => context.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment);
+
     private static readonly Func<HttpContext, bool> _isHealthCheck = (HttpContext context) 
         => context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);
 
     private static readonly Func<HttpContext, bool> _isSpaCall = (HttpContext context) 
-        => !context.Request.Path.StartsWithSegments("/api") && !context.Request.Path.StartsWithSegments("/swagger") && !context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);       
+        => !context.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment) 
+            && !context.Request.Path.StartsWithSegments("/api") 
+            && !context.Request.Path.StartsWithSegments("/swagger") 
+            && !context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);       
 }

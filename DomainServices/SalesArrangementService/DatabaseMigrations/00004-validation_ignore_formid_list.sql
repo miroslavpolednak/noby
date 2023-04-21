@@ -1,0 +1,1 @@
+UPDATE FormValidationTransformation SET FieldPath = 'seznam_id_formulare[].id_formulare', AlterSeverity = 2 WHERE Id IN (9, 259)

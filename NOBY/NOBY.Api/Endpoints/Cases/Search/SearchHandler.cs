@@ -5,7 +5,7 @@ using _CS = DomainServices.CaseService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.Search;
 
-internal class SearchHandler
+internal sealed class SearchHandler
     : IRequestHandler<SearchRequest, SearchResponse>
 {
     public async Task<SearchResponse> Handle(SearchRequest request, CancellationToken cancellationToken)

@@ -6,7 +6,7 @@ using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerMana
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
-internal class CustomerManagementDetailProvider
+internal sealed class CustomerManagementDetailProvider
 {
     private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClients _codebook;
@@ -61,7 +61,7 @@ internal class CustomerManagementDetailProvider
 
         AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.ComponentAddress, customer.PrimaryAddress?.PrimaryAddressFrom);
         AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.ComponentAddress, default);
-        AddAddress(AddressTypes.Abroad, response.Addresses.Add, customer.TemporaryStay?.ComponentAddress, default);
+        AddAddress(AddressTypes.Other, response.Addresses.Add, customer.TemporaryStay?.ComponentAddress, default);
 
         AddContacts(customer, response.Contacts.Add);
 
@@ -109,7 +109,7 @@ internal class CustomerManagementDetailProvider
             ProfessionCategoryId = customer.Kyc?.NaturalPersonKyc?.Employment?.CategoryCode,
             ProfessionId = _professionTypes.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.Employment?.ProfessionCode == t.RdmCode)?.Id,
             NetMonthEarningAmountId = _netMonthEarnings.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.NetMonthEarningCode == t.RdmCode)?.Id,
-            NetMonthEarningTypeId = _incomeMainTypesAML.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.MainSourceOfEarnings?.Code.ToString() == t.RdmCode)?.Id,
+            NetMonthEarningTypeId = _incomeMainTypesAML.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.MainSourceOfEarnings?.Code.ToString(System.Globalization.CultureInfo.InvariantCulture) == t.RdmCode)?.Id,
             TaxResidence = new NaturalPersonTaxResidence
             {
                 ValidFrom = customer.TaxResidence?.ValidFrom
@@ -155,7 +155,7 @@ internal class CustomerManagementDetailProvider
         };
     }
 
-    private CustomerIdentification? CreateCustomerIdentification(__Contracts.CustomerIdentification? customerIdentification)
+    private static CustomerIdentification? CreateCustomerIdentification(__Contracts.CustomerIdentification? customerIdentification)
     {
         if (customerIdentification is null)
             return default;
@@ -209,9 +209,9 @@ internal class CustomerManagementDetailProvider
             };
 
             if (noIndex <= 0)
-                model.Mobile = new MobilePhone { PhoneNumber = customer.PrimaryPhone.PhoneNumber };
+                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber };
             else
-                model.Mobile = new MobilePhone { PhoneNumber = customer.PrimaryPhone.PhoneNumber![noIndex..], PhoneIDC = customer.PrimaryPhone.PhoneNumber![..noIndex] };
+                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber![(noIndex + 1)..], PhoneIDC = customer.PrimaryPhone.PhoneNumber![..noIndex] };
 
             onAddContact(model);
         }
@@ -221,7 +221,7 @@ internal class CustomerManagementDetailProvider
             onAddContact(new Contact
             {
                 ContactTypeId = (int)ContactTypes.Email,
-                Email = new EmailAddress { Address = customer.PrimaryEmail.EmailAddress },
+                Email = new EmailAddressItem { EmailAddress = customer.PrimaryEmail.EmailAddress },
                 IsPrimary = true,
                 IsConfirmed = customer.PrimaryEmail.Confirmed
             });

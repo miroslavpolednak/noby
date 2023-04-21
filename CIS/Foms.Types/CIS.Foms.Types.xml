@@ -144,5 +144,35 @@
             Role klienta v obchodu
             </summary>
         </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.IsOfferGuaranteed">
+            <summary>
+            Nabídka s platnou garancí
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.CustomerIdentifiedOnMainHousehold">
+            <summary>
+            Identifikovaní klienti na hlavní domácnosti
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.CustomerIdentifiedOnCodebtorHousehold">
+            <summary>
+            Identifikovaní klienti na spolužadatelské domácnosti
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.Was3601MainChangedAfterSigning">
+            <summary>
+            3601 pro hlavní domácnost byla změněna po podpisu
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.Was3602CodebtorChangedAfterSigning">
+            <summary>
+            3602 pro spoludlužnickou domácnost byla změněna po podpisu
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.ParametersSavedAtLeastOnce">
+            <summary>
+            Došlo k uložení parametrů na žádosti
+            </summary>
+        </member>
     </members>
 </doc>

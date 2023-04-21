@@ -1,35 +1,35 @@
-﻿namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementState;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementState;
 
 internal sealed class UpdateSalesArrangementStateHandler
     : IRequestHandler<Contracts.UpdateSalesArrangementStateRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateSalesArrangementStateRequest request, CancellationToken cancellation)
     {
-        // kontrola existence noveho stavu
-        _ = (await _codebookService.SalesArrangementStates(cancellation)).FirstOrDefault(t => t.Id == request.State)
-            ?? throw new CisNotFoundException(18006, $"SalesArrangementState #{request.State} does not exist.");
-
         // kontrola existence SA
-        var saEntity = await _repository.GetSalesArrangement(request.SalesArrangementId, cancellation);
+        var entity = await _dbContext
+            .SalesArrangements
+            .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
         // kontrola aktualniho stavu vuci novemu stavu
-        if (saEntity.State == request.State)
-            throw new CisValidationException(18007, $"SalesArrangement {request.SalesArrangementId} is already in state {request.State}");
+        if (entity.State == request.State)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AlreadyInSalesArrangementState, request.State);
 
         // update stavu SA
-        await _repository.UpdateSalesArrangementState(request.SalesArrangementId, request.State, cancellation);
+        entity.State = request.State;
+        entity.StateUpdateTime = _dbContext.CisDateTime.Now;
+
+        await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly Database.SalesArrangementServiceRepository _repository;
+    private readonly Database.SalesArrangementServiceDbContext _dbContext;
 
-    public UpdateSalesArrangementStateHandler(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
-        Database.SalesArrangementServiceRepository repository)
+    public UpdateSalesArrangementStateHandler(Database.SalesArrangementServiceDbContext dbContext)
     {
-        _codebookService = codebookService;
-        _repository = repository;
+        _dbContext = dbContext;
     }
 }

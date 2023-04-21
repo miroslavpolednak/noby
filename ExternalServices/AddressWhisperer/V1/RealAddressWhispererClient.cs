@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace ExternalServices.AddressWhisperer.V1;
 
-internal class RealAddressWhispererClient
+internal sealed class RealAddressWhispererClient
     : IAddressWhispererClient
 {
     public async Task<Dto.AddressDetail?> GetAddressDetail(string sessionId, string addressId, string title, string country, CancellationToken cancellationToken)
@@ -28,7 +28,7 @@ internal class RealAddressWhispererClient
             request.Headers.Add("SOAPAction", "getAddressDetails");
             request.Content = content;
 
-            using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
+            using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
                 string rawResponse = await response.Content.ReadAsStringAsync(cancellationToken);
 
@@ -95,7 +95,7 @@ internal class RealAddressWhispererClient
             request.Headers.Add("SOAPAction", "getSuggestions");
             request.Content = content;
 
-            using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
+            using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
                 string rawResponse = await response.Content.ReadAsStringAsync(cancellationToken);
 

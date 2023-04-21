@@ -38,7 +38,9 @@ internal static class ModelComparers
     {
         if (!_basicCompareLogic.Compare(original, request).AreEqual)
         {
+#pragma warning disable CS8601 // Possible null reference assignment.
             delta[propertyName] = request;
+#pragma warning restore CS8601 // Possible null reference assignment.
         }
     }
 
@@ -52,7 +54,6 @@ internal static class ModelComparers
         _basicCompareLogic.Config.IgnoreCollectionOrder = true;
         _basicCompareLogic.Config.CompareChildren = true;
         _basicCompareLogic.Config.IgnoreProperty<CIS.Foms.Types.Address>(x => x.IsPrimary);
-        _basicCompareLogic.Config.IgnoreProperty<CIS.Foms.Types.Address>(x => x.PrimaryAddressFrom);
 
         var spec = new Dictionary<Type, IEnumerable<string>>();
         spec.Add(typeof(CIS.Foms.Types.Address), new string[] { "AddressTypeId" });

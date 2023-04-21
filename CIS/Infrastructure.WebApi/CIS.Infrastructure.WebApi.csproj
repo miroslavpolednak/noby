@@ -19,17 +19,10 @@
 		<DisableDefaultDocumentation Condition=" '$(Configuration)' != 'Debug' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>
 
-	<ItemGroup>
-	  <Content Remove="DefaultDocumentation.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="DefaultDocumentation.json" />
-	</ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.5.0" />
-    <PackageReference Include="MediatR" Version="12.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+    <PackageReference Include="FluentValidation" Version="11.5.1" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>

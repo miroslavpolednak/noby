@@ -6,10 +6,14 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
+
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.21.12" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.51.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.51.0">
+		<PackageReference Include="Google.Protobuf" Version="3.22.1" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.52.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.52.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -22,7 +26,6 @@
 	<ItemGroup>
 		<Protobuf Include="DocumentGeneratorService.V1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="GenerateDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="Document.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="GenericTable.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Signature.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="DocumentFooter.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />

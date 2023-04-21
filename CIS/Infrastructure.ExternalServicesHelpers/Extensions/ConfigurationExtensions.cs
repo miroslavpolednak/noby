@@ -36,7 +36,7 @@ public static class ConfigurationExtensions
         if (configuration.ImplementationType == Foms.Enums.ServiceImplementationTypes.Unknown)
             throw new CisConfigurationException(0, $"{serviceName} Service client Implementation type is not set");
 
-        configuration!.ServiceName = $"{Constants.ExternalServicesServiceDiscoveryKeyPrefix}{serviceName}:{serviceImplementationVersion}";
+        configuration!.ServiceName = $"{Core.CisGlobalConstants.ExternalServicesServiceDiscoveryKeyPrefix}{serviceName}:{serviceImplementationVersion}";
 
         builder.Services.AddSingleton<IExternalServiceConfiguration<TClient>>(configuration);
 
@@ -44,5 +44,5 @@ public static class ConfigurationExtensions
     }
 
     private static string getSectionName(in string serviceName, in string serviceImplementationVersion)
-        => $"{Constants.ExternalServicesConfigurationSectionName}:{serviceName}:{serviceImplementationVersion}";
+        => $"{Core.CisGlobalConstants.ExternalServicesConfigurationSectionName}:{serviceName}:{serviceImplementationVersion}";
 }

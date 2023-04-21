@@ -12,12 +12,12 @@ internal sealed class CreateHandler
     {
         // vytvorit customera v CM
         long kbId;
-        bool createOk = false;
+        bool isVerified = false;
         try
         {
             var createResult = await _customerService.CreateCustomer(request.ToDomainService(Mandants.Kb), cancellationToken);
             kbId = createResult.CreatedCustomerIdentity.IdentityId;
-            createOk = true;
+            isVerified = !request.HardCreate;
         }
         // V případě, že existoval jeden klient
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11023")
@@ -29,18 +29,18 @@ internal sealed class CreateHandler
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11024")
         {
             _logger.LogInformation("CreateCustomer: more clients found", ex);
-            throw new CisConflictException(ex.Message);
+            throw new CisConflictException(90006, ex.Message);
         }
         // Registry nefungují
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11025")
         {
             _logger.LogInformation("CreateCustomer: registry failed", ex);
-            return new CreateResponse { ResponseCode = "KBCM_NOT_FOUND_IN_BR" };
+            throw new CisValidationException(90007, "KBCM_NOT_FOUND_IN_BR");
         }
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11026")
         {
             _logger.LogInformation("CreateCustomer: registry failed", ex);
-            return new CreateResponse { ResponseCode = "KBCM_UNAVAILABLE_BR" };
+            throw new CisException(90008, "KBCM_UNAVAILABLE_BR");
         }
         catch
         {
@@ -63,8 +63,7 @@ internal sealed class CreateHandler
 
         // vytvorit response z API
         var model = customerKb
-            .ToResponseDto()
-            .SetResponseCode(createOk)
+            .ToResponseDto(isVerified)
             .InputDataComparison(request);
 
         // pokud je vse OK, zalozit customera v konsDb

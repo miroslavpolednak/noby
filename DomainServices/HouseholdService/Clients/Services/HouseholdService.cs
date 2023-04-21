@@ -28,7 +28,7 @@ internal sealed class HouseholdService : IHouseholdServiceClient
                 HouseholdId = householdId,
             }, cancellationToken: cancellationToken);
     }
-    
+
     public async Task<List<Household>> GetHouseholdList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.GetHouseholdListAsync(
@@ -55,6 +55,8 @@ internal sealed class HouseholdService : IHouseholdServiceClient
     }
 
     private readonly Contracts.v1.HouseholdService.HouseholdServiceClient _service;
+
     public HouseholdService(Contracts.v1.HouseholdService.HouseholdServiceClient service) => _service = service;
+
     //private readonly ServiceClientResultCache<Household> _householdCache;
 }

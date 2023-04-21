@@ -17,7 +17,7 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -59,13 +59,16 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("HouseholdId")
+                    b.Property<int?>("HouseholdId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDocumentArchived")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
+
+                    b.Property<bool>("IsFinal")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsSigned")
                         .ValueGeneratedOnAdd()
@@ -87,7 +90,6 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SignatureMethodCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(15)");
 
                     b.HasKey("DocumentOnSAId");

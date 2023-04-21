@@ -2,8 +2,11 @@
 
 namespace CIS.Testing;
 
-public sealed class TestCisEnvironmentConfiguration : Core.Configuration.ICisEnvironmentConfiguration
+public sealed class TestCisEnvironmentConfiguration 
+    : Core.Configuration.ICisEnvironmentConfiguration
 {
+    public bool DisableServiceDiscovery { get; set; }
+
     public string? DefaultApplicationKey { get; set; }
 
     public string? EnvironmentName { get; set; }
@@ -14,5 +17,5 @@ public sealed class TestCisEnvironmentConfiguration : Core.Configuration.ICisEnv
 
     public string? InternalServicePassword { get; set; }
 
-    public ICisEnvironmentDistributedCacheConfiguration? DistributedCache => throw new NotImplementedException();
+    public ICisDistributedCacheConfiguration? DistributedCache => throw new NotImplementedException();
 }

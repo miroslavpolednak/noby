@@ -41,17 +41,18 @@
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
     <PackageReference Include="CompareNETObjects" Version="4.79.0" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.4" />
     <PackageReference Include="Scrutor" Version="4.2.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+	<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CIS\Infrastructure.Caching\CIS.Infrastructure.Caching.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
@@ -71,13 +72,13 @@
     <ProjectReference Include="..\..\ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj" />
     <ProjectReference Include="..\..\InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj" />
     <ProjectReference Include="..\..\InternalServices\DocumentGeneratorService\Clients\CIS.InternalServices.DocumentGeneratorService.Clients.csproj" />
+    <ProjectReference Include="..\MPSS.Security.Noby\MPSS.Security.Noby.csproj" />
     <ProjectReference Include="..\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Endpoints\Document\GeneralDocument\" />
     <Folder Include="Endpoints\Document\Offer\" />
-    <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
     <Folder Include="Endpoints\Document\Shared\DocumentIdManager\" />
     <Folder Include="Endpoints\SalesArrangement\SendToCmp\Dto\" />
   </ItemGroup>

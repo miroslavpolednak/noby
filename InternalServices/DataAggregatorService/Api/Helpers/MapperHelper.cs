@@ -10,7 +10,7 @@ internal static class MapperHelper
         var propertyValue = GetValue(data, dynamicParameter.SourceFieldPath);
 
         if (propertyValue == null)
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"Requested dynamic parameter '{dynamicParameter.SourceFieldPath}' has returned null.");
 
         TypeAccessor.Create(typeof(InputParameters))[parameters, dynamicParameter.InputParameterName] = propertyValue;
     }

@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
 
-internal record GetMortgageBySalesArrangementRequest(int SalesArrangementId)
+internal sealed record GetMortgageBySalesArrangementRequest(int SalesArrangementId)
     : IRequest<Dto.GetMortgageResponse>
 {
 }

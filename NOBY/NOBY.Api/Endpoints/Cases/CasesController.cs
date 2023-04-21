@@ -23,9 +23,10 @@ public class CasesController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(CreateSalesArrangement.CreateSalesArrangementResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
-    public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request.InfuseId(caseId), cancellationToken);
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request)
+        => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>
     /// Detail dlužníků a spoludlužníků pro daný case
@@ -42,8 +43,7 @@ public class CasesController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(List<GetCustomers.GetCustomersResponseCustomer>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<GetCustomers.GetCustomersResponseCustomer>> GetCustomers([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomers.GetCustomersRequest(caseId), cancellationToken);
 
@@ -60,6 +60,7 @@ public class CasesController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Case" })]
     [ProducesResponseType(typeof(Dto.CaseModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.CaseModel> GetById([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetById.GetByIdRequest(caseId), cancellationToken);
     
@@ -97,8 +98,8 @@ public class CasesController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "Case" })]
     [ProducesResponseType(typeof(Search.SearchResponse), StatusCodes.Status200OK)]
-    public async Task<Search.SearchResponse> Search([FromBody] Search.SearchRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    public async Task<Search.SearchResponse> Search([FromBody] Search.SearchRequest request)
+        => await _mediator.Send(request);
 
     /// <summary>
     /// Seznam workflow tasku dotažený z SB.
@@ -111,6 +112,7 @@ public class CasesController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(GetTaskList.GetTaskListResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetTaskList.GetTaskListResponse> GetTaskList([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetTaskList.GetTaskListRequest(caseId), cancellationToken);
 
@@ -118,13 +120,15 @@ public class CasesController : ControllerBase
     /// Parametry Case-u.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> CaseService/GetTaskList<br/>
+    /// Vrátí parametry case s ohledem na stav case. Před předáním žádosti vrací lokálně uložená data. Po předání žádosti vrací data z KonsDB. <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EEB4BBAA-9996-43ff-BB50-61514A2B6107"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
     [HttpGet("{caseId:long}/parameters")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(GetCaseParameters.GetCaseParametersResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetCaseParameters.GetCaseParametersResponse> GetCaseParameters([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCaseParameters.GetCaseParametersRequest(caseId), cancellationToken);
 }

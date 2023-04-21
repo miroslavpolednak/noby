@@ -41,7 +41,7 @@ internal sealed class CasesModelConverter
             converted.OfferContacts.EmailAddress = new() { EmailAddress = model.OfferContacts?.EmailForOffer };
 
         if (!string.IsNullOrEmpty(model.OfferContacts?.PhoneNumberForOffer?.PhoneNumber))
-            converted.OfferContacts.PhoneNumber = new()
+            converted.OfferContacts.MobilePhone = new()
             {
                 PhoneNumber = model.OfferContacts.PhoneNumberForOffer.PhoneNumber,
                 PhoneIDC = model.OfferContacts.PhoneNumberForOffer.PhoneIDC

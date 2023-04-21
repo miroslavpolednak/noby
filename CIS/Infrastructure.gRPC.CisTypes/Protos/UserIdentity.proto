@@ -9,7 +9,7 @@ message UserIdentity {
 
 	enum UserIdentitySchemes {
 		Unknown = 0;
-		KbUId = 4;
+		KbUid = 4;
 		M04Id = 5;
 		M17Id = 6;
 		BrokerId = 7;

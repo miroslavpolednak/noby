@@ -7,7 +7,7 @@ using CIS.InternalServices;
 using ExternalServices;
 using DomainServices.CustomerService.Api.Endpoints;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
+bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
 //TODO workaround until .NET6 UseWindowsService() will work with WebApplication
 var webAppOptions = runAsWinSvc
@@ -25,25 +25,24 @@ builder.AddCisEnvironmentConfiguration();
 builder.AddCisLogging();
 builder.AddCisTracing();
 
-// health checks
-builder.AddCisHealthChecks();
-
 builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
 builder.AddCisServiceAuthentication();
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddCustomerService();
 
 builder.AddExternalService<ExternalServices.MpHome.V1_1.IMpHomeClient>();
 
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
+builder.Services
+    .AddCisGrpcInfrastructure(typeof(Program))
+    .AddGrpcReflection()
+    .AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    });
+builder.AddCisGrpcHealthChecks();
 #endregion register builder.Services
 
 // kestrel configuration
@@ -59,13 +58,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
-app.UseCisLogging();
 
-app.MapCisHealthChecks();
-
+app.MapCisGrpcHealthChecks();
+app.MapGrpcReflectionService(); 
 app.MapGrpcService<CustomerService>();
-
-app.MapGrpcReflectionService();
 
 try
 {

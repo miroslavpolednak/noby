@@ -22,7 +22,7 @@ public class PartyValidator : AbstractValidator<Party>
                     .WithMessage($"Invalid {nameof(Party.LegalPerson)}.");
         });
 
-        When(party => party.LegalPerson is not null, () =>
+        When(party => party.NaturalPerson is not null, () =>
         {
             RuleFor(party => party.NaturalPerson!)
                 .SetValidator(new NaturalPersonValidator())

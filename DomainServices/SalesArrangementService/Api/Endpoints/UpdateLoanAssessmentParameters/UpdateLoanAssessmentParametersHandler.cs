@@ -1,4 +1,7 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using CIS.Foms.Enums;
+using DomainServices.SalesArrangementService.Api.Database;
+using DomainServices.SalesArrangementService.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateLoanAssessmentParameters;
 
@@ -7,15 +10,31 @@ internal sealed class UpdateLoanAssessmentParametersHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateLoanAssessmentParametersRequest request, CancellationToken cancellation)
     {
-        await _repository.UpdateLoanAssessment(request.SalesArrangementId, request.LoanApplicationAssessmentId, request.RiskSegment, request.CommandId, request.RiskBusinessCaseExpirationDate, cancellation);
+        var entity = await _dbContext
+            .SalesArrangements
+            .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation) 
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
+
+        entity.LoanApplicationAssessmentId = request.LoanApplicationAssessmentId;
+        entity.RiskSegment = request.RiskSegment;
+        entity.CommandId = request.CommandId;
+        entity.RiskBusinessCaseExpirationDate = request.RiskBusinessCaseExpirationDate;
+
+        // pokud je zadost NEW, zmenit na InProgress
+        if (entity.State == (int)SalesArrangementStates.NewArrangement)
+        {
+            entity.State = (int)SalesArrangementStates.InProgress;
+        }
+
+        await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Database.SalesArrangementServiceRepository _repository;
+    private readonly SalesArrangementServiceDbContext _dbContext;
 
-    public UpdateLoanAssessmentParametersHandler(Database.SalesArrangementServiceRepository repository)
+    public UpdateLoanAssessmentParametersHandler(SalesArrangementServiceDbContext dbContext)
     {
-        _repository = repository;
+        _dbContext = dbContext;
     }
 }

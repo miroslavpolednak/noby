@@ -19,7 +19,7 @@ internal sealed class GetCustomersOnProductHandler
         var customers = await _dbContext.Relationships
             .AsNoTracking()
             .Where(t => t.UverId == request.ProductId)
-            .Select(t => new { Vztah = t.VztahId, MpId = t.PartnerId, KbId = t.Partner.KBId })
+            .Select(t => new { Vztah = t.VztahId, MpId = t.PartnerId, KbId = t.Partner.KBId, t.Zmocnenec, t.Partner.StavKyc })
             .ToListAsync(cancellation);
         if (!customers.Any())
             throw new CisValidationException(12020, "Customers not found for product.");
@@ -31,14 +31,12 @@ internal sealed class GetCustomersOnProductHandler
         {
             var item = new GetCustomersOnProductResponseItem
             {
-                RelationshipCustomerProductTypeId = customer.Vztah
+                RelationshipCustomerProductTypeId = customer.Vztah,
+                Agent = customer.Zmocnenec.GetValueOrDefault(),
+                IsKYCSuccessful = customer.StavKyc == 1
             };
             item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.MpId, CIS.Foms.Enums.IdentitySchemes.Mp));
             item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.KbId!.Value, CIS.Foms.Enums.IdentitySchemes.Kb));
-
-            //TODO MOCK https://jira.kb.cz/browse/HFICH-3284
-            var random = new Random();
-            item.IsKYCSuccessful = random.Next(2) == 1;
 
             model.Customers.Add(item);
         }

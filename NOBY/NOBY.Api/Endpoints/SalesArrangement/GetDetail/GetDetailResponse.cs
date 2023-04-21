@@ -39,18 +39,16 @@ public sealed class GetDetailResponse
     public DateTime OfferGuaranteeDateTo { get; set; }
 
     /// <summary>
-    /// Data o zadosti - bude se jednat o ruzne objekty podle typu zadosti.
-    /// </summary>
-    [Obsolete]
-    public object? Data { get; set; }
-
-    /// <summary>
     /// Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.
     /// </summary>
     /// <remarks>
     /// OneOf(
     /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersMortgage
     /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersDrawing
+    /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersGeneralChange
+    /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersHUBN
+    /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersCustomerChange
+    /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersCustomerChange3602
     /// )
     /// </remarks>
     public object? Parameters { get; set; }

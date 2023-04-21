@@ -2,11 +2,10 @@
 using DomainServices.SalesArrangementService.Clients;
 using CIS.Core;
 using DomainServices.CodebookService.Clients;
-using DSContracts = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetList;
 
-internal class GetListHandler
+internal sealed class GetListHandler
     : IRequestHandler<GetListRequest, List<Dto.SalesArrangementListItem>>
 {
     public async Task<List<Dto.SalesArrangementListItem>> Handle(GetListRequest request, CancellationToken cancellationToken)

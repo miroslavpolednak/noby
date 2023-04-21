@@ -4,12 +4,15 @@ namespace NOBY.Api.Endpoints.Customer.Create;
 
 public sealed class CreateResponse
 {
-    public string ResponseCode { get; set; } = string.Empty;
-
     /// <summary>
     /// Vstupní data se liší od dat z KB CM
     /// </summary>
     public bool IsInputDataDifferent { get; set; }
+
+    /// <summary>
+    /// Klient byl při založení ztotožněn v základních registrech
+    /// </summary>
+    public bool IsVerified { get; set; }
 
     public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
 
@@ -19,9 +22,7 @@ public sealed class CreateResponse
 
     public bool Updatable { get; set; }
 
-    public bool IsLegallyIncapable { get; set; }
-
-    public DateTime? LegallyIncapableToDate { get; set; }
+    public Shared.LegalCapacityItem? LegalCapacity { get; set; }
 
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
 

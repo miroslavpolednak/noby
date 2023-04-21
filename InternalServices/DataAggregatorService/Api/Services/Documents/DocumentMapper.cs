@@ -43,6 +43,7 @@ internal class DocumentMapper
             {
                 FieldName = sourceData.AcroFieldName,
                 StringFormat = stringFormat,
+                TextAlign = sourceData.TextAlign
             };
 
             SetDocumentFieldDataValue(fieldData, sourceData.Value);
@@ -83,7 +84,7 @@ internal class DocumentMapper
                 continue;
 
             if (collectionSource is not IEnumerable collection)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException($"Path {table.CollectionSourcePath} does not return IEnumerable.");
 
             yield return new DocumentFieldData
             {

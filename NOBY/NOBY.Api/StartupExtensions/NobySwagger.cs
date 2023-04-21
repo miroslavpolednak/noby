@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Text;
-using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -21,7 +20,12 @@ internal static class NobySwagger
         // konfigurace pro generátor JSON souboru
         builder.Services.AddSwaggerGen(x =>
         {
-            x.SwaggerDoc("v1", new OpenApiInfo { Title = "NOBY FRONTEND API", Version = "v1" });
+            x.SwaggerDoc("v1", new OpenApiInfo 
+            { 
+                Title = "NOBY FRONTEND API", 
+                Version = "v1", 
+                Description = "Obecná specifikace <b>error handlingu</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=589534698](https://wiki.kb.cz/pages/viewpage.action?pageId=589534698)</li></ul>Specifikace <b>HTTP hlaviček</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=513345095](https://wiki.kb.cz/pages/viewpage.action?pageId=513345095)</li></ul>"
+            });
 
             // zapojení rozšířených anotací nad controllery
             x.EnableAnnotations();
@@ -46,13 +50,10 @@ internal static class NobySwagger
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
         });
 
-        // Adds FluentValidationRules staff to Swagger.
-        builder.Services.AddFluentValidationRulesToSwagger();
-
         return builder;
     }
 
-    private class CodebookGetAllSchemaFilter : ISchemaFilter
+    private sealed class CodebookGetAllSchemaFilter : ISchemaFilter
     {
         private readonly List<Type> _getAllResponsePossibleTypes;
 
@@ -75,7 +76,7 @@ internal static class NobySwagger
         }
     }
 
-    private class EnumValuesDescriptionSchemaFilter : ISchemaFilter
+    private sealed class EnumValuesDescriptionSchemaFilter : ISchemaFilter
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {

@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
-internal class UpdateParametersSwagerSchema : ISchemaFilter
+internal sealed class UpdateParametersSwagerSchema : ISchemaFilter
 {
     public void Apply(OpenApiSchema schema, SchemaFilterContext context)
     {
@@ -16,7 +16,9 @@ internal class UpdateParametersSwagerSchema : ISchemaFilter
             typeof(ParametersMortgage),
             typeof(ParametersDrawing),
             typeof(Dto.HUBNUpdate),
-            typeof(Dto.GeneralChangeUpdate)
+            typeof(Dto.GeneralChangeUpdate),
+            typeof(Dto.CustomerChangeUpdate),
+            typeof(Dto.CustomerChange3602Update)
         };
 
         foreach (var type in possibleTypes)

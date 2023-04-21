@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System.Text;
 
 namespace CIS.Infrastructure.Telemetry;
 
@@ -10,22 +11,6 @@ namespace CIS.Infrastructure.Telemetry;
 /// </summary>
 public static class LoggingExtensions
 {
-    /// <summary>
-    /// Podle nastavení v appsettings.json zařazuje middleware pro logování buď gRPC nebo Webapi.
-    /// </summary>
-    public static IApplicationBuilder UseCisLogging(this IApplicationBuilder webApplication)
-    {
-        webApplication.UseWhen(
-            httpContext => httpContext.RequestServices.GetRequiredService<CisTelemetryConfiguration>().Logging?.LogType == LogBehaviourTypes.WebApi, 
-            builder => builder.UseMiddleware<Middlewares.LoggerCisUserWebapiMiddleware>());
-
-        webApplication.UseWhen(
-            httpContext => httpContext.RequestServices.GetRequiredService<CisTelemetryConfiguration>().Logging?.LogType == LogBehaviourTypes.Grpc,
-            builder => builder.UseMiddleware<Middlewares.LoggerCisUserGrpcMiddleware>());
-        
-        return webApplication;
-    }
-
     /// <summary>
     /// Přidává do aplikace logování pomocí Serilogu.
     /// </summary>
@@ -41,6 +26,9 @@ public static class LoggingExtensions
         CisTelemetryConfiguration configuration = new();
         configSection.Bind(configuration);
         builder.Services.AddSingleton(configuration);
+
+        // pridani custom enricheru
+        builder.Services.AddTransient<Enrichers.NobyHeadersEnricher>();
 
         // auditni log
         builder.Services.AddSingleton<IAuditLogger>(new AuditLogger());

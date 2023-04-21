@@ -130,7 +130,7 @@ internal static class Extensions
                         return new cLA.LoanApplicationEmploymentIncome
                         {
                             EmployerIdentificationNumber = new List<string?> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
-                            EmployerName = i.Employement?.Employer?.Name,
+                            EmployerName = i.Employement?.Employer?.Name ?? "",
                             Address = new cRS.AddressDetail
                             {
                                 CountryId = i.Employement?.Employer?.CountryId,
@@ -140,7 +140,7 @@ internal static class Extensions
                             {
                                 Amount = iil.Sum is not null ? (decimal)iil.Sum! : default(decimal),
                             },
-                            ProofTypeId = 1, // Default = 1 (PVP - Potvrzení o příjmu), ProofType(CIS_TYP_POTVRDENIE_PRIJMU)
+                            ProofTypeId = 6,
                             IncomeForeignTypeId = i.Employement?.ForeignIncomeTypeId,
                             GrossAnnualIncome = i.Employement?.Job?.GrossAnnualIncome,
                             ConfirmationPerson = i.Employement?.IncomeConfirmation?.ConfirmationPerson,
@@ -264,7 +264,7 @@ internal static class Extensions
                     EducationLevelId = c.NaturalPerson?.EducationLevelId > 0 ? c.NaturalPerson?.EducationLevelId : null, // neposílat pokud 0
                     AcademicTitlePrefix = academicTitlePrefix,
                     MobilePhoneNumber = $"{contactMobilePhone?.Mobile?.PhoneIDC}{contactMobilePhone?.Mobile?.PhoneNumber}",
-                    HasEmail = !String.IsNullOrEmpty(contactEmail?.Email?.Address),
+                    HasEmail = !String.IsNullOrEmpty(contactEmail?.Email?.EmailAddress),
                     IsPartner = isPartner,
                     Taxpayer = c.NaturalPerson?.TaxResidence?.ResidenceCountries?.Any(t => t.CountryId == 16) ?? false,
                     Address = (addressPermanent is null) ? null : MapAddress(addressPermanent),

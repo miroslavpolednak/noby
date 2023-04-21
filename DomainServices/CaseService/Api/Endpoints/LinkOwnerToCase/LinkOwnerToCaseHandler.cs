@@ -9,8 +9,10 @@ internal sealed class LinkOwnerToCaseHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(LinkOwnerToCaseRequest request, CancellationToken cancellation)
     {
         // case entity
-        var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation) 
-            ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
+        var entity = await _dbContext
+            .Cases
+            .FirstOrDefaultAsync(t => t.CaseId == request.CaseId, cancellation)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // overit ze existuje uzivatel
         var userInstance = await _userService.GetUser(request.CaseOwnerUserId, cancellation);

@@ -60,3 +60,48 @@ Role klienta v obchodu
 ```csharp
 public enum CustomerRoles : System.Byte
 ```
+
+<a name='CIS.Foms.Enums.FlowSwitches'></a>
+
+## FlowSwitches Enum
+
+```csharp
+public enum FlowSwitches
+```
+### Fields
+
+<a name='CIS.Foms.Enums.FlowSwitches.CustomerIdentifiedOnCodebtorHousehold'></a>
+
+`CustomerIdentifiedOnCodebtorHousehold` 3
+
+Identifikovaní klienti na spolužadatelské domácnosti
+
+<a name='CIS.Foms.Enums.FlowSwitches.CustomerIdentifiedOnMainHousehold'></a>
+
+`CustomerIdentifiedOnMainHousehold` 2
+
+Identifikovaní klienti na hlavní domácnosti
+
+<a name='CIS.Foms.Enums.FlowSwitches.IsOfferGuaranteed'></a>
+
+`IsOfferGuaranteed` 1
+
+Nabídka s platnou garancí
+
+<a name='CIS.Foms.Enums.FlowSwitches.ParametersSavedAtLeastOnce'></a>
+
+`ParametersSavedAtLeastOnce` 6
+
+Došlo k uložení parametrů na žádosti
+
+<a name='CIS.Foms.Enums.FlowSwitches.Was3601MainChangedAfterSigning'></a>
+
+`Was3601MainChangedAfterSigning` 4
+
+3601 pro hlavní domácnost byla změněna po podpisu
+
+<a name='CIS.Foms.Enums.FlowSwitches.Was3602CodebtorChangedAfterSigning'></a>
+
+`Was3602CodebtorChangedAfterSigning` 5
+
+3602 pro spoludlužnickou domácnost byla změněna po podpisu

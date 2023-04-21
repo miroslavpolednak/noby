@@ -9,9 +9,11 @@
 
 [Konfigurace služeb / aplikací](./topics/configuration.md)
 
-[Validace requestu a byznys logiky](./topics/validation.md)
+[Validace HTTP requestu a error handling](./topics/validation.md)
 
-[Autentizace FE a doménových služeb](./topics/authentication.md)
+[Autentizace doménových služeb](./topics/authentication.md)
+
+[Autentizace FE API](./topics/authentication-feapi.md)
 
 [gRPC služby - technický popis](./topics/grpc-services.md)
 
@@ -19,7 +21,11 @@
 
 [Jak funguje ServiceDiscovery](./topics/service-discovery.md)
 
-[Error handling na FE API](./topics/feapi-error-handling.md)
+[Nastavení a použití Distributed cache](./topics/distributed-cache.md)
+
+[Background services / periodické joby](./topics/background-services.md)
+
+[DataAggregator](./topics/dataAggregator.md)
 
 ## Struktura solution - projekty a adresáře
 
@@ -57,6 +63,9 @@ Podpora pro vytváření REST služeb.
 
 [CIS.Infrastructure.ExternalServicesHelpers](CIS.Infrastructure.ExternalServicesHelpers/index.md)  
 Podpora pro konzumaci REST a SOAP služeb třetích stran.
+
+[CIS.Infrastructure.Messaging](CIS.Infrastructure.Messaging/index.md)  
+Podpora a helpery pro messaging - aktálně Kafku.
 
 ### DomainServices
 Obsahuje byznysové služby. Každá služba obsluhuje vlastní byznys doménu, např. klient, domácnost, smlouva.

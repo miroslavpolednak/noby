@@ -21,7 +21,7 @@ public enum AddressTypes : byte
     [EnumMember]
     Mailing = 2,
 
-    [Display(Name = "Adresa v zahraničí pro daňové nerezidenty")]
+    [Display(Name = "Jiný pobyt")]
     [EnumMember]
-    Abroad = 3
+    Other = 3
 }

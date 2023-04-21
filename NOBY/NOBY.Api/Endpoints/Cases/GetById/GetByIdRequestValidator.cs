@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Cases.GetById;
 
-internal class GetByIdRequestValidator
+internal sealed class GetByIdRequestValidator
     : AbstractValidator<GetByIdRequest>
 {
     public GetByIdRequestValidator()

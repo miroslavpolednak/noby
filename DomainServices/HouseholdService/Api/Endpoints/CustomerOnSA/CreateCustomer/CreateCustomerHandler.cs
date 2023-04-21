@@ -1,7 +1,11 @@
-﻿using DomainServices.HouseholdService.Api.Database.Entities;
+﻿using DomainServices.CaseService.Clients;
+using DomainServices.CustomerService.Clients;
+using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
 using Google.Protobuf;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
 
@@ -10,50 +14,48 @@ internal sealed class CreateCustomerHandler
 {
     public async Task<CreateCustomerResponse> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
-        var model = new CreateCustomerResponse();
-
         // check existing SalesArrangementId
-        await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+        var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         var entity = new Database.Entities.CustomerOnSA
         {
-            FirstNameNaturalPerson = request.Customer.FirstNameNaturalPerson ?? "",
-            Name = request.Customer.Name ?? "",
-            DateOfBirthNaturalPerson = request.Customer.DateOfBirthNaturalPerson,
+            FirstNameNaturalPerson = request.Customer?.FirstNameNaturalPerson ?? "",
+            Name = request.Customer?.Name ?? "",
+            DateOfBirthNaturalPerson = request.Customer?.DateOfBirthNaturalPerson,
             SalesArrangementId = request.SalesArrangementId,
-            CustomerRoleId = (CIS.Foms.Enums.CustomerRoles)request.CustomerRoleId,
+            CustomerRoleId = (CustomerRoles)request.CustomerRoleId,
             LockedIncomeDateTime = request.Customer?.LockedIncomeDateTime,
             MaritalStatusId = request.Customer?.MaritalStatusId,
             Identities = request.Customer?.CustomerIdentifiers?.Select(t => new CustomerOnSAIdentity(t)).ToList()
         };
 
-        bool containsKbIdentity = request.Customer?.CustomerIdentifiers?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false;
-        bool containsMpIdentity = request.Customer?.CustomerIdentifiers?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp) ?? false;
+        var kbIdentity = request
+            .Customer?
+            .CustomerIdentifiers?
+            .FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
 
-        // provolat sulm
-        if (containsKbIdentity)
+        bool containsMpIdentity = request
+            .Customer?
+            .CustomerIdentifiers?
+            .Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp) ?? false;
+
+        // kontrola zda customer existuje v CM
+        if (kbIdentity is not null)
         {
-            var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
-            await _sulmClient.StopUse(identity.IdentityId, "MPAP", cancellationToken);
-            await _sulmClient.StartUse(identity.IdentityId, "MPAP", cancellationToken);
+            await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
+
+            // provolat sulm
+            await _sulmClient.StartUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
+
+            // uz ma KB identitu, ale jeste nema MP identitu
+            if (!containsMpIdentity)
+            {
+                // zavolat EAS
+                await _updateService.TryCreateMpIdentity(entity, cancellationToken);
+            }
         }
 
-        // uz ma KB identitu, ale jeste nema MP identitu
-        if (containsKbIdentity && !containsMpIdentity)
-        {
-            var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
-            await _updateService.GetCustomerAndUpdateEntity(entity, identity.IdentityId, identity.IdentityScheme, cancellationToken);
-
-            // zavolat EAS
-            await _updateService.TryCreateMpIdentity(entity, cancellationToken);
-        }
-        // nove byl customer identifikovan KB identitou
-        else if (containsKbIdentity)
-        {
-            await _updateService.GetCustomerAndUpdateEntity(entity, entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb).IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellationToken);
-        }
-
-        // additional data
+        // additional data - set defaults
         // https://jira.kb.cz/browse/HFICH-4551
         CustomerAdditionalData additionalData = new()
         {
@@ -74,33 +76,61 @@ internal sealed class CreateCustomerHandler
         // ulozit do DB
         _dbContext.Customers.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        model.CustomerOnSAId = entity.CustomerOnSAId;
-
         _logger.EntityCreated(nameof(Database.Entities.CustomerOnSA), entity.CustomerOnSAId);
 
+        // update case detailu
+        if (kbIdentity is not null && entity.CustomerRoleId == CustomerRoles.Debtor)
+        {
+            await updateCase(salesArrangement.CaseId, entity, kbIdentity, cancellationToken);
+        }
+
+        var model = new CreateCustomerResponse
+        {
+            CustomerOnSAId = entity.CustomerOnSAId
+        };
         if (entity.Identities is not null)
+        {
             model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new CIS.Infrastructure.gRPC.CisTypes.Identity
             {
                 IdentityScheme = (CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes)(int)t.IdentityScheme,
                 IdentityId = t.IdentityId
             }).ToList());
+        }
 
         return model;
     }
 
-    private readonly SulmService.ISulmClient _sulmClient;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
+    private async Task updateCase(long caseId, Database.Entities.CustomerOnSA entity, CIS.Infrastructure.gRPC.CisTypes.Identity identity, CancellationToken cancellationToken)
+    {
+        // update case service
+        await _caseService.UpdateCustomerData(caseId, new CaseService.Contracts.CustomerData
+        {
+            DateOfBirthNaturalPerson = entity.DateOfBirthNaturalPerson,
+            FirstNameNaturalPerson = entity.FirstNameNaturalPerson,
+            Name = entity.Name,
+            Identity = identity
+        }, cancellationToken);
+    }
+
+    private readonly ICaseServiceClient _caseService;
+    private readonly SulmService.ISulmClientHelper _sulmClient;
+    private readonly ICustomerServiceClient _customerService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly UpdateCustomerService _updateService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateCustomerHandler> _logger;
 
     public CreateCustomerHandler(
-        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        SulmService.ISulmClient sulmClient,
+        ICustomerServiceClient customerService,
+        ISalesArrangementServiceClient salesArrangementService,
+        SulmService.ISulmClientHelper sulmClient,
         UpdateCustomerService updateService,
+        ICaseServiceClient caseService,
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateCustomerHandler> logger)
     {
+        _caseService = caseService;
+        _customerService = customerService;
         _salesArrangementService = salesArrangementService;
         _sulmClient = sulmClient;
         _updateService = updateService;

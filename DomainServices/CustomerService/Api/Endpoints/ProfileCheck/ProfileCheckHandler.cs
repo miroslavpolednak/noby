@@ -2,7 +2,7 @@
 
 namespace DomainServices.CustomerService.Api.Endpoints.ProfileCheck;
 
-internal class ProfileCheckHandler : IRequestHandler<ProfileCheckRequest, ProfileCheckResponse>
+internal sealed class ProfileCheckHandler : IRequestHandler<ProfileCheckRequest, ProfileCheckResponse>
 {
     private readonly ICustomerProfileClient _customerProfile;
 

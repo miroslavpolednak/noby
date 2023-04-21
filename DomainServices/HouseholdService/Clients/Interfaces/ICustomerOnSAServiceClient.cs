@@ -1,10 +1,11 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Clients;
 
 public interface ICustomerOnSAServiceClient
 {
-    Task UpdateCustomerDetail(UpdateCustomerDetailRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateCustomerDetail(UpdateCustomerDetailRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vytvoreni noveho klienta
@@ -12,14 +13,14 @@ public interface ICustomerOnSAServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16021; CustomerRoleId does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Smazani klienta
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16020; CustomerOnSA ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken));
+    Task DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci instanci vybraneho klienta
@@ -27,15 +28,21 @@ public interface ICustomerOnSAServiceClient
     /// <returns><see cref="CustomerOnSA"/>Customer instance</returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16020; CustomerOnSA ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Vraci seznam instanci klientu dle Identity
+    /// </summary>
+    /// <returns><see cref="List{}"/> where T : <see cref="CustomerOnSA" /></returns>
+    Task<List<CustomerOnSA>> GetCustomersByIdentity(Identity identity, CancellationToken cancellationToken = default);
+    
     /// <summary>
     /// Vraci seznam instanci klientu dle SA Id
     /// </summary>
     /// <returns><see cref="List{}"/> where T : <see cref="CustomerOnSA" /></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<List<CustomerOnSA>> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<List<CustomerOnSA>> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Update dat o customerovi
@@ -43,7 +50,7 @@ public interface ICustomerOnSAServiceClient
     /// <returns><see cref="UpdateCustomerResponse"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16020; CustomerOnSA ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vytvoreni noveho prijmu
@@ -52,14 +59,14 @@ public interface ICustomerOnSAServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16024; CustomerOnSAId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16028; IncomeTypeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<int> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<int> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Smazani prijmu
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; Income ID {IncomeId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task DeleteIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken));
+    Task DeleteIncome(int incomeId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci instanci pozadovaneho prijmu
@@ -67,28 +74,28 @@ public interface ICustomerOnSAServiceClient
     /// <returns><see cref="Income"/>Income instance</returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; Income ID {request.IncomeId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<Income> GetIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<Income> GetIncome(int incomeId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci vsechny prijmy pro daneho Customera
     /// </summary>
     /// <returns><see cref="List{}"/> where T : <see cref="IncomeInList" /></returns>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<List<IncomeInList>> GetIncomeList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<List<IncomeInList>> GetIncomeList(int customerOnSAId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Update detailu dat o prijmu
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16055; IncomeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Update zakladnich dat o prijmu
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16055; IncomeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vytvoreni noveho zavazku
@@ -97,14 +104,14 @@ public interface ICustomerOnSAServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16024; CustomerOnSAId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16028; ObligationTypeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<int> CreateObligation(CreateObligationRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<int> CreateObligation(CreateObligationRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Smazani zavazku
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16042; Obligation ID {ObligationId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task DeleteObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken));
+    Task DeleteObligation(int ObligationId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci instanci pozadovaneho zavazku
@@ -112,19 +119,19 @@ public interface ICustomerOnSAServiceClient
     /// <returns><see cref="Obligation"/>Obligation instance</returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16042; Obligation ID {ObligationId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<Obligation> GetObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<Obligation> GetObligation(int ObligationId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci vsechny zavazky pro daneho Customera
     /// </summary>
     /// <returns><see cref="List{}"/>where T : <see cref="ObligationInList" /></returns>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<List<Obligation>> GetObligationList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<List<Obligation>> GetObligationList(int customerOnSAId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Update detailu dat o zavazku
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16042; Obligation ID {ObligationId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task UpdateObligation(Obligation request, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateObligation(Obligation request, CancellationToken cancellationToken = default);
 }

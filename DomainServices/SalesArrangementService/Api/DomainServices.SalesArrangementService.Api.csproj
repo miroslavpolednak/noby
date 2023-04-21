@@ -3,9 +3,7 @@
   <PropertyGroup>
 	  <TargetFramework>net7.0</TargetFramework>
 	  <Authors>Filip Tuma</Authors>
-	  <Company>Wookiee.Apps s.r.o.</Company>
 	  <Product>MPSS DomainServices</Product>
-	  <LangVersion>preview</LangVersion>
 	  <Nullable>enable</Nullable>
 	  <Platforms>AnyCPU;x64</Platforms>
 	  <ImplicitUsings>enable</ImplicitUsings>
@@ -14,16 +12,17 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="Dapper" Version="2.0.123" />
 		<PackageReference Include="Dapper.Contrib" Version="2.0.78" />
-		<PackageReference Include="MediatR" Version="12.0.0" />
+		<PackageReference Include="MediatR" Version="12.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
-		<PackageReference Include="Grpc.AspNetCore" Version="2.51.0" />
-		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.51.0" />
-		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.52.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.52.0" />
+		<PackageReference Include="System.ServiceModel.Http" Version="4.10.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -32,12 +31,13 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
-		<ProjectReference Include="..\..\..\ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj" />
-		<ProjectReference Include="..\..\..\ExternalServices\Sulm\ExternalServices.Sulm.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj" />
+		<ProjectReference Include="..\..\..\InternalServices\DocumentGeneratorService\Clients\CIS.InternalServices.DocumentGeneratorService.Clients.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
 		<ProjectReference Include="..\..\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
+		<ProjectReference Include="..\..\DocumentArchiveService\Clients\DomainServices.DocumentArchiveService.Clients.csproj" />
+		<ProjectReference Include="..\..\DocumentOnSAService\Clients\DomainServices.DocumentOnSAService.Clients.csproj" />
 		<ProjectReference Include="..\..\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
 		<ProjectReference Include="..\..\OfferService\Clients\DomainServices.OfferService.Clients.csproj" />
 		<ProjectReference Include="..\..\UserService\Clients\DomainServices.UserService.Clients.csproj" />

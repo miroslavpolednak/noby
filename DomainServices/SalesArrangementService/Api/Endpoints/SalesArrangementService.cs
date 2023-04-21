@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.SalesArrangementService.Api.Endpoints;
 
 [Authorize]
-internal class SalesArrangementService : Contracts.v1.SalesArrangementService.SalesArrangementServiceBase
+internal sealed class SalesArrangementService : Contracts.v1.SalesArrangementService.SalesArrangementServiceBase
 {
     private readonly IMediator _mediator;
 
@@ -49,5 +49,11 @@ internal class SalesArrangementService : Contracts.v1.SalesArrangementService.Sa
        => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateOfferDocumentId(UpdateOfferDocumentIdRequest request, ServerCallContext context)
+       => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<GetFlowSwitchesResponse> GetFlowSwitches(GetFlowSwitchesRequest request, ServerCallContext context)
+       => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> SetFlowSwitches(SetFlowSwitchesRequest request, ServerCallContext context)
        => await _mediator.Send(request, context.CancellationToken);
 }

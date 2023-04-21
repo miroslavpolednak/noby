@@ -83,7 +83,7 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
 
         if (result.Count >= MaxReceivedRowsCount)
         {
-            throw new CisValidationException(9701, "To many results returned from external service, please specify filter more accurately.");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ToManyResultsFromExternalService);
         }
 
         return result;
@@ -102,7 +102,7 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
 
         if (result is null)
         {
-            throw new CisNotFoundException(14002, "Unable to get/find document from eArchive (TCP)");
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.TcpDocumentNotFound);
         }
 
         return result;
@@ -110,15 +110,8 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
 
     private string ComposeSqlWithFilter(FindTcpDocumentQuery query, OracleDynamicParameters parameters)
     {
-        if (query is null)
-        {
-            throw new ArgumentNullException(nameof(query));
-        }
-
-        if (parameters is null)
-        {
-            throw new ArgumentNullException(nameof(parameters));
-        }
+        ArgumentNullException.ThrowIfNull(nameof(query));
+        ArgumentNullException.ThrowIfNull(nameof(parameters));
 
         var sb = new StringBuilder(DocumentMainSql);
 

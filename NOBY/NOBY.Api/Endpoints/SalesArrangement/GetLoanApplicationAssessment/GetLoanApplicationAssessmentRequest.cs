@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
-internal record GetLoanApplicationAssessmentRequest(int SalesArrangementId, bool NewAssessmentRequired)
+internal sealed record GetLoanApplicationAssessmentRequest(int SalesArrangementId, bool NewAssessmentRequired)
     : IRequest<GetLoanApplicationAssessmentResponse>
 {
 }

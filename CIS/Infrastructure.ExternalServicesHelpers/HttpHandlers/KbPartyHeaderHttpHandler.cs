@@ -21,12 +21,17 @@ public sealed class KbPartyHeaderHttpHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        //var userId = _serviceProvider.GetService<CIS.Core.Security.ICurrentUserAccessor>()?.User?.Id;
+        var login = _serviceProvider.GetService<CIS.Core.Security.ICurrentUserAccessor>()?.User?.Login;
 
-        //request.Headers.Add("X-KB-Party-Identity-In-Service", $$"""{"partyIdIS":[{"partyId":{"id":"{{userId}}","idScheme":"MPAD"},"usg":"AUTH"}]}""");
-        //TODO zamockovano https://jira.kb.cz/browse/HFICH-4442, https://jira.kb.cz/browse/HFICH-366
-        request.Headers.Add("X-KB-Party-Identity-In-Service", $$$"""{"partyIdIS":[{"partyId":{"id":"A09FK3","idScheme":{"code":"KBUID"}},"usg":"BA"},{"partyId":{"id":"JMARKOVA","idScheme":{"code":"KBAD"}},"usg":"BA"}]}""");
-
+        if (!string.IsNullOrEmpty(login))
+        {
+            int index = login.IndexOf('=');
+            if (index > 0)
+            {
+                request.Headers.Add("X-KB-Party-Identity-In-Service", $$"""{"partyIdIS":[{"partyId":{"id":"{{login[..index]}}","idScheme":"{{login[(index + 1)..]}}"},"usg":"AUTH"}]}""");
+            }
+        }
+        
         return await base.SendAsync(request, cancellationToken);
     }
 }

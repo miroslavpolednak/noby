@@ -7,6 +7,22 @@ namespace NOBY.Api.Endpoints.SalesArrangement;
 public class SalesArrangementController : ControllerBase
 {
     /// <summary>
+    /// Detailní informace pro sluníčko
+    /// </summary>
+    /// <remarks>
+    /// Provede vyhodnocení klapek na základě konfigurace v konfiguračním excelu a vrátí informace nutné pro správné zobrazení rozcestníku žádosti (sluníčka).
+    /// <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2709EE14-C343-4c7f-B733-A092E41EA839"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId">ID Sales Arrangement</param>
+    [HttpGet("{salesArrangementId:int}/flow")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [ProducesResponseType(typeof(GetFlowSwitches.GetFlowSwitchesResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetFlowSwitches.GetFlowSwitchesResponse> GetFlowSwitches([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetFlowSwitches.GetFlowSwitchesRequest(salesArrangementId), cancellationToken);
+
+    /// <summary>
     /// Validace dat SalesArrangementu - checkform.
     /// </summary>
     /// <remarks>
@@ -17,8 +33,9 @@ public class SalesArrangementController : ControllerBase
     [HttpGet("{salesArrangementId:int}/validate")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Validate.ValidateResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Validate.ValidateResponse> Validate([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new Validate.ValidateRequest(salesArrangementId), cancellationToken);
 
@@ -34,9 +51,10 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
-    public async Task DeleteSalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
-        => await _mediator.Send(new DeleteSalesArrangement.DeleteSalesArrangementRequest(salesArrangementId), cancellationToken);
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task DeleteSalesArrangement([FromRoute] int salesArrangementId)
+        => await _mediator.Send(new DeleteSalesArrangement.DeleteSalesArrangementRequest(salesArrangementId));
 
     /// <summary>
     /// Vrací vyhodnocení dané úvěrové žádosti
@@ -54,6 +72,7 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse> GetLoanApplicationAssessment([FromRoute] int salesArrangementId, [FromQuery] bool newAssessmentRequired, CancellationToken cancellationToken)
         => await _mediator.Send(new GetLoanApplicationAssessment.GetLoanApplicationAssessmentRequest(salesArrangementId, newAssessmentRequired), cancellationToken);
 
@@ -70,6 +89,7 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(GetCreditWorthiness.GetCreditWorthinessResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetCreditWorthiness.GetCreditWorthinessResponse> GetCreditWorthiness([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCreditWorthiness.GetCreditWorthinessRequest(salesArrangementId), cancellationToken);
 
@@ -85,6 +105,7 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(List<Dto.SalesArrangementListItem>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<Dto.SalesArrangementListItem>> GetList([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetList.GetListRequest(caseId), cancellationToken);
 
@@ -101,6 +122,7 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(List<Dto.CustomerListItem>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<Dto.CustomerListItem>> GetCustomers([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomers.GetCustomersRequest(salesArrangementId), cancellationToken);
 
@@ -116,6 +138,7 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetDetail.GetDetailResponse> GetDetail([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDetail.GetDetailRequest(salesArrangementId), cancellationToken);
 
@@ -123,12 +146,14 @@ public class SalesArrangementController : ControllerBase
     /// Update dat SalesArrangement-u
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
+    /// Aktualizuje parametry SalesArrangementu. Aktualizovat lze pouze produktovou žádost. <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=18E19FC4-9238-4249-B43E-A26A9FBBC32C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPut("{salesArrangementId:int}/parameters")]
+    [HttpPut("{salesArrangementId:int}/parameters", Name = "Update dat SalesArrangement-u")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] UpdateParameters.UpdateParametersRequest request)
         => await _mediator.Send(request.InfuseId(salesArrangementId));
 
@@ -145,7 +170,8 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task SendToCmp([FromRoute] int salesArrangementId, [FromQuery] bool ignoreWarnings = false)
         => await _mediator.Send(new SendToCmp.SendToCmpRequest(salesArrangementId, ignoreWarnings));
 

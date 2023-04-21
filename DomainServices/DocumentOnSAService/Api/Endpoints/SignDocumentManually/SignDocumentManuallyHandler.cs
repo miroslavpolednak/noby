@@ -1,15 +1,21 @@
 ﻿using CIS.Core;
 using CIS.Core.Security;
+using CIS.Foms.Enums;
+using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
+using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using ExternalServices.Eas.V1;
+using ExternalServices.Sulm.V1;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocumentManually;
 
-public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest>
+public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest, Empty>
 {
     private const string ManualSigningMethodCode = "PHYSICAL";
     /// <summary>
@@ -22,22 +28,34 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
     private readonly ICurrentUserAccessor _currentUser;
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
     private readonly IEasClient _easClient;
+    private readonly ISulmClientHelper _sulmClientHelper;
+    private readonly ICodebookServiceClients _codebookServiceClient;
+    private readonly IHouseholdServiceClient _householdClient;
+    private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
 
     public SignDocumentManuallyHandler(
         DocumentOnSAServiceDbContext dbContext,
         IDateTime dateTime,
         ICurrentUserAccessor currentUser,
         ISalesArrangementServiceClient arrangementServiceClient,
-        IEasClient easClient)
+        IEasClient easClient,
+        ISulmClientHelper sulmClientHelper,
+        ICodebookServiceClients codebookServiceClient,
+        IHouseholdServiceClient householdClient,
+        ICustomerOnSAServiceClient customerOnSAServiceClient)
     {
         _dbContext = dbContext;
         _dateTime = dateTime;
         _currentUser = currentUser;
         _arrangementServiceClient = arrangementServiceClient;
         _easClient = easClient;
+        _sulmClientHelper = sulmClientHelper;
+        _codebookServiceClient = codebookServiceClient;
+        _householdClient = householdClient;
+        _customerOnSAServiceClient = customerOnSAServiceClient;
     }
 
-    public async Task Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
+    public async Task<Empty> Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
     {
         var documentOnSa = await _dbContext.DocumentOnSa.FirstOrDefaultAsync(r => r.DocumentOnSAId == request.DocumentOnSAId!.Value, cancellationToken);
 
@@ -46,16 +64,46 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
             throw new CisNotFoundException(19003, $"DocumentOnSA {request.DocumentOnSAId!.Value} does not exist.");
         }
 
-        if (documentOnSa.SignatureMethodCode.ToUpper() != ManualSigningMethodCode)
+        if (documentOnSa.SignatureMethodCode!.ToUpper() != ManualSigningMethodCode || documentOnSa.IsSigned)
         {
-            throw new CisValidationException(19005, $"Unable to sign DocumentOnSA {request.DocumentOnSAId!.Value}. Document is for electronic signature only.");
+            throw new CisValidationException(19005, $"Unable to sign DocumentOnSA {request.DocumentOnSAId!.Value}. Document is for electronic signature only or is already signed.");
         }
 
         UpdateDocumentOnSa(documentOnSa);
 
         await AddSignatureIfNotSetYet(documentOnSa, cancellationToken);
 
+        // SUML call
+        await SumlCall(documentOnSa, cancellationToken);
+
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return new Empty();
+    }
+
+    private async Task SumlCall(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
+    {
+        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
+        var salesArrangementTypes = await _codebookServiceClient.SalesArrangementTypes(cancellationToken);
+        var salesArrangementType = salesArrangementTypes.Single(r => r.Id == salesArrangement.SalesArrangementTypeId);
+
+        if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)
+        {
+            var houseHold = await _householdClient.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken);
+            await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId1!.Value, cancellationToken);
+
+            if (houseHold.CustomerOnSAId2 is not null)
+            {
+                await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId2.Value, cancellationToken);
+            }
+        }
+    }
+
+    private async Task SumlCallForSpecifiedCustomer(int customerOnSaId, CancellationToken cancellationToken)
+    {
+        var customerOnSa = await _customerOnSAServiceClient.GetCustomer(customerOnSaId, cancellationToken);
+        var kbIdentity = customerOnSa.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        await _sulmClientHelper.StartUse(kbIdentity.IdentityId, ISulmClient.PurposeMLAP, cancellationToken);
     }
 
     private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, CancellationToken cancellationToken)

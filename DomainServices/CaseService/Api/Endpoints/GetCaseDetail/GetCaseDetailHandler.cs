@@ -1,10 +1,11 @@
 ﻿using DomainServices.CaseService.Api.Database;
+using DomainServices.CaseService.Api.Messaging;
 using DomainServices.CaseService.Contracts;
-using Microsoft.EntityFrameworkCore;
+using MassTransit;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetCaseDetail;
 
-internal class GetCaseDetailHandler
+internal sealed class GetCaseDetailHandler
     : IRequestHandler<GetCaseDetailRequest, Case>
 {
     /// <summary>
@@ -18,7 +19,7 @@ internal class GetCaseDetailHandler
             .AsNoTracking()
             .Select(CaseServiceDatabaseExpressions.CaseDetail())
             .FirstOrDefaultAsync(cancellation) 
-            ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
     }
 
     private readonly CaseServiceDbContext _dbContext;

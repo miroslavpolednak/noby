@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCustomers;
 
-internal class GetCustomersHandler
+internal sealed class GetCustomersHandler
     : IRequestHandler<GetCustomersRequest, List<Dto.CustomerListItem>>
 {
     //TODO tohle se bude nejspis cele predelavat, nema smysl to moc resit
@@ -76,13 +76,13 @@ internal class GetCustomersHandler
                 }
 
                 // kontakty
-                var email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.Address;
+                var email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.EmailAddress;
                 if (!string.IsNullOrEmpty(email))
                     c.Contacts.EmailAddress = new() { EmailAddress = email };
 
                 var phone = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
                 if (!string.IsNullOrEmpty(phone))
-                    c.Contacts.PhoneNumber = new()
+                    c.Contacts.MobilePhone = new()
                     {
                         PhoneNumber = phone,
                         PhoneIDC = customerDetail.Contacts!.First(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil).Mobile.PhoneIDC

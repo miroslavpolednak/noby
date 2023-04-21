@@ -19,6 +19,13 @@ public class SaveDocumentsToArchiveRequest : IRequest
 
 public class DocumentsInformation
 {
+    public DocumentInformation DocumentInformation { get; set; } = null!;
+
+    public string? FormId { get; set; }
+}
+
+public class DocumentInformation
+{
     /// <summary>
     /// GUID dokumentu v dočasném úložišti
     /// </summary>

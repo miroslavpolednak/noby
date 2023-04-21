@@ -113,6 +113,16 @@ internal sealed class CaseService
             }, cancellationToken: cancellationToken);
     }
 
+    public async Task NotifyStarbuild(long caseId, string? riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        await _service.NotifyStarbuildAsync(
+            new()
+            {
+                CaseId = caseId,
+                RiskBusinessCaseId = riskBusinessCaseId
+            }, cancellationToken: cancellationToken);
+    }
+
     private readonly Contracts.v1.CaseService.CaseServiceClient _service;
     public CaseService(Contracts.v1.CaseService.CaseServiceClient service)
         => _service = service;

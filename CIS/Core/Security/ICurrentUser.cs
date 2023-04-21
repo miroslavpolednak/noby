@@ -9,4 +9,14 @@ public interface ICurrentUser
     /// v33id
     /// </summary>
     int Id { get; }
+
+    /// <summary>
+    /// Login uzivatele
+    /// </summary>
+    string? Login { get; }
+
+    /// <summary>
+    /// Jmeno a prijmeni uzivatele
+    /// </summary>
+    string? DisplayName { get; }
 }

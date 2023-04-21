@@ -7,7 +7,11 @@ internal class GetDocumentBaseRequest : IRequest<ReadOnlyMemory<byte>>
 {
     public required DocumentType DocumentType { get; init; }
 
-    public string? DocumentTemplateVersion { get; set; }
+    public int DocumentTemplateVersionId { get; set; }
+
+    public int? DocumentTemplateVariantId { get; set; }
 
     public required InputParameters InputParameters { get; set; }
+
+    public bool? ForPreview { get; set; }
 }

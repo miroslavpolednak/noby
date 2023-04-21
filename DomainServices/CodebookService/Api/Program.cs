@@ -4,8 +4,8 @@ using DomainServices.CodebookService.Api;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.Telemetry;
 using Microsoft.OpenApi.Models;
-using CIS.Infrastructure.Caching;
 using CIS.Infrastructure.Security;
+using CIS.InternalServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 var endpointsType = typeof(DomainServices.CodebookService.Endpoints.IEndpointsAssembly);
@@ -22,10 +22,9 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 #region register builder.Services
 // globalni nastaveni prostredi
 builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
+    .AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 builder.Services.AddAttributedServices(typeof(Program), endpointsType);
-builder.Services.AddCisDistributedCache();
 
 // logging 
 builder
@@ -35,14 +34,11 @@ builder
 // add mediatr
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
 
-// health checks
-builder.AddCisHealthChecks();
-
 // add general Dapper repository
 builder.Services
-    .AddDapper(builder.Configuration.GetConnectionString("default"))
-    .AddDapper<DomainServices.CodebookService.Endpoints.IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd"))
-    .AddDapper<DomainServices.CodebookService.Endpoints.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb"));
+    .AddDapper(builder.Configuration.GetConnectionString("default")!)
+    .AddDapper<DomainServices.CodebookService.Endpoints.IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd")!)
+    .AddDapper<DomainServices.CodebookService.Endpoints.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb")!);
 
 // authentication
 builder.AddCisServiceAuthentication();
@@ -75,6 +71,8 @@ builder.UseKestrelWithCustomConfiguration();
 if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
 
+app.UseServiceDiscovery();
+
 app
     .UseSwagger()
     .UseSwaggerUI(c =>
@@ -88,21 +86,11 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
-app.UseCisLogging();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
-
-    endpoints.MapGrpcService<DomainServices.CodebookService.Api.Services.CodebookService>();
-
-    endpoints.MapCodeFirstGrpcReflectionService();
-
-    endpoints.MapCodebookJsonApi();
-});
-
-// print gRPC PROTO file
-//CIS.Infrastructure.gRPC.GrpcHelpers.CreateProtoFileFromContract<Contracts.ICodebookService("d:\\Visual Studio Projects\\MPSS-FOMS\\DomainServices\\CodebookService\\Contracts\\protos\\CodebookService.proto");
+app.MapGrpcService<DomainServices.CodebookService.Api.Services.CodebookService>();
+app.MapCodeFirstGrpcHealthChecks();
+app.MapCodeFirstGrpcReflectionService();
+app.MapCodebookJsonApi();
 
 try
 {

@@ -27,15 +27,19 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 builder.Configure();
 
 // Mvc
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.SuppressMapClientErrors = true;
+    });
 
 // Cis
+builder.AddCisEnvironmentConfiguration();
 builder
-    .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures()
     .AddCisLogging()
     .AddCisTracing()
-    .AddCisHealthChecks()
     .AddCisServiceAuthentication();
 
 builder.Services.AddAttributedServices(typeof(Program));
@@ -92,6 +96,12 @@ if (winSvc)
 
 var app = builder.Build();
 
+app.Use((context, next) =>
+{
+    context.Request.EnableBuffering();
+    return next();
+});
+
 app.UseHttpsRedirection();
 app.UseServiceDiscovery();
 
@@ -101,14 +111,11 @@ app
     .UseRouting()
     .UseAuthentication()
     .UseAuthorization()
-    .UseCisServiceUserContext()
-    .UseCisLogging()
-    .UseEndpoints(endpoints =>
-    {
-        endpoints.MapCisHealthChecks();
-        endpoints.MapGrpcService<NotificationService>();
-        endpoints.MapCodeFirstGrpcReflectionService();
-        endpoints.MapControllers();
-    });
+    .UseCisServiceUserContext();
+
+app.MapCodeFirstGrpcHealthChecks();
+app.MapGrpcService<NotificationService>();
+app.MapCodeFirstGrpcReflectionService();
+app.MapControllers();
 
 await app.RunAsync();

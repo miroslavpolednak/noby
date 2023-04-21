@@ -9,9 +9,11 @@ internal sealed class UpdateCustomerDetailHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateCustomerDetailRequest request, CancellationToken cancellationToken)
     {
         // vytahnout stavajici entitu z DB
-        var entity = await _dbContext.Customers
+        var entity = await _dbContext
+            .Customers
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CustomerOnSANotFound, request.CustomerOnSAId);
 
         // additional data
         entity.AdditionalData = request.CustomerAdditionalData == null ? null : Newtonsoft.Json.JsonConvert.SerializeObject(request.CustomerAdditionalData);

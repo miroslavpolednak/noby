@@ -33,7 +33,7 @@ public interface ISalesArrangementServiceClient
     /// Vraci detail nalinkovaneho Sales Arrangement na zaklade OfferId
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement unavailable</exception>
-    Task<SalesArrangement> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<SalesArrangement?> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Napojeni OfferInstance na SA
@@ -61,7 +61,7 @@ public interface ISalesArrangementServiceClient
     /// <summary>
     /// Update obsahu SA
     /// </summary>
-    Task UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, DateTime? firstSignedDate, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update parametru SA
@@ -94,5 +94,9 @@ public interface ISalesArrangementServiceClient
     Task DeleteSalesArrangement(int salesArrangementId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken));
 
     Task UpdateOfferDocumentId(int salesArrangementId, string offerDocumentId, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task<List<FlowSwitch>> GetFlowSwitches(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task SetFlowSwitches(int salesArrangementId, List<FlowSwitch> flowSwitches, CancellationToken cancellationToken = default(CancellationToken));
 }
 

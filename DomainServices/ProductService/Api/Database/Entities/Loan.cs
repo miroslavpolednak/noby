@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.ProductService.Api.Database.Entities;
@@ -11,6 +10,8 @@ internal class Loan
     public Int64 Id { get; set; }
 
     public Int64? PartnerId { get; set; }
+
+	public int? KodProduktyUv { get; set; }
 
     public string? CisloSmlouvy { get; set; }
 
@@ -67,6 +68,39 @@ internal class Loan
 	public string? CisloUctu { get; set; }
 
 	public string? PredcisliUctu { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? Jistina { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? CelkovyDluhPoSplatnosti { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? PohledavkaPoplatkyPo { get; set; }
+
+	public int? PocetBankovnichDniPoSpl { get; set; }
+
+    [Column(TypeName = "decimal(16, 4)")]
+    [Precision(16, 4)]
+    public decimal? SazbaZProdleni { get; set; }
+
+	public int? SplatkyDen { get; set; }
+
+	public long? PobockaObsluhyId { get; set; }
+
+	public string? InkasoPredcisli { get; set; }
+
+    public string? InkasoCislo { get; set; }
+
+    public string? InkasoBanka { get; set; }
+
+	public short? HuVypisZodb { get; set; }
+	public short? HuVypisTyp { get; set; }
+	public string? VypisEmail1 { get; set; }
+    public string? VypisEmail2 { get; set; }
 }
 
 /*

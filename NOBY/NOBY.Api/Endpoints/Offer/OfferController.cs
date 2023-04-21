@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using NOBY.Api.Endpoints.Offer.DeveloperSearch;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Offer;
 
@@ -8,12 +9,12 @@ public class OfferController : ControllerBase
 {
     private readonly IMediator _mediator;
     public OfferController(IMediator mediator) =>  _mediator = mediator;
-    
+
     /// <summary>
     /// Simulace KB hypotéky.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> OfferService/SimulateMortgage
+    /// Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.
     /// </remarks>
     /// <param name="request">Nastaveni simulace.</param>
     /// <returns>ID vytvořené simulace a její výsledky.</returns>
@@ -22,9 +23,9 @@ public class OfferController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(SimulateMortgage.SimulateMortgageResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
-    public async Task<SimulateMortgage.SimulateMortgageResponse> SimulateMortgage([FromBody] SimulateMortgage.SimulateMortgageRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<SimulateMortgage.SimulateMortgageResponse> SimulateMortgage([FromBody] SimulateMortgage.SimulateMortgageRequest request)
+        => await _mediator.Send(request);
     
     /// <summary>
     /// Detail provedené simulace dle ID simulace.
@@ -37,6 +38,7 @@ public class OfferController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.GetMortgageResponse> GetMortgageByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageByOfferId.GetMortgageByOfferIdRequest(offerId), cancellationToken);
     
@@ -53,6 +55,7 @@ public class OfferController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.GetMortgageResponse> GetMortgageBySalesArrangementId([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageBySalesArrangement.GetMortgageBySalesArrangementRequest(salesArrangementId), cancellationToken);
 
@@ -79,7 +82,7 @@ public class OfferController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(CreateMortgageCase.CreateMortgageCaseResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<CreateMortgageCase.CreateMortgageCaseResponse> CreateMortgageCase([FromBody] CreateMortgageCase.CreateMortgageCaseRequest request)
         => await _mediator.Send(request);
 
@@ -109,7 +112,23 @@ public class OfferController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Modelace" })]
     [ProducesResponseType(typeof(Dto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<NOBY.Infrastructure.ErrorHandling.ApiErrorItem>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.GetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetFullPaymentScheduleByOfferId.GetFullPaymentScheduleByOfferIdRequest(offerId), cancellationToken);
+    
+    /// <summary>
+    /// Vyhledání developerských projektů a developerů bez projektu.
+    /// </summary>
+    /// <remarks>
+    /// Vyhledá developerské projekty na základě vyhledávacího textu.<br />
+    /// Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />
+    /// Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
+    /// </remarks>
+    [HttpPost("mortgage/developer-project/search")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Modelace" })]
+    [ProducesResponseType(typeof(DeveloperSearchResponse), StatusCodes.Status200OK)]
+    public async Task<DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearchRequest request)
+        => await _mediator.Send(request);
 }

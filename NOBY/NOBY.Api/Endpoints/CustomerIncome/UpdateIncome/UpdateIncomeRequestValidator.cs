@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.CustomerIncome.UpdateIncome;
 
-internal class UpdateIncomeRequestValidator
+internal sealed class UpdateIncomeRequestValidator
     : AbstractValidator<UpdateIncomeRequest>
 {
     public UpdateIncomeRequestValidator()

@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.CustomerService.ExternalServices.Common.Dto;
 
-internal class Error
+internal sealed class Error
 {
     /// <summary>
     /// Http status code

@@ -2,6 +2,8 @@
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms;
+using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms;
 
@@ -10,33 +12,45 @@ internal class EasFormFactory
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly DataServicesLoader _dataServicesLoader;
+    private readonly ICodebookServiceClients _codebookService;
 
-    public EasFormFactory(IServiceProvider serviceProvider, DataServicesLoader dataServicesLoader)
+    public EasFormFactory(IServiceProvider serviceProvider, DataServicesLoader dataServicesLoader, ICodebookServiceClients codebookService)
     {
         _serviceProvider = serviceProvider;
         _dataServicesLoader = dataServicesLoader;
+        _codebookService = codebookService;
     }
 
-    public async Task<EasForm> Create(int salesArrangementId, EasFormConfiguration config, CancellationToken cancellationToken)
+    public async Task<IEasForm> Create(int salesArrangementId, int userId, EasFormConfiguration config, CancellationToken cancellationToken)
     {
-        var inputParameters = new InputParameters { SalesArrangementId = salesArrangementId };
+        var inputParameters = new InputParameters
+        {
+            SalesArrangementId = salesArrangementId,
+            UserId = userId
+        };
 
-        var easForm = CreateEasForm(config.EasFormRequestType);
+        var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
 
-        await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, easForm.FormData, cancellationToken);
+        var easForm = config.EasFormKey.RequestType switch
+        {
+            EasFormRequestType.Service => CreateServiceEasForm(config.EasFormKey, documentTypes),
+            EasFormRequestType.Product => new EasProductForm(CreateData<ProductFormData>(), documentTypes),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, easForm.AggregatedData, cancellationToken);
 
         return easForm;
     }
 
-    private EasForm CreateEasForm(EasFormRequestType requestType)
+    private IEasForm CreateServiceEasForm(EasFormKey easFormKey, List<DocumentTypeItem> documentTypes)
     {
-        return requestType switch
+        return easFormKey.EasFormTypes.First() switch
         {
-            EasFormRequestType.Service => new EasServiceForm(CreateData<ServiceFormData>()),
-            EasFormRequestType.Product => new EasProductForm(CreateData<ProductFormData>()),
-            _ => throw new ArgumentOutOfRangeException()
+            EasFormType.F3700 => new EasServiceForm<DrawingFormData>(CreateData<DrawingFormData>(), documentTypes),
+            _ => throw new NotImplementedException()
         };
-
-        TFormData CreateData<TFormData>() where TFormData : AggregatedData => _serviceProvider.GetRequiredService<TFormData>();
     }
+
+    private TFormData CreateData<TFormData>() where TFormData : AggregatedData => _serviceProvider.GetRequiredService<TFormData>();
 }

@@ -58,7 +58,7 @@ internal sealed class ProductChildMapper
             .Select(t => new _C4M.LoanApplicationProductRelation
             {
                 ProductId = getProductId(t),
-                ProductType = t.ProductType,
+                ProductType = getProductType(t),
                 RelationType = t.RelationType,
                 Value = new _C4M.LoanApplicationProductRelationValue
                 {
@@ -93,7 +93,7 @@ internal sealed class ProductChildMapper
             } else if (!string.IsNullOrEmpty(relation.BankAccount?.Number)) {
                 return new _C4M.ResourceIdentifier
                 {
-                    Id = String.IsNullOrEmpty(relation.BankAccount.NumberPrefix) ? relation.BankAccount.Number : $"{relation.BankAccount.NumberPrefix}-{relation.BankAccount.Number}",
+                    Id = (relation.BankAccount.NumberPrefix ?? "").PadLeft(6, '0') + relation.BankAccount.Number.PadLeft(10, '0'),
                     Instance = relation.BankAccount.BankCode switch {
                         "7990" => "MPSS",
                         "0100" => "KBCZ",
@@ -106,6 +106,14 @@ internal sealed class ProductChildMapper
             {
                 return null;
             }
+        }
+
+        string getProductType(_V2.LoanApplicationProductRelation relation)
+        {
+            if (!string.IsNullOrWhiteSpace(relation.ProductType))
+                return relation.ProductType;
+
+            return relation.BankAccount?.BankCode == "0100" ? "KBGROUP" : "OFI";
         }
     }
 

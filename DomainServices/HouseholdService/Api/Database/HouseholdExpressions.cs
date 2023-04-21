@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
+using System.Linq.Expressions;
 
 namespace DomainServices.HouseholdService.Api.Database;
 

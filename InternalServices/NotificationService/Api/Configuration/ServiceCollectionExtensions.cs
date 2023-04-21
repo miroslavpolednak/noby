@@ -11,9 +11,15 @@ public static class ServiceCollectionExtensions
             .Bind(builder.Configuration.GetSection(nameof(AppConfiguration)))
             
             .Validate(config =>
-                config?.UserConsumerIdMap?.Any() ?? false,
-                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.UserConsumerIdMap)} cannot be empty.")
-            
+                config?.Consumers != null,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.Consumers)} required.")
+            .Validate(config =>
+                config?.Consumers?.TrueForAll(c => !string.IsNullOrEmpty(c.Username) && !string.IsNullOrEmpty(c.ConsumerId)) ?? false,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.Consumers)} have {nameof(Consumer.Username)} and {nameof(Consumer.ConsumerId)} required.")
+            .Validate(config =>
+                config?.Consumers?.Select(c => c.Username).Distinct().Count() == config?.Consumers?.Count,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.Consumers)} must contain {nameof(Consumer)} with unique {nameof(Consumer.Username)}.")
+
             .Validate(config =>
                     config?.EmailSenders?.Mcs?.Any() ?? false,
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailSenders)}.{nameof(EmailSenders.Mcs)} cannot be empty.")
@@ -22,14 +28,19 @@ public static class ServiceCollectionExtensions
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailSenders)}.{nameof(EmailSenders.Mpss)} cannot be empty.")
             
             .Validate(config =>
+                config?.EmailFormats?.Any() ?? false,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailFormats)} cannot be empty.")
+            
+            .Validate(config =>
+                    config?.EmailLanguageCodes?.Any() ?? false,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailLanguageCodes)} cannot be empty.")
+            
+            .Validate(config =>
                 !string.IsNullOrEmpty(config?.KafkaTopics?.McsResult),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.McsResult)} required.")
             .Validate(config =>
                     !string.IsNullOrEmpty(config?.KafkaTopics?.McsSender),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.McsSender)} required.")
-            .Validate(config =>
-                    !string.IsNullOrEmpty(config?.KafkaTopics?.NobyResult),
-                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.NobyResult)} required.")
             .Validate(config =>
                     !string.IsNullOrEmpty(config?.KafkaTopics?.NobySendEmail),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.NobySendEmail)} required.")

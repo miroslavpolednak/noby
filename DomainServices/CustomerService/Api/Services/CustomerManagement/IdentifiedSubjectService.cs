@@ -40,7 +40,7 @@ internal sealed class IdentifiedSubjectService
 
         var response = await _identifiedSubjectClient.CreateIdentifiedSubject(identifiedSubject, request.HardCreate, cancellationToken);
 
-        return new Identity(_errorMap.ResolveAndThrowIfError(response), IdentitySchemes.Kb);
+        return new Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response), IdentitySchemes.Kb);
     }
 
     public async Task UpdateSubject(UpdateCustomerRequest request, CancellationToken cancellationToken)
@@ -138,7 +138,7 @@ internal sealed class IdentifiedSubjectService
             },
             PrimaryAddress = CreateAddress(request.Addresses, AddressTypes.Permanent, CreatePrimaryAddress),
             ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
-            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Abroad, CreateTemporaryStayAddress),
+            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Other, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
             CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
@@ -157,7 +157,7 @@ internal sealed class IdentifiedSubjectService
             },
             PrimaryAddress = CreateAddress(request.Addresses, AddressTypes.Permanent, CreatePrimaryAddress),
             ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
-            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Abroad, CreateTemporaryStayAddress),
+            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Other, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
             CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
@@ -244,7 +244,7 @@ internal sealed class IdentifiedSubjectService
         };
     }
 
-    private __Contracts.CustomerIdentification? CreateCustomerIdentification(CustomerIdentification? customerIdentification)
+    private static __Contracts.CustomerIdentification? CreateCustomerIdentification(CustomerIdentification? customerIdentification)
     {
         if (customerIdentification is null)
             return default;
@@ -279,7 +279,7 @@ internal sealed class IdentifiedSubjectService
 
         return new()
         {
-            EmailAddress = email.Email.Address
+            EmailAddress = email.Email.EmailAddress
         };
     }
 }

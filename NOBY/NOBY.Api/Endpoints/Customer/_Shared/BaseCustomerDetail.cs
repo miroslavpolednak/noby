@@ -25,11 +25,6 @@ public abstract class BaseCustomerDetail
     public bool? IsBrSubscribed { get; set; }
 
     /// <summary>
-    /// Příznak podle kterého zobrazujeme na FE výsledek z našeptávače
-    /// </summary>
-    public bool? IsAddressWhispererUsed { get; set; }
-
-    /// <summary>
     /// Zvláštní vztah ke Komerční bance
     /// </summary>
     public bool? HasRelationshipWithKB { get; set; }
@@ -57,12 +52,12 @@ public abstract class BaseCustomerDetail
 
 internal interface ICustomerDetailConfirmedContacts
 {
-    PhoneNumberConfirmedDto? PrimaryPhoneNumber { get; set; }
-    EmailAddressConfirmedDto? PrimaryEmail { get; set; }
+    PhoneNumberConfirmedDto? MobilePhone { get; set; }
+    EmailAddressConfirmedDto? EmailAddress { get; set; }
 }
 
 internal interface ICustomerDetailContacts
 {
-    PhoneNumberDto? PrimaryPhoneNumber { get; set; }
-    EmailAddressDto? PrimaryEmail { get; set; }
+    PhoneNumberDto? MobilePhone { get; set; }
+    EmailAddressDto? EmailAddress { get; set; }
 }

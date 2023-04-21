@@ -49,15 +49,17 @@ internal class Customer
 
     public bool HasRelationshipWithCorporate => CustomerOnSA.CustomerAdditionalData?.HasRelationshipWithCorporate ?? false;
 
+    public bool IsPoliticallyExposed => CustomerOnSA.CustomerAdditionalData?.IsPoliticallyExposed ?? false;
+
+    public bool IsUSPerson => CustomerOnSA.CustomerAdditionalData?.IsUSPerson ?? false;
+
     public string? RestrictionType => LegalCapacityTypes.Where(l => l.Id == CustomerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionTypeId).Select(l => l.RdmCode).FirstOrDefault();
 
     public NaturalPerson NaturalPerson => _customerDetail.NaturalPerson;
 
-    public bool IsPoliticallyExposed => _customerDetail.NaturalPerson.IsPoliticallyExposed ?? false;
-
     public IEnumerable<Address> Addresses => _customerDetail.Addresses.Select(a => new Address(a));
 
-    public IEnumerable<Contact> Contacts => _customerDetail.Contacts;
+    public IEnumerable<CustomerContact> Contacts => _customerDetail.Contacts.Select(c => new CustomerContact(c));
 
     public IEnumerable<IdentificationDocument> IdentificationDocuments =>
         _customerDetail.IdentificationDocument != null
@@ -73,8 +75,6 @@ internal class Customer
                                                      .FirstOrDefault(id => id == 16, NaturalPerson.CitizenshipCountriesId.Cast<int?>().FirstOrDefault());
 
     public bool IsResident => NaturalPerson.TaxResidence?.ResidenceCountries.Any(r => r.CountryId == 16) ?? false;
-
-    public int DefaultZeroValue => 0;
 
     public IEnumerable<IncomeEmployment> IncomesEmployment => 
         _customerIncomes[CustomerIncomeTypes.Employement].Select(i => new IncomeEmployment(i, Incomes[i.IncomeId])

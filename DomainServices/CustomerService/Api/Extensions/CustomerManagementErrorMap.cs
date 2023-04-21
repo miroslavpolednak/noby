@@ -14,7 +14,7 @@ internal sealed class CustomerManagementErrorMap
         MapErrors();
     }
 
-    public long ResolveAndThrowIfError(__Contracts.CreateIdentifiedSubjectResponse response)
+    public static long ResolveAndThrowIfError(__Contracts.CreateIdentifiedSubjectResponse response)
     {
         switch (response.ResponseCode)
         {
@@ -24,7 +24,7 @@ internal sealed class CustomerManagementErrorMap
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED when response.IdentifiedSubjects.Count == 1:
                 {
                     // nemame jak vratit ID (nevracime Result object), takze do zpravy...
-                    throw new CisValidationException(11023, response.IdentifiedSubjects.First().CustomerId.ToString());
+                    throw new CisValidationException(11023, response.IdentifiedSubjects.First().CustomerId.ToString(System.Globalization.CultureInfo.InvariantCulture));
                 }
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED:
@@ -34,13 +34,13 @@ internal sealed class CustomerManagementErrorMap
                 }
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.NOT_FOUND_IN_BR:
-                throw new CisValidationException(11024, "KB CM: Unable to identify customer in state registry ");
+                throw new CisValidationException(11025, "KB CM: Unable to identify customer in state registry ");
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.UNAVAILABLE_BR:
                 throw new CisValidationException(11026, "KB CM: State registry is unavailable");
 
             default:
-                throw new InvalidEnumArgumentException(nameof(response.ResponseCode), (int)response.ResponseCode, typeof(__Contracts.CreateIdentifiedSubjectResponseResponseCode));
+                throw new InvalidEnumArgumentException(nameof(response.ResponseCode), (int)(response.ResponseCode ?? 0), typeof(__Contracts.CreateIdentifiedSubjectResponseResponseCode));
         }
     }
 
@@ -119,7 +119,7 @@ internal sealed class CustomerManagementErrorMap
         }
     }
 
-    private record Error
+    private sealed record Error
     {
         public int ErrorCode { get; init; }
 

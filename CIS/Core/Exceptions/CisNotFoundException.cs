@@ -6,7 +6,7 @@
 /// <remarks>
 /// Např. při dotazu do databáze dané ID neexistuje.
 /// </remarks>
-public sealed class CisNotFoundException 
+public sealed class CisNotFoundException
     : BaseCisException
 {
     /// <summary>
@@ -23,8 +23,8 @@ public sealed class CisNotFoundException
 
     /// <param name="exceptionCode">CIS kód chyby</param>
     /// <param name="message">Text chyby</param>
-    public CisNotFoundException(int exceptionCode, string message) 
-        : base(exceptionCode, message) 
+    public CisNotFoundException(int exceptionCode, string message)
+        : base(exceptionCode, message)
     { }
 
     /// <param name="exceptionCode">CIS kód chyby</param>

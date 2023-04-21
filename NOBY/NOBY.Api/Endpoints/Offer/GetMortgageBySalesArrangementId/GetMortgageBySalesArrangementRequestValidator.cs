@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
 
-internal class GetMortgageBySalesArrangementRequestValidator
+internal sealed class GetMortgageBySalesArrangementRequestValidator
     : AbstractValidator<GetMortgageBySalesArrangementRequest>
 {
     public GetMortgageBySalesArrangementRequestValidator()

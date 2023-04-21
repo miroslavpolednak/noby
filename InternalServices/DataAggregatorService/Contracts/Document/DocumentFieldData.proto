@@ -20,6 +20,8 @@ message DocumentFieldData {
 		bool LogicalValue = 7;
 		GenericTable Table = 8;
 	}
+
+	google.protobuf.Int32Value TextAlign = 9;
 }
 
 message GenericTable {

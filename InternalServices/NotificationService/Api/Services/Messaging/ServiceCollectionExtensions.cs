@@ -1,14 +1,18 @@
-﻿using Avro.Specific;
-using CIS.InternalServices.NotificationService.Api.Configuration;
+﻿using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Consumers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Infrastructure;
+using CIS.InternalServices.NotificationService.Messaging.Partials;
 using Confluent.Kafka;
+using Confluent.Kafka.SyncOverAsync;
+using Confluent.SchemaRegistry;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
+using cz.kb.osbs.mcs.sender.sendapi.v4.email;
+using cz.kb.osbs.mcs.sender.sendapi.v4.sms;
 using KB.Speed.MassTransit.DependencyInjection;
 using KB.Speed.MassTransit.Kafka;
+using KB.Speed.MassTransit.Tracing;
 using KB.Speed.Messaging.Kafka.DependencyInjection;
 using KB.Speed.Tracing.Extensions;
-using KB.Speed.Tracing.Instrumentations.AspNetCore;
-using KB.Speed.Tracing.Instrumentations.HttpClient;
 using MassTransit;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Messaging;
@@ -17,15 +21,14 @@ public static class ServiceCollectionExtensions
 {
     public static WebApplicationBuilder AddMessaging(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSpeedTracing(builder.Configuration, providerBuilder =>
-        {
-            providerBuilder.SetDefaultResourceBuilder()
-                .AddDefaultExporter()
-                .AddSpeedAspNetInstrumentation()
-                .AddSpeedHttpClientInstrumentation()
-                .AddMassTransitInstrumentation();
-        }); 
-        
+        builder.Services
+            .AddSpeedTracing()
+            .AddMassTransitTracingOptions(o =>
+            {
+                o.UseHeaderValidation = false;
+                o.HeaderValidationBehavior = InvalidHeaderBehavior.IgnoreErrors;
+            });
+
         var kafkaConfiguration = builder.GetKafkaConfiguration();
         var appConfiguration = builder.GetAppConfiguration();
         
@@ -50,8 +53,30 @@ public static class ServiceCollectionExtensions
                 rider.AddConsumer<MpssSendEmailConsumer>();
                 
                 // add producers
-                rider.AddProducerAvro<ISpecificRecord>(topics.McsSender);
+                // rider.AddProducerAvro<IMcsSenderCommand>(topics.McsSender);
                 rider.AddProducerAvro<MpssSendApi.v1.email.SendEmail>(topics.NobySendEmail);
+                
+                var multipleTypeConfig = new MultipleTypeConfigBuilder<IMcsSenderCommand>()
+                    .AddType<SendEmail>(SendEmail._SCHEMA)
+                    .AddType<SendSMS>(SendSMS._SCHEMA)
+                    .Build();
+                
+                rider.AddProducer<IMcsSenderCommand>(topics.McsSender, (riderContext, conf) =>
+                {
+                    var serializerConfig = new Confluent.SchemaRegistry.Serdes.AvroSerializerConfig
+                    {
+                        SubjectNameStrategy = SubjectNameStrategy.Record,
+                        AutoRegisterSchemas = false
+                    };
+
+                    var schemaRegistryClient = riderContext.GetRequiredService<ISchemaRegistryClient>();
+
+                    // var keySerializer = new Confluent.SchemaRegistry.Serdes.AvroSerializer<Null>(schemaRegistryClient);
+                    // conf.SetKeySerializer(keySerializer.AsSyncOverAsync());
+                    
+                    var valueSerializer = new MultipleTypeSerializer<IMcsSenderCommand>(multipleTypeConfig, schemaRegistryClient, serializerConfig);
+                    conf.SetValueSerializer(valueSerializer.AsSyncOverAsync());
+                });
                 
                 rider.UsingKafka((context, k) =>
                 {
