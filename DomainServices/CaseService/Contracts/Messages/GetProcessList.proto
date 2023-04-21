@@ -24,4 +24,8 @@ message ProcessTask {
 	string ProcessNameLong = 5;
 
 	string StateName = 6;
+
+	int32 StateIndicator = 7;
+
+	int32 ProcessPhaseId = 8;
 }

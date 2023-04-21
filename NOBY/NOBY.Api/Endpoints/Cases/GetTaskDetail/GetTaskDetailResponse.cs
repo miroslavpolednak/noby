@@ -6,7 +6,7 @@ namespace NOBY.Api.Endpoints.Cases.GetTaskDetail;
 
 public class GetTaskDetailResponse
 {
-    public WorkflowTask? Task { get; set; }
+    public WorkflowTaskNew? Task { get; set; }
     
     public WorkflowTaskDetail? TaskDetail { get; set; }
     

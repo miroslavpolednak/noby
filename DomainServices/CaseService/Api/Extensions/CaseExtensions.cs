@@ -29,15 +29,19 @@ internal static class CaseExtensions
 
     public static ProcessTask ToProcessTask(this IReadOnlyDictionary<string, string> taskData)
     {
-        return new ProcessTask
+        var process =  new ProcessTask
         {
             ProcessIdSb = taskData.GetInteger("ukol_id"),
             ProcessId = taskData.GetInteger("ukol_sada"),
             CreatedOn = taskData.GetDate("ukol_dat_start_proces"),
             ProcessTypeId = taskData.GetInteger("ukol_proces_typ_noby"),
             ProcessNameLong = taskData["ukol_proces_nazev_noby"],
-            StateName = taskData["ukol_proces_oznacenie_noby"]
         };
+
+        process.ProcessPhaseId = GetProcessPhaseId(process.ProcessTypeId, taskData);
+        SetStateNameAndIndicator(process, taskData);
+
+        return process;
     }
 
     public static TaskDetailItem ToTaskDetail(this IReadOnlyDictionary<string, string> taskData)
@@ -93,6 +97,39 @@ internal static class CaseExtensions
             1 => "paper",
             2 => "digital",
             _ => "unknown"
+        };
+    }
+
+    private static void SetStateNameAndIndicator(ProcessTask process, IReadOnlyDictionary<string, string> taskData)
+    {
+        if (taskData.GetBoolean("ukol_stornovano"))
+        {
+            process.StateName = "ZRUŠENO";
+            process.StateIndicator = 2;
+
+            return;
+        }
+
+        if (taskData.GetInteger("ukol_stav_poz") == 30)
+        {
+            process.StateName = "DOKONČENO";
+            process.StateIndicator = 3;
+
+            return;
+        }
+
+        process.StateName = taskData["ukol_proces_oznacenie_noby"];
+        process.StateIndicator = 1;
+    }
+
+    private static int GetProcessPhaseId(int processTypeId, IReadOnlyDictionary<string, string> taskData)
+    {
+        return processTypeId switch
+        {
+            1 => taskData.GetInteger("ukol_faze_uv_procesu"),
+            2 => taskData.GetInteger("ukol_faze_zm_procesu"),
+            3 => taskData.GetInteger("ukol_faze_rt_procesu"),
+            _ => throw new ArgumentOutOfRangeException(nameof(processTypeId), processTypeId, null)
         };
     }
 }

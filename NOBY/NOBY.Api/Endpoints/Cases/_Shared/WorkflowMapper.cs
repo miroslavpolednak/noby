@@ -18,7 +18,7 @@ public class WorkflowMapper
     private readonly IUserServiceClient _userService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     
-    public async Task<NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTask> Map(
+    public async Task<NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew> Map(
         WorkflowTask task,
         CancellationToken cancellationToken)
     {
@@ -29,12 +29,12 @@ public class WorkflowMapper
         return MapInternal(task, taskState);
     }
 
-    public async Task<List<NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTask>> Map(
+    public async Task<List<NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew>> Map(
         List<WorkflowTask> tasks,
         CancellationToken cancellationToken)
     {
         var taskStates = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
-        var list = new List<NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTask>();
+        var list = new List<NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew>();
         foreach (var task in tasks)
         {
             var workflowState = await GetWorkflowState(task, cancellationToken);
@@ -73,10 +73,10 @@ public class WorkflowMapper
         };
     }
     
-    private NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTask MapInternal(WorkflowTask task,
+    private NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew MapInternal(WorkflowTask task,
         WorkflowTaskStateNobyItem taskState)
     {
-        return new NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTask
+        return new NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew
         {
             TaskId = task.TaskId,
             CreatedOn = task.CreatedOn,

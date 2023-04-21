@@ -1,4 +1,5 @@
-﻿using NOBY.Api.Endpoints.Cases.Dto;
+﻿using DomainServices.CaseService.Clients;
+using NOBY.Api.Endpoints.Cases.Dto;
 using NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
 
 namespace NOBY.Api.Endpoints.Cases.GetTaskList;
@@ -6,16 +7,11 @@ namespace NOBY.Api.Endpoints.Cases.GetTaskList;
 internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
 {
     private readonly WorkflowMapper _mapper;
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly ICaseServiceClient _caseService;
 
-    public GetTaskListHandler(
-        WorkflowMapper mapper,
-        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService)
+    public GetTaskListHandler(WorkflowMapper mapper, ICaseServiceClient caseService)
     {
         _mapper = mapper;
-        _codebookService = codebookService;
         _caseService = caseService;
     }
 
@@ -24,14 +20,29 @@ internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, G
         var workflowTasks = LoadWorkflowTasks(request.CaseId, cancellationToken);
         var workflowProcesses = LoadWorkflowProcesses(request.CaseId, cancellationToken);
 
-        return new GetTaskListResponse
+        //Temporary mock - The old answer must be used to avoid violating FE
+        var newResponse = new GetTaskListResponseNew
         {
             Tasks = await workflowTasks,
             Processes = await workflowProcesses
         };
+
+        return new GetTaskListResponse
+        {
+            Tasks = newResponse.Tasks?.Select(t => new WorkflowTask
+            {
+                TaskId = t.TaskId,
+                TaskProcessId = t.ProcessId,
+                Name = t.TaskTypeName,
+                TypeId = t.TaskTypeId,
+                CategoryId = 0,
+                CreatedOn = t.CreatedOn,
+                StateId = t.StateId
+            }).ToList()
+        };
     }
 
-    private async Task<List<Dto.WorkflowTask>?> LoadWorkflowTasks(long caseId, CancellationToken cancellationToken)
+    private async Task<List<Dto.WorkflowTaskNew>?> LoadWorkflowTasks(long caseId, CancellationToken cancellationToken)
     {
         var tasks = await _caseService.GetTaskList(caseId, cancellationToken);
         
@@ -44,7 +55,6 @@ internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, G
     private async Task<List<WorkflowProcess>> LoadWorkflowProcesses(long caseId, CancellationToken cancellationToken)
     {
         var processes = await _caseService.GetProcessList(caseId, cancellationToken);
-        var processStates = await _codebookService.WorkflowProcessStatesNoby(cancellationToken);
 
         return processes.Select(p => new WorkflowProcess
         {
@@ -52,9 +62,7 @@ internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, G
             CreatedOn = p.CreatedOn,
             ProcessNameLong = p.ProcessNameLong,
             StateName = p.StateName,
-            StateIndicator = GetStateIndicator(p.StateName)
+            StateIndicator = (StateIndicator)p.StateIndicator
         }).ToList();
-
-        StateIndicator GetStateIndicator(string stateName) => Enum.Parse<StateIndicator>(processStates.First(s => s.Name.Equals(stateName, StringComparison.InvariantCultureIgnoreCase)).Indicator);
     }
 }
