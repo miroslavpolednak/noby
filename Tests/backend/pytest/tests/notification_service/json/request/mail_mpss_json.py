@@ -29,164 +29,6 @@ json_req_mail_mpss_basic_legal = \
     "attachments": []
   }
 
-# obsahuje špatně format a jazyk
-json_req_mail_mpss_bad_format_language = \
-  {
-    "from": {
-      "value": "notification-service@mpss.cz",
-      "party": {
-        "legalPerson": {
-          "name": "Notifikace"
-        }
-      }
-    },
-    "to": [
-      {
-        "value": "marek.mikel@mpss.cz",
-        "party": {
-          "legalPerson": {
-            "name": "Marek Mikel"
-          }
-        }
-      }
-    ],
-    "subject": "NS_test_MIKEL_basic_legal",
-    "content": {
-      "format": "text",
-      "language": "cz",
-      "text": "json_req_mail_mpss_basic_legal"
-    },
-    "attachments": []
-  }
-
-
-# obsahuje špatně content format
-json_req_mail_mpss_bad_content_format = \
-  {
-    "from": {
-      "value": "notification-service@mpss.cz",
-      "party": {
-        "legalPerson": {
-          "name": "Notifikace"
-        }
-      }
-    },
-    "to": [
-      {
-        "value": "marek.mikel@mpss.cz",
-        "party": {
-          "legalPerson": {
-            "name": "Marek Mikel"
-          }
-        }
-      }
-    ],
-    "subject": "NS_test_MIKEL_basic_legal",
-    "content": {
-      "format": "text",
-      "language": "cs",
-      "text": "json_req_mail_mpss_basic_legal"
-    },
-    "attachments": []
-  }
-
-# bez parameters identifiers
-json_req_mail_bad_identifier_mpss_basic = \
-  {
-    "from": {
-      "value": "notification-service@mpss.cz",
-      "party": {
-        "legalPerson": {
-          "name": "Notifikace"
-        }
-      }
-    },
-    "to": [
-      {
-        "value": "marek.mikel@mpss.cz",
-        "party": {
-          "legalPerson": {
-            "name": "Marek Mikel"
-          }
-        }
-      }
-    ],
-    "subject": "NS_test_MIKEL_basic_legal",
-    "content": {
-      "format": "application/html",
-      "language": "cs",
-      "text": "json_req_mail_mpss_basic_legal"
-    },
-  "identifier": {},
-    "attachments": []
-  }
-
-# withnout parameters identifier.identityScheme
-json_req_mail_bad_identifier_scheme_mpss_basic = \
-  {
-    "from": {
-      "value": "notification-service@mpss.cz",
-      "party": {
-        "legalPerson": {
-          "name": "Notifikace"
-        }
-      }
-    },
-    "to": [
-      {
-        "value": "marek.mikel@mpss.cz",
-        "party": {
-          "legalPerson": {
-            "name": "Marek Mikel"
-          }
-        }
-      }
-    ],
-    "subject": "NS_test_MIKEL_basic_legal",
-    "content": {
-      "format": "application/html",
-      "language": "cs",
-      "text": "json_req_mail_mpss_basic_legal"
-    },
-  "identifier": {
-    "identity": "992472q"
-  },
-    "attachments": []
-  }
-
-# withnout parameters identifier.identity
-json_req_mail_bad_identifier_identity_mpss_basic = \
-  {
-    "from": {
-      "value": "notification-service@mpss.cz",
-      "party": {
-        "legalPerson": {
-          "name": "Notifikace"
-        }
-      }
-    },
-    "to": [
-      {
-        "value": "marek.mikel@mpss.cz",
-        "party": {
-          "legalPerson": {
-            "name": "Marek Mikel"
-          }
-        }
-      }
-    ],
-    "subject": "NS_test_MIKEL_basic_legal",
-    "content": {
-      "format": "application/html",
-      "language": "cs",
-      "text": "json_req_mail_mpss_basic_legal"
-    },
-  "identifier": {
-    "identityScheme": "2"
-  },
-    "attachments": []
-  }
-
 
 # from, to, naturalPerson, bez priloh
 json_req_mail_mpss_basic_natural = \
@@ -220,6 +62,80 @@ json_req_mail_mpss_basic_natural = \
       "text": "json_req_mail_mpss_basic_natural"
     },
     "attachments": []
+  }
+
+# from, to, bcc, cc, replyTo, naturalPerson
+json_req_mail_mpss_full_natural = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "naturalPerson": {
+          "firstName": "Marek",
+          "middleName": "Bozi",
+          "surname": "Mikel"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "jakub.vana@mpss.cz",
+        "party": {
+          "naturalPerson": {
+            "firstName": "Baru",
+            "middleName": "Mikel",
+            "surname": "Krsmaru"
+          }
+        }
+      }
+    ],
+    "bcc": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "naturalPerson": {
+            "firstName": "BaruBCC",
+            "middleName": "MikelBCC",
+            "surname": "KrsmaruBCC"
+          }
+        }
+      }
+    ],
+    "cc": [
+      {
+        "value": "karel.nguyen-trong@mpss.cz",
+        "party": {
+          "naturalPerson": {
+            "firstName": "BaruCC",
+            "middleName": "MikelCC",
+            "surname": "KrsmaruCC"
+          }
+        }
+      }
+    ],
+    "replyTo": {
+      "value": "marek.mikel_reply@mpss.cz",
+      "party": {
+        "naturalPerson": {
+          "firstName": "MarekReply",
+          "middleName": "MikelReply",
+          "surname": "NovakReply"
+        }
+      }
+    },
+    "subject": "NS_test_MIKEL_full_natural",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_full_natural"
+    },
+    "attachments": [],
+    "identifier": {
+      "identity": "992474q",
+      "identityScheme": "1"
+    },
+    "customId": "customId_123456",
+    "documentId": "documentId_123456"
   }
 
 # from, to, bcc, cc, replyTo, legalPerson, attachments
@@ -367,7 +283,312 @@ json_req_mail_mpss_max_attachments = \
     ]
   }
 
-# from, to, legalPerson, bez priloh
+#tests current content.format
+json_req_mail_mpss_basic_format_application_html = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_json_req_mail_mpss_basic_format_application_html",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_basic_format_application_html"
+    },
+    "attachments": []
+  }
+
+json_req_mail_mpss_basic_format_text_html = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_json_req_mail_mpss_basic_format_text_html",
+    "content": {
+      "format": "text/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_basic_format_text_html"
+    },
+    "attachments": []
+  }
+
+json_req_mail_mpss_basic_format_text_plain = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_json_req_mail_mpss_basic_format_text_plain",
+    "content": {
+      "format": "text/plain",
+      "language": "cs",
+      "text": "json_req_mail_mpss_basic_format_text_plain"
+    },
+    "attachments": []
+  }
+
+json_req_mail_mpss_basic_format_html = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_json_req_mail_mpss_basic_format_html",
+    "content": {
+      "format": "html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_basic_format_html"
+    },
+    "attachments": []
+  }
+
+# ----------------------------------BAD REQUESTS
+# obsahuje špatně format a jazyk
+json_req_mail_mpss_bad_format_language = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "text",
+      "language": "cz",
+      "text": "json_req_mail_mpss_bad_format_language"
+    },
+    "attachments": []
+  }
+
+# obsahuje špatně content format
+json_req_mail_mpss_bad_content_format = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "text",
+      "language": "cs",
+      "text": "json_req_mail_mpss_bad_content_format"
+    },
+    "attachments": []
+  }
+
+# bez parameters identifiers
+json_req_mail_bad_identifier_mpss_basic = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_bad_identifier_mpss_basic"
+    },
+  "identifier": {},
+    "attachments": []
+  }
+
+# withnout parameters identifier.identityScheme
+json_req_mail_bad_identifier_scheme_mpss_basic = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_bad_identifier_scheme_mpss_basic"
+    },
+  "identifier": {
+    "identity": "992472q"
+  },
+    "attachments": []
+  }
+
+# withnout parameters identifier.identity
+json_req_mail_bad_identifier_identity_mpss_basic = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_bad_identifier_identity_mpss_basi"
+    },
+  "identifier": {
+    "identityScheme": "2"
+  },
+    "attachments": []
+  }
+
+# obsahuje špatně format a jazyk
+json_req_mail_mpss_bad_format_content = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "text",
+      "language": "cs",
+      "text": "spatny content.format"
+    },
+    "attachments": []
+  }
+
+# more than ok attachments
 json_req_mail_mpss_bad_11_attachments = \
   {
     "from": {
@@ -442,79 +663,6 @@ json_req_mail_mpss_bad_11_attachments = \
     ]
   }
 
-# from, to, bcc, cc, replyTo, naturalPerson
-json_req_mail_mpss_full_natural = \
-  {
-    "from": {
-      "value": "notification-service@mpss.cz",
-      "party": {
-        "naturalPerson": {
-          "firstName": "Marek",
-          "middleName": "Bozi",
-          "surname": "Mikel"
-        }
-      }
-    },
-    "to": [
-      {
-        "value": "jakub.vana@mpss.cz",
-        "party": {
-          "naturalPerson": {
-            "firstName": "Baru",
-            "middleName": "Mikel",
-            "surname": "Krsmaru"
-          }
-        }
-      }
-    ],
-    "bcc": [
-      {
-        "value": "marek.mikel@mpss.cz",
-        "party": {
-          "naturalPerson": {
-            "firstName": "BaruBCC",
-            "middleName": "MikelBCC",
-            "surname": "KrsmaruBCC"
-          }
-        }
-      }
-    ],
-    "cc": [
-      {
-        "value": "karel.nguyen-trong@mpss.cz",
-        "party": {
-          "naturalPerson": {
-            "firstName": "BaruCC",
-            "middleName": "MikelCC",
-            "surname": "KrsmaruCC"
-          }
-        }
-      }
-    ],
-    "replyTo": {
-      "value": "marek.mikel_reply@mpss.cz",
-      "party": {
-        "naturalPerson": {
-          "firstName": "MarekReply",
-          "middleName": "MikelReply",
-          "surname": "NovakReply"
-        }
-      }
-    },
-    "subject": "NS_test_MIKEL_full_natural",
-    "content": {
-      "format": "application/mht",
-      "language": "cz",
-      "text": "json_req_mail_mpss_full_natural"
-    },
-    "attachments": [],
-    "identifier": {
-      "identity": "992474q",
-      "identityScheme": "1"
-    },
-    "customId": "customId_123456",
-    "documentId": "documentId_123456"
-  }
 
 # fucker naturalPerson
 json_req_mail_mpss_bad_natural_legal = \
