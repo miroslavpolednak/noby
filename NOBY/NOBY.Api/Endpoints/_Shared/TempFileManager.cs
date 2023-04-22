@@ -3,7 +3,7 @@ using NOBY.Infrastructure.Configuration;
 
 namespace NOBY.Api.Endpoints.Shared;
 
-public interface ITempFileManager
+public interface ITempFileManagerx
 {
     public string ComposeFilePath(string fileName);
 
@@ -15,11 +15,11 @@ public interface ITempFileManager
 }
 
 [ScopedService, AsImplementedInterfacesService]
-public class TempFileManager: ITempFileManager
+public class TempFileManagerx: ITempFileManagerx
 {
     private readonly AppConfiguration _configuration;
 
-    public TempFileManager(AppConfiguration configuration)
+    public TempFileManagerx(AppConfiguration configuration)
 	{
         _configuration = configuration;
     }
