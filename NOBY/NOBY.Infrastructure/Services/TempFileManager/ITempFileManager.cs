@@ -1,4 +1,6 @@
-﻿namespace NOBY.Infrastructure.Services.TempFileManager;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace NOBY.Infrastructure.Services.TempFileManager;
 
 public interface ITempFileManager
 {
@@ -8,9 +10,13 @@ public interface ITempFileManager
 
     public Task<byte[]> GetDocument(string filePath, CancellationToken cancellationToken);
 
+    public void BatchDelete(List<TempDocumentInformation>? attachments);
+
     public void BatchDelete(List<string> filePaths);
 
-    void BatchDelete(List<TempDocumentInformation>? attachments);
+    public void CreateDirectoryIfNotExist(string directoryPath);
+
+    public Task SaveFileToTempStorage(string path, IFormFile file, CancellationToken cancellationToken);
 
     Task<List<string>> UploadToArchive(long caseId, string? contractNumber, List<TempDocumentInformation> attachments, CancellationToken cancellationToken);
 }

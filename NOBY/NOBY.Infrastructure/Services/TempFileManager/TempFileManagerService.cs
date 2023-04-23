@@ -5,6 +5,7 @@ using CIS.Core.Security;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
+using Microsoft.AspNetCore.Http;
 using NOBY.Infrastructure.Configuration;
 using System.Globalization;
 
@@ -24,6 +25,12 @@ internal sealed class TempFileManagerService
     public void BatchDelete(List<string> filePaths)
     {
         filePaths.ForEach(File.Delete);
+    }
+
+    public void CreateDirectoryIfNotExist(string directoryPath)
+    {
+        if (!Directory.Exists(_configuration.FileTempFolderLocation))
+            Directory.CreateDirectory(_configuration.FileTempFolderLocation);
     }
 
     public void CheckIfDocumentExist(string filePath)
@@ -47,6 +54,13 @@ internal sealed class TempFileManagerService
     public async Task<byte[]> GetDocument(string filePath, CancellationToken cancellationToken)
     {
         return await File.ReadAllBytesAsync(filePath, cancellationToken);
+    }
+
+    public async Task SaveFileToTempStorage(string path, IFormFile file, CancellationToken cancellationToken)
+    {
+        using var stream = new FileStream(path, FileMode.Create);
+        await file.CopyToAsync(stream, cancellationToken);
+        await stream.FlushAsync(cancellationToken);
     }
 
     public async Task<List<string>> UploadToArchive(long caseId, string? contractNumber, List<TempDocumentInformation> attachments, CancellationToken cancellationToken)
