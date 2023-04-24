@@ -1,5 +1,6 @@
 ﻿using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Model;
 using Ixtent.ContentServer.ExtendedServices.Model.WebService;
+using System.Globalization;
 
 namespace DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Clients;
 public class MockSdfClient : ISdfClient
@@ -24,7 +25,7 @@ public class MockSdfClient : ISdfClient
           new MetadataValue
           {
              AttributeName= "DOK_Nazev_souboru",
-             Value ="TestFilename"
+             Value ="TestFilename.txt"
           },
           new MetadataValue
           {
@@ -39,7 +40,7 @@ public class MockSdfClient : ISdfClient
           new MetadataValue
           {
              AttributeName= "DOK_Datum_prijeti",
-             Value =DateTime.Now.ToString()
+             Value = new DateTime(2000,1,1).ToString(CultureInfo.InvariantCulture)
           },
           new MetadataValue
           {
@@ -110,7 +111,7 @@ public class MockSdfClient : ISdfClient
         return Task.FromResult(new GetDocumentByExternalIdOutput
         {
             Metadata = mockValues.ToArray(),
-            FileContent = Convert.FromBase64String("VGhpcyBpcyBhIHRlc3Q="),
+            FileContent = query.WithContent ? Convert.FromBase64String("VGhpcyBpcyBhIHRlc3Q="): null,
             DmsDocInfo = new DmsDocumentInfo { MimeType = "text/plain" }
         });
     }
