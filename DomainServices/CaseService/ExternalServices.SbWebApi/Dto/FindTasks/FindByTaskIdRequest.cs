@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
 
-public sealed class FindByTaskIdRequest : RequestBase
+public sealed class FindByTaskIdRequest
 {
     public required int TaskIdSb { get; init; }
 

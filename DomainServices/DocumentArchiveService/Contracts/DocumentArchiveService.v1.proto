@@ -35,7 +35,7 @@ service DocumentArchiveService{
 		};
 	};
 	// Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
-	rpc GetGetDocumentList(DomainServices.DocumentArchiveService.GetDocumentList.GetDocumentListRequest) returns (DomainServices.DocumentArchiveService.GetDocumentList.GetDocumentListResponse){
+	rpc GetDocumentList(DomainServices.DocumentArchiveService.GetDocumentList.GetDocumentListRequest) returns (DomainServices.DocumentArchiveService.GetDocumentList.GetDocumentListResponse){
 		 option (google.api.http) = {
 		 post: "/api/v1/documents/search",
 		 body: "*"

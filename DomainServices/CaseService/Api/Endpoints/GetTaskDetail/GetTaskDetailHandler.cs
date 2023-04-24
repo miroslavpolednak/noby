@@ -22,11 +22,8 @@ internal class GetTaskDetailHandler : IRequestHandler<GetTaskDetailRequest, GetT
 
     public async Task<GetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
     {
-        var login = await _commonDataProvider.GetCurrentLogin(cancellationToken);
-
         var sbRequest = new FindByTaskIdRequest
         {
-            HeaderLogin = login,
             TaskIdSb = request.TaskIdSb,
             TaskStates = await _commonDataProvider.GetValidTaskStateIds(cancellationToken)
         };

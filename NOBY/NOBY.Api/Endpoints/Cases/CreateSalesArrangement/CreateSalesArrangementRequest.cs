@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement;
 
-public class CreateSalesArrangementRequest
+public sealed class CreateSalesArrangementRequest
     : IRequest<CreateSalesArrangementResponse>
 {
     [JsonIgnore]

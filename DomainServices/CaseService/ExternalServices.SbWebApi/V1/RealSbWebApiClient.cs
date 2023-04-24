@@ -1,22 +1,63 @@
-﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
+﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
 using DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts;
+using DomainServices.UserService.Clients;
 
 namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
-internal sealed class RealSbWebApiClient : ISbWebApiClient
+internal sealed class RealSbWebApiClient 
+    : ISbWebApiClient
 {
-    private readonly HttpClient _httpClient;
+    public async Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        // vytvoreni EAS requestu
+        var easRequest = new WFS_Request_CancelTask
+        {
+            Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
+            Message = new WFS_Manage_CancelTask
+            {
+                Task_id = taskIdSB
+            }
+        };
 
-    public RealSbWebApiClient(HttpClient httpClient) => _httpClient = httpClient;
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/canceltask", easRequest, cancellationToken);
+        await RequestHelper.ProcessResponse<WFS_CommonResponse>(httpResponse, x => x.Result, cancellationToken);
+    }
+    
+    public async Task<Dto.CreateTask.CreateTaskResponse> CreateTask(Dto.CreateTask.CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        var easRequest = new WFS_Request_CreateTask
+        {
+            Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
+            Message = new WFS_Manage_CreateTask
+            {
+                Task_type = request.TaskTypeId,
+                Parent_task_set = request.ProcessId,
+                Metadata = request.Metadata.Select(t => new WFS_MetadataItem
+                {
+                    Mtdt_def = t.Key,
+                    Mtdt_val = t.Value
+                }).ToList()
+            }
+        };
 
-    public async Task<CaseStateChangedResponse> CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken))
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/createtask", easRequest, cancellationToken);
+
+        var responseObject = await RequestHelper.ProcessResponse<WFS_Manage_CreateTask_Response>(httpResponse, x => x.Result, cancellationToken);
+
+        return new Dto.CreateTask.CreateTaskResponse
+        {
+            TaskIdSB = responseObject.Task_id.GetValueOrDefault(),
+            //TaskId = responseObject
+        };
+    }
+
+    public async Task<Dto.CaseStateChanged.CaseStateChangedResponse> CaseStateChanged(Dto.CaseStateChanged.CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         // vytvoreni EAS requestu
         var easRequest = new WFS_Request_CaseStateChanged
         {
-            Header = RequestHelper.MapEasHeader(request.Login),
-            Message = new WFS_Event_CaseStateChanged
+            Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
+            Message = new()
             {
                 Client_benefits = 0,
                 Case_id = request.CaseId,
@@ -36,13 +77,13 @@ internal sealed class RealSbWebApiClient : ISbWebApiClient
 
         var responseObject = await RequestHelper.ProcessResponse<WFS_Event_Response>(httpResponse, x => x.Result, cancellationToken);
 
-        return new CaseStateChangedResponse
+        return new Dto.CaseStateChanged.CaseStateChangedResponse
         {
             RequestId = responseObject.Request_id
         };
     }
 
-    public async Task<int> CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default)
+    public async Task<int> CompleteTask(Dto.CompleteTaskRequest request, CancellationToken cancellationToken = default)
     {
         var sbRequest = new WFS_Manage_CompleteTask
         {
@@ -63,7 +104,7 @@ internal sealed class RealSbWebApiClient : ISbWebApiClient
     {
         var easRequest = new WFS_Request_ByCaseId
         {
-            Header = RequestHelper.MapEasHeader(request.HeaderLogin),
+            Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
             Message = new WFS_Find_ByCaseId
             {
                 Case_id = request.CaseId,
@@ -87,7 +128,7 @@ internal sealed class RealSbWebApiClient : ISbWebApiClient
     {
         var easRequest = new WFS_Request_ByTaskId
         {
-            Header = RequestHelper.MapEasHeader(request.HeaderLogin),
+            Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
             Message = new WFS_Find_ByTaskId
             {
                 Task_id = request.TaskIdSb,
@@ -104,5 +145,40 @@ internal sealed class RealSbWebApiClient : ISbWebApiClient
             ItemsFound = responseObject.Items_found ?? 0,
             Tasks = RequestHelper.MapTasksToDictionary(responseObject.Tasks)
         };
+    }
+
+    private async Task<string> getLogin(CancellationToken cancellationToken)
+    {
+        int? userId = _userAccessor?.User?.Id;
+
+        if (userId.HasValue)
+        {
+            // get current user's login
+            var userInstance = await _userService.GetUser(userId.Value, cancellationToken);
+
+            if (string.IsNullOrEmpty(userInstance.CPM) || string.IsNullOrEmpty(userInstance.ICP))
+            {
+                return userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous";
+            }
+            else
+            {
+                return $"CPM: {userInstance.CPM} ICP: {userInstance.ICP}";
+            }
+        }
+        else
+        {
+            return "anonymous";
+        }
+    }
+
+    private readonly HttpClient _httpClient;
+    private readonly IUserServiceClient _userService;
+    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
+
+    public RealSbWebApiClient(HttpClient httpClient, IUserServiceClient userService, CIS.Core.Security.ICurrentUserAccessor userAccessor)
+    {
+        _userAccessor = userAccessor;
+        _userService = userService;
+        _httpClient = httpClient;
     }
 }
