@@ -18,13 +18,19 @@ internal class GetEasFormHandler : IRequestHandler<GetEasFormRequest, GetEasForm
     {
         var config = await _configurationManager.LoadEasFormConfiguration(GetEasFormKey(request), cancellationToken);
 
-        var easForm = await _easFormFactory.Create(request.SalesArrangementId, request.UserId, config, cancellationToken);
+        var inputParameters = new InputParameters
+        {
+            SalesArrangementId = request.SalesArrangementId,
+            UserId = request.UserId
+        };
+
+        var easForm = await _easFormFactory.Create(inputParameters, config, request.DynamicFormValues, cancellationToken);
 
         var response = new GetEasFormResponse
         {
             Forms = { easForm.BuildForms(request.DynamicFormValues, config.SourceFields) }
         };
-
+        
         easForm.SetFormResponseSpecificData(response);
 
         return response;
