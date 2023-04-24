@@ -23,9 +23,6 @@ internal static class StartupExtensions
         // EAS svc
         builder.AddExternalService<Ext1.Eas.V1.IEasClient>();
 
-        // EAS EasSimulationHT svc
-        builder.AddExternalService<Ext1.EasSimulationHT.V1.IEasSimulationHTClient>();
-
         // SB webapi svc
         builder.AddExternalService<Ext2.SbWebApi.V1.ISbWebApiClient>();
 
