@@ -3,6 +3,7 @@ using DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStates;
 
 namespace DomainServices.CaseService.Api.Services;
 
+[CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class SbWebApiCommonDataProvider
 {
     private readonly ICodebookServiceClients _codebookService;
