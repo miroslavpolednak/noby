@@ -15,7 +15,6 @@ internal sealed class ErrorCodeMapper
     public const int OfferIdIsEmpty = 18011;
     public const int AlreadyLinkedToOffer = 18012;
     public const int SATypeNotSupported = 18013;
-    public const int SalesArrangementSignatureTypeIdNotFound = 18014;
     public const int DataObjectIsNotValid = 18015;
     public const int SalesArrangementCantDelete = 18016;
     public const int FlowSwitchesIsEmpty = 18017;
@@ -49,7 +48,6 @@ internal sealed class ErrorCodeMapper
         {
             { CaseIdIsEmpty, "Case Id must be > 0" },
             { SalesArrangementTypeIdIsEmpty, "SalesArrangementTypeId must be > 0" },
-            { SalesArrangementSignatureTypeIdNotFound, "SalesArrangementSignatureTypeId not found" },
             { SalesArrangementTypeNotFound, "SalesArrangementTypeId {PropertyValue} does not exist." },
             { DataObjectIsNotValid, "CreateSalesArrangementRequest.DataOneofCase is not valid for SalesArrangementTypeId={PropertyValue}" },
             { SalesArrangementNotFound, "Sales arrangement ID {PropertyValue} does not exist." },

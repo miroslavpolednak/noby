@@ -11,6 +11,11 @@ internal sealed class MockSbWebApiClient
         return Task.FromResult(new CaseStateChangedResponse() { RequestId = 1 });
     }
 
+    public Task<int> CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(0);
+    }
+
     public Task<FindTasksResponse> FindTasksByCaseId(FindByCaseIdRequest request, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(new FindTasksResponse { ItemsFound = 0, Tasks = new List<IReadOnlyDictionary<string, string>>() });

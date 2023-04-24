@@ -14,7 +14,6 @@ internal sealed class CreateSalesArrangementHandler
         // vytvorit entitu
         var saEntity = new Database.Entities.SalesArrangement
         {
-            SalesArrangementSignatureTypeId = request.SalesArrangementSignatureTypeId,
             CaseId = request.CaseId,
             SalesArrangementTypeId = request.SalesArrangementTypeId,
             StateUpdateTime = _dbContext.CisDateTime.Now,

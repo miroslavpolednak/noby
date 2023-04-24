@@ -46,6 +46,7 @@ internal sealed class GetCaseParametersHandler
         var loanKindsById = (await _codebookService.LoanKinds(cancellationToken)).ToDictionary(i => i.Id);
         var statementFrequencies = (await _codebookService.StatementFrequencies(cancellationToken));
         var statementSubscriptionTypes = (await _codebookService.StatementSubscriptionTypes(cancellationToken));
+        var statementTypes = (await _codebookService.StatementTypes(cancellationToken));
 
         var mandantId = productTypesById[caseInstance.Data.ProductTypeId].MandantId;
         var loanPurposesById = (await _codebookService.LoanPurposes(cancellationToken)).Where(i => i.MandantId == mandantId).ToDictionary(i => i.Id);
@@ -54,7 +55,7 @@ internal sealed class GetCaseParametersHandler
 
         var response = (caseState.Code == CIS.Foms.Enums.CaseStates.InProgress) ?
             (await GetParamsBeforeHandover(caseInstance, productTypesById, loanKindsById, loanPurposesById, cancellationToken)) :
-            (await GetParamsAfterHandover(caseInstance, productTypesById, loanKindsById, loanPurposesById, statementSubscriptionTypes, statementFrequencies, cancellationToken));
+            (await GetParamsAfterHandover(caseInstance, productTypesById, loanKindsById, loanPurposesById, statementTypes, statementSubscriptionTypes, statementFrequencies, cancellationToken));
 
         return response;
     }
@@ -140,8 +141,9 @@ internal sealed class GetCaseParametersHandler
         Dictionary<int, cCodebookService.Endpoints.ProductTypes.ProductTypeItem> productTypesById,
         Dictionary<int, cCodebookService.Endpoints.LoanKinds.LoanKindsItem> loanKindsById,
         Dictionary<int, cCodebookService.Endpoints.LoanPurposes.LoanPurposesItem> loanPurposesById,
-        List<cCodebookService.Endpoints.GenericCodebookItemWithCodeAndDefault> statementFrequencies,
-        List<cCodebookService.Endpoints.StatementFrequencies.StatementFrequencyItem> statementSubscriptionTypes,
+        List<cCodebookService.Endpoints.StatementTypes.StatementTypeItem> statementTypes,
+        List<cCodebookService.Endpoints.GenericCodebookItemWithCodeAndDefault> statementSubscriptionTypes,
+        List<cCodebookService.Endpoints.StatementFrequencies.StatementFrequencyItem> statementFrequencies,
         CancellationToken cancellation
         )
     {
@@ -202,8 +204,10 @@ internal sealed class GetCaseParametersHandler
         {
             respone.Statement = new StatementDto
             {
-                Type = statementSubscriptionTypes.FirstOrDefault(x => x.Id == mortgageData.Statement?.Type)?.Name,
-                Frequency = statementFrequencies.FirstOrDefault(x => x.Id == mortgageData.Statement?.Frequency)?.Name,
+                TypeId = mortgageData.Statement.TypeId,
+                TypeName = statementTypes.FirstOrDefault(x => x.Id == mortgageData.Statement?.TypeId)?.Name,
+                SubscriptionType = statementSubscriptionTypes.FirstOrDefault(x => x.Id == mortgageData.Statement?.SubscriptionTypeId)?.Name,
+                Frequency = statementFrequencies.FirstOrDefault(x => x.Id == mortgageData.Statement?.FrequencyId)?.Name,
                 EmailAddress1 = mortgageData.Statement?.EmailAddress1,
                 EmailAddress2 = mortgageData.Statement?.EmailAddress2
             };

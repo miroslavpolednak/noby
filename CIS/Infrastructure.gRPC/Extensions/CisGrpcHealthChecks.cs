@@ -26,12 +26,16 @@ public static class CisGrpcHealthChecks
             .AddCheck("Service", () => HealthCheckResult.Healthy());
 
         // pridat check na databazi
+        //TODO tohle neni uplne spravne - potrebujeme pridavat CS podle toho, jakeho jsou typu: MsSql, Redis atd.
+        //TODO jak to vyresit? Hledat instance DbCOntextu a podle toho? Nebo regexem?
         var section = builder.Configuration.GetSection("ConnectionStrings")?.GetChildren();
         if (section != null)
         {
-            var elements = section.Where(t => !string.IsNullOrEmpty(t.Value)).ToArray();
+            var elements = section.Where(t => !string.IsNullOrEmpty(t.Value) && t.Key != "cisDistributedCache").ToArray();
             foreach (var cs in elements)
+            {
                 hc.AddSqlServer(cs.Value!, name: cs.Key);
+            }
         }
 
         // nepublikovat automaticky, delame to obracene

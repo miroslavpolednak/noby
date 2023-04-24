@@ -1,0 +1,40 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "Messages/GetTaskList.proto";
+import "google/protobuf/wrappers.proto";
+
+message GetTaskDetailRequest {
+	int32 TaskIdSb = 1;
+}
+
+message GetTaskDetailResponse {
+	repeated TaskDetailResponse TaskDetails = 1;
+}
+
+message TaskDetailResponse {
+	WorkflowTask TaskObject = 1;
+
+	TaskDetailItem TaskDetail = 2;
+}
+
+message TaskDetailItem {
+	string PerformanName = 1;
+
+	string ProcessNameLong = 2;
+
+	google.protobuf.BoolValue SentToCustomer = 3;
+
+	google.protobuf.Int32Value OrderId = 4;
+
+	repeated TaskCommunicationItem TaskCommunication = 5;
+
+	repeated string TaskDocumentIds = 6;
+}
+
+message TaskCommunicationItem {
+	google.protobuf.StringValue TaskResponse = 1;
+
+	string TaskRequest = 2;
+}

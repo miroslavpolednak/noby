@@ -76,9 +76,7 @@ public class EasFormsManager
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
             ContractNumber = contractNumber,
-            RiskBusinessCaseId = salesArrangement.RiskBusinessCaseId,
-            SalesArrangementSignatureTypeId = salesArrangement.SalesArrangementSignatureTypeId,
-            FirstSignedDate = salesArrangement.FirstSignedDate
+            RiskBusinessCaseId = salesArrangement.RiskBusinessCaseId
         }, cancellationToken);
 
         salesArrangement.ContractNumber = contractNumber;

@@ -99,7 +99,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
     {
         var templates = await _codebookServiceClients.DocumentTypes(cancellationToken);
         var fileName = templates.First(t => t.Id == (int)documentOnSa.DocumentTypeId!).FileName;
-        return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}";
+        return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
     }
 
     private static GenerateDocumentRequest CreateDocumentRequest(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, DomainServices.DocumentOnSAService.Contracts.GetDocumentOnSADataResponse documentOnSaData)

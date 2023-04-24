@@ -30,8 +30,6 @@ internal sealed class UpdateSalesArrangementHandler
 
         entity.ContractNumber = request.ContractNumber;
         entity.RiskBusinessCaseId = request.RiskBusinessCaseId;
-        entity.FirstSignedDate = request.FirstSignedDate;
-        entity.SalesArrangementSignatureTypeId = request.SalesArrangementSignatureTypeId;
 
         // pokud je zadost NEW, zmenit na InProgress
         if (entity.State == (int)SalesArrangementStates.NewArrangement)

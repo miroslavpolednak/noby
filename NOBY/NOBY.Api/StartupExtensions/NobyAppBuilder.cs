@@ -81,12 +81,15 @@ internal static class NobyAppBuilder
                     .RequireAuthorization()
                     .WithDescription("Přihlášení uživatele / redirect na auth provider.")
                     .WithTags("Authentication")
+                    .WithName("signIn")
                     .WithOpenApi();
 
                 // sign out
                 t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint, 
-                    ([FromServices] IHttpContextAccessor context, [FromServices] AppConfiguration configuration) =>
+                    ([FromServices] IHttpContextAccessor context, [FromServices] AppConfiguration configuration, [FromQuery] string? redirect) =>
                 {
+                    string redirectUrl = Uri.TryCreate(redirect, UriKind.Absolute, out var uri) ? uri.ToString() : "/";
+
                     context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
                     if (configuration.Security!.AuthenticationScheme == AuthenticationConstants.CaasAuthScheme)
@@ -95,12 +98,18 @@ internal static class NobyAppBuilder
                     }
 
                     // redirect to root?
-                    context.HttpContext!.Response.Redirect("/");
+                    context.HttpContext!.Response.Redirect(redirectUrl);
                 })
                     .RequireAuthorization()
                     .WithDescription("Odhlášení uživatele.")
                     .WithTags("Authentication")
-                    .WithOpenApi();
+                    .WithName("signOut")
+                    .WithOpenApi(generatedOperation =>
+                    {
+                        var parameter = generatedOperation.Parameters[0];
+                        parameter.Description = "Absolutní URI kam má být uživatel přesměrován po odhlášení";
+                        return generatedOperation;
+                    });
             });
         });
 

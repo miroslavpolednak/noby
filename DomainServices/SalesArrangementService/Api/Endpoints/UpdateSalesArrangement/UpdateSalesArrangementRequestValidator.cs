@@ -11,12 +11,5 @@ internal sealed class UpdateSalesArrangementRequestValidator
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.SalesArrangementIdIsEmpty);
-
-        RuleFor(t => t.SalesArrangementSignatureTypeId)
-            .MustAsync(async (id, cancellation) =>
-            {
-                return id.HasValue ? (await codebookService.SignatureTypes(cancellation)).Any(t => t.Id == id) : true;
-            })
-            .WithErrorCode(ErrorCodeMapper.SalesArrangementSignatureTypeIdNotFound);
     }
 }

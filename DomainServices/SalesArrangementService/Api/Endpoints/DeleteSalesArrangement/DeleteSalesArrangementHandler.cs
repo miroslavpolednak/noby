@@ -16,7 +16,7 @@ internal sealed class DeleteSalesArrangementHandler
         {
             // kontrola na kategorii
             if ((await _codebookService.SalesArrangementTypes(cancellation)).First(t => t.Id == saInstance.SalesArrangementTypeId).SalesArrangementCategory != 2)
-                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, saInstance.SalesArrangementSignatureTypeId);
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, saInstance.SalesArrangementTypeId);
 
             // kontrola na stav
             if (saInstance.State != (int)SalesArrangementStates.InProgress && saInstance.State != (int)SalesArrangementStates.IsSigned)

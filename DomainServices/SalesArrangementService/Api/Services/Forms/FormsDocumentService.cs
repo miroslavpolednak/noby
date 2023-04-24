@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using CIS.Core;
 using CIS.Core.Attributes;
-using CIS.Core.Security;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
@@ -11,6 +10,7 @@ using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
+using DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService;
 using DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.Entities;
 using DomainServices.SalesArrangementService.Api.Endpoints.SendToCmp;
 using DomainServices.SalesArrangementService.Contracts;
@@ -27,7 +27,7 @@ internal sealed class FormsDocumentService
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorService;
     private readonly ICodebookServiceClients _codebookService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
+    private readonly IDocumentArchiveRepository _documentArchiveRepository;
     private readonly IDateTime _dateTime;
     private readonly IUserServiceClient _userService;
 
@@ -35,7 +35,7 @@ internal sealed class FormsDocumentService
                                 IDocumentArchiveServiceClient documentArchiveService,
                                 IDocumentGeneratorServiceClient documentGeneratorService,
                                 ICodebookServiceClients codebookService,
-                                ICurrentUserAccessor currentUserAccessor,
+                                IDocumentArchiveRepository documentArchiveRepository,
                                 IDateTime dateTime,
                                 IUserServiceClient userService)
     {
@@ -43,7 +43,7 @@ internal sealed class FormsDocumentService
         _documentArchiveService = documentArchiveService;
         _documentGeneratorService = documentGeneratorService;
         _codebookService = codebookService;
-        _currentUserAccessor = currentUserAccessor;
+        _documentArchiveRepository = documentArchiveRepository;
         _dateTime = dateTime;
         _userService = userService;
     }
@@ -51,7 +51,7 @@ internal sealed class FormsDocumentService
     /// <summary>
     /// Prepare DocumentInterface (Form) with FormInstanceInterface (data sentense) entities.
     /// </summary>
-    public async Task<DocumentInterface[]> PrepareEntities(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, IReadOnlyCollection<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
+    public async Task SaveEasForms(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, IReadOnlyCollection<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
     {
         var formsWithDataSentenses = createdFinalVersionOfDocOnSa.OrderBy(r => r.DocumentOnSa.EArchivId)
                  .Zip(easFormResponse.Forms.OrderBy(r => r.DynamicFormValues.DocumentId),
@@ -60,10 +60,11 @@ internal sealed class FormsDocumentService
         // load user
         var user = await _userService.GetUser(salesArrangement.Created.UserId!.Value, cancellationToken);
 
-        return await Task.WhenAll(
+        var entities = await Task.WhenAll(
             formsWithDataSentenses
-            .Select(r => PrepareEntity(r.docOnSa, r.form, salesArrangement, easFormResponse.ContractNumber, user, cancellationToken))
-            );
+                .Select(r => PrepareEntity(r.docOnSa, r.form, salesArrangement, easFormResponse.ContractNumber, user, cancellationToken)));
+
+        await _documentArchiveRepository.SaveDataSentenseWithForm(entities, cancellationToken);
     }
 
     private async Task<DocumentInterface> PrepareEntity(CreateDocumentOnSAResponse docOnSa, Form form, SalesArrangement salesArrangement, string contractNumber, User user, CancellationToken cancellationToken)

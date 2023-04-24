@@ -150,12 +150,33 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetTaskList(System.Int64,System.Threading.CancellationToken)">
             <summary>
-            Seznam workflow tasku dotažený z SB.
+            Seznam workflow tasků dotažený z SB.
             </summary>
             <remarks>
-            <i>DS:</i> CaseService/GetTaskList<br/>
+            Operace získá ze Starbuildu seznam úkolů a procesů k danému case ID. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Seznam wf tasks z SB.</returns>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetTaskDetail(System.Int64,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Detail workflow tasku dotažený ze SB.
+            </summary>
+            <remarks>
+            Detail workflow tasku dotažený ze SB. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=90CD722E-8955-43e6-9924-DC5FDDF6ED15"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <returns></returns>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.UpdateTaskDetail(System.Int64,System.Int64,NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest,System.Threading.CancellationToken)">
+            <summary>
+            Update workflow tasku do SB
+            </summary>
+            <remarks>
+            Update workflow tasku do SB. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <returns></returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseParameters(System.Int64,System.Threading.CancellationToken)">
             <summary>
@@ -187,7 +208,19 @@
             Výše účelu v Kč
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.Type">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.TypeId">
+            <summary>
+            Id typu výpisů
+            </summary>
+            <example>2</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.TypeName">
+            <summary>
+            Způsob odběru výpisů
+            </summary>
+            <example>elektronicky</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.SubscriptionType">
             <summary>
             Způsob odběru výpisů
             </summary>
@@ -421,6 +454,155 @@
             KBID
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem.TaskRequest">
+            <summary>
+            Text požadavku
+            </summary>
+            <example>Prosím o součinnost.</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem.TaskResponse">
+            <summary>
+            Dožádání: odpověď
+            </summary>
+            <example>Posílám Vám požadované dokumenty.</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.TaskIdSB">
+            <summary>
+            SB ID úkolu, není zobrazeno na FE UI
+            </summary>
+            <example>22456</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.PerformerLogin">
+            <summary>
+            Login zadavatele/zpracovatele
+            </summary>
+            <example>14</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.PerformerName">
+            <summary>
+            Jméno a příjmení zadavatele/zpracovatele
+            </summary>
+            <example>Jan Novák</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.ProcessNameLong">
+            <summary>
+            Jméno typu procesu (nezkrácené)
+            </summary>
+            <example>Hlavní úvěrový proces</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.SentToCustomer">
+            <summary>
+            Dožádání: Příznak zaslání Dožádní přímo na klienta
+            </summary>
+            <example>false</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.OrderId">
+            <summary>
+            Dožádání: Číslo objednávky ocenění
+            </summary>
+            <example>123556</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.TaskCommunication">
+            <summary>
+            Dožádání: Text požadavku a případné odpovědi (i včetně případných opakování komunikace). Řazeno chronologicky, nejstarší záznam je jako poslední.; Předání na specialistu: popis požadavku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.ProcessId">
+            <summary>
+            Noby proces ID. Jde o ID sady úkolů generované Starbuildem.
+            </summary>
+            <example>22777</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.CreatedOn">
+            <summary>
+            Datum vytvoření procesu
+            </summary>
+            <example>12.12.2021</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.ProcessNameLong">
+            <summary>
+            Jméno typu procesu (nezkrácené)
+            </summary>
+            <example>Hlavní úvěrový proces</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.StateName">
+            <summary>
+            Název Noby stavu procesu
+            </summary>
+            <example>SPRÁVA</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.StateIndicator">
+            <summary>
+            Indikátor barvy Noby stavu
+            </summary>
+            <example>Active</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.TaskId">
+            <summary>
+            Noby task ID. Jde o ID sady úkolů generované Starbuildem.
+            </summary>
+            <example>22777</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.CreatedOn">
+            <summary>
+            Datum vytvoření úkolu
+            </summary>
+            <example>12.12.2022</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.TaskTypeId">
+            <summary>
+            ID typu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK">číselníku typu úkolů</a>
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.TaskTypeName">
+            <summary>
+            Jméno typu úkolu
+            </summary>
+            <example>Dožádání</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.TaskSubtypeName">
+            <summary>
+            Označení úkolu (název podtypu úkolu)
+            </summary>
+            <example>Obecné</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.ProcessId">
+            <summary>
+            ID procesu
+            </summary>
+            <example>2344</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.ProcessNameShort">
+            <summary>
+            Jméno typu procesu (zkrácené)
+            </summary>
+            <example>Hlavní</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.StateId">
+            <summary>
+            ID Noby stavu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby">číselníku stavů úkolů</a>
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.StateName">
+            <summary>
+            Název Noby stavu úkolu
+            </summary>
+            <example>K VYŘÍZENÍ</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.StateFilter">
+            <summary>
+            Filter Noby stavu úkolu
+            </summary>
+            <example>Active</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.StateIndicator">
+            <summary>
+            Indikátor barvy Noby stavu
+            </summary>
+            <example>Active</example>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.Search.SearchRequest.FilterId">
             <summary>
             [optional] ID pozadovaneho stavu filtru.
@@ -445,6 +627,12 @@
             <summary>
             Kolekce nalezenych Case-s.
             </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest.TaskIdSB">
+            <summary>
+            SB ID úkolu, není zobrazeno na FE UI
+            </summary>
+            <example>22456</example>[
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.Dto.CaseModel.CaseId">
             <summary>
@@ -584,7 +772,6 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417284324">StatementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/TinFormatByCountry+%28CB_CmTrTinFormat%29+-+MOCK">TinFormatsByCountry</a>
              - <a href="https://wiki.kb.cz/display/HT/TinNoFillReasonsByCountry+%28CB_CmTrTinCountry%29+-+MOCK">TinNoFillReasonsByCountry</a>
-             - <a href="https://wiki.kb.cz/display/HT/WorkflowProcessStateNoby">WorkflowProcessStatesNoby</a>
              - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby">WorkflowTaskStatesNoby</a>
              - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskCategory">WorkflowTaskCategories</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440871662">WorkflowTaskStates</a>
@@ -1279,6 +1466,19 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks> 
         </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.SetDocumentStatusInQueue(System.String,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Slouží k nastavení stavu dokumentu ve frontě
+            </summary>
+            <remarks>
+            Nastavení stavu dokumentu ve frontě pro uložení do eArchiv-u
+            </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocumentList.DocumentsMetadata.UploadStatus">
+            <summary>
+            Stav přenosu dokumentu do eArchivu. \n\n<small>Enum Values</small><ul><li>0 - Uloženo v eArchivu</li><li>1 - Ve zpracování</li><li>2 - Chyba</li></ul>
+            </summary>
+        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.ValidateFormId(System.Int64,NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Threading.CancellationToken)">
             <summary>
             If formId exist on DocumentOnSa, return EArchiveId from documentOnSa
@@ -1292,22 +1492,22 @@
             </summary>
             <returns>SalesArrangementId from DocumentOnSa for FormId</returns>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation.Guid">
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.Guid">
             <summary>
             GUID dokumentu v dočasném úložišti
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation.FileName">
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.FileName">
             <summary>
             Jméno souboru
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation.EaCodeMainId">
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.EaCodeMainId">
             <summary>
             Id EA kódu
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation.Description">
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.Description">
             <summary>
             Popis dokumentu
             </summary>
@@ -1662,7 +1862,8 @@
             Smazani domacnosti
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/DeleteHousehold
+            Slouží ke smazání domácnosti včetně navázaných customerů.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C97B19D9-A165-409d-B6FF-28029D23D517"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
             </remarks>
             <param name="householdId">ID domacnosti</param>
             <returns>ID smazané domacnosti</returns>
@@ -1672,10 +1873,9 @@
             Vytvořeni nové domacnosti
             </summary>
             <remarks>
-            Vytvoří nový household zavoláním DS: SalesArrangementService/CreateHousehold a zároveň vytvoří prvního CustomerOnSA s rolí odpovídající vytvářené domácnosti (Spolužadatel na spolužadatelské a ručitel na ručitelské domácnosti) pomocí volání DS: SalesArrangementService/CreateCustomer.<br/>
-            Prázdná obálka CustomerOnSA je vytvářena, protože neexistuje businessově prázdná domácnost bez členů domácnosti.
+            Vytvoření domácnosti i s CustomerOnSA, aby domácnost nebyla prázdná.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=72EEBC25-A403-42e9-9AFD-A48CCEBC179F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
             </remarks>
-            <returns>Nove HouseholdId, typ domacnosti a nazev typu domacnosti</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.Update(System.Int32,NOBY.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest)">
             <summary>
@@ -1693,20 +1893,35 @@
             <remarks>
             Založí, smaže nebo updatuje CustomerOnSAId1 a CustomerOnSAId2 podle objektu v requestu Customer1 a Customer2.<br /><br />
             Zavoláním lockedIncome = true se zapíše timestamp zamknutí příjmů. Při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp.<br /><br />
-            V případě, že se mění Cutomer na daném householdu, dojde k znevalidnění rozběhnutých či skončených podepisovacích proseců (nutno znovu podepsat).<br /><br />
+            V případě, že se mění Customer na daném householdu, dojde k znevalidnění rozběhnutých či skončených podepisovacích proseců (nutno znovu podepsat).<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF47934C-D0C7-46da-B13E-C3E648389EFB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="householdId">ID domácnosti</param>
             <returns>CustomerOnSAId nalinkovanych customeru</returns>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.CustomerDto.LockedIncome">
+        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.Dto.CustomerDto.LockedIncome">
             <summary>
             Příznak zamknutí příjmů daného CustomerOnSA
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.CustomerDto.Identity">
+        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.Dto.CustomerDto.Identity">
             <summary>
             Identita klienta, pokud se ma zalozit novy CustomerOnSA
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.setFlowSwitches(System.Int32,System.Int32,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Nastavit flowSwitches na SalesArrangementu
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.checkDoubledCustomers(System.Int32,NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest,System.Threading.CancellationToken)">
+            <summary>
+            Kontrola zda nektery z customeru jiz nema pouzitou stejnou identitu
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.deleteRelationships(System.Int64,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Upravit relationship v KonsDb
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer1">
@@ -3481,9 +3696,6 @@
             <example>CZK</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.ContractSignatureTypeId">
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.SalesArrangementSignatureTypeId">
             <example>1</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.Agent">

@@ -55,7 +55,7 @@ internal sealed class GenerateDocumentIdHandler
     {
         EnvironmentNames.Dev => "D",
         EnvironmentNames.Fat => "F",
-        EnvironmentNames.Sit => "S",
+        EnvironmentNames.Sit1 => "S",
         EnvironmentNames.Uat => "U",
         EnvironmentNames.Preprod => "P",
         EnvironmentNames.Edu => "E",

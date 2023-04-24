@@ -39,13 +39,15 @@ internal class DocumentOnSaInfo
 
     private int GetSignatureMethodId(IEnumerable<DocumentOnSAToSign> documentsOnSa)
     {
+        const int DefaultSignatureMethodId = 1;
+
         var signatureMethodCode = documentsOnSa.LastOrDefault(d => d.IsValid && d.IsSigned)?.SignatureMethodCode;
 
-        return _signingMethods.Where(s => s.Code == signatureMethodCode).Select(s => s.StarbuildEnumId).FirstOrDefault(1);
+        return _signingMethods.Where(s => s.Code == signatureMethodCode).Select(s => s.StarbuildEnumId).FirstOrDefault(DefaultSignatureMethodId);
     }
 
     private static DateTime? GetFirstSignatureDate(IEnumerable<DocumentOnSAToSign> documentsOnSa) =>
-        documentsOnSa.Where(d => d.IsSigned).OrderBy(d => d.SignatureDateTime).Select(d => d.SignatureDateTime.ToDateTime()).FirstOrDefault();
+        documentsOnSa.Where(d => d.IsSigned).OrderBy(d => d.SignatureDateTime).Select(d => (DateTime?)d.SignatureDateTime.ToDateTime()).FirstOrDefault();
 
     private static List<object> GetFormIdList(IEnumerable<DocumentOnSAToSign> documentsOnSa) => documentsOnSa.Select(d => new { d.FormId }).ToList<object>();
 }

@@ -23,9 +23,7 @@ internal static class DatabaseExpressions
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime),
             OfferGuaranteeDateFrom = t.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = t.OfferGuaranteeDateTo,
-            RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate,
-            FirstSignedDate = t.FirstSignedDate,
-            SalesArrangementSignatureTypeId = t.SalesArrangementSignatureTypeId
+            RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate
         };
     }
 }

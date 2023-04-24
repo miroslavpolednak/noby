@@ -2,6 +2,7 @@
 using NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
+using NOBY.Api.Endpoints.DocumentArchive.SetDocumentStatusInQueue;
 using NOBY.Api.Endpoints.DocumentArchive.UploadDocument;
 using NOBY.Api.Endpoints.Shared;
 using Swashbuckle.AspNetCore.Annotations;
@@ -95,4 +96,19 @@ public class DocumentArchiveController : ControllerBase
         await _mediator.Send(request?.InfuseCaseId(caseId) ?? throw new NobyValidationException("Payload is empty"));
         return Accepted();
     }
+
+    /// <summary>
+    /// Slouží k nastavení stavu dokumentu ve frontě
+    /// </summary>
+    /// <remarks>
+    /// Nastavení stavu dokumentu ve frontě pro uložení do eArchiv-u
+    /// </remarks>
+    [HttpPut("document/{documentId}/status/{statusId:int}")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task SetDocumentStatusInQueue(
+        [FromRoute] string documentId,
+        [FromRoute] int statusId,
+        CancellationToken cancellationToken)
+         => await _mediator.Send(new SetDocumentStatusInQueueRequest(documentId, statusId), cancellationToken);
 }

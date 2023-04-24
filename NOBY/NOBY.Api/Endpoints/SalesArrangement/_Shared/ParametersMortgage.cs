@@ -13,9 +13,6 @@ public class ParametersMortgage
 	/// <example>1</example>
 	public int? ContractSignatureTypeId { get; set; }
 
-    /// <example>1</example>
-    public int? SalesArrangementSignatureTypeId { get; set; }
-
     public List<LoanRealEstateDto>? LoanRealEstates { get; set; }
 
 	/// <summary>
