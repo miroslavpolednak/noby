@@ -29,7 +29,7 @@ builder
     .AddCisTracing();
 
 // add general Dapper repository
-builder.Services.AddDapper(builder.Configuration.GetConnectionString("default")!);
+builder.AddBaseEntityFramework<CIS.InternalServices.ServiceDiscovery.Api.Database.ServiceDiscoveryDbContext>();
 
 // add GRPC
 builder.Services.AddGrpc(options =>

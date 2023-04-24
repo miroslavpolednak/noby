@@ -9,11 +9,7 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
-	<PropertyGroup>
-		<AnalysisMode>Recommended</AnalysisMode>
-	</PropertyGroup>
-
-	<ItemGroup>
+  <ItemGroup>
     <None Remove="appsettings.Testing.json" />
   </ItemGroup>
 
@@ -24,12 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="IntegrationTests\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\CIS\Testing\CIS.Testing.csproj" />
-    <ProjectReference Include="..\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj" />
+    <ProjectReference Include="..\..\..\..\CIS\Testing\CIS.Testing.csproj" />
+    <ProjectReference Include="..\..\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj" />
   </ItemGroup>
 
 </Project>
