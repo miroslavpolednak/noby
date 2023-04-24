@@ -15,7 +15,7 @@ enum EnvironmentNames {
   Unknown = 0;
   Dev = 1;
   Fat = 2;
-  Sit = 3;
+  Sit1 = 3;
   Uat = 4;
   Preprod = 5;
   Edu = 6;
