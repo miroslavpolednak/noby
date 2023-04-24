@@ -188,7 +188,7 @@
             <param name="context">The context of the server-side call handler being invoked.</param>
             <returns>The response to send back to the client (wrapped by a task).</returns>
         </member>
-        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.GetGetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.ServerCallContext)">
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.GetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.ServerCallContext)">
             <summary>
             Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
             </summary>
@@ -338,7 +338,7 @@
             <param name="options">The options for the call.</param>
             <returns>The call object.</returns>
         </member>
-        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
             Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
             </summary>
@@ -348,7 +348,7 @@
             <param name="cancellationToken">An optional token for canceling the call.</param>
             <returns>The response received from the server.</returns>
         </member>
-        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
             <summary>
             Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
             </summary>
@@ -356,7 +356,7 @@
             <param name="options">The options for the call.</param>
             <returns>The response received from the server.</returns>
         </member>
-        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
             Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
             </summary>
@@ -366,7 +366,7 @@
             <param name="cancellationToken">An optional token for canceling the call.</param>
             <returns>The call object.</returns>
         </member>
-        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
             <summary>
             Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
             </summary>
