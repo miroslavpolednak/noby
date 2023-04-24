@@ -7,7 +7,7 @@ using NOBY.Api.Endpoints.Customer.Search.Dto;
 namespace NOBY.Api.Endpoints.Customer.Identify;
 
 internal sealed class IdentifyHandler
-    : IRequestHandler<IdentifyRequest, CustomerInList>
+    : IRequestHandler<IdentifyRequest, CustomerInList?>
 {
     public async Task<CustomerInList?> Handle(IdentifyRequest request, CancellationToken cancellationToken)
     {

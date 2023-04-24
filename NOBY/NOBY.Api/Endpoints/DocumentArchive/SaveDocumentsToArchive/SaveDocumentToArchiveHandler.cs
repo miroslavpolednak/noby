@@ -7,7 +7,6 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
-using NOBY.Api.Endpoints.Shared;
 using System.Globalization;
 using _DocOnSa = NOBY.Api.Endpoints.DocumentOnSA.Search;
 
@@ -21,7 +20,7 @@ public class SaveDocumentToArchiveHandler
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDateTime _dateTime;
-    private readonly ITempFileManager _tempFileManager;
+    private readonly Infrastructure.Services.TempFileManager.ITempFileManager _tempFileManager;
     private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
     private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
     private readonly IMediator _mediator;
@@ -32,7 +31,7 @@ public class SaveDocumentToArchiveHandler
         IDocumentArchiveServiceClient client,
         ICurrentUserAccessor currentUserAccessor,
         IDateTime dateTime,
-        ITempFileManager tempFileManager,
+        Infrastructure.Services.TempFileManager.ITempFileManager tempFileManager,
         ISalesArrangementServiceClient salesArrangementServiceClient,
         IDocumentOnSAServiceClient documentOnSAServiceClient,
         IMediator mediator,

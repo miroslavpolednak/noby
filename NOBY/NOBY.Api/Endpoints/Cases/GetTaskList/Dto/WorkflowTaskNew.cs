@@ -66,5 +66,5 @@ public sealed class WorkflowTaskNew
     /// Indikátor barvy Noby stavu
     /// </summary>
     /// <example>Active</example>
-    public StateIndicator StateIndicator { get; set; }
+    public StateIndicators StateIndicator { get; set; }
 }

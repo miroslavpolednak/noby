@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DomainServices.CaseService.Contracts;
+﻿using DomainServices.CaseService.Contracts;
+using NOBY.Api.Endpoints.Cases.GetConsultationTypes;
 using NOBY.Api.Endpoints.Cases.UpdateTaskDetail;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -11,6 +11,57 @@ public class CasesController : ControllerBase
 {
     private readonly IMediator _mediator;
     public CasesController(IMediator mediator) =>  _mediator = mediator;
+
+    /// <summary>
+    /// Získání relevantních typů konzultace
+    /// </summary>
+    /// <remarks>
+    /// Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("{caseId:long}/tasks/consultation-type", Name = "consultationTypeGet")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Case" })]
+    [ProducesResponseType(typeof(List<GetConsultationTypesResponseItem>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<List<GetConsultationTypesResponseItem>> GetConsultationTypes([FromRoute] long caseId, [FromQuery] long processId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetConsultationTypesRequest(caseId, processId), cancellationToken);
+
+    /// <summary>
+    /// Stornování úkolu ve SB
+    /// </summary>
+    /// <remarks>
+    /// Stornování úkolu ve SB. <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("{caseId:long}/tasks/{taskId:int}/cancel", Name = "taskDetailCancel")]
+    [Consumes("application/json")]
+    [SwaggerOperation(Tags = new[] { "Case" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CancelTask([FromRoute] long caseId, [FromRoute] int taskId, [FromBody] CancelTask.CancelTaskRequest request)
+    {
+        await _mediator.Send(request.InfuseId(caseId, taskId));
+        return NoContent();
+    }
+    
+    /// <summary>
+    /// Vytvoření nového workflow tasku do SB.
+    /// </summary>
+    /// <remarks>
+    /// Vytvoření nového workflow tasku do SB.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
+    [HttpPost("{caseId:long}/tasks", Name = "taskCreate")]
+    [Consumes("application/json")]
+    [Produces("text/plain")]
+    [SwaggerOperation(Tags = new[] { "Case" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<int> CreateTask([FromRoute] long caseId, [FromBody] CreateTask.CreateTaskRequest request)
+        => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>
     /// Vytvoření servisního SalesArrangement-u
@@ -112,9 +163,9 @@ public class CasesController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Seznam wf tasks z SB.</returns>
-    [HttpGet("{caseId:long}/tasks")]
+    [HttpGet("{caseId:long}/tasks", Name = "tasksByCaseIdGet")]
     [Produces("application/json")]
-    [SwaggerOperation(OperationId = "getTasksByCaseId", Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(GetTaskList.GetTaskListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetTaskList.GetTaskListResponse> GetTaskList([FromRoute] long caseId, CancellationToken cancellationToken)
