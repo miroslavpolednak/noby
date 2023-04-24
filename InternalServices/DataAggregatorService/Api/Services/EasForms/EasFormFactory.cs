@@ -1,4 +1,6 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
+﻿using System.ComponentModel;
+using CIS.Foms.Enums;
+using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms;
@@ -21,26 +23,28 @@ internal class EasFormFactory
         _codebookService = codebookService;
     }
 
-    public async Task<IEasForm> Create(int salesArrangementId, int userId, EasFormConfiguration config, CancellationToken cancellationToken)
+    public async Task<IEasForm> Create(InputParameters inputParameters, EasFormConfiguration config, ICollection<DynamicFormValues> dynamicFormValues, CancellationToken cancellationToken)
     {
-        var inputParameters = new InputParameters
-        {
-            SalesArrangementId = salesArrangementId,
-            UserId = userId
-        };
-
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
 
         var easForm = config.EasFormKey.RequestType switch
         {
             EasFormRequestType.Service => CreateServiceEasForm(config.EasFormKey, documentTypes),
-            EasFormRequestType.Product => new EasProductForm(CreateData<ProductFormData>(), documentTypes),
-            _ => throw new ArgumentOutOfRangeException()
+            EasFormRequestType.Product => CreateProductEasForm(dynamicFormValues, documentTypes),
+            _ => throw new InvalidEnumArgumentException(nameof(config.EasFormKey.RequestType), config.EasFormKey.RequestTypeId, typeof(EasFormRequestType))
         };
 
         await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, easForm.AggregatedData, cancellationToken);
 
         return easForm;
+    }
+
+    private IEasForm CreateProductEasForm(IEnumerable<DynamicFormValues> dynamicFormValues, List<DocumentTypeItem> documentTypes)
+    {
+        var productData = CreateData<ProductFormData>();
+        productData.MainDynamicFormValues = dynamicFormValues.First(d => d.DocumentTypeId == (int)DocumentType.ZADOSTHU);
+
+        return new EasProductForm(productData, documentTypes);
     }
 
     private IEasForm CreateServiceEasForm(EasFormKey easFormKey, List<DocumentTypeItem> documentTypes)
