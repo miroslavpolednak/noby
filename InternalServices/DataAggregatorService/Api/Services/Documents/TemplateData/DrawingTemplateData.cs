@@ -17,7 +17,7 @@ internal class DrawingTemplateData : AggregatedData
             var bankAccount = BankAccountHelper.AccountNumber(Mortgage.PaymentAccount.Prefix, Mortgage.PaymentAccount.Number, Mortgage.PaymentAccount.BankCode);
 
             if (SalesArrangement.Drawing.IsImmediateDrawing)
-                return bankAccount + " a to bezokladně.";
+                return bankAccount + " a to bezodkladně.";
 
             return bankAccount + $" a to k datu: {((DateTime)SalesArrangement.Drawing.DrawingDate).ToString("d", CultureInfo.GetCultureInfo("cs"))}.";
         }
