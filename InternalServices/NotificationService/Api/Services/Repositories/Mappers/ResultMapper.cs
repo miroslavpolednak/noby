@@ -14,7 +14,7 @@ public static class ResultMapper
     public static Identifier? Map(string? identity, string? identityScheme)
     {
         return string.IsNullOrEmpty(identity) && string.IsNullOrEmpty(identityScheme)
-            ? null : new Identifier { Identity = identity, IdentityScheme = identityScheme };
+            ? null : new Identifier { Identity = identity ?? string.Empty, IdentityScheme = identityScheme ?? string.Empty };
     }
     
     public static Dto.Result Map(this Entity.SmsResult smsResult)

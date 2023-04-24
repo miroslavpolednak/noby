@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Sms;
+﻿using CIS.InternalServices.NotificationService.Api.Validators.Common;
+using CIS.InternalServices.NotificationService.Contracts.Sms;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Sms;
@@ -44,5 +45,12 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SendSmsFrom
             })
                 .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PlaceholdersInvalid)
                 .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} must contain unique keys.");
+        
+        When(request => request.Identifier is not null, () =>
+        {
+            RuleFor(request => request.Identifier!)
+                .SetValidator(new IdentifierValidator())
+                .WithMessage($"Invalid {nameof(SendSmsFromTemplateRequest.Identifier)}.");
+        });
     }
 }
