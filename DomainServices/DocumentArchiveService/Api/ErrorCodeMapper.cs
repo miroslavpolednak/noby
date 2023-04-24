@@ -11,6 +11,7 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int OneOfMainParametersFillIn = 14017;
     public const int StateInQueueNotAllowed = 14019;
     public const int DocumentWithEArchiveIdNotExist = 14020;
+    public const int CaseIdInqueueNotExist = 1421;
 
     public static IErrorCodesDictionary Init()
     {
@@ -22,7 +23,8 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { UnknownEnvironmentName, "Unknown EnvironmentName."},
             { OneOfMainParametersFillIn, "One of main parameters have to be fill in (CaseId, PledgeAgreementNumber, ContractNumber, OrderId, AuthorUserLogin)"},
             { StateInQueueNotAllowed, "Given state isn't allowed in queue"},
-            { DocumentWithEArchiveIdNotExist, "Document with specified EArchiveId doesn't exist in queue" }
+            { DocumentWithEArchiveIdNotExist, "Document with specified EArchiveId doesn't exist in queue" },
+            {CaseIdInqueueNotExist, "CaseId in queue doesn't exist." }
         });
 
         return Messages;

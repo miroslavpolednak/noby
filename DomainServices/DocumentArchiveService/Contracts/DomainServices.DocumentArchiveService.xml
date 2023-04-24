@@ -120,6 +120,17 @@
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest.EArchivIdsFieldNumber">
             <summary>Field number for the "EArchivIds" field.</summary>
         </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest.CaseIdFieldNumber">
+            <summary>Field number for the "CaseId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest.CaseId">
+            <summary>
+            Unikátní Id obchodního případu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest.StatusesInQueueFieldNumber">
+            <summary>Field number for the "StatusesInQueue" field.</summary>
+        </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest.EArchivIdFieldNumber">
             <summary>Field number for the "EArchivId" field.</summary>
         </member>
@@ -133,7 +144,7 @@
         </member>
         <member name="P:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest.StatusInQueue">
             <summary>
-            Stav dokument ve frontì
+            Stav dokument ve frontě
             </summary>
         </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveServiceV1Reflection">
@@ -668,16 +679,19 @@
         <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.FilenameFieldNumber">
             <summary>Field number for the "Filename" field.</summary>
         </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.StatusFieldNumber">
-            <summary>Field number for the "Status" field.</summary>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.StatusInQueueFieldNumber">
+            <summary>Field number for the "StatusInQueue" field.</summary>
         </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.Status">
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.StatusInQueue">
             <summary>
             Status dokumentu (100 - k přenosu, 300 chyba přenosu, 400 - úspěšně přeneseno)
             </summary>
         </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.FormIdFieldNumber">
             <summary>Field number for the "FormId" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.EaCodeMainIdFieldNumber">
+            <summary>Field number for the "EaCodeMainId" field.</summary>
         </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueReflection">
             <summary>Holder for reflection information generated from SetDocumentStatusInQueue.proto</summary>
