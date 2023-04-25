@@ -1,5 +1,7 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Configuration;
+using CIS.InternalServices.NotificationService.Api.Validators.Common;
 using CIS.InternalServices.NotificationService.Contracts.Email;
+using CIS.InternalServices.NotificationService.Contracts.Sms;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 
@@ -68,5 +70,12 @@ public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
             .SetValidator(new EmailAttachmentValidator())
                 .WithErrorCode(ErrorCodes.Validation.SendEmail.AttachmentsInvalid)
                 .WithMessage($"Invalid {nameof(SendEmailRequest.Attachments)}.");
+        
+        When(request => request.Identifier is not null, () =>
+        {
+            RuleFor(request => request.Identifier!)
+                .SetValidator(new IdentifierValidator())
+                .WithMessage($"Invalid {nameof(SendEmailRequest.Identifier)}.");
+        });
     }
 }
