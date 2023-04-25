@@ -55,6 +55,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\CIS.Core.csproj" />
     <ProjectReference Include="..\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
+    <ProjectReference Include="..\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
     <ProjectReference Include="..\Infrastructure\CIS.Infrastructure.csproj" />
   </ItemGroup>
 

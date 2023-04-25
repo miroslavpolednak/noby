@@ -1,48 +1,50 @@
-﻿using CIS.Testing;
+﻿using CIS.InternalServices.ServiceDiscovery.Contracts;
+using CIS.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using static CIS.InternalServices.ServiceDiscovery.Contracts.v1.DiscoveryService;
 
 namespace CIS.InternalServices.ServiceDiscovery.Tests.IntegrationTests.Helpers;
 
-public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryFixture<Program>>
+public abstract class IntegrationTestBase 
+    : IClassFixture<WebApplicationFactoryFixture<Program>>
 {
     public IntegrationTestBase(WebApplicationFactoryFixture<Program> fixture)
     {
         Fixture = fixture;
-
-        ConfigureWebHost();
-
-        CreateGlobalMocks();
     }
 
-    public WebApplicationFactoryFixture<Program> Fixture { get; }
+    protected WebApplicationFactoryFixture<Program> Fixture { get; }
 
     protected DiscoveryServiceClient CreateGrpcClient()
     {
         return Fixture.CreateGrpcClient<DiscoveryServiceClient>();
     }
 
-    private void ConfigureWebHost()
+    protected void SeedDatabaseWithServices()
     {
-        Fixture
-           .ConfigureCisTestOptions(options =>
-           {
-               options.Header = new() { { "test", "Test" } }; // default is null
-           })
-           .ConfigureServices(services =>
-           {
-               // Example of manual register of db context with inmemory database
-               //var dbName = Guid.NewGuid().ToString();// unique db name for every test class
-               //services.RemoveAll<DbContextOptions<DocumentArchiveDbContext>>()
-               //      .AddDbContext<DocumentArchiveDbContext>(options =>
-               //      {
-               //          options.UseInMemoryDatabase(dbName);
-               //          options.ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-               //      });
-           });
-    }
+        using var scope = Fixture.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<Api.Database.ServiceDiscoveryDbContext>();
 
-    private void CreateGlobalMocks()
-    {
-       // Some global mocks
+        List<Api.Database.Entities.ServiceDiscoveryEntity> data = new()
+        {
+            create(1, 1),
+            create(1, 2),
+            create(1, 3, ServiceTypes.Proprietary),
+            create(2, 1),
+            create(2, 2),
+        };
+
+        dbContext.ServiceDiscoveryEntities.AddRange(data);
+        dbContext.SaveChanges();
+
+        Api.Database.Entities.ServiceDiscoveryEntity create(int environment, int index, ServiceTypes serviceType = ServiceTypes.Grpc)
+        {
+            return new() { 
+                EnvironmentName = environment == 1 ? Constants.ServicesEnvironmentName1 : Constants.ServicesEnvironmentName2, 
+                ServiceName = $"DS:Service{index}", 
+                ServiceUrl = $"http://0.0.0.0:{index}",
+                ServiceType = (byte)serviceType
+            };
+        }
     }
 }
