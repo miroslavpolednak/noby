@@ -1,0 +1,1 @@
+ALTER TABLE DocumentOnSa ADD DocumentTemplateVariantId INT NULL;

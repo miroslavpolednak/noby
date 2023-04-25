@@ -67,6 +67,7 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
                 DocumentOnSAId = documentOnSaEntity.DocumentOnSAId,
                 DocumentTypeId = documentOnSaEntity.DocumentTypeId,
                 DocumentTemplateVersionId = documentOnSaEntity.DocumentTemplateVersionId,
+                DocumentTemplateVariantId = documentOnSaEntity.DocumentTemplateVariantId,
                 FormId = documentOnSaEntity.FormId ?? string.Empty,
                 EArchivId = documentOnSaEntity.EArchivId ?? string.Empty,
                 DmsxId = documentOnSaEntity.DmsxId ?? string.Empty,
