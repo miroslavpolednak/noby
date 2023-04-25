@@ -49,4 +49,7 @@
 	<ItemGroup>
 		<Folder Include="Database\Migrations\" />
 	</ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="DomainServices.DocumentArchiveService.Tests" />
+	</ItemGroup>
 </Project>

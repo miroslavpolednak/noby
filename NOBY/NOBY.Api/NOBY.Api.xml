@@ -87,6 +87,34 @@
             Seznam URL služeb zaregistrovaných v ServiceDiscovery
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetConsultationTypes(System.Int64,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Získání relevantních typů konzultace
+            </summary>
+            <remarks>
+            Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CancelTask(System.Int64,System.Int32,NOBY.Api.Endpoints.Cases.CancelTask.CancelTaskRequest)">
+            <summary>
+            Stornování úkolu ve SB
+            </summary>
+            <remarks>
+            Stornování úkolu ve SB. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateTask(System.Int64,NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest)">
+            <summary>
+            Vytvoření nového workflow tasku do SB.
+            </summary>
+            <remarks>
+            Vytvoření nového workflow tasku do SB.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateSalesArrangement(System.Int64,NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest)">
             <summary>
             Vytvoření servisního SalesArrangement-u
@@ -202,6 +230,30 @@
             <remarks>
             https://wiki.kb.cz/pages/viewpage.action?pageId=424119307#id-%C4%8Cerp%C3%A1ni%C5%BD%C3%A1dosto%C4%8Derp%C3%A1n%C3%AD-Kontrolyp%C5%99edformul%C3%A1%C5%99em%C4%8Derp%C3%A1n%C3%AD
             </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.TaskTypeId">
+            <summary>
+            ID typu úkolu (Předání na specialistu = 7, Konzultace = 3)
+            </summary>
+            <example>7</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.TaskSubtypeId">
+            <summary>
+            ID typu konzultace
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.ProcessId">
+            <summary>
+            ID nadřazeného procesu
+            </summary>
+            <example>24556</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.TaskUserRequest">
+            <summary>
+            Text požadavku
+            </summary>
+            <example>Prosím o pomoc s tímto případem.</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.LoanPurposeItem.Sum">
             <summary>
@@ -414,6 +466,18 @@
             IČP
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetConsultationTypes.GetConsultationTypesResponseItem.TaskSubtypeId">
+            <summary>
+            ID typu konzultace
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetConsultationTypes.GetConsultationTypesResponseItem.taskSubtypeName">
+            <summary>
+            Název typu konzultace
+            </summary>
+            <example>Dotaz (obecný)</example>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleId">
             <summary>
             ID role klienta
@@ -536,6 +600,12 @@
             Indikátor barvy Noby stavu
             </summary>
             <example>Active</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.ProcessTypeId">
+            <summary>
+            ID typu procesu. 1 - Hlavní úvěrový proces, 2 - Změnový proces, 3 - Retenční proces
+            </summary>
+            <example>1</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.TaskId">
             <summary>

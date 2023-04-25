@@ -62,7 +62,8 @@ internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, G
             CreatedOn = p.CreatedOn,
             ProcessNameLong = p.ProcessNameLong,
             StateName = p.StateName,
-            StateIndicator = (StateIndicator)p.StateIndicator
+            ProcessTypeId = p.ProcessTypeId,
+            StateIndicator = (StateIndicators)p.StateIndicator
         }).ToList();
     }
 }

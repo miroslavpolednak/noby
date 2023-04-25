@@ -1,4 +1,5 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
+﻿using CIS.Core.Exceptions;
+using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms;
 
@@ -11,7 +12,15 @@ public static class EasFormTypeFactory
         { EasFormType.F3700, 6 }
     };
 
-    public static EasFormType GetEasFormType(int documentTypeId) => _formTypeMap.First(d => d.Value == documentTypeId).Key;
+    public static EasFormType GetEasFormType(int documentTypeId)
+    {
+        var keyValuePair = _formTypeMap.FirstOrDefault(d => d.Value == documentTypeId);
+
+        if (keyValuePair.Equals(default(KeyValuePair<EasFormType, int>)))
+            throw new CisValidationException($"The eas form does not support document type {documentTypeId}");
+
+        return keyValuePair.Key;
+    }
 
     public static DefaultValues CreateDefaultValues(EasFormType easFormType, List<DocumentTypeItem> documentTypes)
     {

@@ -18,5 +18,4 @@ public class DocumentArchiveDbContext : BaseDbContext<DocumentArchiveDbContext>
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Program).Assembly);
     }
-
 }

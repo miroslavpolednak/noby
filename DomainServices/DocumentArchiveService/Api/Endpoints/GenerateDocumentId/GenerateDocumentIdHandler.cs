@@ -1,6 +1,5 @@
 ﻿using CIS.Core.Configuration;
-using CIS.Infrastructure.Data;
-using DomainServices.DocumentArchiveService.Api.Database;
+using DomainServices.DocumentArchiveService.Api.Database.Repositories;
 using DomainServices.DocumentArchiveService.Contracts;
 using FastEnumUtility;
 
@@ -11,16 +10,16 @@ internal sealed class GenerateDocumentIdHandler
 {
     private readonly AppConfiguration _configuration;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
-    private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _connectionProvider;
+    private readonly IDocumentSequenceRepository _documentSequenceRepository;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
     public GenerateDocumentIdHandler(
-        CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> connectionProvider,
+        IDocumentSequenceRepository documentSequenceRepository,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         AppConfiguration configuration,
         ICisEnvironmentConfiguration cisEnvironment)
     {
-        _connectionProvider = connectionProvider;
+        _documentSequenceRepository = documentSequenceRepository;
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;
         _cisEnvironment = cisEnvironment;
@@ -29,9 +28,9 @@ internal sealed class GenerateDocumentIdHandler
     public async Task<Contracts.GenerateDocumentIdResponse> Handle(GenerateDocumentIdRequest request, CancellationToken cancellation)
     {
         var envName = request.EnvironmentName == EnvironmentNames.Unknown ? FastEnum.Parse<EnvironmentNames>(ConvertToEnvEnumStr(_cisEnvironment.EnvironmentName!))
-                                                                          : request.EnvironmentName;
+                                                                            : request.EnvironmentName;
 
-        long seq = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<long>("SELECT NEXT VALUE FOR dbo.GenerateDocumentIdSequence", cancellation);
+        long seq = await _documentSequenceRepository.GetNextDocumentSeqValue(cancellation);
 
         return new Contracts.GenerateDocumentIdResponse
         {
@@ -56,7 +55,7 @@ internal sealed class GenerateDocumentIdHandler
     {
         EnvironmentNames.Dev => "D",
         EnvironmentNames.Fat => "F",
-        EnvironmentNames.Sit => "S",
+        EnvironmentNames.Sit1 => "S",
         EnvironmentNames.Uat => "U",
         EnvironmentNames.Preprod => "P",
         EnvironmentNames.Edu => "E",

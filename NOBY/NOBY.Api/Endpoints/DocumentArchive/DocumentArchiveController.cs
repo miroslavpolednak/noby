@@ -93,7 +93,7 @@ public class DocumentArchiveController : ControllerBase
      [FromRoute] long caseId,
      [FromBody] SaveDocumentsToArchiveRequest request)
     {
-        await _mediator.Send(request?.InfuseCaseId(caseId) ?? throw new NobyValidationException("Payload is empty"));
+        await _mediator.Send(request?.InfuseId(caseId) ?? throw new NobyValidationException("Payload is empty"));
         return Accepted();
     }
 

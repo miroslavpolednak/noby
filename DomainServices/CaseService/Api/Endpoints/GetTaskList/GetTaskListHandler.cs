@@ -23,7 +23,6 @@ internal sealed class GetTaskListHandler
 
         var sbRequest = new FindByCaseIdRequest
         {
-            HeaderLogin = await _commonDataProvider.GetCurrentLogin(cancellationToken),
             CaseId = request.CaseId,
             TaskStates = taskStateIds,
             SearchPattern = "LoanProcessSubtasks"

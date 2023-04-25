@@ -88,7 +88,7 @@ public class WorkflowMapper
             StateId = taskState.Id,
             StateName = taskState.Name,
             StateFilter = Enum.Parse<StateFilter>(taskState.Filter, true),
-            StateIndicator = Enum.Parse<StateIndicator>(taskState.Indicator, true)
+            StateIndicator = Enum.Parse<StateIndicators>(taskState.Indicator, true)
         };
     }
     

@@ -20,6 +20,8 @@ import "Messages/GetProcessList.proto";
 import "Messages/UpdateActiveTasks.proto";
 import "Messages/UpdateOfferContacts.proto";
 import "Messages/NotifyStarbuild.proto";
+import "Messages/CancelTask.proto";
+import "Messages/CreateTask.proto";
 
 service CaseService {
    rpc CompleteTask (CompleteTaskRequest) returns (google.protobuf.Empty);
@@ -53,4 +55,8 @@ service CaseService {
    rpc UpdateOfferContacts (UpdateOfferContactsRequest) returns (google.protobuf.Empty);
 
    rpc NotifyStarbuild (NotifyStarbuildRequest) returns (google.protobuf.Empty);
+
+   rpc CancelTask (CancelTaskRequest) returns (google.protobuf.Empty);
+   
+   rpc CreateTask (CreateTaskRequest) returns (CreateTaskResponse);
 }
