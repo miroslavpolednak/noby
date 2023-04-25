@@ -4,7 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
 	<Company>Wookiee.Apps s.r.o.</Company>
     <Product>Common Infrastructure Solution</Product>
-    <Authors>Filip Tuma</Authors>
 	<LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
@@ -33,5 +32,9 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\Contracts\CIS.InternalServices.ServiceDiscovery.Contracts.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="CIS.InternalServices.ServiceDiscovery.Tests" />
 	</ItemGroup>
 </Project>
