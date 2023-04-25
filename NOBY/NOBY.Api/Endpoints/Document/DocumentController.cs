@@ -165,7 +165,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZAOZMDLU, input, 9, cancellationToken);
+        return GenerateGeneralDocument(DocumentType.ZAOZMDLU, input, cancellationToken);
     }
 
     /// <summary>
@@ -185,7 +185,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZADOSTHU, input, 2, cancellationToken);
+        return GenerateGeneralDocument(DocumentType.ZADOSTHU, input, cancellationToken);
     }
 
     /// <summary>
@@ -205,7 +205,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZADOSTHD, input, 6, cancellationToken);
+        return GenerateGeneralDocument(DocumentType.ZADOSTHD, input, cancellationToken);
     }
 
     [Obsolete]
@@ -222,25 +222,14 @@ public class DocumentController : ControllerBase
 
     private Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, CancellationToken cancellationToken)
     {
-        return GenerateGeneralDocument(documentType, inputParameters, default, default, cancellationToken);
+        return GenerateGeneralDocument(documentType, inputParameters, false, cancellationToken);
     }
 
-    private Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, bool forPreview, CancellationToken cancellationToken)
-    {
-        return GenerateGeneralDocument(documentType, inputParameters, default, forPreview, cancellationToken);
-    }
-
-    private Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, int? documentVariantId, CancellationToken cancellationToken)
-    {
-        return GenerateGeneralDocument(documentType, inputParameters, documentVariantId, default, cancellationToken);
-    }
-
-    private async Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, int? documentVariantId, bool? forPreview, CancellationToken cancellationToken)
+    private async Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, bool forPreview, CancellationToken cancellationToken)
     {
         var request = new GeneralDocument.GetGeneralDocumentRequest
         {
             DocumentType = documentType,
-            DocumentTemplateVariantId = documentVariantId,
             ForPreview = forPreview,
             InputParameters = inputParameters
         };
