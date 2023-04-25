@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -11,7 +11,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;NU1603</NoWarn>
   </PropertyGroup>
 
@@ -34,11 +38,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="FluentAssertions" Version="6.10.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.52.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.4" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="NSubstitute" Version="5.0.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <PrivateAssets>all</PrivateAssets>
@@ -48,6 +54,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
+    <ProjectReference Include="..\Infrastructure\CIS.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

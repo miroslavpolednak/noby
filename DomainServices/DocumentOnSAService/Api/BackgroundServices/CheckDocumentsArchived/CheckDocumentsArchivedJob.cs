@@ -63,7 +63,7 @@ internal sealed class CheckDocumentsArchivedJob
         request.EArchivIds.AddRange(unArchivedDocOnSaIds);
         var documentInQueue = await _documentArchiveServiceClient.GetDocumentsInQueue(request, cancellationToken);
         var successfullyArchivedDocumentIds = documentInQueue.QueuedDocuments
-                                              .Where(d => d.Status == SuccessfullyArchivedStatus)
+                                              .Where(d => d.StatusInQueue == SuccessfullyArchivedStatus)
                                               .Select(s => s.EArchivId)
                                               .ToList();
         return successfullyArchivedDocumentIds;

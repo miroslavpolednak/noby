@@ -6,7 +6,7 @@ using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetProcessList;
 
-internal class GetProcessListHandler : IRequestHandler<GetProcessListRequest, GetProcessListResponse>
+internal sealed class GetProcessListHandler : IRequestHandler<GetProcessListRequest, GetProcessListResponse>
 {
     private readonly CaseServiceDbContext _dbContext;
     private readonly SbWebApiCommonDataProvider _commonDataProvider;
@@ -25,7 +25,6 @@ internal class GetProcessListHandler : IRequestHandler<GetProcessListRequest, Ge
 
         var sbRequest = new FindByCaseIdRequest
         {
-            HeaderLogin = await _commonDataProvider.GetCurrentLogin(cancellationToken),
             CaseId = request.CaseId,
             TaskStates = await _commonDataProvider.GetValidTaskStateIds(cancellationToken),
             SearchPattern = "MainLoanProcessTasks"
