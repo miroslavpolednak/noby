@@ -37,13 +37,13 @@ internal sealed class DocumentGenerator
         var documentDataRequest = new GetDocumentDataRequest
         {
             DocumentTypeId = (int)documentRequest.DocumentType,
-            DocumentTemplateVariantId = documentRequest.DocumentTemplateVariantId,
             InputParameters = documentRequest.InputParameters
         };
 
         var result = await _dataAggregator.GetDocumentData(documentDataRequest, cancellationToken);
 
         documentRequest.DocumentTemplateVersionId = result.DocumentTemplateVersionId;
+        documentRequest.DocumentTemplateVariantId = result.DocumentTemplateVariantId;
         documentRequest.InputParameters = result.InputParameters;
 
         return result.DocumentData;

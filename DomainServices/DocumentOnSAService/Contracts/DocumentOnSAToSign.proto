@@ -38,4 +38,6 @@ message DocumentOnSAToSign {
 	google.protobuf.Int32Value SignatureConfirmedBy = 14;
 
 	bool IsFinal = 15;
+
+	google.protobuf.Int32Value DocumentTemplateVariantId = 16;
 }

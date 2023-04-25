@@ -20,7 +20,9 @@ message GetDocumentDataRequest {
 message GetDocumentDataResponse {
 	int32 DocumentTemplateVersionId = 1;
 
-	InputParameters InputParameters = 2;
+	google.protobuf.Int32Value DocumentTemplateVariantId = 2;
 
-	repeated DocumentFieldData DocumentData = 3;
+	InputParameters InputParameters = 3;
+
+	repeated DocumentFieldData DocumentData = 4;
 }

@@ -22,6 +22,7 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
                 DocumentOnSAId = documentOnSa.DocumentOnSAId,
                 DocumentTypeId = documentOnSa.DocumentTypeId,
                 DocumentTemplateVersionId = documentOnSa.DocumentTemplateVersionId,
+                DocumentTemplateVariantId = documentOnSa.DocumentTemplateVariantId,
                 FormId = documentOnSa.FormId ?? string.Empty,
                 EArchivId = documentOnSa.EArchivId ?? string.Empty,
                 DmsxId = documentOnSa.DmsxId ?? string.Empty,
