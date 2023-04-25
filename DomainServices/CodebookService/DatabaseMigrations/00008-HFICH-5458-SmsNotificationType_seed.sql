@@ -11,8 +11,4 @@ INSERT [dbo].[SmsNotificationType] ([Id], [Code], [Description], [SmsText], [Mcs
     (4, N'SB_NOTIFICATIONS_AUDITED_KB', N'Auditované notifikace, která sdružuje všechny notifikace, které StarBuild odesílá jako součást své business logiky pro KB.', NULL, N'MCS_HF_STARBUILD_001', 1),
     (5, N'SB_NOTIFICATIONS_KB', N'Neauditované notifikace, která sdružuje všechny notifikace, které StarBuild odesílá jako součást své business logiky pro KB.', NULL, N'MCS_HF_STARBUILD_001', 0),
     (6, N'SB_NOTIFICATIONS_AUDITED_MP', N'Auditované notifikace, která sdružuje všechny notifikace, které StarBuild odesílá jako součást své business logiky pro MP.', NULL, N'MCS_HF_STARBUILD_002', 1),
-    (7, N'SB_NOTIFICATIONS_MP', N'Neauditované notifikace, která sdružuje všechny notifikace, které StarBuild odesílá jako součást své business logiky pro MP.', NULL, N'MCS_HF_STARBUILD_002', 0),
-                                                                                                                
-    (8, N'RETENTION', N'Popis', NULL, N'MCS_HF_ARCHIVATOR_001', 0),
-    (9, N'RETENTION', N'Popis', NULL, N'MCS_HF_ARCHIVATOR_002', 0),
-    
+    (7, N'SB_NOTIFICATIONS_MP', N'Neauditované notifikace, která sdružuje všechny notifikace, které StarBuild odesílá jako součást své business logiky pro MP.', NULL, N'MCS_HF_STARBUILD_002', 0)

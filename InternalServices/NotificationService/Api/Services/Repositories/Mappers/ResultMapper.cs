@@ -38,8 +38,7 @@ public static class ResultMapper
                         CountryCode = smsResult.CountryCode,
                         NationalNumber = smsResult.PhoneNumber
                     },
-                    Type = smsResult.Type,
-                    Text = smsResult.Text
+                    Type = smsResult.Type
                 }
             },
             ResultTimestamp = smsResult.ResultTimestamp,

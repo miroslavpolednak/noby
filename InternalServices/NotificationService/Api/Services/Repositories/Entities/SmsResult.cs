@@ -7,8 +7,6 @@ public class SmsResult : Result
 {
     public string Type { get; set; } = null!;
 
-    public string Text { get; set; } = null!;
-    
     public string CountryCode { get; set; } = null!;
     
     public string PhoneNumber { get; set; } = null!;
