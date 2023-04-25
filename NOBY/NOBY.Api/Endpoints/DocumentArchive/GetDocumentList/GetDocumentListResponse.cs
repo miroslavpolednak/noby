@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
+﻿using NOBY.Api.Endpoints.Shared;
+
+namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
 public class GetDocumentListResponse
 {
@@ -23,9 +25,3 @@ public class DocumentsMetadata
     public UploadStatus UploadStatus { get; set; }
 }
 
-public enum UploadStatus
-{
-    Ok = 1,
-    InProgress = 2,
-    Error = 3
-}

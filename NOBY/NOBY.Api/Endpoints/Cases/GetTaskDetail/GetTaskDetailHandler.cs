@@ -2,6 +2,7 @@
 using DomainServices.DocumentArchiveService.Clients;
 using NOBY.Api.Endpoints.Cases.Dto;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
+using NOBY.Api.Endpoints.Shared;
 
 namespace NOBY.Api.Endpoints.Cases.GetTaskDetail;
 
@@ -40,7 +41,7 @@ internal sealed class GetTaskDetailHandler : IRequestHandler<GetTaskDetailReques
                     Description = m.Description,
                     CreatedOn = m.CreatedOn,
                     FileName = m.Filename,
-                    UploadStatus =  UploadStatus.Ok, // TODO: https://jira.kb.cz/browse/HFICH-5592
+                    UploadStatus =  UploadStatus.SaveInEArchive, // TODO: https://jira.kb.cz/browse/HFICH-5592
                     EaCodeMainId = m.EaCodeMainId
                 })
                 .ToList()
