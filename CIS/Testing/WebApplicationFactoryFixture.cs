@@ -11,13 +11,14 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Net.Http.Headers;
 using Grpc.Core.Interceptors;
-using CIS.Infrastructure.Configuration;
 
 namespace CIS.Testing;
-public class WebApplicationFactoryFixture<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
+
+public class WebApplicationFactoryFixture<TStartup> 
+    : WebApplicationFactory<TStartup> where TStartup : class
 {
-    private Action<IServiceCollection>? _configureServices = null;
-    private Action<WebHostBuilderContext, IConfigurationBuilder>? _configureAppConfiguration = null;
+    private Action<IServiceCollection>? _configureServices;
+    private Action<WebHostBuilderContext, IConfigurationBuilder>? _configureAppConfiguration;
 
     public CisWebApplicationFactoryOptions CisWebFactoryConfiguration { get; set; } = new();
 
@@ -34,12 +35,31 @@ public class WebApplicationFactoryFixture<TStartup> : WebApplicationFactory<TSta
     {
     }
 
-    public TService CreateGrpcClient<TService>() where TService : ClientBase<TService>
+    public TService CreateGrpcClient<TService>(bool addClientExceptionInterceptor = false) 
+        where TService : ClientBase<TService>
     {
-        var exceptionInterceptor = Services.GetRequiredService<GenericClientExceptionInterceptor>();
-        var userForwardingInterceptor = Services.GetRequiredService<ContextUserForwardingClientInterceptor>();
-        var invoker = Channel.Intercept(exceptionInterceptor, userForwardingInterceptor);
-        return (TService)Activator.CreateInstance(typeof(TService), new object[] { invoker })!;
+        List<Interceptor> interceptors = new();
+
+        var userForwardingInterceptor = Services.GetService<ContextUserForwardingClientInterceptor>();
+        if (userForwardingInterceptor != null)
+        {
+            interceptors.Add(userForwardingInterceptor);
+        }
+        
+        if (addClientExceptionInterceptor)
+        {
+            interceptors.Add(Services.GetRequiredService<GenericClientExceptionInterceptor>());
+        }
+
+        if (interceptors.Any())
+        {
+            var invoker = Channel.Intercept(interceptors.ToArray());
+            return (TService)Activator.CreateInstance(typeof(TService), new object[] { invoker })!;
+        }
+        else
+        {
+            return (TService)Activator.CreateInstance(typeof(TService), new object[] { Channel })!;
+        }
     }
 
     public WebApplicationFactoryFixture<TStartup> ConfigureCisTestOptions(Action<CisWebApplicationFactoryOptions>? options)
@@ -66,23 +86,32 @@ public class WebApplicationFactoryFixture<TStartup> : WebApplicationFactory<TSta
 
         builder.ConfigureAppConfiguration((context, config) =>
         {
-            if (CisWebFactoryConfiguration.UseTestAppsettings)
-                config.SetBasePath(Directory.GetCurrentDirectory())
-                     .AddJsonFile(CisWebFactoryConfiguration.AppSettingsName, optional: false);
+            config
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(CisWebFactoryConfiguration.AppSettingsName, optional: true);
 
             _configureAppConfiguration?.Invoke(context, config);
         }).
         ConfigureServices(services =>
         {
-            // Mock of service discovery and other things in CisEnvironmentConfiguration
-            if (CisWebFactoryConfiguration.UseMockCisEnvironmentConfiguration)
-            {
-                var config = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-                var cisEnvConfiguration = config.GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName)
-                              .Get<CisEnvironmentConfiguration>();
+            // ziskat korektni app key dane sluzby
+            var config = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+            var applicationKey = config
+                .GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName)
+                .GetValue<string>("DefaultApplicationKey");
 
-                services.RemoveAll<ICisEnvironmentConfiguration>().AddSingleton<ICisEnvironmentConfiguration>(cisEnvConfiguration!);
-            }
+            // vyhodit puvodni konfiguraci z DI a zaregistrovat novou s hodnotami pro test
+            services
+                .RemoveAll<ICisEnvironmentConfiguration>()
+                .AddSingleton<ICisEnvironmentConfiguration>(new TestCisEnvironmentConfiguration
+                {
+                    DefaultApplicationKey = applicationKey
+                });
+
+            // nastavit service security auth validator
+            services
+                .RemoveAll<Infrastructure.Security.ILoginValidator>()
+                .AddSingleton<Infrastructure.Security.ILoginValidator, Infrastructure.Security.StaticLoginValidator>();
 
             // fake logger
             if (CisWebFactoryConfiguration.UseNullLogger)
@@ -114,7 +143,7 @@ public class WebApplicationFactoryFixture<TStartup> : WebApplicationFactory<TSta
         return client;
     }
 
-    private void SetCustomHeader(HttpClient client, Dictionary<string, string?> header)
+    private static void SetCustomHeader(HttpClient client, Dictionary<string, string?> header)
     {
         foreach (var headerItem in header)
         {
@@ -128,9 +157,10 @@ public class WebApplicationFactoryFixture<TStartup> : WebApplicationFactory<TSta
         var config = Services.GetRequiredService<ICisEnvironmentConfiguration>();
         var authenticationString = $"{config.InternalServicesLogin}:{config.InternalServicePassword}";
         var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(authenticationString));
+
         // add noby specific header 
-        client.DefaultRequestHeaders.Add("noby-user-id", "3048");
-        client.DefaultRequestHeaders.Add("noby-user-ident", "KBUID=A09FK3");
+        client.DefaultRequestHeaders.Add("noby-user-id", Constants.HeaderServiceContextUserId.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        client.DefaultRequestHeaders.Add("noby-user-ident", Constants.HeaderServiceContextIdent);
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
     }
 }

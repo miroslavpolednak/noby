@@ -1,7 +1,9 @@
-﻿using Dapper;
+﻿using CIS.InternalServices.ServiceDiscovery.Api.Database;
+using CIS.InternalServices.ServiceDiscovery.Contracts;
 using Grpc.Core;
 using Grpc.Net.ClientFactory;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
@@ -12,10 +14,23 @@ internal static class HealthCheckExtensions
 {
     public static WebApplicationBuilder AddGlobalHealthChecks(this WebApplicationBuilder builder, CIS.Core.Configuration.ICisEnvironmentConfiguration environmentConfiguration)
     {
-        var connectionString = builder.Configuration.GetConnectionString("default")!;
-        using var connection = (new CIS.Infrastructure.Data.SqlConnectionProvider(connectionString)).Create();
-        var services = connection.Query<Dto.ServiceModel>(_sqlQuery, new { name = environmentConfiguration.EnvironmentName }).ToList();
-        
+        List<Dto.ServiceModel> services = null!;
+        var optionsBuilder = new DbContextOptionsBuilder<ServiceDiscoveryDbContext>();
+        optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("default")!);
+        using (var dbContext = new ServiceDiscoveryDbContext(optionsBuilder.Options))
+        {
+            services = dbContext.ServiceDiscoveryEntities
+                .AsNoTracking()
+                .Where(t => t.AddToGlobalHealthCheck && t.EnvironmentName ==  environmentConfiguration.EnvironmentName)
+                .Select(t => new Dto.ServiceModel
+                {
+                    ServiceName = t.ServiceName,
+                    ServiceType = (ServiceTypes)t.ServiceType,
+                    ServiceUrl = t.ServiceUrl
+                })
+                .ToList();
+        }
+
         foreach (var service in services)
         {
             builder.Services
@@ -167,8 +182,7 @@ internal static class HealthCheckExtensions
     private static JsonWriterOptions _jsonWriterOptions = new JsonWriterOptions { Indented = true };
     private const string _healthyValue = "Healthy";
     private const string _unhealthyValue = "Unhealthy";
-    private const int _deadlineSeconds = 5;
-    private const string _sqlQuery = "SELECT ServiceName, ServiceUrl, ServiceType FROM ServiceDiscovery WHERE AddToGlobalHealthCheck=1 AND EnvironmentName=@name";
-
+    private const int _deadlineSeconds = 2;
+    
     private static IReadOnlyCollection<string>? _serviceNamesCache;
 }

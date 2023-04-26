@@ -4,7 +4,7 @@
 grpcurl -insecure 172.30.35.51:5003 list
 grpcurl -insecure -d "{\"CaseId\":2954604,\"SalesArrangementTypeId\":6}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/CreateSalesArrangement
 grpcurl -insecure -d "{\"SalesArrangementId\":20070}" -H "Authorization: Basic YTph" 127.0.0.1:30009 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangement
-grpcurl -insecure -d "{\"SalesArrangementId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/DeleteSalesArrangement
+grpcurl -insecure -d "{\"SalesArrangementId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/DeleteSalesArrangement
 grpcurl -insecure -d "{\"OfferId\":9}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangementByOfferId
 grpcurl -insecure -d "{\"SalesArrangementId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangementData
 grpcurl -insecure -d "{\"CaseId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangementsByCaseId
