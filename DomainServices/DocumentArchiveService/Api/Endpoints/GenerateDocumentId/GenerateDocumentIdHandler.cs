@@ -2,7 +2,7 @@
 using DomainServices.DocumentArchiveService.Api.Database.Repositories;
 using DomainServices.DocumentArchiveService.Contracts;
 using FastEnumUtility;
-
+using _api = DomainServices.DocumentArchiveService.Api;
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GenerateDocumentId;
 
 internal sealed class GenerateDocumentIdHandler
@@ -60,6 +60,7 @@ internal sealed class GenerateDocumentIdHandler
         EnvironmentNames.Preprod => "P",
         EnvironmentNames.Edu => "E",
         EnvironmentNames.Prod => "R",
+        EnvironmentNames.Test => "T",
         EnvironmentNames.Unknown => HandleUnsupportedEnv(environmentNames),
         _ => HandleUnsupportedEnv(environmentNames)
     };
@@ -74,11 +75,11 @@ internal sealed class GenerateDocumentIdHandler
         string? serviceUser = _serviceUserAccessor.User?.Name;
 
         if (_configuration.ServiceUser2LoginBinding is null || !_configuration.ServiceUser2LoginBinding.Any())
-            throw ErrorCodeMapper.CreateConfigurationException(ErrorCodeMapper.ServiceUser2LoginBindingConfigurationNotSet);
+            throw _api.ErrorCodeMapper.CreateConfigurationException(_api.ErrorCodeMapper.ServiceUser2LoginBindingConfigurationNotSet);
 
         if (_configuration.ServiceUser2LoginBinding.ContainsKey(serviceUser ?? "_default"))
             return _configuration.ServiceUser2LoginBinding[serviceUser ?? "_default"];
         else
-            throw ErrorCodeMapper.CreateConfigurationException(ErrorCodeMapper.ServiceUserNotFoundInServiceUser2LoginBinding, serviceUser);
+            throw _api.ErrorCodeMapper.CreateConfigurationException(_api.ErrorCodeMapper.ServiceUserNotFoundInServiceUser2LoginBinding, serviceUser);
     }
 }
