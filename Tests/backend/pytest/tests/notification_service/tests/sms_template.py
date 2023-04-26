@@ -8,7 +8,7 @@ from ..json.request.sms_template import json_req_sms_full_template, json_req_sms
     json_req_sms_full_template_uat, json_req_sms_basic_template_uat
 
 
-@pytest.mark.parametrize("url_name", ["uat_url"])
+@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_full_template, json_req_sms_basic_template])
 def test_sms_template(url_name,  auth_params, auth, json_data):
@@ -31,8 +31,6 @@ def test_sms_template(url_name,  auth_params, auth, json_data):
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("url_name, json_data", [
-    ("uat_url", json_req_sms_full_template_uat),
-    ("uat_url", json_req_sms_basic_template_uat),
     ("dev_url", json_req_sms_full_template),
     ("dev_url", json_req_sms_basic_template)
 ])
