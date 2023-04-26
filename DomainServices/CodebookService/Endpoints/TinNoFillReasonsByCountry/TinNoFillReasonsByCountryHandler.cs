@@ -1,24 +1,31 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.TinNoFillReasonsByCountry;
+﻿using CIS.Core.Data;
+using DomainServices.CodebookService.Contracts.Endpoints.TinNoFillReasonsByCountry;
 
 namespace DomainServices.CodebookService.Endpoints.TinNoFillReasonsByCountry;
 
 public class TinNoFillReasonsByCountryHandler
     : IRequestHandler<TinNoFillReasonsByCountryRequest, List<TinNoFillReasonItem>>
 {
-    public Task<List<TinNoFillReasonItem>> Handle(TinNoFillReasonsByCountryRequest request, CancellationToken cancellationToken)
+    #region Construction
+
+    private readonly IConnectionProvider _connectionProvider;
+
+    private const string _sqlQuery =
+        @"SELECT Id, IsTinMandatory, ReasonForBlankTin,
+          CASE WHEN SYSDATETIME() BETWEEN[ValidFrom] AND ISNULL([ValidTo], '9999-12-31') THEN 1 ELSE 0 END 'IsValid'
+          FROM [dbo].[TinNoFillReasonsByCountry]";
+
+    public TinNoFillReasonsByCountryHandler(IConnectionProvider connectionProvider)
     {
-        return Task.FromResult(new List<TinNoFillReasonItem>
-        {
-            new TinNoFillReasonItem() { Id = "AD", IsTinMandatory = true, ReasonForBlankTin = "TIN není možné získat", IsValid = true},
-            new TinNoFillReasonItem() { Id = "AE", IsTinMandatory = false, ReasonForBlankTin = "Země TIN nevydává", IsValid = true},
-        });
+        _connectionProvider = connectionProvider;
     }
 
-    private readonly ILogger<TinNoFillReasonsByCountryHandler> _logger;
+    #endregion
 
-    public TinNoFillReasonsByCountryHandler(
-        ILogger<TinNoFillReasonsByCountryHandler> logger)
+    public async Task<List<TinNoFillReasonItem>> Handle(TinNoFillReasonsByCountryRequest request, CancellationToken cancellationToken)
     {
-        _logger = logger;
+        return await FastMemoryCache.GetOrCreate<TinNoFillReasonItem>(nameof(TinNoFillReasonsByCountryHandler), async () =>
+            await _connectionProvider.ExecuteDapperRawSqlToList<TinNoFillReasonItem>(_sqlQuery, cancellationToken)
+        );
     }
 }
