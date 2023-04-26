@@ -76,7 +76,6 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         result.RequestTimestamp = _dateTime.Now;
 
         result.Type = request.Type;
-        result.Text = text;
         result.CountryCode = phone.CountryCode;
         result.PhoneNumber = phone.NationalNumber;
 

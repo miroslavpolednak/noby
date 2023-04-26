@@ -56,5 +56,17 @@
         <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH5458DropText">
+            <inheritdoc />
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH5458DropText.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH5458DropText.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH5458DropText.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

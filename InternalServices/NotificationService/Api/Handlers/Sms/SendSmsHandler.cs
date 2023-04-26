@@ -60,7 +60,6 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         result.RequestTimestamp = _dateTime.Now;
 
         result.Type = request.Type;
-        result.Text = request.Text;
         result.CountryCode = phone.CountryCode;
         result.PhoneNumber = phone.NationalNumber;
 
