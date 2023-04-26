@@ -11,6 +11,9 @@ message CreateDocumentOnSARequest {
 	string FormId = 3;
 	string EArchivId = 4;
 	bool IsFinal = 5;
+
+	google.protobuf.Int32Value DocumentTemplateVersionId = 6;
+	google.protobuf.Int32Value DocumentTemplateVariantId = 7;
 }
 
 message CreateDocumentOnSAResponse {
