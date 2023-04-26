@@ -1,6 +1,8 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.Testing;
+using DomainServices.DocumentArchiveService.Api.Database;
 using DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests;
 public class GetDocumentListTests : IntegrationTestBase
@@ -30,6 +32,5 @@ public class GetDocumentListTests : IntegrationTestBase
         var result = await client.GetDocumentListAsync(new() { CaseId = 123, UserLogin = "Test" }, default);
         result.Should().NotBeNull();
         result.Metadata.Should().HaveCount(3);
-
     }
 }

@@ -1,8 +1,10 @@
 ﻿using CIS.Core.Security;
+using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using NOBY.Api.Endpoints.Shared;
 using __Contract = DomainServices.DocumentArchiveService.Contracts;
+using __Api = NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
@@ -10,13 +12,16 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
 {
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
+    private readonly ICodebookServiceClients _codebookServiceClient;
 
     public GetDocumentListHandler(
         IDocumentArchiveServiceClient client,
-        ICurrentUserAccessor currentUserAccessor)
+        ICurrentUserAccessor currentUserAccessor,
+        ICodebookServiceClients codebookServiceClient)
     {
         _client = client;
         _currentUserAccessor = currentUserAccessor;
+        _codebookServiceClient = codebookServiceClient;
     }
 
     public async Task<GetDocumentListResponse> Handle(GetDocumentListRequest request, CancellationToken cancellationToken)
@@ -34,60 +39,54 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
         getDocumentsInQueueRequest.StatusesInQueue.AddRange(new List<int> { 100, 110, 200, 300 });
         var getDocumentsInQueueResult = await _client.GetDocumentsInQueue(getDocumentsInQueueRequest, cancellationToken);
 
-        var documentListResponse = MapGetDocumentListToResponse(getDocumentListResult);
-        var documentInQueueRespose = MapgetDocumentsInQueueToRespose(getDocumentsInQueueResult);
+        var documentListMetadata = MapGetDocumentListMetadata(getDocumentListResult);
+        var documentInQueueMetadata = MapGetDocumentsInQueueMetadata(getDocumentsInQueueResult);
 
-        var mergedResponse = MergeDocuments(documentListResponse.DocumentsMetadata, documentInQueueRespose.DocumentsMetadata);
+        var mergedDocumentMetadata = MergeDocuments(documentListMetadata, documentInQueueMetadata);
 
-        return null;
-    }
+        var eaCodeMain = await _codebookServiceClient.EaCodesMain(cancellationToken);
 
-    private GetDocumentListResponse MergeDocuments(IReadOnlyCollection<DocumentsMetadata> documentList, IReadOnlyCollection<DocumentsMetadata> documentInQueue)
-    {
-        var response = new GetDocumentListResponse();
-        response.DocumentsMetadata = documentList.Concat(documentInQueue.Where(d => !documentList.Select(l => l.DocumentId)
-                                                                        .Contains(d.DocumentId)))
-                                                                        .ToList();
-        return response;
-    }
-
-    private static GetDocumentListResponse MapgetDocumentsInQueueToRespose(__Contract.GetDocumentsInQueueResponse getDocumentsInQueueResult)
-    {
-        return new GetDocumentListResponse
+        // Filter
+        var mergedDocumentMetadataFiltered = mergedDocumentMetadata.Select(data =>
+        new
         {
-            DocumentsMetadata = getDocumentsInQueueResult.QueuedDocuments.Select(s => new DocumentsMetadata
-            {
-                DocumentId = s.EArchivId,
-                EaCodeMainId = s.EaCodeMainId,
-                FileName = s.Filename,
-                UploadStatus = GetUploadStatus(s.StatusInQueue)
-            })
-           .ToList()
-        };
+            docData = data,
+            eACodeMainObj = eaCodeMain.FirstOrDefault(r => r.Id == data.EaCodeMainId)
+        })
+        .Where(f => f.eACodeMainObj is not null && f.eACodeMainObj.IsVisibleForKb);
+
+        var finalResponse = new GetDocumentListResponse();
+        finalResponse.DocumentsMetadata = mergedDocumentMetadataFiltered.Select(s => s.docData).ToList();
+        return finalResponse;
     }
 
-    private static GetDocumentListResponse MapGetDocumentListToResponse(__Contract.GetDocumentListResponse getDocumentListResult)
+    private static IEnumerable<DocumentsMetadata> MergeDocuments(IEnumerable<__Api.DocumentsMetadata> documentList, IEnumerable<__Api.DocumentsMetadata> documentInQueue)
     {
-        return new GetDocumentListResponse
+        return documentList.Concat(documentInQueue.Where(d => !documentList.Select(l => l.DocumentId)
+                                                                        .Contains(d.DocumentId)));
+    }
+
+    private static IEnumerable<__Api.DocumentsMetadata> MapGetDocumentsInQueueMetadata(__Contract.GetDocumentsInQueueResponse getDocumentsInQueueResult)
+    {
+        return getDocumentsInQueueResult.QueuedDocuments.Select(s => new DocumentsMetadata
         {
-            DocumentsMetadata = getDocumentListResult.Metadata.Select(s => new DocumentsMetadata
-            {
-                DocumentId = s.DocumentId,
-                EaCodeMainId = s.EaCodeMainId,
-                FileName = s.Filename,
-                Description = s.Description,
-                CreatedOn = s.CreatedOn,
-                UploadStatus = GetUploadStatus(400) // 400 mean saved in EArchive
-            })
-            .ToList()
-        };
+            DocumentId = s.EArchivId,
+            EaCodeMainId = s.EaCodeMainId,
+            FileName = s.Filename,
+            UploadStatus = UploadStatusHelper.GetUploadStatus(s.StatusInQueue)
+        });
     }
 
-    private static UploadStatus GetUploadStatus(int stateInQueue) => stateInQueue switch
+    private static IEnumerable<__Api.DocumentsMetadata> MapGetDocumentListMetadata(__Contract.GetDocumentListResponse getDocumentListResult)
     {
-        100 or 110 or 200 => UploadStatus.InProgress,
-        300 => UploadStatus.Error,
-        400 => UploadStatus.SaveInEArchive,
-        _ => throw new ArgumentException("StatusInDocumentInterface is not supported")
-    };
+        return getDocumentListResult.Metadata.Select(s => new DocumentsMetadata
+        {
+            DocumentId = s.DocumentId,
+            EaCodeMainId = s.EaCodeMainId,
+            FileName = s.Filename,
+            Description = s.Description,
+            CreatedOn = s.CreatedOn,
+            UploadStatus = UploadStatusHelper.GetUploadStatus(400) // 400 mean saved in EArchive
+        });
+    }
 }
