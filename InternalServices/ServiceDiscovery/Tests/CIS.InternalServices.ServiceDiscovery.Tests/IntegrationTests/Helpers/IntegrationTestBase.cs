@@ -24,6 +24,12 @@ public abstract class IntegrationTestBase
     {
         using var scope = Fixture.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<Api.Database.ServiceDiscoveryDbContext>();
+        
+        // pokud je jiza naseedovano, tak nic nedelej
+        if (dbContext.ServiceDiscoveryEntities.Any())
+        {
+            return;
+        }
 
         List<Api.Database.Entities.ServiceDiscoveryEntity> data = new()
         {

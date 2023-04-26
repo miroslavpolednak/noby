@@ -26,7 +26,7 @@ public sealed class GetServicesTest
             ServiceType = Contracts.ServiceTypes.Grpc,
             ServiceUrl = "http://0.0.0.0:1"
         });
-        result.Services.Should().ContainSingle(t => t.ServiceName == "DS:Service1");
+        result.Services.Should().ContainSingle(t => t.ServiceName == "DS:Service1" && t.ServiceType == Contracts.ServiceTypes.Grpc);
         result.Services.Should().ContainSingle(t => t.ServiceType == Contracts.ServiceTypes.Proprietary);
     }
 
@@ -39,7 +39,7 @@ public sealed class GetServicesTest
         var result = await client.GetServicesAsync(new Contracts.GetServicesRequest
         {
             Environment = Constants.ServicesEnvironmentName1,
-            ServiceType = Contracts.ServiceTypes.Unknown
+            ServiceType = Contracts.ServiceTypes.Grpc
         }, default);
 
         result.Services.Should().NotBeEmpty().And.HaveCount(2);
