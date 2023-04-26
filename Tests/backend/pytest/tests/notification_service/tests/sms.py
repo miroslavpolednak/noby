@@ -7,18 +7,18 @@ import requests
 
 from ..conftest import URLS, greater_than_zero
 from ..json.request.seg_log import json_req_basic_log
-from ..json.request.sms_json import json_req_sms_basic, json_req_sms_basic_full, json_req_sms_basic_epsy, \
-    json_req_sms_basic_insg, json_req_sms_bez_logovani, json_req_sms_logovani, json_req_sms_sb, json_req_sms_basic_alex, \
+from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
+    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_sb, json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
-    json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_uat
+    json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat
 from ..json.request.sms_template import json_req_sms_full_template, json_req_sms_basic_template, \
     json_req_sms_full_template_uat, json_req_sms_basic_template_uat
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("url_name, json_data", [
-    ("dev_url", json_req_sms_basic),
-    ("uat_url", json_req_sms_basic_uat)])
+    ("dev_url", json_req_sms_basic_insg),
+    ("uat_url", json_req_sms_basic_insg_uat)])
 def test_sms(url_name,  auth_params, auth, json_data):
     """
     uvodni test pro zakladni napln sms bez priloh
@@ -42,7 +42,7 @@ def test_sms(url_name,  auth_params, auth, json_data):
 
 #est pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [(json_req_sms_basic)])
+@pytest.mark.parametrize("json_data", [(json_req_sms_basic_insg)])
 def test_sms_manual_env(ns_url,  auth_params, auth, json_data):
     url_name = ns_url["url_name"]
     url = ns_url["url"]
@@ -61,7 +61,6 @@ def test_sms_manual_env(ns_url,  auth_params, auth, json_data):
     notification_id = resp["notificationId"]
     assert notification_id != ""
 
-@pytest.mark.skip
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_sb])
@@ -86,12 +85,11 @@ def test_sms_sb(url_name,  auth_params, auth, json_data):
     assert notification_id != ""
 
 
-#TODO: dořešit hlášku, když True je False a obráceně
 @pytest.mark.parametrize("url_name", ["dev_url"])
-@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
-    ("loguji", json_req_sms_logovani, True),
-    ("neloguji", json_req_sms_bez_logovani, False)
+    ("loguji", json_req_sms_logovani_kb_sb, True),
+    ("neloguji", json_req_sms_bez_logovani_kb_sb, False)
 ])
 def test_sms_log(url_name,  auth_params, auth, custom_id, json_data, expected_result, authenticated_seqlog_session):
     """test logovani - zalogujeme, nezalogujeme do seq"""
@@ -146,7 +144,7 @@ def test_sms_log(url_name,  auth_params, auth, custom_id, json_data, expected_re
 #NOBY vraci okej, ale v databázi padnou kombinace, ktere nemaji pro sebe MCS kod
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_basic_insg, json_req_sms_basic_epsy])
+@pytest.mark.parametrize("json_data", [json_req_sms_basic_insg, json_req_sms_basic_epsy_kb, json_req_sms_logovani_kb_sb])
 def test_sms_combination_security(url_name,  auth_params, auth, json_data):
     """test pro kombinaci všech uživatelů s basic sms"""
 
@@ -170,7 +168,8 @@ def test_sms_combination_security(url_name,  auth_params, auth, json_data):
 @pytest.mark.parametrize("auth, json_data",
                          [
                              ("XX_INSG_RMT_USR_TEST", json_req_sms_basic_insg),
-                             ("XX_EPSY_RMT_USR_TEST", json_req_sms_basic_epsy)
+                             ("XX_EPSY_RMT_USR_TEST", json_req_sms_basic_epsy_kb),
+                             ("XX_SB_RMT_USR_TEST", json_req_sms_logovani_kb_sb),
                          ], indirect=["auth"])
 def test_sms_basic_security(auth_params, auth, json_data, url_name):
     """

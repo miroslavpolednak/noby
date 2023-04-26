@@ -5,14 +5,14 @@ import pytest
 import requests
 
 from ..conftest import URLS
-from ..json.request.sms_json import json_req_sms_basic, json_req_sms_basic_full, json_req_sms_basic_epsy, \
-    json_req_sms_basic_insg, json_req_sms_bez_logovani, json_req_sms_logovani, json_req_sms_basic_full_for_search
+from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
+    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_basic_full_for_search
 from ..json.request.sms_template import json_req_sms_full_template, json_req_sms_basic_template, \
     json_req_sms_full_template_uat, json_req_sms_basic_template_uat
 
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_basic, json_req_sms_basic_full])
+@pytest.mark.parametrize("json_data", [json_req_sms_basic_insg, json_req_sms_basic_full])
 def test_sms(url_name,  auth_params, auth, json_data):
     """uvodni test pro zakladni napln sms bez priloh
     """
@@ -35,7 +35,7 @@ def test_sms(url_name,  auth_params, auth, json_data):
 
 @pytest.mark.parametrize("url_name", ["uat_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_basic])
+@pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
 def test_get_sms_notification_id_states(url_name,  auth_params, auth, json_data):
     """uvodni test pro zakladni napln sms bez priloh
     """
@@ -70,7 +70,7 @@ def test_get_sms_notification_id_states(url_name,  auth_params, auth, json_data)
     assert len(resp['errors']) == 0
     assert 'createdBy' in resp
 
-    expected_sms_data = json_req_sms_basic.copy()
+    expected_sms_data = json_req_sms_basic_insg.copy()
 
     # Odebere processingPriority z expected_sms_data - insg nechce tento atribut vracet
     if "processingPriority" in expected_sms_data:
