@@ -63,6 +63,5 @@ public sealed class GetServicesTest
     public GetServicesTest(WebApplicationFactoryFixture<Program> fixture)
         : base(fixture)
     {
-        string ss = "";
     }
 }

@@ -17,6 +17,14 @@ internal sealed class ServicesMemoryCache
         _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 20 });
     }
 
+    /// <summary>
+    /// Pouze pro testovani kese
+    /// </summary>
+    internal static bool IsKeyInCache(string environmentName)
+    {
+        return _cache.TryGetValue(new ApplicationEnvironmentName(environmentName), out object? cacheEntry);
+    }
+
     public async Task<IReadOnlyList<Contracts.DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
         IReadOnlyList<Contracts.DiscoverableService> cacheEntry;

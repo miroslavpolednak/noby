@@ -29,7 +29,7 @@ public abstract class IntegrationTestBase
         {
             create(1, 1),
             create(1, 2),
-            create(1, 3, ServiceTypes.Proprietary),
+            create(1, 1, ServiceTypes.Proprietary),
             create(2, 1),
             create(2, 2),
         };
