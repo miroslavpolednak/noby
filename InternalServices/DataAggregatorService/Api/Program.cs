@@ -23,8 +23,7 @@ builder.Configuration.Bind("DataAggregatorConfiguration", config);
 builder.Services.AddSingleton(config);
 
 builder.AddCisEnvironmentConfiguration();
-builder
-       .AddCisCoreFeatures()
+builder.AddCisCoreFeatures()
        .AddCisLogging()
        .AddCisTracing()
        .AddCisServiceAuthentication();
@@ -43,16 +42,13 @@ builder.Services
 
 builder.Services.AddDbContext<ConfigurationContext>(opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
-builder.Services.AddAttributedServices(typeof(Program));
-
 builder.Services
        .AddAttributedServices(typeof(Program))
        .AddCisGrpcInfrastructure(typeof(Program))
        .AddGrpcReflection()
        .AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
-builder.AddCisGrpcHealthChecks();
 
+builder.AddCisGrpcHealthChecks();
 
 if (config.UseCacheForConfiguration)
 {

@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes;

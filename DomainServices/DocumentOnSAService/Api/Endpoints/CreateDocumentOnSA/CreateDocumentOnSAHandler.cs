@@ -41,6 +41,8 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
         var documentData = await _dataAggregatorServiceClient.GetDocumentData(new()
         {
             DocumentTypeId = request.DocumentTypeId!.Value,
+            DocumentTemplateVersionId = request.DocumentTemplateVersionId,
+            DocumentTemplateVariantId = request.DocumentTemplateVariantId,
             InputParameters = new()
             {
                 SalesArrangementId = request.SalesArrangementId!.Value,
@@ -65,6 +67,7 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
                 DocumentOnSAId = documentOnSaEntity.DocumentOnSAId,
                 DocumentTypeId = documentOnSaEntity.DocumentTypeId,
                 DocumentTemplateVersionId = documentOnSaEntity.DocumentTemplateVersionId,
+                DocumentTemplateVariantId = documentOnSaEntity.DocumentTemplateVariantId,
                 FormId = documentOnSaEntity.FormId ?? string.Empty,
                 EArchivId = documentOnSaEntity.EArchivId ?? string.Empty,
                 DmsxId = documentOnSaEntity.DmsxId ?? string.Empty,
@@ -86,6 +89,7 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
         {
             DocumentTypeId = request.DocumentTypeId!.Value,
             DocumentTemplateVersionId = dataResponse.DocumentTemplateVersionId,
+            DocumentTemplateVariantId = dataResponse.DocumentTemplateVariantId,
             FormId = request.FormId,
             EArchivId = request.EArchivId,
             SalesArrangementId = request.SalesArrangementId!.Value,

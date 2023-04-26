@@ -69,6 +69,8 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         var documentData = await _dataAggregatorServiceClient.GetDocumentData(new()
         {
             DocumentTypeId = request.DocumentTypeId!.Value,
+            DocumentTemplateVersionId = request.DocumentTemplateVersionId,
+            DocumentTemplateVariantId = request.DocumentTemplateVariantId,
             InputParameters = new()
             {
                 SalesArrangementId = request.SalesArrangementId!.Value,
@@ -131,6 +133,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         var entity = new __Entity.DocumentOnSa();
         entity.DocumentTypeId = request.DocumentTypeId!.Value;
         entity.DocumentTemplateVersionId = getDocumentDataResponse.DocumentTemplateVersionId;
+        entity.DocumentTemplateVariantId = getDocumentDataResponse.DocumentTemplateVariantId;
         entity.FormId = formId;
         entity.EArchivId = await _documentArchiveServiceClient.GenerateDocumentId(new(), cancellationToken);
         entity.SalesArrangementId = request.SalesArrangementId!.Value;
