@@ -14,9 +14,16 @@ internal static class HealthCheckExtensions
 {
     public static WebApplicationBuilder AddGlobalHealthChecks(this WebApplicationBuilder builder, CIS.Core.Configuration.ICisEnvironmentConfiguration environmentConfiguration)
     {
+        string? cs = builder.Configuration.GetConnectionString("default");
+        // toto je pripad pro test projekt - musi se zaregistrovat ve fixture
+        if (string.IsNullOrEmpty(cs))
+        {
+            return builder;
+        }
+
         List<Dto.ServiceModel> services = null!;
         var optionsBuilder = new DbContextOptionsBuilder<ServiceDiscoveryDbContext>();
-        optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("default")!);
+        optionsBuilder.UseSqlServer(cs!);
         using (var dbContext = new ServiceDiscoveryDbContext(optionsBuilder.Options))
         {
             services = dbContext.ServiceDiscoveryEntities
