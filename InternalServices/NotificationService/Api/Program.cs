@@ -15,6 +15,8 @@ using ProtoBuf.Grpc.Server;
 using DomainServices;
 using CIS.InternalServices;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var winSvc = args.Any(t => t.Equals("winsvc"));
 var webAppOptions = winSvc
@@ -92,6 +94,7 @@ if (winSvc)
     builder.Host.UseWindowsService();
 }
 
+builder.Services.AddHealthChecks();
 // ---------------------------------------------------------------------------------
 
 var app = builder.Build();
@@ -117,5 +120,14 @@ app.MapCodeFirstGrpcHealthChecks();
 app.MapGrpcService<NotificationService>();
 app.MapCodeFirstGrpcReflectionService();
 app.MapControllers();
+app.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, new HealthCheckOptions
+{
+    ResultStatusCodes =
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+    }
+});
 
 await app.RunAsync();
