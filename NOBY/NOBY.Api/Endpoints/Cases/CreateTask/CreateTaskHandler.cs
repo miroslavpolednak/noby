@@ -28,6 +28,7 @@ internal sealed class CreateTaskHandler
 
         var dsRequest = new DomainServices.CaseService.Contracts.CreateTaskRequest
         {
+            CaseId = caseInstance.CaseId,
             ProcessId = request.ProcessId,
             TaskTypeId = request.TaskTypeId,
             TaskRequest = request.TaskUserRequest ?? "",
