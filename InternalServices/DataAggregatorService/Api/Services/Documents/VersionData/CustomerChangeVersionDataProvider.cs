@@ -49,9 +49,7 @@ internal class CustomerChangeVersionDataProvider : IDocumentVersionDataProvider
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
 
-        var signingCustomers = salesArrangement.CustomerChange.Applicants.Count - salesArrangement.CustomerChange.Release.Customers.Count + salesArrangement.CustomerChange.Add.Customers.Count;
-
-        return signingCustomers switch
+        return salesArrangement.CustomerChange.Applicants.Count switch
         {
             1 => "A",
             2 => "B",

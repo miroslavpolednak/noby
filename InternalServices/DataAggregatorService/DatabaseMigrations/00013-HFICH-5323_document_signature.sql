@@ -19,3 +19,8 @@ SET IDENTITY_INSERT [dbo].[DocumentDataField] OFF
 
 INSERT INTO DocumentSpecialDataField VALUES (10, 'PodpisJmenoKlienta', 5, 'FullName', NULL, NULL)
 INSERT INTO DocumentSpecialDataField VALUES (8, 'PodpisJmenoKlienta', 5, 'FullName', NULL, NULL)
+
+INSERT INTO DocumentDataFieldVariant VALUES (167, 'A')
+INSERT INTO DocumentDataFieldVariant VALUES (167, 'B')
+INSERT INTO DocumentDataFieldVariant VALUES (167, 'C')
+INSERT INTO DocumentDataFieldVariant VALUES (167, 'D')
