@@ -7,7 +7,6 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.UserService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 
@@ -30,7 +29,7 @@ internal class AggregatedData
 
     public GetMortgageOfferFPScheduleResponse OfferPaymentSchedule { get; set; } = null!;
 
-    public User User { get; set; } = null!;
+    public UserInfo User { get; set; } = null!;
 
     public CustomerDetailResponse Customer { get; set; } = null!;
 

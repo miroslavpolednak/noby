@@ -374,6 +374,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00009-HFICH-5533_added_3601_document_missing_attributes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00009-HFICH-5533_added_3601_document_missing_attributes.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00011-HFICH-5624_OfferFees.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00011-HFICH-5624_OfferFees.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00012-HFICH-5426_performer.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00012-HFICH-5426_performer.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00013-HFICH-5323_document_signature.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00013-HFICH-5323_document_signature.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -388,7 +389,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MPSS.Security.Noby", "NOBY\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2FB17E85-DD83-4D49-835B-331A7056BB40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.ServiceDiscovery.Tests", "InternalServices\ServiceDiscovery\Tests\CIS.InternalServices.ServiceDiscovery.Tests\CIS.InternalServices.ServiceDiscovery.Tests.csproj", "{CF32FE07-6D1B-47E9-B96B-91DBD0BCD9A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.ServiceDiscovery.Tests", "InternalServices\ServiceDiscovery\Tests\CIS.InternalServices.ServiceDiscovery.Tests\CIS.InternalServices.ServiceDiscovery.Tests.csproj", "{CF32FE07-6D1B-47E9-B96B-91DBD0BCD9A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
