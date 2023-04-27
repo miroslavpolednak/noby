@@ -17,7 +17,7 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/tasks/consultation-type", Name = "consultationTypeGet")]
     [Produces("application/json")]
@@ -32,7 +32,7 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Stornování úkolu ve SB. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/tasks/{taskId:int}/cancel", Name = "taskDetailCancel")]
     [Consumes("application/json")]
@@ -50,7 +50,7 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vytvoření nového workflow tasku do SB.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
     [HttpPost("{caseId:long}/tasks", Name = "taskCreate")]

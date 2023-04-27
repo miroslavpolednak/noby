@@ -194,8 +194,8 @@ public class CodebooksController : ControllerBase
     /// Detail developeského projektu
     /// </summary>
     /// <remarks>
-    /// Vrátí detail developerského projektu dle developerProjectId na vstupu.
-    /// <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Vrátí detail developerského projektu dle developerProjectId na vstupu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="developerId">ID developera</param>
     [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}", Name = "DeveloperProjectGet")]

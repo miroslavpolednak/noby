@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments;
 
-public class GetGeneralDocumentsHandler : IRequestHandler<GetGeneralDocumentsRequest, List<Document>>
+internal sealed class GetGeneralDocumentsHandler : IRequestHandler<GetGeneralDocumentsRequest, List<Document>>
 {
     public async Task<List<Document>> Handle(GetGeneralDocumentsRequest request, CancellationToken cancellationToken)
     {
