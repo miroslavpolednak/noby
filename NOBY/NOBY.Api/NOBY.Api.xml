@@ -265,6 +265,11 @@
             </summary>
             <example>Prosím o pomoc s tímto případem.</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.DocumentsMenuItem.Flag">
+            <summary>
+            0 - No flag, 1 - Error (!), 2 - In processing
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.LoanPurposeItem.Sum">
             <summary>
             Výše účelu v Kč

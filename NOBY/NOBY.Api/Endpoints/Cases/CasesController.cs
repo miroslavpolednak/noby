@@ -234,7 +234,7 @@ public class CasesController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task GetCaseDocumentsFlag([FromRoute] long caseId, CancellationToken cancellationToken)
+    public async Task<GetCaseDocumentsFlagResponse> GetCaseDocumentsFlag([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCaseDocumentsFlagRequest(caseId), cancellationToken);
 
 }

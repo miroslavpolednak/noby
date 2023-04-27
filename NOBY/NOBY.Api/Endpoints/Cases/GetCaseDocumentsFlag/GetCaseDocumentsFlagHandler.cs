@@ -20,8 +20,6 @@ public class GetCaseDocumentsFlagHandler : IRequestHandler<GetCaseDocumentsFlagR
 
     public async Task<GetCaseDocumentsFlagResponse> Handle(GetCaseDocumentsFlagRequest request, CancellationToken cancellationToken)
     {
-        // ToDo ask how validate if case exist efficiently  
-
         var getDocumentsInQueueRequest = new GetDocumentsInQueueRequest { CaseId = request.CaseId };
         getDocumentsInQueueRequest.StatusesInQueue.AddRange(new List<int> { 100, 110, 200, 300 });
         var getDocumentsInQueueResult = await _documentArchiveServiceClient.GetDocumentsInQueue(getDocumentsInQueueRequest, cancellationToken);
@@ -35,8 +33,36 @@ public class GetCaseDocumentsFlagHandler : IRequestHandler<GetCaseDocumentsFlagR
             docData = data,
             eACodeMainObj = eaCodeMain.FirstOrDefault(r => r.Id == data.EaCodeMainId)
         })
-        .Where(f => f.eACodeMainObj is not null && f.eACodeMainObj.IsVisibleForKb);
+        .Where(f => f.eACodeMainObj is not null && f.eACodeMainObj.IsVisibleForKb)
+        .Select(s => s.docData).ToList();
 
-        return null;
+        return new GetCaseDocumentsFlagResponse
+        {
+            DocumentsMenuItem = new DocumentsMenuItem
+            {
+                Flag = GetDocumentsFlag(documentsInQueueFiltered)
+            }
+        };
+    }
+
+    private static FlagDocuments GetDocumentsFlag(List<QueuedDocument> queuedDocuments)
+    {
+        if (queuedDocuments.Any(s => s.StatusInQueue == 300))
+        {
+            return FlagDocuments.Error;
+        }
+        else if (queuedDocuments.Any(s => s.StatusInQueue == 100 || s.StatusInQueue == 110 || s.StatusInQueue == 200))
+        {
+            return FlagDocuments.InProcessing;
+        }
+        else if (!queuedDocuments.Any())
+        {
+            return FlagDocuments.NoFlag;
+        }
+        else
+        {
+            throw new ArgumentException("This state isn't supported");
+        }
     }
 }
+
