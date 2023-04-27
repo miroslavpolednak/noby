@@ -22,7 +22,8 @@ public class GenerateDocumentIdTests : IntegrationTestBase
         response.DocumentId.Should().NotBeEmpty();
         response.DocumentId.Should().Contain("1");
         response.DocumentId.Should().Contain("KBH");
-        response.DocumentId.Should().Contain("D");
+        response.DocumentId.Should().Contain("XX");
+        response.DocumentId.Should().Contain("T");
         response.DocumentId.Should().HaveLength(29);
     }
 }
