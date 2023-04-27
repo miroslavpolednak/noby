@@ -1003,11 +1003,6 @@
             Current time
             </summary>
         </member>
-        <member name="P:CIS.Core.IDateTime.OffsetNow">
-            <summary>
-            Current time
-            </summary>
-        </member>
         <member name="T:CIS.Core.IIsServiceDiscoverable">
             <summary>
             Rozhraní reprezentující konfigurační objekt, který má možnost pomocí ServiceDiscovery zjistit adresu vlastní služby.
