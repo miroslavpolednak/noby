@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
+﻿using System.Globalization;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
 using DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts;
 using DomainServices.UserService.Clients;
 
@@ -90,6 +91,8 @@ internal sealed class RealSbWebApiClient
             Task_id = request.TaskIdSb,
             Metadata = new List<WFS_MetadataItem>
             {
+                new() { Mtdt_def = "ukol_mandant", Mtdt_val = "2", },
+                new() { Mtdt_def = "ukol_uver_id", Mtdt_val = request.CaseId.ToString(CultureInfo.InvariantCulture), },
                 new() { Mtdt_def = "ukol_dozadani_odpoved_oz", Mtdt_val = request.TaskUserResponse ?? string.Empty },
                 new() { Mtdt_def = "wfl_refobj_dokumenty", Mtdt_val = string.Join(",", request.TaskDocumentIds) }
             }
