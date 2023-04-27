@@ -35,7 +35,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
 
     protected DocumentArchiveServiceClient CreateGrpcClient()
     {
-        return Fixture.CreateGrpcClient<DocumentArchiveServiceClient>();
+        return Fixture.CreateGrpcClient<DocumentArchiveServiceClient>(true);
     }
 
     private void ConfigureWebHost()

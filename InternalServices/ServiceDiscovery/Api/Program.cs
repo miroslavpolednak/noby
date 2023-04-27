@@ -16,7 +16,8 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 
 #region register builder.Services
 // globalni nastaveni prostredi
-var envConfiguration = builder.AddCisCoreFeatures()
+var envConfiguration = builder
+    .AddCisCoreFeatures()
     .AddCisEnvironmentConfiguration();
 builder.Services.AddAttributedServices(typeof(Program));
 
@@ -29,7 +30,7 @@ builder
     .AddCisTracing();
 
 // add general Dapper repository
-builder.Services.AddDapper(builder.Configuration.GetConnectionString("default")!);
+builder.AddBaseEntityFramework<CIS.InternalServices.ServiceDiscovery.Api.Database.ServiceDiscoveryDbContext>();
 
 // add GRPC
 builder.Services.AddGrpc(options =>

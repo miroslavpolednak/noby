@@ -30,6 +30,5 @@ public class GetDocumentListTests : IntegrationTestBase
         var result = await client.GetDocumentListAsync(new() { CaseId = 123, UserLogin = "Test" }, default);
         result.Should().NotBeNull();
         result.Metadata.Should().HaveCount(3);
-
     }
 }
