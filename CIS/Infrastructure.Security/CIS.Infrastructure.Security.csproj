@@ -4,7 +4,6 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<Company></Company>
 		<Product>Common Infrastructure Solution</Product>
-		<Authors>Filip Tuma</Authors>
 		<Nullable>enable</Nullable>
 		<Platforms>AnyCPU;x64</Platforms>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -30,4 +29,7 @@
 		<ProjectReference Include="..\Foms.Types\CIS.Foms.Types.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="CIS.Testing" />
+	</ItemGroup>
 </Project>

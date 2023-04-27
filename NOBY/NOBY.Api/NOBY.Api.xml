@@ -216,6 +216,16 @@
             </remarks>
             <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseDocumentsFlag(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Příznaky v menu Case detailu
+            </summary>
+            <remarks>
+             Implementováno pro položku menu Documents<br /><br /><br />
+             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
+             <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
             <summary>
             Typ žádosti - číselník SalesArrangementType
@@ -254,6 +264,11 @@
             Text požadavku
             </summary>
             <example>Prosím o pomoc s tímto případem.</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.DocumentsMenuItem.Flag">
+            <summary>
+            0 - No flag, 1 - Error (!), 2 - In processing
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.LoanPurposeItem.Sum">
             <summary>
@@ -1843,6 +1858,30 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=D5159266-11E9-4959-BDFA-71C1FCF46092"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.GeneralDocument.GeneralDocumentController.GetGeneralDocuments(System.Threading.CancellationToken)" -->
+        <member name="P:NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments.Document.Id">
+            <summary>
+            Id dokumentu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments.Document.Name">
+            <summary>
+            Jméno dokumentu
+            </summary>
+            <example>Potvrzení o příjmech</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments.Document.Filename">
+            <summary>
+            Jméno souboru ke stažení
+            </summary>
+            <example>potvrzeni_o_prijmech.pdf</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments.Document.Format">
+            <summary>
+            Formát dokumentu
+            </summary>
+            <example>PDF</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest.SalesArrangementId">
             <summary>

@@ -22,13 +22,13 @@ internal class CompleteTaskHandler : IRequestHandler<CompleteTaskRequest>
         };
 
         var responseCode = await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
-
+        
         switch (responseCode)
         {
             case 0:
                 return;
             case 2:
-                throw new CisValidationException(13026, "Task ID not found in SB");
+                throw new CisValidationException(ErrorCodeMapper.TaskIdNotFound, ErrorCodeMapper.GetMessage(ErrorCodeMapper.TaskIdNotFound, request.TaskIdSb));
             default:
                 throw new CisException(BaseCisException.UnknownExceptionCode, $"SbWebApi returned error code {responseCode}");
         }

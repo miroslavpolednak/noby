@@ -21,6 +21,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
             {
                 DocumentTypeId = d.DocumentTypeId,
                 DocumentTemplateVersionId = d.DocumentTemplateVersionId,
+                DocumentTemplateVariantId = d.DocumentTemplateVariantId,
                 Data = d.Data
             })
             .FirstOrDefaultAsync(cancellationToken);

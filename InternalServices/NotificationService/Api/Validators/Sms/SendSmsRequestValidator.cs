@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Sms;
+﻿using CIS.InternalServices.NotificationService.Api.Validators.Common;
+using CIS.InternalServices.NotificationService.Contracts.Sms;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Sms;
@@ -32,5 +33,12 @@ public class SendSmsRequestValidator : AbstractValidator<SendSmsRequest>
             .MaximumLength(480)
                 .WithErrorCode(ErrorCodes.Validation.SendSms.TextLengthLimitExceeded)
                 .WithMessage($"Maximum length of {nameof(SendSmsRequest.Text)} is 480.");
+
+        When(request => request.Identifier is not null, () =>
+        {
+            RuleFor(request => request.Identifier!)
+                .SetValidator(new IdentifierValidator())
+                .WithMessage($"Invalid {nameof(SendSmsRequest.Identifier)}.");
+        });
     }    
 }

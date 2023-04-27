@@ -20,17 +20,9 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
 
     public async Task<GetDocumentDataResponse> Handle(GetDocumentDataRequest request, CancellationToken cancellationToken)
     {
-        //TODO: mock
-        if (request.DocumentTypeId is 4 or 5 && request.DocumentTemplateVariantId is null)
-        {
-            request.DocumentTemplateVariantId = request.DocumentTypeId switch
-            {
-                4 => 2,
-                5 => 6
-            };
-        }
+        var versionData = await _documentDataFactory.CreateVersionData((DocumentType)request.DocumentTypeId).GetDocumentVersionData(request, cancellationToken);
 
-        var documentKey = new DocumentKey(request.DocumentTypeId, request.DocumentTemplateVersionId, request.DocumentTemplateVariantId);
+        var documentKey = new DocumentKey(request.DocumentTypeId, versionData);
         var config = await _configurationManager.LoadDocumentConfiguration(documentKey, cancellationToken);
 
         var documentMapper = await LoadDocumentData((DocumentType)request.DocumentTypeId, request.InputParameters, config, cancellationToken);
@@ -38,6 +30,7 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
         return new GetDocumentDataResponse
         {
             DocumentTemplateVersionId = config.DocumentTemplateVersionId,
+            DocumentTemplateVariantId = config.DocumentTemplateVariantId,
             DocumentData = { documentMapper.MapDocumentFieldData() },
             InputParameters = request.InputParameters
         };
@@ -45,7 +38,7 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
 
     private async Task<DocumentMapper> LoadDocumentData(DocumentType documentType, InputParameters inputParameters, DocumentConfiguration config, CancellationToken cancellationToken)
     {
-        var documentData = _documentDataFactory.Create(documentType);
+        var documentData = _documentDataFactory.CreateData(documentType);
 
         await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, documentData, cancellationToken);
 

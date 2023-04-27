@@ -2,6 +2,16 @@
 
 public static class CisSecurityHeaders
 {
+    public static IServiceCollection AddCisSecurityHeaders(this IServiceCollection services)
+    {
+        services.AddHsts(options =>
+        {
+            options.Preload = true;
+            options.MaxAge = TimeSpan.FromDays(360);
+        });
+        return services;
+    }
+
     public static IApplicationBuilder UseCisSecurityHeaders(this IApplicationBuilder app)
     {
         app.UseMiddleware<Middleware.HttpOptionsMiddleware>();

@@ -47,7 +47,7 @@ internal sealed class RealSbWebApiClient
         return new Dto.CreateTask.CreateTaskResponse
         {
             TaskIdSB = responseObject.Task_id.GetValueOrDefault(),
-            //TaskId = responseObject
+            //TaskId = responseObject.Process_id
         };
     }
 

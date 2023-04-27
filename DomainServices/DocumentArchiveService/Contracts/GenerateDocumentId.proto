@@ -20,4 +20,5 @@ enum EnvironmentNames {
   Preprod = 5;
   Edu = 6;
   Prod = 7;
+  Test = 8;
 }

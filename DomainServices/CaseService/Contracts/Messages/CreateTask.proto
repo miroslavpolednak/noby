@@ -10,6 +10,7 @@ message CreateTaskRequest {
 	int32 ProcessId = 3;
 	google.protobuf.StringValue TaskRequest = 4;
 	repeated string TaskDocumentsId = 5;
+	int64 CaseId = 6;
 }
 
 message CreateTaskResponse {

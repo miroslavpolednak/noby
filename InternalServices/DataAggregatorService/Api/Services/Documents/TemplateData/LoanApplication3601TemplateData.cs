@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using CIS.Core.Exceptions;
+using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.LoanApplication;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.CustomerService.Clients;
@@ -55,7 +56,10 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
 
     public override async Task LoadAdditionalData(CancellationToken cancellationToken)
     {
-        var debtorIdentity = CustomerOnSaDebtor.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        var debtorIdentity = CustomerOnSaDebtor.CustomerIdentifiers.FirstOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        if (debtorIdentity is null)
+            throw new CisValidationException($"CustomerOnSa {CustomerOnSaDebtor.CustomerOnSAId} does not have KB identifier.");
+
         var codebtorIdentity = CustomerOnSaCodebtor?.CustomerIdentifiers.FirstOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
 
         var requestedIdentities = new[] { debtorIdentity, codebtorIdentity }.Where(identity => identity is not null).Cast<Identity>();
