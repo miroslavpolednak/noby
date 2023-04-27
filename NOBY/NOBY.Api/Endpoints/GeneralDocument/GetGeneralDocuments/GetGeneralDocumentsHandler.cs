@@ -7,7 +7,15 @@ public class GetGeneralDocumentsHandler : IRequestHandler<GetGeneralDocumentsReq
     public async Task<List<Document>> Handle(GetGeneralDocumentsRequest request, CancellationToken cancellationToken)
     {
         await Task.Delay(1, cancellationToken);
-        return new List<Document>();
+        var documents = await _codebookService.GetGeneralDocumentList(cancellationToken);
+
+        return documents.Select(d => new Document()
+        {
+            Id = d.Id,
+            Filename = d.Filename,
+            Format = d.Format,
+            Name = d.Name
+        }).ToList();
     }
 
     private readonly ICodebookServiceClients _codebookService;
