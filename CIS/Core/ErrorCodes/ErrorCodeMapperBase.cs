@@ -73,7 +73,10 @@ public abstract class ErrorCodeMapperBase
     /// <param name="messages">[ExceptionCode, ExceptionMessage]</param>
     protected static void SetMessages(IDictionary<int, string> messages)
     {
-        Messages = new ErrorCodesDictionary(messages);
+        if (Messages is null)
+            Messages = new ErrorCodesDictionary(messages);
+        else
+            Messages = new ErrorCodesDictionary(Messages.Concat(messages).ToDictionary(x => x.Key, x => x.Value));
     }
 
     /// <summary>

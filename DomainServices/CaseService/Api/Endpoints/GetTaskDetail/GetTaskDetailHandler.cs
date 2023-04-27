@@ -31,7 +31,7 @@ internal class GetTaskDetailHandler : IRequestHandler<GetTaskDetailRequest, GetT
         var tasks = await _sbWebApiClient.FindTasksByTaskId(sbRequest, cancellationToken);
 
         if (tasks.ItemsFound == 0)
-            throw new CisValidationException(13026, "Task ID not found in SB");
+            throw new CisValidationException(ErrorCodeMapper.TaskIdNotFound, ErrorCodeMapper.GetMessage(ErrorCodeMapper.TaskIdNotFound, request.TaskIdSb));
 
         var response = new GetTaskDetailResponse();
 
