@@ -277,6 +277,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql = NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql
 		NOBY\DatabaseMigrations\00004-DropFormInstanceInterface.sql = NOBY\DatabaseMigrations\00004-DropFormInstanceInterface.sql
 		NOBY\DatabaseMigrations\00005-HFICH-5400.sql = NOBY\DatabaseMigrations\00005-HFICH-5400.sql
+		NOBY\DatabaseMigrations\00006-HFICH-5716_fix.sql = NOBY\DatabaseMigrations\00006-HFICH-5716_fix.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.ExternalServices.Sdf", "DomainServices\DocumentArchiveService\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj", "{F969A020-76AF-48A6-BF8F-959A58D0C982}"
@@ -388,7 +389,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MPSS.Security.Noby", "NOBY\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2FB17E85-DD83-4D49-835B-331A7056BB40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.ServiceDiscovery.Tests", "InternalServices\ServiceDiscovery\Tests\CIS.InternalServices.ServiceDiscovery.Tests\CIS.InternalServices.ServiceDiscovery.Tests.csproj", "{CF32FE07-6D1B-47E9-B96B-91DBD0BCD9A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.ServiceDiscovery.Tests", "InternalServices\ServiceDiscovery\Tests\CIS.InternalServices.ServiceDiscovery.Tests\CIS.InternalServices.ServiceDiscovery.Tests.csproj", "{CF32FE07-6D1B-47E9-B96B-91DBD0BCD9A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
