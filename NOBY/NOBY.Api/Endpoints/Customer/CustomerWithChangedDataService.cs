@@ -119,7 +119,7 @@ internal sealed class CustomerWithChangedDataService
             var newPhone = (TPhone)Activator.CreateInstance(typeof(TPhone))!;
             newPhone.IsConfirmed = phone.IsConfirmed;
             newPhone.PhoneNumber = phone.Mobile.PhoneNumber;
-            newPhone.PhoneIDC = phone.Mobile.PhoneNumber;
+            newPhone.PhoneIDC = phone.Mobile.PhoneIDC;
             return newPhone;
         }
         else
