@@ -1,6 +1,7 @@
 ﻿using DomainServices.CaseService.Contracts;
 using NOBY.Api.Endpoints.Cases.GetConsultationTypes;
 using NOBY.Api.Endpoints.Cases.UpdateTaskDetail;
+using NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Cases;
@@ -10,7 +11,7 @@ namespace NOBY.Api.Endpoints.Cases;
 public class CasesController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public CasesController(IMediator mediator) =>  _mediator = mediator;
+    public CasesController(IMediator mediator) => _mediator = mediator;
 
     /// <summary>
     /// Získání relevantních typů konzultace
@@ -44,7 +45,7 @@ public class CasesController : ControllerBase
         await _mediator.Send(request.InfuseId(caseId, taskId));
         return NoContent();
     }
-    
+
     /// <summary>
     /// Vytvoření nového workflow tasku do SB.
     /// </summary>
@@ -112,12 +113,12 @@ public class CasesController : ControllerBase
     /// <returns>Zakladni informace o Case-u.</returns>
     [HttpGet("{caseId:long}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "Case" })]
+    [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(Dto.CaseModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.CaseModel> GetById([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetById.GetByIdRequest(caseId), cancellationToken);
-    
+
     /// <summary>
     /// Počty Cases pro přihlášeného uživatele zgrupované podle nastavených filtrů.
     /// </summary>
@@ -128,7 +129,7 @@ public class CasesController : ControllerBase
     /// <returns>Kolekce ID stavu s počtem Cases.</returns>
     [HttpGet("dashboard-filters")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "Case" })]
+    [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(List<GetTotalsByStates.GetDashboardFiltersResponse>), StatusCodes.Status200OK)]
     public async Task<List<GetTotalsByStates.GetDashboardFiltersResponse>> GetDashboardFilters(CancellationToken cancellationToken)
         => await _mediator.Send(new GetTotalsByStates.GetDashboardFiltersRequest(), cancellationToken);
@@ -150,7 +151,7 @@ public class CasesController : ControllerBase
     [HttpPost("search")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new [] { "Case" })]
+    [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(Search.SearchResponse), StatusCodes.Status200OK)]
     public async Task<Search.SearchResponse> Search([FromBody] Search.SearchRequest request)
         => await _mediator.Send(request);
@@ -200,9 +201,9 @@ public class CasesController : ControllerBase
     [SwaggerOperation(OperationId = "taskDetailUpdate", Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task UpdateTaskDetail([FromRoute] long caseId, [FromRoute] long taskId, [FromBody] UpdateTaskDetailRequest? request,CancellationToken cancellationToken)
+    public async Task UpdateTaskDetail([FromRoute] long caseId, [FromRoute] long taskId, [FromBody] UpdateTaskDetailRequest? request, CancellationToken cancellationToken)
         => await _mediator.Send(request?.InfuseIds(caseId, taskId) ?? throw new NobyValidationException("Payload is empty"), cancellationToken);
-    
+
     /// <summary>
     /// Parametry Case-u.
     /// </summary>
@@ -218,4 +219,22 @@ public class CasesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetCaseParameters.GetCaseParametersResponse> GetCaseParameters([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCaseParameters.GetCaseParametersRequest(caseId), cancellationToken);
+
+
+    /// <summary>
+    /// Příznaky v menu Case detailu
+    /// </summary>
+    /// <remarks>
+    ///  Implementováno pro položku menu Documents<br /><br /><br />
+    ///  <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
+    ///  <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("{caseId:long}/menu/flags")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Case" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task GetCaseDocumentsFlag([FromRoute] long caseId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCaseDocumentsFlagRequest(caseId), cancellationToken);
+
 }
