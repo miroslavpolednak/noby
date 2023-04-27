@@ -28,5 +28,5 @@ internal class CustomerInfo
 
     public string? DateOfBirthText => string.IsNullOrWhiteSpace(_customer.NaturalPerson.BirthNumber) ? "Datum narození:" : default;
 
-    public DateTime? DateOfBirth => _customer.NaturalPerson.DateOfBirth;
+    public DateTime? DateOfBirth => string.IsNullOrWhiteSpace(_customer.NaturalPerson.BirthNumber) ? _customer.NaturalPerson.DateOfBirth : default;
 }
