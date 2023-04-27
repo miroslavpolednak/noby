@@ -11,7 +11,9 @@ public static class CisCoreFeatures
     {
         // datetime unification
         if (useDefaultDateTimeService)
+        {
             builder.Services.AddSingleton<IDateTime, LocalDateTime>();
+        }
 
         builder.Services.AddOptions();
 

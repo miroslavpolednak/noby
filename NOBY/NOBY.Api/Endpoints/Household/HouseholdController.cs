@@ -67,7 +67,7 @@ public class HouseholdController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vytvoření domácnosti i s CustomerOnSA, aby domácnost nebyla prázdná.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=72EEBC25-A403-42e9-9AFD-A48CCEBC179F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=72EEBC25-A403-42e9-9AFD-A48CCEBC179F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
     /// </remarks>
     [HttpPost("", Name = "householdCreate")]
     [Consumes("application/json")]

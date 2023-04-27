@@ -10,6 +10,8 @@ internal sealed class CreateTaskHandler
     {
         Dictionary<string, string> metadata = new();
         metadata.Add(getTaskTypeKey(), request.TaskRequest);
+        metadata.Add("ukol_uver_id", request.CaseId.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        metadata.Add("ukol_mandant", "2");
 
         // subtype
         if (request.TaskTypeId == 3)
