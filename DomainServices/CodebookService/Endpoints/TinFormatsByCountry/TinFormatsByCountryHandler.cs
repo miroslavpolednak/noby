@@ -11,7 +11,7 @@ public class TinFormatsByCountryHandler
     private readonly IConnectionProvider _connectionProvider;
 
     private const string _sqlQuery =
-        @"SELECT Id, CountryCode, RegularExpression, IsForFo, TooltipTooltip,
+        @"SELECT Id, CountryCode, RegularExpression, IsForFo, Tooltip,
           CASE WHEN SYSDATETIME() BETWEEN[ValidFrom] AND ISNULL([ValidTo], '9999-12-31') THEN 1 ELSE 0 END 'IsValid'
           FROM [dbo].[TinFormatsByCountry]";
 
