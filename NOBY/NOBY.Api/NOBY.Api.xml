@@ -1843,6 +1843,30 @@
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.GeneralDocument.GeneralDocumentController.GetGeneralDocuments(System.Threading.CancellationToken)" -->
+        <member name="P:NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments.Document.Id">
+            <summary>
+            Id dokumentu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments.Document.Name">
+            <summary>
+            Jméno dokumentu
+            </summary>
+            <example>Potvrzení o příjmech</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments.Document.Filename">
+            <summary>
+            Jméno souboru ke stažení
+            </summary>
+            <example>potvrzeni_o_prijmech.pdf</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments.Document.Format">
+            <summary>
+            Formát dokumentu
+            </summary>
+            <example>PDF</example>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest.SalesArrangementId">
             <summary>
             ID pripadu
