@@ -1,21 +1,23 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
+using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
+using NOBY.Api.Endpoints.Shared;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 
 public class GetCaseDocumentsFlagHandler : IRequestHandler<GetCaseDocumentsFlagRequest, GetCaseDocumentsFlagResponse>
 {
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
-    private readonly ICodebookServiceClients _codebookServiceClient;
+    private readonly IDocumentHelper _documentHelper;
 
     public GetCaseDocumentsFlagHandler(
-        IDocumentArchiveServiceClient documentArchiveServiceClient,
-        ICodebookServiceClients codebookServiceClient
-        )
+            IDocumentArchiveServiceClient documentArchiveServiceClient,
+            IDocumentHelper documentHelper
+            )
     {
         _documentArchiveServiceClient = documentArchiveServiceClient;
-        _codebookServiceClient = codebookServiceClient;
+        _documentHelper = documentHelper;
     }
 
     public async Task<GetCaseDocumentsFlagResponse> Handle(GetCaseDocumentsFlagRequest request, CancellationToken cancellationToken)
@@ -24,34 +26,25 @@ public class GetCaseDocumentsFlagHandler : IRequestHandler<GetCaseDocumentsFlagR
         getDocumentsInQueueRequest.StatusesInQueue.AddRange(new List<int> { 100, 110, 200, 300 });
         var getDocumentsInQueueResult = await _documentArchiveServiceClient.GetDocumentsInQueue(getDocumentsInQueueRequest, cancellationToken);
 
-        var eaCodeMain = await _codebookServiceClient.EaCodesMain(cancellationToken);
-
-        // Filter
-        var documentsInQueueFiltered = getDocumentsInQueueResult.QueuedDocuments.Select(data =>
-        new
-        {
-            docData = data,
-            eACodeMainObj = eaCodeMain.FirstOrDefault(r => r.Id == data.EaCodeMainId)
-        })
-        .Where(f => f.eACodeMainObj is not null && f.eACodeMainObj.IsVisibleForKb)
-        .Select(s => s.docData).ToList();
+        var getDocumentsInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(getDocumentsInQueueResult);
+        var documentsInQueueFiltered = await _documentHelper.FilterDocumentsVisibleForKb(getDocumentsInQueueMetadata, cancellationToken);
 
         return new GetCaseDocumentsFlagResponse
         {
             DocumentsMenuItem = new DocumentsMenuItem
             {
-                Flag = GetDocumentsFlag(documentsInQueueFiltered)
+                Flag = GetDocumentsFlag(documentsInQueueFiltered.ToList())
             }
         };
     }
 
-    private static FlagDocuments GetDocumentsFlag(List<QueuedDocument> queuedDocuments)
+    private static FlagDocuments GetDocumentsFlag(List<DocumentsMetadata> queuedDocuments)
     {
-        if (queuedDocuments.Any(s => s.StatusInQueue == 300))
+        if (queuedDocuments.Any(s => s.UploadStatus == UploadStatus.Error))
         {
             return FlagDocuments.Error;
         }
-        else if (queuedDocuments.Any(s => s.StatusInQueue == 100 || s.StatusInQueue == 110 || s.StatusInQueue == 200))
+        else if (queuedDocuments.Any(s => s.UploadStatus == UploadStatus.InProgress))
         {
             return FlagDocuments.InProcessing;
         }

@@ -93,7 +93,7 @@
             </summary>
             <remarks>
             Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CancelTask(System.Int64,System.Int32,NOBY.Api.Endpoints.Cases.CancelTask.CancelTaskRequest)">
@@ -102,7 +102,7 @@
             </summary>
             <remarks>
             Stornování úkolu ve SB. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateTask(System.Int64,NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest)">
@@ -111,7 +111,7 @@
             </summary>
             <remarks>
             Vytvoření nového workflow tasku do SB.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
         </member>
@@ -903,8 +903,8 @@
             Detail developeského projektu
             </summary>
             <remarks>
-            Vrátí detail developerského projektu dle developerProjectId na vstupu.
-            <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Vrátí detail developerského projektu dle developerProjectId na vstupu.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="developerId">ID developera</param>
         </member>
@@ -1859,7 +1859,15 @@
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.GeneralDocument.GeneralDocumentController.GetGeneralDocuments(System.Threading.CancellationToken)" -->
+        <member name="M:NOBY.Api.Endpoints.GeneralDocument.GeneralDocumentController.GetGeneralDocuments(System.Threading.CancellationToken)">
+            <summary>
+            Seznam obecných dokumentů ke stažení
+            </summary>
+            <remarks>
+            Načtení seznamu obecných dokumentů, které je možné stáhnout a vyplnit. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EA4655D8-5314-469b-8C92-5D2324EF1824"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="P:NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments.Document.Id">
             <summary>
             Id dokumentu
@@ -1984,7 +1992,7 @@
             </summary>
             <remarks>
             Vytvoření domácnosti i s CustomerOnSA, aby domácnost nebyla prázdná.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=72EEBC25-A403-42e9-9AFD-A48CCEBC179F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=72EEBC25-A403-42e9-9AFD-A48CCEBC179F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.Update(System.Int32,NOBY.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest)">
@@ -2489,7 +2497,8 @@
              Vrátí seznam závazků na daném produktu
              </summary>
              <remarks>
-            Seznam z závazků načtený z KonsDB.<br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=058D1B76-375C-4747-90DB-D4E3BE5C46F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Seznam z závazků načtený z KonsDB.<br /><br />
+             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=058D1B76-375C-4747-90DB-D4E3BE5C46F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
              </remarks>
              <returns>Seznam závazků na produktu</returns>
         </member>
@@ -3168,8 +3177,8 @@
             Detailní informace pro sluníčko
             </summary>
             <remarks>
-            Provede vyhodnocení klapek na základě konfigurace v konfiguračním excelu a vrátí informace nutné pro správné zobrazení rozcestníku žádosti (sluníčka).
-            <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2709EE14-C343-4c7f-B733-A092E41EA839"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Provede vyhodnocení klapek na základě konfigurace v konfiguračním excelu a vrátí informace nutné pro správné zobrazení rozcestníku žádosti (sluníčka).<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2709EE14-C343-4c7f-B733-A092E41EA839"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
         </member>

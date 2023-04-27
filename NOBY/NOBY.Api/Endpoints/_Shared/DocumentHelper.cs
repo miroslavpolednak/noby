@@ -3,7 +3,6 @@ using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using __Contract = DomainServices.DocumentArchiveService.Contracts;
 using __Api = NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using DomainServices.CodebookService.Clients;
-using System.Threading;
 
 namespace NOBY.Api.Endpoints.Shared;
 public interface IDocumentHelper
