@@ -29,7 +29,7 @@ internal class CustomerChangeTemplateData : AggregatedData
     {
         get
         {
-            if (!SalesArrangement.CustomerChange.Release.IsActive)
+            if (SalesArrangement.CustomerChange.Release?.IsActive != true)
                 return string.Empty;
 
             return string.Join(Environment.NewLine,
@@ -41,7 +41,7 @@ internal class CustomerChangeTemplateData : AggregatedData
     {
         get
         {
-            if (!SalesArrangement.CustomerChange.Add.IsActive)
+            if (SalesArrangement.CustomerChange.Add?.IsActive != true)
                 return string.Empty;
 
             return string.Join(Environment.NewLine, SalesArrangement.CustomerChange.Add.Customers.Select(c => CustomerHelper.NameWithDateOfBirth(c.Name, c.DateOfBirth)));
@@ -52,7 +52,7 @@ internal class CustomerChangeTemplateData : AggregatedData
     {
         get
         {
-            if (!SalesArrangement.CustomerChange.RepaymentAccount.IsActive)
+            if (SalesArrangement.CustomerChange.RepaymentAccount?.IsActive != true)
                 return string.Empty;
 
             var account = SalesArrangement.CustomerChange.RepaymentAccount;
@@ -65,7 +65,7 @@ internal class CustomerChangeTemplateData : AggregatedData
     {
         get
         {
-            if (!SalesArrangement.CustomerChange.RepaymentAccount.IsActive)
+            if (SalesArrangement.CustomerChange.RepaymentAccount?.IsActive != true)
                 return string.Empty;
 
             var account = SalesArrangement.CustomerChange.RepaymentAccount;
