@@ -13,7 +13,12 @@ internal sealed  class GetCommentHandler : IRequestHandler<GetCommentRequest, Co
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         
         return (SalesArrangementTypes)salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.Mortgage
-            ? new Comment { Text = salesArrangement.Mortgage.Comment }
+            ? new Comment
+            {
+                // TODO
+                // Text = salesArrangement.Mortgage.Comment
+                Text = "Tvrdí, že není politicky exponovaná osoba, ale já myslím, že je."
+            }
             : throw new NobyValidationException(90001);
     }
     
