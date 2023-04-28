@@ -17,8 +17,6 @@ UPDATE DocumentTemplateVersion SET FormTypeId = '3602001' WHERE Id = 10
 UPDATE DocumentTemplateVersion SET FormTypeId = '3602001' WHERE Id = 11
 UPDATE DocumentTemplateVersion SET FormTypeId = '3602001' WHERE Id = 15
 
-UPDATE DocumentTemplateVariant SET DocumentTemplateVersionId = 9 WHERE DocumentTemplateVersionId = 8
-
 INSERT INTO DocumentTemplateVariant VALUES (17, 16, 'A', 'jeden spoludlužník, zprostředkovatel')
 INSERT INTO DocumentTemplateVariant VALUES (18, 16, 'B', 'jeden spoludlužník, bez zprostředkovatele')
 INSERT INTO DocumentTemplateVariant VALUES (19, 16, 'C', 'dva spoludlužníci, zprostředkovatel')

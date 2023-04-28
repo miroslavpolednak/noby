@@ -30,8 +30,8 @@ internal sealed class RealSbWebApiClient
             Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
             Message = new WFS_Manage_CreateTask
             {
-                Task_type = request.TaskTypeId,
                 Parent_task_set = request.ProcessId,
+                Task_type_noby = request.TaskTypeId,
                 Metadata = request.Metadata.Select(t => new WFS_MetadataItem
                 {
                     Mtdt_def = t.Key,
@@ -47,7 +47,7 @@ internal sealed class RealSbWebApiClient
         return new Dto.CreateTask.CreateTaskResponse
         {
             TaskIdSB = responseObject.Task_id.GetValueOrDefault(),
-            //TaskId = responseObject
+            TaskId = responseObject.Process_id.GetValueOrDefault()
         };
     }
 
@@ -60,8 +60,8 @@ internal sealed class RealSbWebApiClient
             Message = new()
             {
                 Client_benefits = 0,
-                Case_id = request.CaseId,
-                Uver_id = request.CaseId,
+                Case_id = Convert.ToInt32(request.CaseId),
+                Uver_id = Convert.ToInt32(request.CaseId),
                 Loan_no = request.ContractNumber,
                 Jmeno_prijmeni = request.ClientFullName,
                 Case_state = request.CaseStateName,
@@ -107,7 +107,7 @@ internal sealed class RealSbWebApiClient
             Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
             Message = new WFS_Find_ByCaseId
             {
-                Case_id = request.CaseId,
+                Case_id = Convert.ToInt32(request.CaseId),
                 Search_pattern = request.SearchPattern,
                 Task_state = request.TaskStates
             }
