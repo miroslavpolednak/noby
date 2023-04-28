@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
+﻿using NOBY.Api.Endpoints.Shared;
+
+namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
 public class GetDocumentListResponse
 {
@@ -18,14 +20,8 @@ public class DocumentsMetadata
     public DateOnly CreatedOn { get; set; }
     
     /// <summary>
-    /// Stav přenosu dokumentu do eArchivu. \n\n<small>Enum Values</small><ul><li>0 - Uloženo v eArchivu</li><li>1 - Ve zpracování</li><li>2 - Chyba</li></ul>
+    /// Stav přenosu dokumentu do eArchivu. Enum Values: 0 - Uloženo v EArchivu, 1 - Probíhá přenos, 2 - Chyba přenosu
     /// </summary>
     public UploadStatus UploadStatus { get; set; }
 }
 
-public enum UploadStatus
-{
-    Ok = 1,
-    InProgress = 2,
-    Error = 3
-}
