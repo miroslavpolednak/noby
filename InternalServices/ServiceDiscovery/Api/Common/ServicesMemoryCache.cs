@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Types;
-using CIS.InternalServices.ServiceDiscovery.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
@@ -60,11 +59,12 @@ internal sealed class ServicesMemoryCache
         var list = await _dbContext.ServiceDiscoveryEntities
             .AsNoTracking()
             .Where(t => t.EnvironmentName == environmentName)
-            .Select(t => new Dto.ServiceModel
+            .Select(t => new
             {
-                ServiceName = t.ServiceName,
-                ServiceType = (ServiceTypes)t.ServiceType,
-                ServiceUrl = t.ServiceUrl
+                t.ServiceName,
+                ServiceType = (Contracts.ServiceTypes)t.ServiceType,
+                t.ServiceUrl,
+                t.AddToGlobalHealthCheck
             })
             .ToListAsync(cancellationToken);
         
@@ -81,6 +81,7 @@ internal sealed class ServicesMemoryCache
                 ServiceName = t.ServiceName,
                 ServiceType = t.ServiceType,
                 ServiceUrl = t.ServiceUrl,
+                AddToGlobalHealthCheck = t.AddToGlobalHealthCheck
             })
             .ToArray()
             .AsReadOnly();
