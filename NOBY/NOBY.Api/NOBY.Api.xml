@@ -3277,6 +3277,8 @@
             </remarks>
             <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetComment(System.Int32,System.Threading.CancellationToken)" -->
+        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.UpdateComment(System.Int32,NOBY.Api.Endpoints.SalesArrangement.Dto.Comment)" -->
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChange3602Update.IsSpouseInDebt">
             <summary>
             Přistupující manžel/ka?
@@ -3557,6 +3559,12 @@
             NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing
             )
             </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.Comment.Text">
+            <summary>
+            Komentář k žádosti
+            </summary>
+            <example>Tvrdí, že není politicky exponovaná osoba, ale já myslím, že je.</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstateTypeId">
             <example>1</example>

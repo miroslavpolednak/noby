@@ -13,6 +13,7 @@ message SalesArrangementParametersMortgage {
 	repeated LoanRealEstate LoanRealEstates = 5;
 	google.protobuf.Int32Value Agent = 6;
 	google.protobuf.BoolValue AgentConsentWithElCom = 7;
+    string Comment = 8;
 
 	message LoanRealEstate {
 		int64 RealEstateTypeId = 1;
