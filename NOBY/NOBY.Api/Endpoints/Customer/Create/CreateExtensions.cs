@@ -2,16 +2,17 @@
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using NOBY.Api.SharedDto;
+using CIS.Foms.Enums;
 
 namespace NOBY.Api.Endpoints.Customer.Create;
 
 internal static class CreateExtensions
 {
-    public static _Cust.CreateCustomerRequest ToDomainService(this CreateRequest request, Mandants createIn, params Identity[] identities)
+    public static _Cust.CreateCustomerRequest ToDomainService(this CreateRequest request, CIS.Infrastructure.gRPC.CisTypes.Mandants createIn, params Identity[] identities)
     {
         var model = new _Cust.CreateCustomerRequest
         {
-            Mandant = Mandants.Kb,
+            Mandant = CIS.Infrastructure.gRPC.CisTypes.Mandants.Kb,
             NaturalPerson = new()
             {
                 FirstName = request.FirstName ?? "",
@@ -25,6 +26,30 @@ internal static class CreateExtensions
             HardCreate = request.HardCreate
         };
         model.Identities.Add(identities);
+
+        // kontakty
+        if (!string.IsNullOrEmpty(request.Contacts?.EmailAddress?.EmailAddress))
+        {
+            model.Contacts.Add(new _Cust.Contact
+            {
+                ContactTypeId = (int)ContactTypes.Email,
+                Email = new _Cust.EmailAddressItem { EmailAddress = request.Contacts.EmailAddress.EmailAddress },
+                IsConfirmed = request.Contacts.EmailAddress.IsConfirmed
+            });
+        }
+        if (!string.IsNullOrEmpty(request.Contacts?.MobilePhone?.PhoneNumber))
+        {
+            model.Contacts.Add(new _Cust.Contact
+            {
+                ContactTypeId = (int)ContactTypes.Mobil,
+                Mobile = new _Cust.MobilePhoneItem
+                {
+                    PhoneIDC = request.Contacts.MobilePhone.PhoneIDC ?? "",
+                    PhoneNumber = request.Contacts.MobilePhone.PhoneNumber
+                },
+                IsConfirmed = request.Contacts.MobilePhone.IsConfirmed
+            });
+        }
 
         // adresa
         if (request.PrimaryAddress is not null)
@@ -103,16 +128,16 @@ internal static class CreateExtensions
             }
         };
 
-        var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.EmailAddress;
+        var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)ContactTypes.Email)?.Email?.EmailAddress;
         if (!string.IsNullOrEmpty(email))
             model.Contacts.EmailAddress = new() { EmailAddress = email };
 
-        var phone = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
+        var phone = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)ContactTypes.Mobil)?.Mobile?.PhoneNumber;
         if (!string.IsNullOrEmpty(phone))
             model.Contacts.MobilePhone = new()
             {
                 PhoneNumber = phone,
-                PhoneIDC = customer.Contacts!.First(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil).Mobile.PhoneIDC
+                PhoneIDC = customer.Contacts!.First(x => x.ContactTypeId == (int)ContactTypes.Mobil).Mobile.PhoneIDC
             };
 
         return model;
