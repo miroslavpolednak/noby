@@ -1557,11 +1557,12 @@
             </summary>
             <remarks>
             Nastavení stavu dokumentu ve frontě pro uložení do eArchiv-u
+            <br /><br /><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C23F8DBF-9F26-465b-BB34-8736133D020D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocumentList.DocumentsMetadata.UploadStatus">
             <summary>
-            Stav přenosu dokumentu do eArchivu. \n\n<small>Enum Values</small><ul><li>0 - Uloženo v eArchivu</li><li>1 - Ve zpracování</li><li>2 - Chyba</li></ul>
+            Stav přenosu dokumentu do eArchivu. Enum Values: 0 - Uloženo v EArchivu, 1 - Probíhá přenos, 2 - Chyba přenosu
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.ValidateFormId(System.Int64,NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Threading.CancellationToken)">
@@ -3277,6 +3278,8 @@
             </remarks>
             <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetComment(System.Int32,System.Threading.CancellationToken)" -->
+        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.UpdateComment(System.Int32,NOBY.Api.Endpoints.SalesArrangement.Dto.Comment)" -->
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChange3602Update.IsSpouseInDebt">
             <summary>
             Přistupující manžel/ka?
@@ -3557,6 +3560,12 @@
             NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing
             )
             </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.Comment.Text">
+            <summary>
+            Komentář k žádosti
+            </summary>
+            <example>Tvrdí, že není politicky exponovaná osoba, ale já myslím, že je.</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstateTypeId">
             <example>1</example>

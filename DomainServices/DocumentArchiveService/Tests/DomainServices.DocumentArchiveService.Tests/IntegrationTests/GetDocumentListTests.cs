@@ -1,6 +1,8 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.Testing;
+using DomainServices.DocumentArchiveService.Api.Database;
 using DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests;
 public class GetDocumentListTests : IntegrationTestBase
