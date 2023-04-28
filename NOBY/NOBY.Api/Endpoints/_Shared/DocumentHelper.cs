@@ -66,14 +66,15 @@ public class DocumentHelper : IDocumentHelper
     {
         EaCodeMainItems = await _codebookServiceClient.EaCodesMain(cancellationToken);
 
-        return docMetadata.Select(data =>
+        var query = docMetadata.Select(data =>
          new
          {
              docData = data,
              eACodeMainObj = EaCodeMainItems.FirstOrDefault(r => r.Id == data.EaCodeMainId)
          })
-         .Where(f => f.eACodeMainObj is not null && f.eACodeMainObj.IsVisibleForKb)
-         .Select(s => s.docData);
+         .Where(f => f.eACodeMainObj is not null && f.eACodeMainObj.IsVisibleForKb);
+
+        return query.Select(s => s.docData);
     }
 
     public async Task<IReadOnlyCollection<CategoryEaCodeMain>> CalculateCategoryEaCodeMain(List<DocumentsMetadata> documentsMetadata, CancellationToken cancellationToken)
@@ -88,17 +89,18 @@ public class DocumentHelper : IDocumentHelper
         })
         .Where(f => f.eACodeMainObj is not null).ToList();
 
-        var eaCodeMainNames = dataWithEaCodeMain.Select(s => s.eACodeMainObj!.Name.Trim()).Distinct().ToList();
+        var eaCodeMainCategories = dataWithEaCodeMain.Select(s => s.eACodeMainObj!.Category.Trim()).Distinct().ToList();
 
         var categoryEaCodeMains = new List<CategoryEaCodeMain>();
 
-        foreach (var eaCodeMainName in eaCodeMainNames)
+        foreach (var eaCodeMainCategory in eaCodeMainCategories)
         {
             var categoryEaCodeMain = new CategoryEaCodeMain
             {
-                Name = eaCodeMainName,
-                DocumentCountInCategory = dataWithEaCodeMain.Count(c => c.eACodeMainObj!.Name == eaCodeMainName),
-                EaCodeMainIdList = dataWithEaCodeMain.Where(c => c.eACodeMainObj!.Name == eaCodeMainName).Select(s => s.docData.EaCodeMainId).ToList(),
+                Name = eaCodeMainCategory,
+                DocumentCountInCategory = dataWithEaCodeMain.Count(c => c.eACodeMainObj!.Category == eaCodeMainCategory),
+                EaCodeMainIdList = dataWithEaCodeMain.Where(c => c.eACodeMainObj!.Category == eaCodeMainCategory)
+                                                     .Select(s => s.docData.EaCodeMainId).Distinct().ToList(),
             };
 
             categoryEaCodeMains.Add(categoryEaCodeMain);
