@@ -31,6 +31,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 
         var completeTaskRequest = new CompleteTaskRequest
         {
+            CaseId = request.CaseId,
             TaskIdSb = request.TaskIdSB,
             TaskUserResponse = request.TaskUserResponse
         };
