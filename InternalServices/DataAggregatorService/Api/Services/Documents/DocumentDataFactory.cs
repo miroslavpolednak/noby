@@ -33,6 +33,7 @@ internal class DocumentDataFactory
         return documentType switch
         {
             DocumentType.ZADOSTHU or DocumentType.ZADOSTHD => _serviceProvider.GetRequiredService<LoanApplicationVersionDataProvider>(),
+            DocumentType.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeVersionDataProvider>(),
             _ => _serviceProvider.GetRequiredService<IDocumentVersionDataProvider>()
         };
     }

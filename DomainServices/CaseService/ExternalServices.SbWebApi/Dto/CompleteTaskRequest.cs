@@ -2,6 +2,8 @@
 
 public sealed class CompleteTaskRequest
 {
+    public required long CaseId { get; init; }
+
     public required int TaskIdSb { get; init; }
 
     public string? TaskUserResponse { get; init; }
