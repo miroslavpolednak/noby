@@ -175,6 +175,36 @@ public class SalesArrangementController : ControllerBase
     public async Task SendToCmp([FromRoute] int salesArrangementId, [FromQuery] bool ignoreWarnings = false)
         => await _mediator.Send(new SendToCmp.SendToCmpRequest(salesArrangementId, ignoreWarnings));
 
+    /// <summary>
+    /// Získání komentáře na SalesArrangementu.
+    /// </summary>
+    /// <remarks>
+    /// "Vrátí komentář produktové žádosti. <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("{salesArrangementId:int}/comment")]
+    [Produces("application/json")]
+    [SwaggerOperation(OperationId = "SalesArrangementCommentGet", Tags = new[] { "Sales Arrangement" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<Dto.Comment> GetComment([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetComment.GetCommentRequest(salesArrangementId), cancellationToken);
+    
+    /// <summary>
+    /// Aktualizace komentáře na SalesArrangementu.
+    /// </summary>
+    /// <remarks>
+    /// Aktualizuje komentář produktové žádosti. <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("{salesArrangementId:int}/comment")]
+    [Produces("application/json")]
+    [SwaggerOperation(OperationId = "SalesArrangementCommentUpdate", Tags = new[] { "Sales Arrangement" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task UpdateComment([FromRoute] int salesArrangementId, [FromBody] Dto.Comment? comment)
+        => await _mediator.Send(new UpdateComment.UpdateCommentRequest(salesArrangementId, comment ?? throw new NobyValidationException("Payload is empty")));
+    
     private readonly IMediator _mediator;
     public SalesArrangementController(IMediator mediator) =>  _mediator = mediator;
 }
