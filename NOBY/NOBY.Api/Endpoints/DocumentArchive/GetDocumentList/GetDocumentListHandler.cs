@@ -44,9 +44,10 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
         var documentInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(getDocumentsInQueueResult);
         var mergedDocumentMetadata = _documentHelper.MergeDocuments(documentListMetadata, documentInQueueMetadata);
         var mergedDocumentMetadataFiltered = await _documentHelper.FilterDocumentsVisibleForKb(mergedDocumentMetadata, cancellationToken);
-        
+
         var finalResponse = new GetDocumentListResponse();
         finalResponse.DocumentsMetadata = mergedDocumentMetadataFiltered.ToList();
+        finalResponse.CategoryEaCodeMain = await _documentHelper.CalculateCategoryEaCodeMain(mergedDocumentMetadataFiltered.ToList(), cancellationToken);
         return finalResponse;
     }
 }
