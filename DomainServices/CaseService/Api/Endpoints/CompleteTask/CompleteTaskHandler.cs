@@ -16,6 +16,7 @@ internal class CompleteTaskHandler : IRequestHandler<CompleteTaskRequest>
     {
         var sbRequest = new ExternalServices.SbWebApi.Dto.CompleteTaskRequest
         {
+            CaseId = request.CaseId,
             TaskIdSb = request.TaskIdSb,
             TaskUserResponse = request.TaskUserResponse,
             TaskDocumentIds = request.TaskDocumentIds
