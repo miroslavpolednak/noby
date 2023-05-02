@@ -186,7 +186,7 @@
             </remarks>
             <returns>Seznam wf tasks z SB.</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetTaskDetail(System.Int64,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetTaskDetail(System.Int64,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Detail workflow tasku dotažený ze SB.
             </summary>
@@ -1577,26 +1577,6 @@
             This method try to find formId on DocumentOnsa for all salesarragment under the Case
             </summary>
             <returns>SalesArrangementId from DocumentOnSa for FormId</returns>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.Guid">
-            <summary>
-            GUID dokumentu v dočasném úložišti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.FileName">
-            <summary>
-            Jméno souboru
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.EaCodeMainId">
-            <summary>
-            Id EA kódu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentInformation.Description">
-            <summary>
-            Popis dokumentu
-            </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentsSignList(System.Int32,System.Threading.CancellationToken)">
              <summary>
@@ -3918,6 +3898,26 @@
             Endpoint vrací obsah MPSS.Security cookie, která slouží pro autentizaci ePodpisů na základě údajů získaných z UserService. Cookie je generovaná z projektu MPSS.Security.Noby, což je klon standardní MPSS.Security dll.
             </remarks>
             <returns>BASE64 obsah cookie, který se musí předat ePodpis widgetu</returns>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Shared.DocumentInformation.Guid">
+            <summary>
+            GUID dokumentu v dočasném úložišti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Shared.DocumentInformation.FileName">
+            <summary>
+            Jméno souboru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Shared.DocumentInformation.EaCodeMainId">
+            <summary>
+            Id EA kódu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Shared.DocumentInformation.Description">
+            <summary>
+            Popis dokumentu
+            </summary>
         </member>
         <member name="T:NOBY.Api.Notifications.Handlers.CreateRiskBusinessCaseHandler">
             <summary>

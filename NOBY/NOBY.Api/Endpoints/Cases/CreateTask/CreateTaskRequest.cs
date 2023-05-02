@@ -1,6 +1,7 @@
 ﻿using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using NOBY.Api.Endpoints.Shared;
 
 namespace NOBY.Api.Endpoints.Cases.CreateTask;
 
