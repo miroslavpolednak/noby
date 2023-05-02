@@ -3,9 +3,9 @@
 public class GetTaskDetailRequest : IRequest<GetTaskDetailResponse>
 {
     public long CaseId { get; }
-    public int TaskId { get; }
+    public long TaskId { get; }
 
-    public GetTaskDetailRequest(long caseId, int taskId)
+    public GetTaskDetailRequest(long caseId, long taskId)
     {
         CaseId = caseId;
         TaskId = taskId;

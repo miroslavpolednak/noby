@@ -180,12 +180,12 @@ public class CasesController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=90CD722E-8955-43e6-9924-DC5FDDF6ED15"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns></returns>
-    [HttpGet("{caseId:long}/tasks/{taskId:int}")]
+    [HttpGet("{caseId:long}/tasks/{taskId:long}")]
     [Produces("application/json")]
-    [SwaggerOperation(OperationId = "getTaskDetail", Tags = new[] { "Case" })]
-    [ProducesResponseType(typeof(GetTaskDetailResponse), StatusCodes.Status200OK)]
+    [SwaggerOperation(OperationId = "taskDetailGet", Tags = new[] { "Case" })]
+    [ProducesResponseType(typeof(GetTaskDetail.GetTaskDetailResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetTaskDetail.GetTaskDetailResponse> GetTaskDetail([FromRoute] long caseId, [FromRoute] int taskId, CancellationToken cancellationToken)
+    public async Task<GetTaskDetail.GetTaskDetailResponse> GetTaskDetail([FromRoute] long caseId, [FromRoute] long taskId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetTaskDetail.GetTaskDetailRequest(caseId, taskId), cancellationToken);
 
     /// <summary>
