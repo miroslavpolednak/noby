@@ -73,21 +73,16 @@ internal sealed class SendToCmpHandler
 
             await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
 
+            // odeslat do SB
+            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+
             // update case state
             await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
         }
-
-        // odeslat do SB
-        try
+        else
         {
+            // odeslat do SB
             await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
-        }
-        catch when (saCategory.SalesArrangementCategory == 1)
-        {
-            //CaseState rollback
-            await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InProgress, cancellationToken);
-
-            throw;
         }
     }
 
