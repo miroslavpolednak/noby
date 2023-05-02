@@ -28,14 +28,14 @@ public class WorkflowConsultationMatrixHandler
         });
     }
 
-    const string _sqlXxd = "SELECT CAST(KOD as int) 'Kod', [TEXT] 'Text' FROM SBR.htedm_cis_wfl_cis_hodnoty WHERE ciselnik_id = 139";
+    const string _sqlXxd = "SELECT CAST(KOD as int) 'Kod', [TEXT] 'Text' FROM SBR.v_HTEDM_CIS_WFL_CIS_HODNOTY WHERE ciselnik_id = 139";
     const string _sqlCodebook = "SELECT [TaskSubtypeId],[ProcessTypeId],[ProcessPhaseId],[IsConsultation] FROM [dbo].[WorkflowConsultationMatrix]";
 
-    private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
+    private readonly CIS.Core.Data.IConnectionProvider<IXxdHfDapperConnectionProvider> _connectionProvider;
     private readonly CIS.Core.Data.IConnectionProvider _connectionProviderCodebooks;
 
     public WorkflowConsultationMatrixHandler(
-        CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
+        CIS.Core.Data.IConnectionProvider<IXxdHfDapperConnectionProvider> connectionProvider,
         CIS.Core.Data.IConnectionProvider connectionProviderCodebooks)
     {
         _connectionProvider = connectionProvider;
