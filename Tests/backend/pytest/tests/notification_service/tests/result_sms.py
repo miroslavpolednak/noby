@@ -99,7 +99,7 @@ def test_get_sms_notification_id_states(url_name,  auth_params, auth, json_data)
 
 
 #TODO: koukni na response GET search, ve swagger vraci i vyparsovane parametry
-@pytest.mark.parametrize("url_name", ["uat_url"])
+@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_full_for_search])
 def test_get_sms_notification_search(url_name,  auth_params, auth, json_data):
@@ -147,8 +147,8 @@ def test_get_sms_notification_search(url_name,  auth_params, auth, json_data):
 
     expected_sms_data = json_req_sms_basic_full_for_search.copy()
 
-    # Odebere processingPriority, customId, documentid z expected_sms_data - insg nechce tento atribut vracet
-    for attr in ["processingPriority", "customId", "documentId", "identifier"]:
+    # Odebere processingPriority, customId, documentid, text z expected_sms_data - insg nechce tento atribut vracet
+    for attr in ["processingPriority", "customId", "documentId", "identifier", "text"]:
         if attr in expected_sms_data:
             del expected_sms_data[attr]
 

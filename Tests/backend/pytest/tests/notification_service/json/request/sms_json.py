@@ -94,6 +94,24 @@ json_req_sms_basic_full= \
   "documentId": "DocumentID_876"
 }
 
+json_req_sms_mpss_archivator = \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "ARCHIVATOR_RETENCE_OZNAMENI_MP",
+  "text": "mpss archivator",
+  "customId": "log"
+}
+
+json_req_sms_kb_archivator = \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "ARCHIVATOR_RETENCE_OZNAMENI_KB",
+  "text": "kb archivator",
+  "customId": "log"
+}
+
 json_req_sms_bad_basic_without_identifier= \
 {
   "phoneNumber": "+420607115686",

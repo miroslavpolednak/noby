@@ -8,11 +8,12 @@ import requests
 from ..conftest import URLS, greater_than_zero
 from ..json.request.seg_log import json_req_basic_log
 from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
-    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_sb, json_req_sms_basic_alex, \
+    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_sb, \
+    json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
-    json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat
-from ..json.request.sms_template import json_req_sms_full_template, json_req_sms_basic_template, \
-    json_req_sms_full_template_uat, json_req_sms_basic_template_uat
+    json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
+    json_req_sms_kb_archivator
+from ..json.request.sms_template import json_req_sms_full_template
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
@@ -61,10 +62,38 @@ def test_sms_manual_env(ns_url,  auth_params, auth, json_data):
     notification_id = resp["notificationId"]
     assert notification_id != ""
 
+
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_sb])
 def test_sms_sb(url_name,  auth_params, auth, json_data):
+    """
+    SB test do budoucna, který ale ještě nemá svůj mcs type sms
+    """
+
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/sms",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    resp = resp.json()
+    print(resp)
+    assert "notificationId" in resp
+    notification_id = resp["notificationId"]
+    assert notification_id != ""
+
+
+#TODO: username pro archivator získat od Karla
+@pytest.mark.parametrize("url_name", ["dev_url"])
+@pytest.mark.parametrize("auth, json_data", [
+    ("XX_INSG_RMT_USR_TEST", json_req_sms_mpss_archivator),
+    ("XX_INSG_RMT_USR_TEST", json_req_sms_kb_archivator),
+], indirect=["auth"])
+def test_sms_archivator(url_name,  auth_params, auth, json_data):
     """
     SB test do budoucna, který ale ještě nemá svůj mcs type sms
     """
@@ -234,12 +263,22 @@ def test_sms_basic_alex(url_name,  auth_params, auth, json_data):
     assert resp["notificationId"] != ""
 
 
-#TODO: assert pro error chybu na chybějící parametry
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, json_req_sms_bad_basic_without_identifier_identity ])
-def test_sms_bad_requests(url_name,  auth_params, auth, json_data):
-    """uvodni test pro zakladni napln sms bez priloh
+@pytest.mark.parametrize("json_data, expected_error", [
+    (json_req_sms_bad_basic_without_identifier, {
+            'Identifier.Identity': ['The Identity field is required.'],
+            'Identifier.IdentityScheme': ['The IdentityScheme field is required.']
+        }),
+    (json_req_sms_bad_basic_without_identifier_scheme, {
+            'Identifier.IdentityScheme': ['The IdentityScheme field is required.']
+        }),
+    (json_req_sms_bad_basic_without_identifier_identity, {
+            'Identifier.Identity': ['The Identity field is required.']
+        }),
+])
+def test_sms_bad_identifier(url_name, auth_params, auth, json_data, expected_error):
+    """uvodni errors test pro zakladni napln sms bez priloh
     """
 
     username = auth[0]
@@ -255,4 +294,5 @@ def test_sms_bad_requests(url_name,  auth_params, auth, json_data):
     print(resp)
     assert resp['status'] == 400
     print(resp)
-    errors = resp.get('errors', {})
+    result_error = resp.get('errors', {})
+    assert result_error == expected_error

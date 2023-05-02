@@ -11,9 +11,9 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
     json_req_mail_bad_identifier_identity_mpss_basic, \
     json_req_mail_bad_identifier_mpss_basic, json_req_mail_bad_identifier_identity_mpss_basic, \
     json_req_mail_bad_identifier_scheme_mpss_basic, json_req_mail_mpss_bad_format_language, \
-    json_req_mail_mpss_bad_content_format, json_req_mail_mpss_basic_format_html, \
-    json_req_mail_mpss_basic_format_text_plain, json_req_mail_mpss_basic_format_text_html, \
-    json_req_mail_mpss_basic_format_application_html
+    json_req_mail_mpss_bad_content_format_text, json_req_mail_mpss_basic_format_html, \
+    json_req_mail_mpss_negative_basic_format_text_plain, json_req_mail_mpss_basic_format_text_html, \
+    json_req_mail_mpss_basic_format_application_html, json_req_mail_mpss_basic_content_format_application_mht
 
 
 #zákkladní test
@@ -39,12 +39,13 @@ def test_mail(url_name,  auth_params, auth, json_data):
     notification_id = resp["notificationId"]
     assert notification_id != ""
 
-
 #TODO:content.format test - az po Drobne zmeny 3
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_format_application_html, json_req_mail_mpss_basic_format_text_html, json_req_mail_mpss_basic_format_text_plain,
-                                       json_req_mail_mpss_basic_format_html])
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_format_application_html,
+                                       json_req_mail_mpss_basic_format_text_html,
+                                       json_req_mail_mpss_basic_format_html,
+                                       json_req_mail_mpss_basic_content_format_application_mht])
 def test_mail_content_format(url_name,  auth_params, auth, json_data):
     """kladny test"""
 
@@ -84,27 +85,6 @@ def test_mail_max_attachments(url_name,  auth_params, auth, json_data):
     assert "notificationId" in resp
     notification_id = resp["notificationId"]
     assert notification_id != ""
-
-
-#TODO: hlášky budou vyvinuty v drobné změny 3
-@pytest.mark.parametrize("url_name", ["dev_url"])
-@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_content_format])
-def test_mail_bad_content_format(url_name,  auth_params, auth, json_data):
-    """negativní test pro test jazyka a formatu"""
-
-    username = auth[0]
-    password = auth[1]
-    session = requests.session()
-    resp = session.post(
-        URLS[url_name] + "/v1/notification/email",
-        json=json_data,
-        auth=(username, password),
-        verify=False
-    )
-    assert resp.status_code == 400
-    error_message = resp.json()['errors']['317'][0]
-    assert 'Allowed values for Format: xxxxxxxxx.' in error_message
 
 
 #negativní testy
@@ -173,7 +153,8 @@ def test_mail_negative_identifier_request(auth_params, auth, json_data, url_name
 #TODO: dodelat assrty pro errors hlášku, bude vyvinuto v drobné změny 3
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_content_format])
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_content_format_text,
+                                       json_req_mail_mpss_negative_basic_format_text_plain])
 def test_mail_negative_content_format(url_name,  auth_params, auth, json_data):
     """negativní test pro test jazyka a formatu"""
 
@@ -188,7 +169,7 @@ def test_mail_negative_content_format(url_name,  auth_params, auth, json_data):
     )
     assert resp.status_code == 400
     error_message = resp.json()['errors']['317'][0]
-    assert 'Allowed values for Format: xxxxxxxxx.' in error_message
+    assert 'Allowed values for Format: application/html,application/mht,html,text/html.' in error_message
 
 #pro testy zabezpeceni, jake sms jsou mozne odespilat pres urcite uzivatele - pouzita vnorena parametrizace
 @pytest.mark.parametrize("url_name", ["dev_url"])

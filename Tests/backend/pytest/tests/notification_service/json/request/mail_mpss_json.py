@@ -342,7 +342,7 @@ json_req_mail_mpss_basic_format_text_html = \
     "attachments": []
   }
 
-json_req_mail_mpss_basic_format_text_plain = \
+json_req_mail_mpss_negative_basic_format_text_plain = \
   {
     "from": {
       "value": "notification-service@mpss.cz",
@@ -432,7 +432,7 @@ json_req_mail_mpss_bad_format_language = \
   }
 
 # obsahuje špatně content format
-json_req_mail_mpss_bad_content_format = \
+json_req_mail_mpss_bad_content_format_text = \
   {
     "from": {
       "value": "notification-service@mpss.cz",
@@ -457,6 +457,35 @@ json_req_mail_mpss_bad_content_format = \
       "format": "text",
       "language": "cs",
       "text": "json_req_mail_mpss_bad_content_format"
+    },
+    "attachments": []
+  }
+
+json_req_mail_mpss_basic_content_format_application_mht = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "text/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_content_format_application_mht"
     },
     "attachments": []
   }
