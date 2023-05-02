@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
+using NOBY.Api.Endpoints.Shared;
 
 namespace NOBY.Api.Endpoints.Cases.UpdateTaskDetail;
 
@@ -19,7 +19,7 @@ public class UpdateTaskDetailRequest : IRequest
 
     public string TaskUserResponse { get; set; } = null!;
 
-    public List<DocumentsInformation> Attachments { get; set; } = null!;
+    public List<DocumentInformation> Attachments { get; set; } = null!;
 
     internal UpdateTaskDetailRequest InfuseIds(long caseId, long taskId)
     {
