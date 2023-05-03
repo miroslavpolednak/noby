@@ -34,7 +34,7 @@ public sealed class CreateTaskRequest
     /// </summary>
     /// <example>24556</example>
     [Required]
-    public int ProcessId { get; set; }
+    public long ProcessId { get; set; }
 
     /// <summary>
     /// Text požadavku
