@@ -7,19 +7,9 @@ using System.Text.RegularExpressions;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetTaskDetail;
 
-internal class GetTaskDetailHandler : IRequestHandler<GetTaskDetailRequest, GetTaskDetailResponse>
+internal sealed class GetTaskDetailHandler 
+    : IRequestHandler<GetTaskDetailRequest, GetTaskDetailResponse>
 {
-    private readonly SbWebApiCommonDataProvider _commonDataProvider;
-    private readonly ISbWebApiClient _sbWebApiClient;
-    private readonly ICodebookServiceClients _codebookService;
-
-    public GetTaskDetailHandler(SbWebApiCommonDataProvider commonDataProvider, ISbWebApiClient sbWebApiClient, ICodebookServiceClients codebookService)
-    {
-        _commonDataProvider = commonDataProvider;
-        _sbWebApiClient = sbWebApiClient;
-        _codebookService = codebookService;
-    }
-
     public async Task<GetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
     {
         var sbRequest = new FindByTaskIdRequest
@@ -42,26 +32,26 @@ internal class GetTaskDetailHandler : IRequestHandler<GetTaskDetailRequest, GetT
             response.TaskDetails.Add(new TaskDetailResponse
             {
                 TaskObject = taskData.ToWorkflowTask(),
-                TaskDetail = await CreateTaskDetail(taskData, cancellationToken)
+                TaskDetail = await createTaskDetail(taskData, cancellationToken)
             });
         }
 
         return response;
     }
 
-    private async Task<TaskDetailItem> CreateTaskDetail(IReadOnlyDictionary<string, string> taskData, CancellationToken cancellationToken)
+    private async Task<TaskDetailItem> createTaskDetail(IReadOnlyDictionary<string, string> taskData, CancellationToken cancellationToken)
     {
         var taskDetail = taskData.ToTaskDetail();
 
         var performer = await _codebookService.GetOperator(taskData["ukol_op_zpracovatel"], cancellationToken);
-
         taskDetail.PerformanName = performer.PerformerName;
-        taskDetail.TaskCommunication.AddRange(ParseTaskCommunications(taskData));
+
+        taskDetail.TaskCommunication.AddRange(parseTaskCommunications(taskData));
 
         return taskDetail;
     }
 
-    private static IEnumerable<TaskCommunicationItem> ParseTaskCommunications(IReadOnlyDictionary<string, string> taskData)
+    private static IEnumerable<TaskCommunicationItem> parseTaskCommunications(IReadOnlyDictionary<string, string> taskData)
     {
         const string Pattern = @"(?=#Separator(Request|Response)#|$)(.*?)(?=#Separator(Request|Response)#|$)";
 
@@ -69,7 +59,9 @@ internal class GetTaskDetailHandler : IRequestHandler<GetTaskDetailRequest, GetT
         {
             1 => taskData["ukol_dozadani_noby"],
             3 => taskData["ukol_konzultace_noby"],
-            7 => taskData["ukol_predanihs_noby"]
+            6 => taskData["ukol_podpis_noby"],
+            7 => taskData["ukol_predanihs_noby"],
+            _ => throw new NotImplementedException()
         };
 
         var matches = Regex.Matches(text, Pattern);
@@ -94,5 +86,16 @@ internal class GetTaskDetailHandler : IRequestHandler<GetTaskDetailRequest, GetT
                 TaskRequest = matches[i + 1].Value
             };
         }
+    }
+
+    private readonly SbWebApiCommonDataProvider _commonDataProvider;
+    private readonly ISbWebApiClient _sbWebApiClient;
+    private readonly ICodebookServiceClients _codebookService;
+
+    public GetTaskDetailHandler(SbWebApiCommonDataProvider commonDataProvider, ISbWebApiClient sbWebApiClient, ICodebookServiceClients codebookService)
+    {
+        _commonDataProvider = commonDataProvider;
+        _sbWebApiClient = sbWebApiClient;
+        _codebookService = codebookService;
     }
 }

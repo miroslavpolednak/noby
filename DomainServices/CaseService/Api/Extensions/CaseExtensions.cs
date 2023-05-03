@@ -9,16 +9,16 @@ internal static class CaseExtensions
         var task = new WorkflowTask
         {
             TaskIdSb = taskData.GetInteger("ukol_id"),
-            TaskId = taskData.GetInteger("ukol_sada"),
+            TaskId = taskData.GetLong("ukol_sada"),
             CreatedOn = taskData.GetDate("ukol_dat_start_proces"),
             TaskTypeId = taskData.GetInteger("ukol_typ_noby"),
-            TaskTypeName = taskData["ukol_nazev_noby"],
-            TaskSubtypeName = taskData["ukol_oznaceni_noby"],
-            ProcessId = taskData.GetInteger("ukol_top_proces_sada"),
-            ProcessNameShort = taskData["ukol_top_proces_nazev_noby"],
+            TaskTypeName = taskData.GetValueOrDefault("ukol_nazev_noby") ?? "",
+            TaskSubtypeName = taskData.GetValueOrDefault("ukol_oznaceni_noby") ?? "",
+            ProcessId = taskData.GetLong("ukol_top_proces_sada"),
+            ProcessNameShort = taskData.GetValueOrDefault("ukol_top_proces_nazev_noby") ?? "",
             StateIdSb = taskData.GetInteger("ukol_stav_poz"),
             Cancelled = taskData.GetBoolean("ukol_stornovano"),
-            PerformerLogin = taskData.GetValueOrDefault("ukol_op_zpracovatel")
+            PerformerLogin = taskData.GetValueOrDefault("ukol_op_zpracovatel") ?? ""
         };
 
         task.PhaseTypeId = GetPhaseTypeId(task.TaskTypeId, taskData);
@@ -32,10 +32,10 @@ internal static class CaseExtensions
         var process =  new ProcessTask
         {
             ProcessIdSb = taskData.GetInteger("ukol_id"),
-            ProcessId = taskData.GetInteger("ukol_sada"),
+            ProcessId = taskData.GetLong("ukol_sada"),
             CreatedOn = taskData.GetDate("ukol_dat_start_proces"),
             ProcessTypeId = taskData.GetInteger("ukol_proces_typ_noby"),
-            ProcessNameLong = taskData["ukol_proces_nazev_noby"],
+            ProcessNameLong = taskData.GetValueOrDefault("ukol_proces_nazev_noby") ?? "",
         };
 
         process.ProcessPhaseId = GetProcessPhaseId(process.ProcessTypeId, taskData);
@@ -46,22 +46,44 @@ internal static class CaseExtensions
 
     public static TaskDetailItem ToTaskDetail(this IReadOnlyDictionary<string, string> taskData)
     {
-        var taskType = taskData.GetInteger("ukol_typ_noby");
-
-        int? orderId = taskType switch
+        var taskDetail = new TaskDetailItem
         {
-            1 when taskData.GetInteger("ukol_dozadani_typ") == 5 => taskData.GetInteger("ukol_dozadani_order_id"),
-            3 when taskData.GetInteger("ukol_konzultace_oblast") is 1 or 7 => taskData.GetInteger("ukol_konzultace_order_id"),
-            _ => null
+            ProcessNameLong = taskData.GetValueOrDefault("ukol_typ_proces_noby_oznaceni") ?? "",
+            TaskDocumentIds = { (taskData.GetValueOrDefault("wfl_refobj_dokumenty") ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries) }
         };
-
-        return new TaskDetailItem
+        
+        if (int.TryParse(taskData.GetValueOrDefault("ukol_typ_noby"), out int taskType))
         {
-            ProcessNameLong = taskData["ukol_typ_proces_noby_oznaceni"],
-            SentToCustomer = taskType == 1 ? taskData.GetBoolean("ukol_dozadani_prijemce_typ") : null,
-            OrderId = orderId,
-            TaskDocumentIds = { taskData["wfl_refobj_dokumenty"].Split(',', StringSplitOptions.RemoveEmptyEntries) }
-        };
+            switch (taskType)
+            {
+                case 1:
+                    taskDetail.Request = new()
+                    {
+                        SentToCustomer = taskData.GetValueOrDefault("ukol_dozadani_prijemce_typ") == "1",
+                        OrderId = taskData.GetValueOrDefault("ukol_dozadani_typ") == "5" ? taskData.GetNInteger("ukol_dozadani_order_id") : null
+                    };
+                    break;
+
+                case 6:
+                    taskDetail.Signing = new()
+                    {
+                        FormId = taskData.GetValueOrDefault("ukol_podpis_dokument_form_id") ?? "",
+                        Expiration = taskData.GetValueOrDefault("ukol_podpis_lhuta_do") ?? "",
+                        DocumentForSigning = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_id") ?? "",
+                        ProposalForEntry = taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")
+                    };
+                    break;
+
+                case 3 when _allowedConsultationTypes.Contains(taskData.GetNInteger("ukol_konzultace_oblast").GetValueOrDefault()):
+                    taskDetail.ConsultationData = new()
+                    {
+                        OrderId = taskData.GetNInteger("ukol_konzultace_order_id")
+                    };
+                    break;
+            }
+        }
+
+        return taskDetail;
     }
 
     public static ActiveTask ToUpdateTaskItem(this WorkflowTask workflowTask)
@@ -118,7 +140,7 @@ internal static class CaseExtensions
             return;
         }
 
-        process.StateName = taskData["ukol_proces_oznacenie_noby"];
+        process.StateName = taskData.GetValueOrDefault("ukol_proces_oznacenie_noby") ?? "";
         process.StateIndicator = 1;
     }
 
@@ -132,4 +154,6 @@ internal static class CaseExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(processTypeId), processTypeId, null)
         };
     }
+
+    private static int[] _allowedConsultationTypes = new[] { 1, 7 };
 }
