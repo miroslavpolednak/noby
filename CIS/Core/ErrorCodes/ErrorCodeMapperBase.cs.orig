@@ -82,6 +82,7 @@ public abstract class ErrorCodeMapperBase
     /// <param name="messages">[ExceptionCode, ExceptionMessage]</param>
     protected static void SetMessages(IDictionary<int, string> messages)
     {
+<<<<<<< HEAD
         lock (_lock)
         {
             if (Messages is null)
@@ -90,9 +91,18 @@ public abstract class ErrorCodeMapperBase
             }
             else if (messages.Any() && !Messages.ContainsKey(messages.Keys.First()))
             {
-                var filteredMessages = messages.Where(t => !Messages.Any(x => x.Key == t.Key));
-                Messages = new ErrorCodesDictionary(Messages.Concat(filteredMessages).ToDictionary(x => x.Key, x => x.Value));
+                Messages = new ErrorCodesDictionary(Messages.Concat(messages).ToDictionary(x => x.Key, x => x.Value));
             }
+=======
+        if (Messages is null)
+        {
+            Messages = new ErrorCodesDictionary(messages);
+        }
+        else
+        {
+            var filteredMessages = messages.Where(t => !Messages.Any(x => x.Key == t.Key));
+            Messages = new ErrorCodesDictionary(Messages.Concat(filteredMessages).ToDictionary(x => x.Key, x => x.Value));
+>>>>>>> feature/HFICH-5661_getTaskListByContract
         }
     }
 

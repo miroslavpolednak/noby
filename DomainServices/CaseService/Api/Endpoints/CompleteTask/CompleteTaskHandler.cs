@@ -3,7 +3,7 @@ using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
 namespace DomainServices.CaseService.Api.Endpoints.CompleteTask;
 
-internal class CompleteTaskHandler : IRequestHandler<CompleteTaskRequest>
+internal sealed class CompleteTaskHandler : IRequestHandler<CompleteTaskRequest>
 {
     private readonly ISbWebApiClient _sbWebApiClient;
 
@@ -22,16 +22,6 @@ internal class CompleteTaskHandler : IRequestHandler<CompleteTaskRequest>
             TaskDocumentIds = request.TaskDocumentIds
         };
 
-        var responseCode = await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
-        
-        switch (responseCode)
-        {
-            case 0:
-                return;
-            case 2:
-                throw new CisValidationException(ErrorCodeMapper.TaskIdNotFound, ErrorCodeMapper.GetMessage(ErrorCodeMapper.TaskIdNotFound, request.TaskIdSb));
-            default:
-                throw new CisException(BaseCisException.UnknownExceptionCode, $"SbWebApi returned error code {responseCode}");
-        }
+        await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
     }
 }

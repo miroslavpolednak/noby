@@ -21,7 +21,10 @@ internal sealed class GetProcessListHandler : IRequestHandler<GetProcessListRequ
 
     public async Task<GetProcessListResponse> Handle(GetProcessListRequest request, CancellationToken cancellationToken)
     {
-        await CheckIfCaseExists(request.CaseId, cancellationToken);
+        if (!(await _dbContext.Cases.AnyAsync(c => c.CaseId == request.CaseId, cancellationToken)))
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
+        }
 
         var sbRequest = new FindByCaseIdRequest
         {
@@ -34,17 +37,7 @@ internal sealed class GetProcessListHandler : IRequestHandler<GetProcessListRequ
 
         return new GetProcessListResponse
         {
-            Processes = { foundTasks.Tasks.Select(taskData => taskData.ToProcessTask()) }
+            Processes = { foundTasks.Select(taskData => taskData.ToProcessTask()) }
         };
-    }
-
-    private async Task CheckIfCaseExists(long caseId, CancellationToken cancellationToken)
-    {
-        var caseExists = await _dbContext.Cases.AnyAsync(c => c.CaseId == caseId, cancellationToken);
-
-        if (caseExists)
-            return;
-
-        throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, caseId);
     }
 }

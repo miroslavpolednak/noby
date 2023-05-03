@@ -109,6 +109,8 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
     Task<List<WorkflowTask>> GetTaskList(long caseId, CancellationToken cancellationToken = default(CancellationToken));
 
+    Task<List<WorkflowTask>> GetTaskListByContract(string contractNumber, CancellationToken cancellationToken = default(CancellationToken));
+
     Task<IList<ProcessTask>> GetProcessList(long caseId, CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -48,6 +48,10 @@ public partial class GetTaskListRequest
     : MediatR.IRequest<GetTaskListResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 
+public partial class GetTaskListByContractRequest
+    : MediatR.IRequest<GetTaskListResponse>, CIS.Core.Validation.IValidatableRequest
+{ }
+
 public partial class GetProcessListRequest : MediatR.IRequest<GetProcessListResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 

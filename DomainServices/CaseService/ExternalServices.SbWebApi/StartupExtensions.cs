@@ -35,6 +35,8 @@ public static class StartupExtensions
                 throw new NotImplementedException($"{ServiceName} version {typeof(TClient)} client not implemented");
         }
 
+        SbWebApi.ErrorCodeMapper.Init();
+
         return builder;
     }
 }
