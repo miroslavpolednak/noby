@@ -27,7 +27,7 @@ internal sealed class CreateTaskHandler
 
         var result = await _sbWebApi.CreateTask(new ExternalServices.SbWebApi.Dto.CreateTask.CreateTaskRequest
         {
-            ProcessId = request.ProcessId,
+            ProcessId = Convert.ToInt32(request.ProcessId),//IT anal neni schopna rict co s tim
             TaskTypeId = request.TaskTypeId,
             Metadata = metadata
         }, cancellationToken);

@@ -1,5 +1,4 @@
-﻿using DomainServices.CaseService.Contracts;
-using NOBY.Api.Endpoints.Cases.GetConsultationTypes;
+﻿using NOBY.Api.Endpoints.Cases.GetConsultationTypes;
 using NOBY.Api.Endpoints.Cases.UpdateTaskDetail;
 using NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 using Swashbuckle.AspNetCore.Annotations;
@@ -20,7 +19,7 @@ public class CasesController : ControllerBase
     /// Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("{caseId:long}/tasks/consultation-type", Name = "consultationTypeGet")]
+    [HttpGet("{caseId:long}/tasks/consultation-type", Name = "consultationTypeGet")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(List<GetConsultationTypesResponseItem>), StatusCodes.Status200OK)]
@@ -61,7 +60,7 @@ public class CasesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<int> CreateTask([FromRoute] long caseId, [FromBody] CreateTask.CreateTaskRequest request)
+    public async Task<long> CreateTask([FromRoute] long caseId, [FromBody] CreateTask.CreateTaskRequest request)
         => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>

@@ -25,21 +25,10 @@ public class CisWebApplicationFactoryOptions
     /// </summary>
     public Dictionary<string, string?>? Header { get; set; }
 
-    /// <summary>
-    /// Create mock of appsettings. If enabled, test project have to has appsettings.Testing.json 
-    /// </summary>
-    public bool UseTestAppsettings { get; set; } = true;
-
-    /// <summary>
-    /// Create mock of CisEnvironmentConfiguration via configuration in appsettings.Testing.json. 
-    /// If we want disable service discovery, we have to set: "CisEnvironmentConfiguration"__"DisableServiceDiscovery": true 
-    /// </summary>
-    public bool UseMockCisEnvironmentConfiguration { get; set; } = true;
-
     public string AppSettingsName { get; set; } = "appsettings.Testing.json";
 
     /// <summary>
-    /// Currently we have only EfInMemoryMockAdapter, others going to be added soon.
+    /// Currently we have only EfInMemoryMockAdapter and SqliteInMemoryMockAdapter (Default: EfInMemoryMockAdapter).
     /// </summary>
     public IDbMockAdapter DbMockAdapter { get; set; } = new EfInMemoryMockAdapter();
 }

@@ -53,7 +53,17 @@ internal sealed class CreateMortgageCaseHandler
         // create customer on SA
         var createCustomerResult = await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyCustomerOnSAId, createCustomerResult.CustomerOnSAId);
-        
+
+        // updatovat Agent v SA parameters, vytvarime prazdny objekt Parameters pouze s agentem
+        await _salesArrangementService.UpdateSalesArrangementParameters(new _SA.UpdateSalesArrangementParametersRequest
+        {
+            SalesArrangementId = salesArrangementId,
+            Mortgage = new _SA.SalesArrangementParametersMortgage
+            {
+                Agent = createCustomerResult.CustomerOnSAId
+            }
+        }, cancellationToken);
+
         // create household
         int householdId = await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
         {

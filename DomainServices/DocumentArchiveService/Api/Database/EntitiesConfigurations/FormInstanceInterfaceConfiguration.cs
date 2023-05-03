@@ -47,8 +47,11 @@ public class FormInstanceInterfaceConfiguration : IEntityTypeConfiguration<FormI
        .HasColumnType("tinyint");
 
         builder.Property(e => e.JsonDataClob)
-       .HasColumnName("JSON_DATA_CLOB")
-       .HasColumnType("varchar(max)");
+       .HasColumnName("JSON_DATA_CLOB");
 
+        if (DocumentArchiveDbContext.IsSqlite)
+            builder.Property(e => e.JsonDataClob).HasColumnType("text");
+        else
+            builder.Property(e => e.JsonDataClob).HasColumnType("varchar(max)");
     }
 }
