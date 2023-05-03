@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Data.Common;
 
 namespace CIS.Testing.Database;
-public class EfInMemoryMockAdapter : IDbMockAdapter
+public class SqliteInMemoryMockAdapter : IDbMockAdapter, IDisposable
 {
+    private DbConnection _connection = null!;
+
     public void MockDatabase<TStartup>(IServiceCollection services) where TStartup : class
     {
         var dbContextTypes = typeof(TStartup).Assembly.GetTypes().Where(t => typeof(DbContext).IsAssignableFrom(t));
@@ -12,16 +15,23 @@ public class EfInMemoryMockAdapter : IDbMockAdapter
 
         foreach (var dbContextType in dbContextTypes)
         {
+            //Set IsSqlite to true if exist 
+            var isSqlServerInfo = dbContextType.GetProperty("IsSqlite");
+            if (isSqlServerInfo is not null)
+                isSqlServerInfo.SetValue(null, true);
+
             // Remove existing dbContext(real db) 
             DbHelper.RemoveExistingDbContext(services, dbContextType);
 
-            //Dynamically register db context with in memory db
-            var dbName = Guid.NewGuid().ToString(); // db is unique per test class 
+            // Create and open a connection. This creates the SQLite in-memory database, which will persist until the connection is closed
+            // at the end of the test (see Dispose below).
+            _connection = new SqliteConnection("Filename=:memory:");
+            _connection.Open();
+
             var addDbContextGenericMethod = addDbContextMethod.MakeGenericMethod(dbContextType);
             var optionsAction = new Action<DbContextOptionsBuilder>(options =>
             {
-                options.UseInMemoryDatabase(dbName);
-                options.ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                options.UseSqlite(_connection);
             });
 
             DbHelper.RegisterDbContext(services, addDbContextGenericMethod, optionsAction);
@@ -30,6 +40,18 @@ public class EfInMemoryMockAdapter : IDbMockAdapter
 
     public void Dispose(bool disposing)
     {
-        // Nothing to dispose if we use inmemory database
+        if (disposing)
+        {
+            Dispose();
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_connection is not null)
+        {
+            _connection.Dispose();
+            GC.SuppressFinalize(this);
+        }
     }
 }

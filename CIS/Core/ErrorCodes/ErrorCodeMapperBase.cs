@@ -8,6 +8,9 @@ namespace CIS.Core.ErrorCodes;
 /// </summary>
 public abstract class ErrorCodeMapperBase
 {
+    // Global lock
+    private static readonly object _lock = new();
+
     /// <summary>
     /// Slovník chybových hlášek [ExceptionCode, ExceptionMessage].
     /// </summary>
@@ -73,10 +76,17 @@ public abstract class ErrorCodeMapperBase
     /// <param name="messages">[ExceptionCode, ExceptionMessage]</param>
     protected static void SetMessages(IDictionary<int, string> messages)
     {
-        if (Messages is null)
-            Messages = new ErrorCodesDictionary(messages);
-        else
-            Messages = new ErrorCodesDictionary(Messages.Concat(messages).ToDictionary(x => x.Key, x => x.Value));
+        lock (_lock)
+        {
+            if (Messages is null)
+            {
+                Messages = new ErrorCodesDictionary(messages);
+            }
+            else if (messages.Any() && !Messages.ContainsKey(messages.Keys.First()))
+            {
+                Messages = new ErrorCodesDictionary(Messages.Concat(messages).ToDictionary(x => x.Key, x => x.Value));
+            }
+        }
     }
 
     /// <summary>
