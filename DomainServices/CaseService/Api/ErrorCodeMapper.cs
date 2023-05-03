@@ -15,6 +15,7 @@ internal sealed class ErrorCodeMapper
     public const int WfTaskValidationFailed2 = 13009;
     public const int CaseStateNotFound = 13011;
     public const int CustomerNameIsEmpty = 13012;
+    public const int ContractNumberIsEmpty = 13013;
     public const int ProductTypeIdNotFound = 13014;
     public const int CaseAlreadyExist = 13015;
     public const int CaseIdIsEmpty = 13016;
@@ -27,11 +28,14 @@ internal sealed class ErrorCodeMapper
     public const int ProcessIdIsEmpty = 13028;
     public const int TaskTypeIdNotAllowed = 13029;
     public const int TaskIdSBIsEmpty = 13030;
+    public const int ContractNumberNotFound = 13030;
 
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
         {
+            { ContractNumberNotFound, "Contract number not found" },
+            { ContractNumberIsEmpty, "Contract number is empty" },
             { ProductTypeIdIsEmpty, "ProductTypeId must be > 0" },
             { TargetAmountIsEmpty, "Target amount must be > 0" },
             { CaseOwnerIsEmpty, "CaseOwnerUserId must be > 0" },
