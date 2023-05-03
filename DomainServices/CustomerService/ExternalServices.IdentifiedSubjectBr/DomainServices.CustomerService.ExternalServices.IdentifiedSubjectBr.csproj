@@ -31,4 +31,8 @@
     <ProjectReference Include="..\ExternalServices.Common\DomainServices.CustomerService.ExternalServices.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="V1\Dto\" />
+  </ItemGroup>
+
 </Project>

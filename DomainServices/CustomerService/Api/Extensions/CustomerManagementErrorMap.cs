@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using CIS.Core.Exceptions;
+using DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Dto;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 
 namespace DomainServices.CustomerService.Api.Extensions;
@@ -44,14 +45,17 @@ internal sealed class CustomerManagementErrorMap
         }
     }
 
-    public void ResolveValidationError(string errorCode)
+    public void ResolveValidationError(IdentifiedSubjectError errorData)
     {
-        if (!_errors.ContainsKey(errorCode))
-            return;
+        foreach (var errorMessage in errorData.Detail)
+        {
+            if (_errors.ContainsKey(errorMessage))
+                continue;
 
-        var error = _errors[errorCode];
+            var error = _errors[errorMessage];
 
-        throw new CisValidationException(error.ErrorCode, $"{errorCode} - {error.Description}");
+            throw new CisValidationException(error.ErrorCode, $"{errorData.Message}, {errorMessage} - {error.Description}");
+        }
     }
 
     private void MapErrors()

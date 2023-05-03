@@ -40,7 +40,10 @@ internal sealed class IdentifiedSubjectService
 
         var response = await _identifiedSubjectClient.CreateIdentifiedSubject(identifiedSubject, request.HardCreate, cancellationToken);
 
-        return new Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response), IdentitySchemes.Kb);
+        if (response.Error is not null) 
+            _errorMap.ResolveValidationError(response.Error);
+
+        return new Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response.Result!), IdentitySchemes.Kb);
     }
 
     public async Task UpdateSubject(UpdateCustomerRequest request, CancellationToken cancellationToken)
