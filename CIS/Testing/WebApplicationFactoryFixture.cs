@@ -14,7 +14,7 @@ using Grpc.Core.Interceptors;
 
 namespace CIS.Testing;
 
-public class WebApplicationFactoryFixture<TStartup> 
+public class WebApplicationFactoryFixture<TStartup>
     : WebApplicationFactory<TStartup> where TStartup : class
 {
     private Action<IServiceCollection>? _configureServices;
@@ -35,7 +35,7 @@ public class WebApplicationFactoryFixture<TStartup>
     {
     }
 
-    public TService CreateGrpcClient<TService>(bool addClientExceptionInterceptor = false) 
+    public TService CreateGrpcClient<TService>(bool addClientExceptionInterceptor = false)
         where TService : ClientBase<TService>
     {
         List<Interceptor> interceptors = new();
@@ -45,7 +45,7 @@ public class WebApplicationFactoryFixture<TStartup>
         {
             interceptors.Add(userForwardingInterceptor);
         }
-        
+
         if (addClientExceptionInterceptor)
         {
             interceptors.Add(Services.GetRequiredService<GenericClientExceptionInterceptor>());

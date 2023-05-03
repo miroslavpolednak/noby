@@ -12,6 +12,8 @@ using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using CIS.Testing;
 using DomainServices.UserService.Clients.Services;
+using DomainServices.DocumentArchiveService.Api.Database;
+using CIS.Testing.Database;
 
 namespace DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
 
@@ -28,7 +30,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
 
         ConfigureWebHost();
 
-        CreateGlobalMocks();
+        PrepareDatabase();
     }
 
     public WebApplicationFactoryFixture<Program> Fixture { get; }
@@ -44,6 +46,8 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         // This configuration is optional, everything is set correctly by default.
        .ConfigureCisTestOptions(options =>
        {
+           // default is EfInMemoryMockAdapter
+           options.DbMockAdapter = new SqliteInMemoryMockAdapter();
            // If you set this property to false, you have to manually register in memory database, if you don't do it, regular database gonna be used and this is terrible wrong.  
            // Example of how to do it manually is shown below
            options.UseDbContextAutoMock = true; // default
@@ -112,8 +116,11 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         };
     }
 
-    private void CreateGlobalMocks()
+    private void PrepareDatabase()
     {
-       // Some global mocks
+        var scope = Fixture.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<DocumentArchiveDbContext>();
+        context.Database.EnsureDeleted();
+        context.Database.EnsureCreated();
     }
 }
