@@ -14,7 +14,7 @@ internal sealed  class UpdateCommentHandler : IRequestHandler<UpdateCommentReque
 
         if ((SalesArrangementTypes)salesArrangement.SalesArrangementTypeId != SalesArrangementTypes.Mortgage)
         {
-            throw new NobyValidationException(90001);
+            throw new NobyValidationException($"Invalid SalesArrangement id = {request.SalesArrangementId}, SalesArrangementTypeId must be {SalesArrangementTypes.Mortgage}");
         }
         
         var mortgageParameters = new SalesArrangementParametersMortgage

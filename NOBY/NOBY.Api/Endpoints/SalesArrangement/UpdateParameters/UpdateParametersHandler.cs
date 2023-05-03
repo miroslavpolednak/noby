@@ -25,7 +25,13 @@ internal sealed class UpdateParametersHandler
                 case CIS.Foms.Types.Enums.SalesArrangementTypes.Mortgage:
                     var o1 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersMortgage>(dataString, _jsonSerializerOptions);
                     if (o1 is not null)
+                    {
                         updateRequest.Mortgage = o1.ToDomainService();
+                        if (string.IsNullOrEmpty(updateRequest.Mortgage.IncomeCurrencyCode) || string.IsNullOrEmpty(updateRequest.Mortgage.ResidencyCurrencyCode))
+                        {
+                            throw new NobyValidationException(90019);
+                        }
+                    }
                     break;
 
                 case CIS.Foms.Types.Enums.SalesArrangementTypes.Drawing:
