@@ -194,7 +194,7 @@ public class CasesController : ControllerBase
     /// Update workflow tasku do SB. <br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    /// <returns></returns>
+    /// <response code="404">Task or case not found</response>
     [HttpPut("{caseId:long}/tasks/{taskId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(OperationId = "taskDetailUpdate", Tags = new[] { "Case" })]
