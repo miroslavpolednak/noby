@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CompleteTask;
 using DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts;
 using DomainServices.UserService.Clients;
 
@@ -103,18 +104,16 @@ internal sealed class RealSbWebApiClient
         };
     }
 
-    public async Task CompleteTask(Dto.CompleteTaskRequest request, CancellationToken cancellationToken = default)
+    public async Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default)
     {
         var sbRequest = new WFS_Manage_CompleteTask
         {
             Task_id = request.TaskIdSb,
-            Metadata = new List<WFS_MetadataItem>
+            Metadata = request.Metadata.Select(t => new WFS_MetadataItem
             {
-                new() { Mtdt_def = "ukol_mandant", Mtdt_val = "2", },
-                new() { Mtdt_def = "ukol_uver_id", Mtdt_val = request.CaseId.ToString(CultureInfo.InvariantCulture), },
-                new() { Mtdt_def = "ukol_dozadani_odpoved_oz", Mtdt_val = request.TaskUserResponse ?? string.Empty },
-                new() { Mtdt_def = "wfl_refobj_dokumenty", Mtdt_val = string.Join(",", request.TaskDocumentIds) }
-            }
+                Mtdt_def = t.Key,
+                Mtdt_val = t.Value
+            }).ToList()
         };
 
         var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/completetask", sbRequest, cancellationToken);

@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CompleteTask;
 
 namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
@@ -16,7 +17,7 @@ public interface ISbWebApiClient
     /// Zašle odpověď do workflow úkolu Dožádání.
     /// </summary>
     /// <returns>Kód, který se vrátil z SB</returns>
-    Task CompleteTask(Dto.CompleteTaskRequest request, CancellationToken cancellationToken = default);
+    Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Získání seznamu úkolů a podúkolů ze SB podle Case ID.

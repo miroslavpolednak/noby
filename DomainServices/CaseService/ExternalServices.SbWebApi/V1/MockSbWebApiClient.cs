@@ -1,5 +1,5 @@
-﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CaseStateChanged;
+﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CaseStateChanged;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CompleteTask;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CreateTask;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
 
