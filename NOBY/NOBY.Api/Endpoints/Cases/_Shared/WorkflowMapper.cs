@@ -52,11 +52,11 @@ public class WorkflowMapper
         var taskDetail = new NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail
         {
             TaskIdSB = task.TaskIdSb,
-            PerformerLogin = performer?.PerformerLogin ?? string.Empty,
-            PerformerName = performer?.PerformerName ?? string.Empty,
+            PerformerLogin = performer?.PerformerLogin,
+            PerformerName = performer?.PerformerName,
             ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
-            SentToCustomer = taskDetailItem.SentToCustomer ?? false,
-            OrderId = taskDetailItem.OrderId ?? 0
+            SentToCustomer = taskDetailItem.SentToCustomer,
+            OrderId = taskDetailItem.OrderId
         };
 
         taskDetail.TaskCommunication.AddRange(taskDetailItem.TaskCommunication.Select(Map));

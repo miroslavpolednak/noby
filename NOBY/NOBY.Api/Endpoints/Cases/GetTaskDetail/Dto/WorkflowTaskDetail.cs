@@ -12,13 +12,13 @@ public class WorkflowTaskDetail
     /// Login zadavatele/zpracovatele
     /// </summary>
     /// <example>14</example>
-    public string PerformerLogin { get; set; } = null!;
+    public string? PerformerLogin { get; set; }
     
     /// <summary>
     /// Jméno a příjmení zadavatele/zpracovatele
     /// </summary>
     /// <example>Jan Novák</example>
-    public string PerformerName { get; set; } = null!;
+    public string? PerformerName { get; set; }
     
     /// <summary>
     /// Jméno typu procesu (nezkrácené)
@@ -30,13 +30,13 @@ public class WorkflowTaskDetail
     /// Dožádání: Příznak zaslání Dožádní přímo na klienta
     /// </summary>
     /// <example>false</example>
-    public bool SentToCustomer { get; set; }
+    public bool? SentToCustomer { get; set; }
     
     /// <summary>
     /// Dožádání: Číslo objednávky ocenění
     /// </summary>
     /// <example>123556</example>
-    public int OrderId { get; set; }
+    public int? OrderId { get; set; }
 
     /// <summary>
     /// Dožádání: Text požadavku a případné odpovědi (i včetně případných opakování komunikace). Řazeno chronologicky, nejstarší záznam je jako poslední.; Předání na specialistu: popis požadavku
