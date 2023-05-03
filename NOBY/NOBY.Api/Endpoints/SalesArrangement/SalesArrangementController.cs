@@ -146,7 +146,7 @@ public class SalesArrangementController : ControllerBase
     /// Update dat SalesArrangement-u
     /// </summary>
     /// <remarks>
-    /// Aktualizuje parametry SalesArrangementu. Aktualizovat lze pouze produktovou žádost. <br /><br />
+    /// Aktualizuje parametry produktového či servisního SalesArrangementu. <br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=18E19FC4-9238-4249-B43E-A26A9FBBC32C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/parameters", Name = "Update dat SalesArrangement-u")]
