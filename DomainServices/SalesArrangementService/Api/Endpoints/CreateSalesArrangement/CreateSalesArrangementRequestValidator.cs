@@ -19,6 +19,13 @@ internal sealed class CreateSalesArrangementRequestValidator
         RuleFor(t => t.SalesArrangementTypeId)
             .MustAsync(async (t, cancellationToken) => (await codebookService.SalesArrangementTypes(cancellationToken)).Any(c => c.Id == t))
             .WithErrorCode(ErrorCodeMapper.SalesArrangementTypeNotFound);
+
+        When(t => t.DataCase == Contracts.CreateSalesArrangementRequest.DataOneofCase.Mortgage && t.Mortgage is not null, () =>
+        {
+            RuleFor(t => t.Mortgage.Agent)
+                .Empty()
+                .WithErrorCode(ErrorCodeMapper.MortgageAgentIsNotEmpty);
+        });
     }
 }
 
