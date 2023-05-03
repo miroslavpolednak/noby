@@ -16,11 +16,10 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         var attachments = request.Attachments?
             .Select(t => new Infrastructure.Services.TempFileManager.TempDocumentInformation
             {
-                Description = t.DocumentInformation.Description,
-                EaCodeMainId = t.DocumentInformation.EaCodeMainId,
-                FileName = t.DocumentInformation.FileName,
-                TempGuid = t.DocumentInformation.Guid!.Value,
-                FormId = t.FormId
+                Description = t.Description,
+                EaCodeMainId = t.EaCodeMainId,
+                FileName = t.FileName,
+                TempGuid = t.Guid!.Value
             })
             .ToList();
 
@@ -31,6 +30,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 
         var completeTaskRequest = new CompleteTaskRequest
         {
+            CaseId = request.CaseId,
             TaskIdSb = request.TaskIdSB,
             TaskUserResponse = request.TaskUserResponse
         };

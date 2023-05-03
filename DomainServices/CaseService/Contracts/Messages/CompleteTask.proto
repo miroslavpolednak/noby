@@ -5,9 +5,11 @@ option csharp_namespace = "DomainServices.CaseService.Contracts";
 import "google/protobuf/wrappers.proto";
 
 message CompleteTaskRequest {
-	int32 TaskIdSb = 1;
+	int64 CaseId = 1;
 
-	google.protobuf.StringValue TaskUserResponse = 2;
+	int32 TaskIdSb = 2;
 
-	repeated string TaskDocumentIds = 3;
+	google.protobuf.StringValue TaskUserResponse = 3;
+
+	repeated string TaskDocumentIds = 4;
 }

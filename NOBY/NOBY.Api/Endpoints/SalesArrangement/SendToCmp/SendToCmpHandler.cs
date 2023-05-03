@@ -53,7 +53,7 @@ internal sealed class SendToCmpHandler
         // check flow switches
         var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
         if (saCategory.SalesArrangementCategory == 1
-            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed))
+            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed && t.Value))
         {
             throw new NobyValidationException(90016);
         }
@@ -73,21 +73,16 @@ internal sealed class SendToCmpHandler
 
             await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
 
+            // odeslat do SB
+            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+
             // update case state
             await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
         }
-
-        // odeslat do SB
-        try
+        else
         {
+            // odeslat do SB
             await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
-        }
-        catch when (saCategory.SalesArrangementCategory == 1)
-        {
-            //CaseState rollback
-            await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InProgress, cancellationToken);
-
-            throw;
         }
     }
 

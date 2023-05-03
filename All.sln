@@ -278,6 +278,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql = NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql
 		NOBY\DatabaseMigrations\00004-DropFormInstanceInterface.sql = NOBY\DatabaseMigrations\00004-DropFormInstanceInterface.sql
 		NOBY\DatabaseMigrations\00005-HFICH-5400.sql = NOBY\DatabaseMigrations\00005-HFICH-5400.sql
+		NOBY\DatabaseMigrations\00006-HFICH-5716_fix.sql = NOBY\DatabaseMigrations\00006-HFICH-5716_fix.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.ExternalServices.Sdf", "DomainServices\DocumentArchiveService\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj", "{F969A020-76AF-48A6-BF8F-959A58D0C982}"
@@ -287,6 +288,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{575507BC-3755-40BB-AC02-E7B8823C6F90}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql
+		DomainServices\CaseService\DatabaseMigrations\00002-HFICH-5454.sql = DomainServices\CaseService\DatabaseMigrations\00002-HFICH-5454.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
@@ -375,6 +377,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00009-HFICH-5533_added_3601_document_missing_attributes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00009-HFICH-5533_added_3601_document_missing_attributes.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00011-HFICH-5624_OfferFees.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00011-HFICH-5624_OfferFees.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00012-HFICH-5426_performer.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00012-HFICH-5426_performer.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00013-HFICH-5323_document_signature.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00013-HFICH-5323_document_signature.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00014-OfferDocument_Domicilace.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00014-OfferDocument_Domicilace.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00013-HFICH-4663_MortgageComment.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00013-HFICH-4663_MortgageComment.sql
 	EndProjectSection
 EndProject
@@ -1218,7 +1222,7 @@ Global
 		{EA856A99-17EE-4834-A5E4-212C87F9B963} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 		{BE9FCE3F-E547-4E4D-BD3F-C9BE487E6E9E} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 		{4BC2FB92-EBAE-40F3-8873-AE712D866195} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
-		{7B04CC9B-7F95-457D-B1B1-77B14F6FA95C} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}
+		{7B04CC9B-7F95-457D-B1B1-77B14F6FA95C} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
 		{7A1307BD-0B58-4F54-831C-6B7FE507F7EE} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 		{EDB5ADA8-B0DA-4F61-B3EB-346AB7BC96DB} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 		{6C60ADF4-04DA-46C0-91BE-054BDC00A89E} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}

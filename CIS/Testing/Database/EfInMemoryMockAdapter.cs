@@ -13,14 +13,7 @@ public class EfInMemoryMockAdapter : IDbMockAdapter
         foreach (var dbContextType in dbContextTypes)
         {
             // Remove existing dbContext(real db) 
-            var dbContextOptions = typeof(DbContextOptions<>).MakeGenericType(dbContextType);
-            var dbContextDescriptor = services.SingleOrDefault(
-                                    d => d.ServiceType == dbContextOptions);
-
-            if (dbContextDescriptor is not null)
-            {
-                services.Remove(dbContextDescriptor);
-            }
+            DbHelper.RemoveExistingDbContext(services, dbContextType);
 
             //Dynamically register db context with in memory db
             var dbName = Guid.NewGuid().ToString(); // db is unique per test class 
@@ -31,10 +24,7 @@ public class EfInMemoryMockAdapter : IDbMockAdapter
                 options.ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
             });
 
-            // Create AddDbContext parameters
-            object[] parametersArray = new object[] { services, optionsAction, ServiceLifetime.Scoped, ServiceLifetime.Scoped };
-            // Call AddDbContext with parameters
-            addDbContextGenericMethod?.Invoke(services, parametersArray);
+            DbHelper.RegisterDbContext(services, addDbContextGenericMethod, optionsAction);
         }
     }
 

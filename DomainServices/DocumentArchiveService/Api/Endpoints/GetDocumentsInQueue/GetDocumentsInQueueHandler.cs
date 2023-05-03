@@ -51,13 +51,7 @@ public class GetDocumentsInQueueHandler : IRequestHandler<GetDocumentsInQueueReq
             query = query.Where(d => request.EArchivIds.Contains(d.DocumentId));
 
         if (request.CaseId is not null)
-        {
-            // Check if case exist 
-            if (!_context.DocumentInterface.Any(d => d.CaseId == request.CaseId))
-                throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseIdInqueueNotExist);
-
             query = query.Where(d => d.CaseId == request.CaseId);
-        }
 
         if (request.StatusesInQueue.Any())
             query = query.Where(d => request.StatusesInQueue.Contains(d.Status));

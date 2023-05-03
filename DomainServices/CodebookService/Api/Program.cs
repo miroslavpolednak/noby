@@ -41,6 +41,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
 builder.Services
     .AddDapper(builder.Configuration.GetConnectionString("default")!)
     .AddDapper<DomainServices.CodebookService.Endpoints.IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd")!)
+    .AddDapper<DomainServices.CodebookService.Endpoints.IXxdHfDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxdhf")!)
     .AddDapper<DomainServices.CodebookService.Endpoints.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb")!);
 
 // authentication

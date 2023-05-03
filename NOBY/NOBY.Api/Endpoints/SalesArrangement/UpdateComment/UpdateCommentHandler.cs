@@ -14,28 +14,31 @@ internal sealed  class UpdateCommentHandler : IRequestHandler<UpdateCommentReque
 
         if ((SalesArrangementTypes)salesArrangement.SalesArrangementTypeId != SalesArrangementTypes.Mortgage)
         {
-            throw new NobyValidationException(90001);
+            throw new NobyValidationException($"Invalid SalesArrangement id = {request.SalesArrangementId}, SalesArrangementTypeId must be {SalesArrangementTypes.Mortgage}");
         }
         
         var mortgageParameters = new SalesArrangementParametersMortgage
         {
-            Agent = salesArrangement.Mortgage.Agent,
+            Agent = salesArrangement.Mortgage?.Agent,
             Comment = request.Comment.Text ?? string.Empty,
-            IncomeCurrencyCode = salesArrangement.Mortgage.IncomeCurrencyCode,
-            ResidencyCurrencyCode = salesArrangement.Mortgage.ResidencyCurrencyCode,
-            ContractSignatureTypeId = salesArrangement.Mortgage.ContractSignatureTypeId,
-            ExpectedDateOfDrawing = salesArrangement.Mortgage.ExpectedDateOfDrawing,
-            AgentConsentWithElCom = salesArrangement.Mortgage.AgentConsentWithElCom,
+            IncomeCurrencyCode = salesArrangement.Mortgage?.IncomeCurrencyCode ?? string.Empty,
+            ResidencyCurrencyCode = salesArrangement.Mortgage?.ResidencyCurrencyCode ?? string.Empty,
+            ContractSignatureTypeId = salesArrangement.Mortgage?.ContractSignatureTypeId,
+            ExpectedDateOfDrawing = salesArrangement.Mortgage?.ExpectedDateOfDrawing,
+            AgentConsentWithElCom = salesArrangement.Mortgage?.AgentConsentWithElCom,
         };
-        
-        mortgageParameters.LoanRealEstates.AddRange(salesArrangement.Mortgage.LoanRealEstates);
 
+        if (salesArrangement.Mortgage?.LoanRealEstates.Any() ?? false)
+        {
+            mortgageParameters.LoanRealEstates.AddRange(salesArrangement.Mortgage?.LoanRealEstates);
+        }
+        
         var updateParametersRequest = new UpdateSalesArrangementParametersRequest
         {
             SalesArrangementId = request.SalesArrangementId,
             Mortgage = mortgageParameters
         };
-
+        
         await _salesArrangementService.UpdateSalesArrangementParameters(updateParametersRequest, cancellationToken);
     }
     

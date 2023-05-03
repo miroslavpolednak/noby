@@ -6,7 +6,7 @@ public class WorkflowProcess
     /// Noby proces ID. Jde o ID sady úkolů generované Starbuildem.
     /// </summary>
     /// <example>22777</example>
-    public int ProcessId { get; set; }
+    public long ProcessId { get; set; }
 
     /// <summary>
     /// Datum vytvoření procesu

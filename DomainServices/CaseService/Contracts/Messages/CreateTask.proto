@@ -7,12 +7,13 @@ import "google/protobuf/wrappers.proto";
 message CreateTaskRequest {
 	int32 TaskTypeId = 1;
 	google.protobuf.Int32Value TaskSubtypeId = 2;
-	int32 ProcessId = 3;
+	int64 ProcessId = 3;
 	google.protobuf.StringValue TaskRequest = 4;
 	repeated string TaskDocumentsId = 5;
+	int64 CaseId = 6;
 }
 
 message CreateTaskResponse {
 	int32 TaskIdSB = 1;
-	int32 TaskId = 2;
+	int64 TaskId = 2;
 }

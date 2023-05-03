@@ -105,7 +105,6 @@ app.Use((context, next) =>
     return next();
 });
 
-app.UseHttpsRedirection();
 app.UseServiceDiscovery();
 
 app
@@ -130,4 +129,18 @@ app.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, new H
     }
 });
 
-await app.RunAsync();
+try
+{
+    app.Run();
+}
+finally
+{
+    LoggingExtensions.CloseAndFlush();
+}
+
+#pragma warning disable CA1050 // Declare types in namespaces
+public partial class Program
+#pragma warning restore CA1050 // Declare types in namespaces
+{
+    // Expose the Program class for use with WebApplicationFactory<T>
+}

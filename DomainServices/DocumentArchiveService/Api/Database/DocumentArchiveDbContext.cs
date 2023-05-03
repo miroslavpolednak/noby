@@ -6,6 +6,8 @@ namespace DomainServices.DocumentArchiveService.Api.Database;
 
 public class DocumentArchiveDbContext : BaseDbContext<DocumentArchiveDbContext>
 {
+    public static bool IsSqlite { get; set; }
+
     public DocumentArchiveDbContext(BaseDbContextAggregate<DocumentArchiveDbContext> aggregate) : base(aggregate)
     {
     }

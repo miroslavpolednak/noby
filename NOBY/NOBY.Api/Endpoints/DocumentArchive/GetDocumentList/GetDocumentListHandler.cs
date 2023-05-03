@@ -1,6 +1,8 @@
 ﻿using CIS.Core.Security;
+using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
-using __Contract = DomainServices.DocumentArchiveService.Contracts;
+using DomainServices.DocumentArchiveService.Contracts;
+using NOBY.Api.Endpoints.Shared;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
@@ -8,42 +10,44 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
 {
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
+    private readonly ICodebookServiceClients _codebookServiceClient;
+    private readonly IDocumentHelper _documentHelper;
 
     public GetDocumentListHandler(
-        IDocumentArchiveServiceClient client,
-        ICurrentUserAccessor currentUserAccessor)
+            IDocumentArchiveServiceClient client,
+            ICurrentUserAccessor currentUserAccessor,
+            ICodebookServiceClients codebookServiceClient,
+            IDocumentHelper documentHelper)
     {
         _client = client;
         _currentUserAccessor = currentUserAccessor;
+        _codebookServiceClient = codebookServiceClient;
+        _documentHelper = documentHelper;
     }
 
     public async Task<GetDocumentListResponse> Handle(GetDocumentListRequest request, CancellationToken cancellationToken)
     {
         var user = _currentUserAccessor.User;
 
-        var result = await _client.GetDocumentList(new()
+        var getDocumentListResult = await _client.GetDocumentList(new()
         {
             CaseId = request.CaseId,
             UserLogin = user is null ? "Unknow NOBY user" : user.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),
 
         }, cancellationToken);
 
-        return MapResponse(result);
-    }
+        var getDocumentsInQueueRequest = new GetDocumentsInQueueRequest { CaseId = request.CaseId };
+        getDocumentsInQueueRequest.StatusesInQueue.AddRange(new List<int> { 100, 110, 200, 300 });
+        var getDocumentsInQueueResult = await _client.GetDocumentsInQueue(getDocumentsInQueueRequest, cancellationToken);
 
-    private static GetDocumentListResponse MapResponse(__Contract.GetDocumentListResponse result)
-    {
-        return new GetDocumentListResponse
-        {
-            DocumentsMetadata = result.Metadata.Select(s => new DocumentsMetadata
-            {
-                DocumentId = s.DocumentId,
-                EaCodeMainId = s.EaCodeMainId,
-                FileName = s.Filename,
-                Description = s.Description,
-                CreatedOn = s.CreatedOn
-            })
-            .ToList()
-        };
+        var documentListMetadata = _documentHelper.MapGetDocumentListMetadata(getDocumentListResult);
+        var documentInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(getDocumentsInQueueResult);
+        var mergedDocumentMetadata = _documentHelper.MergeDocuments(documentListMetadata, documentInQueueMetadata);
+        var mergedDocumentMetadataFiltered = await _documentHelper.FilterDocumentsVisibleForKb(mergedDocumentMetadata, cancellationToken);
+
+        var finalResponse = new GetDocumentListResponse();
+        finalResponse.DocumentsMetadata = mergedDocumentMetadataFiltered.ToList();
+        finalResponse.CategoryEaCodeMain = await _documentHelper.CalculateCategoryEaCodeMain(mergedDocumentMetadataFiltered.ToList(), cancellationToken);
+        return finalResponse;
     }
 }

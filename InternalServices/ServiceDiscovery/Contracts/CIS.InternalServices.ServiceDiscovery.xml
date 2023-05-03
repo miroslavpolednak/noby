@@ -291,6 +291,9 @@
             Typ služby: gRPC, REST, Externí služba
             </summary>
         </member>
+        <member name="F:CIS.InternalServices.ServiceDiscovery.Contracts.DiscoverableService.AddToGlobalHealthCheckFieldNumber">
+            <summary>Field number for the "AddToGlobalHealthCheck" field.</summary>
+        </member>
         <member name="T:CIS.InternalServices.ServiceDiscovery.Contracts.ClearCacheReflection">
             <summary>Holder for reflection information generated from Messages/ClearCache.proto</summary>
         </member>

@@ -1,5 +1,9 @@
 ﻿## grpcurl tests
 
+### GetAllGrpcServices
+```
+grpcurl -insecure 172.30.35.51:30005 list DomainServices.DocumentArchiveService.v1.DocumentArchiveService
+```
 ### GenerateDocumentId
 ```
 grpcurl -insecure -d "{\"EnvironmentName\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30005 DomainServices.DocumentArchiveService.v1.DocumentArchiveService/GenerateDocumentId
