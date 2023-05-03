@@ -56,6 +56,8 @@ internal sealed class CustomerManagementErrorMap
 
             throw new CisValidationException(error.ErrorCode, $"{errorData.Message}, {errorMessage} - {error.Description}");
         }
+
+        throw new CisValidationException($"{errorData.Message}, Detail: {string.Join("; ", errorData.Detail)}");
     }
 
     private void MapErrors()
