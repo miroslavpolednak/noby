@@ -96,7 +96,7 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CancelTask(System.Int64,System.Int32,NOBY.Api.Endpoints.Cases.CancelTask.CancelTaskRequest)">
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CancelTask(System.Int64,System.Int64,NOBY.Api.Endpoints.Cases.CancelTask.CancelTaskRequest)">
             <summary>
             Stornování úkolu ve SB
             </summary>
@@ -1529,7 +1529,7 @@
             </summary>
             <remarks>
             Načtení seznamu dokumentů ke Case-u<br />Nevrací se dokumenty s EaCodeMain.IsVisibleForKb=false<br /><br />
-            <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=25F73554-B9DB-42a4-8CB5-25FC3B3F6902"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>"
+            <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=25F73554-B9DB-42a4-8CB5-25FC3B3F6902"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks> 
             <param name="caseId">ID Case-u</param>
         </member>
@@ -1563,6 +1563,7 @@
             <summary>
             Stav přenosu dokumentu do eArchivu. Enum Values: 0 - Uloženo v EArchivu, 1 - Probíhá přenos, 2 - Chyba přenosu
             </summary>
+            <example>1</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.ValidateFormId(System.Int64,NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Threading.CancellationToken)">
             <summary>
@@ -3257,8 +3258,24 @@
             </remarks>
             <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetComment(System.Int32,System.Threading.CancellationToken)" -->
-        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.UpdateComment(System.Int32,NOBY.Api.Endpoints.SalesArrangement.Dto.Comment)" -->
+        <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetComment(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Získání komentáře na SalesArrangementu.
+            </summary>
+            <remarks>
+            Vrátí komentář produktové žádosti. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.UpdateComment(System.Int32,NOBY.Api.Endpoints.SalesArrangement.Dto.Comment)">
+            <summary>
+            Aktualizace komentáře na SalesArrangementu.
+            </summary>
+            <remarks>
+            Aktualizuje komentář produktové žádosti. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChange3602Update.IsSpouseInDebt">
             <summary>
             Přistupující manžel/ka?

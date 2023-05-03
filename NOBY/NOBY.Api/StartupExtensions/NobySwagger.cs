@@ -31,6 +31,8 @@ internal static class NobySwagger
             x.EnableAnnotations();
             //x.UseOneOfForPolymorphism();
 
+            x.SupportNonNullableReferenceTypes();
+            
             // všechny parametry budou camel case
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();

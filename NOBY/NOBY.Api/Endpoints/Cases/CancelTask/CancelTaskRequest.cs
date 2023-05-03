@@ -10,9 +10,9 @@ public sealed class CancelTaskRequest
     internal long CaseId;
 
     [JsonIgnore]
-    internal int TaskId;
+    internal long TaskId;
 
-    internal CancelTaskRequest InfuseId(long caseId, int taskId)
+    internal CancelTaskRequest InfuseId(long caseId, long taskId)
     {
         this.TaskId = taskId;
         this.CaseId = caseId;

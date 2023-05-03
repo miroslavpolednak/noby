@@ -39,7 +39,7 @@ public class CasesController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CancelTask([FromRoute] long caseId, [FromRoute] int taskId, [FromBody] CancelTask.CancelTaskRequest request)
+    public async Task<IActionResult> CancelTask([FromRoute] long caseId, [FromRoute] long taskId, [FromBody] CancelTask.CancelTaskRequest request)
     {
         await _mediator.Send(request.InfuseId(caseId, taskId));
         return NoContent();
