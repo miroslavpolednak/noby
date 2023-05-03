@@ -179,7 +179,7 @@ public class SalesArrangementController : ControllerBase
     /// Získání komentáře na SalesArrangementu.
     /// </summary>
     /// <remarks>
-    /// "Vrátí komentář produktové žádosti. <br /><br />
+    /// Vrátí komentář produktové žádosti. <br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("{salesArrangementId:int}/comment")]
