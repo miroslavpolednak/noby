@@ -58,7 +58,7 @@ json_req_mail_mpss_basic_natural = \
     "subject": "NS_test_MIKEL_basic_natural",
     "content": {
       "format": "application/mht",
-      "language": "cz",
+      "language": "cs",
       "text": "json_req_mail_mpss_basic_natural"
     },
     "attachments": []
@@ -190,7 +190,7 @@ json_req_mail_mpss_full_attachments = \
     "subject": "NS_test_MIKEL_full_attachments",
     "content": {
       "format": "application/html",
-      "language": "cz",
+      "language": "cs",
       "text": "json_req_mail_mpss_full_attachments"
     },
     "attachments": [
@@ -236,7 +236,7 @@ json_req_mail_mpss_max_attachments = \
     "subject": "NS_test_MIKEL_basic_legal",
     "content": {
       "format": "application/mht",
-      "language": "cz",
+      "language": "cs",
       "text": "json_req_mail_mpss_basic_legal"
     },
     "attachments": [

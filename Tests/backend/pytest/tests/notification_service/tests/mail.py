@@ -132,8 +132,8 @@ def test_mail_negative_11_attachments(url_name,  auth_params, auth, json_data):
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_bad_identifier_mpss_basic,
-                                     json_req_mail_bad_identifier_scheme_mpss_basic,
-                                     json_req_mail_bad_identifier_identity_mpss_basic])
+                                       json_req_mail_bad_identifier_scheme_mpss_basic,
+                                       json_req_mail_bad_identifier_identity_mpss_basic])
 def test_mail_negative_identifier_request(auth_params, auth, json_data, url_name):
     username = auth[0]
     password = auth[1]
@@ -170,6 +170,7 @@ def test_mail_negative_content_format(url_name,  auth_params, auth, json_data):
     assert resp.status_code == 400
     error_message = resp.json()['errors']['317'][0]
     assert 'Allowed values for Format: application/html,application/mht,html,text/html.' in error_message
+
 
 #pro testy zabezpeceni, jake sms jsou mozne odespilat pres urcite uzivatele - pouzita vnorena parametrizace
 @pytest.mark.parametrize("url_name", ["dev_url"])

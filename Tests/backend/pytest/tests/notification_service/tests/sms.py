@@ -87,7 +87,9 @@ def test_sms_sb(url_name,  auth_params, auth, json_data):
     assert notification_id != ""
 
 
+
 #TODO: username pro archivator získat od Karla
+@pytest.mark.skip
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth, json_data", [
     ("XX_INSG_RMT_USR_TEST", json_req_sms_mpss_archivator),
