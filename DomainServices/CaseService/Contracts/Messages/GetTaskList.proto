@@ -8,7 +8,7 @@ import "google/protobuf/wrappers.proto";
 message WorkflowTask {
 	int32 TaskIdSb = 1;
 
-	int32 TaskId = 2;
+	int64 TaskId = 2;
 
 	int32 TaskTypeId = 3;
 
@@ -24,7 +24,7 @@ message WorkflowTask {
 
 	string TaskSubtypeName = 9;
 
-	int32 ProcessId = 10;
+	int64 ProcessId = 10;
 
 	string ProcessNameShort = 11;
 

@@ -61,7 +61,7 @@ public class CasesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<int> CreateTask([FromRoute] long caseId, [FromBody] CreateTask.CreateTaskRequest request)
+    public async Task<long> CreateTask([FromRoute] long caseId, [FromBody] CreateTask.CreateTaskRequest request)
         => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>

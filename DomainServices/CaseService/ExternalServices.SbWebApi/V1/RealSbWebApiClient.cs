@@ -61,8 +61,8 @@ internal sealed class RealSbWebApiClient
             Message = new()
             {
                 Client_benefits = 0,
-                Case_id = Convert.ToInt32(request.CaseId),
-                Uver_id = Convert.ToInt32(request.CaseId),
+                Case_id = Convert.ToInt32(request.CaseId),//IT anal neni schopna rict co s tim
+                Uver_id = Convert.ToInt32(request.CaseId),//IT anal neni schopna rict co s tim
                 Loan_no = request.ContractNumber,
                 Jmeno_prijmeni = request.ClientFullName,
                 Case_state = request.CaseStateName,
@@ -110,7 +110,7 @@ internal sealed class RealSbWebApiClient
             Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
             Message = new WFS_Find_ByCaseId
             {
-                Case_id = Convert.ToInt32(request.CaseId),
+                Case_id = Convert.ToInt32(request.CaseId),//IT anal neni schopna rict co s tim
                 Search_pattern = request.SearchPattern,
                 Task_state = request.TaskStates
             }

@@ -3,9 +3,9 @@
 namespace NOBY.Api.Endpoints.Cases.CreateTask;
 
 internal sealed class CreateTaskHandler
-    : IRequestHandler<CreateTaskRequest, int>
+    : IRequestHandler<CreateTaskRequest, long>
 {
-    public async Task<int> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
+    public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
         // kontrola existence Case
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);

@@ -6,7 +6,7 @@ public sealed class WorkflowTaskNew
     /// Noby task ID. Jde o ID sady úkolů generované Starbuildem.
     /// </summary>
     /// <example>22777</example>
-    public int TaskId { get; set; }
+    public long TaskId { get; set; }
 
     /// <summary>
     /// Datum vytvoření úkolu
@@ -36,7 +36,7 @@ public sealed class WorkflowTaskNew
     /// ID procesu
     /// </summary>
     /// <example>2344</example>
-    public int ProcessId { get; set; }
+    public long ProcessId { get; set; }
 
     /// <summary>
     /// Jméno typu procesu (zkrácené)
