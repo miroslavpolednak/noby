@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CaseStateChanged;
+﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CaseStateChanged;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CreateTask;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
 
@@ -12,19 +13,19 @@ internal sealed class MockSbWebApiClient
         return Task.FromResult(new CaseStateChangedResponse() { RequestId = 1 });
     }
 
-    public Task<int> CompleteTask(Dto.CompleteTaskRequest request, CancellationToken cancellationToken = default)
+    public Task<IList<IReadOnlyDictionary<string, string>>> FindTasksByCaseId(FindByCaseIdRequest request, CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(0);
+        return Task.FromResult<IList<IReadOnlyDictionary<string, string>>>(new List<IReadOnlyDictionary<string, string>>());
     }
 
-    public Task<FindTasksResponse> FindTasksByCaseId(FindByCaseIdRequest request, CancellationToken cancellationToken = default)
+    public Task<IList<IReadOnlyDictionary<string, string>>> FindTasksByTaskId(FindByTaskIdRequest request, CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(new FindTasksResponse { ItemsFound = 0, Tasks = new List<IReadOnlyDictionary<string, string>>() });
+        return Task.FromResult<IList<IReadOnlyDictionary<string, string>>>(new List<IReadOnlyDictionary<string, string>>());
     }
 
-    public Task<FindTasksResponse> FindTasksByTaskId(FindByTaskIdRequest request, CancellationToken cancellationToken = default)
+    public Task<IList<IReadOnlyDictionary<string, string>>> FindTasksByContractNumber(Dto.FindTasks.FindByContractNumberRequest request, CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(new FindTasksResponse { ItemsFound = 0, Tasks = new List<IReadOnlyDictionary<string, string>>() });
+        return Task.FromResult<IList<IReadOnlyDictionary<string, string>>>(new List<IReadOnlyDictionary<string, string>>());
     }
 
     public Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken))
@@ -39,5 +40,10 @@ internal sealed class MockSbWebApiClient
     public Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default(CancellationToken))
     {
         return Task.CompletedTask;
+    }
+
+    public Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
     }
 }

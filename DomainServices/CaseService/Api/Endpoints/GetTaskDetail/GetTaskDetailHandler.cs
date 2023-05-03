@@ -30,12 +30,14 @@ internal class GetTaskDetailHandler : IRequestHandler<GetTaskDetailRequest, GetT
 
         var tasks = await _sbWebApiClient.FindTasksByTaskId(sbRequest, cancellationToken);
 
-        if (tasks.ItemsFound == 0)
+        if (!tasks.Any())
+        {
             throw new CisValidationException(ErrorCodeMapper.TaskIdNotFound, ErrorCodeMapper.GetMessage(ErrorCodeMapper.TaskIdNotFound, request.TaskIdSb));
+        }
 
         var response = new GetTaskDetailResponse();
 
-        foreach (var taskData in tasks.Tasks)
+        foreach (var taskData in tasks)
         {
             response.TaskDetails.Add(new TaskDetailResponse
             {

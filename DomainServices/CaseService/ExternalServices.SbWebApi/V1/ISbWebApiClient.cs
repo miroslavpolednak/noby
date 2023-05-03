@@ -16,17 +16,19 @@ public interface ISbWebApiClient
     /// Zašle odpověď do workflow úkolu Dožádání.
     /// </summary>
     /// <returns>Kód, který se vrátil z SB</returns>
-    Task<int> CompleteTask(Dto.CompleteTaskRequest request, CancellationToken cancellationToken = default);
+    Task CompleteTask(Dto.CompleteTaskRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Získání seznamu úkolů a podúkolů ze SB podle Case ID.
     /// </summary>
-    Task<Dto.FindTasks.FindTasksResponse> FindTasksByCaseId(Dto.FindTasks.FindByCaseIdRequest request, CancellationToken cancellationToken = default);
+    Task<IList<IReadOnlyDictionary<string, string>>> FindTasksByCaseId(Dto.FindTasks.FindByCaseIdRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Získání podúkolů ze SB podle Task SB-ID.
     /// </summary>
-    Task<Dto.FindTasks.FindTasksResponse> FindTasksByTaskId(Dto.FindTasks.FindByTaskIdRequest request, CancellationToken cancellationToken = default);
+    Task<IList<IReadOnlyDictionary<string, string>>> FindTasksByTaskId(Dto.FindTasks.FindByTaskIdRequest request, CancellationToken cancellationToken = default);
+
+    Task<IList<IReadOnlyDictionary<string, string>>> FindTasksByContractNumber(Dto.FindTasks.FindByContractNumberRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// založení workflow úkolu

@@ -28,7 +28,7 @@ internal sealed class ErrorCodeMapper
     public const int ProcessIdIsEmpty = 13028;
     public const int TaskTypeIdNotAllowed = 13029;
     public const int TaskIdSBIsEmpty = 13030;
-    public const int ContractNumberNotFound = 13030;
+    public const int ContractNumberNotFound = 13032;
 
     public static IErrorCodesDictionary Init()
     {
@@ -57,7 +57,7 @@ internal sealed class ErrorCodeMapper
             { TaskTypeIdIsEmpty, "TaskTypeId must be > 0" },
             { ProcessIdIsEmpty, "ProcessId must be > 0" },
             { TaskTypeIdNotAllowed, "TaskTypeId is not allowed" },
-            { TaskIdNotFound, "TaskId {PropertyValue} not found" },
+            { TaskIdNotFound, "TaskId {PropertyValue} not found" }
         });
 
         return Messages;

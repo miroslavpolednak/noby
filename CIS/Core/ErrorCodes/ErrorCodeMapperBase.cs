@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Exceptions;
+using CIS.Core.Exceptions.ExternalServices;
 using System.Collections.ObjectModel;
 
 namespace CIS.Core.ErrorCodes;
@@ -61,6 +62,11 @@ public abstract class ErrorCodeMapperBase
         return new CisValidationException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
+    public static CisExtServiceValidationException CreateExtServiceValidationException(int exceptionCode, object? parameter = null)
+    {
+        return new CisExtServiceValidationException(exceptionCode, GetMessage(exceptionCode, parameter));
+    }
+
     public static CisConfigurationException CreateConfigurationException(int exceptionCode, object? parameter = null)
     {
         return new CisConfigurationException(exceptionCode, GetMessage(exceptionCode, parameter));
@@ -74,9 +80,14 @@ public abstract class ErrorCodeMapperBase
     protected static void SetMessages(IDictionary<int, string> messages)
     {
         if (Messages is null)
+        {
             Messages = new ErrorCodesDictionary(messages);
+        }
         else
-            Messages = new ErrorCodesDictionary(Messages.Concat(messages).ToDictionary(x => x.Key, x => x.Value));
+        {
+            var filteredMessages = messages.Where(t => !Messages.Any(x => x.Key == t.Key));
+            Messages = new ErrorCodesDictionary(Messages.Concat(filteredMessages).ToDictionary(x => x.Key, x => x.Value));
+        }
     }
 
     /// <summary>
