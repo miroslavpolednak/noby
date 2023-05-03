@@ -1,5 +1,4 @@
-﻿using CIS.Core.Exceptions.ExternalServices;
-using DomainServices.CaseService.Api.Database;
+﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Api.Services;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
