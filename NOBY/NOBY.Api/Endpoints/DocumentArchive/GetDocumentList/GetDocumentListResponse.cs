@@ -24,6 +24,7 @@ public class DocumentsMetadata
     /// <summary>
     /// Stav přenosu dokumentu do eArchivu. Enum Values: 0 - Uloženo v EArchivu, 1 - Probíhá přenos, 2 - Chyba přenosu
     /// </summary>
+    /// <example>1</example>
     public UploadStatus UploadStatus { get; set; }
 }
 
