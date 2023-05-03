@@ -28,22 +28,18 @@ internal sealed class SalesArrangementParametersMortgageValidator
     public SalesArrangementParametersMortgageValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         RuleFor(t => t.IncomeCurrencyCode)
-            .NotEmpty()
-            .WithErrorCode(ErrorCodeMapper.IncomeCurrencyCodeIsEmpty);
-        RuleFor(t => t.IncomeCurrencyCode)
             .MustAsync(async (code, cancellation) =>
             {
-                return (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
+                return string.IsNullOrEmpty(code) ||  
+                    (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
             })
             .WithErrorCode(ErrorCodeMapper.IncomeCurrencyCodeNotFound);
-
-        RuleFor(t => t.ResidencyCurrencyCode)
-            .NotEmpty()
-            .WithErrorCode(ErrorCodeMapper.ResidencyCurrencyCodeIsEmpty);
+        
         RuleFor(t => t.ResidencyCurrencyCode)
             .MustAsync(async (code, cancellation) =>
             {
-                return (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
+                return string.IsNullOrEmpty(code) || 
+                    (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
             })
             .WithErrorCode(ErrorCodeMapper.ResidencyCurrencyCodeNotFound);
 
