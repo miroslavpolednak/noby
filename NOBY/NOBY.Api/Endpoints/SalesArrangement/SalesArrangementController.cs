@@ -180,7 +180,7 @@ public class SalesArrangementController : ControllerBase
     /// </summary>
     /// <remarks>
     /// "Vrátí komentář produktové žádosti. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("{salesArrangementId:int}/comment")]
     [Produces("application/json")]
@@ -195,7 +195,7 @@ public class SalesArrangementController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Aktualizuje komentář produktové žádosti. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/comment")]
     [Produces("application/json")]
