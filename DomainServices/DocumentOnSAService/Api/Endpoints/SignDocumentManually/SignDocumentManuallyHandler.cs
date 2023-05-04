@@ -12,6 +12,7 @@ using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocumentManually;
 
@@ -60,14 +61,11 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         var documentOnSa = await _dbContext.DocumentOnSa.FirstOrDefaultAsync(r => r.DocumentOnSAId == request.DocumentOnSAId!.Value, cancellationToken);
 
         if (documentOnSa is null)
-        {
-            throw new CisNotFoundException(19003, $"DocumentOnSA {request.DocumentOnSAId!.Value} does not exist.");
-        }
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId!.Value);
 
-        if (documentOnSa.SignatureMethodCode!.ToUpper() != ManualSigningMethodCode || documentOnSa.IsSigned)
-        {
-            throw new CisValidationException(19005, $"Unable to sign DocumentOnSA {request.DocumentOnSAId!.Value}. Document is for electronic signature only or is already signed.");
-        }
+
+        if (documentOnSa.SignatureMethodCode!.ToUpper(CultureInfo.InvariantCulture) != ManualSigningMethodCode || documentOnSa.IsSigned)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToSignDocumentOnSA, request.DocumentOnSAId!.Value);
 
         UpdateDocumentOnSa(documentOnSa);
 
@@ -109,20 +107,16 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
     private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
     {
         if (documentOnSa.DocumentTypeId == DocumentType
-            && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => r.IsSigned == false))
+            && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => r.IsSigned == false, cancellationToken))
         {
-            var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
-
-            if (salesArrangement is null)
-            {
-                throw new CisNotFoundException(19000, $"SalesArrangement{documentOnSa.SalesArrangementId} does not exist.");
-            }
-
+            var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken) 
+                ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotExist, documentOnSa.SalesArrangementId);
+            
             var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, _dateTime.Now.Date, cancellationToken);
 
             if (result is not null && result.CommonValue != 0)
             {
-                throw new CisValidationException(19006, $"Eas {nameof(IEasClient.AddFirstSignatureDate)} returned error state: {result.CommonValue} with message: {result.CommonText}");
+                throw new CisValidationException(ErrorCodeMapper.EasAddFirstSignatureDateReturnedErrorState, $"Eas AddFirstSignatureDate returned error state: {result.CommonValue} with message: {result.CommonText}");
             }
         }
     }

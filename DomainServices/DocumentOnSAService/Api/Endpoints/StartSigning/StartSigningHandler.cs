@@ -9,6 +9,7 @@ using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Text.Json;
 using __Entity = DomainServices.DocumentOnSAService.Api.Database.Entities;
 using __Household = DomainServices.HouseholdService.Contracts;
@@ -49,22 +50,18 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(nameof(request));
-        
+
         await ValidateRequest(request, cancellationToken);
 
-        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
-
-        if (salesArrangement is null)
-        {
-            throw new CisNotFoundException(19000, $"SalesArrangement{request.SalesArrangementId} does not exist.");
-        }
+        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotExist, request.SalesArrangementId);
 
         var houseHold = await GetHouseholdId(request.DocumentTypeId!.Value, request.SalesArrangementId!.Value, cancellationToken);
 
         // Check, if signing process has been already started. If started we have to invalidate exist signing processes
         await InvalidateExistingSigningProcessesIfExist(request, houseHold);
 
-        var formIdResponse = await _mediator.Send(new GenerateFormIdRequest { HouseholdId = houseHold.HouseholdId });
+        var formIdResponse = await _mediator.Send(new GenerateFormIdRequest { HouseholdId = houseHold.HouseholdId }, cancellationToken);
 
         var documentData = await _dataAggregatorServiceClient.GetDocumentData(new()
         {
@@ -76,7 +73,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
                 SalesArrangementId = request.SalesArrangementId!.Value,
                 CaseId = salesArrangement.CaseId,
                 UserId = _currentUser.User?.Id,
-                
+
             }
         }, cancellationToken);
 
@@ -89,9 +86,9 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     private async Task ValidateRequest(StartSigningRequest request, CancellationToken cancellationToken)
     {
         var signingMethods = await _codebookServiceClient.SigningMethodsForNaturalPerson(cancellationToken);
-        if (!signingMethods.Any(r => r.Code.ToUpper() == request.SignatureMethodCode.ToUpper()))
+        if (!signingMethods.Any(r => r.Code.ToUpper(CultureInfo.InvariantCulture) == request.SignatureMethodCode.ToUpper(CultureInfo.InvariantCulture)))
         {
-            throw new CisNotFoundException(19002, $"SignatureMethod {request.SignatureMethodCode} does not exist.");
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SignatureMethodNotExist, request.SignatureMethodCode);
         }
     }
 
@@ -109,7 +106,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         }
     }
 
-    private StartSigningResponse MapToResponse(DocumentOnSa documentOnSaEntity)
+    private static StartSigningResponse MapToResponse(DocumentOnSa documentOnSaEntity)
     {
         return new StartSigningResponse
         {
@@ -153,18 +150,15 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         var houseHolds = await _householdClient.GetHouseholdList(salesArrangementId, cancellationToken);
         var houseHold = houseHolds.SingleOrDefault(r => r.HouseholdTypeId == householdTypeId);
 
-        if (houseHold is null)
-        {
-            throw new CisNotFoundException(19004, "Household {HouseholdId} does not exist");
-        }
-
-        return houseHold;
+        return houseHold is null
+            ? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ForSpecifiedDocumentTypeIdCannotFindHousehold, documentTypeId)
+            : houseHold;
     }
 
-    private int GetHouseholdTypeId(int documentTypeId) => documentTypeId switch
+    private static int GetHouseholdTypeId(int documentTypeId) => documentTypeId switch
     {
         4 => 1,
         5 => 2,
-        _ => throw new CisValidationException(19001, $"DocumentOnTypeId {documentTypeId} does not exist.")
+        _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.DocumentTypeIdNotExist, documentTypeId)
     };
 }

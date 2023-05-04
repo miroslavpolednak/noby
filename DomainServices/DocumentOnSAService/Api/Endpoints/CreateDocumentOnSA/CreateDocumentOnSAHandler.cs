@@ -34,9 +34,7 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
 
         if (salesArrangement is null)
-        {
-            throw new CisNotFoundException(19000, $"SalesArrangement{request.SalesArrangementId} does not exist.");
-        }
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotExist, request.SalesArrangementId);
 
         var documentData = await _dataAggregatorServiceClient.GetDocumentData(new()
         {
