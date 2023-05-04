@@ -121,7 +121,8 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
     {
         return new DocumentFooter
         {
-            SalesArrangementId = documentOnSa.SalesArrangementId
+            SalesArrangementId = documentOnSa.SalesArrangementId,
+            BarcodeText = documentOnSa.FormId
         };
     }
 
