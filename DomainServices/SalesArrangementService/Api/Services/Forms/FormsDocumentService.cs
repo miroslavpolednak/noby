@@ -118,7 +118,7 @@ internal sealed class FormsDocumentService
     {
         var documentOnSaData = await _documentOnSAService.GetDocumentOnSAData(documentOnSaResponse.DocumentOnSa.DocumentOnSAId!.Value, cancellationToken);
 
-        var generateDocumentRequest = CreateDocumentRequest(documentOnSaData, salesArrangement);
+        var generateDocumentRequest = CreateDocumentRequest(documentOnSaResponse.DocumentOnSa, documentOnSaData, salesArrangement);
 
         return await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
     }
@@ -171,7 +171,7 @@ internal sealed class FormsDocumentService
         return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
     }
 
-    private static GenerateDocumentRequest CreateDocumentRequest(GetDocumentOnSADataResponse documentOnSaData, SalesArrangement salesArrangement)
+    private static GenerateDocumentRequest CreateDocumentRequest(DocumentOnSAToSign documentOnSa, GetDocumentOnSADataResponse documentOnSaData, SalesArrangement salesArrangement)
     {
         return new GenerateDocumentRequest
         {
@@ -180,7 +180,7 @@ internal sealed class FormsDocumentService
             ForPreview = false,
             OutputType = OutputFileType.Pdfa,
             Parts = { CreateDocPart(documentOnSaData) },
-            DocumentFooter = CreateFooter(salesArrangement)
+            DocumentFooter = CreateFooter(salesArrangement, documentOnSa)
         };
     }
 
@@ -197,12 +197,13 @@ internal sealed class FormsDocumentService
         return docPart;
     }
 
-    private static DocumentFooter CreateFooter(SalesArrangement salesArrangement)
+    private static DocumentFooter CreateFooter(SalesArrangement salesArrangement, DocumentOnSAToSign documentOnSA)
     {
         return new DocumentFooter
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
-            CaseId = salesArrangement.CaseId
+            CaseId = salesArrangement.CaseId,
+            BarcodeText = documentOnSA.FormId
         };
     }
 }
