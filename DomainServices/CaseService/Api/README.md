@@ -13,13 +13,14 @@ grpcurl -insecure -d "{\"CaseId\":59,\"Data\":{\"ProductTypeId\":1,\"ContractNum
 grpcurl -insecure -d "{\"CaseId\":49,\"State\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/UpdateCaseState
 grpcurl -insecure -d "{\"CaseId\":49,\"Customer\":{\"FirstNameNaturalPerson\":\"Peter\",\"Name\":\"Mortal\"}}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/UpdateCaseCustomer
 grpcurl -insecure -d "{\"CaseId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/GetTaskList
-grpcurl -insecure -d "{\"CaseId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/GetTaskListByContract
+grpcurl -insecure -d "{\"ContractNumber\":\"HF00000002068\"}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30001 DomainServices.CaseService.v1.CaseService/GetTaskListByContract
 grpcurl -insecure -d "{\"CaseId\":1,\"State\":2}" -H "Authorization: Basic YTph" -H "Correlation-Context: MpPartyId=3048" -H "traceparent: 00-ddc1760e36a462c9c03b2583b1c9a098-ea157dc423037e71-01" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/UpdateCaseState
 grpcurl -insecure -d "{\"CaseId\":3014591}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/DeleteCase
 grpcurl -insecure -d "{\"CaseId\":3014640}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30001 DomainServices.CaseService.v1.CaseService/NotifyStarbuild
 grpcurl -insecure -d "{\"CaseId\":3014640}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/NotifyStarbuild
 
 grpcurl -insecure -d "{\"TaskTypeId\":3,\"TaskSubtypeId\":1,\"ProcessId\":6610481,\"TaskRequest\":\"nejaky text\",\"CaseId\":3014654}" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/CreateTask
+grpcurl -insecure -d "{\"TaskTypeId\":3,\"TaskSubtypeId\":1,\"ProcessId\":6610481,\"TaskRequest\":\"nejaky text\",\"CaseId\":3014654}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30001 DomainServices.CaseService.v1.CaseService/CreateTask
 grpcurl -insecure -d "{\"TaskIdSB\":3}" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/CancelTask
 
 ## run batch
