@@ -55,8 +55,8 @@ public class WorkflowMapper
             PerformerLogin = performer?.PerformerLogin,
             PerformerName = performer?.PerformerName,
             ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
-            SentToCustomer = taskDetailItem.SentToCustomer,
-            OrderId = taskDetailItem.OrderId
+            //SentToCustomer = taskDetailItem.SentToCustomer, //TODO bylo zruseno taskem HFICH-5625, ktery je na DS, ale nedostali jsme nic na FE API...
+            //OrderId = taskDetailItem.OrderId
         };
 
         taskDetail.TaskCommunication.AddRange(taskDetailItem.TaskCommunication.Select(Map));

@@ -2,7 +2,7 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
-import "Messages/GetTaskList.proto";
+import "Messages/WorkflowTask.proto";
 import "google/protobuf/wrappers.proto";
 
 message GetTaskDetailRequest {
@@ -24,17 +24,36 @@ message TaskDetailItem {
 
 	string ProcessNameLong = 2;
 
-	google.protobuf.BoolValue SentToCustomer = 3;
+	repeated TaskCommunicationItem TaskCommunication = 3;
 
-	google.protobuf.Int32Value OrderId = 4;
+	repeated string TaskDocumentIds = 4;
 
-	repeated TaskCommunicationItem TaskCommunication = 5;
-
-	repeated string TaskDocumentIds = 6;
+	oneof Amendments  {
+		AmendmentSigning Signing = 20;
+		AmendmentRequest Request = 21;
+		AmendmentConsultationData ConsultationData = 22;
+	}
 }
 
 message TaskCommunicationItem {
 	google.protobuf.StringValue TaskResponse = 1;
 
 	string TaskRequest = 2;
+}
+
+message AmendmentSigning {
+	string FormId = 1;
+	string Expiration = 2;
+	string DocumentForSigning = 3;
+	google.protobuf.StringValue ProposalForEntry = 4;
+}
+
+message AmendmentRequest {
+	google.protobuf.BoolValue SentToCustomer = 1;
+
+	google.protobuf.Int32Value OrderId = 2;
+}
+
+message AmendmentConsultationData{
+	google.protobuf.Int32Value OrderId = 1;
 }

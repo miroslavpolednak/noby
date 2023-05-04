@@ -169,7 +169,7 @@ public class CodebooksController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="developerId">ID developera</param>
-    [HttpGet("developer/{developerId:int}", Name = "DeveloperGet")]
+    [HttpGet("developer/{developerId:int}")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(Dto.Developer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -198,7 +198,7 @@ public class CodebooksController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="developerId">ID developera</param>
-    [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}", Name = "DeveloperProjectGet")]
+    [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(DeveloperProjectItem), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

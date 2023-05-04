@@ -20,7 +20,7 @@ public class CustomerIncomeController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task Delete([FromRoute] int customerOnSAId, [FromRoute] int incomeId)
+    public async Task DeleteIncome([FromRoute] int customerOnSAId, [FromRoute] int incomeId)
         => await _mediator.Send(new DeleteIncome.DeleteIncomeRequest(customerOnSAId, incomeId));
 
     /// <summary>
@@ -41,7 +41,7 @@ public class CustomerIncomeController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(typeof(GetIncome.GetIncomeResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetIncome.GetIncomeResponse> GetDetail([FromRoute] int customerOnSAId, [FromRoute] int incomeId, CancellationToken cancellationToken)
+    public async Task<GetIncome.GetIncomeResponse> GetIncome([FromRoute] int customerOnSAId, [FromRoute] int incomeId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetIncome.GetIncomeRequest(customerOnSAId, incomeId), cancellationToken);
 
     /// <summary>
@@ -59,7 +59,7 @@ public class CustomerIncomeController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] UpdateIncome.UpdateIncomeRequest? request)
+    public async Task UpdateIncome([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] UpdateIncome.UpdateIncomeRequest? request)
         => await _mediator.Send(request?.InfuseId(customerOnSAId, incomeId) ?? throw new NobyValidationException("Payload is empty"));
 
     /// <summary>
@@ -75,7 +75,7 @@ public class CustomerIncomeController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<int> Create([FromRoute] int customerOnSAId, [FromBody] CreateIncome.CreateIncomeRequest? request)
+    public async Task<int> CreateIncome([FromRoute] int customerOnSAId, [FromBody] CreateIncome.CreateIncomeRequest? request)
         => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new NobyValidationException("Payload is empty"));
 
     private readonly IMediator _mediator;

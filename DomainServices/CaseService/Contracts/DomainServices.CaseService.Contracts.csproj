@@ -16,6 +16,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Messages\GetTaskListByContract.proto" />
+	  <None Remove="Messages\WorkflowTask.proto" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.22.1" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.52.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.52.0">
@@ -54,5 +59,7 @@
 		<Protobuf Include="Messages/UpdateCaseState.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/CancelTask.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/CreateTask.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages/GetTaskListByContract.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\WorkflowTask.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 	</ItemGroup>
 </Project>

@@ -1,5 +1,4 @@
-﻿using CIS.Core.Exceptions.ExternalServices;
-using DomainServices.CaseService.Contracts;
+﻿using DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
 namespace DomainServices.CaseService.Api.Endpoints.CancelTask;
@@ -9,15 +8,8 @@ internal sealed class CancelTaskHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(CancelTaskRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            await _sbWebApi.CancelTask(request.TaskIdSB, cancellationToken);
-        }
-        catch (CisExtServiceValidationException ex) when (ex.Errors.Any(t => t.ExceptionCode == "2"))
-        {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.TaskIdNotFound, request.TaskIdSB);
-        }
-
+        await _sbWebApi.CancelTask(request.TaskIdSB, cancellationToken);
+        
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 

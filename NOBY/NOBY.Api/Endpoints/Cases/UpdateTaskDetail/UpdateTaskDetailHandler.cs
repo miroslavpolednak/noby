@@ -32,6 +32,8 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         {
             CaseId = request.CaseId,
             TaskIdSb = request.TaskIdSB,
+            TaskResponseTypeId = request.TaskResponseTypeId,
+            TaskTypeId = request.TaskTypeId,
             TaskUserResponse = request.TaskUserResponse
         };
         

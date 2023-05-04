@@ -38,6 +38,7 @@ internal static class NobySwagger
             x.UseInlineDefinitionsForEnums();
 
             x.CustomSchemaIds(type => type.ToString().Replace('+', '_'));
+            x.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
 
             // generate the XML docs that'll drive the swagger docs
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
@@ -46,7 +47,7 @@ internal static class NobySwagger
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
             
             x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
-            x.SchemaFilter<Endpoints.SalesArrangement.GetDetail.GetDetailSwaggerSchema> ();
+            x.SchemaFilter<Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementSwaggerSchema> ();
             x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwagerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();

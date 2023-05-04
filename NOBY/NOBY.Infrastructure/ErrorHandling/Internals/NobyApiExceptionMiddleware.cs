@@ -89,7 +89,11 @@ public sealed class NobyApiExceptionMiddleware
         catch (Exception ex)
         {
             logger.WebApiUncoughtException(ex);
-            await Results.Json("Nastala neočekávaná chyba, opakujte akci později prosím.", statusCode: 500).ExecuteAsync(context);
+            var jsonError = new List<ApiErrorItem> 
+            { 
+                new() { ErrorCode = 90001, Message = "Nastala neočekávaná chyba, opakujte akci později prosím." } 
+            };
+            await Results.Json(jsonError, statusCode: 500).ExecuteAsync(context);
         }
     }
 

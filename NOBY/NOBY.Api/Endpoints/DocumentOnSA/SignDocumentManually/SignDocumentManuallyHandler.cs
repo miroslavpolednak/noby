@@ -9,8 +9,8 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer;
-using NOBY.Api.Endpoints.Customer.GetDetailWithChanges;
-using NOBY.Api.Endpoints.SalesArrangement.Validate;
+using NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
+using NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement;
 using NOBY.Api.SharedDto;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -84,7 +84,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         var (household, customersOnSa) = await GetCustomersOnSa(documentOnSa, cancellationToken);
         foreach (var customerOnSa in customersOnSa)
         {
-            var detailWithChangedData = await _changedDataService.GetCustomerWithChangedData<GetDetailWithChangesResponse>(customerOnSa, cancellationToken);
+            var (detailWithChangedData, _) = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
             await _customerServiceClient.UpdateCustomer(MapUpdateCustomerRequest(detailWithChangedData, mandantId.Value, customerOnSa), cancellationToken);
             //Throw away locally stored data(update CustomerChangeData with null)
             await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa), cancellationToken);
@@ -129,7 +129,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         };
     }
 
-    private static DomainServices.CustomerService.Contracts.UpdateCustomerRequest MapUpdateCustomerRequest(GetDetailWithChangesResponse detailWithChangedData, int mandant, CustomerOnSA customerOnSA)
+    private static DomainServices.CustomerService.Contracts.UpdateCustomerRequest MapUpdateCustomerRequest(GetCustomerDetailWithChangesResponse detailWithChangedData, int mandant, CustomerOnSA customerOnSA)
     {
         var updateRequest = new DomainServices.CustomerService.Contracts.UpdateCustomerRequest();
         updateRequest.Mandant = (CIS.Infrastructure.gRPC.CisTypes.Mandants)mandant;
@@ -284,7 +284,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
 
     private async Task ValidateSalesArrangement(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
     {
-        var validationResult = await _mediator.Send(new ValidateRequest(request.SalesArrangementId), cancellationToken);
+        var validationResult = await _mediator.Send(new ValidateSalesArrangementRequest(request.SalesArrangementId), cancellationToken);
 
         if (validationResult is not null && validationResult.Categories is not null && validationResult.Categories.Any())
         {

@@ -33,11 +33,11 @@ public class SalesArrangementController : ControllerBase
     [HttpGet("{salesArrangementId:int}/validate")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
-    [ProducesResponseType(typeof(Validate.ValidateResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidateSalesArrangement.ValidateSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Validate.ValidateResponse> Validate([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
-        => await _mediator.Send(new Validate.ValidateRequest(salesArrangementId), cancellationToken);
+    public async Task<ValidateSalesArrangement.ValidateSalesArrangementResponse> ValidateSalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new ValidateSalesArrangement.ValidateSalesArrangementRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
     /// Smazaní SalesArrangement-u
@@ -106,8 +106,8 @@ public class SalesArrangementController : ControllerBase
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(List<Dto.SalesArrangementListItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<Dto.SalesArrangementListItem>> GetList([FromRoute] long caseId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetList.GetListRequest(caseId), cancellationToken);
+    public async Task<List<Dto.SalesArrangementListItem>> GetSalesArrangements([FromRoute] long caseId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetSalesArrangements.GetSalesArrangementsRequest(caseId), cancellationToken);
 
     /// <summary>
     /// Seznam klientů navázaných na Sales Arrangement.
@@ -137,10 +137,10 @@ public class SalesArrangementController : ControllerBase
     [HttpGet("{salesArrangementId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
-    [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetSalesArrangement.GetSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetDetail.GetDetailResponse> GetDetail([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetDetail.GetDetailRequest(salesArrangementId), cancellationToken);
+    public async Task<GetSalesArrangement.GetSalesArrangementResponse> GetSalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetSalesArrangement.GetSalesArrangementRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
     /// Update dat SalesArrangement-u
@@ -149,7 +149,7 @@ public class SalesArrangementController : ControllerBase
     /// Aktualizuje parametry produktového či servisního SalesArrangementu. <br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=18E19FC4-9238-4249-B43E-A26A9FBBC32C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPut("{salesArrangementId:int}/parameters", Name = "Update dat SalesArrangement-u")]
+    [HttpPut("{salesArrangementId:int}/parameters")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -184,7 +184,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     [HttpGet("{salesArrangementId:int}/comment")]
     [Produces("application/json")]
-    [SwaggerOperation(OperationId = "SalesArrangementCommentGet", Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.Comment> GetComment([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
@@ -199,7 +199,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/comment")]
     [Produces("application/json")]
-    [SwaggerOperation(OperationId = "SalesArrangementCommentUpdate", Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task UpdateComment([FromRoute] int salesArrangementId, [FromBody] Dto.Comment? comment)
