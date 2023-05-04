@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DomainServices.ProductService.ExternalServices.Pcp.V1;
 
-namespace DomainServices.ProductService.ExternalServices.Pcp.V1;
-internal class MockPcpClient
+internal sealed class MockPcpClient
+    : IPcpClient
 {
+    public Task CreateProduct(long caseId, long customerKbId, string pcpProductId, CancellationToken cancellationToken = default)
+    {
+        return Task.CompletedTask;
+    }
 }

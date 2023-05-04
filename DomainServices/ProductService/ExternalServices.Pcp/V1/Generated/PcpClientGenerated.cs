@@ -9,8 +9,8 @@
 
 namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
 {
-    
-    
+
+
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceSystemException))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceSystemPermissionException))]
@@ -19,20 +19,20 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceValidationException))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/DataModel/Technical/ServiceException/v2")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/DataModel/Technical/ServiceException/v2")]
     public abstract partial class ServiceException
     {
-        
+
         private string errorCodeField;
-        
+
         private string messageField;
-        
+
         private long uuidField;
-        
+
         private string errorDetailField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string errorCode
         {
             get
@@ -44,9 +44,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.errorCodeField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string message
         {
             get
@@ -58,9 +58,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.messageField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public long uuid
         {
             get
@@ -72,9 +72,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.uuidField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
         public string errorDetail
         {
             get
@@ -87,22 +87,22 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/DataModel/Technical/ServiceException/v2")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/DataModel/Technical/ServiceException/v2")]
     public partial class ServiceValidationExceptionConstraint
     {
-        
+
         private string messageField;
-        
+
         private string pathField;
-        
+
         private string valueField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string message
         {
             get
@@ -114,9 +114,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.messageField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string path
         {
             get
@@ -128,9 +128,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.pathField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public string value
         {
             get
@@ -143,18 +143,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class ReferentialMktItemInstanceId
     {
-        
+
         private string idField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string id
         {
             get
@@ -167,18 +167,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class ProductInstanceReference
     {
-        
+
         private ReferentialMktItemInstanceId referentialMktItemInstanceIdField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public ReferentialMktItemInstanceId referentialMktItemInstanceId
         {
             get
@@ -191,18 +191,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class createResponse
     {
-        
+
         private ProductInstanceReference productInstanceReferenceField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public ProductInstanceReference productInstanceReference
         {
             get
@@ -215,20 +215,20 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class InfoSourceCode
     {
-        
+
         private string classField;
-        
+
         private string codeField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string @class
         {
             get
@@ -240,9 +240,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.classField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string code
         {
             get
@@ -255,22 +255,22 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class InfoSource
     {
-        
+
         private InfoSourceCode infoSourceCodeField;
-        
+
         private System.DateTime onField;
-        
+
         private bool onFieldSpecified;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public InfoSourceCode infoSourceCode
         {
             get
@@ -282,9 +282,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.infoSourceCodeField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public System.DateTime on
         {
             get
@@ -296,7 +296,7 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.onField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool onSpecified
@@ -311,20 +311,20 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class ProductInstanceInfo
     {
-        
+
         private Account accountField;
-        
+
         private InfoSource infoSourceField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public Account account
         {
             get
@@ -336,9 +336,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.accountField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public InfoSource infoSource
         {
             get
@@ -351,18 +351,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class Account
     {
-        
+
         private AccountNumber accountNumberField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public AccountNumber accountNumber
         {
             get
@@ -375,22 +375,22 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class AccountNumber
     {
-        
+
         private string bankCodeField;
-        
+
         private string coreField;
-        
+
         private string prefixField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string bankCode
         {
             get
@@ -402,9 +402,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.bankCodeField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string core
         {
             get
@@ -416,9 +416,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.coreField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public string prefix
         {
             get
@@ -431,18 +431,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class CatalogueItemId
     {
-        
+
         private string idField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string id
         {
             get
@@ -455,19 +455,19 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueProductInOffer))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO/create")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO/create")]
     public partial class CommonCatalogueItem
     {
-        
+
         private CatalogueItemId catalogueItemIdField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public CatalogueItemId catalogueItemId
         {
             get
@@ -480,26 +480,26 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO/create")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO/create")]
     public partial class CatalogueProductInOffer : CommonCatalogueItem
     {
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO/create")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO/create")]
     public partial class ProductInOffer
     {
-        
+
         private CatalogueProductInOffer catalogueProductInOfferField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public CatalogueProductInOffer catalogueProductInOffer
         {
             get
@@ -512,21 +512,21 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MktItemInstanceIdByAccount))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class OtherMktItemInstanceId
     {
-        
+
         private string classField;
-        
+
         private string idField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string @class
         {
             get
@@ -538,9 +538,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.classField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string id
         {
             get
@@ -553,18 +553,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class MktItemInstanceIdByAccount : OtherMktItemInstanceId
     {
-        
+
         private Account accountField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public Account account
         {
             get
@@ -577,20 +577,20 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class MktItemInstanceState
     {
-        
+
         private string classField;
-        
+
         private string stateField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string @class
         {
             get
@@ -602,9 +602,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.classField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string state
         {
             get
@@ -617,20 +617,20 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class MktItemInstanceId
     {
-        
+
         private string classField;
-        
+
         private string idField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string @class
         {
             get
@@ -642,9 +642,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.classField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string id
         {
             get
@@ -657,18 +657,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class RelatedProductInstanceReference
     {
-        
+
         private MktItemInstanceId mktItemInstanceIdField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public MktItemInstanceId mktItemInstanceId
         {
             get
@@ -681,20 +681,20 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class MktItemInstanceRelationship
     {
-        
+
         private RelatedProductInstanceReference relatedProductInstanceReferenceField;
-        
+
         private string purposeField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public RelatedProductInstanceReference relatedProductInstanceReference
         {
             get
@@ -706,9 +706,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.relatedProductInstanceReferenceField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string purpose
         {
             get
@@ -721,20 +721,20 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class PartyInproductInstanceRoleCode
     {
-        
+
         private string classField;
-        
+
         private string codeField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string @class
         {
             get
@@ -746,9 +746,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.classField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string code
         {
             get
@@ -761,18 +761,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class PartyInProductInstanceRole
     {
-        
+
         private PartyInproductInstanceRoleCode partyInproductInstanceRoleCodeField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public PartyInproductInstanceRoleCode partyInproductInstanceRoleCode
         {
             get
@@ -785,18 +785,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class KBCustomer
     {
-        
+
         private string idField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string id
         {
             get
@@ -809,20 +809,20 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class CustomerInProductInstance
     {
-        
+
         private KBCustomer kBCustomerField;
-        
+
         private PartyInProductInstanceRole partyInProductInstanceRoleField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public KBCustomer kBCustomer
         {
             get
@@ -834,9 +834,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.kBCustomerField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public PartyInProductInstanceRole partyInProductInstanceRole
         {
             get
@@ -849,39 +849,39 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO/create")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO/create")]
     public partial class ProductInstance
     {
-        
+
         private CustomerInProductInstance[] customerInProductInstanceListField;
-        
+
         private MktItemInstanceRelationship[] mktItemInstanceRelationshipListField;
-        
+
         private MktItemInstanceState mktItemInstanceStateField;
-        
+
         private OtherMktItemInstanceId[] otherMktItemInstanceIdListField;
-        
+
         private ProductInOffer productInOfferField;
-        
+
         private ProductInstanceInfo productInstanceInfoField;
-        
+
         private System.DateTime createdOnField;
-        
+
         private bool createdOnFieldSpecified;
-        
+
         private string nameField;
-        
+
         private System.DateTime soldOnField;
-        
+
         private bool soldOnFieldSpecified;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("customerInProductInstance", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 0)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("customerInProductInstance", IsNullable = false)]
         public CustomerInProductInstance[] customerInProductInstanceList
         {
             get
@@ -893,10 +893,10 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.customerInProductInstanceListField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=1)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("mktItemInstanceRelationship", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 1)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("mktItemInstanceRelationship", IsNullable = false)]
         public MktItemInstanceRelationship[] mktItemInstanceRelationshipList
         {
             get
@@ -908,9 +908,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.mktItemInstanceRelationshipListField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public MktItemInstanceState mktItemInstanceState
         {
             get
@@ -922,10 +922,10 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.mktItemInstanceStateField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=3)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("otherMktItemInstanceId", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 3)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("otherMktItemInstanceId", IsNullable = false)]
         public OtherMktItemInstanceId[] otherMktItemInstanceIdList
         {
             get
@@ -937,9 +937,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.otherMktItemInstanceIdListField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
         public ProductInOffer productInOffer
         {
             get
@@ -951,9 +951,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.productInOfferField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
         public ProductInstanceInfo productInstanceInfo
         {
             get
@@ -965,9 +965,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.productInstanceInfoField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
         public System.DateTime createdOn
         {
             get
@@ -979,7 +979,7 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.createdOnField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool createdOnSpecified
@@ -993,9 +993,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.createdOnFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 7)]
         public string name
         {
             get
@@ -1007,9 +1007,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.nameField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 8)]
         public System.DateTime soldOn
         {
             get
@@ -1021,7 +1021,7 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.soldOnField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool soldOnSpecified
@@ -1036,18 +1036,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class createRequest
     {
-        
+
         private ProductInstance productInstanceField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public ProductInstance productInstance
         {
             get
@@ -1060,45 +1060,45 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceSystemPermissionException))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceSystemUnavailableException))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/DataModel/Technical/ServiceException/v2")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/DataModel/Technical/ServiceException/v2")]
     public partial class ServiceSystemException : ServiceException
     {
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/DataModel/Technical/ServiceException/v2")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/DataModel/Technical/ServiceException/v2")]
     public partial class ServiceSystemPermissionException : ServiceSystemException
     {
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/DataModel/Technical/ServiceException/v2")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/DataModel/Technical/ServiceException/v2")]
     public partial class ServiceSystemUnavailableException : ServiceSystemException
     {
     }
-    
+
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceValidationException))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/DataModel/Technical/ServiceException/v2")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/DataModel/Technical/ServiceException/v2")]
     public partial class ServiceBusinessException : ServiceException
     {
-        
+
         private string originalErrorCodeField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string originalErrorCode
         {
             get
@@ -1111,18 +1111,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/DataModel/Technical/ServiceException/v2")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/DataModel/Technical/ServiceException/v2")]
     public partial class ServiceValidationException : ServiceBusinessException
     {
-        
+
         private ServiceValidationExceptionConstraint[] serviceValidationExceptionConstraintField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("serviceValidationExceptionConstraint", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute("serviceValidationExceptionConstraint", Order = 0)]
         public ServiceValidationExceptionConstraint[] serviceValidationExceptionConstraint
         {
             get
@@ -1135,63 +1135,63 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", ConfigurationName="DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBESer" +
+    [System.ServiceModel.ServiceContractAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", ConfigurationName = "DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBESer" +
         "vice")]
-    internal interface ProductInstanceBEService
+    internal interface IProductInstanceBEService
     {
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action="", Name="serviceException", Namespace="http://kb.cz/DataModel/Technical/Exceptions/v2")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+
+        [System.ServiceModel.OperationContractAttribute(Action = "", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action = "", Name = "serviceException", Namespace = "http://kb.cz/DataModel/Technical/Exceptions/v2")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommonCatalogueItem))]
         System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createResponse1> createAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createRequest1 request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action="", Name="serviceException", Namespace="http://kb.cz/DataModel/Technical/Exceptions/v2")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+
+        [System.ServiceModel.OperationContractAttribute(Action = "", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action = "", Name = "serviceException", Namespace = "http://kb.cz/DataModel/Technical/Exceptions/v2")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommonCatalogueItem))]
         System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteResponse1> deleteAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteRequest1 request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action="", Name="serviceException", Namespace="http://kb.cz/DataModel/Technical/Exceptions/v2")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+
+        [System.ServiceModel.OperationContractAttribute(Action = "", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action = "", Name = "serviceException", Namespace = "http://kb.cz/DataModel/Technical/Exceptions/v2")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommonCatalogueItem))]
         System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdResponse1> getByCustomerIdAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdRequest1 request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action="", Name="serviceException", Namespace="http://kb.cz/DataModel/Technical/Exceptions/v2")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+
+        [System.ServiceModel.OperationContractAttribute(Action = "", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action = "", Name = "serviceException", Namespace = "http://kb.cz/DataModel/Technical/Exceptions/v2")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommonCatalogueItem))]
         System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsResponse1> getByIdsAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsRequest1 request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action="", Name="serviceException", Namespace="http://kb.cz/DataModel/Technical/Exceptions/v2")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+
+        [System.ServiceModel.OperationContractAttribute(Action = "", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action = "", Name = "serviceException", Namespace = "http://kb.cz/DataModel/Technical/Exceptions/v2")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommonCatalogueItem))]
         System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsResponse1> getByOtherIdsAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsRequest1 request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action="", Name="serviceException", Namespace="http://kb.cz/DataModel/Technical/Exceptions/v2")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+
+        [System.ServiceModel.OperationContractAttribute(Action = "", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ServiceException), Action = "", Name = "serviceException", Namespace = "http://kb.cz/DataModel/Technical/Exceptions/v2")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommonCatalogueItem))]
         System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateResponse1> updateAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateRequest1 request);
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/DataModel/Technical/HeaderTypes/v1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/DataModel/Technical/HeaderTypes/v1")]
     public partial class SystemIdentity
     {
-        
+
         private Application originatorField;
-        
+
         private Application callerField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public Application originator
         {
             get
@@ -1203,9 +1203,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.originatorField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public Application caller
         {
             get
@@ -1218,20 +1218,20 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/DataModel/Technical/HeaderTypes/v1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/DataModel/Technical/HeaderTypes/v1")]
     public partial class Application
     {
-        
+
         private string applicationField;
-        
+
         private string applicationComponentField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string application
         {
             get
@@ -1243,9 +1243,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.applicationField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string applicationComponent
         {
             get
@@ -1258,22 +1258,22 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/DataModel/Technical/HeaderTypes/v1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/DataModel/Technical/HeaderTypes/v1")]
     public partial class TraceContext
     {
-        
+
         private string traceIdField;
-        
+
         private System.DateTime timestampField;
-        
+
         private bool timestampFieldSpecified;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string traceId
         {
             get
@@ -1285,9 +1285,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.traceIdField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public System.DateTime timestamp
         {
             get
@@ -1299,7 +1299,7 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.timestampField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool timestampSpecified
@@ -1314,27 +1314,27 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class createRequest1
     {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity;
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createRequest createRequest;
-        
+
         public createRequest1()
         {
         }
-        
+
         public createRequest1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createRequest createRequest)
         {
             this.systemIdentity = systemIdentity;
@@ -1342,38 +1342,38 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             this.createRequest = createRequest;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class createResponse1
     {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createResponse createResponse;
-        
+
         public createResponse1()
         {
         }
-        
+
         public createResponse1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createResponse createResponse)
         {
             this.createResponse = createResponse;
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class deleteRequest
     {
-        
+
         private ProductInstanceReference productInstanceReferenceField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public ProductInstanceReference productInstanceReference
         {
             get
@@ -1386,35 +1386,35 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class deleteResponse
     {
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class deleteRequest1
     {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity;
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteRequest deleteRequest;
-        
+
         public deleteRequest1()
         {
         }
-        
+
         public deleteRequest1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteRequest deleteRequest)
         {
             this.systemIdentity = systemIdentity;
@@ -1422,38 +1422,38 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             this.deleteRequest = deleteRequest;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class deleteResponse1
     {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteResponse deleteResponse;
-        
+
         public deleteResponse1()
         {
         }
-        
+
         public deleteResponse1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteResponse deleteResponse)
         {
             this.deleteResponse = deleteResponse;
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class getByCustomerIdRequest
     {
-        
+
         private KBCustomer kBCustomerField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public KBCustomer kBCustomer
         {
             get
@@ -1466,19 +1466,19 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class getByCustomerIdResponse
     {
-        
+
         private ProductInstance2[] productInstanceListField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("productInstance", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 0)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("productInstance", IsNullable = false)]
         public ProductInstance2[] productInstanceList
         {
             get
@@ -1491,26 +1491,26 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName="ProductInstance", Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO/getByCustomerId")]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "ProductInstance", Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO/getByCustomerId")]
     public partial class ProductInstance2
     {
-        
+
         private CatalogueProductInOfferSpecs catalogueProductInOfferSpecsField;
-        
+
         private CustomerInProductInstance[] customerInProductInstanceListField;
-        
+
         private MktItemInstanceState mktItemInstanceStateField;
-        
+
         private OtherMktItemInstanceId[] otherMktItemInstanceIdListField;
-        
+
         private ReferentialMktItemInstanceId referentialMktItemInstanceIdField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public CatalogueProductInOfferSpecs catalogueProductInOfferSpecs
         {
             get
@@ -1522,10 +1522,10 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.catalogueProductInOfferSpecsField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=1)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("customerInProductInstance", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 1)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("customerInProductInstance", IsNullable = false)]
         public CustomerInProductInstance[] customerInProductInstanceList
         {
             get
@@ -1537,9 +1537,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.customerInProductInstanceListField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public MktItemInstanceState mktItemInstanceState
         {
             get
@@ -1551,10 +1551,10 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.mktItemInstanceStateField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=3)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("otherMktItemInstanceId", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 3)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("otherMktItemInstanceId", IsNullable = false)]
         public OtherMktItemInstanceId[] otherMktItemInstanceIdList
         {
             get
@@ -1566,9 +1566,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.otherMktItemInstanceIdListField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
         public ReferentialMktItemInstanceId referentialMktItemInstanceId
         {
             get
@@ -1581,18 +1581,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class CatalogueProductInOfferSpecs : CommonCatalogueProductInOffer
     {
-        
+
         private CatalogueBusinessProductSpecs catalogueBusinessProductSpecsField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public CatalogueBusinessProductSpecs catalogueBusinessProductSpecs
         {
             get
@@ -1605,18 +1605,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class CatalogueBusinessProductSpecs : CommonCatalogueBusinessProduct
     {
-        
+
         private CatalogueTechnicalProductSpecs catalogueTechnicalProductSpecsField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public CatalogueTechnicalProductSpecs catalogueTechnicalProductSpecs
         {
             get
@@ -1629,27 +1629,27 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class CatalogueTechnicalProductSpecs : CommonCatalogueTechnicalItem
     {
     }
-    
+
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueTechnicalProductSpecs))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class CommonCatalogueTechnicalItem
     {
-        
+
         private CatalogueItemObjectCode catalogueItemObjectCodeField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public CatalogueItemObjectCode catalogueItemObjectCode
         {
             get
@@ -1662,18 +1662,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class CatalogueItemObjectCode
     {
-        
+
         private string objectCodeField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string objectCode
         {
             get
@@ -1686,21 +1686,21 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueBusinessProductSpecs))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class CommonCatalogueBusinessProduct
     {
-        
+
         private CatalogueItemId catalogueItemIdField;
-        
+
         private CatalogueItemObjectCode catalogueItemObjectCodeField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public CatalogueItemId catalogueItemId
         {
             get
@@ -1712,9 +1712,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.catalogueItemIdField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public CatalogueItemObjectCode catalogueItemObjectCode
         {
             get
@@ -1727,23 +1727,23 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueProductInOfferSpecs))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class CommonCatalogueProductInOffer
     {
-        
+
         private CatalogueItemId catalogueItemIdField;
-        
+
         private CatalogueItemObjectCode catalogueItemObjectCodeField;
-        
+
         private string nameField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public CatalogueItemId catalogueItemId
         {
             get
@@ -1755,9 +1755,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.catalogueItemIdField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public CatalogueItemObjectCode catalogueItemObjectCode
         {
             get
@@ -1769,9 +1769,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.catalogueItemObjectCodeField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public string name
         {
             get
@@ -1784,27 +1784,27 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class getByCustomerIdRequest1
     {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity;
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdRequest getByCustomerIdRequest;
-        
+
         public getByCustomerIdRequest1()
         {
         }
-        
+
         public getByCustomerIdRequest1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdRequest getByCustomerIdRequest)
         {
             this.systemIdentity = systemIdentity;
@@ -1812,39 +1812,39 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             this.getByCustomerIdRequest = getByCustomerIdRequest;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class getByCustomerIdResponse1
     {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdResponse getByCustomerIdResponse;
-        
+
         public getByCustomerIdResponse1()
         {
         }
-        
+
         public getByCustomerIdResponse1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdResponse getByCustomerIdResponse)
         {
             this.getByCustomerIdResponse = getByCustomerIdResponse;
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class getByIdsRequest
     {
-        
+
         private ProductInstanceReference[] productInstanceReferenceListField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("productInstanceReference", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 0)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("productInstanceReference", IsNullable = false)]
         public ProductInstanceReference[] productInstanceReferenceList
         {
             get
@@ -1857,19 +1857,19 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class getByIdsResponse
     {
-        
+
         private ProductInstance3[] productInstanceListField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("productInstance", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 0)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("productInstance", IsNullable = false)]
         public ProductInstance3[] productInstanceList
         {
             get
@@ -1882,44 +1882,44 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName="ProductInstance", Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "ProductInstance", Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class ProductInstance3
     {
-        
+
         private CatalogueProductInOfferSpecs catalogueProductInOfferSpecsField;
-        
+
         private CustomerInProductInstance[] customerInProductInstanceListField;
-        
+
         private MktItemInstanceRelationship[] mktItemInstanceRelationshipListField;
-        
+
         private MktItemInstanceState mktItemInstanceStateField;
-        
+
         private OtherMktItemInstanceId[] otherMktItemInstanceIdListField;
-        
+
         private ProductInstanceArchFlag productInstanceArchFlagField;
-        
+
         private ProductInstanceInfo productInstanceInfoField;
-        
+
         private ReferentialMktItemInstanceId referentialMktItemInstanceIdField;
-        
+
         private System.DateTime createdOnField;
-        
+
         private bool createdOnFieldSpecified;
-        
+
         private System.DateTime lastModifiedOnField;
-        
+
         private string nameField;
-        
+
         private System.DateTime soldOnField;
-        
+
         private bool soldOnFieldSpecified;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public CatalogueProductInOfferSpecs catalogueProductInOfferSpecs
         {
             get
@@ -1931,10 +1931,10 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.catalogueProductInOfferSpecsField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=1)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("customerInProductInstance", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 1)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("customerInProductInstance", IsNullable = false)]
         public CustomerInProductInstance[] customerInProductInstanceList
         {
             get
@@ -1946,10 +1946,10 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.customerInProductInstanceListField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=2)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("mktItemInstanceRelationship", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 2)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("mktItemInstanceRelationship", IsNullable = false)]
         public MktItemInstanceRelationship[] mktItemInstanceRelationshipList
         {
             get
@@ -1961,9 +1961,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.mktItemInstanceRelationshipListField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
         public MktItemInstanceState mktItemInstanceState
         {
             get
@@ -1975,10 +1975,10 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.mktItemInstanceStateField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=4)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("otherMktItemInstanceId", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 4)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("otherMktItemInstanceId", IsNullable = false)]
         public OtherMktItemInstanceId[] otherMktItemInstanceIdList
         {
             get
@@ -1990,9 +1990,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.otherMktItemInstanceIdListField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
         public ProductInstanceArchFlag productInstanceArchFlag
         {
             get
@@ -2004,9 +2004,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.productInstanceArchFlagField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
         public ProductInstanceInfo productInstanceInfo
         {
             get
@@ -2018,9 +2018,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.productInstanceInfoField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 7)]
         public ReferentialMktItemInstanceId referentialMktItemInstanceId
         {
             get
@@ -2032,9 +2032,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.referentialMktItemInstanceIdField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 8)]
         public System.DateTime createdOn
         {
             get
@@ -2046,7 +2046,7 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.createdOnField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool createdOnSpecified
@@ -2060,9 +2060,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.createdOnFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 9)]
         public System.DateTime lastModifiedOn
         {
             get
@@ -2074,9 +2074,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.lastModifiedOnField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 10)]
         public string name
         {
             get
@@ -2088,9 +2088,9 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.nameField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 11)]
         public System.DateTime soldOn
         {
             get
@@ -2102,7 +2102,7 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
                 this.soldOnField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool soldOnSpecified
@@ -2117,35 +2117,35 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class ProductInstanceArchFlag
     {
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class getByIdsRequest1
     {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity;
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsRequest getByIdsRequest;
-        
+
         public getByIdsRequest1()
         {
         }
-        
+
         public getByIdsRequest1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsRequest getByIdsRequest)
         {
             this.systemIdentity = systemIdentity;
@@ -2153,39 +2153,39 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             this.getByIdsRequest = getByIdsRequest;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class getByIdsResponse1
     {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsResponse getByIdsResponse;
-        
+
         public getByIdsResponse1()
         {
         }
-        
+
         public getByIdsResponse1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsResponse getByIdsResponse)
         {
             this.getByIdsResponse = getByIdsResponse;
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class getByOtherIdsRequest
     {
-        
+
         private ProductInstanceReference1[] productInstanceReferenceListField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("productInstanceReference", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 0)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("productInstanceReference", IsNullable = false)]
         public ProductInstanceReference1[] productInstanceReferenceList
         {
             get
@@ -2198,18 +2198,18 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName="ProductInstanceReference", Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO/getByOtherId")]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "ProductInstanceReference", Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO/getByOtherId")]
     public partial class ProductInstanceReference1
     {
-        
+
         private OtherMktItemInstanceId otherMktItemInstanceIdField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public OtherMktItemInstanceId otherMktItemInstanceId
         {
             get
@@ -2222,19 +2222,19 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class getByOtherIdsResponse
     {
-        
+
         private ProductInstance3[] productInstanceListField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("productInstance", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 0)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("productInstance", IsNullable = false)]
         public ProductInstance3[] productInstanceList
         {
             get
@@ -2247,27 +2247,27 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class getByOtherIdsRequest1
     {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity;
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsRequest getByOtherIdsRequest;
-        
+
         public getByOtherIdsRequest1()
         {
         }
-        
+
         public getByOtherIdsRequest1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsRequest getByOtherIdsRequest)
         {
             this.systemIdentity = systemIdentity;
@@ -2275,38 +2275,38 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             this.getByOtherIdsRequest = getByOtherIdsRequest;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class getByOtherIdsResponse1
     {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsResponse getByOtherIdsResponse;
-        
+
         public getByOtherIdsResponse1()
         {
         }
-        
+
         public getByOtherIdsResponse1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsResponse getByOtherIdsResponse)
         {
             this.getByOtherIdsResponse = getByOtherIdsResponse;
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class updateRequest
     {
-        
+
         private ProductInstance3 productInstanceField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public ProductInstance3 productInstance
         {
             get
@@ -2319,35 +2319,35 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1/DTO")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1/DTO")]
     public partial class updateResponse
     {
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class updateRequest1
     {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity;
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://kb.cz/DataModel/Technical/Headers/v1")]
+
+        [System.ServiceModel.MessageHeaderAttribute(Namespace = "http://kb.cz/DataModel/Technical/Headers/v1")]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateRequest updateRequest;
-        
+
         public updateRequest1()
         {
         }
-        
+
         public updateRequest1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateRequest updateRequest)
         {
             this.systemIdentity = systemIdentity;
@@ -2355,172 +2355,172 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             this.updateRequest = updateRequest;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     internal partial class updateResponse1
     {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://kb.cz/ProductInstanceBEService/v1", Order=0)]
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v1", Order = 0)]
         public DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateResponse updateResponse;
-        
+
         public updateResponse1()
         {
         }
-        
+
         public updateResponse1(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateResponse updateResponse)
         {
             this.updateResponse = updateResponse;
         }
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    internal interface ProductInstanceBEServiceChannel : DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService, System.ServiceModel.IClientChannel
+    internal interface ProductInstanceBEServiceChannel : DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService, System.ServiceModel.IClientChannel
     {
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    internal partial class ProductInstanceBEServiceClient : System.ServiceModel.ClientBase<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService>, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService
+    internal partial class ProductInstanceBEServiceClient : System.ServiceModel.ClientBase<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService>, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService
     {
-        
+
         /// <summary>
         /// Implement this partial method to configure the service endpoint.
         /// </summary>
         /// <param name="serviceEndpoint">The endpoint to configure</param>
         /// <param name="clientCredentials">The client credentials</param>
         static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
-        
-        public ProductInstanceBEServiceClient() : 
+
+        public ProductInstanceBEServiceClient() :
                 base(ProductInstanceBEServiceClient.GetDefaultBinding(), ProductInstanceBEServiceClient.GetDefaultEndpointAddress())
         {
             this.Endpoint.Name = EndpointConfiguration.ProductInstanceBEServiceServicePort.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
-        
-        public ProductInstanceBEServiceClient(EndpointConfiguration endpointConfiguration) : 
+
+        public ProductInstanceBEServiceClient(EndpointConfiguration endpointConfiguration) :
                 base(ProductInstanceBEServiceClient.GetBindingForEndpoint(endpointConfiguration), ProductInstanceBEServiceClient.GetEndpointAddress(endpointConfiguration))
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
-        
-        public ProductInstanceBEServiceClient(EndpointConfiguration endpointConfiguration, string remoteAddress) : 
+
+        public ProductInstanceBEServiceClient(EndpointConfiguration endpointConfiguration, string remoteAddress) :
                 base(ProductInstanceBEServiceClient.GetBindingForEndpoint(endpointConfiguration), new System.ServiceModel.EndpointAddress(remoteAddress))
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
-        
-        public ProductInstanceBEServiceClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) : 
+
+        public ProductInstanceBEServiceClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(ProductInstanceBEServiceClient.GetBindingForEndpoint(endpointConfiguration), remoteAddress)
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
-        
-        public ProductInstanceBEServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+
+        public ProductInstanceBEServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(binding, remoteAddress)
         {
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService.createAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createRequest1 request)
+        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService.createAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createRequest1 request)
         {
             return base.Channel.createAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createResponse1> createAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createRequest createRequest)
         {
             DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createRequest1 inValue = new DomainServices.ProductService.ExternalServices.Pcp.V1.Client.createRequest1();
             inValue.systemIdentity = systemIdentity;
             inValue.traceContext = traceContext;
             inValue.createRequest = createRequest;
-            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService)(this)).createAsync(inValue);
+            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService)(this)).createAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService.deleteAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteRequest1 request)
+        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService.deleteAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteRequest1 request)
         {
             return base.Channel.deleteAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteResponse1> deleteAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteRequest deleteRequest)
         {
             DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteRequest1 inValue = new DomainServices.ProductService.ExternalServices.Pcp.V1.Client.deleteRequest1();
             inValue.systemIdentity = systemIdentity;
             inValue.traceContext = traceContext;
             inValue.deleteRequest = deleteRequest;
-            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService)(this)).deleteAsync(inValue);
+            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService)(this)).deleteAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService.getByCustomerIdAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdRequest1 request)
+        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService.getByCustomerIdAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdRequest1 request)
         {
             return base.Channel.getByCustomerIdAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdResponse1> getByCustomerIdAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdRequest getByCustomerIdRequest)
         {
             DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdRequest1 inValue = new DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByCustomerIdRequest1();
             inValue.systemIdentity = systemIdentity;
             inValue.traceContext = traceContext;
             inValue.getByCustomerIdRequest = getByCustomerIdRequest;
-            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService)(this)).getByCustomerIdAsync(inValue);
+            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService)(this)).getByCustomerIdAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService.getByIdsAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsRequest1 request)
+        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService.getByIdsAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsRequest1 request)
         {
             return base.Channel.getByIdsAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsResponse1> getByIdsAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsRequest getByIdsRequest)
         {
             DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsRequest1 inValue = new DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByIdsRequest1();
             inValue.systemIdentity = systemIdentity;
             inValue.traceContext = traceContext;
             inValue.getByIdsRequest = getByIdsRequest;
-            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService)(this)).getByIdsAsync(inValue);
+            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService)(this)).getByIdsAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService.getByOtherIdsAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsRequest1 request)
+        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService.getByOtherIdsAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsRequest1 request)
         {
             return base.Channel.getByOtherIdsAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsResponse1> getByOtherIdsAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsRequest getByOtherIdsRequest)
         {
             DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsRequest1 inValue = new DomainServices.ProductService.ExternalServices.Pcp.V1.Client.getByOtherIdsRequest1();
             inValue.systemIdentity = systemIdentity;
             inValue.traceContext = traceContext;
             inValue.getByOtherIdsRequest = getByOtherIdsRequest;
-            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService)(this)).getByOtherIdsAsync(inValue);
+            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService)(this)).getByOtherIdsAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService.updateAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateRequest1 request)
+        System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateResponse1> DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService.updateAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateRequest1 request)
         {
             return base.Channel.updateAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateResponse1> updateAsync(DomainServices.ProductService.ExternalServices.Pcp.V1.Client.SystemIdentity systemIdentity, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.TraceContext traceContext, DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateRequest updateRequest)
         {
             DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateRequest1 inValue = new DomainServices.ProductService.ExternalServices.Pcp.V1.Client.updateRequest1();
             inValue.systemIdentity = systemIdentity;
             inValue.traceContext = traceContext;
             inValue.updateRequest = updateRequest;
-            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.ProductInstanceBEService)(this)).updateAsync(inValue);
+            return ((DomainServices.ProductService.ExternalServices.Pcp.V1.Client.IProductInstanceBEService)(this)).updateAsync(inValue);
         }
-        
+
         public virtual System.Threading.Tasks.Task OpenAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
-        
+
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.ProductInstanceBEServiceServicePort))
@@ -2534,7 +2534,7 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
-        
+
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.ProductInstanceBEServiceServicePort))
@@ -2543,20 +2543,20 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1.Client
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
-        
+
         private static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
             return ProductInstanceBEServiceClient.GetBindingForEndpoint(EndpointConfiguration.ProductInstanceBEServiceServicePort);
         }
-        
+
         private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
             return ProductInstanceBEServiceClient.GetEndpointAddress(EndpointConfiguration.ProductInstanceBEServiceServicePort);
         }
-        
+
         public enum EndpointConfiguration
         {
-            
+
             ProductInstanceBEServiceServicePort,
         }
     }

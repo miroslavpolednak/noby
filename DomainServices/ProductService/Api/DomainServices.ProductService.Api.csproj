@@ -36,6 +36,7 @@
 		<ProjectReference Include="..\..\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.ProductService.Contracts.csproj" />
+		<ProjectReference Include="..\ExternalServices.Pcp\DomainServices.ProductService.ExternalServices.Pcp.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

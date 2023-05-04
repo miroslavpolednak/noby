@@ -5,20 +5,18 @@ using Microsoft.EntityFrameworkCore;
 namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;
 
 internal sealed class GetMortgageHandler
-    : BaseMortgageHandler, IRequestHandler<GetMortgageRequest, GetMortgageResponse>
+    : IRequestHandler<GetMortgageRequest, GetMortgageResponse>
 {
     private readonly Database.ProductServiceDbContext _dbContext;
+    private readonly Database.LoanRepository _repository;
 
     #region Construction
 
     public GetMortgageHandler(
         Database.ProductServiceDbContext dbContext,
-        ICodebookServiceClients codebookService,
-        Database.LoanRepository repository,
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        ILogger<GetMortgageHandler> logger) : base(codebookService, repository, null, logger)
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+        Database.LoanRepository repository)
     {
+        _repository = repository;
         _dbContext = dbContext;
     }
     #endregion
@@ -35,6 +33,9 @@ internal sealed class GetMortgageHandler
         var relationships = await _repository.GetRelationships(request.ProductId, cancellation);
 
         var mortgage = loan.ToMortgage(relationships);
+
+        // pcpid
+        mortgage.PcpId = await _dbContext.LoanReservations.Where(t => t.UverId == request.ProductId).Select(t => t.PcpInstId).FirstOrDefaultAsync(cancellation);
 
         // nemovitosti
         var realEstates = _dbContext
