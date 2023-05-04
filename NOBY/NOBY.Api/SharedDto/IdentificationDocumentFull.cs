@@ -24,6 +24,4 @@ public sealed class IdentificationDocumentFull
     public DateTime IssuedOn { get; set; }
 
     public string? RegisterPlace { get; set; }
-
-    public CustomerIdentificationObject? CustomerIdentification { get; set; }
 }

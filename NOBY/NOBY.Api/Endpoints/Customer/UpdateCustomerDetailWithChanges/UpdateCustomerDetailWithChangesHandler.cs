@@ -19,7 +19,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
         
         // customer from KB CM
-        var originalModel = await _changedDataService.GetCustomerFromCM<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
+        var (originalModel, identificationMethodId) = await _changedDataService.GetCustomerFromCM<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
 
         // compare objects
         dynamic delta = new System.Dynamic.ExpandoObject();
@@ -45,17 +45,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         }
 
         // tady schvalne neresime prvni pindu z EA diagramu, protoze bysme museli z customerOnSA json delty udelat objekt a ten teprve kontrolovat. A to by bylo pomalejsi a narocnejsi nez tuhle podminku vzdy znovu projet.
-        if (!identDocExists 
-            && originalModel.CustomerIdentification?.IdentificationMethodId != 1 
-            && originalModel.CustomerIdentification?.IdentificationMethodId != 8)
+        if (!identDocExists && identificationMethodId != 1 && identificationMethodId != 8)
         {
-            delta.CustomerIdentification = new CustomerIdentificationMethod
-            {
-                IdentificationDate = DateTime.Now,
-                CzechIdentificationNumber = string.Empty,
-                IdentificationMethodId = 1
-            };
-            
             if (_userAccessor.User?.Id != null)
             {
                 var user = await _userServiceClient.GetUser(_userAccessor.User.Id, cancellationToken);

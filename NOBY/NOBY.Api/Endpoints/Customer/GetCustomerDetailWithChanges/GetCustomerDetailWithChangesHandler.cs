@@ -22,7 +22,8 @@ internal sealed class GetCustomerDetailWithChangesHandler
         if (productMandant != 2) // muze byt jen KB
             throw new CisValidationException("Product type mandant is not KB");
 
-        return await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSA, cancellationToken);
+        var (data, _) = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSA, cancellationToken);
+        return data;
     }
 
     private readonly CustomerWithChangedDataService _changedDataService;

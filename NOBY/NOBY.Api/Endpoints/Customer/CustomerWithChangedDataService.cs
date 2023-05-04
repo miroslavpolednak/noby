@@ -11,7 +11,7 @@ namespace NOBY.Api.Endpoints.Customer;
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class CustomerWithChangedDataService
 {
-    public async Task<TResponse> GetCustomerFromCM<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
+    public async Task<(TResponse Customer, int? IdentificationMethodId)> GetCustomerFromCM<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
         where TResponse : Shared.BaseCustomerDetail
     {
         // kontrola identity KB
@@ -23,10 +23,10 @@ internal sealed class CustomerWithChangedDataService
         var customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
         // convert DS contract to FE model
-        return fillResponseDto<TResponse>(customer, customerOnSA);
+        return (fillResponseDto<TResponse>(customer, customerOnSA), customer.CustomerIdentification?.IdentificationMethodId);
     }
 
-    public async Task<TResponse> GetCustomerWithChangedData<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
+    public async Task<(TResponse Customer, int? IdentificationMethodId)> GetCustomerWithChangedData<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
         where TResponse : Shared.BaseCustomerDetail
     {
         // convert DS contract to FE model
@@ -36,7 +36,7 @@ internal sealed class CustomerWithChangedDataService
         if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
         {
             // provide saved changes to original model
-            var original = JObject.FromObject(model);
+            var original = JObject.FromObject(model.Customer);
             var delta = JObject.Parse(customerOnSA.CustomerChangeData);
 
             original.Merge(delta, new JsonMergeSettings
@@ -45,7 +45,7 @@ internal sealed class CustomerWithChangedDataService
                 MergeNullValueHandling = MergeNullValueHandling.Merge
             });
 
-            return original.ToObject<TResponse>()!;
+            return (original.ToObject<TResponse>()!, model.IdentificationMethodId);
         }
         else
         {
@@ -77,13 +77,6 @@ internal sealed class CustomerWithChangedDataService
         newCustomer.JuridicalPerson = null;
         newCustomer.IdentificationDocument = dsCustomer.IdentificationDocument?.ToResponseDto();
         newCustomer.Addresses = dsCustomer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList();
-
-        newCustomer.CustomerIdentification = new CustomerIdentificationMethod
-        {
-            CzechIdentificationNumber = dsCustomer.CustomerIdentification?.CzechIdentificationNumber,
-            IdentificationDate = dsCustomer.CustomerIdentification?.IdentificationDate,
-            IdentificationMethodId = dsCustomer.CustomerIdentification?.IdentificationMethodId
-        };
 
         // https://jira.kb.cz/browse/HFICH-4200
         // docasne reseni nez se CM rozmysli jak na to

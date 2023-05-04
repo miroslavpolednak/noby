@@ -12,8 +12,6 @@ public abstract class BaseCustomerDetail
 
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
 
-    public CustomerIdentificationMethod? CustomerIdentification { get; set; }
-
     /// <summary>
     /// Objekt právního omezení	
     /// </summary>
