@@ -56,7 +56,7 @@ public class OfferController : ControllerBase
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Dto.GetMortgageResponse> GetMortgageBySalesArrangementId([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<Dto.GetMortgageResponse> GetMortgageBySalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageBySalesArrangement.GetMortgageBySalesArrangementRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
