@@ -29,7 +29,7 @@ internal sealed class GetMortgageHandler
 
         if (loan == null)
         {
-            throw new CisNotFoundException(12001, nameof(Database.Entities.Loan), request.ProductId);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
         }
 
         var relationships = await _repository.GetRelationships(request.ProductId, cancellation);

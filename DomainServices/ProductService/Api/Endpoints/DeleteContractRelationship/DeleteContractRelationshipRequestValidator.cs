@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
+using FluentValidation;
 
 namespace DomainServices.ProductService.Api.Endpoints.DeleteContractRelationship;
 
@@ -8,11 +9,11 @@ internal sealed class DeleteContractRelationshipRequestValidator : AbstractValid
     {
         RuleFor(t => t.ProductId)
            .GreaterThan(0)
-           .WithMessage("ProductId is not specified").WithErrorCode("12014");
+           .WithErrorCode(ErrorCodeMapper.InvalidArgument12014);
 
         RuleFor(t => t.PartnerId)
             .GreaterThan(0)
-            .WithMessage("PartnerId is not specified").WithErrorCode("12010");
+            .WithErrorCode(ErrorCodeMapper.InvalidArgument12010);
     }
 }
 
