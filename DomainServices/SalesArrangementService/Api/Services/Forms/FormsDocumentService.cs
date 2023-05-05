@@ -177,6 +177,7 @@ internal sealed class FormsDocumentService
         {
             DocumentTypeId = documentOnSaData.DocumentTypeId!.Value,
             DocumentTemplateVersionId = documentOnSaData.DocumentTemplateVersionId!.Value,
+            DocumentTemplateVariantId = documentOnSaData.DocumentTemplateVariantId,
             ForPreview = false,
             OutputType = OutputFileType.Pdfa,
             Parts = { CreateDocPart(documentOnSaData) },
@@ -189,7 +190,8 @@ internal sealed class FormsDocumentService
         var docPart = new GenerateDocumentPart
         {
             DocumentTypeId = documentOnSaData.DocumentTypeId!.Value,
-            DocumentTemplateVersionId = documentOnSaData.DocumentTemplateVersionId!.Value
+            DocumentTemplateVersionId = documentOnSaData.DocumentTemplateVersionId!.Value,
+            DocumentTemplateVariantId = documentOnSaData.DocumentTemplateVariantId,
         };
 
         var documentDataDtos = JsonConvert.DeserializeObject<List<DocumentDataDto>>(documentOnSaData.Data);
