@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using CIS.Core;
 using CIS.Core.Attributes;
+using CIS.Core.Security;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
@@ -17,6 +18,7 @@ using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.UserService.Clients;
 using DomainServices.UserService.Contracts;
 using Newtonsoft.Json;
+using static DomainServices.UserService.Contracts.v1.UserService;
 
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 
@@ -76,7 +78,7 @@ internal sealed class FormsDocumentService
         entity.FileName = await GetFileName(docOnSa.DocumentOnSa, cancellationToken);
         entity.FileNameSuffix = Path.GetExtension(entity.FileName)[1..];
         entity.CaseId = salesArrangement.CaseId;
-        entity.AuthorUserLogin = user.CPM ?? user.Id.ToString(CultureInfo.InvariantCulture);
+        entity.AuthorUserLogin = GetAuthorUserLogin(user);
         entity.ContractNumber = contractNumber;
         entity.FormId = docOnSa.DocumentOnSa.FormId;
         entity.CreatedOn = _dateTime.Now.Date;
@@ -98,6 +100,16 @@ internal sealed class FormsDocumentService
         };
 
         return entity;
+    }
+
+    private static string GetAuthorUserLogin(User user)
+    {
+        if (!string.IsNullOrWhiteSpace(user.ICP))
+            return user.ICP;
+        else if (!string.IsNullOrWhiteSpace(user.CPM))
+            return user.CPM;
+        else
+            return user.Id.ToString(CultureInfo.InvariantCulture);
     }
 
     public async Task<CreateDocumentOnSAResponse> CreateFinalDocumentOnSa(int salesArrangementId, DynamicFormValues dynamicValue, CancellationToken cancellationToken)
