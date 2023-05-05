@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using CIS.Core;
 using CIS.Core.Attributes;
-using CIS.Core.Security;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
@@ -11,6 +10,7 @@ using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
+using DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService;
 using DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.Entities;
 using DomainServices.SalesArrangementService.Api.Endpoints.SendToCmp;
 using DomainServices.SalesArrangementService.Contracts;
@@ -21,13 +21,13 @@ using Newtonsoft.Json;
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 
 [ScopedService, SelfService]
-internal class FormsDocumentService
+internal sealed class FormsDocumentService
 {
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorService;
     private readonly ICodebookServiceClients _codebookService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
+    private readonly IDocumentArchiveRepository _documentArchiveRepository;
     private readonly IDateTime _dateTime;
     private readonly IUserServiceClient _userService;
 
@@ -35,7 +35,7 @@ internal class FormsDocumentService
                                 IDocumentArchiveServiceClient documentArchiveService,
                                 IDocumentGeneratorServiceClient documentGeneratorService,
                                 ICodebookServiceClients codebookService,
-                                ICurrentUserAccessor currentUserAccessor,
+                                IDocumentArchiveRepository documentArchiveRepository,
                                 IDateTime dateTime,
                                 IUserServiceClient userService)
     {
@@ -43,7 +43,7 @@ internal class FormsDocumentService
         _documentArchiveService = documentArchiveService;
         _documentGeneratorService = documentGeneratorService;
         _codebookService = codebookService;
-        _currentUserAccessor = currentUserAccessor;
+        _documentArchiveRepository = documentArchiveRepository;
         _dateTime = dateTime;
         _userService = userService;
     }
@@ -51,26 +51,24 @@ internal class FormsDocumentService
     /// <summary>
     /// Prepare DocumentInterface (Form) with FormInstanceInterface (data sentense) entities.
     /// </summary>
-    public async Task<DocumentInterface[]> PrepareEntities(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, IReadOnlyCollection<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
+    public async Task SaveEasForms(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, IReadOnlyCollection<CreateDocumentOnSAResponse> createdFinalVersionOfDocOnSa, CancellationToken cancellationToken)
     {
         var formsWithDataSentenses = createdFinalVersionOfDocOnSa.OrderBy(r => r.DocumentOnSa.EArchivId)
-                 .Zip(easFormResponse.Forms.OrderBy(r => r.DynamicFormValues.DocumentTypeId),
+                 .Zip(easFormResponse.Forms.OrderBy(r => r.DynamicFormValues.DocumentId),
                  (docOnSa, form) => new { docOnSa, form });
 
         // load user
         var user = await _userService.GetUser(salesArrangement.Created.UserId!.Value, cancellationToken);
 
-        return await Task.WhenAll(
+        var entities = await Task.WhenAll(
             formsWithDataSentenses
-            .Select(r => PrepareEntity(r.docOnSa, r.form, salesArrangement, easFormResponse.ContractNumber, user, cancellationToken))
-            );
+                .Select(r => PrepareEntity(r.docOnSa, r.form, salesArrangement, easFormResponse.ContractNumber, user, cancellationToken)));
+
+        await _documentArchiveRepository.SaveDataSentenseWithForm(entities, cancellationToken);
     }
 
     private async Task<DocumentInterface> PrepareEntity(CreateDocumentOnSAResponse docOnSa, Form form, SalesArrangement salesArrangement, string contractNumber, User user, CancellationToken cancellationToken)
     {
-        var identity = user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.Mpad)
-             ?? user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.KbUid);
-        
         var entity = new DocumentInterface();
         entity.DocumentId = docOnSa.DocumentOnSa.EArchivId;
         var generatedDocument = await GenerateDocument(salesArrangement, docOnSa, cancellationToken);
@@ -78,7 +76,7 @@ internal class FormsDocumentService
         entity.FileName = await GetFileName(docOnSa.DocumentOnSa, cancellationToken);
         entity.FileNameSuffix = Path.GetExtension(entity.FileName)[1..];
         entity.CaseId = salesArrangement.CaseId;
-        entity.AuthorUserLogin = identity?.Identity ?? user.Id.ToString(CultureInfo.InvariantCulture);
+        entity.AuthorUserLogin = user.CPM ?? user.Id.ToString(CultureInfo.InvariantCulture);
         entity.ContractNumber = contractNumber;
         entity.FormId = docOnSa.DocumentOnSa.FormId;
         entity.CreatedOn = _dateTime.Now.Date;
@@ -120,7 +118,7 @@ internal class FormsDocumentService
     {
         var documentOnSaData = await _documentOnSAService.GetDocumentOnSAData(documentOnSaResponse.DocumentOnSa.DocumentOnSAId!.Value, cancellationToken);
 
-        var generateDocumentRequest = CreateDocumentRequest(documentOnSaData, salesArrangement);
+        var generateDocumentRequest = CreateDocumentRequest(documentOnSaResponse.DocumentOnSa, documentOnSaData, salesArrangement);
 
         return await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
     }
@@ -140,6 +138,7 @@ internal class FormsDocumentService
 
             switch (documentDataDto.ValueCase)
             {
+                case 0: break;
                 case 3:
                     documentPartData.Text = documentDataDto.Text ?? string.Empty;
                     break;
@@ -172,7 +171,7 @@ internal class FormsDocumentService
         return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
     }
 
-    private static GenerateDocumentRequest CreateDocumentRequest(GetDocumentOnSADataResponse documentOnSaData, SalesArrangement salesArrangement)
+    private static GenerateDocumentRequest CreateDocumentRequest(DocumentOnSAToSign documentOnSa, GetDocumentOnSADataResponse documentOnSaData, SalesArrangement salesArrangement)
     {
         return new GenerateDocumentRequest
         {
@@ -181,7 +180,7 @@ internal class FormsDocumentService
             ForPreview = false,
             OutputType = OutputFileType.Pdfa,
             Parts = { CreateDocPart(documentOnSaData) },
-            DocumentFooter = CreateFooter(salesArrangement)
+            DocumentFooter = CreateFooter(salesArrangement, documentOnSa)
         };
     }
 
@@ -198,12 +197,13 @@ internal class FormsDocumentService
         return docPart;
     }
 
-    private static DocumentFooter CreateFooter(SalesArrangement salesArrangement)
+    private static DocumentFooter CreateFooter(SalesArrangement salesArrangement, DocumentOnSAToSign documentOnSA)
     {
         return new DocumentFooter
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
-            CaseId = salesArrangement.CaseId
+            CaseId = salesArrangement.CaseId,
+            BarcodeText = documentOnSA.FormId
         };
     }
 }

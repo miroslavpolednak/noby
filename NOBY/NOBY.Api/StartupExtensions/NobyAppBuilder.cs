@@ -74,19 +74,54 @@ internal static class NobyAppBuilder
 
             appBuilder.UseEndpoints(t =>
             {
+                // sign in
                 t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, ([FromServices] IHttpContextAccessor context) =>
                 {
                 })
                     .RequireAuthorization()
-                    .ExcludeFromDescription();
+                    .Produces(302)
+                    .WithDescription("Přihlášení uživatele / redirect na auth provider.")
+                    .WithTags("Users")
+                    .WithName("loginUserGet")
+                    .WithOpenApi(generatedOperation =>
+                    {
+                        generatedOperation.Summary = "Přihlášení uživatele / redirect na auth provider.";
+                        generatedOperation.Responses.First().Value.Description = "Redirect na CAAS";
+                        return generatedOperation;
+                    });
 
-                t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint, ([FromServices] IHttpContextAccessor context) =>
+                // Odhlášení přihlášeného uživatele
+                t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint, 
+                    ([FromServices] IHttpContextAccessor context, [FromServices] AppConfiguration configuration, [FromQuery] string? redirect) =>
                 {
+                    string redirectUrl = Uri.TryCreate(redirect, UriKind.Absolute, out var uri) ? uri.ToString() : "/";
+
                     context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                    context.HttpContext!.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+
+                    if (configuration.Security!.AuthenticationScheme == AuthenticationConstants.CaasAuthScheme)
+                    {
+                        context.HttpContext!.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+                    }
+
+                    // redirect to root?
+                    context.HttpContext!.Response.Redirect(redirectUrl);
                 })
                     .RequireAuthorization()
-                    .ExcludeFromDescription();
+                    .Produces(302)
+                    .WithTags("Users")
+                    .WithName("logoutUserGet")
+                    .WithOpenApi(generatedOperation =>
+                    {
+                        generatedOperation.Summary = "Odhlášení přihlášeného uživatele";
+                        generatedOperation.Description = "Provolání zajistí správné odhlášení přihlášeného uživatele. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea?m=1&amp;o=713A5C7F-13DB-4c88-863B-29C40F2EDE32\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>";
+                        
+                        var parameter = generatedOperation.Parameters[0];
+                        parameter.Description = "Absolutní URI kam má být uživatel přesměrován po odhlášení";
+
+                        generatedOperation.Responses.First().Value.Description = "Uživatel byl ohlášen";
+
+                        return generatedOperation;
+                    });
             });
         });
 

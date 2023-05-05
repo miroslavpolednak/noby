@@ -2,9 +2,16 @@
 
 internal class DataLoaderStatus
 {
-    public List<DataSource> LoadedDataSources { get; } = new();
+    private readonly object _remainingDataSourcesSyncRoot = new();
 
-    public required List<DataSource> RemainingDataSources { get; init; }
+    public DataLoaderStatus(IEnumerable<DataSource> requestedDataSources)
+    {
+        RemainingDataSources = new SynchronizedCollection<DataSource>(_remainingDataSourcesSyncRoot, requestedDataSources);
+    }
+
+    public SynchronizedCollection<DataSource> LoadedDataSources { get; } = new();
+
+    public SynchronizedCollection<DataSource> RemainingDataSources { get; }
 
     public required List<DynamicInputParameter> RelatedInputParameters { get; init; }
 

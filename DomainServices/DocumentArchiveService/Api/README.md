@@ -1,5 +1,9 @@
 ﻿## grpcurl tests
 
+### GetAllGrpcServices
+```
+grpcurl -insecure 172.30.35.51:30005 list DomainServices.DocumentArchiveService.v1.DocumentArchiveService
+```
 ### GenerateDocumentId
 ```
 grpcurl -insecure -d "{\"EnvironmentName\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30005 DomainServices.DocumentArchiveService.v1.DocumentArchiveService/GenerateDocumentId
@@ -8,9 +12,9 @@ grpcurl -insecure -d "{\"EnvironmentName\":1}" -H "Authorization: Basic WFhfTk9C
 ```
 grpcurl -insecure -d "{\"documentId\":\"KBHCWS000000000000000013832943\"}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30005 DomainServices.DocumentArchiveService.v1.DocumentArchiveService/GetDocument
 ```
-### GetGetDocumentList
+### GetDocumentList
 ```
-grpcurl -insecure -d "{\"CaseId\":12345}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30005 DomainServices.DocumentArchiveService.v1.DocumentArchiveService/GetGetDocumentList
+grpcurl -insecure -d "{\"CaseId\":12345}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30005 DomainServices.DocumentArchiveService.v1.DocumentArchiveService/GetDocumentList
 ```
 ### UploadDocument 
 **If you want use this call, you have to generate document id (GenerateDocumentId) first and past it as DocumentId parameter!!!** 
@@ -20,6 +24,10 @@ grpcurl -insecure -d "{\"BinaryData\":\"VGhpcyBpcyBhIHRlc3Q=\",\"Metadata\":{\"C
 ### GetDocumentsInQueue
 ```
 grpcurl -insecure -d "{\"EArchivIds\":[\"KBHXXD00000000000000000000007\",\"KBHXXD00000000000000000000009\"]}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30005 DomainServices.DocumentArchiveService.v1.DocumentArchiveService/GetDocumentsInQueue
+```
+### SetDocumentStatusInQueue
+```
+grpcurl -insecure -d "{\"EArchivId\":\"KBHXXD00000000000000000000001\",\"StatusInQueue\":302}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30005 DomainServices.DocumentArchiveService.v1.DocumentArchiveService/SetDocumentStatusInQueue
 ```
 ### Run batch
 ```

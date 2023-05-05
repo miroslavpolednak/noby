@@ -1,26 +1,32 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
+using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class CustomerChangeBuilder
-    : BaseBuilder, ICreateSalesArrangementParametersBuilder
+    : BaseBuilder
 {
-    public async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage
         var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         var customerService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.CustomerService.Clients.ICustomerServiceClient>();
 
+        _request.CustomerChange = new();
+        
         try
         {
             var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
 
             if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.BankCode))
             {
-                _request.CustomerChange.RepaymentAccount.Prefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;
-                _request.CustomerChange.RepaymentAccount.Number = mortgageInstance.Mortgage.RepaymentAccount.Number;
-                _request.CustomerChange.RepaymentAccount.BankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode;
+                _request.CustomerChange.RepaymentAccount = new()
+                {
+                    AgreedPrefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix,
+                    AgreedNumber = mortgageInstance.Mortgage.RepaymentAccount.Number,
+                    AgreedBankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode
+                };
             }
             else
                 _logger.LogInformation("DrawingBuilder: Account is empty");
@@ -80,11 +86,8 @@ internal sealed class CustomerChangeBuilder
 
     private static int[] _allowedCustomerRoles = new[] { 1, 2 };
 
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
     public CustomerChangeBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-        : base(logger, request)
+        : base(logger, request, httpContextAccessor)
     {
-        _httpContextAccessor = httpContextAccessor;
     }
 }

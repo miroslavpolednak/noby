@@ -45,4 +45,21 @@ public static class DataStartupExtensions
         
         return builder;
     }
+
+    public static WebApplicationBuilder AddBaseEntityFramework<TDbContext>(this WebApplicationBuilder builder, bool enableSensitiveDataLogging = false, string connectionStringKey = "default", CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
+        where TDbContext : DbContext
+    {
+        // add custom CIS options
+        builder.Services.TryAddSingleton(cisOptions ?? new CisEntityFrameworkOptions<TDbContext>());
+
+        // add DbContext
+        string? connectionString = builder.Configuration.GetConnectionString(connectionStringKey);
+        if (!string.IsNullOrEmpty(connectionString))
+        {
+            builder.Services
+                .AddDbContext<TDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(enableSensitiveDataLogging), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+        }
+
+        return builder;
+    }
 }

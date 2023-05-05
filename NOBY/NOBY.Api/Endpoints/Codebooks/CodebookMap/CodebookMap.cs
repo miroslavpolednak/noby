@@ -49,6 +49,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.DocumentOnSATypes(ct));
         AddCodebook((s, ct) => s.DocumentTemplateVersions(ct));
         AddCodebook((s, ct) => s.DocumentTemplateVariants(ct));
+        AddCodebook((s, ct) => s.DocumentTypes(ct));
         AddCodebook((s, ct) => s.DrawingDurations(ct));
         AddCodebook((s, ct) => s.DrawingTypes(ct), c => c.Cast<Codebook.DrawingTypes.DrawingTypeItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.EaCodesMain(ct));
@@ -83,12 +84,12 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.SalesArrangementStates(ct), c => c.Cast<Codebook.SalesArrangementStates.SalesArrangementStateItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.SalesArrangementTypes(ct));
         AddCodebook((s, ct) => s.SignatureTypes(ct), c => c.Cast<Codebook.SignatureTypes.SignatureTypeItem>().Where(t => t.Id > 0));
+        AddCodebook((s, ct) => s.SigningMethodsForNaturalPerson(ct), c => c.Cast<Codebook.SigningMethodsForNaturalPerson.SigningMethodsForNaturalPersonItem>());
         AddCodebook((s, ct) => s.StatementTypes(ct));
         AddCodebook((s, ct) => s.TinFormatsByCountry(ct));
         AddCodebook((s, ct) => s.TinNoFillReasonsByCountry(ct));
         AddCodebook((s, ct) => s.RealEstateTypes(ct), c => c.Cast<Codebook.RealEstateTypes.RealEstateTypeItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.RealEstatePurchaseTypes(ct));
-        AddCodebook((s, ct) => s.WorkflowProcessStatesNoby(ct));
         AddCodebook((s, ct) => s.WorkflowTaskStatesNoby(ct));
         AddCodebook((s, ct) => s.WorkflowTaskCategories(ct));
         AddCodebook((s, ct) => s.WorkflowTaskStates(ct));

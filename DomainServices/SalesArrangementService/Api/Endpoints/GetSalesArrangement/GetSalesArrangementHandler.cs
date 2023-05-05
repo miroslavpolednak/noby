@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DomainServices.SalesArrangementService.Api.Database;
+using Microsoft.EntityFrameworkCore;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.GetSalesArrangement;
@@ -9,7 +10,12 @@ internal sealed class GetSalesArrangementHandler
     public async Task<__SA.SalesArrangement> Handle(__SA.GetSalesArrangementRequest request, CancellationToken cancellation)
     {
         // detail SA
-        var model = await _repository.GetSalesArrangement(request.SalesArrangementId, cancellation);
+        var model = await _dbContext.SalesArrangements
+            .Where(t => t.SalesArrangementId == request.SalesArrangementId)
+            .AsNoTracking()
+            .Select(DatabaseExpressions.SalesArrangementDetail())
+            .FirstOrDefaultAsync(cancellation) 
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
         // parametry
         var parameters = await _dbContext.SalesArrangementsParameters
@@ -23,37 +29,42 @@ internal sealed class GetSalesArrangementHandler
         {
             switch (parameters.ParameterType)
             {
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.Mortgage:
+                case SalesArrangementTypes.Mortgage:
                     model.Mortgage = __SA.SalesArrangementParametersMortgage.Parser.ParseFrom(parameters.Bin);
                     break;
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.Drawing:
+                case SalesArrangementTypes.Drawing:
                     model.Drawing = __SA.SalesArrangementParametersDrawing.Parser.ParseFrom(parameters.Bin);
                     break;
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.GeneralChange:
+                case SalesArrangementTypes.GeneralChange:
                     model.GeneralChange = __SA.SalesArrangementParametersGeneralChange.Parser.ParseFrom(parameters.Bin);
                     break;
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.HUBN:
+                case SalesArrangementTypes.HUBN:
                     model.HUBN = __SA.SalesArrangementParametersHUBN.Parser.ParseFrom(parameters.Bin);
                     break;
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.CustomerChange:
-                    model.HUBN = __SA.SalesArrangementParametersHUBN.Parser.ParseFrom(parameters.Bin);
+                case SalesArrangementTypes.CustomerChange:
+                    model.CustomerChange = __SA.SalesArrangementParametersCustomerChange.Parser.ParseFrom(parameters.Bin);
+                    break;
+                case SalesArrangementTypes.CustomerChange3602A:
+                    model.CustomerChange3602A = __SA.SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(parameters.Bin);
+                    break;
+                case SalesArrangementTypes.CustomerChange3602B:
+                    model.CustomerChange3602B = __SA.SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(parameters.Bin);
+                    break;
+                case SalesArrangementTypes.CustomerChange3602C:
+                    model.CustomerChange3602C = __SA.SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(parameters.Bin);
                     break;
                 default:
-                    throw new NotImplementedException($"SalesArrangementParametersType {parameters.ParameterType} is not implemented");
+                    throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, parameters.ParameterType);
             }
         }
 
         return model;
     }
 
-    private readonly Database.SalesArrangementServiceDbContext _dbContext;
-    private readonly Database.SalesArrangementServiceRepository _repository;
+    private readonly SalesArrangementServiceDbContext _dbContext;
 
-    public GetSalesArrangementHandler(
-        Database.SalesArrangementServiceRepository repository,
-        Database.SalesArrangementServiceDbContext dbContext)
+    public GetSalesArrangementHandler(SalesArrangementServiceDbContext dbContext)
     {
         _dbContext = dbContext;
-        _repository = repository;
     }
 }

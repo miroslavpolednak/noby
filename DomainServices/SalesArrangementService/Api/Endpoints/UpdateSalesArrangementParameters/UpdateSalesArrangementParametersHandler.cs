@@ -14,7 +14,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
             .Where(t => t.SalesArrangementId == request.SalesArrangementId)
             .Select(t => new { t.State, t.OfferGuaranteeDateTo })
             .FirstOrDefaultAsync(cancellation))
-            ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
         // kontrolovat pokud je zmocnenec, tak zda existuje?
         if (request.DataCase == Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage)
@@ -23,12 +23,13 @@ internal sealed class UpdateSalesArrangementParametersHandler
             {
                 var customersOnSA = await _customerOnSAService.GetCustomerList(request.SalesArrangementId, cancellation);
                 if (!customersOnSA.Any(t => t.CustomerOnSAId == request.Mortgage.Agent))
-                    throw new CisNotFoundException(18078, $"Agent {request.Mortgage.Agent} not found amoung customersOnSA for SAID {request.SalesArrangementId}");
+                    throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AgentNotFound, request.Mortgage.Agent);
             }
         }
 
         // instance parametru, pokud existuje
-        var entity = await _dbContext.SalesArrangementsParameters
+        var entity = await _dbContext
+            .SalesArrangementsParameters
             .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation);
 
         if (entity is null)
@@ -83,6 +84,9 @@ internal sealed class UpdateSalesArrangementParametersHandler
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => SalesArrangementTypes.GeneralChange,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => SalesArrangementTypes.HUBN,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange => SalesArrangementTypes.CustomerChange,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602A => SalesArrangementTypes.CustomerChange3602A,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602B => SalesArrangementTypes.CustomerChange3602B,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602C => SalesArrangementTypes.CustomerChange3602C,
             _ => throw new NotImplementedException($"UpdateSalesArrangementParametersRequest.DataOneofCase {datacase} is not implemented")
         };
 
@@ -94,6 +98,9 @@ internal sealed class UpdateSalesArrangementParametersHandler
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => request.GeneralChange,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => request.HUBN,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange => request.CustomerChange,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602A => request.CustomerChange3602A,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602B => request.CustomerChange3602B,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602C => request.CustomerChange3602C,
             _ => null
         };
 
@@ -110,7 +117,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
             };
             flowSwitchesRequest.FlowSwitches.Add(new Contracts.FlowSwitch
             {
-                FlowSwitchId = (int)FlowSwitches.FlowSwitch1,
+                FlowSwitchId = (int)FlowSwitches.IsOfferGuaranteed,
                 Value = true
             });
             await _mediator.Send(flowSwitchesRequest, cancellation);
@@ -129,12 +136,12 @@ internal sealed class UpdateSalesArrangementParametersHandler
             return;
         }
 
-        var isAccountEqual = string.Equals(originalAccount.Prefix, requestAccount.Prefix, StringComparison.InvariantCultureIgnoreCase) &&
-                             string.Equals(originalAccount.Number, requestAccount.Number, StringComparison.InvariantCultureIgnoreCase) &&
-                             string.Equals(originalAccount.BankCode, requestAccount.BankCode);
+        var isAccountEqual = string.Equals(originalAccount.Prefix, requestAccount.Prefix, StringComparison.OrdinalIgnoreCase) &&
+                             string.Equals(originalAccount.Number, requestAccount.Number, StringComparison.OrdinalIgnoreCase) &&
+                             string.Equals(originalAccount.BankCode, requestAccount.BankCode, StringComparison.OrdinalIgnoreCase);
 
         if (!isAccountEqual)
-            throw new CisValidationException("18081", "Repayment account cannot be changed with IsAccountNumberMissing set to false");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.RepaymentAccountCantChange);
 
         requestAccount.IsAccountNumberMissing = false;
     }

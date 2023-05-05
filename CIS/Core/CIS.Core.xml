@@ -83,6 +83,12 @@
             <remarks>Pokud není zadáno, nebude fungovat automatické dohledávání adres služeb v Clients projektech.</remarks>
             <example>https://177.0.0.55:30000</example>
         </member>
+        <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.DisableServiceDiscovery">
+            <summary>
+            Pokud je nastaveno na True, nebude se v infrastruktuře služeb automaticky dotahovat URL návazných komponent z ServiceDiscovery.
+            </summary>
+            <remarks>Pravděpodobně se použije pouze pro infra testy.</remarks>
+        </member>
         <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.InternalServicesLogin">
             <summary>
             Login uživatele pod kterým se daná služba autentizuje do ostatních služeb v rámci NOBY
@@ -883,6 +889,26 @@
             URL health check endpointu pro vsechny sluzby/aplikace.
             </summary>
         </member>
+        <member name="F:CIS.Core.CisGlobalConstants.ExternalServicesConfigurationSectionName">
+            <summary>
+            Name of section in appsettings.json which holds configuration settings for external services.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.CisGlobalConstants.ExternalServicesServiceDiscoveryKeyPrefix">
+            <summary>
+            Prefix for external service's Key in ServiceDiscovery database.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.CisGlobalConstants.DomainServicesClientsConfigurationSectionName">
+            <summary>
+            Name of section in appsettings.json which holds configuration settings for domain services.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.CisGlobalConstants.EnvironmentConfigurationSectionName">
+            <summary>
+            Name of section in appsettings.json which holds CIS environment configuration
+            </summary>
+        </member>
         <member name="T:CIS.Core.ErrorCodes.ErrorCodeMapperBase">
             <summary>
             Base třída pro zadávání chybových hlášek zejména pro FluentValidation a Rpc exceptions.
@@ -973,11 +999,6 @@
             </remarks>
         </member>
         <member name="P:CIS.Core.IDateTime.Now">
-            <summary>
-            Current time
-            </summary>
-        </member>
-        <member name="P:CIS.Core.IDateTime.OffsetNow">
             <summary>
             Current time
             </summary>

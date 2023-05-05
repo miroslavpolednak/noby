@@ -9,6 +9,11 @@ internal sealed class SignInHandler
 {
     public async Task Handle(SignInRequest request, CancellationToken cancellationToken)
     {
+        if (_configuration.Security!.AuthenticationScheme != NOBY.Infrastructure.Security.AuthenticationConstants.SimpleLoginAuthScheme)
+        {
+            throw new NobyValidationException($"SignIn endpoint call is not enabled for scheme {_configuration.Security!.AuthenticationScheme}");
+        }
+
         _logger.UserSigningInAs(request.Login);
 
         var userInstance = await _userService.GetUserByLogin(request.Login ?? "", cancellationToken);
@@ -28,9 +33,11 @@ internal sealed class SignInHandler
     private readonly IHttpContextAccessor _httpContext;
     private readonly ILogger<SignInHandler> _logger;
     private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
+    private readonly Infrastructure.Configuration.AppConfiguration _configuration;
 
-    public SignInHandler(ILogger<SignInHandler> logger, DomainServices.UserService.Clients.IUserServiceClient userService, IHttpContextAccessor httpContext)
+    public SignInHandler(ILogger<SignInHandler> logger, DomainServices.UserService.Clients.IUserServiceClient userService, IHttpContextAccessor httpContext, Infrastructure.Configuration.AppConfiguration configuration)
     {
+        _configuration = configuration;
         _httpContext = httpContext;
         _logger = logger;
         _userService = userService;

@@ -15,6 +15,7 @@ internal sealed class ErrorCodeMapper
     public const int WfTaskValidationFailed2 = 13009;
     public const int CaseStateNotFound = 13011;
     public const int CustomerNameIsEmpty = 13012;
+    public const int ContractNumberIsEmpty = 13013;
     public const int ProductTypeIdNotFound = 13014;
     public const int CaseAlreadyExist = 13015;
     public const int CaseIdIsEmpty = 13016;
@@ -22,11 +23,19 @@ internal sealed class ErrorCodeMapper
     public const int TargetAmountIsEmpty = 13018;
     public const int AuthenticatedUserNotFound = 13019;
     public const int CantDeleteCase = 13021;
+    public const int TaskIdNotFound = 13026;
+    public const int TaskTypeIdIsEmpty = 13027;
+    public const int ProcessIdIsEmpty = 13028;
+    public const int TaskTypeIdNotAllowed = 13029;
+    public const int TaskIdSBIsEmpty = 13030;
+    public const int ContractNumberNotFound = 13032;
 
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
         {
+            { ContractNumberNotFound, "Contract number not found" },
+            { ContractNumberIsEmpty, "Contract number is empty" },
             { ProductTypeIdIsEmpty, "ProductTypeId must be > 0" },
             { TargetAmountIsEmpty, "Target amount must be > 0" },
             { CaseOwnerIsEmpty, "CaseOwnerUserId must be > 0" },
@@ -43,8 +52,12 @@ internal sealed class ErrorCodeMapper
             { CaseStateNotFound, "State {PropertyValue} not found" },
             { CaseStateAlreadySet, "Case state already set to the same value" },
             { CaseStateNotAllowed, "Case state change not allowed" },
-            { AuthenticatedUserNotFound, "Authenticated user has not been passed in auth headers" }
-
+            { AuthenticatedUserNotFound, "Authenticated user has not been passed in auth headers" },
+            { TaskIdSBIsEmpty, "TaskIdSB must be > 0" },
+            { TaskTypeIdIsEmpty, "TaskTypeId must be > 0" },
+            { ProcessIdIsEmpty, "ProcessId must be > 0" },
+            { TaskTypeIdNotAllowed, "TaskTypeId is not allowed" },
+            { TaskIdNotFound, "TaskId {PropertyValue} not found" }
         });
 
         return Messages;

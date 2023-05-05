@@ -57,7 +57,7 @@ internal class LoanApplication3602TemplateData : LoanApplicationBaseTemplateData
             Customer2Obligation = new LoanApplicationObligation(HouseholdCodebtor!.CustomerOnSa2!);
         }
 
-        LoanApplicationCustomer CreateCustomer(long id) => new(GetDetail(id), _codebookManager.DegreesBefore, _codebookManager.Countries, _codebookManager.IdentificationDocumentTypes);
+        LoanApplicationCustomer CreateCustomer(long id) => new(GetDetail(id), _codebookManager.DegreesBefore, _codebookManager.Countries, _codebookManager.IdentificationDocumentTypes, _codebookManager.EducationLevels);
         CustomerDetailResponse GetDetail(long id) => response.Customers.First(c => c.Identities.Any(i => i.IdentityId == id));
     }
 

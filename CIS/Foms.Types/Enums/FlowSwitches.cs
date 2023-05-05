@@ -1,30 +1,34 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CIS.Foms.Enums;
+﻿namespace CIS.Foms.Enums;
 
 public enum FlowSwitches : int
 {
     /// <summary>
     /// Nabídka s platnou garancí
     /// </summary>
-    [Display(Name = "Nabídka s platnou garancí")]
-    FlowSwitch1 = 1,
+    IsOfferGuaranteed = 1,
 
     /// <summary>
-    /// Požadavek na IC
+    /// Identifikovaní klienti na hlavní domácnosti
     /// </summary>
-    [Display(Name = "Požadavek na IC")]
-    FlowSwitch2 = 2,
+    CustomerIdentifiedOnMainHousehold = 2,
 
     /// <summary>
-    /// Alespoň jeden příjem na hlavní domácnosti
+    /// Identifikovaní klienti na spolužadatelské domácnosti
     /// </summary>
-    [Display(Name = "Alespoň jeden příjem na hlavní domácnosti")]
-    FlowSwitch3 = 3,
+    CustomerIdentifiedOnCodebtorHousehold = 3,
 
     /// <summary>
-    /// Alespoň jeden příjem na spoludlužnícké domácnosti
+    /// 3601 pro hlavní domácnost byla změněna po podpisu
     /// </summary>
-    [Display(Name = "Alespoň jeden příjem na spoludlužnícké domácnosti")]
-    FlowSwitch4 = 4
+    Was3601MainChangedAfterSigning = 4,
+
+    /// <summary>
+    /// 3602 pro spoludlužnickou domácnost byla změněna po podpisu
+    /// </summary>
+    Was3602CodebtorChangedAfterSigning = 5,
+
+    /// <summary>
+    /// Došlo k uložení parametrů na žádosti
+    /// </summary>
+    ParametersSavedAtLeastOnce = 6
 }

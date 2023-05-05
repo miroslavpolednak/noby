@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Cases.GetTotalsByStates;
 
-internal class GetDashboardFiltersHandler
+internal sealed class GetDashboardFiltersHandler
     : IRequestHandler<GetDashboardFiltersRequest, List<GetDashboardFiltersResponse>>
 {
     public async Task<List<GetDashboardFiltersResponse>> Handle(GetDashboardFiltersRequest request, CancellationToken cancellationToken)

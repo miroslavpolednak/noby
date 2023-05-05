@@ -29,10 +29,11 @@ internal class CustomerChangeTemplateData : AggregatedData
     {
         get
         {
-            if (!SalesArrangement.CustomerChange.Release.IsActive)
+            if (SalesArrangement.CustomerChange.Release?.IsActive != true)
                 return string.Empty;
 
-            return string.Join(Environment.NewLine, SalesArrangement.CustomerChange.Release.Customers.Select(c => $"{c.NaturalPerson.FirstName} {c.NaturalPerson.LastName}, datum narození: {c.NaturalPerson.DateOfBirth}"));
+            return string.Join(Environment.NewLine,
+                               SalesArrangement.CustomerChange.Release.Customers.Select(c => CustomerHelper.NameWithDateOfBirth($"{c.NaturalPerson.FirstName} {c.NaturalPerson.LastName}", c.NaturalPerson.DateOfBirth)));
         }
     }
 
@@ -40,10 +41,10 @@ internal class CustomerChangeTemplateData : AggregatedData
     {
         get
         {
-            if (!SalesArrangement.CustomerChange.Add.IsActive)
+            if (SalesArrangement.CustomerChange.Add?.IsActive != true)
                 return string.Empty;
 
-            return string.Join(Environment.NewLine, SalesArrangement.CustomerChange.Add.Customers.Select(c => $"{c.Name}, datum narození: {c.DateOfBirth}"));
+            return string.Join(Environment.NewLine, SalesArrangement.CustomerChange.Add.Customers.Select(c => CustomerHelper.NameWithDateOfBirth(c.Name, c.DateOfBirth)));
         }
     }
 
@@ -51,13 +52,12 @@ internal class CustomerChangeTemplateData : AggregatedData
     {
         get
         {
-            if (!SalesArrangement.CustomerChange.RepaymentAccount.IsActive)
+            if (SalesArrangement.CustomerChange.RepaymentAccount?.IsActive != true)
                 return string.Empty;
 
-            if (string.IsNullOrWhiteSpace(SalesArrangement.CustomerChange.RepaymentAccount.Prefix))
-                return $"{SalesArrangement.CustomerChange.RepaymentAccount.Number}/{SalesArrangement.CustomerChange.RepaymentAccount.BankCode}";
+            var account = SalesArrangement.CustomerChange.RepaymentAccount;
 
-            return $"{SalesArrangement.CustomerChange.RepaymentAccount.Prefix}-{SalesArrangement.CustomerChange.RepaymentAccount.Number}/{SalesArrangement.CustomerChange.RepaymentAccount.BankCode}";
+            return BankAccountHelper.AccountNumber(account.Prefix, account.Number, account.BankCode);
         }
     }
 
@@ -65,11 +65,12 @@ internal class CustomerChangeTemplateData : AggregatedData
     {
         get
         {
-            if (!SalesArrangement.CustomerChange.RepaymentAccount.IsActive)
+            if (SalesArrangement.CustomerChange.RepaymentAccount?.IsActive != true)
                 return string.Empty;
 
-            return $"{SalesArrangement.CustomerChange.RepaymentAccount.OwnerFirstName} {SalesArrangement.CustomerChange.RepaymentAccount.OwnerLastName}, " +
-                   $"datum narození: {SalesArrangement.CustomerChange.RepaymentAccount.OwnerDateOfBirth}";
+            var account = SalesArrangement.CustomerChange.RepaymentAccount;
+
+            return CustomerHelper.NameWithDateOfBirth($"{account.OwnerFirstName} {account.OwnerLastName}", account.OwnerDateOfBirth);
         }
     }
 

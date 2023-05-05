@@ -1,25 +1,31 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.TinFormatsByCountry;
-using System.ComponentModel.DataAnnotations;
+﻿using CIS.Core.Data;
+using DomainServices.CodebookService.Contracts.Endpoints.TinFormatsByCountry;
 
 namespace DomainServices.CodebookService.Endpoints.TinFormatsByCountry;
 
 public class TinFormatsByCountryHandler
     : IRequestHandler<TinFormatsByCountryRequest, List<TinFormatItem>>
 {
-    public Task<List<TinFormatItem>> Handle(TinFormatsByCountryRequest request, CancellationToken cancellationToken)
+    #region Construction
+
+    private readonly IConnectionProvider _connectionProvider;
+
+    private const string _sqlQuery =
+        @"SELECT Id, CountryCode, RegularExpression, IsForFo, Tooltip,
+          CASE WHEN SYSDATETIME() BETWEEN[ValidFrom] AND ISNULL([ValidTo], '9999-12-31') THEN 1 ELSE 0 END 'IsValid'
+          FROM [dbo].[TinFormatsByCountry]";
+
+    public TinFormatsByCountryHandler(IConnectionProvider connectionProvider)
     {
-        return Task.FromResult(new List<TinFormatItem>
-        {
-            new TinFormatItem() { Id = 100, CountryCode = "AD", RegularExpression = "^[EF][-]\\d{6}[-][A-Z]$", IsForFo = true, Tooltip = "8 znaků (1 písmeno+ 6 číslic + 1 kontrolní písmeno), první písmeno vždy F nebo E, písmena jsou od čísel oddělené pomlčkou", IsValid = true},
-            new TinFormatItem() { Id = 101, CountryCode = "AD", RegularExpression = "^[ALECDGOPU][-]\\d{6}[-][A-Z]$", IsForFo = false, Tooltip = "8 znaků (1 písmeno+ 6 číslic + 1 kontrolní písmeno), písmena jsou od čísel oddělené pomlčkou", IsValid = true},
-        });
+        _connectionProvider = connectionProvider;
     }
 
-    private readonly ILogger<TinFormatsByCountryHandler> _logger;
+    #endregion
 
-    public TinFormatsByCountryHandler(
-        ILogger<TinFormatsByCountryHandler> logger)
+    public async Task<List<TinFormatItem>> Handle(TinFormatsByCountryRequest request, CancellationToken cancellationToken)
     {
-        _logger = logger;
+        return await FastMemoryCache.GetOrCreate<TinFormatItem>(nameof(TinFormatsByCountryHandler), async () =>
+            await _connectionProvider.ExecuteDapperRawSqlToList<TinFormatItem>(_sqlQuery, cancellationToken)
+        );
     }
 }

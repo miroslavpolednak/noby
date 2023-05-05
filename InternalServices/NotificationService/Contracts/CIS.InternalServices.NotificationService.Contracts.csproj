@@ -7,6 +7,10 @@
     <RootNamespace>CIS.InternalServices.NotificationService.Contracts</RootNamespace>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
+	
   <ItemGroup>
     <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
     <PackageReference Include="protobuf-net.Core" Version="3.2.16" />

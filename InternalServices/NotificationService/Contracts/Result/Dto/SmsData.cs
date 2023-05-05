@@ -11,7 +11,4 @@ public class SmsData
     
     [ProtoMember(2)]
     public string Type { get; set; } = string.Empty;
-    
-    [ProtoMember(3)]
-    public string Text { get; set; } = string.Empty;
 }

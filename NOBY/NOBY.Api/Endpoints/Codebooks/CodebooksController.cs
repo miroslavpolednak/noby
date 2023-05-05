@@ -38,6 +38,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/DocumentOnSAType">DocumentOnSATypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVersion">DocumentTemplateVersions</a>
     /// - <a href="https://wiki.kb.cz/display/HT/DocumentTemplateVariant">DocumentTemplateVariants</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/DocumentType">DocumentTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=450580207">DrawingDurations</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=444604999">DrawingTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=400823251">EaCodesMain</a>
@@ -77,12 +78,12 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/SigningMethodsForNaturalPerson+%28CB_StandardMethodOfArrAcceptanceByNPType%29+-+MOCK">SigningMethodsForNaturalPerson</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequencies</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235789">StatementSubscriptionTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417284324">StatementTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/TinFormatByCountry+%28CB_CmTrTinFormat%29+-+MOCK">TinFormatsByCountry</a>
     /// - <a href="https://wiki.kb.cz/display/HT/TinNoFillReasonsByCountry+%28CB_CmTrTinCountry%29+-+MOCK">TinNoFillReasonsByCountry</a>
-    /// - <a href="https://wiki.kb.cz/display/HT/WorkflowProcessStateNoby">WorkflowProcessStatesNoby</a>
     /// - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby">WorkflowTaskStatesNoby</a>
     /// - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskCategory">WorkflowTaskCategories</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440871662">WorkflowTaskStates</a>
@@ -168,7 +169,7 @@ public class CodebooksController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="developerId">ID developera</param>
-    [HttpGet("developer/{developerId:int}", Name = "DeveloperGet")]
+    [HttpGet("developer/{developerId:int}")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(Dto.Developer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -193,11 +194,11 @@ public class CodebooksController : ControllerBase
     /// Detail developeského projektu
     /// </summary>
     /// <remarks>
-    /// Vrátí detail developerského projektu dle developerProjectId na vstupu.
-    /// <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Vrátí detail developerského projektu dle developerProjectId na vstupu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="developerId">ID developera</param>
-    [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}", Name = "DeveloperProjectGet")]
+    [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(DeveloperProjectItem), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

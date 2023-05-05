@@ -2,6 +2,7 @@
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CodebookService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.Countries;
+using DomainServices.CodebookService.Contracts.Endpoints.EducationLevels;
 using DomainServices.CodebookService.Contracts.Endpoints.IdentificationDocumentTypes;
 using DomainServices.CustomerService.Contracts;
 
@@ -14,16 +15,19 @@ internal class LoanApplicationCustomer
     private readonly List<GenericCodebookItem> _degreesBefore;
     private readonly List<CountriesItem> _countries;
     private readonly List<IdentificationDocumentTypesItem> _identificationDocumentTypes;
+    private readonly List<EducationLevelItem> _educationLevels;
 
     public LoanApplicationCustomer(CustomerDetailResponse customer,
                                    List<GenericCodebookItem> degreesBefore,
                                    List<CountriesItem> countries,
-                                   List<IdentificationDocumentTypesItem> identificationDocumentTypes)
+                                   List<IdentificationDocumentTypesItem> identificationDocumentTypes,
+                                   List<EducationLevelItem> educationLevels)
     {
         _customer = customer;
         _degreesBefore = degreesBefore;
         _countries = countries;
         _identificationDocumentTypes = identificationDocumentTypes;
+        _educationLevels = educationLevels;
     }
 
     public string FullName => GetFullName();
@@ -41,6 +45,8 @@ internal class LoanApplicationCustomer
     public string Contacts => GetContacts();
 
     public int MaritalStatusStateId => _customer.NaturalPerson.MaritalStatusStateId;
+
+    public string EducationLevel => GetEducationLevel();
 
     private string GetFullName()
     {
@@ -74,8 +80,8 @@ internal class LoanApplicationCustomer
 
     private string GetContacts()
     {
-        var email = _customer.Contacts.FirstOrDefault(c => c.ContactTypeId == 1);
-        var phone = _customer.Contacts.FirstOrDefault(c => c.ContactTypeId == 5);
+        var email = _customer.Contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email);
+        var phone = _customer.Contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil);
 
         if (email is not null && phone is not null)
             return $"telefon: {phone.Mobile?.PhoneIDC}{phone.Mobile?.PhoneNumber} | e-mail: {email.Email?.EmailAddress}";
@@ -87,5 +93,13 @@ internal class LoanApplicationCustomer
             return $"telefon: {phone.Mobile?.PhoneIDC}{phone.Mobile?.PhoneNumber}";
 
         return string.Empty;
+    }
+
+    private string GetEducationLevel()
+    {
+        return _educationLevels.Where(e => e.Id == _customer.NaturalPerson.EducationLevelId)
+                               .Select(e => e.ShortName)
+                               .DefaultIfEmpty(string.Empty)
+                               .First();
     }
 }

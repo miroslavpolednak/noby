@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Exceptions;
+using CIS.Core.Exceptions.ExternalServices;
 using System.Collections.ObjectModel;
 
 namespace CIS.Core.ErrorCodes;
@@ -8,6 +9,9 @@ namespace CIS.Core.ErrorCodes;
 /// </summary>
 public abstract class ErrorCodeMapperBase
 {
+    // Global lock
+    private static readonly object _lock = new();
+
     /// <summary>
     /// Slovník chybových hlášek [ExceptionCode, ExceptionMessage].
     /// </summary>
@@ -40,6 +44,11 @@ public abstract class ErrorCodeMapperBase
         return new CisNotFoundException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
+    public static CisArgumentException CreateArgumentException(int exceptionCode, object? parameter = null)
+    {
+        return new CisArgumentException(exceptionCode, GetMessage(exceptionCode, parameter));
+    }
+
     public static CisAlreadyExistsException CreateAlreadyExistsException(int exceptionCode, object? parameter = null)
     {
         return new CisAlreadyExistsException(exceptionCode, GetMessage(exceptionCode, parameter));
@@ -56,6 +65,16 @@ public abstract class ErrorCodeMapperBase
         return new CisValidationException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
+    public static CisExtServiceValidationException CreateExtServiceValidationException(int exceptionCode, object? parameter = null)
+    {
+        return new CisExtServiceValidationException(exceptionCode, GetMessage(exceptionCode, parameter));
+    }
+
+    public static CisConfigurationException CreateConfigurationException(int exceptionCode, object? parameter = null)
+    {
+        return new CisConfigurationException(exceptionCode, GetMessage(exceptionCode, parameter));
+    }
+
     /// <summary>
     /// Inicializuje kolekci chybových hlášek Messages. Tato kolekce je private, lze ji tedy z child třídy nastavit jen touto metodou.
     /// </summary>
@@ -63,7 +82,18 @@ public abstract class ErrorCodeMapperBase
     /// <param name="messages">[ExceptionCode, ExceptionMessage]</param>
     protected static void SetMessages(IDictionary<int, string> messages)
     {
-        Messages = new ErrorCodesDictionary(messages);
+        lock (_lock)
+        {
+            if (Messages is null)
+            {
+                Messages = new ErrorCodesDictionary(messages);
+            }
+            else if (messages.Any() && !Messages.ContainsKey(messages.Keys.First()))
+            {
+                var filteredMessages = messages.Where(t => !Messages.Any(x => x.Key == t.Key));
+                Messages = new ErrorCodesDictionary(Messages.Concat(filteredMessages).ToDictionary(x => x.Key, x => x.Value));
+            }
+        }
     }
 
     /// <summary>

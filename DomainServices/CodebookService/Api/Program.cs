@@ -6,6 +6,9 @@ using CIS.Infrastructure.Telemetry;
 using Microsoft.OpenApi.Models;
 using CIS.Infrastructure.Security;
 using CIS.InternalServices;
+using System.Reflection.PortableExecutable;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 var endpointsType = typeof(DomainServices.CodebookService.Endpoints.IEndpointsAssembly);
@@ -36,9 +39,10 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
 
 // add general Dapper repository
 builder.Services
-    .AddDapper(builder.Configuration.GetConnectionString("default"))
-    .AddDapper<DomainServices.CodebookService.Endpoints.IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd"))
-    .AddDapper<DomainServices.CodebookService.Endpoints.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb"));
+    .AddDapper(builder.Configuration.GetConnectionString("default")!)
+    .AddDapper<DomainServices.CodebookService.Endpoints.IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd")!)
+    .AddDapper<DomainServices.CodebookService.Endpoints.IXxdHfDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxdhf")!)
+    .AddDapper<DomainServices.CodebookService.Endpoints.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb")!);
 
 // authentication
 builder.AddCisServiceAuthentication();
@@ -62,6 +66,7 @@ builder.Services.AddSwaggerGen(x =>
 
 // add grpc reflection
 builder.Services.AddCodeFirstGrpcReflection();
+builder.Services.AddHealthChecks();
 #endregion register builder.Services
 
 // kestrel configuration
@@ -91,6 +96,15 @@ app.MapGrpcService<DomainServices.CodebookService.Api.Services.CodebookService>(
 app.MapCodeFirstGrpcHealthChecks();
 app.MapCodeFirstGrpcReflectionService();
 app.MapCodebookJsonApi();
+app.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, new HealthCheckOptions
+{
+    ResultStatusCodes =
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+    }
+});
 
 try
 {

@@ -3,7 +3,7 @@ using NOBY.Api.Endpoints.Codebooks.CodebookMap;
 
 namespace NOBY.Api.Endpoints.Codebooks.GetAll;
 
-internal class GetAllHandler
+internal sealed class GetAllHandler
     : IRequestHandler<GetAllRequest, List<GetAllResponseItem>>
 {
     public async Task<List<GetAllResponseItem>> Handle(GetAllRequest request, CancellationToken cancellationToken)

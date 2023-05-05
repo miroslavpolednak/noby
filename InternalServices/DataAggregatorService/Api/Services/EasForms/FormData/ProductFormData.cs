@@ -3,14 +3,20 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest.ConditionalValues;
+using DomainServices.OfferService.Contracts;
+using DomainServices.UserService.Clients;
+using DomainServices.UserService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
 [TransientService, SelfService]
 internal class ProductFormData : AggregatedData
 {
-    public ProductFormData(HouseholdData householdData)
+    private readonly IUserServiceClient _userService;
+
+    public ProductFormData(HouseholdData householdData, IUserServiceClient userService)
     {
+        _userService = userService;
         HouseholdData = householdData;
     }
 
@@ -18,11 +24,15 @@ internal class ProductFormData : AggregatedData
 
     public MockValues MockValues { get; } = new();
 
+    public DynamicFormValues MainDynamicFormValues { get; set; } = null!;
+
     public DefaultValues DefaultValues3601 { get; private set; } = null!;
 
     public DefaultValues DefaultValues3602 { get; private set; } = null!;
 
     public ConditionalFormValues ConditionalFormValues { get; private set; } = null!;
+
+    public User? PerformerUser { get; private set; }
 
     public int? SalesArrangementStateId => _codebookManager.SalesArrangementStates.First(x => x.Id == SalesArrangement.State).StarbuildId;
 
@@ -40,6 +50,8 @@ internal class ProductFormData : AggregatedData
 
     public bool IsEmployeeBonusRequested => Offer.SimulationInputs.IsEmployeeBonusRequested == true;
 
+    public IEnumerable<ResultFee> OfferFees => Offer.AdditionalSimulationResults.Fees.Where(f => f.UsageText.Contains('F', StringComparison.InvariantCultureIgnoreCase));
+
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
         DefaultValues3601 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3601, _codebookManager.DocumentTypes);
@@ -51,7 +63,8 @@ internal class ProductFormData : AggregatedData
 
         HouseholdData.PrepareCodebooks(_codebookManager);
 
-        return HouseholdData.Initialize(SalesArrangement.SalesArrangementId, cancellationToken);
+        return Task.WhenAll(LoadPerformerData(cancellationToken),
+                            HouseholdData.Initialize(SalesArrangement.SalesArrangementId, cancellationToken));
     }
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
@@ -59,6 +72,14 @@ internal class ProductFormData : AggregatedData
         configurator.ProductTypes().DrawingTypes().DrawingDurations().SalesArrangementStates().SalesArrangementTypes().DocumentTypes();
 
         HouseholdData.ConfigureCodebooks(configurator);
+    }
+
+    private async Task LoadPerformerData(CancellationToken cancellationToken)
+    {
+        if (MainDynamicFormValues.PerformerUserId is null)
+            return;
+
+        PerformerUser = await _userService.GetUser(MainDynamicFormValues.PerformerUserId.Value, cancellationToken);
     }
 
     private int GetProductTypeId()

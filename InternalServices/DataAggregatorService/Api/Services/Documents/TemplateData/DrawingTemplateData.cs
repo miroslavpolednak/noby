@@ -14,10 +14,10 @@ internal class DrawingTemplateData : AggregatedData
     {
         get
         {
-            var bankAccount = $"{Mortgage.PaymentAccount.Prefix}-{Mortgage.PaymentAccount.Number}/{Mortgage.PaymentAccount.BankCode}";
+            var bankAccount = BankAccountHelper.AccountNumber(Mortgage.PaymentAccount.Prefix, Mortgage.PaymentAccount.Number, Mortgage.PaymentAccount.BankCode);
 
             if (SalesArrangement.Drawing.IsImmediateDrawing)
-                return bankAccount + " a to bezokladně.";
+                return bankAccount + " a to bezodkladně.";
 
             return bankAccount + $" a to k datu: {((DateTime)SalesArrangement.Drawing.DrawingDate).ToString("d", CultureInfo.GetCultureInfo("cs"))}.";
         }
@@ -32,7 +32,7 @@ internal class DrawingTemplateData : AggregatedData
 
             var account = SalesArrangement.Drawing.RepaymentAccount;
 
-            return "Číslo účtu pro splácení úvěru: " + $"{account.Prefix}-{account.Number}/{account.BankCode}";
+            return "Číslo účtu pro splácení úvěru: " + $"{BankAccountHelper.AccountNumber(account.Prefix, account.Number, account.BankCode)}";
         }
     }
 

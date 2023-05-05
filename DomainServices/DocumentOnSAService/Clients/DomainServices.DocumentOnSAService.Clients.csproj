@@ -6,7 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
+
+	<ItemGroup>
     <ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />

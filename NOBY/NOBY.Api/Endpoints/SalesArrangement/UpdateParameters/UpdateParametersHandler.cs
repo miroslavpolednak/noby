@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
@@ -24,7 +25,13 @@ internal sealed class UpdateParametersHandler
                 case CIS.Foms.Types.Enums.SalesArrangementTypes.Mortgage:
                     var o1 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersMortgage>(dataString, _jsonSerializerOptions);
                     if (o1 is not null)
+                    {
                         updateRequest.Mortgage = o1.ToDomainService();
+                        if (string.IsNullOrEmpty(updateRequest.Mortgage.IncomeCurrencyCode) || string.IsNullOrEmpty(updateRequest.Mortgage.ResidencyCurrencyCode))
+                        {
+                            throw new NobyValidationException(90019);
+                        }
+                    }
                     break;
 
                 case CIS.Foms.Types.Enums.SalesArrangementTypes.Drawing:
@@ -51,12 +58,40 @@ internal sealed class UpdateParametersHandler
                         updateRequest.CustomerChange = o5.ToDomainService(saInstance.CustomerChange);
                     break;
 
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.CustomerChange3602A:
+                    var o6 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
+                    if (o6 is not null)
+                        updateRequest.CustomerChange3602A = o6.ToDomainService(saInstance.CustomerChange3602A);
+                    break;
+
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.CustomerChange3602B:
+                    var o7 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
+                    if (o7 is not null)
+                        updateRequest.CustomerChange3602B = o7.ToDomainService(saInstance.CustomerChange3602B);
+                    break;
+
+                case CIS.Foms.Types.Enums.SalesArrangementTypes.CustomerChange3602C:
+                    var o8 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
+                    if (o8 is not null)
+                        updateRequest.CustomerChange3602C = o8.ToDomainService(saInstance.CustomerChange3602C);
+                    break;
+
                 default:
                     throw new NotImplementedException($"SalesArrangementTypeId {saInstance.SalesArrangementTypeId} parameters model cast to domain service is not implemented");
             }
         }
 
         await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken);
+
+        // nastavit flowSwitch ParametersSavedAtLeastOnce
+        await _salesArrangementService.SetFlowSwitches(request.SalesArrangementId, new()
+        {
+            new() 
+            { 
+                FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce, 
+                Value = true 
+            }
+        }, cancellationToken);
     }
 
     static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions

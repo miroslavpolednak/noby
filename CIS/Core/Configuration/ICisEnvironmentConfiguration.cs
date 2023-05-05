@@ -27,6 +27,12 @@ public interface ICisEnvironmentConfiguration
     string? ServiceDiscoveryUrl { get; }
 
     /// <summary>
+    /// Pokud je nastaveno na True, nebude se v infrastruktuře služeb automaticky dotahovat URL návazných komponent z ServiceDiscovery.
+    /// </summary>
+    /// <remarks>Pravděpodobně se použije pouze pro infra testy.</remarks>
+    bool DisableServiceDiscovery { get; }
+
+    /// <summary>
     /// Login uživatele pod kterým se daná služba autentizuje do ostatních služeb v rámci NOBY
     /// </summary>
     /// <remarks>Je nutné zadat pokud má fungovat automatické dohledávání adres služeb v Clients projektech.</remarks>

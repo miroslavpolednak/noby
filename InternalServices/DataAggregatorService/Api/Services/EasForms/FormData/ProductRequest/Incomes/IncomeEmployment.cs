@@ -20,5 +20,5 @@ internal class IncomeEmployment : IncomeBase
     public string? EmployerIdentificationNumber =>
         new[] { Employment?.Employer?.Cin, Employment?.Employer?.BirthNumber }.FirstOrDefault(str => !string.IsNullOrEmpty(str));
 
-    public int DocumentType => 1;
+    public int DocumentType => 6;
 }

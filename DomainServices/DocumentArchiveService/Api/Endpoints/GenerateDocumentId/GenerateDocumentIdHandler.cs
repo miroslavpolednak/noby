@@ -1,9 +1,8 @@
 ﻿using CIS.Core.Configuration;
-using CIS.Infrastructure.Data;
-using DomainServices.DocumentArchiveService.Api.Database;
+using DomainServices.DocumentArchiveService.Api.Database.Repositories;
 using DomainServices.DocumentArchiveService.Contracts;
 using FastEnumUtility;
-
+using _api = DomainServices.DocumentArchiveService.Api;
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GenerateDocumentId;
 
 internal sealed class GenerateDocumentIdHandler
@@ -11,16 +10,16 @@ internal sealed class GenerateDocumentIdHandler
 {
     private readonly AppConfiguration _configuration;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
-    private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _connectionProvider;
+    private readonly IDocumentSequenceRepository _documentSequenceRepository;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
     public GenerateDocumentIdHandler(
-        CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> connectionProvider,
+        IDocumentSequenceRepository documentSequenceRepository,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         AppConfiguration configuration,
         ICisEnvironmentConfiguration cisEnvironment)
     {
-        _connectionProvider = connectionProvider;
+        _documentSequenceRepository = documentSequenceRepository;
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;
         _cisEnvironment = cisEnvironment;
@@ -29,9 +28,9 @@ internal sealed class GenerateDocumentIdHandler
     public async Task<Contracts.GenerateDocumentIdResponse> Handle(GenerateDocumentIdRequest request, CancellationToken cancellation)
     {
         var envName = request.EnvironmentName == EnvironmentNames.Unknown ? FastEnum.Parse<EnvironmentNames>(ConvertToEnvEnumStr(_cisEnvironment.EnvironmentName!))
-                                                                          : request.EnvironmentName;
+                                                                            : request.EnvironmentName;
 
-        long seq = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<long>("SELECT NEXT VALUE FOR dbo.GenerateDocumentIdSequence", cancellation);
+        long seq = await _documentSequenceRepository.GetNextDocumentSeqValue(cancellation);
 
         return new Contracts.GenerateDocumentIdResponse
         {
@@ -41,7 +40,7 @@ internal sealed class GenerateDocumentIdHandler
 
     private static string ConvertToEnvEnumStr(string enumStr)
     {
-        enumStr =enumStr.ToLower();
+        enumStr = enumStr.ToLower();
         if (string.IsNullOrEmpty(enumStr) || enumStr.Length < 1)
         {
             return string.Empty;
@@ -56,11 +55,12 @@ internal sealed class GenerateDocumentIdHandler
     {
         EnvironmentNames.Dev => "D",
         EnvironmentNames.Fat => "F",
-        EnvironmentNames.Sit => "S",
+        EnvironmentNames.Sit1 => "S",
         EnvironmentNames.Uat => "U",
         EnvironmentNames.Preprod => "P",
         EnvironmentNames.Edu => "E",
         EnvironmentNames.Prod => "R",
+        EnvironmentNames.Test => "T",
         EnvironmentNames.Unknown => HandleUnsupportedEnv(environmentNames),
         _ => HandleUnsupportedEnv(environmentNames)
     };
@@ -75,11 +75,11 @@ internal sealed class GenerateDocumentIdHandler
         string? serviceUser = _serviceUserAccessor.User?.Name;
 
         if (_configuration.ServiceUser2LoginBinding is null || !_configuration.ServiceUser2LoginBinding.Any())
-            throw new CisConfigurationException(14012, "ServiceUser2LoginBinding configuration is not set");
+            throw _api.ErrorCodeMapper.CreateConfigurationException(_api.ErrorCodeMapper.ServiceUser2LoginBindingConfigurationNotSet);
 
         if (_configuration.ServiceUser2LoginBinding.ContainsKey(serviceUser ?? "_default"))
             return _configuration.ServiceUser2LoginBinding[serviceUser ?? "_default"];
         else
-            throw new CisConfigurationException(14013, $"ServiceUser '{serviceUser}' not found in ServiceUser2LoginBinding configuration and no _default has been set");
+            throw _api.ErrorCodeMapper.CreateConfigurationException(_api.ErrorCodeMapper.ServiceUserNotFoundInServiceUser2LoginBinding, serviceUser);
     }
 }

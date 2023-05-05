@@ -2,7 +2,6 @@
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 using ExternalServices.Eas.V1;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.CaseService.Api.Endpoints.CreateCase;
 
@@ -59,7 +58,7 @@ internal sealed class CreateCaseHandler
             CaseId = caseId,
 
             StateUpdatedInStarbuild = (int)UpdatedInStarbuildStates.Unknown,
-            StateUpdateTime = _dateTime.Now,
+            StateUpdateTime = _dbContext.CisDateTime.Now,
             ProductTypeId = request.Data.ProductTypeId,
 
             Name = request.Customer.Name,
@@ -90,7 +89,6 @@ internal sealed class CreateCaseHandler
 
     private readonly IRollbackBag _bag;
     private readonly IMediator _mediator;
-    private readonly CIS.Core.IDateTime _dateTime;
     private readonly CaseServiceDbContext _dbContext;
     private readonly ILogger<CreateCaseHandler> _logger;
     private readonly IEasClient _easClient;
@@ -100,7 +98,6 @@ internal sealed class CreateCaseHandler
     public CreateCaseHandler(
         IRollbackBag bag,
         IMediator mediator,
-        CIS.Core.IDateTime dateTime,
         UserService.Clients.IUserServiceClient userService,
         CodebookService.Clients.ICodebookServiceClients codebookService,
         IEasClient easClient,
@@ -109,8 +106,7 @@ internal sealed class CreateCaseHandler
     {
         _bag = bag;
         _mediator = mediator;
-        _dateTime = dateTime;
-        _userService = userService;
+         _userService = userService;
         _easClient = easClient;
         _dbContext = dbContext;
         _logger = logger;

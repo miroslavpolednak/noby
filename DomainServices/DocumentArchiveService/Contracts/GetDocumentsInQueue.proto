@@ -7,6 +7,13 @@ import "google/protobuf/wrappers.proto";
 message GetDocumentsInQueueRequest {
 
 	repeated string EArchivIds = 1;
+
+	// Unikátní Id obchodního případu
+    google.protobuf.Int64Value CaseId = 2;
+
+	repeated int32 StatusesInQueue = 3;
+
+
 }
 
 message GetDocumentsInQueueResponse{
@@ -21,7 +28,9 @@ message QueuedDocument {
 	string Filename = 2;
 
 	 // Status dokumentu (100 - k přenosu, 300 chyba přenosu, 400 - úspěšně přeneseno)
-    int32 Status = 3;
+    int32 StatusInQueue = 3;
 
-	string FormId = 15;
+	string FormId = 4;
+
+	int32 EaCodeMainId = 5;
 }

@@ -1,15 +1,14 @@
-﻿using NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto;
 
 public sealed class CustomerChangeUpdate
 {
     [Required]
-    public CustomerChangeDetailRelease? Release { get; set; }
+    public GetSalesArrangement.Dto.CustomerChangeDetailRelease? Release { get; set; }
 
     [Required]
-    public CustomerChangeDetailAdd? Add { get; set; }
+    public GetSalesArrangement.Dto.CustomerChangeDetailAdd? Add { get; set; }
 
     [Required]
     public CustomerChangeUpdateAgent? Agent { get; set; }

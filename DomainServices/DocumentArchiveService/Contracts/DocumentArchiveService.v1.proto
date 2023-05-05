@@ -7,6 +7,7 @@ import "UploadDocument.proto";
 import "GetDocument.proto";
 import "GetDocumentList.proto";
 import "GetDocumentsInQueue.proto";
+import "SetDocumentStatusInQueue.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
@@ -34,12 +35,16 @@ service DocumentArchiveService{
 		};
 	};
 	// Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
-	rpc GetGetDocumentList(DomainServices.DocumentArchiveService.GetDocumentList.GetDocumentListRequest) returns (DomainServices.DocumentArchiveService.GetDocumentList.GetDocumentListResponse){
+	rpc GetDocumentList(DomainServices.DocumentArchiveService.GetDocumentList.GetDocumentListRequest) returns (DomainServices.DocumentArchiveService.GetDocumentList.GetDocumentListResponse){
 		 option (google.api.http) = {
 		 post: "/api/v1/documents/search",
 		 body: "*"
 		};
 	};
+	
 	// Metoda slouží k získání seznamu dokumentů z lokálně uložené fronty dokumentů k odeslání nebo již odeslaných nebo dokumentů v chybových stavech
 	rpc GetDocumentsInQueue(DomainServices.DocumentArchiveService.GetDocumentsInQueue.GetDocumentsInQueueRequest) returns (DomainServices.DocumentArchiveService.GetDocumentsInQueue.GetDocumentsInQueueResponse);
+	
+	// Metoda slouží k nastavení stavu dokumentu ve frontě.
+	rpc SetDocumentStatusInQueue(DomainServices.DocumentArchiveService.SetDocumentStatusInQueue.SetDocumentStatusInQueueRequest) returns (google.protobuf.Empty);
 }

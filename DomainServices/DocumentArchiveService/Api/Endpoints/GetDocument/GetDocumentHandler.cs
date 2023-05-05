@@ -10,7 +10,7 @@ using Ixtent.ContentServer.ExtendedServices.Model.WebService;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocument;
 
-internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumentResponse>
+internal sealed class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumentResponse>
 {
     private const string DocumentPrefix = "KBH";
     private readonly ISdfClient _sdfClient;

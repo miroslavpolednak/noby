@@ -17,15 +17,19 @@ public partial class DeleteCustomerRequest
 { }
 
 public partial class DeleteIncomeRequest
-    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
 { }
 
 public partial class DeleteObligationRequest
-    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
 { }
 
 public partial class GetCustomerRequest
     : MediatR.IRequest<CustomerOnSA>
+{ }
+
+public partial class GetCustomersByIdentityRequest
+    : MediatR.IRequest<GetCustomersByIdentityResponse>
 { }
 
 public partial class GetCustomerListRequest

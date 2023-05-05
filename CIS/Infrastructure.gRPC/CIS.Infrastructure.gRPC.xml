@@ -19,6 +19,11 @@
             Adresa služby.
             </summary>
         </member>
+        <member name="P:CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsEmpty`1.ServiceUrl">
+            <summary>
+            Adresa služby.
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsServiceDiscovery`1">
             <summary>
             Implementace podporující ServiceDiscovery.

@@ -9,8 +9,8 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer;
-using NOBY.Api.Endpoints.Customer.GetDetailWithChanges;
-using NOBY.Api.Endpoints.SalesArrangement.Validate;
+using NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
+using NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement;
 using NOBY.Api.SharedDto;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -18,7 +18,7 @@ using System.Text.Unicode;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 
-internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest>
+internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest>
 {
     private readonly IDocumentOnSAServiceClient _documentOnSaClient;
 
@@ -81,14 +81,27 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
             throw new CisValidationException(90002, $"Mp products not supported (mandant {mandantId})");
         }
 
-        var customersOnSa = await GetCustomersOnSa(documentOnSa, cancellationToken);
+        var (household, customersOnSa) = await GetCustomersOnSa(documentOnSa, cancellationToken);
         foreach (var customerOnSa in customersOnSa)
         {
-            var detailWithChangedData = await _changedDataService.GetCustomerWithChangedData<GetDetailWithChangesResponse>(customerOnSa, cancellationToken);
+            var (detailWithChangedData, _) = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
             await _customerServiceClient.UpdateCustomer(MapUpdateCustomerRequest(detailWithChangedData, mandantId.Value, customerOnSa), cancellationToken);
             //Throw away locally stored data(update CustomerChangeData with null)
             await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa), cancellationToken);
         }
+
+        // HFICH-4165
+        int flowSwitchId = household.HouseholdTypeId switch
+        {
+            (int)HouseholdTypes.Main => (int)FlowSwitches.Was3601MainChangedAfterSigning,
+            (int)HouseholdTypes.Codebtor => (int)FlowSwitches.Was3602CodebtorChangedAfterSigning,
+            _ => throw new NobyValidationException("Unsupported HouseholdType")
+        };
+
+        await _arrangementServiceClient.SetFlowSwitches(household.SalesArrangementId, new()
+        {
+            new() { FlowSwitchId = flowSwitchId, Value = false }
+        }, cancellationToken);
     }
 
     private async Task<int?> GetMandantId(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
@@ -116,7 +129,7 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
         };
     }
 
-    private static DomainServices.CustomerService.Contracts.UpdateCustomerRequest MapUpdateCustomerRequest(GetDetailWithChangesResponse detailWithChangedData, int mandant, CustomerOnSA customerOnSA)
+    private static DomainServices.CustomerService.Contracts.UpdateCustomerRequest MapUpdateCustomerRequest(GetCustomerDetailWithChangesResponse detailWithChangedData, int mandant, CustomerOnSA customerOnSA)
     {
         var updateRequest = new DomainServices.CustomerService.Contracts.UpdateCustomerRequest();
         updateRequest.Mandant = (CIS.Infrastructure.gRPC.CisTypes.Mandants)mandant;
@@ -182,7 +195,6 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
             CityDistrict = address.CityDistrict ?? string.Empty,
             PragueDistrict = address.PragueDistrict ?? string.Empty,
             CountrySubdivision = address.CountrySubdivision ?? string.Empty,
-            PrimaryAddressFrom = address.PrimaryAddressFrom,
             AddressPointId = address.AddressPointId ?? string.Empty
         });
     }
@@ -253,7 +265,7 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
         return result;
     }
 
-    private async Task<List<CustomerOnSA>> GetCustomersOnSa(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
+    private async Task<(DomainServices.HouseholdService.Contracts.Household Household, List<CustomerOnSA> Customers)> GetCustomersOnSa(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
     {
         var houseHold = await _householdClient.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken);
 
@@ -267,12 +279,12 @@ internal class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuall
             customers.Add(await _customerOnSAServiceClient.GetCustomer(houseHold.CustomerOnSAId2.Value, cancellationToken));
         }
 
-        return customers;
+        return (houseHold, customers);
     }
 
     private async Task ValidateSalesArrangement(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
     {
-        var validationResult = await _mediator.Send(new ValidateRequest(request.SalesArrangementId), cancellationToken);
+        var validationResult = await _mediator.Send(new ValidateSalesArrangementRequest(request.SalesArrangementId), cancellationToken);
 
         if (validationResult is not null && validationResult.Categories is not null && validationResult.Categories.Any())
         {

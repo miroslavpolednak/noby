@@ -2,6 +2,7 @@
 using NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
+using NOBY.Api.Endpoints.DocumentArchive.SetDocumentStatusInQueue;
 using NOBY.Api.Endpoints.DocumentArchive.UploadDocument;
 using NOBY.Api.Endpoints.Shared;
 using Swashbuckle.AspNetCore.Annotations;
@@ -53,9 +54,8 @@ public class DocumentArchiveController : ControllerBase
     /// Seznam dokumentů ke Case-u
     /// </summary>
     /// <remarks>
-    /// Načtení seznamu dokumentů ke Case-u z archivu<br/>
-    /// Nevrací se dokumenty s EaCodeMain.IsVisibleForKb=false <br/>
-    /// <i>DS:</i>DocumentArchiveService/getDocumentList
+    /// Načtení seznamu dokumentů ke Case-u<br />Nevrací se dokumenty s EaCodeMain.IsVisibleForKb=false<br /><br />
+    /// <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=25F73554-B9DB-42a4-8CB5-25FC3B3F6902"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks> 
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("case/{caseId:long}/documents")]
@@ -75,8 +75,8 @@ public class DocumentArchiveController : ControllerBase
     [HttpPost("document")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    public async Task<Guid> UploadDocument(IFormFile file, CancellationToken cancellationToken)
-          => await _mediator.Send(new UploadDocumentRequest(file), cancellationToken);
+    public async Task<Guid> UploadDocument(IFormFile file)
+          => await _mediator.Send(new UploadDocumentRequest(file));
 
     /// <summary>
     /// Uložení dokumentů ke Case-u do archivu
@@ -90,11 +90,26 @@ public class DocumentArchiveController : ControllerBase
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> SaveDocumentsToArchive(
      [FromRoute] long caseId,
-     [FromBody] SaveDocumentsToArchiveRequest request,
-     CancellationToken cancellationToken)
+     [FromBody] SaveDocumentsToArchiveRequest request)
     {
-        await _mediator.Send(request?.InfuseCaseId(caseId) ?? throw new NobyValidationException("Payload is empty"), 
-                             cancellationToken);
+        await _mediator.Send(request?.InfuseId(caseId) ?? throw new NobyValidationException("Payload is empty"));
         return Accepted();
     }
+
+    /// <summary>
+    /// Slouží k nastavení stavu dokumentu ve frontě
+    /// </summary>
+    /// <remarks>
+    /// Nastavení stavu dokumentu ve frontě pro uložení do eArchiv-u
+    /// <br /><br /><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C23F8DBF-9F26-465b-BB34-8736133D020D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("document/{documentId}/status/{statusId:int}")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task SetDocumentStatusInQueue(
+        [FromRoute] string documentId,
+        [FromRoute] int statusId,
+        CancellationToken cancellationToken)
+         => await _mediator.Send(new SetDocumentStatusInQueueRequest(documentId, statusId), cancellationToken);
 }

@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Notifications;
 
-internal record MainCustomerUpdatedNotification(
+internal sealed record MainCustomerUpdatedNotification(
     long CaseId, 
     int SalesArrangementId, 
     int CustomerOnSAId,

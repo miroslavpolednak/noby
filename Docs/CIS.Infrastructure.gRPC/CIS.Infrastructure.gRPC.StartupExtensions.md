@@ -49,28 +49,34 @@ public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder? AddCi
 #### Returns
 [Microsoft.Extensions.DependencyInjection.IHttpClientBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.DependencyInjection.IHttpClientBuilder 'Microsoft.Extensions.DependencyInjection.IHttpClientBuilder')
 
-<a name='CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection,System.Type)'></a>
+<a name='CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection,System.Type,CIS.Core.ErrorCodes.IErrorCodesDictionary)'></a>
 
-## StartupExtensions.AddCisGrpcInfrastructure(this IServiceCollection, Type) Method
+## StartupExtensions.AddCisGrpcInfrastructure(this IServiceCollection, Type, IErrorCodesDictionary) Method
 
 Zaregistruje do DI:  
 - MediatR  
 - FluentValidation through MediatR pipelines
 
 ```csharp
-public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddCisGrpcInfrastructure(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Type assemblyType);
+public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddCisGrpcInfrastructure(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Type assemblyType, CIS.Core.ErrorCodes.IErrorCodesDictionary? validationMessages=null);
 ```
 #### Parameters
 
-<a name='CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection,System.Type).services'></a>
+<a name='CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection,System.Type,CIS.Core.ErrorCodes.IErrorCodesDictionary).services'></a>
 
 `services` [Microsoft.Extensions.DependencyInjection.IServiceCollection](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.DependencyInjection.IServiceCollection 'Microsoft.Extensions.DependencyInjection.IServiceCollection')
 
-<a name='CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection,System.Type).assemblyType'></a>
+<a name='CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection,System.Type,CIS.Core.ErrorCodes.IErrorCodesDictionary).assemblyType'></a>
 
 `assemblyType` [System.Type](https://docs.microsoft.com/en-us/dotnet/api/System.Type 'System.Type')
 
 Typ, který je v hlavním projektu - typicky Program.cs
+
+<a name='CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection,System.Type,CIS.Core.ErrorCodes.IErrorCodesDictionary).validationMessages'></a>
+
+`validationMessages` [CIS.Core.ErrorCodes.IErrorCodesDictionary](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.ErrorCodes.IErrorCodesDictionary 'CIS.Core.ErrorCodes.IErrorCodesDictionary')
+
+Slovník pro překládání chybových kódů ve FluentValidation na naše error messages. [ExceptionCode, Message]
 
 #### Returns
 [Microsoft.Extensions.DependencyInjection.IServiceCollection](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.DependencyInjection.IServiceCollection 'Microsoft.Extensions.DependencyInjection.IServiceCollection')

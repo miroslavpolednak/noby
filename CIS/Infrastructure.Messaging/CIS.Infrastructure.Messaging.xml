@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.Infrastructure.Messaging</name>
+    </assembly>
+    <members>
+        <member name="T:CIS.Infrastructure.Messaging.AssemblyDoc">
+            <summary>
+            Konfigurace a helpery pro autentizaci gRPC služeb.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Messaging.NamespaceDoc">
+            <summary>
+            Helpery pro autentizaci gRPC služeb.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Messaging.Configuration.NamespaceDoc">
+            <summary>
+            Nastavení konfigurace autentizace z appsettings.json.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Messaging.Kafka.NamespaceDoc">
+            <summary>
+            Helpery pro konzumacia produkování zpráv do Kafky
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumer``1">
+            <summary>
+            Přidání single consumera do pipeline Kafky.
+            </summary>
+            <remarks>
+            Pro správné přidání konzumera je nutné ještě zavolat metodu AddConsumerTopicAvro nebo AddConsumerTopicJson!
+            </remarks>
+            <typeparam name="TConsumer">Typ consumera implementující interface IConsumer</typeparam>
+        </member>
+        <member name="M:CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddProducerAvro``1(System.String)">
+            <summary>
+            Přidání producerů do pipeline Kafky pro AVRO.
+            </summary>
+            <remarks>
+            Každý producer musí implementovat interface TTopicMarker, metoda ho díky tomu sama najde a přidá do pipeline.
+            </remarks>
+            <typeparam name="TTopicMarker">Marker interface označující všechny producery, kteří patří do skupiny daného topicu.</typeparam>
+            <param name="topic">Název topicu do kterého se budou posílat zprávy.</param>
+        </member>
+        <member name="M:CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddProducerJson``1(System.String)">
+            <summary>
+            Přidání producerů do pipeline Kafky pro JSON.
+            </summary>
+            <remarks>
+            Každý producer musí implementovat interface TTopicMarker, metoda ho díky tomu sama najde a přidá do pipeline.
+            </remarks>
+            <typeparam name="TTopicMarker">Marker interface označující všechny producery, kteří patří do skupiny daného topicu.</typeparam>
+            <param name="topic">Název topicu do kterého se budou posílat zprávy.</param>
+        </member>
+        <member name="M:CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopicAvro``1(System.String,System.String)">
+            <summary>
+            Přidání consumerů do pipeline Kafky pro AVRO. Je to druhý krok po AddConsumer().
+            </summary>
+            <remarks>
+            Každý consumer avro kontrakt (tj. třída implementující ISpecificRecord) musí implementovat interface TTopicMarker, metoda ho díky tomu sama najde a přidá do pipeline.
+            </remarks>
+            <typeparam name="TTopicMarker">Marker interface označující všechny consumery, kteří patří do skupiny daného topicu.</typeparam>
+            <param name="topic">Název topicu ze kterého se budou přijímat zprávy.</param>
+            <param name="groupId">Název skupiny v Kafce. Pokud je prázdné, doplňmuje se automaticky název aplikace.</param>
+        </member>
+        <member name="M:CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddConsumerTopicJson``1(System.String,System.String)">
+            <summary>
+            Přidání consumerů do pipeline Kafky pro JSON. Je to druhý krok po AddConsumer().
+            </summary>
+            <remarks>
+            Každý consumer json kontrakt musí implementovat interface TTopicMarker, metoda ho díky tomu sama najde a přidá do pipeline.
+            </remarks>
+            <typeparam name="TTopicMarker">Marker interface označující všechny consumery, kteří patří do skupiny daného topicu.</typeparam>
+            <param name="topic">Název topicu ze kterého se budou přijímat zprávy.</param>
+            <param name="groupId">Název skupiny v Kafce. Pokud je prázdné, doplňmuje se automaticky název aplikace.</param>
+        </member>
+        <member name="M:CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddRiderConfiguration(System.Action{MassTransit.IRiderRegistrationConfigurator})">
+            <summary>
+            Extension point pro přidání další konfigurace do configurator.AddRider()
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.AddRiderKafkaConfiguration(System.Action{MassTransit.IKafkaFactoryConfigurator,MassTransit.IRiderRegistrationContext})">
+            <summary>
+            Extension point pro přidání další konfigurace do rider.UsingKafka()
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Messaging.Kafka.ICisMessagingKafkaBuilder.Build">
+            <summary>
+            Napojení Kafky do aplikace. Bez zavolání této metody na konci Messaging builderu nebude Kafka v aplikaci nastavena!!!
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.Messaging.Constants.KafkaConfigurationElement">
+            <summary>
+            Nazev elementu v appsettings.json, ve kterem je konfigurace Kafky
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.Messaging.Constants.MessagingConfigurationElement">
+            <summary>
+            Nazev root element v appsettings.json pod ktery jsou konfigurace Messagingu
+            </summary>
+        </member>
+    </members>
+</doc>

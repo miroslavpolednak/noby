@@ -29,11 +29,15 @@ internal sealed class DeleteCustomerHandler
             .FirstOrDefault(t => t.IdentityScheme == IdentitySchemes.Kb);
 
         // zjistit zda ma customer rozjednany pripad
-        var hasMoreSA = (await _dbContext.CustomersIdentities
-            .CountAsync(t =>
-                t.IdentityScheme == customer.Identities!.First().IdentityScheme
-                && t.IdentityId == customer.Identities!.First().IdentityId
-                , cancellationToken)) > 1;
+        var identityToCheck = customer.Identities?.FirstOrDefault();
+        bool hasMoreSA = false;
+
+        if (identityToCheck is not null)
+        {
+            hasMoreSA = (await _dbContext
+                .CustomersIdentities
+                .CountAsync(t => t.IdentityScheme == identityToCheck.IdentityScheme && t.IdentityId == identityToCheck.IdentityId, cancellationToken)) > 1;
+        }
 
         // SULM
         if (kbIdentity is not null && !hasMoreSA)

@@ -4,7 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
 	<Company>Wookiee.Apps s.r.o.</Company>
     <Product>Common Infrastructure Solution</Product>
-    <Authors>Filip Tuma</Authors>
 	<LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
@@ -14,14 +13,10 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<InternalsVisibleTo Include="CIS.InternalServices.ServiceDiscovery.Tests" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<PackageReference Include="Dapper" Version="2.0.123" />
 		<PackageReference Include="Grpc.AspNetCore" Version="2.52.0" />
 		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.52.0" />
 		<PackageReference Include="MediatR" Version="12.0.1" />
@@ -36,5 +31,9 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\Contracts\CIS.InternalServices.ServiceDiscovery.Contracts.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="CIS.InternalServices.ServiceDiscovery.Tests" />
 	</ItemGroup>
 </Project>

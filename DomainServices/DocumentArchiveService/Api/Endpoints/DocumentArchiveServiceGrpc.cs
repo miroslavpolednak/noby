@@ -23,9 +23,13 @@ public class DocumentArchiveServiceGrpc : Contracts.v1.DocumentArchiveService.Do
     public override async Task<GetDocumentResponse> GetDocument(GetDocumentRequest request, ServerCallContext context)
      => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<GetDocumentListResponse> GetGetDocumentList(GetDocumentListRequest request, ServerCallContext context)
+    public override async Task<GetDocumentListResponse> GetDocumentList(GetDocumentListRequest request, ServerCallContext context)
      => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<GetDocumentsInQueueResponse> GetDocumentsInQueue(GetDocumentsInQueueRequest request, ServerCallContext context)
      => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Empty> SetDocumentStatusInQueue(SetDocumentStatusInQueueRequest request, ServerCallContext context)
+     => await _mediator.Send(request, context.CancellationToken);
+
 }

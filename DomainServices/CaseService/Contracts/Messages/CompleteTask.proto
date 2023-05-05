@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message CompleteTaskRequest {
+	int64 CaseId = 1;
+
+	int32 TaskIdSb = 2;
+
+	google.protobuf.StringValue TaskUserResponse = 3;
+
+	repeated string TaskDocumentIds = 4;
+
+	int32 TaskTypeId = 5;
+
+	google.protobuf.Int32Value TaskResponseTypeId = 6;
+}

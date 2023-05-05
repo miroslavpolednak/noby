@@ -26,6 +26,12 @@ internal partial class CodebookService : ICodebookServiceClients
             DeveloperProjectId = developerProjectId
         }, cancellationToken);
 
+    public async Task<Contracts.Endpoints.GetOperator.GetOperatorItem> GetOperator(string login, CancellationToken cancellationToken = default(CancellationToken))
+        => await _codebookService.GetOperator(new Contracts.Endpoints.GetOperator.GetOperatorRequest
+        {
+            PerformerLogin = login
+        }, cancellationToken);
+
     public CodebookService(ICodebookService codebookService, ClientsMemoryCache cache)
     {
         _cache = cache;

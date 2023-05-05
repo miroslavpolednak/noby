@@ -10,8 +10,10 @@ internal sealed class UpdateLoanAssessmentParametersHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateLoanAssessmentParametersRequest request, CancellationToken cancellation)
     {
-        var entity = await _dbContext.SalesArrangements.FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation) 
-            ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
+        var entity = await _dbContext
+            .SalesArrangements
+            .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation) 
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
         entity.LoanApplicationAssessmentId = request.LoanApplicationAssessmentId;
         entity.RiskSegment = request.RiskSegment;

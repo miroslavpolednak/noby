@@ -7,7 +7,6 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
-using NOBY.Api.Endpoints.Shared;
 using System.Globalization;
 using _DocOnSa = NOBY.Api.Endpoints.DocumentOnSA.Search;
 
@@ -21,7 +20,7 @@ public class SaveDocumentToArchiveHandler
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDateTime _dateTime;
-    private readonly ITempFileManager _tempFileManager;
+    private readonly Infrastructure.Services.TempFileManager.ITempFileManager _tempFileManager;
     private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
     private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
     private readonly IMediator _mediator;
@@ -32,7 +31,7 @@ public class SaveDocumentToArchiveHandler
         IDocumentArchiveServiceClient client,
         ICurrentUserAccessor currentUserAccessor,
         IDateTime dateTime,
-        ITempFileManager tempFileManager,
+        Infrastructure.Services.TempFileManager.ITempFileManager tempFileManager,
         ISalesArrangementServiceClient salesArrangementServiceClient,
         IDocumentOnSAServiceClient documentOnSAServiceClient,
         IMediator mediator,
@@ -62,7 +61,7 @@ public class SaveDocumentToArchiveHandler
             if (!string.IsNullOrWhiteSpace(docInfo.FormId))
                 eArchiveIdFromDocumentOnSa = await ValidateFormId(request.CaseId, docInfo, cancellationToken);
 
-            var filePath = _tempFileManager.ComposeFilePath(docInfo.Guid!.Value.ToString());
+            var filePath = _tempFileManager.ComposeFilePath(docInfo.DocumentInformation.Guid!.Value.ToString());
             _tempFileManager.CheckIfDocumentExist(filePath);
             filePaths.Add(filePath);
 
@@ -113,7 +112,7 @@ public class SaveDocumentToArchiveHandler
             var response = await _mediator.Send(new _DocOnSa.SearchRequest
             {
                 SalesArrangementId = salesArrangement.SalesArrangementId,
-                EACodeMainId = docInfo.EaCodeMainId
+                EACodeMainId = docInfo.DocumentInformation.EaCodeMainId
             }, cancellationToken);
 
             var findResult = response.FormIds.FirstOrDefault(f => f.FormId == docInfo.FormId);
@@ -131,8 +130,6 @@ public class SaveDocumentToArchiveHandler
     private async Task<UploadDocumentRequest> MapRequest(byte[] file, string documentId, long caseId, DocumentsInformation documentInformation, CancellationToken cancellationToken)
     {
         var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
-        var identity = user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.Mpad)
-            ?? user.UserIdentifiers.FirstOrDefault(r => r.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.KbUid);
         
         return new UploadDocumentRequest
         {
@@ -141,11 +138,11 @@ public class SaveDocumentToArchiveHandler
             {
                 CaseId = caseId,
                 DocumentId = documentId,
-                EaCodeMainId = documentInformation.EaCodeMainId,
-                Filename = documentInformation.FileName,
-                AuthorUserLogin = identity?.Identity ?? user.Id.ToString(CultureInfo.InvariantCulture),
+                EaCodeMainId = documentInformation.DocumentInformation.EaCodeMainId,
+                Filename = documentInformation.DocumentInformation.FileName,
+                AuthorUserLogin = user.CPM ?? user.Id.ToString(CultureInfo.InvariantCulture),
                 CreatedOn = _dateTime.Now.Date,
-                Description = documentInformation.Description ?? string.Empty,
+                Description = documentInformation.DocumentInformation.Description ?? string.Empty,
                 FormId = documentInformation.FormId ?? string.Empty,
                 ContractNumber = await GetContractNumber(caseId, cancellationToken)
             }
@@ -155,6 +152,9 @@ public class SaveDocumentToArchiveHandler
     private async Task<string> GetContractNumber(long caseId, CancellationToken cancellationToken)
     {
         var caseDetail = await _caseServiceClient.GetCaseDetail(caseId, cancellationToken);
-        return caseDetail.Data?.ContractNumber ?? defaultContractNumber;
+        if (string.IsNullOrWhiteSpace(caseDetail?.Data?.ContractNumber))
+            return defaultContractNumber;
+        
+        return caseDetail.Data.ContractNumber;
     }
 }

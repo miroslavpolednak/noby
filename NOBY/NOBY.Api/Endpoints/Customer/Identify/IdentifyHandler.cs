@@ -1,17 +1,17 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
-using NOBY.Api.Endpoints.Customer.Search;
-using NOBY.Api.Endpoints.Customer.Search.Dto;
+using NOBY.Api.Endpoints.Customer.SearchCustomers;
+using NOBY.Api.Endpoints.Customer.SearchCustomers.Dto;
 
 namespace NOBY.Api.Endpoints.Customer.Identify;
 
 internal sealed class IdentifyHandler
-    : IRequestHandler<IdentifyRequest, CustomerInList>
+    : IRequestHandler<IdentifyRequest, CustomerInList?>
 {
-    public async Task<CustomerInList> Handle(IdentifyRequest request, CancellationToken cancellationToken)
+    public async Task<CustomerInList?> Handle(IdentifyRequest request, CancellationToken cancellationToken)
     {
-        var dsRequest = new SearchCustomersRequest
+        var dsRequest = new DomainServices.CustomerService.Contracts.SearchCustomersRequest
         {
             NaturalPerson = new NaturalPersonSearch
             {

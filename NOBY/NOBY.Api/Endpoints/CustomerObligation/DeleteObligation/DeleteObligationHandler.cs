@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.CustomerObligation.DeleteObligation;
 
-internal class DeleteObligationHandler
+internal sealed class DeleteObligationHandler
     : IRequestHandler<DeleteObligationRequest>
 {
     public async Task Handle(DeleteObligationRequest request, CancellationToken cancellationToken)

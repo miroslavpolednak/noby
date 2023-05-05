@@ -13,6 +13,7 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -25,11 +26,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
-		<ProjectReference Include="..\..\..\ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj" />
 		<ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
@@ -37,6 +38,11 @@
 		<ProjectReference Include="..\..\UserService\Clients\DomainServices.UserService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.CaseService.Contracts.csproj" />
 		<ProjectReference Include="..\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Endpoints\GetTaskDetail\" />
+		<Folder Include="Endpoints\GetProcessList\" />
 	</ItemGroup>
 
 </Project>

@@ -24,18 +24,21 @@ internal static class NobySwagger
             { 
                 Title = "NOBY FRONTEND API", 
                 Version = "v1", 
-                Description = "Obecná specifikace error handlingu na úrovni FE API na [https://wiki.kb.cz/display/HT/FE+API%3A+Popis+error+Handlingu](https://wiki.kb.cz/display/HT/FE+API%3A+Popis+error+Handlingu). \n\nSpecifikace HTTP/SOAP hlaviček [https://wiki.kb.cz/pages/viewpage.action?pageId=513345095](https://wiki.kb.cz/pages/viewpage.action?pageId=513345095)"
+                Description = "Obecná specifikace <b>error handlingu</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=589534698](https://wiki.kb.cz/pages/viewpage.action?pageId=589534698)</li></ul>Specifikace <b>HTTP hlaviček</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=513345095](https://wiki.kb.cz/pages/viewpage.action?pageId=513345095)</li></ul>"
             });
 
             // zapojení rozšířených anotací nad controllery
             x.EnableAnnotations();
             //x.UseOneOfForPolymorphism();
 
+            x.SupportNonNullableReferenceTypes();
+            
             // všechny parametry budou camel case
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();
 
             x.CustomSchemaIds(type => type.ToString().Replace('+', '_'));
+            x.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
 
             // generate the XML docs that'll drive the swagger docs
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
@@ -44,7 +47,7 @@ internal static class NobySwagger
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
             
             x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
-            x.SchemaFilter<Endpoints.SalesArrangement.GetDetail.GetDetailSwaggerSchema> ();
+            x.SchemaFilter<Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementSwaggerSchema> ();
             x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwagerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
@@ -53,7 +56,7 @@ internal static class NobySwagger
         return builder;
     }
 
-    private class CodebookGetAllSchemaFilter : ISchemaFilter
+    private sealed class CodebookGetAllSchemaFilter : ISchemaFilter
     {
         private readonly List<Type> _getAllResponsePossibleTypes;
 
@@ -76,7 +79,7 @@ internal static class NobySwagger
         }
     }
 
-    private class EnumValuesDescriptionSchemaFilter : ISchemaFilter
+    private sealed class EnumValuesDescriptionSchemaFilter : ISchemaFilter
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {

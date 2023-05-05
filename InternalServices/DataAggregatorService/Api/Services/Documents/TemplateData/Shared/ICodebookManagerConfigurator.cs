@@ -21,4 +21,6 @@ public interface ICodebookManagerConfigurator
     ICodebookManagerConfigurator ObligationTypes();
     ICodebookManagerConfigurator LegalCapacityRestrictionTypes();
     ICodebookManagerConfigurator DocumentTypes();
+    ICodebookManagerConfigurator EducationLevels();
+    ICodebookManagerConfigurator SignatureTypes();
 }

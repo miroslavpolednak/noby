@@ -4,6 +4,8 @@ namespace Console_NotificationService
 {
     internal class CisEnvironmentConfiguration : ICisEnvironmentConfiguration
     {
+        public bool DisableServiceDiscovery { get; set; }
+
         public string? DefaultApplicationKey { get; set; }
 
         public string? EnvironmentName { get; set; }

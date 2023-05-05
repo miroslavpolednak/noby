@@ -10,23 +10,27 @@ internal sealed class DeleteSalesArrangementHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteSalesArrangementRequest request, CancellationToken cancellation)
     {
         var saInstance = await _dbContext.SalesArrangements.FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
-            ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
         if (!request.HardDelete)
         {
             // kontrola na kategorii
             if ((await _codebookService.SalesArrangementTypes(cancellation)).First(t => t.Id == saInstance.SalesArrangementTypeId).SalesArrangementCategory != 2)
-                throw new CisValidationException(18013, $"SalesArrangement type not supported");
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, saInstance.SalesArrangementTypeId);
 
             // kontrola na stav
             if (saInstance.State != (int)SalesArrangementStates.InProgress && saInstance.State != (int)SalesArrangementStates.IsSigned)
-                throw new CisValidationException($"SalesArrangement cannot be updated/deleted in this state {saInstance.State}");
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SalesArrangementCantDelete, saInstance.State);
         }
 
         // smazat SA
         _dbContext.Remove(saInstance);
-        //TODO predelat v .NET7 na EF nativni delete
-        await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.SalesArrangementParameters WHERE SalesArrangementId={request.SalesArrangementId}", cancellation);
+        
+        // smazat parametry
+        await _dbContext.SalesArrangementsParameters
+            .Where(t => t.SalesArrangementId == request.SalesArrangementId)
+            .ExecuteDeleteAsync(cancellation);
+        
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();

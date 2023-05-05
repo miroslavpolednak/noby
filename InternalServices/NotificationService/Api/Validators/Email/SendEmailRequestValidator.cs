@@ -1,5 +1,7 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Configuration;
+using CIS.InternalServices.NotificationService.Api.Validators.Common;
 using CIS.InternalServices.NotificationService.Contracts.Email;
+using CIS.InternalServices.NotificationService.Contracts.Sms;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 
@@ -55,13 +57,25 @@ public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
             .NotEmpty()
                 .WithErrorCode(ErrorCodes.Validation.SendEmail.ContentRequired)
                 .WithMessage($"{nameof(SendEmailRequest.Content)} required.")
-            .SetValidator(new EmailContentValidator())
+            .SetValidator(new EmailContentValidator(options))
                 .WithErrorCode(ErrorCodes.Validation.SendEmail.ContentInvalid)
                 .WithMessage($"Invalid {nameof(SendEmailRequest.Content)}.");
 
+        RuleFor(request => request.Attachments.Count)
+            .LessThanOrEqualTo(10)
+                .WithErrorCode(ErrorCodes.Validation.SendEmail.AttachmentsCountLimitExceeded)
+                .WithMessage($"Maximum count of {nameof(SendEmailRequest.Attachments)} is 10.");
+        
         RuleForEach(request => request.Attachments)
             .SetValidator(new EmailAttachmentValidator())
                 .WithErrorCode(ErrorCodes.Validation.SendEmail.AttachmentsInvalid)
                 .WithMessage($"Invalid {nameof(SendEmailRequest.Attachments)}.");
+        
+        When(request => request.Identifier is not null, () =>
+        {
+            RuleFor(request => request.Identifier!)
+                .SetValidator(new IdentifierValidator())
+                .WithMessage($"Invalid {nameof(SendEmailRequest.Identifier)}.");
+        });
     }
 }

@@ -21,8 +21,11 @@ internal sealed class CalculateHandler
         if (request.UserIdentity is not null)
         {
             var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-            if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+            if (userInstance != null)
+            {
+                if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                    requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+            }            
         }
         
         // zavolat C4M

@@ -10,6 +10,8 @@ public class DocumentOnSa : ICreated
 
     public int? DocumentTemplateVersionId { get; set; }
 
+    public int? DocumentTemplateVariantId { get; set; }
+
     public string FormId { get; set; } = null!;
 
     public string? EArchivId { get; set; }

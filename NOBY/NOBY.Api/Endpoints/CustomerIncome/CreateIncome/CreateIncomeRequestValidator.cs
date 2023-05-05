@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.CustomerIncome.CreateIncome;
 
-internal class CreateIncomeRequestValidator
+internal sealed class CreateIncomeRequestValidator
     : AbstractValidator<CreateIncomeRequest>
 {
     public CreateIncomeRequestValidator()

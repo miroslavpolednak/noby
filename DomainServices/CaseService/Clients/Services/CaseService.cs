@@ -3,7 +3,7 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Clients.Services;
 
-internal sealed class CaseService 
+internal sealed class CaseService
     : ICaseServiceClient
 {
     public async Task<long> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken))
@@ -20,6 +20,11 @@ internal sealed class CaseService
                 CaseOwnerUserId = caseOwnerUserId
             }, cancellationToken: cancellationToken);
         return result.CaseCounts.ToList();
+    }
+
+    public Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default)
+    {
+        return _service.CompleteTaskAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
 
     public async Task<Case> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken))
@@ -93,6 +98,11 @@ internal sealed class CaseService
             }, cancellationToken: cancellationToken);
     }
 
+    public Task<GetTaskDetailResponse> GetTaskDetail(int taskIdSb, CancellationToken cancellationToken = default)
+    {
+        return _service.GetTaskDetailAsync(new GetTaskDetailRequest { TaskIdSb = taskIdSb }, cancellationToken: cancellationToken).ResponseAsync;
+    }
+
     public async Task<List<WorkflowTask>> GetTaskList(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.GetTaskListAsync(
@@ -101,6 +111,23 @@ internal sealed class CaseService
                 CaseId = caseId
             }, cancellationToken: cancellationToken);
         return result.Tasks.ToList();
+    }
+
+    public async Task<List<WorkflowTask>> GetTaskListByContract(string contractNumber, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        var result = await _service.GetTaskListByContractAsync(
+            new()
+            {
+                ContractNumber = contractNumber
+            }, cancellationToken: cancellationToken);
+        return result.Tasks.ToList();
+    }
+
+    public async Task<IList<ProcessTask>> GetProcessList(long caseId, CancellationToken cancellationToken = default)
+    {
+        var result = await _service.GetProcessListAsync(new GetProcessListRequest { CaseId = caseId }, cancellationToken: cancellationToken);
+
+        return result.Processes;
     }
 
     public async Task UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default(CancellationToken))
@@ -121,6 +148,19 @@ internal sealed class CaseService
                 CaseId = caseId,
                 RiskBusinessCaseId = riskBusinessCaseId
             }, cancellationToken: cancellationToken);
+    }
+
+    public async Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        await _service.CancelTaskAsync(new CancelTaskRequest
+        {
+            TaskIdSB = taskIdSB
+        }, cancellationToken: cancellationToken);
+    }
+    
+    public async Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        return await _service.CreateTaskAsync(request, cancellationToken: cancellationToken);
     }
 
     private readonly Contracts.v1.CaseService.CaseServiceClient _service;

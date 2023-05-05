@@ -7,7 +7,7 @@ using _Document = CIS.InternalServices.DocumentGeneratorService.Contracts;
 namespace NOBY.Api.Endpoints.Document.Shared;
 
 [TransientService, SelfService]
-internal class DocumentGenerator
+internal sealed class DocumentGenerator
 {
     private readonly IDataAggregatorServiceClient _dataAggregator;
     private readonly IDocumentGeneratorServiceClient _documentGenerator;
@@ -37,13 +37,13 @@ internal class DocumentGenerator
         var documentDataRequest = new GetDocumentDataRequest
         {
             DocumentTypeId = (int)documentRequest.DocumentType,
-            DocumentTemplateVariantId = documentRequest.DocumentTemplateVariantId,
             InputParameters = documentRequest.InputParameters
         };
 
         var result = await _dataAggregator.GetDocumentData(documentDataRequest, cancellationToken);
 
         documentRequest.DocumentTemplateVersionId = result.DocumentTemplateVersionId;
+        documentRequest.DocumentTemplateVariantId = result.DocumentTemplateVariantId;
         documentRequest.InputParameters = result.InputParameters;
 
         return result.DocumentData;

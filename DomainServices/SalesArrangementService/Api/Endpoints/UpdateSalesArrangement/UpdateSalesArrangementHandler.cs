@@ -12,8 +12,10 @@ internal sealed class UpdateSalesArrangementHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateSalesArrangementRequest request, CancellationToken cancellation)
     {
-        var entity = await _dbContext.SalesArrangements.FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
-            ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
+        var entity = await _dbContext
+            .SalesArrangements
+            .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
         // kontrola na kategorii
         /*if ((await _codebookService.SalesArrangementTypes(cancellation)).First(t => t.Id == entity.SalesArrangementTypeId).SalesArrangementCategory != 2)
@@ -21,15 +23,13 @@ internal sealed class UpdateSalesArrangementHandler
 
         // kontrola na stav
         if (!_allowedStates.Contains(entity.State))
-            throw new CisValidationException(18082, $"SalesArrangement cannot be updated/deleted in this state {entity.State}");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SalesArrangementCantDelete, entity.State);
 
         // meni se rbcid
         bool riskBusinessCaseIdChanged = !string.IsNullOrEmpty(request.RiskBusinessCaseId) && !request.RiskBusinessCaseId.Equals(entity.RiskBusinessCaseId, StringComparison.OrdinalIgnoreCase);
 
         entity.ContractNumber = request.ContractNumber;
         entity.RiskBusinessCaseId = request.RiskBusinessCaseId;
-        entity.FirstSignedDate = request.FirstSignedDate;
-        entity.SalesArrangementSignatureTypeId = request.SalesArrangementSignatureTypeId;
 
         // pokud je zadost NEW, zmenit na InProgress
         if (entity.State == (int)SalesArrangementStates.NewArrangement)

@@ -6,6 +6,8 @@ using CIS.Infrastructure.Security;
 using ProtoBuf.Grpc.Server;
 using CIS.InternalServices;
 using DomainServices;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -53,6 +55,7 @@ builder.AddRipSwagger();
 
 // add grpc
 builder.AddRipGrpc();
+builder.Services.AddHealthChecks();
 #endregion register builder
 
 // kestrel configuration
@@ -74,6 +77,15 @@ app.UseAuthorization();
 app.UseCisServiceUserContext();
 
 app.MapCodeFirstGrpcHealthChecks();
+app.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, new HealthCheckOptions
+{
+    ResultStatusCodes =
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+    }
+});
 
 app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.CustomersExposureService>();
 app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseService>();

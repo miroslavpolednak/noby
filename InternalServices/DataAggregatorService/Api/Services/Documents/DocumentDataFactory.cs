@@ -1,6 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.VersionData;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents;
 
@@ -14,7 +15,7 @@ internal class DocumentDataFactory
         _serviceProvider = serviceProvider;
     }
 
-    public AggregatedData Create(DocumentType documentType) =>
+    public AggregatedData CreateData(DocumentType documentType) =>
         documentType switch
         {
             DocumentType.NABIDKA or DocumentType.KALKULHU => new OfferTemplateData(),
@@ -26,4 +27,14 @@ internal class DocumentDataFactory
             DocumentType.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeTemplateData>(),
             _ => new AggregatedData()
         };
+
+    public IDocumentVersionDataProvider CreateVersionData(DocumentType documentType)
+    {
+        return documentType switch
+        {
+            DocumentType.ZADOSTHU or DocumentType.ZADOSTHD => _serviceProvider.GetRequiredService<LoanApplicationVersionDataProvider>(),
+            DocumentType.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeVersionDataProvider>(),
+            _ => _serviceProvider.GetRequiredService<IDocumentVersionDataProvider>()
+        };
+    }
 }
