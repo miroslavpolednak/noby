@@ -1,114 +1,106 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
-using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
-using Microsoft.Extensions.Logging;
-using System.ServiceModel.Channels;
-using System.ServiceModel;
-using DomainServices.ProductService.ExternalServices.Pcp.V1.Client;
+﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using System.Diagnostics;
-using CIS.Core.Extensions;
+using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace DomainServices.ProductService.ExternalServices.Pcp.V1;
 
 internal sealed class RealPcpClient 
-    : SoapClientBase<ProductInstanceBEServiceClient, IProductInstanceBEService>, IPcpClient
+    : IPcpClient
 {
     public async Task CreateProduct(long caseId, long customerKbId, string pcpProductId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        await callMethod<createResponse>(async () =>
+        string soap = _soapEnvelopeStart + getHeader() + $@"<soapenv:Body>
+<v12:createRequest>
+    <dto:productInstance>
+    <cre:customerInProductInstanceList>
+        <cre:customerInProductInstance>
+            <dto:kBCustomer>
+                <dto:id>{customerKbId}</dto:id>
+            </dto:kBCustomer>
+            <dto:partyInProductInstanceRole>
+                <dto:partyInproductInstanceRoleCode>
+                <dto:class>CB_CustomerLoanProductRole</dto:class>
+                <dto:code>A</dto:code>
+                </dto:partyInproductInstanceRoleCode>
+            </dto:partyInProductInstanceRole>
+        </cre:customerInProductInstance>
+    </cre:customerInProductInstanceList>
+    <cre:mktItemInstanceState>
+        <dto:class>CB_AgreementState</dto:class>
+        <dto:state>PROPOSED</dto:state>
+    </cre:mktItemInstanceState>
+    <cre:otherMktItemInstanceIdList>
+        <cre:otherMktItemInstanceId>
+            <dto:class>ID</dto:class>
+            <dto:id>{pcpProductId}</dto:id>
+        </cre:otherMktItemInstanceId>
+    </cre:otherMktItemInstanceIdList>
+    <cre:productInOffer>
+        <cre:catalogueProductInOffer>
+            <cre:catalogueItemId>
+                <dto:id>{caseId}</dto:id>
+            </cre:catalogueItemId>
+        </cre:catalogueProductInOffer>
+    </cre:productInOffer>
+    <cre:productInstanceInfo>
+    </cre:productInstanceInfo>
+    </dto:productInstance>
+</v12:createRequest>
+   </soapenv:Body>" + _soapEnvelopeEnd;
+
+        using (HttpContent content = new StringContent(soap, Encoding.UTF8, "text/xml"))
+        using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress))
         {
-            var result = await Client.createAsync(createSystemIdentity(), createTraceContext(), new createRequest
-            {
-                productInstance = new ProductInstance
-                {
-                    otherMktItemInstanceIdList = new OtherMktItemInstanceId[1]
-                    {
-                        new OtherMktItemInstanceId { @class = "ID", id = caseId.ToString() }
-                    },
-                    mktItemInstanceState = new MktItemInstanceState
-                    {
-                        @class = "CB_AgreementState",
-                        state = "PROPOSED"
-                    },
-                    customerInProductInstanceList = new CustomerInProductInstance[]
-                    {
-                        new CustomerInProductInstance
-                        {
-                            partyInProductInstanceRole = new PartyInProductInstanceRole
-                            {
-                                partyInproductInstanceRoleCode = new PartyInproductInstanceRoleCode
-                                {
-                                    @class = "CB_CustomerLoanProductRole",
-                                    code = "A"
-                                }
-                            },
-                            kBCustomer = new KBCustomer { id = customerKbId.ToString() }
-                        }
-                    },
-                    productInOffer = new ProductInOffer
-                    {
-                        catalogueProductInOffer = new CatalogueProductInOffer
-                        {
-                            catalogueItemId = new CatalogueItemId
-                            {
-                                id = pcpProductId
-                            }
-                        }
+            request.Headers.Add("SOAPAction", "");
+            request.Content = content;
 
-                    }
-                }
-            }).WithCancellation(cancellationToken);
-
-            return result.createResponse;
-        });
-    }
-
-    private SystemIdentity createSystemIdentity()
-    {
-        return new SystemIdentity
-        {
-            caller = new Application
+            using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
-                application = "NOBY",
-                applicationComponent = "NOBY.DS"
-            },
-            originator = new Application
-            {
-                application = "NOBY",
-                applicationComponent = "NOBY.FEAPI"
+                string rawResponse = await response.Content.ReadAsStringAsync(cancellationToken);
+
+                response.EnsureSuccessStatusCode();
+                //var xml = XElement.Parse(rawResponse);
             }
-        };
-    }
-
-    private TraceContext createTraceContext()
-    {
-        return new TraceContext
-        {
-            traceId = Activity.Current?.TraceId.ToHexString() ?? Guid.NewGuid().ToString(),
-            timestamp = DateTime.Now
-        };
-    }
-
-    protected override Binding CreateBinding()
-    {
-        var basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
-
-        if (Configuration.RequestTimeout.HasValue)
-        {
-            basicHttpBinding.SendTimeout = TimeSpan.FromSeconds(Configuration.RequestTimeout.Value);
-            basicHttpBinding.CloseTimeout = TimeSpan.FromSeconds(Configuration.RequestTimeout.Value);
         }
-        basicHttpBinding.MaxReceivedMessageSize = 1500000;
-        basicHttpBinding.ReaderQuotas.MaxArrayLength = 1500000;
-
-        return basicHttpBinding;
     }
 
-    protected override string ServiceName => global::ExternalServices.StartupExtensions.ServiceName;
+    private const string _soapEnvelopeStart = @"<soapenv:Envelope xmlns:cre=""http://kb.cz/ProductInstanceBEService/v1/DTO/create"" xmlns:dto=""http://kb.cz/ProductInstanceBEService/v1/DTO"" xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:v1=""http://kb.cz/DataModel/Technical/Headers/v1"" xmlns:v11=""http://kb.cz/DataModel/Technical/HeaderTypes/v1"" xmlns:v12=""http://kb.cz/ProductInstanceBEService/v1"">";
+    private const string _soapEnvelopeEnd = @"</soapenv:Envelope>";
 
-    public RealPcpClient(
-        ILogger<RealPcpClient> logger,
-        IExternalServiceConfiguration<IPcpClient> configuration)
-        : base(configuration, logger)
+    private string getHeader()
+        => $@"<soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand=""1"" xmlns:wsse=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"" xmlns:wsu=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"">
+         <wsse:UsernameToken wsu:Id=""UsernameToken-{Guid.NewGuid().ToString("N")}"">
+            <wsse:Username>{_configuration.Username}</wsse:Username>
+            <wsse:Password Type=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"">{_configuration.Password}</wsse:Password>
+            <wsse:Nonce EncodingType=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary"">EJCe9O91tt/+NVn1JThDWg==</wsse:Nonce>
+            <wsu:Created>{DateTime.Now:yyyy-MM-ddTHH:mm:sssZ}</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+     <v1:traceContext>
+         <v11:traceId>{(Activity.Current?.TraceId.ToHexString() ?? Guid.NewGuid().ToString())[0..15]}</v11:traceId>
+         <v11:timestamp>{DateTime.Now:yyyy-MM-ddTHH:mm:ss}+02:00</v11:timestamp>
+      </v1:traceContext>
+      <v1:systemIdentity>
+         <v11:originator>
+            <v11:application>NOBY</v11:application>
+            <v11:applicationComponent>NOBY.FEAPI</v11:applicationComponent>
+         </v11:originator>
+         <v11:caller>
+            <v11:application>NOBY</v11:application>
+            <v11:applicationComponent>NOBY.DS</v11:applicationComponent>
+         </v11:caller>
+      </v1:systemIdentity>
+   </soapenv:Header>";
+
+    private readonly HttpClient _httpClient;
+    private readonly IExternalServiceConfiguration<IPcpClient> _configuration;
+
+    public RealPcpClient(HttpClient httpClient, IExternalServiceConfiguration<IPcpClient> configuration)
     {
+        _configuration = configuration;
+        _httpClient = httpClient;
     }
 }
