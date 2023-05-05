@@ -24,7 +24,7 @@ internal sealed class CreateContractRelationshipHandler
         // check if relationship not exists
         if (await _repository.ExistsRelationship(request.ProductId, request.Relationship.PartnerId, cancellation))
         {
-            throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.AlreadyExists12011, request.ProductId); //, request.Relationship.PartnerId); 
+            throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.AlreadyExists12011, request.ProductId, request.Relationship.PartnerId); 
         }
 
         // check if loan exists (against KonsDB)

@@ -22,7 +22,7 @@ internal sealed class DeleteContractRelationshipHandler
         // check if relationship exists
         if (!await _repository.ExistsRelationship(request.ProductId, request.PartnerId, cancellation))
         {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12018, request.ProductId); //, request.PartnerId);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12018, request.ProductId, request.PartnerId);
         }
 
         // call endpoint

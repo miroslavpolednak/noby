@@ -21,7 +21,7 @@ internal sealed class CreateMortgageRequestValidator : AbstractValidator<Contrac
 
         RuleFor(t => t.Mortgage.LoanKindId)
             .GreaterThan(0)
-            .WithMessage("LoanKindId is not specified").WithErrorCode("0");
+            .WithErrorCode(ErrorCodeMapper.InvalidArgument12007);
     }
 }
 
