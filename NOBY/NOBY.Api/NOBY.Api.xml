@@ -2281,7 +2281,8 @@
             <i>DS:</i> SalesArrangement/CreateSalesArrangement<br/>
             <i>DS:</i> ProductService/CreateMortgage (pokud MpHome API na vytvoření produktu spadne na fatální chybu, tak tuto chybu ignorujeme a pokračujeme ve vytvoření Case)<br/>
             <i>DS:</i> SalesArrangement/CreateHousehold<br/>
-            <i>DS:</i> SalesArrangement/CreateCustomerOnSA
+            <i>DS:</i> SalesArrangement/CreateCustomerOnSA<br/><br/>
+            Endpoint podporuje rollback.
             </remarks>
             <param name="request">Identifikace klienta a ID simulace.</param>
             <returns>ID nově vytvořeného Case</returns>

@@ -11,7 +11,7 @@ internal class GetOperatorHandler
             ?? throw new CIS.Core.Exceptions.CisNotFoundException(20002, $"Operator {request.PerformerLogin} not found");
     }
 
-    const string _sqlQuery = @"SELECT JMENO 'PerformerName', [LOGIN] 'PerformerLogin' FROM [xxd0vss].[SBR].[OPERATOR] WHERE [LOGIN]=@PerformerLogin";
+    const string _sqlQuery = @"SELECT MENO 'PerformerName', [LOGIN] 'PerformerLogin' FROM [xxd0vss].[SBR].[OPERATOR] WHERE DATUM_ZMENY IS NULL AND [LOGIN]=@PerformerLogin";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
 
