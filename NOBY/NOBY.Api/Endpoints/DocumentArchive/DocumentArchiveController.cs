@@ -21,15 +21,16 @@ public class DocumentArchiveController : ControllerBase
     }
 
     /// <summary>
-    /// Načtení dokumentu z archivu
+    /// Načtení dokumentu z e-archivu nebo ze systému ePodpisů
     /// </summary>
     /// <remarks>
-    /// Načtení contentu dokumentu. Vrací se steam binárních dat.<br/>
-    /// Nenačítají se dokumenty s EaCodeMain.IsVisibleForKb=false <br/>
-    /// <i>DS:</i> DocumentArchiveService/getDocument
+    ///Načtení contentu dokumentu.Vrací se stream binárních dat.<br />
+    ///Pro dokumenty z e-archivu se nenačítají dokumenty s EaCodeMain.IsVisibleForKb=false.<br /><br />
+    /// <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9617EAF8-9876-4444-A130-DFCCD597484D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="documentId">ID dokumentu</param>
     /// <param name="contentDisposition">0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default</param>
+    /// <param name="source">Zdroj dokumentu (0 - e-archiv; 1 - fronta do systému ePodpisů; 2 - systém ePodpisů; 0 je default</param>
     [HttpGet("document/{documentId}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
@@ -37,6 +38,7 @@ public class DocumentArchiveController : ControllerBase
     public async Task<IActionResult> GetDocument(
         [FromRoute] string documentId,
         [FromQuery] FileContentDisposition contentDisposition,
+        [FromQuery] DocumentSource source, // added prep. according to HFICH-5628 (without implementation)
         CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetDocumentRequest(documentId), cancellationToken);
