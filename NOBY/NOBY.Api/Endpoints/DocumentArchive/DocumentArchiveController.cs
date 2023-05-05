@@ -38,7 +38,7 @@ public class DocumentArchiveController : ControllerBase
     public async Task<IActionResult> GetDocument(
         [FromRoute] string documentId,
         [FromQuery] FileContentDisposition contentDisposition,
-        [FromQuery] DocumentSource source,
+        [FromQuery] DocumentSource source, // added prep. according to HFICH-5628 (without implementation)
         CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetDocumentRequest(documentId), cancellationToken);
