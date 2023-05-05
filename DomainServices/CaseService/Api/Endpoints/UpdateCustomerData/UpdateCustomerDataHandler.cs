@@ -23,13 +23,19 @@ internal sealed class UpdateCustomerDataHandler
 
         await _dbContext.SaveChangesAsync(cancellation);
 
+        await _mediator.Send(new NotifyStarbuildRequest { CaseId = request.CaseId  }, cancellation);
+        
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private readonly IMediator _mediator;
     private readonly CaseServiceDbContext _dbContext;
 
-    public UpdateCustomerDataHandler(CaseServiceDbContext dbContext)
+    public UpdateCustomerDataHandler(
+        IMediator mediator,
+        CaseServiceDbContext dbContext)
     {
+        _mediator = mediator;
         _dbContext = dbContext;
     }
 }
