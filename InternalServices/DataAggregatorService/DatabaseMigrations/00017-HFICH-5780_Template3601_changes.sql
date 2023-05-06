@@ -10,6 +10,7 @@ UPDATE DataField SET DefaultStringFormat = '{0:CustomCurrency}' WHERE DataFieldI
 UPDATE DocumentSpecialDataField SET StringFormat = '{0:CustomCurrency}', DefaultTextIfNull = '--' WHERE DocumentId = 4 AND AcroFieldName = 'VyseUveruNeucelova'
 UPDATE DocumentSpecialDataField SET DefaultTextIfNull = '--' WHERE DocumentId = 4 AND AcroFieldName = 'RodneCislo'
 UPDATE DocumentSpecialDataField SET DefaultTextIfNull = '--' WHERE DocumentId = 4 AND AcroFieldName = 'SpoluzadatelRodneCislo'
+UPDATE DocumentSpecialDataField SET DefaultTextIfNull = '--' WHERE DocumentId = 4 AND AcroFieldName = 'DobaCerpani'
 
 UPDATE DocumentSpecialDataField SET StringFormat = '{0:CustomCurrency}' WHERE DocumentId = 4 AND AcroFieldName = 'ZeZamestnani'
 UPDATE DocumentSpecialDataField SET StringFormat = '{0:CustomCurrency}' WHERE DocumentId = 4 AND AcroFieldName = 'ZPodnikani'
@@ -139,6 +140,14 @@ INSERT INTO DocumentDataFieldVariant VALUES (176, 'D')
 
 INSERT INTO DocumentDataFieldVariant VALUES (177, 'C')
 INSERT INTO DocumentDataFieldVariant VALUES (177, 'D')
+
+INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'JsemNejsem5Odrazka', 'A')
+INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'JsemNejsem5Odrazka', 'B')
+INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'JsemNejsem5Odrazka', 'C')
+INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'JsemNejsem5Odrazka', 'D')
+
+INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'SpoluzadatelJsemNejsem5Odrazka', 'C')
+INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'SpoluzadatelJsemNejsem5Odrazka', 'D')
 
 INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'PodpisJmenoKlienta', 'A')
 INSERT INTO DocumentSpecialDataFieldVariant VALUES (4, 'PodpisJmenoKlienta', 'B')
