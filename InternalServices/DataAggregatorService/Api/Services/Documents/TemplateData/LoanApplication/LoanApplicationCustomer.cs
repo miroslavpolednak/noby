@@ -1,4 +1,5 @@
-﻿using CIS.Foms.Enums;
+﻿using System.Globalization;
+using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CodebookService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.Countries;
@@ -48,6 +49,8 @@ internal class LoanApplicationCustomer
 
     public string EducationLevel => GetEducationLevel();
 
+    public NaturalPersonResidenceCountry? CzechResidence => _customer.NaturalPerson.TaxResidence?.ResidenceCountries.FirstOrDefault(r => r.CountryId == 16);
+
     private string GetFullName()
     {
         if (!_customer.NaturalPerson.DegreeBeforeId.HasValue)
@@ -72,10 +75,15 @@ internal class LoanApplicationCustomer
     {
         var document = _customer.IdentificationDocument;
 
+        if (document is null)
+            return string.Empty;
+
         var documentType = _identificationDocumentTypes.First(x => x.Id == document.IdentificationDocumentTypeId).Name;
         var countryName = _countries.First(c => c.Id == document.IssuingCountryId).LongName;
 
-        return $"{documentType} č.: {document.Number}, platný do: {(DateTime?)document.ValidTo}, vydal: {document.IssuedBy}, {countryName}";
+        var validToText = document.ValidTo is null ? "n/a" : ((DateTime)document.ValidTo).ToString("d", CultureInfo.GetCultureInfo("cs"));
+
+        return $"{documentType} č.: {document.Number}, platný do: {validToText}, vydal: {document.IssuedBy}, {countryName}";
     }
 
     private string GetContacts()
@@ -84,13 +92,13 @@ internal class LoanApplicationCustomer
         var phone = _customer.Contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil);
 
         if (email is not null && phone is not null)
-            return $"telefon: {phone.Mobile?.PhoneIDC}{phone.Mobile?.PhoneNumber} | e-mail: {email.Email?.EmailAddress}";
+            return $"{phone.Mobile?.PhoneIDC} {phone.Mobile?.PhoneNumber} | {email.Email?.EmailAddress}";
 
         if (email is not null)
-            return $"e-mail: {email.Email?.EmailAddress}";
+            return $"{email.Email?.EmailAddress}";
 
         if (phone is not null)
-            return $"telefon: {phone.Mobile?.PhoneIDC}{phone.Mobile?.PhoneNumber}";
+            return $"{phone.Mobile?.PhoneIDC} {phone.Mobile?.PhoneNumber}";
 
         return string.Empty;
     }
