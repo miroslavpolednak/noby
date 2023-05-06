@@ -16,6 +16,8 @@ internal class DocumentSpecialDataFieldConfiguration : IEntityTypeConfiguration<
 
         builder.Property(x => x.StringFormat).HasMaxLength(50).IsRequired(false);
 
+        builder.Property(x => x.DefaultTextIfNull).HasMaxLength(500).IsRequired(false);
+
         builder.HasOne(x => x.Document);
 
         builder.HasOne(x => x.DataService).WithMany().IsRequired();

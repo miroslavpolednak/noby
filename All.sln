@@ -379,6 +379,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00013-HFICH-5323_document_signature.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00013-HFICH-5323_document_signature.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00014-OfferDocument_Domicilace.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00014-OfferDocument_Domicilace.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00016-HFICH-4663_MortgageComment.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00016-HFICH-4663_MortgageComment.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00017-HFICH-5780_Template3601_changes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00017-HFICH-5780_Template3601_changes.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -397,7 +398,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.Servic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{81F64DB6-77D4-4EFF-920C-CAC9FCE5EEC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentGeneratorService.Tests", "InternalServices\DocumentGeneratorService\CIS.InternalServices.DocumentGeneratorService.ApiTests\CIS.InternalServices.DocumentGeneratorService.Tests.csproj", "{D691ECA3-BE81-40DF-8C31-870B77FF258C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentGeneratorService.Tests", "InternalServices\DocumentGeneratorService\CIS.InternalServices.DocumentGeneratorService.ApiTests\CIS.InternalServices.DocumentGeneratorService.Tests.csproj", "{D691ECA3-BE81-40DF-8C31-870B77FF258C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
