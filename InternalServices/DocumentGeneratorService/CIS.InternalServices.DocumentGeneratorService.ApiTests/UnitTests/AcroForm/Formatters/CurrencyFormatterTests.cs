@@ -7,13 +7,35 @@ namespace CIS.InternalServices.DocumentGeneratorService.Tests.UnitTests.AcroForm
 public class CurrencyFormatterTests
 {
     [Fact]
-    public void Format_ObjIsNotDecimal_ShouldThrowArgument()
+    public void Format_ObjIsNotNumber_ShouldThrowArgument()
     {
         var sut = CurrencyFormatter.Instance;
 
         Action act = () => sut.Format("Not a number", CultureInfoFixture.CultureInfo);
 
         act.Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void Format_ObjIsDecimal_ShouldNotThrowArgument()
+    {
+        const decimal DecimalValue = 0m;
+        var sut = CurrencyFormatter.Instance;
+
+        Action act = () => sut.Format(DecimalValue, CultureInfoFixture.CultureInfo);
+
+        act.Should().NotThrow<ArgumentException>();
+    }
+
+    [Fact]
+    public void Format_ObjIsInteger_ShouldNotThrowArgument()
+    {
+        const int IntValue = 0;
+        var sut = CurrencyFormatter.Instance;
+
+        Action act = () => sut.Format(IntValue, CultureInfoFixture.CultureInfo);
+
+        act.Should().NotThrow<ArgumentException>();
     }
 
     [Theory]

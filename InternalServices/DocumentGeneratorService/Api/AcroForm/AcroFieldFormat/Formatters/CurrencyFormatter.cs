@@ -12,11 +12,11 @@ internal class CurrencyFormatter : IAcroFieldFormatter
 
     public string Format(object obj, IFormatProvider formatProvider)
     {
-        if (obj is not decimal decimalNumber)
+        if (obj is not decimal && obj is not int)
             throw new ArgumentException("Decimal was expected.");
 
         var numberFormatInfo = NumberFormatInfo.GetInstance(formatProvider);
 
-        return string.Format(numberFormatInfo, "{0:#,0.##}" + $" {numberFormatInfo.CurrencySymbol}", decimalNumber);
+        return string.Format(numberFormatInfo, "{0:#,0.##}" + $" {numberFormatInfo.CurrencySymbol}", (decimal)obj);
     }
 }
