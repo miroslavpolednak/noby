@@ -24,7 +24,7 @@ public class CurrencyFormatterTests
 
         Action act = () => sut.Format(DecimalValue, CultureInfoFixture.CultureInfo);
 
-        act.Should().NotThrow<ArgumentException>();
+        act.Should().NotThrow();
     }
 
     [Fact]
@@ -35,7 +35,7 @@ public class CurrencyFormatterTests
 
         Action act = () => sut.Format(IntValue, CultureInfoFixture.CultureInfo);
 
-        act.Should().NotThrow<ArgumentException>();
+        act.Should().NotThrow();
     }
 
     [Theory]
