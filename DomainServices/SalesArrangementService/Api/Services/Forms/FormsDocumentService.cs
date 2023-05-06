@@ -217,6 +217,7 @@ internal sealed class FormsDocumentService
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
             CaseId = salesArrangement.CaseId,
+            DocumentId = documentOnSA.EArchivId,
             BarcodeText = documentOnSA.FormId
         };
     }
