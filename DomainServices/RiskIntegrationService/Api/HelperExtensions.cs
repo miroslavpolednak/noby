@@ -1,5 +1,4 @@
-﻿using CIS.Core.Types;
-
+﻿
 namespace DomainServices.RiskIntegrationService.Api;
 
 internal static class HelperExtensions

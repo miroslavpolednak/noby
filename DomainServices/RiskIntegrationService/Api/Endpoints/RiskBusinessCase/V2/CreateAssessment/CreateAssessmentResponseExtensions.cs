@@ -1,18 +1,18 @@
 ﻿using DomainServices.RiskIntegrationService.Contracts.Shared;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V3.Contracts;
 using _sh = DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssessment;
 
 internal static class CreateAssessmentExtensions
 {
-    public static _sh.LoanApplicationAssessmentResponse ToRIP(this _C4M.Identified response, string environmentName)
+    public static _sh.LoanApplicationAssessmentResponse ToRIP(this _C4M.LoanApplicationAssessment response, string environmentName)
         => new()
         {
             LoanApplicationAssessmentId = response.Id,
             SalesArrangementId = response.LoanApplicationId.ToSalesArrangementId(environmentName),
             RiskBusinesscaseId = response.RiskBusinesscaseId,
-            RiskBusinessCaseExpirationDate = response.RiskBusinesscaseExpirationDate?.DateTime,
+            RiskBusinessCaseExpirationDate = response.RiskBusinesscaseExpirationDate.DateTime,
             AssessmentResult = response.AssessmentResult,
             StandardRiskCosts = response.StandardRiskCosts,
             GlTableCode = response.GlTableCode,
@@ -56,11 +56,11 @@ internal static class CreateAssessmentExtensions
             InstallmentLimit = model.LoanApplicationInstallmentLimit.ToAmountDetail(),
             CollateralLimit = model.LoanApplicationCollateralLimit.ToAmountDetail(),
             RemainingAnnuityLivingAmount = model.RemainingAnnuityLivingAmount.ToAmountDetail(),
-            IsCalculationStressed = model.CalculationIrStressed.GetValueOrDefault(),
+            IsCalculationStressed = model.CalculationIrStressed,
             Iir = model.Iir,
             Cir = model.Cir,
             Dti = model.Dti,
-            Dsti = model.Dsti
+            Dsti = (long)model.Dsti
         };
 
     private static _sh.LoanApplicationAssessmentRiskCharacteristics ToRiskCharacteristics(this _C4M.RiskCharacteristics model)
@@ -126,13 +126,13 @@ internal static class CreateAssessmentExtensions
         => new()
         {
             IdentityId = model.IdentityId,
-            ChangeTime = model.Timestamp?.DateTime
+            ChangeTime = model.Timestamp.DateTime
         };
 
     private static AmountDetail? ToAmountDetail(this _C4M.Amount model)
-        => model != null && model.Value != null ? new()
+        => model != null ? new()
         {
-            Amount = model.Value.Value,
+            Amount = model.Value,
             CurrencyCode = model.CurrencyCode
         } : null;
 }

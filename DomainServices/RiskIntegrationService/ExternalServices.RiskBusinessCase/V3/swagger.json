@@ -1,0 +1,2325 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "laa-risk-business-case-service",
+    "description": "RISK LAA Risk-business-case Service",
+    "termsOfService": "https://www.kb.cz/api/terms",
+    "contact": {
+      "name": "KB RISK API Team",
+      "url": "https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=253305685",
+      "email": "kbsq4fut@ds.kb.cz"
+    },
+    "license": {
+      "name": "KB API 1.0",
+      "url": "https://www.kb.cz/api/license/LICENSE-1.0.html"
+    },
+    "version": "3.1.1-SNAPSHOT",
+    "x-type-mappgings": {
+      "ResourceIdentifier": "cz.kb.risk.datatypes.ResourceIdentifier"
+    }
+  },
+  "servers": [
+    {
+      "url": "/laa-risk-business-case-service-3.1.1/api",
+      "description": "default context"
+    }
+  ],
+  "paths": {
+    "/risk-business-case": {
+      "post": {
+        "tags": [
+          "RiskBusinessCase"
+        ],
+        "description": "Vytvoření nového Risk Business Case",
+        "operationId": "RiskBusinessCase_create",
+        "requestBody": {
+          "description": "body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskBusinessCase"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "create"
+      }
+    },
+    "/risk-business-case/command/create": {
+      "post": {
+        "tags": [
+          "RiskBusinessCase - async"
+        ],
+        "summary": "Vytvoření nového Risk Business Case - asynchronní",
+        "description": "doCreateRiskBusinessCase",
+        "operationId": "RiskBusinessCase-async_doCreateRiskBusinessCase",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "query",
+            "description": "ID dané úvěrové žádosti.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          {
+            "name": "resourceProcessId",
+            "in": "query",
+            "description": "ID business procesu v rámci kterého Risk Business Case vzniká.",
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          {
+            "name": "itChannel",
+            "in": "query",
+            "description": "Typ zdrojové aplikace (např. NOBY)",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ItSubChannelType"
+            }
+          },
+          {
+            "name": "assessment",
+            "in": "query",
+            "description": "Create assessment flag",
+            "schema": {
+              "type": "boolean",
+              "description": ""
+            }
+          },
+          {
+            "name": "versionId",
+            "in": "query",
+            "description": "Form entity version id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "NotNull",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRiskBusinessCaseCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateRiskBusinessCaseCommandInstance"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "doCreateRiskBusinessCase"
+      }
+    },
+    "/risk-business-case/{riskBusinessCaseId}": {
+      "get": {
+        "tags": [
+          "RiskBusinessCase"
+        ],
+        "description": "Získání Risk Business Case",
+        "operationId": "RiskBusinessCase_get",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "vrácený objekt RiskBusinessCase je možné rozšířit o tyto položky",
+            "schema": {
+              "type": "array",
+              "description": "",
+              "items": {
+                "$ref": "#/components/schemas/Expandables"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskBusinessCase"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "get"
+      }
+    },
+    "/risk-business-case/{riskBusinessCaseId}/assessment": {
+      "post": {
+        "tags": [
+          "RiskBusinessCaseAssessment"
+        ],
+        "description": "Vyhodnocení úvěrové žádosti",
+        "operationId": "RiskBusinessCaseAssessment_create",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanApplicationAssessmentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplicationAssessment"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "create"
+      }
+    },
+    "/risk-business-case/{riskBusinessCaseId}/assessment/{assessmentId}": {
+      "get": {
+        "tags": [
+          "RiskBusinessCaseAssessment"
+        ],
+        "description": "Získání Risk Business Case",
+        "operationId": "RiskBusinessCaseAssessment_get",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          {
+            "name": "assessmentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplicationAssessment"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "get"
+      }
+    },
+    "/risk-business-case/{riskBusinessCaseId}/command/assessment": {
+      "post": {
+        "tags": [
+          "RiskBusinessCaseAssessment - async"
+        ],
+        "summary": "Vyhodnocení úvěrové žádosti - asynchronní",
+        "description": "doCreateAssessment",
+        "operationId": "RiskBusinessCaseAssessment-async_doCreateAssessment",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "description": "ID dané úvěrové žádosti.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssessmentCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAssessmentCommandInstance"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "doCreateAssessment"
+      }
+    },
+    "/risk-business-case/{riskBusinessCaseId}/command/commit": {
+      "post": {
+        "tags": [
+          "RiskBusinessCaseCommit - async"
+        ],
+        "summary": "doRiskBusinessCaseCommit",
+        "description": "Dokončení úvěrové žádosti - asynchronní",
+        "operationId": "RiskBusinessCaseCommit-async_doRiskBusinessCaseCommit",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "description": "Risk business case resource identifier",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommitRiskBusinessCaseCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommitRiskBusinessCaseCommandInstance"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "doRiskBusinessCaseCommit"
+      }
+    },
+    "/risk-business-case/{riskBusinessCaseId}/command/{commandId}": {
+      "get": {
+        "tags": [
+          "RiskBusinessCase - async"
+        ],
+        "summary": "Zjištění stavu commandu - asynchronní",
+        "description": "doGet",
+        "operationId": "RiskBusinessCase-async_getCommand",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "description": "Risk business case resource identifier",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          {
+            "name": "commandId",
+            "in": "path",
+            "description": "Risk business case resource identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "NotNull",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandInstance"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "getCommand"
+      }
+    },
+    "/risk-business-case/{riskBusinessCaseId}/commitment": {
+      "get": {
+        "tags": [
+          "RiskBusinessCaseCommit"
+        ],
+        "operationId": "RiskBusinessCaseCommit_get",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskBusinessCaseCommit"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "get"
+      },
+      "post": {
+        "tags": [
+          "RiskBusinessCaseCommit"
+        ],
+        "description": "Dokončení úvěrové žádosti",
+        "operationId": "RiskBusinessCaseCommit_create",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskBusinessCaseCommitCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskBusinessCaseCommit"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "create"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Amount": {
+        "required": [
+          "currencyCode"
+        ],
+        "type": "object",
+        "properties": {
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency code of the Amount (ISO 4217), e.g. 'CZK', 'EUR'\nNotNull"
+          },
+          "value": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Value of the Amount\n"
+          }
+        },
+        "description": "Amount"
+      },
+      "AssessmentDetail": {
+        "type": "object",
+        "properties": {
+          "loanApplicationLimit": {
+            "$ref": "#/components/schemas/LoanApplicationLimit"
+          },
+          "loanApplicationRiskCharacteristics": {
+            "$ref": "#/components/schemas/RiskCharacteristics"
+          },
+          "loanApplicationScore": {
+            "$ref": "#/components/schemas/LoanApplicationScore"
+          }
+        },
+        "description": "AssessmentDetail"
+      },
+      "AssessmentMode": {
+        "type": "string",
+        "description": "RDM čísleník: CB_LoanRiskScoringMethod",
+        "enum": [
+          "PS",
+          "SC",
+          "FI"
+        ]
+      },
+      "AssessmentReasonDetail": {
+        "type": "object",
+        "properties": {
+          "desc": {
+            "type": "string",
+            "description": "Desc\n"
+          },
+          "resource": {
+            "type": "array",
+            "description": "Target\n",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            }
+          },
+          "result": {
+            "type": "string",
+            "description": "Result\n"
+          },
+          "target": {
+            "type": "string",
+            "description": "Target\n"
+          }
+        },
+        "description": "AssessmentReasonDetail"
+      },
+      "Change": {
+        "type": "object",
+        "properties": {
+          "identityId": {
+            "type": "string",
+            "description": "Actor/user identity\n"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Change date and time \nFormat: yyyy-MM-dd'T'HH:mm:ss.SSSXXX (ISO 8601)\n\n",
+            "format": "date-time",
+            "example": "2021-04-20T22:00:00Z"
+          }
+        },
+        "description": "Change"
+      },
+      "CollateralAgreement": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "collateralAgreements."
+      },
+      "CollateralRiskCharacteristics": {
+        "type": "object",
+        "properties": {
+          "lftv": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Loan foreign to value (celkové cizí zdroje k zajištění) (\"format\": \"decimal\")\n"
+          },
+          "ltp": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Loan to cost (používá se také označení LTP) (\"format\": \"decimal\")\n"
+          },
+          "ltv": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Loan to value (\"format\": \"decimal\")\n"
+          },
+          "sumAppraisedValue": {
+            "type": "integer",
+            "description": "Výsledná oceněná hodnota zajištění (po odečtení angažovanosti váznoucích úvěrů)\n",
+            "format": "int64"
+          },
+          "totalCollUsedValue": {
+            "type": "integer",
+            "description": "Angažovanost váznoucích úvěrů na zajištění\n",
+            "format": "int64"
+          }
+        },
+        "description": "CollateralRiskCharacteristics"
+      },
+      "CommandCommandIdentifiers": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "$ref": "#/components/schemas/CommandIdentifiers"
+          }
+        },
+        "description": "A command abstraction"
+      },
+      "CommandIdentifiers": {
+        "type": "string",
+        "description": "Known fs commands enumeration",
+        "enum": [
+          "CREATE_ASSESSMENT",
+          "CREATE_BUSINESS_CASE",
+          "COMMIT_BUSINESS_CASE",
+          "GET_ASSESSMENT"
+        ]
+      },
+      "CommandInstance": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result\n"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CommandStatusObject"
+          }
+        },
+        "description": "A command instance abstraction"
+      },
+      "CommandStatusObject": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "object",
+            "description": "A code of an object\n"
+          },
+          "completionType": {
+            "$ref": "#/components/schemas/CompletionType"
+          },
+          "reason": {
+            "$ref": "#/components/schemas/Reason"
+          }
+        },
+        "description": "A command state"
+      },
+      "CommitRiskBusinessCaseCommand": {
+        "required": [
+          "identifier"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "$ref": "#/components/schemas/CommandIdentifiers"
+          }
+        },
+        "description": "The RiskBusinessCaseCommit command"
+      },
+      "CommitRiskBusinessCaseCommandInstance": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "$ref": "#/components/schemas/CommandCommandIdentifiers"
+          },
+          "id": {
+            "type": "string",
+            "description": "id, Command instance ID - an UUID value\n"
+          },
+          "result": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DefaultCommandStates"
+          }
+        },
+        "description": "The RiskBusinessCaseCommit command instance"
+      },
+      "CompletionType": {
+        "type": "string",
+        "description": "A completion-type, an activity may be completed or incomplete",
+        "enum": [
+          "INCOMPLETE",
+          "COMPLETED"
+        ]
+      },
+      "CounterpartyAssessmentDetail": {
+        "type": "object",
+        "properties": {
+          "assessmentDetail": {
+            "$ref": "#/components/schemas/AssessmentDetail"
+          },
+          "counterPartyId": {
+            "type": "integer",
+            "description": "Counterparty id\n",
+            "format": "int64"
+          },
+          "customerId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Id\n",
+            "format": "int64"
+          }
+        },
+        "description": "Counterparty Assessment Detail"
+      },
+      "Create": {
+        "required": [
+          "itChannel",
+          "loanApplicationId"
+        ],
+        "type": "object",
+        "properties": {
+          "itChannel": {
+            "$ref": "#/components/schemas/ItSubChannelType"
+          },
+          "loanApplicationId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "resourceProcessId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "filtr sloužící pro založení RiskBusinessCase"
+      },
+      "CreateAssessmentCommand": {
+        "required": [
+          "identifier"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "$ref": "#/components/schemas/CommandIdentifiers"
+          },
+          "loanApplicationAssessmentCreate": {
+            "$ref": "#/components/schemas/LoanApplicationAssessmentCreate"
+          }
+        },
+        "description": "The CreateAssessment command"
+      },
+      "CreateAssessmentCommandInstance": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "$ref": "#/components/schemas/CommandCommandIdentifiers"
+          },
+          "id": {
+            "type": "string",
+            "description": "id, Command instance ID - an UUID value\n"
+          },
+          "result": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DefaultCommandStates"
+          }
+        },
+        "description": "The CreateAssessment command instance"
+      },
+      "CreateRiskBusinessCaseCommand": {
+        "required": [
+          "identifier"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "$ref": "#/components/schemas/CommandIdentifiers"
+          }
+        },
+        "description": "The CreateRiskBusinessCase command"
+      },
+      "CreateRiskBusinessCaseCommandInstance": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "$ref": "#/components/schemas/CommandCommandIdentifiers"
+          },
+          "id": {
+            "type": "string",
+            "description": "id, Command instance ID - an UUID value\n"
+          },
+          "result": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DefaultCommandStates"
+          }
+        },
+        "description": "The CreateRiskBusinessCase command instance"
+      },
+      "DefaultCommandStateCodes": {
+        "type": "string",
+        "description": "A code of an object",
+        "enum": [
+          "CREATED",
+          "PROCESSING",
+          "SUCCEEDED",
+          "FAILED"
+        ]
+      },
+      "DefaultCommandStates": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/DefaultCommandStateCodes"
+          },
+          "completionType": {
+            "$ref": "#/components/schemas/CompletionType"
+          },
+          "reason": {
+            "$ref": "#/components/schemas/Reason"
+          }
+        },
+        "description": "DefaultCommandStates command status enumeration"
+      },
+      "ErrorModel": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "integer",
+            "description": "usually unused and replaced by the error codes categorization",
+            "format": "int32",
+            "example": 10,
+            "deprecated": true
+          },
+          "code": {
+            "type": "string",
+            "description": "code of the error that occured, with or without an hirarchical categorization",
+            "example": "CRAB.PLATFORM.PATTERN.LOCKING.OPTIMISTIC.CONCURRENT_MODIFICATION"
+          },
+          "detail": {
+            "type": "object",
+            "description": "an optional error detail with a custom schema discriminated by the type-discriminator"
+          },
+          "httpStatusCode": {
+            "type": "integer",
+            "description": "copy of the http-status-code",
+            "format": "int32",
+            "example": 409
+          },
+          "message": {
+            "type": "string",
+            "description": "plain-text message description related to the given error code and intended for better issue-solving only"
+          },
+          "uuid": {
+            "type": "string",
+            "description": "unique error ID",
+            "example": "7e81204c-9b76-4224-b82a-f2706dd9efcf"
+          }
+        },
+        "description": "The unified error model",
+        "readOnly": true
+      },
+      "Expandables": {
+        "type": "string",
+        "enum": [
+          "assessment"
+        ]
+      },
+      "GrantingProcedure": {
+        "type": "string",
+        "description": "RDM číselník: CB_GrantingProcedure",
+        "enum": [
+          "CPG",
+          "SC",
+          "EMP",
+          "NCR",
+          "NSR",
+          "QLC",
+          "SEL",
+          "STD",
+          "STU",
+          "XM",
+          "XT"
+        ]
+      },
+      "HouseholdAssessmentDetail": {
+        "type": "object",
+        "properties": {
+          "assessmentDetail": {
+            "$ref": "#/components/schemas/AssessmentDetail"
+          },
+          "householdId": {
+            "type": "integer",
+            "description": "Identifikace domácnosti\n",
+            "format": "int64"
+          },
+          "householdIndex": {
+            "type": "integer",
+            "description": "Household index\n",
+            "format": "int64"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Id\n",
+            "format": "int64"
+          }
+        },
+        "description": "Household Assessment detail"
+      },
+      "ItChannelType": {
+        "type": "string",
+        "description": "IT CHANNEL",
+        "enum": [
+          "NOBY",
+          "STARBUILD",
+          "DCS",
+          "PF",
+          "PFO",
+          "AON"
+        ]
+      },
+      "ItSubChannelType": {
+        "type": "string",
+        "description": "ItSubChannelType",
+        "enum": [
+          "NOBY",
+          "STARBUILD",
+          "DCS",
+          "PF",
+          "PFO",
+          "AON"
+        ]
+      },
+      "JobPost": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Kód pracovní pozice přihlášeného uživatele / schvalovatele\n"
+          }
+        },
+        "description": "JobPost"
+      },
+      "KBGroupPerson": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "orgUnit": {
+            "$ref": "#/components/schemas/OrgUnit"
+          },
+          "surname": {
+            "type": "string",
+            "description": "Příjmení přihlášeného uživatele / příjmení schvalovatele\n"
+          }
+        },
+        "description": "KbGroupPerson"
+      },
+      "LoanAgreement": {
+        "required": [
+          "distributionChannel",
+          "signatureType"
+        ],
+        "type": "object",
+        "properties": {
+          "distributionChannel": {
+            "type": "string",
+            "description": "Distribuční kanál přijetí smlouvy\nNotNull"
+          },
+          "signatureType": {
+            "type": "string",
+            "description": "Typ podpisu smplouvy\nNotNull"
+          }
+        },
+        "description": "loanAgreement."
+      },
+      "LoanApplicationApprovalPossibilities": {
+        "type": "object",
+        "properties": {
+          "autoApprovalPossible": {
+            "type": "boolean",
+            "description": "Id\n"
+          },
+          "selfApprovalPossible": {
+            "type": "boolean",
+            "description": "Id\n"
+          }
+        },
+        "description": "Možnosti samo/autoschválení"
+      },
+      "LoanApplicationAssessment": {
+        "type": "object",
+        "properties": {
+          "assessmentDetail": {
+            "$ref": "#/components/schemas/AssessmentDetail"
+          },
+          "assessmentResult": {
+            "type": "integer",
+            "description": "Odpověď vyhodnocení skoringu\n",
+            "format": "int64"
+          },
+          "collateralRiskCharacteristics": {
+            "$ref": "#/components/schemas/CollateralRiskCharacteristics"
+          },
+          "counterpartyAssessmentDetail": {
+            "type": "array",
+            "description": "Hodnocení jednotlivých klientů domácnosti (obohaceno o CBCB)\n",
+            "items": {
+              "$ref": "#/components/schemas/CounterpartyAssessmentDetail"
+            }
+          },
+          "created": {
+            "$ref": "#/components/schemas/Change"
+          },
+          "glTableCode": {
+            "type": "integer",
+            "description": "Číslo GL tabulky\n",
+            "format": "int64"
+          },
+          "householdAssessmentDetail": {
+            "type": "array",
+            "description": "HouseholdAssessmentDetail\n",
+            "items": {
+              "$ref": "#/components/schemas/HouseholdAssessmentDetail"
+            }
+          },
+          "id": {
+            "type": "string",
+            "description": "ResourceIdentifier\n"
+          },
+          "loanApplicationApprovalPossibilities": {
+            "$ref": "#/components/schemas/LoanApplicationApprovalPossibilities"
+          },
+          "loanApplicationAssessmentReason": {
+            "type": "array",
+            "description": "LoanApplicationAssessment resource-identifier\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationAssessmentReason"
+            }
+          },
+          "loanApplicationId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "riskBusinesscaseExpirationDate": {
+            "type": "string",
+            "description": "Datum expirace obchodního případu v C4M (po datu nelze dopracovat)\n",
+            "format": "date-time"
+          },
+          "riskBusinesscaseId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "standardRiskCosts": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Standardní rizikové náklady (\"format\": \"decimal\")\n",
+            "example": 458.45
+          },
+          "updated": {
+            "$ref": "#/components/schemas/Change"
+          },
+          "version": {
+            "$ref": "#/components/schemas/SemanticVersion"
+          }
+        }
+      },
+      "LoanApplicationAssessmentCreate": {
+        "required": [
+          "assessmentMode",
+          "grantingProcedureCode",
+          "itChannel",
+          "loanApplicationId",
+          "loanApplicationSnapshotId",
+          "selfApprovalRequired",
+          "systemApprovalRequired"
+        ],
+        "type": "object",
+        "properties": {
+          "assessmentMode": {
+            "$ref": "#/components/schemas/AssessmentMode"
+          },
+          "exceptionHighestApprovalLevel": {
+            "type": "string",
+            "description": "Kód nejvyšší schvalovací úrovně, která schválila danou metodickou výjimku\n"
+          },
+          "expand": {
+            "type": "array",
+            "description": "Vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky\n",
+            "items": {
+              "$ref": "#/components/schemas/Expandables"
+            }
+          },
+          "grantingProcedureCode": {
+            "$ref": "#/components/schemas/GrantingProcedure"
+          },
+          "itChannel": {
+            "$ref": "#/components/schemas/ItChannelType"
+          },
+          "itChannelPrevious": {
+            "$ref": "#/components/schemas/ItChannelType"
+          },
+          "loanApplicationException": {
+            "type": "array",
+            "description": "Parametry metodické výjimky; Kódy pro jednotlivé metodické výjimky jsou definovány v RDM číselníku CB_ExceptionReason (jde o kódy, které dnes využívá CLO)\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationException"
+            }
+          },
+          "loanApplicationId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "loanApplicationSnapshotId": {
+            "type": "string",
+            "description": "Identifikace verze dat žádosti, která jsou uložena v Loan Application\nNotNull"
+          },
+          "riskCampaignCode": {
+            "type": "string",
+            "description": "Kód risk kampaně; Nabývá hodnot 001 až 999 podle specifikace dané kampaně v CSC číselníku LOAN_CAMP\n"
+          },
+          "selfApprovalRequired": {
+            "type": "boolean",
+            "description": "Příznak, zdali je požadováno samoschválení\nNotNull"
+          },
+          "systemApprovalRequired": {
+            "type": "boolean",
+            "description": "Příznak, zdali je požadováno automatické schválení (systémem)\nNotNull"
+          }
+        },
+        "description": "LoanApplicationAssessmentCreate"
+      },
+      "LoanApplicationAssessmentReason": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Kategorie reasonu (odpovídá dnešním negům)\n"
+          },
+          "code": {
+            "type": "string",
+            "description": "Kód reasonu\n"
+          },
+          "detail": {
+            "$ref": "#/components/schemas/AssessmentReasonDetail"
+          },
+          "level": {
+            "type": "string",
+            "description": "Úroveň závažnosti reasonu (PROBLEM, WARNING, ERROR, INFO)\n"
+          },
+          "weight": {
+            "type": "integer",
+            "description": "Váha (možno využít k řazení na straně konzumenta)\n",
+            "format": "int64"
+          }
+        },
+        "description": "LoanApplicationAssessmentReason"
+      },
+      "LoanApplicationDealer": {
+        "required": [
+          "companyId",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "loanApplicationDealer."
+      },
+      "LoanApplicationException": {
+        "type": "object",
+        "properties": {
+          "arm": {
+            "type": "string",
+            "description": "Oddělení udělující metodickou výjimku\n"
+          },
+          "reasonCode": {
+            "type": "string",
+            "description": "Důvod metodické výjimky\n"
+          }
+        },
+        "description": "LoanApplicationException"
+      },
+      "LoanApplicationLimit": {
+        "type": "object",
+        "properties": {
+          "calculationIrStressed": {
+            "type": "boolean",
+            "description": "Příznak zda při výpočtu limitu proběhlo stresování zvýšenou úrokovou sazbou\n"
+          },
+          "cir": {
+            "type": "integer",
+            "description": "Costs to income ratio (výdaje ku příjmům)\n",
+            "format": "int64"
+          },
+          "dsti": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Debt service to income ratio (splátky ku příjmům) (\"format\": \"decimal\")\n"
+          },
+          "dti": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Debt to income ratio (angažovanost ku ročnímu příjmu) (\"format\": \"decimal\")\n"
+          },
+          "iir": {
+            "type": "integer",
+            "description": "Installments to income ratio (splátky ku příjmům)\n",
+            "format": "int64"
+          },
+          "loanApplicationCollateralLimit": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanApplicationInstallmentLimit": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanApplicationLimit": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "remainingAnnuityLivingAmount": {
+            "$ref": "#/components/schemas/Amount"
+          }
+        },
+        "description": "LoanApplicationLimit"
+      },
+      "LoanApplicationProduct": {
+        "required": [
+          "productClusterCode"
+        ],
+        "type": "object",
+        "properties": {
+          "productClusterCode": {
+            "type": "string",
+            "description": "Cluster kód požadovaného úvěru\nNotNull"
+          }
+        },
+        "description": "loanApplicationProduct."
+      },
+      "LoanApplicationScore": {
+        "type": "object",
+        "properties": {
+          "scale": {
+            "type": "string",
+            "description": "Typ ratingu hodnocení (AR/RC)\n"
+          },
+          "value": {
+            "type": "string",
+            "description": "Hodnota ratingu\n"
+          }
+        },
+        "description": "LoanApplicationScore"
+      },
+      "LoanSoldProduct": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "loanSoldProduct."
+      },
+      "OrgUnit": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Pobočka + expozitura přihlášení uživatele / schvalovatele\n"
+          },
+          "jobPost": {
+            "$ref": "#/components/schemas/JobPost"
+          },
+          "name": {
+            "type": "string",
+            "description": "Název pobočky přihlášení  uživatele / schvalovatele\n"
+          }
+        },
+        "description": "OrgUnit"
+      },
+      "Reason": {
+        "required": [
+          "code",
+          "level"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "code of the reason / symptom\nNotNull"
+          },
+          "level": {
+            "$ref": "#/components/schemas/ReasonLevelType"
+          },
+          "weight": {
+            "type": "integer",
+            "description": "weight\n",
+            "format": "int32"
+          }
+        },
+        "description": "Reason"
+      },
+      "ReasonLevelType": {
+        "type": "string",
+        "description": "ReasonLevelType",
+        "enum": [
+          "INFO",
+          "WARNING",
+          "ERROR"
+        ]
+      },
+      "Resource": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "description": "Entity\n"
+          },
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "Resource"
+      },
+      "ResourceIdentifier": {
+        "pattern": "^urn:ri:(\\w+)\\.(\\w+)\\.(\\w+)\\.([\\w+-.]*)(~(\\w+))?",
+        "type": "string",
+        "description": "The URN identifier of a resource is an universal scalar/string representation of a resource identifier in a system instance",
+        "format": "urn:ri:INSTANCE.DOMAIN.RESOURCE.ID~VARIANT",
+        "example": "urn:ri:KBCZ.CRMD.CreditRiskModel.837051596914429952"
+      },
+      "ResultReason": {
+        "required": [
+          "code",
+          "desc"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "kód důvodu nespočtení výsledku.\nNotNull"
+          },
+          "desc": {
+            "type": "string",
+            "description": "popis důvodu nespočtení výsledku.\nNotNull"
+          }
+        },
+        "description": "Důvod(y) nespočetní výsledků bonity"
+      },
+      "RiskBusinessCase": {
+        "type": "object",
+        "properties": {
+          "riskBusinessCaseId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "RiskBusinessCase"
+      },
+      "RiskBusinessCaseCommit": {
+        "type": "object",
+        "properties": {
+          "operationResult": {
+            "type": "string",
+            "description": "Status\n"
+          },
+          "resultReasons": {
+            "type": "array",
+            "description": "Důvod(y) nespočetní výsledků bonity\n",
+            "items": {
+              "$ref": "#/components/schemas/ResultReason"
+            }
+          },
+          "riskBusinessCaseFinalState": {
+            "type": "string",
+            "description": "Změněný  stav ukončení obchodu ze strany business commit, oproti požadovanému stavu obchodní aplikace\n"
+          },
+          "riskBusinessCaseId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Datum a čas odpovědi\n",
+            "format": "date-time"
+          }
+        },
+        "description": "Response"
+      },
+      "RiskBusinessCaseCommitCreate": {
+        "required": [
+          "itChannel",
+          "loanApplicationId",
+          "loanApplicationProduct",
+          "riskBusinessCaseFinalResult"
+        ],
+        "type": "object",
+        "properties": {
+          "approvalDate": {
+            "type": "string",
+            "description": "Datum schválení. \nFormat: yyyy-MM-dd\n\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "approvalLevel": {
+            "type": "string",
+            "description": "approvalLevel.\n"
+          },
+          "approver": {
+            "$ref": "#/components/schemas/KBGroupPerson"
+          },
+          "collateralAgreements": {
+            "type": "array",
+            "description": "collateralAgreements.\n",
+            "items": {
+              "$ref": "#/components/schemas/CollateralAgreement"
+            }
+          },
+          "creator": {
+            "$ref": "#/components/schemas/KBGroupPerson"
+          },
+          "itChannel": {
+            "$ref": "#/components/schemas/ItSubChannelType"
+          },
+          "loanAgreement": {
+            "$ref": "#/components/schemas/LoanAgreement"
+          },
+          "loanApplicationDealer": {
+            "$ref": "#/components/schemas/LoanApplicationDealer"
+          },
+          "loanApplicationId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "loanApplicationProduct": {
+            "$ref": "#/components/schemas/LoanApplicationProduct"
+          },
+          "loanSoldProduct": {
+            "$ref": "#/components/schemas/LoanSoldProduct"
+          },
+          "riskBusinessCaseFinalResult": {
+            "$ref": "#/components/schemas/RiskBusinessCaseFinalResultType"
+          }
+        },
+        "description": "RiskBusinessCaseCommitCreate"
+      },
+      "RiskBusinessCaseExpanded": {
+        "type": "object",
+        "description": "RiskBusinessCaseExpanded\n",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RiskBusinessCase"
+          }
+        ]
+      },
+      "RiskBusinessCaseFinalResultType": {
+        "type": "string",
+        "description": "Výsledek poskytování",
+        "enum": [
+          "CANCELLED_BY_CLIENT",
+          "REFUSED_BY_OFFICER",
+          "PROVIDED",
+          "ALREADY_PROVIDED_BY_EXT_SYS",
+          "TIMEOUT_BY_EXT_SYS"
+        ]
+      },
+      "RiskCharacteristics": {
+        "type": "object",
+        "properties": {
+          "monthlyCostsWithoutInstAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyEntrepreneurInstallmentsInKBAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyIncomeAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyInstallmentsInCBCBAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyInstallmentsInKBAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyInstallmentsInMPSSAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyInstallmentsInOFIAmount": {
+            "$ref": "#/components/schemas/Amount"
+          }
+        },
+        "description": "RiskCharacteristics"
+      },
+      "SemanticVersion": {
+        "required": [
+          "bugfix",
+          "major",
+          "minor"
+        ],
+        "type": "object",
+        "properties": {
+          "bugfix": {
+            "type": "integer",
+            "description": "Bugfix part of a version\nNotNull",
+            "format": "int32"
+          },
+          "major": {
+            "type": "integer",
+            "description": "Major part of a version\nNotNull",
+            "format": "int32"
+          },
+          "minor": {
+            "type": "integer",
+            "description": "Minor part of a version\nNotNull",
+            "format": "int32"
+          },
+          "nonSemanticPart": {
+            "type": "string",
+            "description": "A non-semantic part of a version, irrelevant parts of semantic comparison like SNAPSHOT, RC1, alpha1, ...\n"
+          }
+        },
+        "description": "SemanticVersion"
+      }
+    }
+  }
+}
