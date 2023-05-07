@@ -42,10 +42,6 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
 
     public LoanApplicationCustomer? CodebtorCustomer { get; private set; }
 
-    public string HeaderHouseholdData => CustomerOnSaCodebtor is null ? "Údaje o domácnosti žadatele" : "Údaje o společné domácnosti žadatele a spolužadatele";
-
-    public string HeaderHouseholdExpenses => CustomerOnSaCodebtor is null ? "Výdaje domácnosti žadatele (měsíčně)" : "Výdaje domácnosti žadatele a spolužadatele (měsíčně)";
-
     public string AgentName { get; private set; } = null!;
 
     public string SignatureType => GetSignatureType();

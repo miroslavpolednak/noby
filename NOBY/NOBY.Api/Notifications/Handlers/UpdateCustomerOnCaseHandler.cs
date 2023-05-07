@@ -1,7 +1,6 @@
 ﻿using DomainServices.HouseholdService.Clients;
 using _Case = DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.Clients;
-using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Notifications.Handlers;
 

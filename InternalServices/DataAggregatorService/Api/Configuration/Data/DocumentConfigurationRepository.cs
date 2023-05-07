@@ -95,7 +95,7 @@ internal class DocumentConfigurationRepository
             FieldPath = f.DataField.FieldPath,
             AcroFieldName = f.AcroFieldName,
             StringFormat = Convert.ToString(f.StringFormat ?? f.DataField.DefaultStringFormat),
-            DefaultTextIfNull = Convert.ToString(f.DefaultTextIfNull),
+            DefaultTextIfNull = f.DefaultTextIfNull,
             TextAlign = f.TextAlign
         });
     }
@@ -121,7 +121,7 @@ internal class DocumentConfigurationRepository
             FieldPath = f.FieldPath,
             AcroFieldName = f.AcroFieldName,
             StringFormat = Convert.ToString(f.StringFormat),
-            DefaultTextIfNull = Convert.ToString(default(string)),
+            DefaultTextIfNull = f.DefaultTextIfNull,
             TextAlign = f.TextAlign
         });
     }

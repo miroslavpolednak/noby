@@ -1523,17 +1523,18 @@
             Stupeň vzdělání
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocument(System.String,NOBY.Api.Endpoints.Shared.FileContentDisposition,System.Threading.CancellationToken)">
-            <summary>
-            Načtení dokumentu z archivu
-            </summary>
-            <remarks>
-            Načtení contentu dokumentu. Vrací se steam binárních dat.<br/>
-            Nenačítají se dokumenty s EaCodeMain.IsVisibleForKb=false <br/>
-            <i>DS:</i> DocumentArchiveService/getDocument
-            </remarks>
-            <param name="documentId">ID dokumentu</param>
-            <param name="contentDisposition">0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default</param>
+        <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocument(System.String,NOBY.Api.Endpoints.Shared.FileContentDisposition,NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentSource,System.Threading.CancellationToken)">
+             <summary>
+             Načtení dokumentu z e-archivu nebo ze systému ePodpisů
+             </summary>
+             <remarks>
+            Načtení contentu dokumentu.Vrací se stream binárních dat.<br />
+            Pro dokumenty z e-archivu se nenačítají dokumenty s EaCodeMain.IsVisibleForKb=false.<br /><br />
+             <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9617EAF8-9876-4444-A130-DFCCD597484D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+             </remarks>
+             <param name="documentId">ID dokumentu</param>
+             <param name="contentDisposition">0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default</param>
+             <param name="source">Zdroj dokumentu (0 - e-archiv; 1 - fronta do systému ePodpisů; 2 - systém ePodpisů; 0 je default</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocumentList(System.Int64,System.Threading.CancellationToken)">
             <summary>
@@ -2281,7 +2282,8 @@
             <i>DS:</i> SalesArrangement/CreateSalesArrangement<br/>
             <i>DS:</i> ProductService/CreateMortgage (pokud MpHome API na vytvoření produktu spadne na fatální chybu, tak tuto chybu ignorujeme a pokračujeme ve vytvoření Case)<br/>
             <i>DS:</i> SalesArrangement/CreateHousehold<br/>
-            <i>DS:</i> SalesArrangement/CreateCustomerOnSA
+            <i>DS:</i> SalesArrangement/CreateCustomerOnSA<br/><br/>
+            Endpoint podporuje rollback.
             </remarks>
             <param name="request">Identifikace klienta a ID simulace.</param>
             <returns>ID nově vytvořeného Case</returns>

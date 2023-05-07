@@ -16,11 +16,15 @@ public class MonthsToYearsFormatter : IAcroFieldFormatter
         var years = number / 12;
         var months = number % 12;
 
-        var formattableString = (months == 0)
-            ? (FormattableString)$"{years} {GetYearsText(years)}"
-            : $"{years} {GetYearsText(years)} a {months} {GetMonthsText(months)}";
+        FormattableString text = (years, months) switch
+        {
+            (years: 0, months: >= 1) => $"{months} {GetMonthsText(months)}",
+            (years: >= 1, months: 0) => $"{years} {GetYearsText(years)}",
+            (years: >= 1, months: >= 1) => $"{years} {GetYearsText(years)} a {months} {GetMonthsText(months)}",
+            _ => throw new ArgumentOutOfRangeException(nameof(obj), obj, null)
+        };
 
-        return formattableString.ToString(formatProvider);
+        return text.ToString(formatProvider);
     }
 
     private static string GetYearsText(int numberOfYears) =>
@@ -37,7 +41,7 @@ public class MonthsToYearsFormatter : IAcroFieldFormatter
         {
             1 => "měsíc",
             >= 2 and <= 4 => "měsíce",
-            >= 5 => "měsíců",
+            >= 5 and <= 12 => "měsíců",
             _ => throw new ArgumentOutOfRangeException(nameof(numberOfMonths), numberOfMonths, null)
         };
 }

@@ -13,9 +13,9 @@
             <stringProp name="Argument.value">1</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="identity" elementType="Argument">
-            <stringProp name="Argument.name">identity</stringProp>
-            <stringProp name="Argument.value">1190</stringProp>
+          <elementProp name="customId" elementType="Argument">
+            <stringProp name="Argument.name">customId</stringProp>
+            <stringProp name="Argument.value">10002</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="duration" elementType="Argument">
@@ -213,7 +213,7 @@ if(ctx.getThreadNum()==0)
         <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="SMS bez auditního logu " enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="SMS bez auditního logu " enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -234,12 +234,14 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;SMS: jednoduchá&quot;,&#xd;
   &quot;phoneNumber&quot;: &quot;+420607115686&quot;,&#xd;
   &quot;processingPriority&quot;: 1,&#xd;
   &quot;type&quot;: &quot;PERF_NO_AUDIT&quot;,&#xd;
   &quot;text&quot;: &quot;SMS bez auditního logu z vlákna ${__threadNum}, iterace ${__counter(TRUE)}.&quot;,&#xd;
   &quot;identifier&quot;: {&#xd;
-    &quot;identity&quot;: &quot;${__javaScript(${identity}+5)}&quot;,&#xd;
+    &quot;identity&quot;: &quot;1000&quot;,&#xd;
     &quot;identityScheme&quot;: &quot;2&quot;&#xd;
   }&#xd;
 }</stringProp>
@@ -270,7 +272,7 @@ if(ctx.getThreadNum()==0)
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="SMS s auditním logem" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="SMS s auditním logem" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -291,12 +293,14 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;SMS: auditní log&quot;,&#xd;
   &quot;phoneNumber&quot;: &quot;+420607115686&quot;,&#xd;
   &quot;processingPriority&quot;: 1,&#xd;
   &quot;type&quot;: &quot;PERF_AUDIT&quot;,&#xd;
   &quot;text&quot;: &quot;SMS s auditnim logem z vlakna ${__threadNum}, iterace ${__counter(TRUE)}.&quot;,&#xd;
   &quot;identifier&quot;: {&#xd;
-    &quot;identity&quot;: &quot;${__javaScript(${identity}+6)}&quot;,&#xd;
+    &quot;identity&quot;: &quot;1000&quot;,&#xd;
     &quot;identityScheme&quot;: &quot;2&quot;&#xd;
   }&#xd;
 }</stringProp>
@@ -327,7 +331,7 @@ if(ctx.getThreadNum()==0)
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="sms s Template bez proměnných " enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="sms s Template bez proměnných " enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -348,17 +352,17 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;SMS: z template bez proměnných&quot;,&#xd;
   &quot;phoneNumber&quot;: &quot;+420607115686&quot;,&#xd;
   &quot;processingPriority&quot;: 1,&#xd;
   &quot;type&quot;: &quot;PERF_NO_AUDIT_NO_VARIABLES&quot;,&#xd;
   &quot;placeholders&quot;: [&#xd;
   ],&#xd;
   &quot;identifier&quot;: {&#xd;
-    &quot;identity&quot;: &quot;${__javaScript(${identity}+7)}&quot;,&#xd;
+    &quot;identity&quot;: &quot;1000&quot;,&#xd;
     &quot;identityScheme&quot;: &quot;2&quot;&#xd;
-  },&#xd;
-  &quot;customId&quot;: &quot;123546&quot;,&#xd;
-  &quot;documentId&quot;: &quot;789456&quot;&#xd;
+  }&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -387,7 +391,7 @@ if(ctx.getThreadNum()==0)
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="sms s Template s 3 proměnnými " enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="sms s Template s 3 proměnnými " enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -408,6 +412,8 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;SMS: z template, 3 proměnné&quot;,&#xd;
   &quot;phoneNumber&quot;: &quot;+420607115686&quot;,&#xd;
   &quot;processingPriority&quot;: 1,&#xd;
   &quot;type&quot;: &quot;PERF_NO_AUDIT&quot;,&#xd;
@@ -426,11 +432,9 @@ if(ctx.getThreadNum()==0)
     }&#xd;
   ],&#xd;
   &quot;identifier&quot;: {&#xd;
-    &quot;identity&quot;: &quot;${__javaScript(${identity}+8)}&quot;,&#xd;
+    &quot;identity&quot;: &quot;1000&quot;,&#xd;
     &quot;identityScheme&quot;: &quot;2&quot;&#xd;
-  },&#xd;
-  &quot;customId&quot;: &quot;123546&quot;,&#xd;
-  &quot;documentId&quot;: &quot;789456&quot;&#xd;
+  }&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -459,7 +463,7 @@ if(ctx.getThreadNum()==0)
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="KB Mail velký" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="KB Mail velký" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -480,7 +484,9 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value"> {&#xd;
-    &quot;from&quot;: {&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;Email: velký&quot;,&#xd;
+  &quot;from&quot;: {&#xd;
       &quot;value&quot;: &quot;notification-service@kb.cz&quot;,&#xd;
       &quot;party&quot;: {&#xd;
         &quot;legalPerson&quot;: {&#xd;
@@ -501,7 +507,7 @@ if(ctx.getThreadNum()==0)
     &quot;subject&quot;: &quot;Test html-email Notification service&quot;,&#xd;
     &quot;content&quot;: {&#xd;
       &quot;format&quot;: &quot;application/html&quot;,&#xd;
-      &quot;language&quot;: &quot;cz&quot;, &#xd;
+      &quot;language&quot;: &quot;cs&quot;, &#xd;
       &quot;text&quot;: &quot;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;font face=\&quot;\&quot;calibri\&quot;\&quot; color=\&quot;\&quot;black\&quot;\&quot;&gt;ABC Vážená klientko, Vážený kliente, &lt;p&gt;rádi bychom Vám poděkovali za Vaši důvěru a využívání služeb Modré pyramidy. V příloze Vám zasíláme &lt;strong&gt;návrh dokumentů ke smlouvě číslo: {3}&lt;/strong&gt;. Zpráva s přístupovým heslem Vám byla zaslána na &lt;strong&gt;telefonní číslo: {1}&lt;/strong&gt;. Číslo této elektronické zprávy je: {0}. &lt;p&gt;Vaše Modrá pyramida&lt;/font&gt;&lt;div&gt;\r\n    &lt;p&gt;&lt;/p&gt;\r\n    &lt;table border=\&quot;\&quot;0\&quot;\&quot; cellspacing=\&quot;\&quot;0\&quot;\&quot; cellpadding=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;100%\&quot;\&quot; style=\&quot;\&quot;width: 100.0%\&quot;\&quot;&gt;\r\n    &lt;tbody&gt;&lt;tr&gt;&lt;td style=\&quot;\&quot;background: white; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;table border=\&quot;\&quot;0\&quot;\&quot; cellspacing=\&quot;\&quot;0\&quot;\&quot; cellpadding=\&quot;\&quot;0\&quot;\&quot; align=\&quot;\&quot;left\&quot;\&quot; width=\&quot;\&quot;600\&quot;\&quot; style=\&quot;\&quot;width: 450.0pt\&quot;\&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td style=\&quot;\&quot;padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;/td&gt;&lt;/tr&gt;\r\n    &lt;tr&gt;&lt;td style=\&quot;\&quot;padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;table border=\&quot;\&quot;0\&quot;\&quot; cellspacing=\&quot;\&quot;0\&quot;\&quot; cellpadding=\&quot;\&quot;0\&quot;\&quot; align=\&quot;\&quot;left\&quot;\&quot; width=\&quot;\&quot;612\&quot;\&quot; style=\&quot;\&quot;width: 459.0pt\&quot;\&quot;&gt;\r\n    &lt;tbody&gt;&lt;tr&gt;&lt;td width=\&quot;\&quot;202\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 151.5pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;\r\n    &lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img width=\&quot;\&quot;202\&quot;\&quot; height=\&quot;\&quot;76\&quot;\&quot; src=\&quot;\&quot;{{MP}}\&quot;\&quot; alt=\&quot;\&quot;Modrá pyramida\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td width=\&quot;\&quot;218\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 163.5pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 7.0pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 8.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;Modrá pyramida stavební spořitelna, a.s.&lt;br&gt;Bělehradská 128, č.p. 222&lt;br&gt;120 21 Praha 2&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td width=\&quot;\&quot;26\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 19.5pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img width=\&quot;\&quot;26\&quot;\&quot; height=\&quot;\&quot;77\&quot;\&quot; src=\&quot;\&quot;{{vertikal}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td width=\&quot;\&quot;120\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 90.0pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 7.0pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 8.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;+420 210 220 230&lt;br&gt;&lt;br&gt;&lt;a href=\&quot;\&quot;http://www.modrapyramida.cz\&quot;\&quot;&gt;www.modrapyramida.cz&lt;/a&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td width=\&quot;\&quot;26\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 19.5pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;26\&quot;\&quot; height=\&quot;\&quot;77\&quot;\&quot; src=\&quot;\&quot;{{vertikal}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=\&quot;\&quot;padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 2.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;br&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;18\&quot;\&quot; height=\&quot;\&quot;17\&quot;\&quot; src=\&quot;\&quot;{{f}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 2.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;18\&quot;\&quot; height=\&quot;\&quot;17\&quot;\&quot; src=\&quot;\&quot;{{t}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 2.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;18\&quot;\&quot; height=\&quot;\&quot;18\&quot;\&quot; src=\&quot;\&quot;{{y}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 2.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td width=\&quot;\&quot;610\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 457.5pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;&lt;br&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;610\&quot;\&quot; height=\&quot;\&quot;11\&quot;\&quot; src=\&quot;\&quot;{{horizontal}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=\&quot;\&quot;padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;table border=\&quot;\&quot;0\&quot;\&quot; cellpadding=\&quot;\&quot;0\&quot;\&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td width=\&quot;\&quot;25\&quot;\&quot; valign=\&quot;\&quot;bottom\&quot;\&quot; style=\&quot;\&quot;width: 18.75pt; padding: .75pt .75pt .75pt .75pt\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;17\&quot;\&quot; height=\&quot;\&quot;17\&quot;\&quot; src=\&quot;\&quot;{{strom}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td valign=\&quot;\&quot;bottom\&quot;\&quot; style=\&quot;\&quot;padding: .75pt .75pt .75pt .75pt\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 9.0pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: #97BF0C\&quot;\&quot;&gt;Myslete na přírodu... Skutečně potřebujete vytisknout tento e-mail? &lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 6.0pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: #231F20\&quot;\&quot;&gt;&lt;br&gt;Tento e-mail a k němu připojené dokumenty mohou být důvěrné a jsou určeny pouze jeho adresátům. Nejste-li adresátem, informujte laskavě neprodleně jeho odesílatele, obsah i s přílohami a kopiemi vymaľte ze svého systému a e-mail neroząiřujte, nekopírujte, nezveřejňujte ani jinak neuľívejte. Odesílatel e-mailu neodpovídá za jakoukoliv ąkodu způsobenou přenosem e-mailu. V případě, ľe je tento e-mail součástí jednání o smlouvě má odesílatel právo ukončit kdykoliv takové jednání i bez uvedení důvodu, přičemľ přísluąná smlouva bude uzavřena teprve výslovným dosaľením dohody o celém jejím obsahu.&lt;br&gt;&lt;img src=&apos;data:image/png;base64,${smile}&apos;/&gt;&lt;img src=&apos;data:image/png;base64,${smile}&apos;/&gt;&lt;img src=&apos;data:image/png;base64,${smile}&apos;/&gt;&lt;br&gt;This electronic message and any files attached thereto are intended solely for the named addressee(s) and may be legally privileged and/or confidential. If you have received this electronic mail message in error, please advise the sender without any delay and delete it, including all copies and enclosures transmitted therewith, from your system immediately. If you are not the intended addressee, the use, distribution, copying, divulging and disclosure of this electronic mail message is prohibited. The sender of this electronic mail message shall not be held liable for any damage caused by or arising from the transmission hereof. In case this electronic mail message is part of contract negotiations, the sender is entitled to terminate such negotiations at any time and for whatever reason. The contract shall not be executed until the parties reach a full agreement on terms and conditions of such a contract. &lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;&quot;&#xd;
     },&#xd;
     &quot;attachments&quot;: []&#xd;
@@ -531,6 +537,15 @@ if(ctx.getThreadNum()==0)
             <stringProp name="throughput">${__javaScript(${requestsPerHour}/40/60*5)}</stringProp>
           </ConstantThroughputTimer>
           <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">def empty=&apos;Request byl nahrazen tímto textem, protože byl příliš dlouhý a znehybňoval JMeter.&apos;
+prev.setQueryString(empty);</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
         </hashTree>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="KB Mail malý" enabled="true">
@@ -554,8 +569,10 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value"> {&#xd;
-    &quot;from&quot;: {&#xd;
-      &quot;value&quot;: &quot;notification-service@kb.cz&quot;,&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;Email: malý&quot;,&#xd;
+  &quot;from&quot;: {&#xd;
+      &quot;value&quot;: &quot;notification-service@mpss.cz&quot;,&#xd;
       &quot;party&quot;: {&#xd;
         &quot;legalPerson&quot;: {&#xd;
           &quot;name&quot;: &quot;Notifikace&quot;&#xd;
@@ -564,7 +581,7 @@ if(ctx.getThreadNum()==0)
     },&#xd;
     &quot;to&quot;: [&#xd;
       {&#xd;
-        &quot;value&quot;: &quot;jakub_vana@kb.cz&quot;,&#xd;
+        &quot;value&quot;: &quot;jakub.vanafffffffffffffffffff@mpss.cz&quot;,&#xd;
         &quot;party&quot;: {&#xd;
           &quot;legalPerson&quot;: {&#xd;
             &quot;name&quot;: &quot;Jakub Vana&quot;&#xd;
@@ -575,7 +592,7 @@ if(ctx.getThreadNum()==0)
     &quot;subject&quot;: &quot;Test html-email Notification service&quot;,&#xd;
     &quot;content&quot;: {&#xd;
       &quot;format&quot;: &quot;application/html&quot;,&#xd;
-      &quot;language&quot;: &quot;cz&quot;, &#xd;
+      &quot;language&quot;: &quot;cs&quot;, &#xd;
       &quot;text&quot;: &quot;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;font face=\&quot;\&quot;calibri\&quot;\&quot; color=\&quot;\&quot;black\&quot;\&quot;&gt;ABC Vážená klientko, Vážený kliente, &lt;p&gt;rádi bychom Vám poděkovali za Vaši důvěru a využívání služeb Modré pyramidy. V příloze Vám zasíláme &lt;strong&gt;návrh dokumentů ke smlouvě číslo: {3}&lt;/strong&gt;. Zpráva s přístupovým heslem Vám byla zaslána na &lt;strong&gt;telefonní číslo: {1}&lt;/strong&gt;. Číslo této elektronické zprávy je: {0}. &lt;p&gt;Vaše Modrá pyramida&lt;/font&gt;&lt;div&gt;\r\n    &lt;p&gt;&lt;/p&gt;\r\n    &lt;table border=\&quot;\&quot;0\&quot;\&quot; cellspacing=\&quot;\&quot;0\&quot;\&quot; cellpadding=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;100%\&quot;\&quot; style=\&quot;\&quot;width: 100.0%\&quot;\&quot;&gt;\r\n    &lt;tbody&gt;&lt;tr&gt;&lt;td style=\&quot;\&quot;background: white; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;table border=\&quot;\&quot;0\&quot;\&quot; cellspacing=\&quot;\&quot;0\&quot;\&quot; cellpadding=\&quot;\&quot;0\&quot;\&quot; align=\&quot;\&quot;left\&quot;\&quot; width=\&quot;\&quot;600\&quot;\&quot; style=\&quot;\&quot;width: 450.0pt\&quot;\&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td style=\&quot;\&quot;padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;/td&gt;&lt;/tr&gt;\r\n    &lt;tr&gt;&lt;td style=\&quot;\&quot;padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;table border=\&quot;\&quot;0\&quot;\&quot; cellspacing=\&quot;\&quot;0\&quot;\&quot; cellpadding=\&quot;\&quot;0\&quot;\&quot; align=\&quot;\&quot;left\&quot;\&quot; width=\&quot;\&quot;612\&quot;\&quot; style=\&quot;\&quot;width: 459.0pt\&quot;\&quot;&gt;\r\n    &lt;tbody&gt;&lt;tr&gt;&lt;td width=\&quot;\&quot;202\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 151.5pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;\r\n    &lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img width=\&quot;\&quot;202\&quot;\&quot; height=\&quot;\&quot;76\&quot;\&quot; src=\&quot;\&quot;{{MP}}\&quot;\&quot; alt=\&quot;\&quot;Modrá pyramida\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td width=\&quot;\&quot;218\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 163.5pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 7.0pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 8.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;Modrá pyramida stavební spořitelna, a.s.&lt;br&gt;Bělehradská 128, č.p. 222&lt;br&gt;120 21 Praha 2&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td width=\&quot;\&quot;26\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 19.5pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img width=\&quot;\&quot;26\&quot;\&quot; height=\&quot;\&quot;77\&quot;\&quot; src=\&quot;\&quot;{{vertikal}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td width=\&quot;\&quot;120\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 90.0pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 7.0pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 8.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;+420 210 220 230&lt;br&gt;&lt;br&gt;&lt;a href=\&quot;\&quot;http://www.modrapyramida.cz\&quot;\&quot;&gt;www.modrapyramida.cz&lt;/a&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td width=\&quot;\&quot;26\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 19.5pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;26\&quot;\&quot; height=\&quot;\&quot;77\&quot;\&quot; src=\&quot;\&quot;{{vertikal}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=\&quot;\&quot;padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 2.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;br&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;18\&quot;\&quot; height=\&quot;\&quot;17\&quot;\&quot; src=\&quot;\&quot;{{f}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 2.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;18\&quot;\&quot; height=\&quot;\&quot;17\&quot;\&quot; src=\&quot;\&quot;{{t}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 2.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;18\&quot;\&quot; height=\&quot;\&quot;18\&quot;\&quot; src=\&quot;\&quot;{{y}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 2.5pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: black\&quot;\&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td width=\&quot;\&quot;610\&quot;\&quot; valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;width: 457.5pt; padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;&lt;br&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;610\&quot;\&quot; height=\&quot;\&quot;11\&quot;\&quot; src=\&quot;\&quot;{{horizontal}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=\&quot;\&quot;padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;table border=\&quot;\&quot;0\&quot;\&quot; cellpadding=\&quot;\&quot;0\&quot;\&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td width=\&quot;\&quot;25\&quot;\&quot; valign=\&quot;\&quot;bottom\&quot;\&quot; style=\&quot;\&quot;width: 18.75pt; padding: .75pt .75pt .75pt .75pt\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;\r\n    &lt;img border=\&quot;\&quot;0\&quot;\&quot; width=\&quot;\&quot;17\&quot;\&quot; height=\&quot;\&quot;17\&quot;\&quot; src=\&quot;\&quot;{{strom}}\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td valign=\&quot;\&quot;bottom\&quot;\&quot; style=\&quot;\&quot;padding: .75pt .75pt .75pt .75pt\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 9.0pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: #97BF0C\&quot;\&quot;&gt;Myslete na přírodu... Skutečně potřebujete vytisknout tento e-mail? &lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td valign=\&quot;\&quot;top\&quot;\&quot; style=\&quot;\&quot;padding: 0cm 0cm 0cm 0cm\&quot;\&quot;&gt;&lt;p&gt;&lt;span style=\&quot;\&quot;font-size: 6.0pt; font-family: &amp;quot;Arial&amp;quot;, &amp;quot;sans-serif&amp;quot;; color: #231F20\&quot;\&quot;&gt;&lt;br&gt;Tento e-mail a k němu připojené dokumenty mohou být důvěrné a jsou určeny pouze jeho adresátům. Nejste-li adresátem, informujte laskavě neprodleně jeho odesílatele, obsah i s přílohami a kopiemi vymaľte ze svého systému a e-mail neroząiřujte, nekopírujte, nezveřejňujte ani jinak neuľívejte. Odesílatel e-mailu neodpovídá za jakoukoliv ąkodu způsobenou přenosem e-mailu. V případě, ľe je tento e-mail součástí jednání o smlouvě má odesílatel právo ukončit kdykoliv takové jednání i bez uvedení důvodu, přičemľ přísluąná smlouva bude uzavřena teprve výslovným dosaľením dohody o celém jejím obsahu.&lt;br&gt;&lt;br&gt;This electronic message and any files attached thereto are intended solely for the named addressee(s) and may be legally privileged and/or confidential. If you have received this electronic mail message in error, please advise the sender without any delay and delete it, including all copies and enclosures transmitted therewith, from your system immediately. If you are not the intended addressee, the use, distribution, copying, divulging and disclosure of this electronic mail message is prohibited. The sender of this electronic mail message shall not be held liable for any damage caused by or arising from the transmission hereof. In case this electronic mail message is part of contract negotiations, the sender is entitled to terminate such negotiations at any time and for whatever reason. The contract shall not be executed until the parties reach a full agreement on terms and conditions of such a contract. &lt;/span&gt;&lt;span style=\&quot;\&quot;font-size: 12.0pt; font-family: &amp;quot;Times New Roman&amp;quot;, &amp;quot;serif&amp;quot;; color: black\&quot;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;&quot;&#xd;
     },&#xd;
     &quot;attachments&quot;: []&#xd;
@@ -607,7 +624,7 @@ if(ctx.getThreadNum()==0)
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Email s jednou přílohou " enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Email s jednou přílohou " enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -628,7 +645,9 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value"> {&#xd;
-    &quot;from&quot;: {&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;Email: 1 příloha&quot;,&#xd;
+  &quot;from&quot;: {&#xd;
       &quot;value&quot;: &quot;notification-service@kb.cz&quot;,&#xd;
       &quot;party&quot;: {&#xd;
         &quot;legalPerson&quot;: {&#xd;
@@ -684,9 +703,18 @@ if(ctx.getThreadNum()==0)
             <intProp name="calcMode">0</intProp>
           </ConstantThroughputTimer>
           <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">def empty=&apos;Request byl nahrazen tímto textem, protože byl příliš dlouhý a znehybňoval JMeter.&apos;
+prev.setQueryString(empty);</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Email se dvěma přílohami" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Email se dvěma přílohami" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -707,7 +735,9 @@ if(ctx.getThreadNum()==0)
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value"> {&#xd;
-    &quot;from&quot;: {&#xd;
+  &quot;customId&quot;:&quot;${customId}&quot;,&#xd;
+  &quot;documentId&quot;:&quot;Email: 2 přílohy&quot;,&#xd;
+  &quot;from&quot;: {&#xd;
       &quot;value&quot;: &quot;notification-service@kb.cz&quot;,&#xd;
       &quot;party&quot;: {&#xd;
         &quot;legalPerson&quot;: {&#xd;
@@ -766,6 +796,104 @@ if(ctx.getThreadNum()==0)
             <stringProp name="throughput">${__javaScript(${requestsPerHour}/40/60*5)}</stringProp>
             <intProp name="calcMode">0</intProp>
           </ConstantThroughputTimer>
+          <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">def empty=&apos;Request byl nahrazen tímto textem, protože byl příliš dlouhý a znehybňoval JMeter.&apos;
+prev.setQueryString(empty);
+
+
+
+
+</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Získat výsledky" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">10</stringProp>
+        <stringProp name="ThreadGroup.delay">${__javaScript(${duration}+10)}</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Získat výsledky - HTTP Request" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${server}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/v1/notification/result/search?customId=${customId}</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">import groovy.json.JsonSlurper;
+
+def response=prev.getResponseDataAsString();
+
+def jsonSlurper=new JsonSlurper();
+data = jsonSlurper.parseText(response);
+
+def outputData=&apos;&apos;; 
+
+def messageTypes=[:];
+
+for(item in data)
+{
+  //outputData+=item.notificationId+&apos;\t\t&apos;+item.state+&apos;\n&apos;;
+
+  if(!messageTypes.containsKey(item.documentId))
+  {
+	messageTypes[item.documentId]=[:];  	
+  }
+  
+  if(messageTypes[item.documentId].containsKey(item.state))
+  	messageTypes[item.documentId][item.state]+=1;
+  else
+  	messageTypes[item.documentId][item.state]=1;
+}
+
+def output=&apos;Results:\n\n&apos;;
+
+messageTypes.each
+{ 
+	type, states -&gt; 
+	output+=type+&apos;:\n&apos;
+	states.each{ s, num -&gt; output+=s+&apos;: &apos;+num+&apos;\n&apos;;}
+	output+=&apos;========================================\n\n&apos;
+}
+
+//Tohoto by bylo asi příliš:
+//output+=&apos;========================================\n\n&apos;+outputData;
+
+
+prev.setResponseData(output.getBytes(&apos;UTF-8&apos;));</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223PostProcessor>
           <hashTree/>
         </hashTree>
       </hashTree>
