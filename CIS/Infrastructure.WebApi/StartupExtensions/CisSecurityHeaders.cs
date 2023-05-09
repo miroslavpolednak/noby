@@ -25,6 +25,8 @@ public static class CisSecurityHeaders
         // CSP
         app.Use(async (context, next) => {
             context.Response.OnStarting(() => {
+                context.Response.Headers.Add("Access-Control-Expose-Headers", "trace-id");
+
                 context.Response.Headers.Add("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'");
                 context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
                 context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
