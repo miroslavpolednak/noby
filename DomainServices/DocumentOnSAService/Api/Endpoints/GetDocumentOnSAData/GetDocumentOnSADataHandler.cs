@@ -27,9 +27,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
             .FirstOrDefaultAsync(cancellationToken);
 
         if (response is null)
-        {
-            throw new CisNotFoundException(19003, $"DocumentOnSA {request.DocumentOnSAId!.Value} does not exist.");
-        }
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId!.Value);
 
         return response;
     }

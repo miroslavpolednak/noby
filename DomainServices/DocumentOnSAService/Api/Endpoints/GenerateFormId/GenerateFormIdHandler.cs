@@ -12,7 +12,6 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
     private const short MaxVersion = 99;
     private const string DefaultSystem = "N";
 
-
     public GenerateFormIdHandler(DocumentOnSAServiceDbContext dbContext)
     {
         _dbContext = dbContext;
@@ -21,7 +20,7 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
     public async Task<GenerateFormIdResponse> Handle(GenerateFormIdRequest request, CancellationToken cancellationToken)
     {
         var generatedFormId = request.HouseholdId is null ? null : await _dbContext.GeneratedFormId.OrderByDescending(e => e.Id)
-            .FirstOrDefaultAsync(e => e.HouseholdId == request.HouseholdId);
+            .FirstOrDefaultAsync(e => e.HouseholdId == request.HouseholdId, cancellationToken);
 
         short version = 0;
         long sequenceId = 0;
@@ -59,7 +58,7 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
         }
         else
         {
-            throw new ArgumentException("Combination of parameters not supported");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CombinationOfParametersNotSupported);
         }
 
         if (_dbContext.ChangeTracker.HasChanges())
@@ -73,19 +72,17 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
         };
     }
 
-    private string CreateFormId(long sequenceId, short version)
+    private static string CreateFormId(long sequenceId, short version)
     {
         if (version > MaxVersion)
-        {
-            throw new ArgumentException($"Version have to be lower than {MaxVersion}");
-        }
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.VersionHaveToBeLowerThanMaxVersion, MaxVersion);
 
         var identifier = sequenceId * 100 + version;
 
         return $"{DefaultSystem}{identifier:D14}";
     }
 
-    private short UpdateVersionOfFormId(GeneratedFormId generatedFormId, bool increaseVersion, short version = 0)
+    private static short UpdateVersionOfFormId(GeneratedFormId generatedFormId, bool increaseVersion, short version = 0)
     {
         if (increaseVersion)
         {
@@ -93,7 +90,7 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
         }
         else
         {
-            generatedFormId.Version = version == 0 && version != MaxVersion ? throw new ArgumentException($"If you want set version directly, you have to set increaseVersion to false and version have to be {MaxVersion}") : version;
+            generatedFormId.Version = version == 0 && version != MaxVersion ? throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SetVersionDirectlyError, MaxVersion) : version;
         }
 
         return generatedFormId.Version;

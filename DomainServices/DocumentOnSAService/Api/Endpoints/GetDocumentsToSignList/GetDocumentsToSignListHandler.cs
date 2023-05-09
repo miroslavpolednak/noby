@@ -36,13 +36,9 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
 
     public async Task<GetDocumentsToSignListResponse> Handle(GetDocumentsToSignListRequest request, CancellationToken cancellationToken)
     {
-        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
-
-        if (salesArrangement is null)
-        {
-            throw new CisNotFoundException(19000, $"SalesArrangement{request.SalesArrangementId!.Value} does not exist.");
-        }
-
+        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotExist, request.SalesArrangementId!.Value);
+        
         var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
 
         var response = new GetDocumentsToSignListResponse();
@@ -57,7 +53,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         }
         else
         {
-            throw new ArgumentException($"This kind of {nameof(SalesArrangementCategories)} {salesArrangementType.SalesArrangementCategory} is not supported");
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SalesArrangementCategoryNotSupported, salesArrangementType.SalesArrangementCategory);
         }
 
         return response;
@@ -91,7 +87,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignVirtual);
     }
 
-    private DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypeItem documentTypeItem, int salesArrangementId)
+    private static DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypeItem documentTypeItem, int salesArrangementId)
     {
         return new DocumentOnSAToSign
         {
@@ -103,7 +99,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         };
     }
 
-    private IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<Household> households)
+    private static IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<Household> households)
     {
         foreach (var household in households)
         {
@@ -126,10 +122,10 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         return salesArrangementType;
     }
 
-    private int GetDocumentTypeId(int householdTypeId) => householdTypeId switch
+    private static int GetDocumentTypeId(int householdTypeId) => householdTypeId switch
     {
         1 => 4,
         2 => 5,
-        _ => throw new ArgumentException($"HouseholdTypeId {householdTypeId} does not exist.", nameof(householdTypeId))
+        _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.HouseholdTypeIdNotExist, householdTypeId)
     };
 }
