@@ -14,5 +14,9 @@
 
         [DataMember(Order = 4)]
         public int SalesArrangementCategory { get; set; }
+
+        [DataMember(Order = 5)]
+        public string Description { get; set; }
+        
     }
 }
