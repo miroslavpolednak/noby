@@ -9,11 +9,11 @@ public class WorkflowTaskConsultationTypesHandler
 
     #region Construction
 
-    private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
+    private readonly CIS.Core.Data.IConnectionProvider<IXxdHfDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<WorkflowTaskConsultationTypesHandler> _logger;
 
     public WorkflowTaskConsultationTypesHandler(
-        CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider, 
+        CIS.Core.Data.IConnectionProvider<IXxdHfDapperConnectionProvider> connectionProvider, 
         ILogger<WorkflowTaskConsultationTypesHandler> logger)
     {
         _logger = logger;
