@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
 public sealed class IdentifyByIdentityRequest
-    : IRequest
+    : IRequest, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 {
     /// <summary>
     /// Identita klienta

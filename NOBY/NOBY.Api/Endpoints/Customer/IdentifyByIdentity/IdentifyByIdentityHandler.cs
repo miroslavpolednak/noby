@@ -4,6 +4,7 @@ using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CIS.Foms.Enums;
+using CIS.Infrastructure.CisMediatR.Rollback;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
@@ -41,6 +42,7 @@ internal sealed class IdentifyByIdentityHandler
 
         // update customera
         var updateResult = await updateCustomer(customerOnSaInstance, request.CustomerIdentity!, cancellationToken);
+        _bag.Add(IdentifyByIdentityRollback.BagKeyCustomerOnSA, customerOnSaInstance);
 
         // hlavni klient
         if (customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Debtor)
@@ -127,6 +129,7 @@ internal sealed class IdentifyByIdentityHandler
         return await _customerOnSAService.UpdateCustomer(modelToUpdate, cancellationToken);
     }
 
+    private readonly IRollbackBag _bag;
     private readonly Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
     private readonly IHouseholdServiceClient _householdService;
     private readonly IMediator _mediator;
@@ -135,6 +138,7 @@ internal sealed class IdentifyByIdentityHandler
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public IdentifyByIdentityHandler(
+        IRollbackBag bag,
         IMediator mediator,
         Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
         ISalesArrangementServiceClient salesArrangementService,
@@ -142,6 +146,7 @@ internal sealed class IdentifyByIdentityHandler
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService)
     {
+        _bag = bag;
         _createOrUpdateCustomerKonsDb = createOrUpdateCustomerKonsDb;
         _householdService = householdService;
         _mediator = mediator;

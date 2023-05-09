@@ -14,7 +14,7 @@
             Extension metody do startupu aplikace pro registraci behaviors.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.CisMediatR.CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+        <member name="M:CIS.Infrastructure.CisMediatR.CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type[])">
             <summary>
             Pridava moznost rollbacku do Mediatr handleru. Rollback se spusti vyhozenim exception kdykoliv v prubehu exekuce handleru. Po ukonceni rollbacku se dana exception propaguje standardne dal do pipeline.
             </summary>

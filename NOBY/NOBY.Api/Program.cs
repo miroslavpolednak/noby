@@ -71,7 +71,7 @@ builder.Services.AddSpaStaticFiles(configuration =>
 });
 
 // pridat moznost rollbacku mediatr handleru
-builder.Services.AddCisMediatrRollbackCapability();
+builder.Services.AddCisMediatrRollbackCapability(typeof(NOBY.Api.IApiAssembly));
 #endregion register services
 
 // BUILD APP
