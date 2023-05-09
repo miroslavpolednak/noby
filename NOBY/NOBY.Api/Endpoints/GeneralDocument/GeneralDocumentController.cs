@@ -12,7 +12,7 @@ public class GeneralDocumentController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Načtení seznamu obecných dokumentů, které je možné stáhnout a vyplnit. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EA4655D8-5314-469b-8C92-5D2324EF1824"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EA4655D8-5314-469b-8C92-5D2324EF1824"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet]
     [Produces("application/json")]

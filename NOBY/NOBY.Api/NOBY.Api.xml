@@ -10,7 +10,7 @@
             </summary>
             <remarks>
             Provolá AddressWhispererBEService na IIB a vrátí stránkovaný seznam adres. Dotazujeme se zprostředkovaně do RUIAN pro CZ/SK adresy a přes službu Google pro ostatní.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=046F9631-86E1-4f17-9527-C518700030CE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20"/>Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=046F9631-86E1-4f17-9527-C518700030CE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20"/>Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Address.AddressController.GetAddressDetail(NOBY.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest)">
@@ -19,7 +19,7 @@
             </summary>
             <remarks>
             Provolánám získáme přes AddressWhispererBEService na IIB detail konkrétní adresy.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=312CA931-1DA0-4be2-AF0D-4D71962845F2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20"/>Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=312CA931-1DA0-4be2-AF0D-4D71962845F2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20"/>Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.SessionId">
@@ -93,8 +93,9 @@
             </summary>
             <remarks>
             Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
+            <param name="processId">Noby proces ID. Jde o ID sady úkolů generované Starbuildem.</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CancelTask(System.Int64,System.Int64,NOBY.Api.Endpoints.Cases.CancelTask.CancelTaskRequest)">
             <summary>
@@ -102,7 +103,7 @@
             </summary>
             <remarks>
             Stornování úkolu ve SB. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateTask(System.Int64,NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest)">
@@ -111,7 +112,7 @@
             </summary>
             <remarks>
             Vytvoření nového workflow tasku do SB.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
         </member>
@@ -121,7 +122,7 @@
             </summary>
             <remarks>
             Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
             Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.<br/><br/>
             Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
             </remarks>
@@ -135,7 +136,7 @@
             Dlužník na prvním místě, dále spoludlužníci řazeni dle příjmení a jména.<br /><br />
             <i>DS:</i> SalesArrangementService/getSalesArrangementList<br /><i>DS:</i> SalesArrangementService/GetCustomerList (onSA)<br />
             <i>DS:</i> ProductService/GetCustomersOnProduct<br /><i>DS:</i> CustomerService/GetList<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=7F566103-49D8-4a7a-83C3-B690F4A1CC1C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7F566103-49D8-4a7a-83C3-B690F4A1CC1C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="caseId">ID Case-u</param>
         </member>
@@ -182,7 +183,7 @@
             </summary>
             <remarks>
             Operace získá ze Starbuildu seznam úkolů a procesů k danému case ID. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Seznam wf tasks z SB.</returns>
         </member>
@@ -192,7 +193,7 @@
             </summary>
             <remarks>
             Detail workflow tasku dotažený ze SB. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=90CD722E-8955-43e6-9924-DC5FDDF6ED15"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=90CD722E-8955-43e6-9924-DC5FDDF6ED15"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns></returns>
         </member>
@@ -202,7 +203,7 @@
             </summary>
             <remarks>
             Update workflow tasku do SB. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <response code="404">Task or case not found</response>
         </member>
@@ -212,7 +213,7 @@
             </summary>
             <remarks>
             Vrátí parametry case s ohledem na stav case. Před předáním žádosti vrací lokálně uložená data. Po předání žádosti vrací data z KonsDB. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EEB4BBAA-9996-43ff-BB50-61514A2B6107"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EEB4BBAA-9996-43ff-BB50-61514A2B6107"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
         </member>
@@ -906,7 +907,7 @@
             </summary>
             <remarks>
             Vrátí detail developera dle developerId na vstupu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="developerId">ID developera</param>
         </member>
@@ -916,7 +917,7 @@
             </summary>
             <remarks>
             Vrátí detail developerského projektu dle developerProjectId na vstupu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="developerId">ID developera</param>
         </member>
@@ -1278,7 +1279,7 @@
             <remarks>
             Vytvoření Customer entity, která zaštiťuje KB customera a MPSS customera.<br /><br />
             Na výstupu je Customer objekt s kompletními daty z KB CM.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.SearchCustomers(NOBY.Api.Endpoints.Customer.SearchCustomers.SearchCustomersRequest,System.Threading.CancellationToken)">
@@ -1310,7 +1311,7 @@
             <remarks>
             Slouží pro identifikaci klienta.<br />
             Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.Identify(NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest)">
@@ -1336,7 +1337,7 @@
             </summary>
             <remarks>
             Vrací data klienta aktualizovaného o lokálně uložené změny. Podle kontextu produktu vracíme data z KB CM (pro červené produkty) nebo z KonsDB (pro modré produkty, prozatím nepodporováno).<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=6452CB93-41C7-450f-A20F-E8CB5208F1DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6452CB93-41C7-450f-A20F-E8CB5208F1DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.UpdateCustomerDetailWithChanges(System.Int32,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
@@ -1345,7 +1346,7 @@
             </summary>
             <remarks>
             Ukládá data klienta (deltu oproti KB CM pro červené produkty, do budoucna i deltu oproti KonsDB pro modré produkty). <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=BB5766C4-CCC7-487e-B482-1B1C86D999F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BB5766C4-CCC7-487e-B482-1B1C86D999F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.GetCustomerDetail.Dto.NaturalPersonModel.IsBrSubscribed">
@@ -1560,7 +1561,7 @@
             </summary>
             <remarks>
             Uložení dokumentů do archivu <br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks> 
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.SetDocumentStatusInQueue(System.String,System.Int32,System.Threading.CancellationToken)">
@@ -1629,7 +1630,7 @@
             </summary>
             <remarks>
             Provede Checkform, označí daný DocumentOnSA jako manuálně podepsaný a provede aktualizaci dat v KB CM (pokud možno)<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSa(System.Int32,System.Int32,System.Threading.CancellationToken)">
@@ -1638,7 +1639,7 @@
             </summary>
             <remarks>
             Pro započaté podepisovací procesy je požadováno zobrazovat náhledy a poskytovat dokumenty ke stažení.<br /> Slouží pro podepisování - neobsahuje vodoznak. <br/><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=F950B198-2C67-48e5-B1FE-C091131E6A63"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F950B198-2C67-48e5-B1FE-C091131E6A63"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
@@ -1649,7 +1650,7 @@
             </summary>
             <remarks>
             Vrátí informace o podepisovaném dokumentu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FA259E3F-5B8D-4ade-9F1A-7C1A943F1029"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FA259E3F-5B8D-4ade-9F1A-7C1A943F1029"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
@@ -1660,7 +1661,7 @@
             </summary>
             <remarks>
             Vyhledání formId (businessovém identifikátoru dokumentů) na sales arrangementu dle hlavního hesla (eArchivu).<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0C28E9E5-7AC1-4265-8342-FCE63B33967F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0C28E9E5-7AC1-4265-8342-FCE63B33967F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
             </remarks>
             <param name="salesArrangementId"></param>
             <param name="request"></param>
@@ -1766,7 +1767,7 @@
             </summary>
             <remarks>
             Vygenerování dokumentu nabídka ze šablony k dané SalesArrangement. Pokud dokument pro tuto nabídku byl již vygenerován a byl uložen do eArchiv-u, tak je dokument načten z eArchiv-u.<br />Výstup je bez vodoznaku<br/><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=01EE50D6-556E-47e8-ADD8-673A844864C2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=01EE50D6-556E-47e8-ADD8-673A844864C2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
@@ -1776,7 +1777,7 @@
             </summary>
             <remarks>
             Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="offerId">Offer ID</param>
         </member>
@@ -1786,7 +1787,7 @@
             </summary>
             <remarks>
             Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="offerId">Offer ID</param>
         </member>
@@ -1796,7 +1797,7 @@
             </summary>
             <remarks>
             Vygenerování dokumentu Žádost o čerpání ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FF4A4806-9638-4287-8A4F-4CA027677E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20\" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FF4A4806-9638-4287-8A4F-4CA027677E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20\" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
@@ -1806,7 +1807,7 @@
             </summary>
             <remarks>
             Vygenerování dokumentu Žádost o obecnou změnu ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=176277CE-66F6-4abd-93E6-57F113B5AF16"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=176277CE-66F6-4abd-93E6-57F113B5AF16"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
@@ -1816,7 +1817,7 @@
             </summary>
             <remarks>
             Vygenerování dokumentu Žádost o HUBN ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0E17AE8A-C137-415b-B4FB-2C0D3995E0DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0E17AE8A-C137-415b-B4FB-2C0D3995E0DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
@@ -1826,7 +1827,7 @@
             </summary>
             <remarks>
             Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí) ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=B7ED8950-BAA7-44a2-A069-2593B6D5121E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B7ED8950-BAA7-44a2-A069-2593B6D5121E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId"></param>
             <param name="cancellationToken"></param>
@@ -1838,7 +1839,7 @@
             </summary>
             <remarks>
             Vygenerování dokumentu Žádost o úvěr F3601 (dlužnická domácnost) ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DD734EDD-1344-43b2-B45E-3407255B993A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DD734EDD-1344-43b2-B45E-3407255B993A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
@@ -1848,7 +1849,7 @@
             </summary>
             <remarks>
             Vygenerování dokumentu Žádost o úvěr F3602 (spoludlužnická domácnost) k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=D5159266-11E9-4959-BDFA-71C1FCF46092"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D5159266-11E9-4959-BDFA-71C1FCF46092"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
@@ -1858,7 +1859,7 @@
             </summary>
             <remarks>
             Načtení seznamu obecných dokumentů, které je možné stáhnout a vyplnit. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EA4655D8-5314-469b-8C92-5D2324EF1824"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EA4655D8-5314-469b-8C92-5D2324EF1824"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments.Document.Id">
@@ -1974,7 +1975,7 @@
             </summary>
             <remarks>
             Slouží ke smazání domácnosti včetně navázaných customerů.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C97B19D9-A165-409d-B6FF-28029D23D517"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C97B19D9-A165-409d-B6FF-28029D23D517"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
             </remarks>
             <param name="householdId">ID domacnosti</param>
             <returns>ID smazané domacnosti</returns>
@@ -1985,7 +1986,7 @@
             </summary>
             <remarks>
             Vytvoření domácnosti i s CustomerOnSA, aby domácnost nebyla prázdná.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=72EEBC25-A403-42e9-9AFD-A48CCEBC179F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=72EEBC25-A403-42e9-9AFD-A48CCEBC179F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.UpdateHousehold(System.Int32,NOBY.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest)">
@@ -2005,7 +2006,7 @@
             Založí, smaže nebo updatuje CustomerOnSAId1 a CustomerOnSAId2 podle objektu v requestu Customer1 a Customer2.<br /><br />
             Zavoláním lockedIncome = true se zapíše timestamp zamknutí příjmů. Při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp.<br /><br />
             V případě, že se mění Customer na daném householdu, dojde k znevalidnění rozběhnutých či skončených podepisovacích proseců (nutno znovu podepsat).<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF47934C-D0C7-46da-B13E-C3E648389EFB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DF47934C-D0C7-46da-B13E-C3E648389EFB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="householdId">ID domácnosti</param>
             <returns>CustomerOnSAId nalinkovanych customeru</returns>
@@ -2294,7 +2295,7 @@
             </summary>
             <remarks>
             Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.GetFullPaymentScheduleByOfferId(System.Int32,System.Threading.CancellationToken)">
@@ -2492,7 +2493,7 @@
              </summary>
              <remarks>
             Seznam z závazků načtený z KonsDB.<br /><br />
-             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=058D1B76-375C-4747-90DB-D4E3BE5C46F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=058D1B76-375C-4747-90DB-D4E3BE5C46F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
              </remarks>
              <returns>Seznam závazků na produktu</returns>
         </member>
@@ -3172,7 +3173,7 @@
             </summary>
             <remarks>
             Provede vyhodnocení klapek na základě konfigurace v konfiguračním excelu a vrátí informace nutné pro správné zobrazení rozcestníku žádosti (sluníčka).<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2709EE14-C343-4c7f-B733-A092E41EA839"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2709EE14-C343-4c7f-B733-A092E41EA839"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
         </member>
@@ -3258,7 +3259,7 @@
             </summary>
             <remarks>
             Aktualizuje parametry produktového či servisního SalesArrangementu. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=18E19FC4-9238-4249-B43E-A26A9FBBC32C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=18E19FC4-9238-4249-B43E-A26A9FBBC32C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.SendToCmp(System.Int32,System.Boolean)">
@@ -3268,7 +3269,7 @@
             <remarks>
             Dojde ke zvalidování obsahu žádosti stejně, jako při operaci validace a předání datových vět na rozhraní Starbuildu.<br /><br />
             Pokud žádost obsahuje chyby, které nejsou/nemohou být ignorovány, vrací se chyba.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
         </member>
@@ -3278,7 +3279,7 @@
             </summary>
             <remarks>
             Vrátí komentář produktové žádosti. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.UpdateComment(System.Int32,NOBY.Api.Endpoints.SalesArrangement.Dto.Comment)">
@@ -3287,7 +3288,7 @@
             </summary>
             <remarks>
             Aktualizuje komentář produktové žádosti. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.CustomerChange3602Update.IsSpouseInDebt">
