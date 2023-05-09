@@ -6,9 +6,9 @@ using _HO = DomainServices.HouseholdService.Contracts;
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
 internal sealed class IdentifyByIdentityRollback
-    : IRollbackAction<CreateMortgageCaseRequest>
+    : IRollbackAction<IdentifyByIdentityRequest>
 {
-    public async Task ExecuteRollback(Exception exception, CreateMortgageCaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task ExecuteRollback(Exception exception, IdentifyByIdentityRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RollbackHandlerStarted(nameof(CreateMortgageCaseRollback));
 

@@ -8,10 +8,11 @@ using CIS.Infrastructure.CisMediatR.Rollback;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
+// musi tady byt Mediatr.Unit, jinak nefunguje rollback behavior
 internal sealed class IdentifyByIdentityHandler
-    : IRequestHandler<IdentifyByIdentityRequest>
+    : IRequestHandler<IdentifyByIdentityRequest, MediatR.Unit>
 {
-    public async Task Handle(IdentifyByIdentityRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(IdentifyByIdentityRequest request, CancellationToken cancellationToken)
     {
         // customer On SA
         var customerOnSaInstance = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
@@ -57,6 +58,8 @@ internal sealed class IdentifyByIdentityHandler
 
         // HFICH-5396
         await updateFlowSwitches(household, customerDetails, request.CustomerOnSAId, cancellationToken);
+
+        return new MediatR.Unit();
     }
 
     private async Task updateFlowSwitches(_HO.Household household, List<_HO.CustomerOnSA> customerDetails, int customerOnSAId, CancellationToken cancellationToken)
