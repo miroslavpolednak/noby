@@ -28,24 +28,25 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     {
         SetMessages(new Dictionary<int, string>
         {
-            { NotFound12000, "CaseId does not exist." },	
-            { NotFound12001, "ProductInstanceId {PropertyValue} does not exist in KonsDB." },	
-            { InvalidArgument12004, "Product can be created only with client with partnerId linked to case." },	
-            { AlreadyExists12005, "Product already exist." },	
-            { InvalidArgument12008, "CaseId is not specified." },	
-            { InvalidArgument12009, "ProductTypeId is not specified." },	
-            { InvalidArgument12010, "PartnerId is not specified." },	
+            { NotFound12000, "CaseId {PropertyValue} not found." },	
+            { NotFound12001, "ProductInstanceId {PropertyValue} not found in KonsDB." },	
+            { InvalidArgument12004, "Product can be created only when client and partnerId are linked to the case." },	
+            { AlreadyExists12005, "Product {PropertyValue} already exist." },
+            { InvalidArgument12007, "LoanKindId is not provided." },
+            { InvalidArgument12008, "CaseId is not provided." },	
+            { InvalidArgument12009, "ProductTypeId is not provided." },	
+            { InvalidArgument12010, "PartnerId is not provided." },	
             { AlreadyExists12011, "Relationship with ProductId {0} and PartnerId {1} already exists." },	
             { NotFound12012, "Partner {PropertyValue} not found." },	
-            { NotFound12013, "RelationshipCustomerProductTypeItem {PropertyValue} not found." },	
-            { InvalidArgument12014, "ProductId is not specified." },	
-            { InvalidArgument12015, "Relationship not provided." },	
-            { InvalidArgument12016, "Relationship PartnerId not specified." },	
-            { InvalidArgument12017, "Relationship ContractRelationshipTypeId not specified." },	
-            { NotFound12018, "Relationship with ProductId {0} and PartnerId {1} does not exist." },	
+            { NotFound12013, "Relationship CustomerProductTypeItem {PropertyValue} not found." },	
+            { InvalidArgument12014, "ProductId is not provided." },	
+            { InvalidArgument12015, "Relationship is not provided." },	
+            { InvalidArgument12016, "Relationship PartnerId is not provided." },	
+            { InvalidArgument12017, "Relationship ContractRelationshipTypeId is not provided." },	
+            { NotFound12018, "Relationship with ProductId {0} and PartnerId {1} not found." },	
             { InvalidArgument12019, "Unsupported product type." },	
-            { InvalidArgument12020, "Customers not found for product." },	
-            { InvalidArgument12021, "Not all customers does have KB ID." }
+            { InvalidArgument12020, "Customers for product not found." },	
+            { InvalidArgument12021, "Some customers do not have KB ID." }
         });
         return Messages;
     }
