@@ -70,7 +70,6 @@ internal sealed class NotifyStarbuildHandler
             {
                 RequestId = result.RequestId.Value,
                 CaseId = caseInstance.CaseId,
-                CaseState = caseState.Id,
                 CreatedTime = DateTime.Now
             }, new DistributedCacheEntryOptions
             {

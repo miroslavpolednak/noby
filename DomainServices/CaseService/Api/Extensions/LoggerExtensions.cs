@@ -43,12 +43,12 @@ internal static class LoggerExtensions
         _starbuildStateUpdateFailed = LoggerMessage.Define<long, int>(
             LogLevel.Warning,
             new EventId(LoggerEventIdCodes.StarbuildStateUpdateFailed, nameof(StarbuildStateUpdateFailed)),
-            "Case state failed in Starbuild for {CaseId} with state {StateId}");
+            "Case state failed in Starbuild for {CaseId} with requestId {StateId}");
 
         _starbuildStateUpdateSuccess = LoggerMessage.Define<long, int>(
             LogLevel.Debug,
             new EventId(LoggerEventIdCodes.StarbuildStateUpdateSuccess, nameof(StarbuildStateUpdateSuccess)),
-            "Case state changed in Starbuild for {CaseId} to {StateId}");
+            "Case state changed in Starbuild for {CaseId} by requestId {StateId}");
 
         _kafkaMessageIncorrectFormat = LoggerMessage.Define<string>(
             LogLevel.Error,
@@ -81,11 +81,11 @@ internal static class LoggerExtensions
     public static void QueueRequestIdSaved(this ILogger logger, int requestId, long caseId)
         => _queueRequestIdSaved(logger, requestId, caseId, null!);
 
-    public static void StarbuildStateUpdateFailed(this ILogger logger, long caseId, int stateId)
-        => _starbuildStateUpdateFailed(logger, caseId, stateId, null!);
+    public static void StarbuildStateUpdateFailed(this ILogger logger, long caseId, int requestId)
+        => _starbuildStateUpdateFailed(logger, caseId, requestId, null!);
 
-    public static void StarbuildStateUpdateSuccess(this ILogger logger, long caseId, int stateId)
-        => _starbuildStateUpdateSuccess(logger, caseId, stateId, null!);
+    public static void StarbuildStateUpdateSuccess(this ILogger logger, long caseId, int requestId)
+        => _starbuildStateUpdateSuccess(logger, caseId, requestId, null!);
 
     public static void KafkaMessageIncorrectFormat(this ILogger logger, string caseId)
         => _kafkaMessageIncorrectFormat(logger, caseId, null!);
