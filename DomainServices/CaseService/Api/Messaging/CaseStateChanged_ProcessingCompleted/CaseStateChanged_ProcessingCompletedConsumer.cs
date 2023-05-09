@@ -41,6 +41,8 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
         {
             entity.State = cache.CaseState;
             entity.StateUpdatedInStarbuild = (byte)Contracts.UpdatedInStarbuildStates.Ok;
+
+            _logger.StarbuildStateUpdateSuccess(cache.CaseId, cache.CaseState);
         }
         else
         {
