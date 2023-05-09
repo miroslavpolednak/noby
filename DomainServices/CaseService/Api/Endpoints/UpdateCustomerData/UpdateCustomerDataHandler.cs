@@ -14,8 +14,8 @@ internal sealed class UpdateCustomerDataHandler
         //TODO zkontrolovat existenci klienta?
 
         var customerNameChanged =
-            string.Equals(entity.Name, request.Customer.Name, StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(entity.FirstNameNaturalPerson, request.Customer.FirstNameNaturalPerson, StringComparison.Ordinal);
+            !string.Equals(entity.Name, request.Customer.Name, StringComparison.OrdinalIgnoreCase) ||
+            !string.Equals(entity.FirstNameNaturalPerson, request.Customer.FirstNameNaturalPerson, StringComparison.OrdinalIgnoreCase);
         
         // ulozit do DB
         entity.DateOfBirthNaturalPerson = request.Customer.DateOfBirthNaturalPerson;
