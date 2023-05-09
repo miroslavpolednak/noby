@@ -36,9 +36,8 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
 
     public async Task<GetDocumentsToSignListResponse> Handle(GetDocumentsToSignListRequest request, CancellationToken cancellationToken)
     {
-        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotExist, request.SalesArrangementId!.Value);
-        
+        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
+           
         var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
 
         var response = new GetDocumentsToSignListResponse();

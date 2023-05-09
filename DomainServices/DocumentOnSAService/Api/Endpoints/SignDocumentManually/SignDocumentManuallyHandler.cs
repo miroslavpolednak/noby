@@ -109,8 +109,7 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         if (documentOnSa.DocumentTypeId == DocumentType
             && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => r.IsSigned == false, cancellationToken))
         {
-            var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken) 
-                ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotExist, documentOnSa.SalesArrangementId);
+            var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken); 
             
             var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, _dateTime.Now.Date, cancellationToken);
 
