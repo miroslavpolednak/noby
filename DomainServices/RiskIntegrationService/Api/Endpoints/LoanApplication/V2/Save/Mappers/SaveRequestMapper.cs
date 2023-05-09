@@ -1,8 +1,7 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
 using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 using CIS.Core.Security;
-using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
 using CIS.Core.Configuration;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
@@ -10,7 +9,7 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class SaveRequestMapper
 {
-    public async Task<_C4M.LoanApplication> MapToC4m(_V2.LoanApplicationSaveRequest request, CancellationToken cancellation)
+    public async Task<_C4M.LoanApplicationRequest> MapToC4m(_V2.LoanApplicationSaveRequest request, CancellationToken cancellation)
     {
         // neprislo LTV, zkus ho spocitat
         if (request.Product.Ltv.GetValueOrDefault() == 0 && request.Product.RequiredAmount.GetValueOrDefault() > 0)
@@ -41,12 +40,12 @@ internal sealed class SaveRequestMapper
         var productChildMapper = new ProductChildMapper(_codebookService, riskApplicationType, cancellation);
         var householdMapper = new HouseholdChildMapper(_codebookService, riskApplicationType, cancellation);
 
-        var requestModel = new _C4M.LoanApplication
+        var requestModel = new _C4M.LoanApplicationRequest
         {
-            Id = _C4M.ResourceIdentifier.CreateId(request.SalesArrangementId.ToEnvironmentId(_cisEnvironment.EnvironmentName!), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name!)),
+            Id = _C4M.ResourceIdentifier.CreateId(request.SalesArrangementId.ToEnvironmentId(_cisEnvironment.EnvironmentName!), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name!)).ToC4M(),
             AppendixCode = request.AppendixCode,
-            DistributionChannelCode = Helpers.GetEnumFromString<_C4M.LoanApplicationDistributionChannelCode>((await _codebookService.Channels(cancellation)).FirstOrDefault(t => t.Id == request.DistributionChannelId)?.Code, LoanApplicationDistributionChannelCode.BR),
-            LoanApplicationDataVersion = request.LoanApplicationDataVersion,
+            DistributionChannelCode = Helpers.GetEnumFromString<_C4M.DistributionChannelType>((await _codebookService.Channels(cancellation)).FirstOrDefault(t => t.Id == request.DistributionChannelId)?.Code, _C4M.DistributionChannelType.BR),
+            LoanApplicationSnapshotId = request.LoanApplicationDataVersion,
             LoanApplicationHousehold = await householdMapper.MapHouseholds(request.Households, verification),
             LoanApplicationProduct = await productChildMapper.MapProduct(request.Product),
             LoanApplicationProductRelation = await productChildMapper.MapProductRelations(request.ProductRelations),

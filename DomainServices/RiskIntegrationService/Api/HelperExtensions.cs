@@ -3,6 +3,9 @@ namespace DomainServices.RiskIntegrationService.Api;
 
 internal static class HelperExtensions
 {
+    public static int ToInt(this bool value)
+        => value ? 1 : 0;
+
     public static string? ConvertToString(this Contracts.Shared.BankAccountDetail? bankAccount)
         => bankAccount switch
         {

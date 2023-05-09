@@ -13,7 +13,7 @@ internal sealed class SaveHandler
         // volani c4m
         var response = await _client.Save(requestModel, cancellation);
 
-        bool responseVerPriority = requestModel.LoanApplicationHousehold?.All(t => t.CounterParty.All(x => x.Income?.EmploymentIncome?.All(y => y.VerificationPriority.GetValueOrDefault()) ?? false)) ?? false;
+        bool responseVerPriority = requestModel.LoanApplicationHousehold?.All(t => t.CounterParty.All(x => x.Income?.EmploymentIncomes?.All(y => y.VerificationPriority == 1) ?? false)) ?? false;
         return new _V2.LoanApplicationSaveResponse
         {
             RiskSegment = responseVerPriority ? _V2.LoanApplicationRiskSegments.A : _V2.LoanApplicationRiskSegments.B
@@ -21,9 +21,9 @@ internal sealed class SaveHandler
     }
 
     private readonly Mappers.SaveRequestMapper _requestMapper;
-    private readonly ExternalServices.LoanApplication.V1.ILoanApplicationClient _client;
+    private readonly ExternalServices.LoanApplication.V3.ILoanApplicationClient _client;
 
-    public SaveHandler(ExternalServices.LoanApplication.V1.ILoanApplicationClient client, Mappers.SaveRequestMapper requestMapper)
+    public SaveHandler(ExternalServices.LoanApplication.V3.ILoanApplicationClient client, Mappers.SaveRequestMapper requestMapper)
     {
         _requestMapper = requestMapper;
         _client = client;

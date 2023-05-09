@@ -1,17 +1,8 @@
 ﻿namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V3.Contracts;
 
 public class ResourceIdentifier
+    : ExternalServices.Dto.C4mResourceIdentifier
 {
-    public string? Instance { get; set; }
-
-    public string? Domain { get; set; }
-
-    public string? Resource { get; set; }
-
-    public string? Id { get; set; }
-
-    public string? Variant { get; set; }
-
     public static ResourceIdentifier CreateLoanApplication(string id, string variant)
         => new ResourceIdentifier
         {
@@ -59,10 +50,5 @@ public class ResourceIdentifier
             Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(17000, $"Can not find Id for ResourceIdentifier {domain}/{resource}"),
             Variant = resource == "Broker" ? humanUser.IdentityScheme! : null
         };
-
-    public string ToC4M()
-        => string.IsNullOrEmpty(Variant)
-        ? $"urn:ri:{Instance}.{Domain}.{Resource}.{Id}"
-        : $"urn:ri:{Instance}.{Domain}.{Resource}.{Id}~{Variant}";
 }
 
