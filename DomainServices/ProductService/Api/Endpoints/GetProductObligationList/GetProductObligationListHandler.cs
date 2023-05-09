@@ -18,10 +18,11 @@ internal sealed class GetProductObligationListHandler : IRequestHandler<GetProdu
     public async Task<GetProductObligationListResponse> Handle(GetProductObligationListRequest request, CancellationToken cancellation)
     {
         // check if loan exists (against KonsDB)
-        var loanExists = await _loanRepository.ExistsLoan(request.ProductId, cancellation);
-        if (!loanExists)
-            throw new CisNotFoundException(12001, nameof(Database.Entities.Loan), request.ProductId);
-
+        if (!await _loanRepository.ExistsLoan(request.ProductId, cancellation))
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+        }
+        
         var obligations = await _dbContext.Obligations.Where(o => o.LoanId == request.ProductId && o.ObligationTypeId != 0 && o.Amount > 0 && o.CreditorName != null).ToListAsync(cancellation);
 
         var responseItems = obligations.Select(obligation =>

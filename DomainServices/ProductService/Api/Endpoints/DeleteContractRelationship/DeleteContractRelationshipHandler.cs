@@ -20,11 +20,9 @@ internal sealed class DeleteContractRelationshipHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.DeleteContractRelationshipRequest request, CancellationToken cancellation)
     {
         // check if relationship exists
-        var relationshipExists = await _repository.ExistsRelationship(request.ProductId, request.PartnerId, cancellation);
-        if (!relationshipExists)
+        if (!await _repository.ExistsRelationship(request.ProductId, request.PartnerId, cancellation))
         {
-            throw new CisNotFoundException(12018,
-                $"{nameof(Database.Entities.Relationship)} with ProductId {request.ProductId} and PartnerId {request.PartnerId} does not exist.");
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12018, request.ProductId, request.PartnerId);
         }
 
         // call endpoint

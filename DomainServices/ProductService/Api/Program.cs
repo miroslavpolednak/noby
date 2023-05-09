@@ -39,7 +39,7 @@ builder.Services
 builder.AddProductService();
 
 builder.Services
-    .AddCisGrpcInfrastructure(typeof(Program))
+    .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
     .AddGrpcReflection()
     .AddGrpc(options =>
     {
