@@ -11,20 +11,31 @@ internal sealed class GetCustomersOnProductHandler
         // Kontrola, zda se jedná o KB produkt (typ uveru = 3), chyba pokud ne vyhodit chybu
         var typUveru = (await _dbContext.Loans.AsNoTracking().FirstOrDefaultAsync(t => t.Id == request.ProductId, cancellation))?.TypUveru;
         if (typUveru == null)
-            throw new CisNotFoundException(12001, "ProductInstanceId does not exist in KonsDB.");
-        else if (typUveru.Value != 3)
-            throw new CisValidationException(12019, "Unsupported product type.");
-
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+        }
+        if (typUveru.Value != 3)
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InvalidArgument12019);
+        }
+        
         // Zjištění seznamu klientů na produktu, vyhodit tvrdou chybu pokud je množina prázdná (nesmí se stávat, pokud není nekonzistence dat)
         var customers = await _dbContext.Relationships
             .AsNoTracking()
             .Where(t => t.UverId == request.ProductId)
             .Select(t => new { Vztah = t.VztahId, MpId = t.PartnerId, KbId = t.Partner.KBId, t.Zmocnenec, t.Partner.StavKyc })
             .ToListAsync(cancellation);
+
         if (!customers.Any())
-            throw new CisValidationException(12020, "Customers not found for product.");
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InvalidArgument12020);
+        }
+
         if (customers.Any(t => !t.KbId.HasValue))
-            throw new CisValidationException(12021, "Not all customers does have KB ID");
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InvalidArgument12021);
+        }
+
 
         var model = new GetCustomersOnProductResponse();
         foreach (var customer in customers)
