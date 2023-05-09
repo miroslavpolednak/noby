@@ -13,6 +13,10 @@ internal sealed class UpdateCustomerDataHandler
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
         //TODO zkontrolovat existenci klienta?
 
+        var customerNameChanged =
+            string.Equals(entity.Name, request.Customer.Name, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(entity.FirstNameNaturalPerson, request.Customer.FirstNameNaturalPerson, StringComparison.Ordinal);
+        
         // ulozit do DB
         entity.DateOfBirthNaturalPerson = request.Customer.DateOfBirthNaturalPerson;
         entity.Name = request.Customer.Name;
@@ -23,8 +27,11 @@ internal sealed class UpdateCustomerDataHandler
 
         await _dbContext.SaveChangesAsync(cancellation);
 
-        await _mediator.Send(new NotifyStarbuildRequest { CaseId = request.CaseId  }, cancellation);
-        
+        if (customerNameChanged)
+        {
+            await _mediator.Send(new NotifyStarbuildRequest { CaseId = request.CaseId  }, cancellation);    
+        }
+
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
