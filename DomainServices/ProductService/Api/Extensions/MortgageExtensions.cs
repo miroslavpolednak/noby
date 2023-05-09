@@ -106,7 +106,7 @@ internal static class MortgageExtensions
         return mortgage;
     }
 
-    
+
     /// <summary>
     /// Converts db entity Relationship (table dbo.VztahUver) to contract object Relationship .
     /// </summary>

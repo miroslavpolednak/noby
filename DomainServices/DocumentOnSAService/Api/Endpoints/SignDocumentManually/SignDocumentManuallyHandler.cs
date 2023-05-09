@@ -7,7 +7,9 @@ using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Clients;
+using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using Google.Protobuf.WellKnownTypes;
@@ -33,6 +35,7 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
     private readonly ICodebookServiceClients _codebookServiceClient;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
+    private readonly IProductServiceClient _productServiceClient;
 
     public SignDocumentManuallyHandler(
         DocumentOnSAServiceDbContext dbContext,
@@ -43,7 +46,8 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         ISulmClientHelper sulmClientHelper,
         ICodebookServiceClients codebookServiceClient,
         IHouseholdServiceClient householdClient,
-        ICustomerOnSAServiceClient customerOnSAServiceClient)
+        ICustomerOnSAServiceClient customerOnSAServiceClient,
+        IProductServiceClient productServiceClient)
     {
         _dbContext = dbContext;
         _dateTime = dateTime;
@@ -54,6 +58,7 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         _codebookServiceClient = codebookServiceClient;
         _householdClient = householdClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
+        _productServiceClient = productServiceClient;
     }
 
     public async Task<Empty> Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
@@ -69,7 +74,12 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
 
         UpdateDocumentOnSa(documentOnSa);
 
-        await AddSignatureIfNotSetYet(documentOnSa, cancellationToken);
+        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
+
+        await AddSignatureIfNotSetYet(documentOnSa, salesArrangement, cancellationToken);
+
+        // Update Mortgage.FirstSignatureDate
+        await UpdateMortgageFirstSignatureDate(documentOnSa, salesArrangement, cancellationToken);
 
         // SUML call
         await SumlCall(documentOnSa, cancellationToken);
@@ -77,6 +87,13 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Empty();
+    }
+
+    private async Task UpdateMortgageFirstSignatureDate(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
+        var mortgageResponse = await _productServiceClient.GetMortgage(salesArrangement.CaseId, cancellationToken);
+        // blocked by https://jira.kb.cz/browse/HFICH-5449
+
     }
 
     private async Task SumlCall(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
@@ -104,13 +121,11 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         await _sulmClientHelper.StartUse(kbIdentity.IdentityId, ISulmClient.PurposeMLAP, cancellationToken);
     }
 
-    private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
+    private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         if (documentOnSa.DocumentTypeId == DocumentType
             && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => r.IsSigned == false, cancellationToken))
         {
-            var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken); 
-            
             var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, _dateTime.Now.Date, cancellationToken);
 
             if (result is not null && result.CommonValue != 0)
