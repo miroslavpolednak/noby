@@ -18,11 +18,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="MediatR" Version="12.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="7.0.4" />
+		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="7.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
-		<PackageReference Include="Grpc.AspNetCore" Version="2.52.0" />
-		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.52.0" />
-		<PackageReference Include="System.ServiceModel.Http" Version="4.10.1" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.53.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.53.0" />
+		<PackageReference Include="System.ServiceModel.Http" Version="4.10.2" />
 	</ItemGroup>
 
 	<ItemGroup>
