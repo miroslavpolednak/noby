@@ -41,6 +41,11 @@ internal sealed class IdentifyByIdentityRollback
         }
     }
 
+    public bool OverrideThrownException { get => true; }
+
+    public Exception OnOverrideException(Exception exception)
+        => exception is NobyValidationException ? exception : new NobyValidationException(exception.Message);
+
     public const string BagKeyCustomerOnSA = "BagKeyCustomerOnSA";
 
     private readonly IRollbackBag _bag;
