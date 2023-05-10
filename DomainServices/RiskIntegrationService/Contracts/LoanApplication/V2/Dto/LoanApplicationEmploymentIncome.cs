@@ -6,15 +6,18 @@ public class LoanApplicationEmploymentIncome
     [ProtoMember(1)]
     public string? EmployerIdentificationNumber { get; set; }
 
+    [Obsolete("c4mv3")]
     [ProtoMember(2)]
     public int? WorkSectorId { get; set; }
 
     [ProtoMember(3)]
     public string EmployerName { get; set; } = default!;
 
+    [Obsolete("c4mv3")]
     [ProtoMember(4)]
     public int? ClassificationOfEconomicActivityId { get; set; }
 
+    [Obsolete("c4mv3")]
     [ProtoMember(5)]
     public int? JobTypeId { get; set; }
 

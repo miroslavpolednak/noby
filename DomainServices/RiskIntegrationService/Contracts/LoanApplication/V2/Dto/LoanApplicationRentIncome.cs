@@ -3,6 +3,7 @@
 [ProtoContract]
 public sealed class LoanApplicationRentIncome
 {
+    [Obsolete("c4mv3")]
     [ProtoMember(1)]
     public Shared.BankAccountDetail? BankAccount { get; set; }
 

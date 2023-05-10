@@ -19,13 +19,13 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (LoanApplication.V1.ILoanApplicationClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<LoanApplication.V1.ILoanApplicationClient, LoanApplication.V1.MockLoanApplicationClient>();
+            case (LoanApplication.V3.ILoanApplicationClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<LoanApplication.V3.ILoanApplicationClient, LoanApplication.V3.MockLoanApplicationClient>();
                 break;
 
-            case (LoanApplication.V1.ILoanApplicationClient.Version, ServiceImplementationTypes.Real):
+            case (LoanApplication.V3.ILoanApplicationClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<LoanApplication.V1.ILoanApplicationClient, LoanApplication.V1.RealLoanApplicationClient>()
+                    .AddExternalServiceRestClient<LoanApplication.V3.ILoanApplicationClient, LoanApplication.V3.RealLoanApplicationClient>()
                     .AddExternalServicesKbHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
                     .AddBadRequestHandling();
@@ -41,7 +41,7 @@ public static class StartupExtensions
     static string getVersion<TClient>()
         => typeof(TClient) switch
         {
-            Type t when t.IsAssignableFrom(typeof(LoanApplication.V1.ILoanApplicationClient)) => LoanApplication.V1.ILoanApplicationClient.Version,
+            Type t when t.IsAssignableFrom(typeof(LoanApplication.V3.ILoanApplicationClient)) => LoanApplication.V3.ILoanApplicationClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
 
