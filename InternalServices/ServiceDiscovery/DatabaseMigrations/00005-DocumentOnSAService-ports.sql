@@ -1,0 +1,1 @@
+UPDATE [dbo].[ServiceDiscovery] SET [ServiceUrl] = REPLACE([ServiceUrl], '021', '019') WHERE [ServiceName] = 'DS:DocumentOnSAService' AND [ServiceType] = 1;
