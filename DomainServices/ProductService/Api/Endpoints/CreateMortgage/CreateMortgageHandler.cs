@@ -35,9 +35,6 @@ internal sealed class CreateMortgageHandler
 
     public async Task<CreateMortgageResponse> Handle(Contracts.CreateMortgageRequest request, CancellationToken cancellation)
     {
-        await _pcpClient.CreateProduct(request.CaseId, 951070696, "123456", cancellation);
-        return null;
-
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellation);
 
         if (await _repository.ExistsLoan(caseInstance.CaseId, cancellation))
