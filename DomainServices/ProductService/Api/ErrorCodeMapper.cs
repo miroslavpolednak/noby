@@ -4,7 +4,6 @@ namespace DomainServices.ProductService.Api;
 
 internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
 {
-    public const int NotFound12000 = 12000;
     public const int NotFound12001 = 12001;
     public const int InvalidArgument12004 = 12004;
     public const int AlreadyExists12005 = 12005;
@@ -28,7 +27,6 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     {
         SetMessages(new Dictionary<int, string>
         {
-            { NotFound12000, "CaseId {PropertyValue} not found." },	
             { NotFound12001, "ProductInstanceId {PropertyValue} not found in KonsDB." },	
             { InvalidArgument12004, "Product can be created only when client and partnerId are linked to the case." },	
             { AlreadyExists12005, "Product {PropertyValue} already exist." },
