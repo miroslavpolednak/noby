@@ -9,11 +9,11 @@ public class WorkflowTaskConsultationTypesHandler
 
     #region Construction
 
-    private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
+    private readonly CIS.Core.Data.IConnectionProvider<IXxdHfDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<WorkflowTaskConsultationTypesHandler> _logger;
 
     public WorkflowTaskConsultationTypesHandler(
-        CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider, 
+        CIS.Core.Data.IConnectionProvider<IXxdHfDapperConnectionProvider> connectionProvider, 
         ILogger<WorkflowTaskConsultationTypesHandler> logger)
     {
         _logger = logger;
@@ -23,7 +23,7 @@ public class WorkflowTaskConsultationTypesHandler
     #endregion
 
     private const string _sqlQuery =
-            "SELECT KOD 'Id', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN DATUM_OD AND ISNULL(DATUM_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.HTEDM_CIS_WFL_CISELNIKY_HODNOTY WHERE CISELNIK_ID = 139 ORDER BY KOD";
+            "SELECT KOD 'Id', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN DATUM_OD AND ISNULL(DATUM_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.v_HTEDM_CIS_WFL_CISELNIKY_HODNOTY WHERE CISELNIK_ID = 139 ORDER BY KOD";
 
     public async Task<List<GenericCodebookItem>> Handle(WorkflowTaskConsultationTypesRequest request, CancellationToken cancellationToken)
     {

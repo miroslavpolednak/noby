@@ -6,9 +6,11 @@ public class LoanApplicationEntrepreneurIncome
     [ProtoMember(1)]
     public string? EntrepreneurIdentificationNumber { get; set; }
 
+    [Obsolete("c4mv3")]
     [ProtoMember(2)]
     public int? ClassificationOfEconomicActivityId { get; set; }
 
+    [Obsolete("c4mv3")]
     [ProtoMember(3)]
     public int? JobTypeId { get; set; }
 

@@ -27,6 +27,8 @@
 
 [DataAggregator](./topics/dataAggregator.md)
 
+[Health checks](./topics/healthcheck.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

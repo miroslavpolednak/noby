@@ -6,41 +6,43 @@ using ExternalServices.MpHome.V1_1.Contracts;
 namespace DomainServices.ProductService.Api.Endpoints.CreateContractRelationship;
 
 internal sealed class CreateContractRelationshipHandler
-    : BaseMortgageHandler, IRequestHandler<Contracts.CreateContractRelationshipRequest, Google.Protobuf.WellKnownTypes.Empty>
+    : IRequestHandler<Contracts.CreateContractRelationshipRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     #region Construction
+    private readonly ICodebookServiceClients _codebookService;
+    private readonly Database.LoanRepository _repository;
+    private readonly IMpHomeClient _mpHomeClient;
 
     public CreateContractRelationshipHandler(
         ICodebookServiceClients codebookService,
         Database.LoanRepository repository,
-        IMpHomeClient mpHomeClient,
-        ILogger<CreateContractRelationshipHandler> logger) : base(codebookService, repository, mpHomeClient, logger)
-    { }
+        IMpHomeClient mpHomeClient)
+    {
+        _codebookService = codebookService;
+        _repository = repository;
+        _mpHomeClient = mpHomeClient;
+    }
 
     #endregion
 
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.CreateContractRelationshipRequest request, CancellationToken cancellation)
     {
         // check if relationship not exists
-        var relationshipExists = await _repository.ExistsRelationship(request.ProductId, request.Relationship.PartnerId, cancellation);
-        if (relationshipExists)
+        if (await _repository.ExistsRelationship(request.ProductId, request.Relationship.PartnerId, cancellation))
         {
-            throw new CisAlreadyExistsException(12011,
-                $"{nameof(Database.Entities.Relationship)} with ProductId {request.ProductId} and PartnerId {request.Relationship.PartnerId} already exists");
+            throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.AlreadyExists12011, request.ProductId, request.Relationship.PartnerId); 
         }
 
         // check if loan exists (against KonsDB)
-        var loanExists = await _repository.ExistsLoan(request.ProductId, cancellation);
-        if (!loanExists)
+        if (!await _repository.ExistsLoan(request.ProductId, cancellation))
         {
-            throw new CisNotFoundException(12001, nameof(Database.Entities.Loan), request.ProductId);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
         }
 
         // check if partner exists (against KonsDB)
-        var partnerExists = await _repository.ExistsPartner(request.Relationship.PartnerId, cancellation);
-        if (!partnerExists)
+        if (!await _repository.ExistsPartner(request.Relationship.PartnerId, cancellation))
         {
-            throw new CisNotFoundException(12012, nameof(Database.Entities.Partner), request.Relationship.PartnerId);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12012, request.Relationship.PartnerId);
         }
 
         // get codebook RelationshipCustomerProductTypeItem item
@@ -57,7 +59,7 @@ internal sealed class CreateContractRelationshipHandler
         };
 
         // call endpoint
-        await _mpHomeClient.UpdateLoanPartnerLink(request.ProductId, request.Relationship.PartnerId, loanLinkRequest);
+        await _mpHomeClient.UpdateLoanPartnerLink(request.ProductId, request.Relationship.PartnerId, loanLinkRequest, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
@@ -72,7 +74,7 @@ internal sealed class CreateContractRelationshipHandler
 
         if (item == null)
         {
-            throw new CisNotFoundException(12013, nameof(RelationshipCustomerProductTypeItem), contractRelationshipTypeId);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12013, contractRelationshipTypeId);
         }
 
         return item;

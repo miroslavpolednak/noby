@@ -14,7 +14,7 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
 {
     private readonly TSoapClient _client;
     private readonly IExternalServiceConfiguration _configuration;
-    private readonly ILogger _logger;
+    protected readonly ILogger Logger;
 
     protected TSoapClient Client => _client;
 
@@ -25,7 +25,7 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
         ILogger logger)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-        _logger = logger;
+        Logger = logger;
         _client = new TSoapClient();
         _client.Endpoint.Address = new EndpointAddress(_configuration.ServiceUrl);
         _client.Endpoint.Binding = CreateBinding();
@@ -90,14 +90,14 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
         }
         catch (Exception ex) when (ex is InvalidOperationException || ex is EndpointNotFoundException)
         {
-            _logger.ExtServiceUnavailable(ServiceName, ex);
+            Logger.ExtServiceUnavailable(ServiceName, ex);
             throw new CisServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
         }
         catch (Exception e)
         {
 #pragma warning disable CA1848 // Use the LoggerMessage delegates
 #pragma warning disable CA2254 // Template should be a static expression
-            _logger.LogError(e, e.Message);
+            Logger.LogError(e, e.Message);
 #pragma warning restore CA2254 // Template should be a static expression
 #pragma warning restore CA1848 // Use the LoggerMessage delegates
             throw;

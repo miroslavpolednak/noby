@@ -86,6 +86,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/TinNoFillReasonsByCountry+%28CB_CmTrTinCountry%29+-+MOCK">TinNoFillReasonsByCountry</a>
     /// - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby">WorkflowTaskStatesNoby</a>
     /// - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskCategory">WorkflowTaskCategories</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=549782919">WorkflowTaskSigningResponseTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440871662">WorkflowTaskStates</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440879561">WorkflowTaskTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216261">WorkSectors</a>
@@ -166,7 +167,7 @@ public class CodebooksController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vrátí detail developera dle developerId na vstupu.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="developerId">ID developera</param>
     [HttpGet("developer/{developerId:int}")]
@@ -195,7 +196,7 @@ public class CodebooksController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vrátí detail developerského projektu dle developerProjectId na vstupu.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="developerId">ID developera</param>
     [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}")]

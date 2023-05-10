@@ -11,7 +11,7 @@ public class SalesArrangementTypesHandler
         );
     }
 
-    private const string _sqlQuery = "SELECT Id, Name, ProductTypeId, SalesArrangementCategory FROM [dbo].[SalesArrangementType]";
+    private const string _sqlQuery = "SELECT Id, Name, ProductTypeId, SalesArrangementCategory, Description FROM [dbo].[SalesArrangementType] ORDER BY Id";
 
     private readonly CIS.Core.Data.IConnectionProvider _connectionProvider;
 

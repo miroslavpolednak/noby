@@ -14,7 +14,7 @@
             Extension metody do startupu aplikace pro registraci behaviors.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.CisMediatR.CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+        <member name="M:CIS.Infrastructure.CisMediatR.CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type[])">
             <summary>
             Pridava moznost rollbacku do Mediatr handleru. Rollback se spusti vyhozenim exception kdykoliv v prubehu exekuce handleru. Po ukonceni rollbacku se dana exception propaguje standardne dal do pipeline.
             </summary>
@@ -44,6 +44,17 @@
             </summary>
             <param name="exception">Vyjimka, ktera rollback spustila</param>
             <param name="request">Puvodni Mediatr request</param>
+        </member>
+        <member name="P:CIS.Infrastructure.CisMediatR.Rollback.IRollbackAction`1.OverrideThrownException">
+            <summary>
+            Pokud bude nastaveno na True, tak se misto exception, ktera rollback zpusobila, vrati exception z OverrideException()
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.CisMediatR.Rollback.IRollbackAction`1.OnOverrideException(System.Exception)">
+            <summary>
+            Vytvoreni exception misto puvodni, ktera spustila rollback
+            </summary>
+            <param name="exception">Puvodni vyjimka</param>
         </member>
         <member name="T:CIS.Infrastructure.CisMediatR.Rollback.IRollbackBag">
             <summary>

@@ -13,4 +13,15 @@ public interface IRollbackAction<TRequest>
     /// <param name="exception">Vyjimka, ktera rollback spustila</param>
     /// <param name="request">Puvodni Mediatr request</param>
     Task ExecuteRollback(Exception exception, TRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Pokud bude nastaveno na True, tak se misto exception, ktera rollback zpusobila, vrati exception z OverrideException()
+    /// </summary>
+    bool OverrideThrownException { get => false; }
+
+    /// <summary>
+    /// Vytvoreni exception misto puvodni, ktera spustila rollback
+    /// </summary>
+    /// <param name="exception">Puvodni vyjimka</param>
+    Exception OnOverrideException(Exception exception) => throw new NotImplementedException();
 }

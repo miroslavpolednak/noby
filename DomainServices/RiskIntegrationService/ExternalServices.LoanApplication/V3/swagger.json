@@ -1,0 +1,3016 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "loan-application-hf-adapter-service",
+    "description": "RISK la-loan-application-hf-adapter-service description\n                                    \\\n                                    Build Date: 25-04-2023 13:23:08",
+    "termsOfService": "https://www.kb.cz/api/terms",
+    "contact": {
+      "name": "KB RISK API Team",
+      "url": "https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=253305685",
+      "email": "kbsq4fut@ds.kb.cz"
+    },
+    "license": {
+      "name": "KB API 1.0",
+      "url": "http://www.kb.cz/api/license/LICENSE-1.0.html"
+    },
+    "version": "3.1.1-SNAPSHOT",
+    "x-type-mappgings": {
+      "ResourceIdentifier": "cz.kb.risk.datatypes.ResourceIdentifier"
+    }
+  },
+  "servers": [
+    {
+      "url": "/la-loan-application-hf-adapter-service-3.1.1/api",
+      "description": "default context"
+    }
+  ],
+  "paths": {
+    "/hf/loan-application": {
+      "post": {
+        "tags": [
+          "LoanApplication"
+        ],
+        "description": "Založí LoanApplication",
+        "operationId": "LoanApplication_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanApplicationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplicationResult"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "create"
+      }
+    },
+    "/hf/loan-application-counterparty": {
+      "get": {
+        "tags": [
+          "LoanApplicationCounterparty"
+        ],
+        "description": "Vrátí všechny Counterparty pro daný Household",
+        "operationId": "LoanApplicationCounterparty_get",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "query",
+            "description": "loanApplicationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          {
+            "name": "loanApplicationHouseholdIndex",
+            "in": "query",
+            "description": "loanApplicationHouseholdIndex",
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "loanApplicationCounterpartyRoleCode",
+            "in": "query",
+            "description": "loanApplicationCounterpartyRoleCode",
+            "schema": {
+              "type": "string",
+              "description": ""
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "",
+                  "items": {
+                    "$ref": "#/components/schemas/LoanApplicationCounterParty"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "get"
+      }
+    },
+    "/hf/loan-application-household/{householdId}/loan-application-counterparty": {
+      "get": {
+        "tags": [
+          "LoanApplicationCounterparty"
+        ],
+        "description": "Vrátí všechny Counterparty pro daný Household",
+        "operationId": "LoanApplicationCounterparty_find",
+        "parameters": [
+          {
+            "name": "householdId",
+            "in": "path",
+            "description": "householdId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "NotNull",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "loanApplicationId",
+            "in": "query",
+            "description": "loanApplicationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "query",
+            "description": "customerId",
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "",
+                  "items": {
+                    "$ref": "#/components/schemas/LoanApplicationCounterParty"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "find"
+      }
+    },
+    "/hf/loan-application/{loanApplicationId}": {
+      "get": {
+        "tags": [
+          "LoanApplication"
+        ],
+        "description": "Vrátí LoanApplication podle ID",
+        "operationId": "LoanApplication_get",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "path",
+            "description": "loanApplicationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplication"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "get"
+      }
+    },
+    "/hf/loan-application/{loanApplicationId}/kb-group-person": {
+      "get": {
+        "tags": [
+          "KBGroupPerson"
+        ],
+        "description": "Vrátí data o Person – tzn. Zaměstanci, který danou žádost zpracovává",
+        "operationId": "KBGroupPerson_find",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "path",
+            "description": "loanApplicationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KBGroupPerson"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "find"
+      }
+    },
+    "/hf/loan-application/{loanApplicationId}/loan-application-dealer": {
+      "get": {
+        "tags": [
+          "LoanApplicationDealer"
+        ],
+        "description": "Vrátí data o dealerovi v dané žádosti",
+        "operationId": "LoanApplicationDealer_get",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "path",
+            "description": "loanApplicationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          {
+            "name": "DealerID",
+            "in": "query",
+            "description": "DealerID",
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplicationDealer"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "get"
+      }
+    },
+    "/hf/loan-application/{loanApplicationId}/loan-application-declared-product-relation": {
+      "get": {
+        "tags": [
+          "LoanApplicationDeclaredProductRelation"
+        ],
+        "operationId": "LoanApplicationDeclaredProductRelation_find",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "path",
+            "description": "loanApplicationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "",
+                  "items": {
+                    "$ref": "#/components/schemas/LoanApplicationDeclaredProductRelation"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "find"
+      }
+    },
+    "/hf/loan-application/{loanApplicationId}/loan-application-household": {
+      "get": {
+        "tags": [
+          "LoanApplicationHousehold"
+        ],
+        "description": "Vrátí kolekci Householdů v žádosti",
+        "operationId": "LoanApplicationHousehold_loanApplicationHouseholdList",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "path",
+            "description": "loanApplicationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          {
+            "name": "index",
+            "in": "query",
+            "description": "index",
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "",
+                  "items": {
+                    "$ref": "#/components/schemas/LoanApplicationHousehold"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "loanApplicationHouseholdList"
+      }
+    },
+    "/hf/loan-application/{loanApplicationId}/loan-application-household/{householdId}": {
+      "get": {
+        "tags": [
+          "LoanApplicationHousehold"
+        ],
+        "description": "Vrátí kolekci Householdů v žádosti",
+        "operationId": "LoanApplicationHousehold_loanApplicationHousehold",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "path",
+            "description": "loanApplicationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          {
+            "name": "householdId",
+            "in": "path",
+            "description": "householdId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "NotNull",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplicationHousehold"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "loanApplicationHousehold"
+      }
+    },
+    "/hf/loan-application/{loanApplicationId}/loan-application-product": {
+      "get": {
+        "tags": [
+          "LoanApplicationProduct"
+        ],
+        "description": "Vrátí specifikaci Produktu o který je žádáno",
+        "operationId": "LoanApplicationProduct_get",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "path",
+            "description": "loanApplicationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplicationProduct"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "get"
+      }
+    },
+    "/hf/loan-application/{loanApplicationId}/loan-application-product-relation": {
+      "get": {
+        "tags": [
+          "LoanApplicationProductRelation"
+        ],
+        "description": "Vrátí data o všech navázaných produktech na danou žádost",
+        "operationId": "LoanApplicationProductRelation_find",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "path",
+            "description": "loanApplicationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "",
+                  "items": {
+                    "$ref": "#/components/schemas/LoanApplicationProductRelation"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "find"
+      }
+    },
+    "/hf/loan-application/{loanApplicationId}/loan-application-product-relation-counterparty": {
+      "get": {
+        "tags": [
+          "LoanApplicationProductRelationCounterparty"
+        ],
+        "operationId": "LoanApplicationProductRelationCounterparty_find",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "path",
+            "description": "loanApplicationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "",
+                  "items": {
+                    "$ref": "#/components/schemas/LoanApplicationProductRelationCounterparty"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "find"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Amount": {
+        "required": [
+          "currencyCode"
+        ],
+        "type": "object",
+        "properties": {
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency code of the Amount (ISO 4217), e.g. 'CZK', 'EUR'\nNotNull"
+          },
+          "value": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Value of the Amount\n"
+          }
+        },
+        "description": "Amount"
+      },
+      "ConsentValueType": {
+        "type": "string",
+        "description": "ConsentValueType",
+        "enum": [
+          "PHONE_NUMBER"
+        ]
+      },
+      "Contact": {
+        "required": [
+          "contactCategory",
+          "contactType",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "contactCategory": {
+            "$ref": "#/components/schemas/ContactCategoryType"
+          },
+          "contactType": {
+            "$ref": "#/components/schemas/ContactType"
+          },
+          "value": {
+            "type": "string",
+            "description": "Hodnota kontaktu, tedy konkrétní email nebo telefonní číslo\nNotNull"
+          }
+        },
+        "description": "Contact"
+      },
+      "ContactCategoryType": {
+        "type": "string",
+        "description": "CONTACT CATEGORY TYPE",
+        "enum": [
+          "MOBILE",
+          "BUSINESS",
+          "PRIVATE"
+        ]
+      },
+      "ContactType": {
+        "type": "string",
+        "description": "CONTACT TYPE",
+        "enum": [
+          "PHONE",
+          "EMAIL"
+        ]
+      },
+      "CreditLiabilitiesSummary": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "amountConsolidated": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "productClusterCode": {
+            "$ref": "#/components/schemas/CreditLiabilitiesSummaryType"
+          }
+        },
+        "description": "HouseholdCreditLiabilitiesSummaryOutHomeCompany."
+      },
+      "CreditLiabilitiesSummaryType": {
+        "type": "string",
+        "description": "CREDIT LIABILITIES PRODUCT CLUSTER",
+        "enum": [
+          "CC",
+          "AD",
+          "CL",
+          "ML"
+        ]
+      },
+      "DateRange": {
+        "type": "object",
+        "properties": {
+          "dateFrom": {
+            "type": "string",
+            "description": "Datum od\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "dateTo": {
+            "type": "string",
+            "description": "Datum do\n",
+            "format": "date",
+            "example": "2021-04-20"
+          }
+        },
+        "description": "Rozsah datumů od a do. Například: datum zaměstnání od, datum zaměstnání do."
+      },
+      "DistributionChannelType": {
+        "type": "string",
+        "description": "DISTRIBUTION CHANNEL",
+        "enum": [
+          "DC",
+          "AG",
+          "BR",
+          "CC",
+          "DM",
+          "SH",
+          "TP",
+          "MC",
+          "WF",
+          "MB",
+          "MA",
+          "XC"
+        ]
+      },
+      "ErrorModel": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "integer",
+            "description": "usually unused and replaced by the error codes categorization",
+            "format": "int32",
+            "example": 10,
+            "deprecated": true
+          },
+          "code": {
+            "type": "string",
+            "description": "code of the error that occured, with or without an hirarchical categorization",
+            "example": "CRAB.PLATFORM.PATTERN.LOCKING.OPTIMISTIC.CONCURRENT_MODIFICATION"
+          },
+          "detail": {
+            "type": "object",
+            "description": "an optional error detail with a custom schema discriminated by the type-discriminator"
+          },
+          "httpStatusCode": {
+            "type": "integer",
+            "description": "copy of the http-status-code",
+            "format": "int32",
+            "example": 409
+          },
+          "message": {
+            "type": "string",
+            "description": "plain-text message description related to the given error code and intended for better issue-solving only"
+          },
+          "uuid": {
+            "type": "string",
+            "description": "unique error ID",
+            "example": "7e81204c-9b76-4224-b82a-f2706dd9efcf"
+          }
+        },
+        "description": "The unified error model",
+        "readOnly": true
+      },
+      "ExpensesSummary": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "category": {
+            "$ref": "#/components/schemas/ExpensesSummaryCategoryType"
+          }
+        },
+        "description": "Parametry domácnosti"
+      },
+      "ExpensesSummaryCategoryType": {
+        "type": "string",
+        "description": "EXPENSES CATEGORY",
+        "enum": [
+          "RENT",
+          "ALIMONY",
+          "INSURANCE",
+          "SAVINGS",
+          "OTHER"
+        ]
+      },
+      "ExternalRegisterType": {
+        "type": "string",
+        "description": "ExternalRegistreType",
+        "enum": [
+          "TELCO"
+        ]
+      },
+      "GenderType": {
+        "type": "string",
+        "description": "GENDER",
+        "enum": [
+          "M",
+          "F"
+        ]
+      },
+      "HighestEducationType": {
+        "type": "string",
+        "description": "EDUCATION",
+        "enum": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ]
+      },
+      "HousingConditionType": {
+        "type": "string",
+        "description": "HOUSING CONDITION",
+        "enum": [
+          "OW",
+          "GR",
+          "RE",
+          "PA",
+          "OT"
+        ]
+      },
+      "IncomeDeduction": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "type": {
+            "$ref": "#/components/schemas/IncomeDeductionType"
+          }
+        },
+        "description": "IncomeDeduction"
+      },
+      "IncomeDeductionType": {
+        "type": "string",
+        "description": "INCOME DEDUCTION TYPE",
+        "enum": [
+          "EXECUTION",
+          "INSTALLMENTS",
+          "OTHER"
+        ]
+      },
+      "IncomePeriodType": {
+        "type": "string",
+        "description": "INCOME PERIOD TYPE",
+        "enum": [
+          "MONTH",
+          "YEAR"
+        ]
+      },
+      "InstallmentPeriodType": {
+        "type": "string",
+        "description": "INSTALLMENT PERIOD",
+        "enum": [
+          "A",
+          "M",
+          "B",
+          "T",
+          "Q",
+          "C",
+          "S",
+          "N",
+          "V"
+        ]
+      },
+      "JobPost": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Kód pracovní pozice přihlášeného uživatele / schvalovatele\n"
+          }
+        },
+        "description": "JobPost"
+      },
+      "KBGroupPerson": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "orgUnit": {
+            "$ref": "#/components/schemas/OrgUnit"
+          },
+          "surname": {
+            "type": "string",
+            "description": "Příjmení přihlášeného uživatele / příjmení schvalovatele\n"
+          }
+        },
+        "description": "KbGroupPerson"
+      },
+      "LoanApplication": {
+        "required": [
+          "loanApplicationSnapshotId"
+        ],
+        "type": "object",
+        "properties": {
+          "appendixCode": {
+            "type": "integer",
+            "description": "Rozlišení nového obchodu a typu dodatku\n",
+            "format": "int64"
+          },
+          "distributionChannelCode": {
+            "$ref": "#/components/schemas/DistributionChannelType"
+          },
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "loanApplicationSnapshotId": {
+            "type": "string",
+            "description": "loan application verze\nNotNull"
+          },
+          "signatureType": {
+            "type": "string",
+            "description": "Způsob podpisu žádosti\n"
+          }
+        },
+        "description": "LoanApplication"
+      },
+      "LoanApplicationCollateral": {
+        "type": "object",
+        "properties": {
+          "appraisedValue": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "appraisedValueOriginal": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "categoryCode": {
+            "type": "string",
+            "description": "Kategorie zajištění\n"
+          },
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "Parametry domácnosti."
+      },
+      "LoanApplicationConsentValue": {
+        "type": "object",
+        "properties": {
+          "consentValueType": {
+            "$ref": "#/components/schemas/ConsentValueType"
+          },
+          "value": {
+            "type": "string",
+            "description": "value\n"
+          }
+        },
+        "description": "."
+      },
+      "LoanApplicationCounterParty": {
+        "required": [
+          "customerId"
+        ],
+        "type": "object",
+        "properties": {
+          "academicTitlePrefix": {
+            "type": "string",
+            "description": "Akademický titul\n"
+          },
+          "address": {
+            "$ref": "#/components/schemas/PrimaryAddress"
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Datum narození\n",
+            "format": "date"
+          },
+          "birthName": {
+            "type": "string",
+            "description": "Rodné příjmení\n"
+          },
+          "birthNumber": {
+            "type": "string",
+            "description": "RČ klienta\n"
+          },
+          "birthPlace": {
+            "type": "string",
+            "description": "Místo narození\n"
+          },
+          "contacts": {
+            "type": "array",
+            "description": "Telefonní/emailové kontakty.\n",
+            "items": {
+              "$ref": "#/components/schemas/Contact"
+            }
+          },
+          "counterpartyType": {
+            "type": "string",
+            "description": "Typ protistrany\n"
+          },
+          "customerId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "firstname": {
+            "type": "string",
+            "description": "Jméno\n"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/GenderType"
+          },
+          "groupEmployee": {
+            "type": "boolean",
+            "description": "Vztah klienta ke skupině KB\n"
+          },
+          "hasEmail": {
+            "type": "boolean",
+            "description": "Emailová adresa\n"
+          },
+          "highestEducation": {
+            "$ref": "#/components/schemas/HighestEducationType"
+          },
+          "housingCondition": {
+            "$ref": "#/components/schemas/HousingConditionType"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Identifikace klienta v rámci dané žádosti (korelační id)\n",
+            "format": "int64"
+          },
+          "income": {
+            "$ref": "#/components/schemas/LoanApplicationIncome"
+          },
+          "isPartner": {
+            "type": "boolean",
+            "description": "Je klient druhem/družkou?\n"
+          },
+          "loanApplicationCounterpartyConsent": {
+            "$ref": "#/components/schemas/LoanApplicationCounterpartyConsent"
+          },
+          "loanApplicationDeclaredIncome": {
+            "$ref": "#/components/schemas/LoanApplicationDeclaredIncome"
+          },
+          "loanApplicationPersonalDocument": {
+            "$ref": "#/components/schemas/LoanApplicationPersonalDocument"
+          },
+          "managementType": {
+            "type": "string",
+            "description": "Typ obsluhy klienta\n"
+          },
+          "maritalStatus": {
+            "$ref": "#/components/schemas/MaritalStatusType"
+          },
+          "roleCode": {
+            "$ref": "#/components/schemas/RoleType"
+          },
+          "segmentCode": {
+            "type": "string",
+            "description": "Segment klienta\n"
+          },
+          "specialRelationsWithKB": {
+            "type": "boolean",
+            "description": "Speciální vztah k bance\n"
+          },
+          "surname": {
+            "type": "string",
+            "description": "Příjmení\n"
+          },
+          "taxpayer": {
+            "type": "boolean",
+            "description": "Příznak, zdali je protistrana daňovým residentem\n"
+          }
+        },
+        "description": "Protistrana na žádosti (žadatel, spolužadatel)"
+      },
+      "LoanApplicationCounterpartyConsent": {
+        "type": "object",
+        "properties": {
+          "consent": {
+            "type": "boolean",
+            "description": "Udělen souhlas s dotazem do registru NRKI?\n"
+          },
+          "consentDate": {
+            "type": "string",
+            "description": "Datum udělení/neudělení souhlasu s dotazem do registru NRKI\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "externalRegisterType": {
+            "$ref": "#/components/schemas/ExternalRegisterType"
+          },
+          "loanApplicationConsentValue": {
+            "$ref": "#/components/schemas/LoanApplicationConsentValue"
+          }
+        },
+        "description": "LoanApplicationCounterpartyConsent"
+      },
+      "LoanApplicationDealer": {
+        "required": [
+          "companyId",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "Parametry domácnosti."
+      },
+      "LoanApplicationDeclaredEmploymentIncome": {
+        "type": "object",
+        "properties": {
+          "domiciled": {
+            "type": "boolean",
+            "description": "Je příjem domicilován?\n"
+          },
+          "employerId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "employerIdentificationNumber": {
+            "type": "string",
+            "description": "Rodné číslo / IČO zaměstnavatele\n"
+          },
+          "monthlyIncomeAmount": {
+            "$ref": "#/components/schemas/Amount"
+          }
+        },
+        "description": "Kolekce příjmů od zaměstnavatele"
+      },
+      "LoanApplicationDeclaredIncome": {
+        "type": "object",
+        "properties": {
+          "employer": {
+            "type": "array",
+            "description": "employer\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationDeclaredEmploymentIncome"
+            }
+          },
+          "entrepreneurAnnualIncomeAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyOtherIncomeAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyRentIncomeAmount": {
+            "$ref": "#/components/schemas/Amount"
+          }
+        },
+        "description": "LoanApplicationDeclaredIncome"
+      },
+      "LoanApplicationDeclaredProductRelation": {
+        "required": [
+          "productType",
+          "relationType"
+        ],
+        "type": "object",
+        "properties": {
+          "aplType": {
+            "type": "string",
+            "description": "Aplikace + typ účtu\n"
+          },
+          "productClusterCode": {
+            "type": "string",
+            "description": "Kód produktového shluku\n"
+          },
+          "productType": {
+            "type": "string",
+            "description": "Typ navézaného produktu (KBRGOUP, OFI)\nNotNull"
+          },
+          "relationType": {
+            "type": "string",
+            "description": "Typ dané vazby (SECURED_PRODUCT)\nNotNull"
+          },
+          "value": {
+            "$ref": "#/components/schemas/LoanApplicationProductRelationValue"
+          }
+        },
+        "description": "Vazba žádosti na existující úvěrový produkt (např.pro konsolidace, dodatky, apod.)"
+      },
+      "LoanApplicationEmploymentIncome": {
+        "required": [
+          "incomePartId"
+        ],
+        "type": "object",
+        "properties": {
+          "accountantContacts": {
+            "type": "array",
+            "description": "Telefonický a emailový kontakt na účetní\n",
+            "items": {
+              "$ref": "#/components/schemas/Contact"
+            }
+          },
+          "dateRange": {
+            "$ref": "#/components/schemas/DateRange"
+          },
+          "declaredIncome": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "declaredIncomeCash": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "declaredIncomeCashPeriod": {
+            "$ref": "#/components/schemas/IncomePeriodType"
+          },
+          "declaredIncomePeriod": {
+            "$ref": "#/components/schemas/IncomePeriodType"
+          },
+          "domiciled": {
+            "type": "integer",
+            "description": "Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.domiciled.   \n",
+            "format": "int32"
+          },
+          "employerCountryCode": {
+            "type": "string",
+            "description": "Stát sídla zaměstnání.\n"
+          },
+          "employerId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "employerIdentificationNumber": {
+            "type": "string",
+            "description": "Rodné číslo / IČO zaměstnavatele\n"
+          },
+          "employerName": {
+            "type": "string",
+            "description": "Název zaměstnavatele\n"
+          },
+          "employmentTypeCode": {
+            "type": "string",
+            "description": "Typ zaměstnaní\n"
+          },
+          "firstContractFrom": {
+            "type": "string",
+            "description": "První pracovní smlouva se zaměstnavatelem od\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "fixedTerm": {
+            "type": "boolean",
+            "description": "Je pracovní poměr sjednán na dobu určitou?.\n"
+          },
+          "foreignEmploymentTypeCode": {
+            "type": "string",
+            "description": "Typ zaměstnání.\n"
+          },
+          "incomeAccountIBAN": {
+            "maxLength": 34,
+            "type": "string",
+            "description": "Číslo účtu ve formátu IBAN na který chodí bezhotovostní příjem.\n"
+          },
+          "incomeDeduction": {
+            "type": "array",
+            "description": "Z příjmu Zaměstnance  jsou/nejsou prováděny srážky\n",
+            "items": {
+              "$ref": "#/components/schemas/IncomeDeduction"
+            }
+          },
+          "incomePartId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "issuedByExternalAccountant": {
+            "type": "boolean",
+            "description": "Vystavila potvrzení o příjmu externí účetní firma?\n"
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "Klient je u zaměstavatele zaměstnán jako (textové pole)\n"
+          },
+          "noticePeriod": {
+            "type": "boolean",
+            "description": "Je klient ve výpovědní lhůtě?\n"
+          },
+          "probationaryPeriod": {
+            "type": "boolean",
+            "description": "Je klient ve zkušební době?\n"
+          },
+          "proofConfirmationContactPhone": {
+            "type": "string",
+            "description": "Kontaktní tel. číslo uvedené na potvrzení o výši příjmu\n"
+          },
+          "proofConfirmationContactSurname": {
+            "type": "string",
+            "description": "Kontaktní osoba uvedená na potvrzení o výši příjm.\n"
+          },
+          "proofCreatedOn": {
+            "type": "string",
+            "description": "Datum vystavení potvrzení o výši příjmu.\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "proofMonthlyIncomeAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "proofType": {
+            "$ref": "#/components/schemas/ProofType"
+          },
+          "relatedTransactions": {
+            "type": "array",
+            "description": "Klientem potvrzené transakce k žádosti.\n",
+            "items": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          "verificationPriority": {
+            "type": "integer",
+            "description": "Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.verificationPriority.\n",
+            "format": "int32"
+          },
+          "verificationStrategyCode": {
+            "type": "string",
+            "description": "Kód verifikační strategie dle číselníku CB_VerificationStrategyType - prozatím není verifikováno na straně LA.\n"
+          },
+          "verificationStrategySubCode": {
+            "type": "string",
+            "description": "Kód verifikační podstrategie dle číselníku CB_VerificationStrategySubType - prozatím není verifikováno na straně LA.\n"
+          }
+        },
+        "description": "LoanApplicationEmploymentIncome"
+      },
+      "LoanApplicationEntrepreneurIncome": {
+        "required": [
+          "incomePartId"
+        ],
+        "type": "object",
+        "properties": {
+          "countryCode": {
+            "type": "string",
+            "description": "Země sídla podnikání\n"
+          },
+          "dateRange": {
+            "$ref": "#/components/schemas/DateRange"
+          },
+          "declaredIncome": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "declaredIncomeCash": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "declaredIncomeCashPeriod": {
+            "$ref": "#/components/schemas/IncomePeriodType"
+          },
+          "declaredIncomePeriod": {
+            "$ref": "#/components/schemas/IncomePeriodType"
+          },
+          "domiciled": {
+            "type": "integer",
+            "description": "Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.domiciled.   \n",
+            "format": "int32"
+          },
+          "entrepreneurId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "entrepreneurIdentificationNumber": {
+            "type": "string",
+            "description": "Rodné číslo / IČO FOP\n"
+          },
+          "incomeAccountIBAN": {
+            "maxLength": 34,
+            "type": "string",
+            "description": "Číslo účtu ve formátu IBAN na který chodí bezhotovostní příjem.\n"
+          },
+          "incomePartId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "lumpSumModified": {
+            "type": "boolean",
+            "description": "Příznak, zda byl využit modifikovaný paušál\n"
+          },
+          "lumpSumTaxationRegime": {
+            "type": "boolean",
+            "description": "Příznak, zda je v podnikání využita paušální daň\n"
+          },
+          "proofType": {
+            "$ref": "#/components/schemas/ProofType"
+          },
+          "relatedTransactions": {
+            "type": "array",
+            "description": "Klientem potvrzené transakce k žádosti.\n",
+            "items": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          "verificationPriority": {
+            "type": "integer",
+            "description": "Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.verificationPriority.\n",
+            "format": "int32"
+          },
+          "verificationStrategyCode": {
+            "type": "string",
+            "description": "Kód verifikační strategie dle číselníku CB_VerificationStrategyType - prozatím není verifikováno na straně LA.\n"
+          },
+          "verificationStrategySubCode": {
+            "type": "string",
+            "description": "Kód verifikační podstrategie dle číselníku CB_VerificationStrategySubType - prozatím není verifikováno na straně LA.\n"
+          }
+        },
+        "description": "LoanApplicationEntrepreneurIncome"
+      },
+      "LoanApplicationHousehold": {
+        "required": [
+          "counterParty"
+        ],
+        "type": "object",
+        "properties": {
+          "childrenOver10": {
+            "type": "integer",
+            "description": "Počet vyživovaných dětí nad 10 let\n",
+            "format": "int64"
+          },
+          "childrenUnderAnd10": {
+            "type": "integer",
+            "description": "Počet vyživovaných dětí do 10 let (včetně)\n",
+            "format": "int64"
+          },
+          "counterParty": {
+            "type": "array",
+            "description": "Protistrana na žádosti (žadatel, spolužadatel)\nNotNull,NotEmpty",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationCounterParty"
+            }
+          },
+          "householdCreditLiabilitiesSummaryOutHomeCompany": {
+            "type": "array",
+            "description": "Shrnutí pasiv úvěru domácnosti\n",
+            "items": {
+              "$ref": "#/components/schemas/CreditLiabilitiesSummary"
+            }
+          },
+          "householdExpensesSummary": {
+            "type": "array",
+            "description": "Household Expenses Summary\n",
+            "items": {
+              "$ref": "#/components/schemas/ExpensesSummary"
+            }
+          },
+          "householdInstallmentsSummaryOutHomeCompany": {
+            "type": "array",
+            "description": "Shrnutí pasiv úvěru mimo domácnosti\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanInstallmentsSummary"
+            }
+          },
+          "id": {
+            "type": "integer",
+            "description": "LoanApplicationHousehold identity\n",
+            "format": "int64"
+          },
+          "index": {
+            "type": "integer",
+            "description": "LoanApplication index\n",
+            "format": "int64"
+          },
+          "roleCode": {
+            "$ref": "#/components/schemas/RoleType"
+          },
+          "settlementTypeCode": {
+            "$ref": "#/components/schemas/SettlementType"
+          }
+        },
+        "description": "Parametry domácnosti"
+      },
+      "LoanApplicationIncome": {
+        "required": [
+          "incomeCollected",
+          "incomeConfirmed"
+        ],
+        "type": "object",
+        "properties": {
+          "employmentIncomes": {
+            "type": "array",
+            "description": "Příjmy ze závislé činnosti\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationEmploymentIncome"
+            }
+          },
+          "entrepreneurIncome": {
+            "$ref": "#/components/schemas/LoanApplicationEntrepreneurIncome"
+          },
+          "incomeCollected": {
+            "type": "boolean",
+            "description": "Je příjem sbírán?\nNotNull"
+          },
+          "incomeConfirmed": {
+            "type": "boolean",
+            "description": "Jsou celkové příjmy uzamčeny?\nNotNull"
+          },
+          "lastConfirmedDate": {
+            "type": "string",
+            "description": "Datum a čas posledního uzamčení příjmů\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "otherIncomes": {
+            "type": "array",
+            "description": "Suma ostatních prokazatelných periodických čistých měsíčních příjmů\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationOtherIncome"
+            }
+          },
+          "rentIncome": {
+            "$ref": "#/components/schemas/LoanApplicationRentIncome"
+          }
+        },
+        "description": "Příjmy protistrany"
+      },
+      "LoanApplicationOtherIncome": {
+        "required": [
+          "incomePartId"
+        ],
+        "type": "object",
+        "properties": {
+          "dateRange": {
+            "$ref": "#/components/schemas/DateRange"
+          },
+          "declaredIncome": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "declaredIncomeCash": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "declaredIncomeCashPeriod": {
+            "$ref": "#/components/schemas/IncomePeriodType"
+          },
+          "declaredIncomePeriod": {
+            "$ref": "#/components/schemas/IncomePeriodType"
+          },
+          "domiciled": {
+            "type": "integer",
+            "description": "Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.domiciled.   \n",
+            "format": "int32"
+          },
+          "incomeAccountIBAN": {
+            "maxLength": 34,
+            "type": "string",
+            "description": "Číslo účtu ve formátu IBAN na který chodí bezhotovostní příjem.\n"
+          },
+          "incomePartId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "otherIncomeTypeCode": {
+            "type": "string",
+            "description": "Kód typu ostatního příjmu dle číselníku CB_OtherIncomeType - prozatím nebude verifikováno na straně LA.\n"
+          },
+          "proofType": {
+            "$ref": "#/components/schemas/ProofType"
+          },
+          "relatedTransactions": {
+            "type": "array",
+            "description": "Klientem potvrzené transakce k žádosti.\n",
+            "items": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          "verificationPriority": {
+            "type": "integer",
+            "description": "Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.verificationPriority.\n",
+            "format": "int32"
+          },
+          "verificationStrategyCode": {
+            "type": "string",
+            "description": "Kód verifikační strategie dle číselníku CB_VerificationStrategyType - prozatím není verifikováno na straně LA.\n"
+          },
+          "verificationStrategySubCode": {
+            "type": "string",
+            "description": "Kód verifikační podstrategie dle číselníku CB_VerificationStrategySubType - prozatím není verifikováno na straně LA.\n"
+          }
+        },
+        "description": "LoanApplicationOtherIncome"
+      },
+      "LoanApplicationPersonalDocument": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Číslo dokladu\n"
+          },
+          "issuedOn": {
+            "type": "string",
+            "description": "Datum vydání\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "type": {
+            "type": "string",
+            "description": "Typ dokladu\n"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Datum expirace dokladu\n",
+            "format": "date",
+            "example": "2021-04-20"
+          }
+        },
+        "description": "LoanApplicationPersonalDocument"
+      },
+      "LoanApplicationProduct": {
+        "type": "object",
+        "properties": {
+          "amountForeignResources": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "amountInvestment": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "amountOwnResources": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "amountRequired": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "annuity": {
+            "type": "integer",
+            "description": "Žádaná anuitní splátka\n",
+            "format": "int64"
+          },
+          "aplType": {
+            "type": "string",
+            "description": "Aplikace + typ účtu\n"
+          },
+          "developerCode": {
+            "type": "string",
+            "description": "Kód developera daného projektu, v rámci kterého je žádáno financování\n"
+          },
+          "drawingPeriodEnd": {
+            "type": "string",
+            "description": "Termín čerpání obchodu do\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "drawingPeriodStart": {
+            "type": "string",
+            "description": "Termín čerpání obchodu od\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "financingType": {
+            "type": "string",
+            "description": "Typ financování\n"
+          },
+          "fixationPeriod": {
+            "type": "integer",
+            "description": "Doba fixace úrokové sazby\n",
+            "format": "int64"
+          },
+          "glTableSelection": {
+            "type": "string",
+            "description": "Z tabulek xxTABGL, sloupec C_PROD_SEL\n"
+          },
+          "homeCurrencyIncome": {
+            "type": "string",
+            "description": "Domácí měna dle příjmu žadatelů\n"
+          },
+          "homeCurrencyResidence": {
+            "type": "string",
+            "description": "Domácí měna dle bydliště žadatelů\n"
+          },
+          "installmentCount": {
+            "type": "integer",
+            "description": "Počet splátek (pouze anuitní)\n",
+            "format": "int64"
+          },
+          "installmentPeriod": {
+            "$ref": "#/components/schemas/InstallmentPeriodType"
+          },
+          "interestRate": {
+            "type": "number",
+            "description": "Žádaná roční úroková sazba\n",
+            "format": "double"
+          },
+          "isProductSecured": {
+            "type": "boolean",
+            "description": "Kód produktového shluku (shluk jednoho produktu)\n"
+          },
+          "loanApplicationCollateral": {
+            "type": "array",
+            "description": "Seznam zajištění daného účtu. Zabaluje větve COLLATERAL. Shodná struktura jako v CrI_out\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationCollateral"
+            }
+          },
+          "loanApplicationPurpose": {
+            "type": "array",
+            "description": "Účely úvěru\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationPurpose"
+            }
+          },
+          "maturity": {
+            "type": "integer",
+            "description": "Počet splátek (anuitní a úrokové)\n",
+            "format": "int64"
+          },
+          "productClusterCode": {
+            "type": "string",
+            "description": "Kód produktového shluku (shluk jednoho produktu)\n"
+          },
+          "projectCode": {
+            "type": "string",
+            "description": "Kód daného projektu, v rámci kterého je žádáno financování\n"
+          },
+          "repaymentPeriodEnd": {
+            "type": "string",
+            "description": "Konečný den splatnosti\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "repaymentPeriodStart": {
+            "type": "string",
+            "description": "Datum začátku splácení\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "repaymentScheduleType": {
+            "$ref": "#/components/schemas/RepaymentScheduleType"
+          },
+          "vbs": {
+            "type": "number",
+            "description": "Vnitrobankovní úroková sazba\n",
+            "format": "double"
+          }
+        },
+        "description": "Parametry domácnosti."
+      },
+      "LoanApplicationProductRelation": {
+        "required": [
+          "productId",
+          "productType",
+          "relationType",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "counterparty": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationProductRelationCounterparty"
+            }
+          },
+          "productId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "productType": {
+            "type": "string",
+            "description": "Typ navézaného produktu (KBRGOUP, OFI).\nNotNull"
+          },
+          "relationType": {
+            "type": "string",
+            "description": "Typ dané vazby (CONSOLIDATION, APPENDIX, NOT_INCLUDE).\nNotNull"
+          },
+          "value": {
+            "$ref": "#/components/schemas/LoanApplicationProductRelationValue"
+          }
+        },
+        "description": "Vazba žádosti na existující úvěrový produkt (např.pro konsolidace, dodatky, apod.)"
+      },
+      "LoanApplicationProductRelationCounterparty": {
+        "required": [
+          "customerId",
+          "roleCode"
+        ],
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "roleCode": {
+            "$ref": "#/components/schemas/RoleType"
+          }
+        }
+      },
+      "LoanApplicationProductRelationValue": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Typ navázaného parametru (REMAINING_EXPOSURE)\n"
+          },
+          "value": {
+            "type": "string",
+            "description": "Hodnota navázaného parametru\n"
+          }
+        },
+        "description": "Navázané parametry na danou vazbu"
+      },
+      "LoanApplicationPurpose": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Výše požadované výše úvěru pro daný účel\n"
+          },
+          "code": {
+            "$ref": "#/components/schemas/LoanApplicationPurposeType"
+          }
+        },
+        "description": "Parametry domácnosti"
+      },
+      "LoanApplicationPurposeType": {
+        "type": "string",
+        "description": "PURPOSE",
+        "enum": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "32",
+          "33",
+          "34",
+          "35",
+          "36"
+        ]
+      },
+      "LoanApplicationRentIncome": {
+        "required": [
+          "incomePartId"
+        ],
+        "type": "object",
+        "properties": {
+          "dateRange": {
+            "$ref": "#/components/schemas/DateRange"
+          },
+          "declaredIncome": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "declaredIncomeCash": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "declaredIncomeCashPeriod": {
+            "$ref": "#/components/schemas/IncomePeriodType"
+          },
+          "declaredIncomePeriod": {
+            "$ref": "#/components/schemas/IncomePeriodType"
+          },
+          "domiciled": {
+            "type": "integer",
+            "description": "Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.domiciled.   \n",
+            "format": "int32"
+          },
+          "incomeAccountIBAN": {
+            "maxLength": 34,
+            "type": "string",
+            "description": "Číslo účtu ve formátu IBAN na který chodí bezhotovostní příjem.\n"
+          },
+          "incomePartId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "proofType": {
+            "$ref": "#/components/schemas/ProofType"
+          },
+          "relatedTransactions": {
+            "type": "array",
+            "description": "Klientem potvrzené transakce k žádosti.\n",
+            "items": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          "verificationPriority": {
+            "type": "integer",
+            "description": "Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.verificationPriority.\n",
+            "format": "int32"
+          },
+          "verificationStrategyCode": {
+            "type": "string",
+            "description": "Kód verifikační strategie dle číselníku CB_VerificationStrategyType - prozatím není verifikováno na straně LA.\n"
+          },
+          "verificationStrategySubCode": {
+            "type": "string",
+            "description": "Kód verifikační podstrategie dle číselníku CB_VerificationStrategySubType - prozatím není verifikováno na straně LA.\n"
+          }
+        },
+        "description": "LoanApplicationRentIncome"
+      },
+      "LoanApplicationRequest": {
+        "required": [
+          "loanApplicationHousehold",
+          "loanApplicationSnapshotId"
+        ],
+        "type": "object",
+        "properties": {
+          "appendixCode": {
+            "type": "integer",
+            "description": "Rozlišení nového obchodu a typu dodatku\n",
+            "format": "int64"
+          },
+          "distributionChannelCode": {
+            "$ref": "#/components/schemas/DistributionChannelType"
+          },
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "loanApplicationDealer": {
+            "$ref": "#/components/schemas/LoanApplicationDealer"
+          },
+          "loanApplicationDeclaredProductRelation": {
+            "type": "array",
+            "description": "Úvěrové produkty jištěné daným zajištěním (ještě bez znalosti konkrétních produktů)\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationDeclaredProductRelation"
+            }
+          },
+          "loanApplicationHousehold": {
+            "type": "array",
+            "description": "Aplikační data jednotlivých domácností (včetně ručitelských)\nNotNull,NotEmpty",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationHousehold"
+            }
+          },
+          "loanApplicationProduct": {
+            "$ref": "#/components/schemas/LoanApplicationProduct"
+          },
+          "loanApplicationProductRelation": {
+            "type": "array",
+            "description": "Vazba žádosti na existující úvěrový produkt (např.pro konsolidace, dodatky, apod.)\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationProductRelation"
+            }
+          },
+          "loanApplicationSnapshotId": {
+            "type": "string",
+            "description": "Loan application snapshotID\nNotNull"
+          },
+          "person": {
+            "$ref": "#/components/schemas/KBGroupPerson"
+          },
+          "signatureType": {
+            "type": "string",
+            "description": "Způsob podpisu žádosti\n"
+          }
+        },
+        "description": "RiskBusinessCaseAssessment"
+      },
+      "LoanApplicationResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "loanApplicationSnapshotId": {
+            "type": "string",
+            "description": "Loan application SnapshotId\n",
+            "example": "000001"
+          }
+        },
+        "description": "Loan Application result"
+      },
+      "LoanInstallmentsSummary": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "amountConsolidated": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "productClusterCode": {
+            "$ref": "#/components/schemas/LoanInstallmentsSummaryType"
+          }
+        },
+        "description": "householdInstallmentsSummaryOutHomeCompany"
+      },
+      "LoanInstallmentsSummaryType": {
+        "type": "string",
+        "description": "INSTALLMENTS PRODUCT CLUSTER",
+        "enum": [
+          "CL",
+          "ML"
+        ]
+      },
+      "MaritalStatusType": {
+        "type": "string",
+        "description": "MARTIAL STATUS",
+        "enum": [
+          "S",
+          "M",
+          "D",
+          "W",
+          "R"
+        ]
+      },
+      "OrgUnit": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Pobočka + expozitura přihlášení uživatele / schvalovatele\n"
+          },
+          "jobPost": {
+            "$ref": "#/components/schemas/JobPost"
+          },
+          "name": {
+            "type": "string",
+            "description": "Název pobočky přihlášení  uživatele / schvalovatele\n"
+          }
+        },
+        "description": "OrgUnit"
+      },
+      "PrimaryAddress": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string",
+            "description": "Město trvalého bydliště\n"
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Kód země\n"
+          },
+          "houseNumber": {
+            "type": "string",
+            "description": "Číslo popisné\n"
+          },
+          "inhabitancyFrom": {
+            "type": "string",
+            "description": "Datum nastěhování do trvalého bydliště\n",
+            "format": "date",
+            "example": "2021-04-20"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "PSČ trvalého bydliště\n"
+          },
+          "regionCode": {
+            "$ref": "#/components/schemas/RegionType"
+          },
+          "street": {
+            "type": "string",
+            "description": "Ulice\n"
+          },
+          "streetNumber": {
+            "type": "string",
+            "description": "Orientační číslo\n"
+          }
+        },
+        "description": "PrimaryAddress"
+      },
+      "ProofType": {
+        "type": "string",
+        "description": "PROOF TYPE",
+        "enum": [
+          "CCD",
+          "CPS",
+          "DAP",
+          "DOM",
+          "EPP",
+          "PNZ",
+          "PVP",
+          "UPS",
+          "XXX"
+        ]
+      },
+      "RegionType": {
+        "type": "string",
+        "description": "REGION",
+        "enum": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16"
+        ]
+      },
+      "RepaymentScheduleType": {
+        "type": "string",
+        "description": "REPAYMENT SCHEDULE TYPE",
+        "enum": [
+          "A",
+          "P",
+          "OS",
+          "OM",
+          "AX",
+          "PX"
+        ]
+      },
+      "ResourceIdentifier": {
+        "pattern": "^urn:ri:(\\w+)\\.(\\w+)\\.(\\w+)\\.([\\w+-.]*)(~(\\w+))?",
+        "type": "string",
+        "description": "The URN identifier of a resource is an universal scalar/string representation of a resource identifier in a system instance",
+        "format": "urn:ri:INSTANCE.DOMAIN.RESOURCE.ID~VARIANT",
+        "example": "urn:ri:KBCZ.CRMD.CreditRiskModel.837051596914429952"
+      },
+      "RoleType": {
+        "type": "string",
+        "description": "ROLE",
+        "enum": [
+          "A",
+          "S",
+          "R"
+        ]
+      },
+      "SettlementType": {
+        "type": "string",
+        "description": "SETTLEMENT TYPE",
+        "enum": [
+          "1",
+          "2",
+          "4",
+          "6",
+          "5",
+          "0"
+        ]
+      }
+    }
+  }
+}

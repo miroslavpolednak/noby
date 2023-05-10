@@ -9,14 +9,11 @@ using System.ServiceModel.Channels;
 namespace ExternalServices.EasSimulationHT.V1;
 public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient, IHT_WS_SB_Services>, IEasSimulationHTClient
 {
-    private readonly ILogger<RealEasSimulationHTClient> _logger;
-
     public RealEasSimulationHTClient(
         ILogger<RealEasSimulationHTClient> logger,
         IExternalServiceConfiguration<IEasSimulationHTClient> configuration)
         : base(configuration, logger)
     {
-        _logger = logger;
     }
 
     protected override string ServiceName => StartupExtensions.ServiceName;
@@ -38,7 +35,7 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
 
             if ((result.errorInfo?.kodChyby ?? 0) != 0)
             {
-                _logger.ExtServiceResponseError($"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]");
+                Logger.ExtServiceResponseError($"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]");
                 throw new CisValidationException(10020, result.errorInfo!.textChyby);
             }
             return result;

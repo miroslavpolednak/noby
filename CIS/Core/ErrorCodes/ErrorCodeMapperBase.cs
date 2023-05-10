@@ -44,6 +44,11 @@ public abstract class ErrorCodeMapperBase
         return new CisNotFoundException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
+    public static CisNotFoundException CreateNotFoundException(int exceptionCode, params object?[] args)
+    {
+        throw new CisNotFoundException(exceptionCode, string.Format(GetMessage(exceptionCode), args));
+    }
+    
     public static CisArgumentException CreateArgumentException(int exceptionCode, object? parameter = null)
     {
         return new CisArgumentException(exceptionCode, GetMessage(exceptionCode, parameter));
@@ -54,6 +59,11 @@ public abstract class ErrorCodeMapperBase
         return new CisAlreadyExistsException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
+    public static CisAlreadyExistsException CreateAlreadyExistsException(int exceptionCode, params object?[] args)
+    {
+        throw new CisAlreadyExistsException(exceptionCode, string.Format(GetMessage(exceptionCode), args));
+    }
+    
     /// <summary>
     /// Vytvoří vyjímku typu ValidationFound s textem pro daný ExceptionCode.
     /// </summary>

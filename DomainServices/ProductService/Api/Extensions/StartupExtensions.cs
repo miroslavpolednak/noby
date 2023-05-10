@@ -8,9 +8,10 @@ internal static class StartupExtensions
     public static WebApplicationBuilder AddProductService(this WebApplicationBuilder builder)
     {
         // EAS svc
-        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
+        builder.AddExternalService<global::ExternalServices.Eas.V1.IEasClient>();
         // MpHome svc
-        builder.AddExternalService<ExternalServices.MpHome.V1_1.IMpHomeClient>();
+        builder.AddExternalService<global::ExternalServices.MpHome.V1_1.IMpHomeClient>();
+        builder.AddExternalService<DomainServices.ProductService.ExternalServices.Pcp.V1.IPcpClient>();
 
         // dbcontext
         builder.AddEntityFramework<Database.ProductServiceDbContext>(connectionStringKey: "konsDb");
