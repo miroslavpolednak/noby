@@ -16,4 +16,6 @@ public sealed class SimulateMortgageResponse
     /// Vysledky simulace.
     /// </summary>
     public Dto.MortgageOutputs? SimulationResults { get; set; }
+
+    public CreditWorthinessSimpleResults? CreditWorthinessSimpleResults { get; set; }
 }

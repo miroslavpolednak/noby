@@ -10,6 +10,8 @@ internal static class StartupExtensions
         // EAS EasSimulationHT svc
         builder.AddExternalService<ExternalServices.EasSimulationHT.V1.IEasSimulationHTClient>();
 
+        builder.Services.AddRiskIntegrationService();
+
         // dbcontext
         builder.AddEntityFramework<Database.OfferServiceDbContext>();
 

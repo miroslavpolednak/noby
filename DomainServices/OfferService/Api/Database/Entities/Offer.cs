@@ -20,6 +20,10 @@ internal sealed class Offer
 
     public string AdditionalSimulationResults { get; set; } = default!;
 
+    public bool IsCreditWorthinessSimpleRequested { get; set; }
+
+    public string? CreditWorthinessSimpleInputs { get; set; }
+
     public byte[] BasicParametersBin { get; set; } = default!;
 
     public byte[] SimulationInputsBin { get; set; } = default!;
@@ -27,4 +31,6 @@ internal sealed class Offer
     public byte[] SimulationResultsBin { get; set; } = default!;
 
     public byte[] AdditionalSimulationResultsBin { get; set; } = default!;
+
+    public byte[]? CreditWorthinessSimpleInputsBin { get; set; }
 }

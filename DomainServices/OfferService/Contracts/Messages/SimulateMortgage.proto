@@ -7,11 +7,15 @@ import "Messages/BasicParameters.proto";
 import "Messages/MortgageSimulationInputs.proto";
 import "Messages/MortgageSimulationResults.proto";
 import "Messages/AdditionalMortgageSimulationResults.proto";
+import "Messages/MortgageCreditWorthinessSimpleInputs.proto";
+import "Messages/MortgageCreditWorthinessSimpleResults.proto";
 
 message SimulateMortgageRequest {
 	string ResourceProcessId = 1;
 	BasicParameters BasicParameters = 2;
 	MortgageSimulationInputs SimulationInputs = 3;
+	bool IsCreditWorthinessSimpleRequested = 4;
+	MortgageCreditWorthinessSimpleInputs CreditWorthinessSimpleInputs = 5;
 }
 
 message SimulateMortgageResponse {
@@ -22,4 +26,5 @@ message SimulateMortgageResponse {
 	MortgageSimulationInputs SimulationInputs = 5;
 	MortgageSimulationResults SimulationResults = 6;
 	AdditionalMortgageSimulationResults AdditionalSimulationResults = 7;
+	MortgageCreditWorthinessSimpleResults CreditWorthinessSimpleResults = 8;
 }
