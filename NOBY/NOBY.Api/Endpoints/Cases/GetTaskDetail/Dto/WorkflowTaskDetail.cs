@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto;
+﻿using NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments;
+
+namespace NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto;
 
 public class WorkflowTaskDetail
 {
@@ -42,4 +44,6 @@ public class WorkflowTaskDetail
     /// Dožádání: Text požadavku a případné odpovědi (i včetně případných opakování komunikace). Řazeno chronologicky, nejstarší záznam je jako poslední.; Předání na specialistu: popis požadavku
     /// </summary>
     public List<TaskCommunicationItem> TaskCommunication { get; set; } = null!;
+
+    public Amendments.Amendments Amendments { get; set; } = null!;
 }
