@@ -23,7 +23,8 @@ public sealed class ErrorCodeMapper
             { 90014, new("Smlouva není podepsána. Nelze vytvořit změnu.") },
             { 90015, new("Není vyplněna žádost o změnu Dlužníka. Nelze vytvořit změnu.") },
             { 90016, new("Nabídka nemá platnou garanci.") },
-            { 90017, new("Nelze simulovat s garancí.", "Žádost neexistuje nebo neobsahuje platné datum garance.") }
+            { 90017, new("Nelze simulovat s garancí.", "Žádost neexistuje nebo neobsahuje platné datum garance.") },
+            { 90019, new("Není vyplněna měna příjmu nebo bydliště.") }
         };
 
         Messages = messages.AsReadOnly();

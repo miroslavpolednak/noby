@@ -26,11 +26,13 @@ internal sealed class UpdateParametersHandler
                     var o1 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersMortgage>(dataString, _jsonSerializerOptions);
                     if (o1 is not null)
                     {
-                        updateRequest.Mortgage = o1.ToDomainService();
-                        if (string.IsNullOrEmpty(updateRequest.Mortgage.IncomeCurrencyCode) || string.IsNullOrEmpty(updateRequest.Mortgage.ResidencyCurrencyCode))
+                        if (string.IsNullOrEmpty(o1.IncomeCurrencyCode) || string.IsNullOrEmpty(o1.ResidencyCurrencyCode))
                         {
                             throw new NobyValidationException(90019);
                         }
+                        
+                        updateRequest.Mortgage = o1.ToDomainService();
+
                     }
                     break;
 
