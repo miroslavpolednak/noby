@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NOBY.Api.Endpoints.Shared;
+using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.Cases.UpdateTaskDetail;
 
@@ -15,12 +16,14 @@ public class UpdateTaskDetailRequest : IRequest
     /// SB ID úkolu, není zobrazeno na FE UI
     /// </summary>
     /// <example>22456</example>
+    [Required]
     public int TaskIdSB { get; set; }
 
     /// <summary>
     /// ID typu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK">číselníku typu úkolů</a>
     /// </summary>
     /// <example>1</example>
+    [Required]
     public int TaskTypeId { get; set; }
 
     /// <summary>
