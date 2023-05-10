@@ -6,16 +6,22 @@ using ExternalServices.MpHome.V1_1.Contracts;
 namespace DomainServices.ProductService.Api.Endpoints.CreateContractRelationship;
 
 internal sealed class CreateContractRelationshipHandler
-    : BaseMortgageHandler, IRequestHandler<Contracts.CreateContractRelationshipRequest, Google.Protobuf.WellKnownTypes.Empty>
+    : IRequestHandler<Contracts.CreateContractRelationshipRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     #region Construction
+    private readonly ICodebookServiceClients _codebookService;
+    private readonly Database.LoanRepository _repository;
+    private readonly IMpHomeClient _mpHomeClient;
 
     public CreateContractRelationshipHandler(
         ICodebookServiceClients codebookService,
         Database.LoanRepository repository,
-        IMpHomeClient mpHomeClient,
-        ILogger<CreateContractRelationshipHandler> logger) : base(codebookService, repository, mpHomeClient, logger)
-    { }
+        IMpHomeClient mpHomeClient)
+    {
+        _codebookService = codebookService;
+        _repository = repository;
+        _mpHomeClient = mpHomeClient;
+    }
 
     #endregion
 
@@ -53,7 +59,7 @@ internal sealed class CreateContractRelationshipHandler
         };
 
         // call endpoint
-        await _mpHomeClient.UpdateLoanPartnerLink(request.ProductId, request.Relationship.PartnerId, loanLinkRequest);
+        await _mpHomeClient.UpdateLoanPartnerLink(request.ProductId, request.Relationship.PartnerId, loanLinkRequest, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

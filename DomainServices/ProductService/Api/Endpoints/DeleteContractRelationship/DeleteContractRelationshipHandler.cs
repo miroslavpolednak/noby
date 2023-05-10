@@ -1,19 +1,21 @@
-﻿using DomainServices.CodebookService.Clients;
-using ExternalServices.MpHome.V1_1;
+﻿using ExternalServices.MpHome.V1_1;
 
 namespace DomainServices.ProductService.Api.Endpoints.DeleteContractRelationship;
 
 internal sealed class DeleteContractRelationshipHandler
-    : BaseMortgageHandler, IRequestHandler<Contracts.DeleteContractRelationshipRequest, Google.Protobuf.WellKnownTypes.Empty>
+    : IRequestHandler<Contracts.DeleteContractRelationshipRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     #region Construction
+    private readonly Database.LoanRepository _repository;
+    private readonly IMpHomeClient _mpHomeClient;
 
     public DeleteContractRelationshipHandler(
-        ICodebookServiceClients codebookService,
         Database.LoanRepository repository,
-        IMpHomeClient mpHomeClient,
-        ILogger<DeleteContractRelationshipHandler> logger) : base(codebookService, repository, mpHomeClient, logger)
-    { }
+        IMpHomeClient mpHomeClient)
+    {
+        _repository = repository;
+        _mpHomeClient = mpHomeClient;
+    }
 
     #endregion
 
@@ -26,7 +28,7 @@ internal sealed class DeleteContractRelationshipHandler
         }
 
         // call endpoint
-        await _mpHomeClient.DeletePartnerLoanLink(request.ProductId, request.PartnerId);
+        await _mpHomeClient.DeletePartnerLoanLink(request.ProductId, request.PartnerId, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

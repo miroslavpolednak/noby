@@ -42,4 +42,6 @@ message MortgageData {
 	PaymentAccount RepaymentAccount = 31;
 	repeated LoanRealEstate LoanRealEstates = 32;
 	StatementObject Statement = 33;
+	google.protobuf.StringValue PcpId = 34;
+	cis.types.NullableGrpcDate FirstSignatureDate = 35;
 }

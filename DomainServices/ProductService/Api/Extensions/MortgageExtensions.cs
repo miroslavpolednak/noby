@@ -31,7 +31,8 @@ internal static class MortgageExtensions
             RepaymentStartDate = mortgage.FirstAnnuityPaymentDate,
             ServiceBranchId = mortgage.BranchConsultantId,
             ConsultantId = mortgage.ThirdPartyConsultantId,
-            LoanPurposes = mortgage.LoanPurposes is null ? null : mortgage.LoanPurposes.Select(t => new ExternalServices.MpHome.V1_1.Contracts.LoanPurpose
+            FirstRequestSignDate = mortgage.FirstSignatureDate,
+            LoanPurposes = mortgage.LoanPurposes is null ? null : mortgage.LoanPurposes.Select(t => new global::ExternalServices.MpHome.V1_1.Contracts.LoanPurpose
             {
                 Amount = Convert.ToDouble((decimal)t.Sum),
                 LoanPurposeId = t.LoanPurposeId
@@ -95,7 +96,8 @@ internal static class MortgageExtensions
                 FrequencyId = eLoan.HuVypisZodb,
                 EmailAddress1 = eLoan.VypisEmail1,
                 EmailAddress2 = eLoan.VypisEmail2
-            }
+            },
+            FirstSignatureDate = eLoan.DatumPodpisuPrvniZadosti
         };
 
         if (eRelationships?.Count > 0)
