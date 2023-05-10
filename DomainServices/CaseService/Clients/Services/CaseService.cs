@@ -113,16 +113,6 @@ internal sealed class CaseService
         return result.Tasks.ToList();
     }
 
-    public async Task<List<WorkflowTask>> GetTaskListByContract(string contractNumber, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        var result = await _service.GetTaskListByContractAsync(
-            new()
-            {
-                ContractNumber = contractNumber
-            }, cancellationToken: cancellationToken);
-        return result.Tasks.ToList();
-    }
-
     public async Task<IList<ProcessTask>> GetProcessList(long caseId, CancellationToken cancellationToken = default)
     {
         var result = await _service.GetProcessListAsync(new GetProcessListRequest { CaseId = caseId }, cancellationToken: cancellationToken);

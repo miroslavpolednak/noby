@@ -9,7 +9,7 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1;
 internal sealed class RealPcpClient 
     : IPcpClient
 {
-    public async Task CreateProduct(long caseId, long customerKbId, string pcpProductId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<string> CreateProduct(long caseId, long customerKbId, string pcpProductId, CancellationToken cancellationToken = default(CancellationToken))
     {
         string soap = _soapEnvelopeStart + getHeader() + $@"<soapenv:Body>
 <v12:createRequest>
@@ -62,6 +62,8 @@ internal sealed class RealPcpClient
 
                 response.EnsureSuccessStatusCode();
                 //var xml = XElement.Parse(rawResponse);
+
+                return "nejake id";
             }
         }
     }
