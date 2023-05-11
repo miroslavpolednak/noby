@@ -23,7 +23,9 @@ internal sealed class GetMortgageOfferDetailHandler
             BasicParameters = BasicParameters.Parser.ParseFrom(entity.BasicParametersBin),
             SimulationInputs = MortgageSimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin),
             SimulationResults = MortgageSimulationResults.Parser.ParseFrom(entity.SimulationResultsBin),
-            AdditionalSimulationResults = AdditionalMortgageSimulationResults.Parser.ParseFrom(entity.AdditionalSimulationResultsBin)
+            AdditionalSimulationResults = AdditionalMortgageSimulationResults.Parser.ParseFrom(entity.AdditionalSimulationResultsBin),
+            IsCreditWorthinessSimpleRequested = entity.IsCreditWorthinessSimpleRequested,
+            CreditWorthinessSimpleInputs = entity.CreditWorthinessSimpleInputsBin is null ? null : MortgageCreditWorthinessSimpleInputs.Parser.ParseFrom(entity.CreditWorthinessSimpleInputsBin)
         };
 
         return model;

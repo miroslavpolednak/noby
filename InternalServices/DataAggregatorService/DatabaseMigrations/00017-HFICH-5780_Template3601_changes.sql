@@ -80,8 +80,13 @@ INSERT INTO DocumentSpecialDataField VALUES (4, 'SpoluzadatelJsemNejsem5Odrazka'
 
 DELETE FROM DocumentSpecialDataFieldVariant WHERE DocumentId = 4 AND AcroFieldName = 'UdajeDomacnosti'
 DELETE FROM DocumentSpecialDataFieldVariant WHERE DocumentId = 4 AND AcroFieldName = 'VydajeDomacnosti'
+DELETE FROM DocumentSpecialDataFieldVariant WHERE DocumentId = 4 AND AcroFieldName = 'Zahlavi1Radek'
+DELETE FROM DocumentSpecialDataFieldVariant WHERE DocumentId = 4 AND AcroFieldName = 'Zahlavi2Radky'
+
 DELETE FROM DocumentSpecialDataField WHERE DocumentId = 4 AND AcroFieldName = 'UdajeDomacnosti'
 DELETE FROM DocumentSpecialDataField WHERE DocumentId = 4 AND AcroFieldName = 'VydajeDomacnosti'
+DELETE FROM DocumentSpecialDataField WHERE DocumentId = 4 AND AcroFieldName = 'Zahlavi1Radek'
+DELETE FROM DocumentSpecialDataField WHERE DocumentId = 4 AND AcroFieldName = 'Zahlavi2Radky'
 
 UPDATE DataField SET DefaultStringFormat = '{0:CustomCurrency}' WHERE DataFieldId = 107
 UPDATE DataField SET DefaultStringFormat = '{0:CustomCurrency}' WHERE DataFieldId = 108

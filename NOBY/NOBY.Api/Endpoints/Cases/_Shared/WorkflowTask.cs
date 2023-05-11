@@ -1,6 +1,8 @@
-﻿namespace NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
+﻿using NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
 
-public sealed class WorkflowTaskNew
+namespace NOBY.Api.Endpoints.Cases.Dto;
+
+public sealed class WorkflowTask
 {
     /// <summary>
     /// Noby task ID. Jde o ID sady úkolů generované Starbuildem.

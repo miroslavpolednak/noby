@@ -7,6 +7,7 @@ import "Messages/BasicParameters.proto";
 import "Messages/MortgageSimulationInputs.proto";
 import "Messages/MortgageSimulationResults.proto";
 import "Messages/AdditionalMortgageSimulationResults.proto";
+import "Messages/MortgageCreditWorthinessSimpleInputs.proto";
 
 message GetMortgageOfferDetailRequest {
 	int32 OfferId = 1;
@@ -20,4 +21,6 @@ message GetMortgageOfferDetailResponse {
 	MortgageSimulationInputs SimulationInputs = 5;
 	MortgageSimulationResults SimulationResults = 6;
 	AdditionalMortgageSimulationResults AdditionalSimulationResults = 7;
+	bool IsCreditWorthinessSimpleRequested = 8;
+	MortgageCreditWorthinessSimpleInputs CreditWorthinessSimpleInputs = 9;
 }

@@ -6,7 +6,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStatesNoby;
 using DomainServices.UserService.Clients;
 using NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
-using WorkflowTask = DomainServices.CaseService.Contracts.WorkflowTask;
+using _Case = DomainServices.CaseService.Contracts;
 
 
 namespace NOBY.Api.Endpoints.Cases.Dto;
@@ -18,8 +18,8 @@ public class WorkflowMapper
     private readonly IUserServiceClient _userService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     
-    public async Task<NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew> Map(
-        WorkflowTask task,
+    public async Task<WorkflowTask> Map(
+        _Case.WorkflowTask task,
         CancellationToken cancellationToken)
     {
         var taskStates = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
@@ -29,12 +29,12 @@ public class WorkflowMapper
         return MapInternal(task, taskState);
     }
 
-    public async Task<List<NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew>> Map(
-        List<WorkflowTask> tasks,
+    public async Task<List<WorkflowTask>> Map(
+        List<_Case.WorkflowTask> tasks,
         CancellationToken cancellationToken)
     {
         var taskStates = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
-        var list = new List<NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew>();
+        var list = new List<Dto.WorkflowTask>();
         foreach (var task in tasks)
         {
             var workflowState = await GetWorkflowState(task, cancellationToken);
@@ -45,11 +45,11 @@ public class WorkflowMapper
         return list;
     }
 
-    public async Task<NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail> Map(WorkflowTask task, TaskDetailItem taskDetailItem, CancellationToken cancellationToken)
+    public async Task<GetTaskDetail.Dto.WorkflowTaskDetail> Map(_Case.WorkflowTask task, TaskDetailItem taskDetailItem, CancellationToken cancellationToken)
     {
         var performer = await _codebookService.GetOperator(task.PerformerLogin, cancellationToken);
 
-        var taskDetail = new NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail
+        var taskDetail = new GetTaskDetail.Dto.WorkflowTaskDetail
         {
             TaskIdSB = task.TaskIdSb,
             PerformerLogin = performer?.PerformerLogin,
@@ -73,10 +73,10 @@ public class WorkflowMapper
         };
     }
     
-    private NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew MapInternal(WorkflowTask task,
-        WorkflowTaskStateNobyItem taskState)
+    private Dto.WorkflowTask MapInternal(_Case.WorkflowTask task,
+                                         WorkflowTaskStateNobyItem taskState)
     {
-        return new NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew
+        return new Dto.WorkflowTask
         {
             TaskId = task.TaskId,
             CreatedOn = task.CreatedOn,
@@ -92,7 +92,7 @@ public class WorkflowMapper
         };
     }
     
-    private async Task<State> GetWorkflowState(WorkflowTask task, CancellationToken cancellationToken)
+    private async Task<State> GetWorkflowState(_Case.WorkflowTask task, CancellationToken cancellationToken)
     {
         if (task.Cancelled)
             return State.Cancelled;
@@ -126,7 +126,7 @@ public class WorkflowMapper
             _ => throw new ArgumentOutOfRangeException(nameof(phaseTypeId), phaseTypeId, null)
         };
 
-    private async Task<State> GetSignatureState(WorkflowTask task, CancellationToken cancellationToken) =>
+    private async Task<State> GetSignatureState(_Case.WorkflowTask task, CancellationToken cancellationToken) =>
         task.SignatureType switch
         {
             "digital" => GetDigitalSignatureState(task.PhaseTypeId),
@@ -142,7 +142,7 @@ public class WorkflowMapper
             _ => throw new ArgumentOutOfRangeException(nameof(phaseTypeId), phaseTypeId, null)
         };
 
-    private async Task<State> GetPaperSignatureState(WorkflowTask task, CancellationToken cancellationToken)
+    private async Task<State> GetPaperSignatureState(_Case.WorkflowTask task, CancellationToken cancellationToken)
     {
         var user = await _userService.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
 

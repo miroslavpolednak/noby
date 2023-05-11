@@ -623,72 +623,6 @@
             </summary>
             <example>1</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.TaskId">
-            <summary>
-            Noby task ID. Jde o ID sady úkolů generované Starbuildem.
-            </summary>
-            <example>22777</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.CreatedOn">
-            <summary>
-            Datum vytvoření úkolu
-            </summary>
-            <example>12.12.2022</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.TaskTypeId">
-            <summary>
-            ID typu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK">číselníku typu úkolů</a>
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.TaskTypeName">
-            <summary>
-            Jméno typu úkolu
-            </summary>
-            <example>Dožádání</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.TaskSubtypeName">
-            <summary>
-            Označení úkolu (název podtypu úkolu)
-            </summary>
-            <example>Obecné</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.ProcessId">
-            <summary>
-            ID procesu
-            </summary>
-            <example>2344</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.ProcessNameShort">
-            <summary>
-            Jméno typu procesu (zkrácené)
-            </summary>
-            <example>Hlavní</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.StateId">
-            <summary>
-            ID Noby stavu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby">číselníku stavů úkolů</a>
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.StateName">
-            <summary>
-            Název Noby stavu úkolu
-            </summary>
-            <example>K VYŘÍZENÍ</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.StateFilter">
-            <summary>
-            Filter Noby stavu úkolu
-            </summary>
-            <example>Active</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowTaskNew.StateIndicator">
-            <summary>
-            Indikátor barvy Noby stavu
-            </summary>
-            <example>Active</example>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest.FilterId">
             <summary>
             [optional] ID pozadovaneho stavu filtru.
@@ -796,6 +730,72 @@
             <summary>
             Datum a cas posledni zmeny Case.
             </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.TaskId">
+            <summary>
+            Noby task ID. Jde o ID sady úkolů generované Starbuildem.
+            </summary>
+            <example>22777</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.CreatedOn">
+            <summary>
+            Datum vytvoření úkolu
+            </summary>
+            <example>12.12.2022</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.TaskTypeId">
+            <summary>
+            ID typu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK">číselníku typu úkolů</a>
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.TaskTypeName">
+            <summary>
+            Jméno typu úkolu
+            </summary>
+            <example>Dožádání</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.TaskSubtypeName">
+            <summary>
+            Označení úkolu (název podtypu úkolu)
+            </summary>
+            <example>Obecné</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.ProcessId">
+            <summary>
+            ID procesu
+            </summary>
+            <example>2344</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.ProcessNameShort">
+            <summary>
+            Jméno typu procesu (zkrácené)
+            </summary>
+            <example>Hlavní</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.StateId">
+            <summary>
+            ID Noby stavu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby">číselníku stavů úkolů</a>
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.StateName">
+            <summary>
+            Název Noby stavu úkolu
+            </summary>
+            <example>K VYŘÍZENÍ</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.StateFilter">
+            <summary>
+            Filter Noby stavu úkolu
+            </summary>
+            <example>Active</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.StateIndicator">
+            <summary>
+            Indikátor barvy Noby stavu
+            </summary>
+            <example>Active</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetAll(System.String,System.Threading.CancellationToken)">
              <summary>Kolekce vyžadaných číselniků.</summary>
@@ -2244,7 +2244,8 @@
             Simulace KB hypotéky.
             </summary>
             <remarks>
-            Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.
+            Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F8D7E9A3-7589-42af-B2B3-9B34A243D6AB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="request">Nastaveni simulace.</param>
             <returns>ID vytvořené simulace a její výsledky.</returns>
@@ -2254,7 +2255,7 @@
             Detail provedené simulace dle ID simulace.
             </summary>
             <remarks>
-            <i>DS:</i> OfferService/GetMortgageData
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2AB0C760-7188-48ad-ABA7-D432D51A1A40"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Vstupy a výstupy uložené simulace.</returns>
         </member>
@@ -2263,9 +2264,8 @@
             Detail provedené simulace dle ID Sales Arrangement.
             </summary>
             <remarks>
-            Stejný endpoint jako GetMortgageByOfferId, jen podle jiného ID.<br/>
-            <i>DS:</i> SalesArrangementService/GetSalesArrangement (to get OfferId)<br/>
-            <i>DS:</i> OfferService/GetMortgageData
+            Stejný endpoint jako MortgageOfferByOfferIdGet, jen podle jiného ID.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=43139152-F859-4d55-9D06-11353DA80961"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Vstupy a výstupy uložené simulace.</returns>
         </member>
@@ -2319,6 +2319,31 @@
             Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
             </remarks>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.WorthinessResult">
+            <summary>
+            Výsledek bonity
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.InstallmentLimit">
+            <summary>
+            Měsíční splátka (maximum)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.MaxAmount">
+            <summary>
+            Měsíční splátka (maximum)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.RemainsLivingAnnuity">
+            <summary>
+            Zbývá na živobytí s požadovanou splátkou
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.RemainsLivingInst">
+            <summary>
+            Zbývá na živobytí s maximální splátkou
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest.ResourceProcessId">
             <summary>
             Unikatni identifikator pro session simulace.
@@ -2348,6 +2373,46 @@
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.SimulationResults">
             <summary>
             Vysledky simulace.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.Dto.CreditWorthinessSimpleInputs.IsActive">
+            <summary>
+            Sekce aktivní
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.Dto.CreditWorthinessSimpleInputs.TotalMonthlyIncome">
+            <summary>
+            Celkové měsíční příjmy
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.Dto.CreditWorthinessSimpleInputs.ExpensesRent">
+            <summary>
+            Celkové měsíční příjmy
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.Dto.CreditWorthinessSimpleInputs.ExpensesOther">
+            <summary>
+            Ostatní měsíční výdaje
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.Dto.CreditWorthinessSimpleInputs.LoansInstallmentsAmount">
+            <summary>
+            Splátky úvěrů a hypoték
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.Dto.CreditWorthinessSimpleInputs.CreditCardsAmount">
+            <summary>
+            Limity kreditních karet
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.Dto.CreditWorthinessSimpleInputs.AuthorizedOverdraftsTotalAmount">
+            <summary>
+            Limity debetů
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.Dto.CreditWorthinessSimpleInputs.ChildrenCount">
+            <summary>
+            Počet dětí
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.Dto.GetFullPaymentScheduleResponse.Items">

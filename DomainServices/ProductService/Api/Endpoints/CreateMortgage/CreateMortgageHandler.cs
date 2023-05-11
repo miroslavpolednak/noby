@@ -21,7 +21,7 @@ internal sealed class CreateMortgageHandler
         DomainServices.ProductService.ExternalServices.Pcp.V1.IPcpClient pcpClient,
         ICodebookServiceClients codebookService,
         ICaseServiceClient caseService,
-        Database.LoanRepository repository,
+        LoanRepository repository,
         IMpHomeClient mpHomeClient)
     {
         _codebookService = codebookService;
@@ -43,10 +43,11 @@ internal sealed class CreateMortgageHandler
         }
 
         // create in pcp
+        string? newPcpId;
         if (caseInstance.Customer?.Identity?.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
         {
-            var pcpId = (await _codebookService.ProductTypes(cancellation)).First(t => t.Id == request.Mortgage.ProductTypeId).Id.ToString();
-            //await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpId, cancellation);
+            var pcpId = (await _codebookService.ProductTypes(cancellation)).First(t => t.Id == request.Mortgage.ProductTypeId).Id.ToString();//TODO pozor!!!! nahradit Id za korektni prop z ciselniku
+            //newPcpId = await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpId, cancellation);
         }
 
         // create in konsdb
