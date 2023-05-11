@@ -30,15 +30,9 @@ internal sealed class IdentifyByIdentityHandler
         }
 
         // validate two same identities on household
-        if (customerOnSaInstance.CustomerIdentifiers?.Any() ?? false)
+        if (customerDetails.Any(x => x.CustomerIdentifiers?.Any(t => (int)t.IdentityScheme == (int)request.CustomerIdentity!.Scheme && t.IdentityId == request.CustomerIdentity.Id) ?? false))
         {
-            foreach (var customer in customerDetails)
-            {
-                if (customerOnSaInstance.CustomerIdentifiers.Any(x => customer.CustomerIdentifiers.Any(t => t.IdentityScheme == x.IdentityScheme && t.IdentityId == x.IdentityId)))
-                {
-                    throw new NobyValidationException("Identity already present on SalesArrangement customers");
-                }
-            }
+            throw new NobyValidationException("Identity already present on SalesArrangement customers");
         }
 
         // update customera
