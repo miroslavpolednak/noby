@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message MortgageCreditWorthinessSimpleResults {
+	google.protobuf.Int32Value InstallmentLimit = 1;
+
+	google.protobuf.Int32Value MaxAmount = 2;
+
+	google.protobuf.Int32Value RemainsLivingAnnuity = 3;
+
+	google.protobuf.Int32Value RemainsLivingInst = 4;
+
+	WorthinessResult WorthinessResult = 5;
+}
+
+enum WorthinessResult {
+	Unknown = 0;
+	Success = 1;
+	Failed = 2;
+}
