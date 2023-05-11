@@ -10,12 +10,6 @@ internal sealed class NotifyStarbuildHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(NotifyStarbuildRequest request, CancellationToken cancellationToken)
     {
-        // bez prihlaseneho uzivatele to nema cenu
-        if (!_userAccessor.IsAuthenticated)
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AuthenticatedUserNotFound);
-        }
-
         // instance Case
         var caseInstance = await _dbContext
             .Cases
