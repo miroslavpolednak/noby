@@ -28,4 +28,7 @@ public class EaCodeMainItem
 
     [DataMember(Order = 8)]
     public bool IsValid { get; set; }
+
+    [DataMember(Order = 9)]
+    public bool IsFormIdRequested { get; set; }
 }
