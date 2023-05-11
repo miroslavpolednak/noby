@@ -51,7 +51,7 @@ public class WorkflowMapper
             PerformerLogin = performer?.PerformerLogin,
             PerformerName = performer?.PerformerName,
             ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
-            Amendments = Map(taskDetailItem)
+            Amendments = Map(task, taskDetailItem)
         };
 
         taskDetail.TaskCommunication.AddRange(taskDetailItem.TaskCommunication.Select(Map));
@@ -59,11 +59,11 @@ public class WorkflowMapper
         return taskDetail;
     }
 
-    private static Amendments Map(TaskDetailItem taskDetailItem) =>
+    private static Amendments Map(_Case.WorkflowTask task, TaskDetailItem taskDetailItem) =>
         taskDetailItem.AmendmentsCase switch
         {
             TaskDetailItem.AmendmentsOneofCase.Request => Map(taskDetailItem.Request),
-            TaskDetailItem.AmendmentsOneofCase.Signing => Map(taskDetailItem.Signing),
+            TaskDetailItem.AmendmentsOneofCase.Signing => Map(task, taskDetailItem.Signing),
             TaskDetailItem.AmendmentsOneofCase.ConsultationData => Map(taskDetailItem.ConsultationData),
             _ => throw new ArgumentOutOfRangeException()
         };
@@ -75,15 +75,15 @@ public class WorkflowMapper
         SentToCustomer = request.SentToCustomer
     };
 
-    private static AmendmentsSigning Map(AmendmentSigning signing) => new()
+    private static AmendmentsSigning Map(_Case.WorkflowTask task, AmendmentSigning signing) => new()
     {
-        // SignatureType = 
+        SignatureType = Map(task.SignatureType),
         Expiration = signing.Expiration,
         FormId = signing.FormId,
         DocumentForSigning = signing.DocumentForSigning,
         ProposalForEntry = signing.ProposalForEntry
     };
-
+    
     private static AmendmentsConsultationData Map(AmendmentConsultationData consultationData) => new()
     {
         OrderId = consultationData.OrderId
@@ -145,11 +145,19 @@ public class WorkflowMapper
             _ => throw new ArgumentOutOfRangeException(nameof(phaseTypeId), phaseTypeId, null)
         };
 
+    private static SignatureType Map(string signatureType) =>
+        signatureType switch
+        {
+            "paper" => SignatureType.Paper,
+            "digital" => SignatureType.Digital,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    
     private async Task<State> GetSignatureState(_Case.WorkflowTask task, CancellationToken cancellationToken) =>
         task.SignatureType switch
         {
-            "digital" => GetDigitalSignatureState(task.PhaseTypeId),
             "paper" => await GetPaperSignatureState(task, cancellationToken),
+            "digital" => GetDigitalSignatureState(task.PhaseTypeId),
             _ => throw new ArgumentOutOfRangeException()
         };
 

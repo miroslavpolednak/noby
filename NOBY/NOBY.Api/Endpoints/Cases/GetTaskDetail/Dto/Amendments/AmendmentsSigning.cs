@@ -18,7 +18,7 @@ public class AmendmentsSigning : Amendments
     /// Podepisování: způsob podpisu (0 - papírové podepisování, 1 - elektronické podepisování)
     /// </summary>
     /// <example>0</example>
-    public int SignatureType { get; set; }
+    public SignatureType SignatureType { get; set; }
 
 
     /// <summary>
@@ -41,4 +41,10 @@ public class AmendmentsSigning : Amendments
     /// </summary>
     /// <example>01_23_046_111203_SF_0001</example>
     public string ProposalForEntry { get; set; } = null!;
+}
+
+public enum SignatureType
+{
+    Paper = 0,
+    Digital = 1
 }
