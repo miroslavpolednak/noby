@@ -3964,6 +3964,74 @@
             </summary>
             <example>999999999</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserId">
+            <summary>
+            ID uzivatele - V33ID
+            </summary>
+            <example>61958</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserIdentifiers">
+            <summary>
+            Všechny identity uživatele z XXVVSS
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserInfo">
+            <summary>
+            Základní informace o přihlášeném uživateli
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserAttributes">
+            <summary>
+            Dodatečné informace o uživately a kontakty
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.FirstName">
+            <summary>
+            Jméno uživatele
+            </summary>
+            <example>Jaroslav</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.LastName">
+            <summary>
+            Přijmení uživatele
+            </summary>
+            <example>Cimrman</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.Cpm">
+            <summary>
+            ČPM uživatele
+            </summary>
+            <example>99800001</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.Icp">
+            <summary>
+            IČP uživatele
+            </summary>
+            <example>999999999</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.Cin">
+            <summary>
+            IČO uživatele
+            </summary>
+            <example>12345678</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.PhoneNumber">
+            <summary>
+            Telefon uživatele
+            </summary>
+            <example>+420 601 234 567</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.EmailAddress">
+            <summary>
+            Emailová adresa uživatele
+            </summary>
+            <example>jarda@cimrman.cz</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.IsUserVIP">
+            <summary>
+            VIP flag uživatele
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Login">
             <summary>
             Login uzivatel do CAASu.
@@ -3978,10 +4046,17 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetCurrentUser(System.Threading.CancellationToken)">
             <summary>
-            Informace o prihlašeném uživateli.
+            Informace a oprávnění o přihlášeném uživateli
+            </summary>
+            <returns>Instance přihlášeného uživatele.</returns>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetLoggedInUser(System.Threading.CancellationToken)">
+            <summary>
+            Informace a oprávnění o přihlášeném uživateli
             </summary>
             <remarks>
-            Pokud je uživatel přihlášen (existuje platná auth cookie), vrací základní informace o uživateli.
+            Vrací o uživateli data z XXVVSS - základní údaje, identity (počítáme s tím, že je alespoň jedna, vetšinou více) a set oprávnění pro identitu, kterou se přihlásil. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FC765415-4D2E-4b7c-B1C8-3F4B78A005DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Instance přihlášeného uživatele.</returns>
         </member>
