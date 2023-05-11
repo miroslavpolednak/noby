@@ -388,6 +388,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00014-OfferDocument_Domicilace.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00014-OfferDocument_Domicilace.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00016-HFICH-4663_MortgageComment.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00016-HFICH-4663_MortgageComment.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00017-HFICH-5780_Template3601_changes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00017-HFICH-5780_Template3601_changes.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00018-HFICH-5780_ChangesV2.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00018-HFICH-5780_ChangesV2.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
