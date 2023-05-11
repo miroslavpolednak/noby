@@ -2,7 +2,7 @@
 
 namespace DomainServices.UserService.Api.Database.Entities;
 
-internal sealed class UserIdentity
+internal sealed class DbUserIdentity
 {
     [Key]
     public int v33id { get; set; }

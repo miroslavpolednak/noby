@@ -13,8 +13,8 @@ public class NobyUser
     public NobyUser(IIdentity identity, DomainServices.UserService.Contracts.User userInstance) 
         : base(identity) 
     {
-        Id = userInstance.Id;
+        Id = userInstance.UserId;
         Login = ((ClaimsIdentity)identity).Claims.FirstOrDefault(t => t.Type == CIS.Core.Security.SecurityConstants.ClaimTypeIdent)!.Value;
-        DisplayName = userInstance.FullName;
+        DisplayName = userInstance.UserInfo.DisplayName;
     }
 }

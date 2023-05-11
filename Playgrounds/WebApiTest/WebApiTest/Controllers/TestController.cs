@@ -30,8 +30,8 @@ public class han1 : IRequestHandler<req1, string>
         var svc = _accessor.HttpContext.RequestServices.GetRequiredService<DomainServices.UserService.Clients.IUserServiceClient>();
         var svc2 = _accessor.HttpContext.RequestServices.GetRequiredService<DomainServices.HouseholdService.Clients.IHouseholdServiceClient>();
 
-        var user = await svc.GetUserByLogin("KBUID=A09FK3");
+        var user = await svc.GetUser("KBUID=A09FK3");
 
-        return user.FullName;
+        return user.UserInfo.DisplayName;
     }
 }

@@ -53,7 +53,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                 var isBroker = user.UserIdentifiers.Any(u =>
                     u.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId);
 
-                delta.CustomerIdentification.CzechIdentificationNumber = user.CzechIdentificationNumber;
+                delta.CustomerIdentification.CzechIdentificationNumber = user.UserInfo.Cin;
                 delta.CustomerIdentification.IdentificationMethodId = isBroker ? 8 : 1;
             }
         }

@@ -16,14 +16,14 @@ internal sealed class SignInHandler
 
         _logger.UserSigningInAs(request.Login);
 
-        var userInstance = await _userService.GetUserByLogin(request.Login ?? "", cancellationToken);
+        var userInstance = await _userService.GetUser(request.Login ?? "", cancellationToken);
         if (userInstance is null) throw new CisValidationException("Login not found");
 
         var claims = new List<Claim>
         {
             // natvrdo zadat login, protoze request.Login obsahuje CPM
             new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, "KBUID=A09FK3"),
-            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture))
+            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(System.Globalization.CultureInfo.InvariantCulture))
         };
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

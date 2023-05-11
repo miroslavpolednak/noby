@@ -9,7 +9,7 @@ internal sealed class GetMpssSecurityCookieHandler
     {
         var u = await _userServiceClient.GetUser(_currentUser.User!.Id, cancellationToken);
 
-        return _portal.CreateCookieValue(u.CPM, u.ICP, u.FullName, u.Id, 0, 0, 0, 0, 0);
+        return _portal.CreateCookieValue(u.UserInfo.Cpm, u.UserInfo.Icp, u.UserInfo.DisplayName, u.UserId, 0, 0, 0, 0, 0);
     }
 
     private readonly MPSS.Security.Noby.IPortal _portal;
