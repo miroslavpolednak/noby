@@ -3968,7 +3968,13 @@
             <summary>
             Login uzivatel do CAASu.
             </summary>
-            <example>990614w</example>
+            <example>614</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Schema">
+            <summary>
+            Identitni schema
+            </summary>
+            <example>OsCis</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetCurrentUser(System.Threading.CancellationToken)">
             <summary>
