@@ -10,12 +10,12 @@ public class CountryCodePhoneIdcHandler
         // TODO: Redirect to real data source!     
         return Task.FromResult(new List<CountryCodePhoneIdcItem>
         {
-            new CountryCodePhoneIdcItem() { Id = "AD+376", Name = "AD", Idc = "+376",  IsValid = true },
-            new CountryCodePhoneIdcItem() { Id = "AE+971", Name = "AE", Idc = "+971",  IsValid = true },
-            new CountryCodePhoneIdcItem() { Id = "AF+93", Name = "AF", Idc = "+93",  IsValid = true },
-            new CountryCodePhoneIdcItem() { Id = "AG+1268", Name = "AG", Idc = "+1268",  IsValid = true },
-            new CountryCodePhoneIdcItem() { Id = "AI+1264", Name = "AI", Idc = "+1264",  IsValid = true },
-            new CountryCodePhoneIdcItem() { Id = "CZ+420", Name = "CZ", Idc = "+420",  IsValid = true },
+            new CountryCodePhoneIdcItem() { Id = "AD+376", Name = "AD", Idc = "+376",  IsValid = true, IsPriority = false, IsDefault = false },
+            new CountryCodePhoneIdcItem() { Id = "AE+971", Name = "AE", Idc = "+971",  IsValid = true, IsPriority = false, IsDefault = false },
+            new CountryCodePhoneIdcItem() { Id = "AF+93", Name = "AF", Idc = "+93",  IsValid = true, IsPriority = false, IsDefault = false },
+            new CountryCodePhoneIdcItem() { Id = "AG+1268", Name = "AG", Idc = "+1268",  IsValid = true, IsPriority = false, IsDefault = false },
+            new CountryCodePhoneIdcItem() { Id = "AI+1264", Name = "AI", Idc = "+1264",  IsValid = true, IsPriority = false, IsDefault = false },
+            new CountryCodePhoneIdcItem() { Id = "CZ+420", Name = "CZ", Idc = "+420",  IsValid = true, IsPriority = true, IsDefault = true },
         });
     }
 
