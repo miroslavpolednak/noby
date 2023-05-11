@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Contracts;
+﻿using CIS.Core.ErrorCodes;
+using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStates;
 
@@ -60,13 +61,13 @@ internal sealed class SbWebApiCommonDataProvider
         if (tasksWithInvalidTypeId.Any())
         {
             var taskIds = tasksWithInvalidTypeId.Select(t => t.TaskId);
-            throw new CisValidationException(ErrorCodeMapper.WfTaskValidationFailed1, string.Join(",", taskIds));
+            throw new CisValidationException(ErrorCodeMapper.WfTaskValidationFailed1, ErrorCodeMapper.GetMessage(ErrorCodeMapper.WfTaskValidationFailed1, string.Join(",", taskIds)));
         }
 
         if (tasksWithInvalidStateId.Any())
         {
             var taskIds = tasksWithInvalidStateId.Select(t => t.TaskId);
-            throw new CisValidationException(ErrorCodeMapper.WfTaskValidationFailed2, string.Join(",", taskIds));
+            throw new CisValidationException(ErrorCodeMapper.WfTaskValidationFailed2, ErrorCodeMapper.GetMessage(ErrorCodeMapper.WfTaskValidationFailed2, string.Join(",", taskIds)));
         }
     }
 }

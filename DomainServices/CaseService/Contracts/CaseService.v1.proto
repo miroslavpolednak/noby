@@ -16,7 +16,6 @@ import "Messages/GetCaseCounts.proto";
 import "Messages/DeleteCase.proto";
 import "Messages/GetTaskDetail.proto";
 import "Messages/GetTaskList.proto";
-import "Messages/GetTaskListByContract.proto";
 import "Messages/GetProcessList.proto";
 import "Messages/UpdateActiveTasks.proto";
 import "Messages/UpdateOfferContacts.proto";
@@ -48,8 +47,6 @@ service CaseService {
    rpc GetTaskDetail (GetTaskDetailRequest) returns (GetTaskDetailResponse);
 
    rpc GetTaskList (GetTaskListRequest) returns (GetTaskListResponse);
-
-   rpc GetTaskListByContract (GetTaskListByContractRequest) returns (GetTaskListResponse);
 
    rpc GetProcessList (GetProcessListRequest) returns (GetProcessListResponse);
 

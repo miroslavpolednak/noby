@@ -1,5 +1,4 @@
 ﻿using DomainServices.OfferService.Clients;
-using DSContracts = DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.GetMortgageByOfferId;
 
@@ -16,7 +15,8 @@ internal sealed class GetMortgageByOfferIdHandler
             OfferId = result.OfferId,
             ResourceProcessId = result.ResourceProcessId,
             SimulationInputs = result.SimulationInputs.ToApiResponse(result.BasicParameters),
-            SimulationResults = result.SimulationResults.ToApiResponse(result.SimulationInputs, result.AdditionalSimulationResults)
+            SimulationResults = result.SimulationResults.ToApiResponse(result.SimulationInputs, result.AdditionalSimulationResults),
+            CreditWorthinessSimpleInputs = result.CreditWorthinessSimpleInputs.ToApiResponse(result.IsCreditWorthinessSimpleRequested),
         };
     }
 
