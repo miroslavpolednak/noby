@@ -92,8 +92,8 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
     private async Task UpdateMortgageFirstSignatureDate(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var mortgageResponse = await _productServiceClient.GetMortgage(salesArrangement.CaseId, cancellationToken);
-        // blocked by https://jira.kb.cz/browse/HFICH-5449
-
+        mortgageResponse.Mortgage.FirstSignatureDate = _dateTime.Now;
+        await _productServiceClient.UpdateMortgage(new() { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
     }
 
     private async Task SumlCall(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
