@@ -50,4 +50,6 @@ public class ProductTypeItem
     [DataMember(Order = 14)]
     public int? KonsDbLoanType { get; set; }
 
+    [DataMember(Order = 15)]
+    public string PcpProductId { get; set; }    
 }
