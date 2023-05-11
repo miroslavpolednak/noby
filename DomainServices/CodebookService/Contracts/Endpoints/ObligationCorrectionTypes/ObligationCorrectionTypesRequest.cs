@@ -1,8 +1,6 @@
-﻿
-namespace DomainServices.CodebookService.Contracts.Endpoints.ObligationCorrectionTypes
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.ObligationCorrectionTypes;
+
+[DataContract]
+public class ObligationCorrectionTypesRequest : IRequest<List<GenericCodebookItemWithCode>>
 {
-    [DataContract]
-    public class ObligationCorrectionTypesRequest : IRequest<List<GenericCodebookItem>>
-    {
-    }
 }

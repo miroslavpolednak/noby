@@ -4,15 +4,15 @@ using DomainServices.CodebookService.Contracts.Endpoints.ObligationCorrectionTyp
 namespace DomainServices.CodebookService.Endpoints.ObligationCorrectionTypes;
 
 public class ObligationCorrectionTypesHandler
-    : IRequestHandler<ObligationCorrectionTypesRequest, List<GenericCodebookItem>>
+    : IRequestHandler<ObligationCorrectionTypesRequest, List<GenericCodebookItemWithCode>>
 {
-    public async Task<List<GenericCodebookItem>> Handle(ObligationCorrectionTypesRequest request, CancellationToken cancellationToken)
+    public async Task<List<GenericCodebookItemWithCode>> Handle(ObligationCorrectionTypesRequest request, CancellationToken cancellationToken)
     {
-        return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(ObligationCorrectionTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken));
+        return await FastMemoryCache.GetOrCreate<GenericCodebookItemWithCode>(nameof(ObligationCorrectionTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItemWithCode>(_sqlQuery, cancellationToken));
     }
 
     private const string _sqlQuery =
-            "SELECT KOD 'Id', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN PLATNOST_OD AND ISNULL(PLATNOST_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.CIS_KOREKCE_ZAVAZKU ORDER BY KOD";
+            "SELECT KOD 'Id', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN PLATNOST_OD AND ISNULL(PLATNOST_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid', CODE 'Code' FROM SBR.CIS_KOREKCE_ZAVAZKU ORDER BY KOD";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<ObligationCorrectionTypesHandler> _logger;
