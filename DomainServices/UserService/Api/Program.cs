@@ -17,35 +17,35 @@ var webAppOptions = runAsWinSvc
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
 #region register builder.Services
+builder.Services.AddAttributedServices(typeof(Program));
+
 // globalni nastaveni prostredi
 builder
     .AddCisCoreFeatures()
     .AddCisEnvironmentConfiguration();
-builder.Services.AddAttributedServices(typeof(Program));
 
-// logging 
 builder
+    // logging 
     .AddCisLogging()
-    .AddCisTracing();
+    .AddCisTracing()
+    // authentication
+    .AddCisServiceAuthentication()
+    // add distributed cache
+    .AddCisDistributedCache()
+    // add self
+    .AddUserService()
+    .Services
+        // add CIS services
+        .AddCisServiceDiscovery()
+        // add grpc infrastructure
+        .AddCisGrpcInfrastructure(typeof(Program))
+        .AddGrpcReflection()
+        .AddGrpc(options =>
+        {
+            options.Interceptors.Add<GenericServerExceptionInterceptor>();
+        });
 
-// authentication
-builder.AddCisServiceAuthentication();
-
-// add services
-builder.Services.AddCisServiceDiscovery();
-
-// add distributed cache
-builder.AddCisDistributedCache();
-
-builder.AddUserService();
-
-builder.Services
-    .AddCisGrpcInfrastructure(typeof(Program))
-    .AddGrpcReflection()
-    .AddGrpc(options =>
-    {
-        options.Interceptors.Add<GenericServerExceptionInterceptor>();
-    });
+// add HC
 builder.AddCisGrpcHealthChecks();
 #endregion register builder.Services
 

@@ -2,16 +2,7 @@
 
 internal class UserService : IUserServiceClient
 {
-    public async Task<Contracts.User> GetUserByLogin(string login, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        return await _service.GetUserByLoginAsync(
-            new Contracts.GetUserByLoginRequest
-            {
-                Login = login
-            }, cancellationToken: cancellationToken);
-    }
-
-    public async Task<Contracts.User> GetUser(int userId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<Contracts.User> GetUser(string id, string schema, CancellationToken cancellationToken = default(CancellationToken))
     {
         // pokud bude user nalezen v kesi
         if (_distributedCacheProvider.UseDistributedCache)
@@ -26,7 +17,11 @@ internal class UserService : IUserServiceClient
         return await _service.GetUserAsync(
             new Contracts.GetUserRequest
             {
-                UserId = userId
+                Identity = new()
+                {
+                    Identity = id,
+                    IdentityScheme = schema
+                }
             }, cancellationToken: cancellationToken);
     }
 

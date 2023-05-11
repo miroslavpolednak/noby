@@ -26,33 +26,32 @@ builder
     .AddCisCoreFeatures()
     .AddCisEnvironmentConfiguration();
 
-// logging 
 builder
+    // logging
     .AddCisLogging()
-    .AddCisTracing();
+    .AddCisTracing()
+    // authentication
+    .AddCisServiceAuthentication()
+    // add self
+    .AddCaseService()
+    // add BE services
+    .Services
+        // add CIS services
+        .AddSalesArrangementService()
+        .AddCodebookService()
+        .AddUserService()
+        .AddCisServiceDiscovery()
+        // add rollback
+        .AddCisMediatrRollbackCapability()
+        // add grpc infrastructure
+        .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+        .AddGrpcReflection()
+        .AddGrpc(options =>
+        {
+            options.Interceptors.Add<GenericServerExceptionInterceptor>();
+        });
 
-// authentication
-builder.AddCisServiceAuthentication();
-
-// add BE services
-builder.Services
-    .AddSalesArrangementService()
-    .AddCodebookService()
-    .AddUserService()
-    .AddCisServiceDiscovery();
-
-builder.Services.AddCisMediatrRollbackCapability();
-
-// add this service
-builder.AddCaseService();
-
-builder.Services
-    .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
-    .AddGrpcReflection()
-    .AddGrpc(options =>
-    {
-        options.Interceptors.Add<GenericServerExceptionInterceptor>();
-    });
+// add HC
 builder.AddCisGrpcHealthChecks();
 #endregion register builder
 
