@@ -165,7 +165,6 @@ public class WorkflowMapper
         task.PhaseTypeId switch
         {
             1 => State.ForProcessing,
-            2 => State.Sent,
             _ => throw new ArgumentOutOfRangeException()
         };
 
