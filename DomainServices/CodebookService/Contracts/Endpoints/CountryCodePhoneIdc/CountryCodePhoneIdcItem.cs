@@ -17,4 +17,12 @@ public class CountryCodePhoneIdcItem
 
     [DataMember(Order = 4)]
     public bool IsValid { get; set; }
+
+
+    [DataMember(Order = 5)]
+    public bool IsPriority { get; set; }
+
+
+    [DataMember(Order = 6)]
+    public bool IsDefault { get; set; }
 }

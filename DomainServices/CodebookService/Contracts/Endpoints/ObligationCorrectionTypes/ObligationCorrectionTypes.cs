@@ -1,10 +1,9 @@
 ﻿using ProtoBuf.Grpc;
 
-namespace DomainServices.CodebookService.Contracts
+namespace DomainServices.CodebookService.Contracts;
+
+public partial interface ICodebookService
 {
-    public partial interface ICodebookService
-    {
-        [OperationContract]
-        Task<List<GenericCodebookItem>> ObligationCorrectionTypes(Endpoints.ObligationCorrectionTypes.ObligationCorrectionTypesRequest request, CallContext context = default);
-    }
+    [OperationContract]
+    Task<List<GenericCodebookItemWithCode>> ObligationCorrectionTypes(Endpoints.ObligationCorrectionTypes.ObligationCorrectionTypesRequest request, CallContext context = default);
 }
