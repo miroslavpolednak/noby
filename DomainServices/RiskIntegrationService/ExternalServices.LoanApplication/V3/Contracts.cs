@@ -2514,7 +2514,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
         [System.Text.Json.Serialization.JsonPropertyName("code")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        //[System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public int? Code { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
