@@ -5,9 +5,9 @@ using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStatesNoby;
 using DomainServices.UserService.Clients;
+using NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments;
 using NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
 using _Case = DomainServices.CaseService.Contracts;
-
 
 namespace NOBY.Api.Endpoints.Cases.Dto;
 
@@ -18,9 +18,7 @@ public class WorkflowMapper
     private readonly IUserServiceClient _userService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     
-    public async Task<WorkflowTask> Map(
-        _Case.WorkflowTask task,
-        CancellationToken cancellationToken)
+    public async Task<WorkflowTask> Map(_Case.WorkflowTask task, CancellationToken cancellationToken)
     {
         var taskStates = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
         var workflowState = await GetWorkflowState(task, cancellationToken);
@@ -29,9 +27,7 @@ public class WorkflowMapper
         return MapInternal(task, taskState);
     }
 
-    public async Task<List<WorkflowTask>> Map(
-        List<_Case.WorkflowTask> tasks,
-        CancellationToken cancellationToken)
+    public async Task<List<WorkflowTask>> Map(List<_Case.WorkflowTask> tasks, CancellationToken cancellationToken)
     {
         var taskStates = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
         var list = new List<Dto.WorkflowTask>();
@@ -55,8 +51,7 @@ public class WorkflowMapper
             PerformerLogin = performer?.PerformerLogin,
             PerformerName = performer?.PerformerName,
             ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
-            //SentToCustomer = taskDetailItem.SentToCustomer, //TODO bylo zruseno taskem HFICH-5625, ktery je na DS, ale nedostali jsme nic na FE API...
-            //OrderId = taskDetailItem.OrderId
+            Amendments = Map(taskDetailItem)
         };
 
         taskDetail.TaskCommunication.AddRange(taskDetailItem.TaskCommunication.Select(Map));
@@ -64,33 +59,57 @@ public class WorkflowMapper
         return taskDetail;
     }
 
-    private NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem Map(TaskCommunicationItem taskCommunicationItem)
-    {
-        return new NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem
+    private static Amendments Map(TaskDetailItem taskDetailItem) =>
+        taskDetailItem.AmendmentsCase switch
         {
-            TaskRequest = taskCommunicationItem.TaskRequest,
-            TaskResponse = taskCommunicationItem.TaskResponse
+            TaskDetailItem.AmendmentsOneofCase.Request => Map(taskDetailItem.Request),
+            TaskDetailItem.AmendmentsOneofCase.Signing => Map(taskDetailItem.Signing),
+            TaskDetailItem.AmendmentsOneofCase.ConsultationData => Map(taskDetailItem.ConsultationData),
+            _ => throw new ArgumentOutOfRangeException()
         };
-    }
     
-    private Dto.WorkflowTask MapInternal(_Case.WorkflowTask task,
-                                         WorkflowTaskStateNobyItem taskState)
+
+    private static AmendmentsRequest Map(AmendmentRequest request) => new()
     {
-        return new Dto.WorkflowTask
-        {
-            TaskId = task.TaskId,
-            CreatedOn = task.CreatedOn,
-            TaskTypeId = task.TaskTypeId,
-            TaskTypeName = task.TaskTypeName,
-            TaskSubtypeName = task.TaskSubtypeName,
-            ProcessId = task.ProcessId,
-            ProcessNameShort = task.ProcessNameShort,
-            StateId = taskState.Id,
-            StateName = taskState.Name,
-            StateFilter = Enum.Parse<StateFilter>(taskState.Filter, true),
-            StateIndicator = Enum.Parse<StateIndicators>(taskState.Indicator, true)
-        };
-    }
+        OrderId = request.OrderId,
+        SentToCustomer = request.SentToCustomer
+    };
+
+    private static AmendmentsSigning Map(AmendmentSigning signing) => new()
+    {
+        // SignatureType = 
+        Expiration = signing.Expiration,
+        FormId = signing.FormId,
+        DocumentForSigning = signing.DocumentForSigning,
+        ProposalForEntry = signing.ProposalForEntry
+    };
+
+    private static AmendmentsConsultationData Map(AmendmentConsultationData consultationData) => new()
+    {
+        OrderId = consultationData.OrderId
+    };
+
+    private NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem Map(TaskCommunicationItem taskCommunicationItem) => new()
+    {
+        TaskRequest = taskCommunicationItem.TaskRequest,
+        TaskResponse = taskCommunicationItem.TaskResponse
+    };
+    
+    private Dto.WorkflowTask MapInternal(_Case.WorkflowTask task, WorkflowTaskStateNobyItem taskState) => new()
+    {
+        TaskId = task.TaskId,
+        CreatedOn = task.CreatedOn,
+        TaskTypeId = task.TaskTypeId,
+        TaskTypeName = task.TaskTypeName,
+        TaskSubtypeName = task.TaskSubtypeName,
+        ProcessId = task.ProcessId,
+        ProcessNameShort = task.ProcessNameShort,
+        StateId = taskState.Id,
+        StateName = taskState.Name,
+        StateFilter = Enum.Parse<StateFilter>(taskState.Filter, true),
+        StateIndicator = Enum.Parse<StateIndicators>(taskState.Indicator, true)
+    };
+    
     
     private async Task<State> GetWorkflowState(_Case.WorkflowTask task, CancellationToken cancellationToken)
     {

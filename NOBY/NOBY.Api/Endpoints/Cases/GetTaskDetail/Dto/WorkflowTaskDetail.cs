@@ -1,6 +1,4 @@
-﻿using NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments;
-
-namespace NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto;
+﻿namespace NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto;
 
 public class WorkflowTaskDetail
 {
@@ -27,18 +25,6 @@ public class WorkflowTaskDetail
     /// </summary>
     /// <example>Hlavní úvěrový proces</example>
     public string ProcessNameLong { get; set; } = null!;
-    
-    /// <summary>
-    /// Dožádání: Příznak zaslání Dožádní přímo na klienta
-    /// </summary>
-    /// <example>false</example>
-    public bool? SentToCustomer { get; set; }
-    
-    /// <summary>
-    /// Dožádání: Číslo objednávky ocenění
-    /// </summary>
-    /// <example>123556</example>
-    public int? OrderId { get; set; }
 
     /// <summary>
     /// Dožádání: Text požadavku a případné odpovědi (i včetně případných opakování komunikace). Řazeno chronologicky, nejstarší záznam je jako poslední.; Předání na specialistu: popis požadavku

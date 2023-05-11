@@ -19,14 +19,14 @@ public class AmendmentsSigning : Amendments
     /// </summary>
     /// <example>0</example>
     public int SignatureType { get; set; }
-    
+
 
     /// <summary>
     /// Podepisování: Lhůta pro zajištění podpisu
     /// </summary>
     /// <example>24.12.2023</example>
     [Required]
-    public DateTime Expiration { get; set; }
+    public string Expiration { get; set; } = null!;
     
 
     /// <summary>
