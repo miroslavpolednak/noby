@@ -1,12 +1,12 @@
-﻿using NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto;
-using NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
+﻿using NOBY.Api.Endpoints.Cases.Dto;
+using NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
 namespace NOBY.Api.Endpoints.Cases.GetTaskDetail;
 
 public class GetTaskDetailResponse
 {
-    public WorkflowTaskNew? Task { get; set; }
+    public WorkflowTask? Task { get; set; }
     
     public WorkflowTaskDetail? TaskDetail { get; set; }
     
