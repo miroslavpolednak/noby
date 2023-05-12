@@ -49,7 +49,7 @@ internal sealed class CustomerManagementErrorMap
     {
         foreach (var errorMessage in errorData.Detail)
         {
-            if (_errors.ContainsKey(errorMessage))
+            if (!_errors.ContainsKey(errorMessage))
                 continue;
 
             var error = _errors[errorMessage];
