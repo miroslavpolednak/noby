@@ -4090,17 +4090,17 @@
             VIP flag uživatele
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Login">
+        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.IdentityId">
             <summary>
-            Login uzivatel do CAASu.
+            ID uzivatele v ramci vybraneho identitniho schematu.
             </summary>
-            <example>614</example>
+            <example>E0021L</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Schema">
+        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.IdentityScheme">
             <summary>
-            Identitni schema
+            Vybranne identitni schema pro prihlaseni, moznosti jsou: <a href="https://wiki.kb.cz/display/HT/IdentityScheme">https://wiki.kb.cz/display/HT/IdentityScheme</a>
             </summary>
-            <example>OsCis</example>
+            <example>KBUID</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetCurrentUser(System.Threading.CancellationToken)">
             <summary>

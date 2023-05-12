@@ -3,14 +3,14 @@
 public sealed class SignInRequest : IRequest
 {
     /// <summary>
-    /// Login uzivatel do CAASu.
+    /// ID uzivatele v ramci vybraneho identitniho schematu.
     /// </summary>
-    /// <example>614</example>
-    public string? Login { get; set; }
+    /// <example>E0021L</example>
+    public string? IdentityId { get; set; }
 
     /// <summary>
-    /// Identitni schema
+    /// Vybranne identitni schema pro prihlaseni, moznosti jsou: <a href="https://wiki.kb.cz/display/HT/IdentityScheme">https://wiki.kb.cz/display/HT/IdentityScheme</a>
     /// </summary>
-    /// <example>OsCis</example>
-    public string? Schema { get; set; }
+    /// <example>KBUID</example>
+    public string? IdentityScheme { get; set; }
 }

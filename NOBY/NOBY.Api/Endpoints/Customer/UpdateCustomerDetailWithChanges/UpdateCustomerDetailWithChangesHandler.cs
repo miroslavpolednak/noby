@@ -98,7 +98,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                     u.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId);
 
                 additionalData.CustomerIdentification ??= new __Household.CustomerIdentificationObject();
-                additionalData.CustomerIdentification.CzechIdentificationNumber = user.CzechIdentificationNumber;
+                additionalData.CustomerIdentification.CzechIdentificationNumber = user.UserInfo.Cin;
                 additionalData.CustomerIdentification.IdentificationMethodId = isBroker ? 8 : 1;
             }
         }

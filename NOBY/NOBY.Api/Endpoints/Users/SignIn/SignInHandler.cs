@@ -14,12 +14,12 @@ internal sealed class SignInHandler
             throw new NobyValidationException($"SignIn endpoint call is not enabled for scheme {_configuration.Security!.AuthenticationScheme}");
         }
 
-        if (string.IsNullOrEmpty(request.Schema))
+        if (string.IsNullOrEmpty(request.IdentityScheme))
         {
-            request.Schema = "OsCis";
+            request.IdentityScheme = "OsCis";
         }
 
-        string login = $"{request.Schema}={request.Login}";
+        string login = $"{request.IdentityScheme}={request.IdentityId}";
         _logger.UserSigningInAs(login);
 
         var userInstance = await _userService.GetUser(login, cancellationToken);
