@@ -17,13 +17,14 @@ internal sealed class GetTaskDetailHandler : IRequestHandler<GetTaskDetailReques
     public async Task<GetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
     {
         var taskList = await _caseService.GetTaskList(request.CaseId, cancellationToken);
-        var task = taskList.FirstOrDefault(t => t.TaskId == request.TaskId) ?? throw new CisNotFoundException(0, "TODO");
+        var task = taskList.FirstOrDefault(t => t.TaskId == request.TaskId)
+            ?? throw new CisNotFoundException(90001, $"Task {request.TaskId} not found.");
 
         var taskDetails = await _caseService.GetTaskDetail(task.TaskIdSb, cancellationToken);
-        var taskDetail = taskDetails.TaskDetails.FirstOrDefault(t => t.TaskObject.TaskId == task.TaskId)?.TaskDetail ?? throw new CisNotFoundException(0, "TODO");
+        var taskDetail = taskDetails.TaskDetails.FirstOrDefault(t => t.TaskObject.TaskId == task.TaskId)?.TaskDetail
+            ?? throw new CisNotFoundException(90001, $"TaskDetail for Task {request.TaskId} not found.");
 
         var documentIds = taskDetail.TaskDocumentIds.ToHashSet();
-
 
         var documentListResponse = await _documentArchiveService.GetDocumentList(new DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest
         {

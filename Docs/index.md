@@ -29,6 +29,8 @@
 
 [Health checks](./topics/healthcheck.md)
 
+[Implementace SOAP klienta](./topics/soap-client.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

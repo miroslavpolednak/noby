@@ -84,10 +84,13 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         var (household, customersOnSa) = await GetCustomersOnSa(documentOnSa, cancellationToken);
         foreach (var customerOnSa in customersOnSa)
         {
-            var (detailWithChangedData, _) = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
-            await _customerServiceClient.UpdateCustomer(MapUpdateCustomerRequest(detailWithChangedData, mandantId.Value, customerOnSa), cancellationToken);
-            //Throw away locally stored data(update CustomerChangeData with null)
-            await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa), cancellationToken);
+            if (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
+            {
+                var (detailWithChangedData, _) = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
+                await _customerServiceClient.UpdateCustomer(MapUpdateCustomerRequest(detailWithChangedData, mandantId.Value, customerOnSa), cancellationToken);
+                //Throw away locally stored data(update CustomerChangeData with null)
+                await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa), cancellationToken);
+            }
         }
 
         // HFICH-4165
@@ -145,7 +148,15 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
             updateRequest.Contacts.Add(MapEmailContact(detailWithChangedData.EmailAddress));
         if (detailWithChangedData.MobilePhone is not null)
             updateRequest.Contacts.Add(MapPhoneContact(detailWithChangedData.MobilePhone));
-        // CustomerIdentification not in GetDetailWithChangesResponse
+        
+        if ((customerOnSA.CustomerAdditionalData?.CustomerIdentification?.IdentificationMethodId ?? 0) > 0)
+        {
+            updateRequest.CustomerIdentification = new CustomerIdentification
+            {
+                IdentificationMethodId = customerOnSA.CustomerAdditionalData!.CustomerIdentification.IdentificationMethodId!.Value,
+                CzechIdentificationNumber = customerOnSA.CustomerAdditionalData.CustomerIdentification.CzechIdentificationNumber
+            };
+        }
         return updateRequest;
     }
 

@@ -48,7 +48,8 @@ internal static class NobySwagger
             
             x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
             x.SchemaFilter<Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementSwaggerSchema> ();
-            x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwagerSchema>();
+            x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwaggerSchema>();
+            x.SchemaFilter<Endpoints.Cases.GetTaskDetail.GetTaskDetailSwaggerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
         });

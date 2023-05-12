@@ -1,6 +1,4 @@
-﻿using DomainServices.CaseService.Clients;
-using DomainServices.CodebookService.Clients;
-using DomainServices.ProductService.Api.Database.Entities;
+﻿using DomainServices.ProductService.Api.Database.Entities;
 using DomainServices.ProductService.Api.Endpoints.CreateMortgage;
 using ExternalServices.MpHome.V1_1;
 
