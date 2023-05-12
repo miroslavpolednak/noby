@@ -5,6 +5,7 @@ using NOBY.Infrastructure.ErrorHandling.Internals;
 using CIS.Infrastructure.StartupExtensions;
 using NOBY.Infrastructure.Services;
 using MPSS.Security.Noby;
+using NOBY.Api.Database;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -48,6 +49,9 @@ internal static class NobyServices
 
         // flow switches
         builder.Services.AddFlowSwitches(builder.Configuration.GetConnectionString("default")!);
+
+        // dbcontext
+        builder.AddEntityFramework<FeApiDbContext>();
 
         // add distributed cache
         builder.AddCisDistributedCache();

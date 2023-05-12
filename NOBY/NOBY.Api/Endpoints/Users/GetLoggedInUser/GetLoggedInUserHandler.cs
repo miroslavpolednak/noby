@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Users.GetLoggedInUser;
+﻿using Google.Protobuf.Collections;
+
+namespace NOBY.Api.Endpoints.Users.GetLoggedInUser;
 
 internal sealed class GetLoggedInUserHandler
     : IRequestHandler<GetLoggedInUserRequest, GetLoggedInUserResponse>
@@ -18,14 +20,20 @@ internal sealed class GetLoggedInUserHandler
                 Cpm = userInstance.UserInfo.Cpm,
                 Icp = userInstance.UserInfo.Icp
             },
-            UserIdentifiers = userInstance.UserIdentifiers.Select(t => (CIS.Foms.Types.UserIdentity)t).ToList(),
+            UserIdentifiers = userInstance.UserIdentifiers.Select(t => (CIS.Foms.Types.UserIdentity)t!).ToList(),
             UserAttributes = new GetLoggedInUserResponseAttributes
             {
                 EmailAddress = userInstance.UserAttributes?.Email,
                 PhoneNumber = userInstance.UserAttributes?.PhoneNumber,
                 IsUserVIP = userInstance.UserAttributes?.IsUserVIP ?? false
-            }
+            },
+            UserPermissions = getPermissions(userInstance.UserPermissions)
         };
+    }
+
+    private int[]? getPermissions(RepeatedField<int> permissions)
+    {
+        return null;
     }
 
     private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
