@@ -151,6 +151,7 @@ internal static class CaseExtensions
             1 => taskData.GetInteger("ukol_faze_uv_procesu"),
             2 => taskData.GetInteger("ukol_faze_zm_procesu"),
             3 => taskData.GetInteger("ukol_faze_rt_procesu"),
+            -1 => -1,
             _ => throw new ArgumentOutOfRangeException(nameof(processTypeId), processTypeId, null)
         };
     }

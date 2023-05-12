@@ -41,7 +41,7 @@ public class CasesController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CancelTask([FromRoute] long caseId, [FromRoute] long taskId, [FromBody] CancelTask.CancelTaskRequest request)
+    public async Task<IActionResult> CancelTask([FromRoute] long caseId, [FromRoute] long taskId, [FromBody] [Required] CancelTask.CancelTaskRequest request)
     {
         await _mediator.Send(request.InfuseId(caseId, taskId));
         return NoContent();
@@ -54,6 +54,7 @@ public class CasesController : ControllerBase
     /// Vytvoření nového workflow tasku do SB.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
+    /// <response code="200">Noby task ID. Jde o ID sady úkolů generované Starbuildem.</response>
     /// <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
     [HttpPost("{caseId:long}/tasks")]
     [Consumes("application/json")]
@@ -62,7 +63,7 @@ public class CasesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<long> CreateTask([FromRoute] long caseId, [FromBody] CreateTask.CreateTaskRequest request)
+    public async Task<long> CreateTask([FromRoute] long caseId, [FromBody] [Required] CreateTask.CreateTaskRequest request)
         => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>

@@ -4,7 +4,6 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Newtonsoft.Json;
-using NOBY.Api.SharedDto;
 using UserIdentity = CIS.Infrastructure.gRPC.CisTypes.UserIdentity;
 using __Household = DomainServices.HouseholdService.Contracts;
 
@@ -37,7 +36,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             ModelComparers.CompareObjects(request.MobilePhone, originalModel.MobilePhone, "MobilePhone", delta);
 
         // zjistit zda uz existuji changeData a v nich CustomerIdentification
-        bool identDocExists = false;
+        /*bool identDocExists = false;
         if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
         {
             var deserializedChangedData = JsonConvert.DeserializeObject<UpdateCustomerDetailWithChangesRequest>(customerOnSA.CustomerChangeData);
@@ -56,7 +55,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                 delta.CustomerIdentification.CzechIdentificationNumber = user.CzechIdentificationNumber;
                 delta.CustomerIdentification.IdentificationMethodId = isBroker ? 8 : 1;
             }
-        }
+        }*/
 
         // https://jira.kb.cz/browse/HFICH-4200
         // docasne reseni nez se CM rozmysli jak na to
