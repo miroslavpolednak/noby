@@ -3,7 +3,7 @@
 /// <summary>
 /// Tento objekt je relevantní pouze pro typ úkolu Dožádání
 /// </summary>
-public class AmendmentsRequest : Amendments
+public class AmendmentsRequest
 {
     /// <summary>
     /// Dožádání: Příznak zaslání Dožádní přímo na klienta

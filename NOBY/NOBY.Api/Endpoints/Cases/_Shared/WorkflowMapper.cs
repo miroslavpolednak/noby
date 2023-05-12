@@ -59,7 +59,7 @@ public class WorkflowMapper
         return taskDetail;
     }
 
-    private static Amendments Map(_Case.WorkflowTask task, TaskDetailItem taskDetailItem) =>
+    private static object Map(_Case.WorkflowTask task, TaskDetailItem taskDetailItem) =>
         taskDetailItem.AmendmentsCase switch
         {
             TaskDetailItem.AmendmentsOneofCase.Request => Map(taskDetailItem.Request),

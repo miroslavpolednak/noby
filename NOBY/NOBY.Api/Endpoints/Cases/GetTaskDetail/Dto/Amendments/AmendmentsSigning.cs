@@ -5,7 +5,7 @@ namespace NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments;
 /// <summary>
 /// Tento objekt je relevantní pouze pro typ úkolu Podepisování
 /// </summary>
-public class AmendmentsSigning : Amendments
+public class AmendmentsSigning
 {
     /// <summary>
     /// Podepisování: ID čárového kódu dokumentu k podpisu (formId)

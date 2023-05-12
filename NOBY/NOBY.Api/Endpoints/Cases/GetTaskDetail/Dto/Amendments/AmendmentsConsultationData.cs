@@ -3,7 +3,7 @@
 /// <summary>
 /// Tento objekt je relevantní pouze pro některé typy Konzultací, a to sice pro Dotaz k ocenění a pro Vyhotovení ZOV.
 /// </summary>
-public class AmendmentsConsultationData : Amendments
+public class AmendmentsConsultationData
 {
     /// <summary>
     /// Konzultace: Číslo objednávky ocenění (Atribut je relevantní jen pro konzultaci Dotaz k ocenění a pro konzultaci Vyhotovení ZOV.)

@@ -31,5 +31,5 @@ public class WorkflowTaskDetail
     /// </summary>
     public List<TaskCommunicationItem> TaskCommunication { get; set; } = null!;
 
-    public Amendments.Amendments Amendments { get; set; } = null!;
+    public object? Amendments { get; set; } = null!;
 }
