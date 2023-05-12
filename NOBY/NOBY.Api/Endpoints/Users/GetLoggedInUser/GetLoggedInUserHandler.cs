@@ -1,4 +1,6 @@
 ﻿using Google.Protobuf.Collections;
+using LazyCache;
+using Microsoft.EntityFrameworkCore;
 
 namespace NOBY.Api.Endpoints.Users.GetLoggedInUser;
 
@@ -33,16 +35,27 @@ internal sealed class GetLoggedInUserHandler
 
     private int[]? getPermissions(RepeatedField<int> permissions)
     {
-        return null;
+        var allowedPermissions = _cache.GetOrAdd(nameof(GetLoggedInUserHandler), () =>
+        {
+            return _dbContext.FeAvailableUserPermissions.AsNoTracking().Select(t => t.PermissionCode).ToArray();
+        }, DateTime.Now.AddDays(1));
+
+        return permissions.Intersect(allowedPermissions).ToArray();
     }
 
+    private readonly IAppCache _cache;
+    private readonly Database.FeApiDbContext _dbContext;
     private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
     public GetLoggedInUserHandler(
+        Database.FeApiDbContext dbContext,
+        IAppCache cache,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         DomainServices.UserService.Clients.IUserServiceClient userService)
     {
+        _dbContext = dbContext;
+        _cache = cache;
         _userAccessor = userAccessor;
         _userService = userService;
     }

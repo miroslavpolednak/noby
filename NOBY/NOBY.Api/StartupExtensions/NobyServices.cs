@@ -3,9 +3,7 @@ using NOBY.Infrastructure.Security;
 using ExternalServices.AddressWhisperer.V1;
 using NOBY.Infrastructure.ErrorHandling.Internals;
 using CIS.Infrastructure.StartupExtensions;
-using NOBY.Infrastructure.Services;
 using MPSS.Security.Noby;
-using NOBY.Api.Database;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -14,6 +12,9 @@ internal static class NobyServices
     public static WebApplicationBuilder AddNobyServices(this WebApplicationBuilder builder)
     {
         var assemblyType = typeof(IApiAssembly);
+
+        // memory cache
+        builder.Services.AddLazyCache();
 
         // user accessor
         builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, NobyCurrentUserAccessor>();
@@ -47,11 +48,8 @@ internal static class NobyServices
                 options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForNullableDateTime());
             });
 
-        // flow switches
-        builder.Services.AddFlowSwitches(builder.Configuration.GetConnectionString("default")!);
-
         // dbcontext
-        builder.AddEntityFramework<FeApiDbContext>();
+        builder.AddEntityFramework<Database.FeApiDbContext>();
 
         // add distributed cache
         builder.AddCisDistributedCache();
