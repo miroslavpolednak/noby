@@ -88,7 +88,7 @@ internal sealed class TempFileManagerService
                     DocumentId = documentId,
                     ContractNumber = contractNumber ?? "HF00111111125",
                     CreatedOn = _dateTime.Now.Date,
-                    AuthorUserLogin = user.CPM ?? user.Id.ToString(CultureInfo.InvariantCulture),
+                    AuthorUserLogin = user.UserInfo.Cpm ?? user.UserId.ToString(CultureInfo.InvariantCulture),
                     Description = attachment.Description ?? string.Empty,
                     EaCodeMainId = attachment.EaCodeMainId,
                     Filename = attachment.FileName,

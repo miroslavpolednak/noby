@@ -19,7 +19,7 @@ internal sealed class LinkOwnerToCaseHandler
 
         // update majitele v databazi
         entity.OwnerUserId = request.CaseOwnerUserId;
-        entity.OwnerUserName = userInstance.FullName;
+        entity.OwnerUserName = userInstance.UserInfo.DisplayName;
 
         await _dbContext.SaveChangesAsync(cancellation);
 

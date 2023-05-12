@@ -280,6 +280,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql = NOBY\DatabaseMigrations\00003-FormInstanceInterfaceSchemaChange.sql
 		NOBY\DatabaseMigrations\00004-DropFormInstanceInterface.sql = NOBY\DatabaseMigrations\00004-DropFormInstanceInterface.sql
 		NOBY\DatabaseMigrations\00005-HFICH-5400.sql = NOBY\DatabaseMigrations\00005-HFICH-5400.sql
+		NOBY\DatabaseMigrations\00006-HFICH-5716_fix.sql = NOBY\DatabaseMigrations\00006-HFICH-5716_fix.sql
+		NOBY\DatabaseMigrations\00007-HFICH-5561.sql = NOBY\DatabaseMigrations\00007-HFICH-5561.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.ExternalServices.Sdf", "DomainServices\DocumentArchiveService\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj", "{F969A020-76AF-48A6-BF8F-959A58D0C982}"
@@ -408,6 +410,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentGeneratorService.Tests", "InternalServices\DocumentGeneratorService\CIS.InternalServices.DocumentGeneratorService.ApiTests\CIS.InternalServices.DocumentGeneratorService.Tests.csproj", "{D691ECA3-BE81-40DF-8C31-870B77FF258C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.ProductService.ExternalServices.Pcp", "DomainServices\ProductService\ExternalServices.Pcp\DomainServices.ProductService.ExternalServices.Pcp.csproj", "{5F803B89-2B6B-4BD3-ACB0-F61156FB367C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NOBY.Database", "NOBY\NOBY.Database\NOBY.Database.csproj", "{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1233,6 +1237,14 @@ Global
 		{5F803B89-2B6B-4BD3-ACB0-F61156FB367C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5F803B89-2B6B-4BD3-ACB0-F61156FB367C}.Release|x64.ActiveCfg = Release|Any CPU
 		{5F803B89-2B6B-4BD3-ACB0-F61156FB367C}.Release|x64.Build.0 = Release|Any CPU
+		{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976}.Debug|x64.Build.0 = Debug|Any CPU
+		{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976}.Release|x64.ActiveCfg = Release|Any CPU
+		{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1371,6 +1383,7 @@ Global
 		{81F64DB6-77D4-4EFF-920C-CAC9FCE5EEC8} = {4184CEDA-0D2B-4BEC-8EE1-7D50B6A3E22E}
 		{D691ECA3-BE81-40DF-8C31-870B77FF258C} = {81F64DB6-77D4-4EFF-920C-CAC9FCE5EEC8}
 		{5F803B89-2B6B-4BD3-ACB0-F61156FB367C} = {5C01EE13-0EA0-47B8-95C4-9010F3ED40CB}
+		{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

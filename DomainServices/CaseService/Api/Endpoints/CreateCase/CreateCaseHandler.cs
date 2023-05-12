@@ -23,7 +23,7 @@ internal sealed class CreateCaseHandler
 
         // vytvorit entitu
         var entity = createDatabaseEntity(request, newCaseId);
-        entity.OwnerUserName = userInstance.FullName;//dotazene jmeno majitele caseu (poradce)
+        entity.OwnerUserName = userInstance.UserInfo.DisplayName;//dotazene jmeno majitele caseu (poradce)
         entity.State = defaultCaseState;//vychozi status
 
         try

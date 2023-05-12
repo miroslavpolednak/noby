@@ -14,6 +14,9 @@ message UserIdentity {
 		M17Id = 6;
 		BrokerId = 7;
 		Mpad = 8;
+		OsCis = 9;
+		Kbad = 10;
+		V33Id = 99;
 	}
 
 	UserIdentitySchemes identityScheme = 2;

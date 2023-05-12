@@ -18,33 +18,34 @@ var webAppOptions = runAsWinSvc
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
 #region register builder.Services
-// globalni nastaveni prostredi
-builder.AddCisEnvironmentConfiguration();
-
-// logging 
-builder.AddCisLogging();
-builder.AddCisTracing();
-
-builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
-// authentication
-builder.AddCisServiceAuthentication();
+// globalni nastaveni prostredi
+builder
+    .AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 
-builder.Services.AddCisServiceDiscovery(); // kvuli auto dotazeni URL pro EAS
+builder
+    // logging 
+    .AddCisLogging()
+    .AddCisTracing()
+    // authentication
+    .AddCisServiceAuthentication()
+    // add self
+    .AddOfferService()
+    .Services
+        // add CIS services
+        .AddCisServiceDiscovery()
+        .AddCodebookService()
+        // add grpc infrastructure
+        .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+        .AddGrpcReflection()
+        .AddGrpc(options =>
+        {
+            options.Interceptors.Add<GenericServerExceptionInterceptor>();
+        });
 
-builder.Services.AddCodebookService();
-
-// add my services
-builder.AddOfferService();
-
-builder.Services
-    .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
-    .AddGrpcReflection()
-    .AddGrpc(options =>
-    {
-        options.Interceptors.Add<GenericServerExceptionInterceptor>();
-    });
+// add HC
 builder.AddCisGrpcHealthChecks();
 #endregion register builder.Services
 

@@ -129,9 +129,9 @@ internal sealed class GetCaseParametersHandler
             BranchConsultant = new BranchConsultantDto
             {
                 BranchName = "Pobocka XXX",
-                ConsultantName = userInstance?.FullName,
-                Cpm = userInstance?.CPM,
-                Icp = userInstance?.ICP
+                ConsultantName = userInstance?.UserInfo.DisplayName,
+                Cpm = userInstance?.UserInfo.Cpm,
+                Icp = userInstance?.UserInfo.Icp
             }
         };
     }
@@ -187,16 +187,16 @@ internal sealed class GetCaseParametersHandler
             BranchConsultant = new BranchConsultantDto
             {
                 BranchName = "Pobocka XXX",
-                ConsultantName = branchUser?.FullName,
-                Cpm = branchUser?.CPM,
-                Icp = branchUser?.ICP
+                ConsultantName = branchUser?.UserInfo.DisplayName,
+                Cpm = branchUser?.UserInfo.Cpm,
+                Icp = branchUser?.UserInfo.Icp
             },
             ThirdPartyConsultant = new ThirdPartyConsultantDto
             {
                 BranchName = "Spolecnost XXX",
-                ConsultantName = thirdPartyUser?.FullName,
-                Cpm = thirdPartyUser?.CPM,
-                Icp = thirdPartyUser?.ICP
+                ConsultantName = thirdPartyUser?.UserInfo.DisplayName,
+                Cpm = thirdPartyUser?.UserInfo.Cpm,
+                Icp = thirdPartyUser?.UserInfo.Icp
             }
         };
 
