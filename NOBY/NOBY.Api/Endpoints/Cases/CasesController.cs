@@ -162,7 +162,7 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Operace získá ze Starbuildu seznam úkolů a procesů k danému case ID. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Seznam wf tasks z SB.</returns>
     [HttpGet("{caseId:long}/tasks")]

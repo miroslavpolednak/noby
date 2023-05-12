@@ -26,7 +26,7 @@ public sealed class WorkflowTask
     /// Jméno typu úkolu
     /// </summary>
     /// <example>Dožádání</example>
-    public string? TaskTypeName { get; set; }
+    public string TaskTypeName { get; set; } = null!;
 
     /// <summary>
     /// Označení úkolu (název podtypu úkolu)
