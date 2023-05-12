@@ -847,13 +847,13 @@
             <summary>
             Filter Noby stavu úkolu
             </summary>
-            <example>Active</example>
+            <example>1</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.StateIndicator">
             <summary>
             Indikátor barvy Noby stavu
             </summary>
-            <example>Active</example>
+            <example>1</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetAll(System.String,System.Threading.CancellationToken)">
              <summary>Kolekce vyžadaných číselniků.</summary>

@@ -26,7 +26,7 @@ public sealed class WorkflowTask
     /// Jméno typu úkolu
     /// </summary>
     /// <example>Dožádání</example>
-    public string? TaskTypeName { get; set; }
+    public string TaskTypeName { get; set; } = null!;
 
     /// <summary>
     /// Označení úkolu (název podtypu úkolu)
@@ -61,12 +61,12 @@ public sealed class WorkflowTask
     /// <summary>
     /// Filter Noby stavu úkolu
     /// </summary>
-    /// <example>Active</example>
+    /// <example>1</example>
     public StateFilter StateFilter { get; set; }
 
     /// <summary>
     /// Indikátor barvy Noby stavu
     /// </summary>
-    /// <example>Active</example>
+    /// <example>1</example>
     public StateIndicators StateIndicator { get; set; }
 }
