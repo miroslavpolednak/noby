@@ -148,7 +148,15 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
             updateRequest.Contacts.Add(MapEmailContact(detailWithChangedData.EmailAddress));
         if (detailWithChangedData.MobilePhone is not null)
             updateRequest.Contacts.Add(MapPhoneContact(detailWithChangedData.MobilePhone));
-        // CustomerIdentification not in GetDetailWithChangesResponse
+        
+        if ((customerOnSA.CustomerAdditionalData?.CustomerIdentification?.IdentificationMethodId ?? 0) > 0)
+        {
+            updateRequest.CustomerIdentification = new CustomerIdentification
+            {
+                IdentificationMethodId = customerOnSA.CustomerAdditionalData!.CustomerIdentification.IdentificationMethodId!.Value,
+                CzechIdentificationNumber = customerOnSA.CustomerAdditionalData.CustomerIdentification.CzechIdentificationNumber
+            };
+        }
         return updateRequest;
     }
 

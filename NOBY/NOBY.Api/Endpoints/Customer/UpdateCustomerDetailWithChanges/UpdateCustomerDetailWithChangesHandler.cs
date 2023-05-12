@@ -6,6 +6,7 @@ using DomainServices.UserService.Clients;
 using Newtonsoft.Json;
 using UserIdentity = CIS.Infrastructure.gRPC.CisTypes.UserIdentity;
 using __Household = DomainServices.HouseholdService.Contracts;
+using System.ComponentModel;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
@@ -35,28 +36,6 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         if (!(originalModel.MobilePhone?.IsConfirmed ?? false))
             ModelComparers.CompareObjects(request.MobilePhone, originalModel.MobilePhone, "MobilePhone", delta);
 
-        // zjistit zda uz existuji changeData a v nich CustomerIdentification
-        /*bool identDocExists = false;
-        if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
-        {
-            var deserializedChangedData = JsonConvert.DeserializeObject<UpdateCustomerDetailWithChangesRequest>(customerOnSA.CustomerChangeData);
-            identDocExists = deserializedChangedData?.IdentificationDocument is not null;
-        }
-
-        // tady schvalne neresime prvni pindu z EA diagramu, protoze bysme museli z customerOnSA json delty udelat objekt a ten teprve kontrolovat. A to by bylo pomalejsi a narocnejsi nez tuhle podminku vzdy znovu projet.
-        if (!identDocExists && identificationMethodId != 1 && identificationMethodId != 8)
-        {
-            if (_userAccessor.User?.Id != null)
-            {
-                var user = await _userServiceClient.GetUser(_userAccessor.User.Id, cancellationToken);
-                var isBroker = user.UserIdentifiers.Any(u =>
-                    u.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId);
-
-                delta.CustomerIdentification.CzechIdentificationNumber = user.CzechIdentificationNumber;
-                delta.CustomerIdentification.IdentificationMethodId = isBroker ? 8 : 1;
-            }
-        }*/
-
         // https://jira.kb.cz/browse/HFICH-4200
         // docasne reseni nez se CM rozmysli jak na to
         if (customerOnSA.CustomerAdditionalData is null)
@@ -78,12 +57,12 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         {
             CustomerOnSAId = customerOnSA.CustomerOnSAId,
             CustomerChangeData = finalJson,
-            CustomerAdditionalData = createAdditionalData(customerOnSA, request)
+            CustomerAdditionalData = await createAdditionalData(customerOnSA, request, identificationMethodId, cancellationToken)
         };
         await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
     }
 
-    static __Household.CustomerAdditionalData createAdditionalData(__Household.CustomerOnSA customerOnSA, UpdateCustomerDetailWithChangesRequest request)
+    private async Task<__Household.CustomerAdditionalData> createAdditionalData(__Household.CustomerOnSA customerOnSA, UpdateCustomerDetailWithChangesRequest request, int? identificationMethodId, CancellationToken cancellationToken)
     {
         var additionalData = customerOnSA.CustomerAdditionalData is null ? new __Household.CustomerAdditionalData() : customerOnSA.CustomerAdditionalData;
 
@@ -100,6 +79,29 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         additionalData.HasRelationshipWithKBEmployee = request.HasRelationshipWithKBEmployee.GetValueOrDefault();
         additionalData.IsUSPerson = request.IsUSPerson.GetValueOrDefault();
         additionalData.IsPoliticallyExposed = request.IsUSPerson.GetValueOrDefault();
+
+        // zjistit zda uz existuji changeData a v nich CustomerIdentification
+        bool identDocExists = false;
+        if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
+        {
+            var deserializedChangedData = JsonConvert.DeserializeObject<UpdateCustomerDetailWithChangesRequest>(customerOnSA.CustomerChangeData);
+            identDocExists = deserializedChangedData?.IdentificationDocument is not null;
+        }
+
+        // tady schvalne neresime prvni pindu z EA diagramu, protoze bysme museli z customerOnSA json delty udelat objekt a ten teprve kontrolovat. A to by bylo pomalejsi a narocnejsi nez tuhle podminku vzdy znovu projet.
+        if (!identDocExists && identificationMethodId != 1 && identificationMethodId != 8)
+        {
+            if (_userAccessor.User?.Id != null)
+            {
+                var user = await _userServiceClient.GetUser(_userAccessor.User.Id, cancellationToken);
+                var isBroker = user.UserIdentifiers.Any(u =>
+                    u.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId);
+
+                additionalData.CustomerIdentification ??= new __Household.CustomerIdentificationObject();
+                additionalData.CustomerIdentification.CzechIdentificationNumber = user.CzechIdentificationNumber;
+                additionalData.CustomerIdentification.IdentificationMethodId = isBroker ? 8 : 1;
+            }
+        }
 
         return additionalData;
     }
