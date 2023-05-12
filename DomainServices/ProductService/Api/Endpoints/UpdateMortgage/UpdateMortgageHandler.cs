@@ -32,7 +32,7 @@ internal sealed class UpdateMortgageHandler
         }
 
         // create request
-        var mortgageRequest = request.Mortgage.ToMortgageRequest();
+        var mortgageRequest = request.Mortgage.ToMortgageRequest(null);
 
         // call endpoint
         await _mpHomeClient.UpdateLoan(request.ProductId, mortgageRequest, cancellation);
