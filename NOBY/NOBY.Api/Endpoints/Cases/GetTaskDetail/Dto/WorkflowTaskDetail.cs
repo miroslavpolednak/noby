@@ -25,21 +25,11 @@ public class WorkflowTaskDetail
     /// </summary>
     /// <example>Hlavní úvěrový proces</example>
     public string ProcessNameLong { get; set; } = null!;
-    
-    /// <summary>
-    /// Dožádání: Příznak zaslání Dožádní přímo na klienta
-    /// </summary>
-    /// <example>false</example>
-    public bool? SentToCustomer { get; set; }
-    
-    /// <summary>
-    /// Dožádání: Číslo objednávky ocenění
-    /// </summary>
-    /// <example>123556</example>
-    public int? OrderId { get; set; }
 
     /// <summary>
     /// Dožádání: Text požadavku a případné odpovědi (i včetně případných opakování komunikace). Řazeno chronologicky, nejstarší záznam je jako poslední.; Předání na specialistu: popis požadavku
     /// </summary>
     public List<TaskCommunicationItem> TaskCommunication { get; set; } = null!;
+
+    public Amendments.Amendments Amendments { get; set; } = null!;
 }
