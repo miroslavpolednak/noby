@@ -32,9 +32,13 @@ public class UpdateTaskDetailRequest : IRequest
     /// <example>0</example>
     public int? TaskResponseTypeId { get; set; }
 
-    public string TaskUserResponse { get; set; } = null!;
+    /// <summary>
+    /// Text odpovědi
+    /// </summary>
+    /// <example>Vyplněno, co bylo potřeba.</example>
+    public string? TaskUserResponse { get; set; }
 
-    public List<DocumentInformation> Attachments { get; set; } = null!;
+    public List<DocumentInformation>? Attachments { get; set; }
 
     internal UpdateTaskDetailRequest InfuseIds(long caseId, long taskId)
     {

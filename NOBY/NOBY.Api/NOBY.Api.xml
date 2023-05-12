@@ -114,6 +114,7 @@
             Vytvoření nového workflow tasku do SB.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
+            <response code="200">Noby task ID. Jde o ID sady úkolů generované Starbuildem.</response>
             <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateSalesArrangement(System.Int64,NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest)">
@@ -665,6 +666,12 @@
             ID typu odpovědi. 0 - V pořádku, 1 - Závada - upravený dokument, 2 - Závada - chybějící podpis
             </summary>
             <example>0</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest.TaskUserResponse">
+            <summary>
+            Text odpovědi
+            </summary>
+            <example>Vyplněno, co bylo potřeba.</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.Dto.CaseModel.CaseId">
             <summary>
