@@ -223,9 +223,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\grpc-services-clients.md = Docs\topics\grpc-services-clients.md
 		Docs\topics\grpc-services-contracts.md = Docs\topics\grpc-services-contracts.md
 		Docs\topics\grpc-services.md = Docs\topics\grpc-services.md
-		Docs\topics\healthcheck.md = Docs\topics\healthcheck.md
 		Docs\topics\logging.md = Docs\topics\logging.md
 		Docs\topics\service-discovery.md = Docs\topics\service-discovery.md
+		Docs\topics\soap-client.md = Docs\topics\soap-client.md
 		Docs\topics\validation-feapi.md = Docs\topics\validation-feapi.md
 		Docs\topics\validation-grpc.md = Docs\topics\validation-grpc.md
 		Docs\topics\validation.md = Docs\topics\validation.md
@@ -259,7 +259,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{4FDD79BE-4EC7-4394-8088-4F9527AF510D}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\OfferService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\OfferService\DatabaseMigrations\00001-initial_creation.sql
-		DomainServices\OfferService\DatabaseMigrations\00002-HFICH-5706_CreditWorthiness.sql = DomainServices\OfferService\DatabaseMigrations\00002-HFICH-5706_CreditWorthiness.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
@@ -304,18 +303,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5459.sql = DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5459.sql
 		DomainServices\CodebookService\DatabaseMigrations\00008-HFICH-5458-SmsNotificationType_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00008-HFICH-5458-SmsNotificationType_seed.sql
 		DomainServices\CodebookService\DatabaseMigrations\00009-HFICH-5516.sql = DomainServices\CodebookService\DatabaseMigrations\00009-HFICH-5516.sql
-		DomainServices\CodebookService\DatabaseMigrations\00010-HFICH-5279-GeneralDocumentList.sql = DomainServices\CodebookService\DatabaseMigrations\00010-HFICH-5279-GeneralDocumentList.sql
-		DomainServices\CodebookService\DatabaseMigrations\00011-HFICH-5695-TinFormatsByCountry-TinNoFillReasonsByCountry.sql = DomainServices\CodebookService\DatabaseMigrations\00011-HFICH-5695-TinFormatsByCountry-TinNoFillReasonsByCountry.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
 	ProjectSection(SolutionItems) = preProject
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00001-initial_creation.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00001-initial_creation.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00002-seed.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00002-seed.sql
-		InternalServices\ServiceDiscovery\DatabaseMigrations\00003-HFICH-5100.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00003-HFICH-5100.sql
-		InternalServices\ServiceDiscovery\DatabaseMigrations\00004-delete_old_rip.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00004-delete_old_rip.sql
-		InternalServices\ServiceDiscovery\DatabaseMigrations\00005-DocumentOnSAService-ports.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00005-DocumentOnSAService-ports.sql
-		InternalServices\ServiceDiscovery\DatabaseMigrations\00006-zmena_RIP_na_SIT.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00006-zmena_RIP_na_SIT.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7}"
@@ -387,7 +380,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00013-HFICH-5323_document_signature.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00013-HFICH-5323_document_signature.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00014-OfferDocument_Domicilace.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00014-OfferDocument_Domicilace.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00016-HFICH-4663_MortgageComment.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00016-HFICH-4663_MortgageComment.sql
-		InternalServices\DataAggregatorService\DatabaseMigrations\00017-HFICH-5780_Template3601_changes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00017-HFICH-5780_Template3601_changes.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
