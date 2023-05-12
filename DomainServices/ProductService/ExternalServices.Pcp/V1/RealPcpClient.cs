@@ -1,6 +1,9 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+using CIS.Infrastructure.gRPC;
+using ExternalServices;
 using System.Diagnostics;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -34,13 +37,13 @@ internal sealed class RealPcpClient
     <cre:otherMktItemInstanceIdList>
         <cre:otherMktItemInstanceId>
             <dto:class>ID</dto:class>
-            <dto:id>{pcpProductId}</dto:id>
+            <dto:id>{caseId}</dto:id>
         </cre:otherMktItemInstanceId>
     </cre:otherMktItemInstanceIdList>
     <cre:productInOffer>
         <cre:catalogueProductInOffer>
             <cre:catalogueItemId>
-                <dto:id>{caseId}</dto:id>
+                <dto:id>{pcpProductId}</dto:id>
             </cre:catalogueItemId>
         </cre:catalogueProductInOffer>
     </cre:productInOffer>
@@ -61,12 +64,21 @@ internal sealed class RealPcpClient
                 string rawResponse = await response.Content.ReadAsStringAsync(cancellationToken);
 
                 response.EnsureSuccessStatusCode();
-                //var xml = XElement.Parse(rawResponse);
 
-                return "nejake id";
+                var matches = _reponseRegex.Match(rawResponse);
+                if (matches.Success)
+                {
+                    return matches.Groups[1].Value;
+                }
+                else 
+                {
+                    throw new CisExtServiceValidationException("Response ID not found");
+                }
             }
         }
     }
+
+    private static Regex _reponseRegex = new Regex("<NS2:id>(.*?)</NS2:id>", RegexOptions.Compiled);
 
     private const string _soapEnvelopeStart = @"<soapenv:Envelope xmlns:cre=""http://kb.cz/ProductInstanceBEService/v1/DTO/create"" xmlns:dto=""http://kb.cz/ProductInstanceBEService/v1/DTO"" xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:v1=""http://kb.cz/DataModel/Technical/Headers/v1"" xmlns:v11=""http://kb.cz/DataModel/Technical/HeaderTypes/v1"" xmlns:v12=""http://kb.cz/ProductInstanceBEService/v1"">";
     private const string _soapEnvelopeEnd = @"</soapenv:Envelope>";

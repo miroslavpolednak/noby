@@ -9,10 +9,11 @@ internal static class MortgageExtensions
     /// <summary>
     /// Converts contract object MortgageData to MortgageRequest.
     /// </summary>
-    public static MortgageRequest ToMortgageRequest(this MortgageData mortgage)
+    public static MortgageRequest ToMortgageRequest(this MortgageData mortgage, string? pcpId)
     {
         var request = new MortgageRequest
         {
+            //PcpId = pcpId,//TODO
             LoanType = LoanType.KBMortgage,
             ProductCodeUv = mortgage.ProductTypeId,
             PartnerId = mortgage.PartnerId,
