@@ -29,6 +29,8 @@
 
 [Health checks](./topics/healthcheck.md)
 
+[Unit a integrační testy](./topics/test.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

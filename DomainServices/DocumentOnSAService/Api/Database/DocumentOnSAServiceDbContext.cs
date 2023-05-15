@@ -6,6 +6,8 @@ namespace DomainServices.DocumentOnSAService.Api.Database;
 
 public class DocumentOnSAServiceDbContext : BaseDbContext<DocumentOnSAServiceDbContext>
 {
+    public static bool IsSqlite { get; set; }
+
     public DocumentOnSAServiceDbContext(BaseDbContextAggregate<DocumentOnSAServiceDbContext> aggregate) : base(aggregate)
     {
     }
