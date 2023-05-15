@@ -46,8 +46,8 @@ internal class GetUserHandler
             UserId = dbIdentities.v33id,
             UserInfo = new Contracts.UserInfoObject
             {
-                FirstName = dbIdentities.firstname,
-                LastName = dbIdentities.surname,
+                FirstName = dbIdentities.firstname ?? "",
+                LastName = dbIdentities.surname ?? "",
                 Cin = dbIdentities.ic,
                 Cpm = dbIdentities.cpm,
                 Icp = dbIdentities.icp,
