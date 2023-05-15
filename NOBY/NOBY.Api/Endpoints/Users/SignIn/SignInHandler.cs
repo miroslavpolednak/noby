@@ -9,6 +9,10 @@ internal sealed class SignInHandler
 {
     public async Task Handle(SignInRequest request, CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(request.IdentityId))
+        {
+            request.IdentityId = request.Login;
+        }
         if (_configuration.Security!.AuthenticationScheme != NOBY.Infrastructure.Security.AuthenticationConstants.SimpleLoginAuthScheme)
         {
             throw new NobyValidationException($"SignIn endpoint call is not enabled for scheme {_configuration.Security!.AuthenticationScheme}");

@@ -2,6 +2,9 @@
 
 public sealed class SignInRequest : IRequest
 {
+    [Obsolete]
+    public string? Login { get; set; }
+
     /// <summary>
     /// ID uzivatele v ramci vybraneho identitniho schematu.
     /// </summary>
