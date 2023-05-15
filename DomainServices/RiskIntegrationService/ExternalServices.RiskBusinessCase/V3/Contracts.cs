@@ -858,8 +858,20 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCas
     public enum Expandables
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"assessment")]
-        Assessment = 0,
+        [System.Runtime.Serialization.EnumMember(Value = @"assessmentDetail")]
+        AssessmentDetail = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"householdAssessmentDetail")]
+        HouseholdAssessmentDetail = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"counterpartyAssessmentDetail")]
+        CounterpartyAssessmentDetail = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"loanApplicationApprovalPossibilities")]
+        LoanApplicationApprovalPossibilities = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"collateralRiskCharacteristics")]
+        CollateralRiskCharacteristics = 4
 
     }
 
