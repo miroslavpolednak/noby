@@ -11,6 +11,7 @@ import "Messages/UpdateMortgage.proto";
 import "Messages/CreateContractRelationship.proto";
 import "Messages/DeleteContractRelationship.proto";
 import "Messages/GetCustomersOnProduct.proto";
+import "Messages/GetCaseId.proto";
 
 service ProductService {
    rpc GetProductList (GetProductListRequest) returns (GetProductListResponse);
@@ -28,4 +29,6 @@ service ProductService {
    rpc DeleteContractRelationship (DeleteContractRelationshipRequest) returns (google.protobuf.Empty);
    
    rpc GetCustomersOnProduct (GetCustomersOnProductRequest) returns (GetCustomersOnProductResponse);
+
+   rpc GetCaseId (GetCaseIdRequest) returns (GetCaseIdResponse);
 }

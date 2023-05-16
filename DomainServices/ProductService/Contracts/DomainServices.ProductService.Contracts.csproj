@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Messages\GetCaseId.proto" />
     <None Remove="Messages\Types.proto" />
   </ItemGroup>
 
@@ -29,7 +30,8 @@
 
 	<ItemGroup>
 		<Protobuf Include="ProductService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		
+
+		<Protobuf Include="Messages\GetCaseId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/GetCustomersOnProduct.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/DeleteContractRelationship.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/CreateContractRelationship.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
