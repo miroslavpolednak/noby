@@ -36,6 +36,7 @@ builder.Services
     .ConfigureApiBehaviorOptions(options =>
     {
         options.SuppressMapClientErrors = true;
+        options.AddCustomInvalidModelStateResponseFactory();
     });
 
 // Cis
