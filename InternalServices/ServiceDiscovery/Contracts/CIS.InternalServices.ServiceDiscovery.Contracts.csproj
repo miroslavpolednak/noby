@@ -34,7 +34,6 @@
 		<Protobuf Include="ServiceDiscovery.v1.proto" GrpcServices="Both" />
 		<Protobuf Include="Messages/GetService.proto" GrpcServices="None" />
 		<Protobuf Include="Messages/DiscoverableService.proto" GrpcServices="None" />
-		<Protobuf Include="Messages/ClearCache.proto" GrpcServices="None" />
 		<Protobuf Include="Messages/GetServices.proto" GrpcServices="None" />
 	</ItemGroup>
 	
