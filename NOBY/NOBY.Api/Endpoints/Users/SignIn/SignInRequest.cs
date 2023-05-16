@@ -2,6 +2,10 @@
 
 public sealed class SignInRequest : IRequest
 {
+    /// <summary>
+    /// OsCis
+    /// </summary>
+    /// <example>614</example>
     [Obsolete]
     public string? Login { get; set; }
 

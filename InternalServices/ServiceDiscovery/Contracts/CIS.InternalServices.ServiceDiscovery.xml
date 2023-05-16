@@ -77,14 +77,6 @@
             <param name="context">The context of the server-side call handler being invoked.</param>
             <returns>The response to send back to the client (wrapped by a task).</returns>
         </member>
-        <member name="M:CIS.InternalServices.ServiceDiscovery.Contracts.v1.DiscoveryService.DiscoveryServiceBase.ClearCache(CIS.InternalServices.ServiceDiscovery.Contracts.ClearCacheRequest,Grpc.Core.ServerCallContext)">
-            <summary>
-            Resetuje cache služeb pro všechna prostředí
-            </summary>
-            <param name="request">The request received from the client.</param>
-            <param name="context">The context of the server-side call handler being invoked.</param>
-            <returns>The response to send back to the client (wrapped by a task).</returns>
-        </member>
         <member name="T:CIS.InternalServices.ServiceDiscovery.Contracts.v1.DiscoveryService.DiscoveryServiceClient">
             <summary>Client for DiscoveryService</summary>
         </member>
@@ -175,42 +167,6 @@
             <param name="options">The options for the call.</param>
             <returns>The call object.</returns>
         </member>
-        <member name="M:CIS.InternalServices.ServiceDiscovery.Contracts.v1.DiscoveryService.DiscoveryServiceClient.ClearCache(CIS.InternalServices.ServiceDiscovery.Contracts.ClearCacheRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
-            <summary>
-            Resetuje cache služeb pro všechna prostředí
-            </summary>
-            <param name="request">The request to send to the server.</param>
-            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-            <param name="cancellationToken">An optional token for canceling the call.</param>
-            <returns>The response received from the server.</returns>
-        </member>
-        <member name="M:CIS.InternalServices.ServiceDiscovery.Contracts.v1.DiscoveryService.DiscoveryServiceClient.ClearCache(CIS.InternalServices.ServiceDiscovery.Contracts.ClearCacheRequest,Grpc.Core.CallOptions)">
-            <summary>
-            Resetuje cache služeb pro všechna prostředí
-            </summary>
-            <param name="request">The request to send to the server.</param>
-            <param name="options">The options for the call.</param>
-            <returns>The response received from the server.</returns>
-        </member>
-        <member name="M:CIS.InternalServices.ServiceDiscovery.Contracts.v1.DiscoveryService.DiscoveryServiceClient.ClearCacheAsync(CIS.InternalServices.ServiceDiscovery.Contracts.ClearCacheRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
-            <summary>
-            Resetuje cache služeb pro všechna prostředí
-            </summary>
-            <param name="request">The request to send to the server.</param>
-            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-            <param name="cancellationToken">An optional token for canceling the call.</param>
-            <returns>The call object.</returns>
-        </member>
-        <member name="M:CIS.InternalServices.ServiceDiscovery.Contracts.v1.DiscoveryService.DiscoveryServiceClient.ClearCacheAsync(CIS.InternalServices.ServiceDiscovery.Contracts.ClearCacheRequest,Grpc.Core.CallOptions)">
-            <summary>
-            Resetuje cache služeb pro všechna prostředí
-            </summary>
-            <param name="request">The request to send to the server.</param>
-            <param name="options">The options for the call.</param>
-            <returns>The call object.</returns>
-        </member>
         <member name="M:CIS.InternalServices.ServiceDiscovery.Contracts.v1.DiscoveryService.DiscoveryServiceClient.NewInstance(Grpc.Core.ClientBase.ClientBaseConfiguration)">
             <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
         </member>
@@ -293,12 +249,6 @@
         </member>
         <member name="F:CIS.InternalServices.ServiceDiscovery.Contracts.DiscoverableService.AddToGlobalHealthCheckFieldNumber">
             <summary>Field number for the "AddToGlobalHealthCheck" field.</summary>
-        </member>
-        <member name="T:CIS.InternalServices.ServiceDiscovery.Contracts.ClearCacheReflection">
-            <summary>Holder for reflection information generated from Messages/ClearCache.proto</summary>
-        </member>
-        <member name="P:CIS.InternalServices.ServiceDiscovery.Contracts.ClearCacheReflection.Descriptor">
-            <summary>File descriptor for Messages/ClearCache.proto</summary>
         </member>
         <member name="T:CIS.InternalServices.ServiceDiscovery.Contracts.GetServicesReflection">
             <summary>Holder for reflection information generated from Messages/GetServices.proto</summary>
