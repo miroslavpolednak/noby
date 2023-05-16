@@ -70,7 +70,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         catch (Exception e)
         {
             _logger.LogError(e, $"Could not upload attachments to S3 bucket {bucketName}.");
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
         }
      
         var result = _repository.NewEmailResult();
@@ -90,7 +90,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         catch (Exception e)
         {
             _logger.LogError(e, $"Could not create EmailResult.");
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.CreateEmailResultFailed, nameof(SendEmailFromTemplateHandler), "SendEmailFromTemplate request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.CreateEmailResultFailed, nameof(SendEmailFromTemplateHandler), "SendEmailFromTemplate request failed due to internal server error.");
         }
         
         var consumerId = _userAdapterService.GetConsumerId();
@@ -133,7 +133,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
             _logger.LogError(e, "Could not produce message SendEmail to KAFKA.");
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.ProduceSendEmailError, nameof(SendEmailFromTemplateHandler), "SendEmailFromTemplate request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendEmailError, nameof(SendEmailFromTemplateHandler), "SendEmailFromTemplate request failed due to internal server error.");
         }
         
         return new SendEmailFromTemplateResponse { NotificationId = result.Id };

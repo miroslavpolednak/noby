@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
+﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
+using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Email;
@@ -9,23 +10,18 @@ public class NaturalPersonValidator : AbstractValidator<NaturalPerson>
     {
         RuleFor(person => person.FirstName)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.NaturalPerson.FirstNameRequired)
-                .WithMessage($"{nameof(NaturalPerson.FirstName)} required.")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.FirstNameRequired)
             .MaximumLength(40)
-                .WithErrorCode(ErrorCodes.Validation.NaturalPerson.FirstNameLengthLimitExceeded)
-                .WithMessage($"Maximum length of {nameof(NaturalPerson.FirstName)} is 40.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.FirstNameLengthLimitExceeded);
 
         RuleFor(person => person.MiddleName)
             .MaximumLength(40)
-                .WithErrorCode(ErrorCodes.Validation.NaturalPerson.MiddleNameLengthLimitExceeded)
-                .WithMessage($"Maximum length of {nameof(NaturalPerson.MiddleName)} is 40.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.MiddleNameLengthLimitExceeded);
 
         RuleFor(person => person.Surname)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.NaturalPerson.SurnameRequired)
-                .WithMessage($"{nameof(NaturalPerson.Surname)} required.")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SurnameRequired)
             .MaximumLength(80)
-                .WithErrorCode(ErrorCodes.Validation.NaturalPerson.SurnameLengthLimitExceeded)
-                .WithMessage($"Maximum length of {nameof(NaturalPerson.Surname)} is 80.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SurnameLengthLimitExceeded);
     }
 }

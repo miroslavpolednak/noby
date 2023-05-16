@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Common;
+﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
+using CIS.InternalServices.NotificationService.Contracts.Common;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Common;
@@ -9,10 +10,10 @@ public class IdentifierValidator : AbstractValidator<Identifier>
     {
         RuleFor(request => request.Identity)
             .NotEmpty()
-                .WithMessage($"{nameof(Identifier.Identity)} required.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentityRequired);
 
         RuleFor(request => request.IdentityScheme)
             .NotEmpty()
-                .WithMessage($"{nameof(Identifier.IdentityScheme)} required.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentitySchemeRequired);
     }
 }
