@@ -77,4 +77,8 @@ internal class ProductService : IProductServiceClient
         return await _service.GetCustomersOnProductAsync(new GetCustomersOnProductRequest() { ProductId = productId }, cancellationToken: cancellationToken);
     }
 
+    public async Task<GetCaseIdResponse> GetCaseId(GetCaseIdRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        return await _service.GetCaseIdAsync(request, cancellationToken: cancellationToken);
+    }
 }
