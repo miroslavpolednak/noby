@@ -62,7 +62,21 @@ public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
         {
             RuleFor(request => request.Identifier!)
                 .SetValidator(new IdentifierValidator())
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentifierInvalid);
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentifierInvalid);
+        });
+
+        When(request => request.DocumentId is not null, () =>
+        {
+            RuleFor(request => request.DocumentId!)
+                .SetValidator(new DocumentIdValidator())
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+        });
+        
+        When(request => request.CustomId is not null, () =>
+        {
+            RuleFor(request => request.CustomId!)
+                .SetValidator(new CustomIdValidator())
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
         });
     }
 }

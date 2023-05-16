@@ -12,55 +12,63 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     // Identifier
     public const int IdentifierInvalid = 300;
     public const int IdentityRequired = 301;
-    public const int IdentitySchemeRequired = 302;
+    public const int IdentityInvalid = 302;
+    public const int IdentitySchemeRequired = 303;
+    public const int IdentitySchemeInvalid = 304;
+    
+    // DocumentId
+    public const int DocumentIdInvalid = 305;
+
+    // CustomId
+    public const int CustomIdInvalid = 306;
     
     // Legal person
-    public const int NameRequired = 303;
-    public const int NameLengthLimitExceeded = 304;
+    public const int NameRequired = 307;
+    public const int NameLengthLimitExceeded = 308;
     
     // Natural person
-    public const int FirstNameRequired = 305;
-    public const int FirstNameLengthLimitExceeded = 306;
-    public const int MiddleNameLengthLimitExceeded = 307;
-    public const int SurnameRequired = 308;
-    public const int SurnameLengthLimitExceeded = 309;
+    public const int FirstNameRequired = 309;
+    public const int FirstNameLengthLimitExceeded = 310;
+    public const int MiddleNameLengthLimitExceeded = 311;
+    public const int SurnameRequired = 312;
+    public const int SurnameLengthLimitExceeded = 313;
     
     // Party
-    public const int EitherLegalOrNaturalPersonRequired = 310;
-    public const int LegalPersonInvalid = 311;
-    public const int NaturalPersonInvalid = 312;
+    public const int EitherLegalOrNaturalPersonRequired = 314;
+    public const int LegalPersonInvalid = 315;
+    public const int NaturalPersonInvalid = 316;
     
     // Email address
-    public const int ValueRequired = 313;
-    public const int ValueInvalid = 314;
-    public const int PartyRequired = 315;
-    public const int PartyInvalid = 316;
+    public const int ValueRequired = 317;
+    public const int ValueInvalid = 318;
+    public const int PartyRequired = 319;
+    public const int PartyInvalid = 320;
     
     // Email content
-    public const int FormatRequired = 317;
-    public const int FormatInvalid = 318;
-    public const int LanguageRequired = 319;
-    public const int LanguageInvalid = 320;
-    public const int EmailTextRequired = 321;
+    public const int FormatRequired = 321;
+    public const int FormatInvalid = 322;
+    public const int LanguageRequired = 323;
+    public const int LanguageInvalid = 324;
+    public const int EmailTextRequired = 325;
     
     // Email attachment 
-    public const int BinaryRequired = 322;
-    public const int BinaryInvalid = 323;
-    public const int FilenameRequired = 324;
-    public const int FilenameLengthLimitExceeded = 325;
+    public const int BinaryRequired = 326;
+    public const int BinaryInvalid = 327;
+    public const int FilenameRequired = 328;
+    public const int FilenameLengthLimitExceeded = 329;
     
     // Phone
-    public const int CountryCodeRequired = 326;
-    public const int CountryCodeInvalid = 327;
-    public const int NationalNumberRequired = 328;
-    public const int NationalNumberInvalid = 329;
+    public const int CountryCodeRequired = 330;
+    public const int CountryCodeInvalid = 331;
+    public const int NationalNumberRequired = 332;
+    public const int NationalNumberInvalid = 333;
     
     // Get result
-    public const int NotificationIdNotEmpty = 330;
+    public const int NotificationIdNotEmpty = 334;
     
     // Search result
-    public const int AtLeastOneParameterRequired = 331;
-    public const int IdentityInvalid = 332;
+    public const int AtLeastOneParameterRequired = 335;
+    public const int BothIdentityAndIdentitySchemeRequired = 336;
     
     // Send email
     public const int FromRequired = 340;
@@ -90,10 +98,8 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int SmsTemplatePhoneNumberInvalid = 371;
     public const int SmsTemplateProcessPriorityInvalid = 372;
     public const int SmsTemplateTypeInvalid = 373;
-    public const int SmsTemplateTextRequired = 374;
-    public const int SmsTemplateTextLengthLimitExceeded = 375;
-    public const int SmsTemplatePlaceholdersRequired = 376;
-    public const int SmsTemplatePlaceholdersInvalid = 377;
+    public const int SmsTemplatePlaceholdersRequired = 374;
+    public const int SmsTemplatePlaceholdersInvalid = 375;
     
     // TODO Internal
     public const int ResultNotFound = 380;
@@ -109,8 +115,13 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
         {
             { IdentifierInvalid, $"{nameof(Identifier)} must contain either both {nameof(Identifier.Identity)} and {nameof(Identifier.IdentityScheme)} or none." },
             { IdentityRequired, $"{nameof(Identifier.Identity)} required."},
+            { IdentityInvalid, $"Invalid {nameof(Identifier.Identity)}."},
             { IdentitySchemeRequired, $"{nameof(Identifier.IdentityScheme)} required."},
+            { IdentitySchemeInvalid, $"Invalid {nameof(Identifier.IdentityScheme)}."},
             
+            { DocumentIdInvalid, $"Invalid DocumentId."},
+            { CustomIdInvalid, $"Invalid CustomId."},
+
             { NameRequired, $"{nameof(LegalPerson.Name)} required." },
             { NameLengthLimitExceeded, $"Maximum length of {nameof(LegalPerson.Name)} is 255." },
             
@@ -148,7 +159,7 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { NotificationIdNotEmpty, $"{nameof(GetResultRequest.NotificationId)} must be not empty." },
             
             { AtLeastOneParameterRequired, $"{nameof(SearchResultsRequest)} must contain at least 1 non-empty search parameter." },
-            { IdentityInvalid, $"{nameof(SearchResultsRequest)} must contain either both {nameof(SearchResultsRequest.Identity)} and {nameof(SearchResultsRequest.IdentityScheme)} or none." },
+            { BothIdentityAndIdentitySchemeRequired, $"{nameof(SearchResultsRequest)} must contain either both {nameof(SearchResultsRequest.Identity)} and {nameof(SearchResultsRequest.IdentityScheme)} or none." },
             
             { FromRequired, $"{nameof(SendEmailRequest.From)} required." },
             { FromInvalid, $"Invalid {nameof(SendEmailRequest.From)}." },
@@ -175,8 +186,7 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { SmsTemplatePhoneNumberInvalid, $"Invalid {nameof(SendSmsFromTemplateRequest.PhoneNumber)}."},
             { SmsTemplateProcessPriorityInvalid, $"Invalid {nameof(SendSmsFromTemplateRequest.ProcessingPriority)}."},
             { SmsTemplateTypeInvalid, $"Invalid {nameof(SendSmsFromTemplateRequest.Type)}."},
-            // { SmsTemplateTextRequired, "TODO"},
-            // { SmsTemplateTextLengthLimitExceeded, "TODO"},
+            
             { SmsTemplatePlaceholdersRequired, $"{nameof(SendSmsFromTemplateRequest.Placeholders)} required." },
             { SmsTemplatePlaceholdersInvalid, $"{nameof(SendSmsFromTemplateRequest.Placeholders)} must contain non-empty values." },
             

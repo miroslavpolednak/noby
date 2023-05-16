@@ -10,10 +10,14 @@ public class IdentifierValidator : AbstractValidator<Identifier>
     {
         RuleFor(request => request.Identity)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentityRequired);
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentityRequired)
+            .Matches("^([A-Za-z0-9-_]{0,450})$")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentityInvalid);
 
         RuleFor(request => request.IdentityScheme)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentitySchemeRequired);
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentitySchemeRequired)
+            .Matches("^([A-Za-z0-9-_]{0,450})$")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentitySchemeInvalid);
     }
 }
