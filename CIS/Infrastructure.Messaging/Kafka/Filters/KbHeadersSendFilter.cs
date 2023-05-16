@@ -36,7 +36,7 @@ public sealed class KbHeadersSendFilter<T>
             int index = _currentUserAccessor.User.Login.IndexOf('=');
             if (index > 0)
             {
-                context.Headers.Set("X_HYPHEN_KB_HYPHEN_Party_HYPHEN_Identity_HYPHEN_In_HYPHEN_Service", $$"""{"partyIdIS":[{"partyId":{"id":"{{_currentUserAccessor.User.Login[..index]}}","idScheme":"{{_currentUserAccessor.User.Login[(index + 1)..]}}"},"usg":"AUTH"}]}""");
+                context.Headers.Set("X_HYPHEN_KB_HYPHEN_Party_HYPHEN_Identity_HYPHEN_In_HYPHEN_Service", $$"""{"partyIdIS":[{"partyId":{"idScheme":"{{_currentUserAccessor.User.Login[..index]}}","id":"{{_currentUserAccessor.User.Login[(index + 1)..]}}"},"usg":"AUTH"}]}""");
             }
         }
 
