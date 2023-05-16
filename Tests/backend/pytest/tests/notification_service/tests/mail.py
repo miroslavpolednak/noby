@@ -16,11 +16,34 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
     json_req_mail_mpss_basic_format_application_html, json_req_mail_mpss_basic_content_format_application_mht
 
 
-#zákkladní test
+#základní test pro health check
+@pytest.mark.parametrize("url_name", ["dev_url"])
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal])
+def test_mail_health_check(url_name,  auth_params, auth, json_data):
+    """kladny test"""
+
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/email",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    resp = resp.json()
+    print(resp)
+    assert "notificationId" in resp
+    notification_id = resp["notificationId"]
+    assert notification_id != ""
+
+
+#základní test
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, json_req_mail_mpss_full_attachments,
-                                       json_req_mail_mpss_full_natural, ])
+                                       json_req_mail_mpss_full_natural])
 def test_mail(url_name,  auth_params, auth, json_data):
     """kladny test"""
 
@@ -39,7 +62,7 @@ def test_mail(url_name,  auth_params, auth, json_data):
     notification_id = resp["notificationId"]
     assert notification_id != ""
 
-#TODO:content.format test - az po Drobne zmeny 3
+
 @pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_format_application_html,
