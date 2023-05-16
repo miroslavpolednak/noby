@@ -3,6 +3,7 @@ using DomainServices.OfferService.Clients;
 using DomainServices.RiskIntegrationService.Clients.LoanApplication.V2;
 using DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2;
 using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
+using DomainServices.HouseholdService.Clients;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -17,15 +18,18 @@ internal sealed class GetLoanApplicationAssessmentHandler
     private readonly IOfferServiceClient _offerService;
     private readonly ILoanApplicationServiceClient _loanApplicationService;
     private readonly IRiskBusinessCaseServiceClient _riskBusinessCaseService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
 
     public GetLoanApplicationAssessmentHandler(
         LoanApplicationDataService loanApplicationDataService,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
         ILoanApplicationServiceClient loanApplicationService,
-        IRiskBusinessCaseServiceClient riskBusinessCaseService
+        IRiskBusinessCaseServiceClient riskBusinessCaseService,
+        ICustomerOnSAServiceClient customerOnSAService
         )
     {
+        _customerOnSAService = customerOnSAService;
         _loanApplicationDataService = loanApplicationDataService;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
@@ -81,6 +85,22 @@ internal sealed class GetLoanApplicationAssessmentHandler
         var offer = saInstance.OfferId.HasValue ? await _offerService.GetMortgageOfferDetail(saInstance.OfferId.Value, cancellationToken) : null;
 
         // convert to ApiResponse
-        return getAssesmentResponse.ToApiResponse(offer);
+        var response = getAssesmentResponse.ToApiResponse(offer);
+
+        if (response.AssessmentResult == 502 && (response.Reasons?.Any(t => t.Code == "060009") ?? false))
+        {
+            var customers = await _customerOnSAService.GetCustomerList(request.SalesArrangementId, cancellationToken);
+            foreach (var customer in customers)
+            {
+                var obligations = await _customerOnSAService.GetObligationList(customer.CustomerOnSAId, cancellationToken);
+                if (obligations.Any(t => ((t.Creditor is not null && t.Creditor.IsExternal.GetValueOrDefault()) && (t.Correction is not null && t.Correction.CorrectionTypeId.GetValueOrDefault() != 1))))
+                {
+                    response.DisplayAssessmentResultInfoText = true;
+                    break;
+                }
+            }
+        }
+
+        return response;
     }
 }
