@@ -27,6 +27,11 @@ builder.Configure();
 
 // Mvc
 builder.Services
+    .AddHsts(options =>
+    {
+        options.Preload = true;
+        options.MaxAge = TimeSpan.FromDays(360);
+    })
     .AddControllers()
     .ConfigureApiBehaviorOptions(options =>
     {
@@ -89,7 +94,10 @@ app.Use((context, next) =>
     return next();
 });
 
+app.UseHsts();
+
 app.UseHttpsRedirection();
+
 app.UseServiceDiscovery();
 
 app
