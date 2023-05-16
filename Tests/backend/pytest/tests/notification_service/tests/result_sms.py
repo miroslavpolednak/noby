@@ -48,9 +48,12 @@ def test_get_sms_notification_id_states(url_name,  auth_params, auth, json_data)
 
     expected_sms_data = json_req_sms_basic_insg.copy()
 
-    # Odebere processingPriority z expected_sms_data - insg nechce tento atribut vracet
-    if "processingPriority" in expected_sms_data:
-        del expected_sms_data["processingPriority"]
+    # Odebere processingPriority, customId, documentid, text z expected_sms_data - insg nechce tento atribut vracet
+    for attr in ["processingPriority", "text"]:
+        if attr in expected_sms_data:
+            del expected_sms_data[attr]
+
+    # Převede phoneNumber na objekt s countryCode a nationalNumber
 
     # Převede phoneNumber na objekt s countryCode a nationalNumber
     phone_number = expected_sms_data.pop("phoneNumber")
