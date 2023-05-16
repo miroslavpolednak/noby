@@ -21,7 +21,7 @@ internal sealed class GetCaseIdHandler
 
                 if (!caseId1.HasValue)
                 {
-                    ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ContractNumberNotFound, request.ContractNumber.ContractNumber);
+                    throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ContractNumberNotFound, request.ContractNumber.ContractNumber);
                 }
                 return new GetCaseIdResponse { CaseId = caseId1!.Value };
 
@@ -35,7 +35,7 @@ internal sealed class GetCaseIdHandler
 
                 if (!caseId2.HasValue)
                 {
-                    ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, request.PaymentAccount.AccountNumber);
+                    throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, request.PaymentAccount.AccountNumber);
                 }
                 return new GetCaseIdResponse { CaseId = caseId2!.Value };
 
