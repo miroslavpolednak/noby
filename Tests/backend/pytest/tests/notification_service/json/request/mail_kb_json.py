@@ -1,4 +1,37 @@
 # from, to, legalPerson, bez priloh
+json_req_mail_kb_basic_legal = \
+  {
+    "from": {
+      "value": "notification-service@kb.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "jakub_vana@ks.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Jakub Vana"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal_kb",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_kb_basic_legal"
+    },
+    "attachments": []
+  }
+
+
+
+
+# negative - from, to, legalPerson, bez priloh
 json_req_mail_kb_bad_11_attachments = \
   {
     "from": {

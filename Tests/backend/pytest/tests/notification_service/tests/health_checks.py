@@ -1,21 +1,32 @@
-import time
-import uuid
 
 import pytest
 import requests
-
+import time
+import uuid
 from ..conftest import URLS
+from ..json.request.mail_kb_json import json_req_mail_kb_bad_11_attachments, json_req_mail_kb_basic_legal
+from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
+    json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural, json_req_mail_mpss_bad_natural_legal, \
+    json_req_mail_mpss_max_attachments, json_req_mail_mpss_bad_11_attachments, \
+    json_req_mail_bad_identifier_identity_mpss_basic, \
+    json_req_mail_bad_identifier_mpss_basic, json_req_mail_bad_identifier_identity_mpss_basic, \
+    json_req_mail_bad_identifier_scheme_mpss_basic, json_req_mail_mpss_bad_format_language, \
+    json_req_mail_mpss_bad_content_format_text, json_req_mail_mpss_basic_format_html, \
+    json_req_mail_mpss_negative_basic_format_text_plain, json_req_mail_mpss_basic_format_text_html, \
+    json_req_mail_mpss_basic_format_application_html, json_req_mail_mpss_basic_content_format_application_mht
 from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
     json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_basic_full_for_search
 from ..json.request.sms_template import json_req_sms_full_template
 
-@pytest.mark.parametrize("url_name", ["uat_url"])
+
+#est pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
-def test_get_sms_notification_id_states(url_name,  auth_params, auth, json_data):
+def test_get_sms_notification_id_states(ns_url, auth_params, auth, json_data):
     """uvodni test pro zakladni napln sms bez priloh
     """
-
+    url_name = ns_url["url_name"]
+    url = ns_url["url"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -75,13 +86,14 @@ def test_get_sms_notification_id_states(url_name,  auth_params, auth, json_data)
 
 
 #TODO: koukni na response GET search, ve swagger vraci i vyparsovane parametry
-@pytest.mark.parametrize("url_name", ["dev_url"])
+#est pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_full_for_search])
-def test_get_sms_notification_search(url_name,  auth_params, auth, json_data):
+def test_get_sms_notification_search(ns_url,  auth_params, auth, json_data):
     """test pro vygenerovani sms a jeji nasledne vyhledani
     """
-
+    url_name = ns_url["url_name"]
+    url = ns_url["url"]
     username = auth[0]
     password = auth[1]
     unique_custom_id = f"{uuid.uuid4()}"
@@ -134,3 +146,50 @@ def test_get_sms_notification_search(url_name,  auth_params, auth, json_data):
         "countryCode": phone_number[:4],
         "nationalNumber": phone_number[4:]}
     assert resp["requestData"]["smsData"] == expected_sms_data
+
+
+#základní test pro mail
+#est pro additional parameters napr. --ns-url sit_url
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal, json_req_mail_kb_basic_legal])
+def test_mail_health_check(ns_url,  auth_params, auth, json_data):
+    """kladny test"""
+    url_name = ns_url["url_name"]
+    url = ns_url["url"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/email",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    resp = resp.json()
+    print(resp)
+    assert "notificationId" in resp
+    notification_id = resp["notificationId"]
+    assert notification_id != ""
+
+
+#zakladni test pro template
+#test pro additional parameters napr. --ns-url sit_url
+@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_sms_full_template])
+def test_sms_template(ns_url,  auth_params, auth, json_data):
+    """SMS s template z tabulky CodebookService.dbo.SmsNotificationType"""
+    url_name = ns_url["url_name"]
+    url = ns_url["url"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/smsFromTemplate",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    resp = resp.json()
+    print(resp)
+    assert "notificationId" in resp
+    assert resp["notificationId"] != ""

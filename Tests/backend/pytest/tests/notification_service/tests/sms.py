@@ -41,9 +41,9 @@ def test_sms(url_name,  auth_params, auth, json_data):
     assert notification_id != ""
 
 
-#est pro additional parameters napr. --ns-url sit_url
+#test pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [(json_req_sms_basic_insg)])
+@pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
 def test_sms_manual_env(ns_url,  auth_params, auth, json_data):
     url_name = ns_url["url_name"]
     url = ns_url["url"]
