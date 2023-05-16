@@ -17,6 +17,12 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int ForSpecifiedDocumentTypeIdCannotFindHousehold = 19015;
     public const int DocumentTypeIdNotExist = 19016;
 
+    // Non BL validation
+    public const int SalesArrangementIdIsRequired = 19030;
+    public const int DocumentTypeIdIsRequired = 19031;
+    public const int FormIdIsRequired = 19032;
+    public const int EArchivIdIsRequired = 19033;
+
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
@@ -31,8 +37,12 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { SalesArrangementCategoryNotSupported, "This kind of SalesArrangementCategories {PropertyValue} is not supported" },
             { HouseholdTypeIdNotExist, "HouseholdTypeId {PropertyValue} does not exist"},
             { ForSpecifiedDocumentTypeIdCannotFindHousehold, "For specified documentTypeId {PropertyValue} cannot find Household"},
-            { DocumentTypeIdNotExist, "DocumentTypeId {PropertyValue} does not exist"}
-        });
+            { DocumentTypeIdNotExist, "DocumentTypeId {PropertyValue} does not exist"},
+            { SalesArrangementIdIsRequired, "SalesArrangementId is required"},
+            { DocumentTypeIdIsRequired, " DocumentTypeId is required"},
+            { FormIdIsRequired, "FormId is required"},
+            { EArchivIdIsRequired, "EArchivId is required"}
+    });
 
         return Messages;
     }

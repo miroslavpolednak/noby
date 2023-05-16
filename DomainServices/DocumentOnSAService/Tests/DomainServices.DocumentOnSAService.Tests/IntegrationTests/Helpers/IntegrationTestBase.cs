@@ -6,17 +6,26 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using DomainServices.DocumentOnSAService.Api.Database;
-using static DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService;
 using static DomainServices.DocumentOnSAService.Contracts.v1.DocumentOnSAService;
-using Microsoft.EntityFrameworkCore;
+using CIS.InternalServices.DataAggregatorService.Clients;
+using DomainServices.SalesArrangementService.Clients;
+using NSubstitute;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 
 public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryFixture<Program>>
 {
+    //Mocks
+    internal IDataAggregatorServiceClient DataAggregatorServiceClient { get; }
+    internal ISalesArrangementServiceClient ArrangementServiceClient { get; }
+
     public IntegrationTestBase(WebApplicationFactoryFixture<Program> fixture)
     {
         Fixture = fixture;
+
+        DataAggregatorServiceClient = Substitute.For<IDataAggregatorServiceClient>();
+
+        ArrangementServiceClient = Substitute.For<ISalesArrangementServiceClient>();
 
         ConfigureWebHost();
 
@@ -28,12 +37,17 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
     {
         Fixture.ConfigureCisTestOptions(options =>
         {
+            // Need real db, for sequence testing
             options.DbMockAdapter = new SqliteInMemoryMockAdapter();
         })
         .ConfigureServices(services =>
         {
             // This mock is necessary for mock of service discovery
             services.RemoveAll<IUserServiceClient>().AddSingleton<IUserServiceClient, MockUserService>();
+
+            // NSubstitute mocks
+            services.RemoveAll<IDataAggregatorServiceClient>().AddSingleton(DataAggregatorServiceClient);
+            services.RemoveAll<ISalesArrangementServiceClient>().AddSingleton(ArrangementServiceClient);
         });
     }
 
