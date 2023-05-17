@@ -1,12 +1,12 @@
 ﻿using DomainServices.CaseService.Contracts;
 using FluentValidation;
 
-namespace DomainServices.CaseService.Api.Endpoints.GetProcessList;
+namespace DomainServices.CaseService.Api.Endpoints.ValidateCaseId;
 
-internal sealed class GetProcessListValidator 
+internal sealed class ValidateCaseIdRequestValidator
     : AbstractValidator<GetProcessListRequest>
 {
-    public GetProcessListValidator()
+    public ValidateCaseIdRequestValidator()
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)

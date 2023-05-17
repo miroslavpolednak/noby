@@ -16,6 +16,9 @@ internal sealed class CaseService
         return new Empty();
     }
 
+    public override async Task<ValidateCaseIdResponse> ValidateCaseId(ValidateCaseIdRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     public override async Task<Empty> UpdateOfferContacts(UpdateOfferContactsRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
