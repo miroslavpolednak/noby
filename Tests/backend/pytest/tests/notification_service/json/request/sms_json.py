@@ -15,6 +15,24 @@ json_req_sms_basic_insg_uat = \
   "text": "UAT insg bez logování a chci háčky a čárky"
 }
 
+json_req_sms_basic_insg_fat = \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "INSIGN_PROCESS",
+  "text": "FAT insg bez logování a chci háčky a čárky"
+}
+
+
+json_req_sms_basic_insg_sit = \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "INSIGN_PROCESS",
+  "text": "SIT insg bez logování a chci háčky a čárky"
+}
+
+
 
 json_req_sms_basic_alex = \
 {

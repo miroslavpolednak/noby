@@ -12,14 +12,17 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
     json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
     json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
-    json_req_sms_kb_archivator
+    json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("url_name, json_data", [
     ("dev_url", json_req_sms_basic_insg),
-    ("uat_url", json_req_sms_basic_insg_uat)])
+    ("fat_url", json_req_sms_basic_insg_fat),
+    ("sit_url", json_req_sms_basic_insg_sit),
+    ("uat_url", json_req_sms_basic_insg_uat)
+    ])
 def test_sms(url_name,  auth_params, auth, json_data):
     """
     uvodni test pro zakladni napln sms bez priloh
