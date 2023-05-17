@@ -19,7 +19,7 @@ internal sealed class GetSalesArrangementsListHandler
         // kontrola na existenci case - kvuli efektivite jen pokud se nevrati zadny SA
         if (!list.Any())
         {
-            await _caseService.GetCaseDetail(request.CaseId, cancellation);
+            await _caseService.ValidateCaseId(request.CaseId, true, cancellation);
         }
         
         GetSalesArrangementListResponse model = new();

@@ -18,33 +18,34 @@ var webAppOptions = runAsWinSvc
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
 #region register builder.Services
-// globalni nastaveni prostredi
-builder.AddCisEnvironmentConfiguration();
-
-// logging 
-builder.AddCisLogging();
-builder.AddCisTracing();
-
-builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
-// authentication
-builder.AddCisServiceAuthentication();
+// globalni nastaveni prostredi
+builder
+    .AddCisCoreFeatures()
+    .AddCisEnvironmentConfiguration();
 
-// add services
-builder.Services
-    .AddCisServiceDiscovery()
-    .AddCaseService();
+builder
+    // logging 
+    .AddCisLogging()
+    .AddCisTracing()
+    // authentication
+    .AddCisServiceAuthentication()
+    // add self
+    .AddProductService()
+    .Services
+        // add CIS services
+        .AddCisServiceDiscovery()
+        .AddCaseService()
+        // add grpc infrastructure
+        .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+        .AddGrpcReflection()
+        .AddGrpc(options =>
+        {
+            options.Interceptors.Add<GenericServerExceptionInterceptor>();
+        });
 
-builder.AddProductService();
-
-builder.Services
-    .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
-    .AddGrpcReflection()
-    .AddGrpc(options =>
-    {
-        options.Interceptors.Add<GenericServerExceptionInterceptor>();
-    });
+// add HC
 builder.AddCisGrpcHealthChecks();
 #endregion register builder.Services
 

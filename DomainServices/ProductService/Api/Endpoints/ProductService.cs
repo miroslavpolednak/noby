@@ -35,4 +35,7 @@ internal class ProductService : Contracts.v1.ProductService.ProductServiceBase
 
     public override async Task<GetCustomersOnProductResponse> GetCustomersOnProduct(GetCustomersOnProductRequest request, ServerCallContext context)
         => await _mediator.Send(request);
+
+    public override async Task<GetCaseIdResponse> GetCaseId(GetCaseIdRequest request, ServerCallContext context)
+        => await _mediator.Send(request);
 }

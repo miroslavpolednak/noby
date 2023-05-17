@@ -28,5 +28,17 @@ public enum UserIdentitySchemes : byte
 
     [Display(Name = "MPAD")]
     [EnumMember]
-    Mpad = 8
+    Mpad = 8,
+
+    [Display(Name = "OSCIS")]
+    [EnumMember]
+    OsCis = 9,
+
+    [Display(Name = "KBAD")]
+    [EnumMember]
+    Kbad = 10,
+
+    [Display(Name = "V33ID")]
+    [EnumMember]
+    V33Id = 99
 }

@@ -218,16 +218,7 @@
             </remarks>
             <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseDocumentsFlag(System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Příznaky v menu Case detailu
-            </summary>
-            <remarks>
-             Implementováno pro položku menu Documents<br /><br /><br />
-             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
-             <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseDocumentsFlag(System.Int64,System.Threading.CancellationToken)" -->
         <member name="P:NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
             <summary>
             Typ žádosti - číselník SalesArrangementType
@@ -269,7 +260,7 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.DocumentsMenuItem.Flag">
             <summary>
-            0 - No flag, 1 - Error (!), 2 - In processing
+            0 - No flag, 1 - In processing, 2 - Error (!)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.LoanPurposeItem.Sum">
@@ -3326,10 +3317,11 @@
             Vrací vyhodnocení dané úvěrové žádosti
             </summary>
             <remarks>
-            Použít pro Skóring - výsledek vyhodnocení<br/>
-            - výsledek vyhodnocení žádosti<br/>
-            - výsledek vyhodnocení za jednotlivé domácnosti<br/>
-            Možno vyžadovat nové vyhodnocení
+            Použít pro Skóring - výsledek vyhodnocení<br /> 
+            - výsledek vyhodnocení žádosti<br />
+            - výsledek vyhodnocení za jednotlivé domácnosti<br />
+            Možno vyžadovat nové vyhodnocení<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CB8E73AD-C282-4555-B587-A571EE896E81"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement-u</param>
             <param name="newAssessmentRequired">Požadováno nové posouzení</param>
@@ -4022,18 +4014,105 @@
             </summary>
             <example>999999999</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserId">
+            <summary>
+            ID uzivatele - V33ID
+            </summary>
+            <example>61958</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserIdentifiers">
+            <summary>
+            Všechny identity uživatele z XXVVSS
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserInfo">
+            <summary>
+            Základní informace o přihlášeném uživateli
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserAttributes">
+            <summary>
+            Dodatečné informace o uživately a kontakty
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.FirstName">
+            <summary>
+            Jméno uživatele
+            </summary>
+            <example>Jaroslav</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.LastName">
+            <summary>
+            Přijmení uživatele
+            </summary>
+            <example>Cimrman</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.Cpm">
+            <summary>
+            ČPM uživatele
+            </summary>
+            <example>99800001</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.Icp">
+            <summary>
+            IČP uživatele
+            </summary>
+            <example>999999999</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.Cin">
+            <summary>
+            IČO uživatele
+            </summary>
+            <example>12345678</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.PhoneNumber">
+            <summary>
+            Telefon uživatele
+            </summary>
+            <example>+420 601 234 567</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.EmailAddress">
+            <summary>
+            Emailová adresa uživatele
+            </summary>
+            <example>jarda@cimrman.cz</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.IsUserVIP">
+            <summary>
+            VIP flag uživatele
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Login">
             <summary>
-            Login uzivatel do CAASu.
+            OsCis
             </summary>
-            <example>990614w</example>
+            <example>614</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.IdentityId">
+            <summary>
+            ID uzivatele v ramci vybraneho identitniho schematu.
+            </summary>
+            <example>E0021L</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.IdentityScheme">
+            <summary>
+            Vybranne identitni schema pro prihlaseni, moznosti jsou: <a href="https://wiki.kb.cz/display/HT/IdentityScheme">https://wiki.kb.cz/display/HT/IdentityScheme</a>
+            </summary>
+            <example>KBUID</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetCurrentUser(System.Threading.CancellationToken)">
             <summary>
-            Informace o prihlašeném uživateli.
+            Informace a oprávnění o přihlášeném uživateli
+            </summary>
+            <returns>Instance přihlášeného uživatele.</returns>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetLoggedInUser(System.Threading.CancellationToken)">
+            <summary>
+            Informace a oprávnění o přihlášeném uživateli
             </summary>
             <remarks>
-            Pokud je uživatel přihlášen (existuje platná auth cookie), vrací základní informace o uživateli.
+            Vrací o uživateli data z XXVVSS - základní údaje, identity (počítáme s tím, že je alespoň jedna, vetšinou více) a set oprávnění pro identitu, kterou se přihlásil. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FC765415-4D2E-4b7c-B1C8-3F4B78A005DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Instance přihlášeného uživatele.</returns>
         </member>

@@ -9,7 +9,10 @@ internal sealed class GetMpssSecurityCookieHandler
     {
         var u = await _userServiceClient.GetUser(_currentUser.User!.Id, cancellationToken);
 
-        return _portal.CreateCookieValue(u.CPM, u.ICP, u.FullName, u.Id, 0, 0, 0, 0, 0);
+        string? m17id = u.UserIdentifiers.FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.M17Id)?.Identity;
+        string? brokerId = u.UserIdentifiers.FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.BrokerId)?.Identity;
+
+        return _portal.CreateCookieValue(u.UserInfo.Cpm, u.UserInfo.Icp, u.UserInfo.DisplayName, u.UserId, 0, 0, 0, string.IsNullOrEmpty(m17id) ? 0 : Convert.ToInt32(m17id), string.IsNullOrEmpty(brokerId) ? 0 : Convert.ToInt32(brokerId));
     }
 
     private readonly MPSS.Security.Noby.IPortal _portal;

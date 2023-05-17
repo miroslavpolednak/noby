@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message GetCaseIdRequest {
+    oneof RequestParameters {
+        ContractNumberObject ContractNumber = 20;
+        PaymentAccountObject PaymentAccount = 21;
+    }
+}
+
+message ContractNumberObject {
+    string ContractNumber = 1;
+}
+
+message PaymentAccountObject {
+    google.protobuf.StringValue Prefix = 1;
+    string AccountNumber = 2;
+}
+
+message GetCaseIdResponse {
+    int64 CaseId = 1;
+}

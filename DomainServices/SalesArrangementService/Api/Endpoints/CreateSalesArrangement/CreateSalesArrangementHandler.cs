@@ -9,7 +9,7 @@ internal sealed class CreateSalesArrangementHandler
     {
         // validace na existenci case
         //TODO je nejaka spojitost mezi ProductTypeId a SalesArrangementTypeId, ktera by se dala zkontrolovat?
-        await _caseService.GetCaseDetail(request.CaseId, cancellation);
+        await _caseService.ValidateCaseId(request.CaseId, true, cancellation);
 
         // vytvorit entitu
         var saEntity = new Database.Entities.SalesArrangement

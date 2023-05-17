@@ -24,9 +24,9 @@ internal class PerformerProvider
         if (newestTask is null || string.IsNullOrWhiteSpace(newestTask.PerformerLogin))
             return default;
 
-        var user = await _userService.GetUserByLogin(newestTask.PerformerLogin, cancellationToken);
+        var user = await _userService.GetUser(new CIS.Foms.Types.UserIdentity(newestTask.PerformerLogin, CIS.Foms.Enums.UserIdentitySchemes.Mpad), cancellationToken);
 
-        return user.Id;
+        return user.UserId;
     }
 
     private async Task<WorkflowTask?> LoadNewestTask(long caseId, CancellationToken cancellationToken)

@@ -44,4 +44,6 @@ public interface IProductServiceClient
     /// Seznam klientu k produktu z KonsDB
     /// </summary>
     Task<GetCustomersOnProductResponse> GetCustomersOnProduct(long productId, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task<GetCaseIdResponse> GetCaseId(GetCaseIdRequest request, CancellationToken cancellationToken = default(CancellationToken));
 }

@@ -24,38 +24,36 @@ builder
     .AddCisCoreFeatures()
     .AddCisEnvironmentConfiguration();
 
-// logging 
 builder
+    // logging 
     .AddCisLogging()
-    .AddCisTracing();
+    .AddCisTracing()
+    // authentication
+    .AddCisServiceAuthentication()
+    // add self
+    .AddSalesArrangementService()
+    // add services
+    .Services
+        // add CIS services
+        .AddCisServiceDiscovery()
+        .AddCaseService()
+        .AddCodebookService()
+        .AddOfferService()
+        .AddUserService()
+        .AddHouseholdService()
+        .AddDocumentArchiveService()
+        .AddDocumentOnSAService()
+        .AddDocumentGeneratorService()
+        .AddDataAggregatorService()
+        // add grpc infrastructure
+        .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+        .AddGrpcReflection()
+        .AddGrpc(options =>
+        {
+            options.Interceptors.Add<GenericServerExceptionInterceptor>();
+        });
 
-// authentication
-builder.AddCisServiceAuthentication();
-
-// add services
-builder.Services
-    .AddCisServiceDiscovery()
-    .AddCaseService()
-    .AddCodebookService()
-    .AddOfferService()
-    .AddUserService()
-    .AddHouseholdService()
-    .AddDocumentArchiveService()
-    .AddDocumentOnSAService()
-    .AddDocumentGeneratorService();
-
-// Internal services
-builder.Services.AddDataAggregatorService();
-
-builder.AddSalesArrangementService();
-
-builder.Services
-    .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
-    .AddGrpcReflection()
-    .AddGrpc(options =>
-    {
-        options.Interceptors.Add<GenericServerExceptionInterceptor>();
-    });
+// add HC
 builder.AddCisGrpcHealthChecks();
 #endregion register builder.Services
 
