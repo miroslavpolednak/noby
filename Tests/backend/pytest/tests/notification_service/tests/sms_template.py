@@ -4,7 +4,7 @@ import requests
 from ..conftest import URLS
 from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
     json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_sb, json_req_sms_basic_alex
-from ..json.request.sms_template import json_req_sms_full_template, json_req_sms_template_bad_basic_without_identifier, \
+from ..json.request.sms_template_json import json_req_sms_full_template, json_req_sms_template_bad_basic_without_identifier, \
     json_req_sms_template_bad_basic_without_identifier_scheme, \
     json_req_sms_template_bad_basic_without_identifier_identity
 

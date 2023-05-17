@@ -7,7 +7,7 @@ json_req_sms_full_template = \
   "placeholders": [
     {
       "key": "zadej",
-      "value": "Mara testuje"
+      "value": "kamarade"
     }
   ],
   "identifier": {

@@ -16,7 +16,7 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
     json_req_mail_mpss_basic_format_application_html, json_req_mail_mpss_basic_content_format_application_mht
 from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
     json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_basic_full_for_search
-from ..json.request.sms_template import json_req_sms_full_template
+from ..json.request.sms_template_json import json_req_sms_full_template
 
 
 #est pro additional parameters napr. --ns-url sit_url
