@@ -2,10 +2,16 @@
 package DomainServices.CodebookService.v1;
 option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
 
+import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "Messages/Types.proto";
+import "Messages/GenericCodebookItem.proto";
 
 service CodebookService {
-   rpc AcademicDegreesAfter (google.protobuf.Empty) returns (GenericCodebookItem);
+   rpc AcademicDegreesAfter (google.protobuf.Empty) returns (GenericCodebookItemResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/academic-degrees-after"
+		};
+   }
 
 }
