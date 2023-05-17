@@ -73,22 +73,15 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         additionalData.IsUSPerson = request.IsUSPerson.GetValueOrDefault();
         additionalData.IsPoliticallyExposed = request.IsUSPerson.GetValueOrDefault();
 
-        // zjistit zda uz existuji changeData a v nich CustomerIdentification
-        bool identDocExists = false;
-        if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
-        {
-            var deserializedChangedData = JsonConvert.DeserializeObject<UpdateCustomerDetailWithChangesRequest>(customerOnSA.CustomerChangeData);
-            identDocExists = deserializedChangedData?.IdentificationDocument is not null;
-        }
-
         // tady schvalne neresime prvni pindu z EA diagramu, protoze bysme museli z customerOnSA json delty udelat objekt a ten teprve kontrolovat. A to by bylo pomalejsi a narocnejsi nez tuhle podminku vzdy znovu projet.
-        if (!identDocExists && identificationMethodId != 1 && identificationMethodId != 8)
+        if (identificationMethodId != 1 && identificationMethodId != 8)
         {
             var user = await _userServiceClient.GetUser(_userAccessor.User!.Id, cancellationToken);
             var isBroker = user.UserIdentifiers.Any(u =>
                 u.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId);
 
             additionalData.CustomerIdentification ??= new __Household.CustomerIdentificationObject();
+            additionalData.CustomerIdentification.IdentificationDate = DateTime.Now.Date;
             additionalData.CustomerIdentification.CzechIdentificationNumber = user.UserInfo.Cin;
             additionalData.CustomerIdentification.IdentificationMethodId = isBroker ? 8 : 1;
         }
