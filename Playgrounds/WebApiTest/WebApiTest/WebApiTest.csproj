@@ -15,7 +15,6 @@
     <ProjectReference Include="..\..\..\CIS\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />

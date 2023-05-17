@@ -34,7 +34,6 @@
     <ProjectReference Include="..\..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\MpHome\ExternalServices.MpHome.csproj" />
     <ProjectReference Include="..\..\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
-    <ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\..\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
     <ProjectReference Include="..\..\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
 	<ProjectReference Include="..\Contracts\DomainServices.CustomerService.Contracts.csproj" />

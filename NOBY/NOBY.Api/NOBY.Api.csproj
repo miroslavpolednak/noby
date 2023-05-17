@@ -58,7 +58,6 @@
     <ProjectReference Include="..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\DomainServices\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
-    <ProjectReference Include="..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\DocumentArchiveService\Clients\DomainServices.DocumentArchiveService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\DocumentOnSAService\Clients\DomainServices.DocumentOnSAService.Clients.csproj" />

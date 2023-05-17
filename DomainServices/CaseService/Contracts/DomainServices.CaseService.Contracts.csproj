@@ -4,7 +4,6 @@
 	  <TargetFramework>net7.0</TargetFramework>
 	  <Product>Common Infrastructure Solution</Product>
 	  <Authors>Filip Tuma</Authors>
-	  <LangVersion>preview</LangVersion>
 	  <Nullable>enable</Nullable>
 	  <Platforms>AnyCPU;x64</Platforms>
 	  <ImplicitUsings>enable</ImplicitUsings>
@@ -14,11 +13,6 @@
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <None Remove="Messages\ValidateCaseId.proto" />
-	  <None Remove="Messages\WorkflowTask.proto" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.23.0" />
