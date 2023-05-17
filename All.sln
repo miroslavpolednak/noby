@@ -305,6 +305,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5459.sql = DomainServices\CodebookService\DatabaseMigrations\00007-HFICH-5459.sql
 		DomainServices\CodebookService\DatabaseMigrations\00008-HFICH-5458-SmsNotificationType_seed.sql = DomainServices\CodebookService\DatabaseMigrations\00008-HFICH-5458-SmsNotificationType_seed.sql
 		DomainServices\CodebookService\DatabaseMigrations\00009-HFICH-5516.sql = DomainServices\CodebookService\DatabaseMigrations\00009-HFICH-5516.sql
+		DomainServices\CodebookService\DatabaseMigrations\00010-HFICH-5279-GeneralDocumentList.sql = DomainServices\CodebookService\DatabaseMigrations\00010-HFICH-5279-GeneralDocumentList.sql
+		DomainServices\CodebookService\DatabaseMigrations\00011-HFICH-5695-TinFormatsByCountry-TinNoFillReasonsByCountry.sql = DomainServices\CodebookService\DatabaseMigrations\00011-HFICH-5695-TinFormatsByCountry-TinNoFillReasonsByCountry.sql
+		DomainServices\CodebookService\DatabaseMigrations\00012-HFICH-5537-SalesArrangementType.sql = DomainServices\CodebookService\DatabaseMigrations\00012-HFICH-5537-SalesArrangementType.sql
+		DomainServices\CodebookService\DatabaseMigrations\00013-HFICH-5862-EaCodesMain.sql = DomainServices\CodebookService\DatabaseMigrations\00013-HFICH-5862-EaCodesMain.sql
+		DomainServices\CodebookService\DatabaseMigrations\00014-HFICH-5580-ProductTypes.sql = DomainServices\CodebookService\DatabaseMigrations\00014-HFICH-5580-ProductTypes.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -411,7 +416,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.Docume
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.ProductService.ExternalServices.Pcp", "DomainServices\ProductService\ExternalServices.Pcp\DomainServices.ProductService.ExternalServices.Pcp.csproj", "{5F803B89-2B6B-4BD3-ACB0-F61156FB367C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NOBY.Database", "NOBY\NOBY.Database\NOBY.Database.csproj", "{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.Database", "NOBY\NOBY.Database\NOBY.Database.csproj", "{C29B885A-2F8B-4B8D-96D3-C6D0CD4F7976}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
