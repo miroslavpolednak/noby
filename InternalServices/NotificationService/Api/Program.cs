@@ -9,11 +9,10 @@ using CIS.InternalServices.NotificationService.Api.Extensions;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Api.Services.Smtp;
-using FluentValidation;
-using MediatR;
 using ProtoBuf.Grpc.Server;
 using DomainServices;
 using CIS.InternalServices;
+using CIS.InternalServices.NotificationService.Api.ErrorHandling;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging;
 
 var winSvc = args.Any(t => t.Equals("winsvc"));
@@ -28,10 +27,16 @@ builder.Configure();
 
 // Mvc
 builder.Services
+    .AddHsts(options =>
+    {
+        options.Preload = true;
+        options.MaxAge = TimeSpan.FromDays(360);
+    })
     .AddControllers()
     .ConfigureApiBehaviorOptions(options =>
     {
         options.SuppressMapClientErrors = true;
+        options.AddCustomInvalidModelStateResponseFactory();
     });
 
 // Cis
@@ -40,22 +45,10 @@ builder
     .AddCisCoreFeatures()
     .AddCisLogging()
     .AddCisTracing()
-    .AddCisServiceAuthentication();
-
-builder.Services.AddAttributedServices(typeof(Program));
-
-// Mediator
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
-
-// Validators
-builder.Services
-    .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.CisMediatR.GrpcValidationBehavior<,>));
-
-builder.Services.Scan(selector => selector
-    .FromAssembliesOf(typeof(Program))
-    .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
-    .AsImplementedInterfaces()
-    .WithTransientLifetime());
+    .AddCisServiceAuthentication()
+    .Services
+        .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+        .AddAttributedServices(typeof(Program));
 
 // gRPC
 builder.Services
@@ -102,7 +95,10 @@ app.Use((context, next) =>
     return next();
 });
 
+app.UseHsts();
+
 app.UseHttpsRedirection();
+
 app.UseServiceDiscovery();
 
 app

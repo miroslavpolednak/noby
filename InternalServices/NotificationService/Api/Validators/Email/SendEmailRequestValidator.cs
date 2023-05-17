@@ -1,7 +1,7 @@
-﻿using CIS.InternalServices.NotificationService.Api.Configuration;
+﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
+using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Validators.Common;
 using CIS.InternalServices.NotificationService.Contracts.Email;
-using CIS.InternalServices.NotificationService.Contracts.Sms;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 
@@ -13,69 +13,70 @@ public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
     {
         RuleFor(request => request.From)
             .NotNull()
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.FromRequired)
-                .WithMessage($"{nameof(SendEmailRequest.From)} required.")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.FromRequired)
             .SetValidator(new EmailAddressFromValidator(options))
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.FromInvalid)
-                .WithMessage($"Invalid {nameof(SendEmailRequest.From)}.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.FromInvalid);
         
         RuleFor(request => request.To)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.ToNotEmpty)
-                .WithMessage($"{nameof(SendEmailRequest.To)} must be not empty.")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.ToNotEmpty)
             .ForEach(to => to.SetValidator(new EmailAddressValidator()))
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.ToInvalid)
-                .WithMessage($"Invalid {nameof(SendEmailRequest.To)}.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.ToInvalid);
 
         RuleForEach(request => request.Bcc)
             .SetValidator(new EmailAddressValidator())
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.BccInvalid)
-                .WithMessage($"Invalid {nameof(SendEmailRequest.Bcc)}.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.BccInvalid);
 
         RuleForEach(request => request.Cc)
             .SetValidator(new EmailAddressValidator())
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.CcInvalid)
-                .WithMessage($"Invalid {nameof(SendEmailRequest.Cc)}.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.CcInvalid);
 
         When(request => request.ReplyTo is not null, () =>
         {
             RuleFor(request => request.ReplyTo!)
                 .SetValidator(new EmailAddressValidator())
-                    .WithErrorCode(ErrorCodes.Validation.SendEmail.ReplyToInvalid)
-                    .WithMessage($"Invalid {nameof(SendEmailRequest.ReplyTo)}.");
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.ReplyToInvalid);
         });
 
         RuleFor(request => request.Subject)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.SubjectRequired)
-                .WithMessage($"{nameof(SendEmailRequest.Subject)} required.")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SubjectRequired)
             .MaximumLength(400)
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.SubjectInvalid)
-                .WithMessage($"Invalid {nameof(SendEmailRequest.Subject)}.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SubjectInvalid);
 
         RuleFor(request => request.Content)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.ContentRequired)
-                .WithMessage($"{nameof(SendEmailRequest.Content)} required.")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.ContentRequired)
             .SetValidator(new EmailContentValidator(options))
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.ContentInvalid)
-                .WithMessage($"Invalid {nameof(SendEmailRequest.Content)}.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.ContentInvalid);
 
         RuleFor(request => request.Attachments.Count)
             .LessThanOrEqualTo(10)
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.AttachmentsCountLimitExceeded)
-                .WithMessage($"Maximum count of {nameof(SendEmailRequest.Attachments)} is 10.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.AttachmentsCountLimitExceeded);
         
         RuleForEach(request => request.Attachments)
             .SetValidator(new EmailAttachmentValidator())
-                .WithErrorCode(ErrorCodes.Validation.SendEmail.AttachmentsInvalid)
-                .WithMessage($"Invalid {nameof(SendEmailRequest.Attachments)}.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.AttachmentsInvalid);
         
         When(request => request.Identifier is not null, () =>
         {
             RuleFor(request => request.Identifier!)
                 .SetValidator(new IdentifierValidator())
-                .WithMessage($"Invalid {nameof(SendEmailRequest.Identifier)}.");
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentifierInvalid);
+        });
+
+        When(request => request.DocumentId is not null, () =>
+        {
+            RuleFor(request => request.DocumentId!)
+                .SetValidator(new DocumentIdValidator())
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+        });
+        
+        When(request => request.CustomId is not null, () =>
+        {
+            RuleFor(request => request.CustomId!)
+                .SetValidator(new CustomIdValidator())
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
         });
     }
 }

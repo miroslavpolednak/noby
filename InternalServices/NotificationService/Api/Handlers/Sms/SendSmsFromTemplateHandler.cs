@@ -89,7 +89,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         catch (Exception e)
         {
             _logger.LogError(e, $"Could not create SmsResult.");
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.CreateSmsResultFailed, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.CreateSmsResultFailed, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
         }
         
         var consumerId = _userAdapterService.GetConsumerId();
@@ -116,7 +116,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.ProduceSendSmsError, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendSmsError, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
         }
 
         return new SendSmsFromTemplateResponse { NotificationId = result.Id };

@@ -7,6 +7,7 @@ namespace CIS.InternalServices.NotificationService.Api.Validators.Email;
 
 public class EmailAddressFromValidator : AbstractValidator<EmailAddress>
 {
+    // todo: error code for emailAddress.Value
     private static readonly Func<string, string> _normalForm = e => e.ToLowerInvariant();
     public EmailAddressFromValidator(IOptions<AppConfiguration> options)
     {
@@ -25,7 +26,6 @@ public class EmailAddressFromValidator : AbstractValidator<EmailAddress>
                 var domainName = _normalForm(email).Split('@').Last();
                 return allowedDomainNames.Contains(domainName);
             })
-            .WithErrorCode(ErrorCodes.Validation.SendEmail.FromInvalid)
             .WithMessage($"Allowed domain names for sender: {string.Join(',', allowedDomainNames)}.");
     }
 }

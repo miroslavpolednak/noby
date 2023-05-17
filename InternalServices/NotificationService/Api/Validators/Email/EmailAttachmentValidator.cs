@@ -1,5 +1,6 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
 using FluentValidation;
+using NOBY.Infrastructure.ErrorHandling;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Email;
 
@@ -9,18 +10,14 @@ public class EmailAttachmentValidator : AbstractValidator<EmailAttachment>
     {
         RuleFor(attachment => attachment.Binary)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.EmailAttachment.BinaryRequired)
-                .WithMessage($"{nameof(EmailAttachment.Binary)} required.")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.BinaryRequired)
             .Matches("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$")
-                .WithErrorCode(ErrorCodes.Validation.EmailAttachment.BinaryInvalid)
-                .WithMessage($"{nameof(EmailAttachment.Binary)} must be encoded in Base64.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.BinaryInvalid);
                 
         RuleFor(attachment => attachment.Filename)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.EmailAttachment.FilenameRequired)
-                .WithMessage($"{nameof(EmailAttachment.Filename)} required.")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.FilenameRequired)
             .MaximumLength(255)
-                .WithErrorCode(ErrorCodes.Validation.EmailAttachment.FilenameLengthLimitExceeded)
-                .WithMessage($"Maximum length of {nameof(EmailAttachment.Filename)} is 255.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.FilenameLengthLimitExceeded);
     }
 }
