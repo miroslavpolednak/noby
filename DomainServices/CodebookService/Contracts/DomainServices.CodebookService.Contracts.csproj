@@ -15,7 +15,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Messages\GenericCodebookItem.proto" />
+	  <None Remove="Messages\GenericCodebook.proto" />
+	  <None Remove="Messages\GenericCodebookWithCode.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -36,7 +37,8 @@
 		<Protobuf Include="CodebookService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		
 		<Protobuf Include="Messages/Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="Messages/GenericCodebookItem.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\GenericCodebook.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\GenericCodebookWithCode.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 	</ItemGroup>		
 
 </Project>

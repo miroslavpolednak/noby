@@ -5,13 +5,37 @@ option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "Messages/Types.proto";
-import "Messages/GenericCodebookItem.proto";
+import "Messages/GenericCodebook.proto";
+import "Messages/GenericCodebookWithCode.proto";
 
 service CodebookService {
-   rpc AcademicDegreesAfter (google.protobuf.Empty) returns (GenericCodebookItemResponse) {
+   rpc AcademicDegreesAfter (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/api/v1/academic-degrees-after"
 		};
    }
 
+   rpc AcademicDegreesBefore (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/academic-degrees-before"
+		};
+   }
+
+   rpc AddressTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/address-types"
+		};
+   }
+
+   rpc BankCodes (google.protobuf.Empty) returns (BankCodesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/bank-codes"
+		};
+   }
+
+   rpc CaseStates (google.protobuf.Empty) returns (CaseStatesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/case-states"
+		};
+   }
 }

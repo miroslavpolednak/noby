@@ -8,13 +8,6 @@ namespace DomainServices.CodebookService.Api;
 
 internal static class Helpers
 {
-    public static Task<GenericCodebookItemResponse> GetGenericItems(this IConnectionProvider connectionProvider, ReadOnlySpan<char> sqlQuery, [CallerMemberName] string method = "")
-    {
-        GenericCodebookItemResponse response = new();
-        response.Items.AddRange(connectionProvider.GetOrCreate<GenericCodebookItem>(sqlQuery.ToString(), method.AsSpan()));
-        return Task.FromResult(response);
-    }
-
     public static List<TResponse> GetOrCreate<TResponse>(this IConnectionProvider connectionProvider, string sqlQuery, ReadOnlySpan<char> method)
         where TResponse : class
     {
@@ -24,5 +17,48 @@ internal static class Helpers
             connection.Open();
             return connection.Query<TResponse>(sqlQuery).AsList();
         });
+    }
+
+    public static Task<TResponse> GetItems<TResponse, TItem>(this IConnectionProvider connectionProvider, TResponse response, ReadOnlySpan<char> sqlQuery, [CallerMemberName] string method = "")
+        where TResponse : Contracts.IItemsResponse<TItem>
+        where TItem : class, Google.Protobuf.IMessage
+    {
+        var items = connectionProvider.GetOrCreate<TItem>(sqlQuery.ToString(), method.AsSpan());
+        response.Items.Add(items);
+        return Task.FromResult(response);
+    }
+
+    public static Task<TResponse> GetItems<TResponse, TItem>(TResponse response, Func<IEnumerable<TItem>> items)
+        where TResponse : Contracts.IItemsResponse<TItem>
+        where TItem : class, Google.Protobuf.IMessage
+    {
+        response.Items.Add(items());
+        return Task.FromResult(response);
+    }
+
+    public static Task<GenericCodebookResponse> GetGenericItems(this IConnectionProvider connectionProvider, ReadOnlySpan<char> sqlQuery, [CallerMemberName] string method = "")
+    {
+        GenericCodebookResponse response = new();
+        response.Items.AddRange(connectionProvider.GetOrCreate<Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem>(sqlQuery.ToString(), method.AsSpan()));
+        return Task.FromResult(response);
+    }
+
+    public static Task<GenericCodebookWithCodeResponse> GetGenericItemsWithCode<TEnum>()
+        where TEnum : struct, Enum
+    {
+        var items = FastEnum.GetValues<TEnum>()
+            .Where(t => Convert.ToInt32(t) > 0)
+            .Select(t => new Contracts.v1.GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem
+            {
+                Id = Convert.ToInt32(t),
+                Code = t.ToString(),
+                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+                IsValid = true
+            })
+            .ToList()!;
+
+        GenericCodebookWithCodeResponse response = new();
+        response.Items.AddRange(items);
+        return Task.FromResult(response);
     }
 }

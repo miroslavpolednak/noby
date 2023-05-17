@@ -2,3 +2,27 @@
 package DomainServices.CodebookService.v1;
 option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
 
+import "google/protobuf/wrappers.proto";
+
+message BankCodesResponse {
+	repeated BankCodeItem Items = 1;
+
+	message BankCodeItem {
+		string BankCode = 1;
+		string Name = 2;
+		string ShortName = 3;
+		google.protobuf.StringValue State = 4;
+		bool IsValid = 5;
+	}
+}
+
+message CaseStatesResponse {
+	repeated CaseStateItem Items = 1;
+
+	message CaseStateItem {
+		int32 Id = 1;
+		string Name = 2;
+		string Code = 3;
+		bool IsDefault = 4;
+	}
+}
