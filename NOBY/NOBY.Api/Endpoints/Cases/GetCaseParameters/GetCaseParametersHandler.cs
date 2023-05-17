@@ -1,6 +1,4 @@
-﻿using DomainServices.ProductService.Contracts;
-using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
-using NOBY.Api.Endpoints.Offer.SimulateMortgage;
+﻿using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 using cCodebookService = DomainServices.CodebookService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;

@@ -130,5 +130,5 @@ public interface ICaseServiceClient
     
     Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task<bool> ValidateCaseId(long caseId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<bool> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default(CancellationToken));
 }
