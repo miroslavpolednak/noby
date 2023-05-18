@@ -47,7 +47,7 @@ public class ProductTypesHandler
     // dotaz na codebook do SB
     const string _sqlQuery = @"
 SELECT KOD_PRODUKTU 'Id', NAZOV_PRODUKTU 'Name', PORADIE_ZOBRAZENIA 'Order', MIN_VYSKA_UV 'LoanAmountMin', MAX_VYSKA_UV 'LoanAmountMax', MIN_SPLATNOST_V_ROKOCH 'LoanDurationMin', MAX_SPLATNOST_V_ROKOCH 'LoanDurationMax', MIN_VYSKA_LTV 'LtvMin', MAX_VYSKA_LTV 'LtvMax', DRUH_UV_POVOLENY 'MpHomeApiLoanType', CAST(CASE WHEN GETDATE() BETWEEN PLATNOST_OD_ES AND ISNULL(PLATNOST_DO_ES,'2099-01-01') THEN 1 ELSE 0 END as bit) 'IsValid', ID_PRODUKTU_PCP 'PcpProductId'
-FROM SBR.v_HTEDM_CIS_HYPOTEKY_PRODUKTY
+FROM SBR.HTEDM_CIS_HYPOTEKY_PRODUKTY
 ORDER BY PORADIE_ZOBRAZENIA ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdHfDapperConnectionProvider> _connectionProviderXxd;
