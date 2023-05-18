@@ -6,7 +6,8 @@ from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import
 
 
 # Přidáme všechny číselníky jako parametry testu s výjimkou Codebooks.LEGALCAPACITIES
-@pytest.mark.parametrize("codebook_name", [getattr(Codebooks_all, attr) for attr in dir(Codebooks_all) if not attr.startswith('__') and attr != 'LEGALCAPACITIES' and attr != 'MARKETINGACTIONS'])
+@pytest.mark.parametrize("codebook_name", [getattr(Codebooks_all, attr) for attr in dir(Codebooks_all) if not attr.startswith('__') and attr != 'LEGALCAPACITIES' and attr != 'MARKETINGACTIONS'
+                                           and attr != 'WORKFLOWCONSULTATIONMATRIX' and attr != 'WORKFLOWTASKCONSULTATIONTYPES'])
 def test_get_all_codebooks(codebook_name):
     resp = get_all_codebooks(codebook_name)
     assert resp[0] == 200

@@ -66,6 +66,8 @@ class Codebooks_all:
     STATEMENTTYPES = 'StatementTypes'
     TINFORMATSBYCOUNTRY = 'TinFormatsByCountry'
     TINFILLREASONSBYCOUNTRY = 'TinNoFillReasonsByCountry'
+    WORKFLOWCONSULTATIONMATRIX = 'WorkflowConsultationMatrix'
+    WORKFLOWTASKCONSULTATIONTYPES = 'WorkflowTaskConsultationTypes'
     WORKFLOWTASKSTATESNOBY = 'WorkflowTaskStatesNoby'
     WORKFLOWTASKCATEGORIES = 'WorkflowTaskCategories'
     WORKFLOWTASKSIGNINGRESPONSETYPES = 'WorkflowTaskSigningResponseTypes'
