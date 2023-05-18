@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.NotificationService.Messaging.Partials;
+﻿using CIS.InternalServices.NotificationService.Api.Services.Messaging.Messages.Partials;
 
 namespace cz.kb.osbs.mcs.notificationreport.eventapi.v3.report
 {

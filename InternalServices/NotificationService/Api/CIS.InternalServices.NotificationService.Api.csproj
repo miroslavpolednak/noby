@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <!-- DO NOT UPGRADE VERSIONS -->
+    <PackageReference Include="Apache.Avro" Version="1.11.1" />
     <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="1.1.0.16-SNAPSHOT" />
     <PackageReference Include="MassTransit" Version="8.0.13" />
     <PackageReference Include="MassTransit.Kafka" Version="8.0.13" />
@@ -51,7 +52,14 @@
     <ProjectReference Include="..\..\..\NOBY\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
     <ProjectReference Include="..\..\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
     <ProjectReference Include="..\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
-    <ProjectReference Include="..\Messaging\CIS.InternalServices.NotificationService.Messaging.csproj" />
   </ItemGroup>
-
+  
+  <ItemGroup>
+    <None Include="Services\Messaging\AvroSchemas\Mcs\NotificationReport.json" />
+    <None Include="Services\Messaging\AvroSchemas\Mcs\SendEmail.json" />
+    <None Include="Services\Messaging\AvroSchemas\Mcs\SendSMS.json" />
+    <None Include="Services\Messaging\AvroSchemas\Mpss\NotificationReport.json" />
+    <None Include="Services\Messaging\AvroSchemas\Mpss\SendEmail.json" />
+  </ItemGroup>
+  
 </Project>

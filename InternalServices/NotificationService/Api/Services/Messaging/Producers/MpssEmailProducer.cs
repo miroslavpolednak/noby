@@ -2,8 +2,8 @@
 using CIS.Core;
 using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Messages.Partials;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
-using CIS.InternalServices.NotificationService.Messaging.Partials;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using Headers = CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure.Headers;

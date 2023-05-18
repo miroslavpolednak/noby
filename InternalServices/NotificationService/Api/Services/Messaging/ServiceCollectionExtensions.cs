@@ -2,7 +2,7 @@
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Consumers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Infrastructure;
-using CIS.InternalServices.NotificationService.Messaging.Partials;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Messages.Partials;
 using Confluent.Kafka;
 using Confluent.Kafka.SyncOverAsync;
 using Confluent.SchemaRegistry;

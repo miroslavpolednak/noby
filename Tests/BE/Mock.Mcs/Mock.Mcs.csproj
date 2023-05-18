@@ -8,18 +8,11 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <!-- DO NOT UPGRADE VERSIONS -->
-        <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="0.7.2.1" />
-        <PackageReference Include="MassTransit" Version="8.0.9" />
-        <PackageReference Include="MassTransit.Kafka" Version="8.0.9" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\InternalServices\NotificationService\Messaging\CIS.InternalServices.NotificationService.Messaging.csproj" />
+      <ProjectReference Include="..\..\..\InternalServices\NotificationService\Api\CIS.InternalServices.NotificationService.Api.csproj" />
     </ItemGroup>
     
 </Project>

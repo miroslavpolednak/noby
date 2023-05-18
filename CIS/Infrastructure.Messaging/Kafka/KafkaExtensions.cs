@@ -126,9 +126,7 @@ public static class KafkaExtensions
     {
         var types = System.Reflection.Assembly
             .GetEntryAssembly()!
-            .GetReferencedAssemblies()
-            .Select(a => System.Reflection.Assembly.Load(a))
-            .SelectMany(a => a.GetTypes())
+            .GetTypes()
             .Where(type => typeof(TTopicMarker).IsAssignableFrom(type) && !type.IsInterface)
             .ToList();
         

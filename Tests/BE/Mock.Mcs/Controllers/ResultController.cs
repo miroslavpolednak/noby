@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Avro.Specific;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
