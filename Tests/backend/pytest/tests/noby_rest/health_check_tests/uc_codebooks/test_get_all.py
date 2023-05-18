@@ -5,60 +5,8 @@ from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import
     get_codebooks_fixation_period_length
 
 
-@pytest.mark.parametrize("codebook_name", [
-    Codebooks_all.ACADEMICDEGREESAFTER,
-    Codebooks_all.ACADEMICDEGREESBEFORE,
-    Codebooks_all.BANKCODES,
-    Codebooks_all.CASESTATES,
-    Codebooks_all.CLASSIFICATIONOFECONOMICACTIVITIES,
-    Codebooks_all.CONTACTTYPES,
-    Codebooks_all.COUNTRIES,
-    Codebooks_all.CURRENCIES,
-    Codebooks_all.CUSTOMERPROFILES,
-    Codebooks_all.CUSTOMERROLES,
-    Codebooks_all.DEVELOPERS,
-    Codebooks_all.DEVELOPERPROJECTS,
-    Codebooks_all.DOCUMENTONSATYPES,
-    Codebooks_all.DRAWINGDURATIONS,
-    Codebooks_all.DRAWINGTYPES,
-    Codebooks_all.EACODESMAIN,
-    Codebooks_all.EDUCATIONLEVELS,
-    Codebooks_all.EMPLOYMENTTYPES,
-    Codebooks_all.FEES,
-    Codebooks_all.FIXEDRATEPERIODS,
-    Codebooks_all.FORMTYPES,
-    Codebooks_all.GENDERS,
-    Codebooks_all.HOUSEHOLDTYPES,
-    Codebooks_all.IDENTIFICATIONDOCUMENTTYPES,
-    Codebooks_all.INCOMEMAINTYPES,
-    Codebooks_all.INCOMEFOREIGNTYPES,
-    Codebooks_all.INCOMEOTHERTYPES,
-    Codebooks_all.JOBTYPES,
-    # Codebooks.LEGALCAPACITIES,
-    Codebooks_all.LOANPURPOSES,
-    Codebooks_all.LOANKINDS,
-    Codebooks_all.LOANINTERESTRATEANNOUNCEDTYPES,
-    Codebooks_all.MANDANTS,
-    Codebooks_all.MARITALSTATUSES,
-    Codebooks_all.OBLIGATIONCORRECTIONTYPES,
-    Codebooks_all.OBLIGATIONTYPES,
-    Codebooks_all.PAYMENTDAYS,
-    Codebooks_all.PAYOUTTYPES,
-    Codebooks_all.POSTCODES,
-    Codebooks_all.PRODUCTTYPES,
-    Codebooks_all.PROPERTYSETTLEMENTS,
-    Codebooks_all.REALESTATETYPES,
-    Codebooks_all.REALESTATEPURCHASETYPES,
-    Codebooks_all.SALESARRANGEMENTSTATES,
-    Codebooks_all.SALESARRANGEMENTTYPES,
-    Codebooks_all.SIGNATURETYPES,
-    Codebooks_all.WORKFLOWTASKCATEGORIES,
-    Codebooks_all.WORKFLOWTASKSTATES,
-    Codebooks_all.WORKFLOWTASKTYPES,
-    Codebooks_all.WORKSECTORS
-
-]
-                         )
+# Přidáme všechny číselníky jako parametry testu s výjimkou Codebooks.LEGALCAPACITIES
+@pytest.mark.parametrize("codebook_name", [getattr(Codebooks_all, attr) for attr in dir(Codebooks_all) if not attr.startswith('__') and attr != 'LEGALCAPACITIES' and attr != 'MARKETINGACTIONS'])
 def test_get_all_codebooks(codebook_name):
     resp = get_all_codebooks(codebook_name)
     assert resp[0] == 200

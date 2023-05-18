@@ -11,7 +11,7 @@ Base = declarative_base()
 
 
 def pytest_addoption(parser):
-    parser.addoption("--webapi-url", action="store", default="https://fat.noby.cz/api", help="web api url")
+    parser.addoption("--webapi-url", action="store", default="https://dev.noby.cz/api", help="web api url")
     parser.addoption("--cpm", action="store", default="99917587", help="client id")
 
 
@@ -37,7 +37,7 @@ def get_noby_sit1_cookies():
     session.post(
         noby_sit1_url() + "/users/signin",
         json={
-            "Login": "99917587"
+            "Login": "470223"
         }
     )
     return session.cookies
@@ -48,7 +48,7 @@ def get_noby_fat_cookies():
     session.post(
         noby_fat_url() + "/users/signin",
         json={
-            "Login": "99917587"
+            "Login": "470223"
         }
     )
     return session.cookies
@@ -58,7 +58,7 @@ def get_noby_dev_cookies():
     session.post(
         noby_dev_url() + "/users/signin",
         json={
-            "Login": "99917587"
+            "Login": "470223"
         }
     )
     return session.cookies
