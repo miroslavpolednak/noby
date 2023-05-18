@@ -10,7 +10,7 @@ public class SendSmsRequestValidator : AbstractValidator<SendSmsRequest>
     public SendSmsRequestValidator()
     {
         RuleFor(request => request.PhoneNumber)
-            .NotNull()
+            .NotEmpty()
                 .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsPhoneNumberRequired)
             .SetValidator(new PhoneNumberValidator())
                 .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsPhoneNumberInvalid);

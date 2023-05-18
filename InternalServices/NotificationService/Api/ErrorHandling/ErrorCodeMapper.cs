@@ -58,56 +58,55 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int FilenameLengthLimitExceeded = 329;
     
     // Phone
-    public const int CountryCodeRequired = 330;
-    public const int CountryCodeInvalid = 331;
-    public const int NationalNumberRequired = 332;
-    public const int NationalNumberInvalid = 333;
+    public const int PhoneInvalid = 330;
+    public const int CountryCodeRequired = 331;
+    public const int CountryCodeInvalid = 332;
+    public const int NationalNumberRequired = 333;
+    public const int NationalNumberInvalid = 334;
     
-    // Get result
-    public const int NotificationIdNotEmpty = 334;
-    
-    // Search result
-    public const int AtLeastOneParameterRequired = 335;
-    public const int BothIdentityAndIdentitySchemeRequired = 336;
+    // Get/Search result
+    public const int NotificationIdRequired = 340;
+    public const int AtLeastOneParameterRequired = 341;
+    public const int BothIdentityAndIdentitySchemeRequired = 342;
     
     // Send email
-    public const int FromRequired = 340;
-    public const int FromInvalid = 341;
-    public const int ToNotEmpty = 342;
-    public const int ToInvalid = 343;
-    public const int BccInvalid = 344;
-    public const int CcInvalid = 345;
-    public const int ReplyToInvalid = 346;
-    public const int SubjectRequired = 347;
-    public const int SubjectInvalid = 348;
-    public const int ContentRequired = 349;
-    public const int ContentInvalid = 350;
-    public const int AttachmentsCountLimitExceeded = 351;
-    public const int AttachmentsInvalid = 352;
+    public const int FromRequired = 350;
+    public const int FromInvalid = 351;
+    public const int ToRequired = 352;
+    public const int ToInvalid = 353;
+    public const int BccInvalid = 354;
+    public const int CcInvalid = 355;
+    public const int ReplyToInvalid = 356;
+    public const int SubjectRequired = 357;
+    public const int SubjectInvalid = 358;
+    public const int ContentRequired = 359;
+    public const int ContentInvalid = 360;
+    public const int AttachmentsCountLimitExceeded = 361;
+    public const int AttachmentsInvalid = 362;
     
     // Send sms
-    public const int SmsPhoneNumberRequired = 360;
-    public const int SmsPhoneNumberInvalid = 361;
-    public const int SmsProcessPriorityInvalid = 362;
-    public const int SmsTypeInvalid = 363;
-    public const int SmsTextRequired = 364;
-    public const int SmsTextLengthLimitExceeded = 365;
+    public const int SmsPhoneNumberRequired = 370;
+    public const int SmsPhoneNumberInvalid = 371;
+    public const int SmsProcessPriorityInvalid = 372;
+    public const int SmsTypeInvalid = 373;
+    public const int SmsTextRequired = 374;
+    public const int SmsTextLengthLimitExceeded = 375;
     
     // Send sms from template
-    public const int SmsTemplatePhoneNumberRequired = 370;
-    public const int SmsTemplatePhoneNumberInvalid = 371;
-    public const int SmsTemplateProcessPriorityInvalid = 372;
-    public const int SmsTemplateTypeInvalid = 373;
-    public const int SmsTemplatePlaceholdersRequired = 374;
-    public const int SmsTemplatePlaceholdersInvalid = 375;
+    public const int SmsTemplatePhoneNumberRequired = 380;
+    public const int SmsTemplatePhoneNumberInvalid = 381;
+    public const int SmsTemplateProcessPriorityInvalid = 382;
+    public const int SmsTemplateTypeInvalid = 383;
+    public const int SmsTemplatePlaceholdersRequired = 384;
+    public const int SmsTemplatePlaceholdersInvalid = 385;
     
     // TODO Internal
-    public const int ResultNotFound = 380;
-    public const string CreateEmailResultFailed = "381";
-    public const string CreateSmsResultFailed = "382";
-    public const string UploadAttachmentFailed = "383";
-    public const string ProduceSendEmailError = "384";
-    public const string ProduceSendSmsError = "385";
+    public const int ResultNotFound = 390;
+    public const string CreateEmailResultFailed = "391";
+    public const string CreateSmsResultFailed = "392";
+    public const string UploadAttachmentFailed = "393";
+    public const string ProduceSendEmailError = "394";
+    public const string ProduceSendSmsError = "395";
 
     public static IErrorCodesDictionary Init()
     {
@@ -151,19 +150,19 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { FilenameRequired, $"{nameof(EmailAttachment.Filename)} required." },
             { FilenameLengthLimitExceeded, $"Maximum length of {nameof(EmailAttachment.Filename)} is 255." },
             
+            { PhoneInvalid, $"{nameof(Phone)} not in standard E. 164" },
             { CountryCodeRequired, $"{nameof(Phone.CountryCode)} required." },
             { CountryCodeInvalid, $"Invalid {nameof(Phone.CountryCode)}." },
             { NationalNumberRequired, $"{nameof(Phone.NationalNumber)} required." },
             { NationalNumberInvalid, $"Invalid {nameof(Phone.NationalNumber)}." },
             
-            { NotificationIdNotEmpty, $"{nameof(GetResultRequest.NotificationId)} must be not empty." },
-            
+            { NotificationIdRequired, $"{nameof(GetResultRequest.NotificationId)} must be not empty." },
             { AtLeastOneParameterRequired, $"{nameof(SearchResultsRequest)} must contain at least 1 non-empty search parameter." },
             { BothIdentityAndIdentitySchemeRequired, $"{nameof(SearchResultsRequest)} must contain either both {nameof(SearchResultsRequest.Identity)} and {nameof(SearchResultsRequest.IdentityScheme)} or none." },
             
             { FromRequired, $"{nameof(SendEmailRequest.From)} required." },
             { FromInvalid, $"Invalid {nameof(SendEmailRequest.From)}." },
-            { ToNotEmpty, $"{nameof(SendEmailRequest.To)} must be not empty." },
+            { ToRequired, $"{nameof(SendEmailRequest.To)} must be not empty." },
             { ToInvalid, $"Invalid {nameof(SendEmailRequest.To)}." },
             { BccInvalid, $"Invalid {nameof(SendEmailRequest.Bcc)}." },
             { CcInvalid, $"Invalid {nameof(SendEmailRequest.Cc)}." },

@@ -62,18 +62,7 @@ public static class ServiceCollectionExtensions
                 $"{nameof(S3Configuration)}.{nameof(S3Configuration.AccessKey)} required.")
             .Validate(config => !string.IsNullOrEmpty(config?.SecretKey),
                 $"{nameof(S3Configuration)}.{nameof(S3Configuration.SecretKey)} required.");
-
-        builder.Services
-            .AddOptions<KafkaConfiguration>()
-            .Bind(builder.Configuration.GetSection(nameof(KafkaConfiguration)))
-            .Validate(config => !string.IsNullOrEmpty(config?.GroupId),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.GroupId)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config?.Nodes?.Business?.BootstrapServers),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Nodes)}.{nameof(KafkaConfiguration.Nodes.Business)}.{nameof(KafkaConfiguration.Nodes.Business.BootstrapServers)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config?.Debug),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Debug)}")
-            .ValidateOnStart();
-
+        
         builder.Services
             .AddOptions<SmtpConfiguration>()
             .Bind(builder.Configuration.GetSection(nameof(SmtpConfiguration)))
@@ -98,11 +87,6 @@ public static class ServiceCollectionExtensions
         return builder.GetConfiguration<S3Configuration>();
     }
     
-    public static KafkaConfiguration GetKafkaConfiguration(this WebApplicationBuilder builder)
-    {
-        return builder.GetConfiguration<KafkaConfiguration>();
-    }
-
     public static SmtpConfiguration GetSmtpConfiguration(this WebApplicationBuilder builder)
     {
         return builder.GetConfiguration<SmtpConfiguration>();

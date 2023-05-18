@@ -5,20 +5,23 @@ using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Sms;
 
-public class PhoneValidator : AbstractValidator<Phone>
+public class PhoneValidator : AbstractValidator<Phone?>
 {
     public PhoneValidator()
     {
-        RuleFor(phone => phone.CountryCode)
-            .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.CountryCodeRequired)
-            .Matches(new Regex(@"^((\+?[0-9]{1,3})|([0-9]{1,5}))$"))
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.CountryCodeInvalid);
+        When(phone => phone is not null, () =>
+        {
+            RuleFor(phone => phone!.CountryCode)
+                .NotEmpty()
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CountryCodeRequired)
+                .Matches(new Regex(@"^((\+?[0-9]{1,3})|([0-9]{1,5}))$"))
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CountryCodeInvalid);
         
-        RuleFor(phone => phone.NationalNumber)
-            .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.NationalNumberRequired)
-            .Matches(new Regex(@"^[0-9]{1,14}$"))
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.NationalNumberInvalid);
+            RuleFor(phone => phone!.NationalNumber)
+                .NotEmpty()
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.NationalNumberRequired)
+                .Matches(new Regex(@"^[0-9]{1,14}$"))
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.NationalNumberInvalid);
+        });
     }
 }

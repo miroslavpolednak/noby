@@ -19,7 +19,7 @@ public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
         
         RuleFor(request => request.To)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.ToNotEmpty)
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.ToRequired)
             .ForEach(to => to.SetValidator(new EmailAddressValidator()))
                 .WithErrorCode(ErrorHandling.ErrorCodeMapper.ToInvalid);
 
