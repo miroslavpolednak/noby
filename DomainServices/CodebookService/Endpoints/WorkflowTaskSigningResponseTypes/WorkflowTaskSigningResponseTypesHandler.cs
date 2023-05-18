@@ -23,7 +23,7 @@ public class WorkflowTaskSigningResponseTypesHandler
     #endregion
 
     private const string _sqlQuery =
-            "SELECT KOD 'Id', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN DATUM_OD AND ISNULL(DATUM_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.v_HTEDM_CIS_WFL_CISELNIKY_HODNOTY WHERE CISELNIK_ID = 144 ORDER BY KOD";
+            "SELECT KOD 'Id', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN DATUM_OD AND ISNULL(DATUM_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.HTEDM_CIS_WFL_CISELNIKY_HODNOTY WHERE CISELNIK_ID = 144 ORDER BY KOD";
 
     public async Task<List<GenericCodebookItem>> Handle(WorkflowTaskSigningResponseTypesRequest request, CancellationToken cancellationToken)
     {
