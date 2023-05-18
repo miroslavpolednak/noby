@@ -38,4 +38,59 @@ service CodebookService {
 			get: "/api/v1/case-states"
 		};
    }
+
+   rpc ClassificationOfEconomicActivities (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/classification-of-economic-activities"
+		};
+   }
+   
+   rpc CollateralTypes (google.protobuf.Empty) returns (CollateralTypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/collateral-types"
+		};
+   }
+
+   rpc ContactTypes (google.protobuf.Empty) returns (ContactTypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/contact-types"
+		};
+   }
+
+   rpc Countries (google.protobuf.Empty) returns (CountriesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/countries"
+		};
+   }
+
+   rpc CountryCodePhoneIdc (google.protobuf.Empty) returns (CountryCodePhoneIdcResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/country-code-phone-idc"
+		};
+   }
+   
+   rpc Currencies (google.protobuf.Empty) returns (CurrenciesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/currencies"
+		};
+   }
+
+   rpc CustomerProfiles (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/customer-profiles"
+		};
+   }
+
+   rpc CustomerRoles (google.protobuf.Empty) returns (CustomerRolesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/customer-roles"
+		};
+   }
+
+   rpc DeveloperSearch (DeveloperSearchRequest) returns (DeveloperSearchResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/developer-search"
+		};
+   }
+
 }

@@ -33,13 +33,18 @@ builder
     .AddCodebookService()
     // add BE services
     .Services
+        // add CIS services
+        .AddCisServiceDiscovery()
+        // add swagger
+        .AddCodebookServiceSwagger()
         // add grpc infrastructure
         .AddCisGrpcInfrastructure(typeof(Program))
         .AddGrpcReflection()
         .AddGrpc(options =>
         {
             options.Interceptors.Add<GenericServerExceptionInterceptor>();
-        }); ;
+        })
+        .AddJsonTranscoding();
 
 // add HC
 builder.AddCisGrpcHealthChecks();
@@ -62,6 +67,7 @@ app.UseCisServiceUserContext();
 app.MapCisGrpcHealthChecks();
 app.MapGrpcReflectionService();
 app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.CodebookService>();
+app.UseCodebookServiceSwagger();
 
 try
 {

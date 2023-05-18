@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.Core.Exceptions.ExternalServices;
 using System.Collections.ObjectModel;
+using System.Diagnostics.SymbolStore;
 
 namespace CIS.Core.ErrorCodes;
 
@@ -46,7 +47,7 @@ public abstract class ErrorCodeMapperBase
 
     public static CisNotFoundException CreateNotFoundException(int exceptionCode, params object?[] args)
     {
-        throw new CisNotFoundException(exceptionCode, string.Format(GetMessage(exceptionCode), args));
+        throw new CisNotFoundException(exceptionCode, string.Format(System.Globalization.CultureInfo.InvariantCulture, GetMessage(exceptionCode), args));
     }
     
     public static CisArgumentException CreateArgumentException(int exceptionCode, object? parameter = null)
@@ -61,7 +62,7 @@ public abstract class ErrorCodeMapperBase
 
     public static CisAlreadyExistsException CreateAlreadyExistsException(int exceptionCode, params object?[] args)
     {
-        throw new CisAlreadyExistsException(exceptionCode, string.Format(GetMessage(exceptionCode), args));
+        throw new CisAlreadyExistsException(exceptionCode, string.Format(System.Globalization.CultureInfo.InvariantCulture, GetMessage(exceptionCode), args));
     }
     
     /// <summary>

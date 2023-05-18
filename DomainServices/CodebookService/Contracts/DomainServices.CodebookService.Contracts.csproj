@@ -12,12 +12,9 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>DomainServices.CodebookService.Contracts.xml</DocumentationFile>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <None Remove="Messages\GenericCodebook.proto" />
-	  <None Remove="Messages\GenericCodebookWithCode.proto" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.23.0" />
@@ -39,6 +36,12 @@
 		<Protobuf Include="Messages/Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\GenericCodebook.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\GenericCodebookWithCode.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="DomainServices.CodebookService.Contracts.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>		
 
 </Project>

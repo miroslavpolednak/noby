@@ -14,33 +14,9 @@ internal static class SwaggerExtensions
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Service Discovery API", Version = "v1" });
 
             // generate the XML docs that'll drive the swagger docs
-            var path = Path.Combine(AppContext.BaseDirectory, "CIS.InternalServices.ServiceDiscovery.xml");
+            var path = Path.Combine(AppContext.BaseDirectory, "CIS.InternalServices.ServiceDiscovery.Contracts.xml");
             c.IncludeXmlComments(path);
             c.IncludeGrpcXmlComments(path, includeControllerXmlComments: true);
-
-            c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                Scheme = "basic",
-                In = ParameterLocation.Header,
-                Description = "Basic Authorization header"
-            });
-
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                          new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "basic"
-                                }
-                            },
-                            Array.Empty<string>()
-        }
-                });
         });
 
         return services;

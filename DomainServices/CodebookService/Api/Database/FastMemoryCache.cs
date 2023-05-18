@@ -49,6 +49,6 @@ internal sealed class FastMemoryCache
                 mylock.Release();
             }
         }
-        return cacheEntry;
+        return cacheEntry!;
     }
 }

@@ -13,7 +13,7 @@
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>CIS.InternalServices.ServiceDiscovery.xml</DocumentationFile>
+		<DocumentationFile>CIS.InternalServices.ServiceDiscovery.Contracts.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -38,7 +38,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <None Update="CIS.InternalServices.ServiceDiscovery.xml">
+	  <None Update="CIS.InternalServices.ServiceDiscovery.Contracts.xml">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

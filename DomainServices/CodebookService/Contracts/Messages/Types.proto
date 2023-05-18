@@ -26,3 +26,98 @@ message CaseStatesResponse {
 		bool IsDefault = 4;
 	}
 }
+
+message CollateralTypesResponse {
+	repeated CollateralTypeItem Items = 1;
+
+	message CollateralTypeItem {
+		int32 CollateralType = 1;
+		google.protobuf.Int32Value MandantId = 2;
+		string CodeBgm = 3;
+		string TextBgm = 4;
+		string NameType = 5;
+	}
+}
+
+message ContactTypesResponse {
+	repeated ContactTypeItem Items = 1;
+
+	message ContactTypeItem {
+		int32 Id = 1;
+		string Name = 2;
+		string MpDigiApiCode = 3;
+		bool IsValid = 4;
+		google.protobuf.Int32Value MandantId = 5;
+	}
+}
+
+message CountriesResponse {
+	repeated CountryItem Items = 1;
+
+	message CountryItem {
+		int32 Id = 1;
+		string ShortName = 2;
+		string Name = 3;
+		string LongName = 4;
+		bool IsDefault = 5;
+		bool Risk = 6;
+		bool EuMember = 7;
+		bool Eurozone = 8;
+	}
+}
+
+message CountryCodePhoneIdcResponse {
+	repeated CountryCodePhoneIdcItem Items = 1;
+
+	message CountryCodePhoneIdcItem {
+		string Id = 1;
+		string Name = 2;
+		string Idc = 3;
+		bool IsValid = 4;
+		bool IsPriority = 5;
+		bool IsDefault = 6;
+	}
+}
+
+message CurrenciesResponse {
+	repeated CurrencyItem Items = 1;
+
+	message CurrencyItem {
+		string Code = 1;
+		bool AllowedForIncomeCurrency = 2;
+		bool AllowedForResidencyCurrency = 3;
+		bool IsDefault = 4;
+	}
+}
+
+message CustomerRolesResponse {
+	repeated CustomerRoleItem Items = 1;
+
+	message CustomerRoleItem {
+		int32 Id = 1;
+		string Name = 2;
+		string RdmCode = 3;
+		string NameNoby = 4;
+	}
+}
+
+message DeveloperSearchRequest {
+	string Term = 1;
+}
+
+message DeveloperSearchResponse {
+	repeated DeveloperSearchItem Items = 1;
+
+	message DeveloperSearchItem {
+		// ID developera
+		google.protobuf.Int32Value DeveloperId = 1;
+		// ID developerského projektu
+		google.protobuf.Int32Value DeveloperProjectId = 2;
+		// Jméno developera
+		google.protobuf.StringValue DeveloperName = 3;
+		// Jméno developerského projektu
+		google.protobuf.StringValue DeveloperProjectName = 4;
+		// ICO/RČ developera
+		google.protobuf.StringValue DeveloperCIN = 5;
+	}
+}
