@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
 using System.Text;
 
 namespace MPSS.Security.Noby;
@@ -48,6 +49,12 @@ internal class IdentityBase : IIdentity
     #endregion
 
     #region public properties
+    public string KbUid
+    {
+        get;
+        internal set;
+    }
+
     public int m17ID
     {
         get;
@@ -168,7 +175,8 @@ internal class IdentityBase : IIdentity
         sb.AppendFormat("{0}{1}", _FirstLogin.ToString(System.Globalization.CultureInfo.InvariantCulture), SecurityCookie.Separator[0]);
         sb.AppendFormat("{0}{1}", _Switches, SecurityCookie.Separator[0]);
         sb.AppendFormat("{0}{1}", m17ID, SecurityCookie.Separator[0]);
-        sb.AppendFormat("{0}", BrokerId);
+        sb.AppendFormat("{0}{1}", BrokerId, SecurityCookie.Separator[0]);
+        sb.AppendFormat("{0}", KbUid);
         return sb.ToString();
     }
 
@@ -194,6 +202,7 @@ internal class IdentityBase : IIdentity
         ident._Switches = switches;
         ident.m17ID = Convert.ToInt32(arr[16]);
         ident.BrokerId = Convert.ToInt32(arr[17]);
+        ident.KbUid = arr[18];
 
         try
         {
