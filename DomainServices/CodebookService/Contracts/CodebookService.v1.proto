@@ -272,4 +272,40 @@ service CodebookService {
 			get: "/api/v1/job-types"
 		};
    }
+
+   rpc LegalCapacityRestrictionTypes (google.protobuf.Empty) returns (LegalCapacityRestrictionTypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/legal-capacity-restriction-types"
+		};
+   }
+
+   rpc LoanInterestRateAnnouncedTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/loan-interest-rate-announced-types"
+		};
+   }
+
+   rpc LoanKinds (google.protobuf.Empty) returns (LoanKindsResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/loan-kinds"
+		};
+   }
+
+   rpc LoanPurposes (google.protobuf.Empty) returns (LoanPurposesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/loan-purposes"
+		};
+   }
+
+   rpc Mandants (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/mandants"
+		};
+   }
+
+   rpc MaritalStatuses (google.protobuf.Empty) returns (MaritalStatusesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/marital-statuses"
+		};
+   }
 }

@@ -1,12 +1,10 @@
 ﻿using CIS.Core.Data;
+using CIS.Foms.Enums;
 using CIS.Infrastructure.Data.Synchronous;
 using DomainServices.CodebookService.Api.Database;
 using DomainServices.CodebookService.Api.Extensions;
 using DomainServices.CodebookService.Contracts.v1;
 using Microsoft.AspNetCore.Authorization;
-using StackExchange.Redis;
-using System.Threading;
-using static DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types;
 
 namespace DomainServices.CodebookService.Api.Endpoints;
 
@@ -313,8 +311,60 @@ internal sealed class CodebookService
     public override Task<JobTypesResponse> JobTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetItems<JobTypesResponse, JobTypesResponse.Types.JobTypeItem>(new JobTypesResponse(), SqlQueries.JobTypes);
 
+    public override Task<LegalCapacityRestrictionTypesResponse> LegalCapacityRestrictionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(new LegalCapacityRestrictionTypesResponse(), () =>
+        {
+            return FastEnum.GetValues<CIS.Foms.Enums.LegalCapacityRestrictions>()
+                .Select(t => new LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem()
+                {
+                    Id = (int)t,
+                    Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+                    Description = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Description ?? "",
+                    RdmCode = t.ToString()
+                })
+            .ToList();
+        });
 
+    public override Task<GenericCodebookWithCodeResponse> LoanInterestRateAnnouncedTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetGenericItemsWithCode<LoanInterestRateAnnouncedTypes>();
 
+    public override Task<LoanKindsResponse> LoanKinds(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetItems<LoanKindsResponse, LoanKindsResponse.Types.LoanKindItem>(new LoanKindsResponse(), SqlQueries.LoanKinds);
+
+    public override Task<LoanPurposesResponse> LoanPurposes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(new LoanPurposesResponse(), () =>
+        {
+            var items = _xxd.ExecuteDapperRawSqlToDynamicList(SqlQueries.LoanPurposes);
+            return items.Select(t =>
+            {
+                var item = new LoanPurposesResponse.Types.LoanPurposeItem
+                {
+                    Id = t.Id,
+                    C4MId = t.C4MId,
+                    IsValid = t.IsValid,
+                    MandantId = t.MandantId,
+                    Name = t.Name,
+                    Order = t.Order
+                };
+                item.ProductTypeIds.AddRange(((string)t.ProductTypeIds).ParseIDs());
+                return item;
+            });
+        });
+
+    public override Task<GenericCodebookWithCodeResponse> Mandants(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetGenericItemsWithCode<CIS.Foms.Enums.Mandants>();
+
+    public override Task<MaritalStatusesResponse> MaritalStatuses(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(new MaritalStatusesResponse(), () =>
+        {
+            var items = _xxd.ExecuteDapperRawSqlToList<MaritalStatusesResponse.Types.MaritalStatuseItem>(SqlQueries.MaritalStatuses1);
+            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(SqlQueries.MaritalStatuses2);
+            items.ForEach(item =>
+            {
+                item.RdmMaritalStatusCode = extensions.FirstOrDefault(t => t.MaritalStatusId == item.Id)?.RDMCode;
+            });
+            return items;
+        });
 
     private readonly IConnectionProvider _selfDb;
     private readonly IConnectionProvider<IKonsdbDapperConnectionProvider> _konsdb;

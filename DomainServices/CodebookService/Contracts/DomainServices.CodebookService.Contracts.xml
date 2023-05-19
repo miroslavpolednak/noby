@@ -794,6 +794,90 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.JobTypesResponse.Types.JobTypeItem.IsDefaultFieldNumber">
             <summary>Field number for the "IsDefault" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LegalCapacityRestrictionTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.LegalCapacityRestrictionTypesResponse.Types">
+            <summary>Container for nested types declared in the LegalCapacityRestrictionTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem.RdmCodeFieldNumber">
+            <summary>Field number for the "RdmCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanKindsResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.LoanKindsResponse.Types">
+            <summary>Container for nested types declared in the LoanKindsResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanKindsResponse.Types.LoanKindItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanKindsResponse.Types.LoanKindItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanKindsResponse.Types.LoanKindItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanKindsResponse.Types.LoanKindItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanKindsResponse.Types.LoanKindItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types">
+            <summary>Container for nested types declared in the LoanPurposesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.OrderFieldNumber">
+            <summary>Field number for the "Order" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.C4MIdFieldNumber">
+            <summary>Field number for the "C4mId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.ProductTypeIdsFieldNumber">
+            <summary>Field number for the "ProductTypeIds" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.MaritalStatusesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.MaritalStatusesResponse.Types">
+            <summary>Container for nested types declared in the MaritalStatusesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.MaritalStatusesResponse.Types.MaritalStatuseItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.MaritalStatusesResponse.Types.MaritalStatuseItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.MaritalStatusesResponse.Types.MaritalStatuseItem.RdmMaritalStatusCodeFieldNumber">
+            <summary>Field number for the "RdmMaritalStatusCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.MaritalStatusesResponse.Types.MaritalStatuseItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.CodebookServiceV1Reflection">
             <summary>Holder for reflection information generated from CodebookService.v1.proto</summary>
         </member>

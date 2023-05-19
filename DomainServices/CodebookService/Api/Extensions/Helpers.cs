@@ -8,6 +8,20 @@ namespace DomainServices.CodebookService.Api;
 
 internal static class Helpers
 {
+    /// <summary>
+    /// Converts string with separated integers into list.
+    /// </summary>
+    public static List<int>? ParseIDs(this string value, string separator = ",")
+    {
+        if (String.IsNullOrWhiteSpace(value))
+            return null;
+
+        return value
+                .Split(separator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Select(x => Convert.ToInt32(x, System.Globalization.CultureInfo.InvariantCulture))
+                .ToList();
+    }
+
     public static Task<TResponse> GetItems<TResponse, TItem>(TResponse response, Func<List<TItem>> createItems, [CallerMemberName] string method = "")
         where TResponse : Contracts.IItemsResponse<TItem>
         where TItem : class, Google.Protobuf.IMessage

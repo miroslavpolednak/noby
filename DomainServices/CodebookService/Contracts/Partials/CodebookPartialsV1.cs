@@ -36,3 +36,7 @@ public partial class IdentificationDocumentTypesResponse : IItemsResponse<Identi
 public partial class IdentitySchemesResponse : IItemsResponse<IdentitySchemesResponse.Types.IdentitySchemeItem> { }
 public partial class IncomeMainTypesAMLResponse : IItemsResponse<IncomeMainTypesAMLResponse.Types.IncomeMainTypesAMLItem> { }
 public partial class JobTypesResponse : IItemsResponse<JobTypesResponse.Types.JobTypeItem> { }
+public partial class LegalCapacityRestrictionTypesResponse : IItemsResponse<LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem> { }
+public partial class LoanKindsResponse : IItemsResponse<LoanKindsResponse.Types.LoanKindItem> { }
+public partial class LoanPurposesResponse : IItemsResponse<LoanPurposesResponse.Types.LoanPurposeItem> { }
+public partial class MaritalStatusesResponse : IItemsResponse<MaritalStatusesResponse.Types.MaritalStatuseItem> { }

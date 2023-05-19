@@ -127,4 +127,12 @@ WHERE DEVELOPER_PROJEKT_ID=@DeveloperProjectId AND DEVELOPER_ID=@DeveloperId";
     public const string IncomeOtherTypes = "SELECT KOD 'Id', CODE 'Code', TEXT_CZE 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_ZDROJ_PRIJMU_VEDLAJSI] ORDER BY KOD ASC";
 
     public const string JobTypes = "SELECT KOD 'Id', TEXT 'Name', DEF 'IsDefault' FROM [SBR].[CIS_PRACOVNI_POZICE] ORDER BY KOD ASC";
+
+    public const string LoanKinds = "SELECT KOD 'Id', NULLIF(MANDANT, 0) 'MandantId', DRUH_UVERU_TEXT 'Name', CAST(DEFAULT_HODNOTA as bit) 'IsDefault', CASE WHEN SYSDATETIME() BETWEEN[DATUM_OD_ES] AND ISNULL([DATUM_DO_ES], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_DRUH_UVERU] ORDER BY KOD ASC";
+
+    public const string LoanPurposes = "SELECT KOD 'Id', TEXT 'Name', NULLIF(MANDANT, 0) 'MandantId', KOD_UVER 'ProductTypeId', PORADI 'Order', MAPOVANI_C4M 'C4mId', CASE WHEN SYSDATETIME() BETWEEN [DATUM_PLATNOSTI_OD] AND ISNULL([DATUM_PLATNOSTI_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.CIS_UCEL_UVERU_INT1 ORDER BY KOD";
+
+    public const string MaritalStatuses1 = "SELECT KOD 'Id', TEXT 'Name', DEF 'IsDefault' FROM [SBR].[CIS_RODINNE_STAVY] ORDER BY KOD";
+
+    public const string MaritalStatuses2 = "SELECT * FROM MaritalStatusExtension";
 }
