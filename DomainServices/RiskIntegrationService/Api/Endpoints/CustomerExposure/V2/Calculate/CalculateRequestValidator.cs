@@ -1,7 +1,7 @@
 ﻿using DomainServices.RiskIntegrationService.Api.GlobalValidators;
 using FluentValidation;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.Calculate;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomerExposure.V2.Calculate;
 
 internal sealed class CalculateRequestValidator
     : AbstractValidator<Contracts.CustomersExposure.V2.CustomersExposureCalculateRequest>

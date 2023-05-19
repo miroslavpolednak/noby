@@ -31,7 +31,7 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/CREDIT+WORTHINESS+SERVICE+-+SIMPLE+v2">https://wiki.kb.cz/display/HT/CREDIT+WORTHINESS+SERVICE+-+SIMPLE+v2</a>
             </remarks>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.CustomersExposureServiceController.Calculate(DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2.CustomersExposureCalculateRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.CustomerExposureServiceController.Calculate(DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2.CustomersExposureCalculateRequest,System.Threading.CancellationToken)">
             <summary>
             Vrátí data související s angažovaností jednotlivých účastníků úvěrové žádosti(Loan Applicaiton).
             </summary>

@@ -1,9 +1,9 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1.Contracts;
-using System.Globalization;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V3.Contracts;
+using _cl = DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V3;
 using CIS.Core.Configuration;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.Calculate;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomerExposure.V2.Calculate;
 
 internal sealed class CalculateHandler
     : IRequestHandler<_V2.CustomersExposureCalculateRequest, _V2.CustomersExposureCalculateResponse>
@@ -12,9 +12,9 @@ internal sealed class CalculateHandler
     {
         var requestModel = new _C4M.LoanApplicationRelatedExposure
         {
-            LoanApplicationId = _C4M.ResourceIdentifier.Create("MPSS", "LA", "LoanApplication", request.SalesArrangementId!.ToEnvironmentId(_cisEnvironment.EnvironmentName!), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
+            LoanApplicationId = _C4M.ResourceIdentifier.Create(request.SalesArrangementId!.ToEnvironmentId(_cisEnvironment.EnvironmentName!), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)).ToC4M(),
             RiskBusinessCaseId = request.RiskBusinessCaseId,
-            LoanApplicationDataVersion = request.LoanApplicationDataVersion
+            LoanApplicationSnapshotId = request.LoanApplicationDataVersion
         };
 
         // human user instance
@@ -35,7 +35,7 @@ internal sealed class CalculateHandler
     }
 
     private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
-    private readonly ExternalServices.CustomersExposure.V1.ICustomersExposureClient _client;
+    private readonly _cl.ICustomerExposureClient _client;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
@@ -44,7 +44,7 @@ internal sealed class CalculateHandler
     public CalculateHandler(
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        ExternalServices.CustomersExposure.V1.ICustomersExposureClient client,
+        _cl.ICustomerExposureClient client,
         CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
         CodebookService.Clients.ICodebookServiceClients codebookService,
         ICisEnvironmentConfiguration cisEnvironment)

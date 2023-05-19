@@ -1,9 +1,9 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V3.Contracts;
 using _CB = DomainServices.CodebookService.Contracts.Endpoints;
 using DomainServices.RiskIntegrationService.Contracts.Shared;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.Calculate;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomerExposure.V2.Calculate;
 
 internal static class CalculateResponseExtensions
 {
@@ -33,7 +33,7 @@ internal static class CalculateResponseExtensions
                 RequestedCBCBNaturalPersonExposureItem = t.RequestedCBCBNaturalPersonExposureItem?.Select(x => x.ToServiceResponse(customerRoles, obligationLaExposures)).ToList(),
                 RequestedCBCBJuridicalPersonExposureItem = t.RequestedCBCBJuridicalPersonExposureItem?.Select(x => x.ToServiceResponse(customerRoles, obligationLaExposures)).ToList()
             }).ToList(),
-            ExposureSummary = response.ExposureSummary?.Select(t => t.ToServiceResponse()).ToList()
+            ExposureSummary = response.ExposureSummary.ToServiceResponse()
         };
     }
 
@@ -60,7 +60,7 @@ internal static class CalculateResponseExtensions
             LoanOnBalanceAmount = item.LoanOnBalanceAmount?.Value,
             ExposureAmount = item.ExposureAmount?.Value,
             InstallmentAmount = item.InstallmentAmount?.Value,
-            IsSecured = item.IsSecured.GetValueOrDefault(),
+            IsSecured = item.IsSecured,
             ContractDate = item.ContractDate?.DateTime,
             MaturityDate = item.MaturityDate?.DateTime
         };
@@ -75,7 +75,7 @@ internal static class CalculateResponseExtensions
             LoanAmount = item.LoanAmount?.Value,
             InstallmentAmount = item.InstallmentAmount?.Value,
             StatusCode = item.StatusCode,
-            IsSecured = item.IsSecured.GetValueOrDefault()
+            IsSecured = item.IsSecured
         };
 
     public static _V2.CustomersExposureExistingCBCBItem ToServiceResponse(this _C4M.ExistingCBCBExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)

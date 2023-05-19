@@ -1,9 +1,9 @@
-﻿using DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1.Contracts;
+﻿using DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V1.Contracts;
 
-namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1;
+namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V1;
 
-internal sealed class MockCustomersExposureClient
-    : ICustomersExposureClient
+internal sealed class MockCustomerExposureClient
+    : ICustomerExposureClient
 {
     public Task<LoanApplicationRelatedExposureResult> Calculate(LoanApplicationRelatedExposure request, CancellationToken cancellationToken)
     {

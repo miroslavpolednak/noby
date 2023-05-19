@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1.Contracts;
+﻿namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V1.Contracts;
 
 public partial class ResourceIdentifier
 {

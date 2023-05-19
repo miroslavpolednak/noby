@@ -21,9 +21,6 @@ public class RiskBusinessCaseService
     public async ValueTask<_sh.LoanApplicationAssessmentResponse> CreateAssessment(_V2.RiskBusinessCaseCreateAssessmentRequest request, CancellationToken cancellationToken = default)
         => await _mediator.Send(request, cancellationToken);
 
-    public async ValueTask<_V2.RiskBusinessCaseCreateAssessmentAsynchronousResponse> CreateAssessmentAsynchronous(_V2.RiskBusinessCaseCreateAssessmentAsynchronousRequest request, CancellationToken cancellationToken = default)
-        => await _mediator.Send(request, cancellationToken);
-
     public async ValueTask<_V2.RiskBusinessCaseCommitCaseResponse> CommitCase(_V2.RiskBusinessCaseCommitCaseRequest request, CancellationToken cancellationToken = default)
         => await _mediator.Send(request, cancellationToken);
 

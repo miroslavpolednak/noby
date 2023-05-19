@@ -7,12 +7,12 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.
 [Authorize]
 [ApiController]
 [Route("v2/customers-exposure")]
-public sealed class CustomersExposureServiceController
+public sealed class CustomerExposureServiceController
     : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public CustomersExposureServiceController(IMediator mediator)
+    public CustomerExposureServiceController(IMediator mediator)
     {
         _mediator = mediator;
     }

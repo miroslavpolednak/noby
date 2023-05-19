@@ -1,9 +1,9 @@
-﻿using DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1.Contracts;
+﻿using DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V3.Contracts;
 
-namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1;
+namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V3;
 
-internal sealed class RealCustomersExposureClient
-    : ICustomersExposureClient
+internal sealed class RealCustomerExposureClient
+    : ICustomerExposureClient
 {
     public async Task<LoanApplicationRelatedExposureResult> Calculate(LoanApplicationRelatedExposure request, CancellationToken cancellationToken)
     {
@@ -20,7 +20,7 @@ internal sealed class RealCustomersExposureClient
     private readonly HttpClient _httpClient;
     const string _calculateUrl = "/loan-application-exposure-calculation";
 
-    public RealCustomersExposureClient(HttpClient httpClient)
+    public RealCustomerExposureClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }

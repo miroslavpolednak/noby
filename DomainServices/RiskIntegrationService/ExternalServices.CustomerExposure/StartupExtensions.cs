@@ -1,6 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
-using DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure;
+using DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +11,7 @@ public static class StartupExtensions
     internal const string ServiceName = "C4MCustomersExposure";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
-        where TClient : class, ICustomersExposureClientBase
+        where TClient : class, ICustomerExposureClientBase
     {
         // ziskat konfigurace pro danou verzi sluzby
         string version = getVersion<TClient>();
@@ -19,13 +19,13 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (CustomersExposure.V1.ICustomersExposureClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<CustomersExposure.V1.ICustomersExposureClient, CustomersExposure.V1.MockCustomersExposureClient>();
+            case (CustomerExposure.V3.ICustomerExposureClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<CustomerExposure.V3.ICustomerExposureClient, CustomerExposure.V3.MockCustomerExposureClient>();
                 break;
 
-            case (CustomersExposure.V1.ICustomersExposureClient.Version, ServiceImplementationTypes.Real):
+            case (CustomerExposure.V3.ICustomerExposureClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<CustomersExposure.V1.ICustomersExposureClient, CustomersExposure.V1.RealCustomersExposureClient>()
+                    .AddExternalServiceRestClient<CustomerExposure.V3.ICustomerExposureClient, CustomerExposure.V3.RealCustomerExposureClient>()
                     .AddExternalServicesKbHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
                     .AddBadRequestHandling();
@@ -41,7 +41,7 @@ public static class StartupExtensions
     static string getVersion<TClient>()
         => typeof(TClient) switch
         {
-            Type t when t.IsAssignableFrom(typeof(CustomersExposure.V1.ICustomersExposureClient)) => CustomersExposure.V1.ICustomersExposureClient.Version,
+            Type t when t.IsAssignableFrom(typeof(CustomerExposure.V3.ICustomerExposureClient)) => CustomerExposure.V3.ICustomerExposureClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
 
