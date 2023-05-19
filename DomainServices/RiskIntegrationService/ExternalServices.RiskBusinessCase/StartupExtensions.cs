@@ -42,7 +42,7 @@ public static class StartupExtensions
         => typeof(TClient) switch
         {
             Type t when t.IsAssignableFrom(typeof(RiskBusinessCase.V3.IRiskBusinessCaseClient)) => RiskBusinessCase.V3.IRiskBusinessCaseClient.Version,
-            _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
+            _ => throw new NotImplementedException($"Unknown implementation {typeof(TClient)}")
         };
 
     private static IHttpClientBuilder AddBadRequestHandling(this IHttpClientBuilder builder)

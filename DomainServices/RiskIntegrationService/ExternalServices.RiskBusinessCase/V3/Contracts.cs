@@ -192,7 +192,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCas
         [System.Text.Json.Serialization.JsonPropertyName("timestamp")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.DateTimeOffset Timestamp { get; set; }
+        public System.DateTimeOffset? Timestamp { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -1264,7 +1264,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCas
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseExpirationDate")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.DateTimeOffset RiskBusinesscaseExpirationDate { get; set; }
+        public System.DateTimeOffset? RiskBusinesscaseExpirationDate { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseId")]
 

@@ -37,7 +37,7 @@ internal static class StartupExtensions
         builder.AddExternalService<ExternalServices.CreditWorthiness.V1.ICreditWorthinessClient>();
         builder.AddExternalService<ExternalServices.CustomersExposure.V1.ICustomersExposureClient>();
         builder.AddExternalService<ExternalServices.LoanApplication.V3.ILoanApplicationClient>();
-        builder.AddExternalService<ExternalServices.LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient>();
+        builder.AddExternalService<ExternalServices.LoanApplicationAssessment.V3.ILoanApplicationAssessmentClient>();
         builder.AddExternalService<ExternalServices.RiskBusinessCase.V3.IRiskBusinessCaseClient>();
         builder.AddExternalService<ExternalServices.RiskCharacteristics.V1.IRiskCharacteristicsClient>();
 
