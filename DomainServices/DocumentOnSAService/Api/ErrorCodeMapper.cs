@@ -22,6 +22,7 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int DocumentTypeIdIsRequired = 19031;
     public const int FormIdIsRequired = 19032;
     public const int EArchivIdIsRequired = 19033;
+    public const int SignatureMethodCodeIsRequired = 19034;
 
     public static IErrorCodesDictionary Init()
     {
@@ -41,7 +42,8 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { SalesArrangementIdIsRequired, "SalesArrangementId is required"},
             { DocumentTypeIdIsRequired, " DocumentTypeId is required"},
             { FormIdIsRequired, "FormId is required"},
-            { EArchivIdIsRequired, "EArchivId is required"}
+            { EArchivIdIsRequired, "EArchivId is required"},
+            { SignatureMethodCodeIsRequired, "SignatureMethodCode is required"}
     });
 
         return Messages;
