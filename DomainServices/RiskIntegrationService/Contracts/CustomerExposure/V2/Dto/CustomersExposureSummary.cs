@@ -1,7 +1,7 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+﻿namespace DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 
 [ProtoContract]
-public class CustomersExposureSummary
+public class CustomerExposureSummary
 {
     [ProtoMember(1)]
     public decimal? TotalExistingExposureKB { get; set; }

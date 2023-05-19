@@ -1,9 +1,9 @@
 ﻿using DomainServices.RiskIntegrationService.Contracts.Shared;
 
-namespace DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+namespace DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 
 [ProtoContract]
-public class CustomersExposureExistingKBGroupItem
+public class CustomerExposureExistingKBGroupItem
 {
     [ProtoMember(1)]
     public BankAccountDetail? BankAccount { get; set; }

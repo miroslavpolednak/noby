@@ -1,4 +1,4 @@
-﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -26,8 +26,8 @@ public sealed class CustomerExposureServiceController
     [HttpPut()]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Customers Exposure" })]
-    [ProducesResponseType(typeof(_V2.CustomersExposureCalculateResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(_V2.CustomerExposureCalculateResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<_V2.CustomersExposureCalculateResponse> Calculate([FromBody] _V2.CustomersExposureCalculateRequest request, CancellationToken cancellationToken)
+    public async Task<_V2.CustomerExposureCalculateResponse> Calculate([FromBody] _V2.CustomerExposureCalculateRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 }

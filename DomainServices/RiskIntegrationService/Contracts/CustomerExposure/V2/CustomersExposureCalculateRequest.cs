@@ -1,8 +1,8 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+﻿namespace DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 
 [ProtoContract]
-public class CustomersExposureCalculateRequest
-    : IRequest<CustomersExposureCalculateResponse>, CIS.Core.Validation.IValidatableRequest
+public class CustomerExposureCalculateRequest
+    : IRequest<CustomerExposureCalculateResponse>, CIS.Core.Validation.IValidatableRequest
 {
     [ProtoMember(1)]
     public long SalesArrangementId { get; set; }

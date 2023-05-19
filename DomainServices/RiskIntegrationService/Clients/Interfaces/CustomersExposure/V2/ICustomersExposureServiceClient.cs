@@ -9,5 +9,5 @@ public interface ICustomersExposureServiceClient
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task<CustomersExposureCalculateResponse> Calculate(CustomersExposureCalculateRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<CustomerExposureCalculateResponse> Calculate(CustomerExposureCalculateRequest request, CancellationToken cancellationToken = default(CancellationToken));
 }

@@ -1,7 +1,7 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+﻿namespace DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 
 [ProtoContract]
-public class CustomersExposureRequestedCBCBItem
+public class CustomerExposureRequestedCBCBItem
 {
     [ProtoMember(1)]
     public string? CbcbContractId { get; set; }

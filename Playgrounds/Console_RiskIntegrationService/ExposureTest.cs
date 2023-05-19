@@ -4,7 +4,7 @@ namespace Console_RiskIntegrationService;
 
 internal static class ExposureTest
 {
-    public static CustomersExposureCalculateRequest _test1 = new CustomersExposureCalculateRequest
+    public static CustomerExposureCalculateRequest _test1 = new CustomerExposureCalculateRequest
     {
         SalesArrangementId = 149999990033,
         LoanApplicationDataVersion = "0005",

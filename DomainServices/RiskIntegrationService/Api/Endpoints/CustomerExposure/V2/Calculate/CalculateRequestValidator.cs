@@ -4,7 +4,7 @@ using FluentValidation;
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomerExposure.V2.Calculate;
 
 internal sealed class CalculateRequestValidator
-    : AbstractValidator<Contracts.CustomersExposure.V2.CustomersExposureCalculateRequest>
+    : AbstractValidator<Contracts.CustomerExposure.V2.CustomerExposureCalculateRequest>
 {
     public CalculateRequestValidator()
     {

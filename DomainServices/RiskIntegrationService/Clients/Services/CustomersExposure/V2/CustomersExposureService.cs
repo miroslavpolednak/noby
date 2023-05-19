@@ -6,14 +6,14 @@ namespace DomainServices.RiskIntegrationService.Clients.Services.CustomersExposu
 internal sealed class CustomersExposureService
     : Clients.CustomersExposure.V2.ICustomersExposureServiceClient
 {
-    public async Task<CustomersExposureCalculateResponse> Calculate(CustomersExposureCalculateRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<CustomerExposureCalculateResponse> Calculate(CustomerExposureCalculateRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         return await _service.Calculate(request, cancellationToken: cancellationToken);
     }
 
-    private readonly ICustomersExposureService _service;
+    private readonly ICustomerExposureService _service;
 
-    public CustomersExposureService(ICustomersExposureService service)
+    public CustomersExposureService(ICustomerExposureService service)
     {
         _service = service;
     }

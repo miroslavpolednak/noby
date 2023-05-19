@@ -1,4 +1,4 @@
-﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V3.Contracts;
 using _cl = DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V3;
 using CIS.Core.Configuration;
@@ -6,9 +6,9 @@ using CIS.Core.Configuration;
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomerExposure.V2.Calculate;
 
 internal sealed class CalculateHandler
-    : IRequestHandler<_V2.CustomersExposureCalculateRequest, _V2.CustomersExposureCalculateResponse>
+    : IRequestHandler<_V2.CustomerExposureCalculateRequest, _V2.CustomerExposureCalculateResponse>
 {
-    public async Task<_V2.CustomersExposureCalculateResponse> Handle(_V2.CustomersExposureCalculateRequest request, CancellationToken cancellation)
+    public async Task<_V2.CustomerExposureCalculateResponse> Handle(_V2.CustomerExposureCalculateRequest request, CancellationToken cancellation)
     {
         var requestModel = new _C4M.LoanApplicationRelatedExposure
         {

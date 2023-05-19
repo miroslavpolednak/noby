@@ -1,7 +1,7 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+﻿namespace DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 
 [ProtoContract]
-public class CustomersExposureRequestedKBGroupItem
+public class CustomerExposureRequestedKBGroupItem
 {
     [ProtoMember(1)]
     public string? RiskBusinessCaseId { get; set; }

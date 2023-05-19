@@ -1,4 +1,4 @@
-﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V3.Contracts;
 using _CB = DomainServices.CodebookService.Contracts.Endpoints;
 using DomainServices.RiskIntegrationService.Contracts.Shared;
@@ -7,7 +7,7 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomerExposure.V
 
 internal static class CalculateResponseExtensions
 {
-    public static async Task<_V2.CustomersExposureCalculateResponse> ToServiceResponse(
+    public static async Task<_V2.CustomerExposureCalculateResponse> ToServiceResponse(
         this _C4M.LoanApplicationRelatedExposureResult response, 
         CodebookService.Clients.ICodebookServiceClients _codebookService, 
         CancellationToken cancellation)
@@ -15,9 +15,9 @@ internal static class CalculateResponseExtensions
         var customerRoles = await _codebookService.CustomerRoles(cancellation);
         var obligationLaExposures = await _codebookService.ObligationLaExposures(cancellation);
 
-        return new _V2.CustomersExposureCalculateResponse
+        return new _V2.CustomerExposureCalculateResponse
         {
-            Customers = response.LoanApplicationCounterparty?.Select(t => new _V2.CustomersExposureCustomer
+            Customers = response.LoanApplicationCounterparty?.Select(t => new _V2.CustomerExposureCustomer
             {
                 //CbcbRegisterCalled = t.CbcbRegiterCalled.GetValueOrDefault(),//TODO c4m ma spatne datovy typ=ma byt bool. Ted vraceji nahodne 0 nebo false.
                 CbcbReportId = t.CbcbReportId,
@@ -37,8 +37,8 @@ internal static class CalculateResponseExtensions
         };
     }
 
-    public static _V2.CustomersExposureSummary ToServiceResponse(this _C4M.ExposureSummaryForApproval item)
-        => new _V2.CustomersExposureSummary
+    public static _V2.CustomerExposureSummary ToServiceResponse(this _C4M.ExposureSummaryForApproval item)
+        => new _V2.CustomerExposureSummary
         {
             TotalExistingExposureKB = item.TotalExistingExposureKB?.Value,
             TotalExistingExposureKBNaturalPerson = item.TotalExistingExposureKBNonPurpose?.Value,
@@ -46,8 +46,8 @@ internal static class CalculateResponseExtensions
             TotalExistingExposureUnsecured = item.TotalExistingExposureUnsecured?.Value
         };
 
-    public static _V2.CustomersExposureExistingKBGroupItem ToServiceResponse(this _C4M.ExistingKBGroupExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
-        => new _V2.CustomersExposureExistingKBGroupItem
+    public static _V2.CustomerExposureExistingKBGroupItem ToServiceResponse(this _C4M.ExistingKBGroupExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
+        => new _V2.CustomerExposureExistingKBGroupItem
         {
             BankAccount = getBankAccountFromIdentifier(item.ProductId),
             LoanType = obligationLaExposures.FirstOrDefault(t => t.RdmCode == item.LoanType)?.Id,
@@ -65,8 +65,8 @@ internal static class CalculateResponseExtensions
             MaturityDate = item.MaturityDate?.DateTime
         };
 
-    public static _V2.CustomersExposureRequestedKBGroupItem ToServiceResponse(this _C4M.RequestedKBGroupExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
-        => new _V2.CustomersExposureRequestedKBGroupItem
+    public static _V2.CustomerExposureRequestedKBGroupItem ToServiceResponse(this _C4M.RequestedKBGroupExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
+        => new _V2.CustomerExposureRequestedKBGroupItem
         {
             RiskBusinessCaseId = item.RiskBusinessCaseId,
             LoanType = obligationLaExposures.FirstOrDefault(t => t.RdmCode == item.LoanType)?.Id,
@@ -78,8 +78,8 @@ internal static class CalculateResponseExtensions
             IsSecured = item.IsSecured
         };
 
-    public static _V2.CustomersExposureExistingCBCBItem ToServiceResponse(this _C4M.ExistingCBCBExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
-        => new _V2.CustomersExposureExistingCBCBItem
+    public static _V2.CustomerExposureExistingCBCBItem ToServiceResponse(this _C4M.ExistingCBCBExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
+        => new _V2.CustomerExposureExistingCBCBItem
         {
             CbcbContractId = item.CbcbContractId,
             CustomerRoleId = customerRoles.FirstOrDefault(c => c.RdmCode == item.CustomerRoleCode)?.Id,
@@ -94,8 +94,8 @@ internal static class CalculateResponseExtensions
             KbGroupInstanceCode = item.KbGroupInstanceCode,
         };
 
-    public static _V2.CustomersExposureRequestedCBCBItem ToServiceResponse(this _C4M.RequestedCBCBExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
-        => new _V2.CustomersExposureRequestedCBCBItem
+    public static _V2.CustomerExposureRequestedCBCBItem ToServiceResponse(this _C4M.RequestedCBCBExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
+        => new _V2.CustomerExposureRequestedCBCBItem
         {
             CbcbContractId = item.CbcbContractId,
             CustomerRoleId = customerRoles.FirstOrDefault(c => c.RdmCode == item.CustomerRoleCode)?.Id,
