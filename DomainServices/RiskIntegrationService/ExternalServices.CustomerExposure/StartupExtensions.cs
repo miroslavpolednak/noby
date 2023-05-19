@@ -8,7 +8,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices;
 
 public static class StartupExtensions
 {
-    internal const string ServiceName = "C4MCustomersExposure";
+    internal const string ServiceName = "C4MCustomerExposure";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
         where TClient : class, ICustomerExposureClientBase

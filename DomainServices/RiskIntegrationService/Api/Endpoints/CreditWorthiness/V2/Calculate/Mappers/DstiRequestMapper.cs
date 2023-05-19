@@ -1,5 +1,5 @@
-﻿using DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1.Contracts;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1.Contracts;
+﻿using DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V2.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V2.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;
@@ -14,23 +14,13 @@ internal sealed class DstiRequestMapper
 
         return new _C4M.DSTICalculationArguments
         {
-            ResourceProcessId = new()
-            {
-                Instance = "MPSS",
-                Domain = "OM",
-                Resource = "OfferInstance",
-                Id = request.ResourceProcessId
-            },
-            ItChannel = FastEnum.Parse<_C4M.DSTICalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
+            ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcessId(request.ResourceProcessId ?? "").ToC4M(),
+            ItChannel = FastEnum.Parse<_C4M.ItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             LoanApplicationProduct = new()
             {
                 ProductClusterCode = riskApplicationType.C4mAplCode,
                 Annuity = request.Product!.LoanPaymentAmount.ToAmount(),
-                AmountRequired = new()
-                {
-                    CurrencyCode = GlobalConstants.CurrencyCode,
-                    Value = request.Product!.LoanAmount
-                }
+                AmountRequired = request.Product!.LoanAmount.ToAmount()
             },
             LoanApplicationHousehold = mapHouseholds(request.Households!, riskApplicationType.MandantId)
         };
@@ -55,13 +45,7 @@ internal sealed class DstiRequestMapper
     private static List<_C4M.LoanApplicationCounterparty> mapCustomers(List<_V2.CreditWorthinessCustomer> customers, int? mandantId)
         => customers.Select(customer => new _C4M.LoanApplicationCounterparty
         {
-            CustomerId = string.IsNullOrEmpty(customer.PrimaryCustomerId) ? null : new()
-            {
-                Id = customer.PrimaryCustomerId,
-                Instance = !mandantId.HasValue || (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS",
-                Domain = "CM",
-                Resource = "Customer"
-            },
+            CustomerId = string.IsNullOrEmpty(customer.PrimaryCustomerId) ? null : _C4M.ResourceIdentifier.CreateCustomerId(customer.PrimaryCustomerId, !mandantId.HasValue || (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS").ToC4M(),
             MonthlyEmploymentIncomeSumAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 1).Sum(t => t.Amount) ?? 0).ToAmount(),
             MonthlyRentIncomeSumAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 3).Sum(t => t.Amount) ?? 0).ToAmount(),
             EntrepreneurAnnualIncomeAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 2).Sum(t => t.Amount) ?? 0).ToAmount(),
@@ -75,13 +59,13 @@ internal sealed class DstiRequestMapper
        {
             new()
             {
-                ProductClusterCode = _C4M.DSTICreditLiabilitiesSummaryProductClusterCode.AD,
+                ProductClusterCode = _C4M.DSTICreditLiabilitiesSummaryType.AD,
                 Amount = sumObligations(liabilitiesFlatten, "AD", isExternal, _fcSumObligationsAmount).ToAmount(),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "AD", isExternal, _fcSumObligationsAmountConsolidated).ToAmount()
             },
             new()
             {
-                ProductClusterCode = _C4M.DSTICreditLiabilitiesSummaryProductClusterCode.CC,
+                ProductClusterCode = _C4M.DSTICreditLiabilitiesSummaryType.CC,
                 Amount = sumObligations(liabilitiesFlatten, "CC", isExternal, _fcSumObligationsAmount).ToAmount(),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "CC", isExternal, _fcSumObligationsAmountConsolidated).ToAmount()
             }
@@ -92,13 +76,13 @@ internal sealed class DstiRequestMapper
        {
             new()
             {
-                ProductClusterCode = _C4M.LoanInstallmentsSummaryProductClusterCode.CL,
+                ProductClusterCode = _C4M.LoanInstallmentsSummaryType.CL,
                 Amount = sumObligations(liabilitiesFlatten, "CL", isExternal, _fcSumObligationsInstallment).ToAmount(),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "CL", isExternal, _fcSumObligationsInstallmentConsolidated).ToAmount()
             },
             new()
             {
-                ProductClusterCode = _C4M.LoanInstallmentsSummaryProductClusterCode.ML,
+                ProductClusterCode = _C4M.LoanInstallmentsSummaryType.ML,
                 Amount = sumObligations(liabilitiesFlatten, "ML", isExternal, _fcSumObligationsInstallment).ToAmount(),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "ML", isExternal, _fcSumObligationsInstallmentConsolidated).ToAmount()
             }
