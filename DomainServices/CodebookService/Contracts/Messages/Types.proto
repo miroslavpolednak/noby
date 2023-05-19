@@ -121,3 +121,321 @@ message DeveloperSearchResponse {
 		google.protobuf.StringValue DeveloperCIN = 5;
 	}
 }
+
+message DocumentFileTypesResponse {
+	repeated DocumentFileTypeItem Items = 1;
+
+	message DocumentFileTypeItem {
+		int32 Id = 1;
+		string DocumenFileType = 2;
+		bool IsPrintingSupported = 3;
+	}
+}
+
+message DocumentOnSATypesResponse {
+	repeated DocumentOnSATypeItem Items = 1;
+
+	message DocumentOnSATypeItem {
+		int32 Id = 1;
+		string Name = 2;
+		google.protobuf.Int32Value SalesArrangementTypeId = 3;
+		int32 FormTypeId = 4;
+	}
+}
+
+message DocumentTemplateTypesResponse {
+	repeated DocumentTemplateTypeItem Items = 1;
+
+	message DocumentTemplateTypeItem {
+		int32 Id = 1;
+		string Name = 2;
+		string ShortName = 3;
+	}
+}
+
+message DocumentTemplateVariantsResponse {
+	repeated DocumentTemplateVariantItem Items = 1;
+
+	message DocumentTemplateVariantItem {
+		int32 Id = 1;
+		int32 DocumentTemplateVersionId = 2;
+		string DocumentVariant = 3;
+		string Description = 4;
+	}
+}
+
+message DocumentTemplateVersionsResponse {
+	repeated DocumentTemplateVersionItem Items = 1;
+
+	message DocumentTemplateVersionItem {
+		int32 Id = 1;
+		int32 DocumentTypeId = 2;
+		string DocumentVersion = 3;
+		bool IsValid = 4;
+		google.protobuf.Int32Value FormTypeId = 5;
+	}
+}
+
+message DocumentTypesResponse {
+	repeated DocumentTypeItem Items = 1;
+
+	message DocumentTypeItem {
+		int32 Id = 1;
+		string Name= 2;
+		string ShortName = 3;
+		string FileName = 4;
+		google.protobuf.Int32Value SalesArrangementTypeId = 5;
+		bool IsValid = 6;
+		google.protobuf.Int32Value EACodeMainId = 7;
+		bool IsFormIdRequested = 8;
+	}
+}
+
+message DrawingDurationsResponse {
+	repeated DrawingDurationItem Items = 1;
+
+	message DrawingDurationItem {
+		int32 Id = 1;
+		int32 DrawingDuration = 2;
+		bool IsValid = 3;
+		bool IsDefault = 4;
+	}
+}
+
+message DrawingTypesResponse {
+	repeated DrawingTypeItem Items = 1;
+
+	message DrawingTypeItem {
+		int32 Id = 1;
+		string Name = 2;
+		google.protobuf.Int32Value StarbuildId = 3;
+	}
+}
+
+message EaCodesMainResponse {
+	repeated EaCodesMainItem Items = 1;
+
+	message EaCodesMainItem {
+		int32 Id = 1;
+		string Name = 2;
+		string DescriptionForClient = 3;
+		string Category = 4;
+		string KindKb = 5;
+		bool IsVisibleForKb = 6;
+		bool IsInsertingAllowedNoby = 7;
+		bool IsValid = 8;
+		bool IsFormIdRequested = 9;
+	}
+}
+
+message EducationLevelsResponse {
+	repeated EducationLevelItem Items = 1;
+
+	message EducationLevelItem {
+		int32 Id = 1;
+		string Name = 2;
+		string RdmCode = 3;
+		int32 ScoringCode = 4;
+		string ShortName = 5;
+		bool IsValid = 6;
+	}
+}
+
+message FeesResponse {
+	repeated FeeItem Items = 1;
+
+	message FeeItem {
+		int32 Id = 1;
+		string IdKb = 2;
+		string ShortName = 3;
+		int32 Name = 4;
+		bool IsValid = 5;
+		google.protobuf.Int32Value MandantId = 6;
+	}
+}
+
+message FixedRatePeriodsResponse {
+	repeated FixedRatePeriodItem Items = 1;
+
+	message FixedRatePeriodItem {
+		int32 ProductTypeId = 1;
+		int32 FixedRatePeriod = 2;
+		google.protobuf.Int32Value MandantId = 3;
+		bool IsNewProduct = 4;
+		int32 InterestRateAlgorithm = 5;
+		bool IsValid = 6;
+	}
+}
+
+message FormTypesResponse {
+	repeated FormTypeItem Items = 1;
+
+	message FormTypeItem {
+		int32 Id = 1;
+		int32 Type = 2;
+		string Version = 3;
+		string Name = 4;
+		google.protobuf.Int32Value MandantId = 5;
+		bool IsValid = 6;
+	}
+}
+
+message GendersResponse {
+	repeated GenderItem Items = 1;
+
+	message GenderItem {
+		int32 Id = 1;
+		string Name = 2;
+		int32 KonsDBCode = 3;
+		string KbCmCode = 4;
+		string StarBuildJsonCode = 5;
+	}
+}
+
+message GetDeveloperRequest {
+	int32 DeveloperId = 1;
+}
+
+message GetDeveloperResponse {
+	repeated GetDeveloperItem Items = 1;
+
+	message GetDeveloperItem {
+		int32 Id = 1;
+		string Name = 2;
+		string Cin = 3;
+		google.protobuf.Int32Value StatusId = 4;
+		string StatusText = 5;
+		bool IsValid = 6;
+		bool BenefitPackage = 7;
+		bool IsBenefitValid = 8;
+		bool BenefitsBeyondPackage = 9;
+	}
+}
+
+message GetDeveloperProjectRequest {
+	int32 DeveloperId = 1;
+	int32 DeveloperProjectId = 2;
+}
+
+message GetDeveloperProjectResponse {
+	repeated GetDeveloperProjectItem Items = 1;
+
+	message GetDeveloperProjectItem {
+		int32 Id = 1;
+		string Name = 2;
+		string WarningForKb = 3;
+		string WarningForMp = 4;
+		google.protobuf.StringValue Web = 5;
+		google.protobuf.StringValue MassEvaluationText = 6;
+		google.protobuf.StringValue Recommandation = 7;
+		google.protobuf.StringValue Place = 8;
+		bool IsValid = 9;
+	}
+}
+
+message GetGeneralDocumentListResponse {
+	repeated GetGeneralDocumentListItem Items = 1;
+
+	message GetGeneralDocumentListItem {
+		int32 Id = 1;
+		string Name = 2;
+		string Filename = 3;
+		string Format = 4;
+	}
+}
+
+message GetOperatorRequest {
+	string PerformerLogin = 1;
+}
+
+message GetOperatorResponse {
+	repeated GetOperatorItem Items = 1;
+
+	message GetOperatorItem {
+		string PerformerLogin = 1;
+		string PerformerName = 2;
+	}
+}
+
+message HouseholdTypesResponse {
+	repeated HouseholdTypeItem Items = 1;
+
+	message HouseholdTypeItem {
+		int32 Id = 1;
+		string Name = 2;
+		string RdmCode = 3;
+		google.protobuf.Int32Value DocumentTypeId = 4;
+	}
+}
+
+message HousingConditionsResponse {
+	repeated HousingConditionItem Items = 1;
+
+	message HousingConditionItem {
+		int32 Id = 1;
+		string Name = 2;
+		string Code = 3;
+		string RdmCode = 4;
+		bool IsValid= 5;
+	}
+}
+
+message ChannelsResponse {
+	repeated ChannelItem Items = 1;
+
+	message ChannelItem {
+		int32 Id = 1;
+		string Name = 2;
+		string Code = 3;
+		google.protobuf.StringValue RdmCbChannelCode = 4;
+		bool IsValid= 5;
+		google.protobuf.Int32Value MandantId = 6;
+	}
+}
+
+message IdentificationDocumentTypesResponse {
+	repeated IdentificationDocumentTypeItem Items = 1;
+
+	message IdentificationDocumentTypeItem {
+		int32 Id = 1;
+		string Name = 2;
+		string ShortName = 3;
+		string RdmCode = 4;
+		bool IsDefault= 5;
+		google.protobuf.StringValue MpDigiApiCode = 6;
+	}
+}
+
+message IdentitySchemesResponse {
+	repeated IdentitySchemeItem Items = 1;
+
+	message IdentitySchemeItem {
+		int32 Id = 1;
+		string Name = 2;
+		string Code = 3;
+		string Category = 4;
+		google.protobuf.Int32Value MandantId = 5;
+		google.protobuf.Int32Value ChannelId = 6;
+	}
+}
+
+message IncomeMainTypesAMLResponse {
+	repeated IncomeMainTypesAMLItem Items = 1;
+
+	message IncomeMainTypesAMLItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   bool IsValid = 3;
+	   string RdmCode = 4;
+	}
+}
+
+message JobTypesResponse {
+	repeated JobTypeItem Items = 1;
+
+	message JobTypeItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   bool IsDefault = 3;
+	}
+}

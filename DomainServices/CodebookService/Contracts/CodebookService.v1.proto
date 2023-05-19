@@ -93,4 +93,183 @@ service CodebookService {
 		};
    }
 
+   rpc DocumentFileTypes (google.protobuf.Empty) returns (DocumentFileTypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/document-file-types"
+		};
+   }
+
+   rpc DocumentOnSATypes (google.protobuf.Empty) returns (DocumentOnSATypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/document-on-sa-types"
+		};
+   }
+
+   rpc DocumentTemplateTypes (google.protobuf.Empty) returns (DocumentTemplateTypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/document-template-types"
+		};
+   }
+
+   rpc DocumentTemplateVariants (google.protobuf.Empty) returns (DocumentTemplateVariantsResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/document-template-variants"
+		};
+   }
+
+   rpc DocumentTemplateVersions (google.protobuf.Empty) returns (DocumentTemplateVersionsResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/document-template-versions"
+		};
+   }
+
+   rpc DocumentTypes (google.protobuf.Empty) returns (DocumentTypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/document-types"
+		};
+   }
+
+   rpc DrawingDurations (google.protobuf.Empty) returns (DrawingDurationsResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/drawing-durations"
+		};
+   }
+
+   rpc DrawingTypes (google.protobuf.Empty) returns (DrawingTypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/drawing-types"
+		};
+   }
+
+   rpc EaCodesMain (google.protobuf.Empty) returns (EaCodesMainResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/ea-codes-main"
+		};
+   }
+
+   rpc EducationLevels (google.protobuf.Empty) returns (EducationLevelsResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/education-levels"
+		};
+   }
+
+   rpc EmploymentTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/employment-types"
+		};
+   }
+
+   rpc Fees (google.protobuf.Empty) returns (FeesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/fees"
+		};
+   }
+
+   rpc FixedRatePeriods (google.protobuf.Empty) returns (FixedRatePeriodsResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/fixed-rate-periods"
+		};
+   }
+
+   rpc FormTypes (google.protobuf.Empty) returns (FormTypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/form-types"
+		};
+   }
+
+   rpc Genders (google.protobuf.Empty) returns (GendersResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/genders"
+		};
+   }
+
+   rpc GetDeveloper (GetDeveloperRequest) returns (GetDeveloperResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/developer"
+		};
+   }
+
+   rpc GetDeveloperProject (GetDeveloperProjectRequest) returns (GetDeveloperProjectResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/developer"
+		};
+   }
+
+   rpc GetGeneralDocumentList (google.protobuf.Empty) returns (GetGeneralDocumentListResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/get-general-document-list"
+		};
+   }
+
+   rpc GetOperator (GetOperatorRequest) returns (GetOperatorResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/operator"
+		};
+   }
+
+   rpc HouseholdTypes (google.protobuf.Empty) returns (HouseholdTypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/household-types"
+		};
+   }
+
+   rpc HousingConditions (google.protobuf.Empty) returns (HousingConditionsResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/housing-conditions"
+		};
+   }
+
+   rpc Channels (google.protobuf.Empty) returns (ChannelsResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/channels"
+		};
+   }
+
+   rpc IdentificationDocumentTypes (google.protobuf.Empty) returns (IdentificationDocumentTypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/identification-document-types"
+		};
+   }
+
+   rpc IdentificationSubjectMethods (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/identification-subject-methods"
+		};
+   }
+
+   rpc IdentitySchemes (google.protobuf.Empty) returns (IdentitySchemesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/identity-schemes"
+		};
+   }
+
+   rpc IncomeForeignTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/income-foreign-types"
+		};
+   }
+
+   rpc IncomeMainTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/income-main-types"
+		};
+   }
+
+   rpc IncomeMainTypesAML (google.protobuf.Empty) returns (IncomeMainTypesAMLResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/income-main-types-aml"
+		};
+   }
+
+   rpc IncomeOtherTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/income-other-types"
+		};
+   }
+
+   rpc JobTypes (google.protobuf.Empty) returns (JobTypesResponse) {
+	   option (google.api.http) = {
+			get: "/api/v1/job-types"
+		};
+   }
 }

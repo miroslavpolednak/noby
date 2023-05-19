@@ -50,4 +50,81 @@ internal static class SqlQueries
         )s
         WHERE RATE > 0
         ORDER BY RATE DESC, NAZEV ASC";
+
+    public const string DocumentOnSATypes = "SELECT Id, Name, SalesArrangementTypeId, FormTypeId FROM [dbo].[DocumentOnSAType]";
+
+    public const string DocumentTemplateVariants = "SELECT Id, DocumentTemplateVersionId, DocumentVariant, Description FROM [dbo].[DocumentTemplateVariant] ORDER BY Id ASC";
+
+    public const string DocumentTemplateVersions = "SELECT Id, DocumentTypeId, DocumentVersion, FormTypeId, CASE WHEN SYSDATETIME() BETWEEN[ValidFrom] AND ISNULL([ValidTo], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [dbo].[DocumentTemplateVersion] ORDER BY Id ASC";
+
+    public const string DocumentTypes = "SELECT [Id], Id 'EnumValue', [ShortName],[Name],[FileName],[SalesArrangementTypeId],[EACodeMainId],[IsFormIdRequested],CASE WHEN SYSDATETIME() BETWEEN [ValidFrom] AND ISNULL([ValidTo], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [dbo].[DocumentTypes] ORDER BY [Id]";
+
+    public const string DrawingDurations = "SELECT KOD 'Id', LHUTA_K_CERPANI 'DrawingDuration', DEF 'IsDefault', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_LHUTA_K_CERPANI] ORDER BY KOD ASC";
+
+    public const string EaCodesMain1 = "SELECT KOD 'Id', POPIS 'Name', popis_klient 'DescriptionForClient', KATEGORIE 'Category', DRUH_KB 'KindKb', viditelnost_ps_kb_prodejni_sit_kb 'IsVisibleForKb', viditelnost_pro_vlozeni_noby 'IsInsertingAllowedNoby', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [dbo].[EA_CIS_EACODEMAIN] ORDER BY kod ASC";
+
+    public const string EaCodesMain2 = "SELECT EaCodesMainId, IsFormIdRequested FROM dbo.EaCodesMainExtension";
+
+    public const string EducationLevels = "SELECT KOD 'Id', TEXT 'Name', CODE_NAME 'ShortName', CODE 'RdmCode',  KOD_SCORING 'ScoringCode', CASE WHEN PLATNY_PRE_ES = 1 AND SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_VZDELANIE] WHERE MANDANT IN (0, 2) ORDER BY KOD ASC";
+
+    public const string EmploymentTypes = "SELECT Kod 'Id', CODE 'Code', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN PLATNOST_OD AND ISNULL(PLATNOST_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.CIS_PRACOVNY_POMER ORDER BY Kod";
+
+    public const string Fees = "SELECT POPLATEK_ID 'Id', POPLATEK_ID_KB 'IdKb', NULLIF(MANDANT, 0) 'MandantId', TEXT 'ShortName', TEXT_DOKUMENTACE 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_POPLATKY_UV_DEF] ORDER BY POPLATEK_ID ASC";
+
+    public const string FixedRatePeriods = "SELECT KOD_PRODUKTU 'ProductTypeId', PERIODA_FIXACE 'FixedRatePeriod', NULLIF(MANDANT, 0) 'MandantId', NOVY_PRODUKT 'IsNewProduct', ALGORITMUS_SAZBY 'InterestRateAlgorithm', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.CIS_PERIODY_FIXACE_V";
+
+    public const string FormTypes = "SELECT FORMULAR_ID 'Id', CISLO 'Type', VERZE 'Version', NAZEV 'Name', NULLIF(MANDANT, 0) 'MandantId', CASE WHEN SYSDATETIME() BETWEEN PLATNOST_OD AND ISNULL(PLATNOST_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_FORMULARE] ORDER BY FORMULAR_ID ASC";
+
+    public const string GetDeveloper = @"
+        SELECT DEVELOPER_ID 'Id', 
+            NAZEV 'Name', 
+            ICO_RC 'Cin', 
+            CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid',
+            PRIZNAK_OK 'StatusId', 
+            CASE WHEN PRIZNAK_OK=-1 THEN 'Probíhá prověřování' WHEN PRIZNAK_OK=0 THEN 'Zamítnutý' ELSE 'Schválený' END 'StatusText',
+            CAST(CASE WHEN BALICEK_BENEFITU=1 THEN 1 ELSE 0 END as bit) 'BenefitPackage',
+            CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_BENEFITU_OD] AND ISNULL([PLATNOST_BENEFITU_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsBenefitValid',
+            CAST(CASE WHEN BENEFITY_NAD_RAMEC_BALICKU IS NOT NULL THEN 1 ELSE 0 END as bit) 'BenefitsBeyondPackage'
+        FROM [SBR].[CIS_DEVELOPER]
+        WHERE DEVELOPER_ID=@DeveloperId";
+
+    public const string GetDeveloperProject = @"SELECT 
+	DEVELOPER_PROJEKT_ID 'Id', 
+	DEVELOPER_ID 'DeveloperId', 
+	PROJEKT 'Name', 
+	UPOZORNENI_PRO_KB 'WarningForKb', 
+	UPOZORNENI_PRO_MPSS 'WarningForMp', 
+	STRANKY_PROJEKTU 'Web', 
+	LOKALITA 'Place', 
+	CASE WHEN HROMADNE_OCENENI=-1 THEN 'Probíhá zpracování' WHEN HROMADNE_OCENENI=0 THEN 'NE' ELSE 'ANO' END 'MassEvaluationText', 
+	DOPORUCENI 'Recommandation', 
+	CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
+FROM [SBR].[CIS_DEVELOPER_PROJEKTY_SPV]
+WHERE DEVELOPER_PROJEKT_ID=@DeveloperProjectId AND DEVELOPER_ID=@DeveloperId";
+
+    public const string GetGeneralDocumentList = "SELECT Id, Name, Filename, Format FROM [dbo].[GeneralDocumentList] ORDER BY Id ASC";
+
+    public const string GetOperator = "SELECT MENO 'PerformerName', [LOGIN] 'PerformerLogin' FROM [SBR].[OPERATOR] WHERE DATUM_ZMENY IS NULL AND [LOGIN]=@PerformerLogin";
+
+    public const string HousingConditions = "SELECT KOD 'Id', TEXT 'Name', CODE 'Code', CODE 'RdmCode', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_FORMA_BYVANIA] ORDER BY KOD ASC";
+
+    public const string Channels1 = "SELECT KOD 'Id', TEXT 'Name', NULLIF(MANDANT, 0) 'MandantId', CODE 'Code', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_ALT_KANALY] ORDER BY KOD ASC";
+
+    public const string Channels2 = "SELECT ChannelId, RdmCbChannelCode FROM dbo.ChannelExtension";
+
+    public const string IdentificationDocumentTypes1 = "SELECT KOD 'Id', TEXT 'Name', TEXT_SKRATKA 'ShortName', CODE 'RdmCode', CAST(DEF as bit) 'IsDefault' FROM [SBR].[CIS_TYPY_DOKLADOV] ORDER BY KOD ASC";
+
+    public const string IdentificationDocumentTypes2 = "SELECT [IdentificationDocumentTypeId],[MpDigiApiCode] FROM [dbo].[IdentificationDocumentTypeExtension]";
+
+    public const string IncomeForeignTypes = "SELECT KOD 'Id', CODE 'Code', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_PRIJEM_ZO_ZAHRANICIA] ORDER BY KOD ASC";
+
+    public const string IncomeMainTypes = "SELECT KOD 'Id', CODE 'Code', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_ZDROJ_PRIJMU_HLAVNI] ORDER BY KOD ASC";
+
+    public const string IncomeMainTypesAML1 = "SELECT KOD 'Id', NAZEV 'Name', CAST(1 as bit) 'IsValid' FROM [SBR].[CIS_AML_ZDROJ_PRIJMU_HLAVNI] ORDER BY KOD ASC";
+
+    public const string IncomeMainTypesAML2 = "SELECT Id, RdmCode FROM dbo.IncomeMainTypesAMLExtension";
+
+    public const string IncomeOtherTypes = "SELECT KOD 'Id', CODE 'Code', TEXT_CZE 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_ZDROJ_PRIJMU_VEDLAJSI] ORDER BY KOD ASC";
+
+    public const string JobTypes = "SELECT KOD 'Id', TEXT 'Name', DEF 'IsDefault' FROM [SBR].[CIS_PRACOVNI_POZICE] ORDER BY KOD ASC";
 }

@@ -28,11 +28,31 @@ internal static class Helpers
         });
     }
 
+    public static List<TResponse> GetOrCreateCachedResponse<TResponse>(this IConnectionProvider connectionProvider, string sqlQuery, object param, ReadOnlySpan<char> method)
+        where TResponse : class, Google.Protobuf.IMessage
+    {
+        return FastMemoryCache.GetOrCreate(method.ToString(), () =>
+        {
+            using var connection = connectionProvider.Create();
+            connection.Open();
+            return connection.Query<TResponse>(sqlQuery, param).AsList();
+        });
+    }
+
     public static Task<TResponse> GetItems<TResponse, TItem>(this IConnectionProvider connectionProvider, TResponse response, ReadOnlySpan<char> sqlQuery, [CallerMemberName] string method = "")
         where TResponse : Contracts.IItemsResponse<TItem>
         where TItem : class, Google.Protobuf.IMessage
     {
         var items = connectionProvider.GetOrCreateCachedResponse<TItem>(sqlQuery.ToString(), method.AsSpan());
+        response.Items.Add(items);
+        return Task.FromResult(response);
+    }
+
+    public static Task<TResponse> GetItems<TResponse, TItem>(this IConnectionProvider connectionProvider, TResponse response, ReadOnlySpan<char> sqlQuery, object param, [CallerMemberName] string method = "")
+        where TResponse : Contracts.IItemsResponse<TItem>
+        where TItem : class, Google.Protobuf.IMessage
+    {
+        var items = connectionProvider.GetOrCreateCachedResponse<TItem>(sqlQuery.ToString(), param, method.AsSpan());
         response.Items.Add(items);
         return Task.FromResult(response);
     }
@@ -52,13 +72,20 @@ internal static class Helpers
         return Task.FromResult(response);
     }
 
+    public static Task<GenericCodebookWithCodeResponse> GetGenericItemsWithCode(this IConnectionProvider connectionProvider, ReadOnlySpan<char> sqlQuery, [CallerMemberName] string method = "")
+    {
+        GenericCodebookWithCodeResponse response = new();
+        response.Items.AddRange(connectionProvider.GetOrCreateCachedResponse<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>(sqlQuery.ToString(), method.AsSpan()));
+        return Task.FromResult(response);
+    }
+
     public static Task<GenericCodebookWithCodeResponse> GetGenericItemsWithCode<TEnum>()
         where TEnum : struct, Enum
     {
 #pragma warning disable CA1305 // Specify IFormatProvider
         var items = FastEnum.GetValues<TEnum>()
             .Where(t => Convert.ToInt32(t) > 0)
-            .Select(t => new Contracts.v1.GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem
+            .Select(t => new GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem
             {
                 Id = Convert.ToInt32(t),
                 Code = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.ShortName ?? t.ToString(),
@@ -69,6 +96,26 @@ internal static class Helpers
 #pragma warning restore CA1305 // Specify IFormatProvider
 
         GenericCodebookWithCodeResponse response = new();
+        response.Items.AddRange(items);
+        return Task.FromResult(response);
+    }
+
+    public static Task<GenericCodebookResponse> GetGenericItems<TEnum>()
+        where TEnum : struct, Enum
+    {
+#pragma warning disable CA1305 // Specify IFormatProvider
+        var items = FastEnum.GetValues<TEnum>()
+            .Where(t => Convert.ToInt32(t) > 0)
+            .Select(t => new GenericCodebookResponse.Types.GenericCodebookItem
+            {
+                Id = Convert.ToInt32(t),
+                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+                IsValid = true
+            })
+            .ToList()!;
+#pragma warning restore CA1305 // Specify IFormatProvider
+
+        GenericCodebookResponse response = new();
         response.Items.AddRange(items);
         return Task.FromResult(response);
     }
