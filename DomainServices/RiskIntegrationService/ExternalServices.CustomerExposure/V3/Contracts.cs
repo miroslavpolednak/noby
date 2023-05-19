@@ -44,7 +44,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
 
         [System.Text.Json.Serialization.JsonPropertyName("value")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         public decimal Value { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;

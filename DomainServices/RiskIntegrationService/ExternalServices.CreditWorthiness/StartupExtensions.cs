@@ -19,13 +19,13 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (CreditWorthiness.V1.ICreditWorthinessClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<CreditWorthiness.V1.ICreditWorthinessClient, CreditWorthiness.V1.MockCreditWorthinessClient>();
+            case (CreditWorthiness.V3.ICreditWorthinessClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<CreditWorthiness.V3.ICreditWorthinessClient, CreditWorthiness.V3.MockCreditWorthinessClient>();
                 break;
 
-            case (CreditWorthiness.V1.ICreditWorthinessClient.Version, ServiceImplementationTypes.Real):
+            case (CreditWorthiness.V3.ICreditWorthinessClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<CreditWorthiness.V1.ICreditWorthinessClient, CreditWorthiness.V1.RealCreditWorthinessClient>()
+                    .AddExternalServiceRestClient<CreditWorthiness.V3.ICreditWorthinessClient, CreditWorthiness.V3.RealCreditWorthinessClient>()
                     .AddExternalServicesKbHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
                     .AddBadRequestHandling();
@@ -41,7 +41,7 @@ public static class StartupExtensions
     static string getVersion<TClient>()
         => typeof(TClient) switch
         {
-            Type t when t.IsAssignableFrom(typeof(CreditWorthiness.V1.ICreditWorthinessClient)) => CreditWorthiness.V1.ICreditWorthinessClient.Version,
+            Type t when t.IsAssignableFrom(typeof(CreditWorthiness.V3.ICreditWorthinessClient)) => CreditWorthiness.V3.ICreditWorthinessClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
 
