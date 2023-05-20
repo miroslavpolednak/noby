@@ -1,10 +1,10 @@
 ﻿using CIS.Infrastructure.Logging;
-using DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+using DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 
 namespace DomainServices.RiskIntegrationService.Clients.Services.CustomersExposure.V2;
 
-internal sealed class CustomersExposureService
-    : Clients.CustomersExposure.V2.ICustomersExposureServiceClient
+internal sealed class CustomerExposureService
+    : Clients.CustomerExposure.V2.ICustomerExposureServiceClient
 {
     public async Task<CustomerExposureCalculateResponse> Calculate(CustomerExposureCalculateRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
@@ -13,7 +13,7 @@ internal sealed class CustomersExposureService
 
     private readonly ICustomerExposureService _service;
 
-    public CustomersExposureService(ICustomerExposureService service)
+    public CustomerExposureService(ICustomerExposureService service)
     {
         _service = service;
     }

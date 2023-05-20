@@ -40,7 +40,7 @@ public static class RiskIntegrationServiceExtensions
 
         services.register<__Contracts.CreditWorthiness.V2.ICreditWorthinessService, __Clients.CreditWorthiness.V2.ICreditWorthinessServiceClient, __Clients.Services.CreditWorthiness.V2.CreditWorthinessService>();
 
-        services.register<__Contracts.CustomersExposure.V2.ICustomerExposureService, __Clients.CustomersExposure.V2.ICustomersExposureServiceClient, __Clients.Services.CustomersExposure.V2.CustomersExposureService>();
+        services.register<__Contracts.CustomerExposure.V2.ICustomerExposureService, __Clients.CustomerExposure.V2.ICustomerExposureServiceClient, __Clients.Services.CustomersExposure.V2.CustomerExposureService>();
 
         services.register<__Contracts.LoanApplication.V2.ILoanApplicationService, __Clients.LoanApplication.V2.ILoanApplicationServiceClient, __Clients.Services.LoanApplication.V2.LoanApplicationService>();
 
