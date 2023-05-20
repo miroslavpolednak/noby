@@ -1,4 +1,4 @@
-﻿using DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+﻿using DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 
 namespace Console_RiskIntegrationService;
 
