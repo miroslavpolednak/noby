@@ -130,9 +130,88 @@ WHERE DEVELOPER_PROJEKT_ID=@DeveloperProjectId AND DEVELOPER_ID=@DeveloperId";
 
     public const string LoanKinds = "SELECT KOD 'Id', NULLIF(MANDANT, 0) 'MandantId', DRUH_UVERU_TEXT 'Name', CAST(DEFAULT_HODNOTA as bit) 'IsDefault', CASE WHEN SYSDATETIME() BETWEEN[DATUM_OD_ES] AND ISNULL([DATUM_DO_ES], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_DRUH_UVERU] ORDER BY KOD ASC";
 
-    public const string LoanPurposes = "SELECT KOD 'Id', TEXT 'Name', NULLIF(MANDANT, 0) 'MandantId', KOD_UVER 'ProductTypeId', PORADI 'Order', MAPOVANI_C4M 'C4mId', CASE WHEN SYSDATETIME() BETWEEN [DATUM_PLATNOSTI_OD] AND ISNULL([DATUM_PLATNOSTI_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.CIS_UCEL_UVERU_INT1 ORDER BY KOD";
+    public const string LoanPurposes = "SELECT CAST(KOD as int) 'Id', TEXT 'Name', CAST(NULLIF(MANDANT, 0) as int) 'MandantId', KOD_UVER 'ProductTypeId', CAST(PORADI as int) 'Order', CAST(MAPOVANI_C4M as int) 'C4mId', CAST(CASE WHEN SYSDATETIME() BETWEEN [DATUM_PLATNOSTI_OD] AND ISNULL([DATUM_PLATNOSTI_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM SBR.CIS_UCEL_UVERU_INT1 ORDER BY KOD";
 
     public const string MaritalStatuses1 = "SELECT KOD 'Id', TEXT 'Name', DEF 'IsDefault' FROM [SBR].[CIS_RODINNE_STAVY] ORDER BY KOD";
 
-    public const string MaritalStatuses2 = "SELECT * FROM MaritalStatusExtension";
+    public const string MaritalStatuses2 = "SELECT MaritalStatusId, RDMCode FROM MaritalStatusExtension";
+
+    public const string MarketingActions = "SELECT KOD_MA_AKCIE 'Id', TYP_AKCIE 'Code', NULLIF(MANDANT, 0) 'MandantId', NAZOV 'Name', POPIS 'Description', CAST(CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].[CIS_MA_AKCIE] ORDER BY KOD_MA_AKCIE ASC";
+
+    public const string Nationalities = "SELECT Id, NazevStatniPrislusnost 'Name', CAST(1 as bit) 'IsValid' FROM [cis].[Zeme] ORDER BY NazevStatniPrislusnost ASC";
+
+    public const string NetMonthEarnings1 = "SELECT KOD 'Id', NAZEV 'Name' FROM [SBR].[CIS_AML_IDENTIFIKACE_PRIJMU] ORDER BY KOD ASC";
+
+    public const string NetMonthEarnings2 = "SELECT NetMonthEarningId, RdmCode FROM dbo.NetMonthEarningsExtension";
+
+    public const string ObligationCorrectionTypes = "SELECT KOD 'Id', TEXT 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN PLATNOST_OD AND ISNULL(PLATNOST_DO, '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid', CODE 'Code' FROM SBR.CIS_KOREKCE_ZAVAZKU ORDER BY KOD";
+
+    public const string ObligationLaExposures = "SELECT KOD 'Id', CODE 'RdmCode', TEXT 'Name', DRUH_ZAVAZKU_KATEGORIE 'ObligationTypeId', CAST(CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].CIS_ZAVAZKY_LA_EXPOSURE ORDER BY KOD ASC";
+
+    public const string ObligationTypes1 = "SELECT KOD 'Id', CODE 'Code', TEXT 'Name', KOREKCE_ZAVAZKU 'ObligationCorrectionTypeId', PORADIE 'Order', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].CIS_DRUH_ZAVAZKU ORDER BY KOD ASC";
+
+    public const string ObligationTypes2 = "SELECT [ObligationTypeId], [ObligationProperty] FROM [dbo].[ObligationTypeExtension]";
+
+    public const string PaymentDays = "SELECT DEN_SPLACENI 'PaymentDay', DEN_ZAPOCTENI_SPLATKY 'PaymentAccountDay', NULLIF(MANDANT, 0) 'MandantId', DEF 'IsDefault', NABIZET_PORTAL 'ShowOnPortal' FROM [SBR].[CIS_DEN_SPLACENI] ORDER BY DEN_SPLACENI ASC";
+
+    public const string PostCodes = "SELECT TOP 20 PSC 'PostCode', TRIM(NAZEV) 'Name', KOD_KRAJA 'Disctrict', KOD_OBCE 'Municipality' FROM [SBR].[CIS_PSC] ORDER BY PSC ASC";
+
+    public const string ProductTypes1 = @"
+SELECT KOD_PRODUKTU 'Id', NAZOV_PRODUKTU 'Name', PORADIE_ZOBRAZENIA 'Order', MIN_VYSKA_UV 'LoanAmountMin', MAX_VYSKA_UV 'LoanAmountMax', MIN_SPLATNOST_V_ROKOCH 'LoanDurationMin', MAX_SPLATNOST_V_ROKOCH 'LoanDurationMax', MIN_VYSKA_LTV 'LtvMin', MAX_VYSKA_LTV 'LtvMax', DRUH_UV_POVOLENY 'MpHomeApiLoanType', CAST(CASE WHEN GETDATE() BETWEEN PLATNOST_OD_ES AND ISNULL(PLATNOST_DO_ES,'2099-01-01') THEN 1 ELSE 0 END as bit) 'IsValid', ID_PRODUKTU_PCP 'PcpProductId'
+FROM SBR.HTEDM_CIS_HYPOTEKY_PRODUKTY
+ORDER BY PORADIE_ZOBRAZENIA ASC";
+
+    public const string ProductTypes2 = "SELECT ProductTypeId, MpHomeApiLoanType, KonsDbLoanType, MandantId FROM dbo.ProductTypeExtension";
+
+    public const string ProfessionCategories = "SELECT ProfessionCategoryId, ProfessionTypeIds, IncomeMainTypeAMLIds FROM dbo.ProfessionCategoryExtension";
+
+    public const string ProfessionTypes = "SELECT KOD 'Id',  ID_CM 'RdmCode', NAZEV_CM 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_POVOLANI] ORDER BY KOD ASC";
+
+    public const string ProofTypes = "SELECT KOD 'Id', CODE 'Code', TEXT_CZE 'Name', TEXT_ENG 'NameEnglish', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_TYP_POTVRDENIE_PRIJMU] ORDER BY KOD ASC";
+
+    public const string PropertySettlements = "SELECT CAST(KOD as int) 'Id', TEXT_CZE 'Name', TEXT_ENG 'NameEnglish', ISNULL(ROD_STAV,'') 'MaritalStateId', CAST(PORADI as int) 'Order', CAST(CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].[CIS_VYPORADANI_MAJETKU] ORDER BY KOD ASC";
+
+    public const string RealEstatePurchaseTypes = "SELECT CAST(KOD as int) 'Id', POPIS 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid', DEF 'IsDefault', PORADI 'Order', CODE 'Code', NULLIF(MANDANT, 0) 'MandantId' FROM [SBR].[CIS_UCEL_PORIZENI_UV] ORDER BY PORADI ASC";
+
+    public const string RealEstateTypes = "SELECT CAST(KOD as int) 'Id', POPIS 'Name', NULLIF(MANDANT, 0) 'MandantId', CAST(CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid', DEF 'IsDefault', CAST(PORADI as int) 'Order' FROM [SBR].[CIS_TYPY_NEHNUTELNOSTI_UV] ORDER BY PORADI ASC";
+
+    public const string RelationshipCustomerProductTypes1 = "SELECT [ID_VZTAHU] 'Id', [POPIS_VZTAHU] 'Name' FROM [SBR].[VZTAH] ORDER BY [ID_VZTAHU] ASC";
+
+    public const string RelationshipCustomerProductTypes2 = "SELECT [RelationshipCustomerProductTypeId], [RdmCode], [MpDigiApiCode], [NameNoby] FROM [dbo].[RelationshipCustomerProductTypeExtension]";
+
+    public const string RiskApplicationTypes = "SELECT CAST(ID as int) 'Id', CAST(NULLIF(MANDANT, 0) as int) 'MandantId', UV_PRODUKT_ID 'ProductId', MA, CAST(DRUH_UVERU as int) 'LoanKindId', CAST(LTV_OD as int) 'LtvFrom', CAST(LTV_DO as int) 'LtvTo', CLUSTER_CODE 'C4mAplCode', C4M_APL_TYPE_ID 'C4mAplTypeId', C4M_APL_TYPE_NAZEV 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN [DATUM_OD] AND ISNULL([DATUM_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].CIS_APL_TYPE ORDER BY ID ASC";
+
+    public const string SalesArrangementTypes = "SELECT Id, Name, ProductTypeId, SalesArrangementCategory, Description FROM [dbo].[SalesArrangementType] ORDER BY Id";
+
+    public const string SmsNotificationTypes = "SELECT * FROM [dbo].[SmsNotificationType]";
+
+    public const string StatementFrequencies = "SELECT KOD 'Id', CODE 'FrequencyCode', FREQ 'FrequencyValue', SORT 'Order', [TEXT] 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid', DEF 'IsDefault' FROM [SBR].[CIS_HU_VYPIS_FREQ] ORDER BY SORT";
+
+    public const string StatementSubscriptionTypes = "SELECT KOD 'Id', CODE 'Code', [TEXT] 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid', DEF 'IsDefault' FROM [SBR].[CIS_HU_ZODB_VYPIS]";
+
+    public const string StatementTypes = "SELECT KOD 'Id', C_POPIS_R_CZ 'Name', C_POPIS_CZ 'ShortName', N_SORT_ORDER 'Order', CASE WHEN SYSDATETIME() BETWEEN[VALID_FROM] AND ISNULL([VALID_TO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_HU_TYP_VYPIS] ORDER BY KOD ASC";
+
+    public const string TinFormatsByCountry = "SELECT Id, CountryCode, RegularExpression, IsForFo, Tooltip, CASE WHEN SYSDATETIME() BETWEEN[ValidFrom] AND ISNULL([ValidTo], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [dbo].[TinFormatsByCountry]";
+
+    public const string TinNoFillReasonsByCountry = "SELECT Id, IsTinMandatory, ReasonForBlankTin, CASE WHEN SYSDATETIME() BETWEEN[ValidFrom] AND ISNULL([ValidTo], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [dbo].[TinNoFillReasonsByCountry]";
+
+    public const string WorkflowConsultationMatrixResponse1 = "SELECT CAST(KOD as int) 'Kod', [TEXT] 'Text' FROM SBR.HTEDM_CIS_WFL_CIS_HODNOTY WHERE ciselnik_id = 139";
+
+    public const string WorkflowConsultationMatrixResponse2 = "SELECT [TaskSubtypeId],[ProcessTypeId],[ProcessPhaseId],[IsConsultation] FROM [dbo].[WorkflowConsultationMatrix]";
+
+    public const string WorkflowTaskConsultationTypes = "SELECT KOD 'Id', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN DATUM_OD AND ISNULL(DATUM_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.HTEDM_CIS_WFL_CISELNIKY_HODNOTY WHERE CISELNIK_ID = 139 ORDER BY KOD";
+
+    public const string WorkflowTaskSigningResponseTypes = "SELECT KOD 'Id', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN DATUM_OD AND ISNULL(DATUM_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.HTEDM_CIS_WFL_CISELNIKY_HODNOTY WHERE CISELNIK_ID = 144 ORDER BY KOD";
+
+    public const string WorkflowTaskStates1 = "SELECT KOD 'Id', TEXT 'Name' FROM [SBR].[CIS_WFL_UKOLY_STAVY] ORDER BY KOD ASC";
+
+    public const string WorkflowTaskStates2 = "SELECT WorkflowTaskStateId, Flag FROM WorkflowTaskStateExtension";
+
+    public const string WorkflowTaskStatesNoby = "SELECT [Id],[Name],[Filter],[Indicator] FROM [dbo].[WorkflowTaskStatesNoby] ORDER BY [Id] ASC";
+
+    public const string WorkflowTaskTypes1 = "SELECT UKOL_TYP 'Id', UKOL_NAZOV 'Name' FROM [SBR].[CIS_WFL_UKOLY] ORDER BY UKOL_TYP ASC";
+
+    public const string WorkflowTaskTypes2 = "SELECT [WorkflowTaskTypeId], [CategoryId] FROM WorkflowTaskTypeExtension";
+
+    public const string WorkSectors = "SELECT KOD 'Id', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_PRACOVNI_SEKTOR] ORDER BY KOD ASC";
 }

@@ -4,7 +4,7 @@
 	  <TargetFramework>net7.0</TargetFramework>
 	  <Company>Wookiee.Apps s.r.o.</Company>
 	  <Product>Common Infrastructure Solution</Product>
-	  <LangVersion>preview</LangVersion>
+	  <Authors>Filip Tuma</Authors>
 	  <Nullable>enable</Nullable>
 	  <Platforms>AnyCPU;x64</Platforms>
 	  <ImplicitUsings>enable</ImplicitUsings>
@@ -25,6 +25,12 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
-		<ProjectReference Include="..\Contracts\DomainServices.CaseService.Contracts.csproj" />
+		<ProjectReference Include="..\Contracts\DomainServices.CodebookService.Contracts.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ClientsGenerator\DomainServices.CodebookService.ClientsGenerator.csproj"
+						  OutputItemType="Analyzer"
+						  ReferenceOutputAssembly="false" />
 	</ItemGroup>
 </Project>

@@ -16,17 +16,6 @@ message BankCodesResponse {
 	}
 }
 
-message CaseStatesResponse {
-	repeated CaseStateItem Items = 1;
-
-	message CaseStateItem {
-		int32 Id = 1;
-		string Name = 2;
-		string Code = 3;
-		bool IsDefault = 4;
-	}
-}
-
 message CollateralTypesResponse {
 	repeated CollateralTypeItem Items = 1;
 
@@ -45,8 +34,8 @@ message ContactTypesResponse {
 	message ContactTypeItem {
 		int32 Id = 1;
 		string Name = 2;
-		string MpDigiApiCode = 3;
-		bool IsValid = 4;
+		bool IsValid = 3;
+		google.protobuf.StringValue MpDigiApiCode = 4;
 		google.protobuf.Int32Value MandantId = 5;
 	}
 }
@@ -248,7 +237,7 @@ message FeesResponse {
 		int32 Id = 1;
 		string IdKb = 2;
 		string ShortName = 3;
-		int32 Name = 4;
+		string Name = 4;
 		bool IsValid = 5;
 		google.protobuf.Int32Value MandantId = 6;
 	}
@@ -411,32 +400,11 @@ message IdentitySchemesResponse {
 
 	message IdentitySchemeItem {
 		int32 Id = 1;
-		string Name = 2;
+		google.protobuf.StringValue Name = 2;
 		string Code = 3;
 		string Category = 4;
 		google.protobuf.Int32Value MandantId = 5;
 		google.protobuf.Int32Value ChannelId = 6;
-	}
-}
-
-message IncomeMainTypesAMLResponse {
-	repeated IncomeMainTypesAMLItem Items = 1;
-
-	message IncomeMainTypesAMLItem {
-	   int32 Id = 1;
-	   string Name = 2;
-	   bool IsValid = 3;
-	   string RdmCode = 4;
-	}
-}
-
-message JobTypesResponse {
-	repeated JobTypeItem Items = 1;
-
-	message JobTypeItem {
-	   int32 Id = 1;
-	   string Name = 2;
-	   bool IsDefault = 3;
 	}
 }
 
@@ -451,18 +419,6 @@ message LegalCapacityRestrictionTypesResponse {
 	}
 }
 
-message LoanKindsResponse {
-	repeated LoanKindItem Items = 1;
-
-	message LoanKindItem {
-	   int32 Id = 1;
-	   string Name = 2;
-	   bool IsDefault = 3;
-	   bool IsValid = 4;
-	   google.protobuf.Int32Value MandantId = 5;
-	}
-}
-
 message LoanPurposesResponse {
 	repeated LoanPurposeItem Items = 1;
 
@@ -470,7 +426,7 @@ message LoanPurposesResponse {
 	   int32 Id = 1;
 	   string Name = 2;
 	   google.protobuf.Int32Value MandantId = 3;
-	   int32 Order = 4;
+	   google.protobuf.Int32Value Order = 4;
 	   google.protobuf.Int32Value C4mId = 5;
 	   bool IsValid = 6;
 	   repeated int32 ProductTypeIds = 7;
@@ -483,7 +439,306 @@ message MaritalStatusesResponse {
 	message MaritalStatuseItem {
 	   int32 Id = 1;
 	   string Name = 2;
-	   string RdmMaritalStatusCode = 3;
+	   google.protobuf.StringValue RdmMaritalStatusCode = 3;
 	   bool IsDefault = 4;
+	}
+}
+
+message MarketingActionsResponse {
+	repeated MarketingActionItem Items = 1;
+
+	message MarketingActionItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   string Code = 3;
+	   string Description = 4;
+	   bool IsValid = 5;
+	   google.protobuf.Int32Value MandantId = 6;
+	}
+}
+
+message ObligationLaExposuresResponse {
+	repeated ObligationLaExposureItem Items = 1;
+
+	message ObligationLaExposureItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   string RdmCode = 3;
+	   int32 ObligationTypeId = 4;
+	   bool IsValid = 5;
+	}
+}
+
+message ObligationTypesResponse {
+	repeated ObligationTypeItem Items = 1;
+
+	message ObligationTypeItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   string Code = 3;
+	   bool IsValid = 4;
+	   int32 Order = 5;
+	   google.protobuf.StringValue ObligationProperty = 6;
+	}
+}
+
+message PaymentDaysResponse {
+	repeated PaymentDayItem Items = 1;
+
+	message PaymentDayItem {
+	   int32 PaymentDay = 1;
+	   int32 PaymentAccountDay = 2;
+	   google.protobuf.Int32Value MandantId = 3;
+	   bool IsDefault = 4;
+	   bool ShowOnPortal = 5;
+	}
+}
+
+message PostCodesResponse {
+	repeated PostCodeItem Items = 1;
+
+	message PostCodeItem {
+	   string PostCode = 1;
+	   string Name = 2;
+	   int32 Disctrict = 3;
+	   int32 Municipality = 4;
+	}
+}
+
+message ProductTypesResponse {
+	repeated ProductTypeItem Items = 1;
+
+	message ProductTypeItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   google.protobuf.Int32Value MandantId = 3;
+	   bool IsValid = 4;
+	   int32 Order = 5;
+	   google.protobuf.Int32Value LoanAmountMin = 6;
+	   google.protobuf.Int32Value LoanAmountMax = 7;
+	   google.protobuf.Int32Value LoanDurationMin = 8;
+	   google.protobuf.Int32Value LoanDurationMax = 9;
+	   google.protobuf.Int32Value LtvMin = 10;
+	   google.protobuf.Int32Value LtvMax = 11;
+	   google.protobuf.StringValue MpHomeApiLoanType = 12;
+	   google.protobuf.Int32Value KonsDbLoanType = 13;
+	   google.protobuf.StringValue PcpProductId = 14;
+	   repeated int32 LoanKindIds = 15;
+	}
+}
+
+message ProfessionCategoriesResponse {
+	repeated ProfessionCategoryItem Items = 1;
+
+	message ProfessionCategoryItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   bool IsValid = 3;
+	   repeated int32 ProfessionTypeIds = 4;
+	   repeated int32 IncomeMainTypeAMLIds = 5;
+	}
+}
+
+message ProofTypesResponse {
+	repeated ProofTypeItem Items = 1;
+
+	message ProofTypeItem {
+	   int32 Id = 1;
+	   string Code = 2;
+	   string Name = 3;
+	   string NameEnglish = 4;
+	   bool IsValid = 5;
+	}
+}
+
+message PropertySettlementsResponse {
+	repeated PropertySettlementItem Items = 1;
+
+	message PropertySettlementItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   string NameEnglish = 3;
+	   bool IsValid = 4;
+	   google.protobuf.Int32Value Order = 5;
+	   repeated int32 MaritalStateIds = 6;
+	}
+}
+
+message RelationshipCustomerProductTypesResponse {
+	repeated RelationshipCustomerProductTypeItem Items = 1;
+
+	message RelationshipCustomerProductTypeItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   google.protobuf.StringValue RdmCode = 3;
+	   google.protobuf.StringValue MpDigiApiCode = 4;
+	   google.protobuf.StringValue NameNoby = 5;
+	}
+}
+
+message RiskApplicationTypesResponse {
+	repeated RiskApplicationTypeItem Items = 1;
+
+	message RiskApplicationTypeItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   google.protobuf.Int32Value MandantId = 3;
+	   google.protobuf.Int32Value LoanKindId = 4;
+	   google.protobuf.Int32Value LtvFrom = 5;
+	   google.protobuf.Int32Value LtvTo = 6;
+	   google.protobuf.StringValue C4mAplCode = 7;
+	   google.protobuf.StringValue C4mAplTypeId = 8;
+	   bool IsValid = 9;
+	   repeated int32 ProductTypeId = 10;
+	   repeated int32 MarketingActions = 11;
+	}
+}
+
+message SalesArrangementStatesResponse {
+	repeated SalesArrangementStateItem Items = 1;
+
+	message SalesArrangementStateItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   google.protobuf.Int32Value StarbuildId = 3;
+	   bool IsDefault = 4;
+	}
+}
+
+message SalesArrangementTypesResponse {
+	repeated SalesArrangementTypeItem Items = 1;
+
+	message SalesArrangementTypeItem {
+	   int32 Id = 1;
+	   string Name = 2;
+	   google.protobuf.Int32Value ProductTypeId = 3;
+	   int32 SalesArrangementCategory = 4;
+	   string Description = 5;
+	}
+}
+
+message SigningMethodsForNaturalPersonResponse {
+	repeated SigningMethodsForNaturalPersonItem Items = 1;
+
+	message SigningMethodsForNaturalPersonItem {
+	   string Code = 1;
+	   int32 Order = 2;
+	   string Name = 3;
+	   google.protobuf.StringValue Description = 4;
+	   bool IsValid = 5;
+	   int32 StarbuildEnumId = 6;
+	}
+}
+
+message SmsNotificationTypesResponse {
+	repeated SmsNotificationTypeItem Items = 1;
+
+	message SmsNotificationTypeItem {
+	   string Code = 1;
+	   google.protobuf.StringValue Description = 2;
+	   google.protobuf.StringValue SmsText = 3;
+	   string McsCode = 4;
+	   bool IsAuditLogEnabled = 5;
+	}
+}
+
+message StatementFrequenciesResponse {
+	repeated StatementFrequencyItem Items = 1;
+
+	message StatementFrequencyItem {
+		int32 Id = 1;
+		string FrequencyCode = 2;
+		int32 FrequencyValue = 3;
+		int32 Order = 4;
+		string Name = 5;
+		bool IsValid = 6;
+		bool IsDefault = 7;
+	}
+}
+
+message StatementTypesResponse {
+	repeated StatementTypeItem Items = 1;
+
+	message StatementTypeItem {
+		int32 Id = 1;
+		string Name = 2;
+		string ShortName = 3;
+		int32 Order = 4;
+		bool IsValid = 5;
+	}
+}
+
+message TinFormatsByCountryResponse {
+	repeated TinFormatsByCountryItem Items = 1;
+
+	message TinFormatsByCountryItem {
+		int32 Id = 1;
+		string CountryCode = 2;
+		string RegularExpression = 3;
+		bool IsForFo = 4;
+		google.protobuf.StringValue Tooltip = 5;
+		bool IsValid = 6;
+	}
+}
+
+message TinNoFillReasonsByCountryResponse {
+	repeated TinNoFillReasonsByCountryItem Items = 1;
+
+	message TinNoFillReasonsByCountryItem {
+		string Id = 1;
+		bool IsTinMandatory = 2;
+		string ReasonForBlankTin = 3;
+		bool IsValid = 4;
+	}
+}
+
+message WorkflowConsultationMatrixResponse {
+	repeated WorkflowConsultationMatrixItem Items = 1;
+
+	message WorkflowConsultationMatrixItem {
+		int32 TaskSubtypeId = 1;
+		string TaskSubtypeName = 2;
+		repeated WorkflowConsultationMatrixItemValidity IsValidFor = 3;
+
+		message WorkflowConsultationMatrixItemValidity {
+			int32 ProcessTypeId = 1;
+			int32 ProcessPhaseId = 2;
+		}
+	}
+}
+
+message WorkflowTaskStatesResponse {
+	repeated WorkflowTaskStatesItem Items = 1;
+
+	message WorkflowTaskStatesItem {
+		int32 Id = 1;
+		string Name = 2;
+		EWorkflowTaskStateFlag Flag = 3;
+
+		enum EWorkflowTaskStateFlag {
+			None = 0;
+			Inactive = 1;
+		}
+	}
+}
+
+message WorkflowTaskStatesNobyResponse {
+	repeated WorkflowTaskStatesNobyItem Items = 1;
+
+	message WorkflowTaskStatesNobyItem {
+		int32 Id = 1;
+		string Name = 2;
+		string Filter = 3;
+		string Indicator = 4;
+	}
+}
+
+message WorkflowTaskTypesResponse {
+	repeated WorkflowTaskTypesItem Items = 1;
+
+	message WorkflowTaskTypesItem {
+		int32 Id = 1;
+		string Name = 2;
+		google.protobuf.Int32Value CategoryId = 3;
 	}
 }
