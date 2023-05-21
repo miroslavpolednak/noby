@@ -165,11 +165,11 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         return new Contact
         {
             IsPrimary = true,
-            IsConfirmed = emailAddress.IsConfirmed,
             ContactTypeId = (int)ContactTypes.Email,
             Email = new EmailAddressItem
             {
-                EmailAddress = emailAddress.EmailAddress
+                EmailAddress = emailAddress.EmailAddress,
+                IsEmailConfirmed = emailAddress.IsConfirmed
             }
         };
     }
@@ -179,12 +179,12 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         return new Contact
         {
             IsPrimary = true,
-            IsConfirmed = phoneNumber.IsConfirmed,
             ContactTypeId = (int)ContactTypes.Mobil,
             Mobile = new MobilePhoneItem
             {
                 PhoneIDC = phoneNumber.PhoneIDC,
                 PhoneNumber = phoneNumber.PhoneNumber,
+                IsPhoneConfirmed = phoneNumber.IsConfirmed
             }
         };
     }

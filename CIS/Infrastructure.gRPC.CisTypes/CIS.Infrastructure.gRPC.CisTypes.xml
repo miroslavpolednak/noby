@@ -54,6 +54,12 @@
         <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.AddressPointIdFieldNumber">
             <summary>Field number for the "AddressPointId" field.</summary>
         </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.SingleLineAddressPointFieldNumber">
+            <summary>Field number for the "SingleLineAddressPoint" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.IsAddressConfirmedFieldNumber">
+            <summary>Field number for the "IsAddressConfirmed" field.</summary>
+        </member>
         <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDate.YearFieldNumber">
             <summary>Field number for the "year" field.</summary>
         </member>

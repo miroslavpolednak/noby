@@ -18,7 +18,7 @@ internal static class CustomerContactExtensions
             model.EmailAddress = new() 
             { 
                 EmailAddress = email.Email.EmailAddress,
-                IsConfirmed = email.IsConfirmed
+                IsConfirmed = email.Email.IsEmailConfirmed
             };
         }
 
@@ -29,7 +29,7 @@ internal static class CustomerContactExtensions
             {
                 PhoneNumber = phone.Mobile.PhoneNumber,
                 PhoneIDC = phone.Mobile.PhoneIDC,
-                IsConfirmed = phone.IsConfirmed
+                IsConfirmed = phone.Mobile.IsPhoneConfirmed
             };
         }
 

@@ -52,6 +52,8 @@ internal class ProductFormData : AggregatedData
 
     public IEnumerable<ResultFee> OfferFees => Offer.AdditionalSimulationResults.Fees.Where(f => f.UsageText.Contains('F', StringComparison.InvariantCultureIgnoreCase));
 
+    public string? ContractSegment => HouseholdData.Customers.Where(c => c.NaturalPerson.Segment is "PB" or "PC").Select(_ => "PRIV").FirstOrDefault();
+
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
         DefaultValues3601 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3601, _codebookManager.DocumentTypes);

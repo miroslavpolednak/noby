@@ -69,6 +69,16 @@ public class Address
     /// </summary>
     public string? AddressPointId { get; set; }
 
+    /// <summary>
+    /// Adresa v řádkovém formátu
+    /// </summary>
+    public string? SingleLineAddressPoint { get; init; }
+
+    /// <summary>
+    /// Zda je adresa ověřená jako kontaktní adresa
+    /// </summary>
+    public bool? IsAddressConfirmed { get; set; }
+
     public override bool Equals(object? obj)
     {
         var address2 = obj as Address;

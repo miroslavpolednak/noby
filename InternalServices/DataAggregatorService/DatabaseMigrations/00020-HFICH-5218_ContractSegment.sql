@@ -1,0 +1,1 @@
+INSERT INTO EasFormSpecialDataField VALUES (2, 'segment_smlouvy', 1, 2, 'ContractSegment')

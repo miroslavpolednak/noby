@@ -2,24 +2,25 @@
 package DomainServices.CustomerService;
 option csharp_namespace = "DomainServices.CustomerService.Contracts";
 
-import "google/protobuf/wrappers.proto";
-
 message Contact {
 	bool IsPrimary = 1;	
 	int32 ContactTypeId = 2;
-	bool IsConfirmed = 3;
 
 	oneof Data  {
-		MobilePhoneItem Mobile = 20;
-		EmailAddressItem Email = 21;
+		MobilePhoneItem Mobile = 3;
+		EmailAddressItem Email = 4;
 	}
 } 
 
 message MobilePhoneItem {
 	string PhoneNumber = 1;
 	string PhoneIDC = 2;
+
+	bool IsPhoneConfirmed = 3;
 }
 
 message EmailAddressItem {
 	string EmailAddress = 1;
+
+	bool IsEmailConfirmed = 2;
 }

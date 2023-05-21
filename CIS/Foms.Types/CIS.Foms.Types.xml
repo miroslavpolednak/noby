@@ -74,6 +74,16 @@
             Id adresního bodu
             </summary>
         </member>
+        <member name="P:CIS.Foms.Types.Address.SingleLineAddressPoint">
+            <summary>
+            Adresa v řádkovém formátu
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.Address.IsAddressConfirmed">
+            <summary>
+            Zda je adresa ověřená jako kontaktní adresa
+            </summary>
+        </member>
         <member name="T:CIS.Foms.Types.CustomerIdentity">
             <summary>
             Identita klienta
