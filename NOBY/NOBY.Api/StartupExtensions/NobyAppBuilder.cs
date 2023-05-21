@@ -109,7 +109,7 @@ internal static class NobyAppBuilder
                     .RequireAuthorization()
                     .Produces(302)
                     .WithTags("Users")
-                    .WithName("logoutUserGet")
+                    .WithName("signoutUserGet")
                     .WithOpenApi(generatedOperation =>
                     {
                         generatedOperation.Summary = "Odhlášení přihlášeného uživatele";
