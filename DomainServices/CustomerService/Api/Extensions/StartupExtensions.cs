@@ -21,7 +21,7 @@ internal static class StartupExtensions
         
         builder.Services.AddDapper(builder.Configuration.GetConnectionString("KonsDb")!);
 
-        builder.AddExternalService<ExternalServices.CustomerManagement.V1.ICustomerManagementClient>();
+        builder.AddExternalService<ExternalServices.CustomerManagement.V2.ICustomerManagementClient>();
         builder.AddExternalService<ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient>();
         builder.AddExternalService<ExternalServices.CustomerProfile.V1.ICustomerProfileClient>();
         builder.AddExternalService<ExternalServices.Kyc.V1.IKycClient>();
