@@ -11,7 +11,7 @@ namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 [ScopedService, SelfService]
 internal sealed class IdentifiedSubjectService
 {
-    private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
+    private readonly ExternalServices.CustomerManagement.V2.ICustomerManagementClient _customerManagement;
     private readonly ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient _identifiedSubjectClient;
     private readonly ICodebookServiceClients _codebook;
     private readonly CustomerManagementErrorMap _errorMap;
@@ -23,7 +23,7 @@ internal sealed class IdentifiedSubjectService
     private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
     private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public IdentifiedSubjectService(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
+    public IdentifiedSubjectService(ExternalServices.CustomerManagement.V2.ICustomerManagementClient customerManagement, ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
     {
         _customerManagement = customerManagement;
         _identifiedSubjectClient = identifiedSubjectClient;

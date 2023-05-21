@@ -1,20 +1,20 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
-using __CM = DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
+using CM = DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
 internal sealed class CustomerManagementSearchProvider
 {
-    private readonly __CM.ICustomerManagementClient _customerManagement;
+    private readonly CM.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClients _codebook;
 
     private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
     private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
     private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public CustomerManagementSearchProvider(__CM.ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
+    public CustomerManagementSearchProvider(CM.ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;
@@ -81,7 +81,7 @@ internal sealed class CustomerManagementSearchProvider
         return cmRequest;
     }
 
-    private NaturalPersonBasicInfo CreateNaturalPerson(__CM.Contracts.NaturalPersonAttributesSearch customer)
+    private NaturalPersonBasicInfo CreateNaturalPerson(CM.Contracts.NaturalPersonAttributesSearch customer)
     {
         return new NaturalPersonBasicInfo
         {
@@ -93,7 +93,7 @@ internal sealed class CustomerManagementSearchProvider
         };
     }
 
-    private IdentificationDocument? CreateIdentificationDocument(__CM.Contracts.IdentificationDocument? document)
+    private IdentificationDocument? CreateIdentificationDocument(CM.Contracts.IdentificationDocument? document)
     {
         if (document is null)
             return null;
@@ -110,7 +110,7 @@ internal sealed class CustomerManagementSearchProvider
         };
     }
 
-    private void FillAddressData(SearchCustomersItem result, __CM.Contracts.AddressLinePoint? address)
+    private void FillAddressData(SearchCustomersItem result, CM.Contracts.AddressLinePoint? address)
     {
         if (address is null)
             return;
