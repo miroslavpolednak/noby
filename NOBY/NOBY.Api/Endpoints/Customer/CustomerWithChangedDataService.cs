@@ -109,7 +109,7 @@ internal sealed class CustomerWithChangedDataService
         if (!string.IsNullOrEmpty(phone?.Mobile?.PhoneNumber))
         {
             var newPhone = (TPhone)Activator.CreateInstance(typeof(TPhone))!;
-            newPhone.IsConfirmed = phone.IsConfirmed;
+            newPhone.IsConfirmed = phone.Mobile.IsPhoneConfirmed;
             newPhone.PhoneNumber = phone.Mobile.PhoneNumber;
             newPhone.PhoneIDC = phone.Mobile.PhoneIDC;
             return newPhone;
@@ -125,7 +125,7 @@ internal sealed class CustomerWithChangedDataService
         if (!string.IsNullOrEmpty(email?.Email?.EmailAddress))
         {
             var newEmail = (TEmail)Activator.CreateInstance(typeof(TEmail))!;
-            newEmail.IsConfirmed = email.IsConfirmed;
+            newEmail.IsConfirmed = email.Email.IsEmailConfirmed;
             newEmail.EmailAddress = email.Email.EmailAddress;
             return newEmail;
         }

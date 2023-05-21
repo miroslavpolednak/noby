@@ -33,8 +33,11 @@ internal static class CreateCustomerExtensions
             model.Contacts.Add(new _Cust.Contact
             {
                 ContactTypeId = (int)ContactTypes.Email,
-                Email = new _Cust.EmailAddressItem { EmailAddress = request.Contacts.EmailAddress.EmailAddress },
-                IsConfirmed = request.Contacts.EmailAddress.IsConfirmed
+                Email = new _Cust.EmailAddressItem
+                {
+                    EmailAddress = request.Contacts.EmailAddress.EmailAddress,
+                    IsEmailConfirmed = request.Contacts.EmailAddress.IsConfirmed
+                }
             });
         }
         if (!string.IsNullOrEmpty(request.Contacts?.MobilePhone?.PhoneNumber))
@@ -45,9 +48,9 @@ internal static class CreateCustomerExtensions
                 Mobile = new _Cust.MobilePhoneItem
                 {
                     PhoneIDC = request.Contacts.MobilePhone.PhoneIDC ?? "",
-                    PhoneNumber = request.Contacts.MobilePhone.PhoneNumber
-                },
-                IsConfirmed = request.Contacts.MobilePhone.IsConfirmed
+                    PhoneNumber = request.Contacts.MobilePhone.PhoneNumber,
+                    IsPhoneConfirmed = request.Contacts.MobilePhone.IsConfirmed
+                }
             });
         }
 

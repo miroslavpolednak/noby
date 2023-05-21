@@ -59,9 +59,9 @@ internal sealed class CustomerManagementDetailProvider
             CustomerIdentification = CreateCustomerIdentification(customer.CustomerIdentification)
         };
 
-        AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.ComponentAddressPoint);
-        AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.ComponentAddressPoint);
-        AddAddress(AddressTypes.Other, response.Addresses.Add, customer.TemporaryStay?.ComponentAddressPoint);
+        AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.ComponentAddressPoint, customer.PrimaryAddress?.SingleLineAddressPoint, null);
+        AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.ComponentAddressPoint, customer.ContactAddress?.SingleLineAddressPoint, customer.ContactAddress?.Confirmed);
+        AddAddress(AddressTypes.Other, response.Addresses.Add, customer.TemporaryStay?.ComponentAddressPoint, customer.TemporaryStay?.SingleLineAddressPoint, null);
 
         AddContacts(customer, response.Contacts.Add);
 
@@ -175,7 +175,7 @@ internal sealed class CustomerManagementDetailProvider
         };
     }
 
-    private void AddAddress(AddressTypes addressType, Action<GrpcAddress> onAddAddress, CM.Contracts.ComponentAddressPoint? componentAddress)
+    private void AddAddress(AddressTypes addressType, Action<GrpcAddress> onAddAddress, CM.Contracts.ComponentAddressPoint? componentAddress, CM.Contracts.SingleLineAddressPoint? singleLineAddress, bool? isConfirmed)
     {
         if (componentAddress is null)
             return;
@@ -195,7 +195,9 @@ internal sealed class CustomerManagementDetailProvider
             CityDistrict = componentAddress.CityDistrict ?? string.Empty,
             PragueDistrict = componentAddress.PragueDistrict ?? string.Empty,
             CountrySubdivision = componentAddress.CountrySubdivision ?? string.Empty,
-            AddressPointId = componentAddress.AddressPointId ?? string.Empty
+            AddressPointId = componentAddress.AddressPointId ?? string.Empty,
+            SingleLineAddressPoint = singleLineAddress?.Address,
+            IsAddressConfirmed = isConfirmed
         });
     }
 
@@ -203,31 +205,35 @@ internal sealed class CustomerManagementDetailProvider
     {
         if (customer.PrimaryPhone is not null)
         {
-            var noIndex = (customer.PrimaryPhone.PhoneNumber ?? "").IndexOf(' ');
-            var model = new Contact
+            var phone = new Contact
             {
                 ContactTypeId = (int)ContactTypes.Mobil,
                 IsPrimary = true,
-                IsConfirmed = customer.PrimaryPhone.Confirmed
+                Mobile = new MobilePhoneItem
+                {
+                    PhoneIDC = customer.PrimaryPhone.ComponentPhone.PhoneIDC,
+                    PhoneNumber = customer.PrimaryPhone.ComponentPhone.PhoneNumber,
+                    IsPhoneConfirmed = customer.PrimaryPhone.Confirmed
+                }
             };
 
-            if (noIndex <= 0)
-                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber };
-            else
-                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber![(noIndex + 1)..], PhoneIDC = customer.PrimaryPhone.PhoneNumber![..noIndex] };
-
-            onAddContact(model);
+            onAddContact(phone);
         }
 
         if (customer.PrimaryEmail is not null)
         {
-            onAddContact(new Contact
+            var email = new Contact
             {
                 ContactTypeId = (int)ContactTypes.Email,
-                Email = new EmailAddressItem { EmailAddress = customer.PrimaryEmail.EmailAddress },
                 IsPrimary = true,
-                IsConfirmed = customer.PrimaryEmail.Confirmed
-            });
+                Email = new EmailAddressItem
+                {
+                    EmailAddress = customer.PrimaryEmail.EmailAddress,
+                    IsEmailConfirmed = customer.PrimaryEmail.Confirmed
+                },
+            };
+
+            onAddContact(email);
         }
     }
 }
