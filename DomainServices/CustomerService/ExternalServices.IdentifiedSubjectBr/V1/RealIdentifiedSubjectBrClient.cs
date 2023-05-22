@@ -3,6 +3,9 @@ using CIS.Core.Exceptions;
 using CIS.Infrastructure.ExternalServicesHelpers;
 using DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Dto;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
+using Newtonsoft.Json.Schema.Generation;
 
 namespace DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1;
 
@@ -23,14 +26,43 @@ internal sealed class RealIdentifiedSubjectBrClient : IIdentifiedSubjectBrClient
         if (response.IsSuccessStatusCode)
             return new IdentifiedSubjectResult<CreateIdentifiedSubjectResponse>
             {
-                Result = await ParseResponse<CreateIdentifiedSubjectResponse>(response, cancellationToken)
+                Result = await response.Content.ReadFromJsonAsync<CreateIdentifiedSubjectResponse>(cancellationToken: cancellationToken)
+                         ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(CreateIdentifiedSubject), nameof(CreateIdentifiedSubjectResponse))
             };
 
         if (response.StatusCode == HttpStatusCode.BadRequest)
-            return new IdentifiedSubjectResult<CreateIdentifiedSubjectResponse>
+        {
+            var schemaGenerator = new JSchemaGenerator();
+
+            var errorSchema = schemaGenerator.Generate(typeof(IdentifiedSubjectError));
+
+            var jsonResponse = await response.Content.ReadAsStringAsync(cancellationToken);
+
+            var errorObject = JObject.Parse(jsonResponse);
+
+            //Error is business validation
+            if (errorObject.IsValid(errorSchema))
             {
-                Error = await ParseResponse<IdentifiedSubjectError>(response, cancellationToken)
-            };
+                return new IdentifiedSubjectResult<CreateIdentifiedSubjectResponse>
+                {
+                    Error = errorObject.ToObject<IdentifiedSubjectError>()
+                };
+            }
+
+            var validationErrorSchema = schemaGenerator.Generate(typeof(IdentifiedSubjectValidationError));
+
+            var validationErrorObject = JObject.Parse(jsonResponse);
+
+            //Error is technical validation
+            if (validationErrorObject.IsValid(validationErrorSchema))
+            {
+                var validationError = validationErrorObject.ToObject<IdentifiedSubjectValidationError>();
+
+                var validationErrorDetail = string.Join("; ", validationError?.Detail.ViolatedConstraints?.Select(v => $"Attribute {v.Attribute} (Invalid Value: {v.InvalidValue}) with the error: {v.Message}") ?? Array.Empty<string>());
+
+                throw new CisExtServiceValidationException($"{validationError?.Message}: {validationErrorDetail}");
+            }
+        }
 
         throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
     }
@@ -53,8 +85,4 @@ internal sealed class RealIdentifiedSubjectBrClient : IIdentifiedSubjectBrClient
             };
         }
     }
-
-    private async Task<TResponse> ParseResponse<TResponse>(HttpResponseMessage response, CancellationToken cancellationToken) =>
-        await response.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken)
-        ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(ParseResponse), nameof(TResponse));
 }

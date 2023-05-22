@@ -1,14 +1,14 @@
 ﻿using System.Globalization;
 using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
-using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
+using CM = DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
 internal sealed class CustomerManagementDetailProvider
 {
-    private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
+    private readonly CM.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClients _codebook;
 
     private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
@@ -22,7 +22,7 @@ internal sealed class CustomerManagementDetailProvider
     private List<CodebookService.Contracts.Endpoints.EducationLevels.EducationLevelItem> _educations = null!;
     private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public CustomerManagementDetailProvider(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
+    public CustomerManagementDetailProvider(CM.ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;
@@ -49,19 +49,19 @@ internal sealed class CustomerManagementDetailProvider
         return customers.Select(CreateDetailResponse);
     }
 
-    private CustomerDetailResponse CreateDetailResponse(__Contracts.CustomerBaseInfo customer)
+    private CustomerDetailResponse CreateDetailResponse(CM.Contracts.CustomerInfo customer)
     {
         var response = new CustomerDetailResponse
         {
             Identities = { new Identity(customer.CustomerId, IdentitySchemes.Kb) },
-            NaturalPerson = CreateNaturalPerson(customer),
+            NaturalPerson = CreateNaturalPerson(customer, customer.IsLegallyIncapable),
             IdentificationDocument = CreateIdentificationDocument(customer.PrimaryIdentificationDocument),
             CustomerIdentification = CreateCustomerIdentification(customer.CustomerIdentification)
         };
 
-        AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.ComponentAddress, customer.PrimaryAddress?.PrimaryAddressFrom);
-        AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.ComponentAddress, default);
-        AddAddress(AddressTypes.Other, response.Addresses.Add, customer.TemporaryStay?.ComponentAddress, default);
+        AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.ComponentAddressPoint, customer.PrimaryAddress?.SingleLineAddressPoint, null);
+        AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.ComponentAddressPoint, customer.ContactAddress?.SingleLineAddressPoint, customer.ContactAddress?.Confirmed);
+        AddAddress(AddressTypes.Other, response.Addresses.Add, customer.TemporaryStay?.ComponentAddressPoint, customer.TemporaryStay?.SingleLineAddressPoint, null);
 
         AddContacts(customer, response.Contacts.Add);
 
@@ -84,17 +84,17 @@ internal sealed class CustomerManagementDetailProvider
         async Task LegalCapacityRestrictionTypes() => _legalCapacityRestrictionTypes = await _codebook.LegalCapacityRestrictionTypes(cancellationToken);
     }
 
-    private Contracts.NaturalPerson CreateNaturalPerson(__Contracts.CustomerBaseInfo customer)
+    private NaturalPerson CreateNaturalPerson(CM.Contracts.CustomerInfo customer, bool? isLegallyIncapable)
     {
-        var np = (ExternalServices.CustomerManagement.V1.Contracts.NaturalPerson)customer.Party;
+        var np = customer.Party.NaturalPersonAttributes;
 
-        var person = new Contracts.NaturalPerson
+        var person = new NaturalPerson
         {
             BirthNumber = np.CzechBirthNumber ?? string.Empty,
             DateOfBirth = np.BirthDate,
             FirstName = np.FirstName ?? string.Empty,
             LastName = np.Surname ?? string.Empty,
-            GenderId = _genders.First(t => t.KbCmCode == np.GenderCode.ToString()).Id,
+            GenderId = _genders.First(t => t.KbCmCode == np.GenderCode).Id,
             BirthName = np.BirthName ?? string.Empty,
             PlaceOfBirth = np.BirthPlace ?? string.Empty,
             BirthCountryId = _countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,
@@ -116,8 +116,15 @@ internal sealed class CustomerManagementDetailProvider
             },
             LegalCapacity = new NaturalPersonLegalCapacity
             {
-                RestrictionTypeId = _legalCapacityRestrictionTypes.FirstOrDefault(t => t.RdmCode == np.LegalCapacityRestriction?.RestrictionType)?.Id,
-                RestrictionUntil = np.LegalCapacityRestriction?.RestrictionUntil
+                RestrictionTypeId = isLegallyIncapable switch  //MOCK HFICH-5860
+                {
+                    true => 2,
+                    false => 1,
+                    null => 3
+                },
+                RestrictionUntil = DateTime.Now.AddYears(50) //Mock HFICH-5860
+                //RestrictionTypeId = _legalCapacityRestrictionTypes.FirstOrDefault(t => t.RdmCode == np.LegalCapacityRestriction?.RestrictionType)?.Id,
+                //RestrictionUntil = np.LegalCapacityRestriction?.RestrictionUntil
             }
         };
 
@@ -126,7 +133,7 @@ internal sealed class CustomerManagementDetailProvider
         {
             person.TaxResidence.ResidenceCountries.AddRange(customer.TaxResidence.ResidenceCountries.Select(t => new NaturalPersonResidenceCountry
             {
-                CountryId = _countries.FirstOrDefault(t => t.ShortName == customer.TaxResidence?.CountryCode)?.Id,
+                CountryId = _countries.FirstOrDefault(c => c.ShortName == t.CountryCode)?.Id,
                 Tin = t.Tin,
                 TinMissingReasonDescription = t.TinMissingReasonDescription
             }));
@@ -138,12 +145,12 @@ internal sealed class CustomerManagementDetailProvider
         return person;
     }
 
-    private Contracts.IdentificationDocument? CreateIdentificationDocument(__Contracts.IdentificationDocument? document)
+    private IdentificationDocument? CreateIdentificationDocument(CM.Contracts.IdentificationDocument? document)
     {
         if (document is null)
             return null;
 
-        return new Contracts.IdentificationDocument
+        return new IdentificationDocument
         {
             RegisterPlace = document.RegisterPlace ?? string.Empty,
             ValidTo = document.ValidTo,
@@ -155,7 +162,7 @@ internal sealed class CustomerManagementDetailProvider
         };
     }
 
-    private static CustomerIdentification? CreateCustomerIdentification(__Contracts.CustomerIdentification? customerIdentification)
+    private static CustomerIdentification? CreateCustomerIdentification(CM.Contracts.CustomerIdentification? customerIdentification)
     {
         if (customerIdentification is null)
             return default;
@@ -168,10 +175,7 @@ internal sealed class CustomerManagementDetailProvider
         };
     }
 
-    private void AddAddress(AddressTypes addressType,
-                            Action<GrpcAddress> onAddAddress,
-                            __Contracts.ComponentAddress? componentAddress,
-                            DateTime? primaryAddressFrom)
+    private void AddAddress(AddressTypes addressType, Action<GrpcAddress> onAddAddress, CM.Contracts.ComponentAddressPoint? componentAddress, CM.Contracts.SingleLineAddressPoint? singleLineAddress, bool? isConfirmed)
     {
         if (componentAddress is null)
             return;
@@ -191,40 +195,45 @@ internal sealed class CustomerManagementDetailProvider
             CityDistrict = componentAddress.CityDistrict ?? string.Empty,
             PragueDistrict = componentAddress.PragueDistrict ?? string.Empty,
             CountrySubdivision = componentAddress.CountrySubdivision ?? string.Empty,
-            PrimaryAddressFrom = primaryAddressFrom,
-            AddressPointId = componentAddress.AddressPointId ?? string.Empty
+            AddressPointId = componentAddress.AddressPointId ?? string.Empty,
+            SingleLineAddressPoint = singleLineAddress?.Address,
+            IsAddressConfirmed = isConfirmed
         });
     }
 
-    private static void AddContacts(__Contracts.CustomerBaseInfo customer, Action<Contact> onAddContact)
+    private static void AddContacts(CM.Contracts.CustomerInfo customer, Action<Contact> onAddContact)
     {
         if (customer.PrimaryPhone is not null)
         {
-            var noIndex = (customer.PrimaryPhone.PhoneNumber ?? "").IndexOf(' ');
-            var model = new Contact
+            var phone = new Contact
             {
                 ContactTypeId = (int)ContactTypes.Mobil,
                 IsPrimary = true,
-                IsConfirmed = customer.PrimaryPhone.Confirmed
+                Mobile = new MobilePhoneItem
+                {
+                    PhoneIDC = customer.PrimaryPhone.ComponentPhone.PhoneIDC,
+                    PhoneNumber = customer.PrimaryPhone.ComponentPhone.PhoneNumber,
+                    IsPhoneConfirmed = customer.PrimaryPhone.Confirmed
+                }
             };
 
-            if (noIndex <= 0)
-                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber };
-            else
-                model.Mobile = new MobilePhoneItem { PhoneNumber = customer.PrimaryPhone.PhoneNumber![(noIndex + 1)..], PhoneIDC = customer.PrimaryPhone.PhoneNumber![..noIndex] };
-
-            onAddContact(model);
+            onAddContact(phone);
         }
 
         if (customer.PrimaryEmail is not null)
         {
-            onAddContact(new Contact
+            var email = new Contact
             {
                 ContactTypeId = (int)ContactTypes.Email,
-                Email = new EmailAddressItem { EmailAddress = customer.PrimaryEmail.EmailAddress },
                 IsPrimary = true,
-                IsConfirmed = customer.PrimaryEmail.Confirmed
-            });
+                Email = new EmailAddressItem
+                {
+                    EmailAddress = customer.PrimaryEmail.EmailAddress,
+                    IsEmailConfirmed = customer.PrimaryEmail.Confirmed
+                },
+            };
+
+            onAddContact(email);
         }
     }
 }

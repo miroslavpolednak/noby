@@ -1,2 +1,2 @@
 ﻿global using System.Net.Http.Json;
-global using CIS.Core.Exceptions.ExternalServices;
+global using DomainServices.CustomerService.ExternalServices.Common;
