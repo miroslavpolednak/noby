@@ -15,8 +15,15 @@ public sealed class StatementDto
     /// Způsob odběru výpisů
     /// </summary>
     /// <example>elektronicky</example>
+    [Obsolete]
     public string? TypeName { get; set; }
 
+    /// <summary>
+    /// Způsob odběru výpisů
+    /// </summary>
+    /// <example>Elektronický</example>
+    public string? TypeShortName { get; set; }
+    
     /// <summary>
     /// Způsob odběru výpisů
     /// </summary>

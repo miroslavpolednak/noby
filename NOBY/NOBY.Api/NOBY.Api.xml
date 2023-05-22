@@ -280,6 +280,12 @@
             </summary>
             <example>elektronicky</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.TypeShortName">
+            <summary>
+            Způsob odběru výpisů
+            </summary>
+            <example>Elektronický</example>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.SubscriptionType">
             <summary>
             Způsob odběru výpisů

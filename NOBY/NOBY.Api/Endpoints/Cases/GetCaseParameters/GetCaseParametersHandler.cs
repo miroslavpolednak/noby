@@ -204,6 +204,7 @@ internal sealed class GetCaseParametersHandler
             {
                 TypeId = mortgageData.Statement.TypeId,
                 TypeName = statementTypes.FirstOrDefault(x => x.Id == mortgageData.Statement?.TypeId)?.Name,
+                TypeShortName = statementTypes.FirstOrDefault(x => x.Id == mortgageData.Statement?.TypeId)?.ShortName,
                 SubscriptionType = statementSubscriptionTypes.FirstOrDefault(x => x.Id == mortgageData.Statement?.SubscriptionTypeId)?.Name,
                 Frequency = statementFrequencies.FirstOrDefault(x => x.Id == mortgageData.Statement?.FrequencyId)?.Name,
                 EmailAddress1 = mortgageData.Statement?.EmailAddress1,
