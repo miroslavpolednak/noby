@@ -79,7 +79,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public CreditLiabilitiesSummaryType ProductClusterCode { get; set; }
+        public CreditLiabilitiesSummaryType? ProductClusterCode { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -203,7 +203,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public DSTICreditLiabilitiesSummaryType ProductClusterCode { get; set; }
+        public DSTICreditLiabilitiesSummaryType? ProductClusterCode { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -644,7 +644,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteris
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public LoanInstallmentsSummaryType ProductClusterCode { get; set; }
+        public LoanInstallmentsSummaryType? ProductClusterCode { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 

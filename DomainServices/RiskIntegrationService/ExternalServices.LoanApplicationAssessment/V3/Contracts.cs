@@ -767,7 +767,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public ItChannelType ItChannelPrevious { get; set; }
+        public ItChannelType? ItChannelPrevious { get; set; }
 
         /// <summary>
         /// Parametry metodické výjimky; Kódy pro jednotlivé metodické výjimky jsou definovány v RDM číselníku CB_ExceptionReason (jde o kódy, které dnes využívá CLO)

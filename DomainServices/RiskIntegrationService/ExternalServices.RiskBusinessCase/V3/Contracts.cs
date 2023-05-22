@@ -308,7 +308,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCas
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public CommandIdentifiers Identifier { get; set; }
+        public CommandIdentifiers? Identifier { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -394,7 +394,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCas
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public CompletionType CompletionType { get; set; }
+        public CompletionType? CompletionType { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("reason")]
 
@@ -758,13 +758,13 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCas
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public DefaultCommandStateCodes Code { get; set; }
+        public DefaultCommandStateCodes? Code { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("completionType")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public CompletionType CompletionType { get; set; }
+        public CompletionType? CompletionType { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("reason")]
 
