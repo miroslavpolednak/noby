@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
+﻿namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 
 /// <summary>
 /// Middleware přidávájící KB hlavičku s informací o přihlášeném uživateli do requestu.
@@ -28,7 +26,7 @@ public sealed class KbPartyHeaderHttpHandler
             int index = login.IndexOf('=');
             if (index > 0)
             {
-                request.Headers.Add("X-KB-Party-Identity-In-Service", $$"""{"partyIdIS":[{"partyId":{"id":"{{login[..index]}}","idScheme":"{{login[(index + 1)..]}}"},"usg":"AUTH"}]}""");
+                request.Headers.Add("X-KB-Party-Identity-In-Service", $$"""{"partyIdIS":[{"partyId":{"idScheme":"{{login[..index]}}","id":"{{login[(index + 1)..]}}"},"usg":"AUTH"}]}""");
             }
         }
         

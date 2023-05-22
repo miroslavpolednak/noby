@@ -7,7 +7,6 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "Messages/GetService.proto";
 import "Messages/GetServices.proto";
-import "Messages/ClearCache.proto";
 
 // Repository adres služeb / aplikací používaných pro NOBY
 service DiscoveryService {
@@ -22,13 +21,6 @@ service DiscoveryService {
 	rpc GetServices (CIS.InternalServices.ServiceDiscovery.GetServicesRequest) returns (CIS.InternalServices.ServiceDiscovery.GetServicesResponse) {
 		option (google.api.http) = {
 			get: "/api/v1/services"
-		};
-	}
-
-	// Resetuje cache služeb pro všechna prostředí
-	rpc ClearCache (CIS.InternalServices.ServiceDiscovery.ClearCacheRequest) returns (google.protobuf.Empty) {
-		option (google.api.http) = {
-			post: "/api/v1/clear-cache"
 		};
 	}
 }

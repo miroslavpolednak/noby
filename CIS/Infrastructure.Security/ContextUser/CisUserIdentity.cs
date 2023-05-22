@@ -13,8 +13,8 @@ internal sealed class CisUserIdentity
     public CisUserIdentity(string? login, DomainServices.UserService.Contracts.User userInstance)
         : base(InternalServicesAuthentication.ContextUserSchemeName, SecurityConstants.ClaimTypeId, "role")
     {
-        Id = userInstance.Id;
+        Id = userInstance.UserId;
         Login = login;
-        DisplayName = userInstance.FullName;
+        DisplayName = userInstance.UserInfo.DisplayName;
     }
 }

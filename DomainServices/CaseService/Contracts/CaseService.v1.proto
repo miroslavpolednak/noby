@@ -22,6 +22,7 @@ import "Messages/UpdateOfferContacts.proto";
 import "Messages/NotifyStarbuild.proto";
 import "Messages/CancelTask.proto";
 import "Messages/CreateTask.proto";
+import "Messages/ValidateCaseId.proto";
 
 service CaseService {
    rpc CompleteTask (CompleteTaskRequest) returns (google.protobuf.Empty);
@@ -59,4 +60,6 @@ service CaseService {
    rpc CancelTask (CancelTaskRequest) returns (google.protobuf.Empty);
    
    rpc CreateTask (CreateTaskRequest) returns (CreateTaskResponse);
+
+   rpc ValidateCaseId (ValidateCaseIdRequest) returns (ValidateCaseIdResponse);
 }

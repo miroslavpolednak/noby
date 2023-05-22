@@ -49,9 +49,9 @@ internal sealed class NotifyStarbuildHandler
             ClientFullName = $"{caseInstance.FirstNameNaturalPerson} {caseInstance.Name}",
             CaseStateName = caseState.Name,
             ProductTypeId = caseInstance.ProductTypeId,
-            OwnerUserCpm = ownerInstance.CPM,
-            OwnerUserIcp = ownerInstance.ICP,
-            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId.GetValueOrDefault(),
+            OwnerUserCpm = ownerInstance.UserInfo.Cpm,
+            OwnerUserIcp = ownerInstance.UserInfo.Icp,
+            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId,
             RiskBusinessCaseId = request.RiskBusinessCaseId,
             IsEmployeeBonusRequested = caseInstance.IsEmployeeBonusRequested
         };

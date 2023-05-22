@@ -1,5 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using Microsoft.EntityFrameworkCore;
+using DomainServices.UserService.Api.Database;
 
 namespace DomainServices.UserService.Api;
 
@@ -7,8 +7,8 @@ internal static class StartupExtensions
 {
     public static WebApplicationBuilder AddUserService(this WebApplicationBuilder builder)
     {
-        // db repo
-        builder.Services.AddDapper(builder.Configuration.GetConnectionString("xxvvss"));
+        // dbcontext
+        builder.AddEntityFramework<UserServiceDbContext>();
 
         return builder;
     }

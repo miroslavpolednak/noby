@@ -6,6 +6,16 @@ namespace DomainServices.CaseService.Clients.Services;
 internal sealed class CaseService
     : ICaseServiceClient
 {
+    public async Task<bool> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        var result = await _service.ValidateCaseIdAsync(new ValidateCaseIdRequest
+        {
+            CaseId = caseId,
+            ThrowExceptionIfNotFound = throwExceptionIfNotFound
+        }, cancellationToken: cancellationToken);
+        return result.Exists;
+    }
+
     public async Task<long> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.CreateCaseAsync(model, cancellationToken: cancellationToken);

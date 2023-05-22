@@ -12,7 +12,7 @@ public class ProductTypeItem
     public string Name { get; set; }
 
     [DataMember(Order = 3)]
-    public int? MandantId { get; set; }
+    public int MandantId { get; set; }
 
     [DataMember(Order = 4)]
     public bool IsValid { get; set; }

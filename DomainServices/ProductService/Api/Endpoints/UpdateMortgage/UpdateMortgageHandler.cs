@@ -1,6 +1,4 @@
-﻿using DomainServices.CaseService.Clients;
-using DomainServices.CodebookService.Clients;
-using DomainServices.ProductService.Api.Database.Entities;
+﻿using DomainServices.ProductService.Api.Database.Entities;
 using DomainServices.ProductService.Api.Endpoints.CreateMortgage;
 using ExternalServices.MpHome.V1_1;
 
@@ -34,7 +32,7 @@ internal sealed class UpdateMortgageHandler
         }
 
         // create request
-        var mortgageRequest = request.Mortgage.ToMortgageRequest();
+        var mortgageRequest = request.Mortgage.ToMortgageRequest(null);
 
         // call endpoint
         await _mpHomeClient.UpdateLoan(request.ProductId, mortgageRequest, cancellation);

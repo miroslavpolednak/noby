@@ -184,7 +184,7 @@
             </summary>
             <remarks>
             Operace získá ze Starbuildu seznam úkolů a procesů k danému case ID. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Seznam wf tasks z SB.</returns>
         </member>
@@ -218,16 +218,7 @@
             </remarks>
             <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseDocumentsFlag(System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Příznaky v menu Case detailu
-            </summary>
-            <remarks>
-             Implementováno pro položku menu Documents<br /><br /><br />
-             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
-             <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseDocumentsFlag(System.Int64,System.Threading.CancellationToken)" -->
         <member name="P:NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
             <summary>
             Typ žádosti - číselník SalesArrangementType
@@ -269,7 +260,7 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.DocumentsMenuItem.Flag">
             <summary>
-            0 - No flag, 1 - Error (!), 2 - In processing
+            0 - No flag, 1 - In processing, 2 - Error (!)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.LoanPurposeItem.Sum">
@@ -535,6 +526,69 @@
             KBID
             </summary>
         </member>
+        <member name="T:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsConsultationData">
+            <summary>
+            Tento objekt je relevantní pouze pro některé typy Konzultací, a to sice pro Dotaz k ocenění a pro Vyhotovení ZOV.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsConsultationData.OrderId">
+            <summary>
+            Konzultace: Číslo objednávky ocenění (Atribut je relevantní jen pro konzultaci Dotaz k ocenění a pro konzultaci Vyhotovení ZOV.)
+            </summary>
+            <example>123556</example>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsRequest">
+            <summary>
+            Tento objekt je relevantní pouze pro typ úkolu Dožádání
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsRequest.SentToCustomer">
+            <summary>
+            Dožádání: Příznak zaslání Dožádní přímo na klienta
+            </summary>
+            <example>false</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsRequest.OrderId">
+            <summary>
+            Dožádání: Číslo objednávky ocenění (Atribut je relevantní jen pro dožádání k ocenění.)
+            </summary>
+            <example>123556</example>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning">
+            <summary>
+            Tento objekt je relevantní pouze pro typ úkolu Podepisování
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning.FormId">
+            <summary>
+            Podepisování: ID čárového kódu dokumentu k podpisu (formId)
+            </summary>
+            <example>S00000014139920</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning.SignatureType">
+            <summary>
+            Podepisování: způsob podpisu (0 - papírové podepisování, 1 - elektronické podepisování)
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning.Expiration">
+            <summary>
+            Podepisování: Lhůta pro zajištění podpisu
+            </summary>
+            <example>24.12.2023</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning.DocumentForSigning">
+            <summary>
+            Podepisování: ID dokumentu k podpisu
+            </summary>
+            <example>01_23_046_111203_SF_0001</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning.ProposalForEntry">
+            <summary>
+            Podepisování: ID dokumentu návrhu na vklad
+            </summary>
+            <example>01_23_046_111203_SF_0001</example>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem.TaskRequest">
             <summary>
             Text požadavku
@@ -570,18 +624,6 @@
             Jméno typu procesu (nezkrácené)
             </summary>
             <example>Hlavní úvěrový proces</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.SentToCustomer">
-            <summary>
-            Dožádání: Příznak zaslání Dožádní přímo na klienta
-            </summary>
-            <example>false</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.OrderId">
-            <summary>
-            Dožádání: Číslo objednávky ocenění
-            </summary>
-            <example>123556</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.TaskCommunication">
             <summary>
@@ -796,13 +838,13 @@
             <summary>
             Filter Noby stavu úkolu
             </summary>
-            <example>Active</example>
+            <example>1</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.StateIndicator">
             <summary>
             Indikátor barvy Noby stavu
             </summary>
-            <example>Active</example>
+            <example>1</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetAll(System.String,System.Threading.CancellationToken)">
              <summary>Kolekce vyžadaných číselniků.</summary>
@@ -3275,10 +3317,11 @@
             Vrací vyhodnocení dané úvěrové žádosti
             </summary>
             <remarks>
-            Použít pro Skóring - výsledek vyhodnocení<br/>
-            - výsledek vyhodnocení žádosti<br/>
-            - výsledek vyhodnocení za jednotlivé domácnosti<br/>
-            Možno vyžadovat nové vyhodnocení
+            Použít pro Skóring - výsledek vyhodnocení<br /> 
+            - výsledek vyhodnocení žádosti<br />
+            - výsledek vyhodnocení za jednotlivé domácnosti<br />
+            Možno vyžadovat nové vyhodnocení<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CB8E73AD-C282-4555-B587-A571EE896E81"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement-u</param>
             <param name="newAssessmentRequired">Požadováno nové posouzení</param>
@@ -3971,18 +4014,105 @@
             </summary>
             <example>999999999</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserId">
+            <summary>
+            ID uzivatele - V33ID
+            </summary>
+            <example>61958</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserIdentifiers">
+            <summary>
+            Všechny identity uživatele z XXVVSS
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserInfo">
+            <summary>
+            Základní informace o přihlášeném uživateli
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserAttributes">
+            <summary>
+            Dodatečné informace o uživately a kontakty
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.FirstName">
+            <summary>
+            Jméno uživatele
+            </summary>
+            <example>Jaroslav</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.LastName">
+            <summary>
+            Přijmení uživatele
+            </summary>
+            <example>Cimrman</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.Cpm">
+            <summary>
+            ČPM uživatele
+            </summary>
+            <example>99800001</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.Icp">
+            <summary>
+            IČP uživatele
+            </summary>
+            <example>999999999</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.Cin">
+            <summary>
+            IČO uživatele
+            </summary>
+            <example>12345678</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.PhoneNumber">
+            <summary>
+            Telefon uživatele
+            </summary>
+            <example>+420 601 234 567</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.EmailAddress">
+            <summary>
+            Emailová adresa uživatele
+            </summary>
+            <example>jarda@cimrman.cz</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.IsUserVIP">
+            <summary>
+            VIP flag uživatele
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Login">
             <summary>
-            Login uzivatel do CAASu.
+            OsCis
             </summary>
-            <example>990614w</example>
+            <example>614</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.IdentityId">
+            <summary>
+            ID uzivatele v ramci vybraneho identitniho schematu.
+            </summary>
+            <example>E0021L</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.IdentityScheme">
+            <summary>
+            Vybranne identitni schema pro prihlaseni, moznosti jsou: <a href="https://wiki.kb.cz/display/HT/IdentityScheme">https://wiki.kb.cz/display/HT/IdentityScheme</a>
+            </summary>
+            <example>KBUID</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetCurrentUser(System.Threading.CancellationToken)">
             <summary>
-            Informace o prihlašeném uživateli.
+            Informace a oprávnění o přihlášeném uživateli
+            </summary>
+            <returns>Instance přihlášeného uživatele.</returns>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetLoggedInUser(System.Threading.CancellationToken)">
+            <summary>
+            Informace a oprávnění o přihlášeném uživateli
             </summary>
             <remarks>
-            Pokud je uživatel přihlášen (existuje platná auth cookie), vrací základní informace o uživateli.
+            Vrací o uživateli data z XXVVSS - základní údaje, identity (počítáme s tím, že je alespoň jedna, vetšinou více) a set oprávnění pro identitu, kterou se přihlásil. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FC765415-4D2E-4b7c-B1C8-3F4B78A005DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Instance přihlášeného uživatele.</returns>
         </member>

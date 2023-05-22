@@ -159,10 +159,10 @@ public class SaveDocumentToArchiveHandler
     private async Task<string> GetAuthorUserLogin(CancellationToken cancellationToken)
     {
         var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
-        if (!string.IsNullOrWhiteSpace(user.ICP))
-            return user.ICP;
-        else if (!string.IsNullOrWhiteSpace(user.CPM))
-            return user.CPM;
+        if (!string.IsNullOrWhiteSpace(user.UserInfo.Icp))
+            return user.UserInfo.Icp;
+        else if (!string.IsNullOrWhiteSpace(user.UserInfo.Cpm))
+            return user.UserInfo.Cpm;
         else if (_currentUserAccessor?.User?.Id is not null)
             return _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture);
         else

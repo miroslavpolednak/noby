@@ -12,8 +12,8 @@ internal sealed class GetCaseByIdHandler
         var userInstance = await _userService.GetUser(result.CaseOwner.UserId, cancellationToken);
         model.CaseOwner = new Dto.CaseOwnerModel
         {
-            Cpm = userInstance.CPM,
-            Icp = userInstance.ICP
+            Cpm = userInstance.UserInfo.Cpm,
+            Icp = userInstance.UserInfo.Icp
         };
 
         return model;

@@ -1,0 +1,9 @@
+﻿syntax = "proto3";
+package DomainServices.UserService;
+option csharp_namespace = "DomainServices.UserService.Contracts";
+
+import "UserIdentity.proto";
+
+message GetUserRequest {
+	cis.types.UserIdentity Identity = 1;
+}

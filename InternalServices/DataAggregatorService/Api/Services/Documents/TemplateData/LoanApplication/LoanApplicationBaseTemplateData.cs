@@ -5,10 +5,6 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Temp
 
 internal class LoanApplicationBaseTemplateData : AggregatedData
 {
-    public string LoanApplicationHeader1 =>"ŽÁDOST O POSKYTNUTÍ ÚVĚRU";
-
-    public string LoanApplicationHeader2 => "ŽÁDOST O POSKYTNUTÍ ÚVĚRU A POTVRZENÍ O ZPROSTŘEDKOVÁNÍ";
-
     public string LoanType => Offer.SimulationInputs.LoanKindId == 2001 ? GetLoanKindName() : GetProductTypeName();
 
     public string LoanPurposes

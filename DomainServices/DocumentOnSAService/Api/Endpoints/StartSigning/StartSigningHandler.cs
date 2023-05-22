@@ -53,9 +53,8 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
         await ValidateRequest(request, cancellationToken);
 
-        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotExist, request.SalesArrangementId);
-
+        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
+        
         var houseHold = await GetHouseholdId(request.DocumentTypeId!.Value, request.SalesArrangementId!.Value, cancellationToken);
 
         // Check, if signing process has been already started. If started we have to invalidate exist signing processes

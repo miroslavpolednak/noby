@@ -16,8 +16,6 @@ public class LoanPurposesItem
 
 
     [DataMember(Order = 4)]
-    // TODO: ačkoliv se to nemá propagovat na FE API, používá to aktuálně RIP na CodebooksAPI !? 
-    // [JsonIgnore]
     public List<int> ProductTypeIds { get; set; }
 
 
