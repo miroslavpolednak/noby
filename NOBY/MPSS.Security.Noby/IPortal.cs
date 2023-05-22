@@ -11,5 +11,6 @@ public interface IPortal
         int v11id, /* v11id uzivatele - 0 pokud se nejedna o zamestnance */
         int v03id, /* v03id uzivatele - 0 pokud se nejedna o agenturu */
         int m17id,
-        int brokerId);
+        int brokerId,
+        string kbuid);
 }

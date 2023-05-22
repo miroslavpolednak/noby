@@ -2,6 +2,8 @@
 
 internal static class TaskDataExtensions
 {
+    private static CultureInfo _czCulture = new CultureInfo("cs-CZ");
+
     public static int GetInteger(this IReadOnlyDictionary<string, string> taskData, string key)
     {
         return int.Parse(taskData[key], CultureInfo.InvariantCulture);
@@ -17,9 +19,17 @@ internal static class TaskDataExtensions
         return long.Parse(taskData[key], CultureInfo.InvariantCulture);
     }
 
-    public static DateTime GetDate(this IReadOnlyDictionary<string, string> taskData, string key)
+    public static DateTime? GetDate(this IReadOnlyDictionary<string, string> taskData, string key)
     {
-        return DateTime.Parse(taskData[key], CultureInfo.InvariantCulture);
+        if (DateTime.TryParse(taskData[key], _czCulture, out DateTime d2))
+        {
+            return d2;
+        }
+        else if (DateTime.TryParse(taskData[key], CultureInfo.InvariantCulture, out DateTime d1))
+        {
+            return d1;
+        }
+        return null;
     }
 
     public static bool GetBoolean(this IReadOnlyDictionary<string, string> taskData, string key)

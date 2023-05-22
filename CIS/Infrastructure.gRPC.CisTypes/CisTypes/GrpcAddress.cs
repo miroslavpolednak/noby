@@ -21,7 +21,9 @@ public partial class GrpcAddress
             CountrySubdivision = address.CountrySubdivision,
             AddressPointId = address.AddressPointId,
             DeliveryDetails = address.DeliveryDetails,
-            EvidenceNumber = address.EvidenceNumber
+            EvidenceNumber = address.EvidenceNumber,
+            SingleLineAddressPoint = address.SingleLineAddressPoint,
+            IsAddressConfirmed = address.IsAddressConfirmed
         };
     }
     
@@ -44,7 +46,9 @@ public partial class GrpcAddress
             CityDistrict = address.CityDistrict ?? string.Empty,
             PragueDistrict = address.PragueDistrict ?? string.Empty,
             CountrySubdivision = address.CountrySubdivision ?? string.Empty,
-            AddressPointId = address.AddressPointId ?? string.Empty
+            AddressPointId = address.AddressPointId ?? string.Empty,
+            SingleLineAddressPoint = address.SingleLineAddressPoint,
+            IsAddressConfirmed = address.IsAddressConfirmed
         };
     }
 }

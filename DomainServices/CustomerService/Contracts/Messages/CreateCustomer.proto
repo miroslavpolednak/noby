@@ -26,8 +26,6 @@ message CreateCustomerRequest {
 	cis.types.Mandants Mandant = 7;
 
 	CustomerIdentification CustomerIdentification = 8;
-
-
 }
 
 message CreateCustomerResponse {
