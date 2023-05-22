@@ -44,12 +44,12 @@ internal sealed class GetSalesArrangementHandler
 
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
     
     public GetSalesArrangementHandler(
         ICaseServiceClient caseService,
-        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
+        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         DomainServices.OfferService.Clients.IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService)
     {

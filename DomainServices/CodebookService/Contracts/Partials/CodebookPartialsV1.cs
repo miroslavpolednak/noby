@@ -26,10 +26,7 @@ public partial class FeesResponse : IItemsResponse<FeesResponse.Types.FeeItem> {
 public partial class FixedRatePeriodsResponse : IItemsResponse<FixedRatePeriodsResponse.Types.FixedRatePeriodItem> { }
 public partial class FormTypesResponse : IItemsResponse<FormTypesResponse.Types.FormTypeItem> { }
 public partial class GendersResponse : IItemsResponse<GendersResponse.Types.GenderItem> { }
-public partial class GetDeveloperResponse : IItemsResponse<GetDeveloperResponse.Types.GetDeveloperItem> { }
-public partial class GetDeveloperProjectResponse : IItemsResponse<GetDeveloperProjectResponse.Types.GetDeveloperProjectItem> { }
 public partial class GetGeneralDocumentListResponse : IItemsResponse<GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem> { }
-public partial class GetOperatorResponse : IItemsResponse<GetOperatorResponse.Types.GetOperatorItem> { }
 public partial class HouseholdTypesResponse : IItemsResponse<HouseholdTypesResponse.Types.HouseholdTypeItem> { }
 public partial class HousingConditionsResponse : IItemsResponse<HousingConditionsResponse.Types.HousingConditionItem> { }
 public partial class ChannelsResponse : IItemsResponse<ChannelsResponse.Types.ChannelItem> { }

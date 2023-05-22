@@ -97,7 +97,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     }
 
     private readonly CustomerWithChangedDataService _changedDataService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IUserServiceClient _userServiceClient;
@@ -105,7 +105,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
 
     public UpdateCustomerDetailWithChangesHandler(
         CustomerWithChangedDataService changedDataService,
-        ICodebookServiceClients codebookService,
+        ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSAService,
         IUserServiceClient userServiceClient,

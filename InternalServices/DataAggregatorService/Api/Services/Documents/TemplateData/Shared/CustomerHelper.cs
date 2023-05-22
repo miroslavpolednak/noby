@@ -1,13 +1,12 @@
 ﻿using CIS.Foms.Enums;
-using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.Countries;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 
 public static class CustomerHelper
 {
-    public static string FullName(CustomerDetailResponse customerDetail, ICollection<GenericCodebookItem> degreesBefore)
+    public static string FullName(CustomerDetailResponse customerDetail, ICollection<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore)
     {
         if (!customerDetail.NaturalPerson.DegreeBeforeId.HasValue)
             return $"{customerDetail.NaturalPerson.FirstName} {customerDetail.NaturalPerson.LastName}";
@@ -22,7 +21,7 @@ public static class CustomerHelper
         return $"{fullName}, datum narození: {dateOfBirth.ToString("d", CultureProvider.GetProvider())}";
     }
 
-    public static string FullAddress(CustomerDetailResponse customerDetail, ICollection<CountriesItem> countries)
+    public static string FullAddress(CustomerDetailResponse customerDetail, ICollection<CountriesResponse.Types.CountryItem> countries)
     {
         var address = customerDetail.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Permanent);
 

@@ -19,7 +19,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
-    private readonly ICodebookServiceClients _codebookServiceClients;
+    private readonly ICodebookServiceClient _codebookServiceClients;
     private readonly IDateTime _dateTime;
 
     public GetDocumentOnSADataHandler(
@@ -27,7 +27,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         IDocumentArchiveServiceClient documentArchiveServiceClient,
         ICurrentUserAccessor currentUserAccessor,
         IDocumentGeneratorServiceClient documentGeneratorServiceClient,
-        ICodebookServiceClients codebookServiceClients,
+        ICodebookServiceClient codebookServiceClients,
         IDateTime dateTime)
     {
         _documentOnSaClient = documentOnSaClient;

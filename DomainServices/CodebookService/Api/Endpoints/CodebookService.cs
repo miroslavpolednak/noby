@@ -1,9 +1,11 @@
 ﻿using CIS.Core.Data;
 using CIS.Infrastructure.Data.Synchronous;
+using Dapper;
 using DomainServices.CodebookService.Api.Database;
 using DomainServices.CodebookService.Api.Extensions;
 using DomainServices.CodebookService.Contracts.v1;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DomainServices.CodebookService.Api.Endpoints;
 
@@ -200,18 +202,30 @@ internal sealed class CodebookService
                 .ToList();
         });
 
-    public override Task<GetDeveloperResponse> GetDeveloper(GetDeveloperRequest request, ServerCallContext context)
-        => _xxd.GetItems<GetDeveloperResponse, GetDeveloperResponse.Types.GetDeveloperItem>(new GetDeveloperResponse(), SqlQueries.GetDeveloper, new { request.DeveloperId });
+    public override async Task<GetDeveloperResponse> GetDeveloper(GetDeveloperRequest request, ServerCallContext context)
+    {
+        using var connection = _xxd.Create();
+        await connection.OpenAsync();
+        return await connection.QueryFirstOrDefaultAsync<GetDeveloperResponse>(SqlQueries.GetDeveloper, new { request.DeveloperId });
+    }
 
-    public override Task<GetDeveloperProjectResponse> GetDeveloperProject(GetDeveloperProjectRequest request, ServerCallContext context)
-        => _xxd.GetItems<GetDeveloperProjectResponse, GetDeveloperProjectResponse.Types.GetDeveloperProjectItem>(new GetDeveloperProjectResponse(), SqlQueries.GetDeveloperProject, new { request.DeveloperProjectId, request.DeveloperId });
+    public override async Task<GetDeveloperProjectResponse> GetDeveloperProject(GetDeveloperProjectRequest request, ServerCallContext context)
+    {
+        using var connection = _xxd.Create();
+        await connection.OpenAsync();
+        return await connection.QueryFirstOrDefaultAsync<GetDeveloperProjectResponse>(SqlQueries.GetDeveloperProject, new { request.DeveloperProjectId, request.DeveloperId });
+    }
 
     public override Task<GetGeneralDocumentListResponse> GetGeneralDocumentList(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _selfDb.GetItems<GetGeneralDocumentListResponse, GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem>(new GetGeneralDocumentListResponse(), SqlQueries.GetGeneralDocumentList);
 
-    public override Task<GetOperatorResponse> GetOperator(GetOperatorRequest request, ServerCallContext context)
-        => _xxd.GetItems<GetOperatorResponse, GetOperatorResponse.Types.GetOperatorItem>(new GetOperatorResponse(), SqlQueries.GetOperator, new { request.PerformerLogin });
-
+    public override async Task<GetOperatorResponse> GetOperator(GetOperatorRequest request, ServerCallContext context)
+    {
+        using var connection = _xxd.Create();
+        await connection.OpenAsync();
+        return await connection.QueryFirstOrDefaultAsync<GetOperatorResponse>(SqlQueries.GetOperator, new { request.PerformerLogin });
+    }
+    
     public override Task<HouseholdTypesResponse> HouseholdTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(new HouseholdTypesResponse(), () =>
         {

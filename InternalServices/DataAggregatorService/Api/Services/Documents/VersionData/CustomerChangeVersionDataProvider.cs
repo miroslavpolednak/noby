@@ -1,7 +1,7 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.Document;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTemplateVariants;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.VersionData;
@@ -11,9 +11,9 @@ internal class CustomerChangeVersionDataProvider : IDocumentVersionDataProvider
 {
     private readonly IDocumentVersionDataProvider _documentVersionDataProvider;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
 
-    public CustomerChangeVersionDataProvider(IDocumentVersionDataProvider documentVersionDataProvider, ISalesArrangementServiceClient salesArrangementService, ICodebookServiceClients codebookService)
+    public CustomerChangeVersionDataProvider(IDocumentVersionDataProvider documentVersionDataProvider, ISalesArrangementServiceClient salesArrangementService, ICodebookServiceClient codebookService)
     {
         _documentVersionDataProvider = documentVersionDataProvider;
         _salesArrangementService = salesArrangementService;
@@ -28,7 +28,7 @@ internal class CustomerChangeVersionDataProvider : IDocumentVersionDataProvider
 
         var variants = await _codebookService.DocumentTemplateVariants(cancellationToken);
 
-        DocumentTemplateVariantItem variant;
+        DocumentTemplateVariantsResponse.Types.DocumentTemplateVariantItem variant;
 
         if (request.DocumentTemplateVariantId.HasValue)
         {

@@ -6,11 +6,11 @@ namespace NOBY.Api.Endpoints.DocumentOnSA.Search;
 public class SearchHandler : IRequestHandler<SearchRequest, SearchResponse>
 {
     private readonly IDocumentOnSAServiceClient _client;
-    private readonly ICodebookServiceClients _codebookServiceClients;
+    private readonly ICodebookServiceClient _codebookServiceClients;
 
     public SearchHandler(
         IDocumentOnSAServiceClient client,
-        ICodebookServiceClients codebookServiceClients)
+        ICodebookServiceClient codebookServiceClients)
     {
         _client = client;
         _codebookServiceClients = codebookServiceClients;

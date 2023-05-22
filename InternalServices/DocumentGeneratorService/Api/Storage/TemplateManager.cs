@@ -7,11 +7,11 @@ namespace CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 public class TemplateManager : IDisposable
 {
     private readonly TemplateFileStorage _fileStorage;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
 
     private readonly List<Stream> _documentStreams = new();
 
-    public TemplateManager(TemplateFileStorage fileStorage, ICodebookServiceClients codebookService)
+    public TemplateManager(TemplateFileStorage fileStorage, ICodebookServiceClient codebookService)
     {
         _fileStorage = fileStorage;
         _codebookService = codebookService;

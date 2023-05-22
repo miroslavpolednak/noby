@@ -16,13 +16,13 @@ internal sealed class FormsService
     private readonly IMediator _mediator;
     private readonly IDataAggregatorServiceClient _dataAggregatorService;
     private readonly IHouseholdServiceClient _householdService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public FormsService(IMediator mediator,
                         IDataAggregatorServiceClient dataAggregatorService,
                         IHouseholdServiceClient householdService,
-                        ICodebookServiceClients codebookService,
+                        ICodebookServiceClient codebookService,
                         ICurrentUserAccessor currentUserAccessor)
     {
         _mediator = mediator;

@@ -17,7 +17,7 @@ public static class StartupExtensions
 
     public const int DefaultAbsoluteCacheExpirationMinutes = 10;
 
-    public static IServiceCollection AddCaseService(this IServiceCollection services)
+    public static IServiceCollection AddCodebookService(this IServiceCollection services)
     {
         services.AddCisServiceDiscovery();
         services.TryAddTransient<ICodebookServiceClient, __Services.CodebookService>();
@@ -25,7 +25,7 @@ public static class StartupExtensions
         return services;
     }
 
-    public static IServiceCollection AddCaseService(this IServiceCollection services, string serviceUrl)
+    public static IServiceCollection AddCodebookService(this IServiceCollection services, string serviceUrl)
     {
         services.TryAddTransient<ICodebookServiceClient, __Services.CodebookService>();
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.CodebookService.CodebookServiceClient>(serviceUrl);

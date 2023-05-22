@@ -27,13 +27,13 @@ internal sealed class GetCustomerDetailWithChangesHandler
     }
 
     private readonly CustomerWithChangedDataService _changedDataService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
 
     public GetCustomerDetailWithChangesHandler(
         CustomerWithChangedDataService changedDataService,
-        ICodebookServiceClients codebookService,
+        ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSAService)
     {

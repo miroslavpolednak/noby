@@ -165,7 +165,7 @@ internal sealed class SimulateMortgageHandler
     }
 
     private readonly ILogger<SimulateMortgageHandler> _logger;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IEasSimulationHTClient _easSimulationHTClient;
     private readonly ICreditWorthinessServiceClient _creditWorthinessService;
     private readonly OfferServiceDbContext _dbContext;
@@ -173,7 +173,7 @@ internal sealed class SimulateMortgageHandler
     public SimulateMortgageHandler(
         OfferServiceDbContext dbContext,
         ILogger<SimulateMortgageHandler> logger,
-        ICodebookServiceClients codebookService,
+        ICodebookServiceClient codebookService,
         IEasSimulationHTClient easSimulationHTClient,
         ICreditWorthinessServiceClient creditWorthinessService
     )

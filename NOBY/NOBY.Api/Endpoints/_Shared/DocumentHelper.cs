@@ -3,8 +3,7 @@ using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using __Contract = DomainServices.DocumentArchiveService.Contracts;
 using __Api = NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using DomainServices.CodebookService.Clients;
-using System.Threading;
-using DomainServices.CodebookService.Contracts.Endpoints.EaCodesMain;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.Shared;
 public interface IDocumentHelper
@@ -23,11 +22,11 @@ public interface IDocumentHelper
 [ScopedService, AsImplementedInterfacesService]
 public class DocumentHelper : IDocumentHelper
 {
-    private readonly ICodebookServiceClients _codebookServiceClient;
+    private readonly ICodebookServiceClient _codebookServiceClient;
 
-    public List<EaCodeMainItem> EaCodeMainItems { get; set; } = null!;
+    public List<EaCodesMainResponse.Types.EaCodesMainItem> EaCodeMainItems { get; set; } = null!;
 
-    public DocumentHelper(ICodebookServiceClients codebookServiceClient)
+    public DocumentHelper(ICodebookServiceClient codebookServiceClient)
     {
         _codebookServiceClient = codebookServiceClient;
     }

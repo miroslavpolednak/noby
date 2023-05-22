@@ -1,7 +1,6 @@
 ﻿using CIS.Foms.Enums;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
-using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Mappers;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -10,20 +9,21 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
+
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetDocumentsToSignList;
 
 public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignListRequest, GetDocumentsToSignListResponse>
 {
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
-    private readonly ICodebookServiceClients _codebookServiceClients;
+    private readonly ICodebookServiceClient _codebookServiceClients;
     private readonly IDocumentOnSaMapper _documentOnSaMapper;
     private readonly IHouseholdServiceClient _householdClient;
 
     public GetDocumentsToSignListHandler(
         DocumentOnSAServiceDbContext dbContext,
         ISalesArrangementServiceClient arrangementServiceClient,
-        ICodebookServiceClients codebookServiceClients,
+        ICodebookServiceClient codebookServiceClients,
         IDocumentOnSaMapper documentOnSaMapper,
         IHouseholdServiceClient householdClient)
     {
@@ -86,7 +86,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignVirtual);
     }
 
-    private static DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypeItem documentTypeItem, int salesArrangementId)
+    private static DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypesResponse.Types.DocumentTypeItem documentTypeItem, int salesArrangementId)
     {
         return new DocumentOnSAToSign
         {
@@ -114,7 +114,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         }
     }
 
-    private async Task<SalesArrangementTypeItem> GetSalesArrangementType(SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem> GetSalesArrangementType(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var salesArrangementTypes = await _codebookServiceClients.SalesArrangementTypes(cancellationToken);
         var salesArrangementType = salesArrangementTypes.Single(r => r.Id == salesArrangement.SalesArrangementTypeId);

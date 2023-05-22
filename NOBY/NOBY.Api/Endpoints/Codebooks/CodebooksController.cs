@@ -1,7 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper;
-using DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject;
-using DomainServices.CodebookService.Contracts.Endpoints.LoanKinds;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.Codebooks;
 
@@ -122,7 +120,7 @@ public class CodebooksController : ControllerBase
     [HttpGet("fixation-period-length")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<int>), StatusCodes.Status200OK)]
-    public async Task<List<int>> GetFixationPeriodLength([FromQuery] int productTypeId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    public async Task<List<int>> GetFixationPeriodLength([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
             .Where(t => t.ProductTypeId == productTypeId)
             .Select(t => t.FixedRatePeriod)
@@ -135,8 +133,8 @@ public class CodebooksController : ControllerBase
     /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
     [HttpGet("product-loan-kinds")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(List<LoanKindsItem>), StatusCodes.Status200OK)]
-    public async Task<List<LoanKindsItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(List<GenericCodebookFullResponse.Types.GenericCodebookFullItem>), StatusCodes.Status200OK)]
+    public async Task<List<GenericCodebookFullResponse.Types.GenericCodebookFullItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         var loanKindsIds = (await svc.ProductTypes(cancellationToken))
             .FirstOrDefault(t => t.Id == productTypeId && t.IsValid)?
@@ -155,8 +153,8 @@ public class CodebooksController : ControllerBase
     /// <param name="productTypeId">ID typu produktu</param>
     [HttpGet("fixed-rate-periods")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>), StatusCodes.Status200OK)]
-    public async Task<List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(List<FixedRatePeriodsResponse.Types.FixedRatePeriodItem>), StatusCodes.Status200OK)]
+    public async Task<List<FixedRatePeriodsResponse.Types.FixedRatePeriodItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
             .Where(t => t.ProductTypeId == productTypeId && t.IsNewProduct)
             .DistinctBy(t => new { t.FixedRatePeriod, t.MandantId })
@@ -174,7 +172,7 @@ public class CodebooksController : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(typeof(Dto.Developer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Dto.Developer> GetDeveloper([FromRoute] int developerId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    public async Task<Dto.Developer> GetDeveloper([FromRoute] int developerId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         var developer = await svc.GetDeveloper(developerId, cancellationToken);
         return new Dto.Developer
@@ -201,9 +199,9 @@ public class CodebooksController : ControllerBase
     /// <param name="developerId">ID developera</param>
     [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(DeveloperProjectItem), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetDeveloperProjectResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<DeveloperProjectItem> GetDeveloperProject([FromRoute] int developerId, [FromRoute] int developerProjectId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    public async Task<GetDeveloperProjectResponse> GetDeveloperProject([FromRoute] int developerId, [FromRoute] int developerProjectId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         return await svc.GetDeveloperProject(developerId, developerProjectId, cancellationToken);
     }

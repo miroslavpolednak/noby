@@ -1,11 +1,12 @@
-﻿using FluentValidation;
+﻿using DomainServices.CodebookService.Clients;
+using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.UpdateObligation;
 
 internal sealed class UpdateObligationRequestValidator
     : AbstractValidator<Contracts.Obligation>
 {
-    public UpdateObligationRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public UpdateObligationRequestValidator(ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)

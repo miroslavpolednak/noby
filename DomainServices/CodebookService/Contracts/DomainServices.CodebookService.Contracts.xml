@@ -581,72 +581,6 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.GendersResponse.Types.GenderItem.StarBuildJsonCodeFieldNumber">
             <summary>Field number for the "StarBuildJsonCode" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.ItemsFieldNumber">
-            <summary>Field number for the "Items" field.</summary>
-        </member>
-        <member name="T:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.Types">
-            <summary>Container for nested types declared in the GetDeveloperResponse message type.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.Types.GetDeveloperItem.IdFieldNumber">
-            <summary>Field number for the "Id" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.Types.GetDeveloperItem.NameFieldNumber">
-            <summary>Field number for the "Name" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.Types.GetDeveloperItem.CinFieldNumber">
-            <summary>Field number for the "Cin" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.Types.GetDeveloperItem.StatusIdFieldNumber">
-            <summary>Field number for the "StatusId" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.Types.GetDeveloperItem.StatusTextFieldNumber">
-            <summary>Field number for the "StatusText" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.Types.GetDeveloperItem.IsValidFieldNumber">
-            <summary>Field number for the "IsValid" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.Types.GetDeveloperItem.BenefitPackageFieldNumber">
-            <summary>Field number for the "BenefitPackage" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.Types.GetDeveloperItem.IsBenefitValidFieldNumber">
-            <summary>Field number for the "IsBenefitValid" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.Types.GetDeveloperItem.BenefitsBeyondPackageFieldNumber">
-            <summary>Field number for the "BenefitsBeyondPackage" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.ItemsFieldNumber">
-            <summary>Field number for the "Items" field.</summary>
-        </member>
-        <member name="T:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.Types">
-            <summary>Container for nested types declared in the GetDeveloperProjectResponse message type.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.Types.GetDeveloperProjectItem.IdFieldNumber">
-            <summary>Field number for the "Id" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.Types.GetDeveloperProjectItem.NameFieldNumber">
-            <summary>Field number for the "Name" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.Types.GetDeveloperProjectItem.WarningForKbFieldNumber">
-            <summary>Field number for the "WarningForKb" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.Types.GetDeveloperProjectItem.WarningForMpFieldNumber">
-            <summary>Field number for the "WarningForMp" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.Types.GetDeveloperProjectItem.WebFieldNumber">
-            <summary>Field number for the "Web" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.Types.GetDeveloperProjectItem.MassEvaluationTextFieldNumber">
-            <summary>Field number for the "MassEvaluationText" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.Types.GetDeveloperProjectItem.RecommandationFieldNumber">
-            <summary>Field number for the "Recommandation" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.Types.GetDeveloperProjectItem.PlaceFieldNumber">
-            <summary>Field number for the "Place" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.Types.GetDeveloperProjectItem.IsValidFieldNumber">
-            <summary>Field number for the "IsValid" field.</summary>
-        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.GetGeneralDocumentListResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
@@ -664,18 +598,6 @@
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem.FormatFieldNumber">
             <summary>Field number for the "Format" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorResponse.ItemsFieldNumber">
-            <summary>Field number for the "Items" field.</summary>
-        </member>
-        <member name="T:DomainServices.CodebookService.Contracts.v1.GetOperatorResponse.Types">
-            <summary>Container for nested types declared in the GetOperatorResponse message type.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorResponse.Types.GetOperatorItem.PerformerLoginFieldNumber">
-            <summary>Field number for the "PerformerLogin" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorResponse.Types.GetOperatorItem.PerformerNameFieldNumber">
-            <summary>Field number for the "PerformerName" field.</summary>
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
@@ -1440,14 +1362,74 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperRequest.DeveloperIdFieldNumber">
             <summary>Field number for the "DeveloperId" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.CinFieldNumber">
+            <summary>Field number for the "Cin" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.StatusIdFieldNumber">
+            <summary>Field number for the "StatusId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.StatusTextFieldNumber">
+            <summary>Field number for the "StatusText" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.BenefitPackageFieldNumber">
+            <summary>Field number for the "BenefitPackage" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.IsBenefitValidFieldNumber">
+            <summary>Field number for the "IsBenefitValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.BenefitsBeyondPackageFieldNumber">
+            <summary>Field number for the "BenefitsBeyondPackage" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectRequest.DeveloperIdFieldNumber">
             <summary>Field number for the "DeveloperId" field.</summary>
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectRequest.DeveloperProjectIdFieldNumber">
             <summary>Field number for the "DeveloperProjectId" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.WarningForKbFieldNumber">
+            <summary>Field number for the "WarningForKb" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.WarningForMpFieldNumber">
+            <summary>Field number for the "WarningForMp" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.WebFieldNumber">
+            <summary>Field number for the "Web" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.MassEvaluationTextFieldNumber">
+            <summary>Field number for the "MassEvaluationText" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.RecommandationFieldNumber">
+            <summary>Field number for the "Recommandation" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.PlaceFieldNumber">
+            <summary>Field number for the "Place" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorRequest.PerformerLoginFieldNumber">
             <summary>Field number for the "PerformerLogin" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorResponse.PerformerLoginFieldNumber">
+            <summary>Field number for the "PerformerLogin" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorResponse.PerformerNameFieldNumber">
+            <summary>Field number for the "PerformerName" field.</summary>
         </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.GenericCodebookFullReflection">
             <summary>Holder for reflection information generated from Messages/GenericCodebookFull.proto</summary>

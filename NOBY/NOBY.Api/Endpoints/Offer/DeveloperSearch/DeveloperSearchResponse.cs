@@ -10,5 +10,5 @@ public sealed class DeveloperSearchResponse
     /// <summary>
     /// Kolekce nalezenych projektu.
     /// </summary>
-    public List<DomainServices.CodebookService.Contracts.Endpoints.DeveloperSearch.DeveloperSearchItem>? Rows { get; set; }
+    public List<DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types.DeveloperSearchItem>? Rows { get; set; }
 }

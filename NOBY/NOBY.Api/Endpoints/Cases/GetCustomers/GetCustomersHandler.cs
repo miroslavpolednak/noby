@@ -139,7 +139,7 @@ internal sealed class GetCustomersHandler
 
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
     private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
@@ -148,7 +148,7 @@ internal sealed class GetCustomersHandler
         DomainServices.ProductService.Clients.IProductServiceClient productService,
         DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
-        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
+        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         DomainServices.CaseService.Clients.ICaseServiceClient caseService, 
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {

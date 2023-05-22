@@ -26,9 +26,9 @@ internal sealed class DeveloperSearchHandler
         };
     }
 
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
 
-    public DeveloperSearchHandler(DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService)
+    public DeveloperSearchHandler(DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         _codebookService = codebookService;
     }

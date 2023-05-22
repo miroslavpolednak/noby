@@ -90,7 +90,7 @@ internal sealed class CreateMortgageCaseHandler
 
     private readonly IRollbackBag _bag;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceClient _caseService;
@@ -107,7 +107,7 @@ internal sealed class CreateMortgageCaseHandler
         ISalesArrangementServiceClient salesArrangementService,
         IHouseholdServiceClient householdService,
         ICaseServiceClient caseService,
-        ICodebookServiceClients codebookService, 
+        ICodebookServiceClient codebookService, 
         IOfferServiceClient offerService, 
         ILogger<CreateMortgageCaseHandler> logger)
     {

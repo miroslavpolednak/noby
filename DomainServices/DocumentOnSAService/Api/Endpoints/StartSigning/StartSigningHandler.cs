@@ -23,7 +23,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
     private readonly IDataAggregatorServiceClient _dataAggregatorServiceClient;
-    private readonly ICodebookServiceClients _codebookServiceClient;
+    private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly ICurrentUserAccessor _currentUser;
 
@@ -33,7 +33,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         IHouseholdServiceClient householdClient,
         ISalesArrangementServiceClient arrangementServiceClient,
         IDataAggregatorServiceClient dataAggregatorServiceClient,
-        ICodebookServiceClients codebookServiceClient,
+        ICodebookServiceClient codebookServiceClient,
         IDocumentArchiveServiceClient documentArchiveServiceClient,
         ICurrentUserAccessor currentUser)
     {

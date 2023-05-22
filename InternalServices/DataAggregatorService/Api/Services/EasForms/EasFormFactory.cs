@@ -5,7 +5,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms;
 
@@ -14,9 +14,9 @@ internal class EasFormFactory
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly DataServicesLoader _dataServicesLoader;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
 
-    public EasFormFactory(IServiceProvider serviceProvider, DataServicesLoader dataServicesLoader, ICodebookServiceClients codebookService)
+    public EasFormFactory(IServiceProvider serviceProvider, DataServicesLoader dataServicesLoader, ICodebookServiceClient codebookService)
     {
         _serviceProvider = serviceProvider;
         _dataServicesLoader = dataServicesLoader;
@@ -39,7 +39,7 @@ internal class EasFormFactory
         return easForm;
     }
 
-    private IEasForm CreateProductEasForm(IEnumerable<DynamicFormValues> dynamicFormValues, List<DocumentTypeItem> documentTypes)
+    private IEasForm CreateProductEasForm(IEnumerable<DynamicFormValues> dynamicFormValues, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes)
     {
         var productData = CreateData<ProductFormData>();
         productData.MainDynamicFormValues = dynamicFormValues.First(d => d.DocumentTypeId == (int)DocumentType.ZADOSTHU);
@@ -47,7 +47,7 @@ internal class EasFormFactory
         return new EasProductForm(productData, documentTypes);
     }
 
-    private IEasForm CreateServiceEasForm(EasFormKey easFormKey, List<DocumentTypeItem> documentTypes)
+    private IEasForm CreateServiceEasForm(EasFormKey easFormKey, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes)
     {
         return easFormKey.EasFormTypes.First() switch
         {

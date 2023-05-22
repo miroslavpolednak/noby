@@ -7,11 +7,11 @@ namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;
 public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListRequest, GetDocumentsSignListResponse>
 {
     private readonly IDocumentOnSAServiceClient _client;
-    private readonly ICodebookServiceClients _codebookServiceClient;
+    private readonly ICodebookServiceClient _codebookServiceClient;
 
     public GetDocumentsSignListHandler(
         IDocumentOnSAServiceClient client,
-        ICodebookServiceClients codebookServiceClient)
+        ICodebookServiceClient codebookServiceClient)
     {
         _client = client;
         _codebookServiceClient = codebookServiceClient;

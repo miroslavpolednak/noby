@@ -286,19 +286,15 @@ message GetDeveloperRequest {
 }
 
 message GetDeveloperResponse {
-	repeated GetDeveloperItem Items = 1;
-
-	message GetDeveloperItem {
-		int32 Id = 1;
-		string Name = 2;
-		string Cin = 3;
-		google.protobuf.Int32Value StatusId = 4;
-		string StatusText = 5;
-		bool IsValid = 6;
-		bool BenefitPackage = 7;
-		bool IsBenefitValid = 8;
-		bool BenefitsBeyondPackage = 9;
-	}
+	int32 Id = 1;
+	string Name = 2;
+	string Cin = 3;
+	google.protobuf.Int32Value StatusId = 4;
+	string StatusText = 5;
+	bool IsValid = 6;
+	bool BenefitPackage = 7;
+	bool IsBenefitValid = 8;
+	bool BenefitsBeyondPackage = 9;
 }
 
 message GetDeveloperProjectRequest {
@@ -307,19 +303,15 @@ message GetDeveloperProjectRequest {
 }
 
 message GetDeveloperProjectResponse {
-	repeated GetDeveloperProjectItem Items = 1;
-
-	message GetDeveloperProjectItem {
-		int32 Id = 1;
-		string Name = 2;
-		string WarningForKb = 3;
-		string WarningForMp = 4;
-		google.protobuf.StringValue Web = 5;
-		google.protobuf.StringValue MassEvaluationText = 6;
-		google.protobuf.StringValue Recommandation = 7;
-		google.protobuf.StringValue Place = 8;
-		bool IsValid = 9;
-	}
+	int32 Id = 1;
+	string Name = 2;
+	string WarningForKb = 3;
+	string WarningForMp = 4;
+	google.protobuf.StringValue Web = 5;
+	google.protobuf.StringValue MassEvaluationText = 6;
+	google.protobuf.StringValue Recommandation = 7;
+	google.protobuf.StringValue Place = 8;
+	bool IsValid = 9;
 }
 
 message GetGeneralDocumentListResponse {
@@ -338,12 +330,8 @@ message GetOperatorRequest {
 }
 
 message GetOperatorResponse {
-	repeated GetOperatorItem Items = 1;
-
-	message GetOperatorItem {
-		string PerformerLogin = 1;
-		string PerformerName = 2;
-	}
+	string PerformerLogin = 1;
+	string PerformerName = 2;
 }
 
 message HouseholdTypesResponse {

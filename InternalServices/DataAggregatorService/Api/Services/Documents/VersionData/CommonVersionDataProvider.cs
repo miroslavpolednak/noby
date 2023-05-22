@@ -2,16 +2,16 @@
 using CIS.Core.Exceptions;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.Document;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTemplateVersions;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.VersionData;
 
 [TransientService, AsImplementedInterfacesService]
 internal class CommonVersionDataProvider : IDocumentVersionDataProvider
 {
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
 
-    public CommonVersionDataProvider(ICodebookServiceClients codebookService)
+    public CommonVersionDataProvider(ICodebookServiceClient codebookService)
     {
         _codebookService = codebookService;
     }
@@ -33,14 +33,14 @@ internal class CommonVersionDataProvider : IDocumentVersionDataProvider
         };
     }
 
-    private async Task<DocumentTemplateVersionItem?> GetRequestedVersion(int documentTypeId, int versionId, CancellationToken cancellationToken)
+    private async Task<DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem?> GetRequestedVersion(int documentTypeId, int versionId, CancellationToken cancellationToken)
     {
         var documentVersions = await _codebookService.DocumentTemplateVersions(cancellationToken);
 
         return documentVersions.FirstOrDefault(d => d.Id == versionId && d.DocumentTypeId == documentTypeId);
     }
 
-    private async Task<DocumentTemplateVersionItem?> GetLatestVersion(int documentTypeId, CancellationToken cancellationToken)
+    private async Task<DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem?> GetLatestVersion(int documentTypeId, CancellationToken cancellationToken)
     {
         var documentVersions = await _codebookService.DocumentTemplateVersions(cancellationToken);
 

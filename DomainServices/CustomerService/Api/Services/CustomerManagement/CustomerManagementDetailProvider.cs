@@ -2,6 +2,7 @@
 using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -9,20 +10,20 @@ namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 internal sealed class CustomerManagementDetailProvider
 {
     private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
-    private readonly ICodebookServiceClients _codebook;
+    private readonly ICodebookServiceClient _codebook;
 
-    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
-    private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
-    private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
-    private List<CodebookService.Contracts.Endpoints.ProfessionTypes.ProfessionTypeItem> _professionTypes = null!;
-    private List<CodebookService.Contracts.Endpoints.NetMonthEarnings.NetMonthEarningItem> _netMonthEarnings = null!;
-    private List<CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes.LegalCapacityRestrictionTypeItem> _legalCapacityRestrictionTypes = null!;
-    private List<CodebookService.Contracts.GenericCodebookItemWithRdmCode> _incomeMainTypesAML = null!;
-    private List<CodebookService.Contracts.Endpoints.EducationLevels.EducationLevelItem> _educations = null!;
-    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
+    private List<CountriesResponse.Types.CountryItem> _countries = null!;
+    private List<GendersResponse.Types.GenderItem> _genders = null!;
+    private List<MaritalStatusesResponse.Types.MaritalStatuseItem> _maritals = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _titles = null!;
+    private List<GenericCodebookWithRdmCodeResponse.Types.GenericCodebookWithRdmCodeItem> _professionTypes = null!;
+    private List<GenericCodebookWithRdmCodeResponse.Types.GenericCodebookWithRdmCodeItem> _netMonthEarnings = null!;
+    private List<LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem> _legalCapacityRestrictionTypes = null!;
+    private List<GenericCodebookWithRdmCodeResponse.Types.GenericCodebookWithRdmCodeItem> _incomeMainTypesAML = null!;
+    private List<EducationLevelsResponse.Types.EducationLevelItem> _educations = null!;
+    private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
 
-    public CustomerManagementDetailProvider(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
+    public CustomerManagementDetailProvider(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ICodebookServiceClient codebook)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;
@@ -107,7 +108,7 @@ internal sealed class CustomerManagementDetailProvider
             KbRelationshipCode = customer.Kyc?.NaturalPersonKyc?.CustomerKbRelationship?.Code ?? string.Empty,
             Segment = customer.CustomerSegment?.SegmentKeyCode ?? string.Empty,
             ProfessionCategoryId = customer.Kyc?.NaturalPersonKyc?.Employment?.CategoryCode,
-            ProfessionId = _professionTypes.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.Employment?.ProfessionCode == t.RdmCode)?.Id,
+            ProfessionId = _professionTypes.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.Employment?.ProfessionCode.ToString() == t.RdmCode)?.Id,
             NetMonthEarningAmountId = _netMonthEarnings.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.NetMonthEarningCode == t.RdmCode)?.Id,
             NetMonthEarningTypeId = _incomeMainTypesAML.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.MainSourceOfEarnings?.Code.ToString(System.Globalization.CultureInfo.InvariantCulture) == t.RdmCode)?.Id,
             TaxResidence = new NaturalPersonTaxResidence
