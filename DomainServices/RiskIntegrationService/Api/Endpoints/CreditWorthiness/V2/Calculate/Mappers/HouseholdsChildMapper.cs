@@ -2,6 +2,7 @@
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
 using CIS.Core;
 using DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;
 
