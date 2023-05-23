@@ -207,7 +207,7 @@ internal sealed class CodebookService
         using var connection = _xxd.Create();
         await connection.OpenAsync();
         return (await connection.QueryFirstOrDefaultAsync<GetDeveloperResponse>(SqlQueries.GetDeveloper, new { request.DeveloperId }))
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperNotFound);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperNotFound, request.DeveloperId);
     }
 
     public override async Task<GetDeveloperProjectResponse> GetDeveloperProject(GetDeveloperProjectRequest request, ServerCallContext context)
@@ -215,7 +215,7 @@ internal sealed class CodebookService
         using var connection = _xxd.Create();
         await connection.OpenAsync();
         return (await connection.QueryFirstOrDefaultAsync<GetDeveloperProjectResponse>(SqlQueries.GetDeveloperProject, new { request.DeveloperProjectId, request.DeveloperId }))
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperProjectNotFound);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperProjectNotFound, request.DeveloperProjectId);
     }
 
     public override Task<GetGeneralDocumentListResponse> GetGeneralDocumentList(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)

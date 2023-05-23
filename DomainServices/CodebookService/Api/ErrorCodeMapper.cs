@@ -12,8 +12,8 @@ internal sealed class ErrorCodeMapper
     {
         SetMessages(new Dictionary<int, string>()
         {
-            { DeveloperNotFound, "Developer not found" },
-            { DeveloperProjectNotFound, "Developer project not found" }
+            { DeveloperNotFound, "DeveloperId {PropertyValue} not found" },
+            { DeveloperProjectNotFound, "DeveloperProjectId {PropertyValue} not found" }
         });
 
         return Messages;
