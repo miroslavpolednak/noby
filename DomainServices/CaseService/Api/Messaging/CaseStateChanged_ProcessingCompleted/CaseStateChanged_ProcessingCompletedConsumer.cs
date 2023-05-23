@@ -39,15 +39,15 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
 
         if (context.Message.workflowInputProcessingContext.requestProcessingResult == cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.RequestProcessingResultEnum.OK)
         {
-            entity.State = cache.CaseState;
             entity.StateUpdatedInStarbuild = (byte)Contracts.UpdatedInStarbuildStates.Ok;
+
+            _logger.StarbuildStateUpdateSuccess(cache.CaseId, cache.RequestId);
         }
         else
         {
-            entity.State = cache.CaseState;
             entity.StateUpdatedInStarbuild = (byte)Contracts.UpdatedInStarbuildStates.Error;
 
-            _logger.StarbuildStateUpdateFailed(cache.CaseId, cache.CaseState);
+            _logger.StarbuildStateUpdateFailed(cache.CaseId, cache.RequestId);
         }
 
         await _dbContext.SaveChangesAsync(context.CancellationToken);

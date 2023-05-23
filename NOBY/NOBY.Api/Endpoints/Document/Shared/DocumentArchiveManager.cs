@@ -13,12 +13,12 @@ internal sealed class DocumentArchiveManager<TDocumentIdManager, TEntityId> wher
 {
     private readonly TDocumentIdManager _documentIdManager;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ICisEnvironmentConfiguration _environmentConfiguration;
 
     public DocumentArchiveManager(TDocumentIdManager documentIdManager,
                                   IDocumentArchiveServiceClient documentArchiveService,
-                                  ICodebookServiceClients codebookService,
+                                  ICodebookServiceClient codebookService,
                                   ICisEnvironmentConfiguration environmentConfiguration)
     {
         _documentIdManager = documentIdManager;

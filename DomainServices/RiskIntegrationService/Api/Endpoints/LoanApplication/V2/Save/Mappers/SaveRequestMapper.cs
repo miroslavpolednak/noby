@@ -1,8 +1,8 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
-using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 using CIS.Core.Security;
 using CIS.Core.Configuration;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
@@ -71,7 +71,7 @@ internal sealed class SaveRequestMapper
     }
 
     // najit odpovidajici produkt
-    private async Task<_RAT.RiskApplicationTypeItem?> getRiskApplicationType(_V2.LoanApplicationProduct product, CancellationToken cancellation)
+    private async Task<RiskApplicationTypesResponse.Types.RiskApplicationTypeItem?> getRiskApplicationType(_V2.LoanApplicationProduct product, CancellationToken cancellation)
     {
         // product 
         var products = (await _codebookService.RiskApplicationTypes(cancellation))
@@ -105,7 +105,7 @@ internal sealed class SaveRequestMapper
     }
 
     private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly IServiceUserAccessor _serviceUserAccessor;
     private readonly AppConfiguration _configuration;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
@@ -114,7 +114,7 @@ internal sealed class SaveRequestMapper
         AppConfiguration configuration,
         IServiceUserAccessor serviceUserAccessor,
         CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         ICisEnvironmentConfiguration cisEnvironment)
     {
         _configuration = configuration;

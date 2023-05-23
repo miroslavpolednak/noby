@@ -17,10 +17,10 @@
 	<ItemGroup>
     <PackageReference Include="MediatR" Version="12.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
-	  <PackageReference Include="Grpc.AspNetCore" Version="2.52.0" />
-	  <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.52.0" />
+	  <PackageReference Include="Grpc.AspNetCore" Version="2.53.0" />
+	  <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.53.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.ServiceModel.Http" Version="4.10.1" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.10.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +31,7 @@
     <ProjectReference Include="..\..\..\ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj" />
     <ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
     <ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
+    <ProjectReference Include="..\..\RiskIntegrationService\Clients\DomainServices.RiskIntegrationService.Clients.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.OfferService.Contracts.csproj" />
   </ItemGroup>
 

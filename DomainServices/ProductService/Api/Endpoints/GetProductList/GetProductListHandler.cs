@@ -1,20 +1,17 @@
 ﻿using DomainServices.ProductService.Contracts;
-using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetProductList;
 
 internal sealed class GetProductListHandler
-    : BaseMortgageHandler, IRequestHandler<Contracts.GetProductListRequest, GetProductListResponse>
+    : IRequestHandler<Contracts.GetProductListRequest, GetProductListResponse>
 {
     #region Construction
+    private readonly Database.LoanRepository _repository;
 
-    public GetProductListHandler(
-      ICodebookServiceClients codebookService,
-      Database.LoanRepository repository,
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        ILogger<GetProductListHandler> logger) : base(codebookService, repository, null, logger) { }
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
-
+    public GetProductListHandler(Database.LoanRepository repository)
+    {
+        _repository = repository;
+    }
 
     #endregion
 

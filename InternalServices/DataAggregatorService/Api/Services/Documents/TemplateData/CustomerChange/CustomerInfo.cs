@@ -1,6 +1,5 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
-using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.Countries;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.CustomerChange;
@@ -8,10 +7,10 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Temp
 internal class CustomerInfo
 {
     private readonly CustomerDetailResponse _customer;
-    private readonly ICollection<GenericCodebookItem> _degreesBefore;
-    private readonly ICollection<CountriesItem> _countries;
+    private readonly ICollection<GenericCodebookResponse.Types.GenericCodebookItem> _degreesBefore;
+    private readonly ICollection<CountriesResponse.Types.CountryItem> _countries;
 
-    public CustomerInfo(CustomerDetailResponse customer, ICollection<GenericCodebookItem> degreesBefore, ICollection<CountriesItem> countries)
+    public CustomerInfo(CustomerDetailResponse customer, ICollection<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore, ICollection<CountriesResponse.Types.CountryItem> countries)
     {
         _customer = customer;
         _degreesBefore = degreesBefore;

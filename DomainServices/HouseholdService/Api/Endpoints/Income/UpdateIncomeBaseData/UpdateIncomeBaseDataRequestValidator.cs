@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.UpdateIncomeBaseData;
@@ -6,7 +7,7 @@ namespace DomainServices.HouseholdService.Api.Endpoints.Income.UpdateIncomeBaseD
 internal sealed class UpdateIncomeBaseDataRequestValidator
     : AbstractValidator<UpdateIncomeBaseDataRequest>
 {
-    public UpdateIncomeBaseDataRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public UpdateIncomeBaseDataRequestValidator(ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.IncomeId)
             .GreaterThan(0)

@@ -40,7 +40,8 @@ internal sealed class SimulateMortgageHandler
             {
                 OfferId = result.OfferId,
                 ResourceProcessId = result.ResourceProcessId,
-                SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs, result.AdditionalSimulationResults)
+                SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs, result.AdditionalSimulationResults),
+                CreditWorthinessSimpleResults = result.CreditWorthinessSimpleResults.ToApiResponse()
             };
         }
         catch (CisArgumentException ex)

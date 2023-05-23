@@ -4,7 +4,6 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Newtonsoft.Json;
-using NOBY.Api.SharedDto;
 using UserIdentity = CIS.Infrastructure.gRPC.CisTypes.UserIdentity;
 using __Household = DomainServices.HouseholdService.Contracts;
 
@@ -36,38 +35,6 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         if (!(originalModel.MobilePhone?.IsConfirmed ?? false))
             ModelComparers.CompareObjects(request.MobilePhone, originalModel.MobilePhone, "MobilePhone", delta);
 
-        // zjistit zda uz existuji changeData a v nich CustomerIdentification
-        bool identDocExists = false;
-        if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
-        {
-            var deserializedChangedData = JsonConvert.DeserializeObject<UpdateCustomerDetailWithChangesRequest>(customerOnSA.CustomerChangeData);
-            identDocExists = deserializedChangedData?.IdentificationDocument is not null;
-        }
-
-        // tady schvalne neresime prvni pindu z EA diagramu, protoze bysme museli z customerOnSA json delty udelat objekt a ten teprve kontrolovat. A to by bylo pomalejsi a narocnejsi nez tuhle podminku vzdy znovu projet.
-        if (!identDocExists && identificationMethodId != 1 && identificationMethodId != 8)
-        {
-            if (_userAccessor.User?.Id != null)
-            {
-                var user = await _userServiceClient.GetUser(_userAccessor.User.Id, cancellationToken);
-                var isBroker = user.UserIdentifiers.Any(u =>
-                    u.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId);
-
-                delta.CustomerIdentification.CzechIdentificationNumber = user.CzechIdentificationNumber;
-                delta.CustomerIdentification.IdentificationMethodId = isBroker ? 8 : 1;
-            }
-        }
-
-        // https://jira.kb.cz/browse/HFICH-4200
-        // docasne reseni nez se CM rozmysli jak na to
-        if (customerOnSA.CustomerAdditionalData is null)
-            customerOnSA.CustomerAdditionalData = new DomainServices.HouseholdService.Contracts.CustomerAdditionalData();
-        customerOnSA.CustomerAdditionalData.LegalCapacity = new()
-        {
-            RestrictionTypeId = request.LegalCapacity?.RestrictionTypeId,
-            RestrictionUntil = request.LegalCapacity?.RestrictionUntil
-        };
-        
         // vytvoreni JSONu z delta objektu
         string? finalJson = null;
         if (((IDictionary<string, Object>)delta).Count > 0)
@@ -79,14 +46,18 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         {
             CustomerOnSAId = customerOnSA.CustomerOnSAId,
             CustomerChangeData = finalJson,
-            CustomerAdditionalData = createAdditionalData(customerOnSA, request)
+            CustomerAdditionalData = await createAdditionalData(customerOnSA, request, identificationMethodId, cancellationToken)
         };
         await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
     }
 
-    static __Household.CustomerAdditionalData createAdditionalData(__Household.CustomerOnSA customerOnSA, UpdateCustomerDetailWithChangesRequest request)
+    private async Task<__Household.CustomerAdditionalData> createAdditionalData(
+        __Household.CustomerOnSA customerOnSA, 
+        UpdateCustomerDetailWithChangesRequest request, 
+        int? identificationMethodId, 
+        CancellationToken cancellationToken)
     {
-        var additionalData = customerOnSA.CustomerAdditionalData is null ? new __Household.CustomerAdditionalData() : customerOnSA.CustomerAdditionalData;
+        var additionalData = customerOnSA.CustomerAdditionalData ?? new __Household.CustomerAdditionalData();
 
         // https://jira.kb.cz/browse/HFICH-4200
         // docasne reseni nez se CM rozmysli jak na to
@@ -102,11 +73,24 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         additionalData.IsUSPerson = request.IsUSPerson.GetValueOrDefault();
         additionalData.IsPoliticallyExposed = request.IsUSPerson.GetValueOrDefault();
 
+        // tady schvalne neresime prvni pindu z EA diagramu, protoze bysme museli z customerOnSA json delty udelat objekt a ten teprve kontrolovat. A to by bylo pomalejsi a narocnejsi nez tuhle podminku vzdy znovu projet.
+        if (identificationMethodId != 1 && identificationMethodId != 8)
+        {
+            var user = await _userServiceClient.GetUser(_userAccessor.User!.Id, cancellationToken);
+            var isBroker = user.UserIdentifiers.Any(u =>
+                u.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId);
+
+            additionalData.CustomerIdentification ??= new __Household.CustomerIdentificationObject();
+            additionalData.CustomerIdentification.IdentificationDate = DateTime.Now.Date;
+            additionalData.CustomerIdentification.CzechIdentificationNumber = user.UserInfo.Cin;
+            additionalData.CustomerIdentification.IdentificationMethodId = isBroker ? 8 : 1;
+        }
+
         return additionalData;
     }
 
     private readonly CustomerWithChangedDataService _changedDataService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IUserServiceClient _userServiceClient;
@@ -114,7 +98,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
 
     public UpdateCustomerDetailWithChangesHandler(
         CustomerWithChangedDataService changedDataService,
-        ICodebookServiceClients codebookService,
+        ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSAService,
         IUserServiceClient userServiceClient,

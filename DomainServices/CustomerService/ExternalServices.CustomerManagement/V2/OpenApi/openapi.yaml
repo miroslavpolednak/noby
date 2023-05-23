@@ -1,0 +1,1576 @@
+openapi: 3.0.1
+info:
+  description: 'Customer service, contains operations for getting basic customer data and search customers'
+  title: CustomerService.v2
+  version: 2.0.4
+servers:
+  - url: https://be-cm-v1.dev.custmng.kbcloud/api
+    description: DEV environment
+  - url: https://be-cm-v1.fat.custmng.kbcloud/api
+    description: SIT environment
+  - url: https://be-cm-v1.stage.custmng.kbcloud/api
+    description: STAGE environment
+  - url: https://be-cm-v1.edu.custmng.kbcloud/api
+    description: EDU environment
+  - url: https://be-cm-v1.prod.custmng.kbcloud/api
+    description: Production environment
+paths:
+  /public/v2/customers/{customerId}/info:
+    get:
+      operationId: getCustomerInfo
+      tags:
+        - CustomerService.v2
+      summary: getCustomerInfo
+      description: "Operation returns customer information with: party, primary address, contact address, primary identification document, primary email and phone."
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/RequiredEntities'
+        - $ref: '#/components/parameters/IncludeArchived'
+        - $ref: '#/components/parameters/GetAllPrimaryPhones'
+        - $ref: '#/components/parameters/RequiredAddressFormats'
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerInfo'
+          description: Customer info entity
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+  /public/v2/customers/info:
+    post:
+      operationId: getCustomersInfo
+      tags:
+        - CustomerService.v2
+      summary: getCustomersInfo - for list of IDs
+      description: "Operation returns customer information with: party, primary address, contact address, primary identification document, primary email and phone."
+      requestBody:
+        description: List of required IDs
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+      parameters:
+        - $ref: '#/components/parameters/RequiredEntities'
+        - $ref: '#/components/parameters/IncludeArchived'
+        - $ref: '#/components/parameters/GetAllPrimaryPhones'
+        - $ref: '#/components/parameters/RequiredAddressFormats'
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerInfo'
+          description: Customer info for required customers
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+  /public/v2/customers:
+    get:
+      operationId: searchCustomer
+      tags:
+        - CustomerService.v2
+      summary: searchCustomer
+      description: Operation search customers according input parameters
+      parameters:
+        - name: numberOfEntries
+          description: Number of entries to return. When not specified or when is greater than 100 then 100 is applied.
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: customerId
+          description: Customer's ID (KBID) filter - primary filter
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: name
+          description: "Surname/company name filter - primary filter. Surname or company name can be used with mask - at least 3 marks + * (example: Komer* for Komercni Banka)"
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: firstName
+          description: "First name filter - can be used only as additional filter to surname for Natural Person. First name can be used with mask - at least 3 marks + *"
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: birthEstablishedDate
+          description: Birth date/Established date filter, can be used only as additional filter with other filters
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: identifierValue
+          description: Identifier value filter - primary filter
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: identifierTypeCode
+          description: Identifier type filter, additional filter to identifierValue. When not specified then all identifier types are used. RDM codebook CB_JuridicalPersonIdentificationType.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: idDocumentTypeCode
+          description: Type of identification document. Can be used only with idDocumentNumber and idDocumentIssuingCountryCode. RDM codebook CB_IdentificationDocumentType
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: idDocumentNumber
+          description: Identification document number. Can be used only with idDocumentTypeCode and idDocumentIssuingCountryCode.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: idDocumentIssuingCountryCode
+          description: Identification document issuing country code. Can be used only with idDocumentTypeCode and idDocumentNumber. RDM codebook CB_Country.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: email
+          description: Email filter
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: phoneNumber
+          description: Phone number filter
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: isInKbi
+          description: "Flag indicating whether subject should or should not be in KBI. Possible variants:
+                        <ul>
+                          <li>parameter is not used - all subject are returned</li>
+                          <li>true - only subjects in KBI are returned</li>
+                          <li>false - only subjects not in KBI are returned</li>
+                        </ul>"
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: legalStatusCode
+          description: Legal status filter
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - P
+                - E
+                - B
+          style: form
+          explode: true
+        - name: includeArchived
+          in: query
+          description: Flag indicating whether archived customers will be returned
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: showSegment
+          in: query
+          description: Flag indicating whether segment (fixed and float) should be returned in response
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: showOnlyIdentified
+          in: query
+          description: Flag indicating whether unidentified subjects should filtered out from result
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerSearchResult'
+          description: Search result
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+components:
+  schemas:
+    CustomerInfo:
+      description: Customer base information entity - contains party, primary address, contact address, primary phone and email, customer segments and economic classifications.
+      properties:
+        customerId:
+          type: integer
+          format: int64
+          description: Identifier of the customer
+        party:
+          $ref: '#/components/schemas/Party'
+        primaryIdentificationDocument:
+          $ref: '#/components/schemas/IdentificationDocument'
+        customerIdentification:
+          $ref: '#/components/schemas/CustomerIdentification'
+        primaryAddress:
+          $ref: '#/components/schemas/PrimaryAddress'
+        contactAddress:
+          $ref: '#/components/schemas/ContactAddress'
+        temporaryStay:
+          $ref: '#/components/schemas/TemporaryStayAddress'
+        primaryEmail:
+          $ref: '#/components/schemas/PrimaryEmail'
+        primaryPhone:
+          $ref: '#/components/schemas/PrimaryPhone'
+        customerSegment:
+          $ref: '#/components/schemas/CustomerSegment'
+        fixedCustomerSegment:
+          $ref: '#/components/schemas/CustomerSegment'
+        isInKbi:
+          type: boolean
+          description: Flag indicating whether subject is in KBI system
+        isPoliticallyExposed:
+          type: boolean
+          description: |
+            Flag indicating that customer is politically exposed.
+            If the value of the item is 'true', politicalExposition is also returned.
+            If the value is not returned, the information about political exposition is not collected.
+        politicalExposition:
+          $ref: '#/components/schemas/PoliticalExposition'
+        isLegallyIncapable:
+          type: boolean
+          description: Flag indicating that customer is legally incapable. Only for Natural Person. Mandatory for Natural Person.
+        lifecycleStatusCode:
+          $ref: '#/components/schemas/LifecycleStatusEnum'
+        fatca:
+          $ref: '#/components/schemas/Fatca'
+        kyc:
+          $ref: '#/components/schemas/Kyc'
+        brSubscription:
+          $ref: '#/components/schemas/BRSubscription'
+        taxResidence:
+          $ref: '#/components/schemas/TaxResidence'
+        taxDomicile:
+          $ref: '#/components/schemas/TaxDomicile'
+        confirmedContactFlags:
+          $ref: '#/components/schemas/ConfirmedContactFlags'
+      required:
+        - party
+        - lifecycleStatusCode
+        - isInKbi
+      type: object
+    Party:
+      description: Party entity. Only one of attributes naturalPersonAttributes, entrepreneurAttributes, legalPersonAttributes will be filled according to legalStatus.
+      type: object
+      required:
+        - legalStatus
+        - customerIdentifiers
+      properties:
+        customerIdentifiers:
+          type: array
+          description: List of customer identifiers
+          items:
+            $ref: '#/components/schemas/CustomerIdentifier'
+        legalStatus:
+          type: string
+          description: P - for Natural Person, E - for Entrepreneur, B - for Legal Person
+          enum:
+            - P
+            - E
+            - B
+        naturalPersonAttributes:
+          $ref: '#/components/schemas/NaturalPersonAttributes'
+        entrepreneurAttributes:
+          $ref: '#/components/schemas/EntrepreneurAttributes'
+        legalPersonAttributes:
+          $ref: '#/components/schemas/LegalPersonAttributes'
+    LegalPersonAttributes:
+      description: Attributes for party of type Legal Person
+      type: object
+      required:
+        - name
+        - nameKb
+      properties:
+        name:
+          type: string
+          description: Company name. Is filled with name from business register. When name from business register does not exists, KB custom search name is used instead.
+          minLength: 1
+          maxLength: 200
+          example: KOMERČNÍ BANKA A.S.
+        businessRegisterName:
+          type: string
+          description: Company name. Name from business register.
+          minLength: 1
+          maxLength: 200
+          example: KOMERČNÍ BANKA A.S.
+        nameKb:
+          type: string
+          description: Custom KB search name
+          minLength: 1
+          maxLength: 200
+          example: KOMERČNÍ BANKA A.S.
+        establishedOn:
+          type: string
+          format: date
+          description: Company established date
+          example: 1992-03-05
+        legalForm:
+          $ref: '#/components/schemas/JuridicalPersonLegalForm'
+        czechIdentificationNumber:
+          type: string
+          description: Czech identification number
+          minLength: 1
+          maxLength: 30
+          example: 45317054
+    EntrepreneurAttributes:
+      description: Attributes for Party of type Entrepreneur
+      type: object
+      required:
+        - name
+        - nameKb
+      properties:
+        name:
+          type: string
+          description: Entrepreneur name. Is filled with name from business register. When name from business register does not exists, KB custom search name is used instead.
+          minLength: 1
+          maxLength: 200
+          example: Prof. MUDr. Roman Prymula, CSc. Ph.D.
+        businessRegisterName:
+          type: string
+          description: Entrepreneur name. Name from business register.
+          minLength: 1
+          maxLength: 200
+          example: Prof. MUDr. Roman Prymula, CSc. Ph.D.
+        nameKb:
+          type: string
+          description: Custom KB search name
+          minLength: 1
+          maxLength: 200
+          example: Prof. MUDr. Roman Prymula, CSc. Ph.D.
+        establishedOn:
+          type: string
+          format: date
+          description: Entrepreneur established date
+          example: 2020-06-17
+        legalForm:
+          $ref: '#/components/schemas/JuridicalPersonLegalForm'
+        czechIdentificationNumber:
+          type: string
+          description: Czech identification number
+          minLength: 1
+          maxLength: 30
+          example: 12345678
+    NaturalPersonAttributes:
+      description: Attributes for party of type Natural Person
+      type: object
+      required:
+        - firstName
+        - surname
+        - initials
+      properties:
+        title:
+          type: string
+          description: Title before name, i.e. prof. Ing., gen. Ing.
+          minLength: 1
+          maxLength: 15
+          example: ING.
+        firstName:
+          type: string
+          description: First name
+          minLength: 1
+          maxLength: 50
+          example: Michal
+        surname:
+          type: string
+          description: Surname
+          minLength: 1
+          maxLength: 200
+          example: Prouza
+        initials:
+          type: string
+          description: Subject initials from first name and surname
+          minLength: 1
+          maxLength: 10
+          example: MP
+        birthDate:
+          type: string
+          format: date
+          description: Date of birth
+          example: 2000-05-22
+        birthName:
+          type: string
+          description: Birth surname
+          minLength: 1
+          maxLength: 100
+          example: Prouza
+        birthPlace:
+          type: string
+          description: Place of birth, i.e. Praque
+          minLength: 1
+          maxLength: 100
+          example: Ostrava
+        birthCountryCode:
+          type: string
+          description: Land of birth - ISO 2 character code - RDM codebook CB_Country
+          minLength: 2
+          maxLength: 2
+          example: CZ
+        citizenshipCodes:
+          type: array
+          description: List of customer citizenships
+          items:
+            type: string
+            description: citizenship code - CB_Country
+            minLength: 2
+            maxLength: 2
+            example: CZ
+        genderCode:
+          type: string
+          description: Gender, RDM codebook CB_Gender
+          minLength: 1
+          maxLength: 1
+          example: M
+        czechBirthNumber:
+          type: string
+          description: Czech birth number
+          example: 7908205184
+        firstNameVocative:
+          type: string
+          description: First name vocative
+          minLength: 1
+          maxLength: 50
+          example: Michale
+        surnameVocative:
+          type: string
+          description: Surname vocative
+          minLength: 1
+          maxLength: 200
+          example: Prouzo
+        deathDate:
+          type: string
+          format: date
+          description: Date of death
+          example: 2022-12-24
+        maritalStatusCode:
+          type: string
+          description: Marital status code, RDM codebook CB_MaritalStatus
+          minLength: 1
+          maxLength: 1
+          example: M
+    JuridicalPersonLegalForm:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          description: Legal form code. CSC codebooks PRAV_FORM, PRAV_FORM2 (foreign legal forms)
+          minLength: 1
+          maxLength: 4
+        unstructured:
+          type: string
+          description: Description of legal form in the case of unknown legal form
+          minLength: 1
+          maxLength: 256
+      description: Legal form
+    CustomerIdentifier:
+      type: object
+      required:
+        - typeCode
+        - identifierValue
+      properties:
+        typeCode:
+          type: string
+          description: Identifier type code. RDM codebook CB_JuridicalPersonIdentificationType
+        identifierValue:
+          type: string
+          description: Value of identifier
+      description: Customers identifiers
+    IdentificationDocument:
+      type: object
+      required:
+        - documentNumber
+        - typeCode
+        - issuedBy
+        - issuingCountryCode
+        - expired
+        - lostDocument
+      properties:
+        typeCode:
+          type: string
+          description: Type of identification document - RDM codebook CB_IdentificationDocumentType
+          maxLength: 2
+        documentNumber:
+          type: string
+          description: Official number of identification document - CDM number
+          maxLength: 24
+        issuingCountryCode:
+          type: string
+          description: Document issuing country - RDM codebook CB_Country - CDM issuingCountry
+          maxLength: 2
+        issuedBy:
+          type: string
+          description: Identification document issuing authority
+          maxLength: 255
+        issuedOn:
+          type: string
+          format: date
+          description: When document was issued - CDM validFrom
+        validTo:
+          type: string
+          format: date
+          description: Document is valid until this date
+        registerPlace:
+          type: string
+          description: Registration in OR or other register
+        expired:
+          type: boolean
+          description: The document expiration flag
+        lostDocument:
+          type: boolean
+          description: Losted document flag
+      example:
+        typeCode: A
+        documentNumber: AB 123123
+        issuingCountryCode: CZ
+        issuedBy: Praha
+        issuedOn: 2020-05-22
+        validTo: 2030-05-22
+        expired: false
+        lostDocument: false
+      description: Identification document
+    PrimaryPhone:
+      description: Customer primary phone.
+      properties:
+        phoneNumber:
+          type: string
+          description: Local part of phone number, including national destination code i.e. +420 777112233.
+          maxLength: 19
+          example: +420 777569933
+        isMobile:
+          type: boolean
+          description: Flag whether it is a mobile phone. Flag is determined only for czech and slovak phone numbers.
+          example: true
+        confirmed:
+          type: boolean
+          description: Flag indicating that phone is confirmed by client
+          example: true
+        componentPhone:
+          $ref: '#/components/schemas/ComponentPhone'
+      required:
+        - phoneNumber
+        - isMobile
+        - confirmed
+      type: object
+    ComponentPhone:
+      type: object
+      description: Phone split to international destination code and national part of number
+      properties:
+        phoneIDC:
+          type: string
+          pattern: ^[+]{1}[1-9]{1}[0-9]{0,3}$
+          description: Phone international destination code, i.e. +420, +1 etc.
+          maxLength: 5
+          example: '+420'
+        phoneNumber:
+          type: string
+          pattern: ^[0-9]{1,13}$
+          description: Local part of phone number, including national destination code i.e. 777112233.
+          maxLength: 13
+          example: 777569933
+      required:
+        - phoneNumber
+    PrimaryEmail:
+      description: Customer primary email.
+      properties:
+        emailAddress:
+          type: string
+          description: Email
+          maxLength: 254
+          example: jefim_xaver_vyskocil@seznam.cz
+        confirmed:
+          type: boolean
+          description: Flag indicating that email is confirmed by client
+          example: true
+      required:
+        - emailAddress
+        - confirmed
+      type: object
+    PrimaryAddress:
+      description: Primary address. Address is returned according to input parameter requiredAddressFormats. LINE - addressLinePoint, COMPONENT - componentAddressPoint, SINGLE_LINE - singleLineAddressPoint.
+      type: object
+      properties:
+        addressLinePoint:
+          $ref: '#/components/schemas/AddressLinePoint'
+        componentAddressPoint:
+          $ref: '#/components/schemas/ComponentAddressPoint'
+        singleLineAddressPoint:
+          $ref: '#/components/schemas/SingleLineAddressPoint'
+    PrimaryAddressSearch:
+      description: Primary address for search. Address is returned only in LINE format.
+      type: object
+      properties:
+        addressLinePoint:
+          $ref: '#/components/schemas/AddressLinePoint'
+    ContactAddress:
+      description: "Contact address. Bank correspondence delivery address. If it is not filled out, correspondence is delivered to a permanent residence address. A contact address can also be entered as a P.O. BOX.
+      Address is returned according to input parameter requiredAddressFormats. LINE - addressLinePoint, COMPONENT - componentAddressPoint, SINGLE_LINE - singleLineAddressPoint"
+      type: object
+      required:
+        - confirmed
+      properties:
+        addressLinePoint:
+          $ref: '#/components/schemas/AddressLinePoint'
+        componentAddressPoint:
+          $ref: '#/components/schemas/ComponentAddressPoint'
+        singleLineAddressPoint:
+          $ref: '#/components/schemas/SingleLineAddressPoint'
+        confirmed:
+          type: boolean
+          description: Flag indicating that address is confirmed by client
+          example: true
+    TemporaryStayAddress:
+      description: "Temporary residence address. The address is obligatory for foreigners who do not have the Czech Republic filled in at their permanent address.
+      Address is returned according to input parameter requiredAddressFormats. LINE - addressLinePoint, COMPONENT - componentAddressPoint, SINGLE_LINE - singleLineAddressPoint"
+      type: object
+      properties:
+        addressLinePoint:
+          $ref: '#/components/schemas/AddressLinePoint'
+        componentAddressPoint:
+          $ref: '#/components/schemas/ComponentAddressPoint'
+        singleLineAddressPoint:
+          $ref: '#/components/schemas/SingleLineAddressPoint'
+    AddressLinePoint:
+      description: Address in LINE format.
+      type: object
+      required:
+        - street
+        - city
+        - countryCode
+      properties:
+        street:
+          type: string
+          description: First line of address (street, street number etc.)
+          maxLength: 100
+        deliveryDetails:
+          type: string
+          description: Address delivery details
+          maxLength: 100
+        city:
+          type: string
+          description: Third line of address (typically city)
+          maxLength: 100
+        postCode:
+          type: string
+          description:  Post code, Postal code, ZIP code. Is present for all countries, not only for czech!!
+          maxLength: 12
+        countryCode:
+          type: string
+          description: Country code - two characters ISO code - RDM codebook CB_Country
+          maxLength: 2
+        addressPointId:
+          type: string
+          description: Identification of address point
+          maxLength: 100
+      example:
+        street: Holubova 22
+        city: Chlumec
+        postCode: 40339
+        countryCode: CZ
+        addressPointId: 12313212
+    ComponentAddressPoint:
+      description: "Address in COMPONENT format
+Examples:
+<ul>
+    <li> Czech address with street, house number and street number: {
+        \"street\": \"Wilsonova\",
+        \"houseNumber\": \"101\",
+        \"streetNumber\": \"1\",
+        \"cityDistrict\": \"Vinohrady\",
+        \"pragueDistrict\": \"Praha 1\",
+        \"deliveryDetails\": \"Marketing department\",
+        \"city\": \"Praha\",
+        \"postCode\": \"11000\",
+        \"countryCode\": \"CZ\",
+        \"addressPointId\": \"21727554\"
+      }
+
+    <li> Czech address without street and with house number: {
+        \"houseNumber\": \"6\",
+        \"cityDistrict\": \"Dehtáry\",
+        \"city\": \"Jenštejn \",
+        \"postCode\": \"25091\",
+        \"countryCode\": \"CZ\",
+        \"addressPointId\": \"12644340\"
+      }
+
+    <li> Foreign address with street, house number: {
+        \"street\": \"S Torrence Ave\",
+        \"houseNumber\": \"12600\",
+        \"deliveryDetails\": \"Marketing department\",
+        \"city\": \"Chicago\",
+        \"postCode\": \"60633\",
+        \"countryCode\": \"US\",
+        \"countrySubdivision\": \"IL\"
+      }
+
+    <li> Foreign address without street, with house number: {
+        \"houseNumber\": \"16\",
+        \"city\": \"Drzymałowice\",
+        \"postCode\": \"59-407\",
+        \"countryCode\": \"PL\",
+      }
+
+    <li> Post box address: {
+        \"postBox\": \"1234 \",
+        \"city\": \"Jenštejn \",
+        \"postCode\": \"25091\",
+        \"countryCode\": \"CZ\",
+      }
+</ul>
+"
+      type: object
+      required:
+        - city
+        - countryCode
+      properties:
+        street:
+          type: string
+          description: Street name without a house number. The field is not filled out for cities without an street network or for post box address.
+          maxLength: 100
+          example: Holubova
+        houseNumber:
+          type: string
+          description: The house number. It is not filled out for post box address. Foreign addresses should have it filled out. Czech addresses may have the building number in this attribute or the evidenceNumber.
+          maxLength: 16
+          example: 22
+        evidenceNumber:
+          type: string
+          description: Evidence number. It is not filled out for post box address. Used only for Czech addresses. The evidence number has objects that are not assigned a house number. These are, for example, chalets.
+          maxLength: 4
+          example: 20
+        streetNumber:
+          type: string
+          description: Street number. It is not filled out for post box address. Used only for Czech and Slovak addresses. A number that helps locate a house on a given street.
+          maxLength: 4
+          example: 9A
+        cityDistrict:
+          type: string
+          description: City district. It is not filled out for post box address. Should be filled for all Czech addresses, at least for that with address point id.
+          maxLength: 100
+          example: Vinoř
+        pragueDistrict:
+          type: string
+          description: Territory of the city district in the capital Prague (Praha 1 - 10 not Praha 1 - 22). It is not filled out for post box address.
+          maxLength: 40
+          example: Praha 9
+        deliveryDetails:
+          type: string
+          description: A note of delivery specifying to whom delivery is intended.
+          maxLength: 100
+          example: Marketing department
+        city:
+          type: string
+          description: The city name. Only the name of the city without its parts is given, i.e. for Prague we only mention Prague and not Prague 6 or Prague Dejvice.
+          maxLength: 100
+          example: Praha
+        postBox:
+          type: string
+          description: P.O. Box number. For Czech addresses the value is number. It is filled out for post box address.
+          maxLength: 16
+          example: 756
+        postCode:
+          type: string
+          description: Post code, Postal code, ZIP code.  For czech address it should be five-digit number between 10000 - 79999
+          maxLength: 16
+          example: 19017
+        countrySubdivision:
+          type: string
+          description: It is used only for foreign addresses and mainly for states which are divided into large self-governing entities. E.g. USA, then state like Texas, Florida is filled out.
+          maxLength: 35
+          example: Texas
+        countryCode:
+          type: string
+          description: Country code - two characters ISO code - RDM codebook CB_Country
+          maxLength: 2
+          example: CZ
+        addressPointId:
+          type: string
+          description: Address point id from Register of Territorial Identification of Addresses and Properties in the Czech Republic or its equivalent in the Slovak Republic.
+          maxLength: 100
+          example: 12313212
+    SingleLineAddressPoint:
+      description: Address in SINGLE_LINE format. Single line textual address representation. Whole address is one textual line.
+      type: object
+      required:
+        - address
+      properties:
+        address:
+          type: string
+          description: Represents whole address.
+          maxLength: 500
+          example: Pražská 125, PRAHA, PSČ 111 11, Česká republika
+    AddressFormats:
+      description: Types of the address format.
+      type: array
+      items:
+        $ref: '#/components/schemas/AddressFormat'
+      example: [LINE, COMPONENT]
+      default: [LINE]
+    AddressFormat:
+      description: |
+        Type of the address format.
+        * 'LINE'      - Address format in the form of address lines. An easy-to-read form for users. It is used, for example, for an address on a letter or a contractual document, or to display address to user in application. This notation returns in the Address schema definition
+        * 'COMPONENT' - Address format in the form of address components. Harder for users to read form. Component writing is used primarily to enter an address or to exchange an address for machine processing. This notation returns in the ComponentAddress schema definition.
+        * 'SINGLE_LINE' - Address format in single line. Mainly used for visual presentation of address.
+      type: string
+      enum:
+        - LINE
+        - COMPONENT
+        - SINGLE_LINE
+      example: "LINE"
+    CustomerSegment:
+      type: object
+      required:
+        - segmentCode
+        - subsegmentCode
+      properties:
+        segmentKeyCode:
+          type: string
+          description: Synthetic segment key code (connection of segmentCode + subsegmentCode) for referencing RDM codebook CB_CustomerSegment
+        segmentCode:
+          type: string
+          description: Customer segment
+        subsegmentCode:
+          type: string
+          description: Customer subsegment
+      description: Customer segment and subsegment
+    CustomerSearchResult:
+      type: object
+      required:
+        - isThereMore
+        - resultRows
+      properties:
+        isThereMore:
+          type: boolean
+          description: Flag indicating whether search result can return more rows
+        resultRows:
+          type: array
+          items:
+            $ref : '#/components/schemas/CustomerSearchResultRow'
+    CustomerSearchResultRow:
+      type: object
+      description: search result
+      required:
+        - customerId
+        - party
+        - restrictedCustomer
+        - lifecycleStatusCode
+      properties:
+        customerId:
+          type: integer
+          format: int64
+        party:
+          $ref: '#/components/schemas/PartySearchResult'
+        primaryIdentificationDocument:
+          $ref: '#/components/schemas/IdentificationDocument'
+        primaryAddress:
+          $ref: '#/components/schemas/PrimaryAddressSearch'
+        customerSegment:
+          $ref: '#/components/schemas/CustomerSegment'
+        fixedCustomerSegment:
+          $ref: '#/components/schemas/CustomerSegment'
+        restrictedCustomer:
+          type: boolean
+          description: Customer of bank to which access is restricted. For example, an employee is considered to be restricted.
+        lifecycleStatusCode:
+          $ref: '#/components/schemas/LifecycleStatusEnum'
+    PartySearchResult:
+      type: object
+      description: Party search result. Only one of attributes naturalPersonAttributes, entrepreneurAttributes, legalPersonAttributes will be filled according to legalStatus.
+      required:
+        - legalStatus
+      properties:
+        legalStatus:
+          type: string
+          description: P - for Natural Person, E - for Entrepreneur, B - for Legal Person
+          enum:
+            - P
+            - E
+            - B
+        naturalPersonAttributes:
+          $ref: '#/components/schemas/NaturalPersonAttributesSearch'
+        entrepreneurAttributes:
+          $ref: '#/components/schemas/EntrepreneurAttributesSearch'
+        legalPersonAttributes:
+          $ref: '#/components/schemas/LegalPersonAttributesSearch'
+    LegalPersonAttributesSearch:
+      description:  Attributes for party of type Legal Person
+      type: object
+      required:
+        - name
+        - nameKb
+      properties:
+        name:
+          type: string
+          description: Company name. Is filled with name from business register. When name from business register does not exists, KB custom search name is used instead.
+          minLength: 1
+          maxLength: 200
+        businessRegisterName:
+          type: string
+          description: Company name. Name from business register.
+          minLength: 1
+          maxLength: 200
+        nameKb:
+          type: string
+          description: Custom KB search name. This field is used for searching.
+          minLength: 1
+          maxLength: 200
+        establishedOn:
+          type: string
+          format: date
+          description: Company established date
+        czechIdentificationNumber:
+          type: string
+          description: Czech identification number
+          minLength: 1
+          maxLength: 30
+    EntrepreneurAttributesSearch:
+      description:  Attributes for party type of Entrepreneur
+      type: object
+      required:
+        - name
+        - nameKb
+      properties:
+        name:
+          type: string
+          description: Entrepreneur name. Is filled with name from business register. When name from business register does not exists, KB custom search name is used instead.
+          minLength: 1
+          maxLength: 200
+        businessRegisterName:
+          type: string
+          description: Entrepreneur name. Name from business register.
+          minLength: 1
+          maxLength: 200
+        nameKb:
+          type: string
+          description: Custom KB search name. This field is used for searching.
+          minLength: 1
+          maxLength: 200
+        establishedOn:
+          type: string
+          format: date
+          description: Company established date
+        czechIdentificationNumber:
+          type: string
+          description: Czech identification number
+          minLength: 1
+          maxLength: 30
+    NaturalPersonAttributesSearch:
+      description:  Attributes for party type of Natural Person
+      type: object
+      required:
+        - surname
+      properties:
+        title:
+          type: string
+          description: Title before name, i.e. prof. Ing., gen. Ing.
+          minLength: 1
+          maxLength: 15
+        firstName:
+          type: string
+          description: First name
+          minLength: 1
+          maxLength: 50
+        surname:
+          type: string
+          description: Surname
+          minLength: 1
+          maxLength: 200
+        birthDate:
+          type: string
+          format: date
+          description: Date of birth
+        genderCode:
+          type: string
+          description: Gender, RDM codebook CB_Gender
+          minLength: 1
+          maxLength: 1
+          example: M
+        czechBirthNumber:
+          type: string
+          description: Czech birth number
+          example:
+            7908205184
+    LifecycleStatusEnum:
+      type: string
+      enum:
+        - ACTIVE
+        - INACTIVE
+        - ARCHIVED
+      description: |
+        Customer lifecycle status. There are lifecycle statuses:
+        * 'ACTIVE' - active subject (GDPR 10 status)
+        * 'INACTIVE' - former subject (GDPR 20 status), has no products or services in bank
+        * 'ARCHIVED' - archived subject (GDPR 30 status) - only dedicated consumers can access these subjects
+    CustomerIdentification:
+      type: object
+      description: The customer's identification entity. Entity contains method, identificaiton date and identifying company.
+      required:
+        - identificationMethodCode
+      properties:
+        identificationMethodCode:
+          type: string
+          description: Code of the method of identifying the subject. Value is defined in the code list CB_IdentificationMethodType
+          maxLength: 2
+          example: "1"
+        identificationDate:
+          type: string
+          format: 'date-time'
+          description: The date and time the subject was first identified.
+          example: "2020-10-10T17:32:28Z"
+        czechIdentificationNumber:
+          type: string
+          description: Czech identification number of the company that made the subject identification. Value is mandatory only for specific identification method codes. See CB_IdentificationMethodType.
+          minLength: 1
+          maxLength: 30
+          example: "45317054"
+    Fatca:
+      type: object
+      required:
+        - statusCode
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+          description: FATCA status code - RDM codebook CB_FATCAStatus
+          example: 1
+        statusDate:
+          type: string
+          format: date
+          description: Date of FATCA status determination
+          example: 2021-08-20
+      description: FATCA (Foreign Account Tax Compliance Act)
+    CustomerTurnover:
+      type: object
+      required:
+        - year
+        - turnover
+      properties:
+        year:
+          type: integer
+          format: int32
+          description: Year of turnover
+          example: 2020
+        turnover:
+          type: integer
+          format: int64
+          description: Customer turnover per year
+          example: 150000
+      description: Customer turnover in one year
+    FinancialProfile:
+      type: object
+      properties:
+        mainSourceOfEarnings:
+          $ref: '#/components/schemas/MainSourceOfEarnings'
+        netMonthEarning:
+          type: number
+          description: Net monthly earning
+          example: 150000
+        netMonthEarningCode:
+          type: string
+          maxLength: 1
+          description: Code of interval net monthly earning - CM Codebook of net month earnings - EP_C_NET_MONTH_EARNING
+          example: A
+        savingInvestmentPotencial:
+          type: number
+          description: Saving investment potencial
+          example: 150000
+      description: Customer financial profile
+    Employment:
+      type: object
+      properties:
+        categoryCode:
+          type: integer
+          format: int32
+          description: Profession category code - codebook CSC PROF_CAT1, RDM CB_Prof_Cat1
+          example: 2
+        professionCode:
+          type: integer
+          format: int32
+          description: Profession code - codebook CSC PROF_CAT2
+          example: 14
+      description: Customer employment profession and category
+    MainSourceOfEarnings:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Code of the source of earnings - CSC codebook ZDROJ_PRIJ
+          example: 1
+        description:
+          type: string
+          description: Description of the source of earnings- only for code 6 / 'other source'
+      description: Main source of earnings
+    Housing:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          description: Code of housing - codebook CB_Housing_Type
+          example: OW
+        description:
+          type: string
+          description: Description of housing - only for code 'OT' / 'other'
+          example: popis bydleni
+      description: Customer turnover in one year
+    Kyc:
+      type: object
+      properties:
+        esaCode:
+          type: string
+          description: Economic sector code according to ESA2010 as amended by the CNB - RDM codebook CB_ESAInstitutionalSectorCNB
+          example: 1100100
+        isInsurable:
+          type: boolean
+          description: Flag indicating that customer is insurable
+          example: true
+        naturalPersonKyc:
+          $ref: '#/components/schemas/NaturalPersonKyc'
+        juridicalPersonKyc:
+          $ref: '#/components/schemas/JuridicalPersonKyc'
+      description: Customer KYC data
+    NaturalPersonKyc:
+      type: object
+      properties:
+        educationCode:
+          type: string
+          description: Code of education - codebook CB_EducationDegree
+          example: Z
+        financialProfile:
+          $ref: '#/components/schemas/FinancialProfile'
+        housing:
+          $ref: '#/components/schemas/Housing'
+        employment:
+          $ref: '#/components/schemas/Employment'
+        customerKbRelationship:
+          $ref: '#/components/schemas/CustomerKbRelationship'
+      description: Natural person KYC data. Object is only present when customer is type of NaturalPerson.
+    JuridicalPersonKyc:
+      type: object
+      properties:
+        numberOfEmployees:
+          type: integer
+          format: int32
+          description: Number of employees
+          example: 150
+        naceCode:
+          type: string
+          description: Code of economic activity according to the new classification of economic activities Only for Juridical Person - RDM codebook CB_NACECode
+          example: 261100
+        businessArea:
+          type: string
+          description: Text description of business area
+          example: Výroba, obchod, služby
+        customerTurnovers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerTurnover'
+      description: Juridical person KYC data. Object is only present when customer is type of JuridicalPerson.
+    PoliticalExposition:
+      type: object
+      description: Information about political exposure
+      required:
+        - functionCode
+        - coutryCode
+        - levelCode
+        - statusCode
+      properties:
+        functionCode:
+          type: string
+          description: Code of political office. Value must match CB_PoliticallyExposedPersonFunction code list
+          maxLength: 2
+          example: "16"
+        functionDescription:
+          type: string
+          description: Text description of the function. Description is mandatory when the function code is set to a value that has the mandatory_note flag set to true in the CB_PoliticallyExposedPersonFunction code list.
+          maxLength: 100
+          example: Senator assistent
+        levelCode:
+          type: string
+          description: Risk level of a politically exposed person. Value from code list CB_PoliticallyExposedPersonLevel
+          maxLength: 2
+          example: LO
+        statusCode:
+          type: string
+          maxLength: 1
+          description: Status of politically exposed person. The value should match the code list CB_PoliticallyExposedPersonStatus. Two values are defined ACTIVE - if in office and PASSIVE - should be set three years after the end of public office.
+          example: A
+        countryCode:
+          type: string
+          description: Country of political office, two-letter ISO code, defined in RDM codebook CB_Country.
+          maxLength: 50
+          example: CZ
+        endDateOfPoliticalActivity:
+          type: string
+          format: date
+          description: Date of termination of public office, may even be foreseen for the future. When the date expires, the status should be set to passive.
+          example: "2020-01-09"
+    BRSubscription:
+      type: object
+      description: Information about subscription for update from the Basic registry
+      required:
+        - isSubscribed
+      properties:
+        isSubscribed:
+          type: boolean
+          description: Information if customer subscribed for update from the Basic registry
+    CustomerKbRelationship:
+      type: object
+      description: Customer's relationship with KB
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          maxLength: 1
+          description: Code of the type of customer's relationship with KB - CSC codebook CLI_KB_REL
+          example: A
+        companyCode:
+          type: string
+          maxLength: 5
+          description: Financial group company code - only for code 'A' - RDM codebook CB_KBGroupCompany
+          example: ESS
+    TaxResidence:
+      type: object
+      description: Tax residence
+      required:
+        - countryCode
+        - validFrom
+        - residenceCountries
+      properties:
+        validFrom:
+          type: string
+          format: date
+          description: Date of beginning of tax residence
+          example: 2010-01-01
+        legalEntityTypeCode:
+          type: integer
+          format: int32
+          description: Type of legal entity - Values are defined in CSC codebook PRAVT_CRS
+          example: 1
+        isPassiveNfe:
+          type: boolean
+          description: Passive NFE flag
+          example: true
+        residenceCountries:
+          description: List of Countries with TIN, where customer is tax resident
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/TaxResidenceCountry'
+    TaxResidenceCountry:
+      type: object
+      required:
+        - countryCode
+      properties:
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          description: Country code of tax residence - two characters ISO code - CB_Country.
+          example: DE
+        tin:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Tax identification number.
+          example: 12345678901
+        tinMissingReasonDescription:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Reason why TIN was not filled out
+          example: "TIN není možné získat"
+    TaxDomicile:
+      type: object
+      description: Tax domicile
+      required:
+        - countryCode
+      properties:
+        countryCode:
+          type: string
+          description: Country code of tax domicile - two characters ISO code - RDM codebook CB_Country
+          maxLength: 2
+          example: CZ
+        validTo:
+          type: string
+          format: date
+          description: Date of end of tax domicile
+          example: 2010-01-01
+    ConfirmedContactFlags:
+      type: object
+      description: Information about confirmed contacts
+      required:
+        - allContactsConfirmed
+        - atLeastOneConfirmedContact
+      properties:
+        allContactsConfirmed:
+          type: boolean
+          description: Information if all customer contacts are confirmed
+        atLeastOneConfirmedContact:
+          type: boolean
+          description: Information if at least one confirmed contact is confirmed(phone or email)
+    DataEntities:
+      type: array
+      uniqueItems: true
+      items:
+        $ref: '#/components/schemas/DataEntity'
+      example: [ PRIMARY_ADDRESS, PRIMARY_ID ]
+    DataEntity:
+      description: |
+        Data entity to be returned.
+        * 'ADDRESS_PRIMARY' - primary address
+        * 'ADDRESS_CONTACT' - contact address
+        * 'ADDRESS_TEMPORARY_STAY' - temporary stay address
+        * 'ID_DOC_PRIMARY' - primary identification document
+        * 'CUSTOMER_IDENTIFICATION' - customer identification
+        * 'PHONE_PRIMARY' - primary phone
+        * 'EMAIL_PRIMARY' - primary email
+        * 'SEGMENT' - segment
+        * 'POLITICAL_EXPOSITION' - political exposition
+        * 'ESA' - ESA classification
+        * 'NACE' - NACE classification
+        * 'INSURABILITY' - insurability
+        * 'FIRST_NAME_VOCATIVE' - firstname vocative
+        * 'SURNAME_VOCATIVE' - surname vocative
+        * 'FATCA' - FATCA
+        * 'FINANCIAL_PROFILE' - financial profile like main source of earnings, net month earning etc.
+        * 'HOUSING' - housing
+        * 'EDUCATION' - education
+        * 'EMPLOYMENT' - employment
+        * 'TURNOVERS' - turnovers
+        * 'EMPLOYEES_NUMBER' - number of employees
+        * 'BUSINESS_AREA' - business area
+        * 'BR_SUBSCRIPTION' - basic registry information
+        * 'TAX_RESIDENCE' - tax residence
+        * 'TAX_DOMICILE' - tax domicile
+        * 'KB_RELATIONSHIP' - type of relationship with KB
+        * 'CONFIRMED_CONTACT_FLAGS' - information about confirmed contacts
+      type: string
+      enum:
+        - ADDRESS_PRIMARY
+        - ADDRESS_CONTACT
+        - ADDRESS_TEMPORARY_STAY
+        - ID_DOC_PRIMARY
+        - CUSTOMER_IDENTIFICATION
+        - PHONE_PRIMARY
+        - EMAIL_PRIMARY
+        - SEGMENT
+        - POLITICAL_EXPOSITION
+        - ESA
+        - NACE
+        - INSURABILITY
+        - FIRST_NAME_VOCATIVE
+        - SURNAME_VOCATIVE
+        - FATCA
+        - FINANCIAL_PROFILE
+        - HOUSING
+        - EDUCATION
+        - EMPLOYMENT
+        - TURNOVERS
+        - EMPLOYEES_NUMBER
+        - BUSINESS_AREA
+        - BR_SUBSCRIPTION
+        - TAX_RESIDENCE
+        - TAX_DOMICILE
+        - KB_RELATIONSHIP
+        - CONFIRMED_CONTACT_FLAGS
+      example: "PRIMARY_ADDRESS"
+    Error:
+      type: object
+      properties:
+        httpStatusCode:
+          type: integer
+          description: Http status code
+        category:
+          type: integer
+          description: Error category
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        uuid:
+          type: string
+          description: Error uuid
+        detail:
+          description: Error detail
+      required:
+        - httpStatusCode
+        - category
+        - code
+        - message
+        - uuid
+  parameters:
+    CustomerId:
+      name: customerId
+      in: path
+      description: Identifier of the customer (KBID - identifier of customer in Customer Management system)
+      required: true
+      schema:
+        format: int64
+        type: integer
+    RequiredEntities:
+      name: e
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/DataEntities'
+      description: Required data entities to be returned. When non specified, only party is returned.
+    IncludeArchived:
+      name: includeArchived
+      in: query
+      description: Flag indicating whether archived customer will be returned
+      required: false
+      schema:
+        type: boolean
+        default: false
+    GetAllPrimaryPhones:
+      name: getAllPrimaryPhones
+      in: query
+      description: Flag indicating whether all available types of primary phone should be returned when primary phone is required. In order 5,1,3
+      required: false
+      schema:
+        type: boolean
+        default: false
+    RequiredAddressFormats:
+      name: requiredAddressFormats
+      in: query
+      description: Required address format. Multiple formats can be returned at the same time. If no format is defined, the LINE address format is returned.
+      required: false
+      schema:
+        $ref: '#/components/schemas/AddressFormats'
+    X-KB-Caller-System-Identity:
+      name: X-KB-Caller-System-Identity
+      description: "[Caller system](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-CallerSystemIdentity)"
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "{\"app\":\"CM\",\"appComp\":\"cm-dch-prs-consumer\"}"
+    X-B3-TraceId:
+      name: X-B3-TraceId
+      description: "[Trace Id](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-TraceId)"
+      in: header
+      required: true
+      schema:
+        type: string
+        example: 614b21fe65a3e6cbf8507e2a3d304691

@@ -23,7 +23,7 @@ internal sealed class CreateCaseHandler
 
         // vytvorit entitu
         var entity = createDatabaseEntity(request, newCaseId);
-        entity.OwnerUserName = userInstance.FullName;//dotazene jmeno majitele caseu (poradce)
+        entity.OwnerUserName = userInstance.UserInfo.DisplayName;//dotazene jmeno majitele caseu (poradce)
         entity.State = defaultCaseState;//vychozi status
 
         try
@@ -92,14 +92,14 @@ internal sealed class CreateCaseHandler
     private readonly CaseServiceDbContext _dbContext;
     private readonly ILogger<CreateCaseHandler> _logger;
     private readonly IEasClient _easClient;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly UserService.Clients.IUserServiceClient _userService;
 
     public CreateCaseHandler(
         IRollbackBag bag,
         IMediator mediator,
         UserService.Clients.IUserServiceClient userService,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         IEasClient easClient,
         CaseServiceDbContext dbContext,
         ILogger<CreateCaseHandler> logger)

@@ -6,11 +6,11 @@ namespace NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSigningResponse>
 {
     private readonly IDocumentOnSAServiceClient _client;
-    private readonly ICodebookServiceClients _codebookServiceClient;
+    private readonly ICodebookServiceClient _codebookServiceClient;
 
     public StartSigningHandler(
         IDocumentOnSAServiceClient client,
-        ICodebookServiceClients codebookServiceClient)
+        ICodebookServiceClient codebookServiceClient)
     {
         _client = client;
         _codebookServiceClient = codebookServiceClient;

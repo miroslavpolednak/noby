@@ -33,3 +33,7 @@ public partial class DeleteContractRelationshipRequest
 public partial class GetCustomersOnProductRequest
     : MediatR.IRequest<GetCustomersOnProductResponse>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class GetCaseIdRequest
+    : MediatR.IRequest<GetCaseIdResponse>, CIS.Core.Validation.IValidatableRequest
+{ }

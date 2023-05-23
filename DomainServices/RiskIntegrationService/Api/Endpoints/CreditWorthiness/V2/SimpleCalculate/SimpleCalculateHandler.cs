@@ -20,17 +20,17 @@ internal sealed class SimpleCalculateHandler
         return response.ToServiceResponse(request.Product.LoanPaymentAmount);
     }
 
-    private async Task<CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem> getRiskApplicationType(int productTypeId, CancellationToken cancellationToken)
+    private async Task<RiskApplicationTypesResponse.Types.RiskApplicationTypeItem> getRiskApplicationType(int productTypeId, CancellationToken cancellationToken)
         => (await _codebookService.RiskApplicationTypes(cancellationToken))
             .FirstOrDefault(t => t.ProductTypeId is not null && t.ProductTypeId.Contains(productTypeId))
         ?? throw new CisValidationException(17006, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly _C4M.ICreditWorthinessClient _client;
     private readonly Calculate.Mappers.CalculateRequestMapper _requestMapper;
 
     public SimpleCalculateHandler(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         _C4M.ICreditWorthinessClient client,
         Calculate.Mappers.CalculateRequestMapper requestMapper)
     {

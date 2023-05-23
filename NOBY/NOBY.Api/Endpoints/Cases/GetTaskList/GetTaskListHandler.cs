@@ -20,29 +20,14 @@ internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, G
         var workflowTasks = LoadWorkflowTasks(request.CaseId, cancellationToken);
         var workflowProcesses = LoadWorkflowProcesses(request.CaseId, cancellationToken);
 
-        //Temporary mock - The old answer must be used to avoid violating FE
-        var newResponse = new GetTaskListResponseNew
+        return new GetTaskListResponse
         {
             Tasks = await workflowTasks,
             Processes = await workflowProcesses
         };
-
-        return new GetTaskListResponse
-        {
-            Tasks = newResponse.Tasks?.Select(t => new WorkflowTask
-            {
-                TaskId = t.TaskId,
-                TaskProcessId = t.ProcessId,
-                Name = t.TaskTypeName,
-                TypeId = t.TaskTypeId,
-                CategoryId = 0,
-                CreatedOn = t.CreatedOn,
-                StateId = t.StateId
-            }).ToList()
-        };
     }
 
-    private async Task<List<Dto.WorkflowTaskNew>?> LoadWorkflowTasks(long caseId, CancellationToken cancellationToken)
+    private async Task<List<WorkflowTask>?> LoadWorkflowTasks(long caseId, CancellationToken cancellationToken)
     {
         var tasks = await _caseService.GetTaskList(caseId, cancellationToken);
         

@@ -169,13 +169,13 @@ internal sealed class RealSbWebApiClient
             // get current user's login
             var userInstance = await _userService.GetUser(userId.Value, cancellationToken);
 
-            if (string.IsNullOrEmpty(userInstance.CPM) || string.IsNullOrEmpty(userInstance.ICP))
+            if (string.IsNullOrEmpty(userInstance.UserInfo.Cpm) || string.IsNullOrEmpty(userInstance.UserInfo.Icp))
             {
                 return userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous";
             }
             else
             {
-                return $"CPM: {userInstance.CPM} ICP: {userInstance.ICP}";
+                return $"CPM: {userInstance.UserInfo.Cpm} ICP: {userInstance.UserInfo.Icp}";
             }
         }
         else

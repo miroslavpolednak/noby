@@ -43,7 +43,7 @@ internal class AggregatedData
 
     public CustomerOnSA? CustomerOnSaCodebtor { get; set; }
 
-    public Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
+    public Task LoadCodebooks(ICodebookServiceClient codebookService, CancellationToken cancellationToken)
     {
         ConfigureCodebooks(_codebookManager);
 

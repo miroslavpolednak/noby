@@ -104,11 +104,11 @@ internal sealed class HouseholdCustomerIncomeChildMapper
     private async Task<TResponse?> getProofType<TResponse>(int? proofTypeId) where TResponse : struct
         => Helpers.GetEnumFromString<TResponse>((await _codebookService.ProofTypes(_cancellationToken)).FirstOrDefault(t => t.Id == proofTypeId)?.Code);
 
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CancellationToken _cancellationToken;
 
     public HouseholdCustomerIncomeChildMapper(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         CancellationToken cancellationToken)
     {
         _cancellationToken = cancellationToken;

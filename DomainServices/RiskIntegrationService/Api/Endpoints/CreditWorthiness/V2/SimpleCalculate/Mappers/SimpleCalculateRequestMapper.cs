@@ -9,8 +9,8 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V
 internal sealed class SimpleCalculateRequestMapper
 {
     public async Task<_C4M.CreditWorthinessCalculationArguments> MapToC4m(
-        _V2.CreditWorthinessSimpleCalculateRequest request, 
-        CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem riskApplicationType,
+        _V2.CreditWorthinessSimpleCalculateRequest request,
+        RiskApplicationTypesResponse.Types.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellation)
     {
         var requestModel = new _C4M.CreditWorthinessCalculationArguments
@@ -19,7 +19,7 @@ internal sealed class SimpleCalculateRequestMapper
             ItChannel = FastEnum.Parse<_C4M.ItChannelType>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             LoanApplicationProduct = new()
             {
-                ProductClusterCode = riskApplicationType.C4mAplCode,
+                ProductClusterCode = riskApplicationType.C4MAplCode,
                 AmountRequired = request.Product!.LoanAmount.ToAmount(),
                 Annuity = request.Product.LoanPaymentAmount,
                 FixationPeriod = request.Product.FixedRatePeriod,

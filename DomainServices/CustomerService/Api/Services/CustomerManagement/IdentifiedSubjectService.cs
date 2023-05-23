@@ -5,25 +5,26 @@ using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
 using FastEnumUtility;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
 internal sealed class IdentifiedSubjectService
 {
-    private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
+    private readonly ExternalServices.CustomerManagement.V2.ICustomerManagementClient _customerManagement;
     private readonly ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient _identifiedSubjectClient;
-    private readonly ICodebookServiceClients _codebook;
+    private readonly ICodebookServiceClient _codebook;
     private readonly CustomerManagementErrorMap _errorMap;
     private readonly ExternalServices.Kyc.V1.IKycClient _kycClient;
 
-    private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
-    private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
-    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
-    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
+    private List<GendersResponse.Types.GenderItem> _genders = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _titles = null!;
+    private List<CountriesResponse.Types.CountryItem> _countries = null!;
+    private List<MaritalStatusesResponse.Types.MaritalStatuseItem> _maritals = null!;
+    private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
 
-    public IdentifiedSubjectService(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
+    public IdentifiedSubjectService(ExternalServices.CustomerManagement.V2.ICustomerManagementClient customerManagement, ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClient codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
     {
         _customerManagement = customerManagement;
         _identifiedSubjectClient = identifiedSubjectClient;
@@ -188,7 +189,7 @@ internal sealed class IdentifiedSubjectService
         };
     }
 
-    private TAddress? CreateAddress<TAddress>(IEnumerable<GrpcAddress> addresses, AddressTypes addressType, Func<__Contracts.Address, DateTime?, TAddress> factory)
+    private TAddress? CreateAddress<TAddress>(IEnumerable<GrpcAddress> addresses, AddressTypes addressType, Func<GrpcAddress, __Contracts.Address, DateTime?, TAddress> factory)
     {
         var address = addresses.FirstOrDefault(a => a.AddressTypeId == (int)addressType);
 
@@ -211,27 +212,27 @@ internal sealed class IdentifiedSubjectService
             AddressPointId = address.AddressPointId.ToCMString()
         };
 
-        return factory(parsedAddress, address.PrimaryAddressFrom);
+        return factory(address, parsedAddress, address.PrimaryAddressFrom);
     }
 
-    private static __Contracts.PrimaryAddress CreatePrimaryAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+    private static __Contracts.PrimaryAddress CreatePrimaryAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
         new()
         {
             Address = address,
             PrimaryAddressFrom = primaryAddressFrom
         };  
     
-    private static __Contracts.ContactAddress CreateContactAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+    private static __Contracts.ContactAddress CreateContactAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
         new()
         {
             Address = address,
-            Confirmed = true
+            Confirmed = requestAddress.IsAddressConfirmed ?? false
         };
 
-    private static __Contracts.TemporaryStayAddress CreateTemporaryStayAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+    private static __Contracts.TemporaryStayAddress CreateTemporaryStayAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
         new() { Address = address };
 
-    private __Contracts.IdentificationDocument? CreateIdentificationDocument(Contracts.IdentificationDocument? document)
+    private __Contracts.IdentificationDocument? CreateIdentificationDocument(IdentificationDocument? document)
     {
         if (document is null)
             return default;
@@ -269,7 +270,8 @@ internal sealed class IdentifiedSubjectService
         return new()
         {
             PhoneIDC = phone.Mobile.PhoneIDC,
-            PhoneNumber = phone.Mobile.PhoneNumber
+            PhoneNumber = phone.Mobile.PhoneNumber,
+            Confirmed = phone.Mobile.IsPhoneConfirmed
         };
     }
 
@@ -282,7 +284,8 @@ internal sealed class IdentifiedSubjectService
 
         return new()
         {
-            EmailAddress = email.Email.EmailAddress
+            EmailAddress = email.Email.EmailAddress,
+            Confirmed = email.Email.IsEmailConfirmed
         };
     }
 }

@@ -38,11 +38,11 @@ internal sealed class GetMortgageOfferFPScheduleHandler
     }
 
     private readonly Database.OfferServiceDbContext _dbContext;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
 
     public GetMortgageOfferFPScheduleHandler(
-        Database.OfferServiceDbContext dbContext, ICodebookServiceClients codebookService, EasSimulationHT.IEasSimulationHTClient easSimulationHTClient)
+        Database.OfferServiceDbContext dbContext, ICodebookServiceClient codebookService, EasSimulationHT.IEasSimulationHTClient easSimulationHTClient)
     {
         _dbContext = dbContext;
         _codebookService = codebookService;

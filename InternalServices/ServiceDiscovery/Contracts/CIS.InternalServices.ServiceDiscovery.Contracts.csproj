@@ -13,17 +13,17 @@
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>CIS.InternalServices.ServiceDiscovery.xml</DocumentationFile>
+		<DocumentationFile>CIS.InternalServices.ServiceDiscovery.Contracts.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.22.1" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.52.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.52.0">
+		<PackageReference Include="Google.Protobuf" Version="3.23.0" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.53.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.54.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.5" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -34,12 +34,11 @@
 		<Protobuf Include="ServiceDiscovery.v1.proto" GrpcServices="Both" />
 		<Protobuf Include="Messages/GetService.proto" GrpcServices="None" />
 		<Protobuf Include="Messages/DiscoverableService.proto" GrpcServices="None" />
-		<Protobuf Include="Messages/ClearCache.proto" GrpcServices="None" />
 		<Protobuf Include="Messages/GetServices.proto" GrpcServices="None" />
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <None Update="CIS.InternalServices.ServiceDiscovery.xml">
+	  <None Update="CIS.InternalServices.ServiceDiscovery.Contracts.xml">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

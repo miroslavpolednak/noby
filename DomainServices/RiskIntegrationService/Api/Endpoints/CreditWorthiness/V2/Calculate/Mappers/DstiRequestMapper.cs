@@ -1,4 +1,4 @@
-﻿using DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V2.Contracts;
+using DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V2.Contracts;
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V2.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 
@@ -7,7 +7,7 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class DstiRequestMapper
 {
-    public async Task<_C4M.DSTICalculationArguments> MapToC4m(_V2.CreditWorthinessCalculateRequest request, CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem riskApplicationType, CancellationToken cancellation)
+    public async Task<_C4M.DSTICalculationArguments> MapToC4m(_V2.CreditWorthinessCalculateRequest request, RiskApplicationTypesResponse.Types.RiskApplicationTypeItem riskApplicationType, CancellationToken cancellation)
     {
         // inicializovat ciselniky
         _obligationTypes = await _codebookService.ObligationTypes(cancellation);
@@ -18,7 +18,7 @@ internal sealed class DstiRequestMapper
             ItChannel = FastEnum.Parse<_C4M.ItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             LoanApplicationProduct = new()
             {
-                ProductClusterCode = riskApplicationType.C4mAplCode,
+                ProductClusterCode = riskApplicationType.C4MAplCode,
                 Annuity = request.Product!.LoanPaymentAmount.ToAmount(),
                 AmountRequired = request.Product!.LoanAmount.ToAmount()
             },
@@ -102,14 +102,14 @@ internal sealed class DstiRequestMapper
     Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsInstallment = t => t.Installment.GetValueOrDefault();
     Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsInstallmentConsolidated = t => t.InstallmentConsolidated.GetValueOrDefault();
 
-    private List<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem>? _obligationTypes;
+    private List<ObligationTypesResponse.Types.ObligationTypeItem>? _obligationTypes;
 
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
 
     public DstiRequestMapper(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor)
     {

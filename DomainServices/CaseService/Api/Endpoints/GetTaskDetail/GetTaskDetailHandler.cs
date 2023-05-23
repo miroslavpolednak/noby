@@ -42,7 +42,7 @@ internal sealed class GetTaskDetailHandler
     private async Task<TaskDetailItem> createTaskDetail(IReadOnlyDictionary<string, string> taskData, CancellationToken cancellationToken)
     {
         var taskDetail = taskData.ToTaskDetail();
-
+        
         var performer = await _codebookService.GetOperator(taskData["ukol_op_zpracovatel"], cancellationToken);
         taskDetail.PerformanName = performer.PerformerName;
 
@@ -90,9 +90,9 @@ internal sealed class GetTaskDetailHandler
 
     private readonly SbWebApiCommonDataProvider _commonDataProvider;
     private readonly ISbWebApiClient _sbWebApiClient;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
 
-    public GetTaskDetailHandler(SbWebApiCommonDataProvider commonDataProvider, ISbWebApiClient sbWebApiClient, ICodebookServiceClients codebookService)
+    public GetTaskDetailHandler(SbWebApiCommonDataProvider commonDataProvider, ISbWebApiClient sbWebApiClient, ICodebookServiceClient codebookService)
     {
         _commonDataProvider = commonDataProvider;
         _sbWebApiClient = sbWebApiClient;

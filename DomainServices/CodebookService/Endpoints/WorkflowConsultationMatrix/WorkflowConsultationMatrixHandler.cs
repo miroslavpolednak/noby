@@ -28,7 +28,7 @@ public class WorkflowConsultationMatrixHandler
         });
     }
 
-    const string _sqlXxd = "SELECT CAST(KOD as int) 'Kod', [TEXT] 'Text' FROM SBR.v_HTEDM_CIS_WFL_CIS_HODNOTY WHERE ciselnik_id = 139";
+    const string _sqlXxd = "SELECT CAST(KOD as int) 'Kod', [TEXT] 'Text' FROM SBR.HTEDM_CIS_WFL_CIS_HODNOTY WHERE ciselnik_id = 139";
     const string _sqlCodebook = "SELECT [TaskSubtypeId],[ProcessTypeId],[ProcessPhaseId],[IsConsultation] FROM [dbo].[WorkflowConsultationMatrix]";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdHfDapperConnectionProvider> _connectionProvider;

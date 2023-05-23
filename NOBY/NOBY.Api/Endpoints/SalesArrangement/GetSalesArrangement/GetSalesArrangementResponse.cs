@@ -1,6 +1,4 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
-
-namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement;
+﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement;
 
 public sealed class GetSalesArrangementResponse
 {

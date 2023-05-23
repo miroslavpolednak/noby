@@ -1,10 +1,7 @@
 ﻿using System.Globalization;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.Countries;
-using DomainServices.CodebookService.Contracts.Endpoints.EducationLevels;
-using DomainServices.CodebookService.Contracts.Endpoints.IdentificationDocumentTypes;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.LoanApplication;
@@ -13,16 +10,16 @@ internal class LoanApplicationCustomer
 {
     private readonly CustomerDetailResponse _customer;
 
-    private readonly List<GenericCodebookItem> _degreesBefore;
-    private readonly List<CountriesItem> _countries;
-    private readonly List<IdentificationDocumentTypesItem> _identificationDocumentTypes;
-    private readonly List<EducationLevelItem> _educationLevels;
+    private readonly List<GenericCodebookResponse.Types.GenericCodebookItem> _degreesBefore;
+    private readonly List<CountriesResponse.Types.CountryItem> _countries;
+    private readonly List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _identificationDocumentTypes;
+    private readonly List<EducationLevelsResponse.Types.EducationLevelItem> _educationLevels;
 
     public LoanApplicationCustomer(CustomerDetailResponse customer,
-                                   List<GenericCodebookItem> degreesBefore,
-                                   List<CountriesItem> countries,
-                                   List<IdentificationDocumentTypesItem> identificationDocumentTypes,
-                                   List<EducationLevelItem> educationLevels)
+                                   List<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore,
+                                   List<CountriesResponse.Types.CountryItem> countries,
+                                   List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> identificationDocumentTypes,
+                                   List<EducationLevelsResponse.Types.EducationLevelItem> educationLevels)
     {
         _customer = customer;
         _degreesBefore = degreesBefore;
@@ -35,11 +32,11 @@ internal class LoanApplicationCustomer
 
     public string PermanentAddress => FormatAddress(_customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Permanent));
 
-    public string ContactAddress => FormatAddress(_customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Mailing));
+    public string ContactAddress => GetContactAddress();
 
     public NullableGrpcDate DateOfBirth => _customer.NaturalPerson.DateOfBirth;
 
-    public string? BirthNumber => _customer.NaturalPerson.BirthNumber;
+    public string? BirthNumber => string.IsNullOrWhiteSpace(_customer.NaturalPerson.BirthNumber) ? null : _customer.NaturalPerson.BirthNumber;
 
     public string IdentificationType => GetIdentificationDocument();
 
@@ -69,6 +66,20 @@ internal class LoanApplicationCustomer
         var countryName = _countries.First(c => c.Id == address.CountryId).LongName;
 
         return $"{address.Street} {address.HouseNumber}/{address.StreetNumber}, {address.Postcode} {address.City}, {countryName}";
+    }
+
+    private string GetContactAddress()
+    {
+        var contactAddress = _customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Mailing);
+
+        if (contactAddress is not null)
+            return FormatAddress(contactAddress);
+
+        if (_customer.Addresses.Any(a => a.AddressTypeId == (int)AddressTypes.Permanent) || _customer.NaturalPerson.CitizenshipCountriesId.Any(id => id == 16))
+            return PermanentAddress;
+
+        var otherAddress = _customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Other);
+        return FormatAddress(otherAddress);
     }
 
     private string GetIdentificationDocument()

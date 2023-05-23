@@ -18,9 +18,9 @@ internal sealed class GetGeneralDocumentsHandler : IRequestHandler<GetGeneralDoc
         }).ToList();
     }
 
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     
-    public GetGeneralDocumentsHandler(ICodebookServiceClients codebookService)
+    public GetGeneralDocumentsHandler(ICodebookServiceClient codebookService)
     {
         _codebookService = codebookService;
     }

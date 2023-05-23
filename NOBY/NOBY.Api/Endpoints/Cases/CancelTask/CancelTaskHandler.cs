@@ -8,7 +8,7 @@ internal sealed class CancelTaskHandler
     public async Task Handle(CancelTaskRequest request, CancellationToken cancellationToken)
     {
         // jen check jestli case existuje
-        await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
+        await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
 
         await _caseService.CancelTask(request.TaskIdSB, cancellationToken);
     }

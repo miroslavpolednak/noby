@@ -9,10 +9,10 @@ internal sealed class GetCurrentUserHandler
 
         return new GetCurrentUserResponse
         {
-            Id = userInstance.Id,
-            Name = userInstance.FullName,
-            CPM = userInstance.CPM,
-            ICP = userInstance.ICP
+            Id = userInstance.UserId,
+            Name = userInstance.UserInfo.DisplayName,
+            CPM = userInstance.UserInfo.Cpm,
+            ICP = userInstance.UserInfo.Icp
         };
     }
 

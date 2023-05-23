@@ -3,7 +3,8 @@ using FluentValidation;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetProcessList;
 
-internal class GetProcessListValidator : AbstractValidator<GetProcessListRequest>
+internal sealed class GetProcessListValidator 
+    : AbstractValidator<GetProcessListRequest>
 {
     public GetProcessListValidator()
     {

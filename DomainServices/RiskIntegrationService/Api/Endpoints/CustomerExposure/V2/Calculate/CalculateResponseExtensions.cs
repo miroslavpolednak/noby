@@ -2,6 +2,7 @@
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V3.Contracts;
 using _CB = DomainServices.CodebookService.Contracts.Endpoints;
 using DomainServices.RiskIntegrationService.Contracts.Shared;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomerExposure.V2.Calculate;
 
@@ -9,7 +10,7 @@ internal static class CalculateResponseExtensions
 {
     public static async Task<_V2.CustomerExposureCalculateResponse> ToServiceResponse(
         this _C4M.LoanApplicationRelatedExposureResult response, 
-        CodebookService.Clients.ICodebookServiceClients _codebookService, 
+        CodebookService.Clients.ICodebookServiceClient _codebookService, 
         CancellationToken cancellation)
     {
         var customerRoles = await _codebookService.CustomerRoles(cancellation);

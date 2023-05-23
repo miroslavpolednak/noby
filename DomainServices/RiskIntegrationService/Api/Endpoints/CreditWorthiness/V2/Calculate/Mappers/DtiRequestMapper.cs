@@ -7,7 +7,7 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class DtiRequestMapper
 {
-    public async Task<_C4M.DTICalculationArguments> MapToC4m(_V2.CreditWorthinessCalculateRequest request, CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem riskApplicationType, CancellationToken cancellation)
+    public async Task<_C4M.DTICalculationArguments> MapToC4m(_V2.CreditWorthinessCalculateRequest request, RiskApplicationTypesResponse.Types.RiskApplicationTypeItem riskApplicationType, CancellationToken cancellation)
     {
         // inicializovat ciselniky
         _obligationTypes = await _codebookService.ObligationTypes(cancellation);
@@ -72,14 +72,14 @@ internal sealed class DtiRequestMapper
         })
         .ToList();
 
-    private List<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem>? _obligationTypes;
+    private List<ObligationTypesResponse.Types.ObligationTypeItem>? _obligationTypes;
 
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
 
     public DtiRequestMapper(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor)
     {

@@ -7,8 +7,8 @@ public class StartSigningValidator : AbstractValidator<StartSigningRequest>
 {
     public StartSigningValidator()
     {
-        RuleFor(e => e.DocumentTypeId).NotNull().WithMessage($"{nameof(StartSigningRequest.DocumentTypeId)} is required");
-        RuleFor(e => e.SalesArrangementId).NotNull().WithMessage($"{nameof(StartSigningRequest.SalesArrangementId)} is required");
-        RuleFor(e => e.SignatureMethodCode).NotEmpty().WithMessage($"{nameof(StartSigningRequest.SignatureMethodCode)} is required");
+        RuleFor(e => e.DocumentTypeId).NotNull().WithErrorCode(ErrorCodeMapper.DocumentTypeIdIsRequired);
+        RuleFor(e => e.SalesArrangementId).NotNull().WithErrorCode(ErrorCodeMapper.SalesArrangementIdIsRequired);
+        RuleFor(e => e.SignatureMethodCode).NotEmpty().WithErrorCode(ErrorCodeMapper.SignatureMethodCodeIsRequired);
     }
 }

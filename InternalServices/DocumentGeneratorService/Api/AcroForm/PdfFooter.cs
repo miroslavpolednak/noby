@@ -4,9 +4,7 @@ using ceTe.DynamicPDF.PageElements;
 using ceTe.DynamicPDF.PageElements.BarCoding;
 using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTemplateVariants;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTemplateVersions;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 
@@ -18,14 +16,14 @@ public class PdfFooter
     private const string FooterPageNumberFieldName = "ZapatiCisloStranky";
     private const string PageNumberFormat = "%%CP%%/%%TP%%";
 
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly CultureInfo _cultureInfo;
 
-    private List<DocumentTypeItem> _templateTypes = null!;
-    private List<DocumentTemplateVersionItem> _templateVersions = null!;
-    private List<DocumentTemplateVariantItem> _templateVariants = null!;
+    private List<DocumentTypesResponse.Types.DocumentTypeItem> _templateTypes = null!;
+    private List<DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem> _templateVersions = null!;
+    private List<DocumentTemplateVariantsResponse.Types.DocumentTemplateVariantItem> _templateVariants = null!;
 
-    public PdfFooter(ICodebookServiceClients codebookService)
+    public PdfFooter(ICodebookServiceClient codebookService)
     {
         _codebookService = codebookService;
         _cultureInfo = (CultureInfo)CultureInfo.GetCultureInfo("cs").Clone();

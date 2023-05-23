@@ -10,13 +10,13 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
 {
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly ICodebookServiceClients _codebookServiceClient;
+    private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly IDocumentHelper _documentHelper;
 
     public GetDocumentListHandler(
             IDocumentArchiveServiceClient client,
             ICurrentUserAccessor currentUserAccessor,
-            ICodebookServiceClients codebookServiceClient,
+            ICodebookServiceClient codebookServiceClient,
             IDocumentHelper documentHelper)
     {
         _client = client;

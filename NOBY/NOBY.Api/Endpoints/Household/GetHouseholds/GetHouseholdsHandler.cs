@@ -24,12 +24,12 @@ internal sealed class GetHouseholdsHandler
             .ToList();
     }
 
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IHouseholdServiceClient _householdService;
     
     public GetHouseholdsHandler(
         IHouseholdServiceClient householdService,
-        ICodebookServiceClients codebookService)
+        ICodebookServiceClient codebookService)
     {
         _codebookService = codebookService;
         _householdService = householdService;

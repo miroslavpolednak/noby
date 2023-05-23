@@ -20,10 +20,11 @@ public sealed class ErrorCodeMapper
             { 90011, new("Zůstatek pro čerpání je menší nebo rovný nule. Formulář nelze vytvořit") },
             { 90012, new("Aktuální datum překračuje datum první anuitní splátky. Formulář nelze vytvořit") },
             { 90013, new("Neexistuje úvěrový účet. Formulář nelze vytvořit") },
-            { 90014, new("Smlouva není podepsána. Nelze vytvořit změnu.") },
+            { 90014, new("Smlouva není podepsána. Formulář pro změnu nelze vytvořit.") },
             { 90015, new("Není vyplněna žádost o změnu Dlužníka. Nelze vytvořit změnu.") },
             { 90016, new("Nabídka nemá platnou garanci.") },
-            { 90017, new("Nelze simulovat s garancí.", "Žádost neexistuje nebo neobsahuje platné datum garance.") }
+            { 90017, new("Nelze simulovat s garancí.", "Žádost neexistuje nebo neobsahuje platné datum garance.") },
+            { 90019, new("Obchod nelze poskytnout.","Převažující měna příjmu nebo měna bydliště není v oboru povolených měn. V žádosti nebude možné dále pokračovat.") }
         };
 
         Messages = messages.AsReadOnly();

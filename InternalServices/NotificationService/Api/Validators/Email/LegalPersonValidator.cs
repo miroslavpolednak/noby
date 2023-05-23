@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
+﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
+using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Email;
@@ -9,10 +10,8 @@ public class LegalPersonValidator : AbstractValidator<LegalPerson>
     {
         RuleFor(person => person.Name)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.LegalPerson.NameRequired)
-                .WithMessage($"{nameof(LegalPerson.Name)} required.")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.NameRequired)
             .MaximumLength(255)
-                .WithErrorCode(ErrorCodes.Validation.LegalPerson.NameLengthLimitExceeded)
-                .WithMessage($"Maximum length of {nameof(LegalPerson.Name)} is 255.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.NameLengthLimitExceeded);
     }
 }

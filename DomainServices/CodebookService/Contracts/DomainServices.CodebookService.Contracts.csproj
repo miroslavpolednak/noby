@@ -1,22 +1,58 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
+	  <Product>Common Infrastructure Solution</Product>
+	  <Authors>Filip Tuma</Authors>
+	  <Nullable>enable</Nullable>
 	  <Platforms>AnyCPU;x64</Platforms>
+	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Version>1.0.0.0</Version>
-	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	  <DocumentationFile>DomainServices.CodebookService.Contracts.xml</DocumentationFile>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>DomainServices.CodebookService.Contracts.xml</DocumentationFile>
+	</PropertyGroup>
+
 	<ItemGroup>
-		<PackageReference Include="MediatR" Version="12.0.1" />
-		<PackageReference Include="protobuf-net.Core" Version="3.2.16" />
-		<PackageReference Include="protobuf-net.Grpc" Version="1.1.1" />
-		<PackageReference Include="System.Text.Json" Version="7.0.2" />
+	  <None Remove="Messages\GenericCodebookFull.proto" />
+	  <None Remove="Messages\GenericCodebookWithDefaultAndCode.proto" />
+	  <None Remove="Messages\GenericCodebookWithRdmCode.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\CIS\Foms.Types\CIS.Foms.Types.csproj" />
-	  <ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
+		<PackageReference Include="Google.Protobuf" Version="3.23.0" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.53.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.54.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.5" />
 	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="CodebookService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		
+		<Protobuf Include="Messages/Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		
+		<Protobuf Include="Messages\GenericCodebookFull.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		
+		<Protobuf Include="Messages\GenericCodebookWithDefaultAndCode.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\GenericCodebookWithRdmCode.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\GenericCodebook.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\GenericCodebookWithCode.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="DomainServices.CodebookService.Contracts.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>		
+
 </Project>

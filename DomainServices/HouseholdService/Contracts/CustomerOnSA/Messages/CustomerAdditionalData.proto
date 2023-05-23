@@ -13,9 +13,16 @@ message CustomerAdditionalData {
     bool IsPoliticallyExposed = 5;
     bool IsUSPerson = 6;
     LegalCapacityData LegalCapacity = 7;
+    CustomerIdentificationObject CustomerIdentification = 8;
 }
 
 message LegalCapacityData {
     google.protobuf.Int32Value RestrictionTypeId = 1;
     cis.types.NullableGrpcDate RestrictionUntil = 2;
+}
+
+message CustomerIdentificationObject {
+    google.protobuf.Int32Value IdentificationMethodId = 1;
+    cis.types.NullableGrpcDate IdentificationDate = 2;
+    google.protobuf.StringValue CzechIdentificationNumber = 3;
 }

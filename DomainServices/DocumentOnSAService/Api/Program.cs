@@ -6,8 +6,6 @@ using CIS.InternalServices;
 using DomainServices.DocumentOnSAService.Api.Configuration;
 using DomainServices.DocumentOnSAService.Api.Endpoints;
 using DomainServices.DocumentOnSAService.Api.Extensions;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -51,7 +49,6 @@ builder.AddCisGrpcHealthChecks();
 
 // kestrel configuration
 builder.UseKestrelWithCustomConfiguration();
-builder.Services.AddHealthChecks();
 
 // BUILD APP
 if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
@@ -69,15 +66,6 @@ app.UseServiceDiscovery();
 app.MapCisGrpcHealthChecks();
 app.MapGrpcService<DocumentOnSAServiceGrpc>();
 app.MapGrpcReflectionService();
-app.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, new HealthCheckOptions
-{
-    ResultStatusCodes =
-    {
-        [HealthStatus.Healthy] = StatusCodes.Status200OK,
-        [HealthStatus.Degraded] = StatusCodes.Status200OK,
-        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-    }
-});
 
 try
 {
@@ -86,4 +74,11 @@ try
 finally
 {
     LoggingExtensions.CloseAndFlush();
+}
+
+#pragma warning disable CA1050 // Declare types in namespaces
+public partial class Program
+#pragma warning restore CA1050 // Declare types in namespaces
+{
+    // Expose the Program class for use with WebApplicationFactory<T>
 }

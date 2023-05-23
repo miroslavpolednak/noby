@@ -11,7 +11,7 @@ public class SalesArrangementController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Provede vyhodnocení klapek na základě konfigurace v konfiguračním excelu a vrátí informace nutné pro správné zobrazení rozcestníku žádosti (sluníčka).<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2709EE14-C343-4c7f-B733-A092E41EA839"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2709EE14-C343-4c7f-B733-A092E41EA839"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("{salesArrangementId:int}/flow")]
@@ -60,10 +60,11 @@ public class SalesArrangementController : ControllerBase
     /// Vrací vyhodnocení dané úvěrové žádosti
     /// </summary>
     /// <remarks>
-    /// Použít pro Skóring - výsledek vyhodnocení<br/>
-    /// - výsledek vyhodnocení žádosti<br/>
-    /// - výsledek vyhodnocení za jednotlivé domácnosti<br/>
-    /// Možno vyžadovat nové vyhodnocení
+    /// Použít pro Skóring - výsledek vyhodnocení<br /> 
+    /// - výsledek vyhodnocení žádosti<br />
+    /// - výsledek vyhodnocení za jednotlivé domácnosti<br />
+    /// Možno vyžadovat nové vyhodnocení<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CB8E73AD-C282-4555-B587-A571EE896E81"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
     /// <param name="newAssessmentRequired">Požadováno nové posouzení</param>
@@ -147,7 +148,7 @@ public class SalesArrangementController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Aktualizuje parametry produktového či servisního SalesArrangementu. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=18E19FC4-9238-4249-B43E-A26A9FBBC32C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=18E19FC4-9238-4249-B43E-A26A9FBBC32C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/parameters")]
     [Produces("application/json")]
@@ -163,7 +164,7 @@ public class SalesArrangementController : ControllerBase
     /// <remarks>
     /// Dojde ke zvalidování obsahu žádosti stejně, jako při operaci validace a předání datových vět na rozhraní Starbuildu.<br /><br />
     /// Pokud žádost obsahuje chyby, které nejsou/nemohou být ignorovány, vrací se chyba.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
     [HttpPost("{salesArrangementId:int}/send")]
@@ -180,7 +181,7 @@ public class SalesArrangementController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vrátí komentář produktové žádosti. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("{salesArrangementId:int}/comment")]
     [Produces("application/json")]
@@ -195,7 +196,7 @@ public class SalesArrangementController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Aktualizuje komentář produktové žádosti. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/comment")]
     [Produces("application/json")]

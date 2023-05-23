@@ -49,7 +49,7 @@ internal sealed class CustomerManagementErrorMap
     {
         foreach (var errorMessage in errorData.Detail)
         {
-            if (_errors.ContainsKey(errorMessage))
+            if (!_errors.ContainsKey(errorMessage))
                 continue;
 
             var error = _errors[errorMessage];
@@ -78,7 +78,7 @@ internal sealed class CustomerManagementErrorMap
         AddError(11021,
                  "KB CM: Unable to create customer - Address parameters are incorrect",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_POST_CODE_INVALID",
-                 "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY," +
+                 "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_ADDRESS_POINT_INVALID",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_BUILDING_NUMBER_EMPTY",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_PRAGUE_DISTRICT_EMPTY",
@@ -87,7 +87,7 @@ internal sealed class CustomerManagementErrorMap
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_PO_BOX_FORBIDDEN_FIELDS_USED",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_PO_BOX_NONNUMERICAL",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_POST_CODE_INVALID",
-                 "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY," +
+                 "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_ADDRESS_POINT_INVALID",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_BUILDING_NUMBER_EMPTY",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_PRAGUE_DISTRICT_EMPTY",

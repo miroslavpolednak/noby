@@ -2,6 +2,7 @@
 using NOBY.Api.Endpoints.Cases.UpdateTaskDetail;
 using NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.Cases;
 
@@ -17,14 +18,15 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
+    /// <param name="processId">Noby proces ID. Jde o ID sady úkolů generované Starbuildem.</param>
     [HttpGet("{caseId:long}/tasks/consultation-type")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(List<GetConsultationTypesResponseItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<GetConsultationTypesResponseItem>> GetConsultationTypes([FromRoute] long caseId, [FromQuery] long processId, CancellationToken cancellationToken)
+    public async Task<List<GetConsultationTypesResponseItem>> GetConsultationTypes([FromRoute] long caseId, [FromQuery] [Required] long processId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetConsultationTypesRequest(caseId, processId), cancellationToken);
 
     /// <summary>
@@ -32,14 +34,14 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Stornování úkolu ve SB. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/tasks/{taskId:int}/cancel")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CancelTask([FromRoute] long caseId, [FromRoute] long taskId, [FromBody] CancelTask.CancelTaskRequest request)
+    public async Task<IActionResult> CancelTask([FromRoute] long caseId, [FromRoute] long taskId, [FromBody] [Required] CancelTask.CancelTaskRequest request)
     {
         await _mediator.Send(request.InfuseId(caseId, taskId));
         return NoContent();
@@ -50,8 +52,9 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vytvoření nového workflow tasku do SB.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
+    /// <response code="200">Noby task ID. Jde o ID sady úkolů generované Starbuildem.</response>
     /// <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
     [HttpPost("{caseId:long}/tasks")]
     [Consumes("application/json")]
@@ -60,7 +63,7 @@ public class CasesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<long> CreateTask([FromRoute] long caseId, [FromBody] CreateTask.CreateTaskRequest request)
+    public async Task<long> CreateTask([FromRoute] long caseId, [FromBody] [Required] CreateTask.CreateTaskRequest request)
         => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>
@@ -68,7 +71,7 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
     /// Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.<br/><br/>
     /// Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
     /// </remarks>
@@ -90,7 +93,7 @@ public class CasesController : ControllerBase
     /// Dlužník na prvním místě, dále spoludlužníci řazeni dle příjmení a jména.<br /><br />
     /// <i>DS:</i> SalesArrangementService/getSalesArrangementList<br /><i>DS:</i> SalesArrangementService/GetCustomerList (onSA)<br />
     /// <i>DS:</i> ProductService/GetCustomersOnProduct<br /><i>DS:</i> CustomerService/GetList<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=7F566103-49D8-4a7a-83C3-B690F4A1CC1C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7F566103-49D8-4a7a-83C3-B690F4A1CC1C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/customers")]
@@ -160,12 +163,12 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Operace získá ze Starbuildu seznam úkolů a procesů k danému case ID. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Seznam wf tasks z SB.</returns>
     [HttpGet("{caseId:long}/tasks")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = new[] { "Case" }, OperationId = "tasksByCaseIdGet")]
     [ProducesResponseType(typeof(GetTaskList.GetTaskListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetTaskList.GetTaskListResponse> GetTaskList([FromRoute] long caseId, CancellationToken cancellationToken)
@@ -176,7 +179,7 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Detail workflow tasku dotažený ze SB. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=90CD722E-8955-43e6-9924-DC5FDDF6ED15"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=90CD722E-8955-43e6-9924-DC5FDDF6ED15"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns></returns>
     [HttpGet("{caseId:long}/tasks/{taskId:long}")]
@@ -192,7 +195,7 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Update workflow tasku do SB. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <response code="404">Task or case not found</response>
     [HttpPut("{caseId:long}/tasks/{taskId:int}")]
@@ -208,7 +211,7 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vrátí parametry case s ohledem na stav case. Před předáním žádosti vrací lokálně uložená data. Po předání žádosti vrací data z KonsDB. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EEB4BBAA-9996-43ff-BB50-61514A2B6107"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EEB4BBAA-9996-43ff-BB50-61514A2B6107"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
     [HttpGet("{caseId:long}/parameters")]
@@ -223,8 +226,8 @@ public class CasesController : ControllerBase
     /// <summary>
     /// Příznaky v menu Case detailu
     /// </summary>
-    /// <remarks>
-    ///  Implementováno pro položku menu Documents<br /><br /><br />
+    /// <remarks
+    ///  Implementováno pro položku menu Documents<br /><br />
     ///  <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
     ///  <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>

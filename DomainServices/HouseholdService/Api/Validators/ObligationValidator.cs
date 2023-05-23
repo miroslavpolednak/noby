@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Validators;
@@ -6,7 +7,7 @@ namespace DomainServices.HouseholdService.Api.Validators;
 internal sealed class ObligationValidator
     : AbstractValidator<IObligation>
 {
-    public ObligationValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public ObligationValidator(ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.ObligationTypeId)
             .MustAsync(async (t, cancellationToken) => !t.HasValue || (await codebookService.ObligationTypes(cancellationToken)).Any(x => x.Id == t.Value))

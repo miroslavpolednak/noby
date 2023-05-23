@@ -7,8 +7,7 @@ using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
-using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.SmsNotificationTypes;
+using DomainServices.CodebookService.Clients;
 using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Sms;
@@ -20,7 +19,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     private readonly McsSmsProducer _mcsSmsProducer;
     private readonly UserAdapterService _userAdapterService;
     private readonly NotificationRepository _repository;
-    private readonly ICodebookService _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly SmsAuditLogger _auditLogger;
     private readonly ILogger<SendSmsFromTemplateHandler> _logger;
     
@@ -29,7 +28,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         McsSmsProducer mcsSmsProducer,
         UserAdapterService userAdapterService,
         NotificationRepository repository,
-        ICodebookService codebookService,
+        ICodebookServiceClient codebookService,
         SmsAuditLogger auditLogger,
         ILogger<SendSmsFromTemplateHandler> logger)
     {
@@ -48,7 +47,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
             .CheckSendSmsAccess()
             .GetUsername();
 
-        var smsTypes = await _codebookService.SmsNotificationTypes(new SmsNotificationTypesRequest(), cancellationToken);
+        var smsTypes = await _codebookService.SmsNotificationTypes(cancellationToken);
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {string.Join(',', smsTypes.Select(s => s.Code))}");
 
@@ -89,7 +88,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         catch (Exception e)
         {
             _logger.LogError(e, $"Could not create SmsResult.");
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.CreateSmsResultFailed, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.CreateSmsResultFailed, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
         }
         
         var consumerId = _userAdapterService.GetConsumerId();
@@ -116,7 +115,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.ProduceSendSmsError, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendSmsError, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");
         }
 
         return new SendSmsFromTemplateResponse { NotificationId = result.Id };

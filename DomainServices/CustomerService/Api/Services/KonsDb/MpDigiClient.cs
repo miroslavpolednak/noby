@@ -5,6 +5,7 @@ using CIS.Foms.Enums;
 using CIS.Infrastructure.Data;
 using Dapper;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.v1;
 using ExternalServices.MpHome.V1_1;
 using ExternalServices.MpHome.V1_1.Contracts;
 using FastEnumUtility;
@@ -18,14 +19,14 @@ public class MpDigiClient
 {
     private readonly IMpHomeClient _mpHomeClient;
     private readonly IConnectionProvider _konsDbProvider;
-    private readonly ICodebookServiceClients _codebook;
+    private readonly ICodebookServiceClient _codebook;
 
-    private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
-    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
-    private List<CodebookService.Contracts.Endpoints.ContactTypes.ContactTypeItem> _contactTypes = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _titles = null!;
+    private List<CountriesResponse.Types.CountryItem> _countries = null!;
+    private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
+    private List<ContactTypesResponse.Types.ContactTypeItem> _contactTypes = null!;
 
-    public MpDigiClient(IMpHomeClient mpHomeClient, IConnectionProvider konsDbProvider, ICodebookServiceClients codebook)
+    public MpDigiClient(IMpHomeClient mpHomeClient, IConnectionProvider konsDbProvider, ICodebookServiceClient codebook)
     {
         _mpHomeClient = mpHomeClient;
         _konsDbProvider = konsDbProvider;

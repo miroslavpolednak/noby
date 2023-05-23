@@ -127,14 +127,14 @@ internal sealed class HouseholdsChildMapper
     Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsInstallment = t => t.Installment.GetValueOrDefault();
     Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsInstallmentConsolidated = t => t.InstallmentConsolidated.GetValueOrDefault();
 
-    private List<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem>? _obligationTypes;
+    private List<ObligationTypesResponse.Types.ObligationTypeItem>? _obligationTypes;
     
     private readonly CustomersChildMapper _customersMapper;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
 
     public HouseholdsChildMapper(
         CustomersChildMapper customersMapper,
-        CodebookService.Clients.ICodebookServiceClients codebookService)
+        CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         _customersMapper = customersMapper;
         _codebookService = codebookService;

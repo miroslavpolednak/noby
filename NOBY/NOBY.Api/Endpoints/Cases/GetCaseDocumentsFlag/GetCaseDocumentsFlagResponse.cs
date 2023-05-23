@@ -8,7 +8,7 @@ public class GetCaseDocumentsFlagResponse
 public class DocumentsMenuItem
 {
     /// <summary>
-    /// 0 - No flag, 1 - Error (!), 2 - In processing
+    /// 0 - No flag, 1 - In processing, 2 - Error (!)
     /// </summary>
     public FlagDocuments Flag { get; set; }
 }
@@ -16,7 +16,7 @@ public class DocumentsMenuItem
 public enum FlagDocuments
 {
     NoFlag = 0,
-    Error = 1,
-    InProcessing = 2
+    InProcessing = 1,
+    Error = 2,
 
 }

@@ -109,11 +109,11 @@ internal static class NobyAppBuilder
                     .RequireAuthorization()
                     .Produces(302)
                     .WithTags("Users")
-                    .WithName("logoutUserGet")
+                    .WithName("signoutUserGet")
                     .WithOpenApi(generatedOperation =>
                     {
                         generatedOperation.Summary = "Odhlášení přihlášeného uživatele";
-                        generatedOperation.Description = "Provolání zajistí správné odhlášení přihlášeného uživatele. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea?m=1&amp;o=713A5C7F-13DB-4c88-863B-29C40F2EDE32\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>";
+                        generatedOperation.Description = "Provolání zajistí správné odhlášení přihlášeného uživatele. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=713A5C7F-13DB-4c88-863B-29C40F2EDE32\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>";
                         
                         var parameter = generatedOperation.Parameters[0];
                         parameter.Description = "Absolutní URI kam má být uživatel přesměrován po odhlášení";

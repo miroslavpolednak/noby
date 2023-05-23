@@ -18,10 +18,13 @@ grpcurl -insecure -d "{\"CaseId\":1,\"State\":2}" -H "Authorization: Basic YTph"
 grpcurl -insecure -d "{\"CaseId\":3014591}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/DeleteCase
 grpcurl -insecure -d "{\"CaseId\":3014640}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30001 DomainServices.CaseService.v1.CaseService/NotifyStarbuild
 grpcurl -insecure -d "{\"CaseId\":3014640}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/NotifyStarbuild
+grpcurl -insecure -d "{\"CaseId\":3045896}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30001 DomainServices.CaseService.v1.CaseService/GetProcessList
 
 grpcurl -insecure -d "{\"TaskTypeId\":3,\"TaskSubtypeId\":1,\"ProcessId\":6610481,\"TaskRequest\":\"nejaky text\",\"CaseId\":3014654}" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/CreateTask
 grpcurl -insecure -d "{\"TaskTypeId\":3,\"TaskSubtypeId\":1,\"ProcessId\":6610481,\"TaskRequest\":\"nejaky text\",\"CaseId\":3014654}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30001 DomainServices.CaseService.v1.CaseService/CreateTask
 grpcurl -insecure -d "{\"TaskIdSB\":3}" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/CancelTask
+grpcurl -insecure -d "{\"CaseId\":3014643}" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/ValidateCaseId
+grpcurl -insecure -d "{\"TaskIdSb\":6681570}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30001 DomainServices.CaseService.v1.CaseService/GetTaskDetail
 
 ## run batch
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"

@@ -28,7 +28,7 @@ internal sealed class FormsDocumentService
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IDocumentArchiveRepository _documentArchiveRepository;
     private readonly IDateTime _dateTime;
     private readonly IUserServiceClient _userService;
@@ -36,7 +36,7 @@ internal sealed class FormsDocumentService
     public FormsDocumentService(IDocumentOnSAServiceClient documentOnSAService,
                                 IDocumentArchiveServiceClient documentArchiveService,
                                 IDocumentGeneratorServiceClient documentGeneratorService,
-                                ICodebookServiceClients codebookService,
+                                ICodebookServiceClient codebookService,
                                 IDocumentArchiveRepository documentArchiveRepository,
                                 IDateTime dateTime,
                                 IUserServiceClient userService)
@@ -90,8 +90,8 @@ internal sealed class FormsDocumentService
             DocumentId = form.DynamicFormValues.DocumentId,
             FormType = form.DefaultValues.FormType,
             FormKind = "N",
-            Cpm = user.CPM ?? string.Empty,
-            Icp = user.ICP ?? string.Empty,
+            Cpm = user.UserInfo.Cpm ?? string.Empty,
+            Icp = user.UserInfo.Icp ?? string.Empty,
             Status = 100,
             CreatedAt = _dateTime.Now,
             Storno = 0,
@@ -104,12 +104,12 @@ internal sealed class FormsDocumentService
 
     private static string GetAuthorUserLogin(User user)
     {
-        if (!string.IsNullOrWhiteSpace(user.ICP))
-            return user.ICP;
-        else if (!string.IsNullOrWhiteSpace(user.CPM))
-            return user.CPM;
+        if (!string.IsNullOrWhiteSpace(user.UserInfo.Icp))
+            return user.UserInfo.Icp;
+        else if (!string.IsNullOrWhiteSpace(user.UserInfo.Cpm))
+            return user.UserInfo.Cpm;
         else
-            return user.Id.ToString(CultureInfo.InvariantCulture);
+            return user.UserId.ToString(CultureInfo.InvariantCulture);
     }
 
     public async Task<CreateDocumentOnSAResponse> CreateFinalDocumentOnSa(int salesArrangementId, DynamicFormValues dynamicValue, CancellationToken cancellationToken)

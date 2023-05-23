@@ -10,12 +10,6 @@ internal sealed class NotifyStarbuildHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(NotifyStarbuildRequest request, CancellationToken cancellationToken)
     {
-        // bez prihlaseneho uzivatele to nema cenu
-        if (!_userAccessor.IsAuthenticated)
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AuthenticatedUserNotFound);
-        }
-
         // instance Case
         var caseInstance = await _dbContext
             .Cases
@@ -55,9 +49,9 @@ internal sealed class NotifyStarbuildHandler
             ClientFullName = $"{caseInstance.FirstNameNaturalPerson} {caseInstance.Name}",
             CaseStateName = caseState.Name,
             ProductTypeId = caseInstance.ProductTypeId,
-            OwnerUserCpm = ownerInstance.CPM,
-            OwnerUserIcp = ownerInstance.ICP,
-            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId.GetValueOrDefault(),
+            OwnerUserCpm = ownerInstance.UserInfo.Cpm,
+            OwnerUserIcp = ownerInstance.UserInfo.Icp,
+            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId,
             RiskBusinessCaseId = request.RiskBusinessCaseId,
             IsEmployeeBonusRequested = caseInstance.IsEmployeeBonusRequested
         };
@@ -82,7 +76,7 @@ internal sealed class NotifyStarbuildHandler
 
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
     private readonly UserService.Clients.IUserServiceClient _userService;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly Database.CaseServiceDbContext _dbContext;
@@ -92,7 +86,7 @@ internal sealed class NotifyStarbuildHandler
         IDistributedCache distributedCache,
         Database.CaseServiceDbContext dbContext,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         UserService.Clients.IUserServiceClient userService,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)

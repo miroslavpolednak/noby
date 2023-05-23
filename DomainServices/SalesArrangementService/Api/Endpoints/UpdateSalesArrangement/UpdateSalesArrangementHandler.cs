@@ -64,14 +64,14 @@ internal sealed class UpdateSalesArrangementHandler
 
     private readonly ICaseServiceClient _caseService;
     private readonly ICurrentUserAccessor _userAccessor;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IUserServiceClient _userService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
 
     public UpdateSalesArrangementHandler(
         ICaseServiceClient caseService,
         ICurrentUserAccessor userAccessor,
-        ICodebookServiceClients codebookService,
+        ICodebookServiceClient codebookService,
         IUserServiceClient userService,
         Database.SalesArrangementServiceDbContext dbContext)
     {

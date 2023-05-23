@@ -1,0 +1,30 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "NullableGrpcDecimal.proto";
+
+message MortgageCreditWorthinessSimpleInputs {
+	cis.types.NullableGrpcDecimal TotalMonthlyIncome = 1;
+
+	ExpensesSummary ExpensesSummary = 2;
+
+	ObligationsSummary ObligationsSummary = 3;
+
+	google.protobuf.Int32Value ChildrenCount = 4;
+}
+
+message ExpensesSummary {
+	cis.types.NullableGrpcDecimal Rent = 1;
+
+	cis.types.NullableGrpcDecimal Other = 2;
+}
+
+message ObligationsSummary {
+	cis.types.NullableGrpcDecimal LoansInstallmentsAmount = 1;
+
+	cis.types.NullableGrpcDecimal CreditCardsAmount = 2;
+
+	cis.types.NullableGrpcDecimal AuthorizedOverdraftsTotalAmount = 3;
+}

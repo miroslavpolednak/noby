@@ -43,7 +43,7 @@ public class CisValidationException
 
     /// <param name="errors">Seznam chyb</param>
     public CisValidationException(IReadOnlyList<CisExceptionItem> errors)
-        : base(errors is null ? string.Empty : errors[0].Message)
+        : base(errors is null || !errors.Any() ? string.Empty : errors[0].Message)
     {
         if (errors is null || !errors.Any())
             throw new ArgumentNullException(nameof(errors), $"No errors has been specified when creating new CisValidationException");

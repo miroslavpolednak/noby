@@ -4,6 +4,7 @@ using cCase = DomainServices.CaseService.Contracts;
 using cOffer = DomainServices.OfferService.Contracts;
 using cCustomer = DomainServices.CustomerService.Contracts;
 using cUser = DomainServices.UserService.Contracts;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
 {
@@ -34,9 +35,9 @@ namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
 
         public Dictionary<string, cCustomer.CustomerDetailResponse> CustomersByIdentityCode { get; init; }
 
-        public Dictionary<int, DomainServices.CodebookService.Contracts.GenericCodebookItem> AcademicDegreesBeforeById { get; init; }
+        public Dictionary<int, GenericCodebookResponse.Types.GenericCodebookItem> AcademicDegreesBeforeById { get; init; }
 
-        public Dictionary<int, DomainServices.CodebookService.Contracts.Endpoints.Countries.CountriesItem> CountriesById { get; init; }
+        public Dictionary<int, CountriesResponse.Types.CountryItem> CountriesById { get; init; }
 
         public Dictionary<string, List<int>> ObligationTypeIdsByObligationProperty { get; init; }
 
@@ -53,9 +54,9 @@ namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
             List<cHousehold.CustomerOnSA> customersOnSa,
             Dictionary<int, cHousehold.Income> incomesById,
             Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode,
-            List<DomainServices.CodebookService.Contracts.GenericCodebookItem> academicDegreesBefore,
-            List<DomainServices.CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries,
-            List<DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes
+            List<GenericCodebookResponse.Types.GenericCodebookItem> academicDegreesBefore,
+            List<CountriesResponse.Types.CountryItem> countries,
+            List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes
             )
         {
             LoanApplicationDataVersion = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture);
