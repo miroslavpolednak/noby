@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 
-internal sealed class CheckDocumentsArchivedJob
+public sealed class CheckDocumentsArchivedJob
     : CIS.Infrastructure.BackgroundServices.ICisBackgroundServiceJob
 {
     private const short SuccessfullyArchivedStatus = 400;

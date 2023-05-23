@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.BackgroundServices;
 
-internal sealed class CisBackgroundServiceConfiguration<TBackgroundService>
+public sealed class CisBackgroundServiceConfiguration<TBackgroundService>
     : ICisBackgroundServiceConfiguration<TBackgroundService>
     where TBackgroundService : ICisBackgroundServiceJob
 {

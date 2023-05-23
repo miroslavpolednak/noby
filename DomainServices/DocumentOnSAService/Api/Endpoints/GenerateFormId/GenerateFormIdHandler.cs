@@ -20,7 +20,7 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
     public async Task<GenerateFormIdResponse> Handle(GenerateFormIdRequest request, CancellationToken cancellationToken)
     {
         var generatedFormId = request.HouseholdId is null ? null : await _dbContext.GeneratedFormId.OrderByDescending(e => e.Id)
-            .FirstOrDefaultAsync(e => e.HouseholdId == request.HouseholdId, cancellationToken);
+             .FirstOrDefaultAsync(e => e.HouseholdId == request.HouseholdId, cancellationToken);
 
         short version = 0;
         long sequenceId = 0;

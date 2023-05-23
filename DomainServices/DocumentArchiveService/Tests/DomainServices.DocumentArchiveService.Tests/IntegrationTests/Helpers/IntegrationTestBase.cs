@@ -55,6 +55,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
            options.UseNobyAuthenticationHeader = true; // default
            // Example of custom header, it is necessary create new instance  
            options.Header = new() { { "test", "Test" } }; // default is null
+           // ...
        })
        .ConfigureServices(services =>
        {

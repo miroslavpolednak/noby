@@ -36,7 +36,10 @@ public class DocumentOnSaConfiguration : IEntityTypeConfiguration<DocumentOnSa>
         builder.Property(e => e.IsDocumentArchived)
            .HasDefaultValue(false);
 
-        builder.Property(e => e.Data)
-           .HasColumnType("nvarchar(MAX)");
+        if (DocumentOnSAServiceDbContext.IsSqlite)
+            builder.Property(e => e.Data).HasColumnType("text");
+        else
+            builder.Property(e => e.Data)
+                       .HasColumnType("nvarchar(MAX)");
     }
 }
