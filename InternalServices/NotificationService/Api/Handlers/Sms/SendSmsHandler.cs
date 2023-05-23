@@ -7,8 +7,7 @@ using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
-using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.SmsNotificationTypes;
+using DomainServices.CodebookService.Clients;
 using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Sms;
@@ -19,7 +18,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
     private readonly McsSmsProducer _mcsSmsProducer;
     private readonly UserAdapterService _userAdapterService;
     private readonly NotificationRepository _repository;
-    private readonly ICodebookService _codebookService;
+    private readonly ICodebookServiceClients _codebookService;
     private readonly SmsAuditLogger _auditLogger;
     private readonly ILogger<SendSmsHandler> _logger;
 
@@ -28,7 +27,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         McsSmsProducer mcsSmsProducer,
         UserAdapterService userAdapterService,
         NotificationRepository repository,
-        ICodebookService codebookService,
+        ICodebookServiceClients codebookService,
         SmsAuditLogger auditLogger,
         ILogger<SendSmsHandler> logger)
     {
@@ -47,7 +46,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
             .CheckSendSmsAccess()
             .GetUsername();
         
-        var smsTypes = await _codebookService.SmsNotificationTypes(new SmsNotificationTypesRequest(), cancellationToken);
+        var smsTypes = await _codebookService.SmsNotificationTypes(cancellationToken);
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {string.Join(',', smsTypes.Select(s => s.Code))}");
         

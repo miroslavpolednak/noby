@@ -89,7 +89,7 @@ internal sealed class CustomerManagementSearchProvider
             DateOfBirth = customer.BirthDate,
             FirstName = customer.FirstName ?? string.Empty,
             LastName = customer.Surname ?? string.Empty,
-            GenderId = _genders.First(t => t.KbCmCode == customer.GenderCode).Id
+            GenderId = _genders.FirstOrDefault(t => t.KbCmCode == customer.GenderCode)?.Id ?? 0
         };
     }
 
