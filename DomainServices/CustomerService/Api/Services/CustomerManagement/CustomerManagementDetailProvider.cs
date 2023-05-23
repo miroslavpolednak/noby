@@ -94,7 +94,7 @@ internal sealed class CustomerManagementDetailProvider
             DateOfBirth = np.BirthDate,
             FirstName = np.FirstName ?? string.Empty,
             LastName = np.Surname ?? string.Empty,
-            GenderId = _genders.First(t => t.KbCmCode == np.GenderCode).Id,
+            GenderId = _genders.FirstOrDefault(t => t.KbCmCode == np.GenderCode)?.Id ?? 0,
             BirthName = np.BirthName ?? string.Empty,
             PlaceOfBirth = np.BirthPlace ?? string.Empty,
             BirthCountryId = _countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,

@@ -276,13 +276,13 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.TypeName">
             <summary>
-            Způsob odběru výpisů
+            Typ výpisů
             </summary>
             <example>elektronicky</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.TypeShortName">
             <summary>
-            Způsob odběru výpisů
+            Typ výpisů
             </summary>
             <example>Elektronický</example>
         </member>
