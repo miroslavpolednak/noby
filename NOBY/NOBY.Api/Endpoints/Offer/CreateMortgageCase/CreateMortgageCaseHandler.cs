@@ -105,6 +105,7 @@ internal sealed class CreateMortgageCaseHandler
             request.Customer.Name = customer.NaturalPerson.LastName;
         if (customer.NaturalPerson.DateOfBirth is not null)
             request.Customer.DateOfBirthNaturalPerson = customer.NaturalPerson.DateOfBirth;
+        request.Customer.MaritalStatusId = customer.NaturalPerson.MaritalStatusStateId;
     }
 
     private readonly IRollbackBag _bag;
