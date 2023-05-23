@@ -25,18 +25,23 @@ public class SearchHandler : IRequestHandler<SearchRequest, SearchResponse>
             throw new CisNotFoundException(90100, $"No items found for SalesArrangement {request.SalesArrangementId}");
         }
 
-        var documentTypes = await _codebookServiceClients.DocumentTypes(cancellationToken);
-        var documentTypeFiltered = documentTypes.FirstOrDefault(r => r.EACodeMainId == request.EACodeMainId && r.IsFormIdRequested);
+        await ValidateEaCodeMain(request, cancellationToken);
 
-        if (documentTypeFiltered is null)
+        var documentTypes = await _codebookServiceClients.DocumentTypes(cancellationToken);
+        var documentTypesFiltered = documentTypes.Where(r => r.EACodeMainId == request.EACodeMainId)
+                                    .Select(s => s.Id)
+                                    .ToList();
+
+        if (!documentTypesFiltered.Any())
         {
             return new SearchResponse { FormIds = Array.Empty<SearchResponseItem>() };
         }
-        
+
         var documentsOnSaFiltered = documentsOnSa.DocumentsOnSAToSign
-                .Where(f => f.DocumentTypeId == documentTypeFiltered.Id 
+                .Where(f => documentTypesFiltered.Contains(f.DocumentTypeId!.Value)
                             && !string.IsNullOrWhiteSpace(f.FormId)
-                            && f.IsDocumentArchived == false);
+                            && f.IsFinal == false 
+                            && f.IsSigned == true);
 
         return new SearchResponse
         {
@@ -45,5 +50,17 @@ public class SearchHandler : IRequestHandler<SearchRequest, SearchResponse>
                 FormId = s.FormId
             }).ToList()
         };
+    }
+
+    private async Task ValidateEaCodeMain(SearchRequest request, CancellationToken cancellationToken)
+    {
+        var eaCodeMains = await _codebookServiceClients.EaCodesMain(cancellationToken);
+        var eaCodeMain = eaCodeMains.FirstOrDefault(r => r.Id == request.EACodeMainId);
+
+        if (eaCodeMain is null)
+            throw new NobyValidationException($"Specified EACodeMainId:{request.EACodeMainId} isn't valid");
+
+        if (eaCodeMain.IsFormIdRequested == false)
+            throw new NobyValidationException($"Specified EACodeMainId has IsFormIdRequested == false");
     }
 }
