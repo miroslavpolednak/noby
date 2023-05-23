@@ -1,10 +1,7 @@
 ﻿using System.Globalization;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.Countries;
-using DomainServices.CodebookService.Contracts.Endpoints.EducationLevels;
-using DomainServices.CodebookService.Contracts.Endpoints.IdentificationDocumentTypes;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.LoanApplication;
@@ -13,16 +10,16 @@ internal class LoanApplicationCustomer
 {
     private readonly CustomerDetailResponse _customer;
 
-    private readonly List<GenericCodebookItem> _degreesBefore;
-    private readonly List<CountriesItem> _countries;
-    private readonly List<IdentificationDocumentTypesItem> _identificationDocumentTypes;
-    private readonly List<EducationLevelItem> _educationLevels;
+    private readonly List<GenericCodebookResponse.Types.GenericCodebookItem> _degreesBefore;
+    private readonly List<CountriesResponse.Types.CountryItem> _countries;
+    private readonly List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _identificationDocumentTypes;
+    private readonly List<EducationLevelsResponse.Types.EducationLevelItem> _educationLevels;
 
     public LoanApplicationCustomer(CustomerDetailResponse customer,
-                                   List<GenericCodebookItem> degreesBefore,
-                                   List<CountriesItem> countries,
-                                   List<IdentificationDocumentTypesItem> identificationDocumentTypes,
-                                   List<EducationLevelItem> educationLevels)
+                                   List<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore,
+                                   List<CountriesResponse.Types.CountryItem> countries,
+                                   List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> identificationDocumentTypes,
+                                   List<EducationLevelsResponse.Types.EducationLevelItem> educationLevels)
     {
         _customer = customer;
         _degreesBefore = degreesBefore;

@@ -37,12 +37,12 @@ internal sealed class GetSalesArrangementsHandler
         return model;
     }
 
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public GetSalesArrangementsHandler(
         ISalesArrangementServiceClient salesArrangementService, 
-        ICodebookServiceClients codebookService)
+        ICodebookServiceClient codebookService)
     {
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;

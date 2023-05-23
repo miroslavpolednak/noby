@@ -52,13 +52,13 @@ internal sealed class UpdateCaseDataHandler
 
     private readonly ILogger<UpdateCaseDataHandler> _logger;
     private readonly IMediator _mediator;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CaseServiceDbContext _dbContext;
 
     public UpdateCaseDataHandler(
         ILogger<UpdateCaseDataHandler> logger,
         IMediator mediator,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         CaseServiceDbContext dbContext)
     {
         _logger = logger;

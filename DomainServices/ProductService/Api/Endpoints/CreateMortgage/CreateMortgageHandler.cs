@@ -11,7 +11,7 @@ internal sealed class CreateMortgageHandler
 {
     #region Construction
 
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly LoanRepository _repository;
     private readonly IMpHomeClient _mpHomeClient;
     private readonly ICaseServiceClient _caseService;
@@ -19,7 +19,7 @@ internal sealed class CreateMortgageHandler
 
     public CreateMortgageHandler(
         DomainServices.ProductService.ExternalServices.Pcp.V1.IPcpClient pcpClient,
-        ICodebookServiceClients codebookService,
+        ICodebookServiceClient codebookService,
         ICaseServiceClient caseService,
         LoanRepository repository,
         IMpHomeClient mpHomeClient)

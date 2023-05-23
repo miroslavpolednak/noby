@@ -6,7 +6,7 @@ namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrang
 internal sealed class UpdateSalesArrangementRequestValidator
     : AbstractValidator<Contracts.UpdateSalesArrangementRequest>
 {
-    public UpdateSalesArrangementRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public UpdateSalesArrangementRequestValidator(CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)

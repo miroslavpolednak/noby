@@ -76,7 +76,7 @@ internal sealed class NotifyStarbuildHandler
 
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
     private readonly UserService.Clients.IUserServiceClient _userService;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly Database.CaseServiceDbContext _dbContext;
@@ -86,7 +86,7 @@ internal sealed class NotifyStarbuildHandler
         IDistributedCache distributedCache,
         Database.CaseServiceDbContext dbContext,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         UserService.Clients.IUserServiceClient userService,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)

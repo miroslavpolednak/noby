@@ -6,8 +6,6 @@ using CIS.InternalServices;
 using DomainServices.DocumentOnSAService.Api.Configuration;
 using DomainServices.DocumentOnSAService.Api.Endpoints;
 using DomainServices.DocumentOnSAService.Api.Extensions;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -76,4 +74,11 @@ try
 finally
 {
     LoggingExtensions.CloseAndFlush();
+}
+
+#pragma warning disable CA1050 // Declare types in namespaces
+public partial class Program
+#pragma warning restore CA1050 // Declare types in namespaces
+{
+    // Expose the Program class for use with WebApplicationFactory<T>
 }

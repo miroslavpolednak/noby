@@ -20,7 +20,7 @@ internal sealed class CommitCaseHandler
             ItChannel = FastEnum.Parse<_C4M.ItSubChannelType>(chanel, true),
             LoanApplicationProduct = new _C4M.LoanApplicationProduct()
             {
-                ProductClusterCode = riskApplicationType!.C4mAplCode
+                ProductClusterCode = riskApplicationType!.C4MAplCode
             },
             LoanSoldProduct = request.SoldProduct != null ? new _C4M.LoanSoldProduct
             {
@@ -87,7 +87,7 @@ internal sealed class CommitCaseHandler
     private readonly _cl.IRiskBusinessCaseClient _client;
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
 
@@ -95,7 +95,7 @@ internal sealed class CommitCaseHandler
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         _cl.IRiskBusinessCaseClient client,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
         ICisEnvironmentConfiguration cisEnvironment)
     {

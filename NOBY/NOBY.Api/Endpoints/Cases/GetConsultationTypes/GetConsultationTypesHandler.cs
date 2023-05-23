@@ -23,10 +23,10 @@ internal sealed class GetConsultationTypesHandler
             }).ToList();
     }
 
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ICaseServiceClient _caseService;
 
-    public GetConsultationTypesHandler(ICaseServiceClient caseService, ICodebookServiceClients codebookService)
+    public GetConsultationTypesHandler(ICaseServiceClient caseService, ICodebookServiceClient codebookService)
     {
         _codebookService = codebookService;
         _caseService = caseService;

@@ -8,5 +8,5 @@ public interface ICodebookEndpoint
 
     Type ReturnType { get; }
 
-    Task<IEnumerable<object>> GetObjects(ICodebookServiceClients codebookService, CancellationToken cancellationToken);
+    Task<IEnumerable<object>> GetObjects(ICodebookServiceClient codebookService, CancellationToken cancellationToken);
 }

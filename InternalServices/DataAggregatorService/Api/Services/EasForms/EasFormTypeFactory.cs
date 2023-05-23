@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Exceptions;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms;
 
@@ -22,7 +22,7 @@ public static class EasFormTypeFactory
         return keyValuePair.Key;
     }
 
-    public static DefaultValues CreateDefaultValues(EasFormType easFormType, List<DocumentTypeItem> documentTypes)
+    public static DefaultValues CreateDefaultValues(EasFormType easFormType, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes)
     {
         var documentTypeId = _formTypeMap[easFormType];
 

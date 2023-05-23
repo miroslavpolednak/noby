@@ -43,14 +43,14 @@ internal sealed class UpdateCustomerService
         }
     }
 
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ICustomerServiceClient _customerService;
     private readonly IEasClient _easClient;
 
     public UpdateCustomerService(
         IEasClient easClient,
         ICustomerServiceClient customerService,
-        ICodebookServiceClients codebookService)
+        ICodebookServiceClient codebookService)
     {
         _codebookService = codebookService;
         _easClient = easClient;

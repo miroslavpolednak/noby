@@ -41,9 +41,9 @@ internal sealed class CustomersChildMapper
         }).ToList();
     }
 
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
 
-    public CustomersChildMapper(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public CustomersChildMapper(CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         _codebookService = codebookService;
     }

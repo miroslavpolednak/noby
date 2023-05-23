@@ -7,7 +7,7 @@ using DomainServices.UserService.Clients;
 using CIS.Core.Exceptions;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.Document;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTemplateVariants;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.UserService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.VersionData;
@@ -16,13 +16,13 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Vers
 internal sealed class LoanApplicationVersionDataProvider : IDocumentVersionDataProvider
 {
     private readonly IDocumentVersionDataProvider _documentVersionDataProvider;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly IUserServiceClient _userService;
 
     public LoanApplicationVersionDataProvider(IDocumentVersionDataProvider documentVersionDataProvider,
-                                              ICodebookServiceClients codebookService,
+                                              ICodebookServiceClient codebookService,
                                               ISalesArrangementServiceClient salesArrangementService, 
                                               IHouseholdServiceClient householdService, 
                                               IUserServiceClient userService)
@@ -40,7 +40,7 @@ internal sealed class LoanApplicationVersionDataProvider : IDocumentVersionDataP
 
         var variants = await _codebookService.DocumentTemplateVariants(cancellationToken);
 
-        DocumentTemplateVariantItem variant;
+        DocumentTemplateVariantsResponse.Types.DocumentTemplateVariantItem variant;
 
         if (request.DocumentTemplateVariantId.HasValue)
         {

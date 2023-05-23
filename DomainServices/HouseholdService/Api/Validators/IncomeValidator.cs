@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Validators;
@@ -6,7 +7,7 @@ namespace DomainServices.HouseholdService.Api.Validators;
 internal sealed class IncomeValidator
     : AbstractValidator<IIncome>
 {
-    public IncomeValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public IncomeValidator(ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.IncomeTypeId)
             .GreaterThan(0)

@@ -25,11 +25,11 @@ internal sealed class GetAllHandler
         return model;
     }
 
-    private readonly ICodebookServiceClients _codebooks;
+    private readonly ICodebookServiceClient _codebooks;
     private readonly ICodebookMap _codebookMap;
     private readonly ILogger<GetAllHandler> _logger;
 
-    public GetAllHandler(ICodebookServiceClients codebooks, ICodebookMap codebookMap, ILogger<GetAllHandler> logger)
+    public GetAllHandler(ICodebookServiceClient codebooks, ICodebookMap codebookMap, ILogger<GetAllHandler> logger)
     {
         _logger = logger;
         _codebooks = codebooks;

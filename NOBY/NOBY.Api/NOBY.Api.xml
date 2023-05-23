@@ -276,9 +276,15 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.TypeName">
             <summary>
-            Způsob odběru výpisů
+            Typ výpisů
             </summary>
             <example>elektronicky</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.TypeShortName">
+            <summary>
+            Typ výpisů
+            </summary>
+            <example>Elektronický</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.SubscriptionType">
             <summary>
@@ -932,26 +938,26 @@
              <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
              <returns>Kolekce vyzadanych ciselniku.</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixationPeriodLength(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixationPeriodLength(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
             <summary>
             Číselník fixace úvěru.
             </summary>
             <returns>Kolekce dob fixací v měsících.</returns>
             <param name="productTypeId">ID typu produktu, pro který se mají vrátit fixace.</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetProductLoanKinds(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetProductLoanKinds(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
             <summary>
             Číselník druhu úveru.
             </summary>
             <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixedRatePeriods(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixedRatePeriods(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
             <summary>
             FixedRatePeriod s filtrací na product
             </summary>
             <param name="productTypeId">ID typu produktu</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloper(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloper(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
             <summary>
             Detail developera
             </summary>
@@ -961,7 +967,7 @@
             </remarks>
             <param name="developerId">ID developera</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloperProject(System.Int32,System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloperProject(System.Int32,System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
             <summary>
             Detail developeského projektu
             </summary>

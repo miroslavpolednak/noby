@@ -110,11 +110,11 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         return long.TryParse(zip, out code) ? code : null;
     }
 
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CancellationToken _cancellationToken;
 
     public HouseholdCustomerIncomeChildMapper(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         CancellationToken cancellationToken)
     {
         _cancellationToken = cancellationToken;

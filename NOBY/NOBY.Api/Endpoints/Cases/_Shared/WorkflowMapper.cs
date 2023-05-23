@@ -2,10 +2,10 @@
 using CIS.Core.Security;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStatesNoby;
 using DomainServices.UserService.Clients;
 using NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments;
 using NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
+using static DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types;
 using _Case = DomainServices.CaseService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.Dto;
@@ -13,7 +13,7 @@ namespace NOBY.Api.Endpoints.Cases.Dto;
 [SelfService, ScopedService]
 public class WorkflowMapper
 {
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IUserServiceClient _userService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     
@@ -95,7 +95,7 @@ public class WorkflowMapper
         TaskResponse = taskCommunicationItem.TaskResponse
     };
     
-    private static Dto.WorkflowTask Map(_Case.WorkflowTask task, WorkflowTaskStateNobyItem taskState) => new()
+    private static Dto.WorkflowTask Map(_Case.WorkflowTask task, WorkflowTaskStatesNobyItem taskState) => new()
     {
         TaskId = task.TaskId,
         CreatedOn = task.CreatedOn,
@@ -178,7 +178,7 @@ public class WorkflowMapper
         };
 
     public WorkflowMapper(
-        ICodebookServiceClients codebookService,
+        ICodebookServiceClient codebookService,
         IUserServiceClient userService,
         ICurrentUserAccessor currentUserAccessor)
     {

@@ -1,4 +1,4 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.SigningMethodsForNaturalPerson;
+﻿using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentOnSAService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
@@ -6,9 +6,9 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.C
 internal class DocumentOnSaInfo
 {
     private readonly ICollection<DocumentOnSAToSign> _documentsOnSa;
-    private readonly List<SigningMethodsForNaturalPersonItem> _signingMethods;
+    private readonly List<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem> _signingMethods;
 
-    public DocumentOnSaInfo(ICollection<DocumentOnSAToSign> documentsOnSa, List<SigningMethodsForNaturalPersonItem> signingMethods)
+    public DocumentOnSaInfo(ICollection<DocumentOnSAToSign> documentsOnSa, List<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem> signingMethods)
     {
         _documentsOnSa = documentsOnSa;
         _signingMethods = signingMethods;

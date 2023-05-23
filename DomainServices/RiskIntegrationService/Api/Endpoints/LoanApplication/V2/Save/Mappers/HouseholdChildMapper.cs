@@ -1,8 +1,8 @@
 ﻿using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
 using CIS.Core;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
@@ -110,12 +110,12 @@ internal sealed class HouseholdChildMapper
         };
 
     private readonly HouseholdCustomerChildMapper _customerMapper;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CancellationToken _cancellationToken;
 
     public HouseholdChildMapper(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
-        _RAT.RiskApplicationTypeItem riskApplicationType,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
+        RiskApplicationTypesResponse.Types.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellationToken)
     {
         _cancellationToken = cancellationToken;

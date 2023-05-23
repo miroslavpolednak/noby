@@ -55,14 +55,14 @@ internal sealed class CreateHouseholdHandler
     }
 
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
 
     public CreateHouseholdHandler(
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService,
-        ICodebookServiceClients codebookService,
+        ICodebookServiceClient codebookService,
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _codebookService = codebookService;
