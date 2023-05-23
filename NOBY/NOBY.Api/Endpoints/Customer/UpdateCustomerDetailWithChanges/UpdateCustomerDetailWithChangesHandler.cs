@@ -6,6 +6,7 @@ using DomainServices.UserService.Clients;
 using Newtonsoft.Json;
 using UserIdentity = CIS.Infrastructure.gRPC.CisTypes.UserIdentity;
 using __Household = DomainServices.HouseholdService.Contracts;
+using DomainServices.CaseService.Clients;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
@@ -20,20 +21,71 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         // customer from KB CM
         var (originalModel, identificationMethodId) = await _changedDataService.GetCustomerFromCM<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
 
+        // update nasi detailu instance customera
+        var updateRequest = new __Household.UpdateCustomerDetailRequest
+        {
+            CustomerOnSAId = customerOnSA.CustomerOnSAId,
+            CustomerChangeData = createJsonDelta(originalModel, request),
+            CustomerAdditionalData = await createAdditionalData(customerOnSA, request, identificationMethodId, cancellationToken)
+        };
+        await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
+
+        // update zakladnich udaju nasi instance customera
+        if (isStoredModelDifferentToRequest(customerOnSA, request))
+        {
+            var updateBaseRequest = new __Household.UpdateCustomerRequest
+            {
+                CustomerOnSAId = customerOnSA.CustomerOnSAId,
+                Customer = new __Household.CustomerOnSABase
+                {
+                    MaritalStatusId = request.NaturalPerson?.MaritalStatusId,
+                    Name = request.NaturalPerson?.FirstName ?? "",
+                    FirstNameNaturalPerson = request.NaturalPerson?.FirstName ?? "",
+                    DateOfBirthNaturalPerson = request.NaturalPerson?.DateOfBirth,
+                    LockedIncomeDateTime = customerOnSA.LockedIncomeDateTime
+                }
+            };
+            if (customerOnSA.CustomerIdentifiers is not null)
+                updateBaseRequest.Customer.CustomerIdentifiers.AddRange(customerOnSA.CustomerIdentifiers);
+
+            await _customerOnSAService.UpdateCustomer(updateBaseRequest, cancellationToken);
+
+            // update na CASE
+            /*var caseId = (await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken)).CaseId;
+            
+            await _caseService.UpdateCustomerData(caseId, new DomainServices.CaseService.Contracts.CustomerData
+            {
+                DateOfBirthNaturalPerson = request.NaturalPerson?.DateOfBirth,
+                FirstNameNaturalPerson = request.NaturalPerson?.FirstName ?? "",
+                Name = request.NaturalPerson?.LastName ?? "",
+                Identity = customerOnSA.CustomerIdentifiers is not null ? customerOnSA.CustomerIdentifiers[0] : null
+            }, cancellationToken);*/
+        }
+    }
+
+    private static bool isStoredModelDifferentToRequest(__Household.CustomerOnSA customerOnSA, UpdateCustomerDetailWithChangesRequest request)
+    {
+        return !customerOnSA.Name.Equals(request.NaturalPerson?.LastName, StringComparison.Ordinal)
+            || !customerOnSA.FirstNameNaturalPerson.Equals(request.NaturalPerson?.FirstName, StringComparison.Ordinal)
+            || !customerOnSA.DateOfBirthNaturalPerson.Equals(request.NaturalPerson?.DateOfBirth);
+    }
+
+    private static string? createJsonDelta(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request)
+    {
         // compare objects
         dynamic delta = new System.Dynamic.ExpandoObject();
 
         ModelComparers.CompareRoot(request, originalModel, delta);
-        ModelComparers.ComparePerson(request.NaturalPerson, originalModel.NaturalPerson, delta);
-        ModelComparers.CompareObjects(request.IdentificationDocument, originalModel.IdentificationDocument, "IdentificationDocument", delta);
-        ModelComparers.CompareObjects(request.Addresses, originalModel.Addresses, "Addresses", delta);
+        ModelComparers.ComparePerson(request.NaturalPerson, originalModel?.NaturalPerson, delta);
+        ModelComparers.CompareObjects(request.IdentificationDocument, originalModel?.IdentificationDocument, "IdentificationDocument", delta);
+        ModelComparers.CompareObjects(request.Addresses, originalModel?.Addresses, "Addresses", delta);
         //ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
-        
+
         // tohle je zajimavost - do delty ukladame zmeny jen u kontaktu, ktere nejsou v CM jako IsConfirmed=true
-        if (!(originalModel.EmailAddress?.IsConfirmed ?? false))
-            ModelComparers.CompareObjects(request.EmailAddress, originalModel.EmailAddress, "EmailAddress", delta);
-        if (!(originalModel.MobilePhone?.IsConfirmed ?? false))
-            ModelComparers.CompareObjects(request.MobilePhone, originalModel.MobilePhone, "MobilePhone", delta);
+        if (!(originalModel?.EmailAddress?.IsConfirmed ?? false))
+            ModelComparers.CompareObjects(request.EmailAddress, originalModel!.EmailAddress, "EmailAddress", delta);
+        if (!(originalModel?.MobilePhone?.IsConfirmed ?? false))
+            ModelComparers.CompareObjects(request.MobilePhone, originalModel!.MobilePhone, "MobilePhone", delta);
 
         // vytvoreni JSONu z delta objektu
         string? finalJson = null;
@@ -42,13 +94,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             finalJson = JsonConvert.SerializeObject(delta);
         }
 
-        var updateRequest = new __Household.UpdateCustomerDetailRequest
-        {
-            CustomerOnSAId = customerOnSA.CustomerOnSAId,
-            CustomerChangeData = finalJson,
-            CustomerAdditionalData = await createAdditionalData(customerOnSA, request, identificationMethodId, cancellationToken)
-        };
-        await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
+        return finalJson;
     }
 
     private async Task<__Household.CustomerAdditionalData> createAdditionalData(
@@ -90,22 +136,22 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     }
 
     private readonly CustomerWithChangedDataService _changedDataService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICaseServiceClient _caseService;    
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IUserServiceClient _userServiceClient;
     private readonly ICurrentUserAccessor _userAccessor;
 
     public UpdateCustomerDetailWithChangesHandler(
+        ICaseServiceClient caseService,
         CustomerWithChangedDataService changedDataService,
-        ICodebookServiceClients codebookService,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSAService,
         IUserServiceClient userServiceClient,
         ICurrentUserAccessor userAccessor)
     {
+        _caseService = caseService;
         _changedDataService = changedDataService;
-        _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
         _customerOnSAService = customerOnSAService;
         _userServiceClient = userServiceClient;
