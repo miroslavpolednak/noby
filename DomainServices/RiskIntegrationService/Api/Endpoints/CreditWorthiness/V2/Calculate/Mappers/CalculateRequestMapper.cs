@@ -1,12 +1,13 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V1.Contracts;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class CalculateRequestMapper
 {
-    public async Task<_C4M.CreditWorthinessCalculationArguments> MapToC4m(_V2.CreditWorthinessCalculateRequest request, CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem riskApplicationType, CancellationToken cancellation)
+    public async Task<_C4M.CreditWorthinessCalculationArguments> MapToC4m(_V2.CreditWorthinessCalculateRequest request, RiskApplicationTypesResponse.Types.RiskApplicationTypeItem riskApplicationType, CancellationToken cancellation)
     {
         var requestModel = new _C4M.CreditWorthinessCalculationArguments
         {
@@ -15,7 +16,7 @@ internal sealed class CalculateRequestMapper
             //RiskBusinessCaseId = request.RiskBusinessCaseId!,//TODO ResourceIdentifier
             LoanApplicationProduct = new()
             {
-                ProductClusterCode = riskApplicationType.C4mAplCode,
+                ProductClusterCode = riskApplicationType.C4MAplCode,
                 AmountRequired = request.Product!.LoanAmount,
                 Annuity = request.Product.LoanPaymentAmount,
                 FixationPeriod = request.Product.FixedRatePeriod,

@@ -1,40 +1,42 @@
-﻿using DomainServices.CodebookService.Contracts;
+﻿using DomainServices.CodebookService.Contracts.v1;
 
-namespace DomainServices.CodebookService.Clients;
+namespace DomainServices.CodebookService.Clients.Services;
 
-internal partial class CodebookService : ICodebookServiceClients
+internal partial class CodebookService
+    : ICodebookServiceClient
 {
-    private readonly ICodebookService _codebookService;
-    private readonly ClientsMemoryCache _cache;
-
-    public async Task<List<Contracts.Endpoints.DeveloperSearch.DeveloperSearchItem>> DeveloperSearch(string term, CancellationToken cancellationToken = default(CancellationToken))
-        => await _codebookService.DeveloperSearch(new Contracts.Endpoints.DeveloperSearch.DeveloperSearchRequest
+    public async Task<GetOperatorResponse> GetOperator(string performerLogin, CancellationToken cancellationToken = default(CancellationToken)) 
+        => await _service.GetOperatorAsync(new GetOperatorRequest()
         {
-            Term = term
-        }, cancellationToken);
+            PerformerLogin = performerLogin
+        }, cancellationToken: cancellationToken);
 
-    public async Task<Contracts.Endpoints.GetDeveloper.DeveloperItem> GetDeveloper(int developerId, CancellationToken cancellationToken = default(CancellationToken))
-        => await _codebookService.GetDeveloper(new Contracts.Endpoints.GetDeveloper.GetDeveloperRequest
+    public async Task<GetDeveloperResponse> GetDeveloper(int developerId, CancellationToken cancellationToken = default(CancellationToken))
+        => await _service.GetDeveloperAsync(new GetDeveloperRequest
         {
             DeveloperId = developerId
-        }, cancellationToken);
+        }, cancellationToken: cancellationToken);
 
-    public async Task<Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem> GetDeveloperProject(int developerId, int developerProjectId, CancellationToken cancellationToken = default(CancellationToken))
-        => await _codebookService.GetDeveloperProject(new Contracts.Endpoints.GetDeveloperProject.GetDeveloperProjectRequest
+    public async Task<GetDeveloperProjectResponse> GetDeveloperProject(int developerId, int developerProjectId, CancellationToken cancellationToken = default(CancellationToken))
+        => await _service.GetDeveloperProjectAsync(new GetDeveloperProjectRequest
         {
             DeveloperId = developerId,
             DeveloperProjectId = developerProjectId
-        }, cancellationToken);
+        }, cancellationToken: cancellationToken);
 
-    public async Task<Contracts.Endpoints.GetOperator.GetOperatorItem> GetOperator(string login, CancellationToken cancellationToken = default(CancellationToken))
-        => await _codebookService.GetOperator(new Contracts.Endpoints.GetOperator.GetOperatorRequest
+    public async Task<List<DeveloperSearchResponse.Types.DeveloperSearchItem>> DeveloperSearch(string term, CancellationToken cancellationToken = default(CancellationToken))
+        => (await _service.DeveloperSearchAsync(new DeveloperSearchRequest
         {
-            PerformerLogin = login
-        }, cancellationToken);
+            Term = term
+        }, cancellationToken: cancellationToken)).Items.ToList();
 
-    public CodebookService(ICodebookService codebookService, ClientsMemoryCache cache)
+    private readonly ClientsMemoryCache _cache;
+    private readonly Contracts.v1.CodebookService.CodebookServiceClient _service;
+
+    public CodebookService(Contracts.v1.CodebookService.CodebookServiceClient service, ClientsMemoryCache cache)
     {
+        _service = service;
         _cache = cache;
-        _codebookService = codebookService;
     }
+        
 }

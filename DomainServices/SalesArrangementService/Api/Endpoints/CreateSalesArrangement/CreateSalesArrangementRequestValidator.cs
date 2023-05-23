@@ -6,7 +6,7 @@ namespace DomainServices.SalesArrangementService.Api.Endpoints.CreateSalesArrang
 internal sealed class CreateSalesArrangementRequestValidator
     : AbstractValidator<Contracts.CreateSalesArrangementRequest>
 {
-    public CreateSalesArrangementRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public CreateSalesArrangementRequestValidator(CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)

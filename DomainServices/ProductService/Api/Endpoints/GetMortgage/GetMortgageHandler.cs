@@ -1,5 +1,4 @@
 ﻿using DomainServices.ProductService.Contracts;
-using DomainServices.CodebookService.Clients;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;

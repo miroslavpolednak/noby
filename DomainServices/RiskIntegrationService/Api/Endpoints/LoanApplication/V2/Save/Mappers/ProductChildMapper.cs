@@ -1,8 +1,8 @@
 ﻿using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
 using DomainServices.RiskIntegrationService.ExternalServices;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
@@ -18,8 +18,8 @@ internal sealed class ProductChildMapper
 
         return new _C4M.LoanApplicationProduct
         {
-            ProductClusterCode = _riskApplicationType?.C4mAplCode,
-            AplType = product.AplType ?? _riskApplicationType?.C4mAplTypeId,
+            ProductClusterCode = _riskApplicationType?.C4MAplCode,
+            AplType = product.AplType ?? _riskApplicationType?.C4MAplTypeId,
             GlTableSelection = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "OST" : null,
             IsProductSecured = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? true : default(bool?),
             LoanApplicationPurpose = tranformPurposes(product.Purposes, purposes, product),
@@ -133,7 +133,7 @@ internal sealed class ProductChildMapper
             })
             .ToList();
 
-    private static Func<_V2.LoanApplicationProductCollateral, _C4M.LoanApplicationCollateral> tranformCollateral(List<DomainServices.CodebookService.Contracts.Endpoints.CollateralTypes.CollateralTypeItem> collaterals)
+    private static Func<_V2.LoanApplicationProductCollateral, _C4M.LoanApplicationCollateral> tranformCollateral(List<CollateralTypesResponse.Types.CollateralTypeItem> collaterals)
         => t => new _C4M.LoanApplicationCollateral
         {
             AppraisedValue = t.AppraisedValue.ToAmount(),
@@ -147,14 +147,14 @@ internal sealed class ProductChildMapper
             CategoryCode = collaterals.FirstOrDefault(x => x.CollateralType == t.CollateralType)?.CodeBgm ?? "NE"
         };
 
-    private static List<_C4M.LoanApplicationPurpose>? tranformPurposes(List<_V2.LoanApplicationProductPurpose>? productPurposes, List<DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes.LoanPurposesItem> purposes, _V2.LoanApplicationProduct product)
+    private static List<_C4M.LoanApplicationPurpose>? tranformPurposes(List<_V2.LoanApplicationProductPurpose>? productPurposes, List<LoanPurposesResponse.Types.LoanPurposeItem> purposes, _V2.LoanApplicationProduct product)
         => (product.ProductTypeId == 20001 && product.LoanKindId == 2001)
             ? new List<_C4M.LoanApplicationPurpose> { new _C4M.LoanApplicationPurpose { Code = 35, Amount = product.RequiredAmount } }
             : productPurposes?
                 .Select(t => new _C4M.LoanApplicationPurpose
                 {
                     Amount = t.Amount,
-                    Code = purposes.FirstOrDefault(x => x.C4mId.HasValue && x.Id == t.LoanPurposeId)?.C4mId ?? -1
+                    Code = purposes.FirstOrDefault(x => x.C4MId.HasValue && x.Id == t.LoanPurposeId)?.C4MId ?? -1
                 })
                 .ToList();
 
@@ -183,13 +183,13 @@ internal sealed class ProductChildMapper
     };
 
 
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CancellationToken _cancellationToken;
-    private readonly _RAT.RiskApplicationTypeItem _riskApplicationType;
+    private readonly RiskApplicationTypesResponse.Types.RiskApplicationTypeItem _riskApplicationType;
 
     public ProductChildMapper(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
-        _RAT.RiskApplicationTypeItem riskApplicationType,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
+        RiskApplicationTypesResponse.Types.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellationToken)
     {
         _riskApplicationType = riskApplicationType;

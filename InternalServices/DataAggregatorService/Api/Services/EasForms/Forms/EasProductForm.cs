@@ -1,15 +1,15 @@
 ﻿using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms;
 
 internal class EasProductForm : EasForm<ProductFormData>
 {
-    private readonly List<DocumentTypeItem> _documentTypes;
+    private readonly List<DocumentTypesResponse.Types.DocumentTypeItem> _documentTypes;
 
-    public EasProductForm(ProductFormData formData, List<DocumentTypeItem> documentTypes) : base(formData)
+    public EasProductForm(ProductFormData formData, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes) : base(formData)
     {
         _documentTypes = documentTypes;
     }

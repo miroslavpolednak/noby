@@ -1,6 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
 using CM = DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -8,13 +9,13 @@ namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 internal sealed class CustomerManagementSearchProvider
 {
     private readonly CM.ICustomerManagementClient _customerManagement;
-    private readonly ICodebookServiceClients _codebook;
+    private readonly ICodebookServiceClient _codebook;
 
-    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
-    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
+    private List<CountriesResponse.Types.CountryItem> _countries = null!;
+    private List<GendersResponse.Types.GenderItem> _genders = null!;
+    private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
 
-    public CustomerManagementSearchProvider(CM.ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
+    public CustomerManagementSearchProvider(CM.ICustomerManagementClient customerManagement, ICodebookServiceClient codebook)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;

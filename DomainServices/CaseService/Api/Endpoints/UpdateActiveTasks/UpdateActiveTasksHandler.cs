@@ -83,11 +83,11 @@ internal sealed class UpdateActiveTasksHandler
     }
 
     private readonly CaseServiceDbContext _dbContext;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     
     public UpdateActiveTasksHandler(
         CaseServiceDbContext dbContext,
-        ICodebookServiceClients codebookService)
+        ICodebookServiceClient codebookService)
     {
         _dbContext = dbContext;
         _codebookService = codebookService;

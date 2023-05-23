@@ -11,12 +11,12 @@ namespace DomainServices.CustomerService.Api.Messaging.PartyUpdated;
 
 public class PartyUpdatedConsumer : IConsumer<PartyUpdatedV1>
 {
-    private readonly ICodebookServiceClients _codebookClient;
+    private readonly ICodebookServiceClient _codebookClient;
     private readonly ICustomerOnSAServiceClient _customerOnSaClient;
     private readonly ISalesArrangementServiceClient _salesArrangementClient;
     private readonly ICaseServiceClient _caseClient;
     public PartyUpdatedConsumer(
-        ICodebookServiceClients codebookClient,
+        ICodebookServiceClient codebookClient,
         ICustomerOnSAServiceClient customerOnSaClient,
         ISalesArrangementServiceClient salesArrangementClient,
         ICaseServiceClient caseClient)

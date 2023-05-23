@@ -1,4 +1,6 @@
-﻿namespace DomainServices.RiskIntegrationService.Api;
+﻿using DomainServices.CodebookService.Contracts.v1;
+
+namespace DomainServices.RiskIntegrationService.Api;
 
 internal static class Helpers
 {
@@ -42,7 +44,7 @@ internal static class Helpers
         where TResponse : struct
         => id.HasValue ? GetEnumFromString<TResponse>(id.ToString(), defaultValue) : default(TResponse?);
 
-    public static CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem GetRiskApplicationType(List<CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem> riskApplicationTypes, int productTypeId)
+    public static RiskApplicationTypesResponse.Types.RiskApplicationTypeItem GetRiskApplicationType(List<RiskApplicationTypesResponse.Types.RiskApplicationTypeItem> riskApplicationTypes, int productTypeId)
         => riskApplicationTypes.FirstOrDefault(t => t.ProductTypeId is not null && t.ProductTypeId.Contains(productTypeId))
         ?? throw new CisValidationException(17014, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 }

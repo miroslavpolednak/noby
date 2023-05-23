@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Cases;
+﻿using DomainServices.CodebookService.Contracts.v1;
+
+namespace NOBY.Api.Endpoints.Cases;
 
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class CasesModelConverter
@@ -70,14 +72,14 @@ internal sealed class CasesModelConverter
 		_taskTypes = await _codebookService.WorkflowTaskTypes();
 	}
 
-	private List<DomainServices.CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeItem> _productTypes;
-	private List<DomainServices.CodebookService.Contracts.Endpoints.CaseStates.CaseStateItem> _caseStates;
-	private List<DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskTypes.WorkflowTaskTypeItem> _taskTypes;
+	private List<ProductTypesResponse.Types.ProductTypeItem> _productTypes;
+	private List<GenericCodebookWithDefaultAndCodeResponse.Types.GenericCodebookWithDefaultAndCodeItem> _caseStates;
+	private List<WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem> _taskTypes;
 
-	private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+	private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public CasesModelConverter(DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService)
+    public CasesModelConverter(DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         _codebookService = codebookService;

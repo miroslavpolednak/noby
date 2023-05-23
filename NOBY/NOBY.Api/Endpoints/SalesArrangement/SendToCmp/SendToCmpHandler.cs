@@ -19,7 +19,7 @@ internal sealed class SendToCmpHandler
     : IRequestHandler<SendToCmpRequest>
 {
 
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSaService;
@@ -27,7 +27,7 @@ internal sealed class SendToCmpHandler
     private readonly ICustomerServiceClient _customerService;
 
     public SendToCmpHandler(
-        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
+        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSaService,

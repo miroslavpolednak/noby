@@ -1,5 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.RelationshipCustomerProductTypes;
+using DomainServices.CodebookService.Contracts.v1;
 using ExternalServices.MpHome.V1_1;
 using ExternalServices.MpHome.V1_1.Contracts;
 
@@ -9,12 +9,12 @@ internal sealed class CreateContractRelationshipHandler
     : IRequestHandler<Contracts.CreateContractRelationshipRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     #region Construction
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly Database.LoanRepository _repository;
     private readonly IMpHomeClient _mpHomeClient;
 
     public CreateContractRelationshipHandler(
-        ICodebookServiceClients codebookService,
+        ICodebookServiceClient codebookService,
         Database.LoanRepository repository,
         IMpHomeClient mpHomeClient)
     {
@@ -50,7 +50,7 @@ internal sealed class CreateContractRelationshipHandler
 
         // get MpHome.ContractRelationshipType by MpDigiApiCode
         if (!Enum.TryParse(relationshipTypeItem.MpDigiApiCode, out ContractRelationshipType type))
-            throw new CisArgumentException(1, $"Value of RelationshipCustomerProductType.MpDigiApiCode [{relationshipTypeItem.MpDigiApiCode}] can´t be converted to MpHome.ContractRelationshipType", nameof(RelationshipCustomerProductTypeItem));
+            throw new CisArgumentException(1, $"Value of RelationshipCustomerProductType.MpDigiApiCode [{relationshipTypeItem.MpDigiApiCode}] can´t be converted to MpHome.ContractRelationshipType", nameof(RelationshipCustomerProductTypesResponse.Types.RelationshipCustomerProductTypeItem));
 
         // create request
         var loanLinkRequest = new LoanLinkRequest
@@ -67,7 +67,7 @@ internal sealed class CreateContractRelationshipHandler
     /// <summary>
     /// Returns RelationshipCustomerProductType codebook item by ID
     /// </summary>
-    private async Task<RelationshipCustomerProductTypeItem> GetContractRelationshipType(int contractRelationshipTypeId)
+    private async Task<RelationshipCustomerProductTypesResponse.Types.RelationshipCustomerProductTypeItem> GetContractRelationshipType(int contractRelationshipTypeId)
     {
         var list = await _codebookService.RelationshipCustomerProductTypes();
         var item = list.FirstOrDefault(t => t.Id == contractRelationshipTypeId);

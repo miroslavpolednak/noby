@@ -28,7 +28,7 @@ internal sealed class FormsDocumentService
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IDocumentArchiveRepository _documentArchiveRepository;
     private readonly IDateTime _dateTime;
     private readonly IUserServiceClient _userService;
@@ -36,7 +36,7 @@ internal sealed class FormsDocumentService
     public FormsDocumentService(IDocumentOnSAServiceClient documentOnSAService,
                                 IDocumentArchiveServiceClient documentArchiveService,
                                 IDocumentGeneratorServiceClient documentGeneratorService,
-                                ICodebookServiceClients codebookService,
+                                ICodebookServiceClient codebookService,
                                 IDocumentArchiveRepository documentArchiveRepository,
                                 IDateTime dateTime,
                                 IUserServiceClient userService)

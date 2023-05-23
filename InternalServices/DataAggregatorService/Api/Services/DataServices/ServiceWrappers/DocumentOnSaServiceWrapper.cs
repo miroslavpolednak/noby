@@ -8,9 +8,9 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.S
 internal class DocumentOnSaServiceWrapper : IServiceWrapper
 {
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
 
-    public DocumentOnSaServiceWrapper(IDocumentOnSAServiceClient documentOnSAService, ICodebookServiceClients codebookService)
+    public DocumentOnSaServiceWrapper(IDocumentOnSAServiceClient documentOnSAService, ICodebookServiceClient codebookService)
     {
         _documentOnSAService = documentOnSAService;
         _codebookService = codebookService;

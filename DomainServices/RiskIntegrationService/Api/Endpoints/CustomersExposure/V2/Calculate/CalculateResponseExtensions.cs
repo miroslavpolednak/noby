@@ -1,7 +1,7 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure.V1.Contracts;
-using _CB = DomainServices.CodebookService.Contracts.Endpoints;
 using DomainServices.RiskIntegrationService.Contracts.Shared;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.Calculate;
 
@@ -9,7 +9,7 @@ internal static class CalculateResponseExtensions
 {
     public static async Task<_V2.CustomersExposureCalculateResponse> ToServiceResponse(
         this _C4M.LoanApplicationRelatedExposureResult response, 
-        CodebookService.Clients.ICodebookServiceClients _codebookService, 
+        CodebookService.Clients.ICodebookServiceClient _codebookService, 
         CancellationToken cancellation)
     {
         var customerRoles = await _codebookService.CustomerRoles(cancellation);
@@ -46,7 +46,7 @@ internal static class CalculateResponseExtensions
             TotalExistingExposureUnsecured = item.TotalExistingExposureUnsecured?.Value
         };
 
-    public static _V2.CustomersExposureExistingKBGroupItem ToServiceResponse(this _C4M.ExistingKBGroupExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
+    public static _V2.CustomersExposureExistingKBGroupItem ToServiceResponse(this _C4M.ExistingKBGroupExposureItem item, List<CustomerRolesResponse.Types.CustomerRoleItem> customerRoles, List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> obligationLaExposures)
         => new _V2.CustomersExposureExistingKBGroupItem
         {
             BankAccount = getBankAccountFromIdentifier(item.ProductId),
@@ -65,7 +65,7 @@ internal static class CalculateResponseExtensions
             MaturityDate = item.MaturityDate?.DateTime
         };
 
-    public static _V2.CustomersExposureRequestedKBGroupItem ToServiceResponse(this _C4M.RequestedKBGroupExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
+    public static _V2.CustomersExposureRequestedKBGroupItem ToServiceResponse(this _C4M.RequestedKBGroupExposureItem item, List<CustomerRolesResponse.Types.CustomerRoleItem> customerRoles, List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> obligationLaExposures)
         => new _V2.CustomersExposureRequestedKBGroupItem
         {
             RiskBusinessCaseId = item.RiskBusinessCaseId,
@@ -78,7 +78,7 @@ internal static class CalculateResponseExtensions
             IsSecured = item.IsSecured.GetValueOrDefault()
         };
 
-    public static _V2.CustomersExposureExistingCBCBItem ToServiceResponse(this _C4M.ExistingCBCBExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
+    public static _V2.CustomersExposureExistingCBCBItem ToServiceResponse(this _C4M.ExistingCBCBExposureItem item, List<CustomerRolesResponse.Types.CustomerRoleItem> customerRoles, List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> obligationLaExposures)
         => new _V2.CustomersExposureExistingCBCBItem
         {
             CbcbContractId = item.CbcbContractId,
@@ -94,7 +94,7 @@ internal static class CalculateResponseExtensions
             KbGroupInstanceCode = item.KbGroupInstanceCode,
         };
 
-    public static _V2.CustomersExposureRequestedCBCBItem ToServiceResponse(this _C4M.RequestedCBCBExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles, List<_CB.ObligationLaExposures.ObligationLaExposureItem> obligationLaExposures)
+    public static _V2.CustomersExposureRequestedCBCBItem ToServiceResponse(this _C4M.RequestedCBCBExposureItem item, List<CustomerRolesResponse.Types.CustomerRoleItem> customerRoles, List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> obligationLaExposures)
         => new _V2.CustomersExposureRequestedCBCBItem
         {
             CbcbContractId = item.CbcbContractId,

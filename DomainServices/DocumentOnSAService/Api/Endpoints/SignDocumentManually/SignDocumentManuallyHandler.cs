@@ -32,7 +32,7 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
     private readonly IEasClient _easClient;
     private readonly ISulmClientHelper _sulmClientHelper;
-    private readonly ICodebookServiceClients _codebookServiceClient;
+    private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
     private readonly IProductServiceClient _productServiceClient;
@@ -44,7 +44,7 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         ISalesArrangementServiceClient arrangementServiceClient,
         IEasClient easClient,
         ISulmClientHelper sulmClientHelper,
-        ICodebookServiceClients codebookServiceClient,
+        ICodebookServiceClient codebookServiceClient,
         IHouseholdServiceClient householdClient,
         ICustomerOnSAServiceClient customerOnSAServiceClient,
         IProductServiceClient productServiceClient)

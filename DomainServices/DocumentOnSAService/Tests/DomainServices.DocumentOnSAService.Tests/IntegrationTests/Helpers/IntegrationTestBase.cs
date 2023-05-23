@@ -66,7 +66,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
             // This mock is necessary for mock of service discovery
             services.RemoveAll<IUserServiceClient>().AddSingleton<IUserServiceClient, MockUserService>();
 
-            services.RemoveAll<ICodebookServiceClients>().AddSingleton<ICodebookServiceClients, CodebookServiceMock>();
+            services.RemoveAll<ICodebookServiceClient>().AddSingleton<ICodebookServiceClient, CodebookService.Clients.Services.CodebookServiceMock>();
 
             // NSubstitute mocks
             services.RemoveAll<IDataAggregatorServiceClient>().AddTransient(r => DataAggregatorServiceClient);

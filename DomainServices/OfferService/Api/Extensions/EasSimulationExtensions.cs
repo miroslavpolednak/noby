@@ -1,6 +1,5 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.DrawingDurations;
-using DomainServices.CodebookService.Contracts.Endpoints.DrawingTypes;
-using _OS = DomainServices.OfferService.Contracts;
+﻿using _OS = DomainServices.OfferService.Contracts;
+using DomainServices.CodebookService.Contracts.v1;
 using EasWrapper = ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
 
 namespace DomainServices.OfferService.Api;
@@ -32,7 +31,7 @@ internal static class EasSimulationExtensions
 
 
     // loan
-    private static EasWrapper.SimSettingsUver ToReqLoan(this _OS.MortgageSimulationInputs inputs, Dictionary<int, DrawingDurationItem> drawingDurationsById, Dictionary<int, DrawingTypeItem> drawingTypeById)
+    private static EasWrapper.SimSettingsUver ToReqLoan(this _OS.MortgageSimulationInputs inputs, Dictionary<int, DrawingDurationsResponse.Types.DrawingDurationItem> drawingDurationsById, Dictionary<int, DrawingTypesResponse.Types.DrawingTypeItem> drawingTypeById)
     {
         var uver = new EasWrapper.SimSettingsUver
         {
@@ -196,7 +195,7 @@ internal static class EasSimulationExtensions
     /// <summary>
     /// Converts Offer object [SimulationInputs] to EasSimulationHT object [SimulationHTRequest].
     /// </summary>
-    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this _OS.MortgageSimulationInputs inputs, _OS.BasicParameters basicParameters, Dictionary<int, DrawingDurationItem> drawingDurationsById, Dictionary<int, DrawingTypeItem> drawingTypeById)
+    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this _OS.MortgageSimulationInputs inputs, _OS.BasicParameters basicParameters, Dictionary<int, DrawingDurationsResponse.Types.DrawingDurationItem> drawingDurationsById, Dictionary<int, DrawingTypesResponse.Types.DrawingTypeItem> drawingTypeById)
     {
         //return SampleRequest;
 

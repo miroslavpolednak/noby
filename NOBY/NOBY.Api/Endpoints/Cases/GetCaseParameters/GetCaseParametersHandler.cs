@@ -1,5 +1,5 @@
 ﻿using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
-using cCodebookService = DomainServices.CodebookService.Contracts;
+using cCodebookService = DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
 
@@ -9,7 +9,7 @@ internal sealed class GetCaseParametersHandler
 
     #region Construction
 
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
     private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
@@ -17,7 +17,7 @@ internal sealed class GetCaseParametersHandler
     private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
 
     public GetCaseParametersHandler(
-        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
+        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         DomainServices.CaseService.Clients.ICaseServiceClient caseService,
         DomainServices.ProductService.Clients.IProductServiceClient productService,
         DomainServices.OfferService.Clients.IOfferServiceClient offerService,
@@ -51,7 +51,7 @@ internal sealed class GetCaseParametersHandler
 
         var caseState = caseStates.First(i => i.Id == caseInstance.State);
 
-        var response = (caseState.Code == CIS.Foms.Enums.CaseStates.InProgress) ?
+        var response = (caseState.Id == (int)CIS.Foms.Enums.CaseStates.InProgress) ?
             (await GetParamsBeforeHandover(caseInstance, productTypesById, loanKindsById, loanPurposesById, cancellationToken)) :
             (await GetParamsAfterHandover(caseInstance, productTypesById, loanKindsById, loanPurposesById, statementTypes, statementSubscriptionTypes, statementFrequencies, cancellationToken));
 
@@ -60,9 +60,9 @@ internal sealed class GetCaseParametersHandler
 
     private async Task<GetCaseParametersResponse> GetParamsBeforeHandover(
         DomainServices.CaseService.Contracts.Case caseInstance,
-        Dictionary<int, cCodebookService.Endpoints.ProductTypes.ProductTypeItem> productTypesById,
-        Dictionary<int, cCodebookService.Endpoints.LoanKinds.LoanKindsItem> loanKindsById,
-        Dictionary<int, cCodebookService.Endpoints.LoanPurposes.LoanPurposesItem> loanPurposesById,
+        Dictionary<int, cCodebookService.ProductTypesResponse.Types.ProductTypeItem> productTypesById,
+        Dictionary<int, cCodebookService.GenericCodebookFullResponse.Types.GenericCodebookFullItem> loanKindsById,
+        Dictionary<int, cCodebookService.LoanPurposesResponse.Types.LoanPurposeItem> loanPurposesById,
         CancellationToken cancellation
         )
     {
@@ -136,12 +136,12 @@ internal sealed class GetCaseParametersHandler
 
     private async Task<GetCaseParametersResponse> GetParamsAfterHandover(
         DomainServices.CaseService.Contracts.Case caseInstance,
-        Dictionary<int, cCodebookService.Endpoints.ProductTypes.ProductTypeItem> productTypesById,
-        Dictionary<int, cCodebookService.Endpoints.LoanKinds.LoanKindsItem> loanKindsById,
-        Dictionary<int, cCodebookService.Endpoints.LoanPurposes.LoanPurposesItem> loanPurposesById,
-        List<cCodebookService.Endpoints.StatementTypes.StatementTypeItem> statementTypes,
-        List<cCodebookService.Endpoints.GenericCodebookItemWithCodeAndDefault> statementSubscriptionTypes,
-        List<cCodebookService.Endpoints.StatementFrequencies.StatementFrequencyItem> statementFrequencies,
+        Dictionary<int, cCodebookService.ProductTypesResponse.Types.ProductTypeItem> productTypesById,
+        Dictionary<int, cCodebookService.GenericCodebookFullResponse.Types.GenericCodebookFullItem> loanKindsById,
+        Dictionary<int, cCodebookService.LoanPurposesResponse.Types.LoanPurposeItem> loanPurposesById,
+        List<cCodebookService.StatementTypesResponse.Types.StatementTypeItem> statementTypes,
+        List<cCodebookService.GenericCodebookWithDefaultAndCodeResponse.Types.GenericCodebookWithDefaultAndCodeItem> statementSubscriptionTypes,
+        List<cCodebookService.StatementFrequenciesResponse.Types.StatementFrequencyItem> statementFrequencies,
         CancellationToken cancellation
         )
     {

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using DomainServices.CodebookService.Clients;
+using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.CreateHousehold;
 
@@ -7,7 +8,7 @@ internal sealed class CreateHouseholdRequestValidator
 {
     public CreateHouseholdRequestValidator(
         Database.HouseholdServiceDbContext dbContext,
-        CodebookService.Clients.ICodebookServiceClients codebookService)
+        ICodebookServiceClient codebookService)
     {
         ClassLevelCascadeMode = CascadeMode.Stop;
 

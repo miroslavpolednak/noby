@@ -7,11 +7,11 @@ namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetailRequest, GetDocumentOnSADetailResponse>
 {
     private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
-    private readonly ICodebookServiceClients _codebookServiceClient;
+    private readonly ICodebookServiceClient _codebookServiceClient;
 
     public GetDocumentOnSADetailHandler(
         IDocumentOnSAServiceClient documentOnSAServiceClient,
-        ICodebookServiceClients codebookServiceClient)
+        ICodebookServiceClient codebookServiceClient)
     {
         _documentOnSAServiceClient = documentOnSAServiceClient;
         _codebookServiceClient = codebookServiceClient;
