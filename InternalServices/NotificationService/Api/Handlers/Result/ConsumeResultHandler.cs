@@ -14,7 +14,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
 {
     private readonly IServiceProvider _provider;
     private readonly IDateTime _dateTime;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly SmsAuditLogger _auditLogger;
     private readonly ILogger<ConsumeResultHandler> _logger;
 
@@ -29,7 +29,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
     public ConsumeResultHandler(
         IServiceProvider provider,
         IDateTime dateTime,
-        ICodebookServiceClients codebookService,
+        ICodebookServiceClient codebookService,
         SmsAuditLogger auditLogger,
         ILogger<ConsumeResultHandler> logger)
     {

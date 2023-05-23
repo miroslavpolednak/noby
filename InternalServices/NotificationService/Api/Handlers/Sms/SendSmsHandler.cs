@@ -18,7 +18,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
     private readonly McsSmsProducer _mcsSmsProducer;
     private readonly UserAdapterService _userAdapterService;
     private readonly NotificationRepository _repository;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly SmsAuditLogger _auditLogger;
     private readonly ILogger<SendSmsHandler> _logger;
 
@@ -27,7 +27,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         McsSmsProducer mcsSmsProducer,
         UserAdapterService userAdapterService,
         NotificationRepository repository,
-        ICodebookServiceClients codebookService,
+        ICodebookServiceClient codebookService,
         SmsAuditLogger auditLogger,
         ILogger<SendSmsHandler> logger)
     {
