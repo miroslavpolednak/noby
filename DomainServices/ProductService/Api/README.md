@@ -8,6 +8,7 @@ grpcurl -insecure -d "{\"CaseId\":301, \"Mortgage\":{\"PartnerId\":1, \"Contract
 grpcurl -insecure -d "{\"ProductId\":301, \"Mortgage\":{\"PartnerId\":1, \"ContractNumber\": \"KB301_A\", \"LoanAmount\":{\"units\":6250000}, \"LoanInterestRate\":{\"units\":2}, \"FixedRatePeriod\":4, \"ProductTypeId\":20001 }}" -H "Authorization: Basic YTph" 127.0.0.1:5011 DomainServices.ProductService.v1.ProductService/UpdateMorgage
 grpcurl -insecure -d "{\"ProductId\":300, \"Relationship\":{\"PartnerId\":1, \"ContractRelationshipTypeId\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5011 DomainServices.ProductService.v1.ProductService/CreateContractRelationship
 grpcurl -insecure -d "{\"ProductId\":300, \"PartnerId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5011 DomainServices.ProductService.v1.ProductService/DeleteContractRelationship
+grpcurl -insecure -d "{\"ProductId\":3046041}" -H "Authorization: Basic YTph" 127.0.0.1:30007 DomainServices.ProductService.v1.ProductService/GetProductObligationList
 
 grpcurl -insecure -d "{\"ProductId\":2193680}" -H "Authorization: Basic YTph" 127.0.0.1:30007 DomainServices.ProductService.v1.ProductService/GetCustomersOnProduct
 grpcurl -insecure -d "{\"ContractNumber\":{\"ContractNumber\":\"HF00000001353\"}}" -H "Authorization: Basic YTph" 127.0.0.1:30007 DomainServices.ProductService.v1.ProductService/GetCaseId

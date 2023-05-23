@@ -36,6 +36,6 @@ internal sealed class ProductServiceDbContext
             .HasForeignKey<Entities.Loan2RealEstate>(t => t.NemovitostId)
             .IsRequired();
 
-        modelBuilder.Entity<Entities.Obligation>().HasKey(m => new { m.LoanId, m.LoanPurposeId });
+        modelBuilder.Entity<Entities.Obligation>().HasKey(m => new { m.LoanId, m.LoanPurposeId, m.DatumZapisu });
     }
 }

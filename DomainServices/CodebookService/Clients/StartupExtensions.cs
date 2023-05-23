@@ -19,6 +19,9 @@ public static class StartupExtensions
 
     public static IServiceCollection AddCodebookService(this IServiceCollection services)
     {
+        // register cache
+        services.AddSingleton(new ClientsMemoryCache());
+
         services.AddCisServiceDiscovery();
         services.TryAddTransient<ICodebookServiceClient, __Services.CodebookService>();
         services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.CodebookService.CodebookServiceClient>(ServiceName);
@@ -27,6 +30,9 @@ public static class StartupExtensions
 
     public static IServiceCollection AddCodebookService(this IServiceCollection services, string serviceUrl)
     {
+        // register cache
+        services.AddSingleton(new ClientsMemoryCache());
+
         services.TryAddTransient<ICodebookServiceClient, __Services.CodebookService>();
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.CodebookService.CodebookServiceClient>(serviceUrl);
         return services;

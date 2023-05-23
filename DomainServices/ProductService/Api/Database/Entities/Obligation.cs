@@ -31,4 +31,6 @@ internal class Obligation
 
     [Column("VariabilniSymbol")]
     public string?  VariableSymbol { get; set; }
+
+    public DateTime DatumZapisu { get; set; }
 }
