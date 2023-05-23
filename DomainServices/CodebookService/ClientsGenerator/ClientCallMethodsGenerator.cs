@@ -73,9 +73,6 @@ namespace DomainServices.CodebookService.ClientsGenerators
             // generate source using targets ...
             context.AddSource("ICodebookServiceClient_generated.cs", sbInterface.ToString());
             context.AddSource("CodebookService_generated.cs", sbImpl.ToString());
-
-            File.WriteAllText("c:/temp3/int.cs", sbInterface.ToString());
-            File.WriteAllText("c:/temp3/impl.cs", sbImpl.ToString());
         }
     }
 
