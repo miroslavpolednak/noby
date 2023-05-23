@@ -38,7 +38,7 @@ builder
         // add swagger
         .AddCodebookServiceSwagger()
         // add grpc infrastructure
-        .AddCisGrpcInfrastructure(typeof(Program))
+        .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
         .AddGrpcReflection()
         .AddGrpc(options =>
         {

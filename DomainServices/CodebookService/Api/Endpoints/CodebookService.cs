@@ -206,14 +206,16 @@ internal sealed class CodebookService
     {
         using var connection = _xxd.Create();
         await connection.OpenAsync();
-        return await connection.QueryFirstOrDefaultAsync<GetDeveloperResponse>(SqlQueries.GetDeveloper, new { request.DeveloperId });
+        return (await connection.QueryFirstOrDefaultAsync<GetDeveloperResponse>(SqlQueries.GetDeveloper, new { request.DeveloperId }))
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperNotFound);
     }
 
     public override async Task<GetDeveloperProjectResponse> GetDeveloperProject(GetDeveloperProjectRequest request, ServerCallContext context)
     {
         using var connection = _xxd.Create();
         await connection.OpenAsync();
-        return await connection.QueryFirstOrDefaultAsync<GetDeveloperProjectResponse>(SqlQueries.GetDeveloperProject, new { request.DeveloperProjectId, request.DeveloperId });
+        return (await connection.QueryFirstOrDefaultAsync<GetDeveloperProjectResponse>(SqlQueries.GetDeveloperProject, new { request.DeveloperProjectId, request.DeveloperId }))
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperProjectNotFound);
     }
 
     public override Task<GetGeneralDocumentListResponse> GetGeneralDocumentList(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
