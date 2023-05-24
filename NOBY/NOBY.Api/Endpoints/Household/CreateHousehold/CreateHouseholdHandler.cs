@@ -10,6 +10,10 @@ internal sealed class CreateHouseholdHandler
 {
     public async Task<Dto.HouseholdInList> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)
     {
+        var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+        if ((await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == saInstance.SalesArrangementTypeId)?.SalesArrangementCategory != 1)
+            throw new NobyValidationException("SalesArrangementTypeId is Service SA");
+        
         // nazev typu domacnosti
         string householdTypeName = (await _codebookService.HouseholdTypes(cancellationToken)).FirstOrDefault(x => x.Id == request.HouseholdTypeId)?.Name ??
             throw new NobyValidationException($"Household type {request.HouseholdTypeId} not found");
