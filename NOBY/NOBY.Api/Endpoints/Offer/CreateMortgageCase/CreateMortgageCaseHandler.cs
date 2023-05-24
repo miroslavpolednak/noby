@@ -7,6 +7,7 @@ using _Case = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
+using DomainServices.CustomerService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
@@ -50,8 +51,14 @@ internal sealed class CreateMortgageCaseHandler
         _bag.Add(CreateMortgageCaseRollback.BagKeySalesArrangementId, salesArrangementId);
         _logger.EntityCreated(nameof(_SA.SalesArrangement), salesArrangementId);
 
+        // pokud je to KB klient, tak si stahni jeho data z CM a updatuj request
+        var createCustomerRequest = request.ToDomainServiceRequest(salesArrangementId);
+        if (request.Identity?.Scheme == CIS.Foms.Enums.IdentitySchemes.Kb)
+        {
+            await updateCustomerFromCM(createCustomerRequest, cancellationToken);
+        }
         // create customer on SA
-        var createCustomerResult = await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken);
+        var createCustomerResult = await _customerOnSAService.CreateCustomer(createCustomerRequest, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyCustomerOnSAId, createCustomerResult.CustomerOnSAId);
 
         // updatovat Agent v SA parameters, vytvarime prazdny objekt Parameters pouze s agentem
@@ -88,7 +95,21 @@ internal sealed class CreateMortgageCaseHandler
         };
     }
 
+    private async Task updateCustomerFromCM(_HO.CreateCustomerRequest request, CancellationToken cancellationToken)
+    {
+        var customer = await _customerService.GetCustomerDetail(request.Customer.CustomerIdentifiers[0], cancellationToken);
+
+        if (!string.IsNullOrEmpty(customer.NaturalPerson.FirstName))
+            request.Customer.FirstNameNaturalPerson = customer.NaturalPerson.FirstName;
+        if (!string.IsNullOrEmpty(customer.NaturalPerson.LastName))
+            request.Customer.Name = customer.NaturalPerson.LastName;
+        if (customer.NaturalPerson.DateOfBirth is not null)
+            request.Customer.DateOfBirthNaturalPerson = customer.NaturalPerson.DateOfBirth;
+        request.Customer.MaritalStatusId = customer.NaturalPerson.MaritalStatusStateId;
+    }
+
     private readonly IRollbackBag _bag;
+    private readonly ICustomerServiceClient _customerService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -103,6 +124,7 @@ internal sealed class CreateMortgageCaseHandler
         IRollbackBag bag,
         IMediator mediator,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
+        ICustomerServiceClient customerService,
         ICustomerOnSAServiceClient customerOnSAService,
         ISalesArrangementServiceClient salesArrangementService,
         IHouseholdServiceClient householdService,
@@ -112,6 +134,7 @@ internal sealed class CreateMortgageCaseHandler
         ILogger<CreateMortgageCaseHandler> logger)
     {
         _bag = bag;
+        _customerService = customerService;
         _customerOnSAService = customerOnSAService;
         _mediator = mediator;
         _userAccessor = userAccessor;
