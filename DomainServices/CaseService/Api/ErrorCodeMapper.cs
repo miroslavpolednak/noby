@@ -11,8 +11,6 @@ internal sealed class ErrorCodeMapper
     public const int CaseOwnerIsEmpty = 13003;
     public const int CaseStateAlreadySet = 13005;
     public const int CaseStateNotAllowed = 13006;
-    public const int WfTaskValidationFailed1 = 13008;
-    public const int WfTaskValidationFailed2 = 13009;
     public const int CaseStateNotFound = 13011;
     public const int CustomerNameIsEmpty = 13012;
     public const int ContractNumberIsEmpty = 13013;
@@ -44,8 +42,6 @@ internal sealed class ErrorCodeMapper
             { CaseIdIsEmpty, "CaseId must be > 0" },
             { CaseNotFound, "Case ID {PropertyValue} not found" },
             { CantDeleteCase, "Unable to delete Case – one or more SalesArrangements exists for this case" },
-            { WfTaskValidationFailed1, "Found tasks [{PropertyValue}] with invalid TypeId." },
-            { WfTaskValidationFailed2, "Found tasks [{PropertyValue}] with invalid StateId." },
             { TaskProcessIdNotUnique, "TaskProcessId must be unique" },
             { ProductTypeIdNotFound, "ProductTypeId {PropertyValue} not found" },
             { InvalidCaseState, "Case State must be > 0" },

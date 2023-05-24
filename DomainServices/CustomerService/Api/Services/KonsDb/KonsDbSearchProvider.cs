@@ -61,7 +61,7 @@ public class KonsDbSearchProvider
 
         var command = new CommandDefinition(Sql.SqlScripts.SearchCustomers, parameters: searchRequest, cancellationToken: cancellationToken);
 
-        return _connectionProvider.ExecuteDapperQuery(SearchQuery, cancellationToken);
+        return _connectionProvider.ExecuteDapperQueryAsync(SearchQuery, cancellationToken);
 
         Task<IEnumerable<Partner>> SearchQuery(IDbConnection conn) => conn.QueryAsync<Partner>(command);
     }
@@ -73,7 +73,7 @@ public class KonsDbSearchProvider
 
         var command = new CommandDefinition(Sql.SqlScripts.SearchCustomersContacts, parameters: new { email = email?.EmailAddress, phoneNumber = $"{phoneNumber?.PhoneIDC}{phoneNumber?.PhoneNumber}" }, cancellationToken: cancellationToken);
 
-       return _connectionProvider.ExecuteDapperQuery(SearchContacts, cancellationToken);
+       return _connectionProvider.ExecuteDapperQueryAsync(SearchContacts, cancellationToken);
 
         Task<IEnumerable<long>> SearchContacts(IDbConnection conn) => conn.QueryAsync<long>(command);
     }

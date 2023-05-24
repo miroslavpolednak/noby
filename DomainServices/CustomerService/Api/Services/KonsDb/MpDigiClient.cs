@@ -86,7 +86,7 @@ public class MpDigiClient
     {
         var command = new CommandDefinition(Sql.SqlScripts.PartnerExists, parameters: new { partnerId }, cancellationToken: cancellationToken);
 
-        return await _konsDbProvider.ExecuteDapperQuery(ExistsQuery, cancellationToken);
+        return await _konsDbProvider.ExecuteDapperQueryAsync(ExistsQuery, cancellationToken);
         
         Task<bool> ExistsQuery(IDbConnection dbConnection) => dbConnection.ExecuteScalarAsync<bool>(command);
     }

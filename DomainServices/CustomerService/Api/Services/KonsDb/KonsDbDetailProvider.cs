@@ -81,7 +81,7 @@ public class KonsDbDetailProvider
     {
         var command = new CommandDefinition(Sql.SqlScripts.GetDetail, parameters: new { partnerId }, cancellationToken: cancellationToken);
 
-        var result = await _connectionProvider.ExecuteDapperQuery(DetailQuery, cancellationToken);
+        var result = await _connectionProvider.ExecuteDapperQueryAsync(DetailQuery, cancellationToken);
 
         return result.GroupBy(p => p.PartnerId).Select(p =>
         {
@@ -110,7 +110,7 @@ public class KonsDbDetailProvider
     {
         var command = new CommandDefinition(Sql.SqlScripts.GetList, parameters: new { partnerIds }, cancellationToken: cancellationToken);
 
-        var result = await _connectionProvider.ExecuteDapperQuery(ListQuery, cancellationToken);
+        var result = await _connectionProvider.ExecuteDapperQueryAsync(ListQuery, cancellationToken);
 
         return result.GroupBy(p => p.PartnerId).Select(p =>
         {
