@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using UserIdentity = CIS.Infrastructure.gRPC.CisTypes.UserIdentity;
 using __Household = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Clients;
+using CIS.Foms.Enums;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
@@ -50,16 +51,19 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
 
             await _customerOnSAService.UpdateCustomer(updateBaseRequest, cancellationToken);
 
-            // update na CASE
-            /*var caseId = (await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken)).CaseId;
-            
-            await _caseService.UpdateCustomerData(caseId, new DomainServices.CaseService.Contracts.CustomerData
+            // update na CASE, pokud se jedna o hlavniho dluznika
+            if (customerOnSA.CustomerRoleId == (int)CustomerRoles.Debtor)
             {
-                DateOfBirthNaturalPerson = request.NaturalPerson?.DateOfBirth,
-                FirstNameNaturalPerson = request.NaturalPerson?.FirstName ?? "",
-                Name = request.NaturalPerson?.LastName ?? "",
-                Identity = customerOnSA.CustomerIdentifiers is not null ? customerOnSA.CustomerIdentifiers[0] : null
-            }, cancellationToken);*/
+                var caseId = (await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken)).CaseId;
+
+                await _caseService.UpdateCustomerData(caseId, new DomainServices.CaseService.Contracts.CustomerData
+                {
+                    DateOfBirthNaturalPerson = request.NaturalPerson?.DateOfBirth,
+                    FirstNameNaturalPerson = request.NaturalPerson?.FirstName ?? "",
+                    Name = request.NaturalPerson?.LastName ?? "",
+                    Identity = customerOnSA.CustomerIdentifiers is not null ? customerOnSA.CustomerIdentifiers[0] : null
+                }, cancellationToken);
+            }
         }
     }
 
