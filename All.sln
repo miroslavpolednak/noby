@@ -381,6 +381,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00018-HFICH-5780_ChangesV2.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00018-HFICH-5780_ChangesV2.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00019-HFICH-5934_Template3602.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00019-HFICH-5934_Template3602.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00020-HFICH-5218_ContractSegment.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00020-HFICH-5218_ContractSegment.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00021-HFICH-5957_HFICH-6027.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00021-HFICH-5957_HFICH-6027.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -417,7 +418,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookServ
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7C6A1A94-EE48-4C69-8AC1-1D14A356394E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.NotificationService.Api.Tests", "InternalServices\NotificationService\Tests\Api.Tests\CIS.InternalServices.NotificationService.Api.Tests.csproj", "{55ACA9AD-77FA-4795-82F7-8A7CF2FA257A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Api.Tests", "InternalServices\NotificationService\Tests\Api.Tests\CIS.InternalServices.NotificationService.Api.Tests.csproj", "{55ACA9AD-77FA-4795-82F7-8A7CF2FA257A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
