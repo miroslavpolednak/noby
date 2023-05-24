@@ -6,6 +6,8 @@ using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using __HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.CustomerService.Clients;
+using DomainServices.CodebookService.Clients;
+using Microsoft.AspNetCore.Components.Web;
 #endregion usings
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
@@ -18,15 +20,16 @@ internal sealed class UpdateCustomersHandler
         var householdInstance = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
         // potrebuju i caseId
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(householdInstance.SalesArrangementId, cancellationToken);
+        bool isProductSA = (await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == salesArrangement.SalesArrangementTypeId)?.SalesArrangementCategory == 1;
 
         // zkontrolovat, zda neni customer jiz v jine domacnosti
         var allCustomers = await checkDoubledCustomers(householdInstance.SalesArrangementId, request, cancellationToken);
 
         // process customer1
-        var c1 = await crudCustomer(request.Customer1, salesArrangement.SalesArrangementId, salesArrangement.CaseId, householdInstance.CustomerOnSAId1, CustomerRoles.Debtor, allCustomers, cancellationToken);
+        var c1 = await crudCustomer(request.Customer1, salesArrangement.SalesArrangementId, isProductSA, salesArrangement.CaseId, householdInstance.CustomerOnSAId1, CustomerRoles.Debtor, allCustomers, cancellationToken);
     
         // process customer2
-        var c2 = await crudCustomer(request.Customer2, salesArrangement.SalesArrangementId, salesArrangement.CaseId, householdInstance.CustomerOnSAId2, CustomerRoles.Codebtor, allCustomers, cancellationToken);
+        var c2 = await crudCustomer(request.Customer2, salesArrangement.SalesArrangementId, isProductSA, salesArrangement.CaseId, householdInstance.CustomerOnSAId2, CustomerRoles.Codebtor, allCustomers, cancellationToken);
 
         // linkovani novych nebo zmenenych CustomerOnSAId na household
         if (householdInstance.CustomerOnSAId1 != c1.OnHouseholdCustomerOnSAId || householdInstance.CustomerOnSAId2 != c2.OnHouseholdCustomerOnSAId) 
@@ -132,6 +135,7 @@ internal sealed class UpdateCustomersHandler
     private async Task<Dto.CrudResult> crudCustomer(
         Dto.CustomerDto? customer,
         int salesArrangementId,
+        bool isProductSA,
         long caseId,
         int? customerOnSAId,
         CustomerRoles customerRole,
@@ -142,7 +146,8 @@ internal sealed class UpdateCustomersHandler
         if (customer is null && customerOnSAId.HasValue)
         {
             await _customerOnSAService.DeleteCustomer(customerOnSAId.Value, cancellationToken: cancellationToken);
-            await deleteRelationships(caseId, getMpId(customerOnSAId.Value), cancellationToken);
+            if (isProductSA)
+                await deleteRelationships(caseId, getMpId(customerOnSAId.Value), cancellationToken);
 
             return new Dto.CrudResult(true);
         }
@@ -154,7 +159,8 @@ internal sealed class UpdateCustomersHandler
             if (customerIdChanged)
             {
                 await _customerOnSAService.DeleteCustomer(customerOnSAId!.Value, cancellationToken: cancellationToken);
-                await deleteRelationships(caseId, getMpId(customerOnSAId!.Value), cancellationToken);
+                if (isProductSA)
+                    await deleteRelationships(caseId, getMpId(customerOnSAId!.Value), cancellationToken);
             }
 
             // update stavajiciho
@@ -230,6 +236,7 @@ internal sealed class UpdateCustomersHandler
         }
     }
 
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
@@ -240,6 +247,7 @@ internal sealed class UpdateCustomersHandler
 
     public UpdateCustomersHandler(
         ILogger<UpdateCustomersHandler> logger,
+        ICodebookServiceClient codebookService,
         IHouseholdServiceClient householdService,
         ICustomerOnSAServiceClient customerOnSAService,
         IProductServiceClient productService,
@@ -248,6 +256,7 @@ internal sealed class UpdateCustomersHandler
         ICustomerServiceClient customerService)
     {
         _logger = logger;
+        _codebookService = codebookService;
         _customerService = customerService;
         _productService = productService;
         _customerOnSAService = customerOnSAService;

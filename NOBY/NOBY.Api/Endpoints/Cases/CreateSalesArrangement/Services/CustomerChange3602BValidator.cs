@@ -1,4 +1,6 @@
-﻿using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+﻿using DomainServices.CaseService.Clients;
+using DomainServices.ProductService.Clients;
+using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
@@ -13,8 +15,24 @@ internal sealed class CustomerChange3602BValidator
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default(CancellationToken))
     {
-        return Task.FromResult<ICreateSalesArrangementParametersBuilder>(new CustomerChange3602BBuilder(_logger, _request, _httpContextAccessor));
+        var caseService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<ICaseServiceClient>();
+        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<IProductServiceClient>();
+
+        var caseInstance = await caseService.GetCaseDetail(_request.CaseId, cancellationToken);
+        if (caseInstance.State == 1)
+        {
+            throw new NobyValidationException("Case state < 2");
+        }
+
+        // instance hypo
+        var productInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
+        if (productInstance.Mortgage?.ContractSignedDate is null)
+        {
+            throw new NobyValidationException(90014);
+        }
+
+        return new CustomerChange3602BBuilder(_logger, _request, _httpContextAccessor);
     }
 }
