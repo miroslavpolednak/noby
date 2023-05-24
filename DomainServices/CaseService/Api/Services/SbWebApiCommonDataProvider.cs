@@ -25,9 +25,6 @@ internal sealed class SbWebApiCommonDataProvider
             .Select(taskData => taskData.ToWorkflowTask())
             .ToList();
 
-        // check tasks
-        await validateTasks(tasks, taskStateIds, cancellationToken);
-
         // update active tasks
         var updateRequest = new UpdateActiveTasksRequest
         {
@@ -47,26 +44,5 @@ internal sealed class SbWebApiCommonDataProvider
         var taskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
 
         return taskStates.Where(i => !i.Flag.HasFlag(CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types.EWorkflowTaskStateFlag.Inactive)).Select(i => i.Id).ToList();
-    }
-
-    public async Task validateTasks(IList<Contracts.WorkflowTask> tasks, IList<int> taskStateIds, CancellationToken cancellationToken)
-    {
-        var taskTypes = await _codebookService.WorkflowTaskTypes(cancellationToken);
-        var taskTypeIds = taskTypes.Select(i => i.Id).ToArray();
-
-        var tasksWithInvalidTypeId = tasks.Where(t => !taskTypeIds.Contains(t.TaskTypeId));
-        var tasksWithInvalidStateId = tasks.Where(t => !taskStateIds.Contains(t.StateIdSb));
-
-        if (tasksWithInvalidTypeId.Any())
-        {
-            var taskIds = tasksWithInvalidTypeId.Select(t => t.TaskId);
-            throw new CisValidationException(ErrorCodeMapper.WfTaskValidationFailed1, ErrorCodeMapper.GetMessage(ErrorCodeMapper.WfTaskValidationFailed1, string.Join(",", taskIds)));
-        }
-
-        if (tasksWithInvalidStateId.Any())
-        {
-            var taskIds = tasksWithInvalidStateId.Select(t => t.TaskId);
-            throw new CisValidationException(ErrorCodeMapper.WfTaskValidationFailed2, ErrorCodeMapper.GetMessage(ErrorCodeMapper.WfTaskValidationFailed2, string.Join(",", taskIds)));
-        }
     }
 }
