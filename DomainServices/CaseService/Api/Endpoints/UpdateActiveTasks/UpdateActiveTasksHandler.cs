@@ -18,25 +18,9 @@ internal sealed class UpdateActiveTasksHandler
         var taskTypes = await _codebookService.WorkflowTaskTypes(cancellation);
         var taskTypeIds = taskTypes.Select(i => i.Id).ToArray();
 
-        // CheckTasks
-        CheckTasks(request.Tasks, taskTypeIds);
-
         await replaceActiveTasks(request.CaseId, request.Tasks, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private static void CheckTasks(RepeatedField<ActiveTask> tasks, int[] taskTypeIds)
-    {
-        var tasksWithInvalidTypeId = tasks.Where(t => !taskTypeIds.Contains(t.TaskTypeId));
-
-        if (!tasksWithInvalidTypeId.Any())
-            return;
-
-        var invalidTypeIds = tasksWithInvalidTypeId.Select(t => t.TaskTypeId).Distinct();
-        var taskIds = tasksWithInvalidTypeId.Select(t => t.TaskId);
-
-        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.WfTaskValidationFailed1, string.Join(",", taskIds));
     }
 
     public async Task replaceActiveTasks(long caseId, RepeatedField<ActiveTask> tasks, CancellationToken cancellation)
