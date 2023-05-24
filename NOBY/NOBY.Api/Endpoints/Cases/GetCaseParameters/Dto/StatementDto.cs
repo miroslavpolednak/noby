@@ -28,6 +28,7 @@ public sealed class StatementDto
     /// Způsob odběru výpisů
     /// </summary>
     /// <example>elektronicky</example>
+    [Obsolete]
     public string? SubscriptionType { get; set; }
 
     /// <summary>
