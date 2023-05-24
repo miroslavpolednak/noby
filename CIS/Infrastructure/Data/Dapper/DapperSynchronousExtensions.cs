@@ -2,7 +2,7 @@
 using CIS.Core.Data;
 using Dapper;
 
-namespace CIS.Infrastructure.Data.Synchronous;
+namespace CIS.Infrastructure.Data;
 
 public static class DapperSynchronousExtensions
 {
@@ -14,6 +14,9 @@ public static class DapperSynchronousExtensions
 
     public static List<dynamic> ExecuteDapperRawSqlToDynamicList(this IConnectionProvider connectionProvider, string sqlQuery)
         => connectionProvider.ExecuteDapperQuery<List<dynamic>>(c => c.Query(sqlQuery).AsList());
+
+    public static T ExecuteDapperFirstOrDefault<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param)
+        => connectionProvider.ExecuteDapperQuery<T>(c => c.QueryFirstOrDefault<T>(sqlQuery, param));
 
     public static T ExecuteDapperQuery<T>(this IConnectionProvider connectionProvider, Func<IDbConnection, T> getData)
     {
