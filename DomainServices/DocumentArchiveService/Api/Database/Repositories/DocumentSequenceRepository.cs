@@ -21,6 +21,6 @@ internal class DocumentSequenceRepository : IDocumentSequenceRepository
 
     public async Task<long> GetNextDocumentSeqValue(CancellationToken cancellation)
     {
-        return await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<long>("SELECT NEXT VALUE FOR dbo.GenerateDocumentIdSequence", cancellation);
+        return await _connectionProvider.ExecuteDapperRawSqlFirstOrDefaultAsync<long>("SELECT NEXT VALUE FOR dbo.GenerateDocumentIdSequence", cancellation);
     }
 }

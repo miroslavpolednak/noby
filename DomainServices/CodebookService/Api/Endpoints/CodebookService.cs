@@ -1,11 +1,10 @@
 ﻿using CIS.Core.Data;
-using CIS.Infrastructure.Data.Synchronous;
+using CIS.Infrastructure.Data;
 using Dapper;
 using DomainServices.CodebookService.Api.Database;
 using DomainServices.CodebookService.Api.Extensions;
 using DomainServices.CodebookService.Contracts.v1;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DomainServices.CodebookService.Api.Endpoints;
 
@@ -86,24 +85,25 @@ internal sealed class CodebookService
                 .ToList();
         });
 
-    public override Task<DeveloperSearchResponse> DeveloperSearch(DeveloperSearchRequest request, ServerCallContext context)
+    public override async Task<DeveloperSearchResponse> DeveloperSearch(DeveloperSearchRequest request, ServerCallContext context)
     {
         if (string.IsNullOrEmpty(request.Term))
-            return Task.FromResult(new DeveloperSearchResponse());
+            return new DeveloperSearchResponse();
 
-        return Helpers.GetItems(new DeveloperSearchResponse(), () =>
-        {
-            var terms = request.Term.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-            var termsValues = String.Join(",", terms.Select(t => $"('{t}')"));
+        var terms = request.Term.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        var termsValues = String.Join(",", terms.Select(t => $"('{t}')"));
 
-            var developersAndProjectsQuery = SqlQueries.DeveloperSearchWithProjects.Replace("<terms>", termsValues);
-            var developersQuery = SqlQueries.DeveloperSearch.Replace("<terms>", termsValues);
+        var developersAndProjectsQuery = SqlQueries.DeveloperSearchWithProjects.Replace("<terms>", termsValues);
+        var developersQuery = SqlQueries.DeveloperSearch.Replace("<terms>", termsValues);
 
-            var developersAndProjects = _xxd.ExecuteDapperRawSqlToList<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersAndProjectsQuery);
-            var developers = _xxd.ExecuteDapperRawSqlToList<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersQuery);
+        var developersAndProjects = await _xxd.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersAndProjectsQuery);
+        var developers = await _xxd.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersQuery);
 
-            return developersAndProjects.Concat(developers).ToList();
-        });
+        var data = developersAndProjects.Concat(developers).ToList();
+
+        var result = new DeveloperSearchResponse();
+        result.Items.AddRange(data);
+        return result;
     }
 
     public override Task<DocumentFileTypesResponse> DocumentFileTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
@@ -204,17 +204,13 @@ internal sealed class CodebookService
 
     public override async Task<GetDeveloperResponse> GetDeveloper(GetDeveloperRequest request, ServerCallContext context)
     {
-        using var connection = _xxd.Create();
-        await connection.OpenAsync();
-        return (await connection.QueryFirstOrDefaultAsync<GetDeveloperResponse>(SqlQueries.GetDeveloper, new { request.DeveloperId }))
+        return (await _xxd.ExecuteDapperFirstOrDefaultAsync<GetDeveloperResponse>(SqlQueries.GetDeveloper, new { request.DeveloperId }))
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperNotFound, request.DeveloperId);
     }
 
     public override async Task<GetDeveloperProjectResponse> GetDeveloperProject(GetDeveloperProjectRequest request, ServerCallContext context)
     {
-        using var connection = _xxd.Create();
-        await connection.OpenAsync();
-        return (await connection.QueryFirstOrDefaultAsync<GetDeveloperProjectResponse>(SqlQueries.GetDeveloperProject, new { request.DeveloperProjectId, request.DeveloperId }))
+        return (await _xxd.ExecuteDapperFirstOrDefaultAsync<GetDeveloperProjectResponse>(SqlQueries.GetDeveloperProject, new { request.DeveloperProjectId, request.DeveloperId }))
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperProjectNotFound, request.DeveloperProjectId);
     }
 

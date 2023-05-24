@@ -76,7 +76,7 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
     {
         var parameters = new OracleDynamicParameters();
 
-        var result = await _connectionProvider.ExecuteDapperRawSqlToList<DocumentServiceQueryResult>(
+        var result = await _connectionProvider.ExecuteDapperRawSqlToListAsync<DocumentServiceQueryResult>(
                                        ComposeSqlWithFilter(query, parameters),
                                        parameters,
                                        cancellationToken);
@@ -95,7 +95,7 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
         parameters.Add("ExternalDocumentId", OracleDbType.NVarchar2, ParameterDirection.Input, $"0{query.DocumentId}");
 
         var result = await _connectionProvider
-            .ExecuteDapperRawSqlFirstOrDefault<DocumentServiceQueryResult>(
+            .ExecuteDapperRawSqlFirstOrDefaultAsync<DocumentServiceQueryResult>(
             $"{DocumentMainSql} {GetDocumentByExternalIdWhereSql}",
             parameters,
             cancellationToken);
