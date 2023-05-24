@@ -103,7 +103,9 @@ internal class RealCustomerManagementClient : ICustomerManagementClient
                     DataEntity.BR_SUBSCRIPTION,
                     DataEntity.TAX_RESIDENCE,
                     DataEntity.KB_RELATIONSHIP,
-                    DataEntity.EDUCATION
+                    DataEntity.EDUCATION,
+                    DataEntity.FINANCIAL_PROFILE,
+                    DataEntity.EMPLOYMENT
                 }.Select(v => v.ToString())
             }
         };
