@@ -61,6 +61,15 @@ internal sealed class CustomerWithChangedDataService
         NaturalPerson person = new();
         dsCustomer.NaturalPerson?.FillResponseDto(person);
         person.EducationLevelId = dsCustomer.NaturalPerson?.EducationLevelId;
+        person.TaxResidences = new TaxResidenceItem
+        {
+            validFrom = dsCustomer.NaturalPerson?.TaxResidence?.ValidFrom,
+            ResidenceCountries = dsCustomer.NaturalPerson?.TaxResidence?.ResidenceCountries.Select(c => new TaxResidenceCountryItem
+            {
+                CountryId = c.CountryId,
+                Tin = c.Tin
+            }).ToList()
+        };
         //person.ProfessionCategoryId = customer.NaturalPerson?
         //person.ProfessionId = customer.NaturalPerson ?;
         //person.NetMonthEarningAmountId = customer.NaturalPerson
