@@ -17,7 +17,7 @@ internal class UserInfo
 
     public string FullName => _user.UserInfo.DisplayName;
 
-    public string FullNameWithDetails => $"{_user.UserInfo.DisplayName} ({CPM}, {ICP})";
+    public string FullNameWithDetails => $"{_user.UserInfo.DisplayName} (IČP: {ICP}, ČPM: {CPM})";
 
     public string Phone => _user.UserAttributes.PhoneNumber;
 
