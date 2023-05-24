@@ -395,9 +395,6 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.Types.DocumentTypeItem.EACodeMainIdFieldNumber">
             <summary>Field number for the "EACodeMainId" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.Types.DocumentTypeItem.IsFormIdRequestedFieldNumber">
-            <summary>Field number for the "IsFormIdRequested" field.</summary>
-        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingDurationsResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>

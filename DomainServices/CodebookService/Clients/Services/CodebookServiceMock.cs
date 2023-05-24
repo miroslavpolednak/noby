@@ -112,22 +112,22 @@ public class CodebookServiceMock
     {
         return Task.FromResult(new List<DocumentTypeItem>
         {
-            new() {Id = 1 , ShortName="NABIDKA" , SalesArrangementTypeId=null,EACodeMainId=605569,IsFormIdRequested=false,FileName="Nabidka_HU"},
-            new() {Id = 2 , ShortName="KALKULHU", SalesArrangementTypeId=null,EACodeMainId=null  ,IsFormIdRequested=false,FileName="Kalkulace_HU"},
-            new() {Id = 3 , ShortName="SPLKALHU", SalesArrangementTypeId=null,EACodeMainId=null  ,IsFormIdRequested=false,FileName="Splatkovy_kalendar"},
-            new() {Id = 4 , ShortName="ZADOSTHU", SalesArrangementTypeId=null,EACodeMainId=608248,IsFormIdRequested=true ,FileName="Zadost_HU1"},
-            new() {Id = 5 , ShortName="ZADOSTHD", SalesArrangementTypeId=null,EACodeMainId=608243,IsFormIdRequested=true ,FileName="Zadost_HD2"},
-            new() {Id = 6 , ShortName="ZADOCERP", SalesArrangementTypeId=6   ,EACodeMainId=613226,IsFormIdRequested=true ,FileName="Cerpani_HU"},
-            new() {Id = 7 , ShortName="ZADOOPCI", SalesArrangementTypeId=null,EACodeMainId=608578,IsFormIdRequested=true ,FileName="Zadost_Flexi"},
-            new() {Id = 8 , ShortName="ZAOZMPAR", SalesArrangementTypeId=7   ,EACodeMainId=608279,IsFormIdRequested=true ,FileName="Zadost_obecna"},
-            new() {Id = 9 , ShortName="ZAOZMDLU", SalesArrangementTypeId=9   ,EACodeMainId=608580,IsFormIdRequested=true ,FileName="Zadost_dluznik"},
-            new() {Id = 10, ShortName="ZAODHUBN", SalesArrangementTypeId=8   ,EACodeMainId=608579,IsFormIdRequested=true ,FileName="Zadost_bezNem"},
-            new() {Id = 11, ShortName="ZUSTAVSI", SalesArrangementTypeId=12  ,EACodeMainId=608524,IsFormIdRequested=true ,FileName="Zustavajici_v_HU"},
-            new() {Id = 12, ShortName="PRISTOUP", SalesArrangementTypeId=10  ,EACodeMainId=608524,IsFormIdRequested=true ,FileName="Pristupujici_k_HU"},
-            new() {Id = 13, ShortName="DANRESID", SalesArrangementTypeId=null,EACodeMainId=616578,IsFormIdRequested=true ,FileName="Prohlaseni_dan"},
-            new() {Id = 14, ShortName="ZMENKLDA", SalesArrangementTypeId=null,EACodeMainId=616525,IsFormIdRequested=true ,FileName="Klientdata_zmena"},
-            new() {Id = 15, ShortName="ODSTOUP" , SalesArrangementTypeId=null,EACodeMainId=608522,IsFormIdRequested=false,FileName="Ukonceni_zadosti_HU"},
-            new() {Id = 16, ShortName="ZADOSTHD", SalesArrangementTypeId=11  ,EACodeMainId=608243,IsFormIdRequested=true ,FileName="Pridani_spoludluznika"}
+            new() {Id = 1 , ShortName="NABIDKA" , SalesArrangementTypeId=null,EACodeMainId=605569, FileName="Nabidka_HU"},
+            new() {Id = 2 , ShortName="KALKULHU", SalesArrangementTypeId=null,EACodeMainId=null  , FileName="Kalkulace_HU"},
+            new() {Id = 3 , ShortName="SPLKALHU", SalesArrangementTypeId=null,EACodeMainId=null  , FileName="Splatkovy_kalendar"},
+            new() {Id = 4 , ShortName="ZADOSTHU", SalesArrangementTypeId=null,EACodeMainId=608248, FileName="Zadost_HU1"},
+            new() {Id = 5 , ShortName="ZADOSTHD", SalesArrangementTypeId=null,EACodeMainId=608243, FileName="Zadost_HD2"},
+            new() {Id = 6 , ShortName="ZADOCERP", SalesArrangementTypeId=6   ,EACodeMainId=613226, FileName="Cerpani_HU"},
+            new() {Id = 7 , ShortName="ZADOOPCI", SalesArrangementTypeId=null,EACodeMainId=608578, FileName="Zadost_Flexi"},
+            new() {Id = 8 , ShortName="ZAOZMPAR", SalesArrangementTypeId=7   ,EACodeMainId=608279, FileName="Zadost_obecna"},
+            new() {Id = 9 , ShortName="ZAOZMDLU", SalesArrangementTypeId=9   ,EACodeMainId=608580, FileName="Zadost_dluznik"},
+            new() {Id = 10, ShortName="ZAODHUBN", SalesArrangementTypeId=8   ,EACodeMainId=608579, FileName="Zadost_bezNem"},
+            new() {Id = 11, ShortName="ZUSTAVSI", SalesArrangementTypeId=12  ,EACodeMainId=608524, FileName="Zustavajici_v_HU"},
+            new() {Id = 12, ShortName="PRISTOUP", SalesArrangementTypeId=10  ,EACodeMainId=608524, FileName="Pristupujici_k_HU"},
+            new() {Id = 13, ShortName="DANRESID", SalesArrangementTypeId=null,EACodeMainId=616578, FileName="Prohlaseni_dan"},
+            new() {Id = 14, ShortName="ZMENKLDA", SalesArrangementTypeId=null,EACodeMainId=616525, FileName="Klientdata_zmena"},
+            new() {Id = 15, ShortName="ODSTOUP" , SalesArrangementTypeId=null,EACodeMainId=608522, FileName="Ukonceni_zadosti_HU"},
+            new() {Id = 16, ShortName="ZADOSTHD", SalesArrangementTypeId=11  ,EACodeMainId=608243, FileName="Pridani_spoludluznika"}
             });
     }
 
