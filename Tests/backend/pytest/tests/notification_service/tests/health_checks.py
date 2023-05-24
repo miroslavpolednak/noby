@@ -4,18 +4,9 @@ import requests
 import time
 import uuid
 from ..conftest import URLS
-from ..json.request.mail_kb_json import json_req_mail_kb_bad_11_attachments, json_req_mail_kb_basic_legal
-from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
-    json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural, json_req_mail_mpss_bad_natural_legal, \
-    json_req_mail_mpss_max_attachments, json_req_mail_mpss_bad_11_attachments, \
-    json_req_mail_bad_identifier_identity_mpss_basic, \
-    json_req_mail_bad_identifier_mpss_basic, json_req_mail_bad_identifier_identity_mpss_basic, \
-    json_req_mail_bad_identifier_scheme_mpss_basic, json_req_mail_mpss_bad_format_language, \
-    json_req_mail_mpss_bad_content_format_text, json_req_mail_mpss_basic_format_html, \
-    json_req_mail_mpss_negative_basic_format_text_plain, json_req_mail_mpss_basic_format_text_html, \
-    json_req_mail_mpss_basic_format_application_html, json_req_mail_mpss_basic_content_format_application_mht
-from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
-    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_basic_full_for_search
+from ..json.request.mail_kb_json import json_req_mail_kb_basic_legal
+from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal
+from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full_for_search
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 
