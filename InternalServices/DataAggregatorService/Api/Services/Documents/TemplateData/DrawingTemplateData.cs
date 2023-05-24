@@ -36,7 +36,7 @@ internal class DrawingTemplateData : AggregatedData
         }
     }
 
-    public string SignPersonName => SalesArrangement.Drawing.Agent?.IsActive == true ? string.Empty : CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
+    public string SignPersonName => SalesArrangement.Drawing.Agent?.IsActive == true ? string.Empty : CustomerHelper.FullName(Customer);
 
     public string SignAgentName => SalesArrangement.Drawing.Agent?.IsActive != true ? string.Empty : $"{SalesArrangement.Drawing.Agent.FirstName} {SalesArrangement.Drawing.Agent.LastName}";
 

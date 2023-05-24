@@ -6,14 +6,16 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Temp
 
 public static class CustomerHelper
 {
+    public static string FullName(CustomerDetailResponse customerDetail) => $"{customerDetail.NaturalPerson.FirstName} {customerDetail.NaturalPerson.LastName}";
+
     public static string FullName(CustomerDetailResponse customerDetail, ICollection<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore)
     {
         if (!customerDetail.NaturalPerson.DegreeBeforeId.HasValue)
-            return $"{customerDetail.NaturalPerson.FirstName} {customerDetail.NaturalPerson.LastName}";
+            return FullName(customerDetail);
 
         var degree = degreesBefore.First(d => d.Id == customerDetail.NaturalPerson.DegreeBeforeId.Value).Name;
 
-        return $"{customerDetail.NaturalPerson.FirstName} {customerDetail.NaturalPerson.LastName}, {degree}";
+        return $"{FullName(customerDetail)}, {degree}";
     }
 
     public static string NameWithDateOfBirth(string fullName, DateTime dateOfBirth)

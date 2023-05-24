@@ -13,7 +13,7 @@ internal class CurrencyFormatter : IAcroFieldFormatter
     public string Format(object obj, IFormatProvider formatProvider)
     {
         if (obj is not decimal && obj is not int)
-            throw new ArgumentException("Decimal was expected.");
+            throw new ArgumentException("Decimal or integer was expected.");
 
         var numberFormatInfo = NumberFormatInfo.GetInstance(formatProvider);
 
