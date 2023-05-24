@@ -176,7 +176,6 @@ message DocumentTypesResponse {
 		google.protobuf.Int32Value SalesArrangementTypeId = 5;
 		bool IsValid = 6;
 		google.protobuf.Int32Value EACodeMainId = 7;
-		bool IsFormIdRequested = 8;
 	}
 }
 
