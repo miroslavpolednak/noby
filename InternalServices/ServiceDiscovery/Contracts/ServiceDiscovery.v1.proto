@@ -4,7 +4,6 @@ package CIS.InternalServices.ServiceDiscovery.v1;
 option csharp_namespace = "CIS.InternalServices.ServiceDiscovery.Contracts.v1";
 
 import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
 import "Messages/GetService.proto";
 import "Messages/GetServices.proto";
 
