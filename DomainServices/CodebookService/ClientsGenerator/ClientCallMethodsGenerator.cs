@@ -12,10 +12,10 @@ namespace DomainServices.CodebookService.ClientsGenerators
     {
         public void Initialize(GeneratorInitializationContext context)
         {
-            if (!Debugger.IsAttached)
+            /*if (!Debugger.IsAttached)
             {
                 Debugger.Launch();
-            }
+            }*/
         }
 
         public void Execute(GeneratorExecutionContext context)
