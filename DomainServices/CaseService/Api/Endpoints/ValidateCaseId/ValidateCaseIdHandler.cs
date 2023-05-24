@@ -10,7 +10,7 @@ internal sealed class ValidateCaseIdHandler
     {
         bool exists = await _dbContext.Cases.AnyAsync(t => t.CaseId ==  request.CaseId, cancellationToken);
 
-        if (request.ThrowExceptionIfNotFound)
+        if (request.ThrowExceptionIfNotFound && !exists)
         {
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
         }
