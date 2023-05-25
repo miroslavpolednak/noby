@@ -21,10 +21,10 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { ServiceUser2LoginBindingConfigurationNotSet, "ServiceUser2LoginBinding configuration is not set" },
             { ServiceUserNotFoundInServiceUser2LoginBinding, "ServiceUser {PropertyValue} not found in ServiceUser2LoginBinding configuration and no _default has been set"},
             { UnknownEnvironmentName, "Unknown EnvironmentName."},
-            { OneOfMainParametersFillIn, "One of main parameters have to be fill in (CaseId, PledgeAgreementNumber, ContractNumber, OrderId, AuthorUserLogin)"},
+            { OneOfMainParametersFillIn, "One of main parameters have to be fill in (CaseId, PledgeAgreementNumber, ContractNumber, OrderId, AuthorUserLogin, FormId)"},
             { StateInQueueNotAllowed, "Given state isn't allowed in queue"},
             { DocumentWithEArchiveIdNotExist, "Document with specified EArchiveId doesn't exist in queue" },
-            {CaseIdInqueueNotExist, "CaseId in queue doesn't exist." }
+            { CaseIdInqueueNotExist, "CaseId in queue doesn't exist." }
         });
 
         return Messages;

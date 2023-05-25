@@ -26,6 +26,7 @@ public class GetDocumentListValidator : AbstractValidator<GetDocumentListRequest
               string.IsNullOrWhiteSpace(request.AuthorUserLogin) &&
               string.IsNullOrWhiteSpace(request.PledgeAgreementNumber) &&
               string.IsNullOrWhiteSpace(request.ContractNumber) &&
+              string.IsNullOrWhiteSpace(request.FormId) &&
               request.OrderId is null
             )
         {
