@@ -306,6 +306,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00006-zmena_RIP_na_SIT.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00006-zmena_RIP_na_SIT.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00007-PCP.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00007-PCP.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00008-HFICH-5177_CustomerManagementV2.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00008-HFICH-5177_CustomerManagementV2.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00009-HFICH-6050_MpHome.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00009-HFICH-6050_MpHome.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7}"

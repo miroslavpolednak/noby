@@ -1,7 +1,7 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
-using ExternalServices.MpHome.V1_1;
-using ExternalServices.MpHome.V1_1.Contracts;
+using ExternalServices.MpHome.V1;
+using ExternalServices.MpHome.V1.Contracts;
 
 namespace DomainServices.ProductService.Api.Endpoints.CreateContractRelationship;
 

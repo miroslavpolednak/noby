@@ -1,7 +1,7 @@
 ﻿using DomainServices.ProductService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients;
-using ExternalServices.MpHome.V1_1;
+using ExternalServices.MpHome.V1;
 using DomainServices.ProductService.Api.Database;
 
 namespace DomainServices.ProductService.Api.Endpoints.CreateMortgage;

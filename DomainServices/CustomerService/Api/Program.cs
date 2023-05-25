@@ -34,7 +34,7 @@ builder
     // add self
     .AddCustomerService()
     // add external svc
-    .AddExternalService<ExternalServices.MpHome.V1_1.IMpHomeClient>()
+    .AddExternalService<ExternalServices.MpHome.V1.IMpHomeClient>()
     .Services
     // add grpc infrastructure
         .AddCisGrpcInfrastructure(typeof(Program))

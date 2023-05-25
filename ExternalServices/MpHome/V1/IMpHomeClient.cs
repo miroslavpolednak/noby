@@ -1,7 +1,7 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
-using ExternalServices.MpHome.V1_1.Contracts;
+using ExternalServices.MpHome.V1.Contracts;
 
-namespace ExternalServices.MpHome.V1_1;
+namespace ExternalServices.MpHome.V1;
 
 public interface IMpHomeClient
     : IExternalServiceClient
@@ -25,5 +25,5 @@ public interface IMpHomeClient
 
     Task UpdatePartnerKbId(long partnerId, long kbId, CancellationToken cancellationToken = default);
 
-    const string Version = "V1_1";
+    const string Version = "V1";
 }

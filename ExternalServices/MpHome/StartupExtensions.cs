@@ -10,8 +10,8 @@ public static class StartupExtensions
     internal const string ServiceName = "MpHome";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
-        where TClient : class, MpHome.V1_1.IMpHomeClient
-        => builder.AddMpHome<TClient>(MpHome.V1_1.IMpHomeClient.Version);
+        where TClient : class, MpHome.V1.IMpHomeClient
+        => builder.AddMpHome<TClient>(MpHome.V1.IMpHomeClient.Version);
 
     static WebApplicationBuilder AddMpHome<TClient>(this WebApplicationBuilder builder, string version)
         where TClient : class, IExternalServiceClient
@@ -21,13 +21,13 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (MpHome.V1_1.IMpHomeClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<MpHome.V1_1.IMpHomeClient, MpHome.V1_1.MockMpHomeClient>();
+            case (MpHome.V1.IMpHomeClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<MpHome.V1.IMpHomeClient, MpHome.V1.MockMpHomeClient>();
                 break;
 
-            case (MpHome.V1_1.IMpHomeClient.Version, ServiceImplementationTypes.Real):
+            case (MpHome.V1.IMpHomeClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<MpHome.V1_1.IMpHomeClient, MpHome.V1_1.RealMpHomeClient>()
+                    .AddExternalServiceRestClient<MpHome.V1.IMpHomeClient, MpHome.V1.RealMpHomeClient>()
                     .AddExternalServicesCorrelationIdForwarding()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;

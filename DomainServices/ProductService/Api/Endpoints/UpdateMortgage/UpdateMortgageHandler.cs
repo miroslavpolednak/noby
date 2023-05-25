@@ -1,6 +1,6 @@
 ﻿using DomainServices.ProductService.Api.Database.Entities;
 using DomainServices.ProductService.Api.Endpoints.CreateMortgage;
-using ExternalServices.MpHome.V1_1;
+using ExternalServices.MpHome.V1;
 
 namespace DomainServices.ProductService.Api.Endpoints.UpdateMortgage;
 

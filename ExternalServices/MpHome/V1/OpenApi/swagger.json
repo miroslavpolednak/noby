@@ -2269,7 +2269,6 @@
           },
           "postCode": {
             "maxLength": 8,
-            "pattern": "\\d{5}",
             "type": "string",
             "description": "PSČ"
           },
@@ -2277,6 +2276,13 @@
             "maxLength": 50,
             "type": "string",
             "description": "Obec"
+          },
+          "country": {
+            "maxLength": 2,
+            "minLength": 2,
+            "type": "string",
+            "description": "Země - ISO code",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -2891,6 +2897,11 @@
             "format": "date-time",
             "nullable": true
           },
+          "pcpInstId": {
+            "type": "string",
+            "description": "PcpInstId",
+            "nullable": true
+          },
           "savingId": {
             "minimum": 1,
             "type": "integer",
@@ -3097,6 +3108,11 @@
             "format": "date-time",
             "nullable": true
           },
+          "pcpInstId": {
+            "type": "string",
+            "description": "PcpInstId",
+            "nullable": true
+          },
           "relationships": {
             "type": "array",
             "items": {
@@ -3149,7 +3165,6 @@
         "type": "object",
         "properties": {
           "birthNumber": {
-            "pattern": "\\d{9,10}",
             "type": "string",
             "description": "Rodné číslo",
             "nullable": true
@@ -3268,7 +3283,6 @@
         "type": "object",
         "properties": {
           "birthNumber": {
-            "pattern": "\\d{9,10}",
             "type": "string",
             "description": "Rodné číslo",
             "nullable": true
@@ -3400,7 +3414,6 @@
         "type": "object",
         "properties": {
           "birthNumber": {
-            "pattern": "\\d{9,10}",
             "type": "string",
             "description": "Rodné číslo",
             "nullable": true
@@ -3540,7 +3553,7 @@
           }
         },
         "additionalProperties": {
-          
+
         }
       },
       "ResultStatus": {

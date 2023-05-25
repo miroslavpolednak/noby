@@ -6,11 +6,11 @@ using CIS.Infrastructure.Data;
 using Dapper;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
-using ExternalServices.MpHome.V1_1;
-using ExternalServices.MpHome.V1_1.Contracts;
+using ExternalServices.MpHome.V1;
+using ExternalServices.MpHome.V1.Contracts;
 using FastEnumUtility;
 using Google.Protobuf.Collections;
-using IdentificationDocument = ExternalServices.MpHome.V1_1.Contracts.IdentificationDocument;
+using IdentificationDocument = ExternalServices.MpHome.V1.Contracts.IdentificationDocument;
 
 namespace DomainServices.CustomerService.Api.Services.KonsDb;
 

@@ -1,9 +1,9 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
-using ExternalServices.MpHome.V1_1.Contracts;
+using ExternalServices.MpHome.V1.Contracts;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace ExternalServices.MpHome.V1_1;
+namespace ExternalServices.MpHome.V1;
 
 internal sealed class RealMpHomeClient 
     : IMpHomeClient

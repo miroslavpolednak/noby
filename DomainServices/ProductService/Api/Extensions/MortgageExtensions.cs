@@ -1,5 +1,5 @@
 ﻿using DomainServices.ProductService.Contracts;
-using ExternalServices.MpHome.V1_1.Contracts;
+using ExternalServices.MpHome.V1.Contracts;
 
 namespace DomainServices.ProductService.Api;
 
@@ -13,7 +13,7 @@ internal static class MortgageExtensions
     {
         var request = new MortgageRequest
         {
-            //PcpId = pcpId,//TODO
+            PcpInstId = pcpId,
             LoanType = LoanType.KBMortgage,
             ProductCodeUv = mortgage.ProductTypeId,
             PartnerId = mortgage.PartnerId,
@@ -33,7 +33,7 @@ internal static class MortgageExtensions
             ServiceBranchId = mortgage.BranchConsultantId.GetValueOrDefault() == 0 ? null : mortgage.BranchConsultantId,
             ConsultantId = mortgage.ThirdPartyConsultantId.GetValueOrDefault() == 0 ? null : mortgage.ThirdPartyConsultantId,
             FirstRequestSignDate = mortgage.FirstSignatureDate,
-            LoanPurposes = mortgage.LoanPurposes is null ? null : mortgage.LoanPurposes.Select(t => new global::ExternalServices.MpHome.V1_1.Contracts.LoanPurpose
+            LoanPurposes = mortgage.LoanPurposes is null ? null : mortgage.LoanPurposes.Select(t => new global::ExternalServices.MpHome.V1.Contracts.LoanPurpose
             {
                 Amount = Convert.ToDouble((decimal)t.Sum),
                 LoanPurposeId = t.LoanPurposeId

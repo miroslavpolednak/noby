@@ -10,7 +10,7 @@ internal static class StartupExtensions
         // EAS svc
         builder.AddExternalService<global::ExternalServices.Eas.V1.IEasClient>();
         // MpHome svc
-        builder.AddExternalService<global::ExternalServices.MpHome.V1_1.IMpHomeClient>();
+        builder.AddExternalService<global::ExternalServices.MpHome.V1.IMpHomeClient>();
         builder.AddExternalService<DomainServices.ProductService.ExternalServices.Pcp.V1.IPcpClient>();
 
         // dbcontext

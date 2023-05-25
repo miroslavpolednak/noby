@@ -1,6 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using FastEnumUtility;
-using __MpHome = ExternalServices.MpHome.V1_1.Contracts;
+using __MpHome = ExternalServices.MpHome.V1.Contracts;
 
 namespace DomainServices.CustomerService.Api;
 

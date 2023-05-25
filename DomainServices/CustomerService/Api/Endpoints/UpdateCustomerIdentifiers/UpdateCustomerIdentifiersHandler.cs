@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Exceptions;
-using ExternalServices.MpHome.V1_1;
+using ExternalServices.MpHome.V1;
 using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.CustomerService.Api.Endpoints.UpdateCustomerIdentifiers;
