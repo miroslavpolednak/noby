@@ -2,6 +2,7 @@
 grpcurl -insecure 127.0.0.1:30003 list
 grpcurl -insecure 127.0.0.1:30003 grpc.health.v1.Health/Check
 grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService.v1.CodebookService/AcademicDegreesAfter
+grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService.v1.CodebookService/WorkflowTaskSigningResponseTypes
 grpcurl -insecure -d "{\"DeveloperId\":3014640}" -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService.v1.CodebookService/GetDeveloper
 
 ## run batch
