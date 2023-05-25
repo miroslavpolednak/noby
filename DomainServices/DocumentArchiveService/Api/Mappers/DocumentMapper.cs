@@ -42,7 +42,8 @@ public class DocumentMapper : IDocumentMapper
             ContractNumber = request.ContractNumber,
             OrderId = request.OrderId,
             FolderDocumentId = request.FolderDocumentId,
-            UserLogin = request.UserLogin
+            UserLogin = request.UserLogin,
+            FormId = request.FormId
         };
     }
 
@@ -84,6 +85,7 @@ public class DocumentMapper : IDocumentMapper
             ContractNumber = request.ContractNumber,
             OrderId = request.OrderId,
             FolderDocumentId = request.FolderDocumentId,
+            FormId = request.FormId
         };
     }
 

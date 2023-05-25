@@ -187,6 +187,16 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
             });
         }
 
+        if (!string.IsNullOrWhiteSpace(query.FormId))
+        {
+            queryParameters.Add(new QueryParameter
+            {
+                Attribute = "DOK_ID_formulare",
+                InputGroup = "Dokument",
+                Value = query.FormId
+            });
+        }
+
         var searchQuery = new SearchQueryOptions();
         searchQuery.Parameters = queryParameters.ToArray();
         return searchQuery;
