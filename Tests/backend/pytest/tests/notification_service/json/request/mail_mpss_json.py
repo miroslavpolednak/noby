@@ -424,7 +424,7 @@ json_req_mail_mpss_bad_format_language = \
     ],
     "subject": "NS_test_MIKEL_basic_legal",
     "content": {
-      "format": "text",
+      "format": "text/html",
       "language": "cz",
       "text": "json_req_mail_mpss_bad_format_language"
     },

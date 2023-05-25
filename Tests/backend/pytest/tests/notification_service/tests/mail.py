@@ -106,7 +106,9 @@ def test_mail_negative_format_language(url_name, auth_params, auth, json_data):
         verify=False
     )
     assert resp.status_code == 400
-    error_message = resp.json()['errors']['319'][0]
+    #error_message = resp.json()['errors']['319'][0]
+    #assert 'Allowed values for Language: cs,en.' in error_message
+    error_message = resp.json()['errors']['324'][0]
     assert 'Allowed values for Language: cs,en.' in error_message
 
 
@@ -126,7 +128,7 @@ def test_mail_negative_11_attachments(url_name, auth_params, auth, json_data):
         verify=False
     )
     assert resp.status_code == 400
-    error_message = resp.json()['errors']['351'][0]
+    error_message = resp.json()['errors']['361'][0]
     assert 'Maximum count of Attachments is 10' in error_message
 
 

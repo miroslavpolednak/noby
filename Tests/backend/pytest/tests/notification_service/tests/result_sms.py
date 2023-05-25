@@ -9,7 +9,7 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
     json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_basic_full_for_search
 from ..json.request.sms_template_json import json_req_sms_full_template
 
-@pytest.mark.parametrize("url_name", ["uat_url"])
+@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
 def test_get_sms_notification_id_states(url_name,  auth_params, auth, json_data):
