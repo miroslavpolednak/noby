@@ -1,4 +1,5 @@
 UPDATE DocumentDataField SET AcroFieldName = 'VyseSplatkyCelkem' WHERE DocumentDataFieldId = 6
+UPDATE DocumentDataField SET AcroFieldName = 'VyseSplatkyCelkem' WHERE DocumentDataFieldId = 35
 
 UPDATE DynamicStringFormatCondition SET EqualToValue = 'VYSE_PRIJMU_UVERU', DataFieldId = 73 WHERE DynamicStringFormatId IN (10, 34) AND DataFieldId = 14
 
@@ -10,6 +11,9 @@ UPDATE DynamicStringFormatCondition SET EqualToValue = '' WHERE DataFieldId = 29
 SET IDENTITY_INSERT [dbo].[DocumentDataField] ON 
 
 INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign])
- VALUES (45, 1, '001', 26, 'VyseSplatky', NULL, NULL, NULL)
+ VALUES (25, 1, '001', 26, 'VyseSplatky', NULL, NULL, NULL)
+
+INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign])
+ VALUES (45, 2, '001', 26, 'VyseSplatky', NULL, NULL, NULL)
 
 SET IDENTITY_INSERT [dbo].[DocumentDataField] OFF

@@ -70,10 +70,10 @@ internal sealed class CustomerWithChangedDataService
                 Tin = c.Tin
             }).ToList()
         };
-        //person.ProfessionCategoryId = customer.NaturalPerson?
-        //person.ProfessionId = customer.NaturalPerson ?;
-        //person.NetMonthEarningAmountId = customer.NaturalPerson
-        //person.NetMonthEarningTypeId = customer.NaturalPerson ?;
+        person.ProfessionCategoryId = dsCustomer.NaturalPerson?.ProfessionCategoryId;
+        person.ProfessionId = dsCustomer.NaturalPerson?.ProfessionId;
+        person.NetMonthEarningAmountId = dsCustomer.NaturalPerson?.NetMonthEarningAmountId;
+        person.NetMonthEarningTypeId = dsCustomer.NaturalPerson?.NetMonthEarningTypeId;
         newCustomer.IsBrSubscribed = dsCustomer.NaturalPerson?.IsBrSubscribed;
         
         newCustomer.HasRelationshipWithCorporate = customerOnSA.CustomerAdditionalData?.HasRelationshipWithCorporate;
