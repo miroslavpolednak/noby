@@ -29,6 +29,8 @@ message GetDocumentListRequest {
     string FolderDocumentId = 7;
 
 	string UserLogin = 8;
+
+	google.protobuf.StringValue FormId = 9;
 }
 
 message GetDocumentListResponse{
