@@ -1,8 +1,6 @@
 ﻿using CIS.Core.Attributes;
-using CIS.Core.Security;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
-using DomainServices.UserService.Clients;
 using NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments;
 using NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
 using static DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types;
@@ -14,9 +12,7 @@ namespace NOBY.Api.Endpoints.Cases.Dto;
 public class WorkflowMapper
 {
     private readonly ICodebookServiceClient _codebookService;
-    private readonly IUserServiceClient _userService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    
+
     public async Task<WorkflowTask> Map(_Case.WorkflowTask task, CancellationToken cancellationToken)
     {
         var taskStates = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
@@ -177,13 +173,8 @@ public class WorkflowMapper
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    public WorkflowMapper(
-        ICodebookServiceClient codebookService,
-        IUserServiceClient userService,
-        ICurrentUserAccessor currentUserAccessor)
+    public WorkflowMapper(ICodebookServiceClient codebookService)
     {
         _codebookService = codebookService;
-        _userService = userService;
-        _currentUserAccessor = currentUserAccessor;
     }
 }
