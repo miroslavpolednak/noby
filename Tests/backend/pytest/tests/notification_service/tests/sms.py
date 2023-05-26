@@ -12,7 +12,7 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
     json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
     json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
-    json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit
+    json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 
@@ -24,7 +24,7 @@ from ..json.request.sms_template_json import json_req_sms_full_template
     ("sit_url", json_req_sms_basic_insg_sit),
     ("uat_url", json_req_sms_basic_insg_uat)
 ])
-def test_sms(url_name, auth_params, auth, json_data):
+def test_sms_manualy(url_name, auth_params, auth, json_data):
     """
     uvodni test pro zakladni napln sms bez priloh, pro ruční spouštění
     """
@@ -45,10 +45,30 @@ def test_sms(url_name, auth_params, auth, json_data):
     assert notification_id != ""
 
 
+@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_sms_basic_insg_e2e])
+def test_E2E_real_sms(ns_url, auth_params, auth, json_data):
+    url_name = ns_url["url_name"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/sms",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    resp = resp.json()
+    print(resp)
+    assert "notificationId" in resp
+    notification_id = resp["notificationId"]
+    assert notification_id != ""
+
+
 # test pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
-def test_sms_manual_env(ns_url, auth_params, auth, json_data):
+def test_sms(ns_url, auth_params, auth, json_data):
     url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
