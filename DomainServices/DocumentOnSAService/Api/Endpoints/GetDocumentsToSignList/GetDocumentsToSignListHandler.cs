@@ -70,7 +70,9 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     {
         var documentsOnSaRealEntity = await _dbContext.DocumentOnSa
                                                     .AsNoTracking()
-                                                    .Where(e => e.SalesArrangementId == request.SalesArrangementId && e.IsValid)
+                                                    .Where(e => e.SalesArrangementId == request.SalesArrangementId 
+                                                                && e.IsValid
+                                                                && e.IsFinal ==false)
                                                     .ToListAsync(cancellationToken);
 
         var documentsOnSaToSignReal = _documentOnSaMapper.MapDocumentOnSaToSign(documentsOnSaRealEntity);
