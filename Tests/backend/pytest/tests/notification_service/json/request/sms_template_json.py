@@ -7,7 +7,7 @@ json_req_sms_full_template_e2e = \
   "placeholders": [
     {
       "key": "zadej",
-      "value": "kamarade"
+      "value": "kamarade E2E"
     }
   ],
   "identifier": {

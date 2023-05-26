@@ -13,7 +13,7 @@ json_req_sms_basic_insg = \
   "phoneNumber": "+420123456789",
   "processingPriority": 1,
   "type": "INSIGN_PROCESS",
-  "text": "insg bez logování a chci háčky a čárky"
+  "text": "e2e TEST insg bez logování a chci háčky a čárky"
 }
 
 json_req_sms_basic_insg_uat = \
