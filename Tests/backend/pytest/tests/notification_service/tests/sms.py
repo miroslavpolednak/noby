@@ -16,6 +16,7 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 
+@pytest.skip
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("url_name, json_data", [
     ("dev_url", json_req_sms_basic_insg),
@@ -25,7 +26,7 @@ from ..json.request.sms_template_json import json_req_sms_full_template
     ])
 def test_sms(url_name,  auth_params, auth, json_data):
     """
-    uvodni test pro zakladni napln sms bez priloh
+    uvodni test pro zakladni napln sms bez priloh, pro ruční spouštění
     """
 
     username = auth[0]
@@ -49,7 +50,6 @@ def test_sms(url_name,  auth_params, auth, json_data):
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
 def test_sms_manual_env(ns_url,  auth_params, auth, json_data):
     url_name = ns_url["url_name"]
-    url = ns_url["url"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -66,14 +66,13 @@ def test_sms_manual_env(ns_url,  auth_params, auth, json_data):
     assert notification_id != ""
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_sb])
-def test_sms_sb(url_name,  auth_params, auth, json_data):
+def test_sms_sb(ns_url,  auth_params, auth, json_data):
     """
     SB test do budoucna, který ale ještě nemá svůj mcs type sms
     """
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -93,16 +92,15 @@ def test_sms_sb(url_name,  auth_params, auth, json_data):
 
 #TODO: username pro archivator získat od Karla
 @pytest.mark.skip
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth, json_data", [
     ("XX_INSG_RMT_USR_TEST", json_req_sms_mpss_archivator),
     ("XX_INSG_RMT_USR_TEST", json_req_sms_kb_archivator),
 ], indirect=["auth"])
-def test_sms_archivator(url_name,  auth_params, auth, json_data):
+def test_sms_archivator(ns_url,  auth_params, auth, json_data):
     """
     SB test do budoucna, který ale ještě nemá svůj mcs type sms
     """
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -119,15 +117,14 @@ def test_sms_archivator(url_name,  auth_params, auth, json_data):
     assert notification_id != ""
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
     ("loguji", json_req_sms_logovani_kb_sb, True),
     ("neloguji", json_req_sms_bez_logovani_kb_sb, False)
 ])
-def test_sms_log(url_name,  auth_params, auth, custom_id, json_data, expected_result, authenticated_seqlog_session):
+def test_sms_log(ns_url,  auth_params, auth, custom_id, json_data, expected_result, authenticated_seqlog_session):
     """test logovani - zalogujeme, nezalogujeme do seq"""
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     #vytvoření unikátního ID pro customId pro dohledani logu
@@ -176,12 +173,11 @@ def test_sms_log(url_name,  auth_params, auth, custom_id, json_data, expected_re
 
 
 #NOBY vraci okej, ale v databázi padnou kombinace, ktere nemaji pro sebe MCS kod
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg, json_req_sms_basic_epsy_kb, json_req_sms_logovani_kb_sb])
-def test_sms_combination_security(url_name,  auth_params, auth, json_data):
+def test_sms_combination_security(ns_url,  auth_params, auth, json_data):
     """test pro kombinaci všech uživatelů s basic sms"""
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -198,18 +194,18 @@ def test_sms_combination_security(url_name,  auth_params, auth, json_data):
     assert notification_id != ""
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth, json_data",
                          [
                              ("XX_INSG_RMT_USR_TEST", json_req_sms_basic_insg),
                              ("XX_EPSY_RMT_USR_TEST", json_req_sms_basic_epsy_kb),
                              ("XX_SB_RMT_USR_TEST", json_req_sms_logovani_kb_sb),
                          ], indirect=["auth"])
-def test_sms_basic_security(auth_params, auth, json_data, url_name):
+def test_sms_basic_security(auth_params, auth, json_data, ns_url):
     """
    Testuje zabezpečení: kladné testy pro usery a jejich msc type kody.
    Použita vnorena parametrizace pro různé uživatele a type sms.
    """
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -225,16 +221,16 @@ def test_sms_basic_security(auth_params, auth, json_data, url_name):
     assert resp["notificationId"] != ""
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth, json_data",
                          [
                              ("XX_NOBY_RMT_USR_TEST", json_req_sms_basic_insg)
                          ], indirect=["auth"])
-def test_sms_bad_basic_security(auth_params, auth, json_data, url_name):
+def test_sms_bad_basic_security(ns_url, auth_params, auth, json_data, url_name):
     """
    Testuje zabezpečení: kladné testy pro usery a jejich msc type kody.
    Použita vnorena parametrizace pro různé uživatele a type sms.
    """
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -246,13 +242,12 @@ def test_sms_bad_basic_security(auth_params, auth, json_data, url_name):
     )
     assert resp.status_code == 403
 
-@pytest.mark.skip
-@pytest.mark.parametrize("url_name", ["uat_url"])
+@pytest.skip
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_alex])
-def test_sms_basic_alex(url_name,  auth_params, auth, json_data):
-    """SMS s template z tabulky CodebookService.dbo.SmsNotificationType"""
-
+def test_sms_basic_alex(ns_url,  auth_params, auth, json_data):
+    """TEST pro ALEXE SEVRJUKOVA"""
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -268,7 +263,6 @@ def test_sms_basic_alex(url_name,  auth_params, auth, json_data):
     assert resp["notificationId"] != ""
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data, expected_error", [
     (json_req_sms_bad_basic_without_identifier, {
@@ -282,10 +276,10 @@ def test_sms_basic_alex(url_name,  auth_params, auth, json_data):
             'Identifier.Identity': ['The Identity field is required.']
         }),
 ])
-def test_sms_bad_identifier(url_name, auth_params, auth, json_data, expected_error):
+def test_sms_bad_identifier(ns_url, auth_params, auth, json_data, expected_error):
     """uvodni errors test pro zakladni napln sms bez priloh
     """
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()

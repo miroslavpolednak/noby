@@ -9,12 +9,12 @@ from ..json.request.sms_template_json import json_req_sms_full_template, json_re
     json_req_sms_template_bad_basic_without_identifier_identity
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_full_template])
-def test_sms_template(url_name,  auth_params, auth, json_data):
+def test_sms_template(ns_url,  auth_params, auth, json_data):
     """SMS s template z tabulky CodebookService.dbo.SmsNotificationType"""
-
+    url_name = ns_url["url_name"]
+    url = ns_url["url"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -30,7 +30,6 @@ def test_sms_template(url_name,  auth_params, auth, json_data):
     assert resp["notificationId"] != ""
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data, expected_error", [
     (json_req_sms_template_bad_basic_without_identifier, {
@@ -44,9 +43,10 @@ def test_sms_template(url_name,  auth_params, auth, json_data):
             'Identifier.Identity': ['The Identity field is required.']
         }),
 ])
-def test_sms_template_bad_identifier_template(url_name, auth_params, auth, json_data, expected_error):
+def test_sms_template_bad_identifier_template(ns_url, auth_params, auth, json_data, expected_error):
     """SMS s template z tabulky CodebookService.dbo.SmsNotificationType"""
-
+    url_name = ns_url["url_name"]
+    url = ns_url["url"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -62,25 +62,3 @@ def test_sms_template_bad_identifier_template(url_name, auth_params, auth, json_
     print(resp)
     result_error = resp.get('errors', {})
     assert result_error == expected_error
-
-
-@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("url_name, json_data", [
-    ("dev_url", json_req_sms_full_template)
-])
-def test_sms_templates_with_various_env(url_name,  auth_params, auth, json_data):
-    """SMS s template z tabulky CodebookService.dbo.SmsNotificationType"""
-
-    username = auth[0]
-    password = auth[1]
-    session = requests.session()
-    resp = session.post(
-        URLS[url_name] + "/v1/notification/smsFromTemplate",
-        json=json_data,
-        auth=(username, password),
-        verify=False
-    )
-    resp = resp.json()
-    print(resp)
-    assert "notificationId" in resp
-    assert resp["notificationId"] != ""

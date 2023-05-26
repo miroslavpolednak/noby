@@ -17,14 +17,14 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
 
 
 # základní test
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural,
                                        json_req_mail_mpss_full_attachments,
                                        json_req_mail_mpss_full_natural])
-def test_mail(url_name, auth_params, auth, json_data):
+def test_mail(ns_url, auth_params, auth, json_data):
     """kladny test"""
-
+    url_name = ns_url["url_name"]
+    url = ns_url["url"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -41,15 +41,14 @@ def test_mail(url_name, auth_params, auth, json_data):
     assert notification_id != ""
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_format_application_html,
                                        json_req_mail_mpss_basic_format_text_html,
                                        json_req_mail_mpss_basic_format_html,
                                        json_req_mail_mpss_basic_content_format_application_mht])
-def test_mail_content_format(url_name, auth_params, auth, json_data):
+def test_mail_content_format(ns_url, auth_params, auth, json_data):
     """kladny test"""
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -67,12 +66,11 @@ def test_mail_content_format(url_name, auth_params, auth, json_data):
 
 
 # test variant
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_max_attachments])
-def test_mail_max_attachments(url_name, auth_params, auth, json_data):
+def test_mail_max_attachments(ns_url, auth_params, auth, json_data):
     """max priloh klady test"""
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -90,12 +88,11 @@ def test_mail_max_attachments(url_name, auth_params, auth, json_data):
 
 
 # negativní testy
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_format_language])
-def test_mail_negative_format_language(url_name, auth_params, auth, json_data):
+def test_mail_negative_format_language(ns_url, auth_params, auth, json_data):
     """negativní test pro test jazyka a formatu"""
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -112,12 +109,11 @@ def test_mail_negative_format_language(url_name, auth_params, auth, json_data):
     assert 'Allowed values for Language: cs,en.' in error_message
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_11_attachments, json_req_mail_kb_bad_11_attachments])
-def test_mail_negative_11_attachments(url_name, auth_params, auth, json_data):
+def test_mail_negative_11_attachments(ns_url, auth_params, auth, json_data):
     """max priloh klady test, ale MCS zařízne"""
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -133,12 +129,14 @@ def test_mail_negative_11_attachments(url_name, auth_params, auth, json_data):
 
 
 # TODO: dodelat assrty pro errors == zatím není vyvinuta hláška  bude vyvinuto v drobné změny 3
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_mail_bad_identifier_mpss_basic,
-                                       json_req_mail_bad_identifier_scheme_mpss_basic,
-                                       json_req_mail_bad_identifier_identity_mpss_basic])
-def test_mail_negative_identifier_request(auth_params, auth, json_data, url_name):
+@pytest.mark.parametrize("json_data, expected_result", [
+    (json_req_mail_bad_identifier_mpss_basic, {'Identifier.Identity': ['The Identity field is required.'], 'Identifier.IdentityScheme': ['The IdentityScheme field is required.']}),
+    (json_req_mail_bad_identifier_scheme_mpss_basic, {'Identifier.IdentityScheme': ['The IdentityScheme field is required.']}),
+    (json_req_mail_bad_identifier_identity_mpss_basic, {'Identifier.Identity': ['The Identity field is required.']}),
+])
+def test_mail_negative_identifier_request(auth_params, auth, json_data, ns_url, expected_result):
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -151,17 +149,16 @@ def test_mail_negative_identifier_request(auth_params, auth, json_data, url_name
     resp = resp.json()
     assert resp['status'] == 400
     print(resp)
-    error_message = resp.json()['errors']['319'][0]
+    assert resp['errors'] == expected_result, f'Expected {expected_result}, but got {resp["errors"]}'
 
 
 # TODO: dodelat assrty pro errors hlášku, bude vyvinuto v drobné změny 3
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_content_format_text,
                                        json_req_mail_mpss_negative_basic_format_text_plain])
-def test_mail_negative_content_format(url_name, auth_params, auth, json_data):
+def test_mail_negative_content_format(ns_url, auth_params, auth, json_data):
     """negativní test pro test jazyka a formatu"""
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -172,15 +169,15 @@ def test_mail_negative_content_format(url_name, auth_params, auth, json_data):
         verify=False
     )
     assert resp.status_code == 400
-    error_message = resp.json()['errors']['317'][0]
+    error_message = resp.json()['errors']['322'][0]
     assert 'Allowed values for Format: application/html,application/mht,html,text/html.' in error_message
 
 
 # pro testy zabezpeceni, jake sms jsou mozne odespilat pres urcite uzivatele - pouzita vnorena parametrizace
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_NOBY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal])
-def test_mail_bad_auth(auth_params, auth, json_data, url_name):
+def test_mail_bad_auth(auth_params, auth, json_data, ns_url):
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -193,10 +190,10 @@ def test_mail_bad_auth(auth_params, auth, json_data, url_name):
     assert resp.status_code == 403
 
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_natural_legal])
-def test_mail_bad_name(auth_params, auth, json_data, url_name):
+def test_mail_bad_name(auth_params, auth, json_data, ns_url):
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()

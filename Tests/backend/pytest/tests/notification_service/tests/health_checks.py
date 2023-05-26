@@ -17,7 +17,6 @@ def test_get_sms_notification_id_states(ns_url, auth_params, auth, json_data):
     """uvodni test pro zakladni napln sms bez priloh
     """
     url_name = ns_url["url_name"]
-    url = ns_url["url"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -85,7 +84,6 @@ def test_get_sms_notification_search(ns_url,  auth_params, auth, json_data):
     """test pro vygenerovani sms a jeji nasledne vyhledani
     """
     url_name = ns_url["url_name"]
-    url = ns_url["url"]
     username = auth[0]
     password = auth[1]
     unique_custom_id = f"{uuid.uuid4()}"
@@ -147,7 +145,6 @@ def test_get_sms_notification_search(ns_url,  auth_params, auth, json_data):
 def test_mail_health_check(ns_url,  auth_params, auth, json_data):
     """kladny test"""
     url_name = ns_url["url_name"]
-    url = ns_url["url"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -171,7 +168,6 @@ def test_mail_health_check(ns_url,  auth_params, auth, json_data):
 def test_sms_template(ns_url,  auth_params, auth, json_data):
     """SMS s template z tabulky CodebookService.dbo.SmsNotificationType"""
     url_name = ns_url["url_name"]
-    url = ns_url["url"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
