@@ -46,47 +46,66 @@ internal sealed class GetTaskDetailHandler
         var performer = await _codebookService.GetOperator(taskData["ukol_op_zpracovatel"], cancellationToken);
         taskDetail.PerformanName = performer.PerformerName;
 
-        taskDetail.TaskCommunication.AddRange(parseTaskCommunications(taskData));
+        parseTaskCommunications(taskDetail, taskData);
 
         return taskDetail;
     }
 
-    private static IEnumerable<TaskCommunicationItem> parseTaskCommunications(IReadOnlyDictionary<string, string> taskData)
+    private static void parseTaskCommunications(TaskDetailItem taskDetail, IReadOnlyDictionary<string, string> taskData)
     {
-        const string Pattern = @"(?=#Separator(Request|Response)#|$)(.*?)(?=#Separator(Request|Response)#|$)";
+        var taskType = taskData.GetInteger("ukol_typ_noby");
 
-        var text = taskData.GetInteger("ukol_typ_noby") switch
+        if (taskType == 2)
         {
-            1 => taskData["ukol_dozadani_noby"],
-            3 => taskData["ukol_konzultace_noby"],
-            6 => taskData["ukol_podpis_noby"],
-            7 => taskData["ukol_predanihs_noby"],
-            _ => throw new NotImplementedException()
-        };
-
-        var matches = Regex.Matches(text, Pattern);
-
-        for (var i = 0; i <= matches.Count - 1; i += 2)
-        {
-            if (matches[i].Groups[1].Value == "Request")
+            if (!string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_overeni_pozadavek")) || !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_overeni_odpoved")))
             {
-                yield return new TaskCommunicationItem
+                taskDetail.TaskCommunication.Add(new TaskCommunicationItem()
                 {
-                    TaskRequest = matches[i].Value
-                };
-
-                i -= 1;
-
-                continue;
+                    TaskResponse = taskData.GetValueOrDefault("ukol_overeni_odpoved"),
+                    TaskRequest = taskData.GetValueOrDefault("ukol_overeni_pozadavek")
+                });
             }
-
-            yield return new TaskCommunicationItem
+        }
+        else
+        {
+            string? text = taskType switch
             {
-                TaskResponse = matches[i].Value,
-                TaskRequest = matches[i + 1].Value
+                1 when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_dozadani_noby")) => taskData["ukol_dozadani_noby"],
+                3 when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_konzultace_noby")) => taskData["ukol_konzultace_noby"],
+                6 when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_podpis_noby")) => taskData["ukol_podpis_noby"],
+                7 when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_predanihs_noby")) => taskData["ukol_predanihs_noby"],
+                _ => null
             };
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                var matches = _messagePatternRegex.Matches(text);
+
+                for (var i = 0; i <= matches.Count - 1; i += 2)
+                {
+                    if (matches[i].Groups[1].Value == "Request")
+                    {
+                        taskDetail.TaskCommunication.Add(new TaskCommunicationItem()
+                        {
+                            TaskRequest = matches[i].Value
+                        });
+
+                        i -= 1;
+
+                        continue;
+                    }
+
+                    taskDetail.TaskCommunication.Add(new TaskCommunicationItem()
+                    {
+                        TaskResponse = matches[i].Value,
+                        TaskRequest = matches[i + 1].Value
+                    });
+                }
+            }
         }
     }
+
+    private static Regex _messagePatternRegex = new Regex(@"(?=#Separator(Request|Response)#|$)(.*?)(?=#Separator(Request|Response)#|$)", RegexOptions.Compiled);
 
     private readonly SbWebApiCommonDataProvider _commonDataProvider;
     private readonly ISbWebApiClient _sbWebApiClient;
