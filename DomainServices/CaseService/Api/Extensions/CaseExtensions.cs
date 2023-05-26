@@ -21,27 +21,36 @@ internal static class CaseExtensions
             PerformerLogin = taskData.GetValueOrDefault("ukol_op_zpracovatel") ?? ""
         };
 
-        task.PhaseTypeId = GetPhaseTypeId(task.TaskTypeId, taskData);
-        task.SignatureType = GetSignatureType(task.TaskTypeId, taskData);
+        task.PhaseTypeId = getPhaseTypeId(task.TaskTypeId, taskData);
+        task.SignatureType = getSignatureType(task.TaskTypeId, taskData);
 
         return task;
     }
 
     public static ProcessTask ToProcessTask(this IReadOnlyDictionary<string, string> taskData)
     {
-        var process =  new ProcessTask
+        return new ProcessTask
         {
             ProcessIdSb = taskData.GetInteger("ukol_id"),
             ProcessId = taskData.GetLong("ukol_sada"),
             CreatedOn = taskData.GetDate("ukol_dat_start_proces"),
             ProcessTypeId = taskData.GetInteger("ukol_proces_typ_noby"),
             ProcessNameLong = taskData.GetValueOrDefault("ukol_proces_nazev_noby") ?? "",
+            StateName = getStateName(taskData),
+            ProcessPhaseId = taskData.GetInteger("ukol_proces_typ_noby") switch
+            {
+                1 => taskData.GetInteger("ukol_faze_uv_procesu"),
+                2 => taskData.GetInteger("ukol_faze_zm_procesu"),
+                3 => taskData.GetInteger("ukol_faze_rt_procesu"),
+                -1 => -1,
+                _ => throw new CisArgumentException(0, taskData["ukol_proces_typ_noby"], "ProcessPhaseId")
+            },
+            StateIndicator = taskData.GetInteger("ukol_proces_typ_noby") switch
+            {
+                1 or 2 or 3 => getStateIndicator(taskData),
+                _ => null
+            }
         };
-
-        process.ProcessPhaseId = GetProcessPhaseId(process.ProcessTypeId, taskData);
-        SetStateNameAndIndicator(process, taskData);
-
-        return process;
     }
 
     public static TaskDetailItem ToTaskDetail(this IReadOnlyDictionary<string, string> taskData)
@@ -95,7 +104,23 @@ internal static class CaseExtensions
         };
     }
 
-    private static int GetPhaseTypeId(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
+    private static int? getStateIndicator(IReadOnlyDictionary<string, string> taskData)
+    {
+        if (taskData.GetNInteger("ukol_stornovano") == 1)
+        {
+            return 2;
+        }
+        else if (taskData.GetNInteger("ukol_stav_poz") == 30)
+        {
+            return 3;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
+    private static int getPhaseTypeId(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
     {
         return taskTypeId switch
         {
@@ -107,7 +132,7 @@ internal static class CaseExtensions
         };
     }
 
-    private static string GetSignatureType(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
+    private static string getSignatureType(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
     {
         if (taskTypeId != 6)
             return "unknown";
@@ -122,38 +147,20 @@ internal static class CaseExtensions
         };
     }
 
-    private static void SetStateNameAndIndicator(ProcessTask process, IReadOnlyDictionary<string, string> taskData)
+    private static string getStateName(IReadOnlyDictionary<string, string> taskData)
     {
         if (taskData.GetBoolean("ukol_stornovano"))
         {
-            process.StateName = "ZRUŠENO";
-            process.StateIndicator = 2;
-
-            return;
+            return "ZRUŠENO";
         }
-
-        if (taskData.GetInteger("ukol_stav_poz") == 30)
+        else if (taskData.GetInteger("ukol_stav_poz") == 30)
         {
-            process.StateName = "DOKONČENO";
-            process.StateIndicator = 3;
-
-            return;
+            return "DOKONČENO";
         }
-
-        process.StateName = taskData.GetValueOrDefault("ukol_proces_oznacenie_noby") ?? "";
-        process.StateIndicator = 1;
-    }
-
-    private static int GetProcessPhaseId(int processTypeId, IReadOnlyDictionary<string, string> taskData)
-    {
-        return processTypeId switch
+        else
         {
-            1 => taskData.GetInteger("ukol_faze_uv_procesu"),
-            2 => taskData.GetInteger("ukol_faze_zm_procesu"),
-            3 => taskData.GetInteger("ukol_faze_rt_procesu"),
-            -1 => -1,
-            _ => throw new ArgumentOutOfRangeException(nameof(processTypeId), processTypeId, null)
-        };
+            return taskData.GetValueOrDefault("ukol_proces_oznacenie_noby") ?? "";
+        }
     }
 
     private static int[] _allowedConsultationTypes = new[] { 1, 7 };

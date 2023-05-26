@@ -1,5 +1,4 @@
-﻿using CIS.Core.ErrorCodes;
-using DomainServices.CaseService.Contracts;
+﻿using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.CaseService.Api.Services;

@@ -8,6 +8,8 @@ internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, G
 {
     private readonly WorkflowMapper _mapper;
     private readonly ICaseServiceClient _caseService;
+    private static int[] _allowdTaskTypes = new[] { 1, 2, 3, 6, 7 };
+    private static int[] _allowdProcessTypes = new[] { 1, 2, 3 };
 
     public GetTaskListHandler(WorkflowMapper mapper, ICaseServiceClient caseService)
     {
@@ -29,7 +31,9 @@ internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, G
 
     private async Task<List<WorkflowTask>?> LoadWorkflowTasks(long caseId, CancellationToken cancellationToken)
     {
-        var tasks = await _caseService.GetTaskList(caseId, cancellationToken);
+        var tasks = (await _caseService.GetTaskList(caseId, cancellationToken))
+            .Where(t => _allowdTaskTypes.Contains(t.TaskTypeId))
+            .ToList();
         
         if (!tasks.Any())
             return default;
@@ -39,7 +43,9 @@ internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, G
 
     private async Task<List<WorkflowProcess>> LoadWorkflowProcesses(long caseId, CancellationToken cancellationToken)
     {
-        var processes = await _caseService.GetProcessList(caseId, cancellationToken);
+        var processes = (await _caseService.GetProcessList(caseId, cancellationToken))
+            .Where(t => _allowdProcessTypes.Contains(t.ProcessTypeId))
+            .ToList();
 
         return processes.Select(p => new WorkflowProcess
         {
@@ -48,7 +54,7 @@ internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, G
             ProcessNameLong = p.ProcessNameLong,
             StateName = p.StateName,
             ProcessTypeId = p.ProcessTypeId,
-            StateIndicator = (StateIndicators)p.StateIndicator
+            StateIndicator = p.StateIndicator.HasValue ? (StateIndicators)p.StateIndicator : StateIndicators.Unknown //TODO co je default stav?
         }).ToList();
     }
 }

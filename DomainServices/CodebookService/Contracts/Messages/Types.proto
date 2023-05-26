@@ -414,7 +414,7 @@ message LoanPurposesResponse {
 	   string Name = 2;
 	   google.protobuf.Int32Value MandantId = 3;
 	   google.protobuf.Int32Value Order = 4;
-	   google.protobuf.Int32Value C4mId = 5;
+	   google.protobuf.Int32Value C4MId = 5;
 	   bool IsValid = 6;
 	   repeated int32 ProductTypeIds = 7;
 	}

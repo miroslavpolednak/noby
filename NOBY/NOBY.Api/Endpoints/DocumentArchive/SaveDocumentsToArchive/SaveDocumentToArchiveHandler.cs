@@ -1,6 +1,7 @@
 ﻿using CIS.Core;
 using CIS.Core.Security;
 using DomainServices.CaseService.Clients;
+using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
@@ -8,7 +9,6 @@ using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
 using System.Globalization;
-using System.Threading;
 using _DocOnSa = NOBY.Api.Endpoints.DocumentOnSA.Search;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
@@ -27,6 +27,7 @@ public class SaveDocumentToArchiveHandler
     private readonly IMediator _mediator;
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly IUserServiceClient _userServiceClient;
+    private readonly ICodebookServiceClient _codebookServiceClient;
 
     public SaveDocumentToArchiveHandler(
         IDocumentArchiveServiceClient client,
@@ -37,7 +38,8 @@ public class SaveDocumentToArchiveHandler
         IDocumentOnSAServiceClient documentOnSAServiceClient,
         IMediator mediator,
         ICaseServiceClient caseServiceClient,
-        IUserServiceClient userServiceClient)
+        IUserServiceClient userServiceClient,
+        ICodebookServiceClient codebookServiceClient)
     {
         _client = client;
         _currentUserAccessor = currentUserAccessor;
@@ -48,6 +50,7 @@ public class SaveDocumentToArchiveHandler
         _mediator = mediator;
         _caseServiceClient = caseServiceClient;
         _userServiceClient = userServiceClient;
+        _codebookServiceClient = codebookServiceClient;
     }
 
     public async Task Handle(SaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
@@ -61,6 +64,9 @@ public class SaveDocumentToArchiveHandler
         foreach (var docInfo in request.DocumentsInformation)
         {
             var eArchiveIdFromDocumentOnSa = string.Empty;
+
+            await CheckIfFormIdRequired(docInfo, cancellationToken);
+
             if (!string.IsNullOrWhiteSpace(docInfo.FormId))
                 eArchiveIdFromDocumentOnSa = await ValidateFormId(request.CaseId, docInfo, cancellationToken);
 
@@ -81,6 +87,17 @@ public class SaveDocumentToArchiveHandler
         _tempFileManager.BatchDelete(filePaths);
     }
 
+    private async Task CheckIfFormIdRequired(DocumentsInformation docInfo, CancellationToken cancellationToken)
+    {
+        var eACodeMains = await _codebookServiceClient.EaCodesMain(cancellationToken);
+
+        var eACodeMain = eACodeMains.FirstOrDefault(r => r.Id == docInfo.DocumentInformation.EaCodeMainId)
+            ?? throw new NobyValidationException($"Specified EaCodeMainId: {docInfo.DocumentInformation.EaCodeMainId} isn't valid");
+
+        if (eACodeMain.IsFormIdRequested && string.IsNullOrWhiteSpace(docInfo.FormId))
+            throw new NobyValidationException($"For specified EaCodeMainId:{docInfo.DocumentInformation.EaCodeMainId}, FormId is required");
+    }
+
     /// <summary>
     /// If formId exist on DocumentOnSa, return EArchiveId from documentOnSa
     /// </summary>
@@ -92,7 +109,7 @@ public class SaveDocumentToArchiveHandler
 
         if (salesArrangementIdWithFormIdFromDocSa is null)
         {
-            throw new CisValidationException(90001, $"Unable to upload file for selected FormId {docInfo.FormId}");
+            throw new NobyValidationException($"Unable to upload file for selected FormId {docInfo.FormId}");
         }
 
         var documentsOnSa = await _documentOnSAServiceClient.GetDocumentsToSignList(salesArrangementIdWithFormIdFromDocSa.Value, cancellationToken);
