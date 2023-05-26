@@ -1,4 +1,5 @@
 ﻿using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Contracts;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.ProductService.Clients;
@@ -23,28 +24,54 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
 
     private async Task<IdentifyCaseResponse> HandleByFormId(string formId, CancellationToken cancellationToken)
     {
-        var request = new GetDocumentListRequest { }; // todo
-        var response = await _documentArchiveServiceClient.GetDocumentList(request, cancellationToken);
+        var documentListRequest = new GetDocumentListRequest { FormId = formId };
+        var documentListResponse = await _documentArchiveServiceClient.GetDocumentList(documentListRequest, cancellationToken);
 
-        var document = response.Metadata.FirstOrDefault(m => m.FormId == formId);
-        var caseId = document?.CaseId ?? 0;
-        
+        var document = documentListResponse.Metadata.FirstOrDefault();
+        var caseId = document?.CaseId ?? throw new NobyValidationException("CaseId does not exist.");
+
         await _caseServiceClient.ValidateCaseId(caseId, true, cancellationToken);
 
         var taskList = await _caseServiceClient.GetTaskList(caseId, cancellationToken);
         var taskSubList = taskList.Where(t => t.TaskTypeId == 6).ToList();
+
+        if (!taskSubList.Any())
+        {
+            return new IdentifyCaseResponse { CaseId = caseId };
+        }
+
+        var taskDetails = new Dictionary<long, List<TaskDetailItem>>();
         
         foreach (var task in taskSubList)
         {
-            var taskDetailResponse = await _caseServiceClient.GetTaskDetail(task.TaskIdSb, cancellationToken);
-            
-            if (taskDetailResponse.TaskDetails.Any(d => d.TaskDetail.Signing.FormId == formId))
+            var reponse = await _caseServiceClient.GetTaskDetail(task.TaskIdSb, cancellationToken);
+
+            var taskDetailsWithFormId  = reponse.TaskDetails
+                .Where(d => d.TaskDetail?.Signing?.FormId == formId)
+                .Select(d => d.TaskDetail)
+                .ToList();
+
+            if (taskDetailsWithFormId.Any())
             {
-                // todo:
+                taskDetails.Add(task.TaskId, taskDetailsWithFormId);
             }
         }
 
-        return new IdentifyCaseResponse { CaseId = caseId };
+        if (taskDetails.SelectMany(d => d.Value).Count() != 1)
+        {
+            return new IdentifyCaseResponse { CaseId = caseId };
+        }
+
+        var taskId = taskDetails.First().Key;
+        var taskDetailRequest = new NOBY.Api.Endpoints.Cases.GetTaskDetail.GetTaskDetailRequest(caseId, taskId);
+        var taskDetailResponse = await _mediator.Send(taskDetailRequest, cancellationToken);
+
+        return new IdentifyCaseResponse
+        {
+            Task = taskDetailResponse.Task,
+            TaskDetail = taskDetailResponse.TaskDetail,
+            Documents = taskDetailResponse.Documents
+        };
     }
     
     private async Task<IdentifyCaseResponse> HandleByPaymentAccount(PaymentAccount account, CancellationToken cancellationToken)
@@ -71,15 +98,18 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         return await HandleByCaseId(response.CaseId, cancellationToken);
     }
 
+    private readonly IMediator _mediator;
     private readonly IProductServiceClient _productServiceClient;
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     
     public IdentifyCaseHandler(
+        IMediator mediator,
         IProductServiceClient productServiceClient,
         ICaseServiceClient caseServiceClient,
         IDocumentArchiveServiceClient documentArchiveServiceClient)
     {
+        _mediator = mediator;
         _productServiceClient = productServiceClient;
         _caseServiceClient = caseServiceClient;
         _documentArchiveServiceClient = documentArchiveServiceClient;
