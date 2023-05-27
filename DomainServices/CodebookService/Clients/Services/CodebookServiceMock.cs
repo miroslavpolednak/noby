@@ -486,4 +486,9 @@ public class CodebookServiceMock
     {
         throw new NotImplementedException();
     }
+
+    public virtual Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> CovenantTypes(CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }

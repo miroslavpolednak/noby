@@ -698,6 +698,9 @@ internal sealed class CodebookService
     public override Task<GenericCodebookResponse> WorkSectors(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetGenericItems(SqlQueries.WorkSectors);
 
+    public override Task<GenericCodebookResponse> CovenantTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxdhf.GetGenericItems(SqlQueries.CovenantTypes);
+
     private readonly IConnectionProvider _selfDb;
     private readonly IConnectionProvider<IKonsdbDapperConnectionProvider> _konsdb;
     private readonly IConnectionProvider<IXxdHfDapperConnectionProvider> _xxdhf;

@@ -539,4 +539,10 @@ service CodebookService {
 			get: "/v1/work-sectors"
 		};
    }
+
+   rpc CovenantTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/covenant-types"
+		};
+   }
 }

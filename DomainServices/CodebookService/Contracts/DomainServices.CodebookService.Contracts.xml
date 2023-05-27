@@ -16,6 +16,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.NameFieldNumber">
             <summary>Field number for the "Name" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.IsValidFieldNumber">
             <summary>Field number for the "IsValid" field.</summary>
         </member>
