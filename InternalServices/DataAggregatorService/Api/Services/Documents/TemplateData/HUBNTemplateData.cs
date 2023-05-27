@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
+﻿using CIS.Foms.Enums;
+using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
@@ -9,7 +10,7 @@ internal class HUBNTemplateData : AggregatedData
 
     public string FullName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
-    public string PermanentAddress => CustomerHelper.FullAddress(Customer, _codebookManager.Countries);
+    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent, _codebookManager.Countries);
 
     public IEnumerable<string> LoanPurposes => GetLoanPurposes();
 

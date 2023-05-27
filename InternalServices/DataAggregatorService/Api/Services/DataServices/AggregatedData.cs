@@ -3,7 +3,6 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Template
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Contracts;
-using DomainServices.HouseholdService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
@@ -35,13 +34,9 @@ internal class AggregatedData
 
     public MortgageData Mortgage { get; set; } = null!;
 
-    public HouseholdInfo HouseholdMain { get; set; } = null!;
+    public HouseholdInfo? HouseholdMain { get; set; }
 
     public HouseholdInfo? HouseholdCodebtor { get; set; }
-
-    public CustomerOnSA CustomerOnSaDebtor { get; set; } = null!;
-
-    public CustomerOnSA? CustomerOnSaCodebtor { get; set; }
 
     public Task LoadCodebooks(ICodebookServiceClient codebookService, CancellationToken cancellationToken)
     {

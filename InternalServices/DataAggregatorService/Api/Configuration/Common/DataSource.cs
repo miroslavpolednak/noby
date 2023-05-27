@@ -11,8 +11,7 @@ internal enum DataSource
     ProductService,
     OfferPaymentScheduleService,
     HouseholdService,
-    CustomersOnSa,
-    CustomersOnSaDetail,
-    HouseholdWithCustomersService,
+    HouseholdMainService,
+    HouseholdCodebtorService,
     DocumentOnSa
 }
