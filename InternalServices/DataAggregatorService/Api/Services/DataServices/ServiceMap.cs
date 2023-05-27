@@ -36,8 +36,8 @@ internal class ServiceMap
     private void ConfigureExtensionServices()
     {
         AddService<OfferServiceWrapper>(DataSource.OfferPaymentScheduleService, s => s.LoadPaymentSchedule);
-        AddService<HouseholdServiceWrapper>(DataSource.HouseholdWithCustomersService, s => s.LoadHouseholdWithCustomers);
-        AddService<CustomerOnSaServiceWrapper>(DataSource.CustomersOnSaDetail, s => s.LoadCustomerOnSaDetail);
+        AddService<HouseholdServiceWrapper>(DataSource.HouseholdMainService, s => s.LoadMainHouseholdDetail);
+        AddService<HouseholdServiceWrapper>(DataSource.HouseholdCodebtorService, s => s.LoadCodebtorHouseholdDetail);
     }
 
     private void AddService<TService>(DataSource dataSource) where TService : IServiceWrapper
@@ -50,7 +50,7 @@ internal class ServiceMap
 
         _map.Add(dataSource, mapItem);
 
-        ServiceCall CommonServiceCall(TService service) => service.LoadData;
+        static ServiceCall CommonServiceCall(TService service) => service.LoadData;
     }
 
     private void AddService<TService>(DataSource dataSource, Func<TService, ServiceCall> serviceCallFactory) where TService : IServiceWrapper

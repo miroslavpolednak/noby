@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
+﻿using CIS.Foms.Enums;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;
 
@@ -19,7 +20,7 @@ internal class CustomerInfo
 
     public string FullName => CustomerHelper.FullName(_customer, _degreesBefore);
 
-    public string Address => CustomerHelper.FullAddress(_customer, _countries);
+    public string Address => CustomerHelper.FullAddress(_customer, AddressTypes.Permanent, _countries);
 
     public string? BirthNumberText => string.IsNullOrWhiteSpace(_customer.NaturalPerson.BirthNumber) ? default : "Rodné číslo:";
 

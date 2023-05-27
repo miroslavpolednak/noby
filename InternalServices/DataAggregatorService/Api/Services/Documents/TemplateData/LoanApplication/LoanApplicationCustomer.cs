@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;
 
@@ -28,9 +29,11 @@ internal class LoanApplicationCustomer
         _educationLevels = educationLevels;
     }
 
-    public string FullName => GetFullName();
+    public string FullName => CustomerHelper.FullName(_customer, _degreesBefore);
 
-    public string PermanentAddress => FormatAddress(_customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Permanent));
+    public string SignerName => CustomerHelper.FullName(_customer);
+
+    public string PermanentAddress => CustomerHelper.FullAddress(_customer, AddressTypes.Permanent, _countries);
 
     public string ContactAddress => GetContactAddress();
 
@@ -48,38 +51,17 @@ internal class LoanApplicationCustomer
 
     public NaturalPersonResidenceCountry? CzechResidence => _customer.NaturalPerson.TaxResidence?.ResidenceCountries.FirstOrDefault(r => r.CountryId == 16);
 
-    private string GetFullName()
-    {
-        if (!_customer.NaturalPerson.DegreeBeforeId.HasValue)
-            return $"{_customer.NaturalPerson.FirstName} {_customer.NaturalPerson.LastName}";
-
-        var degree = _degreesBefore.First(d => d.Id == _customer.NaturalPerson.DegreeBeforeId.Value).Name;
-
-        return $"{_customer.NaturalPerson.FirstName} {_customer.NaturalPerson.LastName}, {degree}";
-    }
-
-    private string FormatAddress(GrpcAddress? address)
-    {
-        if (address is null)
-            return string.Empty;
-
-        var countryName = _countries.First(c => c.Id == address.CountryId).LongName;
-
-        return $"{address.Street} {address.HouseNumber}/{address.StreetNumber}, {address.Postcode} {address.City}, {countryName}";
-    }
-
     private string GetContactAddress()
     {
         var contactAddress = _customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Mailing);
 
         if (contactAddress is not null)
-            return FormatAddress(contactAddress);
+            return CustomerHelper.FullAddress(contactAddress, _countries);
 
-        if (_customer.Addresses.Any(a => a.AddressTypeId == (int)AddressTypes.Permanent) || _customer.NaturalPerson.CitizenshipCountriesId.Any(id => id == 16))
+        if (_customer.Addresses.Any(a => a.AddressTypeId == (int)AddressTypes.Permanent))
             return PermanentAddress;
 
-        var otherAddress = _customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Other);
-        return FormatAddress(otherAddress);
+        return CustomerHelper.FullAddress(_customer, AddressTypes.Other, _countries);
     }
 
     private string GetIdentificationDocument()
