@@ -93,7 +93,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
             foreach (var customer in customers)
             {
                 var obligations = await _customerOnSAService.GetObligationList(customer.CustomerOnSAId, cancellationToken);
-                if (obligations.Any(t => ((t.Creditor is not null && t.Creditor.IsExternal.GetValueOrDefault()) && (t.Correction is not null && t.Correction.CorrectionTypeId.GetValueOrDefault() != 1))))
+                if (obligations.Any(t => ((t.Creditor is not null && !t.Creditor.IsExternal.GetValueOrDefault()) && (t.Correction is not null && t.Correction.CorrectionTypeId.GetValueOrDefault() != 1))))
                 {
                     response.DisplayAssessmentResultInfoText = true;
                     break;
