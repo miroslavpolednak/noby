@@ -37,7 +37,7 @@ public class CodebookManager : ICodebookManagerConfigurator
 
     public List<Codebook.GendersResponse.Types.GenderItem> Genders { get; private set; } = null!;
 
-    public List<Codebook.GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem> EmploymentTypes { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> EmploymentTypes { get; private set; } = null!;
 
     public List<Codebook.ObligationTypesResponse.Types.ObligationTypeItem> ObligationTypes { get; private set; } = null!;
 

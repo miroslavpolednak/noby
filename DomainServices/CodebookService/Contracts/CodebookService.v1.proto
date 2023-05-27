@@ -7,7 +7,6 @@ import "google/protobuf/empty.proto";
 import "Messages/Types.proto";
 import "Messages/GenericCodebook.proto";
 import "Messages/GenericCodebookFull.proto";
-import "Messages/GenericCodebookWithCode.proto";
 import "Messages/GenericCodebookWithRdmCode.proto";
 import "Messages/GenericCodebookWithDefaultAndCode.proto";
 
@@ -24,7 +23,7 @@ service CodebookService {
 		};
    }
 
-   rpc AddressTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc AddressTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/address-types"
 		};
@@ -71,6 +70,12 @@ service CodebookService {
 			get: "/v1/country-code-phone-idc"
 		};
    }
+
+   rpc CovenantTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/covenant-types"
+		};
+   }
    
    rpc Currencies (google.protobuf.Empty) returns (CurrenciesResponse) {
 	   option (google.api.http) = {
@@ -78,7 +83,7 @@ service CodebookService {
 		};
    }
 
-   rpc CustomerProfiles (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc CustomerProfiles (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/customer-profiles"
 		};
@@ -156,7 +161,7 @@ service CodebookService {
 		};
    }
 
-   rpc EmploymentTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc EmploymentTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/employment-types"
 		};
@@ -246,13 +251,13 @@ service CodebookService {
 		};
    }
 
-   rpc IncomeForeignTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc IncomeForeignTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/income-foreign-types"
 		};
    }
 
-   rpc IncomeMainTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc IncomeMainTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/income-main-types"
 		};
@@ -264,7 +269,7 @@ service CodebookService {
 		};
    }
 
-   rpc IncomeOtherTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc IncomeOtherTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/income-other-types"
 		};
@@ -282,7 +287,7 @@ service CodebookService {
 		};
    }
 
-   rpc LoanInterestRateAnnouncedTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc LoanInterestRateAnnouncedTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/loan-interest-rate-announced-types"
 		};
@@ -300,7 +305,7 @@ service CodebookService {
 		};
    }
 
-   rpc Mandants (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc Mandants (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/mandants"
 		};
@@ -330,7 +335,7 @@ service CodebookService {
 		};
    }
 
-   rpc ObligationCorrectionTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc ObligationCorrectionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/obligation-correction-types"
 		};
@@ -414,7 +419,7 @@ service CodebookService {
 		};
    }
 
-   rpc RepaymentScheduleTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc RepaymentScheduleTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/repayment-schedule-types"
 		};
@@ -538,11 +543,5 @@ service CodebookService {
 	   option (google.api.http) = {
 			get: "/v1/work-sectors"
 		};
-   }
-
-   rpc CovenantTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
-	   option (google.api.http) = {
-			get: "/v1/covenant-types"
-		};
-   }
+   }  
 }

@@ -18,7 +18,7 @@ public class CodebookServiceMock
         throw new NotImplementedException();
     }
 
-    public virtual Task<List<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>> AddressTypes(CancellationToken cancellationToken = default)
+    public virtual Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> AddressTypes(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -68,7 +68,7 @@ public class CodebookServiceMock
         throw new NotImplementedException();
     }
 
-    public virtual Task<List<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>> CustomerProfiles(CancellationToken cancellationToken = default)
+    public virtual Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> CustomerProfiles(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -151,7 +151,7 @@ public class CodebookServiceMock
         throw new NotImplementedException();
     }
 
-    public virtual Task<List<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>> EmploymentTypes(CancellationToken cancellationToken = default)
+    public virtual Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> EmploymentTypes(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -221,12 +221,12 @@ public class CodebookServiceMock
         throw new NotImplementedException();
     }
 
-    public virtual Task<List<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>> IncomeForeignTypes(CancellationToken cancellationToken = default)
+    public virtual Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> IncomeForeignTypes(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public virtual Task<List<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>> IncomeMainTypes(CancellationToken cancellationToken = default)
+    public virtual Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> IncomeMainTypes(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -236,7 +236,7 @@ public class CodebookServiceMock
         throw new NotImplementedException();
     }
 
-    public virtual Task<List<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>> IncomeOtherTypes(CancellationToken cancellationToken = default)
+    public virtual Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> IncomeOtherTypes(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -251,7 +251,7 @@ public class CodebookServiceMock
         throw new NotImplementedException();
     }
 
-    public virtual Task<List<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>> LoanInterestRateAnnouncedTypes(CancellationToken cancellationToken = default)
+    public virtual Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> LoanInterestRateAnnouncedTypes(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -266,7 +266,7 @@ public class CodebookServiceMock
         throw new NotImplementedException();
     }
 
-    public virtual Task<List<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>> Mandants(CancellationToken cancellationToken = default)
+    public virtual Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> Mandants(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -291,7 +291,7 @@ public class CodebookServiceMock
         throw new NotImplementedException();
     }
 
-    public virtual Task<List<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>> ObligationCorrectionTypes(CancellationToken cancellationToken = default)
+    public virtual Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> ObligationCorrectionTypes(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -361,7 +361,7 @@ public class CodebookServiceMock
         throw new NotImplementedException();
     }
 
-    public virtual Task<List<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>> RepaymentScheduleTypes(CancellationToken cancellationToken = default)
+    public virtual Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> RepaymentScheduleTypes(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

@@ -18,8 +18,8 @@ internal sealed class CodebookService
     public override Task<GenericCodebookResponse> AcademicDegreesBefore(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _selfDb.GetGenericItems(SqlQueries.AcademicDegreesBefore);
 
-    public override Task<GenericCodebookWithCodeResponse> AddressTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItemsWithCode<CIS.Foms.Enums.AddressTypes>();
+    public override Task<GenericCodebookResponse> AddressTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetGenericItems<CIS.Foms.Enums.AddressTypes>();
 
     public override Task<BankCodesResponse> BankCodes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetItems<BankCodesResponse, BankCodesResponse.Types.BankCodeItem>(new BankCodesResponse(), SqlQueries.BankCodes);
@@ -62,8 +62,8 @@ internal sealed class CodebookService
     public override Task<CurrenciesResponse> Currencies(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetItems<CurrenciesResponse, CurrenciesResponse.Types.CurrencyItem>(new CurrenciesResponse(), SqlQueries.Currencies);
 
-    public override Task<GenericCodebookWithCodeResponse> CustomerProfiles(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItemsWithCode<CIS.Foms.Enums.CustomerProfiles>();
+    public override Task<GenericCodebookResponse> CustomerProfiles(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetGenericItems<CIS.Foms.Enums.CustomerProfiles>();
 
     public override Task<CustomerRolesResponse> CustomerRoles(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(new CustomerRolesResponse(), () =>
@@ -175,8 +175,8 @@ internal sealed class CodebookService
     public override Task<EducationLevelsResponse> EducationLevels(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetItems<EducationLevelsResponse, EducationLevelsResponse.Types.EducationLevelItem>(new EducationLevelsResponse(), SqlQueries.EducationLevels);
 
-    public override Task<GenericCodebookWithCodeResponse> EmploymentTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetGenericItemsWithCode(SqlQueries.EmploymentTypes);
+    public override Task<GenericCodebookResponse> EmploymentTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.EmploymentTypes);
 
     public override Task<FeesResponse> Fees(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetItems<FeesResponse, FeesResponse.Types.FeeItem>(new FeesResponse(), SqlQueries.Fees);
@@ -291,11 +291,11 @@ internal sealed class CodebookService
             new() { Id = 8, Code = "MPAD", MandantId = 1, Category = "User", ChannelId = 1 }
         });
 
-    public override Task<GenericCodebookWithCodeResponse> IncomeForeignTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetGenericItemsWithCode(SqlQueries.IncomeForeignTypes);
+    public override Task<GenericCodebookResponse> IncomeForeignTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.IncomeForeignTypes);
 
-    public override Task<GenericCodebookWithCodeResponse> IncomeMainTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetGenericItemsWithCode(SqlQueries.IncomeMainTypes);
+    public override Task<GenericCodebookResponse> IncomeMainTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.IncomeMainTypes);
 
     public override Task<GenericCodebookWithRdmCodeResponse> IncomeMainTypesAML(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(new GenericCodebookWithRdmCodeResponse(), () =>
@@ -309,8 +309,8 @@ internal sealed class CodebookService
             return items;
         });
 
-    public override Task<GenericCodebookWithCodeResponse> IncomeOtherTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetGenericItemsWithCode(SqlQueries.IncomeOtherTypes);
+    public override Task<GenericCodebookResponse> IncomeOtherTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.IncomeOtherTypes);
 
     public override Task<GenericCodebookWithDefaultAndCodeResponse> JobTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetGenericItemsWithDefaultAndCode(SqlQueries.JobTypes);
@@ -329,8 +329,8 @@ internal sealed class CodebookService
             .ToList();
         });
 
-    public override Task<GenericCodebookWithCodeResponse> LoanInterestRateAnnouncedTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItemsWithCode<CIS.Foms.Enums.LoanInterestRateAnnouncedTypes>();
+    public override Task<GenericCodebookResponse> LoanInterestRateAnnouncedTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetGenericItems<CIS.Foms.Enums.LoanInterestRateAnnouncedTypes>();
 
     public override Task<GenericCodebookFullResponse> LoanKinds(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetGenericFullItems(SqlQueries.LoanKinds);
@@ -358,8 +358,8 @@ internal sealed class CodebookService
             });
         });
 
-    public override Task<GenericCodebookWithCodeResponse> Mandants(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItemsWithCode<CIS.Foms.Enums.Mandants>();
+    public override Task<GenericCodebookResponse> Mandants(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetGenericItems<CIS.Foms.Enums.Mandants>();
 
     public override Task<MaritalStatusesResponse> MaritalStatuses(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(new MaritalStatusesResponse(), () =>
@@ -391,8 +391,8 @@ internal sealed class CodebookService
             return items;
         });
 
-    public override Task<GenericCodebookWithCodeResponse> ObligationCorrectionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetGenericItemsWithCode(SqlQueries.ObligationCorrectionTypes);
+    public override Task<GenericCodebookResponse> ObligationCorrectionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.ObligationCorrectionTypes);
 
     public override Task<ObligationLaExposuresResponse> ObligationLaExposures(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetItems<ObligationLaExposuresResponse, ObligationLaExposuresResponse.Types.ObligationLaExposureItem>(new ObligationLaExposuresResponse(), SqlQueries.ObligationLaExposures);
@@ -526,10 +526,10 @@ internal sealed class CodebookService
             return items;
         });
 
-    public override Task<GenericCodebookWithCodeResponse> RepaymentScheduleTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(new GenericCodebookWithCodeResponse(), () =>
+    public override Task<GenericCodebookResponse> RepaymentScheduleTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(new GenericCodebookResponse(), () =>
         {
-            return new List<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem>
+            return new List<GenericCodebookResponse.Types.GenericCodebookItem>
             {
                 new() { Id = 1, Name = "Anuitní", Code = "A" },
                 new() { Id = 2, Name = "Postupné", Code = "P" },

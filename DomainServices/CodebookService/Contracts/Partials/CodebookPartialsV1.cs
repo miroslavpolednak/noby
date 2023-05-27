@@ -1,7 +1,6 @@
 ﻿namespace DomainServices.CodebookService.Contracts.v1;
 
 public partial class GenericCodebookResponse : IItemsResponse<GenericCodebookResponse.Types.GenericCodebookItem> { }
-public partial class GenericCodebookWithCodeResponse : IItemsResponse<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem> { }
 public partial class GenericCodebookWithRdmCodeResponse : IItemsResponse<GenericCodebookWithRdmCodeResponse.Types.GenericCodebookWithRdmCodeItem> { }
 public partial class GenericCodebookFullResponse : IItemsResponse<GenericCodebookFullResponse.Types.GenericCodebookFullItem> { }
 public partial class BankCodesResponse : IItemsResponse<BankCodesResponse.Types.BankCodeItem> { }

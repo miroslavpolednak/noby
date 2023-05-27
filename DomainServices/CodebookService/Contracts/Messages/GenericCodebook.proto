@@ -11,6 +11,9 @@ message GenericCodebookResponse {
 	   int32 Id = 1;
 	   string Name = 2;
 	   google.protobuf.StringValue Description = 3;
-	   google.protobuf.BoolValue IsValid = 4;
+	   google.protobuf.StringValue Code = 4;
+	   google.protobuf.StringValue RdmCode = 5;
+	   google.protobuf.BoolValue IsValid = 6;
+	   google.protobuf.BoolValue IsDefault = 7;
 	}
 }

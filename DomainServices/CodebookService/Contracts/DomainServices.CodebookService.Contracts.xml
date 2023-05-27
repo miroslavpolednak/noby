@@ -19,26 +19,17 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.DescriptionFieldNumber">
             <summary>Field number for the "Description" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.RdmCodeFieldNumber">
+            <summary>Field number for the "RdmCode" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.IsValidFieldNumber">
             <summary>Field number for the "IsValid" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookWithCodeResponse.ItemsFieldNumber">
-            <summary>Field number for the "Items" field.</summary>
-        </member>
-        <member name="T:DomainServices.CodebookService.Contracts.v1.GenericCodebookWithCodeResponse.Types">
-            <summary>Container for nested types declared in the GenericCodebookWithCodeResponse message type.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem.IdFieldNumber">
-            <summary>Field number for the "Id" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem.NameFieldNumber">
-            <summary>Field number for the "Name" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem.CodeFieldNumber">
-            <summary>Field number for the "Code" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem.IsValidFieldNumber">
-            <summary>Field number for the "IsValid" field.</summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookWithRdmCodeResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
@@ -1472,12 +1463,6 @@
         </member>
         <member name="P:DomainServices.CodebookService.Contracts.v1.GenericCodebookReflection.Descriptor">
             <summary>File descriptor for Messages/GenericCodebook.proto</summary>
-        </member>
-        <member name="T:DomainServices.CodebookService.Contracts.v1.GenericCodebookWithCodeReflection">
-            <summary>Holder for reflection information generated from Messages/GenericCodebookWithCode.proto</summary>
-        </member>
-        <member name="P:DomainServices.CodebookService.Contracts.v1.GenericCodebookWithCodeReflection.Descriptor">
-            <summary>File descriptor for Messages/GenericCodebookWithCode.proto</summary>
         </member>
     </members>
 </doc>

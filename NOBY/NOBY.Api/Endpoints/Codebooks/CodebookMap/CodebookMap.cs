@@ -39,6 +39,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.ContactTypes(ct));
         AddCodebook((s, ct) => s.Countries(ct), c => c.Cast<CountriesResponse.Types.CountryItem>().OrderByDescending(t => t.IsDefault));
         AddCodebook((s, ct) => s.CountryCodePhoneIdc(ct));
+        AddCodebook((s, ct) => s.CovenantTypes(ct));
         AddCodebook((s, ct) => s.Currencies(ct));
         AddCodebook((s, ct) => s.CustomerProfiles(ct));
         AddCodebook((s, ct) => s.CustomerRoles(ct));
