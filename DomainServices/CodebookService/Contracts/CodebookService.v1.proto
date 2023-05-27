@@ -6,9 +6,6 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "Messages/Types.proto";
 import "Messages/GenericCodebook.proto";
-import "Messages/GenericCodebookFull.proto";
-import "Messages/GenericCodebookWithRdmCode.proto";
-import "Messages/GenericCodebookWithDefaultAndCode.proto";
 
 service CodebookService {
    rpc AcademicDegreesAfter (google.protobuf.Empty) returns (GenericCodebookResponse) {
@@ -35,7 +32,7 @@ service CodebookService {
 		};
    }
 
-   rpc CaseStates (google.protobuf.Empty) returns (GenericCodebookWithDefaultAndCodeResponse) {
+   rpc CaseStates (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/case-states"
 		};
@@ -263,7 +260,7 @@ service CodebookService {
 		};
    }
 
-   rpc IncomeMainTypesAML (google.protobuf.Empty) returns (GenericCodebookWithRdmCodeResponse) {
+   rpc IncomeMainTypesAML (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/income-main-types-aml"
 		};
@@ -275,13 +272,13 @@ service CodebookService {
 		};
    }
 
-   rpc JobTypes (google.protobuf.Empty) returns (GenericCodebookWithDefaultAndCodeResponse) {
+   rpc JobTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/job-types"
 		};
    }
 
-   rpc LegalCapacityRestrictionTypes (google.protobuf.Empty) returns (LegalCapacityRestrictionTypesResponse) {
+   rpc LegalCapacityRestrictionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/legal-capacity-restriction-types"
 		};
@@ -293,7 +290,7 @@ service CodebookService {
 		};
    }
 
-   rpc LoanKinds (google.protobuf.Empty) returns (GenericCodebookFullResponse) {
+   rpc LoanKinds (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/loan-kinds"
 		};
@@ -311,13 +308,13 @@ service CodebookService {
 		};
    }
 
-   rpc MaritalStatuses (google.protobuf.Empty) returns (MaritalStatusesResponse) {
+   rpc MaritalStatuses (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/marital-statuses"
 		};
    }
 
-   rpc MarketingActions (google.protobuf.Empty) returns (MarketingActionsResponse) {
+   rpc MarketingActions (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/marketing-actions"
 		};
@@ -329,7 +326,7 @@ service CodebookService {
 		};
    }
 
-   rpc NetMonthEarnings (google.protobuf.Empty) returns (GenericCodebookWithRdmCodeResponse) {
+   rpc NetMonthEarnings (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/net-month-earnings"
 		};
@@ -383,7 +380,7 @@ service CodebookService {
 		};
    }
 
-   rpc ProfessionTypes (google.protobuf.Empty) returns (GenericCodebookWithRdmCodeResponse) {
+   rpc ProfessionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/profession-types"
 		};
@@ -401,13 +398,13 @@ service CodebookService {
 		};
    }
 
-   rpc RealEstatePurchaseTypes (google.protobuf.Empty) returns (GenericCodebookFullResponse) {
+   rpc RealEstatePurchaseTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/real-estate-purchase-types"
 		};
    }
 
-   rpc RealEstateTypes (google.protobuf.Empty) returns (GenericCodebookFullResponse) {
+   rpc RealEstateTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/real-estate-types"
 		};
@@ -449,7 +446,7 @@ service CodebookService {
 		};
    }
 
-   rpc SignatureTypes (google.protobuf.Empty) returns (GenericCodebookWithDefaultAndCodeResponse) {
+   rpc SignatureTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/signature-types"
 		};
@@ -473,7 +470,7 @@ service CodebookService {
 		};
    }
 
-   rpc StatementSubscriptionTypes (google.protobuf.Empty) returns (GenericCodebookWithDefaultAndCodeResponse) {
+   rpc StatementSubscriptionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/statement-subscription-types"
 		};

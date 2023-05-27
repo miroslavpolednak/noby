@@ -134,8 +134,8 @@ public class CodebooksController : ControllerBase
     /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
     [HttpGet("product-loan-kinds")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(List<GenericCodebookFullResponse.Types.GenericCodebookFullItem>), StatusCodes.Status200OK)]
-    public async Task<List<GenericCodebookFullResponse.Types.GenericCodebookFullItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(List<GenericCodebookResponse.Types.GenericCodebookItem>), StatusCodes.Status200OK)]
+    public async Task<List<GenericCodebookResponse.Types.GenericCodebookItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         var loanKindsIds = (await svc.ProductTypes(cancellationToken))
             .FirstOrDefault(t => t.Id == productTypeId && t.IsValid)?

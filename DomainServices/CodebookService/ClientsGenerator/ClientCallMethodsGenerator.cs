@@ -46,6 +46,10 @@ namespace DomainServices.CodebookService.ClientsGenerators
                 })
                 .ToList();
 
+            var sbClientMock = new StringBuilder();
+            sbClientMock.AppendLine("namespace DomainServices.CodebookService.Clients.Services;");
+            sbClientMock.AppendLine("public abstract partial class CodebookServiceBaseMock : ICodebookServiceClient {");
+
             var sbImpl = new StringBuilder();
             sbImpl.AppendLine("namespace DomainServices.CodebookService.Clients.Services;");
             sbImpl.AppendLine("internal partial class CodebookService {");
@@ -59,20 +63,26 @@ namespace DomainServices.CodebookService.ClientsGenerators
 
             endpoints.ForEach(m =>
             {
+                // mock
+                sbClientMock.Append($"public virtual Task<List<{m.ReturnType}>> {m.MethodName}(CancellationToken cancellationToken = default)");
+                sbClientMock.AppendLine("  => throw new NotImplementedException();");
+
                 // implementation
-                sbImpl.Append($"public async Task<List<{m.ReturnType}>> {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken))");
+                sbImpl.Append($"public async Task<List<{m.ReturnType}>> {m.MethodName}(CancellationToken cancellationToken = default)");
                 sbImpl.AppendLine($"  => await _cache.GetOrCreate(async () => (await _service.{m.MethodName}Async(new Google.Protobuf.WellKnownTypes.Empty(), cancellationToken: cancellationToken)).Items.ToList());");
 
                 // interface
-                sbInterface.AppendLine($"Task<List<{m.ReturnType}>> {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken));");
+                sbInterface.AppendLine($"Task<List<{m.ReturnType}>> {m.MethodName}(CancellationToken cancellationToken = default);");
             });
 
             sbImpl.Append("}");
             sbInterface.Append("}");
+            sbClientMock.Append("}");
 
             // generate source using targets ...
             context.AddSource("ICodebookServiceClient_generated.cs", sbInterface.ToString());
             context.AddSource("CodebookService_generated.cs", sbImpl.ToString());
+            context.AddSource("CodebookServiceClientMock_generated.cs", sbClientMock.ToString());
         }
     }
 

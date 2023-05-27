@@ -20,5 +20,5 @@ public class ProductTypeItem
     public string? PcpProductId { get; set; }
     public int LoanKindIds { get; set; }
 
-    public List<GenericCodebookFullResponse.Types.GenericCodebookFullItem>? LoanKinds { get; set; }
+    public List<GenericCodebookResponse.Types.GenericCodebookItem>? LoanKinds { get; set; }
 }

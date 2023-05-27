@@ -73,7 +73,7 @@ internal sealed class CasesModelConverter
 	}
 
 	private List<ProductTypesResponse.Types.ProductTypeItem> _productTypes;
-	private List<GenericCodebookWithDefaultAndCodeResponse.Types.GenericCodebookWithDefaultAndCodeItem> _caseStates;
+	private List<GenericCodebookResponse.Types.GenericCodebookItem> _caseStates;
 	private List<WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem> _taskTypes;
 
 	private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;

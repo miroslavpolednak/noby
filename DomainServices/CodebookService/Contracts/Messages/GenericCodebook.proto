@@ -10,10 +10,12 @@ message GenericCodebookResponse {
 	message GenericCodebookItem {
 	   int32 Id = 1;
 	   string Name = 2;
-	   google.protobuf.StringValue Description = 3;
-	   google.protobuf.StringValue Code = 4;
-	   google.protobuf.StringValue RdmCode = 5;
-	   google.protobuf.BoolValue IsValid = 6;
-	   google.protobuf.BoolValue IsDefault = 7;
+	   google.protobuf.Int32Value MandantId = 3;
+	   google.protobuf.StringValue Description = 4;
+	   google.protobuf.StringValue Code = 5;
+	   google.protobuf.StringValue RdmCode = 6;
+	   google.protobuf.Int32Value Order = 7;
+	   google.protobuf.BoolValue IsValid = 8;
+	   google.protobuf.BoolValue IsDefault = 9;
 	}
 }

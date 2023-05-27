@@ -14,12 +14,12 @@ internal sealed class CustomerManagementDetailProvider
 
     private List<CountriesResponse.Types.CountryItem> _countries = null!;
     private List<GendersResponse.Types.GenderItem> _genders = null!;
-    private List<MaritalStatusesResponse.Types.MaritalStatuseItem> _maritals = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _maritals = null!;
     private List<GenericCodebookResponse.Types.GenericCodebookItem> _titles = null!;
-    private List<GenericCodebookWithRdmCodeResponse.Types.GenericCodebookWithRdmCodeItem> _professionTypes = null!;
-    private List<GenericCodebookWithRdmCodeResponse.Types.GenericCodebookWithRdmCodeItem> _netMonthEarnings = null!;
-    private List<LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem> _legalCapacityRestrictionTypes = null!;
-    private List<GenericCodebookWithRdmCodeResponse.Types.GenericCodebookWithRdmCodeItem> _incomeMainTypesAML = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _professionTypes = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _netMonthEarnings = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _legalCapacityRestrictionTypes = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _incomeMainTypesAML = null!;
     private List<EducationLevelsResponse.Types.EducationLevelItem> _educations = null!;
     private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
 
@@ -99,7 +99,7 @@ internal sealed class CustomerManagementDetailProvider
             BirthName = np.BirthName ?? string.Empty,
             PlaceOfBirth = np.BirthPlace ?? string.Empty,
             BirthCountryId = _countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,
-            MaritalStatusStateId = _maritals.FirstOrDefault(t => t.RdmMaritalStatusCode == np.MaritalStatusCode)?.Id ?? 0,
+            MaritalStatusStateId = _maritals.FirstOrDefault(t => t.RdmCode == np.MaritalStatusCode)?.Id ?? 0,
             DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.OrdinalIgnoreCase))?.Id,
             EducationLevelId = _educations.FirstOrDefault(t => t.RdmCode.Equals(customer.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.OrdinalIgnoreCase))?.Id ?? 0,
             IsPoliticallyExposed = customer.IsPoliticallyExposed,

@@ -21,7 +21,7 @@ internal sealed class IdentifiedSubjectService
     private List<GendersResponse.Types.GenderItem> _genders = null!;
     private List<GenericCodebookResponse.Types.GenericCodebookItem> _titles = null!;
     private List<CountriesResponse.Types.CountryItem> _countries = null!;
-    private List<MaritalStatusesResponse.Types.MaritalStatuseItem> _maritals = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _maritals = null!;
     private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
 
     public IdentifiedSubjectService(ExternalServices.CustomerManagement.V2.ICustomerManagementClient customerManagement, ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClient codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
@@ -113,7 +113,7 @@ internal sealed class IdentifiedSubjectService
             }/*,
             MaritalStatus = new()
             {
-                Code = _maritals.FirstOrDefault(t => t.Id == request.NaturalPerson?.MaritalStatusStateId)?.RdmMaritalStatusCode ?? ""
+                Code = _maritals.FirstOrDefault(t => t.Id == request.NaturalPerson?.MaritalStatusStateId)?.RdmCode ?? ""
             }*/
         };
 
@@ -183,7 +183,7 @@ internal sealed class IdentifiedSubjectService
             CzechBirthNumber = naturalPerson.BirthNumber.ToCMString(),
             CitizenshipCodes = citizenshipCodes.Any() ? citizenshipCodes : null,
             BirthCountryCode = _countries.FirstOrDefault(c => c.Id == naturalPerson.BirthCountryId)?.ShortName,
-            MaritalStatusCode = _maritals.First(m => m.Id == naturalPerson.MaritalStatusStateId).RdmMaritalStatusCode,
+            MaritalStatusCode = _maritals.First(m => m.Id == naturalPerson.MaritalStatusStateId).RdmCode,
             BirthPlace = naturalPerson.PlaceOfBirth.ToCMString(),
             BirthName = naturalPerson.BirthName.ToCMString()
         };

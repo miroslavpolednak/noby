@@ -35,7 +35,7 @@ internal class Customer
 
     public required ILookup<string, int> ObligationTypes { private get; init; }
 
-    public required List<LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem> LegalCapacityTypes { private get; init; }
+    public required List<GenericCodebookResponse.Types.GenericCodebookItem> LegalCapacityTypes { private get; init; }
 
     public CustomerOnSA CustomerOnSA { get; }
 

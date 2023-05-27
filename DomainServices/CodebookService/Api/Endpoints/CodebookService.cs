@@ -19,13 +19,13 @@ internal sealed class CodebookService
         => _selfDb.GetGenericItems(SqlQueries.AcademicDegreesBefore);
 
     public override Task<GenericCodebookResponse> AddressTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.AddressTypes>();
+        => Helpers.GetGenericItems<CIS.Foms.Enums.AddressTypes>(true);
 
     public override Task<BankCodesResponse> BankCodes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetItems<BankCodesResponse, BankCodesResponse.Types.BankCodeItem>(new BankCodesResponse(), SqlQueries.BankCodes);
 
-    public override Task<GenericCodebookWithDefaultAndCodeResponse> CaseStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItemsWithDefaultAndCode<CIS.Foms.Enums.CaseStates>();
+    public override Task<GenericCodebookResponse> CaseStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetGenericItems<CIS.Foms.Enums.CaseStates>(true);
 
     public override Task<GenericCodebookResponse> ClassificationOfEconomicActivities(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetGenericItems(SqlQueries.ClassificationOfEconomicActivities);
@@ -63,7 +63,7 @@ internal sealed class CodebookService
         => _xxd.GetItems<CurrenciesResponse, CurrenciesResponse.Types.CurrencyItem>(new CurrenciesResponse(), SqlQueries.Currencies);
 
     public override Task<GenericCodebookResponse> CustomerProfiles(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.CustomerProfiles>();
+        => Helpers.GetGenericItems<CIS.Foms.Enums.CustomerProfiles>(true);
 
     public override Task<CustomerRolesResponse> CustomerRoles(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(new CustomerRolesResponse(), () =>
@@ -297,10 +297,10 @@ internal sealed class CodebookService
     public override Task<GenericCodebookResponse> IncomeMainTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetGenericItems(SqlQueries.IncomeMainTypes);
 
-    public override Task<GenericCodebookWithRdmCodeResponse> IncomeMainTypesAML(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(new GenericCodebookWithRdmCodeResponse(), () =>
+    public override Task<GenericCodebookResponse> IncomeMainTypesAML(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(new GenericCodebookResponse(), () =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<GenericCodebookWithRdmCodeResponse.Types.GenericCodebookWithRdmCodeItem>(SqlQueries.IncomeMainTypesAML1);
+            var items = _xxd.ExecuteDapperRawSqlToList<GenericCodebookResponse.Types.GenericCodebookItem>(SqlQueries.IncomeMainTypesAML1);
             var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(SqlQueries.IncomeMainTypesAML2);
             items.ForEach(item =>
             {
@@ -312,14 +312,14 @@ internal sealed class CodebookService
     public override Task<GenericCodebookResponse> IncomeOtherTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetGenericItems(SqlQueries.IncomeOtherTypes);
 
-    public override Task<GenericCodebookWithDefaultAndCodeResponse> JobTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetGenericItemsWithDefaultAndCode(SqlQueries.JobTypes);
+    public override Task<GenericCodebookResponse> JobTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.JobTypes);
 
-    public override Task<LegalCapacityRestrictionTypesResponse> LegalCapacityRestrictionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(new LegalCapacityRestrictionTypesResponse(), () =>
+    public override Task<GenericCodebookResponse> LegalCapacityRestrictionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(new GenericCodebookResponse(), () =>
         {
             return FastEnum.GetValues<CIS.Foms.Enums.LegalCapacityRestrictions>()
-                .Select(t => new LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem()
+                .Select(t => new GenericCodebookResponse.Types.GenericCodebookItem()
                 {
                     Id = (int)t,
                     Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
@@ -330,10 +330,10 @@ internal sealed class CodebookService
         });
 
     public override Task<GenericCodebookResponse> LoanInterestRateAnnouncedTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.LoanInterestRateAnnouncedTypes>();
+        => Helpers.GetGenericItems<CIS.Foms.Enums.LoanInterestRateAnnouncedTypes>(true);
 
-    public override Task<GenericCodebookFullResponse> LoanKinds(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetGenericFullItems(SqlQueries.LoanKinds);
+    public override Task<GenericCodebookResponse> LoanKinds(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.LoanKinds);
 
     public override Task<LoanPurposesResponse> LoanPurposes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(new LoanPurposesResponse(), () =>
@@ -359,30 +359,30 @@ internal sealed class CodebookService
         });
 
     public override Task<GenericCodebookResponse> Mandants(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.Mandants>();
+        => Helpers.GetGenericItems<CIS.Foms.Enums.Mandants>(true);
 
-    public override Task<MaritalStatusesResponse> MaritalStatuses(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(new MaritalStatusesResponse(), () =>
+    public override Task<GenericCodebookResponse> MaritalStatuses(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(new GenericCodebookResponse(), () =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<MaritalStatusesResponse.Types.MaritalStatuseItem>(SqlQueries.MaritalStatuses1);
+            var items = _xxd.ExecuteDapperRawSqlToList<GenericCodebookResponse.Types.GenericCodebookItem>(SqlQueries.MaritalStatuses1);
             var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(SqlQueries.MaritalStatuses2);
             items.ForEach(item =>
             {
-                item.RdmMaritalStatusCode = extensions.FirstOrDefault(t => t.MaritalStatusId == item.Id)?.RDMCode;
+                item.RdmCode = extensions.FirstOrDefault(t => t.MaritalStatusId == item.Id)?.RDMCode;
             });
             return items;
         });
 
-    public override Task<MarketingActionsResponse> MarketingActions(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetItems<MarketingActionsResponse, MarketingActionsResponse.Types.MarketingActionItem>(new MarketingActionsResponse(), SqlQueries.MarketingActions);
+    public override Task<GenericCodebookResponse> MarketingActions(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.MarketingActions);
 
     public override Task<GenericCodebookResponse> Nationalities(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _konsdb.GetGenericItems(SqlQueries.Nationalities);
 
-    public override Task<GenericCodebookWithRdmCodeResponse> NetMonthEarnings(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(new GenericCodebookWithRdmCodeResponse(), () =>
+    public override Task<GenericCodebookResponse> NetMonthEarnings(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(new GenericCodebookResponse(), () =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<GenericCodebookWithRdmCodeResponse.Types.GenericCodebookWithRdmCodeItem>(SqlQueries.NetMonthEarnings1);
+            var items = _xxd.ExecuteDapperRawSqlToList<GenericCodebookResponse.Types.GenericCodebookItem>(SqlQueries.NetMonthEarnings1);
             var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(SqlQueries.NetMonthEarnings2);
             items.ForEach(item =>
             {
@@ -423,7 +423,7 @@ internal sealed class CodebookService
         {
             var items = _xxdhf.ExecuteDapperRawSqlToList<ProductTypesResponse.Types.ProductTypeItem>(SqlQueries.ProductTypes1);
             var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(SqlQueries.ProductTypes2);
-            var loanKinds = _xxd.GetOrCreateCachedResponse<GenericCodebookFullResponse.Types.GenericCodebookFullItem>(SqlQueries.LoanKinds, nameof(LoanKinds)).Select(t => t.Id).ToArray();
+            var loanKinds = _xxd.GetOrCreateCachedResponse<GenericCodebookResponse.Types.GenericCodebookItem>(SqlQueries.LoanKinds, nameof(LoanKinds)).Select(t => t.Id).ToArray();
 
             items.ForEach(item =>
             {
@@ -476,8 +476,8 @@ internal sealed class CodebookService
             return items;
         });
 
-    public override Task<GenericCodebookWithRdmCodeResponse> ProfessionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetGenericItemsWithRdmCode(SqlQueries.ProfessionTypes);
+    public override Task<GenericCodebookResponse> ProfessionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.ProfessionTypes);
 
     public override Task<ProofTypesResponse> ProofTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetItems<ProofTypesResponse, ProofTypesResponse.Types.ProofTypeItem>(new ProofTypesResponse(), SqlQueries.ProofTypes);
@@ -504,11 +504,11 @@ internal sealed class CodebookService
             }).ToList();
         });
 
-    public override Task<GenericCodebookFullResponse> RealEstatePurchaseTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetGenericFullItems(SqlQueries.RealEstatePurchaseTypes);
+    public override Task<GenericCodebookResponse> RealEstatePurchaseTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.RealEstatePurchaseTypes);
 
-    public override Task<GenericCodebookFullResponse> RealEstateTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetGenericFullItems(SqlQueries.RealEstateTypes);
+    public override Task<GenericCodebookResponse> RealEstateTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.RealEstateTypes);
 
     public override Task<RelationshipCustomerProductTypesResponse> RelationshipCustomerProductTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(new RelationshipCustomerProductTypesResponse(), () =>
@@ -598,8 +598,8 @@ internal sealed class CodebookService
             new() { Id = 5, Name ="zrušeno", IsValid = true},
         });
 
-    public override Task<GenericCodebookWithDefaultAndCodeResponse> SignatureTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItemsWithDefaultAndCode<CIS.Foms.Enums.SignatureTypes>();
+    public override Task<GenericCodebookResponse> SignatureTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetGenericItems<CIS.Foms.Enums.SignatureTypes>(true);
 
     public override Task<SigningMethodsForNaturalPersonResponse> SigningMethodsForNaturalPerson(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(new SigningMethodsForNaturalPersonResponse(), () => new List<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>
@@ -618,8 +618,8 @@ internal sealed class CodebookService
     public override Task<StatementFrequenciesResponse> StatementFrequencies(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetItems<StatementFrequenciesResponse, StatementFrequenciesResponse.Types.StatementFrequencyItem>(new StatementFrequenciesResponse(), SqlQueries.StatementFrequencies);
 
-    public override Task<GenericCodebookWithDefaultAndCodeResponse> StatementSubscriptionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _xxd.GetGenericItemsWithDefaultAndCode(SqlQueries.StatementSubscriptionTypes);
+    public override Task<GenericCodebookResponse> StatementSubscriptionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _xxd.GetGenericItems(SqlQueries.StatementSubscriptionTypes);
 
     public override Task<StatementTypesResponse> StatementTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _xxd.GetItems<StatementTypesResponse, StatementTypesResponse.Types.StatementTypeItem>(new StatementTypesResponse(), SqlQueries.StatementTypes);

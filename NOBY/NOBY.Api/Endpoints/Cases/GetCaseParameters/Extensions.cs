@@ -23,7 +23,7 @@ internal static class Extensions
         };
     }
 
-    public static GenericCodebookResponse.Types.GenericCodebookItem? ToCodebookItem(this GenericCodebookFullResponse.Types.GenericCodebookFullItem item)
+    public static GenericCodebookResponse.Types.GenericCodebookItem? ToCodebookItem(this GenericCodebookResponse.Types.GenericCodebookItem item)
     {
         if (item == null)
         {

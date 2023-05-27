@@ -80,12 +80,12 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.PropertySettlements(ct));
         AddCodebook((s, ct) => s.SalesArrangementStates(ct), c => c.Cast<SalesArrangementStatesResponse.Types.SalesArrangementStateItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.SalesArrangementTypes(ct));
-        AddCodebook((s, ct) => s.SignatureTypes(ct), c => c.Cast<GenericCodebookWithDefaultAndCodeResponse.Types.GenericCodebookWithDefaultAndCodeItem>().Where(t => t.Id > 0));
+        AddCodebook((s, ct) => s.SignatureTypes(ct), c => c.Cast<GenericCodebookResponse.Types.GenericCodebookItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.SigningMethodsForNaturalPerson(ct), c => c.Cast<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>());
         AddCodebook((s, ct) => s.StatementTypes(ct));
         AddCodebook((s, ct) => s.TinFormatsByCountry(ct));
         AddCodebook((s, ct) => s.TinNoFillReasonsByCountry(ct));
-        AddCodebook((s, ct) => s.RealEstateTypes(ct), c => c.Cast<GenericCodebookFullResponse.Types.GenericCodebookFullItem>().Where(t => t.Id > 0));
+        AddCodebook((s, ct) => s.RealEstateTypes(ct), c => c.Cast<GenericCodebookResponse.Types.GenericCodebookItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.RealEstatePurchaseTypes(ct));
         AddCodebook((s, ct) => s.WorkflowTaskStatesNoby(ct));
         AddCodebook((s, ct) => s.WorkflowTaskCategories(ct));
