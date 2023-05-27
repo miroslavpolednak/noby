@@ -3248,6 +3248,11 @@
             ID zadosti.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementResponse.State">
+            <summary>
+            Stav žádosti. Číselník SalesArrangementState.
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementResponse.SalesArrangementTypeId">
             <summary>
             Druh zadosti. Ciselnik SalesArrangementTypes.
