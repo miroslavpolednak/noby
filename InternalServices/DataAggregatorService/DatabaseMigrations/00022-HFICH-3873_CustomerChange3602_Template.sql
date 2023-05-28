@@ -76,12 +76,12 @@ INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultS
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (174, 10, 'HouseholdCodebtor.CustomerOnSa1.CustomerAdditionalData.HasRelationshipWithKBEmployee', NULL)
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (175, 10, 'HouseholdCodebtor.CustomerOnSa1.CustomerAdditionalData.IsPoliticallyExposed', NULL)
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (176, 10, 'HouseholdCodebtor.CustomerOnSa1.CustomerAdditionalData.HasRelationshipWithCorporate', NULL)
-INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (177, 10, 'HouseholdCodebtor.CustomerOnSa1.CustomerAdditionalData.IsUSPerso', NULL)
+INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (177, 10, 'HouseholdCodebtor.CustomerOnSa1.CustomerAdditionalData.IsUSPerson', NULL)
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (178, 10, 'HouseholdCodebtor.CustomerOnSa2.CustomerAdditionalData.HasRelationshipWithKB', NULL)
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (179, 10, 'HouseholdCodebtor.CustomerOnSa2.CustomerAdditionalData.HasRelationshipWithKBEmployee', NULL)
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (180, 10, 'HouseholdCodebtor.CustomerOnSa2.CustomerAdditionalData.IsPoliticallyExposed', NULL)
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (181, 10, 'HouseholdCodebtor.CustomerOnSa2.CustomerAdditionalData.HasRelationshipWithCorporate', NULL)
-INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (182, 10, 'HouseholdCodebtor.CustomerOnSa2.CustomerAdditionalData.IsUSPerso', NULL)
+INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (182, 10, 'HouseholdCodebtor.CustomerOnSa2.CustomerAdditionalData.IsUSPerson', NULL)
 
 SET IDENTITY_INSERT [dbo].[DataField] OFF
 
@@ -199,9 +199,6 @@ INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [Document
 INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign]) VALUES (195, 11, '001', 120, 'Pojisteni', NULL, NULL, NULL)
 INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign]) VALUES (196, 11, '001', 121, 'Sporeni', NULL, NULL, NULL)
 INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign]) VALUES (197, 11, '001', 122, 'OstatniVydaje', NULL, NULL, NULL)
-
-INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign]) 
-VALUES (198, 11, '001', 60, 'ProhlaseniPristupujicich', 'Prohlašuji, že je mi známo, že původní dlužník s Bankou uzavřel smlouvu o úvěru reg. číslo {0} a že se zněním této smlouvy jsem byl původním dlužníkem seznámen.', NULL, 4)
 
 INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign]) 
 VALUES (199, 11, '001', 173, 'JsemNejsem1Odrazka', 'nejsem osobou se zvláštním vztahem k Bance ve smyslu ustanovení § 19 z.č. 21/1992 Sb., o bankách, ve znění pozdějších předpisů,', NULL, 4)
@@ -385,9 +382,6 @@ INSERT INTO DocumentDataFieldVariant VALUES (196, 'B')
 
 INSERT INTO DocumentDataFieldVariant VALUES (197, 'A')
 INSERT INTO DocumentDataFieldVariant VALUES (197, 'B')
-
-INSERT INTO DocumentDataFieldVariant VALUES (198, 'A')
-INSERT INTO DocumentDataFieldVariant VALUES (198, 'B')
 
 INSERT INTO DocumentDataFieldVariant VALUES (199, 'A')
 INSERT INTO DocumentDataFieldVariant VALUES (199, 'B')
@@ -575,6 +569,9 @@ INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [Document
 INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign]) VALUES (218, 12, '001', 122, 'OstatniVydaje', NULL, NULL, NULL)
 
 INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign]) 
+VALUES (198, 12, '001', 60, 'ProhlaseniPristupujicich', 'Prohlašuji, že je mi známo, že původní dlužník s Bankou uzavřel smlouvu o úvěru reg. číslo {0} a že se zněním této smlouvy jsem byl původním dlužníkem seznámen.', NULL, 4)
+
+INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign]) 
 VALUES (219, 12,  '001', 173, 'JsemNejsem1Odrazka', 'nejsem osobou se zvláštním vztahem k Bance ve smyslu ustanovení § 19 z.č. 21/1992 Sb., o bankách, ve znění pozdějších předpisů,', NULL, 4)
 
 INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign]) 
@@ -727,6 +724,8 @@ INSERT [dbo].[DocumentSpecialDataField] ([DocumentId], [AcroFieldName], [DataSer
 INSERT [dbo].[DocumentSpecialDataField] ([DocumentId], [AcroFieldName], [DataServiceId], [FieldPath], [StringFormat], [TextAlign], [DefaultTextIfNull]) VALUES (12, 'JsemNejsem5Odrazka', 10, 'Customer1.CzechResidence', 'jsem českým daňovým residentem,', 4, 'nejsem českým daňovým residentem,')
 INSERT [dbo].[DocumentSpecialDataField] ([DocumentId], [AcroFieldName], [DataServiceId], [FieldPath], [StringFormat], [TextAlign], [DefaultTextIfNull]) VALUES (12, 'SpoluzadatelJsemNejsem5Odrazka', 10, 'Customer2.CzechResidence', 'jsem českým daňovým residentem,', 4, 'nejsem českým daňovým residentem,')
 
+INSERT INTO DocumentDataFieldVariant VALUES (198, 'A')
+INSERT INTO DocumentDataFieldVariant VALUES (198, 'B')
 
 INSERT INTO DocumentDataFieldVariant VALUES (209, 'A')
 INSERT INTO DocumentDataFieldVariant VALUES (209, 'B')
