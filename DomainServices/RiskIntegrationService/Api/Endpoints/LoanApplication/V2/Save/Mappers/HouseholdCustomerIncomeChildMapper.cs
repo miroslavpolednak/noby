@@ -34,7 +34,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
             {
                 EmployerIdentificationNumber = t.EmployerIdentificationNumber,
                 EmployerName = t.EmployerName,
-                EmployerCountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(x => x.Id == t.Address?.CountryId)?.ShortName,
+                EmployerCountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(x => x.Id == t.CountryId.GetValueOrDefault())?.ShortName,
                 JobTitle = t.JobDescription,
                 AccountantContacts = string.IsNullOrEmpty(t.PhoneNumber) ? null : new List<_C4M.Contact> { new _C4M.Contact { ContactCategory = _C4M.ContactCategoryType.BUSINESS, ContactType = _C4M.ContactType.PHONE, Value = t.PhoneNumber } },
                 Domiciled = t.IsDomicile.ToInt(),
@@ -63,7 +63,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         return new _C4M.LoanApplicationEntrepreneurIncome
         {
             EntrepreneurIdentificationNumber = income.EntrepreneurIdentificationNumber,
-            CountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(t => t.Id == income.Address?.CountryId)?.ShortName,
+            CountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(t => t.Id == income.CountryId.GetValueOrDefault())?.ShortName,
             DateRange = income.EstablishedOn != null ? new _C4M.DateRange { DateFrom = income.EstablishedOn } : null,
             Domiciled = income.IsDomicile.ToInt(),
             ProofType = await getProofType<_C4M.ProofType>(income.ProofTypeId),

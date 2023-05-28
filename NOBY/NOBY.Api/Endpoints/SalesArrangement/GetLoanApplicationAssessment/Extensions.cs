@@ -131,10 +131,7 @@ internal static class Extensions
                         {
                             EmployerIdentificationNumber = new List<string?> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
                             EmployerName = i.Employement?.Employer?.Name ?? "",
-                            Address = new cRS.AddressDetail
-                            {
-                                CountryId = i.Employement?.Employer?.CountryId,
-                            },
+                            CountryId = i.Employement?.Employer?.CountryId,
                             JobDescription = i.Employement?.Job?.JobDescription,
                             MonthlyIncomeAmount = new cRS.AmountDetail
                             {
@@ -142,7 +139,6 @@ internal static class Extensions
                             },
                             ProofTypeId = 6,
                             IncomeForeignTypeId = i.Employement?.ForeignIncomeTypeId,
-                            GrossAnnualIncome = i.Employement?.Job?.GrossAnnualIncome,
                             ConfirmationPerson = i.Employement?.IncomeConfirmation?.ConfirmationPerson,
                             ConfirmationContactPhone = i.Employement?.IncomeConfirmation?.ConfirmationContact,
                             ConfirmationDate = i.Employement?.IncomeConfirmation?.ConfirmationDate,
@@ -174,10 +170,7 @@ internal static class Extensions
                         return new cLA.LoanApplicationEntrepreneurIncome
                         {
                             EntrepreneurIdentificationNumber = new List<string?> { i.Entrepreneur?.Cin, i.Entrepreneur?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
-                            Address = new cRS.AddressDetail
-                            {
-                                CountryId = i.Entrepreneur?.CountryOfResidenceId,
-                            },
+                            CountryId = i.Entrepreneur?.CountryOfResidenceId,
                             ProofTypeId = 2, // Default = 2 (DAP - Daňové přiznání), ProofType(CIS_TYP_POTVRDENIE_PRIJMU)
                             AnnualIncomeAmount = new cRS.AmountDetail
                             {
