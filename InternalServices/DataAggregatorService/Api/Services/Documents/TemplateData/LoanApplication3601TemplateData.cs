@@ -18,6 +18,22 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
         _customerOnSAService = customerOnSAService;
     }
 
+    public LoanApplicationCustomer DebtorCustomer => Customer1;
+
+    public LoanApplicationCustomer? CodebtorCustomer => Customer2;
+
+    public LoanApplicationIncome DebtorIncome => Customer1Income;
+
+    public LoanApplicationIncome? CodebtorIncome => Customer2Income;
+
+    public LoanApplicationObligation DebtorObligation => Customer1Obligation;
+
+    public LoanApplicationObligation? CodebtorObligation => Customer2Obligation;
+
+    public string? DebtorMaritalStatus => Customer1MaritalStatus;
+
+    public string? CodebtorMaritalStatus => Customer2MaritalStatus;
+
     public string LoanType => Offer.SimulationInputs.LoanKindId == 2001 ? GetLoanKindName(Offer.SimulationInputs.LoanKindId) : GetProductTypeName(Offer.SimulationInputs.ProductTypeId);
 
     public string LoanPurposes => GetLoanPurposes(Offer.SimulationInputs.LoanKindId, Offer.SimulationInputs.LoanPurposes.Select(l => l.LoanPurposeId));

@@ -19,47 +19,47 @@ internal abstract class LoanApplicationBaseTemplateData : AggregatedData
         _customerService = customerService;
     }
 
-    public LoanApplicationCustomer DebtorCustomer { get; private set; } = null!;
+    public LoanApplicationCustomer Customer1 { get; private set; } = null!;
 
-    public LoanApplicationCustomer? CodebtorCustomer { get; private set; }
+    public LoanApplicationCustomer? Customer2 { get; private set; }
 
-    public LoanApplicationIncome DebtorIncome { get; private set; } = null!;
+    public LoanApplicationIncome Customer1Income { get; private set; } = null!;
 
-    public LoanApplicationIncome? CodebtorIncome { get; private set; }
+    public LoanApplicationIncome? Customer2Income { get; private set; }
 
-    public LoanApplicationObligation DebtorObligation { get; private set; } = null!;
+    public LoanApplicationObligation Customer1Obligation { get; private set; } = null!;
 
-    public LoanApplicationObligation? CodebtorObligation { get; private set; }
+    public LoanApplicationObligation? Customer2Obligation { get; private set; }
 
-    public string? DebtorMaritalStatus => CurrentHousehold.Household!.Data.AreBothPartnersDeptors == true ? $"{GetMaritalStatus(DebtorCustomer)} | druh/družka" : GetMaritalStatus(DebtorCustomer);
+    public string? Customer1MaritalStatus => CurrentHousehold.Household!.Data.AreBothPartnersDeptors == true ? $"{GetMaritalStatus(Customer1)} | druh/družka" : GetMaritalStatus(Customer1);
 
-    public string? CodebtorMaritalStatus => CurrentHousehold.Household!.Data.AreBothPartnersDeptors == true ? $"{GetMaritalStatus(CodebtorCustomer)} | druh/družka" : GetMaritalStatus(CodebtorCustomer);
+    public string? Customer2MaritalStatus => CurrentHousehold.Household!.Data.AreBothPartnersDeptors == true ? $"{GetMaritalStatus(Customer2)} | druh/družka" : GetMaritalStatus(Customer2);
 
     public string PropertySettlement => GetPropertySettlementName();
 
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
-        var debtorIdentity = CurrentHousehold.Debtor.CustomerIdentifiers.FirstOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb) ??
-                             throw new CisValidationException($"CustomerOnSa (Debtor) {CurrentHousehold.Debtor.CustomerOnSAId} does not have KB identifier.");
+        var identity1 = CurrentHousehold.CustomerOnSa1?.CustomerIdentifiers.FirstOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb) ??
+                             throw new CisValidationException($"CustomerOnSa 1 {CurrentHousehold.Debtor.CustomerOnSAId} does not have KB identifier.");
 
-        var codebtorIdentity = CurrentHousehold.Codebtor?.CustomerIdentifiers.FirstOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        var identity2 = CurrentHousehold.CustomerOnSa2?.CustomerIdentifiers.FirstOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
 
-        return SetDebtorAndCodebtorData(debtorIdentity, codebtorIdentity, cancellationToken);
+        return SetDebtorAndCodebtorData(identity1, identity2, cancellationToken);
     }
 
-    private async Task SetDebtorAndCodebtorData(Identity debtor, Identity? codebtor, CancellationToken cancellationToken)
+    private async Task SetDebtorAndCodebtorData(Identity identity1, Identity? identity2, CancellationToken cancellationToken)
     {
-        var response = await _customerService.GetCustomerList(new[] { debtor, codebtor }.Where(identity => identity is not null).Cast<Identity>(), cancellationToken);
+        var response = await _customerService.GetCustomerList(new[] { identity1, identity2 }.Where(identity => identity is not null).Cast<Identity>(), cancellationToken);
 
-        DebtorCustomer = CreateCustomer(debtor.IdentityId);
-        DebtorIncome = new LoanApplicationIncome(CurrentHousehold.Debtor);
-        DebtorObligation = new LoanApplicationObligation(CurrentHousehold.Debtor);
+        Customer1 = CreateCustomer(identity1.IdentityId);
+        Customer1Income = new LoanApplicationIncome(CurrentHousehold.CustomerOnSa1!);
+        Customer1Obligation = new LoanApplicationObligation(CurrentHousehold.CustomerOnSa1!);
 
-        if (codebtor is not null)
+        if (identity2 is not null)
         {
-            CodebtorCustomer = CreateCustomer(codebtor.IdentityId);
-            CodebtorIncome = new LoanApplicationIncome(CurrentHousehold.Codebtor!);
-            CodebtorObligation = new LoanApplicationObligation(CurrentHousehold.Codebtor!);
+            Customer2 = CreateCustomer(identity2.IdentityId);
+            Customer2Income = new LoanApplicationIncome(CurrentHousehold.CustomerOnSa2!);
+            Customer2Obligation = new LoanApplicationObligation(CurrentHousehold.CustomerOnSa2!);
         }
 
         LoanApplicationCustomer CreateCustomer(long id) => new(GetDetail(id), _codebookManager.DegreesBefore, _codebookManager.Countries, _codebookManager.IdentificationDocumentTypes, _codebookManager.EducationLevels);
