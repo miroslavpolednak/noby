@@ -8,6 +8,8 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using DomainServices.CustomerService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
+using System.Threading;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
@@ -62,14 +64,7 @@ internal sealed class CreateMortgageCaseHandler
         _bag.Add(CreateMortgageCaseRollback.BagKeyCustomerOnSAId, createCustomerResult.CustomerOnSAId);
 
         // updatovat Agent v SA parameters, vytvarime prazdny objekt Parameters pouze s agentem
-        await _salesArrangementService.UpdateSalesArrangementParameters(new _SA.UpdateSalesArrangementParametersRequest
-        {
-            SalesArrangementId = salesArrangementId,
-            Mortgage = new _SA.SalesArrangementParametersMortgage
-            {
-                Agent = createCustomerResult.CustomerOnSAId
-            }
-        }, cancellationToken);
+        await updateSalesArrangementParameters(salesArrangementId, createCustomerResult.CustomerOnSAId, cancellationToken);
 
         // create household
         int householdId = await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
@@ -93,6 +88,25 @@ internal sealed class CreateMortgageCaseHandler
             HouseholdId = householdId,
             CustomerOnSAId = createCustomerResult.CustomerOnSAId
         };
+    }
+
+    /// <summary>
+    /// Update parametru na SA -> musime si je znovu stahnout z nove vytvoreneho SA, protoze mohou obsahovat nejake defaulty doplnene domenovou sluzbou
+    /// </summary>
+    private async Task updateSalesArrangementParameters(int salesArrangementId, int customerOnSAId, CancellationToken cancellationToken)
+    {
+        // stahnout aktualni verzi parametru
+        var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
+
+        // doplnit Agent
+        var mortgage = saInstance.Mortgage ?? new SalesArrangementParametersMortgage();
+        mortgage.Agent = customerOnSAId;
+
+        await _salesArrangementService.UpdateSalesArrangementParameters(new _SA.UpdateSalesArrangementParametersRequest
+        {
+            SalesArrangementId = salesArrangementId,
+            Mortgage = mortgage
+        }, cancellationToken);
     }
 
     private async Task updateCustomerFromCM(_HO.CreateCustomerRequest request, CancellationToken cancellationToken)

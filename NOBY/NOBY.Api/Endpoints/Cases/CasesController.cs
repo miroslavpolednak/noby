@@ -159,6 +159,27 @@ public class CasesController : ControllerBase
         => await _mediator.Send(request);
 
     /// <summary>
+    /// Identifikace obchodního případu podle jednoho ze čtyř možných kritérií.
+    /// </summary>
+    /// <remarks>
+    /// Endpoint umožnuje identifikovat obchodní případ podle:
+    /// - čárového kódu dokumentu (formId)
+    /// - čísla úvěrového účtu
+    /// - ID obchodního případu
+    /// - čísla smlouvy
+    /// <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=60DB6DA4-D938-4901-98DC-0C8DF8011589"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="request">Typ kritéria a jeho hodnota pro vyhledávání.</param>
+    [HttpPost("identify")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [SwaggerOperation(Tags = new[] { "Case" })]
+    [ProducesResponseType(typeof(IdentifyCase.IdentifyCaseResponse), StatusCodes.Status200OK)]
+    public async Task<IdentifyCase.IdentifyCaseResponse> IdentifyCase([FromBody] IdentifyCase.IdentifyCaseRequest request)
+        => await _mediator.Send(request);
+    
+    /// <summary>
     /// Seznam workflow tasků dotažený z SB.
     /// </summary>
     /// <remarks>
@@ -226,7 +247,7 @@ public class CasesController : ControllerBase
     /// <summary>
     /// Příznaky v menu Case detailu
     /// </summary>
-    /// <remarks
+    /// <remarks>
     ///  Implementováno pro položku menu Documents<br /><br />
     ///  <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
     ///  <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>

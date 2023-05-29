@@ -178,6 +178,21 @@
             <param name="request">Nastavení možnosti filtrovaní, strankovaní a řazení.</param>
             <returns>Seznam Cases + informace o použitém stránkovaní/řazení.</returns>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.IdentifyCase(NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest)">
+            <summary>
+            Identifikace obchodního případu podle jednoho ze čtyř možných kritérií.
+            </summary>
+            <remarks>
+            Endpoint umožnuje identifikovat obchodní případ podle:
+            - čárového kódu dokumentu (formId)
+            - čísla úvěrového účtu
+            - ID obchodního případu
+            - čísla smlouvy
+            <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=60DB6DA4-D938-4901-98DC-0C8DF8011589"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="request">Typ kritéria a jeho hodnota pro vyhledávání.</param>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetTaskList(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Seznam workflow tasků dotažený z SB.
@@ -218,7 +233,16 @@
             </remarks>
             <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseDocumentsFlag(System.Int64,System.Threading.CancellationToken)" -->
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseDocumentsFlag(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Příznaky v menu Case detailu
+            </summary>
+            <remarks>
+             Implementováno pro položku menu Documents<br /><br />
+             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
+             <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
             <summary>
             Typ žádosti - číselník SalesArrangementType
@@ -671,6 +695,44 @@
             ID typu procesu. 1 - Hlavní úvěrový proces, 2 - Změnový proces, 3 - Retenční proces
             </summary>
             <example>1</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount.Prefix">
+            <summary>
+            Prefix čísla úvěrového účtu, podle kterého se má vyhledávat
+            </summary>
+            <example>43</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount.Number">
+            <summary>
+            Core čísla úvěrového účtu, podle kterého se má vyhledávat
+            </summary>
+            <example>9105464622</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest.Criterion">
+            <summary>
+            Kritérium vyhledávání: 0 - Čárový kód dokumentu (formId); 1 - Číslo úvěrového účtu; 2 - ID obchodního případu; 3 - Číslo smlouvy
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest.FormId">
+            <summary>
+            Tato hodnota je relevantní pro kritérium 0 (čárový kód)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest.Account">
+            <summary>
+            Tento objekt je relevantní pouze pro kritérium 1 (číslo úvěrového účtu).
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest.CaseId">
+            <summary>
+            Tato hodnota je relevantní pro kritérium 2 (ID obchodního případu)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest.ContractNumber">
+            <summary>
+            Tato hodnota je relevantní pro kritérium 3 (číslo smlouvy)
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest.FilterId">
             <summary>
@@ -2230,6 +2292,11 @@
         <member name="P:NOBY.Api.Endpoints.Household.Dto.HouseholdInList.HouseholdTypeName">
             <summary>
             Typ domacnosti slovne
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseHandler.updateSalesArrangementParameters(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Update parametru na SA -> musime si je znovu stahnout z nove vytvoreneho SA, protoze mohou obsahovat nejake defaulty doplnene domenovou sluzbou
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.OfferId">
