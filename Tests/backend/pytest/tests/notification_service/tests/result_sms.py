@@ -150,9 +150,12 @@ def test_get_sms_notification_id_vulnerability(auth_params, auth, ns_url):
         auth=(username, password),
         verify=False
     )
-    resp = resp.json()
-    error_message = resp['errors']['id'][0]
+    notification = resp.json()
+    error_message = notification['errors']['id'][0]
     assert error_message == 'The value \'%3Ctest_validace%3E\' is not valid.'
+
+    assert 'strict-transport-security' in resp.headers, \
+        'Expected "strict-transport-security" to be in headers'
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
@@ -180,3 +183,7 @@ def test_get_sms_notification_search_vulnerability(ns_url,  auth_params, auth):
                       '306': ['Invalid CustomId.']}
     error = resp.json()['errors']
     assert error == expected_error, f'Expected {expected_error}, but got {error}'
+
+    assert 'strict-transport-security' in resp.headers, \
+        'Expected "strict-transport-security" to be in headers'
+
