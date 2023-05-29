@@ -1,7 +1,9 @@
 ﻿using CIS.Core.Data;
 using Dapper;
 using DomainServices.CodebookService.Api.Database;
+using DomainServices.CodebookService.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
+using Google.Protobuf;
 using System.Runtime.CompilerServices;
 
 namespace DomainServices.CodebookService.Api;
@@ -22,68 +24,34 @@ internal static class Helpers
                 .ToList();
     }
 
-    public static Task<TResponse> GetItems<TResponse, TItem>(TResponse response, Func<List<TItem>> createItems, [CallerMemberName] string method = "")
-        where TResponse : Contracts.IItemsResponse<TItem>
-        where TItem : class, Google.Protobuf.IMessage
+    public static TResponse AddItems<TResponse, TItem>(this TResponse response, IEnumerable<TItem> items)
+        where TItem : class, IMessage
+        where TResponse : class, IMessage, IItemsResponse<TItem>
     {
-        var items = FastMemoryCache.GetOrCreate(method.ToString(), createItems);
         response.Items.AddRange(items);
-        return Task.FromResult(response);
+        return response;
     }
 
-    public static List<TResponse> GetOrCreateCachedResponse<TResponse>(this IConnectionProvider connectionProvider, string sqlQuery, ReadOnlySpan<char> method)
-        where TResponse : class, Google.Protobuf.IMessage
+    public static TResponse GetOrCreateCachedResponse<TResponse, TItem>(this IConnectionProvider connectionProvider, ReadOnlySpan<char> sqlQuery, ReadOnlySpan<char> method)
+        where TResponse : class, IMessage, IItemsResponse<TItem>
+        where TItem : class, IMessage
     {
-        return FastMemoryCache.GetOrCreate(method.ToString(), () =>
+        return CodebookMemoryCache.GetOrCreate(method.ToString(), sqlQuery, (sql) =>
         {
             using var connection = connectionProvider.Create();
             connection.Open();
-            return connection.Query<TResponse>(sqlQuery).AsList();
+            var items = connection.Query<TItem>(sql).AsList();
+
+            var response = Activator.CreateInstance<TResponse>();
+            response.Items.AddRange(items);
+            return response;
         });
     }
 
-    public static List<TResponse> GetOrCreateCachedResponse<TResponse>(this IConnectionProvider connectionProvider, string sqlQuery, object param, ReadOnlySpan<char> method)
-        where TResponse : class, Google.Protobuf.IMessage
+    public static Task<TResponse> GetItems<TResponse>(Func<TResponse> createItems, [CallerMemberName] string method = "")
+        where TResponse : class
     {
-        return FastMemoryCache.GetOrCreate(method.ToString(), () =>
-        {
-            using var connection = connectionProvider.Create();
-            connection.Open();
-            return connection.Query<TResponse>(sqlQuery, param).AsList();
-        });
-    }
-
-    public static Task<TResponse> GetItems<TResponse, TItem>(this IConnectionProvider connectionProvider, TResponse response, ReadOnlySpan<char> sqlQuery, [CallerMemberName] string method = "")
-        where TResponse : Contracts.IItemsResponse<TItem>
-        where TItem : class, Google.Protobuf.IMessage
-    {
-        var items = connectionProvider.GetOrCreateCachedResponse<TItem>(sqlQuery.ToString(), method.AsSpan());
-        response.Items.Add(items);
-        return Task.FromResult(response);
-    }
-
-    public static Task<TResponse> GetItems<TResponse, TItem>(this IConnectionProvider connectionProvider, TResponse response, ReadOnlySpan<char> sqlQuery, object param, [CallerMemberName] string method = "")
-        where TResponse : Contracts.IItemsResponse<TItem>
-        where TItem : class, Google.Protobuf.IMessage
-    {
-        var items = connectionProvider.GetOrCreateCachedResponse<TItem>(sqlQuery.ToString(), param, method.AsSpan());
-        response.Items.Add(items);
-        return Task.FromResult(response);
-    }
-
-    public static Task<TResponse> GetItems<TResponse, TItem>(TResponse response, Func<IEnumerable<TItem>> items)
-        where TResponse : Contracts.IItemsResponse<TItem>
-        where TItem : class, Google.Protobuf.IMessage
-    {
-        response.Items.Add(items());
-        return Task.FromResult(response);
-    }
-
-    public static Task<GenericCodebookResponse> GetGenericItems(this IConnectionProvider connectionProvider, ReadOnlySpan<char> sqlQuery, [CallerMemberName] string method = "")
-    {
-        GenericCodebookResponse response = new();
-        response.Items.AddRange(connectionProvider.GetOrCreateCachedResponse<GenericCodebookResponse.Types.GenericCodebookItem>(sqlQuery.ToString(), method.AsSpan()));
-        return Task.FromResult(response);
+        return Task.FromResult(CodebookMemoryCache.GetOrCreate(method.ToString(), createItems));
     }
 
     public static Task<GenericCodebookResponse> GetGenericItems<TEnum>(bool useCode = false)
@@ -104,8 +72,6 @@ internal static class Helpers
             .ToList()!;
 #pragma warning restore CA1305 // Specify IFormatProvider
 
-        GenericCodebookResponse response = new();
-        response.Items.AddRange(items);
-        return Task.FromResult(response);
+        return Task.FromResult((new GenericCodebookResponse()).AddItems(items));
     }
 }
