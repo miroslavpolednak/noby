@@ -5,26 +5,27 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms;
 
 public static class EasFormTypeFactory
 {
-    private static readonly Dictionary<EasFormType, int> _formTypeMap = new()
+    private static readonly Dictionary<int, EasFormType> _formTypeMap = new()
     {
-        { EasFormType.F3601, 4 },
-        { EasFormType.F3602, 5 },
-        { EasFormType.F3700, 6 }
+        { 4, EasFormType.F3601 },
+        { 5, EasFormType.F3602 },
+        { 6, EasFormType.F3700 },
+        { 11, EasFormType.F3602 },
+        { 12, EasFormType.F3602 },
+        { 16, EasFormType.F3602 }
     };
 
     public static EasFormType GetEasFormType(int documentTypeId)
     {
-        var keyValuePair = _formTypeMap.FirstOrDefault(d => d.Value == documentTypeId);
-
-        if (keyValuePair.Equals(default(KeyValuePair<EasFormType, int>)))
+        if (!_formTypeMap.TryGetValue(documentTypeId, out var formType))
             throw new CisValidationException($"The eas form does not support document type {documentTypeId}");
 
-        return keyValuePair.Key;
+        return formType;
     }
 
     public static DefaultValues CreateDefaultValues(EasFormType easFormType, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes)
     {
-        var documentTypeId = _formTypeMap[easFormType];
+        var documentTypeId = _formTypeMap.First(v => v.Value == easFormType).Key;
 
         var eaCodeMainId = documentTypes.First(d => d.Id == documentTypeId).EACodeMainId;
 

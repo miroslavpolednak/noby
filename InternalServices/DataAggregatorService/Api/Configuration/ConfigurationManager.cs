@@ -43,7 +43,7 @@ internal class ConfigurationManager : IConfigurationManager
     {
         var repository = _repositoryFactory.CreateEasFormConfigurationRepository();
 
-        var fields = await repository.LoadEasFormSourceFields(easFormKey.RequestTypeId, cancellationToken);
+        var fields = await repository.LoadEasFormSourceFields(easFormKey.RequestTypeId, easFormKey.EasFormTypes.Cast<int>(), cancellationToken);
 
         return new EasFormConfiguration
         {
@@ -51,7 +51,7 @@ internal class ConfigurationManager : IConfigurationManager
             InputConfig = new InputConfig
             {
                 DataSources = GetDataSources(fields.Select(f => f.DataSource)),
-                DynamicInputParameters = await repository.LoadEasFormDynamicInputFields(easFormKey.RequestTypeId, cancellationToken)
+                DynamicInputParameters = await repository.LoadEasFormDynamicInputFields(easFormKey.RequestTypeId, easFormKey.EasFormTypes.Cast<int>(), cancellationToken)
             },
             SourceFields = fields
         };

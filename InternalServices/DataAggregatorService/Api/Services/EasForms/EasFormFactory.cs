@@ -52,6 +52,7 @@ internal class EasFormFactory
         return easFormKey.EasFormTypes.First() switch
         {
             EasFormType.F3700 => new EasServiceForm<DrawingFormData>(CreateData<DrawingFormData>(), documentTypes),
+            EasFormType.F3602 => new EasServiceForm<CustomerChange3602FormData>(CreateData<CustomerChange3602FormData>(), documentTypes),
             _ => throw new NotImplementedException()
         };
     }
