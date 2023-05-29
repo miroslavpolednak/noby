@@ -26,6 +26,6 @@ SELECT 1 as EasRequestTypeId, JsonPropertyName, DataServiceId, 3 as EasFormTypeI
 DELETE FROM EasFormSpecialDataField WHERE JsonPropertyName = 'zmenovy_navrh'
 
 INSERT INTO EasFormSpecialDataField VALUES (1, 'zmenovy_navrh', 1, 3, 'ChangeProposal')
-INSERT INTO EasFormSpecialDataField VALUES (1, 'seznam_ucastniku[].klient.manzel_v_dluhu_je', 1, 3, 'IsSpouseInDebt')
+INSERT INTO EasFormSpecialDataField VALUES (1, 'seznam_ucastniku[].klient.manzel_v_dluhu_je', 1, 3, 'HouseholdData.Customers[].IsSpouseInDebt')
 
 INSERT [dbo].[EasFormDynamicInputParameter] ([EasRequestTypeId], [EasFormTypeId], [InputParameterId], [TargetDataServiceId], [SourceDataFieldId]) VALUES (1, 3, 3, 3, 2)

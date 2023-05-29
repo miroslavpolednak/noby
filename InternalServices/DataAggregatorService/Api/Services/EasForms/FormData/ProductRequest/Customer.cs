@@ -39,6 +39,8 @@ internal class Customer
 
     public CustomerOnSA CustomerOnSA { get; }
 
+    public bool? IsSpouseInDebt { get; init; }
+
     public Identity IdentityKb => CustomerOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
 
     public Identity IdentityMp => CustomerOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);

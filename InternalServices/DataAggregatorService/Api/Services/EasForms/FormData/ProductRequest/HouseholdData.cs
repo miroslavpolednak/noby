@@ -41,6 +41,8 @@ internal class HouseholdData
 
     public IEnumerable<Customer> Customers => GetCustomers();
 
+    public bool? IsSpouseInDebt { get; set; }
+
     public async Task Initialize(int salesArrangementId, CancellationToken cancellationToken)
     {
         CustomersOnSa = await LoadCustomersOnSA(salesArrangementId, cancellationToken);
@@ -141,7 +143,8 @@ internal class HouseholdData
                                 AcademicDegreesBefore = _academicDegreesBefore,
                                 GenderCodes = _genders,
                                 ObligationTypes = _obligationTypes,
-                                LegalCapacityTypes = _legalCapacityTypes
+                                LegalCapacityTypes = _legalCapacityTypes,
+                                IsSpouseInDebt = IsSpouseInDebt
                             }).ToList();
 
         static long GetCustomerId(CustomerOnSA customerOnSa)

@@ -13,20 +13,24 @@ internal class CustomerChange3602FormData : LoanApplicationBaseFormData
 
     public bool ChangeProposal => (SalesArrangementTypes)SalesArrangement.SalesArrangementTypeId is SalesArrangementTypes.CustomerChange3602A or SalesArrangementTypes.CustomerChange3602C;
 
-    public bool IsSpouseInDebt
+    public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
-        get
-        {
-            if (HouseholdData.HouseholdDto is { CustomerOnSaId1: not null, CustomerOnSaId2: not null })
-                return false;
+        HouseholdData.IsSpouseInDebt = GetIsSpouseIsDebt();
 
-            return ((SalesArrangementTypes)SalesArrangement.SalesArrangementTypeId switch
-            {
-                SalesArrangementTypes.CustomerChange3602A => SalesArrangement.CustomerChange3602A.IsSpouseInDebt,
-                SalesArrangementTypes.CustomerChange3602B => SalesArrangement.CustomerChange3602B.IsSpouseInDebt,
-                SalesArrangementTypes.CustomerChange3602C => SalesArrangement.CustomerChange3602C.IsSpouseInDebt,
-                _ => throw new NotImplementedException()
-            }) ?? false;
-        }
+        return base.LoadAdditionalData(cancellationToken);
+    }
+
+    private bool? GetIsSpouseIsDebt()
+    {
+        if (HouseholdData.HouseholdDto is { CustomerOnSaId1: not null, CustomerOnSaId2: not null })
+            return false;
+
+        return ((SalesArrangementTypes)SalesArrangement.SalesArrangementTypeId switch
+        {
+            SalesArrangementTypes.CustomerChange3602A => SalesArrangement.CustomerChange3602A.IsSpouseInDebt,
+            SalesArrangementTypes.CustomerChange3602B => SalesArrangement.CustomerChange3602B.IsSpouseInDebt,
+            SalesArrangementTypes.CustomerChange3602C => SalesArrangement.CustomerChange3602C.IsSpouseInDebt,
+            _ => throw new NotImplementedException()
+        }) ?? false;
     }
 }
