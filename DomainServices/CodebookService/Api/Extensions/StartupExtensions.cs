@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace DomainServices.CodebookService.Api;
 
@@ -12,6 +13,13 @@ internal static class StartupExtensions
             .AddDapper<Database.IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd")!)
             .AddDapper<Database.IXxdHfDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxdhf")!)
             .AddDapper<Database.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb")!);
+
+        builder.Services.AddSingleton(provider =>
+        {
+            Database.SqlQueryCollection colletion = new Database.SqlQueryCollection(null);
+            var database = provider.GetRequiredService<CIS.Core.Data.IConnectionProvider>();
+            return colletion;
+        });
 
         return builder;
     }
