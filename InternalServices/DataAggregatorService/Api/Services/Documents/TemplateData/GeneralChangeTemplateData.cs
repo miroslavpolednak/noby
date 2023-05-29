@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
+﻿using CIS.Foms.Enums;
+using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.SalesArrangementService.Contracts;
 
@@ -12,7 +13,7 @@ internal class GeneralChangeTemplateData : AggregatedData
 
     public string FullName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
-    public string PermanentAddress => CustomerHelper.FullAddress(Customer, _codebookManager.Countries);
+    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent, _codebookManager.Countries);
 
     public string RepaymentAccount => 
         BankAccountHelper.AccountNumber(GeneralChange.RepaymentAccount.Prefix, GeneralChange.RepaymentAccount.Number, GeneralChange.RepaymentAccount.BankCode);

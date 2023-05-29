@@ -91,7 +91,7 @@ public class DocumentController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vygenerování dokumentu Žádost o čerpání ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FF4A4806-9638-4287-8A4F-4CA027677E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20\" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FF4A4806-9638-4287-8A4F-4CA027677E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("drawing/sales-arrangement/{salesArrangementId:int}")]
@@ -208,16 +208,64 @@ public class DocumentController : ControllerBase
         return GenerateGeneralDocument(DocumentType.ZADOSTHD, input, cancellationToken);
     }
 
-    [Obsolete]
-    [HttpGet("type/{documentTypeId:int}/sales-arrangement/{salesArrangementId:int}")]
+    /// <summary>
+    /// Vygenerování dokumentu Údaje o přistupujícím k dluhu
+    /// </summary>
+    /// <remarks>
+    /// Vygenerování dokumentu Údaje o přistupujícím k dluhu k dané SalesArrangement.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=02F2D995-565F-4250-8C0A-BCE875C3AAB2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId">Sales Arrangement ID</param>
+    [HttpGet("approach-customer-3602/sales-arrangement/{salesArrangementId}:int")]
+    [SwaggerOperation(Tags = new[] { "Dokument" }, OperationId = "GetApproachCustomer")]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public Task<IActionResult> TestDocument(int documentTypeId, int salesArrangementId, CancellationToken cancellationToken)
+    public Task<IActionResult> GetApproachCustomer3602(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument((DocumentType)documentTypeId, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentType.PRISTOUP, input, cancellationToken);
+    }
+
+    /// <summary>
+    /// Vygenerování dokumentu Údaje o zůstávajícím v dluhu
+    /// </summary>
+    /// <remarks>
+    /// Vygenerování dokumentu Údaje o zůstávajícím v dluhu k dané SalesArrangement.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=1FFE176A-27E6-421e-B2A0-CBD1D4D31890"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId">Sales Arrangement ID</param>
+    [HttpGet("remain-customer-3602/sales-arrangement/{salesArrangementId}:int")]
+    [SwaggerOperation(Tags = new[] { "Dokument" }, OperationId = "GetRemainCustomer")]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public Task<IActionResult> GetRemainCustomer3602(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
+
+        return GenerateGeneralDocument(DocumentType.ZUSTAVSI, input, cancellationToken);
+    }
+
+    /// <summary>
+    /// Vygenerování dokumentu Žádost o přidání spoludlužníka
+    /// </summary>
+    /// <remarks>
+    /// Vygenerování dokumentu Žádost o přidání spoludlužníka k dané SalesArrangement.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=89B4A263-F822-410b-B3AB-E5806A1C7526"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId">Sales Arrangement ID</param>
+    [HttpGet("add-codebtor-3602/sales-arrangement/{salesArrangementId}:int")]
+    [SwaggerOperation(Tags = new[] { "Dokument" }, OperationId = "GetAddCodebtor")]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public Task<IActionResult> GetAddCodebtor3602(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
+
+        return GenerateGeneralDocument(DocumentType.ZADOSTHD_SERVICE, input, cancellationToken);
     }
 
     private Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, CancellationToken cancellationToken)
