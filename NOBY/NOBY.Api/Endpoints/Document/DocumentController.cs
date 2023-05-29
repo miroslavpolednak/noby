@@ -216,7 +216,7 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=02F2D995-565F-4250-8C0A-BCE875C3AAB2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("approach-customer-3602/sales-arrangement/{salesArrangementId}:int")]
+    [HttpGet("approach-customer-3602/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" }, OperationId = "GetApproachCustomer")]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -236,7 +236,7 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=1FFE176A-27E6-421e-B2A0-CBD1D4D31890"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("remain-customer-3602/sales-arrangement/{salesArrangementId}:int")]
+    [HttpGet("remain-customer-3602/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" }, OperationId = "GetRemainCustomer")]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -256,7 +256,7 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=89B4A263-F822-410b-B3AB-E5806A1C7526"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("add-codebtor-3602/sales-arrangement/{salesArrangementId}:int")]
+    [HttpGet("add-codebtor-3602/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" }, OperationId = "GetAddCodebtor")]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
