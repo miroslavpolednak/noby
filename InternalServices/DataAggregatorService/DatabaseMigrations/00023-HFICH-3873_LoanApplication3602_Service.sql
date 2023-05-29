@@ -564,18 +564,18 @@ INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [
 
 
 --Splatnost_Label + missing variants
-INSERT [dbo].[DocumentSpecialDataField] ([DocumentId], [AcroFieldName], [DataServiceId], [FieldPath], [StringFormat], [TextAlign], [DefaultTextIfNull]) VALUES (5, N'Splatnost_Label', 0, N'LoanDurationText', NULL, NULL, NULL)
-INSERT [dbo].[DocumentSpecialDataField] ([DocumentId], [AcroFieldName], [DataServiceId], [FieldPath], [StringFormat], [TextAlign], [DefaultTextIfNull]) VALUES (16, N'Splatnost_Label', 0, N'LoanDurationText', NULL, NULL, NULL)
+INSERT [dbo].[DocumentSpecialDataField] ([DocumentId], [AcroFieldName], [DataServiceId], [FieldPath], [StringFormat], [TextAlign], [DefaultTextIfNull]) VALUES (5, N'SplatnostLabel', 0, N'LoanDurationText', NULL, NULL, NULL)
+INSERT [dbo].[DocumentSpecialDataField] ([DocumentId], [AcroFieldName], [DataServiceId], [FieldPath], [StringFormat], [TextAlign], [DefaultTextIfNull]) VALUES (16, N'SplatnostLabel', 0, N'LoanDurationText', NULL, NULL, NULL)
 
-INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (5, N'Splatnost_Label', N'A')
-INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (5, N'Splatnost_Label', N'B')
-INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (5, N'Splatnost_Label', N'C')
-INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (5, N'Splatnost_Label', N'D')
+INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (5, N'SplatnostLabel', N'A')
+INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (5, N'SplatnostLabel', N'B')
+INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (5, N'SplatnostLabel', N'C')
+INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (5, N'SplatnostLabel', N'D')
 
-INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (16, N'Splatnost_Label', N'A')
-INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (16, N'Splatnost_Label', N'B')
-INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (16, N'Splatnost_Label', N'C')
-INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (16, N'Splatnost_Label', N'D')
+INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (16, N'SplatnostLabel', N'A')
+INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (16, N'SplatnostLabel', N'B')
+INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (16, N'SplatnostLabel', N'C')
+INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (16, N'SplatnostLabel', N'D')
 
 INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (5, N'JsemNejsem5Odrazka', N'A')
 INSERT [dbo].[DocumentSpecialDataFieldVariant] ([DocumentId], [AcroFieldName], [DocumentVariant]) VALUES (5, N'JsemNejsem5Odrazka', N'B')
