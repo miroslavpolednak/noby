@@ -1337,7 +1337,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCas
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
 
         // TODO(system.text.json): Add string enum item converter
-        public System.Collections.Generic.ICollection<Expandables> Expand { get; set; }
+        public System.Collections.Generic.ICollection<string> Expand { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("grantingProcedureCode")]
 

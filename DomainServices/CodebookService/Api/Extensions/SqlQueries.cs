@@ -179,7 +179,7 @@ ORDER BY PORADIE_ZOBRAZENIA ASC";
 
     public const string RelationshipCustomerProductTypes2 = "SELECT [RelationshipCustomerProductTypeId], [RdmCode], [MpDigiApiCode], [NameNoby] FROM [dbo].[RelationshipCustomerProductTypeExtension]";
 
-    public const string RiskApplicationTypes = "SELECT CAST(ID as int) 'Id', CAST(NULLIF(MANDANT, 0) as int) 'MandantId', UV_PRODUKT_ID 'ProductId', MA, CAST(DRUH_UVERU as int) 'LoanKindId', CAST(LTV_OD as int) 'LtvFrom', CAST(LTV_DO as int) 'LtvTo', CLUSTER_CODE 'C4mAplCode', C4M_APL_TYPE_ID 'C4mAplTypeId', C4M_APL_TYPE_NAZEV 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN ISNULL([DATUM_OD], '1901-01-01') AND ISNULL([DATUM_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].CIS_APL_TYPE ORDER BY ID ASC";
+    public const string RiskApplicationTypes = "SELECT CAST(ID as int) 'Id', CAST(NULLIF(MANDANT, 0) as int) 'MandantId', UV_PRODUKT_ID 'ProductId', MA, CAST(DRUH_UVERU as int) 'LoanKindId', CAST(LTV_OD as int) 'LtvFrom', CAST(LTV_DO as int) 'LtvTo', CLUSTER_CODE 'C4MAplCode', C4M_APL_TYPE_ID 'C4MAplTypeId', C4M_APL_TYPE_NAZEV 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN ISNULL([DATUM_OD], '1901-01-01') AND ISNULL([DATUM_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].CIS_APL_TYPE ORDER BY ID ASC";
 
     public const string SalesArrangementTypes = "SELECT Id, Name, ProductTypeId, SalesArrangementCategory, Description FROM [dbo].[SalesArrangementType] ORDER BY Id";
 
