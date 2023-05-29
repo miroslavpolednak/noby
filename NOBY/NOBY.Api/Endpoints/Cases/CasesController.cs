@@ -247,7 +247,7 @@ public class CasesController : ControllerBase
     /// <summary>
     /// Příznaky v menu Case detailu
     /// </summary>
-    /// <remarks
+    /// <remarks>
     ///  Implementováno pro položku menu Documents<br /><br />
     ///  <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
     ///  <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
