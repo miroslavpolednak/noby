@@ -215,5 +215,5 @@ ORDER BY PORADIE_ZOBRAZENIA ASC";
 
     public const string WorkSectors = "SELECT KOD 'Id', TEXT 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].[CIS_PRACOVNI_SEKTOR] ORDER BY KOD ASC";
 
-    public const string CovenantTypes = "SELECT CAST(TYP_ZMLUVA as int) 'Id', [TEXT] 'Name', POPIS 'Description', CAST(PORADI_ZOBRAZENI as int) 'Order' FROM [SBR].[HTEDM_CIS_TERMINOVNIK_TYP_SMLOUVY]";
+    public const string CovenantTypes = "SELECT CAST(TYP_ZMLUVA as int) 'Id', [TEXT] 'Name', POPIS 'Description', CAST(PORADI_ZOBRAZENI as int) 'Order' FROM [SBR].[HTEDM_CIS_TERMINOVNIK_TYP_SMLOUVY] WHERE MANDANT=2";
 }
