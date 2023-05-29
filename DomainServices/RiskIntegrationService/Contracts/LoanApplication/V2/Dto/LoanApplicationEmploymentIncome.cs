@@ -55,14 +55,11 @@ public class LoanApplicationEmploymentIncome
     public bool ConfirmationByCompany { get; set; }
 
     [ProtoMember(18)]
-    public string? PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }}
 
     [ProtoMember(19)]
-    public Shared.BankAccountDetail? BankAccount { get; set; }
-
-    [ProtoMember(20)]
     public int? IncomeForeignTypeId { get; set; }
 
-    [ProtoMember(21)]
+    [ProtoMember(20)]
     public LoanApplicationEmploymentIncomeDeduction? IncomeDeduction { get; set; }
 }
