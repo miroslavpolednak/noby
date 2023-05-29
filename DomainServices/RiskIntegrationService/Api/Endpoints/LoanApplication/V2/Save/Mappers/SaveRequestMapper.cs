@@ -33,8 +33,8 @@ internal sealed class SaveRequestMapper
             && request.Households.All(t => t.Customers?.All(c => !c.Income?.OtherIncomes?.Any() ?? true) ?? true)
             && request.Households.All(t => t.Customers?.All(c => c.Income?.EntrepreneurIncome?.AnnualIncomeAmount is null) ?? true)
             && request.Households.All(t => t.Customers?.All(c => c.Income?.RentIncome?.MonthlyIncomeAmount is null) ?? true)
-            && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.First().EmploymentTypeId == 2) ?? false)
-            && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.First().Address?.CountryId == 16) ?? false);
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.FirstOrDefault()?.EmploymentTypeId == 2) ?? false)
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.FirstOrDefault()?.CountryId.GetValueOrDefault() == 16) ?? false);
 
         // mappers instances
         var productChildMapper = new ProductChildMapper(_codebookService, riskApplicationType, cancellation);
