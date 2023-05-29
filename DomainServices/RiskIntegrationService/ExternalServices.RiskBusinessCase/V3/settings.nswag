@@ -30,7 +30,7 @@
       "generatePrepareRequestAndProcessResponseAsAsyncMethods": false,
       "exposeJsonSerializerSettings": false,
       "clientClassAccessModifier": "public",
-      "typeAccessModifier": "internal",
+      "typeAccessModifier": "public",
       "generateContractsOutput": true,
       "contractsNamespace": "DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V3.Contracts",
       "contractsOutputFilePath": "Contracts.cs",

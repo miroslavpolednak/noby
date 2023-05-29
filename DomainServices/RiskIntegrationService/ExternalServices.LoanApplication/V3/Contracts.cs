@@ -44,7 +44,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
 
         [System.Text.Json.Serialization.JsonPropertyName("value")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         public decimal Value { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
@@ -373,7 +373,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public ExpensesSummaryCategoryType Category { get; set; }
+        public ExpensesSummaryCategoryType? Category { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -504,7 +504,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public IncomeDeductionType Type { get; set; }
+        public IncomeDeductionType? Type { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -767,7 +767,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public ConsentValueType ConsentValueType { get; set; }
+        public ConsentValueType? ConsentValueType { get; set; }
 
         /// <summary>
         /// value
@@ -1071,7 +1071,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public ExternalRegisterType ExternalRegisterType { get; set; }
+        public ExternalRegisterType? ExternalRegisterType { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("loanApplicationConsentValue")]
 
@@ -1310,13 +1310,13 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public IncomePeriodType DeclaredIncomeCashPeriod { get; set; }
+        public IncomePeriodType? DeclaredIncomeCashPeriod { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("declaredIncomePeriod")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public IncomePeriodType DeclaredIncomePeriod { get; set; }
+        public IncomePeriodType? DeclaredIncomePeriod { get; set; }
 
         /// <summary>
         /// Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.domiciled.   
@@ -1601,13 +1601,13 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public IncomePeriodType DeclaredIncomeCashPeriod { get; set; }
+        public IncomePeriodType? DeclaredIncomeCashPeriod { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("declaredIncomePeriod")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public IncomePeriodType DeclaredIncomePeriod { get; set; }
+        public IncomePeriodType? DeclaredIncomePeriod { get; set; }
 
         /// <summary>
         /// Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.domiciled.   
@@ -1945,13 +1945,13 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public IncomePeriodType DeclaredIncomeCashPeriod { get; set; }
+        public IncomePeriodType? DeclaredIncomeCashPeriod { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("declaredIncomePeriod")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public IncomePeriodType DeclaredIncomePeriod { get; set; }
+        public IncomePeriodType? DeclaredIncomePeriod { get; set; }
 
         /// <summary>
         /// Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.domiciled.   
@@ -2671,13 +2671,13 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public IncomePeriodType DeclaredIncomeCashPeriod { get; set; }
+        public IncomePeriodType? DeclaredIncomeCashPeriod { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("declaredIncomePeriod")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public IncomePeriodType DeclaredIncomePeriod { get; set; }
+        public IncomePeriodType? DeclaredIncomePeriod { get; set; }
 
         /// <summary>
         /// Dle mapovacího excelu v10.10 viz BU popis rozhraní níže pro položku LoanApplicationEmploymentIncome.domiciled.   

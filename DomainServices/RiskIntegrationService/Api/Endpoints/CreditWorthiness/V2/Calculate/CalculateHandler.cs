@@ -1,5 +1,7 @@
-﻿using DomainServices.CodebookService.Contracts.v1;
-using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
+﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3;
+using _C4MRiskCharacteristics = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V2;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate;
 
@@ -44,8 +46,8 @@ internal sealed class CalculateHandler
         ?? throw new CisValidationException(17006, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly ExternalServices.CreditWorthiness.V1.ICreditWorthinessClient _client;
-    private readonly ExternalServices.RiskCharacteristics.V1.IRiskCharacteristicsClient _riskCharacteristicsClient;
+    private readonly _C4M.ICreditWorthinessClient _client;
+    private readonly _C4MRiskCharacteristics.IRiskCharacteristicsClient _riskCharacteristicsClient;
     private readonly Mappers.CalculateRequestMapper _requestMapper;
     private readonly Mappers.DtiRequestMapper _dtiRequestMapper;
     private readonly Mappers.DstiRequestMapper _dstiRequestMapper;
@@ -55,8 +57,8 @@ internal sealed class CalculateHandler
         Mappers.DtiRequestMapper dtiRequestMapper,
         Mappers.DstiRequestMapper dstiRequestMapper,
         CodebookService.Clients.ICodebookServiceClient codebookService,
-        ExternalServices.RiskCharacteristics.V1.IRiskCharacteristicsClient riskCharacteristicsClient,
-        ExternalServices.CreditWorthiness.V1.ICreditWorthinessClient client)
+        _C4MRiskCharacteristics.IRiskCharacteristicsClient riskCharacteristicsClient,
+        _C4M.ICreditWorthinessClient client)
     {
         _codebookService = codebookService;
         _riskCharacteristicsClient = riskCharacteristicsClient;

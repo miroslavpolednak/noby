@@ -1,6 +1,6 @@
 ﻿using _sh = DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
-using _cl = DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment.V1;
+using _cl = DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment.V3;
 using CIS.Core.Configuration;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.GetAssessment;
