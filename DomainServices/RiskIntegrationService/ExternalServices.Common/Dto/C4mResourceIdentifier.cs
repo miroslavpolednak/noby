@@ -2,13 +2,13 @@
 
 public class C4mResourceIdentifier
 {
-    public string? Instance { get; set; }
+    public string Instance { get; set; } = default!;
 
-    public string? Domain { get; set; }
+    public string Domain { get; set; } = default!;
 
-    public string? Resource { get; set; }
+    public string Resource { get; set; } = default!;
 
-    public string? Id { get; set; }
+    public string Id { get; set; } = default!;
 
     public string? Variant { get; set; }
 

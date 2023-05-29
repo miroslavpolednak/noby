@@ -19,13 +19,13 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V1.MockLoanApplicationAssessmentClient>();
+            case (LoanApplicationAssessment.V3.ILoanApplicationAssessmentClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<LoanApplicationAssessment.V3.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V3.MockLoanApplicationAssessmentClient>();
                 break;
 
-            case (LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient.Version, ServiceImplementationTypes.Real):
+            case (LoanApplicationAssessment.V3.ILoanApplicationAssessmentClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V1.RealLoanApplicationAssessmentClient>()
+                    .AddExternalServiceRestClient<LoanApplicationAssessment.V3.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V3.RealLoanApplicationAssessmentClient>()
                     .AddExternalServicesKbHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
                     .AddBadRequestHandling();
@@ -41,8 +41,8 @@ public static class StartupExtensions
     static string getVersion<TClient>()
         => typeof(TClient) switch
         {
-            Type t when t.IsAssignableFrom(typeof(LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient)) => LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient.Version,
-            _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
+            Type t when t.IsAssignableFrom(typeof(LoanApplicationAssessment.V3.ILoanApplicationAssessmentClient)) => LoanApplicationAssessment.V3.ILoanApplicationAssessmentClient.Version,
+            _ => throw new NotImplementedException($"Unknown implementation {typeof(TClient)}")
         };
 
     private static IHttpClientBuilder AddBadRequestHandling(this IHttpClientBuilder builder)

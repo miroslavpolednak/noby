@@ -8,7 +8,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices;
 
 public static class StartupExtensions
 {
-    internal const string ServiceName = "C4MRiskCharakteristics";
+    internal const string ServiceName = "C4MRiskCharacteristics";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
         where TClient : class, IRiskCharacteristicsClientBase
@@ -19,13 +19,13 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (RiskCharacteristics.V1.IRiskCharacteristicsClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<RiskCharacteristics.V1.IRiskCharacteristicsClient, RiskCharacteristics.V1.MockRiskCharacteristicsClient>();
+            case (RiskCharacteristics.V2.IRiskCharacteristicsClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<RiskCharacteristics.V2.IRiskCharacteristicsClient, RiskCharacteristics.V2.MockRiskCharacteristicsClient>();
                 break;
 
-            case (RiskCharacteristics.V1.IRiskCharacteristicsClient.Version, ServiceImplementationTypes.Real):
+            case (RiskCharacteristics.V2.IRiskCharacteristicsClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<RiskCharacteristics.V1.IRiskCharacteristicsClient, RiskCharacteristics.V1.RealRiskCharacteristicsClient>()
+                    .AddExternalServiceRestClient<RiskCharacteristics.V2.IRiskCharacteristicsClient, RiskCharacteristics.V2.RealRiskCharacteristicsClient>()
                     .AddExternalServicesKbHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
                     .AddBadRequestHandling();
@@ -41,7 +41,7 @@ public static class StartupExtensions
     static string getVersion<TClient>()
         => typeof(TClient) switch
         {
-            Type t when t.IsAssignableFrom(typeof(RiskCharacteristics.V1.IRiskCharacteristicsClient)) => RiskCharacteristics.V1.IRiskCharacteristicsClient.Version,
+            Type t when t.IsAssignableFrom(typeof(RiskCharacteristics.V2.IRiskCharacteristicsClient)) => RiskCharacteristics.V2.IRiskCharacteristicsClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
 

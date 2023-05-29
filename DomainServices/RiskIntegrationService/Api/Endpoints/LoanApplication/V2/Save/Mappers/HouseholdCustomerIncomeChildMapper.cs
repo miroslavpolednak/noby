@@ -104,12 +104,6 @@ internal sealed class HouseholdCustomerIncomeChildMapper
     private async Task<TResponse?> getProofType<TResponse>(int? proofTypeId) where TResponse : struct
         => Helpers.GetEnumFromString<TResponse>((await _codebookService.ProofTypes(_cancellationToken)).FirstOrDefault(t => t.Id == proofTypeId)?.Code);
 
-    private static long? getZipCode(string? zip)
-    {
-        long code;
-        return long.TryParse(zip, out code) ? code : null;
-    }
-
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CancellationToken _cancellationToken;
 

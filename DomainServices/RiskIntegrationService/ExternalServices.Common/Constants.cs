@@ -15,4 +15,6 @@ public static class Constants
     public const string CM = "CM";
     public const string Customer = "Customer";
     public const string CurrencyCode = "CZK";
+    public const string BM = "BM";
+    public const string Broker = "Broker";
 }

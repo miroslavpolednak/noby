@@ -1,0 +1,634 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Credit-worthiness-calculation Service",
+    "description": "RISK KBGROUP-LAA Credit-worthiness-calculation Service",
+    "termsOfService": "https://www.kb.cz/api/terms",
+    "contact": {
+      "name": "KB RISK API Team",
+      "url": "https://wiki.kb.cz/display/RAS/CRAB+public+components",
+      "email": "kbsq4fut@ds.kb.cz"
+    },
+    "license": {
+      "name": "KB API 1.0",
+      "url": "http://www.kb.cz/api/license/LICENSE-1.0.html"
+    },
+    "version": "3.1.1-SNAPSHOT",
+    "x-type-mappgings": {
+      "ResourceIdentifier": "cz.kb.risk.datatypes.ResourceIdentifier"
+    }
+  },
+  "servers": [
+    {
+      "url": "/kbgroup-laa-credit-worthiness-calculation-service-3.1.1/api",
+      "description": "default context"
+    }
+  ],
+  "paths": {
+    "/credit-worthiness": {
+      "put": {
+        "tags": [
+          "CreditWorthinessCalculation"
+        ],
+        "summary": "Výpočet Bonity",
+        "operationId": "CreditWorthinessCalculation_creditWorthiness",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreditWorthinessCalculationArguments"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditWorthinessCalculationResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "creditWorthiness"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Amount": {
+        "required": [
+          "currencyCode"
+        ],
+        "type": "object",
+        "properties": {
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency code of the Amount (ISO 4217), e.g. 'CZK', 'EUR'\nNotNull"
+          },
+          "value": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Value of the Amount\n"
+          }
+        },
+        "description": "Amount"
+      },
+      "CreditLiabilitiesSummary": {
+        "required": [
+          "amount",
+          "amountConsolidated",
+          "productGroup"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "amountConsolidated": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "productGroup": {
+            "$ref": "#/components/schemas/CreditLiabilitiesSummaryType"
+          }
+        },
+        "description": "HouseholdCreditLiabilitiesSummary - Out, HomeCompany."
+      },
+      "CreditLiabilitiesSummaryType": {
+        "type": "string",
+        "description": "Product group.",
+        "enum": [
+          "CC",
+          "AD"
+        ]
+      },
+      "CreditWorthinessCalculationArguments": {
+        "required": [
+          "itChannel",
+          "loanApplicationHousehold",
+          "loanApplicationProduct"
+        ],
+        "type": "object",
+        "properties": {
+          "itChannel": {
+            "$ref": "#/components/schemas/ItChannelType"
+          },
+          "loanApplicationDealer": {
+            "$ref": "#/components/schemas/LoanApplicationDealer"
+          },
+          "loanApplicationHousehold": {
+            "type": "array",
+            "description": "Větev domácnosti\nNotNull",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationHousehold"
+            }
+          },
+          "loanApplicationProduct": {
+            "$ref": "#/components/schemas/LoanApplicationProduct"
+          },
+          "person": {
+            "$ref": "#/components/schemas/KbGroupPerson"
+          },
+          "resourceProcessId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "riskBusinessCaseId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "Parametry potřebné pro výpočet Bonity"
+      },
+      "CreditWorthinessCalculationResponse": {
+        "required": [
+          "installmentLimit",
+          "maxAmount",
+          "resultReason"
+        ],
+        "type": "object",
+        "properties": {
+          "installmentLimit": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "maxAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "remainingAnnuityLivingAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "remainingAnnuityLivingMaxInstallmentAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "resultReason": {
+            "$ref": "#/components/schemas/ResultReason"
+          }
+        },
+        "description": "Parametry potřebné pro výpočet Bonity"
+      },
+      "ErrorModel": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "integer",
+            "description": "usually unused and replaced by the error codes categorization",
+            "format": "int32",
+            "example": 10,
+            "deprecated": true
+          },
+          "code": {
+            "type": "string",
+            "description": "code of the error that occured, with or without an hirarchical categorization",
+            "example": "CRAB.PLATFORM.PATTERN.LOCKING.OPTIMISTIC.CONCURRENT_MODIFICATION"
+          },
+          "detail": {
+            "type": "object",
+            "description": "an optional error detail with a custom schema discriminated by the type-discriminator"
+          },
+          "httpStatusCode": {
+            "type": "integer",
+            "description": "copy of the http-status-code",
+            "format": "int32",
+            "example": 409
+          },
+          "message": {
+            "type": "string",
+            "description": "plain-text message description related to the given error code and intended for better issue-solving only"
+          },
+          "uuid": {
+            "type": "string",
+            "description": "unique error ID",
+            "example": "7e81204c-9b76-4224-b82a-f2706dd9efcf"
+          }
+        },
+        "description": "The unified error model",
+        "readOnly": true
+      },
+      "ExpensesSummary": {
+        "required": [
+          "amount",
+          "category"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "category": {
+            "$ref": "#/components/schemas/HouseholdExpenseType"
+          }
+        },
+        "description": "Parametry domácnosti."
+      },
+      "HouseholdExpenseType": {
+        "type": "string",
+        "description": "Kategorie.",
+        "enum": [
+          "RENT",
+          "ALIMONY",
+          "OTHER",
+          "INSURANCE",
+          "SAVINGS"
+        ]
+      },
+      "InstallmentsSummaryType": {
+        "type": "string",
+        "description": "Product group.",
+        "enum": [
+          "CL",
+          "ML"
+        ]
+      },
+      "ItChannelType": {
+        "type": "string",
+        "description": "IT aplikace volající službu (PF...)",
+        "enum": [
+          "NOBY",
+          "STARBUILD",
+          "DCS"
+        ]
+      },
+      "JobPost": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Kód pracovní pozice přihlášeného uživatele / schvalovatele\nNotNull"
+          }
+        },
+        "description": "JobPost"
+      },
+      "KbGroupPerson": {
+        "required": [
+          "id",
+          "orgUnit",
+          "surname"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "orgUnit": {
+            "$ref": "#/components/schemas/OrgUnit"
+          },
+          "surname": {
+            "type": "string",
+            "description": "Příjmení přihlášeného uživatele / příjmení schvalovatele\nNotNull"
+          }
+        },
+        "description": "KbGroupPerson"
+      },
+      "LoanApplicationCounterParty": {
+        "required": [
+          "income",
+          "isPartner",
+          "maritalStatus"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "income": {
+            "type": "array",
+            "description": "příjem\nNotNull",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationIncome"
+            }
+          },
+          "isPartner": {
+            "type": "boolean",
+            "description": "současný rodinný stav\nNotNull"
+          },
+          "maritalStatus": {
+            "$ref": "#/components/schemas/MartialStatusType"
+          }
+        },
+        "description": "Protistrana žádosti o půjčku."
+      },
+      "LoanApplicationDealer": {
+        "required": [
+          "companyId",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "Dealer"
+      },
+      "LoanApplicationHousehold": {
+        "required": [
+          "childrenOver10",
+          "childrenUnderAnd10",
+          "clients",
+          "creditLiabilitiesSummaryHomeCompany",
+          "creditLiabilitiesSummaryOutHomeCompany",
+          "expensesSummary",
+          "installmentsSummaryHomeCompany",
+          "installmentsSummaryOutHomeCompany"
+        ],
+        "type": "object",
+        "properties": {
+          "childrenOver10": {
+            "type": "integer",
+            "description": "počet vyživovaných dětí nad 10 let .\nNotNull",
+            "format": "int64"
+          },
+          "childrenUnderAnd10": {
+            "type": "integer",
+            "description": "počet vyživovaných dětí do 10 let (včetně).\nNotNull",
+            "format": "int64"
+          },
+          "clients": {
+            "type": "array",
+            "description": "Klienti\nNotNull",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationCounterParty"
+            }
+          },
+          "creditLiabilitiesSummaryHomeCompany": {
+            "type": "array",
+            "description": "Shrnutí pasiv úvěru domácnosti\nNotNull",
+            "items": {
+              "$ref": "#/components/schemas/CreditLiabilitiesSummary"
+            }
+          },
+          "creditLiabilitiesSummaryOutHomeCompany": {
+            "type": "array",
+            "description": "Shrnutí pasiv úvěru mimo domácnosti\nNotNull",
+            "items": {
+              "$ref": "#/components/schemas/CreditLiabilitiesSummary"
+            }
+          },
+          "expensesSummary": {
+            "type": "array",
+            "description": "Household Expenses Summary\nNotNull",
+            "items": {
+              "$ref": "#/components/schemas/ExpensesSummary"
+            }
+          },
+          "installmentsSummaryHomeCompany": {
+            "type": "array",
+            "description": "Shrnutí splátek domácnosti\nNotNull",
+            "items": {
+              "$ref": "#/components/schemas/LoanInstallmentsSummary"
+            }
+          },
+          "installmentsSummaryOutHomeCompany": {
+            "type": "array",
+            "description": "Shrnutí splátek mimo domácnosti\nNotNull",
+            "items": {
+              "$ref": "#/components/schemas/LoanInstallmentsSummary"
+            }
+          }
+        },
+        "description": "Parametry domácnosti."
+      },
+      "LoanApplicationIncome": {
+        "required": [
+          "amount",
+          "category",
+          "months"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "category": {
+            "$ref": "#/components/schemas/LoanApplicationIncomeType"
+          },
+          "months": {
+            "type": "integer",
+            "description": "Počet měsíců.\nNotNull",
+            "format": "int32"
+          }
+        },
+        "description": "Žádost o půjčku příjem."
+      },
+      "LoanApplicationIncomeType": {
+        "type": "string",
+        "description": "Kategorie.",
+        "enum": [
+          "SALARY",
+          "ENTERPRISE",
+          "RENT",
+          "OTHER"
+        ]
+      },
+      "LoanApplicationProduct": {
+        "required": [
+          "amountRequired",
+          "productClusterCode"
+        ],
+        "type": "object",
+        "properties": {
+          "amountRequired": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "annuity": {
+            "type": "integer",
+            "description": "Žádaná anuitní splátka\n",
+            "format": "int64"
+          },
+          "fixationPeriod": {
+            "type": "integer",
+            "description": "Doba fixace úrokové sazby\n",
+            "format": "int64"
+          },
+          "interestRate": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Frisk\n"
+          },
+          "maturity": {
+            "type": "integer",
+            "description": "Počet splátek (anuitní a úrokové)\n",
+            "format": "int64"
+          },
+          "productClusterCode": {
+            "type": "string",
+            "description": "Cluster kód požadovaného úvěru\nNotNull"
+          }
+        },
+        "description": "Parametry potřebné pro výpočet Bonity"
+      },
+      "LoanInstallmentsSummary": {
+        "required": [
+          "amount",
+          "amountConsolidated",
+          "productGroup"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "amountConsolidated": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "productGroup": {
+            "$ref": "#/components/schemas/InstallmentsSummaryType"
+          }
+        },
+        "description": "LoanInstallmentsSummar."
+      },
+      "MartialStatusType": {
+        "type": "string",
+        "description": "Je klient druhem/družkou?",
+        "enum": [
+          "S",
+          "M",
+          "D",
+          "W",
+          "R"
+        ]
+      },
+      "OrgUnit": {
+        "required": [
+          "id",
+          "jobPost",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Pobočka + expozitura přihlášení uživatele / schvalovatele\nNotNull"
+          },
+          "jobPost": {
+            "$ref": "#/components/schemas/JobPost"
+          },
+          "name": {
+            "type": "string",
+            "description": "Název pobočky přihlášení  uživatele / schvalovatele\nNotNull"
+          }
+        },
+        "description": "OrgUnit"
+      },
+      "ResourceIdentifier": {
+        "pattern": "^urn:ri:(\\w+)\\.(\\w+)\\.(\\w+)\\.([\\w+-.]*)(~(\\w+))?",
+        "type": "string",
+        "description": "The URN identifier of a resource is an universal scalar/string representation of a resource identifier in a system instance",
+        "format": "urn:ri:INSTANCE.DOMAIN.RESOURCE.ID~VARIANT",
+        "example": "urn:ri:KBCZ.CRMD.CreditRiskModel.837051596914429952"
+      },
+      "ResultReason": {
+        "required": [
+          "code",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Kód reasonu\n",
+            "xml": {
+              "name": "CODE"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": "Popis důvodu nespočtení výsledku\n",
+            "xml": {
+              "name": "DESC"
+            }
+          }
+        },
+        "description": "Důvod(y) nespočtení výsledků bonity."
+      }
+    }
+  }
+}
