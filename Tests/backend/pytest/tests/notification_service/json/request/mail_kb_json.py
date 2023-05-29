@@ -11,7 +11,7 @@ json_req_mail_kb_basic_legal = \
     },
     "to": [
       {
-        "value": "jakub_vana@ks.cz",
+        "value": "jakub_vana@kb.cz",
         "party": {
           "legalPerson": {
             "name": "Jakub Vana"
