@@ -707,7 +707,7 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest.FormId">
             <summary>
-            Tato hodnota je relevantní pro kritéria 0 (čárový kód)
+            Tato hodnota je relevantní pro kritérium 0 (čárový kód)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest.Account">
@@ -717,12 +717,12 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest.CaseId">
             <summary>
-            Tato hodnota je relevantní pro kritéria 2 (ID obchodního případu)
+            Tato hodnota je relevantní pro kritérium 2 (ID obchodního případu)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest.ContractNumber">
             <summary>
-            Tato hodnota je relevantní pro kritéria 3 (číslo smlouvy)
+            Tato hodnota je relevantní pro kritérium 3 (číslo smlouvy)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest.FilterId">

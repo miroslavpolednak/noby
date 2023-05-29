@@ -13,7 +13,7 @@ public sealed class IdentifyCaseRequest : IRequest<IdentifyCaseResponse>
     public Criterion Criterion { get; set; }
 
     /// <summary>
-    /// Tato hodnota je relevantní pro kritéria 0 (čárový kód)
+    /// Tato hodnota je relevantní pro kritérium 0 (čárový kód)
     /// </summary>
     public string? FormId { get; set; }
     
@@ -23,12 +23,12 @@ public sealed class IdentifyCaseRequest : IRequest<IdentifyCaseResponse>
     public PaymentAccount? Account { get; set; }
     
     /// <summary>
-    /// Tato hodnota je relevantní pro kritéria 2 (ID obchodního případu)
+    /// Tato hodnota je relevantní pro kritérium 2 (ID obchodního případu)
     /// </summary>
     public long? CaseId { get; set; }
     
     /// <summary>
-    /// Tato hodnota je relevantní pro kritéria 3 (číslo smlouvy)
+    /// Tato hodnota je relevantní pro kritérium 3 (číslo smlouvy)
     /// </summary>
     public string? ContractNumber { get; set; }
 }
