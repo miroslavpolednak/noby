@@ -9,7 +9,10 @@ public static class EasFormTypeFactory
     {
         { EasFormType.F3601, 4 },
         { EasFormType.F3602, 5 },
-        { EasFormType.F3700, 6 }
+        { EasFormType.F3700, 6 },
+        { EasFormType.F3602, 11 },
+        { EasFormType.F3602, 12 },
+        { EasFormType.F3602, 16 }
     };
 
     public static EasFormType GetEasFormType(int documentTypeId)

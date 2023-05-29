@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
+using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.LoanApplicationData;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest.ConditionalValues;
 using DomainServices.OfferService.Contracts;
@@ -10,25 +10,16 @@ using DomainServices.UserService.Contracts;
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
 [TransientService, SelfService]
-internal class ProductFormData : AggregatedData
+internal class ProductFormData : LoanApplicationBaseFormData
 {
     private readonly IUserServiceClient _userService;
 
-    public ProductFormData(HouseholdData householdData, IUserServiceClient userService)
+    public ProductFormData(HouseholdData householdData, IUserServiceClient userService) : base(householdData)
     {
         _userService = userService;
-        HouseholdData = householdData;
     }
 
-    public HouseholdData HouseholdData { get; }
-
-    public MockValues MockValues { get; } = new();
-
     public DynamicFormValues MainDynamicFormValues { get; set; } = null!;
-
-    public DefaultValues DefaultValues3601 { get; private set; } = null!;
-
-    public DefaultValues DefaultValues3602 { get; private set; } = null!;
 
     public ConditionalFormValues ConditionalFormValues { get; private set; } = null!;
 
@@ -44,8 +35,6 @@ internal class ProductFormData : AggregatedData
 
     public int? DrawingDurationId => _codebookManager.DrawingDurations.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingDurationId)?.DrawingDuration;
 
-    public IEnumerable<HouseholdDto> HouseholdList => new[] { HouseholdData.HouseholdDto };
-
     public long? MpIdentityId => GetMpIdentityId();
 
     public bool IsEmployeeBonusRequested => Offer.SimulationInputs.IsEmployeeBonusRequested == true;
@@ -56,22 +45,18 @@ internal class ProductFormData : AggregatedData
 
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
-        DefaultValues3601 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3601, _codebookManager.DocumentTypes);
-        DefaultValues3602 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3602, _codebookManager.DocumentTypes);
-
         ProductTypeId = GetProductTypeId();
 
         ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(ProductTypeId, Offer.SimulationInputs.LoanKindId), this);
 
-        HouseholdData.PrepareCodebooks(_codebookManager);
-
-        return Task.WhenAll(LoadPerformerData(cancellationToken),
-                            HouseholdData.Initialize(SalesArrangement.SalesArrangementId, cancellationToken));
+        return Task.WhenAll(base.LoadAdditionalData(cancellationToken), LoadPerformerData(cancellationToken));
     }
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        configurator.ProductTypes().DrawingTypes().DrawingDurations().SalesArrangementStates().SalesArrangementTypes().DocumentTypes();
+        base.ConfigureCodebooks(configurator);
+
+        configurator.ProductTypes().DrawingTypes().DrawingDurations().SalesArrangementStates().SalesArrangementTypes();
 
         HouseholdData.ConfigureCodebooks(configurator);
     }
