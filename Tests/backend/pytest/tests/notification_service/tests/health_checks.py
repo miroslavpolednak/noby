@@ -6,13 +6,14 @@ import uuid
 from ..conftest import URLS
 from ..json.request.mail_kb_json import json_req_mail_kb_basic_legal
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal
-from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full_for_search
+from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full_for_search, \
+    json_req_sms_basic_insg_e2e
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 
 #est pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
+@pytest.mark.parametrize("json_data", [json_req_sms_basic_insg_e2e])
 def test_get_sms_notification_id_states(ns_url, auth_params, auth, json_data):
     """uvodni test pro zakladni napln sms bez priloh
     """
