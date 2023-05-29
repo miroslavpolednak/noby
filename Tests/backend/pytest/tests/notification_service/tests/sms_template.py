@@ -44,11 +44,13 @@ def test_sms_template(ns_url,  auth_params, auth, json_data):
         auth=(username, password),
         verify=False
     )
-    resp = resp.json()
-    print(resp)
-    assert "notificationId" in resp
-    assert resp["notificationId"] != ""
+    notification = resp.json()
+    print(notification)
+    assert "notificationId" in notification
+    assert notification["notificationId"] != ""
 
+    assert 'strict-transport-security' in resp.headers, \
+        'Expected "strict-transport-security" to be in headers'
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
