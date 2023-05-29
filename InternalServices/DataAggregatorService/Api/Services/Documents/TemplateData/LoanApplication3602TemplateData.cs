@@ -13,6 +13,8 @@ internal class LoanApplication3602TemplateData : LoanApplicationBaseTemplateData
     {
     }
 
+    public string LoanDurationText => "Splatnost";
+
     public string LoanType => Offer.SimulationInputs.LoanKindId == 2001 ? GetLoanKindName(Offer.SimulationInputs.LoanKindId) : GetProductTypeName(Offer.SimulationInputs.ProductTypeId);
 
     public string LoanPurposes => GetLoanPurposes(Offer.SimulationInputs.LoanKindId, Offer.SimulationInputs.LoanPurposes.Select(l => l.LoanPurposeId));

@@ -13,6 +13,8 @@ internal class CustomerChange3602TemplateData : LoanApplicationBaseTemplateData
     {
     }
 
+    public string LoanDurationText => "Předpokládané datum splatnosti";
+    
     public string LoanType => Mortgage.LoanKindId == 2001 ? GetLoanKindName(Mortgage.LoanKindId ?? 0) : GetProductTypeName(Mortgage.ProductTypeId);
 
     public string LoanPurposes => GetLoanPurposes(Mortgage.LoanKindId ?? 0, Mortgage.LoanPurposes.Select(l => l.LoanPurposeId));
