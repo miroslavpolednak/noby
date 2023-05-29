@@ -1,7 +1,4 @@
-﻿using CIS.Core.Data;
-using CIS.Infrastructure.Data;
-using Dapper;
-using DomainServices.CodebookService.Api.Database;
+﻿using CIS.Infrastructure.Data;
 using DomainServices.CodebookService.Contracts.v1;
 using Microsoft.AspNetCore.Authorization;
 
@@ -12,31 +9,31 @@ internal sealed class CodebookService
     : Contracts.v1.CodebookService.CodebookServiceBase
 {
     public override Task<GenericCodebookResponse> AcademicDegreesAfter(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> AcademicDegreesBefore(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_selfDb);
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> AddressTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<CIS.Foms.Enums.AddressTypes>(true);
 
     public override Task<BankCodesResponse> BankCodes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<BankCodesResponse, BankCodesResponse.Types.BankCodeItem>(_xxd);
+        => _db.GetItems<BankCodesResponse, BankCodesResponse.Types.BankCodeItem>();
 
     public override Task<GenericCodebookResponse> CaseStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<CIS.Foms.Enums.CaseStates>(true);
 
     public override Task<GenericCodebookResponse> ClassificationOfEconomicActivities(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<CollateralTypesResponse> CollateralTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<CollateralTypesResponse, CollateralTypesResponse.Types.CollateralTypeItem>(_xxd);
+        => _db.GetItems<CollateralTypesResponse, CollateralTypesResponse.Types.CollateralTypeItem>();
 
     public override Task<ContactTypesResponse> ContactTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<ContactTypesResponse.Types.ContactTypeItem>(_sql[nameof(ContactTypes) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(ContactTypes) + "2"]);
+            var items = _db.GetList<ContactTypesResponse.Types.ContactTypeItem>(nameof(ContactTypes), 1);
+            var extensions = _db.GetDynamicList(nameof(ContactTypes), 2);
             items.ForEach(item =>
             {
                 item.MpDigiApiCode = extensions.FirstOrDefault(t => t.ContactTypeId == item.Id)?.MpDigiApiCode;
@@ -45,7 +42,7 @@ internal sealed class CodebookService
         });
 
     public override Task<CountriesResponse> Countries(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<CountriesResponse, CountriesResponse.Types.CountryItem>(_xxd);
+        => _db.GetItems<CountriesResponse, CountriesResponse.Types.CountryItem>();
 
     public override Task<CountryCodePhoneIdcResponse> CountryCodePhoneIdc(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new CountryCodePhoneIdcResponse()).AddItems(
@@ -61,7 +58,7 @@ internal sealed class CodebookService
         );
 
     public override Task<CurrenciesResponse> Currencies(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<CurrenciesResponse, CurrenciesResponse.Types.CurrencyItem>(_xxd);
+        => _db.GetItems<CurrenciesResponse, CurrenciesResponse.Types.CurrencyItem>();
 
     public override Task<GenericCodebookResponse> CustomerProfiles(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<CIS.Foms.Enums.CustomerProfiles>(true);
@@ -93,11 +90,11 @@ internal sealed class CodebookService
         var terms = request.Term.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         var termsValues = String.Join(",", terms.Select(t => $"('{t}')"));
 
-        var developersAndProjectsQuery = _sql["DeveloperSearchWithProjects"].Replace("<terms>", termsValues);
-        var developersQuery = _sql[nameof(DeveloperSearch)].Replace("<terms>", termsValues);
+        var developersAndProjectsQuery = _db.Sql["DeveloperSearchWithProjects"].Query.Replace("<terms>", termsValues);
+        var developersQuery = _db.Sql[nameof(DeveloperSearch)].Query.Replace("<terms>", termsValues);
 
-        var developersAndProjects = await _xxd.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersAndProjectsQuery);
-        var developers = await _xxd.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersQuery);
+        var developersAndProjects = await _db.Xxd.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersAndProjectsQuery);
+        var developers = await _db.Xxd.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersQuery);
 
         return (new DeveloperSearchResponse()).AddItems(developersAndProjects.Concat(developers));
     }
@@ -116,7 +113,7 @@ internal sealed class CodebookService
         );
 
     public override Task<DocumentOnSATypesResponse> DocumentOnSATypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<DocumentOnSATypesResponse, DocumentOnSATypesResponse.Types.DocumentOnSATypeItem>(_selfDb);
+        => _db.GetItems<DocumentOnSATypesResponse, DocumentOnSATypesResponse.Types.DocumentOnSATypeItem>();
 
     public override Task<DocumentTemplateTypesResponse> DocumentTemplateTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new DocumentTemplateTypesResponse()).AddItems(
@@ -132,16 +129,16 @@ internal sealed class CodebookService
         );
 
     public override Task<DocumentTemplateVariantsResponse> DocumentTemplateVariants(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<DocumentTemplateVariantsResponse, DocumentTemplateVariantsResponse.Types.DocumentTemplateVariantItem>(_selfDb);
+        => _db.GetItems<DocumentTemplateVariantsResponse, DocumentTemplateVariantsResponse.Types.DocumentTemplateVariantItem>();
 
     public override Task<DocumentTemplateVersionsResponse> DocumentTemplateVersions(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<DocumentTemplateVersionsResponse, DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem>(_selfDb);
+        => _db.GetItems<DocumentTemplateVersionsResponse, DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem>();
 
     public override Task<DocumentTypesResponse> DocumentTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<DocumentTypesResponse, DocumentTypesResponse.Types.DocumentTypeItem>(_selfDb);
+        => _db.GetItems<DocumentTypesResponse, DocumentTypesResponse.Types.DocumentTypeItem>();
 
     public override Task<DrawingDurationsResponse> DrawingDurations(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<DrawingDurationsResponse, DrawingDurationsResponse.Types.DrawingDurationItem>(_xxd);
+        => _db.GetItems<DrawingDurationsResponse, DrawingDurationsResponse.Types.DrawingDurationItem>();
 
     public override Task<DrawingTypesResponse> DrawingTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new DrawingTypesResponse()).AddItems(
@@ -159,8 +156,8 @@ internal sealed class CodebookService
     public override Task<EaCodesMainResponse> EaCodesMain(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _selfDb.ExecuteDapperRawSqlToList<EaCodesMainResponse.Types.EaCodesMainItem>(_sql[nameof(EaCodesMain) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(EaCodesMain) + "2"]);
+            var items = _db.GetList<EaCodesMainResponse.Types.EaCodesMainItem>(nameof(EaCodesMain), 1);
+            var extensions = _db.GetDynamicList(nameof(EaCodesMain), 2);
             items.ForEach(item =>
             {
                 item.IsFormIdRequested = extensions.FirstOrDefault(t => t.EaCodesMainId == item.Id)?.IsFormIdRequested ?? false;
@@ -169,19 +166,19 @@ internal sealed class CodebookService
         });
 
     public override Task<EducationLevelsResponse> EducationLevels(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<EducationLevelsResponse, EducationLevelsResponse.Types.EducationLevelItem>(_xxd);
+        => _db.GetItems<EducationLevelsResponse, EducationLevelsResponse.Types.EducationLevelItem>();
 
     public override Task<GenericCodebookResponse> EmploymentTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<FeesResponse> Fees(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<FeesResponse, FeesResponse.Types.FeeItem>(_xxd);
+        => _db.GetItems<FeesResponse, FeesResponse.Types.FeeItem>();
 
     public override Task<FixedRatePeriodsResponse> FixedRatePeriods(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<FixedRatePeriodsResponse, FixedRatePeriodsResponse.Types.FixedRatePeriodItem>(_xxd);
+        => _db.GetItems<FixedRatePeriodsResponse, FixedRatePeriodsResponse.Types.FixedRatePeriodItem>();
 
     public override Task<FormTypesResponse> FormTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<FormTypesResponse, FormTypesResponse.Types.FormTypeItem>(_xxd);
+        => _db.GetItems<FormTypesResponse, FormTypesResponse.Types.FormTypeItem>();
 
     public override Task<GendersResponse> Genders(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new GendersResponse()).AddItems(
@@ -200,25 +197,21 @@ internal sealed class CodebookService
 
     public override async Task<GetDeveloperResponse> GetDeveloper(GetDeveloperRequest request, ServerCallContext context)
     {
-        return (await _xxd.ExecuteDapperFirstOrDefaultAsync<GetDeveloperResponse>(_sql[nameof(GetDeveloper)], new { request.DeveloperId }))
+        return (await _db.GetListWithParam<GetDeveloperResponse>(new { request.DeveloperId }))
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperNotFound, request.DeveloperId);
     }
 
     public override async Task<GetDeveloperProjectResponse> GetDeveloperProject(GetDeveloperProjectRequest request, ServerCallContext context)
     {
-        return (await _xxd.ExecuteDapperFirstOrDefaultAsync<GetDeveloperProjectResponse>(_sql[nameof(GetDeveloperProject)], new { request.DeveloperProjectId, request.DeveloperId }))
+        return (await _db.GetListWithParam<GetDeveloperProjectResponse>(new { request.DeveloperProjectId, request.DeveloperId }))
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperProjectNotFound, request.DeveloperProjectId);
     }
 
     public override Task<GetGeneralDocumentListResponse> GetGeneralDocumentList(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<GetGeneralDocumentListResponse, GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem>(_selfDb);
+        => _db.GetItems<GetGeneralDocumentListResponse, GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem>();
 
     public override async Task<GetOperatorResponse> GetOperator(GetOperatorRequest request, ServerCallContext context)
-    {
-        using var connection = _xxd.Create();
-        await connection.OpenAsync();
-        return await connection.QueryFirstOrDefaultAsync<GetOperatorResponse>(_sql[nameof(GetOperator)], new { request.PerformerLogin });
-    }
+        => await _db.GetFirstOrDefault<GetOperatorResponse>(new { request.PerformerLogin });
     
     public override Task<HouseholdTypesResponse> HouseholdTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new HouseholdTypesResponse()).AddItems(
@@ -240,13 +233,13 @@ internal sealed class CodebookService
         );
 
     public override Task<HousingConditionsResponse> HousingConditions(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<HousingConditionsResponse, HousingConditionsResponse.Types.HousingConditionItem>(_xxd);
+        => _db.GetItems<HousingConditionsResponse, HousingConditionsResponse.Types.HousingConditionItem>();
 
     public override Task<ChannelsResponse> Channels(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<ChannelsResponse.Types.ChannelItem>(_sql[nameof(Channels) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(Channels) + "2"]);
+            var items = _db.GetList<ChannelsResponse.Types.ChannelItem>(nameof(Channels), 1);
+            var extensions = _db.GetDynamicList(nameof(Channels), 2);
             items.ForEach(item =>
             {
                 item.RdmCbChannelCode = extensions.FirstOrDefault(t => t.ChannelId == item.Id)?.RdmCbChannelCode;
@@ -257,8 +250,8 @@ internal sealed class CodebookService
     public override Task<IdentificationDocumentTypesResponse> IdentificationDocumentTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem>(_sql[nameof(IdentificationDocumentTypes) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(IdentificationDocumentTypes) + "2"]);
+            var items = _db.GetList<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem>(nameof(IdentificationDocumentTypes), 1);
+            var extensions = _db.GetDynamicList(nameof(IdentificationDocumentTypes), 2);
             items.ForEach(item =>
             {
                 item.MpDigiApiCode = extensions.FirstOrDefault(t => t.IdentificationDocumentTypeId == item.Id)?.MpDigiApiCode;
@@ -292,16 +285,16 @@ internal sealed class CodebookService
         );
 
     public override Task<GenericCodebookResponse> IncomeForeignTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> IncomeMainTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> IncomeMainTypesAML(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<GenericCodebookResponse.Types.GenericCodebookItem>(_sql[nameof(IncomeMainTypesAML) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(IncomeMainTypesAML) + "2"]);
+            var items = _db.GetList<GenericCodebookResponse.Types.GenericCodebookItem>(nameof(IncomeMainTypesAML), 1);
+            var extensions = _db.GetDynamicList(nameof(IncomeMainTypesAML), 2);
             items.ForEach(item =>
             {
                 item.RdmCode = extensions.FirstOrDefault(t => t.Id == item.Id)?.RdmCode;
@@ -310,10 +303,10 @@ internal sealed class CodebookService
         });
 
     public override Task<GenericCodebookResponse> IncomeOtherTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> JobTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> LegalCapacityRestrictionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new GenericCodebookResponse()).AddItems(
@@ -333,12 +326,12 @@ internal sealed class CodebookService
         => Helpers.GetGenericItems<CIS.Foms.Enums.LoanInterestRateAnnouncedTypes>(true);
 
     public override Task<GenericCodebookResponse> LoanKinds(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<LoanPurposesResponse> LoanPurposes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToDynamicList(_sql[nameof(LoanPurposes)]);
+            var items = _db.GetDynamicList(nameof(LoanPurposes));
             return (new LoanPurposesResponse()).AddItems(items.Select(t =>
             {
                 var item = new LoanPurposesResponse.Types.LoanPurposeItem
@@ -364,8 +357,8 @@ internal sealed class CodebookService
     public override Task<GenericCodebookResponse> MaritalStatuses(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<GenericCodebookResponse.Types.GenericCodebookItem>(_sql[nameof(MaritalStatuses) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(MaritalStatuses) + "2"]);
+            var items = _db.GetList<GenericCodebookResponse.Types.GenericCodebookItem>(nameof(MaritalStatuses) , 1);
+            var extensions = _db.GetDynamicList(nameof(MaritalStatuses), 2);
             items.ForEach(item =>
             {
                 item.RdmCode = extensions.FirstOrDefault(t => t.MaritalStatusId == item.Id)?.RDMCode;
@@ -374,16 +367,16 @@ internal sealed class CodebookService
         });
 
     public override Task<GenericCodebookResponse> MarketingActions(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> Nationalities(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_konsdb);
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> NetMonthEarnings(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<GenericCodebookResponse.Types.GenericCodebookItem>(_sql[nameof(NetMonthEarnings) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(NetMonthEarnings) + "2"]);
+            var items = _db.GetList<GenericCodebookResponse.Types.GenericCodebookItem>(nameof(NetMonthEarnings), 1);
+            var extensions = _db.GetDynamicList(nameof(NetMonthEarnings), 2);
             items.ForEach(item =>
             {
                 item.RdmCode = extensions.FirstOrDefault(t => t.NetMonthEarningId == item.Id)?.RdmCode;
@@ -392,16 +385,16 @@ internal sealed class CodebookService
         });
 
     public override Task<GenericCodebookResponse> ObligationCorrectionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<ObligationLaExposuresResponse> ObligationLaExposures(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<ObligationLaExposuresResponse, ObligationLaExposuresResponse.Types.ObligationLaExposureItem>(_xxd);
+        => _db.GetItems<ObligationLaExposuresResponse, ObligationLaExposuresResponse.Types.ObligationLaExposureItem>();
 
     public override Task<ObligationTypesResponse> ObligationTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<ObligationTypesResponse.Types.ObligationTypeItem>(_sql[nameof(ObligationTypes) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(ObligationTypes) + "2"]);
+            var items = _db.GetList<ObligationTypesResponse.Types.ObligationTypeItem>(nameof(ObligationTypes), 1);
+            var extensions = _db.GetDynamicList(nameof(ObligationTypes), 2);
             items.ForEach(item =>
             {
                 item.ObligationProperty = extensions.FirstOrDefault(t => t.ObligationTypeId == item.Id)?.ObligationProperty;
@@ -410,20 +403,23 @@ internal sealed class CodebookService
         });
 
     public override Task<PaymentDaysResponse> PaymentDays(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<PaymentDaysResponse, PaymentDaysResponse.Types.PaymentDayItem>(_xxd);
+        => _db.GetItems<PaymentDaysResponse, PaymentDaysResponse.Types.PaymentDayItem>();
 
     public override Task<GenericCodebookResponse> PayoutTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<CIS.Foms.Enums.PayoutTypes>();
 
     public override Task<PostCodesResponse> PostCodes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<PostCodesResponse, PostCodesResponse.Types.PostCodeItem>(_xxd);
+        => _db.GetItems<PostCodesResponse, PostCodesResponse.Types.PostCodeItem>();
 
     public override Task<ProductTypesResponse> ProductTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(, () =>
+        => Helpers.GetItems(() =>
         {
-            var items = _xxdhf.ExecuteDapperRawSqlToList<ProductTypesResponse.Types.ProductTypeItem>(_sql[nameof(ProductTypes) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(ProductTypes) + "2"]);
-            var loanKinds = _xxd.GetOrCreateCachedResponse<GenericCodebookResponse.Types.GenericCodebookItem>(_sql[nameof(LoanKinds)], nameof(LoanKinds)).Select(t => t.Id).ToArray();
+            var items = _db.GetList<ProductTypesResponse.Types.ProductTypeItem>(nameof(ProductTypes), 1);
+            var extensions = _db.GetDynamicList(nameof(ProductTypes), 2);
+            var loanKinds = _db.Xxd.GetOrCreateCachedResponse<GenericCodebookResponse, GenericCodebookResponse.Types.GenericCodebookItem>(_db.Sql[nameof(LoanKinds)].Query, nameof(LoanKinds))
+                .Items
+                .Select(t => t.Id)
+                .ToArray();
 
             items.ForEach(item =>
             {
@@ -445,7 +441,7 @@ internal sealed class CodebookService
     public override Task<ProfessionCategoriesResponse> ProfessionCategories(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(ProfessionCategories)]);
+            var extensions = _db.GetDynamicList(nameof(ProfessionCategories));
 
             var items = new List<ProfessionCategoriesResponse.Types.ProfessionCategoryItem>() {
                 new() { Id = 0, Name = "odmítl sdělit", IsValid = true},
@@ -478,15 +474,15 @@ internal sealed class CodebookService
         });
 
     public override Task<GenericCodebookResponse> ProfessionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<ProofTypesResponse> ProofTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<ProofTypesResponse, ProofTypesResponse.Types.ProofTypeItem>(_xxd);
+        => _db.GetItems<ProofTypesResponse, ProofTypesResponse.Types.ProofTypeItem>();
 
     public override Task<PropertySettlementsResponse> PropertySettlements(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToDynamicList(_sql[nameof(PropertySettlements)]);
+            var items = _db.GetDynamicList(nameof(PropertySettlements));
             return (new PropertySettlementsResponse()).AddItems(
                 items.Select(t =>
                 {
@@ -508,16 +504,16 @@ internal sealed class CodebookService
         });
 
     public override Task<GenericCodebookResponse> RealEstatePurchaseTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> RealEstateTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<RelationshipCustomerProductTypesResponse> RelationshipCustomerProductTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<RelationshipCustomerProductTypesResponse.Types.RelationshipCustomerProductTypeItem>(_sql[nameof(RelationshipCustomerProductTypes) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(RelationshipCustomerProductTypes) + "2"]);
+            var items = _db.GetList<RelationshipCustomerProductTypesResponse.Types.RelationshipCustomerProductTypeItem>(nameof(RelationshipCustomerProductTypes), 1);
+            var extensions = _db.GetDynamicList(nameof(RelationshipCustomerProductTypes), 2);
 
             items.ForEach(item =>
             {
@@ -545,7 +541,7 @@ internal sealed class CodebookService
     public override Task<RiskApplicationTypesResponse> RiskApplicationTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToDynamicList(_sql[nameof(RiskApplicationTypes)]);
+            var items = _db.GetDynamicList(nameof(RiskApplicationTypes));
 
             return (new RiskApplicationTypesResponse()).AddItems(items.Select(t =>
             {
@@ -588,7 +584,7 @@ internal sealed class CodebookService
         );
 
     public override Task<SalesArrangementTypesResponse> SalesArrangementTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<SalesArrangementTypesResponse, SalesArrangementTypesResponse.Types.SalesArrangementTypeItem>(_selfDb);
+        => _db.GetItems<SalesArrangementTypesResponse, SalesArrangementTypesResponse.Types.SalesArrangementTypeItem>();
 
     public override Task<GenericCodebookResponse> SignatureStatesNoby(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new GenericCodebookResponse()).AddItems(
@@ -619,28 +615,28 @@ internal sealed class CodebookService
         ));
 
     public override Task<SmsNotificationTypesResponse> SmsNotificationTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<SmsNotificationTypesResponse, SmsNotificationTypesResponse.Types.SmsNotificationTypeItem>(_selfDb);
+        => _db.GetItems<SmsNotificationTypesResponse, SmsNotificationTypesResponse.Types.SmsNotificationTypeItem>();
 
     public override Task<StatementFrequenciesResponse> StatementFrequencies(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<StatementFrequenciesResponse, StatementFrequenciesResponse.Types.StatementFrequencyItem>(_xxd);
+        => _db.GetItems<StatementFrequenciesResponse, StatementFrequenciesResponse.Types.StatementFrequencyItem>();
 
     public override Task<GenericCodebookResponse> StatementSubscriptionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<StatementTypesResponse> StatementTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<StatementTypesResponse, StatementTypesResponse.Types.StatementTypeItem>(_xxd);
+        => _db.GetItems<StatementTypesResponse, StatementTypesResponse.Types.StatementTypeItem>();
 
     public override Task<TinFormatsByCountryResponse> TinFormatsByCountry(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<TinFormatsByCountryResponse, TinFormatsByCountryResponse.Types.TinFormatsByCountryItem>(_selfDb);
+        => _db.GetItems<TinFormatsByCountryResponse, TinFormatsByCountryResponse.Types.TinFormatsByCountryItem>();
 
     public override Task<TinNoFillReasonsByCountryResponse> TinNoFillReasonsByCountry(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<TinNoFillReasonsByCountryResponse, TinNoFillReasonsByCountryResponse.Types.TinNoFillReasonsByCountryItem>(_selfDb);
+        => _db.GetItems<TinNoFillReasonsByCountryResponse, TinNoFillReasonsByCountryResponse.Types.TinNoFillReasonsByCountryItem>();
 
     public override Task<WorkflowConsultationMatrixResponse> WorkflowConsultationMatrix(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var xxdResult = _xxdhf.ExecuteDapperRawSqlToList<(int Kod, string Text)>(_sql[nameof(WorkflowConsultationMatrixResponse) + "1"]);
-            var matrix = _selfDb.ExecuteDapperRawSqlToList<(int TaskSubtypeId, int ProcessTypeId, int ProcessPhaseId, bool IsConsultation)>(_sql[nameof(WorkflowConsultationMatrixResponse) + "2"]);
+            var xxdResult = _db.GetList<(int Kod, string Text)>(nameof(WorkflowConsultationMatrixResponse), 1);
+            var matrix = _db.GetList<(int TaskSubtypeId, int ProcessTypeId, int ProcessPhaseId, bool IsConsultation)>(nameof(WorkflowConsultationMatrixResponse), 2);
 
             return (new WorkflowConsultationMatrixResponse()).AddItems(
                 xxdResult.Select(t =>
@@ -667,16 +663,16 @@ internal sealed class CodebookService
         => Helpers.GetGenericItems<CIS.Foms.Enums.WorkflowTaskCategory>();
 
     public override Task<GenericCodebookResponse> WorkflowTaskConsultationTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxdhf);
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> WorkflowTaskSigningResponseTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxdhf);
+        => _db.GetGenericItems();
 
     public override Task<WorkflowTaskStatesResponse> WorkflowTaskStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem>(_sql[nameof(WorkflowTaskStates) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(WorkflowTaskStates) + "2"]);
+            var items = _db.GetList<WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem>(nameof(WorkflowTaskStates), 1);
+            var extensions = _db.GetDynamicList(nameof(WorkflowTaskStates), 2);
 
             items.ForEach(item =>
             {
@@ -687,13 +683,13 @@ internal sealed class CodebookService
         });
 
     public override Task<WorkflowTaskStatesNobyResponse> WorkflowTaskStatesNoby(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetItems<WorkflowTaskStatesNobyResponse, WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem>(_selfDb);
+        => _db.GetItems<WorkflowTaskStatesNobyResponse, WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem>();
 
     public override Task<WorkflowTaskTypesResponse> WorkflowTaskTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _xxd.ExecuteDapperRawSqlToList<WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem>(_sql[nameof(WorkflowTaskTypes) + "1"]);
-            var extensions = _selfDb.ExecuteDapperRawSqlToDynamicList(_sql[nameof(WorkflowTaskTypes) + "2"]);
+            var items = _db.GetList<WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem>(nameof(WorkflowTaskTypes), 1);
+            var extensions = _db.GetDynamicList(nameof(WorkflowTaskTypes), 2);
 
             items.ForEach(item =>
             {
@@ -703,28 +699,15 @@ internal sealed class CodebookService
         });
 
     public override Task<GenericCodebookResponse> WorkSectors(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxd);
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> CovenantTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _sql.GetGenericItems(_xxdhf);
+        => _db.GetGenericItems();
 
-    private readonly Database.SqlQueryCollection _sql;
-    private readonly IConnectionProvider _selfDb;
-    private readonly IConnectionProvider<IKonsdbDapperConnectionProvider> _konsdb;
-    private readonly IConnectionProvider<IXxdHfDapperConnectionProvider> _xxdhf;
-    private readonly IConnectionProvider<IXxdDapperConnectionProvider> _xxd;
+    private readonly Database.DatabaseAggregate _db;
 
-    public CodebookService(
-        IConnectionProvider selfDb,
-        Database.SqlQueryCollection sql,
-        IConnectionProvider<IKonsdbDapperConnectionProvider> konsdb, 
-        IConnectionProvider<IXxdHfDapperConnectionProvider> xxdhf, 
-        IConnectionProvider<IXxdDapperConnectionProvider> xxd)
+    public CodebookService(Database.DatabaseAggregate db)
     {
-        _sql = sql;
-        _selfDb = selfDb;
-        _konsdb = konsdb;
-        _xxdhf = xxdhf;
-        _xxd = xxd;
+        _db = db;
     }
 }

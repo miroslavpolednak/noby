@@ -48,13 +48,6 @@ internal static class Helpers
         });
     }
 
-    /*public static Task<TResponse> GetItems<TResponse, TItem>(this IConnectionProvider connectionProvider, ReadOnlySpan<char> sqlQuery, ReadOnlySpan<char> method)
-        where TResponse : class, IItemsResponse<TItem>
-        where TItem : class, IMessage
-    {
-        return Task.FromResult(connectionProvider.GetOrCreateCachedResponse<TResponse, TItem>(sqlQuery, method));
-    }*/
-
     public static Task<TResponse> GetItems<TResponse>(Func<TResponse> createItems, [CallerMemberName] string method = "")
         where TResponse : class
     {

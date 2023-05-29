@@ -1,31 +1,25 @@
-﻿using CIS.Core.Data;
-using DomainServices.CodebookService.Contracts.v1;
-using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.ObjectModel;
 
 namespace DomainServices.CodebookService.Api.Database;
 
 internal sealed class SqlQueryCollection
-    : ReadOnlyDictionary<string, string>
+    : ReadOnlyDictionary<string, SqlQueryCollection.QueryItem>
 {
-    public SqlQueryCollection(IDictionary<string, string> values)
+    public SqlQueryCollection(IDictionary<string, SqlQueryCollection.QueryItem> values)
         : base(values)
     { }
 
-    public ReadOnlySpan<char> Get(int? suffix = null, [CallerMemberName] string method = "")
+    public enum DatabaseProviders : byte
     {
-        return suffix.HasValue ? $"{this[method]}{suffix}" : this[method];
+        Xxd = 1,
+        XxdHf = 2,
+        KonsDb = 3,
+        Self = 4
     }
 
-    public Task<GenericCodebookResponse> GetGenericItems(IConnectionProvider connectionProvider, [CallerMemberName] string method = "")
+    public sealed class QueryItem
     {
-        return Task.FromResult(connectionProvider.GetOrCreateCachedResponse<GenericCodebookResponse, GenericCodebookResponse.Types.GenericCodebookItem>(this[method].AsSpan(), method.AsSpan()));
-    }
-
-    public Task<TResponse> GetItems<TResponse, TItem>(IConnectionProvider connectionProvider, [CallerMemberName] string method = "")
-        where TResponse : class, Contracts.IItemsResponse<TItem>
-        where TItem : class, Google.Protobuf.IMessage
-    {
-        return Task.FromResult(connectionProvider.GetOrCreateCachedResponse<TResponse, TItem>(this[method].AsSpan(), method.AsSpan()));
+        public string Query { get; set; } = null!;
+        public DatabaseProviders Provider { get; set; }
     }
 }

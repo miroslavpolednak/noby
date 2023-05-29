@@ -6,13 +6,12 @@ namespace DomainServices.CodebookService.Api.Database;
 
 internal sealed class CodebookMemoryCache
 {
-    //TODO zatim se mi to nechce datavat do appsettings
-    public const int AbsoluteExpirationInMinutes = 10;
-
     private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
     private static CancellationTokenSource _changeTokenSource = new CancellationTokenSource();
 
+    //TODO zatim se mi to nechce datavat do appsettings
+    public const int AbsoluteExpirationInMinutes = 10;
     private static MemoryCacheEntryOptions _cacheOptions = (new MemoryCacheEntryOptions()
         {
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(AbsoluteExpirationInMinutes)
@@ -37,7 +36,8 @@ internal sealed class CodebookMemoryCache
             {
                 if (!_cache.TryGetValue(key, out cacheEntry))
                 {
-                    _cache.Set(key, createItems(), _cacheOptions);
+                    cacheEntry = createItems();
+                    _cache.Set(key, cacheEntry, _cacheOptions);
                 }
             }
             finally
@@ -60,7 +60,8 @@ internal sealed class CodebookMemoryCache
             {
                 if (!_cache.TryGetValue(key, out cacheEntry))
                 {
-                    _cache.Set(key, createItems(sqlQuery.ToString()), _cacheOptions);
+                    cacheEntry = createItems(sqlQuery.ToString());
+                    _cache.Set(key, cacheEntry, _cacheOptions);
                 }
             }
             finally
