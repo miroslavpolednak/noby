@@ -55,7 +55,7 @@ public class LoanApplicationEmploymentIncome
     public bool ConfirmationByCompany { get; set; }
 
     [ProtoMember(18)]
-    public string? PhoneNumber { get; set; }}
+    public string? PhoneNumber { get; set; }
 
     [ProtoMember(19)]
     public int? IncomeForeignTypeId { get; set; }
