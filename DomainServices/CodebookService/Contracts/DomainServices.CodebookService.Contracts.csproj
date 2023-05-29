@@ -17,12 +17,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Messages\GenericCodebookFull.proto" />
-	  <None Remove="Messages\GenericCodebookWithDefaultAndCode.proto" />
-	  <None Remove="Messages\GenericCodebookWithRdmCode.proto" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.23.0" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.53.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.54.0">
@@ -40,13 +34,7 @@
 		<Protobuf Include="CodebookService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		
 		<Protobuf Include="Messages/Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		
-		<Protobuf Include="Messages\GenericCodebookFull.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		
-		<Protobuf Include="Messages\GenericCodebookWithDefaultAndCode.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="Messages\GenericCodebookWithRdmCode.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\GenericCodebook.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="Messages\GenericCodebookWithCode.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 	</ItemGroup>
 
 	<ItemGroup>

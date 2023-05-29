@@ -23,48 +23,51 @@ internal class HouseholdServiceWrapper : IServiceWrapper
     {
         input.ValidateSalesArrangementId();
 
-        var households = await _householdService.GetHouseholdList(input.SalesArrangementId!.Value, cancellationToken);
+        if (data.HouseholdMain is not null && data.HouseholdCodebtor is not null)
+            return;
 
-        var householdsByType = households.ToLookup(x => (HouseholdTypes)x.HouseholdTypeId);
+        var householdList = (await _householdService.GetHouseholdList(input.SalesArrangementId!.Value, cancellationToken)).ToLookup(h => (HouseholdTypes)h.HouseholdTypeId);
 
-        data.HouseholdMain = new HouseholdInfo { Household = householdsByType[HouseholdTypes.Main].First() };
-
-        var householdCodebtor = householdsByType[HouseholdTypes.Codebtor].FirstOrDefault();
-        if (householdCodebtor is not null)
-            data.HouseholdCodebtor = new HouseholdInfo { Household = householdCodebtor };
+        data.HouseholdMain = new HouseholdInfo { Household = householdList[HouseholdTypes.Main].FirstOrDefault() };
+        data.HouseholdCodebtor = new HouseholdInfo { Household = householdList[HouseholdTypes.Codebtor].FirstOrDefault() };
     }
 
-    public async Task LoadHouseholdWithCustomers(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
+    public async Task LoadMainHouseholdDetail(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
         input.ValidateSalesArrangementId();
 
-        var households = await _householdService.GetHouseholdList(input.SalesArrangementId!.Value, cancellationToken);
+        await LoadData(input, data, cancellationToken);
 
-        var householdsByType = households.ToLookup(x => (HouseholdTypes)x.HouseholdTypeId);
-
-        data.HouseholdMain = await CreateHouseholdInfo(householdsByType[HouseholdTypes.Main].First(), cancellationToken);
-
-        var householdCodebtor = householdsByType[HouseholdTypes.Codebtor].FirstOrDefault();
-        if (householdCodebtor is not null)
-            data.HouseholdCodebtor = await CreateHouseholdInfo(householdCodebtor, cancellationToken);
+        if (data.HouseholdMain!.Household is not null)
+            data.HouseholdMain = await LoadHouseholdDetail(data.HouseholdMain.Household, cancellationToken);
     }
 
-    private async Task<HouseholdInfo> CreateHouseholdInfo(Household household, CancellationToken cancellationToken)
+    public async Task LoadCodebtorHouseholdDetail(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
-        CustomerOnSA? customer1 = null;
-        CustomerOnSA? customer2 = null;
+        input.ValidateSalesArrangementId();
+        
+        await LoadData(input, data, cancellationToken);
+
+        if (data.HouseholdCodebtor!.Household is not null)
+            data.HouseholdCodebtor = await LoadHouseholdDetail(data.HouseholdCodebtor.Household, cancellationToken);
+    }
+
+    private async Task<HouseholdInfo> LoadHouseholdDetail(Household household, CancellationToken cancellationToken)
+    {
+        var customer1Loader = Task.FromResult<CustomerOnSA>(null!);
+        var customer2Loader = Task.FromResult<CustomerOnSA>(null!);
 
         if (household.CustomerOnSAId1.HasValue)
-            customer1 = await _customerOnSAService.GetCustomer(household.CustomerOnSAId1.Value, cancellationToken);
+            customer1Loader = _customerOnSAService.GetCustomer(household.CustomerOnSAId1.Value, cancellationToken);
 
         if (household.CustomerOnSAId2.HasValue)
-            customer2 = await _customerOnSAService.GetCustomer(household.CustomerOnSAId2.Value, cancellationToken);
+            customer2Loader = _customerOnSAService.GetCustomer(household.CustomerOnSAId2.Value, cancellationToken);
 
         return new HouseholdInfo
         {
             Household = household,
-            CustomerOnSa1 = customer1,
-            CustomerOnSa2 = customer2
+            CustomerOnSa1 = await customer1Loader,
+            CustomerOnSa2 = await customer2Loader
         };
     }
 }

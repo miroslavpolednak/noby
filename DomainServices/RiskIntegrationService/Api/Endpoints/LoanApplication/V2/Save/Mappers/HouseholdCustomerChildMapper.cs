@@ -61,7 +61,7 @@ internal sealed class HouseholdCustomerChildMapper
                 ValidTo = customer.IdentificationDocument.ValidTo
             },
             Gender = Helpers.GetEnumFromString<_C4M.GenderType>(genders.FirstOrDefault(t => t.Id == customer.GenderId)?.KbCmCode),
-            MaritalStatus = Helpers.GetEnumFromString<_C4M.MaritalStatusType>(maritalStatuses.FirstOrDefault(t => t.Id == customer.MaritalStateId)?.RdmMaritalStatusCode),
+            MaritalStatus = Helpers.GetEnumFromString<_C4M.MaritalStatusType>(maritalStatuses.FirstOrDefault(t => t.Id == customer.MaritalStateId)?.RdmCode),
             HighestEducation = educations.FirstOrDefault(t => t.Id == customer.EducationLevelId)?.ScoringCode,
             HousingCondition = Helpers.GetEnumFromString<_C4M.HousingConditionType>(housingConditions.FirstOrDefault(t => t.Id == customer.HousingConditionId)?.Code, _C4M.HousingConditionType.OW)
         }))

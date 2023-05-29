@@ -28,7 +28,7 @@ public enum DocumentType : byte
     ZADOCERP = 6,
 
     [EnumMember]
-    SDELUCET = 7,
+    ZADOOPCI = 7,
 
     [EnumMember]
     ZAOZMPAR = 8,
@@ -40,5 +40,20 @@ public enum DocumentType : byte
     ZAODHUBN = 10,
 
     [EnumMember]
-    ZADOOPCI = 11,
+    ZUSTAVSI = 11,
+
+    [EnumMember]
+    PRISTOUP = 12,
+
+    [EnumMember]
+    DANRESID = 13,
+
+    [EnumMember]
+    ZMENKLDA = 14,
+
+    [EnumMember]
+    ODSTOUP = 15,
+
+    [EnumMember]
+    ZADOSTHD_SERVICE = 16,
 }

@@ -8,7 +8,12 @@ public sealed class GetSalesArrangementResponse
     /// ID zadosti.
     /// </summary>
     public int SalesArrangementId { get; set; }
-    
+
+    /// <summary>
+    /// Stav žádosti. Číselník SalesArrangementState.
+    /// </summary>
+    public int State { get; set; }
+
     /// <summary>
     /// Druh zadosti. Ciselnik SalesArrangementTypes.
     /// </summary>

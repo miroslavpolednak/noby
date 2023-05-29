@@ -56,7 +56,6 @@ internal static class LoanApplicationTest
                                 {
                                     Amount = 100000
                                 },
-                                JobTypeId = 1,
                                 ProofTypeId = 1,
                                 EstablishedOn = new DateTime(2000, 1, 1),
                                 EntrepreneurIdentificationNumber = "111111"

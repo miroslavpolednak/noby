@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 
@@ -8,7 +9,7 @@ internal class DrawingTemplateData : AggregatedData
 {
     public string PersonName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
-    public string PersonAddress => CustomerHelper.FullAddress(Customer, _codebookManager.Countries);
+    public string PersonAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent, _codebookManager.Countries);
 
     public string PaymentAccount
     {

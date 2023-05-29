@@ -34,12 +34,12 @@ internal static class StartupExtensions
         builder.Services.AddControllers();
 
         // register c4m clients
-        builder.AddExternalService<ExternalServices.CreditWorthiness.V1.ICreditWorthinessClient>();
-        builder.AddExternalService<ExternalServices.CustomersExposure.V1.ICustomersExposureClient>();
+        builder.AddExternalService<ExternalServices.CreditWorthiness.V3.ICreditWorthinessClient>();
+        builder.AddExternalService<ExternalServices.CustomerExposure.V3.ICustomerExposureClient>();
         builder.AddExternalService<ExternalServices.LoanApplication.V3.ILoanApplicationClient>();
-        builder.AddExternalService<ExternalServices.LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient>();
+        builder.AddExternalService<ExternalServices.LoanApplicationAssessment.V3.ILoanApplicationAssessmentClient>();
         builder.AddExternalService<ExternalServices.RiskBusinessCase.V3.IRiskBusinessCaseClient>();
-        builder.AddExternalService<ExternalServices.RiskCharacteristics.V1.IRiskCharacteristicsClient>();
+        builder.AddExternalService<ExternalServices.RiskCharacteristics.V2.IRiskCharacteristicsClient>();
 
         // databases
         builder.Services

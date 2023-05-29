@@ -4,7 +4,7 @@ using CIS.Infrastructure.Security.ContextUser;
 using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using Console_RiskIntegrationService;
 using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+using DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 
 Console.WriteLine("run!");
 

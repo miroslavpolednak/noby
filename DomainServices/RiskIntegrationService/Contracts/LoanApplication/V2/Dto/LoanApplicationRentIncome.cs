@@ -3,16 +3,12 @@
 [ProtoContract]
 public sealed class LoanApplicationRentIncome
 {
-    [Obsolete("c4mv3")]
     [ProtoMember(1)]
-    public Shared.BankAccountDetail? BankAccount { get; set; }
-
-    [ProtoMember(2)]
     public bool IsDomicile { get; set; }
 
-    [ProtoMember(3)]
+    [ProtoMember(2)]
     public int? ProofTypeId { get; set; }
 
-    [ProtoMember(4)]
+    [ProtoMember(3)]
     public Shared.AmountDetail? MonthlyIncomeAmount { get; set; }
 }

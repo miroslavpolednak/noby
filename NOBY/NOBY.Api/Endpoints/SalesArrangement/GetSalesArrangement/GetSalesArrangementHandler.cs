@@ -23,7 +23,8 @@ internal sealed class GetSalesArrangementHandler
             CreatedTime = saInstance.Created.DateTime,
             OfferGuaranteeDateFrom = saInstance.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = saInstance.OfferGuaranteeDateTo,
-            Parameters = getParameters(saInstance)
+            Parameters = getParameters(saInstance),
+            State = saInstance.State
         };
     }
 

@@ -128,7 +128,7 @@ WHERE DEVELOPER_PROJEKT_ID=@DeveloperProjectId AND DEVELOPER_ID=@DeveloperId";
 
     public const string JobTypes = "SELECT KOD 'Id', TEXT 'Name', DEF 'IsDefault' FROM [SBR].[CIS_PRACOVNI_POZICE] ORDER BY KOD ASC";
 
-    public const string LoanKinds = "SELECT KOD 'Id', NULLIF(MANDANT, 0) 'MandantId', DRUH_UVERU_TEXT 'Name', CAST(DEFAULT_HODNOTA as bit) 'IsDefault', CAST(CASE WHEN SYSDATETIME() BETWEEN[DATUM_OD_ES] AND ISNULL([DATUM_DO_ES], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].[CIS_DRUH_UVERU] ORDER BY KOD ASC";
+    public const string LoanKinds = "SELECT KOD 'Id', NULLIF(MANDANT, 0) 'MandantId', DRUH_UVERU_TEXT 'Name', CAST(DEFAULT_HODNOTA as bit) 'IsDefault', CAST(CASE WHEN SYSDATETIME() BETWEEN ISNULL([DATUM_OD_ES], '1901-01-01') AND ISNULL([DATUM_DO_ES], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].[CIS_DRUH_UVERU] ORDER BY KOD ASC";
 
     public const string LoanPurposes = "SELECT CAST(KOD as int) 'Id', TEXT 'Name', CAST(NULLIF(MANDANT, 0) as int) 'MandantId', KOD_UVER 'ProductTypeIds', CAST(PORADI as int) 'Order', CAST(MAPOVANI_C4M as int) 'C4MId', CAST(CASE WHEN SYSDATETIME() BETWEEN [DATUM_PLATNOSTI_OD] AND ISNULL([DATUM_PLATNOSTI_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM SBR.CIS_UCEL_UVERU_INT1 ORDER BY KOD";
 
@@ -179,7 +179,7 @@ ORDER BY PORADIE_ZOBRAZENIA ASC";
 
     public const string RelationshipCustomerProductTypes2 = "SELECT [RelationshipCustomerProductTypeId], [RdmCode], [MpDigiApiCode], [NameNoby] FROM [dbo].[RelationshipCustomerProductTypeExtension]";
 
-    public const string RiskApplicationTypes = "SELECT CAST(ID as int) 'Id', CAST(NULLIF(MANDANT, 0) as int) 'MandantId', UV_PRODUKT_ID 'ProductId', MA, CAST(DRUH_UVERU as int) 'LoanKindId', CAST(LTV_OD as int) 'LtvFrom', CAST(LTV_DO as int) 'LtvTo', CLUSTER_CODE 'C4mAplCode', C4M_APL_TYPE_ID 'C4mAplTypeId', C4M_APL_TYPE_NAZEV 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN [DATUM_OD] AND ISNULL([DATUM_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].CIS_APL_TYPE ORDER BY ID ASC";
+    public const string RiskApplicationTypes = "SELECT CAST(ID as int) 'Id', CAST(NULLIF(MANDANT, 0) as int) 'MandantId', UV_PRODUKT_ID 'ProductId', MA, CAST(DRUH_UVERU as int) 'LoanKindId', CAST(LTV_OD as int) 'LtvFrom', CAST(LTV_DO as int) 'LtvTo', CLUSTER_CODE 'C4mAplCode', C4M_APL_TYPE_ID 'C4mAplTypeId', C4M_APL_TYPE_NAZEV 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN ISNULL([DATUM_OD], '1901-01-01') AND ISNULL([DATUM_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].CIS_APL_TYPE ORDER BY ID ASC";
 
     public const string SalesArrangementTypes = "SELECT Id, Name, ProductTypeId, SalesArrangementCategory, Description FROM [dbo].[SalesArrangementType] ORDER BY Id";
 
@@ -199,9 +199,9 @@ ORDER BY PORADIE_ZOBRAZENIA ASC";
 
     public const string WorkflowConsultationMatrixResponse2 = "SELECT [TaskSubtypeId],[ProcessTypeId],[ProcessPhaseId],[IsConsultation] FROM [dbo].[WorkflowConsultationMatrix]";
 
-    public const string WorkflowTaskConsultationTypes = "SELECT KOD 'Id', TEXT 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN DATUM_OD AND ISNULL(DATUM_DO, '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM SBR.HTEDM_CIS_WFL_CISELNIKY_HODNOTY WHERE CISELNIK_ID = 139 ORDER BY KOD";
+    public const string WorkflowTaskConsultationTypes = "SELECT KOD 'Id', TEXT 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN ISNULL([DATUM_OD], '1901-01-01') AND ISNULL(DATUM_DO, '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM SBR.HTEDM_CIS_WFL_CISELNIKY_HODNOTY WHERE CISELNIK_ID = 139 ORDER BY KOD";
 
-    public const string WorkflowTaskSigningResponseTypes = "SELECT KOD 'Id', TEXT 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN DATUM_OD AND ISNULL(DATUM_DO, '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM SBR.HTEDM_CIS_WFL_CISELNIKY_HODNOTY WHERE CISELNIK_ID = 144 ORDER BY KOD";
+    public const string WorkflowTaskSigningResponseTypes = "SELECT KOD 'Id', TEXT 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN ISNULL([DATUM_OD], '1901-01-01') AND ISNULL(DATUM_DO, '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM SBR.HTEDM_CIS_WFL_CISELNIKY_HODNOTY WHERE CISELNIK_ID = 144 ORDER BY KOD";
 
     public const string WorkflowTaskStates1 = "SELECT KOD 'Id', TEXT 'Name' FROM [SBR].[CIS_WFL_UKOLY_STAVY] ORDER BY KOD ASC";
 
@@ -214,4 +214,6 @@ ORDER BY PORADIE_ZOBRAZENIA ASC";
     public const string WorkflowTaskTypes2 = "SELECT [WorkflowTaskTypeId], [CategoryId] FROM WorkflowTaskTypeExtension";
 
     public const string WorkSectors = "SELECT KOD 'Id', TEXT 'Name', CAST(CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].[CIS_PRACOVNI_SEKTOR] ORDER BY KOD ASC";
+
+    public const string CovenantTypes = "SELECT CAST(TYP_ZMLUVA as int) 'Id', [TEXT] 'Name', POPIS 'Description', CAST(PORADI_ZOBRAZENI as int) 'Order' FROM [SBR].[HTEDM_CIS_TERMINOVNIK_TYP_SMLOUVY] WHERE MANDANT=2";
 }

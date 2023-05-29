@@ -34,7 +34,7 @@ public class PartyUpdatedConsumer : IConsumer<PartyUpdatedV1>
         var party = message.NewParty;
 
         var maritalStatuses = await _codebookClient.MaritalStatuses(context.CancellationToken);
-        var maritalStatusId = maritalStatuses.FirstOrDefault(m => m.RdmMaritalStatusCode == party.NaturalPersonAttributes.MaritalStatusCode)?.Id;
+        var maritalStatusId = maritalStatuses.FirstOrDefault(m => m.RdmCode == party.NaturalPersonAttributes.MaritalStatusCode)?.Id;
         
         var identity = new Identity
         {

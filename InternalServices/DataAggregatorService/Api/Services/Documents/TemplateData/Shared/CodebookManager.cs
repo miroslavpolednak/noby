@@ -13,11 +13,11 @@ public class CodebookManager : ICodebookManagerConfigurator
 
     public List<Codebook.LoanPurposesResponse.Types.LoanPurposeItem> LoanPurposes { get; private set; } = null!;
 
-    public List<Codebook.GenericCodebookFullResponse.Types.GenericCodebookFullItem> LoanKinds { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> LoanKinds { get; private set; } = null!;
 
-    public List<Codebook.GenericCodebookFullResponse.Types.GenericCodebookFullItem> RealEstateTypes { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> RealEstateTypes { get; private set; } = null!;
 
-    public List<Codebook.GenericCodebookFullResponse.Types.GenericCodebookFullItem> PurchaseTypes { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> PurchaseTypes { get; private set; } = null!;
 
     public List<Codebook.ProductTypesResponse.Types.ProductTypeItem> ProductTypes { get; private set; } = null!;
 
@@ -25,7 +25,7 @@ public class CodebookManager : ICodebookManagerConfigurator
 
     public List<Codebook.IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> IdentificationDocumentTypes { get; private set; } = null!;
 
-    public List<Codebook.MaritalStatusesResponse.Types.MaritalStatuseItem> MaritalStatuses { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> MaritalStatuses { get; private set; } = null!;
 
     public List<Codebook.DrawingTypesResponse.Types.DrawingTypeItem> DrawingTypes { get; private set; } = null!;
 
@@ -37,17 +37,17 @@ public class CodebookManager : ICodebookManagerConfigurator
 
     public List<Codebook.GendersResponse.Types.GenderItem> Genders { get; private set; } = null!;
 
-    public List<Codebook.GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem> EmploymentTypes { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> EmploymentTypes { get; private set; } = null!;
 
     public List<Codebook.ObligationTypesResponse.Types.ObligationTypeItem> ObligationTypes { get; private set; } = null!;
 
-    public List<Codebook.LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem> LegalCapacityRestrictionTypes { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> LegalCapacityRestrictionTypes { get; private set; } = null!;
 
     public List<Codebook.DocumentTypesResponse.Types.DocumentTypeItem> DocumentTypes { get; private set; } = null!;
 
     public List<Codebook.EducationLevelsResponse.Types.EducationLevelItem> EducationLevels { get; private set; } = null!;
 
-    public List<Codebook.GenericCodebookWithDefaultAndCodeResponse.Types.GenericCodebookWithDefaultAndCodeItem> SignatureTypes { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> SignatureTypes { get; private set; } = null!;
 
     public Task Load(ICodebookServiceClient codebookService, CancellationToken cancellationToken)
     {

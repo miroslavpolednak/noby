@@ -22,7 +22,7 @@ internal sealed class ProductChildMapper
             AplType = product.AplType ?? _riskApplicationType?.C4MAplTypeId,
             GlTableSelection = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "OST" : null,
             IsProductSecured = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? true : default(bool?),
-            LoanApplicationPurpose = tranformPurposes(product.Purposes, purposes, product),
+            LoanApplicationPurpose = tranformPurposes(product.Purposes, purposes, product, _riskApplicationType?.MandantId ?? 1),
             LoanApplicationCollateral = product.Collaterals?.Select(tranformCollateral(collaterals))?.ToList(),
             AmountRequired = product.RequiredAmount.ToAmount(),
             AmountInvestment = product.InvestmentAmount.ToAmount(),
@@ -147,14 +147,14 @@ internal sealed class ProductChildMapper
             CategoryCode = collaterals.FirstOrDefault(x => x.CollateralType == t.CollateralType)?.CodeBgm ?? "NE"
         };
 
-    private static List<_C4M.LoanApplicationPurpose>? tranformPurposes(List<_V2.LoanApplicationProductPurpose>? productPurposes, List<LoanPurposesResponse.Types.LoanPurposeItem> purposes, _V2.LoanApplicationProduct product)
+    private static List<_C4M.LoanApplicationPurpose>? tranformPurposes(List<_V2.LoanApplicationProductPurpose>? productPurposes, List<LoanPurposesResponse.Types.LoanPurposeItem> purposes, _V2.LoanApplicationProduct product, int mandantId)
         => (product.ProductTypeId == 20001 && product.LoanKindId == 2001)
             ? new List<_C4M.LoanApplicationPurpose> { new _C4M.LoanApplicationPurpose { Code = 35, Amount = product.RequiredAmount } }
             : productPurposes?
                 .Select(t => new _C4M.LoanApplicationPurpose
                 {
                     Amount = t.Amount,
-                    Code = purposes.FirstOrDefault(x => x.C4MId.HasValue && x.Id == t.LoanPurposeId)?.C4MId ?? -1
+                    Code = purposes.FirstOrDefault(x => x.C4MId.HasValue && x.MandantId == mandantId && x.Id == t.LoanPurposeId)?.C4MId ?? -1
                 })
                 .ToList();
 

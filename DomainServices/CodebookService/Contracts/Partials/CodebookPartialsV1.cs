@@ -1,9 +1,6 @@
 ﻿namespace DomainServices.CodebookService.Contracts.v1;
 
 public partial class GenericCodebookResponse : IItemsResponse<GenericCodebookResponse.Types.GenericCodebookItem> { }
-public partial class GenericCodebookWithCodeResponse : IItemsResponse<GenericCodebookWithCodeResponse.Types.GenericCodebookWithCodeItem> { }
-public partial class GenericCodebookWithRdmCodeResponse : IItemsResponse<GenericCodebookWithRdmCodeResponse.Types.GenericCodebookWithRdmCodeItem> { }
-public partial class GenericCodebookFullResponse : IItemsResponse<GenericCodebookFullResponse.Types.GenericCodebookFullItem> { }
 public partial class BankCodesResponse : IItemsResponse<BankCodesResponse.Types.BankCodeItem> { }
 public partial class CollateralTypesResponse : IItemsResponse<CollateralTypesResponse.Types.CollateralTypeItem> { }
 public partial class ContactTypesResponse : IItemsResponse<ContactTypesResponse.Types.ContactTypeItem> { }
@@ -32,10 +29,7 @@ public partial class HousingConditionsResponse : IItemsResponse<HousingCondition
 public partial class ChannelsResponse : IItemsResponse<ChannelsResponse.Types.ChannelItem> { }
 public partial class IdentificationDocumentTypesResponse : IItemsResponse<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> { }
 public partial class IdentitySchemesResponse : IItemsResponse<IdentitySchemesResponse.Types.IdentitySchemeItem> { }
-public partial class LegalCapacityRestrictionTypesResponse : IItemsResponse<LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem> { }
 public partial class LoanPurposesResponse : IItemsResponse<LoanPurposesResponse.Types.LoanPurposeItem> { }
-public partial class MaritalStatusesResponse : IItemsResponse<MaritalStatusesResponse.Types.MaritalStatuseItem> { }
-public partial class MarketingActionsResponse : IItemsResponse<MarketingActionsResponse.Types.MarketingActionItem> { }
 public partial class ObligationLaExposuresResponse : IItemsResponse<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> { }
 public partial class ObligationTypesResponse : IItemsResponse<ObligationTypesResponse.Types.ObligationTypeItem> { }
 public partial class PaymentDaysResponse : IItemsResponse<PaymentDaysResponse.Types.PaymentDayItem> { }

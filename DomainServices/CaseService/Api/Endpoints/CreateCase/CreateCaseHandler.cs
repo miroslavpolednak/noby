@@ -15,7 +15,7 @@ internal sealed class CreateCaseHandler
         //TODO zkontrolovat existenci vlastnika?
 
         // get default case state
-        int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault).Id;
+        int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault.GetValueOrDefault()).Id;
 
         // ziskat caseId
         long newCaseId = await _easClient.GetCaseId(CIS.Foms.Enums.IdentitySchemes.Kb, request.Data.ProductTypeId, cancellation);

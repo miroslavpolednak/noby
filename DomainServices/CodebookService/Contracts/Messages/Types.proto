@@ -395,17 +395,6 @@ message IdentitySchemesResponse {
 	}
 }
 
-message LegalCapacityRestrictionTypesResponse {
-	repeated LegalCapacityRestrictionTypeItem Items = 1;
-
-	message LegalCapacityRestrictionTypeItem {
-	   int32 Id = 1;
-	   string Name = 2;
-	   string RdmCode = 3;
-	   string Description = 4;
-	}
-}
-
 message LoanPurposesResponse {
 	repeated LoanPurposeItem Items = 1;
 
@@ -417,30 +406,6 @@ message LoanPurposesResponse {
 	   google.protobuf.Int32Value C4MId = 5;
 	   bool IsValid = 6;
 	   repeated int32 ProductTypeIds = 7;
-	}
-}
-
-message MaritalStatusesResponse {
-	repeated MaritalStatuseItem Items = 1;
-
-	message MaritalStatuseItem {
-	   int32 Id = 1;
-	   string Name = 2;
-	   google.protobuf.StringValue RdmMaritalStatusCode = 3;
-	   bool IsDefault = 4;
-	}
-}
-
-message MarketingActionsResponse {
-	repeated MarketingActionItem Items = 1;
-
-	message MarketingActionItem {
-	   int32 Id = 1;
-	   string Name = 2;
-	   string Code = 3;
-	   string Description = 4;
-	   bool IsValid = 5;
-	   google.protobuf.Int32Value MandantId = 6;
 	}
 }
 

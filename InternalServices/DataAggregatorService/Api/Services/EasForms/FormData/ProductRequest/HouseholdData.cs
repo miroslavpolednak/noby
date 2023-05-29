@@ -20,7 +20,7 @@ internal class HouseholdData
     private Dictionary<int, string> _academicDegreesBefore = null!;
     private Dictionary<int, string> _genders = null!;
     private ILookup<string, int> _obligationTypes = null!;
-    private List<LegalCapacityRestrictionTypesResponse.Types.LegalCapacityRestrictionTypeItem> _legalCapacityTypes = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _legalCapacityTypes = null!;
 
     private int _firstEmploymentTypeId;
 

@@ -1,5 +1,6 @@
-﻿using DomainServices.CodebookService.Contracts.v1;
-using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
+﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.SimpleCalculate;
 
@@ -26,12 +27,12 @@ internal sealed class SimpleCalculateHandler
         ?? throw new CisValidationException(17006, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly ExternalServices.CreditWorthiness.V1.ICreditWorthinessClient _client;
+    private readonly _C4M.ICreditWorthinessClient _client;
     private readonly Calculate.Mappers.CalculateRequestMapper _requestMapper;
 
     public SimpleCalculateHandler(
         CodebookService.Clients.ICodebookServiceClient codebookService,
-        ExternalServices.CreditWorthiness.V1.ICreditWorthinessClient client,
+        _C4M.ICreditWorthinessClient client,
         Calculate.Mappers.CalculateRequestMapper requestMapper)
     {
         _codebookService = codebookService;

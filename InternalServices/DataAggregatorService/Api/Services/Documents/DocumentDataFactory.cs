@@ -21,10 +21,11 @@ internal class DocumentDataFactory
             DocumentType.NABIDKA or DocumentType.KALKULHU => new OfferTemplateData(),
             DocumentType.ZADOCERP => new DrawingTemplateData(),
             DocumentType.ZADOSTHU => _serviceProvider.GetRequiredService<LoanApplication3601TemplateData>(),
-            DocumentType.ZADOSTHD => _serviceProvider.GetRequiredService<LoanApplication3602TemplateData>(),
+            DocumentType.ZADOSTHD or DocumentType.ZADOSTHD_SERVICE => _serviceProvider.GetRequiredService<LoanApplication3602TemplateData>(),
             DocumentType.ZAOZMPAR => new GeneralChangeTemplateData(),
-            DocumentType.ZAODHUBN => new HUBNTemplateData(),
             DocumentType.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeTemplateData>(),
+            DocumentType.ZAODHUBN => new HUBNTemplateData(),
+            DocumentType.ZUSTAVSI or DocumentType.PRISTOUP => _serviceProvider.GetRequiredService<CustomerChange3602TemplateData>(),
             _ => new AggregatedData()
         };
 
@@ -32,8 +33,9 @@ internal class DocumentDataFactory
     {
         return documentType switch
         {
-            DocumentType.ZADOSTHU or DocumentType.ZADOSTHD => _serviceProvider.GetRequiredService<LoanApplicationVersionDataProvider>(),
+            DocumentType.ZADOSTHU or DocumentType.ZADOSTHD or DocumentType.ZADOSTHD_SERVICE => _serviceProvider.GetRequiredService<LoanApplicationVersionDataProvider>(),
             DocumentType.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeVersionDataProvider>(),
+            DocumentType.ZUSTAVSI or DocumentType.PRISTOUP => _serviceProvider.GetRequiredService<CustomerChange3602VersionDataProvider>(),
             _ => _serviceProvider.GetRequiredService<IDocumentVersionDataProvider>()
         };
     }

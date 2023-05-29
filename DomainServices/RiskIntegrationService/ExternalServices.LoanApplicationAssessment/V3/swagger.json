@@ -1,0 +1,845 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "LAA Loan-application-assessment-service",
+    "description": "The DESCRIPTION.\n                                \\\n                                Build Date: 16-05-2023 09:21:34",
+    "termsOfService": "https://www.kb.cz/api/terms",
+    "contact": {
+      "name": "KB RISK API Team",
+      "url": "https://wiki.kb.cz/display/RAS/CRAB+public+components",
+      "email": "kbsq4fut@ds.kb.cz"
+    },
+    "license": {
+      "name": "KB API 1.0",
+      "url": "https://www.kb.cz/api/license/LICENSE-1.0.html"
+    },
+    "version": "3.1.1-SNAPSHOT",
+    "x-type-mappgings": {
+      "ResourceIdentifier": "cz.kb.risk.datatypes.ResourceIdentifier"
+    }
+  },
+  "servers": [
+    {
+      "url": "/laa-loan-application-assessment-service-3.1.1/api",
+      "description": "default context"
+    }
+  ],
+  "paths": {
+    "/loan-application-assessment": {
+      "post": {
+        "tags": [
+          "LoanApplicationAssessment"
+        ],
+        "description": "Založí LoanApplicationAssessment",
+        "operationId": "LoanApplicationAssessment_create",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanApplicationAssessmentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplicationAssessment"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "create"
+      }
+    },
+    "/loan-application-assessment/{loanApplicationAssessmentId}": {
+      "get": {
+        "tags": [
+          "LoanApplicationAssessment"
+        ],
+        "description": "Vrátí LoanApplicationAssessment podle ID",
+        "operationId": "LoanApplicationAssessment_get",
+        "parameters": [
+          {
+            "name": "loanApplicationAssessmentId",
+            "in": "path",
+            "description": "loanApplicationAssessmentId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky",
+            "schema": {
+              "type": "array",
+              "description": "",
+              "items": {
+                "$ref": "#/components/schemas/Expandables"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplicationAssessment"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "get"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Amount": {
+        "required": [
+          "currencyCode"
+        ],
+        "type": "object",
+        "properties": {
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency code of the Amount (ISO 4217), e.g. 'CZK', 'EUR'\nNotNull"
+          },
+          "value": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Value of the Amount\n"
+          }
+        },
+        "description": "Amount"
+      },
+      "AssessmentDetail": {
+        "type": "object",
+        "properties": {
+          "loanApplicationLimit": {
+            "$ref": "#/components/schemas/LoanApplicationLimit"
+          },
+          "loanApplicationRiskCharacteristics": {
+            "$ref": "#/components/schemas/RiskCharacteristics"
+          },
+          "loanApplicationScore": {
+            "$ref": "#/components/schemas/LoanApplicationScore"
+          }
+        },
+        "description": "AssessmentDetail"
+      },
+      "AssessmentMode": {
+        "type": "string",
+        "description": "RDM čísleník: CB_LoanRiskScoringMethod",
+        "enum": [
+          "PS",
+          "SC",
+          "FI"
+        ]
+      },
+      "AssessmentReasonDetail": {
+        "type": "object",
+        "properties": {
+          "desc": {
+            "type": "string",
+            "description": "Desc\n"
+          },
+          "resource": {
+            "type": "array",
+            "description": "Target\n",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            }
+          },
+          "result": {
+            "type": "string",
+            "description": "Result\n"
+          },
+          "target": {
+            "type": "string",
+            "description": "Target\n"
+          }
+        },
+        "description": "AssessmentReasonDetail"
+      },
+      "Change": {
+        "type": "object",
+        "properties": {
+          "identityId": {
+            "type": "string",
+            "description": "Actor/user identity\n"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Change date and time \nFormat: yyyy-MM-dd'T'HH:mm:ss.SSSXXX (ISO 8601)\n\n",
+            "format": "date-time",
+            "example": "2021-04-20T22:00:00Z"
+          }
+        },
+        "description": "Change"
+      },
+      "CollateralRiskCharacteristics": {
+        "type": "object",
+        "properties": {
+          "lftv": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Loan foreign to value (celkové cizí zdroje k zajištění) (\"format\": \"decimal\")\n"
+          },
+          "ltp": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Loan to cost (používá se také označení LTP) (\"format\": \"decimal\")\n"
+          },
+          "ltv": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Loan to value (\"format\": \"decimal\")\n"
+          },
+          "sumAppraisedValue": {
+            "type": "integer",
+            "description": "Výsledná oceněná hodnota zajištění (po odečtení angažovanosti váznoucích úvěrů)\n",
+            "format": "int64"
+          },
+          "totalCollUsedValue": {
+            "type": "integer",
+            "description": "Angažovanost váznoucích úvěrů na zajištění\n",
+            "format": "int64"
+          }
+        },
+        "description": "CollateralRiskCharacteristics"
+      },
+      "CounterpartyAssessmentDetail": {
+        "type": "object",
+        "properties": {
+          "assessmentDetail": {
+            "$ref": "#/components/schemas/AssessmentDetail"
+          },
+          "counterPartyId": {
+            "type": "integer",
+            "description": "Counterparty id\n",
+            "format": "int64"
+          },
+          "customerId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Id\n",
+            "format": "int64"
+          }
+        },
+        "description": "Counterparty Assessment Detail"
+      },
+      "ErrorModel": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "integer",
+            "description": "usually unused and replaced by the error codes categorization",
+            "format": "int32",
+            "example": 10,
+            "deprecated": true
+          },
+          "code": {
+            "type": "string",
+            "description": "code of the error that occured, with or without an hirarchical categorization",
+            "example": "CRAB.PLATFORM.PATTERN.LOCKING.OPTIMISTIC.CONCURRENT_MODIFICATION"
+          },
+          "detail": {
+            "type": "object",
+            "description": "an optional error detail with a custom schema discriminated by the type-discriminator"
+          },
+          "httpStatusCode": {
+            "type": "integer",
+            "description": "copy of the http-status-code",
+            "format": "int32",
+            "example": 409
+          },
+          "message": {
+            "type": "string",
+            "description": "plain-text message description related to the given error code and intended for better issue-solving only"
+          },
+          "uuid": {
+            "type": "string",
+            "description": "unique error ID",
+            "example": "7e81204c-9b76-4224-b82a-f2706dd9efcf"
+          }
+        },
+        "description": "The unified error model",
+        "readOnly": true
+      },
+      "Expandables": {
+        "type": "string",
+        "description": "Expandables",
+        "enum": [
+          "assessmentDetail",
+          "householdAssessmentDetail",
+          "counterpartyAssessmentDetail",
+          "loanApplicationApprovalPossibilities",
+          "collateralRiskCharacteristics"
+        ]
+      },
+      "GrantingProcedure": {
+        "type": "string",
+        "description": "RDM číselník: CB_GrantingProcedure",
+        "enum": [
+          "CPG",
+          "SC",
+          "EMP",
+          "NCR",
+          "NSR",
+          "QLC",
+          "SEL",
+          "STD",
+          "STU",
+          "XM",
+          "XT"
+        ]
+      },
+      "HouseholdAssessmentDetail": {
+        "type": "object",
+        "properties": {
+          "assessmentDetail": {
+            "$ref": "#/components/schemas/AssessmentDetail"
+          },
+          "householdId": {
+            "type": "integer",
+            "description": "Identifikace domácnosti\n",
+            "format": "int64"
+          },
+          "householdIndex": {
+            "type": "integer",
+            "description": "Household index\n",
+            "format": "int64"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Id\n",
+            "format": "int64"
+          }
+        },
+        "description": "Household Assessment detail"
+      },
+      "ItChannelType": {
+        "type": "string",
+        "description": "IT CHANNEL",
+        "enum": [
+          "NOBY",
+          "STARBUILD",
+          "DCS",
+          "PF",
+          "PFO",
+          "AON"
+        ]
+      },
+      "LoanApplicationApprovalPossibilities": {
+        "type": "object",
+        "properties": {
+          "autoApprovalPossible": {
+            "type": "boolean",
+            "description": "Id\n"
+          },
+          "selfApprovalPossible": {
+            "type": "boolean",
+            "description": "Id\n"
+          }
+        },
+        "description": "Možnosti samo/autoschválení"
+      },
+      "LoanApplicationAssessment": {
+        "type": "object",
+        "properties": {
+          "assessmentDetail": {
+            "$ref": "#/components/schemas/AssessmentDetail"
+          },
+          "assessmentResult": {
+            "type": "integer",
+            "description": "Odpověď vyhodnocení skoringu\n",
+            "format": "int64"
+          },
+          "collateralRiskCharacteristics": {
+            "$ref": "#/components/schemas/CollateralRiskCharacteristics"
+          },
+          "counterpartyAssessmentDetail": {
+            "type": "array",
+            "description": "Hodnocení jednotlivých klientů domácnosti (obohaceno o CBCB)\n",
+            "items": {
+              "$ref": "#/components/schemas/CounterpartyAssessmentDetail"
+            }
+          },
+          "created": {
+            "$ref": "#/components/schemas/Change"
+          },
+          "glTableCode": {
+            "type": "integer",
+            "description": "Číslo GL tabulky\n",
+            "format": "int64"
+          },
+          "householdAssessmentDetail": {
+            "type": "array",
+            "description": "HouseholdAssessmentDetail\n",
+            "items": {
+              "$ref": "#/components/schemas/HouseholdAssessmentDetail"
+            }
+          },
+          "id": {
+            "type": "string",
+            "description": "ResourceIdentifier\n"
+          },
+          "loanApplicationApprovalPossibilities": {
+            "$ref": "#/components/schemas/LoanApplicationApprovalPossibilities"
+          },
+          "loanApplicationAssessmentReason": {
+            "type": "array",
+            "description": "LoanApplicationAssessment resource-identifier\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationAssessmentReason"
+            }
+          },
+          "loanApplicationId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "riskBusinesscaseExpirationDate": {
+            "type": "string",
+            "description": "Datum expirace obchodního případu v C4M (po datu nelze dopracovat)\n",
+            "format": "date-time"
+          },
+          "riskBusinesscaseId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "standardRiskCosts": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Standardní rizikové náklady (\"format\": \"decimal\")\n",
+            "example": 458.45
+          },
+          "updated": {
+            "$ref": "#/components/schemas/Change"
+          },
+          "version": {
+            "$ref": "#/components/schemas/SemanticVersion"
+          }
+        }
+      },
+      "LoanApplicationAssessmentCreate": {
+        "required": [
+          "assessmentMode",
+          "grantingProcedureCode",
+          "itChannel",
+          "loanApplicationId",
+          "loanApplicationSnapshotId",
+          "selfApprovalRequired",
+          "systemApprovalRequired"
+        ],
+        "type": "object",
+        "properties": {
+          "assessmentMode": {
+            "$ref": "#/components/schemas/AssessmentMode"
+          },
+          "exceptionHighestApprovalLevel": {
+            "type": "string",
+            "description": "Kód nejvyšší schvalovací úrovně, která schválila danou metodickou výjimku\n"
+          },
+          "expand": {
+            "type": "array",
+            "description": "Vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky\n",
+            "items": {
+              "$ref": "#/components/schemas/Expandables"
+            }
+          },
+          "grantingProcedureCode": {
+            "$ref": "#/components/schemas/GrantingProcedure"
+          },
+          "itChannel": {
+            "$ref": "#/components/schemas/ItChannelType"
+          },
+          "itChannelPrevious": {
+            "$ref": "#/components/schemas/ItChannelType"
+          },
+          "loanApplicationException": {
+            "type": "array",
+            "description": "Parametry metodické výjimky; Kódy pro jednotlivé metodické výjimky jsou definovány v RDM číselníku CB_ExceptionReason (jde o kódy, které dnes využívá CLO)\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationException"
+            }
+          },
+          "loanApplicationId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "loanApplicationSnapshotId": {
+            "type": "string",
+            "description": "Identifikace verze dat žádosti, která jsou uložena v Loan Application\nNotNull"
+          },
+          "riskCampaignCode": {
+            "type": "string",
+            "description": "Kód risk kampaně; Nabývá hodnot 001 až 999 podle specifikace dané kampaně v CSC číselníku LOAN_CAMP\n"
+          },
+          "selfApprovalRequired": {
+            "type": "boolean",
+            "description": "Příznak, zdali je požadováno samoschválení\nNotNull"
+          },
+          "systemApprovalRequired": {
+            "type": "boolean",
+            "description": "Příznak, zdali je požadováno automatické schválení (systémem)\nNotNull"
+          }
+        },
+        "description": "LoanApplicationAssessmentCreate"
+      },
+      "LoanApplicationAssessmentReason": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Kategorie reasonu (odpovídá dnešním negům)\n"
+          },
+          "code": {
+            "type": "string",
+            "description": "Kód reasonu\n"
+          },
+          "detail": {
+            "$ref": "#/components/schemas/AssessmentReasonDetail"
+          },
+          "level": {
+            "type": "string",
+            "description": "Úroveň závažnosti reasonu (PROBLEM, WARNING, ERROR, INFO)\n"
+          },
+          "weight": {
+            "type": "integer",
+            "description": "Váha (možno využít k řazení na straně konzumenta)\n",
+            "format": "int64"
+          }
+        },
+        "description": "LoanApplicationAssessmentReason"
+      },
+      "LoanApplicationException": {
+        "type": "object",
+        "properties": {
+          "arm": {
+            "type": "string",
+            "description": "Oddělení udělující metodickou výjimku\n"
+          },
+          "reasonCode": {
+            "type": "string",
+            "description": "Důvod metodické výjimky\n"
+          }
+        },
+        "description": "LoanApplicationException"
+      },
+      "LoanApplicationLimit": {
+        "type": "object",
+        "properties": {
+          "calculationIrStressed": {
+            "type": "boolean",
+            "description": "Příznak zda při výpočtu limitu proběhlo stresování zvýšenou úrokovou sazbou\n"
+          },
+          "cir": {
+            "type": "integer",
+            "description": "Costs to income ratio (výdaje ku příjmům)\n",
+            "format": "int64"
+          },
+          "dsti": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Debt service to income ratio (splátky ku příjmům) (\"format\": \"decimal\")\n"
+          },
+          "dti": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Debt to income ratio (angažovanost ku ročnímu příjmu) (\"format\": \"decimal\")\n"
+          },
+          "iir": {
+            "type": "integer",
+            "description": "Installments to income ratio (splátky ku příjmům)\n",
+            "format": "int64"
+          },
+          "loanApplicationCollateralLimit": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanApplicationInstallmentLimit": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanApplicationLimit": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "remainingAnnuityLivingAmount": {
+            "$ref": "#/components/schemas/Amount"
+          }
+        },
+        "description": "LoanApplicationLimit"
+      },
+      "LoanApplicationScore": {
+        "type": "object",
+        "properties": {
+          "scale": {
+            "type": "string",
+            "description": "Typ ratingu hodnocení (AR/RC)\n"
+          },
+          "value": {
+            "type": "string",
+            "description": "Hodnota ratingu\n"
+          }
+        },
+        "description": "LoanApplicationScore"
+      },
+      "Resource": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "description": "Entity\n"
+          },
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "Resource"
+      },
+      "ResourceIdentifier": {
+        "pattern": "^urn:ri:(\\w+)\\.(\\w+)\\.(\\w+)\\.([\\w+-.]*)(~(\\w+))?",
+        "type": "string",
+        "description": "The URN identifier of a resource is an universal scalar/string representation of a resource identifier in a system instance",
+        "format": "urn:ri:INSTANCE.DOMAIN.RESOURCE.ID~VARIANT",
+        "example": "urn:ri:KBCZ.CRMD.CreditRiskModel.837051596914429952"
+      },
+      "RiskCharacteristics": {
+        "type": "object",
+        "properties": {
+          "monthlyCostsWithoutInstAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyEntrepreneurInstallmentsInKBAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyIncomeAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyInstallmentsInCBCBAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyInstallmentsInKBAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyInstallmentsInMPSSAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyInstallmentsInOFIAmount": {
+            "$ref": "#/components/schemas/Amount"
+          }
+        },
+        "description": "RiskCharacteristics"
+      },
+      "SemanticVersion": {
+        "required": [
+          "bugfix",
+          "major",
+          "minor"
+        ],
+        "type": "object",
+        "properties": {
+          "bugfix": {
+            "type": "integer",
+            "description": "Bugfix part of a version\nNotNull",
+            "format": "int32"
+          },
+          "major": {
+            "type": "integer",
+            "description": "Major part of a version\nNotNull",
+            "format": "int32"
+          },
+          "minor": {
+            "type": "integer",
+            "description": "Minor part of a version\nNotNull",
+            "format": "int32"
+          },
+          "nonSemanticPart": {
+            "type": "string",
+            "description": "A non-semantic part of a version, irrelevant parts of semantic comparison like SNAPSHOT, RC1, alpha1, ...\n"
+          }
+        },
+        "description": "SemanticVersion"
+      }
+    }
+  }
+}

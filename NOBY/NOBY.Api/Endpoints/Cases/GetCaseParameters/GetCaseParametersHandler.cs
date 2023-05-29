@@ -61,7 +61,7 @@ internal sealed class GetCaseParametersHandler
     private async Task<GetCaseParametersResponse> GetParamsBeforeHandover(
         DomainServices.CaseService.Contracts.Case caseInstance,
         Dictionary<int, cCodebookService.ProductTypesResponse.Types.ProductTypeItem> productTypesById,
-        Dictionary<int, cCodebookService.GenericCodebookFullResponse.Types.GenericCodebookFullItem> loanKindsById,
+        Dictionary<int, cCodebookService.GenericCodebookResponse.Types.GenericCodebookItem> loanKindsById,
         Dictionary<int, cCodebookService.LoanPurposesResponse.Types.LoanPurposeItem> loanPurposesById,
         CancellationToken cancellation
         )
@@ -137,10 +137,10 @@ internal sealed class GetCaseParametersHandler
     private async Task<GetCaseParametersResponse> GetParamsAfterHandover(
         DomainServices.CaseService.Contracts.Case caseInstance,
         Dictionary<int, cCodebookService.ProductTypesResponse.Types.ProductTypeItem> productTypesById,
-        Dictionary<int, cCodebookService.GenericCodebookFullResponse.Types.GenericCodebookFullItem> loanKindsById,
+        Dictionary<int, cCodebookService.GenericCodebookResponse.Types.GenericCodebookItem> loanKindsById,
         Dictionary<int, cCodebookService.LoanPurposesResponse.Types.LoanPurposeItem> loanPurposesById,
         List<cCodebookService.StatementTypesResponse.Types.StatementTypeItem> statementTypes,
-        List<cCodebookService.GenericCodebookWithDefaultAndCodeResponse.Types.GenericCodebookWithDefaultAndCodeItem> statementSubscriptionTypes,
+        List<cCodebookService.GenericCodebookResponse.Types.GenericCodebookItem> statementSubscriptionTypes,
         List<cCodebookService.StatementFrequenciesResponse.Types.StatementFrequencyItem> statementFrequencies,
         CancellationToken cancellation
         )

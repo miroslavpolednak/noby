@@ -1,7 +1,7 @@
-﻿using DomainServices.CodebookService.Contracts.v1;
-using DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1.Contracts;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V1.Contracts;
+﻿using DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V2.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V2.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;
 
@@ -15,21 +15,11 @@ internal sealed class DtiRequestMapper
 
         return new _C4M.DTICalculationArguments
         {
-            ResourceProcessId = new()
-            {
-                Instance = "MPSS",
-                Domain = "OM",
-                Resource = "OfferInstance",
-                Id = request.ResourceProcessId
-            },
-            ItChannel = FastEnum.Parse<_C4M.DTICalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
+            ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcessId(request.ResourceProcessId ?? "").ToC4M(),
+            ItChannel = FastEnum.Parse<_C4M.ItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             LoanApplicationProduct = new()
             {
-                AmountRequired = new()
-                {
-                    CurrencyCode = GlobalConstants.CurrencyCode,
-                    Value = request.Product!.LoanAmount
-                }
+                AmountRequired = request.Product!.LoanAmount.ToAmount()
             },
             LoanApplicationHousehold = mapHouseholds(request.Households!, riskApplicationType.MandantId)
         };
@@ -45,23 +35,23 @@ internal sealed class DtiRequestMapper
                 LoanApplicationCounterparty = mapCustomers(household.Customers!, mandantId),
                 CreditLiabilitiesSummaryHomeCompany = new List<_C4M.CreditLiabilitiesSummary>
                 {
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.ML, liabilitiesFlatten, false),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.AD, liabilitiesFlatten, false),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.CC, liabilitiesFlatten, false),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.CL, liabilitiesFlatten, false)
+                    createObligation(_C4M.CreditLiabilitiesSummaryType.ML, liabilitiesFlatten, false),
+                    createObligation(_C4M.CreditLiabilitiesSummaryType.AD, liabilitiesFlatten, false),
+                    createObligation(_C4M.CreditLiabilitiesSummaryType.CC, liabilitiesFlatten, false),
+                    createObligation(_C4M.CreditLiabilitiesSummaryType.CL, liabilitiesFlatten, false)
                 },
                 CreditLiabilitiesSummaryOutHomeCompany = new List<_C4M.CreditLiabilitiesSummary>
                 {
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.ML, liabilitiesFlatten, true),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.AD, liabilitiesFlatten, true),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.CC, liabilitiesFlatten, true),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.CL, liabilitiesFlatten, true)
+                    createObligation(_C4M.CreditLiabilitiesSummaryType.ML, liabilitiesFlatten, true),
+                    createObligation(_C4M.CreditLiabilitiesSummaryType.AD, liabilitiesFlatten, true),
+                    createObligation(_C4M.CreditLiabilitiesSummaryType.CC, liabilitiesFlatten, true),
+                    createObligation(_C4M.CreditLiabilitiesSummaryType.CL, liabilitiesFlatten, true)
                 }
             };
         })
         .ToList();
 
-    private _C4M.CreditLiabilitiesSummary createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode clusterCode, List<_V2.CreditWorthinessObligation>? obligations, bool isObligationCreditorExternal)
+    private _C4M.CreditLiabilitiesSummary createObligation(_C4M.CreditLiabilitiesSummaryType clusterCode, List<_V2.CreditWorthinessObligation>? obligations, bool isObligationCreditorExternal)
     {
         var arr = _obligationTypes!.Where(t => t.Code == clusterCode.FastToString()).Select(t => t.Id).ToArray();
         return new ()
@@ -75,13 +65,7 @@ internal sealed class DtiRequestMapper
     private static List<_C4M.LoanApplicationCounterparty> mapCustomers(List<_V2.CreditWorthinessCustomer> customers, int? mandantId)
         => customers.Select(customer => new _C4M.LoanApplicationCounterparty
         {
-            CustomerId = string.IsNullOrEmpty(customer.PrimaryCustomerId) ? null : new()
-            {
-                Id = customer.PrimaryCustomerId,
-                Instance = !mandantId.HasValue || (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Mp ? "KBCZ" : "MPSS",
-                Domain = "CM",
-                Resource = "Customer"
-            },
+            CustomerId = string.IsNullOrEmpty(customer.PrimaryCustomerId) ? null : _C4M.ResourceIdentifier.CreateCustomerId(customer.PrimaryCustomerId, !mandantId.HasValue || (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Mp ? "KBCZ" : "MPSS").ToC4M(),
             MonthlyEmploymentIncomeSumAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 1).Sum(t => t.Amount) ?? 0).ToAmount(),
             MonthlyRentIncomeSumAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 3).Sum(t => t.Amount) ?? 0).ToAmount(),
             EntrepreneurAnnualIncomeAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 2).Sum(t => t.Amount) ?? 0).ToAmount(),

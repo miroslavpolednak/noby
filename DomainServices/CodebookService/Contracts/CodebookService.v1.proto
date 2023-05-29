@@ -6,10 +6,6 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "Messages/Types.proto";
 import "Messages/GenericCodebook.proto";
-import "Messages/GenericCodebookFull.proto";
-import "Messages/GenericCodebookWithCode.proto";
-import "Messages/GenericCodebookWithRdmCode.proto";
-import "Messages/GenericCodebookWithDefaultAndCode.proto";
 
 service CodebookService {
    rpc AcademicDegreesAfter (google.protobuf.Empty) returns (GenericCodebookResponse) {
@@ -24,7 +20,7 @@ service CodebookService {
 		};
    }
 
-   rpc AddressTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc AddressTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/address-types"
 		};
@@ -36,7 +32,7 @@ service CodebookService {
 		};
    }
 
-   rpc CaseStates (google.protobuf.Empty) returns (GenericCodebookWithDefaultAndCodeResponse) {
+   rpc CaseStates (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/case-states"
 		};
@@ -71,6 +67,12 @@ service CodebookService {
 			get: "/v1/country-code-phone-idc"
 		};
    }
+
+   rpc CovenantTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/covenant-types"
+		};
+   }
    
    rpc Currencies (google.protobuf.Empty) returns (CurrenciesResponse) {
 	   option (google.api.http) = {
@@ -78,7 +80,7 @@ service CodebookService {
 		};
    }
 
-   rpc CustomerProfiles (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc CustomerProfiles (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/customer-profiles"
 		};
@@ -156,7 +158,7 @@ service CodebookService {
 		};
    }
 
-   rpc EmploymentTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc EmploymentTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/employment-types"
 		};
@@ -246,49 +248,49 @@ service CodebookService {
 		};
    }
 
-   rpc IncomeForeignTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc IncomeForeignTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/income-foreign-types"
 		};
    }
 
-   rpc IncomeMainTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc IncomeMainTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/income-main-types"
 		};
    }
 
-   rpc IncomeMainTypesAML (google.protobuf.Empty) returns (GenericCodebookWithRdmCodeResponse) {
+   rpc IncomeMainTypesAML (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/income-main-types-aml"
 		};
    }
 
-   rpc IncomeOtherTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc IncomeOtherTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/income-other-types"
 		};
    }
 
-   rpc JobTypes (google.protobuf.Empty) returns (GenericCodebookWithDefaultAndCodeResponse) {
+   rpc JobTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/job-types"
 		};
    }
 
-   rpc LegalCapacityRestrictionTypes (google.protobuf.Empty) returns (LegalCapacityRestrictionTypesResponse) {
+   rpc LegalCapacityRestrictionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/legal-capacity-restriction-types"
 		};
    }
 
-   rpc LoanInterestRateAnnouncedTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc LoanInterestRateAnnouncedTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/loan-interest-rate-announced-types"
 		};
    }
 
-   rpc LoanKinds (google.protobuf.Empty) returns (GenericCodebookFullResponse) {
+   rpc LoanKinds (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/loan-kinds"
 		};
@@ -300,19 +302,19 @@ service CodebookService {
 		};
    }
 
-   rpc Mandants (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc Mandants (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/mandants"
 		};
    }
 
-   rpc MaritalStatuses (google.protobuf.Empty) returns (MaritalStatusesResponse) {
+   rpc MaritalStatuses (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/marital-statuses"
 		};
    }
 
-   rpc MarketingActions (google.protobuf.Empty) returns (MarketingActionsResponse) {
+   rpc MarketingActions (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/marketing-actions"
 		};
@@ -324,13 +326,13 @@ service CodebookService {
 		};
    }
 
-   rpc NetMonthEarnings (google.protobuf.Empty) returns (GenericCodebookWithRdmCodeResponse) {
+   rpc NetMonthEarnings (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/net-month-earnings"
 		};
    }
 
-   rpc ObligationCorrectionTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc ObligationCorrectionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/obligation-correction-types"
 		};
@@ -378,7 +380,7 @@ service CodebookService {
 		};
    }
 
-   rpc ProfessionTypes (google.protobuf.Empty) returns (GenericCodebookWithRdmCodeResponse) {
+   rpc ProfessionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/profession-types"
 		};
@@ -396,13 +398,13 @@ service CodebookService {
 		};
    }
 
-   rpc RealEstatePurchaseTypes (google.protobuf.Empty) returns (GenericCodebookFullResponse) {
+   rpc RealEstatePurchaseTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/real-estate-purchase-types"
 		};
    }
 
-   rpc RealEstateTypes (google.protobuf.Empty) returns (GenericCodebookFullResponse) {
+   rpc RealEstateTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/real-estate-types"
 		};
@@ -414,7 +416,7 @@ service CodebookService {
 		};
    }
 
-   rpc RepaymentScheduleTypes (google.protobuf.Empty) returns (GenericCodebookWithCodeResponse) {
+   rpc RepaymentScheduleTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/repayment-schedule-types"
 		};
@@ -444,7 +446,7 @@ service CodebookService {
 		};
    }
 
-   rpc SignatureTypes (google.protobuf.Empty) returns (GenericCodebookWithDefaultAndCodeResponse) {
+   rpc SignatureTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/signature-types"
 		};
@@ -468,7 +470,7 @@ service CodebookService {
 		};
    }
 
-   rpc StatementSubscriptionTypes (google.protobuf.Empty) returns (GenericCodebookWithDefaultAndCodeResponse) {
+   rpc StatementSubscriptionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/statement-subscription-types"
 		};
@@ -538,5 +540,5 @@ service CodebookService {
 	   option (google.api.http) = {
 			get: "/v1/work-sectors"
 		};
-   }
+   }  
 }
