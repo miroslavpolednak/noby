@@ -2285,6 +2285,11 @@
             Typ domacnosti slovne
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseHandler.updateSalesArrangementParameters(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Update parametru na SA -> musime si je znovu stahnout z nove vytvoreneho SA, protoze mohou obsahovat nejake defaulty doplnene domenovou sluzbou
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.OfferId">
             <summary>
             ID simulace ze ktere se ma vytvorit Case.
