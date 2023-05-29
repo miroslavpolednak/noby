@@ -205,3 +205,9 @@ json_req_sms_basic_epsy_mpss = \
   "type": "EPODPISY_SIGNED_DOCUMENT_MP",
   "text": "Testovací sms text epsy mpss"
 }
+
+
+json_req_sms_hsts_header = \
+{
+  "<test_validace>"
+}

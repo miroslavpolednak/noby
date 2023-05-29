@@ -9,13 +9,13 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
     json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_basic_full_for_search
 from ..json.request.sms_template_json import json_req_sms_full_template
 
-@pytest.mark.parametrize("url_name", ["dev_url"])
+
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
-def test_get_sms_notification_id_states(url_name,  auth_params, auth, json_data):
+def test_get_sms_notification_id_states(auth_params, auth, json_data, ns_url):
     """uvodni test pro zakladni napln sms bez priloh
     """
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -76,15 +76,13 @@ def test_get_sms_notification_id_states(url_name,  auth_params, auth, json_data)
     assert resp['state'] == 'Delivered'
 
 
-
 #TODO: koukni na response GET search, ve swagger vraci i vyparsovane parametry
-@pytest.mark.parametrize("url_name", ["dev_url"])
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_full_for_search])
-def test_get_sms_notification_search(url_name,  auth_params, auth, json_data):
+def test_get_sms_notification_search(ns_url,  auth_params, auth, json_data):
     """test pro vygenerovani sms a jeji nasledne vyhledani
     """
-
+    url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     unique_custom_id = f"{uuid.uuid4()}"
@@ -137,3 +135,48 @@ def test_get_sms_notification_search(url_name,  auth_params, auth, json_data):
         "countryCode": phone_number[:4],
         "nationalNumber": phone_number[4:]}
     assert resp["requestData"]["smsData"] == expected_sms_data
+
+
+@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
+def test_get_sms_notification_id_vulnerability(auth_params, auth, ns_url):
+    """test zranitelnosti proti skriptování
+    """
+    url_name = ns_url["url_name"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.get(
+        URLS[url_name] + f"/v1/notification/result/<test_validace>",
+        auth=(username, password),
+        verify=False
+    )
+    resp = resp.json()
+    error_message = resp['errors']['id'][0]
+    assert error_message == 'The value \'%3Ctest_validace%3E\' is not valid.'
+
+
+@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
+def test_get_sms_notification_search_vulnerability(ns_url,  auth_params, auth):
+    """test zranitelnosti proti skriptování
+    """
+    url_name = ns_url["url_name"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.get(
+        URLS[url_name] + "/v1/notification/result/search",
+        params={
+            "identity": "<identity>",
+            "identityScheme": "<identityScheme>",
+            "customId": "<customId>",
+            "documentId": "<documentId>"
+        },
+        auth=(username, password),
+        verify=False
+    )
+    expected_error = {'302': ['Invalid Identity.'],
+                      '304': ['Invalid IdentityScheme.'],
+                      '305': ['Invalid DocumentId.'],
+                      '306': ['Invalid CustomId.']}
+    error = resp.json()['errors']
+    assert error == expected_error, f'Expected {expected_error}, but got {error}'
