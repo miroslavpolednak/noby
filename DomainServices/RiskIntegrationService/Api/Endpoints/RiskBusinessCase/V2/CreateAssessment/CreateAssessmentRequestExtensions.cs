@@ -1,4 +1,5 @@
-﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
+﻿using CIS.Core;
+using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V3.Contracts;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssessment;
@@ -24,6 +25,6 @@ internal static class CreateAssessmentRequestExtensions
                 ReasonCode = t.ReasonCode
             }).ToList(),
             ExceptionHighestApprovalLevel = request.ExceptionHighestApprovalLevel,
-            Expand = request.RequestedDetails?.Select(t => FastEnum.Parse<_C4M.Expandables>(t.ToString(), true)).ToList()
+            Expand = request.RequestedDetails?.Select(t => FastEnum.Parse<_C4M.Expandables>(t.ToString(), true).GetAttribute<System.Runtime.Serialization.EnumMemberAttribute>()!.Value).ToList()
         };
 }
