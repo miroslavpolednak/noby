@@ -92,7 +92,7 @@ internal sealed class CustomerManagementDetailProvider
         var np = customer.Party.NaturalPersonAttributes;
 
         _logger.LogWarning("GenderCode={GenderCode}, Genders={Count}", np.GenderCode, _genders.Count);
-        _logger.LogWarning($"GenderId={_genders.Select(t => t.KbCmCode)}");
+        _logger.LogWarning($"GenderId={string.Join(",", _genders.Select(t => t.KbCmCode))}");
 
         var person = new NaturalPerson
         {
