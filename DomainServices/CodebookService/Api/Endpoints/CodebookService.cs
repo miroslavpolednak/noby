@@ -174,6 +174,7 @@ internal sealed class CodebookService
         => Helpers.GetItems(() => (new GendersResponse()).AddItems(
             FastEnum
                 .GetValues<CIS.Foms.Enums.Genders>()
+                .Where(t => t != CIS.Foms.Enums.Genders.Unknown)
                 .Select(t => new GendersResponse.Types.GenderItem()
                 {
                     Id = (int)t,
