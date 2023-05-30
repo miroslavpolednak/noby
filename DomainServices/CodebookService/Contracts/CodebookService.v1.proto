@@ -500,6 +500,12 @@ service CodebookService {
 		};
    }
 
+   rpc WorkflowProcessType (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-process-type"
+		};
+   }
+
    rpc WorkflowTaskCategories (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/workflow-task-categories"
