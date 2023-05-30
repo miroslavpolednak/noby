@@ -734,6 +734,12 @@
             Tato hodnota je relevantní pro kritérium 3 (číslo smlouvy)
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponse.CaseId">
+            <summary>
+            ID obchodního případu
+            </summary>
+            <example>24777</example>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest.FilterId">
             <summary>
             [optional] ID pozadovaneho stavu filtru.

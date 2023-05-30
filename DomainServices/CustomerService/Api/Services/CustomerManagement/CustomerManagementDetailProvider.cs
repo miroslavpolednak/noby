@@ -22,11 +22,13 @@ internal sealed class CustomerManagementDetailProvider
     private List<GenericCodebookResponse.Types.GenericCodebookItem> _incomeMainTypesAML = null!;
     private List<EducationLevelsResponse.Types.EducationLevelItem> _educations = null!;
     private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
+    private readonly ILogger<CustomerManagementDetailProvider> _logger;
 
-    public CustomerManagementDetailProvider(CM.ICustomerManagementClient customerManagement, ICodebookServiceClient codebook)
+    public CustomerManagementDetailProvider(CM.ICustomerManagementClient customerManagement, ICodebookServiceClient codebook, ILogger<CustomerManagementDetailProvider> logger)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;
+        _logger = logger;
     }
 
     public async Task<CustomerDetailResponse> GetDetail(long customerId, CancellationToken cancellationToken)
@@ -88,7 +90,10 @@ internal sealed class CustomerManagementDetailProvider
     private NaturalPerson CreateNaturalPerson(CM.Contracts.CustomerInfo customer, bool? isLegallyIncapable)
     {
         var np = customer.Party.NaturalPersonAttributes;
-        
+
+        _logger.LogWarning("GenderCode={GenderCode}, Genders={Count}", np.GenderCode, _genders.Count);
+        _logger.LogWarning($"GenderId={_genders.Select(t => t.KbCmCode)}");
+
         var person = new NaturalPerson
         {
             BirthNumber = np.CzechBirthNumber ?? string.Empty,
