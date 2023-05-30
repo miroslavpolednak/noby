@@ -130,6 +130,7 @@ internal static class NobyAppBuilder
         .UseSwagger()
         .UseSwaggerUI(c =>
         {
+            c.DisplayOperationId();
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "NOBY FRONTEND API");
         });
 

@@ -217,7 +217,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("approach-customer-3602/sales-arrangement/{salesArrangementId:int}")]
-    [SwaggerOperation(Tags = new[] { "Dokument" }, OperationId = "GetApproachCustomer")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -237,7 +237,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("remain-customer-3602/sales-arrangement/{salesArrangementId:int}")]
-    [SwaggerOperation(Tags = new[] { "Dokument" }, OperationId = "GetRemainCustomer")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -257,7 +257,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("add-codebtor-3602/sales-arrangement/{salesArrangementId:int}")]
-    [SwaggerOperation(Tags = new[] { "Dokument" }, OperationId = "GetAddCodebtor")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

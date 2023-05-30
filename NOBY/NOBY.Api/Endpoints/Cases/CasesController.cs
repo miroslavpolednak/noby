@@ -189,7 +189,7 @@ public class CasesController : ControllerBase
     /// <returns>Seznam wf tasks z SB.</returns>
     [HttpGet("{caseId:long}/tasks")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Case" }, OperationId = "tasksByCaseIdGet")]
+    [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(GetTaskList.GetTaskListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetTaskList.GetTaskListResponse> GetTaskList([FromRoute] long caseId, CancellationToken cancellationToken)

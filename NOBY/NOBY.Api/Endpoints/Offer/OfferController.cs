@@ -22,7 +22,7 @@ public class OfferController : ControllerBase
     [HttpPost("mortgage")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new [] { "Modelace" }, OperationId = "mortgageOfferPost")]
+    [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(SimulateMortgage.SimulateMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<SimulateMortgage.SimulateMortgageResponse> SimulateMortgage([FromBody] SimulateMortgage.SimulateMortgageRequest request)
