@@ -88,7 +88,7 @@ internal sealed class CustomerManagementDetailProvider
     private NaturalPerson CreateNaturalPerson(CM.Contracts.CustomerInfo customer, bool? isLegallyIncapable)
     {
         var np = customer.Party.NaturalPersonAttributes;
-
+        
         var person = new NaturalPerson
         {
             BirthNumber = np.CzechBirthNumber ?? string.Empty,
