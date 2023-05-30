@@ -13,4 +13,9 @@ public class CreateHouseholdRequest
     /// </summary>
     /// <example>1</example>
     public int HouseholdTypeId { get; set; }
+
+    /// <summary>
+    /// Pouze pokud se vola handler z jineho handleru
+    /// </summary>
+    internal bool HardCreate { get; set; }
 }

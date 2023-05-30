@@ -2045,6 +2045,11 @@
             </summary>
             <example>1</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest.HardCreate">
+            <summary>
+            Pouze pokud se vola handler z jineho handleru
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.Incomes">
             <summary>
             Prijmy customera
