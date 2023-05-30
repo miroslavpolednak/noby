@@ -12,7 +12,7 @@ public sealed class SignInRequest : IRequest
     /// <summary>
     /// ID uzivatele v ramci vybraneho identitniho schematu.
     /// </summary>
-    /// <example>E0021L</example>
+    /// <example>A09V61</example>
     public string? IdentityId { get; set; }
 
     /// <summary>
