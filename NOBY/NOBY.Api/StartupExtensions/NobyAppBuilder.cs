@@ -118,7 +118,7 @@ internal static class NobyAppBuilder
                         var parameter = generatedOperation.Parameters[0];
                         parameter.Description = "Absolutní URI kam má být uživatel přesměrován po odhlášení";
 
-                        generatedOperation.Responses.First().Value.Description = "Uživatel byl ohlášen";
+                        generatedOperation.Responses.First().Value.Description = "Uživatel byl odhlášen";
 
                         return generatedOperation;
                     });
