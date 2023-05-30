@@ -225,5 +225,7 @@ INSERT [dbo].[SqlQuery] ([SqlQueryId], [SqlQueryText], [DatabaseProvider]) VALUE
 GO
 INSERT [dbo].[SqlQuery] ([SqlQueryId], [SqlQueryText], [DatabaseProvider]) VALUES (N'WorkSectors', N'SELECT KOD ''Id'', TEXT ''Name'', CAST(CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], ''9999-12-31'') THEN 1 ELSE 0 END as bit) ''IsValid'' FROM [SBR].[CIS_PRACOVNI_SEKTOR] ORDER BY KOD ASC', 1)
 GO
+INSERT [dbo].[SqlQuery] ([SqlQueryId], [SqlQueryText], [DatabaseProvider]) VALUES (N'CountryCodePhoneIdc', N'SELECT Id, Idc, [Name], IsPriority, CAST(CASE WHEN Id=''CZ+420'' THEN 1 ELSE 0 END as bit) ''IsDefault'', CAST(1 as bit) ''IsValid'' FROM [dbo].[CountryCodePhoneIdc]', 4)
+GO
 ALTER TABLE [dbo].[SqlQuery] ADD  CONSTRAINT [DF_SqlQuery_DatabaseProvider]  DEFAULT ((1)) FOR [DatabaseProvider]
 GO
