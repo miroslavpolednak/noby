@@ -72,6 +72,12 @@ internal sealed class LinkModelationToSalesArrangementHandler
     /// </summary>
     private async Task setFlowSwitches(int salesArrangementId, __Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellation)
     {
+        // Pokud existuje sleva na poplatku nebo sazbě (libovolný poplatek DiscountPercentage z kolekce SimulationInputs.Fees > 0 nebo SimulationInputs.InterestRateDiscount > 0),
+        if ((offerInstance.SimulationInputs.Fees?.Any(t => t.DiscountPercentage > 0) ?? false) || (offerInstance.SimulationInputs.InterestRateDiscount ?? 0) > 0M)
+        {
+
+        }
+
         if (((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.MinValue) > DateTime.Now)
         {
             var flowSwitchesRequest = new Contracts.SetFlowSwitchesRequest
