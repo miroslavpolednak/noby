@@ -650,6 +650,9 @@ internal sealed class CodebookService
             );
         });
 
+    public override Task<GenericCodebookResponse> WorkflowPriceExceptionDecisionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetGenericItems();
+
     public override Task<GenericCodebookResponse> WorkflowProcessType(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 
