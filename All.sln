@@ -294,6 +294,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00012-HFICH-5537-SalesArrangementType.sql = DomainServices\CodebookService\DatabaseMigrations\00012-HFICH-5537-SalesArrangementType.sql
 		DomainServices\CodebookService\DatabaseMigrations\00013-HFICH-5862-EaCodesMain.sql = DomainServices\CodebookService\DatabaseMigrations\00013-HFICH-5862-EaCodesMain.sql
 		DomainServices\CodebookService\DatabaseMigrations\00014-HFICH-5580-ProductTypes.sql = DomainServices\CodebookService\DatabaseMigrations\00014-HFICH-5580-ProductTypes.sql
+		DomainServices\CodebookService\DatabaseMigrations\00020-service_migration.sql = DomainServices\CodebookService\DatabaseMigrations\00020-service_migration.sql
 		DomainServices\CodebookService\DatabaseMigrations\00021-fixed-DocumentTemplateVariant_VersionIds.sql = DomainServices\CodebookService\DatabaseMigrations\00021-fixed-DocumentTemplateVariant_VersionIds.sql
 		DomainServices\CodebookService\DatabaseMigrations\00022-CodebookRefactoring.sql = DomainServices\CodebookService\DatabaseMigrations\00022-CodebookRefactoring.sql
 	EndProjectSection

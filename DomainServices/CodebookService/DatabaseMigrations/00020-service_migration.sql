@@ -13,7 +13,7 @@ INSERT [dbo].[AcademicDegreesBefore] ([Id], [Name]) VALUES (3, N'DR.')
 GO
 INSERT [dbo].[AcademicDegreesBefore] ([Id], [Name]) VALUES (7, N'JUDR.')
 GO
-INSERT [dbo].[AcademicDegreesBefore] ([Id], [Name]) VALUES (10, N'JUDR.')
+INSERT [dbo].[AcademicDegreesBefore] ([Id], [Name]) VALUES (10, N'RNDR.')
 GO
 INSERT [dbo].[AcademicDegreesBefore] ([Id], [Name]) VALUES (20, N'MGR.')
 GO
