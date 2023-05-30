@@ -184,5 +184,25 @@
             Došlo k uložení parametrů na žádosti
             </summary>
         </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.IsOfferWithDiscount">
+            <summary>
+            IC: Sleva ze sazby nebo na poplatku na modelaci
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.DoesWflTaskForIPExist">
+            <summary>
+            IC: Zadán WFL úkol na IC
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.IsWflTaskForIPApproved">
+            <summary>
+            IC: WFL úkol na IC je schválen
+            </summary>
+        </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.IsWflTaskForIPNotApproved">
+            <summary>
+            IC: WFL úkol na IC je zamítnut
+            </summary>
+        </member>
     </members>
 </doc>
