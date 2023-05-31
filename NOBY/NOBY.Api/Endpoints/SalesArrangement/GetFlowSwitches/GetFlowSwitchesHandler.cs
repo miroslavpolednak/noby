@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
+﻿using CIS.Foms.Enums;
+
+namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 
 internal sealed class GetFlowSwitchesHandler
     : IRequestHandler<GetFlowSwitchesRequest, GetFlowSwitchesResponse>
@@ -11,17 +13,24 @@ internal sealed class GetFlowSwitchesHandler
         // zjistit stav jednotlivych sekci na FE
         var mergedSwitches = _flowSwitches.GetFlowSwitchesGroups(existingSwitches);
 
-        return new GetFlowSwitchesResponse
+        var response = new GetFlowSwitchesResponse
         {
-            ModelationSection = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.ModelationSection]),
+            ModelationSection = createSection(mergedSwitches[FlowSwitchesGroups.ModelationSection]),
             //IndividualPriceSection = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.IndividualPriceSection]),
-            HouseholdSection = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.HouseholdSection]),
-            ParametersSection = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.ParametersSection]),
-            SigningSection = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.SigningSection]),
-            ScoringSection = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.ScoringSection]),
-            EvaluationSection = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.EvaluationSection]),
-            SendButton = createSectionButton(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.SendButton])
+            HouseholdSection = createSection(mergedSwitches[FlowSwitchesGroups.HouseholdSection]),
+            ParametersSection = createSection(mergedSwitches[FlowSwitchesGroups.ParametersSection]),
+            SigningSection = createSection(mergedSwitches[FlowSwitchesGroups.SigningSection]),
+            ScoringSection = createSection(mergedSwitches[FlowSwitchesGroups.ScoringSection]),
+            EvaluationSection = createSection(mergedSwitches[FlowSwitchesGroups.EvaluationSection]),
+            SendButton = createSectionButton(mergedSwitches[FlowSwitchesGroups.SendButton])
         };
+
+        if (existingSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferWithDiscount && t.Value))
+        {
+            response.ModelationSection.IsCompleted = response.ModelationSection.IsCompleted && !existingSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsWflTaskForIPNotApproved && t.Value);
+        }
+
+        return response;
     }
 
     private static GetFlowSwitchesResponseItemButton createSectionButton(Infrastructure.Services.FlowSwitches.FlowSwitchGroup group)
