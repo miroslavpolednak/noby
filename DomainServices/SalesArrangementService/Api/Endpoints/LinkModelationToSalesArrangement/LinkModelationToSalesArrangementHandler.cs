@@ -74,7 +74,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
     /// <summary>
     /// Nastaveni flow switches v podle toho jak je nastavena simulace / sa
     /// </summary>
-    private async Task setFlowSwitches(int salesArrangementId, __Offer.GetMortgageOfferResponse offerInstance, __Offer.GetMortgageOfferResponse? offerInstanceOld, CancellationToken cancellation)
+    private async Task setFlowSwitches(long caseId, int salesArrangementId, __Offer.GetMortgageOfferResponse offerInstance, __Offer.GetMortgageOfferResponse? offerInstanceOld, CancellationToken cancellation)
     {
         List<__SA.FlowSwitch> flowSwitchesToSet = new();
 
@@ -99,12 +99,14 @@ internal sealed class LinkModelationToSalesArrangementHandler
         //  Pokud parametry původně nalinkované Offer (konkrétně parametr Offer.BasicParameters.GuranteeDateTo, všechny DiscountPercentage z kolekce SimulationInputs.Fees a parametr SimulationInputs.InterestRateDiscount), nejsou stejné jako  odpovídající parametry na nové offer
         if (offerInstanceOld is not null)
         {
+            bool isSwitch8On = await _dbContext.FlowSwitches.AnyAsync(t => t.SalesArrangementId == salesArrangementId && t.FlowSwitchId == 8 && t.Value, cancellation);
             var fee1 = offerInstance.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
             var fee2 = offerInstanceOld.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
-            
-            if (offerInstance.BasicParameters.GuaranteeDateTo != offerInstanceOld.BasicParameters.GuaranteeDateTo
+
+            if (isSwitch8On
+                && (offerInstance.BasicParameters.GuaranteeDateTo != offerInstanceOld.BasicParameters.GuaranteeDateTo
                 || offerInstance.SimulationInputs.InterestRateDiscount != offerInstanceOld.SimulationInputs.InterestRateDiscount
-                || fee1.Except(fee2).Union(fee2.Except(fee1)).Any())
+                || fee1.Except(fee2).Union(fee2.Except(fee1)).Any()))
             {
                 flowSwitchesToSet.Add(new()
                 {
@@ -123,6 +125,11 @@ internal sealed class LinkModelationToSalesArrangementHandler
                 });
 
                 // Pokud již existuje WFL úkol na IC (getTaskList zafiltrovat na TaskTypeId = 2 a Cancelled = false), pak dojde k jeho zrušení pomocí cancelTask (na vstup jde TaskIdSB)
+                var taskToCancel = (await _caseService.GetTaskList(caseId, cancellation)).FirstOrDefault(t => t.TaskTypeId == 2 && !t.Cancelled);
+                if (taskToCancel is not null)
+                {
+                    await _caseService.CancelTask(taskToCancel.TaskIdSb, cancellation);
+                }
             }
         }
 
