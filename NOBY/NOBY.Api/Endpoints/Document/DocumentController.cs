@@ -3,12 +3,11 @@ using System.Net.Mime;
 using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using NOBY.Api.Endpoints.Document.Shared;
-using System.Threading;
 
 namespace NOBY.Api.Endpoints.Document;
 
 [ApiController]
-[Route("api/document/template")]
+[Route("api")]
 public class DocumentController : ControllerBase
 {
     private readonly DocumentManager _documentManager;
@@ -28,7 +27,7 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=01EE50D6-556E-47e8-ADD8-673A844864C2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("offer/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("document/template/offer/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -55,7 +54,7 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
-    [HttpGet("calculation/offer/{offerId:int}")]
+    [HttpGet("document/template/calculation/offer/{offerId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -75,7 +74,7 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
-    [HttpGet("payment-schedule/offer/{offerId:int}")]
+    [HttpGet("document/template/payment-schedule/offer/{offerId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -95,11 +94,12 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FF4A4806-9638-4287-8A4F-4CA027677E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("drawing/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("document/template/drawing/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Obsolete("Replaced with sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview endpoint. HFICH-6231")]
     public Task<IActionResult> GetDrawing(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -115,11 +115,12 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=176277CE-66F6-4abd-93E6-57F113B5AF16"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("general-change/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("document/template/general-change/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Obsolete("Replaced with sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview endpoint. HFICH-6231")]
     public Task<IActionResult> GetGeneralChange(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -135,11 +136,12 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0E17AE8A-C137-415b-B4FB-2C0D3995E0DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("HUBN/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("document/template/HUBN/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Obsolete("Replaced with sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview endpoint. HFICH-6231")]
     public Task<IActionResult> GetHUBN(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -157,11 +159,12 @@ public class DocumentController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("customer-change/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("document/template/customer-change/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Obsolete("Replaced with sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview endpoint. HFICH-6231")]
     public Task<IActionResult> GetCustomerChange(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -177,11 +180,12 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DD734EDD-1344-43b2-B45E-3407255B993A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("loan-application/main-household/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("document/template/loan-application/main-household/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Obsolete("Replaced with sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview endpoint. HFICH-6231")]
     public Task<IActionResult> GetLoanApplicationMain(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -197,11 +201,12 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D5159266-11E9-4959-BDFA-71C1FCF46092"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("loan-application/codebtor-household/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("document/template/loan-application/codebtor-household/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Obsolete("Replaced with sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview endpoint. HFICH-6231")]
     public Task<IActionResult> GetLoanApplicationCodebtor(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -217,11 +222,12 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=02F2D995-565F-4250-8C0A-BCE875C3AAB2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("approach-customer-3602/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("document/template/approach-customer-3602/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Obsolete("Replaced with sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview endpoint. HFICH-6231")]
     public Task<IActionResult> GetApproachCustomer3602(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -237,11 +243,12 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=1FFE176A-27E6-421e-B2A0-CBD1D4D31890"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("remain-customer-3602/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("document/template/remain-customer-3602/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Obsolete("Replaced with sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview endpoint. HFICH-6231")]
     public Task<IActionResult> GetRemainCustomer3602(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -257,11 +264,12 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=89B4A263-F822-410b-B3AB-E5806A1C7526"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("add-codebtor-3602/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("document/template/add-codebtor-3602/sales-arrangement/{salesArrangementId:int}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Obsolete("Replaced with sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview endpoint. HFICH-6231")]
     public Task<IActionResult> GetAddCodebtor3602(int salesArrangementId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
@@ -282,7 +290,7 @@ public class DocumentController : ControllerBase
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpGet("/api/sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview")]
+    [HttpGet("sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview")]
     public Task<IActionResult> GenerateDocumentPreview(int salesArrangementId, int documentTypeId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
