@@ -1,7 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
-using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace DomainServices.CaseService.Api.Endpoints.CreateTask;
@@ -15,6 +14,8 @@ internal sealed class CreateTaskHandler
         metadata.Add(getTaskTypeKey(), request.TaskRequest);
         metadata.Add("ukol_uver_id", request.CaseId.ToString(CultureInfo.InvariantCulture));
         metadata.Add("ukol_mandant", "2");
+
+        MapPriceException(metadata, request.PriceException);
 
         // subtype
         if (request.TaskTypeId == 3)
@@ -48,6 +49,7 @@ internal sealed class CreateTaskHandler
         {
             7 => "ukol_predanihs_pozadavek",
             3 => "ukol_konzultace_pozadavek",
+            2 => "ukol_overeni_pozadavek",
             _ => throw new NotImplementedException($"TaskTypeId {request.TaskTypeId} is not supported")
         };
     }
@@ -62,6 +64,32 @@ internal sealed class CreateTaskHandler
                 new() { FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist, Value = false }
             }, cancellationToken);
         }
+    }
+
+    private static void MapPriceException(Dictionary<string, string> metadata, TaskPriceException? priceException)
+    {
+        if (priceException is null)
+            return;
+
+        metadata.Add("ukol_overeni_ic_kod_produktu", priceException.ProductTypeId.ToString(CultureInfo.InvariantCulture));
+        metadata.Add("ukol_overeni_ic_vyse_uveru", priceException.LoanAmount.ToString(CultureInfo.InvariantCulture));
+        metadata.Add("ukol_overeni_ic_splatnost_uveru_poc_mes", priceException.LoanDuration.ToString(CultureInfo.InvariantCulture));
+        metadata.Add("ukol_overeni_ic_uver_ltv", priceException.LoanToValue.ToString(CultureInfo.InvariantCulture));
+        metadata.Add("ukol_overeni_ic_fixace_uveru_poc_mes", priceException.FixedRatePeriod.ToString(CultureInfo.InvariantCulture));
+
+        for (var i = 0; i < priceException.AppliedMarketingActionsCodes.Count; i++)
+        {
+            metadata.Add($"ukol_overeni_ic_skladacka_ma{i + 1}", GetMarketingActionValue(priceException.AppliedMarketingActionsCodes[i]).ToString(CultureInfo.InvariantCulture));
+        }
+
+        static int GetMarketingActionValue(string key) => key switch
+        {
+            "DOMICILACE" => 1,
+            "RZP" => 2,
+            "VYSE_PRIJMU_UVERU" => 3,
+            "POJIST_NEM" => 4,
+            _ => throw new NotImplementedException()
+        };
     }
 
     private readonly ISbWebApiClient _sbWebApi;

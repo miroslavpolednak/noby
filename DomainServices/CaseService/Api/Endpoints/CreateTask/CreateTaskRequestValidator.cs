@@ -11,11 +11,19 @@ internal sealed class CreateTaskRequestValidator
         RuleFor(t => t.TaskTypeId)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.TaskTypeIdIsEmpty)
-            .Must(t => t == 3 || t == 7)
+            .Must(t => t is 2 or 3 or 7)
             .WithErrorCode(ErrorCodeMapper.TaskTypeIdNotAllowed);
 
         RuleFor(t => t.ProcessId)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.ProcessIdIsEmpty);
+
+        When(t => t.TaskTypeId == 2,
+             () =>
+             {
+                 RuleFor(t => t.PriceException)
+                     .NotNull()
+                     .WithErrorCode(ErrorCodeMapper.TaskPriceExceptionIsEmpty);
+             });
     }
 }

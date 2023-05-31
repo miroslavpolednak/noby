@@ -11,9 +11,25 @@ message CreateTaskRequest {
 	google.protobuf.StringValue TaskRequest = 4;
 	repeated string TaskDocumentsId = 5;
 	int64 CaseId = 6;
+
+	optional TaskPriceException PriceException = 7;
 }
 
 message CreateTaskResponse {
 	int32 TaskIdSB = 1;
 	int64 TaskId = 2;
+}
+
+message TaskPriceException {
+	int32 ProductTypeId = 1;
+
+	int32 LoanAmount = 2;
+
+	int32 LoanDuration = 3;
+
+	int32 LoanToValue = 4;
+
+	int32 FixedRatePeriod = 5;
+
+	repeated string AppliedMarketingActionsCodes = 6;
 }
