@@ -22,11 +22,13 @@ internal sealed class CustomerManagementDetailProvider
     private List<GenericCodebookResponse.Types.GenericCodebookItem> _incomeMainTypesAML = null!;
     private List<EducationLevelsResponse.Types.EducationLevelItem> _educations = null!;
     private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
+    private readonly ILogger<CustomerManagementDetailProvider> _logger;
 
-    public CustomerManagementDetailProvider(CM.ICustomerManagementClient customerManagement, ICodebookServiceClient codebook)
+    public CustomerManagementDetailProvider(CM.ICustomerManagementClient customerManagement, ICodebookServiceClient codebook, ILogger<CustomerManagementDetailProvider> logger)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;
+        _logger = logger;
     }
 
     public async Task<CustomerDetailResponse> GetDetail(long customerId, CancellationToken cancellationToken)

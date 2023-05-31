@@ -8,7 +8,7 @@
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Product>Common Infrastructure Solution</Product>
 	  <Authors>Filip Tuma</Authors>
-	  <Version>1.0.0.0</Version>
+	  <Version>1.0.0.1</Version>
   </PropertyGroup>
 
 	<PropertyGroup>

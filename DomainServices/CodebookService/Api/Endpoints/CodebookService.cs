@@ -45,17 +45,7 @@ internal sealed class CodebookService
         => _db.GetItems<CountriesResponse, CountriesResponse.Types.CountryItem>();
 
     public override Task<CountryCodePhoneIdcResponse> CountryCodePhoneIdc(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(() => (new CountryCodePhoneIdcResponse()).AddItems(
-            new List<Contracts.v1.CountryCodePhoneIdcResponse.Types.CountryCodePhoneIdcItem>
-            {
-                new() { Id = "AD+376", Name = "AD", Idc = "+376",  IsValid = true, IsPriority = false, IsDefault = false },
-                new() { Id = "AE+971", Name = "AE", Idc = "+971",  IsValid = true, IsPriority = false, IsDefault = false },
-                new() { Id = "AF+93", Name = "AF", Idc = "+93",  IsValid = true, IsPriority = false, IsDefault = false },
-                new() { Id = "AG+1268", Name = "AG", Idc = "+1268",  IsValid = true, IsPriority = false, IsDefault = false },
-                new() { Id = "AI+1264", Name = "AI", Idc = "+1264",  IsValid = true, IsPriority = false, IsDefault = false },
-                new() { Id = "CZ+420", Name = "CZ", Idc = "+420",  IsValid = true, IsPriority = true, IsDefault = true },
-            })
-        );
+        => _db.GetItems<CountryCodePhoneIdcResponse, CountryCodePhoneIdcResponse.Types.CountryCodePhoneIdcItem>();
 
     public override Task<CurrenciesResponse> Currencies(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<CurrenciesResponse, CurrenciesResponse.Types.CurrencyItem>();
@@ -184,6 +174,7 @@ internal sealed class CodebookService
         => Helpers.GetItems(() => (new GendersResponse()).AddItems(
             FastEnum
                 .GetValues<CIS.Foms.Enums.Genders>()
+                .Where(t => t != CIS.Foms.Enums.Genders.Unknown)
                 .Select(t => new GendersResponse.Types.GenderItem()
                 {
                     Id = (int)t,
@@ -658,6 +649,12 @@ internal sealed class CodebookService
                 })
             );
         });
+
+    public override Task<GenericCodebookResponse> WorkflowPriceExceptionDecisionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetGenericItems();
+
+    public override Task<GenericCodebookResponse> WorkflowProcessType(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> WorkflowTaskCategories(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<CIS.Foms.Enums.WorkflowTaskCategory>();

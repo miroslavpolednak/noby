@@ -18,7 +18,8 @@ internal sealed class CustomerChange3602CBuilder
         var householdResult = await mediator.Send(new Endpoints.Household.CreateHousehold.CreateHouseholdRequest
         {
             SalesArrangementId = salesArrangementId,
-            HouseholdTypeId = (int)HouseholdTypes.Codebtor
+            HouseholdTypeId = (int)HouseholdTypes.Codebtor,
+            HardCreate = true
         }, cancellationToken);
 
         // vytvorit klienta

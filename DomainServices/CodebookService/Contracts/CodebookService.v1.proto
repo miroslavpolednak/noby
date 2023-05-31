@@ -500,6 +500,18 @@ service CodebookService {
 		};
    }
 
+   rpc WorkflowPriceExceptionDecisionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-price-exception-decision-types"
+		};
+   }
+
+   rpc WorkflowProcessType (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-process-type"
+		};
+   }
+
    rpc WorkflowTaskCategories (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/workflow-task-categories"

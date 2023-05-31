@@ -27,17 +27,21 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // validace na existenci offer
         var offerInstance = await _offerService.GetMortgageOffer(request.OfferId, cancellation);
 
+        // instance puvodni Offer
+        __Offer.GetMortgageOfferResponse? offerInstanceOld = null;
+        if (salesArrangementInstance.OfferId.HasValue)
+        {
+            offerInstanceOld = await _offerService.GetMortgageOffer(salesArrangementInstance.OfferId.Value, cancellation);
+        }
+
         // kontrola, zda simulace neni nalinkovana na jiny SA
         if (await _dbContext.SalesArrangements.AnyAsync(t => t.OfferId == request.OfferId, cancellation))
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AlreadyLinkedToAnotherSA, request.OfferId);
 
         // Kontrola, že nová Offer má GuaranteeDateFrom větší nebo stejné jako původně nalinkovaná offer
-        if (salesArrangementInstance.OfferId.HasValue)
-        {
-            var offerInstanceOld = await _offerService.GetMortgageOffer(salesArrangementInstance.OfferId.Value, cancellation);
-            if ((DateTime)offerInstance.SimulationInputs.GuaranteeDateFrom < (DateTime)offerInstanceOld.SimulationInputs.GuaranteeDateFrom)
-                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InvalidGuaranteeDateFrom);
-        }
+        if (offerInstanceOld is not null
+            && (DateTime)offerInstance.SimulationInputs.GuaranteeDateFrom < (DateTime)offerInstanceOld.SimulationInputs.GuaranteeDateFrom)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InvalidGuaranteeDateFrom);
 
         // update linku v DB
         salesArrangementInstance.OfferGuaranteeDateFrom = offerInstance.SimulationInputs.GuaranteeDateFrom;
@@ -62,7 +66,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         }, cancellation);
 
         // nastavit flowSwitches
-        await setFlowSwitches(request.SalesArrangementId, offerInstance, cancellation);
+        await setFlowSwitches(salesArrangementInstance.CaseId, request.SalesArrangementId, offerInstance, offerInstanceOld, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
@@ -70,19 +74,74 @@ internal sealed class LinkModelationToSalesArrangementHandler
     /// <summary>
     /// Nastaveni flow switches v podle toho jak je nastavena simulace / sa
     /// </summary>
-    private async Task setFlowSwitches(int salesArrangementId, __Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellation)
+    private async Task setFlowSwitches(long caseId, int salesArrangementId, __Offer.GetMortgageOfferResponse offerInstance, __Offer.GetMortgageOfferResponse? offerInstanceOld, CancellationToken cancellation)
     {
+        List<__SA.FlowSwitch> flowSwitchesToSet = new();
+
+        // Pokud existuje sleva na poplatku nebo sazbě (libovolný poplatek DiscountPercentage z kolekce SimulationInputs.Fees > 0 nebo SimulationInputs.InterestRateDiscount > 0),
+        bool isOfferWithDiscount = (offerInstance.SimulationInputs.Fees?.Any(t => t.DiscountPercentage > 0) ?? false) || (offerInstance.SimulationInputs.InterestRateDiscount ?? 0) > 0M;
+        flowSwitchesToSet.Add(new()
+        {
+            FlowSwitchId = (int)FlowSwitches.IsOfferWithDiscount,
+            Value = isOfferWithDiscount
+        });
+
+        // Pokud Offer.BasicParameters.GuranteeDateTo > sysdate (tedy platnost garance ještě neskončila)
         if (((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.MinValue) > DateTime.Now)
+        {
+            flowSwitchesToSet.Add(new()
+            {
+                FlowSwitchId = (int)FlowSwitches.IsOfferGuaranteed,
+                Value = true
+            });
+        }
+
+        //  Pokud parametry původně nalinkované Offer (konkrétně parametr Offer.BasicParameters.GuranteeDateTo, všechny DiscountPercentage z kolekce SimulationInputs.Fees a parametr SimulationInputs.InterestRateDiscount), nejsou stejné jako  odpovídající parametry na nové offer
+        if (offerInstanceOld is not null)
+        {
+            bool isSwitch8On = await _dbContext.FlowSwitches.AnyAsync(t => t.SalesArrangementId == salesArrangementId && t.FlowSwitchId == 8 && t.Value, cancellation);
+            var fee1 = offerInstance.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
+            var fee2 = offerInstanceOld.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
+
+            if (isSwitch8On
+                && (offerInstance.BasicParameters.GuaranteeDateTo != offerInstanceOld.BasicParameters.GuaranteeDateTo
+                || offerInstance.SimulationInputs.InterestRateDiscount != offerInstanceOld.SimulationInputs.InterestRateDiscount
+                || fee1.Except(fee2).Union(fee2.Except(fee1)).Any()))
+            {
+                flowSwitchesToSet.Add(new()
+                {
+                    FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist,
+                    Value = false
+                });
+                flowSwitchesToSet.Add(new()
+                {
+                    FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPApproved,
+                    Value = false
+                });
+                flowSwitchesToSet.Add(new()
+                {
+                    FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPNotApproved,
+                    Value = false
+                });
+
+                // Pokud již existuje WFL úkol na IC (getTaskList zafiltrovat na TaskTypeId = 2 a Cancelled = false), pak dojde k jeho zrušení pomocí cancelTask (na vstup jde TaskIdSB)
+                var taskToCancel = (await _caseService.GetTaskList(caseId, cancellation)).FirstOrDefault(t => t.TaskTypeId == 2 && !t.Cancelled);
+                if (taskToCancel is not null)
+                {
+                    await _caseService.CancelTask(taskToCancel.TaskIdSb, cancellation);
+                }
+            }
+        }
+
+        // ulozit pokud byli nejake switches nastaveny
+        if (flowSwitchesToSet.Any())
         {
             var flowSwitchesRequest = new Contracts.SetFlowSwitchesRequest
             {
                 SalesArrangementId = salesArrangementId
             };
-            flowSwitchesRequest.FlowSwitches.Add(new __SA.FlowSwitch
-            {
-                FlowSwitchId = (int)FlowSwitches.IsOfferGuaranteed,
-                Value = true
-            });
+            flowSwitchesRequest.FlowSwitches.AddRange(flowSwitchesToSet);
+
             await _mediator.Send(flowSwitchesRequest, cancellation);
         }
     }
