@@ -10,10 +10,6 @@ message GetTaskDetailRequest {
 }
 
 message GetTaskDetailResponse {
-	repeated TaskDetailResponse TaskDetails = 1;
-}
-
-message TaskDetailResponse {
 	WorkflowTask TaskObject = 1;
 
 	TaskDetailItem TaskDetail = 2;
