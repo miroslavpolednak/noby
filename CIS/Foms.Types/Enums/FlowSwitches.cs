@@ -30,5 +30,25 @@ public enum FlowSwitches : int
     /// <summary>
     /// Došlo k uložení parametrů na žádosti
     /// </summary>
-    ParametersSavedAtLeastOnce = 6
+    ParametersSavedAtLeastOnce = 6,
+
+    /// <summary>
+    /// IC: Sleva ze sazby nebo na poplatku na modelaci
+    /// </summary>
+    IsOfferWithDiscount = 7,
+
+    /// <summary>
+    /// IC: Zadán WFL úkol na IC
+    /// </summary>
+    DoesWflTaskForIPExist = 8,
+
+    /// <summary>
+    /// IC: WFL úkol na IC je schválen
+    /// </summary>
+    IsWflTaskForIPApproved = 9,
+
+    /// <summary>
+    /// IC: WFL úkol na IC je zamítnut
+    /// </summary>
+    IsWflTaskForIPNotApproved = 10
 }
