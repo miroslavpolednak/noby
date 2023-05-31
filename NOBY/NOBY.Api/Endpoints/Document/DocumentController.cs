@@ -3,6 +3,7 @@ using System.Net.Mime;
 using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using NOBY.Api.Endpoints.Document.Shared;
+using System.Threading;
 
 namespace NOBY.Api.Endpoints.Document;
 
@@ -268,9 +269,30 @@ public class DocumentController : ControllerBase
         return GenerateGeneralDocument(DocumentType.ZADOSTHD_SERVICE, input, cancellationToken);
     }
 
+    /// <summary>
+    /// Vygenerování náhledu dokumentu
+    /// </summary>
+    /// <remarks>
+    /// Vrací se steam binárních dat.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&o=258EEA87-9394-42ec-B51F-C13F091686E0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId"></param>
+    /// <param name="documentTypeId"></param>
+    [SwaggerOperation(Tags = new[] { "Dokument" }, OperationId = "GetDocumentPreview")]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpGet("/api/sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview")]
+    public Task<IActionResult> GenerateDocumentPreview(int salesArrangementId, int documentTypeId, CancellationToken cancellationToken)
+    {
+        var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
+
+        return GenerateGeneralDocument((DocumentType)documentTypeId, input, cancellationToken);
+    }
+
     private Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, CancellationToken cancellationToken)
     {
-        return GenerateGeneralDocument(documentType, inputParameters, false, cancellationToken);
+        return GenerateGeneralDocument(documentType, inputParameters, true, cancellationToken);
     }
 
     private async Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, bool forPreview, CancellationToken cancellationToken)
