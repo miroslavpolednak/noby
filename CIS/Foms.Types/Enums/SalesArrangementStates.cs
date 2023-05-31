@@ -26,7 +26,6 @@ public enum SalesArrangementStates : byte
     [CisStarbuildId(2)]
     Cancelled = 3,
 
-    [Obsolete]
     [EnumMember]
     [Display(Name = "Podepsáno")]
     [CisStarbuildId(1)]

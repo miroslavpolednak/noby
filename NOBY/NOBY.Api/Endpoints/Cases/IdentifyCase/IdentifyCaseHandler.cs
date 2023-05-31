@@ -46,14 +46,9 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         {
             var response = await _caseServiceClient.GetTaskDetail(task.TaskIdSb, cancellationToken);
 
-            var taskDetailsWithFormId  = response.TaskDetails
-                .Where(d => d.TaskDetail?.Signing?.FormId == formId)
-                .Select(d => d.TaskDetail)
-                .ToList();
-
-            if (taskDetailsWithFormId.Any())
+            if (response.TaskDetail?.Signing?.FormId == formId)
             {
-                taskDetails.Add(task.TaskId, taskDetailsWithFormId);
+                taskDetails.Add(task.TaskId, new() { response.TaskDetail });
             }
         }
 

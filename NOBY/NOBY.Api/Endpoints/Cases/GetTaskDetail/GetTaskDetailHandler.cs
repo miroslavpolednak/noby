@@ -2,7 +2,6 @@
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using NOBY.Api.Endpoints.Cases.Dto;
-using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using NOBY.Api.Endpoints.Shared;
 
 namespace NOBY.Api.Endpoints.Cases.GetTaskDetail;
@@ -21,7 +20,7 @@ internal sealed class GetTaskDetailHandler : IRequestHandler<GetTaskDetailReques
             ?? throw new CisNotFoundException(90001, $"Task {request.TaskId} not found.");
 
         var taskDetails = await _caseService.GetTaskDetail(task.TaskIdSb, cancellationToken);
-        var taskDetail = taskDetails.TaskDetails.FirstOrDefault(t => t.TaskObject.TaskId == task.TaskId)?.TaskDetail
+        var taskDetail = taskDetails.TaskDetail
             ?? throw new CisNotFoundException(90001, $"TaskDetail for Task {request.TaskId} not found.");
 
         var documentIds = taskDetail.TaskDocumentIds.ToHashSet();
