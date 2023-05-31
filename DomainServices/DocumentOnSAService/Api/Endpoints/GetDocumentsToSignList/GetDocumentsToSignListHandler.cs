@@ -96,7 +96,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
             SalesArrangementId = salesArrangementId,
             IsValid = true,
             IsSigned = false,
-            IsDocumentArchived = false
+            IsArchived = false
         };
     }
 
@@ -111,7 +111,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
                 HouseholdId = household.HouseholdId,
                 IsValid = true,
                 IsSigned = false,
-                IsDocumentArchived = false
+                IsArchived = false
             };
         }
     }

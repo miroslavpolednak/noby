@@ -1,4 +1,5 @@
 ﻿using DomainServices.DocumentOnSAService.Api.Database.Entities;
+using DomainServices.DocumentOnSAService.Api.Database.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -33,8 +34,14 @@ public class DocumentOnSaConfiguration : IEntityTypeConfiguration<DocumentOnSa>
         builder.Property(e => e.IsSigned)
            .HasDefaultValue(false);
 
-        builder.Property(e => e.IsDocumentArchived)
+        builder.Property(e => e.IsArchived)
            .HasDefaultValue(false);
+
+        builder.Property(e => e.ExternalId)
+          .HasColumnType("nvarchar(50)");
+
+        builder.Property(e => e.Source)
+            .HasDefaultValue(Source.Noby);
 
         if (DocumentOnSAServiceDbContext.IsSqlite)
             builder.Property(e => e.Data).HasColumnType("text");

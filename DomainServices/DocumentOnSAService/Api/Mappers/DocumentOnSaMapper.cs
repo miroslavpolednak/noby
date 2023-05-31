@@ -30,7 +30,7 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
                 HouseholdId = documentOnSa.HouseholdId,
                 IsValid = documentOnSa.IsValid,
                 IsSigned = documentOnSa.IsSigned,
-                IsDocumentArchived = documentOnSa.IsDocumentArchived,
+                IsArchived = documentOnSa.IsArchived,
                 SignatureMethodCode = documentOnSa.SignatureMethodCode ?? string.Empty,
                 SignatureDateTime = documentOnSa.SignatureDateTime is not null ? Timestamp.FromDateTime(DateTime.SpecifyKind(documentOnSa.SignatureDateTime.Value, DateTimeKind.Utc)) : null,
                 SignatureConfirmedBy = documentOnSa.SignatureConfirmedBy,
