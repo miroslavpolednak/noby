@@ -294,9 +294,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00012-HFICH-5537-SalesArrangementType.sql = DomainServices\CodebookService\DatabaseMigrations\00012-HFICH-5537-SalesArrangementType.sql
 		DomainServices\CodebookService\DatabaseMigrations\00013-HFICH-5862-EaCodesMain.sql = DomainServices\CodebookService\DatabaseMigrations\00013-HFICH-5862-EaCodesMain.sql
 		DomainServices\CodebookService\DatabaseMigrations\00014-HFICH-5580-ProductTypes.sql = DomainServices\CodebookService\DatabaseMigrations\00014-HFICH-5580-ProductTypes.sql
-		DomainServices\CodebookService\DatabaseMigrations\00020-service_migration.sql = DomainServices\CodebookService\DatabaseMigrations\00020-service_migration.sql
-		DomainServices\CodebookService\DatabaseMigrations\00021-fixed-DocumentTemplateVariant_VersionIds.sql = DomainServices\CodebookService\DatabaseMigrations\00021-fixed-DocumentTemplateVariant_VersionIds.sql
-		DomainServices\CodebookService\DatabaseMigrations\00022-CodebookRefactoring.sql = DomainServices\CodebookService\DatabaseMigrations\00022-CodebookRefactoring.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -337,6 +334,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00001-InitialCreate.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00001-InitialCreate.sql
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00002-HFICH-5357_DocumentTemplateVariantId.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00002-HFICH-5357_DocumentTemplateVariantId.sql
+		DomainServices\DocumentOnSAService\DatabaseMigrations\00003-HFICH-6054_HFICH-5974_SignatureProps.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00003-HFICH-6054_HFICH-5974_SignatureProps.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness", "DomainServices\RiskIntegrationService\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj", "{FF60B12F-B083-46BE-B8DA-FD91ABE2D831}"
@@ -386,9 +384,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00019-HFICH-5934_Template3602.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00019-HFICH-5934_Template3602.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00020-HFICH-5218_ContractSegment.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00020-HFICH-5218_ContractSegment.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00021-HFICH-5957_HFICH-6027.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00021-HFICH-5957_HFICH-6027.sql
-		InternalServices\DataAggregatorService\DatabaseMigrations\00022-HFICH-3873_CustomerChange3602_Template.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00022-HFICH-3873_CustomerChange3602_Template.sql
-		InternalServices\DataAggregatorService\DatabaseMigrations\00023-HFICH-3873_LoanApplication3602_Service.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00023-HFICH-3873_LoanApplication3602_Service.sql
-		InternalServices\DataAggregatorService\DatabaseMigrations\00024-HFICH-3903_EasForm_CustomerChange3602.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00024-HFICH-3903_EasForm_CustomerChange3602.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"

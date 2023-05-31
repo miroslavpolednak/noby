@@ -4201,7 +4201,7 @@
             <summary>
             ID uzivatele v ramci vybraneho identitniho schematu.
             </summary>
-            <example>E0021L</example>
+            <example>A09V61</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.IdentityScheme">
             <summary>

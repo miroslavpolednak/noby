@@ -22,7 +22,7 @@ public class BatchOperationRepository : IBatchOperationRepository
         var result = await _dbContext.DocumentOnSa
             .Where(d => EArchiveIds.Contains(d.EArchivId!))
             .ExecuteUpdateAsync(s => s
-                .SetProperty(d => d.IsDocumentArchived, d => true)
+                .SetProperty(d => d.IsArchived, d => true)
             , cancelationToken);
     }
 }

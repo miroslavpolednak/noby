@@ -49,7 +49,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
 
         var documentOnSa = documentOnSas.DocumentsOnSAToSign.Single(r => r.DocumentOnSAId == request.DocumentOnSAId);
 
-        if (documentOnSa.IsDocumentArchived)
+        if (documentOnSa.IsArchived)
         {
             return await GetDocumentFromEArchive(documentOnSa, cancellationToken);
         }

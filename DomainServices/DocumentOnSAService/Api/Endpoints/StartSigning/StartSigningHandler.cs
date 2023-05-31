@@ -117,7 +117,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
                 HouseholdId = documentOnSaEntity.HouseholdId,
                 IsValid = documentOnSaEntity.IsValid,
                 IsSigned = documentOnSaEntity.IsSigned,
-                IsDocumentArchived = documentOnSaEntity.IsDocumentArchived,
+                IsArchived = documentOnSaEntity.IsArchived,
                 SignatureMethodCode = documentOnSaEntity.SignatureMethodCode ?? string.Empty,
                 EArchivId = documentOnSaEntity.EArchivId,
             }
@@ -138,7 +138,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         entity.Data = JsonSerializer.Serialize(getDocumentDataResponse.DocumentData);
         entity.IsValid = true;
         entity.IsSigned = false;
-        entity.IsDocumentArchived = false;
+        entity.IsArchived = false;
         return entity;
     }
 
