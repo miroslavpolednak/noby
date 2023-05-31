@@ -202,8 +202,11 @@ internal sealed class CodebookService
         => _db.GetItems<GetGeneralDocumentListResponse, GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem>();
 
     public override async Task<GetOperatorResponse> GetOperator(GetOperatorRequest request, ServerCallContext context)
-        => await _db.GetFirstOrDefault<GetOperatorResponse>(new { request.PerformerLogin });
-    
+    { 
+        return await _db.GetFirstOrDefault<GetOperatorResponse>(new { request.PerformerLogin })
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OperatorNotFound, request.PerformerLogin);
+    }
+
     public override Task<HouseholdTypesResponse> HouseholdTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new HouseholdTypesResponse()).AddItems(
             FastEnum

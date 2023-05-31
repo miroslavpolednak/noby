@@ -26,7 +26,7 @@ public class AmendmentsSigning
     /// </summary>
     /// <example>24.12.2023</example>
     [Required]
-    public string Expiration { get; set; } = null!;
+    public DateTime Expiration { get; set; }
     
 
     /// <summary>
