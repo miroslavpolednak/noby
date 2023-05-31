@@ -40,8 +40,8 @@ internal sealed class SbWebApiCommonDataProvider
 
     public async Task<IList<int>> GetValidTaskStateIds(CancellationToken cancellationToken)
     {
-        var taskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
-
-        return taskStates.Where(i => !i.Flag.HasFlag(CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types.EWorkflowTaskStateFlag.Inactive)).Select(i => i.Id).ToList();
+        return (await _codebookService.WorkflowTaskStates(cancellationToken))
+            .Select(i => i.Id)
+            .ToList();
     }
 }
