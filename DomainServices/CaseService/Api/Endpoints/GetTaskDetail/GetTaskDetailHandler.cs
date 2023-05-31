@@ -25,18 +25,13 @@ internal sealed class GetTaskDetailHandler
             throw new CisValidationException(ErrorCodeMapper.TaskIdNotFound, ErrorCodeMapper.GetMessage(ErrorCodeMapper.TaskIdNotFound, request.TaskIdSb));
         }
 
-        var response = new GetTaskDetailResponse();
-
-        foreach (var taskData in tasks)
+        // pry nikdy nemuze byt vic tasku
+        var task = tasks.First();
+        return new GetTaskDetailResponse
         {
-            response.TaskDetails.Add(new TaskDetailResponse
-            {
-                TaskObject = taskData.ToWorkflowTask(),
-                TaskDetail = await createTaskDetail(taskData, cancellationToken)
-            });
-        }
-
-        return response;
+            TaskObject = task.ToWorkflowTask(),
+            TaskDetail = await createTaskDetail(task, cancellationToken)
+        };
     }
 
     private async Task<TaskDetailItem> createTaskDetail(IReadOnlyDictionary<string, string> taskData, CancellationToken cancellationToken)

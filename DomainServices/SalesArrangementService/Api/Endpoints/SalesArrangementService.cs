@@ -12,6 +12,9 @@ internal sealed class SalesArrangementService : Contracts.v1.SalesArrangementSer
     public SalesArrangementService(IMediator mediator)
         => _mediator = mediator;
 
+    public override async Task<GetProductSalesArrangementIdResponse> GetProductSalesArrangementId(GetProductSalesArrangementIdRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     public override async Task<CreateSalesArrangementResponse> CreateSalesArrangement(CreateSalesArrangementRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 

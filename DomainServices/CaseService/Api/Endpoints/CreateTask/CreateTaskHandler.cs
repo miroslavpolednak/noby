@@ -56,33 +56,19 @@ internal sealed class CreateTaskHandler
     {
         if (request.TaskTypeId == 2)
         {
-            var saTypes = (await _codebookService.SalesArrangementTypes(cancellationToken))
-                .Where(t => t.SalesArrangementCategory == 1)
-                .Select(t => t.Id)
-                .ToList();
-
-            var saInstance = (await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken))
-                .SalesArrangements
-                .Where(t => saTypes.Contains(t.SalesArrangementTypeId))
-                .FirstOrDefault();
-
-            if (saInstance is not null)
+            var saId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
+            await _salesArrangementService.SetFlowSwitches(saId, new()
             {
-                await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
-                {
-                    new() { FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist, Value = false }
-                }, cancellationToken);
-            }
+                new() { FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist, Value = false }
+            }, cancellationToken);
         }
     }
 
-    private readonly ICodebookServiceClient _codebookService;
     private readonly ISbWebApiClient _sbWebApi;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
-    public CreateTaskHandler(ISbWebApiClient sbWebApi, ISalesArrangementServiceClient salesArrangementService, ICodebookServiceClient codebookService)
+    public CreateTaskHandler(ISbWebApiClient sbWebApi, ISalesArrangementServiceClient salesArrangementService)
     {
-        _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
         _sbWebApi = sbWebApi;
     }

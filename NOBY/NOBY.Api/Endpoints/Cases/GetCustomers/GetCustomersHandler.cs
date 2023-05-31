@@ -22,15 +22,7 @@ internal sealed class GetCustomersHandler
 
         if (caseInstance.State == (int)CIS.Foms.Enums.CaseStates.InProgress)
         {
-            // get allowed SA types
-            if (_allowedSalesArrangementTypes is null)
-                _allowedSalesArrangementTypes = (await _codebookService.SalesArrangementTypes(cancellationToken))
-                    .Where(t => t.ProductTypeId.GetValueOrDefault() > 0).Select(t => t.Id)
-                    .ToList();
-
-            // get salesArrangementId
-            var saInstances = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken);
-            var saId = saInstances.SalesArrangements.First(t => _allowedSalesArrangementTypes.Contains(t.SalesArrangementTypeId)).SalesArrangementId;
+            var saId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
             // z parameters nacist Agent
             var saDetail = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
             
