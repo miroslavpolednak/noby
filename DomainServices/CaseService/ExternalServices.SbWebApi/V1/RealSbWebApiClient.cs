@@ -175,7 +175,7 @@ internal sealed class RealSbWebApiClient
             }
             else
             {
-                return $"CPM: {userInstance.UserInfo.Cpm} ICP: {userInstance.UserInfo.Icp}";
+                return $"{userInstance.UserInfo.Cpm}_{userInstance.UserInfo.Icp}";
             }
         }
         else
