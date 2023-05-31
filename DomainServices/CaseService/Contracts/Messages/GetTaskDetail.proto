@@ -2,6 +2,7 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
+import "GrpcDate.proto";
 import "Messages/WorkflowTask.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -16,7 +17,7 @@ message GetTaskDetailResponse {
 }
 
 message TaskDetailItem {
-	string PerformanName = 1;
+	google.protobuf.StringValue PerformanName = 1;
 
 	string ProcessNameLong = 2;
 
@@ -39,7 +40,7 @@ message TaskCommunicationItem {
 
 message AmendmentSigning {
 	string FormId = 1;
-	string Expiration = 2;
+	cis.types.GrpcDate Expiration = 2;
 	string DocumentForSigning = 3;
 	google.protobuf.StringValue ProposalForEntry = 4;
 }

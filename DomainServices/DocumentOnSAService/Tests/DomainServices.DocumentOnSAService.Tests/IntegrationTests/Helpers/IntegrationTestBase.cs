@@ -17,6 +17,8 @@ using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsAr
 using CIS.Infrastructure.BackgroundServices;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using ExternalServices.Eas.V1;
+using DomainServices.ProductService.Clients;
+using static DomainServices.ProductService.Contracts.v1.ProductService;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 
@@ -29,6 +31,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
     internal IDocumentArchiveServiceClient DocumentArchiveServiceClient { get; }
     internal IEasClient EasClient { get; }
     internal ICustomerOnSAServiceClient CustomerOnSAServiceClient { get; }
+    internal IProductServiceClient ProductServiceClient { get; }
 
     public IntegrationTestBase(WebApplicationFactoryFixture<Program> fixture)
     {
@@ -40,6 +43,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         DocumentArchiveServiceClient = Substitute.For<IDocumentArchiveServiceClient>();
         EasClient = Substitute.For<IEasClient>();
         CustomerOnSAServiceClient = Substitute.For<ICustomerOnSAServiceClient>();
+        ProductServiceClient = Substitute.For<IProductServiceClient>();
 
         ConfigureWebHost();
 
@@ -75,6 +79,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
             services.RemoveAll<IDocumentArchiveServiceClient>().AddTransient(r => DocumentArchiveServiceClient);
             services.RemoveAll<IEasClient>().AddTransient(r => EasClient);
             services.RemoveAll<ICustomerOnSAServiceClient>().AddTransient(r => CustomerOnSAServiceClient);
+            services.RemoveAll<IProductServiceClient>().AddTransient(r=> ProductServiceClient);
         });
     }
 

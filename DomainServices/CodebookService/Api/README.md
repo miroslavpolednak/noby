@@ -5,6 +5,8 @@ grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.
 grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService.v1.CodebookService/WorkflowProcessType
 grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService.v1.CodebookService/WorkflowTaskSigningResponseTypes
 grpcurl -insecure -d "{\"DeveloperId\":3014640}" -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService.v1.CodebookService/GetDeveloper
+grpcurl -insecure -d "{\"PerformerLogin\":\"sss\"}" -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService.v1.CodebookService/GetOperator
+grpcurl -insecure -d "{\"PerformerLogin\":\"sss\"}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30003 DomainServices.CodebookService.v1.CodebookService/GetOperator
 grpcurl -insecure -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30003 DomainServices.CodebookService.v1.CodebookService/Genders
 
 ## run batch

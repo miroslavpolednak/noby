@@ -70,7 +70,7 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
                 HouseholdId = documentOnSaEntity.HouseholdId,
                 IsValid = documentOnSaEntity.IsValid,
                 IsSigned = documentOnSaEntity.IsSigned,
-                IsDocumentArchived = documentOnSaEntity.IsDocumentArchived,
+                IsArchived = documentOnSaEntity.IsArchived,
                 SignatureMethodCode = documentOnSaEntity.SignatureMethodCode ?? string.Empty,
                 SignatureDateTime = documentOnSaEntity.SignatureDateTime is not null ? Timestamp.FromDateTime(DateTime.SpecifyKind(documentOnSaEntity.SignatureDateTime.Value, DateTimeKind.Utc)) : null,
                 SignatureConfirmedBy = documentOnSaEntity.SignatureConfirmedBy
@@ -91,7 +91,7 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
             Data = JsonSerializer.Serialize(dataResponse.DocumentData),
             IsValid = true,
             IsSigned = false,
-            IsDocumentArchived = false,
+            IsArchived = false,
             IsFinal = request.IsFinal,
         };
     }

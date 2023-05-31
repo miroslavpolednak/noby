@@ -34,7 +34,7 @@ public sealed class CheckDocumentsArchivedJob
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
         var unArchivedDocOnSaIds = await _dbContext.DocumentOnSa
-            .Where(d => !string.IsNullOrEmpty(d.EArchivId) && d.IsDocumentArchived == false)
+            .Where(d => !string.IsNullOrEmpty(d.EArchivId) && d.IsArchived == false)
             .Take(_configuration.MaxBatchSize)
             .Select(s => s.EArchivId)
         .ToListAsync(cancellationToken);

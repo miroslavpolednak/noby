@@ -3,9 +3,9 @@
 namespace DomainServices.CodebookService.Clients.Services;
 
 public class CodebookServiceMock 
-    : CodebookServiceBaseMock
+    : CodebookServiceBaseMock, ICodebookServiceClient
 {
-    public virtual Task<List<DocumentTypesResponse.Types.DocumentTypeItem>> DocumentTypes(CancellationToken cancellationToken = default)
+    public override Task<List<DocumentTypesResponse.Types.DocumentTypeItem>> DocumentTypes(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(new List<Contracts.v1.DocumentTypesResponse.Types.DocumentTypeItem>
         {
@@ -28,7 +28,7 @@ public class CodebookServiceMock
             });
     }
 
-    public virtual Task<List<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem>> SalesArrangementTypes(CancellationToken cancellationToken = default)
+    public override Task<List<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem>> SalesArrangementTypes(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(new List<Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem>{
             new() {Id=1, Name="Žádost o hypotéční úvěr 20001",SalesArrangementCategory=1, ProductTypeId=20001, Description = null},
@@ -46,7 +46,7 @@ public class CodebookServiceMock
         });
     }
 
-    public virtual Task<List<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>> SigningMethodsForNaturalPerson(CancellationToken cancellationToken = default)
+    public override Task<List<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>> SigningMethodsForNaturalPerson(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(new List<Contracts.v1.SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>
         {

@@ -29,7 +29,7 @@ message DocumentOnSAToSign {
 
 	bool IsSigned = 10;
 	
-	bool IsDocumentArchived = 11;
+	bool IsArchived = 11;
 
 	string SignatureMethodCode = 12;
 	

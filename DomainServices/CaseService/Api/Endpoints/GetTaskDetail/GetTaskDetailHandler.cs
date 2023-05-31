@@ -37,11 +37,15 @@ internal sealed class GetTaskDetailHandler
     private async Task<TaskDetailItem> createTaskDetail(IReadOnlyDictionary<string, string> taskData, CancellationToken cancellationToken)
     {
         var taskDetail = taskData.ToTaskDetail();
-        
-        var performer = await _codebookService.GetOperator(taskData["ukol_op_zpracovatel"], cancellationToken);
-        taskDetail.PerformanName = performer.PerformerName;
-
         parseTaskCommunications(taskDetail, taskData);
+
+        // operator neni povinny
+        try
+        {
+            var performer = await _codebookService.GetOperator(taskData["ukol_op_zpracovatel"], cancellationToken);
+            taskDetail.PerformanName = performer.PerformerName;
+        }
+        catch { }
 
         return taskDetail;
     }

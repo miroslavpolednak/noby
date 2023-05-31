@@ -22,7 +22,7 @@ public class GetDocumentListTests : IntegrationTestBase
             await client.GetDocumentListAsync(new() { UserLogin = "Test" }, default);
         };
 
-        await act.Should().ThrowAsync<CisValidationException>().WithMessage("One of main parameters have to be fill in (CaseId, PledgeAgreementNumber, ContractNumber, OrderId, AuthorUserLogin)");
+        await act.Should().ThrowAsync<CisValidationException>().WithMessage("One of main parameters have to be fill in (CaseId, PledgeAgreementNumber, ContractNumber, OrderId, AuthorUserLogin, FormId)");
     }
 
     [Fact]

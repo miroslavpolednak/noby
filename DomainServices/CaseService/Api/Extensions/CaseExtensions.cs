@@ -78,7 +78,7 @@ internal static class CaseExtensions
                     taskDetail.Signing = new()
                     {
                         FormId = taskData.GetValueOrDefault("ukol_podpis_dokument_form_id") ?? "",
-                        Expiration = taskData.GetValueOrDefault("ukol_podpis_lhuta_do") ?? "",
+                        Expiration = taskData.GetDate("ukol_podpis_lhuta_do"),
                         DocumentForSigning = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_id") ?? "",
                         ProposalForEntry = taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")
                     };
