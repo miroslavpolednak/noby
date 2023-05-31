@@ -2,7 +2,7 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
-import "GrpcDate.proto";
+import "GrpcDateTime.proto";
 import "google/protobuf/wrappers.proto";
 
 message WorkflowTask {
@@ -16,7 +16,7 @@ message WorkflowTask {
 
 	int32 StateIdSb = 5;
 
-	cis.types.GrpcDate CreatedOn = 6;
+	cis.types.GrpcDateTime CreatedOn = 6;
 
 	int32 PhaseTypeId = 7;
 
