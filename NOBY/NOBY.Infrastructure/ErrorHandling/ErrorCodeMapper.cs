@@ -24,6 +24,7 @@ public sealed class ErrorCodeMapper
             { 90015, new("Není vyplněna žádost o změnu Dlužníka. Nelze vytvořit změnu.") },
             { 90016, new("Nabídka nemá platnou garanci.") },
             { 90017, new("Nelze simulovat s garancí.", "Žádost neexistuje nebo neobsahuje platné datum garance.") },
+            { 90018, new("Nelze pokračovat bez schválené individuální ceny.") },
             { 90019, new("Obchod nelze poskytnout.","Převažující měna příjmu nebo měna bydliště není v oboru povolených měn. V žádosti nebude možné dále pokračovat.") }
         };
 

@@ -8,7 +8,9 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 using NOBY.Api.Endpoints.SalesArrangement.SendToCmp.Dto;
+using System.Threading;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CreateCustomerRequest = DomainServices.CustomerService.Contracts.CreateCustomerRequest;
 using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
@@ -84,6 +86,26 @@ internal sealed class SendToCmpHandler
             // odeslat do SB
             await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
         }
+    }
+
+    private async Task validateFlowSwitches(int salesArrangementId, int salesArrangementCategory, CancellationToken cancellationToken)
+    {
+        var flowSwitches = await _salesArrangementService.GetFlowSwitches(salesArrangementId, cancellationToken);
+        
+        // HFICH-3630
+        if (salesArrangementCategory == 1 && !isSet(FlowSwitches.IsOfferGuaranteed))
+        {
+            throw new NobyValidationException(90016);
+        }
+
+        // HFICH-5191
+        if (isSet(FlowSwitches.IsOfferWithDiscount) && isSet(FlowSwitches.IsWflTaskForIPApproved, false))
+        {
+            throw new NobyValidationException(90018);
+        }
+
+        bool isSet(FlowSwitches flowSwitch, bool value = true)
+            => flowSwitches?.Any(t => t.FlowSwitchId == (int)flowSwitch && t.Value == value) ?? false;
     }
 
     private async Task ValidateSalesArrangement(int salesArrangementId, bool ignoreWarnings, CancellationToken cancellationToken)
