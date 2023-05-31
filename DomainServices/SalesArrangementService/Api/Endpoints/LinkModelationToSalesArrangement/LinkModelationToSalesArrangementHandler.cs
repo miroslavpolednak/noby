@@ -66,7 +66,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         }, cancellation);
 
         // nastavit flowSwitches
-        await setFlowSwitches(request.SalesArrangementId, offerInstance, offerInstanceOld, cancellation);
+        await setFlowSwitches(salesArrangementInstance.CaseId, request.SalesArrangementId, offerInstance, offerInstanceOld, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
