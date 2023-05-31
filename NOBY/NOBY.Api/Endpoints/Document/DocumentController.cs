@@ -282,7 +282,7 @@ public class DocumentController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vrací se steam binárních dat.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&o=258EEA87-9394-42ec-B51F-C13F091686E0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=258EEA87-9394-42ec-B51F-C13F091686E0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId"></param>
     /// <param name="documentTypeId"></param>
