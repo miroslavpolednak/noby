@@ -17,7 +17,7 @@ message GetTaskDetailResponse {
 }
 
 message TaskDetailItem {
-	string PerformanName = 1;
+	google.protobuf.StringValue PerformanName = 1;
 
 	string ProcessNameLong = 2;
 
