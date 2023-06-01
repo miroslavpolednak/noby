@@ -26,7 +26,7 @@ internal class ProductService : IProductServiceClient
 
     public async Task<GetProductListResponse> GetProductList(long caseId, CancellationToken cancellationToken = default)
     {
-        return await _service.GetProductListAsync(new GetProductListRequest() { CaseId = caseId }, cancellationToken: cancellationToken);
+        return await _service.GetProductListAsync(new GetProductListRequest { CaseId = caseId }, cancellationToken: cancellationToken);
     }
 
     public async Task<GetProductObligationListResponse> GetProductObligationList(GetProductObligationListRequest request, CancellationToken cancellationToken = default)
@@ -36,7 +36,7 @@ internal class ProductService : IProductServiceClient
 
     public async Task<GetMortgageResponse> GetMortgage(long productId, CancellationToken cancellationToken = default)
     {
-        return await _service.GetMortgageAsync(new GetMortgageRequest() { ProductId = productId }, cancellationToken: cancellationToken);
+        return await _service.GetMortgageAsync(new GetMortgageRequest { ProductId = productId }, cancellationToken: cancellationToken);
     }
 
     public async Task<long> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default)
@@ -74,11 +74,21 @@ internal class ProductService : IProductServiceClient
 
     public async Task<GetCustomersOnProductResponse> GetCustomersOnProduct(long productId, CancellationToken cancellationToken = default)
     {
-        return await _service.GetCustomersOnProductAsync(new GetCustomersOnProductRequest() { ProductId = productId }, cancellationToken: cancellationToken);
+        return await _service.GetCustomersOnProductAsync(new GetCustomersOnProductRequest { ProductId = productId }, cancellationToken: cancellationToken);
     }
 
-    public async Task<GetCaseIdResponse> GetCaseId(GetCaseIdRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<GetCaseIdResponse> GetCaseId(GetCaseIdRequest request, CancellationToken cancellationToken = default)
     {
         return await _service.GetCaseIdAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task<GetCovenantDetailResponse> GetCovenantDetail(long caseId, int order, CancellationToken cancellationToken = default)
+    {
+        return await _service.GetCovenantDetailAsync(new GetCovenantDetailRequest { CaseId = caseId, Order = order }, cancellationToken: cancellationToken);
+    }
+
+    public async Task<GetCovenantListResponse> GetCovenantList(long caseId, CancellationToken cancellationToken = default)
+    {
+        return await _service.GetCovenantListAsync(new GetCovenantListRequest { CaseId = caseId }, cancellationToken: cancellationToken);
     }
 }
