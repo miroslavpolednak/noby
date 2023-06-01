@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+message GetCovenantListRequest {
+    int64 CaseId = 1;
+}
+
+message GetCovenantListResponse {
+}
+
