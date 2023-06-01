@@ -3,6 +3,7 @@ using NOBY.Api.Endpoints.Cases.UpdateTaskDetail;
 using NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
+using NOBY.Api.Endpoints.Cases.GetCovenants;
 
 namespace NOBY.Api.Endpoints.Cases;
 
@@ -257,7 +258,22 @@ public class CasesController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetCaseDocumentsFlagResponse> GetCaseDocumentsFlag([FromRoute] long caseId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetCaseDocumentsFlagRequest(caseId), cancellationToken);
+    public async Task<GetCaseMenuFlagsResponse> GetCaseMenuFlags([FromRoute] long caseId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCaseMenuFlagsRequest(caseId), cancellationToken);
 
+    /// <summary>
+    /// Podmínky ke splnění Case-u
+    /// </summary>
+    /// <remarks>
+    /// Seznam Podmínek ke splnění pro Case<br /><br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=4378EDFB-2A3D-46f6-8C51-0241A3436D5E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="caseId">ID Case-u</param>
+    [HttpGet("{caseId:long}/covenants")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Case" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetCovenantsResponse> GetCovenants([FromRoute] long caseId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCovenantsRequest(caseId), cancellationToken);
 }
