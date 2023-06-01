@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
+﻿namespace NOBY.Api.Endpoints.Cases.Dto;
 
 public enum StateIndicators
 {

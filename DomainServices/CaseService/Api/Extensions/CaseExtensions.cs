@@ -73,6 +73,7 @@ internal static class CaseExtensions
                     };
                     break;
 
+                // price exception
                 case 2:
                     taskDetail.PriceException = new()
                     {
@@ -86,7 +87,18 @@ internal static class CaseExtensions
                         },
                         DecisionId = taskData.GetNInteger("ukol_overeni_ic_zpusob_reseni")
                     };
-
+                    for (int i = 1; i < 5; i++)
+                    {
+                        if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")))
+                            break;
+                        taskDetail.PriceException.Fees.Add(new AmendmentPriceException.Types.FeesItem
+                        {
+                            FeeId = taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}"),
+                            TariffSum = taskData.GetNInteger($"ukol_overeni_ic_popl_sazeb{i}"),
+                            FinalSum = taskData.GetNInteger($"ukol_overeni_ic_popl_vysl{i}"),
+                            DiscountPercentage = taskData.GetNInteger($"ukol_overeni_ic_popl_sleva_perc{i}")
+                        });
+                    }
                     break;
 
                 case 6:

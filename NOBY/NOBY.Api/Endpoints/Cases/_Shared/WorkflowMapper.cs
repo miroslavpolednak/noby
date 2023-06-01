@@ -1,8 +1,8 @@
 ﻿using CIS.Core.Attributes;
 using DomainServices.CaseService.Contracts;
+using DomainServices.CaseService.Contracts.v1;
 using DomainServices.CodebookService.Clients;
 using NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments;
-using NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
 using static DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types;
 using _Case = DomainServices.CaseService.Contracts;
 
@@ -37,11 +37,11 @@ public class WorkflowMapper
         return list;
     }
 
-    public async Task<GetTaskDetail.Dto.WorkflowTaskDetail> Map(_Case.WorkflowTask task, TaskDetailItem taskDetailItem, CancellationToken cancellationToken)
+    public async Task<Dto.WorkflowTaskDetail> Map(_Case.WorkflowTask task, TaskDetailItem taskDetailItem, CancellationToken cancellationToken)
     {
         var performer = await _codebookService.GetOperator(task.PerformerLogin, cancellationToken);
 
-        var taskDetail = new GetTaskDetail.Dto.WorkflowTaskDetail
+        var taskDetail = new Dto.WorkflowTaskDetail
         {
             TaskIdSB = task.TaskIdSb,
             PerformerLogin = performer?.PerformerLogin,
@@ -85,7 +85,7 @@ public class WorkflowMapper
         OrderId = consultationData.OrderId
     };
 
-    private NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem Map(TaskCommunicationItem taskCommunicationItem) => new()
+    private TaskCommunicationItem Map(DomainServices.CaseService.Contracts.TaskCommunicationItem taskCommunicationItem) => new()
     {
         TaskRequest = taskCommunicationItem.TaskRequest,
         TaskResponse = taskCommunicationItem.TaskResponse
@@ -107,37 +107,37 @@ public class WorkflowMapper
     };
     
     
-    private static State GetWorkflowState(_Case.WorkflowTask task)
+    private static GetTaskList.Dto.State GetWorkflowState(_Case.WorkflowTask task)
     {
         if (task.Cancelled)
-            return State.Cancelled;
+            return GetTaskList.Dto.State.Cancelled;
 
         if (task.StateIdSb == 30)
-            return State.Completed;
+            return GetTaskList.Dto.State.Completed;
 
         return task.TaskTypeId switch
         {
             1 => GetRequestState(task),
             2 => GetPriceExceptionState(task),
-            3 or 7 => State.Sent,
+            3 or 7 => GetTaskList.Dto.State.Sent,
             6 => GetSignatureState(task),
             _ => throw new ArgumentOutOfRangeException()
         };
     }
 
-    private static State GetRequestState(_Case.WorkflowTask task) =>
+    private static GetTaskList.Dto.State GetRequestState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => State.ForProcessing,
-            2 => State.Sent,
+            1 => GetTaskList.Dto.State.ForProcessing,
+            2 => GetTaskList.Dto.State.Sent,
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private static State GetPriceExceptionState(_Case.WorkflowTask task) =>
+    private static GetTaskList.Dto.State GetPriceExceptionState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => State.Sent,
-            2 => State.Completed,
+            1 => GetTaskList.Dto.State.Sent,
+            2 => GetTaskList.Dto.State.Completed,
             _ => throw new ArgumentOutOfRangeException()
         };
 
@@ -149,7 +149,7 @@ public class WorkflowMapper
             _ => throw new ArgumentOutOfRangeException()
         };
     
-    private static State GetSignatureState(_Case.WorkflowTask task) =>
+    private static GetTaskList.Dto.State GetSignatureState(_Case.WorkflowTask task) =>
         task.SignatureType switch
         {
             "paper" => GetPaperSignatureState(task),
@@ -157,19 +157,19 @@ public class WorkflowMapper
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private static State GetDigitalSignatureState(_Case.WorkflowTask task) =>
+    private static GetTaskList.Dto.State GetDigitalSignatureState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => State.ForProcessing,
+            1 => GetTaskList.Dto.State.ForProcessing,
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private static State GetPaperSignatureState(_Case.WorkflowTask task) =>
+    private static GetTaskList.Dto.State GetPaperSignatureState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => State.ForProcessing,
-            2 => State.OperationalSupport,
-            3 => State.Sent,
+            1 => GetTaskList.Dto.State.ForProcessing,
+            2 => GetTaskList.Dto.State.OperationalSupport,
+            3 => GetTaskList.Dto.State.Sent,
             _ => throw new ArgumentOutOfRangeException()
         };
 

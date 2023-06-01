@@ -1,6 +1,4 @@
-﻿using NOBY.Api.Endpoints.Cases.GetTaskList.Dto;
-
-namespace NOBY.Api.Endpoints.Cases.Dto;
+﻿namespace NOBY.Api.Endpoints.Cases.Dto;
 
 public sealed class WorkflowTask
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
-using NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto;
+using NOBY.Api.Endpoints.Cases.Dto;
 using NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments;
 using Swashbuckle.AspNetCore.SwaggerGen;
 

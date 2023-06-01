@@ -17,7 +17,13 @@ public sealed class CreateTaskRequest
     }
 
     /// <summary>
-    /// ID typu úkolu (Předání na specialistu = 7, Konzultace = 3)
+    /// ID sales arrangementu
+    /// </summary>
+    /// <example>11345</example>
+    public int SalesArrangementId { get; set; }
+
+    /// <summary>
+    /// ID typu úkolu (Cenová výjimka = 2, Konzultace = 3, Předání na specialistu = 7)
     /// </summary>
     /// <example>7</example>
     [Required]

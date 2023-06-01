@@ -3,6 +3,7 @@ using NOBY.Api.Endpoints.Cases.UpdateTaskDetail;
 using NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
+using NOBY.Api.Endpoints.Cases.GetCurrentPriceException;
 
 namespace NOBY.Api.Endpoints.Cases;
 
@@ -260,4 +261,20 @@ public class CasesController : ControllerBase
     public async Task<GetCaseDocumentsFlagResponse> GetCaseDocumentsFlag([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCaseDocumentsFlagRequest(caseId), cancellationToken);
 
+    /// <summary>
+    /// Získání aktuální cenové výjimky
+    /// </summary>
+    /// <remarks>
+    /// Operace vrátí detail Cenové výjimky. <br /> 
+    /// Pokud ještě ve Starbuild neexistuje workflow úkol, budou výsledkem data z Noby a uživatel dostane možnost založit workflow úkolu. <br /> 
+    /// Pokud již workflow úkol existuje, ale je stornovaný, budou výsledkem data z Noby a uživatel dostane možnost založení nového workflow úkolu. <br /> 
+    /// Pokud již workflow úkol existuje a není stornovaný, budou výsledkem data ze Starbuild. U dokončeného úkolu Ocenění nehraje roli, zda bylo Ocenění schváleno či zamítnuto. Uživatel uvidí detail tohoto ukončeného úkolu.
+    /// </remarks>
+    [HttpGet("{caseId:long}/tasks/current-price-exception")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Case" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetCurrentPriceExceptionResponse> GetCurrentPriceException([FromRoute] long caseId, [FromQuery] [Required] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCurrentPriceExceptionRequest(caseId, salesArrangementId), cancellationToken);
 }

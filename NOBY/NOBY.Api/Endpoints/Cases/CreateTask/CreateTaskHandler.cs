@@ -1,4 +1,6 @@
 ﻿using DomainServices.CaseService.Clients;
+using DomainServices.OfferService.Clients;
+using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Cases.CreateTask;
 
@@ -9,6 +11,12 @@ internal sealed class CreateTaskHandler
     {
         // kontrola existence Case
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
+
+        // validace price exception
+        if (request.TaskTypeId == 2)
+        {
+            await validatePriceException(caseInstance.CaseId, cancellationToken);
+        }
 
         List<string>? documentIds = new();
         var attachments = request.Attachments?
@@ -40,6 +48,12 @@ internal sealed class CreateTaskHandler
             dsRequest.TaskDocumentsId.AddRange(documentIds);
         }
 
+        // price exception
+        if (request.TaskTypeId == 2)
+        {
+            await updatePriceExceptionTask(dsRequest, request.SalesArrangementId, cancellationToken);
+        }
+
         var result = await _caseService.CreateTask(dsRequest, cancellationToken);
 
         // smazat prilohy z tempu
@@ -47,12 +61,51 @@ internal sealed class CreateTaskHandler
 
         return result.TaskId;
     }
+    
+    private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
+        if (!saInstance.OfferId.HasValue)
+        {
+            throw new NobyValidationException($"OfferId is null for SalesArrangementId={salesArrangementId}");
+        }
+        var offerInstance = await _offerService.GetMortgageOfferDetail(saInstance.OfferId.Value, cancellationToken);
+
+        request.PriceException.ProductTypeId = offerInstance.SimulationInputs.ProductTypeId;
+        request.PriceException.FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod.GetValueOrDefault();
+        request.PriceException.LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount);
+        request.PriceException.LoanDuration = offerInstance.SimulationResults.LoanDuration;
+        request.PriceException.LoanToValue = Convert.ToInt32(offerInstance.SimulationResults.LoanToValue);
+        if (offerInstance.AdditionalSimulationResults.MarketingActions is not null)
+        {
+            request.PriceException.AppliedMarketingActionsCodes.AddRange(offerInstance.AdditionalSimulationResults.MarketingActions.Where(t => t.Applied.GetValueOrDefault() == 1).Select(t => t.Code));
+        }
+    }
+
+    /// <summary>
+    /// Validace zda jiz neexistuje aktivni price exception
+    /// </summary>
+    private async Task validatePriceException(long caseId, CancellationToken cancellationToken)
+    {
+        if ((await _caseService.GetTaskList(caseId, cancellationToken)).Any(t => t.TaskTypeId == 2 && !t.Cancelled))
+        {
+            throw new CisAuthorizationException("PriceException already exist");
+        }
+    }
 
     private readonly ICaseServiceClient _caseService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IOfferServiceClient _offerService;
     private readonly Infrastructure.Services.TempFileManager.ITempFileManager _tempFileManager;
 
-    public CreateTaskHandler(ICaseServiceClient caseService, Infrastructure.Services.TempFileManager.ITempFileManager tempFileManager)
+    public CreateTaskHandler(
+        ICaseServiceClient caseService, 
+        ISalesArrangementServiceClient salesArrangementService, 
+        IOfferServiceClient offerService, 
+        Infrastructure.Services.TempFileManager.ITempFileManager tempFileManager)
     {
+        _salesArrangementService = salesArrangementService;
+        _offerService = offerService;
         _caseService = caseService;
         _tempFileManager = tempFileManager;
     }

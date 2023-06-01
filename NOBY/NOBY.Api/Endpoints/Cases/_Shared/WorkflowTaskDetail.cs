@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto;
+﻿namespace NOBY.Api.Endpoints.Cases.Dto;
 
 public class WorkflowTaskDetail
 {
