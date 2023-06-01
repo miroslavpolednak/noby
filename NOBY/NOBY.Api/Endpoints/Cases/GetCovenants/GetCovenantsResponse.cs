@@ -35,7 +35,7 @@ public sealed class GetCovenantsResponsePhase
     /// <summary>
     /// Písmenná identifikace fáze
     /// </summary>
-    public string? orderLetter { get; set; }
+    public string? OrderLetter { get; set; }
 
     /// <summary>
     /// Název skupiny podmínek (fáze)
@@ -66,12 +66,12 @@ public sealed class GetCovenantsResponseCovenant
     /// <summary>
     /// Podmínka splněna
     /// </summary>
-    public bool IsFullfilled { get; set; }
+    public bool IsFulfilled { get; set; }
 
     /// <summary>
     /// Termín pro splnění podmínky (datum, kdy by mělo byt splněno)
     /// </summary>
-    public DateTime? FullfillDate { get; set; }
+    public DateTime? FulfillDate { get; set; }
 
     /// <summary>
     /// Text podmínky (jedná se o text ve smlouvě)

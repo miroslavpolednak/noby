@@ -5771,12 +5771,12 @@
             "description": "Jméno podmínky",
             "nullable": true
           },
-          "isFullfilled": {
+          "isFulfilled": {
             "type": "boolean",
             "description": "Podmínka splněna",
             "nullable": false
           },
-          "fullfillDate": {
+          "fulfillDate": {
             "type": "string",
             "description": "Termín pro splnění podmínky (datum, kdy by mělo byt splněno)",
             "format": "date-time",
@@ -5804,12 +5804,12 @@
             "description": "Jméno podmínky",
             "nullable": true
           },
-          "isFullfilled": {
+          "isFulfilled": {
             "type": "boolean",
             "description": "Podmínka splněna",
             "nullable": false
           },
-          "fullfillDate": {
+          "fulfillDate": {
             "type": "string",
             "description": "Termín pro splnění podmínky (datum, kdy by mělo byt splněno)",
             "format": "date-time",

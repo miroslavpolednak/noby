@@ -1,4 +1,4 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using DomainServices.ProductService.Clients;
 
 namespace NOBY.Api.Endpoints.Cases.GetCovenants;
 
@@ -7,13 +7,16 @@ internal sealed class GetCovenantsHandler
 {
     public async Task<GetCovenantsResponse> Handle(GetCovenantsRequest request, CancellationToken cancellationToken)
     {
-        return new GetCovenantsResponse();
+        var list = await _productService.GetCovenantList(request.CaseId, cancellationToken);
+        return new GetCovenantsResponse
+        {
+        };
     }
 
-    private readonly ICaseServiceClient _caseService;
+    private readonly IProductServiceClient _productService;
 
-    public GetCovenantsHandler(ICaseServiceClient caseService)
+    public GetCovenantsHandler(IProductServiceClient productService)
     {
-        _caseService = caseService;
+        _productService = productService;
     }
 }
