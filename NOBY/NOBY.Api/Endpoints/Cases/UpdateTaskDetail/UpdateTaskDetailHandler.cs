@@ -7,10 +7,17 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 {
     private readonly ICaseServiceClient _caseService;
     private readonly Infrastructure.Services.TempFileManager.ITempFileManager _tempFileManager;
+    private static int[] _allowedTaskTypeIds = { 1, 6 };
     
     public async Task Handle(UpdateTaskDetailRequest request, CancellationToken cancellationToken)
     {
         var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
+        var taskDetail = await _caseService.GetTaskDetail(request.TaskIdSB, cancellationToken);
+
+        if (!_allowedTaskTypeIds.Contains(taskDetail.TaskObject.TaskTypeId))
+        {
+            throw new CisAuthorizationException();
+        }
 
         List<string>? documentIds = new();
         var attachments = request.Attachments?
