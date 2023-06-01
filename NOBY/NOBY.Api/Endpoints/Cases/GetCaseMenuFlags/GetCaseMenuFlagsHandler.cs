@@ -6,7 +6,8 @@ using NOBY.Api.Endpoints.Shared;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 
-internal sealed class GetCaseMenuFlagsHandler : IRequestHandler<GetCaseMenuFlagsRequest, GetCaseMenuFlagsResponse>
+internal sealed class GetCaseMenuFlagsHandler 
+    : IRequestHandler<GetCaseMenuFlagsRequest, GetCaseMenuFlagsResponse>
 {
     private readonly IProductServiceClient _productService;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
