@@ -40,7 +40,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                 Customer = new __Household.CustomerOnSABase
                 {
                     MaritalStatusId = request.NaturalPerson?.MaritalStatusId,
-                    Name = request.NaturalPerson?.FirstName ?? "",
+                    Name = request.NaturalPerson?.LastName ?? "",
                     FirstNameNaturalPerson = request.NaturalPerson?.FirstName ?? "",
                     DateOfBirthNaturalPerson = request.NaturalPerson?.DateOfBirth,
                     LockedIncomeDateTime = customerOnSA.LockedIncomeDateTime
