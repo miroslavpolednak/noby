@@ -29,6 +29,11 @@ public class GetDocumentOnSaDataTests : IntegrationTestBase
         response.DocumentTypeId.Should().Be(docOnSaEntity.DocumentTypeId);
         response.DocumentTemplateVersionId.Should().Be(docOnSaEntity.DocumentTemplateVersionId);
         response.Data.Should().Be(docOnSaEntity.Data);
-        response.DocumentTemplateVariantId.Should().Be(response.DocumentTemplateVariantId);
+        response.DocumentTemplateVariantId.Should().Be(docOnSaEntity.DocumentTemplateVariantId);
+        response.ExternalId.Should().Be(docOnSaEntity.ExternalId);
+        response.SignatureTypeId.Should().Be(docOnSaEntity.SignatureTypeId);
+        response.Source.Should().HaveSameValueAs(docOnSaEntity.Source);
+        response.IsValid.Should().Be(docOnSaEntity.IsValid);
+        response.IsSigned.Should().Be(docOnSaEntity.IsSigned);
     }
 }

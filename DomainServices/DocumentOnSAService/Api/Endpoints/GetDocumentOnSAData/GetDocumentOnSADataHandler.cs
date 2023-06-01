@@ -22,7 +22,12 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
                 DocumentTypeId = d.DocumentTypeId,
                 DocumentTemplateVersionId = d.DocumentTemplateVersionId,
                 DocumentTemplateVariantId = d.DocumentTemplateVariantId,
-                Data = d.Data
+                Data = d.Data,
+                SignatureTypeId = d.SignatureTypeId,
+                ExternalId = d.ExternalId,
+                Source = (Source)d.Source,
+                IsValid = d.IsValid,
+                IsSigned = d.IsSigned
             })
             .FirstOrDefaultAsync(cancellationToken);
 
