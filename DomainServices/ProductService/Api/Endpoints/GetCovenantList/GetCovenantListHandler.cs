@@ -4,8 +4,16 @@ namespace DomainServices.ProductService.Api.Endpoints.GetCovenantList;
 
 internal sealed class GetCovenantListHandler : IRequestHandler<GetCovenantListRequest, GetCovenantListResponse>
 {
-    public Task<GetCovenantListResponse> Handle(GetCovenantListRequest request, CancellationToken cancellationToken)
+    public async Task<GetCovenantListResponse> Handle(GetCovenantListRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await Task.Delay(0, cancellationToken);
+        var response = new GetCovenantListResponse();
+        response.Covenants.AddRange(Enumerable.Range(0, 1).Select(i => new CovenantListItem()
+        {
+            Name = ""
+            
+        }));
+
+        return response;
     }
 }

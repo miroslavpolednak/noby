@@ -4,8 +4,19 @@ namespace DomainServices.ProductService.Api.Endpoints.GetCovenantDetail;
 
 internal sealed class GetCovenantDetailHandler : IRequestHandler<GetCovenantDetailRequest, GetCovenantDetailResponse>
 {
-    public Task<GetCovenantDetailResponse> Handle(GetCovenantDetailRequest request, CancellationToken cancellationToken)
+    public async Task<GetCovenantDetailResponse> Handle(GetCovenantDetailRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await Task.Delay(0, cancellationToken);
+        return new GetCovenantDetailResponse
+        {
+            Covenant = new CovenantDetail
+            {
+                Description = "",
+                Name = "",
+                Text = "",
+                FulfillDate = DateTime.Now,
+                IsFulfilled = true
+            }
+        };
     }
 }

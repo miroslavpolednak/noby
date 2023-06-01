@@ -20,6 +20,10 @@ internal sealed class ProductServiceDbContext
     public DbSet<Entities.Collateral> Collaterals { get; set; }
     public DbSet<Entities.Loan2Statement> Loans2Statements { get; set; }
     public DbSet<Entities.LoanReservation> LoanReservations { get; set; }
+    
+    public DbSet<Entities.Covenant> Covenants { get; set; }
+    
+    public DbSet<Entities.CovenantPhase> CovenantPhases { get; set; }
 
     public DbSet<Entities.Obligation> Obligations => Set<Entities.Obligation>();
 
