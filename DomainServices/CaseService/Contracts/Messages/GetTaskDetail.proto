@@ -18,13 +18,10 @@ message GetTaskDetailResponse {
 
 message TaskDetailItem {
 	google.protobuf.StringValue PerformanName = 1;
-
-	string ProcessNameLong = 2;
-
-	repeated TaskCommunicationItem TaskCommunication = 3;
-
-	repeated string TaskDocumentIds = 4;
-
+	google.protobuf.StringValue PerformerCode = 2;
+	string ProcessNameLong = 3;
+	repeated TaskCommunicationItem TaskCommunication = 4;
+	repeated string TaskDocumentIds = 5;
 	oneof Amendments  {
 		AmendmentSigning Signing = 20;
 		AmendmentRequest Request = 21;

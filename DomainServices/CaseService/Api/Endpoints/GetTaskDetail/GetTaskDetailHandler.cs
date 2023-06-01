@@ -44,6 +44,7 @@ internal sealed class GetTaskDetailHandler
         {
             var performer = await _codebookService.GetOperator(taskData["ukol_op_zpracovatel"], cancellationToken);
             taskDetail.PerformanName = performer.PerformerName;
+            taskDetail.PerformerCode = performer.PerformerCode.ToString(CultureInfo.InvariantCulture);
         }
         catch { }
 

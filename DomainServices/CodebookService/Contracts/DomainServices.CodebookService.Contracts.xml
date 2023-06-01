@@ -1323,6 +1323,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorResponse.PerformerNameFieldNumber">
             <summary>Field number for the "PerformerName" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorResponse.PerformerCodeFieldNumber">
+            <summary>Field number for the "PerformerCode" field.</summary>
+        </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.GenericCodebookReflection">
             <summary>Holder for reflection information generated from Messages/GenericCodebook.proto</summary>
         </member>
