@@ -71,7 +71,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     {
         return !customerOnSA.Name.Equals(request.NaturalPerson?.LastName, StringComparison.Ordinal)
             || !customerOnSA.FirstNameNaturalPerson.Equals(request.NaturalPerson?.FirstName, StringComparison.Ordinal)
-            || !customerOnSA.DateOfBirthNaturalPerson.Equals(request.NaturalPerson?.DateOfBirth);
+            || !customerOnSA.DateOfBirthNaturalPerson.Equals(request.NaturalPerson?.DateOfBirth)
+            || customerOnSA.MaritalStatusId != request.NaturalPerson?.MaritalStatusId;
     }
 
     private static string? createJsonDelta(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request)
