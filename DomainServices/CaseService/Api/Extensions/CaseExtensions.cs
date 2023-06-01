@@ -16,7 +16,6 @@ internal static class CaseExtensions
             TaskSubtypeName = taskData.GetValueOrDefault("ukol_oznaceni_noby") ?? "",
             ProcessId = taskData.GetLong("ukol_top_proces_sada"),
             ProcessNameShort = taskData.GetValueOrDefault("ukol_top_proces_nazev_noby") ?? "",
-            ProcessTypeId = taskData.GetInteger("ukol_top_proces_typ_noby"),
             StateIdSb = taskData.GetInteger("ukol_stav_poz"),
             Cancelled = taskData.GetBoolean("ukol_stornovano"),
             PerformerLogin = taskData.GetValueOrDefault("ukol_op_zpracovatel") ?? ""

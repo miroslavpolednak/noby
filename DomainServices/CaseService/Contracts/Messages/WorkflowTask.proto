@@ -31,6 +31,4 @@ message WorkflowTask {
 	bool Cancelled = 12;
 
 	google.protobuf.StringValue PerformerLogin = 13;
-
-	int32 ProcessTypeId = 14;
 }
