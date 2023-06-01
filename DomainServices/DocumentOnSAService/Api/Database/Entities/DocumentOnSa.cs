@@ -41,13 +41,15 @@ public class DocumentOnSa : ICreated
 
     public DateTime CreatedTime { get; set; }
 
-    public string Data { get; set; } = null!;
+    public string? Data { get; set; } = null!;
 
     public bool IsFinal { get; set; }
 
     public string? ExternalId { get; set; }
 
     public Source Source { get; set; }
+
+    public int? SignatureTypeId { get; set; }
 
     public ICollection<EArchivIdsLinked> EArchivIdsLinkeds { get; } = new List<EArchivIdsLinked>();
 }
