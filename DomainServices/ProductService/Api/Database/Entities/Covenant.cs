@@ -3,13 +3,25 @@
 namespace DomainServices.ProductService.Api.Database.Entities;
 
 [Table("Terminovnik", Schema = "dbo")]
-internal sealed class Covenant
+public class Covenant
 {
+    [Column("UverId")]
+    public long CaseId { get; set; }
+    
+    [Column("PoradoveCislo")]
+    public int Order { get; set; }
+    
     [Column("TextNazevProKlienta")]
     public string Name { get; set; } = null!;
+
+    [Column("TextVysvetlujiciDokument")]
+    public string Description { get; set; } = null!;
+
+    [Column("TextDoUveroveSmlouvy")]
+    public string Text { get; set; } = null!;
     
     [Column("PriznakSplnena")]
-    public bool IsFulFilled { get; set; }
+    public short IsFulFilled { get; set; }
     
     [Column("SplnitDo")]
     public DateTime FulfillDate { get; set; }
@@ -21,5 +33,5 @@ internal sealed class Covenant
     public int CovenantTypeId { get; set; }
     
     [Column("FazePoradi")]
-    public int PhaseOrder { get; set; }
+    public short PhaseOrder { get; set; }
 }
