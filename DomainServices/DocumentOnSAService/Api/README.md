@@ -41,10 +41,10 @@ grpcurl -insecure -d "{\"SalesArrangementId\":20008,\"DocumentTypeId\":5,\"FormI
 2) Set project with dbcontext as startpup project (DomainServices.DocumentArchiveService.Api)
 3) In package manager console set Default project to the project with dbcontext (DomainServices.DocumentArchiveService.Api)
 ### Add migration
-EntityFrameworkCore\Add-Migration <YourMigrationName> -OutputDir "Database/Migrations"
+EntityFrameworkCore\Add-Migration YourMigrationName -OutputDir "Database/Migrations"
 ### Update database to latest migration
 EntityFrameworkCore\Update-Database
 ### or to specific migration
-Update-Database  <YourMigrationName>
+Update-Database YourMigrationName
 ## if you want create sql from migration see
 https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying?tabs=vs
