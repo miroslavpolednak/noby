@@ -255,6 +255,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00006-json_ignore_max_date_error.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00006-json_ignore_max_date_error.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00007-HFICH-3975_removed_signature_attributes.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00007-HFICH-3975_removed_signature_attributes.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00008-HFICH-4862_validation_comment.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00008-HFICH-4862_validation_comment.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00009-Validation_Comment_Fixed_Text.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00009-Validation_Comment_Fixed_Text.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
