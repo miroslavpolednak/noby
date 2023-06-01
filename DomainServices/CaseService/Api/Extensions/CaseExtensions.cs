@@ -73,6 +73,22 @@ internal static class CaseExtensions
                     };
                     break;
 
+                case 2:
+                    taskDetail.PriceException = new()
+                    {
+                        Expiration = taskData.GetDate("ukol_overeni_ic_sazba_dat_do"),
+                        LoanInterestRate = new()
+                        {
+                            LoanInterestRate = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_nabid") ?? "",
+                            LoanInterestRateProvided = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_vysled") ?? "",
+                            LoanInterestRateAnnouncedType = taskData.GetInteger("ukol_overeni_ic_sazba_typ"),
+                            LoanInterestRateDiscount = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_sleva")
+                        },
+                        DecisionId = taskData.GetNInteger("ukol_overeni_ic_zpusob_reseni")
+                    };
+
+                    break;
+
                 case 6:
                     taskDetail.Signing = new()
                     {
