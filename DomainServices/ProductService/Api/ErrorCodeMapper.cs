@@ -24,7 +24,8 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int InvalidArgument12021 = 12021;
     public const int PaymentAccountNotFound = 12022;
     public const int ContractNumberNotFound = 12023;
-
+    public const int NotFound12024 = 12024;
+    
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>
@@ -47,8 +48,9 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { InvalidArgument12019, "Unsupported product type." },	
             { InvalidArgument12020, "Customers for product not found." },	
             { InvalidArgument12021, "Some customers do not have KB ID." },
-            { PaymentAccountNotFound, "Payment account {PropertyValue} not found" },
-            { ContractNumberNotFound, "Contract number {PropertyValue} not found" }
+            { PaymentAccountNotFound, "Payment account {PropertyValue} not found." },
+            { ContractNumberNotFound, "Contract number {PropertyValue} not found." },
+            { NotFound12024, "Covenant not found." }
         });
         return Messages;
     }

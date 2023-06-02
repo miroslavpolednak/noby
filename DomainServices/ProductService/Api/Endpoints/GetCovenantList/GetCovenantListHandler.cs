@@ -1,4 +1,5 @@
-﻿using DomainServices.ProductService.Api.Database;
+﻿using DomainServices.CaseService.Clients;
+using DomainServices.ProductService.Api.Database;
 using DomainServices.ProductService.Api.Database.Entities;
 using DomainServices.ProductService.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@ internal sealed class GetCovenantListHandler : IRequestHandler<GetCovenantListRe
 {
     public async Task<GetCovenantListResponse> Handle(GetCovenantListRequest request, CancellationToken cancellationToken)
     {
+        await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
+        
         var covenants = await _dbContext.Covenants
             .Where(c => c.CaseId == request.CaseId)
             .ToListAsync(cancellationToken);
@@ -42,9 +45,13 @@ internal sealed class GetCovenantListHandler : IRequestHandler<GetCovenantListRe
     };
     
     private readonly ProductServiceDbContext _dbContext;
+    private readonly ICaseServiceClient _caseService;
     
-    public GetCovenantListHandler(ProductServiceDbContext dbContext)
+    public GetCovenantListHandler(
+        ProductServiceDbContext dbContext,
+        ICaseServiceClient caseService)
     {
         _dbContext = dbContext;
+        _caseService = caseService;
     }
 }
