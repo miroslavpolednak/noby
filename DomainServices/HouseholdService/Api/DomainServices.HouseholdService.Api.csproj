@@ -24,7 +24,7 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
 		<PackageReference Include="Grpc.AspNetCore" Version="2.53.0" />
 		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.53.0" />
-		<PackageReference Include="System.ServiceModel.Http" Version="4.10.2" />
+		<PackageReference Include="System.ServiceModel.Http" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
