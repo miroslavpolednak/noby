@@ -556,7 +556,7 @@
             Fáze
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponsePhase.orderLetter">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponsePhase.OrderLetter">
             <summary>
             Písmenná identifikace fáze
             </summary>
@@ -586,24 +586,14 @@
             Jméno podmínky
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.IsFullfilled">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.IsFulfilled">
             <summary>
             Podmínka splněna
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.FullfillDate">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.FulfillDate">
             <summary>
             Termín pro splnění podmínky (datum, kdy by mělo byt splněno)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.Text">
-            <summary>
-            Text podmínky (jedná se o text ve smlouvě)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.Description">
-            <summary>
-            Vysvětlení činnosti, kterou je třeba udělat (vysvětlující text podmínky)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleId">
