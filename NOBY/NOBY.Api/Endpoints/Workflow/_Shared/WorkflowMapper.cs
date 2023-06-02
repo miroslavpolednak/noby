@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Attributes;
 using DomainServices.CaseService.Contracts;
-using DomainServices.CaseService.Contracts.v1;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.v1;
 using NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments;
 using NOBY.Api.Endpoints.Workflow.GetTaskList.Dto;
 using static DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types;
@@ -26,7 +26,7 @@ public class WorkflowMapper
     public async Task<List<WorkflowTask>> Map(List<_Case.WorkflowTask> tasks, CancellationToken cancellationToken)
     {
         var taskStates = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
-        var list = new List<Dto.WorkflowTask>();
+        var list = new List<WorkflowTask>();
 
         foreach (var task in tasks)
         {
@@ -38,18 +38,20 @@ public class WorkflowMapper
         return list;
     }
 
-    public async Task<Dto.WorkflowTaskDetail> Map(_Case.WorkflowTask task, TaskDetailItem taskDetailItem, CancellationToken cancellationToken)
+    public async Task<WorkflowTaskDetail> Map(_Case.WorkflowTask task, TaskDetailItem taskDetailItem, CancellationToken cancellationToken)
     {
         var performer = await _codebookService.GetOperator(task.PerformerLogin, cancellationToken);
-
-        var taskDetail = new Dto.WorkflowTaskDetail
+        var decisionTypes = await _codebookService.WorkflowPriceExceptionDecisionTypes(cancellationToken);
+        var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
+        
+        var taskDetail = new WorkflowTaskDetail
         {
             TaskIdSB = task.TaskIdSb,
             PerformerLogin = performer?.PerformerLogin,
             PerformerName = performer?.PerformerName,
             PerformerCode = performer?.PerformerCode,
             ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
-            Amendments = Map(task, taskDetailItem)
+            Amendments = Map(task, taskDetailItem, decisionTypes, loanInterestRateAnnouncedTypes)
         };
 
         taskDetail.TaskCommunication.AddRange(taskDetailItem.TaskCommunication.Select(Map));
@@ -57,12 +59,15 @@ public class WorkflowMapper
         return taskDetail;
     }
 
-    private static object Map(_Case.WorkflowTask task, TaskDetailItem taskDetailItem) =>
+    private static object Map(_Case.WorkflowTask task, TaskDetailItem taskDetailItem,
+        List<GenericCodebookResponse.Types.GenericCodebookItem> decisionTypes,
+        List<GenericCodebookResponse.Types.GenericCodebookItem> loanInterestRateAnnouncedTypes) =>
         taskDetailItem.AmendmentsCase switch
         {
             TaskDetailItem.AmendmentsOneofCase.Request => Map(taskDetailItem.Request),
             TaskDetailItem.AmendmentsOneofCase.Signing => Map(task, taskDetailItem.Signing),
             TaskDetailItem.AmendmentsOneofCase.ConsultationData => Map(taskDetailItem.ConsultationData),
+            TaskDetailItem.AmendmentsOneofCase.PriceException => Map(taskDetailItem.PriceException, decisionTypes, loanInterestRateAnnouncedTypes),
             _ => throw new ArgumentOutOfRangeException()
         };
 
@@ -87,13 +92,44 @@ public class WorkflowMapper
         OrderId = consultationData.OrderId
     };
 
-    private TaskCommunicationItem Map(_Case.TaskCommunicationItem taskCommunicationItem) => new()
+    private static AmendmentsPriceException Map(
+        AmendmentPriceException amendmentPriceException,
+        List<GenericCodebookResponse.Types.GenericCodebookItem> decisionTypes,
+        List<GenericCodebookResponse.Types.GenericCodebookItem> loanInterestRateAnnouncedTypes) => new()
+    {
+        Expiration = amendmentPriceException.Expiration,
+        Decision = GetDecision(amendmentPriceException, decisionTypes),
+        Fees = amendmentPriceException.Fees.Select(Map).ToList(),
+        LoanInterestRate = Map(amendmentPriceException.LoanInterestRate, loanInterestRateAnnouncedTypes)
+    };
+    
+    private static Fee Map(AmendmentPriceException.Types.FeesItem feeItem) => new()
+    {
+        DiscountPercentage = feeItem.DiscountPercentage,
+        FeeId = feeItem.FeeId,
+        FinalSum = feeItem.FinalSum,
+        TariffSum = feeItem.TariffSum
+    };
+
+    private static LoanInterestRates Map(
+        AmendmentPriceException.Types.LoanInterestRateItem loanInterestRate,
+        List<GenericCodebookResponse.Types.GenericCodebookItem> loanInterestRateAnnouncedTypes) => new()
+    {
+        LoanInterestRate = loanInterestRate.LoanInterestRate,
+        LoanInterestRateDiscount = loanInterestRate.LoanInterestRateDiscount,
+        LoanInterestRateProvided = loanInterestRate.LoanInterestRateProvided,
+        LoanInterestRateAnnouncedTypeName = loanInterestRateAnnouncedTypes
+            .FirstOrDefault(t => t.Id == loanInterestRate.LoanInterestRateAnnouncedType)?
+            .Name ?? string.Empty
+    };
+    
+    private static TaskCommunicationItem Map(_Case.TaskCommunicationItem taskCommunicationItem) => new()
     {
         TaskRequest = taskCommunicationItem.TaskRequest,
         TaskResponse = taskCommunicationItem.TaskResponse
     };
 
-    private static Dto.WorkflowTask Map(_Case.WorkflowTask task, WorkflowTaskStatesNobyItem taskState) => new()
+    private static WorkflowTask Map(_Case.WorkflowTask task, WorkflowTaskStatesNobyItem taskState) => new()
     {
         TaskId = task.TaskId,
         CreatedOn = task.CreatedOn,
@@ -108,7 +144,14 @@ public class WorkflowMapper
         StateIndicator = Enum.Parse<StateIndicators>(taskState.Indicator, true)
     };
 
-
+    private static string GetDecision(
+        AmendmentPriceException amendmentPriceException,
+        List<GenericCodebookResponse.Types.GenericCodebookItem> decisionTypes)
+    {
+        return decisionTypes
+            .FirstOrDefault(t => t.Id == amendmentPriceException.DecisionId)?.Name ?? string.Empty;
+    }
+    
     private static State GetWorkflowState(_Case.WorkflowTask task)
     {
         if (task.Cancelled)

@@ -15,6 +15,7 @@ internal sealed class GetTaskDetailSwaggerSchema : ISchemaFilter
         var possibleTypes = new[]
         {
             typeof(AmendmentsConsultationData),
+            typeof(AmendmentsPriceException),
             typeof(AmendmentsRequest),
             typeof(AmendmentsSigning),
         };

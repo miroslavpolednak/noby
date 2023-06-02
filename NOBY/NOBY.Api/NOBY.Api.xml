@@ -4113,6 +4113,66 @@
             </summary>
             <example>123556</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments.AmendmentsPriceException.Expiration">
+            <summary>
+            Cenová výjimka: Platnost cenové výjimky
+            </summary>
+            <example>24.12.2023</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments.AmendmentsPriceException.Decision">
+            <summary>
+            Rozhodnutí
+            </summary>
+            <example>Schváleno</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments.LoanInterestRates.LoanInterestRate">
+            <summary>
+            Nabídková sazba
+            </summary>
+            <example>2,49 %</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments.LoanInterestRates.LoanInterestRateProvided">
+            <summary>
+            Poskytnutá sazba
+            </summary>
+            <example>2 %</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments.LoanInterestRates.LoanInterestRateAnnouncedTypeName">
+            <summary>
+            Typ sazby
+            </summary>
+            <example>standardní</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments.LoanInterestRates.LoanInterestRateDiscount">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>0,49 %</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments.Fee.FeeId">
+            <summary>
+            Název poplatku
+            </summary>
+            <example>Zpracování žádosti</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments.Fee.TariffSum">
+            <summary>
+            Sazebníková cena (Kč)
+            </summary>
+            <example>1000</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments.Fee.FinalSum">
+            <summary>
+            Navrhovaná cena (Kč)
+            </summary>
+            <example>500</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments.Fee.DiscountPercentage">
+            <summary>
+            Sleva (%)
+            </summary>
+            <example>50</example>
+        </member>
         <member name="T:NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments.AmendmentsRequest">
             <summary>
             Tento objekt je relevantní pouze pro typ úkolu Dožádání
