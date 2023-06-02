@@ -171,4 +171,21 @@ public class CasesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetCovenants.GetCovenantsResponse> GetCovenants([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCovenants.GetCovenantsRequest(caseId), cancellationToken);
+
+    /// <summary>
+    /// Detail Podmínky ke splnění Case-u
+    /// </summary>
+    /// <remarks>
+    /// Detail Podmínky ke splnění pro Case<br /><br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=56FAFD66-E483-475d-9868-6B90A4ED889B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="caseId">ID Case-u</param>
+    /// <param name="covenantOrder">Pořadí podmínky ke splnění</param>
+    [HttpGet("{caseId:long}/covenant/{covenantOrder:int}")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Case" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetCovenant.GetCovenantResponse> GetCovenant([FromRoute] long caseId, [FromRoute] int covenantOrder, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCovenant.GetCovenantRequest(caseId, covenantOrder), cancellationToken);
 }

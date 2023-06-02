@@ -1,5 +1,4 @@
 ﻿using DomainServices.ProductService.Api.Database;
-using DomainServices.ProductService.Api.Database.Entities;
 using DomainServices.ProductService.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,19 +12,17 @@ internal sealed class GetCovenantDetailHandler : IRequestHandler<GetCovenantDeta
             .Where(c => c.CaseId == request.CaseId && c.Order == request.Order)
             .FirstOrDefaultAsync(cancellationToken: cancellationToken)
             ?? throw new CisNotFoundException(0, "TODO");
-        
-        return new GetCovenantDetailResponse { Covenant = Map(covenant) };
+
+        return new GetCovenantDetailResponse
+        {
+            Description = covenant.Description,
+            Name = covenant.Name,
+            Text = covenant.Text,
+            FulfillDate = covenant.FulfillDate,
+            IsFulfilled = covenant.IsFulFilled != 0
+        };
     }
 
-    private static CovenantDetail Map(Covenant covenant) => new()
-    {
-        Description = covenant.Description,
-        Name = covenant.Name,
-        Text = covenant.Text,
-        FulfillDate = covenant.FulfillDate,
-        IsFulfilled = covenant.IsFulFilled != 0
-    };
-    
     private readonly ProductServiceDbContext _dbContext;
     
     public GetCovenantDetailHandler(ProductServiceDbContext dbContext)

@@ -10,10 +10,6 @@ message GetCovenantDetailRequest {
 }
 
 message GetCovenantDetailResponse {
-    CovenantDetail Covenant = 1;
-}
-
-message CovenantDetail {
     string Name = 1;
     bool IsFulfilled = 2;
     cis.types.NullableGrpcDate FulfillDate = 3;

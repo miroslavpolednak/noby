@@ -193,6 +193,17 @@
             </remarks>
             <param name="caseId">ID Case-u</param>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCovenant(System.Int64,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Detail Podmínky ke splnění Case-u
+            </summary>
+            <remarks>
+            Detail Podmínky ke splnění pro Case<br /><br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=56FAFD66-E483-475d-9868-6B90A4ED889B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="caseId">ID Case-u</param>
+            <param name="covenantOrder">Pořadí podmínky ke splnění</param>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
             <summary>
             Typ žádosti - číselník SalesArrangementType
@@ -498,6 +509,31 @@
         <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.FulfillDate">
             <summary>
             Termín pro splnění podmínky (datum, kdy by mělo byt splněno)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenant.GetCovenantResponse.Name">
+            <summary>
+            Jméno podmínky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenant.GetCovenantResponse.IsFulfilled">
+            <summary>
+            Podmínka splněna
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenant.GetCovenantResponse.FulfillDate">
+            <summary>
+            Termín pro splnění podmínky (datum, kdy by mělo byt splněno)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenant.GetCovenantResponse.Text">
+            <summary>
+            Text podmínky (jedná se o text ve smlouvě)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenant.GetCovenantResponse.Description">
+            <summary>
+            Vysvětlení činnosti, kterou je třeba udělat (vysvětlující text podmínky)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleId">
