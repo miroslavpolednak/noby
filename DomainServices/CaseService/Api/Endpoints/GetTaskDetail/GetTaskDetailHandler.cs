@@ -61,8 +61,8 @@ internal sealed class GetTaskDetailHandler
             {
                 taskDetail.TaskCommunication.Add(new TaskCommunicationItem()
                 {
-                    TaskResponse = taskData.GetValueOrDefault("ukol_overeni_odpoved"),
-                    TaskRequest = taskData.GetValueOrDefault("ukol_overeni_pozadavek")
+                    TaskResponse = taskData.GetValueOrDefault("ukol_overeni_odpoved") ?? "",
+                    TaskRequest = taskData.GetValueOrDefault("ukol_overeni_pozadavek") ?? ""
                 });
             }
         }
