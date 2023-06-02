@@ -173,7 +173,7 @@
             </remarks>
             <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseDocumentsFlag(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseMenuFlags(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Příznaky v menu Case detailu
             </summary>
@@ -182,6 +182,16 @@
              <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
              <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCovenants(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Podmínky ke splnění Case-u
+            </summary>
+            <remarks>
+            Seznam Podmínek ke splnění pro Case<br /><br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=4378EDFB-2A3D-46f6-8C51-0241A3436D5E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="caseId">ID Case-u</param>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
             <summary>
@@ -198,9 +208,9 @@
             https://wiki.kb.cz/pages/viewpage.action?pageId=424119307#id-%C4%8Cerp%C3%A1ni%C5%BD%C3%A1dosto%C4%8Derp%C3%A1n%C3%AD-Kontrolyp%C5%99edformul%C3%A1%C5%99em%C4%8Derp%C3%A1n%C3%AD
             </remarks>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.DocumentsMenuItem.Flag">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsItem.Flag">
             <summary>
-            0 - No flag, 1 - In processing, 2 - Error (!)
+            Příznak
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.LoanPurposeItem.Sum">
@@ -418,6 +428,76 @@
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.Icp">
             <summary>
             IČP
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponse">
+            <summary>
+            Seznam podmínek ke splnění
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponse.Sections">
+            <summary>
+            Seznam sekcí
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseSection">
+            <summary>
+            Sekce
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseSection.CovenantTypeId">
+            <summary>
+            Sekce - číselník CovenantType
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseSection.Phases">
+            <summary>
+            Seznam fází
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponsePhase">
+            <summary>
+            Fáze
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponsePhase.OrderLetter">
+            <summary>
+            Písmenná identifikace fáze
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponsePhase.Name">
+            <summary>
+            Název skupiny podmínek (fáze)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponsePhase.Covenants">
+            <summary>
+            Podmínky ke splnění
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant">
+            <summary>
+            Podmínka ke splnění
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.OrderLetter">
+            <summary>
+            Písmenná identifikace podmínky v sekci/skupině
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.Name">
+            <summary>
+            Jméno podmínky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.IsFulfilled">
+            <summary>
+            Podmínka splněna
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.FulfillDate">
+            <summary>
+            Termín pro splnění podmínky (datum, kdy by mělo byt splněno)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleId">

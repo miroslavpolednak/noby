@@ -87,7 +87,7 @@ internal static class CaseExtensions
                         },
                         DecisionId = taskData.GetNInteger("ukol_overeni_ic_zpusob_reseni")
                     };
-                    for (int i = 1; i < 5; i++)
+                    for (int i = 1; i < 20; i++)
                     {
                         if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")))
                             break;
