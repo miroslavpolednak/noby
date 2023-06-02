@@ -2,6 +2,7 @@
 using DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.Contracts.v1;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.v1;
 using NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments;
 using NOBY.Api.Endpoints.Workflow.GetTaskList.Dto;
 using static DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types;
@@ -40,7 +41,12 @@ public class WorkflowMapper
 
     public async Task<Dto.WorkflowTaskDetail> Map(_Case.WorkflowTask task, TaskDetailItem taskDetailItem, CancellationToken cancellationToken)
     {
-        var performer = await _codebookService.GetOperator(task.PerformerLogin, cancellationToken);
+        GetOperatorResponse? performer = null;
+        try
+        {
+            performer = await _codebookService.GetOperator(task.PerformerLogin, cancellationToken);
+        }
+        catch { } // operator neni povinny
 
         var taskDetail = new Dto.WorkflowTaskDetail
         {
