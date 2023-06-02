@@ -42,4 +42,9 @@ public interface IDocumentOnSAServiceClient
     /// Metoda slouží k vložení záznamu do tabulky DocumentOnSA obsahující zahájené podepisovací procesy 
     /// </summary>
     Task<CreateDocumentOnSAResponse> CreateDocumentOnSA(CreateDocumentOnSARequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k přidání eArchivového ID k Documentu na SA.
+    /// </summary>
+    Task LinkEArchivIdToDocumentOnSA(LinkEArchivIdToDocumentOnSARequest request, CancellationToken cancellationToken = default);
 }

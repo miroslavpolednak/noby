@@ -57,4 +57,9 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
     {
        return await _client.CreateDocumentOnSAAsync(request, cancellationToken: cancellationToken);
     }
+
+    public async Task LinkEArchivIdToDocumentOnSA(LinkEArchivIdToDocumentOnSARequest request, CancellationToken cancellationToken = default)
+    {
+        await _client.LinkEArchivIdToDocumentOnSAAsync(request,cancellationToken: cancellationToken);
+    }
 }

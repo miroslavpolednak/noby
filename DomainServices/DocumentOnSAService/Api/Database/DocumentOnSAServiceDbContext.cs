@@ -16,6 +16,8 @@ public class DocumentOnSAServiceDbContext : BaseDbContext<DocumentOnSAServiceDbC
 
     public DbSet<DocumentOnSa> DocumentOnSa { get; set; }
 
+    public DbSet<EArchivIdsLinked> EArchivIdsLinked { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Program).Assembly);
