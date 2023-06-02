@@ -4060,12 +4060,6 @@
             Validace zda jiz neexistuje aktivni price exception
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest.SalesArrangementId">
-            <summary>
-            ID sales arrangementu
-            </summary>
-            <example>11345</example>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest.TaskTypeId">
             <summary>
             ID typu úkolu (Cenová výjimka = 2, Konzultace = 3, Předání na specialistu = 7)
