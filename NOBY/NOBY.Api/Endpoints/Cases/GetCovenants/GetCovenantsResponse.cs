@@ -72,14 +72,4 @@ public sealed class GetCovenantsResponseCovenant
     /// Termín pro splnění podmínky (datum, kdy by mělo byt splněno)
     /// </summary>
     public DateTime? FulfillDate { get; set; }
-
-    /// <summary>
-    /// Text podmínky (jedná se o text ve smlouvě)
-    /// </summary>
-    public string? Text { get; set; }
-
-    /// <summary>
-    /// Vysvětlení činnosti, kterou je třeba udělat (vysvětlující text podmínky)
-    /// </summary>
-    public string? Description { get; set; }
 }
