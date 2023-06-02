@@ -1382,7 +1382,7 @@
             <summary>
             If formId exist on DocumentOnSa, return EArchiveId from documentOnSa
             </summary>
-            <returns>DocumentOnSa.EArchiveId</returns>
+            <returns>DocumentOnSa.DocumentOnSAId</returns>
             <exception cref="T:CIS.Core.Exceptions.CisValidationException">Unable to upload file for selected FormId</exception>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.CheckIfExistFormIdOnDocumentOnSa(NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Int64,System.Threading.CancellationToken)">

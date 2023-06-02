@@ -9,6 +9,8 @@ using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
 using System.Globalization;
+using System.Threading;
+using static DomainServices.DocumentOnSAService.Contracts.v1.DocumentOnSAService;
 using _DocOnSa = NOBY.Api.Endpoints.DocumentOnSA.Search;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
@@ -57,34 +59,46 @@ public class SaveDocumentToArchiveHandler
     {
         ArgumentNullException.ThrowIfNull(request);
         var filePaths = new List<string>();
-        var filesToUpload = new List<UploadDocumentRequest>();
-
+        var filesToUpload = new List<(UploadDocumentRequest uploadRequest, int? documentOnSAId)>();
         var authorUserLogin = await GetAuthorUserLogin(cancellationToken);
 
         foreach (var docInfo in request.DocumentsInformation)
         {
-            var eArchiveIdFromDocumentOnSa = string.Empty;
-
+            int? documentOnSAId = null;
             await CheckIfFormIdRequired(docInfo, cancellationToken);
 
             if (!string.IsNullOrWhiteSpace(docInfo.FormId))
-                eArchiveIdFromDocumentOnSa = await ValidateFormId(request.CaseId, docInfo, cancellationToken);
+                documentOnSAId = await ValidateFormId(request.CaseId, docInfo, cancellationToken);
 
             var filePath = _tempFileManager.ComposeFilePath(docInfo.DocumentInformation.Guid!.Value.ToString());
             _tempFileManager.CheckIfDocumentExist(filePath);
             filePaths.Add(filePath);
 
             var file = await _tempFileManager.GetDocument(filePath, cancellationToken);
+            var documentId = await _client.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken);
 
-            var documentId = string.IsNullOrWhiteSpace(eArchiveIdFromDocumentOnSa) ?
-                await _client.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken)
-                : eArchiveIdFromDocumentOnSa;
-
-            filesToUpload.Add(await MapRequest(file, documentId, request.CaseId, docInfo, authorUserLogin, cancellationToken));
+            filesToUpload.Add(new()
+            {
+                uploadRequest = await MapRequest(file, documentId, request.CaseId, docInfo, authorUserLogin, cancellationToken),
+                documentOnSAId = documentOnSAId
+            });
         }
 
-        await Task.WhenAll(filesToUpload.Select(file => _client.UploadDocument(file, cancellationToken)));
+        await Task.WhenAll(filesToUpload.Select(uploadItem => UploadDocument(uploadItem, cancellationToken)));
         _tempFileManager.BatchDelete(filePaths);
+    }
+
+    private async Task UploadDocument((UploadDocumentRequest uploadRequest, int? documentOnSAId) uploadItem, CancellationToken cancellationToken)
+    {
+        await _client.UploadDocument(uploadItem.uploadRequest, cancellationToken);
+        if (uploadItem.documentOnSAId != null)
+            await _documentOnSAServiceClient.LinkEArchivIdToDocumentOnSA(
+                new()
+                {
+                    DocumentOnSAId = uploadItem.documentOnSAId.Value,
+                    EArchivId = uploadItem.uploadRequest.Metadata.DocumentId
+                },
+                        cancellationToken);
     }
 
     private async Task CheckIfFormIdRequired(DocumentsInformation docInfo, CancellationToken cancellationToken)
@@ -101,9 +115,9 @@ public class SaveDocumentToArchiveHandler
     /// <summary>
     /// If formId exist on DocumentOnSa, return EArchiveId from documentOnSa
     /// </summary>
-    /// <returns>DocumentOnSa.EArchiveId</returns>
+    /// <returns>DocumentOnSa.DocumentOnSAId</returns>
     /// <exception cref="CisValidationException">Unable to upload file for selected FormId</exception>
-    private async Task<string> ValidateFormId(long caseId, DocumentsInformation docInfo, CancellationToken cancellationToken)
+    private async Task<int?> ValidateFormId(long caseId, DocumentsInformation docInfo, CancellationToken cancellationToken)
     {
         var salesArrangementIdWithFormIdFromDocSa = await CheckIfExistFormIdOnDocumentOnSa(docInfo, caseId, cancellationToken);
 
@@ -114,7 +128,7 @@ public class SaveDocumentToArchiveHandler
 
         var documentsOnSa = await _documentOnSAServiceClient.GetDocumentsToSignList(salesArrangementIdWithFormIdFromDocSa.Value, cancellationToken);
         var documentOnSa = documentsOnSa.DocumentsOnSAToSign.Single(d => d.FormId == docInfo.FormId);
-        return documentOnSa.EArchivId;
+        return documentOnSa.DocumentOnSAId;
     }
 
     /// <summary>
