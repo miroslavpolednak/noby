@@ -1,4 +1,5 @@
 ﻿using DomainServices.ProductService.Api.Database;
+using DomainServices.ProductService.Api.Database.Entities;
 using DomainServices.ProductService.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,43 +16,31 @@ internal sealed class GetCovenantListHandler : IRequestHandler<GetCovenantListRe
         var covenantPhases = await _dbContext.CovenantPhases
             .Where(c => c.CaseId == request.CaseId)
             .ToListAsync(cancellationToken);
-
-        var result = covenants
-            .GroupJoin(
-                covenantPhases,
-                cov => new { C = cov.CaseId, O = cov.PhaseOrder },
-                phase => new { C = phase.CaseId, O = phase.Order},
-                (c, cp) =>
-                {
-                    var item = new CovenantListItem
-                    {
-                        Name = c.Name,
-                        FulfillDate = c.FulfillDate,
-                        IsFulfilled = c.IsFulFilled != 0,
-                        OrderLetter = c.OrderLetter,
-                        PhaseOrder = c.PhaseOrder,
-                        CovenantTypeId = c.CovenantTypeId,
-                    };
-
-                    item.Phases.AddRange( cp
-                        .Select(p => new Phase
-                        {
-                            Name = p.Name,
-                            Order = p.Order,
-                            OrderLetter = p.OrderLetter
-                        })
-                        .ToList());
-                    
-                    return item;
-                })
-            .ToList();
-        
         
         var response = new GetCovenantListResponse();
-        response.Covenants.AddRange(result);
+        response.Covenants.AddRange(covenants.Select(Map));
+        response.Phases.AddRange(covenantPhases.Select(Map));
+        
         return response;
     }
 
+    private static CovenantListItem Map(Covenant covenant) => new()
+    {
+        Name = covenant.Name,
+        FulfillDate = covenant.FulfillDate,
+        IsFulfilled = covenant.IsFulFilled != 0,
+        OrderLetter = covenant.OrderLetter,
+        PhaseOrder = covenant.PhaseOrder,
+        CovenantTypeId = covenant.CovenantTypeId,
+    };
+
+    private static PhaseListItem Map(CovenantPhase covenantPhase) => new()
+    {
+        Name = covenantPhase.Name,
+        Order = covenantPhase.Order,
+        OrderLetter = covenantPhase.OrderLetter
+    };
+    
     private readonly ProductServiceDbContext _dbContext;
     
     public GetCovenantListHandler(ProductServiceDbContext dbContext)
