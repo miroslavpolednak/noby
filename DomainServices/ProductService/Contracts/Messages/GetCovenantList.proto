@@ -10,6 +10,7 @@ message GetCovenantListRequest {
 
 message GetCovenantListResponse {
     repeated CovenantListItem Covenants = 1;
+    repeated PhaseListItem Phases = 2;
 }
 
 message CovenantListItem {
@@ -19,10 +20,9 @@ message CovenantListItem {
     string OrderLetter = 4;
     int32 CovenantTypeId = 5;
     int32 PhaseOrder = 6;
-    repeated Phase Phases = 7;
 }
 
-message Phase {
+message PhaseListItem {
     int32 Order = 1;
     string OrderLetter = 2;
     string Name = 3;
