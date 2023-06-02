@@ -51,7 +51,7 @@ internal sealed class CreateTaskHandler
         // price exception
         if (request.TaskTypeId == 2)
         {
-            await updatePriceExceptionTask(dsRequest, request.SalesArrangementId, cancellationToken);
+            await updatePriceExceptionTask(dsRequest, cancellationToken);
         }
 
         var result = await _caseService.CreateTask(dsRequest, cancellationToken);
@@ -62,12 +62,13 @@ internal sealed class CreateTaskHandler
         return result.TaskId;
     }
 
-    private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, int salesArrangementId, CancellationToken cancellationToken)
+    private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, CancellationToken cancellationToken)
     {
-        var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
+        var saId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
+        var saInstance = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
         if (!saInstance.OfferId.HasValue)
         {
-            throw new NobyValidationException($"OfferId is null for SalesArrangementId={salesArrangementId}");
+            throw new NobyValidationException($"OfferId is null for SalesArrangementId={saId}");
         }
         var offerInstance = await _offerService.GetMortgageOfferDetail(saInstance.OfferId.Value, cancellationToken);
 
