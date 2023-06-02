@@ -71,5 +71,5 @@ public class CaseModel
 
 	public SharedDto.ContactsDto? OfferContacts { get; set; }
 
-    public List<TaskModel>? ActiveTasks { get; set; }
+    public List<Dto.TaskModel>? ActiveTasks { get; set; }
 }

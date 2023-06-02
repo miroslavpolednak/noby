@@ -91,12 +91,13 @@ internal static class CaseExtensions
                     {
                         if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")))
                             break;
+
                         taskDetail.PriceException.Fees.Add(new AmendmentPriceException.Types.FeesItem
                         {
                             FeeId = taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}"),
-                            TariffSum = taskData.GetNInteger($"ukol_overeni_ic_popl_sazeb{i}"),
-                            FinalSum = taskData.GetNInteger($"ukol_overeni_ic_popl_vysl{i}"),
-                            DiscountPercentage = taskData.GetNInteger($"ukol_overeni_ic_popl_sleva_perc{i}")
+                            TariffSum = taskData.GetInteger($"ukol_overeni_ic_popl_sazeb{i}"),
+                            FinalSum = taskData.GetInteger($"ukol_overeni_ic_popl_vysl{i}"),
+                            DiscountPercentage = taskData.GetInteger($"ukol_overeni_ic_popl_sleva_perc{i}")
                         });
                     }
                     break;

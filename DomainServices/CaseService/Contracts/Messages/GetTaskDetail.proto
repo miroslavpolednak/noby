@@ -18,7 +18,7 @@ message GetTaskDetailResponse {
 
 message TaskDetailItem {
 	google.protobuf.StringValue PerformanName = 1;
-	google.protobuf.StringValue PerformerCode = 2;
+	google.protobuf.Int32Value PerformerCode = 2;
 	string ProcessNameLong = 3;
 	repeated TaskCommunicationItem TaskCommunication = 4;
 	repeated string TaskDocumentIds = 5;
@@ -66,9 +66,9 @@ message AmendmentPriceException {
 	}
 
 	message FeesItem {
-		google.protobuf.StringValue FeeId = 1;
-		google.protobuf.Int32Value TariffSum = 2;
-		google.protobuf.Int32Value FinalSum = 3;
-		google.protobuf.Int32Value DiscountPercentage = 4;
+		string FeeId = 1;
+		int32 TariffSum = 2;
+		int32 FinalSum = 3;
+		int32 DiscountPercentage = 4;
 	}
 }

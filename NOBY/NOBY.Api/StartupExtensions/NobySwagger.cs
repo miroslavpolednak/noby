@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.OpenApi.Models;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
+using NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.StartupExtensions;
@@ -49,7 +50,7 @@ internal static class NobySwagger
             x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
             x.SchemaFilter<Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementSwaggerSchema> ();
             x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwaggerSchema>();
-            x.SchemaFilter<Endpoints.Cases.GetTaskDetail.GetTaskDetailSwaggerSchema>();
+            x.SchemaFilter<GetTaskDetailSwaggerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
         });
