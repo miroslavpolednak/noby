@@ -4356,6 +4356,12 @@
             </summary>
             <example>Jan Novák</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.Dto.WorkflowTaskDetail.PerformerCode">
+            <summary>
+            Kód zadavatele/zpracovatele
+            </summary>
+            <example>9943</example>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Workflow.Dto.WorkflowTaskDetail.ProcessNameLong">
             <summary>
             Jméno typu procesu (nezkrácené)

@@ -21,6 +21,12 @@ public class WorkflowTaskDetail
     public string? PerformerName { get; set; }
 
     /// <summary>
+    /// Kód zadavatele/zpracovatele
+    /// </summary>
+    /// <example>9943</example>
+    public int? PerformerCode { get; set; }
+
+    /// <summary>
     /// Jméno typu procesu (nezkrácené)
     /// </summary>
     /// <example>Hlavní úvěrový proces</example>

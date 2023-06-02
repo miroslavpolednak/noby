@@ -47,6 +47,7 @@ public class WorkflowMapper
             TaskIdSB = task.TaskIdSb,
             PerformerLogin = performer?.PerformerLogin,
             PerformerName = performer?.PerformerName,
+            PerformerCode = performer?.PerformerCode,
             ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
             Amendments = Map(task, taskDetailItem)
         };
