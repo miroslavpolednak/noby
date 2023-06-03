@@ -1,7 +1,7 @@
 ﻿namespace NOBY.Api.Endpoints.Customer.GetCustomerDetail.Dto;
 
 public class NaturalPersonModel
-    : SharedDto.BaseNaturalPerson
+    : NOBY.Dto.BaseNaturalPerson
 {
     /// <summary>
     /// Přihlášen k aktualizaci dat ze základních registrů

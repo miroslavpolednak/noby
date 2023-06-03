@@ -2,9 +2,9 @@
 
 public sealed class GetCurrentPriceExceptionResponse
 {
-    public Dto.WorkflowTask Task { get; set; } = null!;
+    public Dto.Workflow.WorkflowTask Task { get; set; } = null!;
 
-    public Dto.WorkflowTaskDetail TaskDetail { get; set; } = null!;
+    public Dto.Workflow.WorkflowTaskDetail TaskDetail { get; set; } = null!;
 
-    public List<DocumentArchive.GetDocumentList.DocumentsMetadata>? Documents { get; set; }
+    public List<Dto.Documents.DocumentsMetadata>? Documents { get; set; }
 }

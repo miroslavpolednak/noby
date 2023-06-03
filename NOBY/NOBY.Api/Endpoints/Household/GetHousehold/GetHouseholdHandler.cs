@@ -17,7 +17,7 @@ internal sealed class GetHouseholdHandler
         if (household.CustomerOnSAId2.HasValue)
             response.Customer2 = await getCustomer(household.CustomerOnSAId2.Value, cancellationToken);
 
-        bool isPartner = Helpers.AreCustomersPartners(response.Customer1?.MaritalStatusId, response.Customer2?.MaritalStatusId);
+        bool isPartner = DomainServices.HouseholdService.Clients.Helpers.AreCustomersPartners(response.Customer1?.MaritalStatusId, response.Customer2?.MaritalStatusId);
         response.AreCustomersPartners = isPartner;
 
         return response;

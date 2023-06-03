@@ -1,10 +1,8 @@
-﻿using NOBY.Api.Endpoints.Workflow.Dto;
-
-namespace NOBY.Api.Endpoints.Workflow.GetTaskList;
+﻿namespace NOBY.Api.Endpoints.Workflow.GetTaskList;
 
 public sealed class GetTaskListResponse
 {
-    public List<WorkflowTask>? Tasks { get; set; }
+    public List<Dto.Workflow.WorkflowTask>? Tasks { get; set; }
 
-    public List<Dto.WorkflowProcess> Processes { get; set; } = new();
+    public List<Dto.Workflow.WorkflowProcess> Processes { get; set; } = new();
 }

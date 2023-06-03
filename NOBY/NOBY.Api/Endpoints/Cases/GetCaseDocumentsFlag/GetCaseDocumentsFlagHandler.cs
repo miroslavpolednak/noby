@@ -2,7 +2,8 @@
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
-using NOBY.Api.Endpoints.Shared;
+using NOBY.Api.Helpers;
+using NOBY.Dto.Documents;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 
@@ -40,11 +41,11 @@ public class GetCaseDocumentsFlagHandler : IRequestHandler<GetCaseDocumentsFlagR
 
     private static FlagDocuments GetDocumentsFlag(List<DocumentsMetadata> queuedDocuments)
     {
-        if (queuedDocuments.Any(s => s.UploadStatus == UploadStatus.Error))
+        if (queuedDocuments.Any(s => s.UploadStatus == UploadStatuses.Error))
         {
             return FlagDocuments.Error;
         }
-        else if (queuedDocuments.Any(s => s.UploadStatus == UploadStatus.InProgress))
+        else if (queuedDocuments.Any(s => s.UploadStatus == UploadStatuses.InProgress))
         {
             return FlagDocuments.InProcessing;
         }

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using NOBY.Api.Endpoints.Shared;
 using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.Workflow.UpdateTaskDetail;
@@ -38,7 +37,7 @@ public class UpdateTaskDetailRequest : IRequest
     /// <example>Vyplněno, co bylo potřeba.</example>
     public string? TaskUserResponse { get; set; }
 
-    public List<DocumentInformation>? Attachments { get; set; }
+    public List<NOBY.Dto.Documents.DocumentInformation>? Attachments { get; set; }
 
     internal UpdateTaskDetailRequest InfuseIds(long caseId, long taskId)
     {

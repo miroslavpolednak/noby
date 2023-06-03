@@ -1,6 +1,5 @@
 ﻿using DomainServices.CaseService.Clients;
-using NOBY.Api.Endpoints.Workflow.Dto;
-using NOBY.Api.Endpoints.Workflow.GetTaskList.Dto;
+using NOBY.Dto.Workflow;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskList;
 

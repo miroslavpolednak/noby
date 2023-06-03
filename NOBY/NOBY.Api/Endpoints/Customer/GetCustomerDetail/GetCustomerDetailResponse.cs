@@ -14,7 +14,7 @@ public sealed class GetCustomerDetailResponse
     
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
     
-    public SharedDto.ContactsConfirmedDto? Contacts { get; set; }
+    public NOBY.Dto.ContactsConfirmedDto? Contacts { get; set; }
     
-    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
+    public NOBY.Dto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 }

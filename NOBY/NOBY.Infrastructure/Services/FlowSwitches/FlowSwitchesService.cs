@@ -7,11 +7,11 @@ namespace NOBY.Infrastructure.Services.FlowSwitches;
 internal sealed class FlowSwitchesService
     : IFlowSwitchesService
 {
-    public List<FlowSwitch> GetDefaultSwitches()
+    public List<Dto.FlowSwitches.FlowSwitch> GetDefaultSwitches()
     {
         return getFlowSwitches()
             .Where(t => t.DefaultValue)
-            .Select(t => new FlowSwitch
+            .Select(t => new Dto.FlowSwitches.FlowSwitch
             {
                 FlowSwitchId = t.FlowSwitchId,
                 Value = t.DefaultValue
@@ -19,17 +19,17 @@ internal sealed class FlowSwitchesService
             .ToList();
     }
 
-    public Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA)
+    public Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA)
     {
         flowSwitchesOnSA ??= new List<DomainServices.SalesArrangementService.Contracts.FlowSwitch>();
-        var result = new Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, FlowSwitchGroup>();
+        var result = new Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup>();
 
         var allFlowSwitches = getFlowSwitches();
         var allFlowSwitchGroups = getFlowSwitchGroups();
 
         foreach (var group in allFlowSwitchGroups)
         {
-            var resultGroup = new FlowSwitchGroup
+            var resultGroup = new Dto.FlowSwitches.FlowSwitchGroup
             {
                 IsVisible = resolveStatus(group.IsVisibleFlowSwitches, group.IsVisibleDefault),
                 IsActive = resolveStatus(group.IsActiveFlowSwitches, group.IsActiveDefault),

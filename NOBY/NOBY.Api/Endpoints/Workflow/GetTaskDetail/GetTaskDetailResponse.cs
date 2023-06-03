@@ -2,9 +2,9 @@
 
 public sealed class GetTaskDetailResponse
 {
-    public Workflow.Dto.WorkflowTask? Task { get; set; }
+    public Dto.Workflow.WorkflowTask? Task { get; set; }
 
-    public Workflow.Dto.WorkflowTaskDetail? TaskDetail { get; set; }
+    public Dto.Workflow.WorkflowTaskDetail? TaskDetail { get; set; }
 
-    public List<DocumentArchive.GetDocumentList.DocumentsMetadata>? Documents { get; set; }
+    public List<NOBY.Dto.Documents.DocumentsMetadata>? Documents { get; set; }
 }

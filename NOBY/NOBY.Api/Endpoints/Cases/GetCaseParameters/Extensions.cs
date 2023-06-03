@@ -1,4 +1,4 @@
-﻿using NOBY.Api.SharedDto;
+﻿using NOBY.Dto;
 using DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;

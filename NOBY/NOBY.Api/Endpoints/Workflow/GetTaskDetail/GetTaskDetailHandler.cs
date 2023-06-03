@@ -1,8 +1,7 @@
 ﻿using DomainServices.CaseService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
-using NOBY.Api.Endpoints.Shared;
-using NOBY.Api.Endpoints.Workflow.Dto;
+using NOBY.Api.Helpers;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 

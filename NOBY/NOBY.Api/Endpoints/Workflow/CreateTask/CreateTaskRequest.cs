@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using NOBY.Api.Endpoints.Shared;
 
 namespace NOBY.Api.Endpoints.Workflow.CreateTask;
 
@@ -49,5 +48,5 @@ public sealed class CreateTaskRequest
     [Required]
     public string TaskUserRequest { get; set; } = string.Empty;
 
-    public List<DocumentInformation>? Attachments { get; set; }
+    public List<NOBY.Dto.Documents.DocumentInformation>? Attachments { get; set; }
 }

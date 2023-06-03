@@ -1,6 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
-using NOBY.Api.Endpoints.Workflow.Dto;
-using NOBY.Api.Endpoints.Workflow.GetTaskDetail.Dto.Amendments;
+using NOBY.Dto.Workflow;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
