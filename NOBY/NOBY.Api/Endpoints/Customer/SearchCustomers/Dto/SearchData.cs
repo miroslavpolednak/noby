@@ -23,5 +23,5 @@ public class SearchData
     /// </summary>
     public string? IdentificationDocumentNumber { get; set; }
 
-    public SharedDto.ContactsDto? Contacts { get; set; }
+    public NOBY.Dto.ContactsDto? Contacts { get; set; }
 }

@@ -1,13 +1,10 @@
-﻿using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
-using NOBY.Api.Endpoints.Workflow.Dto;
+﻿namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 
-namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
-
-public class GetTaskDetailResponse
+public sealed class GetTaskDetailResponse
 {
-    public WorkflowTask? Task { get; set; }
+    public Dto.Workflow.WorkflowTask? Task { get; set; }
 
-    public WorkflowTaskDetail? TaskDetail { get; set; }
+    public Dto.Workflow.WorkflowTaskDetail? TaskDetail { get; set; }
 
-    public List<DocumentsMetadata>? Documents { get; set; }
+    public List<NOBY.Dto.Documents.DocumentsMetadata>? Documents { get; set; }
 }

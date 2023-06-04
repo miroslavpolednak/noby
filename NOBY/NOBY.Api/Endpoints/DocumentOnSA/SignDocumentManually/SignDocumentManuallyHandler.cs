@@ -11,7 +11,7 @@ using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer;
 using NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
 using NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement;
-using NOBY.Api.SharedDto;
+using NOBY.Dto;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;

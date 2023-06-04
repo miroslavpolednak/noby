@@ -3,7 +3,7 @@ using _Cust = DomainServices.CustomerService.Contracts;
 using CIS.Infrastructure.gRPC.CisTypes;
 using System.ComponentModel.DataAnnotations;
 using CIS.Core;
-using NOBY.Api.SharedDto;
+using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.Cases.GetCustomers;
 

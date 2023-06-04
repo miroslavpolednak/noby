@@ -19,5 +19,5 @@ public sealed class GetCustomersOnProductCustomer
     /// </summary>
     public DateTime? DateOfBirth { get; set; }
 
-    public SharedDto.IdentificationDocumentBase? IdentificationDocument { get; set; }
+    public NOBY.Dto.IdentificationDocumentBase? IdentificationDocument { get; set; }
 }

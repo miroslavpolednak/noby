@@ -1,7 +1,7 @@
 ﻿namespace NOBY.Api.Endpoints.Customer.Shared;
 
 public sealed class NaturalPerson
-    : SharedDto.BaseNaturalPerson
+    : NOBY.Dto.BaseNaturalPerson
 {
     /// <summary>
     /// Stupeň vzdělání

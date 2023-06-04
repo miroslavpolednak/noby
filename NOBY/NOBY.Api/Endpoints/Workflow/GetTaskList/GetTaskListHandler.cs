@@ -1,17 +1,17 @@
 ﻿using DomainServices.CaseService.Clients;
-using NOBY.Api.Endpoints.Workflow.Dto;
-using NOBY.Api.Endpoints.Workflow.GetTaskList.Dto;
+using NOBY.Dto.Workflow;
+using NOBY.Infrastructure.Services.WorkflowMapper;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskList;
 
 internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
 {
-    private readonly WorkflowMapper _mapper;
+    private readonly WorkflowMapperService _mapper;
     private readonly ICaseServiceClient _caseService;
     private static int[] _allowdTaskTypes = new[] { 1, 2, 3, 6, 7 };
     private static int[] _allowdProcessTypes = new[] { 1, 2, 3 };
 
-    public GetTaskListHandler(WorkflowMapper mapper, ICaseServiceClient caseService)
+    public GetTaskListHandler(WorkflowMapperService mapper, ICaseServiceClient caseService)
     {
         _mapper = mapper;
         _caseService = caseService;

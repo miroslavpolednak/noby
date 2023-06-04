@@ -2,7 +2,7 @@
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
-using NOBY.Api.Endpoints.Shared;
+using NOBY.Infrastructure.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
@@ -11,13 +11,13 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly ICodebookServiceClient _codebookServiceClient;
-    private readonly IDocumentHelper _documentHelper;
+    private readonly IDocumentHelperService _documentHelper;
 
     public GetDocumentListHandler(
             IDocumentArchiveServiceClient client,
             ICurrentUserAccessor currentUserAccessor,
             ICodebookServiceClient codebookServiceClient,
-            IDocumentHelper documentHelper)
+            IDocumentHelperService documentHelper)
     {
         _client = client;
         _currentUserAccessor = currentUserAccessor;

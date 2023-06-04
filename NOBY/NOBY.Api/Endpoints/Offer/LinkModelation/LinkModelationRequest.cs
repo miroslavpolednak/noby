@@ -25,5 +25,5 @@ public class LinkModelationRequest
     /// <example>2002-10-26</example>
     public DateTime? DateOfBirth { get; set; }
 
-    public SharedDto.ContactsDto? OfferContacts { get; set; }
+    public NOBY.Dto.ContactsDto? OfferContacts { get; set; }
 }

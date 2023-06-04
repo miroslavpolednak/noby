@@ -1,8 +1,8 @@
 ﻿using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.ProductService.Clients;
-using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
-using NOBY.Api.Endpoints.Shared;
+using NOBY.Dto.Documents;
+using NOBY.Infrastructure.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 
@@ -11,12 +11,12 @@ internal sealed class GetCaseMenuFlagsHandler
 {
     private readonly IProductServiceClient _productService;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
-    private readonly IDocumentHelper _documentHelper;
+    private readonly IDocumentHelperService _documentHelper;
 
     public GetCaseMenuFlagsHandler(
             IProductServiceClient productService,
             IDocumentArchiveServiceClient documentArchiveServiceClient,
-            IDocumentHelper documentHelper
+            IDocumentHelperService documentHelper
             )
     {
         _productService = productService;
@@ -62,11 +62,11 @@ internal sealed class GetCaseMenuFlagsHandler
 
     private static GetCaseMenuFlagsTypes getDocumentsFlag(IEnumerable<DocumentsMetadata> documentsInQueueFiltered)
     {
-        if (documentsInQueueFiltered.Any(s => s.UploadStatus == UploadStatus.Error))
+        if (documentsInQueueFiltered.Any(s => s.UploadStatus == UploadStatuses.Error))
         {
             return GetCaseMenuFlagsTypes.ExclamationMark;
         }
-        else if (documentsInQueueFiltered.Any(s => s.UploadStatus == UploadStatus.InProgress))
+        else if (documentsInQueueFiltered.Any(s => s.UploadStatus == UploadStatuses.InProgress))
         {
             return GetCaseMenuFlagsTypes.InProcessing;
         }

@@ -8,9 +8,9 @@ public sealed class UpdateCustomerDetailWithChangesRequest
     [JsonIgnore]
     public int CustomerOnSAId { get; set; }
 
-    public SharedDto.EmailAddressDto? EmailAddress { get; set; }
+    public NOBY.Dto.EmailAddressDto? EmailAddress { get; set; }
 
-    public SharedDto.PhoneNumberDto? MobilePhone { get; set; }
+    public NOBY.Dto.PhoneNumberDto? MobilePhone { get; set; }
 
     internal UpdateCustomerDetailWithChangesRequest InfuseId(int customerOnSAId)
     {

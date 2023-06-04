@@ -36,7 +36,7 @@ public sealed class CustomerChangeDetailApplicant
 
     public CustomerChangeDetailNaturalPerson? NaturalPerson { get; set; }
 
-    public SharedDto.IdentificationDocumentBase? IdentificationDocument { get; set; }
+    public NOBY.Dto.IdentificationDocumentBase? IdentificationDocument { get; set; }
 }
 
 public sealed class CustomerChangeDetailNaturalPerson
