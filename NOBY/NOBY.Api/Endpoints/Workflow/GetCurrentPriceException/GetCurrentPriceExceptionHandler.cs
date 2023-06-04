@@ -30,13 +30,33 @@ internal sealed class GetCurrentPriceExceptionHandler
             var offer = await _offerService.GetMortgageOfferDetail(productSAId, cancellationToken);
             var process = (await _caseService.GetProcessList(request.CaseId, cancellationToken)).FirstOrDefault(t => t.ProcessTypeId == 1);
             string? taskTypeName = (await _codebookService.WorkflowTaskTypes(cancellationToken)).FirstOrDefault(t => t.Id == 2)?.Name;
-
+            var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
+            
             var response = new GetCurrentPriceExceptionResponse
             {
                 TaskDetail = new()
                 {
                     ProcessNameLong = process?.ProcessNameLong ?? "",
-                    //Amendments = new NOBY.Dto.Workflow.amm
+                    Amendments = new NOBY.Dto.Workflow.AmendmentsPriceException
+                    {
+                        Expiration = offer.BasicParameters.GuaranteeDateTo,
+                        LoanInterestRate = new()
+                        {
+                            LoanInterestRate = offer.SimulationResults.LoanInterestRate?.ToString() ?? "",
+                            LoanInterestRateProvided = offer.SimulationResults.LoanInterestRateProvided?.ToString() ?? "",
+                            LoanInterestRateAnnouncedTypeName = loanInterestRateAnnouncedTypes
+                                .FirstOrDefault(t => t.Id == offer.SimulationResults.LoanInterestRateAnnouncedType)?
+                                .Name ?? string.Empty,
+                            LoanInterestRateDiscount = offer.SimulationInputs.InterestRateDiscount?.ToString() ?? ""
+                        },
+                        Fees = offer.AdditionalSimulationResults.Fees?.Select(t => new Dto.Workflow.Fee
+                        {
+                            FeeId = t.FeeId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                            //TariffSum = t.TariffSum,
+                            //FinalSum = t.FinalSum,
+                            //DiscountPercentage = t.DiscountPercentage
+                        })?.ToList()
+                    }
                 },
                 Task = new()
                 {
