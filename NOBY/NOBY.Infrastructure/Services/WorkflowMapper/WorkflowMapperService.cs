@@ -34,22 +34,15 @@ public sealed class WorkflowMapperService
 
     public async Task<WorkflowTaskDetail> Map(_Case.WorkflowTask task, _Case.TaskDetailItem taskDetailItem, CancellationToken cancellationToken)
     {
-        GetOperatorResponse? performer = null;
-        try
-        {
-            performer = await _codebookService.GetOperator(task.PerformerLogin, cancellationToken);
-        }
-        catch { } // operator neni povinny
-
         var decisionTypes = await _codebookService.WorkflowPriceExceptionDecisionTypes(cancellationToken);
         var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
         
         var taskDetail = new WorkflowTaskDetail
         {
             TaskIdSB = task.TaskIdSb,
-            PerformerLogin = performer?.PerformerLogin,
-            PerformerName = performer?.PerformerName,
-            PerformerCode = performer?.PerformerCode,
+            PerformerCode = taskDetailItem.PerformerCode,
+            PerformerName = taskDetailItem.PerformanName,
+            PerformerLogin = task.PerformerLogin,
             ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
             Amendments = Map(task, taskDetailItem, decisionTypes, loanInterestRateAnnouncedTypes)
         };
