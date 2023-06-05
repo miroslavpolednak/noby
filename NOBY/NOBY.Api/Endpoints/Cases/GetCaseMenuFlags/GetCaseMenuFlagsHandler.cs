@@ -35,7 +35,7 @@ internal sealed class GetCaseMenuFlagsHandler
 
     private async Task<GetCaseMenuFlagsItem> getCovenants(long caseId, CancellationToken cancellationToken)
     {
-        bool isActive = true;
+        bool isActive = false;
         try
         {
             var productInstance = await _productService.GetMortgage(caseId, cancellationToken);
