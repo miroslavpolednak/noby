@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.ExternalServicesHelpers;
 
 namespace ExternalServices.ESignatures.V1;
 
@@ -13,10 +14,20 @@ internal sealed class RealESignaturesClient
 
         var result = await response.Content.ReadFromJsonAsync<Contracts.ResponseStatus>(cancellationToken: cancellationToken)
             ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(GetDocumentStatus), nameof(Contracts.ResponseStatus));
-        return result.Status!;
+
+        //TODO osetrit chybove stavy???
+        if ((result.Result?.Code ?? 0) == 0)
+        {
+            return result.Status!;
+        }
+        else 
+        {
+            throw new CisExtServiceValidationException(result.Result!.Message ?? "");
+        }
+        
     }
 
-    public Task DownloadDocumentPreview(CancellationToken cancellationToken = default)
+    public Task DownloadDocumentPreview(string externalId, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

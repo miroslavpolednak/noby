@@ -11,6 +11,8 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>NOBY.Dto.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>

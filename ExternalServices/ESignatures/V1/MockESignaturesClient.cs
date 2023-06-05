@@ -3,7 +3,7 @@
 internal sealed class MockESignaturesClient 
     : IESignaturesClient
 {
-    public Task DownloadDocumentPreview(CancellationToken cancellationToken = default)
+    public Task DownloadDocumentPreview(string externalId, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

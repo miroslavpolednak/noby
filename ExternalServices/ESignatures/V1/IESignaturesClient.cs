@@ -8,7 +8,7 @@ public interface IESignaturesClient
 {
     Task<string> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default);
 
-    Task DownloadDocumentPreview(CancellationToken cancellationToken = default);
+    Task DownloadDocumentPreview(string externalId, CancellationToken cancellationToken = default);
 
     Task SubmitDispatchForm(CancellationToken cancellationToken = default);
 
