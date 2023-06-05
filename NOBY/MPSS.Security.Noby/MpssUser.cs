@@ -17,6 +17,11 @@ internal class MpssUser : ClaimsPrincipal
         _Identity = identity;
     }
 
+    public string KbUid
+    {
+        get { return _Identity.KbUid; }
+    }
+
     public int m17ID
     {
         get { return _Identity.m17ID; }

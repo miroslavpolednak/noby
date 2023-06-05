@@ -1,6 +1,6 @@
-﻿using ProtoBuf.Grpc.Server;
-using System.IO.Compression;
-using System.Reflection;
+﻿using CIS.Infrastructure.StartupExtensions;
+using CIS.Infrastructure.Data;
+using DomainServices.CodebookService.Api.Database;
 
 namespace DomainServices.CodebookService.Api;
 
@@ -8,29 +8,24 @@ internal static class StartupExtensions
 {
     public static WebApplicationBuilder AddCodebookService(this WebApplicationBuilder builder)
     {
-        // add grpc
-        builder.Services.AddCodeFirstGrpc(config => {
-            config.ResponseCompressionLevel = CompressionLevel.Optimal;
-            config.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
+        // add general Dapper repository
+        builder.Services
+            .AddDapper(builder.Configuration.GetConnectionString("default")!)
+            .AddDapper<IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd")!)
+            .AddDapper<IXxdHfDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxdhf")!)
+            .AddDapper<IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb")!);
+        
+        // seznam SQL dotazu
+        builder.Services.AddSingleton(provider =>
+        {
+            var database = provider.GetRequiredService<CIS.Core.Data.IConnectionProvider>();
+            var data = database
+                .ExecuteDapperRawSqlToList<(string SqlQueryId, string SqlQueryText, SqlQueryCollection.DatabaseProviders DatabaseProvider)>("SELECT SqlQueryId, SqlQueryText, DatabaseProvider FROM dbo.SqlQuery")
+                .ToDictionary(k => k.SqlQueryId, v => new SqlQueryCollection.QueryItem { Provider = v.DatabaseProvider, Query = v.SqlQueryText });
+
+            return new SqlQueryCollection(data);
         });
 
         return builder;
-    }
-
-    public static void AddCodebookServiceEndpointsStartup(this WebApplicationBuilder builder, params Assembly[] assemblies)
-    {
-        foreach (var assembly in assemblies)
-        {
-            foreach (Type type in assembly
-              .GetTypes()
-              .Where(mytype => mytype.GetInterfaces().Contains(typeof(Endpoints.ICodebookServiceEndpointStartup))))
-                {
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                ((Endpoints.ICodebookServiceEndpointStartup)assembly.CreateInstance(type.FullName ?? "")).Register(builder);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-            }
-        }
     }
 }

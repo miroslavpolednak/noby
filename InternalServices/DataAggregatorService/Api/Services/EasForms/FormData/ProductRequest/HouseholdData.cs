@@ -1,9 +1,7 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
-using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Clients;
@@ -22,7 +20,7 @@ internal class HouseholdData
     private Dictionary<int, string> _academicDegreesBefore = null!;
     private Dictionary<int, string> _genders = null!;
     private ILookup<string, int> _obligationTypes = null!;
-    private List<LegalCapacityRestrictionTypeItem> _legalCapacityTypes = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _legalCapacityTypes = null!;
 
     private int _firstEmploymentTypeId;
 
@@ -42,6 +40,8 @@ internal class HouseholdData
     public Dictionary<int, Income> Incomes { get; private set; } = null!;
 
     public IEnumerable<Customer> Customers => GetCustomers();
+
+    public bool? IsSpouseInDebt { get; set; }
 
     public async Task Initialize(int salesArrangementId, CancellationToken cancellationToken)
     {
@@ -143,7 +143,8 @@ internal class HouseholdData
                                 AcademicDegreesBefore = _academicDegreesBefore,
                                 GenderCodes = _genders,
                                 ObligationTypes = _obligationTypes,
-                                LegalCapacityTypes = _legalCapacityTypes
+                                LegalCapacityTypes = _legalCapacityTypes,
+                                IsSpouseInDebt = IsSpouseInDebt
                             }).ToList();
 
         static long GetCustomerId(CustomerOnSA customerOnSa)

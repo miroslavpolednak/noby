@@ -10,7 +10,7 @@ using var client = new SmtpClient();
 await client.ConnectAsync("relay.mpss.cz", 25, SecureSocketOptions.None);
 
 var message = new MimeMessage();
-message.From.Add(MailboxAddress.Parse("notification@mpss.cz"));
+message.From.Add(MailboxAddress.Parse("notification-service@mpss.cz"));
 message.To.Add(MailboxAddress.Parse("karel.nguyen-trong@mpss.cz"));
 message.Cc.Add(MailboxAddress.Parse("petr.caisl@mpss.cz"));
 message.Bcc.Add(MailboxAddress.Parse("filip.tuma@mpss.cz"));

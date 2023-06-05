@@ -1,11 +1,19 @@
-﻿using CIS.Foms.Enums;
-
-namespace ExternalServices.ESignatures.V1;
+﻿namespace ExternalServices.ESignatures.V1;
 
 internal sealed class MockESignaturesClient 
     : IESignaturesClient
 {
-    public Task<string?> GetDocumentStatus(string documentId, IdentitySchemes mandant, CancellationToken cancellationToken = default(CancellationToken))
+    public Task DownloadDocumentPreview(CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task SubmitDispatchForm(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

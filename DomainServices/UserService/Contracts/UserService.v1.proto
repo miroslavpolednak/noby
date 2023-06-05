@@ -2,10 +2,9 @@
 package DomainServices.UserService.v1;
 option csharp_namespace = "DomainServices.UserService.Contracts.v1";
 
-import "Types.proto";
+import "Messages/GetUser.proto";
+import "Messages/User.proto";
 
 service UserService {
-   rpc GetUserByLogin (DomainServices.UserService.GetUserByLoginRequest) returns (DomainServices.UserService.User);
-
-   rpc GetUser(DomainServices.UserService.GetUserRequest) returns (DomainServices.UserService.User);
+   rpc GetUser(GetUserRequest) returns (User);
 }

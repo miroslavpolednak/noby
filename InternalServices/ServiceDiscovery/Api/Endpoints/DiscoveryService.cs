@@ -22,9 +22,6 @@ internal sealed class DiscoveryService
     public override async Task<GetServiceResponse> GetService(GetServiceRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> ClearCache(ClearCacheRequest request, ServerCallContext context)
-        => await _mediator.Send(request, context.CancellationToken);
-
     private readonly IMediator _mediator;
     public DiscoveryService(IMediator mediator)
         => _mediator = mediator;

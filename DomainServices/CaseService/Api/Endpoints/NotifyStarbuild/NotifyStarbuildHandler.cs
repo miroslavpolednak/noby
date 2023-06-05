@@ -10,12 +10,6 @@ internal sealed class NotifyStarbuildHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(NotifyStarbuildRequest request, CancellationToken cancellationToken)
     {
-        // bez prihlaseneho uzivatele to nema cenu
-        if (!_userAccessor.IsAuthenticated)
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AuthenticatedUserNotFound);
-        }
-
         // instance Case
         var caseInstance = await _dbContext
             .Cases
@@ -25,9 +19,6 @@ internal sealed class NotifyStarbuildHandler
 
         var productType = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == caseInstance.ProductTypeId);
         var caseState = (await _codebookService.CaseStates(cancellationToken)).First(t => t.Id == caseInstance.State);
-
-        // get current user's login
-        var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 
         // get case owner
         var ownerInstance = await _userService.GetUser(caseInstance.OwnerUserId, cancellationToken);
@@ -51,17 +42,16 @@ internal sealed class NotifyStarbuildHandler
         }
 
         //TODO login
-        var sbRequest = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest
+        var sbRequest = new ExternalServices.SbWebApi.Dto.CaseStateChanged.CaseStateChangedRequest
         {
-            Login = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous",
             CaseId = caseInstance.CaseId,
             ContractNumber = caseInstance.ContractNumber,
             ClientFullName = $"{caseInstance.FirstNameNaturalPerson} {caseInstance.Name}",
             CaseStateName = caseState.Name,
             ProductTypeId = caseInstance.ProductTypeId,
-            OwnerUserCpm = ownerInstance.CPM,
-            OwnerUserIcp = ownerInstance.ICP,
-            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId.GetValueOrDefault(),
+            OwnerUserCpm = ownerInstance.UserInfo.Cpm,
+            OwnerUserIcp = ownerInstance.UserInfo.Icp,
+            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId,
             RiskBusinessCaseId = request.RiskBusinessCaseId,
             IsEmployeeBonusRequested = caseInstance.IsEmployeeBonusRequested
         };
@@ -86,7 +76,7 @@ internal sealed class NotifyStarbuildHandler
 
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
     private readonly UserService.Clients.IUserServiceClient _userService;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly Database.CaseServiceDbContext _dbContext;
@@ -96,7 +86,7 @@ internal sealed class NotifyStarbuildHandler
         IDistributedCache distributedCache,
         Database.CaseServiceDbContext dbContext,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         UserService.Clients.IUserServiceClient userService,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)

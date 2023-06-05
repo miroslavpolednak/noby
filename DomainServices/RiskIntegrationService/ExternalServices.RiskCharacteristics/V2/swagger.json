@@ -1,0 +1,596 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Loan-application-risk-characteristics-calculation-service Service",
+    "description": "RISK LAA Loan-application-risk-characteristics-calculation-service Service",
+    "termsOfService": "https://www.kb.cz/api/terms",
+    "contact": {
+      "name": "RISK API Team",
+      "url": "https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=253305685",
+      "email": "kbsq4fut@ds.kb.cz"
+    },
+    "license": {
+      "name": "KB API 1.0",
+      "url": "https://www.kb.cz/api/license/LICENSE-1.0.html"
+    },
+    "version": "2.0.0-SNAPSHOT",
+    "x-type-mappgings": {
+      "ResourceIdentifier": "cz.kb.risk.datatypes.ResourceIdentifier"
+    }
+  },
+  "servers": [
+    {
+      "url": "/laa-loan-application-risk-chars-calculation-service-2.0.0/api",
+      "description": "default context"
+    }
+  ],
+  "paths": {
+    "/dsti-explicit-calculation": {
+      "put": {
+        "tags": [
+          "LoanApplicationRiskCharacteristicsCalculationService"
+        ],
+        "description": "výpočet na základě hodnot zaslaných na vstupu (modelace), identifikována pomocí resourceProcessId",
+        "operationId": "LoanApplicationRiskCharacteristicsCalculationService_dstiExplicitCalculation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DSTICalculationArguments"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DSTICalculation"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "dstiExplicitCalculation"
+      }
+    },
+    "/dti-explicit-calculation": {
+      "put": {
+        "tags": [
+          "LoanApplicationRiskCharacteristicsCalculationService"
+        ],
+        "description": "výpočet na základě hodnot zaslaných na vstupu (modelace), identifikována pomocí resourceProcessId",
+        "operationId": "LoanApplicationRiskCharacteristicsCalculationService_dtiExplicitCalculation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DTICalculationArguments"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DTICalculation"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "dtiExplicitCalculation"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Amount": {
+        "required": [
+          "currencyCode"
+        ],
+        "type": "object",
+        "properties": {
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency code of the Amount (ISO 4217), e.g. 'CZK', 'EUR'\nNotNull"
+          },
+          "value": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Value of the Amount\n"
+          }
+        },
+        "description": "Amount"
+      },
+      "CreditLiabilitiesSummary": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "amountConsolidated": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "productClusterCode": {
+            "$ref": "#/components/schemas/CreditLiabilitiesSummaryType"
+          }
+        },
+        "description": "HouseholdCreditLiabilitiesSummaryOutHomeCompany."
+      },
+      "CreditLiabilitiesSummaryType": {
+        "type": "string",
+        "description": "CREDIT LIABILITIES PRODUCT CLUSTER",
+        "enum": [
+          "CC",
+          "AD",
+          "CL",
+          "ML"
+        ]
+      },
+      "DSTICalculation": {
+        "type": "object",
+        "properties": {
+          "dsti": {
+            "type": "number",
+          "format": "decimal",
+            "description": "DSTI\n"
+          }
+        }
+      },
+      "DSTICalculationArguments": {
+        "required": [
+          "itChannel",
+          "loanApplicationHousehold",
+          "loanApplicationProduct"
+        ],
+        "type": "object",
+        "properties": {
+          "itChannel": {
+            "$ref": "#/components/schemas/ItChannel"
+          },
+          "loanApplicationHousehold": {
+            "type": "array",
+            "description": "loanApplicationHousehold\nNotNull",
+            "items": {
+              "$ref": "#/components/schemas/DSTILoanApplicationHousehold"
+            }
+          },
+          "loanApplicationProduct": {
+            "$ref": "#/components/schemas/DSTILoanApplicationProductInput"
+          },
+          "resourceProcessId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        }
+      },
+      "DSTICreditLiabilitiesSummary": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "amountConsolidated": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "productClusterCode": {
+            "$ref": "#/components/schemas/DSTICreditLiabilitiesSummaryType"
+          }
+        },
+        "description": "DSTICreditLiabilitiesSummary."
+      },
+      "DSTICreditLiabilitiesSummaryType": {
+        "type": "string",
+        "description": "CreditLiabilitySummaryType",
+        "enum": [
+          "CC",
+          "AD"
+        ]
+      },
+      "DSTILoanApplicationHousehold": {
+        "type": "object",
+        "properties": {
+          "creditLiabilitiesSummaryHomeCompany": {
+            "type": "array",
+            "description": "Výše závazků v KB\n",
+            "items": {
+              "$ref": "#/components/schemas/DSTICreditLiabilitiesSummary"
+            }
+          },
+          "creditLiabilitiesSummaryOutHomeCompany": {
+            "type": "array",
+            "description": "Výše závazků mimo KB\n",
+            "items": {
+              "$ref": "#/components/schemas/DSTICreditLiabilitiesSummary"
+            }
+          },
+          "loanApplicationCounterparty": {
+            "type": "array",
+            "description": "loanApplication Counterparty\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationCounterparty"
+            }
+          },
+          "loanInstallmentsSummaryHomeCompany": {
+            "type": "array",
+            "description": "Výše splátek úvěrových produktů v KB\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanInstallmentsSummary"
+            }
+          },
+          "loanInstallmentsSummaryOutHomeCompany": {
+            "type": "array",
+            "description": "Výše splátek úvěrových produků mimo KB\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanInstallmentsSummary"
+            }
+          }
+        },
+        "description": "loanApplicationHousehold"
+      },
+      "DSTILoanApplicationProductInput": {
+        "required": [
+          "productClusterCode"
+        ],
+        "type": "object",
+        "properties": {
+          "amountRequired": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "annuity": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "productClusterCode": {
+            "type": "string",
+            "description": "Kód produktového shluku\nNotNull"
+          }
+        },
+        "description": "loanApplicationProduct"
+      },
+      "DTICalculation": {
+        "type": "object",
+        "properties": {
+          "dti": {
+            "type": "number",
+          "format": "decimal",
+            "description": "DTI\n"
+          }
+        }
+      },
+      "DTICalculationArguments": {
+        "required": [
+          "itChannel",
+          "loanApplicationHousehold",
+          "loanApplicationProduct"
+        ],
+        "type": "object",
+        "properties": {
+          "itChannel": {
+            "$ref": "#/components/schemas/ItChannel"
+          },
+          "loanApplicationHousehold": {
+            "type": "array",
+            "description": "loanApplicationHousehold\nNotNull",
+            "items": {
+              "$ref": "#/components/schemas/DTILoanApplicationHousehold"
+            }
+          },
+          "loanApplicationProduct": {
+            "$ref": "#/components/schemas/DTILoanApplicationProductInput"
+          },
+          "resourceProcessId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        }
+      },
+      "DTILoanApplicationHousehold": {
+        "type": "object",
+        "properties": {
+          "creditLiabilitiesSummaryHomeCompany": {
+            "type": "array",
+            "description": "Výše závazků v KB\n",
+            "items": {
+              "$ref": "#/components/schemas/CreditLiabilitiesSummary"
+            }
+          },
+          "creditLiabilitiesSummaryOutHomeCompany": {
+            "type": "array",
+            "description": "Výše závazků mimo KB\n",
+            "items": {
+              "$ref": "#/components/schemas/CreditLiabilitiesSummary"
+            }
+          },
+          "loanApplicationCounterparty": {
+            "type": "array",
+            "description": "loanApplication Counterparty\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationCounterparty"
+            }
+          }
+        },
+        "description": "loanApplicationHousehold"
+      },
+      "DTILoanApplicationProductInput": {
+        "required": [
+          "Požadovaná výše úvěru"
+        ],
+        "type": "object",
+        "properties": {
+          "Požadovaná výše úvěru": {
+            "$ref": "#/components/schemas/Amount"
+          }
+        },
+        "description": "loanApplicationProduct"
+      },
+      "ErrorModel": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "integer",
+            "description": "usually unused and replaced by the error codes categorization",
+            "format": "int32",
+            "example": 10,
+            "deprecated": true
+          },
+          "code": {
+            "type": "string",
+            "description": "code of the error that occured, with or without an hirarchical categorization",
+            "example": "CRAB.PLATFORM.PATTERN.LOCKING.OPTIMISTIC.CONCURRENT_MODIFICATION"
+          },
+          "detail": {
+            "type": "object",
+            "description": "an optional error detail with a custom schema discriminated by the type-discriminator"
+          },
+          "httpStatusCode": {
+            "type": "integer",
+            "description": "copy of the http-status-code",
+            "format": "int32",
+            "example": 409
+          },
+          "message": {
+            "type": "string",
+            "description": "plain-text message description related to the given error code and intended for better issue-solving only"
+          },
+          "uuid": {
+            "type": "string",
+            "description": "unique error ID",
+            "example": "7e81204c-9b76-4224-b82a-f2706dd9efcf"
+          }
+        },
+        "description": "The unified error model",
+        "readOnly": true
+      },
+      "ItChannel": {
+        "type": "string",
+        "description": "IT aplikace volající službu (PF...)",
+        "enum": [
+          "AON",
+          "DCS",
+          "NOBY",
+          "PF",
+          "PFO",
+          "STARBUILD",
+          "NCL"
+        ]
+      },
+      "LoanApplicationCounterparty": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "entrepreneurAnnualIncomeAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyEmploymentIncomeSumAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyOtherIncomeAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "monthlyRentIncomeSumAmount": {
+            "$ref": "#/components/schemas/Amount"
+          }
+        },
+        "description": "loanApplication Counterparty"
+      },
+      "LoanInstallmentsSummary": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "amountConsolidated": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "productClusterCode": {
+            "$ref": "#/components/schemas/LoanInstallmentsSummaryType"
+          }
+        },
+        "description": "householdInstallmentsSummaryOutHomeCompany"
+      },
+      "LoanInstallmentsSummaryType": {
+        "type": "string",
+        "description": "INSTALLMENTS PRODUCT CLUSTER",
+        "enum": [
+          "CL",
+          "ML"
+        ]
+      },
+      "ResourceIdentifier": {
+        "pattern": "^urn:ri:(\\w+)\\.(\\w+)\\.(\\w+)\\.([\\w+-.]*)(~(\\w+))?",
+        "type": "string",
+        "description": "The URN identifier of a resource is an universal scalar/string representation of a resource identifier in a system instance",
+        "format": "urn:ri:INSTANCE.DOMAIN.RESOURCE.ID~VARIANT",
+        "example": "urn:ri:KBCZ.CRMD.CreditRiskModel.837051596914429952"
+      }
+    }
+  }
+}

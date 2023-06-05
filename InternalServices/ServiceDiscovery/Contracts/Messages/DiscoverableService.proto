@@ -12,6 +12,8 @@ message DiscoverableService {
 
 	// Typ služby: gRPC, REST, Externí služba
 	ServiceTypes ServiceType = 3;
+
+	bool AddToGlobalHealthCheck = 4;
 }
 
 enum ServiceTypes {

@@ -1,7 +1,6 @@
 ﻿using CIS.Foms.Enums;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
-using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Mappers;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -10,20 +9,21 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
+
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetDocumentsToSignList;
 
 public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignListRequest, GetDocumentsToSignListResponse>
 {
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
-    private readonly ICodebookServiceClients _codebookServiceClients;
+    private readonly ICodebookServiceClient _codebookServiceClients;
     private readonly IDocumentOnSaMapper _documentOnSaMapper;
     private readonly IHouseholdServiceClient _householdClient;
 
     public GetDocumentsToSignListHandler(
         DocumentOnSAServiceDbContext dbContext,
         ISalesArrangementServiceClient arrangementServiceClient,
-        ICodebookServiceClients codebookServiceClients,
+        ICodebookServiceClient codebookServiceClients,
         IDocumentOnSaMapper documentOnSaMapper,
         IHouseholdServiceClient householdClient)
     {
@@ -37,12 +37,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     public async Task<GetDocumentsToSignListResponse> Handle(GetDocumentsToSignListRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
-
-        if (salesArrangement is null)
-        {
-            throw new CisNotFoundException(19000, $"SalesArrangement{request.SalesArrangementId!.Value} does not exist.");
-        }
-
+           
         var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
 
         var response = new GetDocumentsToSignListResponse();
@@ -57,7 +52,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         }
         else
         {
-            throw new ArgumentException($"This kind of {nameof(SalesArrangementCategories)} {salesArrangementType.SalesArrangementCategory} is not supported");
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SalesArrangementCategoryNotSupported, salesArrangementType.SalesArrangementCategory);
         }
 
         return response;
@@ -75,7 +70,9 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     {
         var documentsOnSaRealEntity = await _dbContext.DocumentOnSa
                                                     .AsNoTracking()
-                                                    .Where(e => e.SalesArrangementId == request.SalesArrangementId && e.IsValid)
+                                                    .Where(e => e.SalesArrangementId == request.SalesArrangementId 
+                                                                && e.IsValid
+                                                                && e.IsFinal ==false)
                                                     .ToListAsync(cancellationToken);
 
         var documentsOnSaToSignReal = _documentOnSaMapper.MapDocumentOnSaToSign(documentsOnSaRealEntity);
@@ -91,7 +88,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignVirtual);
     }
 
-    private DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypeItem documentTypeItem, int salesArrangementId)
+    private static DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypesResponse.Types.DocumentTypeItem documentTypeItem, int salesArrangementId)
     {
         return new DocumentOnSAToSign
         {
@@ -99,11 +96,11 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
             SalesArrangementId = salesArrangementId,
             IsValid = true,
             IsSigned = false,
-            IsDocumentArchived = false
+            IsArchived = false
         };
     }
 
-    private IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<Household> households)
+    private static IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<Household> households)
     {
         foreach (var household in households)
         {
@@ -114,22 +111,22 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
                 HouseholdId = household.HouseholdId,
                 IsValid = true,
                 IsSigned = false,
-                IsDocumentArchived = false
+                IsArchived = false
             };
         }
     }
 
-    private async Task<SalesArrangementTypeItem> GetSalesArrangementType(SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem> GetSalesArrangementType(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var salesArrangementTypes = await _codebookServiceClients.SalesArrangementTypes(cancellationToken);
         var salesArrangementType = salesArrangementTypes.Single(r => r.Id == salesArrangement.SalesArrangementTypeId);
         return salesArrangementType;
     }
 
-    private int GetDocumentTypeId(int householdTypeId) => householdTypeId switch
+    private static int GetDocumentTypeId(int householdTypeId) => householdTypeId switch
     {
         1 => 4,
         2 => 5,
-        _ => throw new ArgumentException($"HouseholdTypeId {householdTypeId} does not exist.", nameof(householdTypeId))
+        _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.HouseholdTypeIdNotExist, householdTypeId)
     };
 }

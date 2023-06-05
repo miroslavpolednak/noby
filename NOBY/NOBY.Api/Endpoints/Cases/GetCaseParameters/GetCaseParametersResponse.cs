@@ -1,5 +1,5 @@
 ﻿using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
-using NOBY.Api.SharedDto;
+using NOBY.Dto;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
 
@@ -10,7 +10,7 @@ public sealed class GetCaseParametersResponse
     /// <summary>
     /// Typ úvěru (číselník).
     /// </summary>
-    public DomainServices.CodebookService.Contracts.GenericCodebookItem? ProductType { get; set; }
+    public DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem? ProductType { get; set; }
 
     /// <summary>
 	/// ČÍslo smlouvy.
@@ -60,7 +60,7 @@ public sealed class GetCaseParametersResponse
     /// <summary>
 	/// Druh uveru (číselník).
 	/// </summary>
-    public DomainServices.CodebookService.Contracts.GenericCodebookItem? LoanKind { get; set; }
+    public DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem? LoanKind { get; set; }
 
     /// <summary>
     /// Dlužná částka včetně příslušenství.

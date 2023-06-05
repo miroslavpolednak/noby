@@ -14,10 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Dto\FindTasks\" />
+    <ProjectReference Include="..\..\UserService\Clients\DomainServices.UserService.Clients.csproj" />
   </ItemGroup>
 
 </Project>

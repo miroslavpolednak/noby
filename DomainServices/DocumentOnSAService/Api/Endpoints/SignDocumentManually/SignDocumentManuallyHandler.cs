@@ -7,11 +7,14 @@ using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Clients;
+using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocumentManually;
 
@@ -29,9 +32,10 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
     private readonly IEasClient _easClient;
     private readonly ISulmClientHelper _sulmClientHelper;
-    private readonly ICodebookServiceClients _codebookServiceClient;
+    private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
+    private readonly IProductServiceClient _productServiceClient;
 
     public SignDocumentManuallyHandler(
         DocumentOnSAServiceDbContext dbContext,
@@ -40,9 +44,10 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         ISalesArrangementServiceClient arrangementServiceClient,
         IEasClient easClient,
         ISulmClientHelper sulmClientHelper,
-        ICodebookServiceClients codebookServiceClient,
+        ICodebookServiceClient codebookServiceClient,
         IHouseholdServiceClient householdClient,
-        ICustomerOnSAServiceClient customerOnSAServiceClient)
+        ICustomerOnSAServiceClient customerOnSAServiceClient,
+        IProductServiceClient productServiceClient)
     {
         _dbContext = dbContext;
         _dateTime = dateTime;
@@ -53,6 +58,7 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         _codebookServiceClient = codebookServiceClient;
         _householdClient = householdClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
+        _productServiceClient = productServiceClient;
     }
 
     public async Task<Empty> Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
@@ -60,18 +66,20 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         var documentOnSa = await _dbContext.DocumentOnSa.FirstOrDefaultAsync(r => r.DocumentOnSAId == request.DocumentOnSAId!.Value, cancellationToken);
 
         if (documentOnSa is null)
-        {
-            throw new CisNotFoundException(19003, $"DocumentOnSA {request.DocumentOnSAId!.Value} does not exist.");
-        }
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId!.Value);
 
-        if (documentOnSa.SignatureMethodCode!.ToUpper() != ManualSigningMethodCode || documentOnSa.IsSigned)
-        {
-            throw new CisValidationException(19005, $"Unable to sign DocumentOnSA {request.DocumentOnSAId!.Value}. Document is for electronic signature only or is already signed.");
-        }
+
+        if (documentOnSa.SignatureMethodCode!.ToUpper(CultureInfo.InvariantCulture) != ManualSigningMethodCode || documentOnSa.IsSigned)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToSignDocumentOnSA, request.DocumentOnSAId!.Value);
 
         UpdateDocumentOnSa(documentOnSa);
 
-        await AddSignatureIfNotSetYet(documentOnSa, cancellationToken);
+        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
+
+        await AddSignatureIfNotSetYet(documentOnSa, salesArrangement, cancellationToken);
+
+        // Update Mortgage.FirstSignatureDate
+        await UpdateMortgageFirstSignatureDate(documentOnSa, salesArrangement, cancellationToken);
 
         // SUML call
         await SumlCall(documentOnSa, cancellationToken);
@@ -79,6 +87,13 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Empty();
+    }
+
+    private async Task UpdateMortgageFirstSignatureDate(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
+        var mortgageResponse = await _productServiceClient.GetMortgage(salesArrangement.CaseId, cancellationToken);
+        mortgageResponse.Mortgage.FirstSignatureDate = _dateTime.Now;
+        await _productServiceClient.UpdateMortgage(new() { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
     }
 
     private async Task SumlCall(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
@@ -106,23 +121,16 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         await _sulmClientHelper.StartUse(kbIdentity.IdentityId, ISulmClient.PurposeMLAP, cancellationToken);
     }
 
-    private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
+    private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         if (documentOnSa.DocumentTypeId == DocumentType
-            && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => r.IsSigned == false))
+            && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => r.IsSigned == false, cancellationToken))
         {
-            var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
-
-            if (salesArrangement is null)
-            {
-                throw new CisNotFoundException(19000, $"SalesArrangement{documentOnSa.SalesArrangementId} does not exist.");
-            }
-
             var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, _dateTime.Now.Date, cancellationToken);
 
             if (result is not null && result.CommonValue != 0)
             {
-                throw new CisValidationException(19006, $"Eas {nameof(IEasClient.AddFirstSignatureDate)} returned error state: {result.CommonValue} with message: {result.CommonText}");
+                throw new CisValidationException(ErrorCodeMapper.EasAddFirstSignatureDateReturnedErrorState, $"Eas AddFirstSignatureDate returned error state: {result.CommonValue} with message: {result.CommonText}");
             }
         }
     }

@@ -1,7 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper;
-using DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject;
-using DomainServices.CodebookService.Contracts.Endpoints.LoanKinds;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.Codebooks;
 
@@ -28,6 +26,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392877756">ContactTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405522415">Countries</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=483360846">CountryCodePhoneIdc</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/CovenantType">CovenantTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424127746">Currencies</a>
     /// - <a href="https://wiki.kb.cz/display/HT/CustomerProfile">CustomerProfiles</a> 
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
@@ -86,6 +85,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/TinNoFillReasonsByCountry+%28CB_CmTrTinCountry%29+-+MOCK">TinNoFillReasonsByCountry</a>
     /// - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby">WorkflowTaskStatesNoby</a>
     /// - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskCategory">WorkflowTaskCategories</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=549782919">WorkflowTaskSigningResponseTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440871662">WorkflowTaskStates</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440879561">WorkflowTaskTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216261">WorkSectors</a>
@@ -121,7 +121,7 @@ public class CodebooksController : ControllerBase
     [HttpGet("fixation-period-length")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<int>), StatusCodes.Status200OK)]
-    public async Task<List<int>> GetFixationPeriodLength([FromQuery] int productTypeId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    public async Task<List<int>> GetFixationPeriodLength([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
             .Where(t => t.ProductTypeId == productTypeId)
             .Select(t => t.FixedRatePeriod)
@@ -134,8 +134,8 @@ public class CodebooksController : ControllerBase
     /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
     [HttpGet("product-loan-kinds")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(List<LoanKindsItem>), StatusCodes.Status200OK)]
-    public async Task<List<LoanKindsItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(List<GenericCodebookResponse.Types.GenericCodebookItem>), StatusCodes.Status200OK)]
+    public async Task<List<GenericCodebookResponse.Types.GenericCodebookItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         var loanKindsIds = (await svc.ProductTypes(cancellationToken))
             .FirstOrDefault(t => t.Id == productTypeId && t.IsValid)?
@@ -154,8 +154,8 @@ public class CodebooksController : ControllerBase
     /// <param name="productTypeId">ID typu produktu</param>
     [HttpGet("fixed-rate-periods")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>), StatusCodes.Status200OK)]
-    public async Task<List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(List<FixedRatePeriodsResponse.Types.FixedRatePeriodItem>), StatusCodes.Status200OK)]
+    public async Task<List<FixedRatePeriodsResponse.Types.FixedRatePeriodItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
             .Where(t => t.ProductTypeId == productTypeId && t.IsNewProduct)
             .DistinctBy(t => new { t.FixedRatePeriod, t.MandantId })
@@ -166,14 +166,14 @@ public class CodebooksController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vrátí detail developera dle developerId na vstupu.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="developerId">ID developera</param>
-    [HttpGet("developer/{developerId:int}", Name = "DeveloperGet")]
+    [HttpGet("developer/{developerId:int}")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(Dto.Developer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Dto.Developer> GetDeveloper([FromRoute] int developerId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    public async Task<Dto.Developer> GetDeveloper([FromRoute] int developerId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         var developer = await svc.GetDeveloper(developerId, cancellationToken);
         return new Dto.Developer
@@ -194,15 +194,15 @@ public class CodebooksController : ControllerBase
     /// Detail developeského projektu
     /// </summary>
     /// <remarks>
-    /// Vrátí detail developerského projektu dle developerProjectId na vstupu.
-    /// <br /><br /><a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Vrátí detail developerského projektu dle developerProjectId na vstupu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="developerId">ID developera</param>
-    [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}", Name = "DeveloperProjectGet")]
+    [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(DeveloperProjectItem), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetDeveloperProjectResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<DeveloperProjectItem> GetDeveloperProject([FromRoute] int developerId, [FromRoute] int developerProjectId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
+    public async Task<GetDeveloperProjectResponse> GetDeveloperProject([FromRoute] int developerId, [FromRoute] int developerProjectId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         return await svc.GetDeveloperProject(developerId, developerProjectId, cancellationToken);
     }

@@ -13,7 +13,7 @@ internal sealed class UpdateActiveTasksRequestValidator
             .WithErrorCode(ErrorCodeMapper.CaseIdIsEmpty);
 
         RuleFor(t => t.Tasks)
-          .Must(tasks => !tasks.GroupBy(t => t.TaskProcessId).Any(i => i.Count() > 1))
+          .Must(tasks => !tasks.GroupBy(t => t.TaskId).Any(i => i.Count() > 1))
           .WithErrorCode(ErrorCodeMapper.TaskProcessIdNotUnique);
     }
 }

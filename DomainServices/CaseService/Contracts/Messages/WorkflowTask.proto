@@ -1,0 +1,34 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "GrpcDateTime.proto";
+import "google/protobuf/wrappers.proto";
+
+message WorkflowTask {
+	int32 TaskIdSb = 1;
+
+	int64 TaskId = 2;
+
+	int32 TaskTypeId = 3;
+
+	string TaskTypeName = 4;
+
+	int32 StateIdSb = 5;
+
+	cis.types.GrpcDateTime CreatedOn = 6;
+
+	int32 PhaseTypeId = 7;
+
+	string SignatureType = 8;
+
+	string TaskSubtypeName = 9;
+
+	int64 ProcessId = 10;
+
+	string ProcessNameShort = 11;
+
+	bool Cancelled = 12;
+
+	google.protobuf.StringValue PerformerLogin = 13;
+}

@@ -7,9 +7,9 @@ public class CreateDocumentOnSAValidator: AbstractValidator<CreateDocumentOnSARe
 {
     public CreateDocumentOnSAValidator()
     {
-        RuleFor(e => e.SalesArrangementId).NotNull().WithMessage($"{nameof(CreateDocumentOnSARequest.SalesArrangementId)} is required");
-        RuleFor(e => e.DocumentTypeId).NotNull().WithMessage($"{nameof(CreateDocumentOnSARequest.DocumentTypeId)} is required");
-        RuleFor(e => e.FormId).NotEmpty().WithMessage($"{nameof(CreateDocumentOnSARequest.FormId)} is required");
-        RuleFor(e => e.EArchivId).NotEmpty().WithMessage($"{nameof(CreateDocumentOnSARequest.EArchivId)} is required");
+        RuleFor(e => e.SalesArrangementId).NotNull().WithErrorCode(ErrorCodeMapper.SalesArrangementIdIsRequired);
+        RuleFor(e => e.DocumentTypeId).NotNull().WithErrorCode(ErrorCodeMapper.DocumentTypeIdIsRequired);
+        RuleFor(e => e.FormId).NotEmpty().WithErrorCode(ErrorCodeMapper.FormIdIsRequired);
+        RuleFor(e => e.EArchivId).NotEmpty().WithErrorCode(ErrorCodeMapper.EArchivIdIsRequired);
     }
 }

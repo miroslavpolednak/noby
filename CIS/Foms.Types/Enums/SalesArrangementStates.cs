@@ -35,5 +35,23 @@ public enum SalesArrangementStates : byte
     [CisDefaultValue]
     [Display(Name = "Nová")]
     [CisStarbuildId(1)]
-    NewArrangement = 5
+    NewArrangement = 5,
+
+    [EnumMember]
+    [CisDefaultValue]
+    [Display(Name = "Vyčerpáno")]
+    [CisStarbuildId(1)]
+    Disbursed = 6,
+
+    [EnumMember]
+    [CisDefaultValue]
+    [Display(Name = "Podepisování")]
+    [CisStarbuildId(1)]
+    InSigning = 7,
+
+    [EnumMember]
+    [CisDefaultValue]
+    [Display(Name = "K odeslání")]
+    [CisStarbuildId(1)]
+    ToSend = 8
 }

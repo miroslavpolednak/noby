@@ -36,11 +36,11 @@ internal sealed class DeleteSalesArrangementHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
 
     public DeleteSalesArrangementHandler(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         Database.SalesArrangementServiceDbContext dbContext)
     {
         _codebookService = codebookService;

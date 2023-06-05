@@ -7,7 +7,7 @@ public interface IProductServiceClient
     /// <summary>
     /// Seznam produktů dle ID obchodního případu
     /// </summary>
-    Task<GetProductListResponse> GetProductList(long caseId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<GetProductListResponse> GetProductList(long caseId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// todo:
@@ -17,31 +17,37 @@ public interface IProductServiceClient
     /// <summary>
     /// Detail produktu KB Hypotéky
     /// </summary>
-    Task<GetMortgageResponse> GetMortgage(long productId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<GetMortgageResponse> GetMortgage(long productId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vytvoření produktu KB Hypotéky
     /// </summary>
     /// <returns>ProductId</returns>
-    Task<long> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<long> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Aktualizace produktu KB Hypotéky
     /// </summary>
-    Task UpdateMortgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateMortgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vytvoření vazby customer/product
     /// </summary>
-    Task CreateContractRelationship(long partnerId, long productId, int contractRelationshipTypeId, CancellationToken cancellationToken = default(CancellationToken));
+    Task CreateContractRelationship(long partnerId, long productId, int contractRelationshipTypeId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Odstranění vazby customer/product
     /// </summary>
-    Task DeleteContractRelationship(long partnerId, long productId, CancellationToken cancellationToken = default(CancellationToken));
+    Task DeleteContractRelationship(long partnerId, long productId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Seznam klientu k produktu z KonsDB
     /// </summary>
-    Task<GetCustomersOnProductResponse> GetCustomersOnProduct(long productId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<GetCustomersOnProductResponse> GetCustomersOnProduct(long productId, CancellationToken cancellationToken = default);
+
+    Task<GetCaseIdResponse> GetCaseId(GetCaseIdRequest request, CancellationToken cancellationToken = default);
+
+    Task<GetCovenantDetailResponse> GetCovenantDetail(long caseId, int order, CancellationToken cancellationToken = default);
+    
+    Task<GetCovenantListResponse> GetCovenantList(long caseId, CancellationToken cancellationToken = default);
 }

@@ -9,9 +9,9 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer;
-using NOBY.Api.Endpoints.Customer.GetDetailWithChanges;
-using NOBY.Api.Endpoints.SalesArrangement.Validate;
-using NOBY.Api.SharedDto;
+using NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
+using NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement;
+using NOBY.Dto;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
@@ -23,7 +23,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
     private readonly IDocumentOnSAServiceClient _documentOnSaClient;
 
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
-    private readonly ICodebookServiceClients _codebookServiceClients;
+    private readonly ICodebookServiceClient _codebookServiceClients;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
     private readonly ICustomerServiceClient _customerServiceClient;
@@ -34,7 +34,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
     public SignDocumentManuallyHandler(
         IDocumentOnSAServiceClient documentOnSaClient,
         ISalesArrangementServiceClient arrangementServiceClient,
-        ICodebookServiceClients codebookServiceClients,
+        ICodebookServiceClient codebookServiceClients,
         IHouseholdServiceClient householdClient,
         ICustomerOnSAServiceClient customerOnSAServiceClient,
         ICustomerServiceClient customerServiceClient,
@@ -84,10 +84,13 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         var (household, customersOnSa) = await GetCustomersOnSa(documentOnSa, cancellationToken);
         foreach (var customerOnSa in customersOnSa)
         {
-            var detailWithChangedData = await _changedDataService.GetCustomerWithChangedData<GetDetailWithChangesResponse>(customerOnSa, cancellationToken);
-            await _customerServiceClient.UpdateCustomer(MapUpdateCustomerRequest(detailWithChangedData, mandantId.Value, customerOnSa), cancellationToken);
-            //Throw away locally stored data(update CustomerChangeData with null)
-            await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa), cancellationToken);
+            if (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
+            {
+                var (detailWithChangedData, _) = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
+                await _customerServiceClient.UpdateCustomer(MapUpdateCustomerRequest(detailWithChangedData, mandantId.Value, customerOnSa), cancellationToken);
+                //Throw away locally stored data(update CustomerChangeData with null)
+                await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa), cancellationToken);
+            }
         }
 
         // HFICH-4165
@@ -129,7 +132,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         };
     }
 
-    private static DomainServices.CustomerService.Contracts.UpdateCustomerRequest MapUpdateCustomerRequest(GetDetailWithChangesResponse detailWithChangedData, int mandant, CustomerOnSA customerOnSA)
+    private static DomainServices.CustomerService.Contracts.UpdateCustomerRequest MapUpdateCustomerRequest(GetCustomerDetailWithChangesResponse detailWithChangedData, int mandant, CustomerOnSA customerOnSA)
     {
         var updateRequest = new DomainServices.CustomerService.Contracts.UpdateCustomerRequest();
         updateRequest.Mandant = (CIS.Infrastructure.gRPC.CisTypes.Mandants)mandant;
@@ -145,7 +148,15 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
             updateRequest.Contacts.Add(MapEmailContact(detailWithChangedData.EmailAddress));
         if (detailWithChangedData.MobilePhone is not null)
             updateRequest.Contacts.Add(MapPhoneContact(detailWithChangedData.MobilePhone));
-        // CustomerIdentification not in GetDetailWithChangesResponse
+        
+        if ((customerOnSA.CustomerAdditionalData?.CustomerIdentification?.IdentificationMethodId ?? 0) > 0)
+        {
+            updateRequest.CustomerIdentification = new CustomerIdentification
+            {
+                IdentificationMethodId = customerOnSA.CustomerAdditionalData!.CustomerIdentification.IdentificationMethodId!.Value,
+                CzechIdentificationNumber = customerOnSA.CustomerAdditionalData.CustomerIdentification.CzechIdentificationNumber
+            };
+        }
         return updateRequest;
     }
 
@@ -154,11 +165,11 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         return new Contact
         {
             IsPrimary = true,
-            IsConfirmed = emailAddress.IsConfirmed,
             ContactTypeId = (int)ContactTypes.Email,
             Email = new EmailAddressItem
             {
-                EmailAddress = emailAddress.EmailAddress
+                EmailAddress = emailAddress.EmailAddress,
+                IsEmailConfirmed = emailAddress.IsConfirmed
             }
         };
     }
@@ -168,12 +179,12 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         return new Contact
         {
             IsPrimary = true,
-            IsConfirmed = phoneNumber.IsConfirmed,
             ContactTypeId = (int)ContactTypes.Mobil,
             Mobile = new MobilePhoneItem
             {
                 PhoneIDC = phoneNumber.PhoneIDC,
                 PhoneNumber = phoneNumber.PhoneNumber,
+                IsPhoneConfirmed = phoneNumber.IsConfirmed
             }
         };
     }
@@ -284,7 +295,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
 
     private async Task ValidateSalesArrangement(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
     {
-        var validationResult = await _mediator.Send(new ValidateRequest(request.SalesArrangementId), cancellationToken);
+        var validationResult = await _mediator.Send(new ValidateSalesArrangementRequest(request.SalesArrangementId), cancellationToken);
 
         if (validationResult is not null && validationResult.Categories is not null && validationResult.Categories.Any())
         {

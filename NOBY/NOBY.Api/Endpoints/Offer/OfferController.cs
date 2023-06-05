@@ -14,7 +14,8 @@ public class OfferController : ControllerBase
     /// Simulace KB hypotéky.
     /// </summary>
     /// <remarks>
-    /// Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.
+    /// Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F8D7E9A3-7589-42af-B2B3-9B34A243D6AB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="request">Nastaveni simulace.</param>
     /// <returns>ID vytvořené simulace a její výsledky.</returns>
@@ -26,12 +27,12 @@ public class OfferController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<SimulateMortgage.SimulateMortgageResponse> SimulateMortgage([FromBody] SimulateMortgage.SimulateMortgageRequest request)
         => await _mediator.Send(request);
-    
+
     /// <summary>
     /// Detail provedené simulace dle ID simulace.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> OfferService/GetMortgageData
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2AB0C760-7188-48ad-ABA7-D432D51A1A40"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Vstupy a výstupy uložené simulace.</returns>
     [HttpGet("mortgage/{offerId:int}")]
@@ -41,14 +42,13 @@ public class OfferController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.GetMortgageResponse> GetMortgageByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageByOfferId.GetMortgageByOfferIdRequest(offerId), cancellationToken);
-    
+
     /// <summary>
     /// Detail provedené simulace dle ID Sales Arrangement.
     /// </summary>
     /// <remarks>
-    /// Stejný endpoint jako GetMortgageByOfferId, jen podle jiného ID.<br/>
-    /// <i>DS:</i> SalesArrangementService/GetSalesArrangement (to get OfferId)<br/>
-    /// <i>DS:</i> OfferService/GetMortgageData
+    /// Stejný endpoint jako MortgageOfferByOfferIdGet, jen podle jiného ID.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=43139152-F859-4d55-9D06-11353DA80961"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Vstupy a výstupy uložené simulace.</returns>
     [HttpGet("mortgage/sales-arrangement/{salesArrangementId:int}")]
@@ -56,7 +56,7 @@ public class OfferController : ControllerBase
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Dto.GetMortgageResponse> GetMortgageBySalesArrangementId([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<Dto.GetMortgageResponse> GetMortgageBySalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageBySalesArrangement.GetMortgageBySalesArrangementRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
@@ -73,7 +73,8 @@ public class OfferController : ControllerBase
     /// <i>DS:</i> SalesArrangement/CreateSalesArrangement<br/>
     /// <i>DS:</i> ProductService/CreateMortgage (pokud MpHome API na vytvoření produktu spadne na fatální chybu, tak tuto chybu ignorujeme a pokračujeme ve vytvoření Case)<br/>
     /// <i>DS:</i> SalesArrangement/CreateHousehold<br/>
-    /// <i>DS:</i> SalesArrangement/CreateCustomerOnSA
+    /// <i>DS:</i> SalesArrangement/CreateCustomerOnSA<br/><br/>
+    /// Endpoint podporuje rollback.
     /// </remarks>
     /// <param name="request">Identifikace klienta a ID simulace.</param>
     /// <returns>ID nově vytvořeného Case</returns>
@@ -91,7 +92,7 @@ public class OfferController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("mortgage/sales-arrangement/link")]
     [Produces("application/json")]

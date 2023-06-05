@@ -17,7 +17,7 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -40,11 +40,13 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Data")
-                        .IsRequired()
                         .HasColumnType("nvarchar(MAX)");
 
                     b.Property<string>("DmsxId")
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("DocumentTemplateVariantId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("DocumentTemplateVersionId")
                         .HasColumnType("int");
@@ -55,6 +57,9 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                     b.Property<string>("EArchivId")
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("ExternalId")
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("FormId")
                         .IsRequired()
                         .HasColumnType("nvarchar(15)");
@@ -62,7 +67,7 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                     b.Property<int?>("HouseholdId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDocumentArchived")
+                    b.Property<bool>("IsArchived")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
@@ -92,11 +97,41 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                     b.Property<string>("SignatureMethodCode")
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<int?>("SignatureTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Source")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
                     b.HasKey("DocumentOnSAId");
 
                     b.HasIndex("SalesArrangementId");
 
                     b.ToTable("DocumentOnSa");
+                });
+
+            modelBuilder.Entity("DomainServices.DocumentOnSAService.Api.Database.Entities.EArchivIdsLinked", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DocumentOnSAId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EArchivId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentOnSAId");
+
+                    b.ToTable("EArchivIdsLinked");
                 });
 
             modelBuilder.Entity("DomainServices.DocumentOnSAService.Api.Database.Entities.GeneratedFormId", b =>
@@ -127,6 +162,22 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                     b.HasIndex("HouseholdId");
 
                     b.ToTable("GeneratedFormId");
+                });
+
+            modelBuilder.Entity("DomainServices.DocumentOnSAService.Api.Database.Entities.EArchivIdsLinked", b =>
+                {
+                    b.HasOne("DomainServices.DocumentOnSAService.Api.Database.Entities.DocumentOnSa", "DocumentOnSa")
+                        .WithMany("EArchivIdsLinkeds")
+                        .HasForeignKey("DocumentOnSAId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DocumentOnSa");
+                });
+
+            modelBuilder.Entity("DomainServices.DocumentOnSAService.Api.Database.Entities.DocumentOnSa", b =>
+                {
+                    b.Navigation("EArchivIdsLinkeds");
                 });
 #pragma warning restore 612, 618
         }

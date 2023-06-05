@@ -4,8 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
 	  <Company>Wookiee.Apps s.r.o.</Company>
 	  <Product>Common Infrastructure Solution</Product>
-	  <Authors>Filip Tuma</Authors>
-	<LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
 	<ImplicitUsings>enable</ImplicitUsings>
     <Platforms>AnyCPU;x64</Platforms>
@@ -17,18 +15,24 @@
 	
   <ItemGroup>
     <PackageReference Include="Duende.AccessTokenManagement.OpenIdConnect" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="7.0.4" />
+    <PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="7.0.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\DomainServices\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
+    <ProjectReference Include="..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
+    <ProjectReference Include="..\..\DomainServices\DocumentArchiveService\Clients\DomainServices.DocumentArchiveService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Contracts\DomainServices.SalesArrangementService.Contracts.csproj" />
     <ProjectReference Include="..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
+    <ProjectReference Include="..\NOBY.Database\NOBY.Database.csproj" />
+    <ProjectReference Include="..\NOBY.Dto\NOBY.Dto.csproj" />
   </ItemGroup>
 
 </Project>

@@ -124,7 +124,8 @@ public static class KafkaExtensions
     
     internal static IEnumerable<Type> GetContractTypes<TTopicMarker>()
     {
-        var types = System.Reflection.Assembly.GetEntryAssembly()!
+        var types = System.Reflection.Assembly
+            .GetEntryAssembly()!
             .GetTypes()
             .Where(type => typeof(TTopicMarker).IsAssignableFrom(type) && !type.IsInterface)
             .ToList();

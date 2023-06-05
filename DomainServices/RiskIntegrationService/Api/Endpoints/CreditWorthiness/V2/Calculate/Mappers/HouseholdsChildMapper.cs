@@ -1,6 +1,8 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
 using CIS.Core;
+using DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;
 
@@ -25,10 +27,10 @@ internal sealed class HouseholdsChildMapper
                 ChildrenUnderAnd10 = h.ChildrenUpToTenYearsCount,
                 ExpensesSummary = toC4m(h.ExpensesSummary ?? new Contracts.Shared.V1.ExpensesSummary()),
                 Clients = await _customersMapper.MapCustomers(h.Customers!, mandantId, cancellation),
-                CreditLiabilitiesSummary = createCreditLiabilitiesSummary(liabilitiesFlatten),
-                CreditLiabilitiesSummaryOut = createCreditLiabilitiesSummaryOut(liabilitiesFlatten),
-                InstallmentsSummary = createInstallmentsSummary(liabilitiesFlatten),
-                InstallmentsSummaryOut = createInstallmentsSummaryOut(liabilitiesFlatten)
+                CreditLiabilitiesSummaryHomeCompany = createCreditLiabilitiesSummary(liabilitiesFlatten),
+                CreditLiabilitiesSummaryOutHomeCompany = createCreditLiabilitiesSummaryOut(liabilitiesFlatten),
+                InstallmentsSummaryHomeCompany = createInstallmentsSummary(liabilitiesFlatten),
+                InstallmentsSummaryOutHomeCompany = createInstallmentsSummaryOut(liabilitiesFlatten)
             };
         })).ToList();   
     }
@@ -36,26 +38,26 @@ internal sealed class HouseholdsChildMapper
     private static List<_C4M.ExpensesSummary> toC4m(Contracts.Shared.V1.ExpensesSummary expenses)
         => new List<_C4M.ExpensesSummary>()
         {
-            new() { Amount = expenses.Rent.GetValueOrDefault(), Category = _C4M.ExpensesSummaryCategory.RENT },
-            new() { Amount = expenses.Saving.GetValueOrDefault(), Category = _C4M.ExpensesSummaryCategory.SAVING },
-            new() { Amount = expenses.Insurance.GetValueOrDefault(), Category = _C4M.ExpensesSummaryCategory.INSURANCE },
-            new() { Amount = expenses.Other.GetValueOrDefault(), Category = _C4M.ExpensesSummaryCategory.OTHER },
-            new() { Amount = 0, Category = _C4M.ExpensesSummaryCategory.ALIMONY },
+            new() { Amount = expenses.Rent.GetValueOrDefault().ToAmount(), Category = _C4M.HouseholdExpenseType.RENT },
+            new() { Amount = expenses.Saving.GetValueOrDefault().ToAmount(), Category = _C4M.HouseholdExpenseType.SAVINGS },
+            new() { Amount = expenses.Insurance.GetValueOrDefault().ToAmount(), Category = _C4M.HouseholdExpenseType.INSURANCE },
+            new() { Amount = expenses.Other.GetValueOrDefault().ToAmount(), Category = _C4M.HouseholdExpenseType.OTHER },
+            new() { Amount = 0.ToAmount(), Category = _C4M.HouseholdExpenseType.ALIMONY },
         };
 
     #region liabilities
-    private List<_C4M.CreditLiabilitiesSummaryHomeCompany> createCreditLiabilitiesSummary(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten)
-       => new List<_C4M.CreditLiabilitiesSummaryHomeCompany>
+    private List<_C4M.CreditLiabilitiesSummary> createCreditLiabilitiesSummary(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten)
+       => new List<_C4M.CreditLiabilitiesSummary>
        {
             new()
             {
-                ProductGroup = _C4M.CreditLiabilitiesSummaryHomeCompanyProductGroup.AD,
+                ProductGroup = _C4M.CreditLiabilitiesSummaryType.AD,
                 Amount = sumObligations(liabilitiesFlatten, "AD", false, _fcSumObligationsAmount),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "AD", false, _fcSumObligationsAmountConsolidated)
             },
             new()
             {
-                ProductGroup = _C4M.CreditLiabilitiesSummaryHomeCompanyProductGroup.CC,
+                ProductGroup = _C4M.CreditLiabilitiesSummaryType.CC,
                 Amount = sumObligations(liabilitiesFlatten, "CC", false, _fcSumObligationsAmount),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "CC", false, _fcSumObligationsAmountConsolidated)
             }
@@ -66,59 +68,59 @@ internal sealed class HouseholdsChildMapper
        {
             new()
             {
-                ProductGroup = _C4M.CreditLiabilitiesSummaryProductGroup.AD,
+                ProductGroup = _C4M.CreditLiabilitiesSummaryType.AD,
                 Amount = sumObligations(liabilitiesFlatten, "AD", true, _fcSumObligationsAmount),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "AD", true, _fcSumObligationsAmountConsolidated)
             },
             new()
             {
-                ProductGroup = _C4M.CreditLiabilitiesSummaryProductGroup.CC,
+                ProductGroup = _C4M.CreditLiabilitiesSummaryType.CC,
                 Amount = sumObligations(liabilitiesFlatten, "CC", true, _fcSumObligationsAmount),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "CC", true, _fcSumObligationsAmountConsolidated)
             }
        };
 
-    private List<_C4M.InstallmentsSummaryHomeCompany> createInstallmentsSummary(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten)
-       => new List<_C4M.InstallmentsSummaryHomeCompany>
+    private List<_C4M.LoanInstallmentsSummary> createInstallmentsSummary(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten)
+       => new List<_C4M.LoanInstallmentsSummary>
        {
             new()
             {
-                ProductGroup = _C4M.InstallmentsSummaryHomeCompanyProductGroup.CL,
+                ProductGroup = _C4M.InstallmentsSummaryType.CL,
                 Amount = sumObligations(liabilitiesFlatten, "CL", false, _fcSumObligationsInstallment),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "CL", false, _fcSumObligationsInstallmentConsolidated)
             },
             new()
             {
-                ProductGroup = _C4M.InstallmentsSummaryHomeCompanyProductGroup.ML,
+                ProductGroup = _C4M.InstallmentsSummaryType.ML,
                 Amount = sumObligations(liabilitiesFlatten, "ML", false, _fcSumObligationsInstallment),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "ML", false, _fcSumObligationsInstallmentConsolidated)
             }
        };
 
-    private List<_C4M.InstallmentsSummaryOutHomeCompany> createInstallmentsSummaryOut(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten)
-       => new List<_C4M.InstallmentsSummaryOutHomeCompany>
+    private List<_C4M.LoanInstallmentsSummary> createInstallmentsSummaryOut(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten)
+       => new List<_C4M.LoanInstallmentsSummary>
        {
             new()
             {
-                ProductGroup = _C4M.InstallmentsSummaryOutHomeCompanyProductGroup.CL,
+                ProductGroup = _C4M.InstallmentsSummaryType.CL,
                 Amount = sumObligations(liabilitiesFlatten, "CL", true, _fcSumObligationsInstallment),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "CL", true, _fcSumObligationsInstallmentConsolidated)
             },
             new()
             {
-                ProductGroup = _C4M.InstallmentsSummaryOutHomeCompanyProductGroup.ML,
+                ProductGroup = _C4M.InstallmentsSummaryType.ML,
                 Amount = sumObligations(liabilitiesFlatten, "ML", true, _fcSumObligationsInstallment),
                 AmountConsolidated = sumObligations(liabilitiesFlatten, "ML", true, _fcSumObligationsInstallmentConsolidated)
             }
        };
     #endregion liabilities
 
-    private decimal sumObligations(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten, string productGroup, bool isObligationCreditorExternal, Func<_V2.CreditWorthinessObligation, decimal> fcSum)
+    private _C4M.Amount sumObligations(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten, string productGroup, bool isObligationCreditorExternal, Func<_V2.CreditWorthinessObligation, decimal> fcSum)
     {
         var arr = _obligationTypes!.Where(t => t.Code == productGroup).Select(t => t.Id).ToArray();
-        return liabilitiesFlatten?
+        return (liabilitiesFlatten?
             .Where(t => t.IsObligationCreditorExternal == isObligationCreditorExternal && arr.Contains(t.ObligationTypeId))
-            .Sum(fcSum) ?? 0;
+            .Sum(fcSum) ?? 0).ToAmount();
     }
 
     Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsAmount = t => t.Amount.GetValueOrDefault();
@@ -126,14 +128,14 @@ internal sealed class HouseholdsChildMapper
     Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsInstallment = t => t.Installment.GetValueOrDefault();
     Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsInstallmentConsolidated = t => t.InstallmentConsolidated.GetValueOrDefault();
 
-    private List<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem>? _obligationTypes;
+    private List<ObligationTypesResponse.Types.ObligationTypeItem>? _obligationTypes;
     
     private readonly CustomersChildMapper _customersMapper;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
 
     public HouseholdsChildMapper(
         CustomersChildMapper customersMapper,
-        CodebookService.Clients.ICodebookServiceClients codebookService)
+        CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         _customersMapper = customersMapper;
         _codebookService = codebookService;

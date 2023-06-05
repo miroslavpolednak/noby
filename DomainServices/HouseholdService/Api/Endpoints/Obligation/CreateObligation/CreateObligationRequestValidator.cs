@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.CreateObligation;
@@ -6,7 +7,7 @@ namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.CreateObligat
 internal sealed class CreateObligationRequestValidator
     : AbstractValidator<CreateObligationRequest>
 {
-    public CreateObligationRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService, Database.HouseholdServiceDbContext dbContext)
+    public CreateObligationRequestValidator(ICodebookServiceClient codebookService, Database.HouseholdServiceDbContext dbContext)
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)

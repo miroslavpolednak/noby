@@ -12,16 +12,16 @@ public class CustomerController : ControllerBase
     /// <remarks>
     /// Vytvoření Customer entity, která zaštiťuje KB customera a MPSS customera.<br /><br />
     /// Na výstupu je Customer objekt s kompletními daty z KB CM.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("customer", Name = "customerCreate")]
+    [HttpPost("customer")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
-    [ProducesResponseType(typeof(Create.CreateResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateCustomer.CreateCustomerResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<Create.CreateResponse> Create([FromBody] Create.CreateRequest request)
+    public async Task<CreateCustomer.CreateCustomerResponse> CreateCustomer([FromBody] CreateCustomer.CreateCustomerRequest request)
         => await _mediator.Send(request);
 
     /// <summary>
@@ -39,8 +39,8 @@ public class CustomerController : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "Klient" })]
-    [ProducesResponseType(typeof(Search.SearchResponse), StatusCodes.Status200OK)]
-    public async Task<Search.SearchResponse> Search([FromBody] Search.SearchRequest request, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(SearchCustomers.SearchCustomersResponse), StatusCodes.Status200OK)]
+    public async Task<SearchCustomers.SearchCustomersResponse> SearchCustomers([FromBody] SearchCustomers.SearchCustomersRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
     
     /// <summary>
@@ -54,9 +54,9 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Klient" })]
-    [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
-    public async Task<GetDetail.GetDetailResponse> GetDetail([FromBody] CIS.Foms.Types.CustomerIdentity request)
-        => await _mediator.Send(new GetDetail.GetDetailRequest(request.Id, request.Scheme));
+    [ProducesResponseType(typeof(GetCustomerDetail.GetCustomerDetailResponse), StatusCodes.Status200OK)]
+    public async Task<GetCustomerDetail.GetCustomerDetailResponse> GetCustomerDetail([FromBody] CIS.Foms.Types.CustomerIdentity request)
+        => await _mediator.Send(new GetCustomerDetail.GetCustomerDetailRequest(request.Id, request.Scheme));
 
     /// <summary>
     /// Identifikace klienta
@@ -64,7 +64,7 @@ public class CustomerController : ControllerBase
     /// <remarks>
     /// Slouží pro identifikaci klienta.<br />
     /// Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer-on-sa/{customerOnSAId:int}/identify-by-identity")]
     [Produces("application/json")]
@@ -86,10 +86,10 @@ public class CustomerController : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
-    [ProducesResponseType(typeof(Search.Dto.CustomerInList), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SearchCustomers.Dto.CustomerInList), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<Search.Dto.CustomerInList> Identify([FromBody] Identify.IdentifyRequest request)
+    public async Task<SearchCustomers.Dto.CustomerInList> Identify([FromBody] Identify.IdentifyRequest request)
         => await _mediator.Send(request);
 
     /// <summary>
@@ -111,30 +111,30 @@ public class CustomerController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vrací data klienta aktualizovaného o lokálně uložené změny. Podle kontextu produktu vracíme data z KB CM (pro červené produkty) nebo z KonsDB (pro modré produkty, prozatím nepodporováno).<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=6452CB93-41C7-450f-A20F-E8CB5208F1DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6452CB93-41C7-450f-A20F-E8CB5208F1DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("customer-on-sa/{customerOnSAId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
-    [ProducesResponseType(typeof(GetDetailWithChanges.GetDetailWithChangesResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetCustomerDetailWithChanges.GetCustomerDetailWithChangesResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetDetailWithChanges.GetDetailWithChangesResponse> GetDetailWithChanges([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetDetailWithChanges.GetDetailWithChangesRequest(customerOnSAId), cancellationToken);
+    public async Task<GetCustomerDetailWithChanges.GetCustomerDetailWithChangesResponse> GetCustomerDetailWithChanges([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCustomerDetailWithChanges.GetCustomerDetailWithChangesRequest(customerOnSAId), cancellationToken);
 
     /// <summary>
     /// Uložení dat klienta (pro uložení změn lokálně)
     /// </summary>
     /// <remarks>
     /// Ukládá data klienta (deltu oproti KB CM pro červené produkty, do budoucna i deltu oproti KonsDB pro modré produkty). <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=BB5766C4-CCC7-487e-B482-1B1C86D999F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BB5766C4-CCC7-487e-B482-1B1C86D999F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("customer-on-sa/{customerOnSAId:int}")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task UpdateDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateDetailWithChanges.UpdateDetailWithChangesRequest request)
+    public async Task UpdateCustomerDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest request)
         => await _mediator.Send(request.InfuseId(customerOnSAId));
 
     private readonly IMediator _mediator;

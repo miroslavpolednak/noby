@@ -1,14 +1,16 @@
 ﻿using CIS.Core;
 using CIS.Core.Security;
 using DomainServices.CaseService.Clients;
+using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
-using NOBY.Api.Endpoints.Shared;
 using System.Globalization;
+using System.Threading;
+using static DomainServices.DocumentOnSAService.Contracts.v1.DocumentOnSAService;
 using _DocOnSa = NOBY.Api.Endpoints.DocumentOnSA.Search;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
@@ -21,23 +23,25 @@ public class SaveDocumentToArchiveHandler
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDateTime _dateTime;
-    private readonly ITempFileManager _tempFileManager;
+    private readonly Infrastructure.Services.TempFileManager.ITempFileManager _tempFileManager;
     private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
     private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
     private readonly IMediator _mediator;
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly IUserServiceClient _userServiceClient;
+    private readonly ICodebookServiceClient _codebookServiceClient;
 
     public SaveDocumentToArchiveHandler(
         IDocumentArchiveServiceClient client,
         ICurrentUserAccessor currentUserAccessor,
         IDateTime dateTime,
-        ITempFileManager tempFileManager,
+        Infrastructure.Services.TempFileManager.ITempFileManager tempFileManager,
         ISalesArrangementServiceClient salesArrangementServiceClient,
         IDocumentOnSAServiceClient documentOnSAServiceClient,
         IMediator mediator,
         ICaseServiceClient caseServiceClient,
-        IUserServiceClient userServiceClient)
+        IUserServiceClient userServiceClient,
+        ICodebookServiceClient codebookServiceClient)
     {
         _client = client;
         _currentUserAccessor = currentUserAccessor;
@@ -48,54 +52,83 @@ public class SaveDocumentToArchiveHandler
         _mediator = mediator;
         _caseServiceClient = caseServiceClient;
         _userServiceClient = userServiceClient;
+        _codebookServiceClient = codebookServiceClient;
     }
 
     public async Task Handle(SaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var filePaths = new List<string>();
-        var filesToUpload = new List<UploadDocumentRequest>();
+        var filesToUpload = new List<(UploadDocumentRequest uploadRequest, int? documentOnSAId)>();
+        var authorUserLogin = await GetAuthorUserLogin(cancellationToken);
 
         foreach (var docInfo in request.DocumentsInformation)
         {
-            var eArchiveIdFromDocumentOnSa = string.Empty;
+            int? documentOnSAId = null;
+            await CheckIfFormIdRequired(docInfo, cancellationToken);
+
             if (!string.IsNullOrWhiteSpace(docInfo.FormId))
-                eArchiveIdFromDocumentOnSa = await ValidateFormId(request.CaseId, docInfo, cancellationToken);
+                documentOnSAId = await ValidateFormId(request.CaseId, docInfo, cancellationToken);
 
             var filePath = _tempFileManager.ComposeFilePath(docInfo.DocumentInformation.Guid!.Value.ToString());
             _tempFileManager.CheckIfDocumentExist(filePath);
             filePaths.Add(filePath);
 
             var file = await _tempFileManager.GetDocument(filePath, cancellationToken);
+            var documentId = await _client.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken);
 
-            var documentId = string.IsNullOrWhiteSpace(eArchiveIdFromDocumentOnSa) ?
-                await _client.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken)
-                : eArchiveIdFromDocumentOnSa;
-
-            filesToUpload.Add(await MapRequest(file, documentId, request.CaseId, docInfo, cancellationToken));
+            filesToUpload.Add(new()
+            {
+                uploadRequest = await MapRequest(file, documentId, request.CaseId, docInfo, authorUserLogin, cancellationToken),
+                documentOnSAId = documentOnSAId
+            });
         }
 
-        await Task.WhenAll(filesToUpload.Select(file => _client.UploadDocument(file, cancellationToken)));
+        await Task.WhenAll(filesToUpload.Select(uploadItem => UploadDocument(uploadItem, cancellationToken)));
         _tempFileManager.BatchDelete(filePaths);
+    }
+
+    private async Task UploadDocument((UploadDocumentRequest uploadRequest, int? documentOnSAId) uploadItem, CancellationToken cancellationToken)
+    {
+        await _client.UploadDocument(uploadItem.uploadRequest, cancellationToken);
+        if (uploadItem.documentOnSAId != null)
+            await _documentOnSAServiceClient.LinkEArchivIdToDocumentOnSA(
+                new()
+                {
+                    DocumentOnSAId = uploadItem.documentOnSAId.Value,
+                    EArchivId = uploadItem.uploadRequest.Metadata.DocumentId
+                },
+                        cancellationToken);
+    }
+
+    private async Task CheckIfFormIdRequired(DocumentsInformation docInfo, CancellationToken cancellationToken)
+    {
+        var eACodeMains = await _codebookServiceClient.EaCodesMain(cancellationToken);
+
+        var eACodeMain = eACodeMains.FirstOrDefault(r => r.Id == docInfo.DocumentInformation.EaCodeMainId)
+            ?? throw new NobyValidationException($"Specified EaCodeMainId: {docInfo.DocumentInformation.EaCodeMainId} isn't valid");
+
+        if (eACodeMain.IsFormIdRequested && string.IsNullOrWhiteSpace(docInfo.FormId))
+            throw new NobyValidationException($"For specified EaCodeMainId:{docInfo.DocumentInformation.EaCodeMainId}, FormId is required");
     }
 
     /// <summary>
     /// If formId exist on DocumentOnSa, return EArchiveId from documentOnSa
     /// </summary>
-    /// <returns>DocumentOnSa.EArchiveId</returns>
+    /// <returns>DocumentOnSa.DocumentOnSAId</returns>
     /// <exception cref="CisValidationException">Unable to upload file for selected FormId</exception>
-    private async Task<string> ValidateFormId(long caseId, DocumentsInformation docInfo, CancellationToken cancellationToken)
+    private async Task<int?> ValidateFormId(long caseId, DocumentsInformation docInfo, CancellationToken cancellationToken)
     {
         var salesArrangementIdWithFormIdFromDocSa = await CheckIfExistFormIdOnDocumentOnSa(docInfo, caseId, cancellationToken);
 
         if (salesArrangementIdWithFormIdFromDocSa is null)
         {
-            throw new CisValidationException(90001, $"Unable to upload file for selected FormId {docInfo.FormId}");
+            throw new NobyValidationException($"Unable to upload file for selected FormId {docInfo.FormId}");
         }
 
         var documentsOnSa = await _documentOnSAServiceClient.GetDocumentsToSignList(salesArrangementIdWithFormIdFromDocSa.Value, cancellationToken);
         var documentOnSa = documentsOnSa.DocumentsOnSAToSign.Single(d => d.FormId == docInfo.FormId);
-        return documentOnSa.EArchivId;
+        return documentOnSa.DocumentOnSAId;
     }
 
     /// <summary>
@@ -128,10 +161,14 @@ public class SaveDocumentToArchiveHandler
         return salesArrangementIdWithFormIdFromDocSa;
     }
 
-    private async Task<UploadDocumentRequest> MapRequest(byte[] file, string documentId, long caseId, DocumentsInformation documentInformation, CancellationToken cancellationToken)
+    private async Task<UploadDocumentRequest> MapRequest(
+        byte[] file,
+        string documentId,
+        long caseId,
+        DocumentsInformation documentInformation,
+        string authorUserLogin,
+        CancellationToken cancellationToken)
     {
-        var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
-        
         return new UploadDocumentRequest
         {
             BinaryData = ByteString.CopyFrom(file),
@@ -141,7 +178,7 @@ public class SaveDocumentToArchiveHandler
                 DocumentId = documentId,
                 EaCodeMainId = documentInformation.DocumentInformation.EaCodeMainId,
                 Filename = documentInformation.DocumentInformation.FileName,
-                AuthorUserLogin = user.CPM ?? user.Id.ToString(CultureInfo.InvariantCulture),
+                AuthorUserLogin = authorUserLogin,
                 CreatedOn = _dateTime.Now.Date,
                 Description = documentInformation.DocumentInformation.Description ?? string.Empty,
                 FormId = documentInformation.FormId ?? string.Empty,
@@ -150,12 +187,25 @@ public class SaveDocumentToArchiveHandler
         };
     }
 
+    private async Task<string> GetAuthorUserLogin(CancellationToken cancellationToken)
+    {
+        var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
+        if (!string.IsNullOrWhiteSpace(user.UserInfo.Icp))
+            return user.UserInfo.Icp;
+        else if (!string.IsNullOrWhiteSpace(user.UserInfo.Cpm))
+            return user.UserInfo.Cpm;
+        else if (_currentUserAccessor?.User?.Id is not null)
+            return _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture);
+        else
+            throw new CisNotFoundException(90001, "Cannot get NOBY user identifier");
+    }
+
     private async Task<string> GetContractNumber(long caseId, CancellationToken cancellationToken)
     {
         var caseDetail = await _caseServiceClient.GetCaseDetail(caseId, cancellationToken);
         if (string.IsNullOrWhiteSpace(caseDetail?.Data?.ContractNumber))
             return defaultContractNumber;
-        
+
         return caseDetail.Data.ContractNumber;
     }
 }

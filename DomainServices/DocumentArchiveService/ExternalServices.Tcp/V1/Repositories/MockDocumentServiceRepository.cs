@@ -63,7 +63,7 @@ public class MockDocumentServiceRepository : IDocumentServiceRepository
             EaCodeMainId = 3,
             Filename = "test.txt",
             OrderId = "1",
-            CreatedOn = DateTime.Now,
+            CreatedOn = new DateTime(2000, 1, 1),
             AuthorUserLogin = "TestLogin",
             Priority = "1",
             Status = "Z",

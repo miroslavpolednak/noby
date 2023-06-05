@@ -54,5 +54,13 @@ internal sealed class SimulateMortgageRequestValidator
                 .Must(t => t.Year == 0)
                 .WithErrorCode(ErrorCodeMapper.GuaranteeDateToSet);
         });
+
+        When(t => t.IsCreditWorthinessSimpleRequested,
+             () =>
+             {
+                 RuleFor(t => t.CreditWorthinessSimpleInputs)
+                     .NotNull()
+                     .WithErrorCode(ErrorCodeMapper.CreditWorthinessNullInput);
+             });
     }
 }

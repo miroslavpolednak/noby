@@ -64,7 +64,7 @@ public sealed class ParametersDrawingAgent
     /// <summary>
     /// Osobní doklad
     /// </summary>
-    public SharedDto.IdentificationDocumentBase? IdentificationDocument { get; set; }
+    public NOBY.Dto.IdentificationDocumentBase? IdentificationDocument { get; set; }
 }
 
 public sealed class ParametersDrawingPayout

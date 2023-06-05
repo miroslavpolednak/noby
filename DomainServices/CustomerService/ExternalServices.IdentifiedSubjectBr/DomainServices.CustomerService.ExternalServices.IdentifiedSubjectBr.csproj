@@ -31,4 +31,12 @@
     <ProjectReference Include="..\ExternalServices.Common\DomainServices.CustomerService.ExternalServices.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="V1\Dto\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.15" />
+  </ItemGroup>
+
 </Project>

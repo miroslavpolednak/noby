@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
 using DomainServices.CodebookService.Clients;
-using Codebook = DomainServices.CodebookService.Contracts.Endpoints;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.Codebooks.CodebookMap;
 
@@ -32,26 +32,23 @@ public class CodebookMap : ICodebookMap
     {
         AddCodebook((s, ct) => s.AcademicDegreesAfter(ct));
         AddCodebook((s, ct) => s.AcademicDegreesBefore(ct));
-        AddCodebook((s, ct) => s.ActionCodesSavings(ct));
-        AddCodebook((s, ct) => s.ActionCodesSavingsLoan(ct));
         AddCodebook((s, ct) => s.AddressTypes(ct));
         AddCodebook((s, ct) => s.BankCodes(ct));
         AddCodebook((s, ct) => s.CaseStates(ct));
         AddCodebook((s, ct) => s.ClassificationOfEconomicActivities(ct));
         AddCodebook((s, ct) => s.ContactTypes(ct));
-        AddCodebook((s, ct) => s.Countries(ct), c => c.Cast<Codebook.Countries.CountriesItem>().OrderByDescending(t => t.IsDefault));
+        AddCodebook((s, ct) => s.Countries(ct), c => c.Cast<CountriesResponse.Types.CountryItem>().OrderByDescending(t => t.IsDefault));
         AddCodebook((s, ct) => s.CountryCodePhoneIdc(ct));
+        AddCodebook((s, ct) => s.CovenantTypes(ct));
         AddCodebook((s, ct) => s.Currencies(ct));
         AddCodebook((s, ct) => s.CustomerProfiles(ct));
         AddCodebook((s, ct) => s.CustomerRoles(ct));
-        AddCodebook((s, ct) => s.Developers(ct));
-        AddCodebook((s, ct) => s.DeveloperProjects(ct));
         AddCodebook((s, ct) => s.DocumentOnSATypes(ct));
         AddCodebook((s, ct) => s.DocumentTemplateVersions(ct));
         AddCodebook((s, ct) => s.DocumentTemplateVariants(ct));
         AddCodebook((s, ct) => s.DocumentTypes(ct));
         AddCodebook((s, ct) => s.DrawingDurations(ct));
-        AddCodebook((s, ct) => s.DrawingTypes(ct), c => c.Cast<Codebook.DrawingTypes.DrawingTypeItem>().Where(t => t.Id > 0));
+        AddCodebook((s, ct) => s.DrawingTypes(ct), c => c.Cast<DrawingTypesResponse.Types.DrawingTypeItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.EaCodesMain(ct));
         AddCodebook((s, ct) => s.EducationLevels(ct));
         AddCodebook((s, ct) => s.EmploymentTypes(ct));
@@ -75,23 +72,24 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.ObligationCorrectionTypes(ct));
         AddCodebook((s, ct) => s.ObligationTypes(ct));
         AddCodebook((s, ct) => s.FormTypes(ct));
-        AddCodebook((s, ct) => s.PaymentDays(ct), c => c.Cast<Codebook.PaymentDays.PaymentDayItem>().Where(t => t.ShowOnPortal));
+        AddCodebook((s, ct) => s.PaymentDays(ct), c => c.Cast<PaymentDaysResponse.Types.PaymentDayItem>().Where(t => t.ShowOnPortal));
         AddCodebook((s, ct) => s.PayoutTypes(ct));
         AddCodebook((s, ct) => s.PostCodes(ct));
-        AddCodebook((s, ct) => s.ProfessionCategories(ct), c => c.Cast<Codebook.ProfessionCategories.ProfessionCategoryItem>());
+        AddCodebook((s, ct) => s.ProfessionCategories(ct), c => c.Cast<ProfessionCategoriesResponse.Types.ProfessionCategoryItem>());
         AddCodebook((s, ct) => s.ProfessionTypes(ct));
         AddCodebook((s, ct) => s.PropertySettlements(ct));
-        AddCodebook((s, ct) => s.SalesArrangementStates(ct), c => c.Cast<Codebook.SalesArrangementStates.SalesArrangementStateItem>().Where(t => t.Id > 0));
+        AddCodebook((s, ct) => s.SalesArrangementStates(ct), c => c.Cast<SalesArrangementStatesResponse.Types.SalesArrangementStateItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.SalesArrangementTypes(ct));
-        AddCodebook((s, ct) => s.SignatureTypes(ct), c => c.Cast<Codebook.SignatureTypes.SignatureTypeItem>().Where(t => t.Id > 0));
-        AddCodebook((s, ct) => s.SigningMethodsForNaturalPerson(ct), c => c.Cast<Codebook.SigningMethodsForNaturalPerson.SigningMethodsForNaturalPersonItem>());
+        AddCodebook((s, ct) => s.SignatureTypes(ct), c => c.Cast<GenericCodebookResponse.Types.GenericCodebookItem>().Where(t => t.Id > 0));
+        AddCodebook((s, ct) => s.SigningMethodsForNaturalPerson(ct), c => c.Cast<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>());
         AddCodebook((s, ct) => s.StatementTypes(ct));
         AddCodebook((s, ct) => s.TinFormatsByCountry(ct));
         AddCodebook((s, ct) => s.TinNoFillReasonsByCountry(ct));
-        AddCodebook((s, ct) => s.RealEstateTypes(ct), c => c.Cast<Codebook.RealEstateTypes.RealEstateTypeItem>().Where(t => t.Id > 0));
+        AddCodebook((s, ct) => s.RealEstateTypes(ct), c => c.Cast<GenericCodebookResponse.Types.GenericCodebookItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.RealEstatePurchaseTypes(ct));
         AddCodebook((s, ct) => s.WorkflowTaskStatesNoby(ct));
         AddCodebook((s, ct) => s.WorkflowTaskCategories(ct));
+        AddCodebook((s, ct) => s.WorkflowTaskSigningResponseTypes(ct));
         AddCodebook((s, ct) => s.WorkflowTaskStates(ct));
         AddCodebook((s, ct) => s.WorkflowTaskTypes(ct));
         AddCodebook((s, ct) => s.WorkSectors(ct));
@@ -101,7 +99,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.StatementFrequencies(ct));
     }
 
-    private void AddCodebook<TReturn>(Expression<Func<ICodebookServiceClients, CancellationToken, TReturn>> expression, Func<IEnumerable<object>, IEnumerable<object>> customizeResult = default!) where TReturn : Task
+    private void AddCodebook<TReturn>(Expression<Func<ICodebookServiceClient, CancellationToken, TReturn>> expression, Func<IEnumerable<object>, IEnumerable<object>> customizeResult = default!) where TReturn : Task
     {
         var methodName = ((MethodCallExpression)expression.Body).Method.Name;
         var returnType = GetCodebookReturnType(typeof(TReturn));

@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Data;
+using DomainServices.DocumentOnSAService.Api.Database.Enums;
 
 namespace DomainServices.DocumentOnSAService.Api.Database.Entities;
 
@@ -9,6 +10,8 @@ public class DocumentOnSa : ICreated
     public int DocumentTypeId { get; set; }
 
     public int? DocumentTemplateVersionId { get; set; }
+
+    public int? DocumentTemplateVariantId { get; set; }
 
     public string FormId { get; set; } = null!;
 
@@ -24,7 +27,7 @@ public class DocumentOnSa : ICreated
 
     public bool IsSigned { get; set; }
 
-    public bool IsDocumentArchived { get; set; }
+    public bool IsArchived { get; set; }
 
     public string? SignatureMethodCode { get; set; } = null!;
 
@@ -38,7 +41,15 @@ public class DocumentOnSa : ICreated
 
     public DateTime CreatedTime { get; set; }
 
-    public string Data { get; set; } = null!;
+    public string? Data { get; set; } = null!;
 
     public bool IsFinal { get; set; }
+
+    public string? ExternalId { get; set; }
+
+    public Source Source { get; set; }
+
+    public int? SignatureTypeId { get; set; }
+
+    public ICollection<EArchivIdsLinked> EArchivIdsLinkeds { get; } = new List<EArchivIdsLinked>();
 }

@@ -1,0 +1,1 @@
+UPDATE [dbo].[SqlQuery] SET SqlQueryText='SELECT CAST(KOD_OPERATORA as int) ''PerformerCode'', MENO ''PerformerName'', [LOGIN] ''PerformerLogin'' FROM [SBR].[OPERATOR] WHERE DATUM_ZMENY IS NULL AND [LOGIN]=@PerformerLogin' WHERE SqlQueryId='GetOperator'

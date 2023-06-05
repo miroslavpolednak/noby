@@ -19,7 +19,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
-    private readonly ICodebookServiceClients _codebookServiceClients;
+    private readonly ICodebookServiceClient _codebookServiceClients;
     private readonly IDateTime _dateTime;
 
     public GetDocumentOnSADataHandler(
@@ -27,7 +27,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         IDocumentArchiveServiceClient documentArchiveServiceClient,
         ICurrentUserAccessor currentUserAccessor,
         IDocumentGeneratorServiceClient documentGeneratorServiceClient,
-        ICodebookServiceClients codebookServiceClients,
+        ICodebookServiceClient codebookServiceClients,
         IDateTime dateTime)
     {
         _documentOnSaClient = documentOnSaClient;
@@ -49,7 +49,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
 
         var documentOnSa = documentOnSas.DocumentsOnSAToSign.Single(r => r.DocumentOnSAId == request.DocumentOnSAId);
 
-        if (documentOnSa.IsDocumentArchived)
+        if (documentOnSa.IsArchived)
         {
             return await GetDocumentFromEArchive(documentOnSa, cancellationToken);
         }
@@ -108,6 +108,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         {
             DocumentTypeId = documentOnSaData.DocumentTypeId!.Value,
             DocumentTemplateVersionId = documentOnSaData.DocumentTemplateVersionId!.Value,
+            DocumentTemplateVariantId = documentOnSaData.DocumentTemplateVariantId,
             ForPreview = false,
             OutputType = OutputFileType.Pdfa,
             Parts = { CreateDocPart(documentOnSaData) },
@@ -121,7 +122,9 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
     {
         return new DocumentFooter
         {
-            SalesArrangementId = documentOnSa.SalesArrangementId
+            SalesArrangementId = documentOnSa.SalesArrangementId,
+            DocumentId = documentOnSa.EArchivId,
+            BarcodeText = documentOnSa.FormId
         };
     }
 
@@ -133,6 +136,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         {
             DocumentTypeId = documentOnSaData.DocumentTypeId!.Value,
             DocumentTemplateVersionId = documentOnSaData.DocumentTemplateVersionId!.Value,
+            DocumentTemplateVariantId = documentOnSaData.DocumentTemplateVariantId,
             Data = { CreateData(documentDataDtos) }
         };
     }

@@ -1,6 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using FastEnumUtility;
-using __MpHome = ExternalServices.MpHome.V1_1.Contracts;
+using __MpHome = ExternalServices.MpHome.V1.Contracts;
 
 namespace DomainServices.CustomerService.Api;
 
@@ -41,7 +41,7 @@ public static class CMExtensions
         return item;
     }
 
-    public static __MpHome.ContactRequest ToExternalService(this DomainServices.CustomerService.Contracts.Contact contact, List<CodebookService.Contracts.Endpoints.ContactTypes.ContactTypeItem> contactTypes)
+    public static __MpHome.ContactRequest ToExternalService(this DomainServices.CustomerService.Contracts.Contact contact, List<CodebookService.Contracts.v1.ContactTypesResponse.Types.ContactTypeItem> contactTypes)
     {
         var item = new __MpHome.ContactRequest
         {

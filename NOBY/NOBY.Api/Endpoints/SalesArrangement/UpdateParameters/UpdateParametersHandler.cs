@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -25,7 +26,15 @@ internal sealed class UpdateParametersHandler
                 case CIS.Foms.Types.Enums.SalesArrangementTypes.Mortgage:
                     var o1 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersMortgage>(dataString, _jsonSerializerOptions);
                     if (o1 is not null)
+                    {
+                        if (string.IsNullOrEmpty(o1.IncomeCurrencyCode) || string.IsNullOrEmpty(o1.ResidencyCurrencyCode))
+                        {
+                            throw new NobyValidationException(90019);
+                        }
+                        
                         updateRequest.Mortgage = o1.ToDomainService();
+
+                    }
                     break;
 
                 case CIS.Foms.Types.Enums.SalesArrangementTypes.Drawing:
@@ -75,17 +84,26 @@ internal sealed class UpdateParametersHandler
             }
         }
 
+        // update SA
         await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken);
 
-        // nastavit flowSwitch ParametersSavedAtLeastOnce
-        await _salesArrangementService.SetFlowSwitches(request.SalesArrangementId, new()
+        // nastavit flowSwitch ParametersSavedAtLeastOnce pouze pro NE servisni SA
+        await setFlowSwitches(saInstance, cancellationToken);
+    }
+
+    private async Task setFlowSwitches(_SA.SalesArrangement saInstance, CancellationToken cancellationToken)
+    {
+        if ((await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == saInstance.SalesArrangementTypeId)?.SalesArrangementCategory == 1)
         {
-            new() 
-            { 
-                FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce, 
-                Value = true 
-            }
-        }, cancellationToken);
+            await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
+            {
+                new()
+                {
+                    FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce,
+                    Value = true
+                }
+            }, cancellationToken);
+        }
     }
 
     static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
@@ -94,11 +112,12 @@ internal sealed class UpdateParametersHandler
         PropertyNameCaseInsensitive = true
     };
 
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
-    public UpdateParametersHandler(
-        ISalesArrangementServiceClient salesArrangementService)
+    public UpdateParametersHandler(ISalesArrangementServiceClient salesArrangementService, ICodebookServiceClient codebookService)
     {
+        _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
     }
 }

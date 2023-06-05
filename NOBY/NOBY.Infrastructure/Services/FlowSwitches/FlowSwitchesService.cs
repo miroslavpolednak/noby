@@ -1,13 +1,17 @@
-﻿namespace NOBY.Infrastructure.Services.FlowSwitches;
+﻿using LazyCache;
+using Microsoft.EntityFrameworkCore;
 
+namespace NOBY.Infrastructure.Services.FlowSwitches;
+
+[CIS.Core.Attributes.TransientService, CIS.Core.Attributes.AsImplementedInterfacesService]
 internal sealed class FlowSwitchesService
     : IFlowSwitchesService
 {
-    public List<FlowSwitch> GetDefaultSwitches()
+    public List<Dto.FlowSwitches.FlowSwitch> GetDefaultSwitches()
     {
-        return _flowSwitchesCache.FlowSwitches
+        return getFlowSwitches()
             .Where(t => t.DefaultValue)
-            .Select(t =>new FlowSwitch
+            .Select(t => new Dto.FlowSwitches.FlowSwitch
             {
                 FlowSwitchId = t.FlowSwitchId,
                 Value = t.DefaultValue
@@ -15,14 +19,17 @@ internal sealed class FlowSwitchesService
             .ToList();
     }
 
-    public Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA)
+    public Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA)
     {
         flowSwitchesOnSA ??= new List<DomainServices.SalesArrangementService.Contracts.FlowSwitch>();
-        var result = new Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, FlowSwitchGroup>();
+        var result = new Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup>();
 
-        foreach (var group in _flowSwitchesCache.FlowSwitchesGroups)
+        var allFlowSwitches = getFlowSwitches();
+        var allFlowSwitchGroups = getFlowSwitchGroups();
+
+        foreach (var group in allFlowSwitchGroups)
         {
-            var resultGroup = new FlowSwitchGroup
+            var resultGroup = new Dto.FlowSwitches.FlowSwitchGroup
             {
                 IsVisible = resolveStatus(group.IsVisibleFlowSwitches, group.IsVisibleDefault),
                 IsActive = resolveStatus(group.IsActiveFlowSwitches, group.IsActiveDefault),
@@ -47,16 +54,65 @@ internal sealed class FlowSwitchesService
                     }
                     else
                     {
-                        return _flowSwitchesCache.FlowSwitches.First(x => x.FlowSwitchId == t.Key).DefaultValue == t.Value;
+                        return allFlowSwitches.First(x => x.FlowSwitchId == t.Key).DefaultValue == t.Value;
                     }
                 });
         }
     }
 
-    private readonly IFlowSwitchesCache _flowSwitchesCache;
-
-    public FlowSwitchesService(IFlowSwitchesCache flowSwitchesCache)
+    private FlowSwitchDefault[] getFlowSwitches()
     {
-        _flowSwitchesCache = flowSwitchesCache;
+        return _cache.GetOrAdd("FlowSwitches", () =>
+        {
+            return _dbContext.FlowSwitches.AsNoTracking().Select(t => new FlowSwitchDefault(t.FlowSwitchId, t.DefaultValue)).ToArray();
+        }, DateTime.Now.AddDays(1));
+    }
+
+    public FlowSwitchGroupDefault[] getFlowSwitchGroups()
+    {
+        return _cache.GetOrAdd("FlowSwitchesGroups", () =>
+        {
+            var groups = _dbContext.FlowSwitchGroups.AsNoTracking().Select(t => new FlowSwitchGroupDefault
+            {
+                FlowSwitchGroupId = t.FlowSwitchGroupId,
+                IsActiveDefault = t.IsActiveDefault,
+                IsVisibleDefault = t.IsVisibleDefault,
+                IsCompletedDefault = t.IsCompletedDefault
+            }).ToArray();
+
+            var bindings = _dbContext.FlowSwitches2Groups.AsNoTracking().ToList();
+
+            foreach (var group in groups)
+            {
+                var isVisible = bindings.Where(t => t.FlowSwitchGroupId == group.FlowSwitchGroupId && t.GroupType == 1);
+                if (isVisible.Any())
+                {
+                    group.IsVisibleFlowSwitches = isVisible.ToDictionary(k => (int)k.FlowSwitchId, v => (bool)v.Value).AsReadOnly();
+                }
+
+                var isActive = bindings.Where(t => t.FlowSwitchGroupId == group.FlowSwitchGroupId && t.GroupType == 2);
+                if (isActive.Any())
+                {
+                    group.IsActiveFlowSwitches = isActive.ToDictionary(k => (int)k.FlowSwitchId, v => (bool)v.Value).AsReadOnly();
+                }
+
+                var isCompleted = bindings.Where(t => t.FlowSwitchGroupId == group.FlowSwitchGroupId && t.GroupType == 3);
+                if (isCompleted.Any())
+                {
+                    group.IsCompletedFlowSwitches = isCompleted.ToDictionary(k => (int)k.FlowSwitchId, v => (bool)v.Value).AsReadOnly();
+                }
+            }
+
+            return groups;
+        }, DateTime.Now.AddDays(1));
+    }
+
+    private readonly Database.FeApiDbContext _dbContext;
+    private readonly IAppCache _cache;
+    
+    public FlowSwitchesService(Database.FeApiDbContext dbContext, IAppCache cache)
+    {
+        _dbContext = dbContext;
+        _cache = cache;
     }
 }

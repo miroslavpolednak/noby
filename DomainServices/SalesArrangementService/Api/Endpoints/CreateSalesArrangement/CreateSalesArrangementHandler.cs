@@ -9,7 +9,7 @@ internal sealed class CreateSalesArrangementHandler
     {
         // validace na existenci case
         //TODO je nejaka spojitost mezi ProductTypeId a SalesArrangementTypeId, ktera by se dala zkontrolovat?
-        await _caseService.GetCaseDetail(request.CaseId, cancellation);
+        await _caseService.ValidateCaseId(request.CaseId, true, cancellation);
 
         // vytvorit entitu
         var saEntity = new Database.Entities.SalesArrangement
@@ -99,7 +99,7 @@ internal sealed class CreateSalesArrangementHandler
             _ => throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.DataObjectIsNotValid, salesArrangementTypeId)
         };
 
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly OfferService.Clients.IOfferServiceClient _offerService;
     private readonly CaseService.Clients.ICaseServiceClient _caseService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
@@ -110,7 +110,7 @@ internal sealed class CreateSalesArrangementHandler
         IMediator mediator,
         OfferService.Clients.IOfferServiceClient offerService,
         CaseService.Clients.ICaseServiceClient caseService,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         Database.SalesArrangementServiceDbContext dbContext,
         ILogger<CreateSalesArrangementHandler> logger)
     {

@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mock.Mcs", "Mock.Mcs.csproj", "{E7746545-2FD3-4021-A1D6-84E179D08546}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.NotificationService.Messaging", "..\..\..\InternalServices\NotificationService\Messaging\CIS.InternalServices.NotificationService.Messaging.csproj", "{91F55942-68F0-47FD-BAA0-8C0FD05BCB81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.NotificationService.Api", "..\..\..\InternalServices\NotificationService\Api\CIS.InternalServices.NotificationService.Api.csproj", "{B61B8C0C-A64F-4033-A6DB-B91E4B45F25B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +14,9 @@ Global
 		{E7746545-2FD3-4021-A1D6-84E179D08546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7746545-2FD3-4021-A1D6-84E179D08546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7746545-2FD3-4021-A1D6-84E179D08546}.Release|Any CPU.Build.0 = Release|Any CPU
-		{91F55942-68F0-47FD-BAA0-8C0FD05BCB81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91F55942-68F0-47FD-BAA0-8C0FD05BCB81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91F55942-68F0-47FD-BAA0-8C0FD05BCB81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91F55942-68F0-47FD-BAA0-8C0FD05BCB81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B61B8C0C-A64F-4033-A6DB-B91E4B45F25B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B61B8C0C-A64F-4033-A6DB-B91E4B45F25B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B61B8C0C-A64F-4033-A6DB-B91E4B45F25B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B61B8C0C-A64F-4033-A6DB-B91E4B45F25B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

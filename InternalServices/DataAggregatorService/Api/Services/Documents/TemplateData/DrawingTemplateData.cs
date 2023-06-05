@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 
@@ -8,7 +9,7 @@ internal class DrawingTemplateData : AggregatedData
 {
     public string PersonName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
-    public string PersonAddress => CustomerHelper.FullAddress(Customer, _codebookManager.Countries);
+    public string PersonAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent, _codebookManager.Countries);
 
     public string PaymentAccount
     {
@@ -17,7 +18,7 @@ internal class DrawingTemplateData : AggregatedData
             var bankAccount = BankAccountHelper.AccountNumber(Mortgage.PaymentAccount.Prefix, Mortgage.PaymentAccount.Number, Mortgage.PaymentAccount.BankCode);
 
             if (SalesArrangement.Drawing.IsImmediateDrawing)
-                return bankAccount + " a to bezokladně.";
+                return bankAccount + " a to bezodkladně.";
 
             return bankAccount + $" a to k datu: {((DateTime)SalesArrangement.Drawing.DrawingDate).ToString("d", CultureInfo.GetCultureInfo("cs"))}.";
         }
@@ -36,7 +37,7 @@ internal class DrawingTemplateData : AggregatedData
         }
     }
 
-    public string SignPersonName => SalesArrangement.Drawing.Agent?.IsActive == true ? string.Empty : CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
+    public string SignPersonName => SalesArrangement.Drawing.Agent?.IsActive == true ? string.Empty : CustomerHelper.FullName(Customer);
 
     public string SignAgentName => SalesArrangement.Drawing.Agent?.IsActive != true ? string.Empty : $"{SalesArrangement.Drawing.Agent.FirstName} {SalesArrangement.Drawing.Agent.LastName}";
 

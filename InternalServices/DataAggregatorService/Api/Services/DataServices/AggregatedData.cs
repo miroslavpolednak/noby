@@ -3,11 +3,9 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Template
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Contracts;
-using DomainServices.HouseholdService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.UserService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 
@@ -30,21 +28,17 @@ internal class AggregatedData
 
     public GetMortgageOfferFPScheduleResponse OfferPaymentSchedule { get; set; } = null!;
 
-    public User User { get; set; } = null!;
+    public UserInfo User { get; set; } = null!;
 
     public CustomerDetailResponse Customer { get; set; } = null!;
 
     public MortgageData Mortgage { get; set; } = null!;
 
-    public HouseholdInfo HouseholdMain { get; set; } = null!;
+    public HouseholdInfo? HouseholdMain { get; set; }
 
     public HouseholdInfo? HouseholdCodebtor { get; set; }
 
-    public CustomerOnSA CustomerOnSaDebtor { get; set; } = null!;
-
-    public CustomerOnSA? CustomerOnSaCodebtor { get; set; }
-
-    public Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
+    public Task LoadCodebooks(ICodebookServiceClient codebookService, CancellationToken cancellationToken)
     {
         ConfigureCodebooks(_codebookManager);
 

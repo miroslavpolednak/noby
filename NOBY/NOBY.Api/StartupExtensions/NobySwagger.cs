@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.OpenApi.Models;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
+using NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.StartupExtensions;
@@ -31,11 +32,14 @@ internal static class NobySwagger
             x.EnableAnnotations();
             //x.UseOneOfForPolymorphism();
 
+            x.SupportNonNullableReferenceTypes();
+            
             // všechny parametry budou camel case
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();
 
             x.CustomSchemaIds(type => type.ToString().Replace('+', '_'));
+            x.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
 
             // generate the XML docs that'll drive the swagger docs
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
@@ -44,8 +48,9 @@ internal static class NobySwagger
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
             
             x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
-            x.SchemaFilter<Endpoints.SalesArrangement.GetDetail.GetDetailSwaggerSchema> ();
-            x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwagerSchema>();
+            x.SchemaFilter<Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementSwaggerSchema> ();
+            x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwaggerSchema>();
+            x.SchemaFilter<GetTaskDetailSwaggerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
         });

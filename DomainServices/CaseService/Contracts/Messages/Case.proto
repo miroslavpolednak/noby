@@ -41,6 +41,7 @@ message Case {
 }
 
 message ActiveTask {
-	int32 TaskProcessId = 1;
-	int32 TypeId = 2;
+	int64 TaskId = 1;
+
+	int32 TaskTypeId = 2;
 }

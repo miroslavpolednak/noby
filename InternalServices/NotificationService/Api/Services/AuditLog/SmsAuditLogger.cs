@@ -2,7 +2,7 @@
 using CIS.Core;
 using CIS.Core.Attributes;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
-using DomainServices.CodebookService.Contracts.Endpoints.SmsNotificationTypes;
+using DomainServices.CodebookService.Contracts.v1;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -114,7 +114,7 @@ public class SmsAuditLogger
         _logger.LogInformation("Sending HTTP Exception: {@log}", log);
     }
 
-    public void LogKafkaProducing(SmsNotificationTypeItem smsType, string consumer)
+    public void LogKafkaProducing(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer)
     {
         if (smsType.IsAuditLogEnabled)
         {
@@ -123,7 +123,7 @@ public class SmsAuditLogger
         }
     }
 
-    public void LogKafkaProduced(SmsNotificationTypeItem smsType, Guid notificationId, string consumer)
+    public void LogKafkaProduced(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, Guid notificationId, string consumer)
     {
         if (smsType.IsAuditLogEnabled)
         {
@@ -133,7 +133,7 @@ public class SmsAuditLogger
         }
     }
 
-    public void LogKafkaError(SmsNotificationTypeItem smsType, string consumer)
+    public void LogKafkaError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer)
     {
         if (smsType.IsAuditLogEnabled)
         {

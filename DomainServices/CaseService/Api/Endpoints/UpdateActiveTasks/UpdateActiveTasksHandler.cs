@@ -1,7 +1,6 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.Api.Database;
-using Microsoft.EntityFrameworkCore;
 using Google.Protobuf.Collections;
 
 namespace DomainServices.CaseService.Api.Endpoints.UpdateActiveTasks;
@@ -19,30 +18,14 @@ internal sealed class UpdateActiveTasksHandler
         var taskTypes = await _codebookService.WorkflowTaskTypes(cancellation);
         var taskTypeIds = taskTypes.Select(i => i.Id).ToArray();
 
-        // CheckTasks
-        CheckTasks(request.Tasks, taskTypeIds);
-
         await replaceActiveTasks(request.CaseId, request.Tasks, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private static void CheckTasks(RepeatedField<ActiveTask> tasks, int[] taskTypeIds)
-    {
-        var tasksWithInvalidTypeId = tasks.Where(t => !taskTypeIds.Contains(t.TypeId));
-
-        if (!tasksWithInvalidTypeId.Any())
-            return;
-
-        var invalidTypeIds = tasksWithInvalidTypeId.Select(t => t.TypeId).Distinct();
-        var taskIds = tasksWithInvalidTypeId.Select(t => t.TaskProcessId);
-
-        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.WfTaskValidationFailed1, string.Join(",", taskIds));
-    }
-
     public async Task replaceActiveTasks(long caseId, RepeatedField<ActiveTask> tasks, CancellationToken cancellation)
     {
-        var taskProcessIds = tasks.Select(i => i.TaskProcessId);
+        var taskProcessIds = tasks.Select(i => i.TaskId);
 
         var entities = _dbContext.ActiveTasks.Where(i => i.CaseId == caseId);
         var entitiesIds = entities.Select(i => i.TaskProcessId);
@@ -61,11 +44,11 @@ internal sealed class UpdateActiveTasksHandler
         if (idsToAdd.Any())
         {
             _dbContext.ActiveTasks.AddRange(
-                tasks.Where(t => idsToAdd.Contains(t.TaskProcessId)).Select(t => new Database.Entities.ActiveTask 
+                tasks.Where(t => idsToAdd.Contains(t.TaskId)).Select(t => new Database.Entities.ActiveTask 
                 { 
                     CaseId = caseId, 
-                    TaskProcessId = t.TaskProcessId, 
-                    TaskTypeId = t.TypeId 
+                    TaskProcessId = t.TaskId, 
+                    TaskTypeId = t.TaskTypeId 
                 })
             );
         }
@@ -73,10 +56,10 @@ internal sealed class UpdateActiveTasksHandler
         // update
         if (idsToUpdate.Any())
         {
-            var tasksToUpdateById = tasks.Where(t => idsToUpdate.Contains(t.TaskProcessId)).ToDictionary(t => t.TaskProcessId);
+            var tasksToUpdateById = tasks.Where(t => idsToUpdate.Contains(t.TaskId)).ToDictionary(t => t.TaskId);
             entities.Where(e => idsToUpdate.Contains(e.TaskProcessId)).ToList().ForEach(e =>
             {
-                e.TaskTypeId = tasksToUpdateById[e.TaskProcessId].TypeId;
+                e.TaskTypeId = tasksToUpdateById[e.TaskProcessId].TaskTypeId;
             });
         }
 
@@ -84,11 +67,11 @@ internal sealed class UpdateActiveTasksHandler
     }
 
     private readonly CaseServiceDbContext _dbContext;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     
     public UpdateActiveTasksHandler(
         CaseServiceDbContext dbContext,
-        ICodebookServiceClients codebookService)
+        ICodebookServiceClient codebookService)
     {
         _dbContext = dbContext;
         _codebookService = codebookService;

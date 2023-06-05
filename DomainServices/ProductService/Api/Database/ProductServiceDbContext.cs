@@ -19,6 +19,11 @@ internal sealed class ProductServiceDbContext
     public DbSet<Entities.Loan2RealEstate> Loans2RealEstates { get; set; }
     public DbSet<Entities.Collateral> Collaterals { get; set; }
     public DbSet<Entities.Loan2Statement> Loans2Statements { get; set; }
+    public DbSet<Entities.LoanReservation> LoanReservations { get; set; }
+    
+    public DbSet<Entities.Covenant> Covenants { get; set; }
+    
+    public DbSet<Entities.CovenantPhase> CovenantPhases { get; set; }
 
     public DbSet<Entities.Obligation> Obligations => Set<Entities.Obligation>();
 
@@ -35,6 +40,12 @@ internal sealed class ProductServiceDbContext
             .HasForeignKey<Entities.Loan2RealEstate>(t => t.NemovitostId)
             .IsRequired();
 
-        modelBuilder.Entity<Entities.Obligation>().HasKey(m => new { m.LoanId, m.LoanPurposeId });
+        modelBuilder.Entity<Entities.Covenant>()
+            .HasNoKey();
+        
+        modelBuilder.Entity<Entities.CovenantPhase>()
+            .HasNoKey();
+
+        modelBuilder.Entity<Entities.Obligation>().HasKey(m => new { m.LoanId, m.LoanPurposeId, m.DatumZapisu });
     }
 }

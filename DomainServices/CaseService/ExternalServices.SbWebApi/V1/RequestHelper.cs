@@ -8,7 +8,8 @@ internal static class RequestHelper
 {
     public static async Task<TResponse> ProcessResponse<TResponse>(HttpResponseMessage response,
                                                                    Func<TResponse, CommonResult?> commonResultGetter,
-                                                                   CancellationToken cancellationToken,
+                                                                   IList<(int ReturnVal, int ErrorCode)>? returnVal2ErrorCodesMapping = null,
+                                                                   CancellationToken cancellationToken = default(CancellationToken),
                                                                    [CallerMemberName] string callerName = "")
     {
         if (!response.IsSuccessStatusCode)
@@ -21,9 +22,19 @@ internal static class RequestHelper
 
         var commonResult = commonResultGetter(responseObject);
 
-        if ((commonResult?.Return_val ?? 0) != 0)
-            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName}.{callerName}: {commonResult?.Return_text}");
-
+        int returnVal = commonResult?.Return_val ?? 0;
+        if (returnVal != 0)
+        {
+            if (returnVal2ErrorCodesMapping?.Any(t => t.ReturnVal == returnVal) ?? false)
+            {
+                throw ErrorCodeMapper.CreateExtServiceValidationException(returnVal2ErrorCodesMapping.First(t => t.ReturnVal == returnVal).ErrorCode);
+            }
+            else
+            {
+                throw new CisExtServiceValidationException(returnVal, $"{StartupExtensions.ServiceName}.{callerName}: {returnVal}: {commonResult?.Return_text}");
+            }
+        }
+        
         return responseObject;
     }
 
@@ -38,7 +49,7 @@ internal static class RequestHelper
         };
     }
 
-    public static ICollection<IReadOnlyDictionary<string, string>> MapTasksToDictionary(ICollection<WFS_FindItem>? tasks)
+    public static IList<IReadOnlyDictionary<string, string>> MapTasksToDictionary(ICollection<WFS_FindItem>? tasks)
     {
         if (tasks is null)
             return new List<IReadOnlyDictionary<string, string>>();

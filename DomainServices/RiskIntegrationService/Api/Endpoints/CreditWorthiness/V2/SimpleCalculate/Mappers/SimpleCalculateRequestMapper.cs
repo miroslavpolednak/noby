@@ -1,24 +1,27 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
+using DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.SimpleCalculate.Mappers;
 
+[Obsolete("C4Mv3", true)]
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class SimpleCalculateRequestMapper
 {
     public async Task<_C4M.CreditWorthinessCalculationArguments> MapToC4m(
-        _V2.CreditWorthinessSimpleCalculateRequest request, 
-        CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem riskApplicationType,
+        _V2.CreditWorthinessSimpleCalculateRequest request,
+        RiskApplicationTypesResponse.Types.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellation)
     {
         var requestModel = new _C4M.CreditWorthinessCalculationArguments
         {
-            ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcessId(request.ResourceProcessId!),
-            ItChannel = FastEnum.Parse<_C4M.CreditWorthinessCalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
+            ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcessId(request.ResourceProcessId!).ToC4M(),
+            ItChannel = FastEnum.Parse<_C4M.ItChannelType>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             LoanApplicationProduct = new()
             {
-                ProductClusterCode = riskApplicationType.C4mAplCode,
-                AmountRequired = request.Product!.LoanAmount,
+                ProductClusterCode = riskApplicationType.C4MAplCode,
+                AmountRequired = request.Product!.LoanAmount.ToAmount(),
                 Annuity = request.Product.LoanPaymentAmount,
                 FixationPeriod = request.Product.FixedRatePeriod,
                 InterestRate = request.Product.LoanInterestRate,
@@ -35,17 +38,17 @@ internal sealed class SimpleCalculateRequestMapper
                 if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
                     requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
                 else
-                    requestModel.KbGroupPerson = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+                    requestModel.Person = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
             }            
         }
 
         // client
         var counterParty = new _C4M.LoanApplicationCounterParty
         {
-            Id = string.IsNullOrEmpty(request.PrimaryCustomerId) ? null : _C4M.ResourceIdentifier.CreateResourceCounterParty(request.PrimaryCustomerId, !riskApplicationType.MandantId.HasValue || (CIS.Foms.Enums.Mandants)riskApplicationType.MandantId == CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS"),
-            IsPartner = 0,
-            MaritalStatus = _C4M.LoanApplicationCounterPartyMaritalStatus.M,
-            LoanApplicationIncome = createIncome(request.TotalMonthlyIncome)
+            Id = string.IsNullOrEmpty(request.PrimaryCustomerId) ? null : _C4M.ResourceIdentifier.CreateResourceCounterParty(request.PrimaryCustomerId, !riskApplicationType.MandantId.HasValue || (CIS.Foms.Enums.Mandants)riskApplicationType.MandantId == CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS").ToC4M(),
+            IsPartner = false,
+            MaritalStatus = _C4M.MartialStatusType.M,
+            Income = createIncome(request.TotalMonthlyIncome)
         };
 
         // household
@@ -53,14 +56,14 @@ internal sealed class SimpleCalculateRequestMapper
         {
             ChildrenOver10 = request.ChildrenCount,
             ExpensesSummary = (request.ExpensesSummary ?? new _V2.CreditWorthinessSimpleExpensesSummary()).ToC4M(),
-            CreditLiabilitiesSummary = createCreditLiabilitiesSummary(),
-            CreditLiabilitiesSummaryOut = createCreditLiabilitiesSummaryOut(request.ObligationsSummary?.AuthorizedOverdraftsAmount, request.ObligationsSummary?.CreditCardsAmount),
-            InstallmentsSummary = createInstallmentsSummary(),
-            InstallmentsSummaryOut = createInstallmentsSummaryOut(request.ObligationsSummary?.LoansInstallmentsAmount),
+            CreditLiabilitiesSummaryHomeCompany = createCreditLiabilitiesSummary(),
+            CreditLiabilitiesSummaryOutHomeCompany = createCreditLiabilitiesSummaryOut(request.ObligationsSummary?.AuthorizedOverdraftsAmount, request.ObligationsSummary?.CreditCardsAmount),
+            InstallmentsSummaryHomeCompany = createInstallmentsSummary(),
+            InstallmentsSummaryOutHomeCompany = createInstallmentsSummaryOut(request.ObligationsSummary?.LoansInstallmentsAmount),
             Clients = new List<_C4M.LoanApplicationCounterParty> { counterParty }
         };
 
-        requestModel.Households = new List<_C4M.LoanApplicationHousehold>() { household };
+        requestModel.LoanApplicationHousehold = new List<_C4M.LoanApplicationHousehold>() { household };
 
         // human user instance
         if (request.UserIdentity is not null)
@@ -71,7 +74,7 @@ internal sealed class SimpleCalculateRequestMapper
                 if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
                     requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
                 else
-                    requestModel.KbGroupPerson = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+                    requestModel.Person = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
             }            
         }
 
@@ -79,42 +82,42 @@ internal sealed class SimpleCalculateRequestMapper
     }
 
     #region liabilities installments
-    private static List<_C4M.CreditLiabilitiesSummaryHomeCompany> createCreditLiabilitiesSummary()
+    private static List<_C4M.CreditLiabilitiesSummary> createCreditLiabilitiesSummary()
         => new()
         {
-            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryHomeCompanyProductGroup.AD, Amount = 0, AmountConsolidated = 0 },
-            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryHomeCompanyProductGroup.CC, Amount = 0, AmountConsolidated = 0 }
+            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.AD, Amount = 0.ToAmount(), AmountConsolidated = 0.ToAmount() },
+            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.CC, Amount = 0.ToAmount(), AmountConsolidated = 0.ToAmount() }
         };
 
     private static List<_C4M.CreditLiabilitiesSummary> createCreditLiabilitiesSummaryOut(decimal? authorizedOverdraftsTotalAmount, decimal? creditCardsTotalAmount)
         => new()
         {
-            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryProductGroup.AD, Amount = authorizedOverdraftsTotalAmount.GetValueOrDefault(), AmountConsolidated = 0 },
-            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryProductGroup.CC, Amount = creditCardsTotalAmount.GetValueOrDefault(), AmountConsolidated = 0 }
+            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.AD, Amount = authorizedOverdraftsTotalAmount.GetValueOrDefault().ToAmount(), AmountConsolidated = 0.ToAmount() },
+            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.CC, Amount = creditCardsTotalAmount.GetValueOrDefault().ToAmount(), AmountConsolidated = 0.ToAmount() }
         };
 
-    private static List<_C4M.InstallmentsSummaryHomeCompany> createInstallmentsSummary()
+    private static List<_C4M.LoanInstallmentsSummary> createInstallmentsSummary()
         => new()
         {
-            new() { ProductGroup = _C4M.InstallmentsSummaryHomeCompanyProductGroup.CL, Amount = 0, AmountConsolidated = 0 },
-            new() { ProductGroup = _C4M.InstallmentsSummaryHomeCompanyProductGroup.ML, Amount = 0, AmountConsolidated = 0 }
+            new() { ProductGroup = _C4M.InstallmentsSummaryType.CL, Amount = 0.ToAmount(), AmountConsolidated = 0.ToAmount() },
+            new() { ProductGroup = _C4M.InstallmentsSummaryType.ML, Amount = 0.ToAmount(), AmountConsolidated = 0.ToAmount() }
         };
 
-    private static List<_C4M.InstallmentsSummaryOutHomeCompany> createInstallmentsSummaryOut(decimal? loansTotalInstallments)
+    private static List<_C4M.LoanInstallmentsSummary> createInstallmentsSummaryOut(decimal? loansTotalInstallments)
         => new()
         {
-            new() { ProductGroup = _C4M.InstallmentsSummaryOutHomeCompanyProductGroup.CL, Amount = loansTotalInstallments.GetValueOrDefault(), AmountConsolidated = 0 },
-            new() { ProductGroup = _C4M.InstallmentsSummaryOutHomeCompanyProductGroup.ML, Amount = 0, AmountConsolidated = 0 }
+            new() { ProductGroup = _C4M.InstallmentsSummaryType.CL, Amount = loansTotalInstallments.GetValueOrDefault().ToAmount(), AmountConsolidated = 0.ToAmount() },
+            new() { ProductGroup = _C4M.InstallmentsSummaryType.ML, Amount = 0.ToAmount(), AmountConsolidated = 0.ToAmount() }
         };
     #endregion
 
     private static List<_C4M.LoanApplicationIncome> createIncome(decimal? totalMonthlyIncome)
         => new List<_C4M.LoanApplicationIncome>()
         {
-            new() { Category = _C4M.LoanApplicationIncomeCategory.SALARY, Month = 1 },
-            new() { Category = _C4M.LoanApplicationIncomeCategory.ENTERPRISE, Month = 12 },
-            new() { Category = _C4M.LoanApplicationIncomeCategory.RENT, Month = 1 },
-            new() { Category = _C4M.LoanApplicationIncomeCategory.OTHER, Month = 1, Amount = totalMonthlyIncome.GetValueOrDefault() }
+            new() { Category = _C4M.LoanApplicationIncomeType.SALARY, Months = 1 },
+            new() { Category = _C4M.LoanApplicationIncomeType.ENTERPRISE, Months = 12 },
+            new() { Category = _C4M.LoanApplicationIncomeType.RENT, Months = 1 },
+            new() { Category = _C4M.LoanApplicationIncomeType.OTHER, Months = 1, Amount = totalMonthlyIncome.GetValueOrDefault().ToAmount() }
         };
 
 

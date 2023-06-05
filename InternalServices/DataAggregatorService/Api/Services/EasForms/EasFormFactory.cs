@@ -1,9 +1,11 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
+﻿using System.ComponentModel;
+using CIS.Foms.Enums;
+using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.Forms;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms;
 
@@ -12,30 +14,24 @@ internal class EasFormFactory
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly DataServicesLoader _dataServicesLoader;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
 
-    public EasFormFactory(IServiceProvider serviceProvider, DataServicesLoader dataServicesLoader, ICodebookServiceClients codebookService)
+    public EasFormFactory(IServiceProvider serviceProvider, DataServicesLoader dataServicesLoader, ICodebookServiceClient codebookService)
     {
         _serviceProvider = serviceProvider;
         _dataServicesLoader = dataServicesLoader;
         _codebookService = codebookService;
     }
 
-    public async Task<IEasForm> Create(int salesArrangementId, int userId, EasFormConfiguration config, CancellationToken cancellationToken)
+    public async Task<IEasForm> Create(InputParameters inputParameters, EasFormConfiguration config, ICollection<DynamicFormValues> dynamicFormValues, CancellationToken cancellationToken)
     {
-        var inputParameters = new InputParameters
-        {
-            SalesArrangementId = salesArrangementId,
-            UserId = userId
-        };
-
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
 
         var easForm = config.EasFormKey.RequestType switch
         {
             EasFormRequestType.Service => CreateServiceEasForm(config.EasFormKey, documentTypes),
-            EasFormRequestType.Product => new EasProductForm(CreateData<ProductFormData>(), documentTypes),
-            _ => throw new ArgumentOutOfRangeException()
+            EasFormRequestType.Product => CreateProductEasForm(dynamicFormValues, documentTypes),
+            _ => throw new InvalidEnumArgumentException(nameof(config.EasFormKey.RequestType), config.EasFormKey.RequestTypeId, typeof(EasFormRequestType))
         };
 
         await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, easForm.AggregatedData, cancellationToken);
@@ -43,11 +39,20 @@ internal class EasFormFactory
         return easForm;
     }
 
-    private IEasForm CreateServiceEasForm(EasFormKey easFormKey, List<DocumentTypeItem> documentTypes)
+    private IEasForm CreateProductEasForm(IEnumerable<DynamicFormValues> dynamicFormValues, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes)
+    {
+        var productData = CreateData<ProductFormData>();
+        productData.MainDynamicFormValues = dynamicFormValues.First(d => d.DocumentTypeId == (int)DocumentType.ZADOSTHU);
+
+        return new EasProductForm(productData, documentTypes);
+    }
+
+    private IEasForm CreateServiceEasForm(EasFormKey easFormKey, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes)
     {
         return easFormKey.EasFormTypes.First() switch
         {
             EasFormType.F3700 => new EasServiceForm<DrawingFormData>(CreateData<DrawingFormData>(), documentTypes),
+            EasFormType.F3602 => new EasServiceForm<CustomerChange3602FormData>(CreateData<CustomerChange3602FormData>(), documentTypes),
             _ => throw new NotImplementedException()
         };
     }

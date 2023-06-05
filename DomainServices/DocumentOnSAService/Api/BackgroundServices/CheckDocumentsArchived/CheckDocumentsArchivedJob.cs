@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 
-internal sealed class CheckDocumentsArchivedJob
+public sealed class CheckDocumentsArchivedJob
     : CIS.Infrastructure.BackgroundServices.ICisBackgroundServiceJob
 {
     private const short SuccessfullyArchivedStatus = 400;
@@ -34,7 +34,7 @@ internal sealed class CheckDocumentsArchivedJob
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
         var unArchivedDocOnSaIds = await _dbContext.DocumentOnSa
-            .Where(d => !string.IsNullOrEmpty(d.EArchivId) && d.IsDocumentArchived == false)
+            .Where(d => !string.IsNullOrEmpty(d.EArchivId) && d.IsArchived == false)
             .Take(_configuration.MaxBatchSize)
             .Select(s => s.EArchivId)
         .ToListAsync(cancellationToken);
@@ -63,7 +63,7 @@ internal sealed class CheckDocumentsArchivedJob
         request.EArchivIds.AddRange(unArchivedDocOnSaIds);
         var documentInQueue = await _documentArchiveServiceClient.GetDocumentsInQueue(request, cancellationToken);
         var successfullyArchivedDocumentIds = documentInQueue.QueuedDocuments
-                                              .Where(d => d.Status == SuccessfullyArchivedStatus)
+                                              .Where(d => d.StatusInQueue == SuccessfullyArchivedStatus)
                                               .Select(s => s.EArchivId)
                                               .ToList();
         return successfullyArchivedDocumentIds;

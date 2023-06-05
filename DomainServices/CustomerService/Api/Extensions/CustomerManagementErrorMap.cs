@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using CIS.Core.Exceptions;
+using DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Dto;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 
 namespace DomainServices.CustomerService.Api.Extensions;
@@ -44,14 +45,19 @@ internal sealed class CustomerManagementErrorMap
         }
     }
 
-    public void ResolveValidationError(string errorCode)
+    public void ResolveValidationError(IdentifiedSubjectError errorData)
     {
-        if (!_errors.ContainsKey(errorCode))
-            return;
+        foreach (var errorMessage in errorData.Detail)
+        {
+            if (!_errors.ContainsKey(errorMessage))
+                continue;
 
-        var error = _errors[errorCode];
+            var error = _errors[errorMessage];
 
-        throw new CisValidationException(error.ErrorCode, $"{errorCode} - {error.Description}");
+            throw new CisValidationException(error.ErrorCode, $"{errorData.Message}, {errorMessage} - {error.Description}");
+        }
+
+        throw new CisValidationException($"{errorData.Message}, Detail: {string.Join("; ", errorData.Detail)}");
     }
 
     private void MapErrors()
@@ -72,7 +78,7 @@ internal sealed class CustomerManagementErrorMap
         AddError(11021,
                  "KB CM: Unable to create customer - Address parameters are incorrect",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_POST_CODE_INVALID",
-                 "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY," +
+                 "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_ADDRESS_POINT_INVALID",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_BUILDING_NUMBER_EMPTY",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_PRAGUE_DISTRICT_EMPTY",
@@ -81,7 +87,7 @@ internal sealed class CustomerManagementErrorMap
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_PO_BOX_FORBIDDEN_FIELDS_USED",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_PO_BOX_NONNUMERICAL",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_POST_CODE_INVALID",
-                 "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY," +
+                 "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_ADDRESS_POINT_INVALID",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_BUILDING_NUMBER_EMPTY",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_PRAGUE_DISTRICT_EMPTY",

@@ -18,4 +18,6 @@ public class FindSdfDocumentsQuery
 
     public string? UserLogin { get; set; }
 
+    public string? FormId { get; set; }
+
 }

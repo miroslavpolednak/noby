@@ -9,21 +9,31 @@ internal sealed class SignInHandler
 {
     public async Task Handle(SignInRequest request, CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(request.IdentityId))
+        {
+            request.IdentityId = request.Login;
+        }
         if (_configuration.Security!.AuthenticationScheme != NOBY.Infrastructure.Security.AuthenticationConstants.SimpleLoginAuthScheme)
         {
             throw new NobyValidationException($"SignIn endpoint call is not enabled for scheme {_configuration.Security!.AuthenticationScheme}");
         }
 
-        _logger.UserSigningInAs(request.Login);
+        if (string.IsNullOrEmpty(request.IdentityScheme))
+        {
+            request.IdentityScheme = "OsCis";
+        }
 
-        var userInstance = await _userService.GetUserByLogin(request.Login ?? "", cancellationToken);
+        string login = $"{request.IdentityScheme}={request.IdentityId}";
+        _logger.UserSigningInAs(login);
+
+        var userInstance = await _userService.GetUser(login, cancellationToken);
         if (userInstance is null) throw new CisValidationException("Login not found");
 
         var claims = new List<Claim>
         {
             // natvrdo zadat login, protoze request.Login obsahuje CPM
-            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, "KBUID=A09FK3"),
-            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture))
+            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, login),
+            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(System.Globalization.CultureInfo.InvariantCulture))
         };
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

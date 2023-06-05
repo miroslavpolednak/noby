@@ -5,8 +5,7 @@ using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
-using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.SmsNotificationTypes;
+using DomainServices.CodebookService.Clients;
 using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Result;
@@ -15,7 +14,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
 {
     private readonly IServiceProvider _provider;
     private readonly IDateTime _dateTime;
-    private readonly ICodebookService _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly SmsAuditLogger _auditLogger;
     private readonly ILogger<ConsumeResultHandler> _logger;
 
@@ -30,7 +29,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
     public ConsumeResultHandler(
         IServiceProvider provider,
         IDateTime dateTime,
-        ICodebookService codebookService,
+        ICodebookServiceClient codebookService,
         SmsAuditLogger auditLogger,
         ILogger<ConsumeResultHandler> logger)
     {
@@ -60,7 +59,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
 
             if (result is SmsResult smsResult)
             {
-                var smsTypes = await _codebookService.SmsNotificationTypes(new SmsNotificationTypesRequest(), cancellationToken);
+                var smsTypes = await _codebookService.SmsNotificationTypes(cancellationToken);
                 var smsType = smsTypes.FirstOrDefault(s => s.Code == smsResult.Type);
 
                 if (smsType?.IsAuditLogEnabled ?? false)

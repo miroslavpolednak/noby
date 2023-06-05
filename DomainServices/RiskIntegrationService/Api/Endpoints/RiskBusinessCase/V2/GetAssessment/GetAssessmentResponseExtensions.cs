@@ -1,12 +1,12 @@
 ﻿using DomainServices.RiskIntegrationService.Contracts.Shared;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplicationAssessment.V3.Contracts;
 using _sh = DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.GetAssessment;
 
 internal static class GetAssessmentResponseExtensions
 {
-    public static _sh.LoanApplicationAssessmentResponse ToRIP(this _C4M.Identified response, string environmentName)
+    public static _sh.LoanApplicationAssessmentResponse ToRIP(this _C4M.LoanApplicationAssessment response, string environmentName)
         => new()
         {
             LoanApplicationAssessmentId = response.Id,
@@ -56,11 +56,11 @@ internal static class GetAssessmentResponseExtensions
             InstallmentLimit = model.LoanApplicationInstallmentLimit.ToAmountDetail(),
             CollateralLimit = model.LoanApplicationCollateralLimit.ToAmountDetail(),
             RemainingAnnuityLivingAmount = model.RemainingAnnuityLivingAmount.ToAmountDetail(),
-            IsCalculationStressed = model.CalculationIrStressed.GetValueOrDefault(),
+            IsCalculationStressed = model.CalculationIrStressed,
             Iir = model.Iir,
             Cir = model.Cir,
             Dti = model.Dti,
-            Dsti = model.Dsti
+            Dsti = (long)model.Dsti
         };
 
     private static _sh.LoanApplicationAssessmentRiskCharacteristics ToRiskCharacteristics(this _C4M.RiskCharacteristics model)
@@ -131,9 +131,9 @@ internal static class GetAssessmentResponseExtensions
         };
 
     private static AmountDetail? ToAmountDetail(this _C4M.Amount model)
-        => model != null && model.Value != null ? new()
+        => model != null ? new()
         {
-            Amount = model.Value.Value,
+            Amount = model.Value,
             CurrencyCode = model.CurrencyCode
         } : null;
 }

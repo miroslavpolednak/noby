@@ -23,6 +23,7 @@ public class TemplateFileStorage : IDisposable
 
     public void Dispose()
     {
+        GC.SuppressFinalize(this);
         _fileStream?.Dispose();
     }
 

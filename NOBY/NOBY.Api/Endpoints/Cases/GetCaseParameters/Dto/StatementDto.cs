@@ -12,15 +12,23 @@ public sealed class StatementDto
     public int? TypeId { get; set; }
 
     /// <summary>
-    /// Způsob odběru výpisů
+    /// Typ výpisů
     /// </summary>
     /// <example>elektronicky</example>
+    [Obsolete]
     public string? TypeName { get; set; }
 
+    /// <summary>
+    /// Typ výpisů
+    /// </summary>
+    /// <example>Elektronický</example>
+    public string? TypeShortName { get; set; }
+    
     /// <summary>
     /// Způsob odběru výpisů
     /// </summary>
     /// <example>elektronicky</example>
+    [Obsolete]
     public string? SubscriptionType { get; set; }
 
     /// <summary>

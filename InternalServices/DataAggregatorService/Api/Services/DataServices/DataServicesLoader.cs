@@ -7,9 +7,9 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 internal class DataServicesLoader
 {
     private readonly ServiceMap _serviceMap;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
 
-    public DataServicesLoader(ServiceMap serviceMap, ICodebookServiceClients codebookService)
+    public DataServicesLoader(ServiceMap serviceMap, ICodebookServiceClient codebookService)
     {
         _serviceMap = serviceMap;
         _codebookService = codebookService;

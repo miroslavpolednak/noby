@@ -7,74 +7,59 @@ public class LoanApplicationEmploymentIncome
     public string? EmployerIdentificationNumber { get; set; }
 
     [ProtoMember(2)]
-    public int? WorkSectorId { get; set; }
-
-    [ProtoMember(3)]
     public string EmployerName { get; set; } = default!;
 
+    [ProtoMember(3)]
+    public int? CountryId { get; set; }
+
     [ProtoMember(4)]
-    public int? ClassificationOfEconomicActivityId { get; set; }
-
-    [ProtoMember(5)]
-    public int? JobTypeId { get; set; }
-
-    [ProtoMember(6)]
-    public Shared.AddressDetail? Address { get; set; }
-
-    [ProtoMember(7)]
     public string? JobDescription { get; set; }
 
-    [ProtoMember(8)]
+    [ProtoMember(5)]
     public Shared.AmountDetail? MonthlyIncomeAmount { get; set; }
 
-    [ProtoMember(9)]
+    [ProtoMember(6)]
     public bool IsDomicile { get; set; }
 
-    [ProtoMember(10)]
+    [ProtoMember(7)]
     public int? ProofTypeId { get; set; }
 
-    [ProtoMember(11)]
-    public decimal? GrossAnnualIncome { get; set; }
-
-    [ProtoMember(12)]
+    [ProtoMember(8)]
     public string? ConfirmationPerson { get; set; }
 
-    [ProtoMember(13)]
+    [ProtoMember(9)]
     public string? ConfirmationContactPhone { get; set; }
 
-    [ProtoMember(14)]
+    [ProtoMember(10)]
     public DateTime? ConfirmationDate { get; set; }
 
-    [ProtoMember(15)]
+    [ProtoMember(11)]
     public bool JobTrialPeriod { get; set; }
 
-    [ProtoMember(16)]
+    [ProtoMember(12)]
     public bool NoticePeriod { get; set; }
 
-    [ProtoMember(17)]
+    [ProtoMember(13)]
     public int? EmploymentTypeId { get; set; }
 
-    [ProtoMember(18)]
+    [ProtoMember(14)]
     public DateTime? FirstWorkContractSince { get; set; }
 
-    [ProtoMember(19)]
+    [ProtoMember(15)]
     public DateTime? CurrentWorkContractSince { get; set; }
 
-    [ProtoMember(20)]
+    [ProtoMember(16)]
     public DateTime? CurrentWorkContractTo { get; set; }
 
-    [ProtoMember(21)]
+    [ProtoMember(17)]
     public bool ConfirmationByCompany { get; set; }
 
-    [ProtoMember(22)]
+    [ProtoMember(18)]
     public string? PhoneNumber { get; set; }
 
-    [ProtoMember(23)]
-    public Shared.BankAccountDetail? BankAccount { get; set; }
-
-    [ProtoMember(24)]
+    [ProtoMember(19)]
     public int? IncomeForeignTypeId { get; set; }
 
-    [ProtoMember(25)]
+    [ProtoMember(20)]
     public LoanApplicationEmploymentIncomeDeduction? IncomeDeduction { get; set; }
 }

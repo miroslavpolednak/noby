@@ -1,7 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest.Incomes;
-using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 
@@ -35,9 +35,11 @@ internal class Customer
 
     public required ILookup<string, int> ObligationTypes { private get; init; }
 
-    public required List<LegalCapacityRestrictionTypeItem> LegalCapacityTypes { private get; init; }
+    public required List<GenericCodebookResponse.Types.GenericCodebookItem> LegalCapacityTypes { private get; init; }
 
     public CustomerOnSA CustomerOnSA { get; }
+
+    public bool? IsSpouseInDebt { get; init; }
 
     public Identity IdentityKb => CustomerOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
 

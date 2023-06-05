@@ -3,7 +3,8 @@ using FluentValidation;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetTaskList;
 
-internal sealed class GetTaskListRequestValidator : AbstractValidator<GetTaskListRequest>
+internal sealed class GetTaskListRequestValidator 
+    : AbstractValidator<GetTaskListRequest>
 {
     public GetTaskListRequestValidator()
     {

@@ -1,27 +1,27 @@
 ﻿using System.Text.RegularExpressions;
+using CIS.Infrastructure.CisMediatR.GrpcValidation;
 using CIS.InternalServices.NotificationService.Contracts.Common;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Sms;
 
-public class PhoneValidator : AbstractValidator<Phone>
+public class PhoneValidator : AbstractValidator<Phone?>
 {
     public PhoneValidator()
     {
-        RuleFor(phone => phone.CountryCode)
-            .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.Phone.CountryCodeRequired)
-                .WithMessage($"{nameof(Phone.CountryCode)} required.")
-            .Matches(new Regex(@"^((\+?[0-9]{1,3})|([0-9]{1,5}))$"))
-                .WithErrorCode(ErrorCodes.Validation.Phone.CountryCodeInvalid)
-                .WithMessage($"Invalid {nameof(Phone.CountryCode)}.");
+        When(phone => phone is not null, () =>
+        {
+            RuleFor(phone => phone!.CountryCode)
+                .NotEmpty()
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CountryCodeRequired)
+                .Matches(new Regex(@"^((\+?[0-9]{1,3})|([0-9]{1,5}))$"))
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CountryCodeInvalid);
         
-        RuleFor(phone => phone.NationalNumber)
-            .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.Phone.NationalNumberRequired)
-                .WithMessage($"{nameof(Phone.NationalNumber)} required.")
-            .Matches(new Regex(@"^[0-9]{1,14}$"))
-                .WithErrorCode(ErrorCodes.Validation.Phone.NationalNumberInvalid)
-                .WithMessage($"Invalid {nameof(Phone.NationalNumber)}.");
+            RuleFor(phone => phone!.NationalNumber)
+                .NotEmpty()
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.NationalNumberRequired)
+                .Matches(new Regex(@"^[0-9]{1,14}$"))
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.NationalNumberInvalid);
+        });
     }
 }

@@ -12,10 +12,10 @@ internal class EasFormConfigurationRepository
         _dbContext = dbContext;
     }
 
-    public Task<List<DynamicInputParameter>> LoadEasFormDynamicInputFields(int requestTypeId, CancellationToken cancellationToken) =>
+    public Task<List<DynamicInputParameter>> LoadEasFormDynamicInputFields(int requestTypeId, IEnumerable<int> formTypeIds, CancellationToken cancellationToken) =>
         _dbContext.EasFormDynamicInputParameters
                   .AsNoTracking()
-                  .Where(e => e.EasRequestTypeId == requestTypeId)
+                  .Where(e => e.EasRequestTypeId == requestTypeId && formTypeIds.Contains(e.EasFormTypeId))
                   .Select(e => new DynamicInputParameter
                   {
                       InputParameterName = e.InputParameter.InputParameterName,
@@ -25,13 +25,14 @@ internal class EasFormConfigurationRepository
                   })
                   .ToListAsync(cancellationToken);
 
-    public Task<List<EasFormSourceField>> LoadEasFormSourceFields(int requestTypeId, CancellationToken cancellationToken) => 
-        GetSourceFields(requestTypeId).Concat(GetSpecialSourceFields(requestTypeId)).ToListAsync(cancellationToken);
+    public Task<List<EasFormSourceField>> LoadEasFormSourceFields(int requestTypeId, IEnumerable<int> formTypeIds, CancellationToken cancellationToken) => 
+        GetSourceFields(requestTypeId, formTypeIds).Concat(GetSpecialSourceFields(requestTypeId, formTypeIds)).ToListAsync(cancellationToken);
 
-    private IQueryable<EasFormSourceField> GetSourceFields(int requestTypeId) =>
+    private IQueryable<EasFormSourceField> GetSourceFields(int requestTypeId, IEnumerable<int> formTypeIds) =>
         _dbContext.EasFormDataFields
                   .AsNoTracking()
                   .Where(e => e.EasRequestTypeId == requestTypeId &&
+                              formTypeIds.Contains(e.EasFormTypeId) &&
                               e.EasFormType.ValidFrom < DateTime.Now &&
                               e.EasFormType.ValidTo > DateTime.Now)
                   .Select(e => new EasFormSourceField
@@ -43,10 +44,11 @@ internal class EasFormConfigurationRepository
                       JsonPropertyName = e.JsonPropertyName
                   });
 
-    private IQueryable<EasFormSourceField> GetSpecialSourceFields(int requestTypeId) =>
+    private IQueryable<EasFormSourceField> GetSpecialSourceFields(int requestTypeId, IEnumerable<int> formTypeIds) =>
         _dbContext.EasFormSpecialDataFields
                   .AsNoTracking()
                   .Where(e => e.EasRequestTypeId == requestTypeId &&
+                              formTypeIds.Contains(e.EasFormTypeId) &&
                               e.EasFormType.ValidFrom < DateTime.Now &&
                               e.EasFormType.ValidTo > DateTime.Now)
                   .Select(e => new EasFormSourceField

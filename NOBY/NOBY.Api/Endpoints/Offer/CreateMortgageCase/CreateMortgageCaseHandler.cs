@@ -7,6 +7,9 @@ using _Case = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
+using DomainServices.CustomerService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
+using System.Threading;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
@@ -50,10 +53,19 @@ internal sealed class CreateMortgageCaseHandler
         _bag.Add(CreateMortgageCaseRollback.BagKeySalesArrangementId, salesArrangementId);
         _logger.EntityCreated(nameof(_SA.SalesArrangement), salesArrangementId);
 
+        // pokud je to KB klient, tak si stahni jeho data z CM a updatuj request
+        var createCustomerRequest = request.ToDomainServiceRequest(salesArrangementId);
+        if (request.Identity?.Scheme == CIS.Foms.Enums.IdentitySchemes.Kb)
+        {
+            await updateCustomerFromCM(createCustomerRequest, cancellationToken);
+        }
         // create customer on SA
-        var createCustomerResult = await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken);
+        var createCustomerResult = await _customerOnSAService.CreateCustomer(createCustomerRequest, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyCustomerOnSAId, createCustomerResult.CustomerOnSAId);
-        
+
+        // updatovat Agent v SA parameters, vytvarime prazdny objekt Parameters pouze s agentem
+        await updateSalesArrangementParameters(salesArrangementId, createCustomerResult.CustomerOnSAId, cancellationToken);
+
         // create household
         int householdId = await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
         {
@@ -78,9 +90,42 @@ internal sealed class CreateMortgageCaseHandler
         };
     }
 
+    /// <summary>
+    /// Update parametru na SA -> musime si je znovu stahnout z nove vytvoreneho SA, protoze mohou obsahovat nejake defaulty doplnene domenovou sluzbou
+    /// </summary>
+    private async Task updateSalesArrangementParameters(int salesArrangementId, int customerOnSAId, CancellationToken cancellationToken)
+    {
+        // stahnout aktualni verzi parametru
+        var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
+
+        // doplnit Agent
+        var mortgage = saInstance.Mortgage ?? new SalesArrangementParametersMortgage();
+        mortgage.Agent = customerOnSAId;
+
+        await _salesArrangementService.UpdateSalesArrangementParameters(new _SA.UpdateSalesArrangementParametersRequest
+        {
+            SalesArrangementId = salesArrangementId,
+            Mortgage = mortgage
+        }, cancellationToken);
+    }
+
+    private async Task updateCustomerFromCM(_HO.CreateCustomerRequest request, CancellationToken cancellationToken)
+    {
+        var customer = await _customerService.GetCustomerDetail(request.Customer.CustomerIdentifiers[0], cancellationToken);
+
+        if (!string.IsNullOrEmpty(customer.NaturalPerson.FirstName))
+            request.Customer.FirstNameNaturalPerson = customer.NaturalPerson.FirstName;
+        if (!string.IsNullOrEmpty(customer.NaturalPerson.LastName))
+            request.Customer.Name = customer.NaturalPerson.LastName;
+        if (customer.NaturalPerson.DateOfBirth is not null)
+            request.Customer.DateOfBirthNaturalPerson = customer.NaturalPerson.DateOfBirth;
+        request.Customer.MaritalStatusId = customer.NaturalPerson.MaritalStatusStateId;
+    }
+
     private readonly IRollbackBag _bag;
+    private readonly ICustomerServiceClient _customerService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceClient _caseService;
@@ -93,15 +138,17 @@ internal sealed class CreateMortgageCaseHandler
         IRollbackBag bag,
         IMediator mediator,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
+        ICustomerServiceClient customerService,
         ICustomerOnSAServiceClient customerOnSAService,
         ISalesArrangementServiceClient salesArrangementService,
         IHouseholdServiceClient householdService,
         ICaseServiceClient caseService,
-        ICodebookServiceClients codebookService, 
+        ICodebookServiceClient codebookService, 
         IOfferServiceClient offerService, 
         ILogger<CreateMortgageCaseHandler> logger)
     {
         _bag = bag;
+        _customerService = customerService;
         _customerOnSAService = customerOnSAService;
         _mediator = mediator;
         _userAccessor = userAccessor;

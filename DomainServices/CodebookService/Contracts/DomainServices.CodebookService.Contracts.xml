@@ -4,105 +4,1333 @@
         <name>DomainServices.CodebookService.Contracts</name>
     </assembly>
     <members>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.DeveloperSearch.DeveloperSearchItem.DeveloperId">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types">
+            <summary>Container for nested types declared in the GenericCodebookResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.RdmCodeFieldNumber">
+            <summary>Field number for the "RdmCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.OrderFieldNumber">
+            <summary>Field number for the "Order" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.BankCodesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.BankCodesResponse.Types">
+            <summary>Container for nested types declared in the BankCodesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.BankCodesResponse.Types.BankCodeItem.BankCodeFieldNumber">
+            <summary>Field number for the "BankCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.BankCodesResponse.Types.BankCodeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.BankCodesResponse.Types.BankCodeItem.ShortNameFieldNumber">
+            <summary>Field number for the "ShortName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.BankCodesResponse.Types.BankCodeItem.StateFieldNumber">
+            <summary>Field number for the "State" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.BankCodesResponse.Types.BankCodeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CollateralTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.CollateralTypesResponse.Types">
+            <summary>Container for nested types declared in the CollateralTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CollateralTypesResponse.Types.CollateralTypeItem.CollateralTypeFieldNumber">
+            <summary>Field number for the "CollateralType" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CollateralTypesResponse.Types.CollateralTypeItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CollateralTypesResponse.Types.CollateralTypeItem.CodeBgmFieldNumber">
+            <summary>Field number for the "CodeBgm" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CollateralTypesResponse.Types.CollateralTypeItem.TextBgmFieldNumber">
+            <summary>Field number for the "TextBgm" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CollateralTypesResponse.Types.CollateralTypeItem.NameTypeFieldNumber">
+            <summary>Field number for the "NameType" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ContactTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.ContactTypesResponse.Types">
+            <summary>Container for nested types declared in the ContactTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ContactTypesResponse.Types.ContactTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ContactTypesResponse.Types.ContactTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ContactTypesResponse.Types.ContactTypeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ContactTypesResponse.Types.ContactTypeItem.MpDigiApiCodeFieldNumber">
+            <summary>Field number for the "MpDigiApiCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ContactTypesResponse.Types.ContactTypeItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountriesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.CountriesResponse.Types">
+            <summary>Container for nested types declared in the CountriesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountriesResponse.Types.CountryItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountriesResponse.Types.CountryItem.ShortNameFieldNumber">
+            <summary>Field number for the "ShortName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountriesResponse.Types.CountryItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountriesResponse.Types.CountryItem.LongNameFieldNumber">
+            <summary>Field number for the "LongName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountriesResponse.Types.CountryItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountriesResponse.Types.CountryItem.RiskFieldNumber">
+            <summary>Field number for the "Risk" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountriesResponse.Types.CountryItem.EuMemberFieldNumber">
+            <summary>Field number for the "EuMember" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountriesResponse.Types.CountryItem.EurozoneFieldNumber">
+            <summary>Field number for the "Eurozone" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountryCodePhoneIdcResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.CountryCodePhoneIdcResponse.Types">
+            <summary>Container for nested types declared in the CountryCodePhoneIdcResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountryCodePhoneIdcResponse.Types.CountryCodePhoneIdcItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountryCodePhoneIdcResponse.Types.CountryCodePhoneIdcItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountryCodePhoneIdcResponse.Types.CountryCodePhoneIdcItem.IdcFieldNumber">
+            <summary>Field number for the "Idc" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountryCodePhoneIdcResponse.Types.CountryCodePhoneIdcItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountryCodePhoneIdcResponse.Types.CountryCodePhoneIdcItem.IsPriorityFieldNumber">
+            <summary>Field number for the "IsPriority" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CountryCodePhoneIdcResponse.Types.CountryCodePhoneIdcItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CurrenciesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.CurrenciesResponse.Types">
+            <summary>Container for nested types declared in the CurrenciesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CurrenciesResponse.Types.CurrencyItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CurrenciesResponse.Types.CurrencyItem.AllowedForIncomeCurrencyFieldNumber">
+            <summary>Field number for the "AllowedForIncomeCurrency" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CurrenciesResponse.Types.CurrencyItem.AllowedForResidencyCurrencyFieldNumber">
+            <summary>Field number for the "AllowedForResidencyCurrency" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CurrenciesResponse.Types.CurrencyItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CustomerRolesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.CustomerRolesResponse.Types">
+            <summary>Container for nested types declared in the CustomerRolesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CustomerRolesResponse.Types.CustomerRoleItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CustomerRolesResponse.Types.CustomerRoleItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CustomerRolesResponse.Types.CustomerRoleItem.RdmCodeFieldNumber">
+            <summary>Field number for the "RdmCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CustomerRolesResponse.Types.CustomerRoleItem.NameNobyFieldNumber">
+            <summary>Field number for the "NameNoby" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types">
+            <summary>Container for nested types declared in the DeveloperSearchResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types.DeveloperSearchItem.DeveloperIdFieldNumber">
+            <summary>Field number for the "DeveloperId" field.</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types.DeveloperSearchItem.DeveloperId">
             <summary>
             ID developera
             </summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.DeveloperSearch.DeveloperSearchItem.DeveloperProjectId">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types.DeveloperSearchItem.DeveloperProjectIdFieldNumber">
+            <summary>Field number for the "DeveloperProjectId" field.</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types.DeveloperSearchItem.DeveloperProjectId">
             <summary>
             ID developerského projektu
             </summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.DeveloperSearch.DeveloperSearchItem.DeveloperName">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types.DeveloperSearchItem.DeveloperNameFieldNumber">
+            <summary>Field number for the "DeveloperName" field.</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types.DeveloperSearchItem.DeveloperName">
             <summary>
             Jméno developera
             </summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.DeveloperSearch.DeveloperSearchItem.DeveloperProjectName">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types.DeveloperSearchItem.DeveloperProjectNameFieldNumber">
+            <summary>Field number for the "DeveloperProjectName" field.</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types.DeveloperSearchItem.DeveloperProjectName">
             <summary>
             Jméno developerského projektu
             </summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.DeveloperSearch.DeveloperSearchItem.DeveloperCIN">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types.DeveloperSearchItem.DeveloperCINFieldNumber">
+            <summary>Field number for the "DeveloperCIN" field.</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.DeveloperSearchResponse.Types.DeveloperSearchItem.DeveloperCIN">
             <summary>
             ICO/RČ developera
             </summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem.Name">
-            <summary>
-            Jméno developerského projektu
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentFileTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem.WarningForKb">
-            <summary>
-            Upozornění pro KB
-            </summary>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.DocumentFileTypesResponse.Types">
+            <summary>Container for nested types declared in the DocumentFileTypesResponse message type.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem.WarningForMp">
-            <summary>
-            Upozornění pro MP
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentFileTypesResponse.Types.DocumentFileTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem.Web">
-            <summary>
-            Stránky projektu
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentFileTypesResponse.Types.DocumentFileTypeItem.DocumenFileTypeFieldNumber">
+            <summary>Field number for the "DocumenFileType" field.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem.MassEvaluationText">
-            <summary>
-            Hromadné ocenění
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentFileTypesResponse.Types.DocumentFileTypeItem.IsPrintingSupportedFieldNumber">
+            <summary>Field number for the "IsPrintingSupported" field.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject.DeveloperProjectItem.Place">
-            <summary>
-            Lokalita
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentOnSATypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject.GetDeveloperProjectRequest.DeveloperId">
-            <summary>
-            Id developera z číselníku developerských projektů
-            </summary>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.DocumentOnSATypesResponse.Types">
+            <summary>Container for nested types declared in the DocumentOnSATypesResponse message type.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloperProject.GetDeveloperProjectRequest.DeveloperProjectId">
-            <summary>
-            Id developerského projektu z číselníku developerských projektů
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentOnSATypesResponse.Types.DocumentOnSATypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper.DeveloperItem.Name">
-            <summary>
-            Jméno developera
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentOnSATypesResponse.Types.DocumentOnSATypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper.DeveloperItem.Cin">
-            <summary>
-            ICO/RČ developera
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentOnSATypesResponse.Types.DocumentOnSATypeItem.SalesArrangementTypeIdFieldNumber">
+            <summary>Field number for the "SalesArrangementTypeId" field.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper.DeveloperItem.StatusId">
-            <summary>
-            Id statusu developera
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentOnSATypesResponse.Types.DocumentOnSATypeItem.FormTypeIdFieldNumber">
+            <summary>Field number for the "FormTypeId" field.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper.DeveloperItem.StatusText">
-            <summary>
-            Status developera
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper.DeveloperItem.BenefitPackage">
-            <summary>
-            Balíček benefitu
-            </summary>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.DocumentTemplateTypesResponse.Types">
+            <summary>Container for nested types declared in the DocumentTemplateTypesResponse message type.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper.DeveloperItem.BenefitsBeyondPackage">
-            <summary>
-            Benefity nad rámec balíčku
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateTypesResponse.Types.DocumentTemplateTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.Endpoints.GetDeveloper.GetDeveloperRequest.DeveloperId">
-            <summary>
-            Id developera z číselníku developerských projektů
-            </summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateTypesResponse.Types.DocumentTemplateTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateTypesResponse.Types.DocumentTemplateTypeItem.ShortNameFieldNumber">
+            <summary>Field number for the "ShortName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVariantsResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVariantsResponse.Types">
+            <summary>Container for nested types declared in the DocumentTemplateVariantsResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVariantsResponse.Types.DocumentTemplateVariantItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVariantsResponse.Types.DocumentTemplateVariantItem.DocumentTemplateVersionIdFieldNumber">
+            <summary>Field number for the "DocumentTemplateVersionId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVariantsResponse.Types.DocumentTemplateVariantItem.DocumentVariantFieldNumber">
+            <summary>Field number for the "DocumentVariant" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVariantsResponse.Types.DocumentTemplateVariantItem.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVersionsResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVersionsResponse.Types">
+            <summary>Container for nested types declared in the DocumentTemplateVersionsResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem.DocumentTypeIdFieldNumber">
+            <summary>Field number for the "DocumentTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem.DocumentVersionFieldNumber">
+            <summary>Field number for the "DocumentVersion" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem.FormTypeIdFieldNumber">
+            <summary>Field number for the "FormTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.Types">
+            <summary>Container for nested types declared in the DocumentTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.Types.DocumentTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.Types.DocumentTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.Types.DocumentTypeItem.ShortNameFieldNumber">
+            <summary>Field number for the "ShortName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.Types.DocumentTypeItem.FileNameFieldNumber">
+            <summary>Field number for the "FileName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.Types.DocumentTypeItem.SalesArrangementTypeIdFieldNumber">
+            <summary>Field number for the "SalesArrangementTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.Types.DocumentTypeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.Types.DocumentTypeItem.EACodeMainIdFieldNumber">
+            <summary>Field number for the "EACodeMainId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingDurationsResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.DrawingDurationsResponse.Types">
+            <summary>Container for nested types declared in the DrawingDurationsResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingDurationsResponse.Types.DrawingDurationItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingDurationsResponse.Types.DrawingDurationItem.DrawingDurationFieldNumber">
+            <summary>Field number for the "DrawingDuration" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingDurationsResponse.Types.DrawingDurationItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingDurationsResponse.Types.DrawingDurationItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.DrawingTypesResponse.Types">
+            <summary>Container for nested types declared in the DrawingTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingTypesResponse.Types.DrawingTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingTypesResponse.Types.DrawingTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingTypesResponse.Types.DrawingTypeItem.StarbuildIdFieldNumber">
+            <summary>Field number for the "StarbuildId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types">
+            <summary>Container for nested types declared in the EaCodesMainResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types.EaCodesMainItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types.EaCodesMainItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types.EaCodesMainItem.DescriptionForClientFieldNumber">
+            <summary>Field number for the "DescriptionForClient" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types.EaCodesMainItem.CategoryFieldNumber">
+            <summary>Field number for the "Category" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types.EaCodesMainItem.KindKbFieldNumber">
+            <summary>Field number for the "KindKb" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types.EaCodesMainItem.IsVisibleForKbFieldNumber">
+            <summary>Field number for the "IsVisibleForKb" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types.EaCodesMainItem.IsInsertingAllowedNobyFieldNumber">
+            <summary>Field number for the "IsInsertingAllowedNoby" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types.EaCodesMainItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types.EaCodesMainItem.IsFormIdRequestedFieldNumber">
+            <summary>Field number for the "IsFormIdRequested" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EducationLevelsResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.EducationLevelsResponse.Types">
+            <summary>Container for nested types declared in the EducationLevelsResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EducationLevelsResponse.Types.EducationLevelItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EducationLevelsResponse.Types.EducationLevelItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EducationLevelsResponse.Types.EducationLevelItem.RdmCodeFieldNumber">
+            <summary>Field number for the "RdmCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EducationLevelsResponse.Types.EducationLevelItem.ScoringCodeFieldNumber">
+            <summary>Field number for the "ScoringCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EducationLevelsResponse.Types.EducationLevelItem.ShortNameFieldNumber">
+            <summary>Field number for the "ShortName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.EducationLevelsResponse.Types.EducationLevelItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FeesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.FeesResponse.Types">
+            <summary>Container for nested types declared in the FeesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FeesResponse.Types.FeeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FeesResponse.Types.FeeItem.IdKbFieldNumber">
+            <summary>Field number for the "IdKb" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FeesResponse.Types.FeeItem.ShortNameFieldNumber">
+            <summary>Field number for the "ShortName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FeesResponse.Types.FeeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FeesResponse.Types.FeeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FeesResponse.Types.FeeItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FixedRatePeriodsResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.FixedRatePeriodsResponse.Types">
+            <summary>Container for nested types declared in the FixedRatePeriodsResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FixedRatePeriodsResponse.Types.FixedRatePeriodItem.ProductTypeIdFieldNumber">
+            <summary>Field number for the "ProductTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FixedRatePeriodsResponse.Types.FixedRatePeriodItem.FixedRatePeriodFieldNumber">
+            <summary>Field number for the "FixedRatePeriod" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FixedRatePeriodsResponse.Types.FixedRatePeriodItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FixedRatePeriodsResponse.Types.FixedRatePeriodItem.IsNewProductFieldNumber">
+            <summary>Field number for the "IsNewProduct" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FixedRatePeriodsResponse.Types.FixedRatePeriodItem.InterestRateAlgorithmFieldNumber">
+            <summary>Field number for the "InterestRateAlgorithm" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FixedRatePeriodsResponse.Types.FixedRatePeriodItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FormTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.FormTypesResponse.Types">
+            <summary>Container for nested types declared in the FormTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FormTypesResponse.Types.FormTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FormTypesResponse.Types.FormTypeItem.TypeFieldNumber">
+            <summary>Field number for the "Type" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FormTypesResponse.Types.FormTypeItem.VersionFieldNumber">
+            <summary>Field number for the "Version" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FormTypesResponse.Types.FormTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FormTypesResponse.Types.FormTypeItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.FormTypesResponse.Types.FormTypeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GendersResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.GendersResponse.Types">
+            <summary>Container for nested types declared in the GendersResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GendersResponse.Types.GenderItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GendersResponse.Types.GenderItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GendersResponse.Types.GenderItem.KonsDBCodeFieldNumber">
+            <summary>Field number for the "KonsDBCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GendersResponse.Types.GenderItem.KbCmCodeFieldNumber">
+            <summary>Field number for the "KbCmCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GendersResponse.Types.GenderItem.StarBuildJsonCodeFieldNumber">
+            <summary>Field number for the "StarBuildJsonCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetGeneralDocumentListResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.GetGeneralDocumentListResponse.Types">
+            <summary>Container for nested types declared in the GetGeneralDocumentListResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem.FilenameFieldNumber">
+            <summary>Field number for the "Filename" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem.FormatFieldNumber">
+            <summary>Field number for the "Format" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.Types">
+            <summary>Container for nested types declared in the HouseholdTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.Types.HouseholdTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.Types.HouseholdTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.Types.HouseholdTypeItem.RdmCodeFieldNumber">
+            <summary>Field number for the "RdmCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.Types.HouseholdTypeItem.DocumentTypeIdFieldNumber">
+            <summary>Field number for the "DocumentTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HousingConditionsResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.HousingConditionsResponse.Types">
+            <summary>Container for nested types declared in the HousingConditionsResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HousingConditionsResponse.Types.HousingConditionItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HousingConditionsResponse.Types.HousingConditionItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HousingConditionsResponse.Types.HousingConditionItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HousingConditionsResponse.Types.HousingConditionItem.RdmCodeFieldNumber">
+            <summary>Field number for the "RdmCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HousingConditionsResponse.Types.HousingConditionItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ChannelsResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.ChannelsResponse.Types">
+            <summary>Container for nested types declared in the ChannelsResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ChannelsResponse.Types.ChannelItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ChannelsResponse.Types.ChannelItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ChannelsResponse.Types.ChannelItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ChannelsResponse.Types.ChannelItem.RdmCbChannelCodeFieldNumber">
+            <summary>Field number for the "RdmCbChannelCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ChannelsResponse.Types.ChannelItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ChannelsResponse.Types.ChannelItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationDocumentTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.IdentificationDocumentTypesResponse.Types">
+            <summary>Container for nested types declared in the IdentificationDocumentTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem.ShortNameFieldNumber">
+            <summary>Field number for the "ShortName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem.RdmCodeFieldNumber">
+            <summary>Field number for the "RdmCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem.MpDigiApiCodeFieldNumber">
+            <summary>Field number for the "MpDigiApiCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types">
+            <summary>Container for nested types declared in the IdentitySchemesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types.IdentitySchemeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types.IdentitySchemeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types.IdentitySchemeItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types.IdentitySchemeItem.CategoryFieldNumber">
+            <summary>Field number for the "Category" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types.IdentitySchemeItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types.IdentitySchemeItem.ChannelIdFieldNumber">
+            <summary>Field number for the "ChannelId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types">
+            <summary>Container for nested types declared in the LoanPurposesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.OrderFieldNumber">
+            <summary>Field number for the "Order" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.C4MIdFieldNumber">
+            <summary>Field number for the "C4MId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.ProductTypeIdsFieldNumber">
+            <summary>Field number for the "ProductTypeIds" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationLaExposuresResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.ObligationLaExposuresResponse.Types">
+            <summary>Container for nested types declared in the ObligationLaExposuresResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationLaExposuresResponse.Types.ObligationLaExposureItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationLaExposuresResponse.Types.ObligationLaExposureItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationLaExposuresResponse.Types.ObligationLaExposureItem.RdmCodeFieldNumber">
+            <summary>Field number for the "RdmCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationLaExposuresResponse.Types.ObligationLaExposureItem.ObligationTypeIdFieldNumber">
+            <summary>Field number for the "ObligationTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationLaExposuresResponse.Types.ObligationLaExposureItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.ObligationTypesResponse.Types">
+            <summary>Container for nested types declared in the ObligationTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationTypesResponse.Types.ObligationTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationTypesResponse.Types.ObligationTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationTypesResponse.Types.ObligationTypeItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationTypesResponse.Types.ObligationTypeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationTypesResponse.Types.ObligationTypeItem.OrderFieldNumber">
+            <summary>Field number for the "Order" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationTypesResponse.Types.ObligationTypeItem.ObligationPropertyFieldNumber">
+            <summary>Field number for the "ObligationProperty" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PaymentDaysResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.PaymentDaysResponse.Types">
+            <summary>Container for nested types declared in the PaymentDaysResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PaymentDaysResponse.Types.PaymentDayItem.PaymentDayFieldNumber">
+            <summary>Field number for the "PaymentDay" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PaymentDaysResponse.Types.PaymentDayItem.PaymentAccountDayFieldNumber">
+            <summary>Field number for the "PaymentAccountDay" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PaymentDaysResponse.Types.PaymentDayItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PaymentDaysResponse.Types.PaymentDayItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PaymentDaysResponse.Types.PaymentDayItem.ShowOnPortalFieldNumber">
+            <summary>Field number for the "ShowOnPortal" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PostCodesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.PostCodesResponse.Types">
+            <summary>Container for nested types declared in the PostCodesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PostCodesResponse.Types.PostCodeItem.PostCodeFieldNumber">
+            <summary>Field number for the "PostCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PostCodesResponse.Types.PostCodeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PostCodesResponse.Types.PostCodeItem.DisctrictFieldNumber">
+            <summary>Field number for the "Disctrict" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PostCodesResponse.Types.PostCodeItem.MunicipalityFieldNumber">
+            <summary>Field number for the "Municipality" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types">
+            <summary>Container for nested types declared in the ProductTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.OrderFieldNumber">
+            <summary>Field number for the "Order" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.LoanAmountMinFieldNumber">
+            <summary>Field number for the "LoanAmountMin" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.LoanAmountMaxFieldNumber">
+            <summary>Field number for the "LoanAmountMax" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.LoanDurationMinFieldNumber">
+            <summary>Field number for the "LoanDurationMin" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.LoanDurationMaxFieldNumber">
+            <summary>Field number for the "LoanDurationMax" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.LtvMinFieldNumber">
+            <summary>Field number for the "LtvMin" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.LtvMaxFieldNumber">
+            <summary>Field number for the "LtvMax" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.MpHomeApiLoanTypeFieldNumber">
+            <summary>Field number for the "MpHomeApiLoanType" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.KonsDbLoanTypeFieldNumber">
+            <summary>Field number for the "KonsDbLoanType" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.PcpProductIdFieldNumber">
+            <summary>Field number for the "PcpProductId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.LoanKindIdsFieldNumber">
+            <summary>Field number for the "LoanKindIds" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProfessionCategoriesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.ProfessionCategoriesResponse.Types">
+            <summary>Container for nested types declared in the ProfessionCategoriesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProfessionCategoriesResponse.Types.ProfessionCategoryItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProfessionCategoriesResponse.Types.ProfessionCategoryItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProfessionCategoriesResponse.Types.ProfessionCategoryItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProfessionCategoriesResponse.Types.ProfessionCategoryItem.ProfessionTypeIdsFieldNumber">
+            <summary>Field number for the "ProfessionTypeIds" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProfessionCategoriesResponse.Types.ProfessionCategoryItem.IncomeMainTypeAMLIdsFieldNumber">
+            <summary>Field number for the "IncomeMainTypeAMLIds" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProofTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.ProofTypesResponse.Types">
+            <summary>Container for nested types declared in the ProofTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProofTypesResponse.Types.ProofTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProofTypesResponse.Types.ProofTypeItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProofTypesResponse.Types.ProofTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProofTypesResponse.Types.ProofTypeItem.NameEnglishFieldNumber">
+            <summary>Field number for the "NameEnglish" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProofTypesResponse.Types.ProofTypeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PropertySettlementsResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.PropertySettlementsResponse.Types">
+            <summary>Container for nested types declared in the PropertySettlementsResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PropertySettlementsResponse.Types.PropertySettlementItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PropertySettlementsResponse.Types.PropertySettlementItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PropertySettlementsResponse.Types.PropertySettlementItem.NameEnglishFieldNumber">
+            <summary>Field number for the "NameEnglish" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PropertySettlementsResponse.Types.PropertySettlementItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PropertySettlementsResponse.Types.PropertySettlementItem.OrderFieldNumber">
+            <summary>Field number for the "Order" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.PropertySettlementsResponse.Types.PropertySettlementItem.MaritalStateIdsFieldNumber">
+            <summary>Field number for the "MaritalStateIds" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RelationshipCustomerProductTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.RelationshipCustomerProductTypesResponse.Types">
+            <summary>Container for nested types declared in the RelationshipCustomerProductTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RelationshipCustomerProductTypesResponse.Types.RelationshipCustomerProductTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RelationshipCustomerProductTypesResponse.Types.RelationshipCustomerProductTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RelationshipCustomerProductTypesResponse.Types.RelationshipCustomerProductTypeItem.RdmCodeFieldNumber">
+            <summary>Field number for the "RdmCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RelationshipCustomerProductTypesResponse.Types.RelationshipCustomerProductTypeItem.MpDigiApiCodeFieldNumber">
+            <summary>Field number for the "MpDigiApiCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RelationshipCustomerProductTypesResponse.Types.RelationshipCustomerProductTypeItem.NameNobyFieldNumber">
+            <summary>Field number for the "NameNoby" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types">
+            <summary>Container for nested types declared in the RiskApplicationTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types.RiskApplicationTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types.RiskApplicationTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types.RiskApplicationTypeItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types.RiskApplicationTypeItem.LoanKindIdFieldNumber">
+            <summary>Field number for the "LoanKindId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types.RiskApplicationTypeItem.LtvFromFieldNumber">
+            <summary>Field number for the "LtvFrom" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types.RiskApplicationTypeItem.LtvToFieldNumber">
+            <summary>Field number for the "LtvTo" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types.RiskApplicationTypeItem.C4MAplCodeFieldNumber">
+            <summary>Field number for the "C4mAplCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types.RiskApplicationTypeItem.C4MAplTypeIdFieldNumber">
+            <summary>Field number for the "C4mAplTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types.RiskApplicationTypeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types.RiskApplicationTypeItem.ProductTypeIdFieldNumber">
+            <summary>Field number for the "ProductTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RiskApplicationTypesResponse.Types.RiskApplicationTypeItem.MarketingActionsFieldNumber">
+            <summary>Field number for the "MarketingActions" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementStatesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.SalesArrangementStatesResponse.Types">
+            <summary>Container for nested types declared in the SalesArrangementStatesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementStatesResponse.Types.SalesArrangementStateItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementStatesResponse.Types.SalesArrangementStateItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementStatesResponse.Types.SalesArrangementStateItem.StarbuildIdFieldNumber">
+            <summary>Field number for the "StarbuildId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementStatesResponse.Types.SalesArrangementStateItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types">
+            <summary>Container for nested types declared in the SalesArrangementTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.ProductTypeIdFieldNumber">
+            <summary>Field number for the "ProductTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.SalesArrangementCategoryFieldNumber">
+            <summary>Field number for the "SalesArrangementCategory" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsForNaturalPersonResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.SigningMethodsForNaturalPersonResponse.Types">
+            <summary>Container for nested types declared in the SigningMethodsForNaturalPersonResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem.OrderFieldNumber">
+            <summary>Field number for the "Order" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem.StarbuildEnumIdFieldNumber">
+            <summary>Field number for the "StarbuildEnumId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SmsNotificationTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.SmsNotificationTypesResponse.Types">
+            <summary>Container for nested types declared in the SmsNotificationTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SmsNotificationTypesResponse.Types.SmsNotificationTypeItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SmsNotificationTypesResponse.Types.SmsNotificationTypeItem.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SmsNotificationTypesResponse.Types.SmsNotificationTypeItem.SmsTextFieldNumber">
+            <summary>Field number for the "SmsText" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SmsNotificationTypesResponse.Types.SmsNotificationTypeItem.McsCodeFieldNumber">
+            <summary>Field number for the "McsCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SmsNotificationTypesResponse.Types.SmsNotificationTypeItem.IsAuditLogEnabledFieldNumber">
+            <summary>Field number for the "IsAuditLogEnabled" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementFrequenciesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.StatementFrequenciesResponse.Types">
+            <summary>Container for nested types declared in the StatementFrequenciesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementFrequenciesResponse.Types.StatementFrequencyItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementFrequenciesResponse.Types.StatementFrequencyItem.FrequencyCodeFieldNumber">
+            <summary>Field number for the "FrequencyCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementFrequenciesResponse.Types.StatementFrequencyItem.FrequencyValueFieldNumber">
+            <summary>Field number for the "FrequencyValue" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementFrequenciesResponse.Types.StatementFrequencyItem.OrderFieldNumber">
+            <summary>Field number for the "Order" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementFrequenciesResponse.Types.StatementFrequencyItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementFrequenciesResponse.Types.StatementFrequencyItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementFrequenciesResponse.Types.StatementFrequencyItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.StatementTypesResponse.Types">
+            <summary>Container for nested types declared in the StatementTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementTypesResponse.Types.StatementTypeItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementTypesResponse.Types.StatementTypeItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementTypesResponse.Types.StatementTypeItem.ShortNameFieldNumber">
+            <summary>Field number for the "ShortName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementTypesResponse.Types.StatementTypeItem.OrderFieldNumber">
+            <summary>Field number for the "Order" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.StatementTypesResponse.Types.StatementTypeItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinFormatsByCountryResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.TinFormatsByCountryResponse.Types">
+            <summary>Container for nested types declared in the TinFormatsByCountryResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinFormatsByCountryResponse.Types.TinFormatsByCountryItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinFormatsByCountryResponse.Types.TinFormatsByCountryItem.CountryCodeFieldNumber">
+            <summary>Field number for the "CountryCode" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinFormatsByCountryResponse.Types.TinFormatsByCountryItem.RegularExpressionFieldNumber">
+            <summary>Field number for the "RegularExpression" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinFormatsByCountryResponse.Types.TinFormatsByCountryItem.IsForFoFieldNumber">
+            <summary>Field number for the "IsForFo" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinFormatsByCountryResponse.Types.TinFormatsByCountryItem.TooltipFieldNumber">
+            <summary>Field number for the "Tooltip" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinFormatsByCountryResponse.Types.TinFormatsByCountryItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinNoFillReasonsByCountryResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.TinNoFillReasonsByCountryResponse.Types">
+            <summary>Container for nested types declared in the TinNoFillReasonsByCountryResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinNoFillReasonsByCountryResponse.Types.TinNoFillReasonsByCountryItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinNoFillReasonsByCountryResponse.Types.TinNoFillReasonsByCountryItem.IsTinMandatoryFieldNumber">
+            <summary>Field number for the "IsTinMandatory" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinNoFillReasonsByCountryResponse.Types.TinNoFillReasonsByCountryItem.ReasonForBlankTinFieldNumber">
+            <summary>Field number for the "ReasonForBlankTin" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.TinNoFillReasonsByCountryResponse.Types.TinNoFillReasonsByCountryItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowConsultationMatrixResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.WorkflowConsultationMatrixResponse.Types">
+            <summary>Container for nested types declared in the WorkflowConsultationMatrixResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowConsultationMatrixResponse.Types.WorkflowConsultationMatrixItem.TaskSubtypeIdFieldNumber">
+            <summary>Field number for the "TaskSubtypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowConsultationMatrixResponse.Types.WorkflowConsultationMatrixItem.TaskSubtypeNameFieldNumber">
+            <summary>Field number for the "TaskSubtypeName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowConsultationMatrixResponse.Types.WorkflowConsultationMatrixItem.IsValidForFieldNumber">
+            <summary>Field number for the "IsValidFor" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.WorkflowConsultationMatrixResponse.Types.WorkflowConsultationMatrixItem.Types">
+            <summary>Container for nested types declared in the WorkflowConsultationMatrixItem message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowConsultationMatrixResponse.Types.WorkflowConsultationMatrixItem.Types.WorkflowConsultationMatrixItemValidity.ProcessTypeIdFieldNumber">
+            <summary>Field number for the "ProcessTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowConsultationMatrixResponse.Types.WorkflowConsultationMatrixItem.Types.WorkflowConsultationMatrixItemValidity.ProcessPhaseIdFieldNumber">
+            <summary>Field number for the "ProcessPhaseId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types">
+            <summary>Container for nested types declared in the WorkflowTaskStatesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.FlagFieldNumber">
+            <summary>Field number for the "Flag" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types">
+            <summary>Container for nested types declared in the WorkflowTaskStatesItem message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types">
+            <summary>Container for nested types declared in the WorkflowTaskStatesNobyResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem.FilterFieldNumber">
+            <summary>Field number for the "Filter" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem.IndicatorFieldNumber">
+            <summary>Field number for the "Indicator" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types">
+            <summary>Container for nested types declared in the WorkflowTaskTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem.CategoryIdFieldNumber">
+            <summary>Field number for the "CategoryId" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.CodebookServiceV1Reflection">
+            <summary>Holder for reflection information generated from CodebookService.v1.proto</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.CodebookServiceV1Reflection.Descriptor">
+            <summary>File descriptor for CodebookService.v1.proto</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.CodebookService.Descriptor">
+            <summary>Service descriptor</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.CodebookService.CodebookServiceBase">
+            <summary>Base class for server-side implementations of CodebookService</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.CodebookService.CodebookServiceClient">
+            <summary>Client for CodebookService</summary>
+        </member>
+        <member name="M:DomainServices.CodebookService.Contracts.v1.CodebookService.CodebookServiceClient.#ctor(Grpc.Core.ChannelBase)">
+            <summary>Creates a new client for CodebookService</summary>
+            <param name="channel">The channel to use to make remote calls.</param>
+        </member>
+        <member name="M:DomainServices.CodebookService.Contracts.v1.CodebookService.CodebookServiceClient.#ctor(Grpc.Core.CallInvoker)">
+            <summary>Creates a new client for CodebookService that uses a custom <c>CallInvoker</c>.</summary>
+            <param name="callInvoker">The callInvoker to use to make remote calls.</param>
+        </member>
+        <member name="M:DomainServices.CodebookService.Contracts.v1.CodebookService.CodebookServiceClient.#ctor">
+            <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
+        </member>
+        <member name="M:DomainServices.CodebookService.Contracts.v1.CodebookService.CodebookServiceClient.#ctor(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Protected constructor to allow creation of configured clients.</summary>
+            <param name="configuration">The client configuration.</param>
+        </member>
+        <member name="M:DomainServices.CodebookService.Contracts.v1.CodebookService.CodebookServiceClient.NewInstance(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
+        </member>
+        <member name="M:DomainServices.CodebookService.Contracts.v1.CodebookService.BindService(DomainServices.CodebookService.Contracts.v1.CodebookService.CodebookServiceBase)">
+            <summary>Creates service definition that can be registered with a server</summary>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="M:DomainServices.CodebookService.Contracts.v1.CodebookService.BindService(Grpc.Core.ServiceBinderBase,DomainServices.CodebookService.Contracts.v1.CodebookService.CodebookServiceBase)">
+            <summary>Register service method with a service binder with or without implementation. Useful when customizing the service binding logic.
+            Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
+            <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.TypesReflection">
+            <summary>Holder for reflection information generated from Messages/Types.proto</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.TypesReflection.Descriptor">
+            <summary>File descriptor for Messages/Types.proto</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DeveloperSearchRequest.TermFieldNumber">
+            <summary>Field number for the "Term" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperRequest.DeveloperIdFieldNumber">
+            <summary>Field number for the "DeveloperId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.CinFieldNumber">
+            <summary>Field number for the "Cin" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.StatusIdFieldNumber">
+            <summary>Field number for the "StatusId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.StatusTextFieldNumber">
+            <summary>Field number for the "StatusText" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.BenefitPackageFieldNumber">
+            <summary>Field number for the "BenefitPackage" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.IsBenefitValidFieldNumber">
+            <summary>Field number for the "IsBenefitValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperResponse.BenefitsBeyondPackageFieldNumber">
+            <summary>Field number for the "BenefitsBeyondPackage" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectRequest.DeveloperIdFieldNumber">
+            <summary>Field number for the "DeveloperId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectRequest.DeveloperProjectIdFieldNumber">
+            <summary>Field number for the "DeveloperProjectId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.WarningForKbFieldNumber">
+            <summary>Field number for the "WarningForKb" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.WarningForMpFieldNumber">
+            <summary>Field number for the "WarningForMp" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.WebFieldNumber">
+            <summary>Field number for the "Web" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.MassEvaluationTextFieldNumber">
+            <summary>Field number for the "MassEvaluationText" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.RecommandationFieldNumber">
+            <summary>Field number for the "Recommandation" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.PlaceFieldNumber">
+            <summary>Field number for the "Place" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorRequest.PerformerLoginFieldNumber">
+            <summary>Field number for the "PerformerLogin" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorResponse.PerformerLoginFieldNumber">
+            <summary>Field number for the "PerformerLogin" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorResponse.PerformerNameFieldNumber">
+            <summary>Field number for the "PerformerName" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorResponse.PerformerCodeFieldNumber">
+            <summary>Field number for the "PerformerCode" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.GenericCodebookReflection">
+            <summary>Holder for reflection information generated from Messages/GenericCodebook.proto</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.GenericCodebookReflection.Descriptor">
+            <summary>File descriptor for Messages/GenericCodebook.proto</summary>
         </member>
     </members>
 </doc>

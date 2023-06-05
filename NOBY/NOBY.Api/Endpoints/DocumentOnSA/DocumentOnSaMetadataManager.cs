@@ -1,19 +1,17 @@
-﻿using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
-using DomainServices.CodebookService.Contracts.Endpoints.EaCodesMain;
+﻿using DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
 public static class DocumentOnSaMetadataManager
 {
-    public static EACodeMainItemDto GetEaCodeMainItem(int DocumentTypeId, List<DocumentTypeItem> documentTypeItems, List<EaCodeMainItem> eaCodeMainItems)
+    public static EACodeMainItemDto GetEaCodeMainItem(int DocumentTypeId, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypeItems, List<EaCodesMainResponse.Types.EaCodesMainItem> eaCodeMainItems)
     {
         var docType = documentTypeItems.Single(d => d.Id == DocumentTypeId);
         var eaCodeMain = eaCodeMainItems.Single(e => e.Id == docType.EACodeMainId);
         return new EACodeMainItemDto { Id = docType.EACodeMainId!.Value, DocumentType = eaCodeMain.Name, Category = eaCodeMain.Category };
     }
 
-    public static SignatureStateDto GetSignatureState(DocumentOnSAInfo docSa, List<GenericCodebookItem> signatureStates) => docSa switch
+    public static SignatureStateDto GetSignatureState(DocumentOnSAInfo docSa, List<GenericCodebookResponse.Types.GenericCodebookItem> signatureStates) => docSa switch
     {
         // ready (připraveno) 1
         DocumentOnSAInfo doc when doc.DocumentOnSAId is null => GetSignatureState(1, signatureStates),
@@ -26,7 +24,7 @@ public static class DocumentOnSaMetadataManager
         _ => new SignatureStateDto { Id = 0, Name = "Unknown" }
     };
 
-    private static SignatureStateDto GetSignatureState(int stateId, List<GenericCodebookItem> signatureStates)
+    private static SignatureStateDto GetSignatureState(int stateId, List<GenericCodebookResponse.Types.GenericCodebookItem> signatureStates)
     {
         var signatureState = signatureStates.Single(s => s.Id == stateId);
         return new SignatureStateDto { Id = signatureState.Id, Name = signatureState.Name };

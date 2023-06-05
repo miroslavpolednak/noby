@@ -1,56 +1,55 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts;
-using Codebook = DomainServices.CodebookService.Contracts.Endpoints;
+using Codebook = DomainServices.CodebookService.Contracts.v1;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 
 public class CodebookManager : ICodebookManagerConfigurator
 {
-    private readonly List<Func<ICodebookServiceClients, CancellationToken, Task>> _codebooksToLoad = new();
+    private readonly List<Func<ICodebookServiceClient, CancellationToken, Task>> _codebooksToLoad = new();
 
-    public List<Codebook.Countries.CountriesItem> Countries { get; private set; } = null!;
+    public List<Codebook.CountriesResponse.Types.CountryItem> Countries { get; private set; } = null!;
 
-    public List<GenericCodebookItem> DegreesBefore { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> DegreesBefore { get; private set; } = null!;
 
-    public List<Codebook.LoanPurposes.LoanPurposesItem> LoanPurposes { get; private set; } = null!;
+    public List<Codebook.LoanPurposesResponse.Types.LoanPurposeItem> LoanPurposes { get; private set; } = null!;
 
-    public List<Codebook.LoanKinds.LoanKindsItem> LoanKinds { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> LoanKinds { get; private set; } = null!;
 
-    public List<Codebook.RealEstateTypes.RealEstateTypeItem> RealEstateTypes { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> RealEstateTypes { get; private set; } = null!;
 
-    public List<Codebook.RealEstatePurchaseTypes.RealEstatePurchaseTypeItem> PurchaseTypes { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> PurchaseTypes { get; private set; } = null!;
 
-    public List<Codebook.ProductTypes.ProductTypeItem> ProductTypes { get; private set; } = null!;
+    public List<Codebook.ProductTypesResponse.Types.ProductTypeItem> ProductTypes { get; private set; } = null!;
 
-    public List<Codebook.PropertySettlements.PropertySettlementItem> PropertySettlements { get; private set; } = null!;
+    public List<Codebook.PropertySettlementsResponse.Types.PropertySettlementItem> PropertySettlements { get; private set; } = null!;
 
-    public List<Codebook.IdentificationDocumentTypes.IdentificationDocumentTypesItem> IdentificationDocumentTypes { get; private set; } = null!;
+    public List<Codebook.IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> IdentificationDocumentTypes { get; private set; } = null!;
 
-    public List<Codebook.MaritalStatuses.MaritalStatusItem> MaritalStatuses { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> MaritalStatuses { get; private set; } = null!;
 
-    public List<Codebook.DrawingTypes.DrawingTypeItem> DrawingTypes { get; private set; } = null!;
+    public List<Codebook.DrawingTypesResponse.Types.DrawingTypeItem> DrawingTypes { get; private set; } = null!;
 
-    public List<Codebook.DrawingDurations.DrawingDurationItem> DrawingDurations { get; private set; } = null!;
+    public List<Codebook.DrawingDurationsResponse.Types.DrawingDurationItem> DrawingDurations { get; private set; } = null!;
 
-    public List<Codebook.SalesArrangementStates.SalesArrangementStateItem> SalesArrangementStates { get; private set; } = null!;
+    public List<Codebook.SalesArrangementStatesResponse.Types.SalesArrangementStateItem> SalesArrangementStates { get; private set; } = null!;
 
-    public List<Codebook.SalesArrangementTypes.SalesArrangementTypeItem> SalesArrangementTypes { get; private set; } = null!;
+    public List<Codebook.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem> SalesArrangementTypes { get; private set; } = null!;
 
-    public List<Codebook.Genders.GenderItem> Genders { get; private set; } = null!;
+    public List<Codebook.GendersResponse.Types.GenderItem> Genders { get; private set; } = null!;
 
-    public List<GenericCodebookItemWithCode> EmploymentTypes { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> EmploymentTypes { get; private set; } = null!;
 
-    public List<Codebook.ObligationTypes.ObligationTypesItem> ObligationTypes { get; private set; } = null!;
+    public List<Codebook.ObligationTypesResponse.Types.ObligationTypeItem> ObligationTypes { get; private set; } = null!;
 
-    public List<Codebook.LegalCapacityRestrictionTypes.LegalCapacityRestrictionTypeItem> LegalCapacityRestrictionTypes { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> LegalCapacityRestrictionTypes { get; private set; } = null!;
 
-    public List<Codebook.DocumentTypes.DocumentTypeItem> DocumentTypes { get; private set; } = null!;
+    public List<Codebook.DocumentTypesResponse.Types.DocumentTypeItem> DocumentTypes { get; private set; } = null!;
 
-    public List<Codebook.EducationLevels.EducationLevelItem> EducationLevels { get; private set; } = null!;
+    public List<Codebook.EducationLevelsResponse.Types.EducationLevelItem> EducationLevels { get; private set; } = null!;
 
-    public List<Codebook.SignatureTypes.SignatureTypeItem> SignatureTypes { get; private set; } = null!;
+    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> SignatureTypes { get; private set; } = null!;
 
-    public Task Load(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
+    public Task Load(ICodebookServiceClient codebookService, CancellationToken cancellationToken)
     {
         return Task.WhenAll(_codebooksToLoad.Select(call => call(codebookService, cancellationToken)));
     }

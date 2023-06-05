@@ -14,7 +14,7 @@ internal static class XxvDapperConnectionProviderExtensions
         if (identity is null)
             throw new CisValidationException(17004, $"Can not obtain user information from XXV - identity is null");
 
-        return await provider.ExecuteDapperRawSqlFirstOrDefault<ExternalServices.Dto.C4mUserInfoData>(c4mUserInfoSql, new { id = identity.IdentityId, scheme = identity.IdentityScheme }, cancellationToken);
+        return await provider.ExecuteDapperRawSqlFirstOrDefaultAsync<ExternalServices.Dto.C4mUserInfoData>(c4mUserInfoSql, new { id = identity.IdentityId, scheme = identity.IdentityScheme }, cancellationToken);
             //?? throw new CisValidationException(17005, $"Can not obtain user information from XXV for {identity.IdentityId}/{identity.IdentityScheme}");
     }
 }

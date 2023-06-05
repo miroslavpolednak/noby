@@ -23,7 +23,8 @@ internal static class StartupExtensions
                     .AddSalesArrangementService()
                     .AddCodebookService()
                     .AddDataAggregatorService()
-                    .AddDocumentArchiveService();
+                    .AddDocumentArchiveService()
+                    .AddProductService();
         
         // EAS svc
         builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();

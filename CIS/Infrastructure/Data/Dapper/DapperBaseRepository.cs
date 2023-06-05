@@ -20,7 +20,7 @@ public abstract class DapperBaseRepository<TLogger>
     {
         try
         {
-            return await _connectionProvider.ExecuteDapperQuery(getData, cancellationToken);
+            return await _connectionProvider.ExecuteDapperQueryAsync(getData, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -34,7 +34,7 @@ public abstract class DapperBaseRepository<TLogger>
     {
         try
         {
-            await _connectionProvider.ExecuteDapperQuery(getData);
+            await _connectionProvider.ExecuteDapperQueryAsync(getData);
         }
         catch (Exception ex)
         {
@@ -48,7 +48,7 @@ public abstract class DapperBaseRepository<TLogger>
     {
         try
         {
-            return await _connectionProvider.ExecuteDapperQuery<TRead, TResult>(getData, process, cancellationToken);
+            return await _connectionProvider.ExecuteDapperQueryAsync<TRead, TResult>(getData, process, cancellationToken);
         }
         catch (Exception ex)
         {

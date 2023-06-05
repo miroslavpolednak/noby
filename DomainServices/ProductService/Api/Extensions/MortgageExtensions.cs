@@ -1,5 +1,5 @@
 ﻿using DomainServices.ProductService.Contracts;
-using ExternalServices.MpHome.V1_1.Contracts;
+using ExternalServices.MpHome.V1.Contracts;
 
 namespace DomainServices.ProductService.Api;
 
@@ -9,10 +9,11 @@ internal static class MortgageExtensions
     /// <summary>
     /// Converts contract object MortgageData to MortgageRequest.
     /// </summary>
-    public static MortgageRequest ToMortgageRequest(this MortgageData mortgage)
+    public static MortgageRequest ToMortgageRequest(this MortgageData mortgage, string? pcpId)
     {
         var request = new MortgageRequest
         {
+            PcpInstId = pcpId,
             LoanType = LoanType.KBMortgage,
             ProductCodeUv = mortgage.ProductTypeId,
             PartnerId = mortgage.PartnerId,
@@ -29,9 +30,10 @@ internal static class MortgageExtensions
             RepaymentAccountPrefix = mortgage.RepaymentAccount?.Prefix,
             EstimatedDuePaymentDate = mortgage.LoanDueDate,
             RepaymentStartDate = mortgage.FirstAnnuityPaymentDate,
-            ServiceBranchId = mortgage.BranchConsultantId,
-            ConsultantId = mortgage.ThirdPartyConsultantId,
-            LoanPurposes = mortgage.LoanPurposes is null ? null : mortgage.LoanPurposes.Select(t => new ExternalServices.MpHome.V1_1.Contracts.LoanPurpose
+            ServiceBranchId = mortgage.BranchConsultantId.GetValueOrDefault() == 0 ? null : mortgage.BranchConsultantId,
+            ConsultantId = mortgage.ThirdPartyConsultantId.GetValueOrDefault() == 0 ? null : mortgage.ThirdPartyConsultantId,
+            FirstRequestSignDate = mortgage.FirstSignatureDate,
+            LoanPurposes = mortgage.LoanPurposes is null ? null : mortgage.LoanPurposes.Select(t => new global::ExternalServices.MpHome.V1.Contracts.LoanPurpose
             {
                 Amount = Convert.ToDouble((decimal)t.Sum),
                 LoanPurposeId = t.LoanPurposeId
@@ -50,8 +52,8 @@ internal static class MortgageExtensions
         var mortgage = new MortgageData
         {
             PartnerId = (int)(eLoan.PartnerId ?? default),
-            BranchConsultantId = eLoan.PobockaObsluhyId.HasValue ? Convert.ToInt32(eLoan.PobockaObsluhyId) : default,
-            ThirdPartyConsultantId = eLoan.PoradceId.HasValue ? Convert.ToInt32(eLoan.PoradceId) : default,
+            BranchConsultantId = eLoan.PobockaObsluhyId.GetValueOrDefault() == 0 ? null : Convert.ToInt32(eLoan.PobockaObsluhyId),
+            ThirdPartyConsultantId = eLoan.PoradceId.GetValueOrDefault() == 0 ? null : Convert.ToInt32(eLoan.PoradceId),
             ContractNumber = eLoan.CisloSmlouvy,
             LoanAmount = eLoan.VyseUveru,
             LoanInterestRate = eLoan.RadnaSazba,
@@ -95,7 +97,8 @@ internal static class MortgageExtensions
                 FrequencyId = eLoan.HuVypisZodb,
                 EmailAddress1 = eLoan.VypisEmail1,
                 EmailAddress2 = eLoan.VypisEmail2
-            }
+            },
+            FirstSignatureDate = eLoan.DatumPodpisuPrvniZadosti
         };
 
         if (eRelationships?.Count > 0)
@@ -106,7 +109,7 @@ internal static class MortgageExtensions
         return mortgage;
     }
 
-    
+
     /// <summary>
     /// Converts db entity Relationship (table dbo.VztahUver) to contract object Relationship .
     /// </summary>

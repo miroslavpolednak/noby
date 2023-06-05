@@ -31,7 +31,7 @@ internal sealed class LoanApplicationDataService
     private readonly ICaseServiceClient _caseService;
     private readonly IUserServiceClient _userService;
     private readonly ICustomerServiceClient _customerService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
 
     public LoanApplicationDataService(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
@@ -42,7 +42,7 @@ internal sealed class LoanApplicationDataService
         ICaseServiceClient caseService,
         IUserServiceClient userService,
         ICustomerServiceClient customerService,
-        ICodebookServiceClients codebookService
+        ICodebookServiceClient codebookService
         )
     {
         _userAccessor = userAccessor;

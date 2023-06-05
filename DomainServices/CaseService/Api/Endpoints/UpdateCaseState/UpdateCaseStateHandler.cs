@@ -54,12 +54,12 @@ internal sealed class UpdateCaseStateHandler
     private static int[] _starbuildStateUpdateStates = new[] { 1, 2, 7, 9 };
 
     private readonly IMediator _mediator;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CaseServiceDbContext _dbContext;
 
     public UpdateCaseStateHandler(
         IMediator mediator,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         CaseServiceDbContext dbContext)
     {
         _mediator = mediator;

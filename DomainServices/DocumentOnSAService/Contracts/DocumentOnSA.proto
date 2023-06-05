@@ -21,7 +21,7 @@ message DocumentOnSA {
 
 	bool IsSigned = 6;
 	
-	bool IsDocumentArchived = 7;
+	bool IsArchived = 7;
 
 	string SignatureMethodCode = 8;
 

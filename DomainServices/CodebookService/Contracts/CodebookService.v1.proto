@@ -1,0 +1,556 @@
+﻿syntax = "proto3";
+package DomainServices.CodebookService.v1;
+option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "Messages/Types.proto";
+import "Messages/GenericCodebook.proto";
+
+service CodebookService {
+   rpc AcademicDegreesAfter (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/academic-degrees-after"
+		};
+   }
+
+   rpc AcademicDegreesBefore (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/academic-degrees-before"
+		};
+   }
+
+   rpc AddressTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/address-types"
+		};
+   }
+
+   rpc BankCodes (google.protobuf.Empty) returns (BankCodesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/bank-codes"
+		};
+   }
+
+   rpc CaseStates (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/case-states"
+		};
+   }
+
+   rpc ClassificationOfEconomicActivities (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/classification-of-economic-activities"
+		};
+   }
+   
+   rpc CollateralTypes (google.protobuf.Empty) returns (CollateralTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/collateral-types"
+		};
+   }
+
+   rpc ContactTypes (google.protobuf.Empty) returns (ContactTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/contact-types"
+		};
+   }
+
+   rpc Countries (google.protobuf.Empty) returns (CountriesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/countries"
+		};
+   }
+
+   rpc CountryCodePhoneIdc (google.protobuf.Empty) returns (CountryCodePhoneIdcResponse) {
+	   option (google.api.http) = {
+			get: "/v1/country-code-phone-idc"
+		};
+   }
+
+   rpc CovenantTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/covenant-types"
+		};
+   }
+   
+   rpc Currencies (google.protobuf.Empty) returns (CurrenciesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/currencies"
+		};
+   }
+
+   rpc CustomerProfiles (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/customer-profiles"
+		};
+   }
+
+   rpc CustomerRoles (google.protobuf.Empty) returns (CustomerRolesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/customer-roles"
+		};
+   }
+
+   rpc DeveloperSearch (DeveloperSearchRequest) returns (DeveloperSearchResponse) {
+	   option (google.api.http) = {
+			get: "/v1/developer-search"
+		};
+   }
+
+   rpc DocumentFileTypes (google.protobuf.Empty) returns (DocumentFileTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/document-file-types"
+		};
+   }
+
+   rpc DocumentOnSATypes (google.protobuf.Empty) returns (DocumentOnSATypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/document-on-sa-types"
+		};
+   }
+
+   rpc DocumentTemplateTypes (google.protobuf.Empty) returns (DocumentTemplateTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/document-template-types"
+		};
+   }
+
+   rpc DocumentTemplateVariants (google.protobuf.Empty) returns (DocumentTemplateVariantsResponse) {
+	   option (google.api.http) = {
+			get: "/v1/document-template-variants"
+		};
+   }
+
+   rpc DocumentTemplateVersions (google.protobuf.Empty) returns (DocumentTemplateVersionsResponse) {
+	   option (google.api.http) = {
+			get: "/v1/document-template-versions"
+		};
+   }
+
+   rpc DocumentTypes (google.protobuf.Empty) returns (DocumentTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/document-types"
+		};
+   }
+
+   rpc DrawingDurations (google.protobuf.Empty) returns (DrawingDurationsResponse) {
+	   option (google.api.http) = {
+			get: "/v1/drawing-durations"
+		};
+   }
+
+   rpc DrawingTypes (google.protobuf.Empty) returns (DrawingTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/drawing-types"
+		};
+   }
+
+   rpc EaCodesMain (google.protobuf.Empty) returns (EaCodesMainResponse) {
+	   option (google.api.http) = {
+			get: "/v1/ea-codes-main"
+		};
+   }
+
+   rpc EducationLevels (google.protobuf.Empty) returns (EducationLevelsResponse) {
+	   option (google.api.http) = {
+			get: "/v1/education-levels"
+		};
+   }
+
+   rpc EmploymentTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/employment-types"
+		};
+   }
+
+   rpc Fees (google.protobuf.Empty) returns (FeesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/fees"
+		};
+   }
+
+   rpc FixedRatePeriods (google.protobuf.Empty) returns (FixedRatePeriodsResponse) {
+	   option (google.api.http) = {
+			get: "/v1/fixed-rate-periods"
+		};
+   }
+
+   rpc FormTypes (google.protobuf.Empty) returns (FormTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/form-types"
+		};
+   }
+
+   rpc Genders (google.protobuf.Empty) returns (GendersResponse) {
+	   option (google.api.http) = {
+			get: "/v1/genders"
+		};
+   }
+
+   rpc GetDeveloper (GetDeveloperRequest) returns (GetDeveloperResponse) {
+	   option (google.api.http) = {
+			get: "/v1/developer"
+		};
+   }
+
+   rpc GetDeveloperProject (GetDeveloperProjectRequest) returns (GetDeveloperProjectResponse) {
+	   option (google.api.http) = {
+			get: "/v1/developer-project"
+		};
+   }
+
+   rpc GetGeneralDocumentList (google.protobuf.Empty) returns (GetGeneralDocumentListResponse) {
+	   option (google.api.http) = {
+			get: "/v1/get-general-document-list"
+		};
+   }
+
+   rpc GetOperator (GetOperatorRequest) returns (GetOperatorResponse) {
+	   option (google.api.http) = {
+			get: "/v1/operator"
+		};
+   }
+
+   rpc HouseholdTypes (google.protobuf.Empty) returns (HouseholdTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/household-types"
+		};
+   }
+
+   rpc HousingConditions (google.protobuf.Empty) returns (HousingConditionsResponse) {
+	   option (google.api.http) = {
+			get: "/v1/housing-conditions"
+		};
+   }
+
+   rpc Channels (google.protobuf.Empty) returns (ChannelsResponse) {
+	   option (google.api.http) = {
+			get: "/v1/channels"
+		};
+   }
+
+   rpc IdentificationDocumentTypes (google.protobuf.Empty) returns (IdentificationDocumentTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/identification-document-types"
+		};
+   }
+
+   rpc IdentificationSubjectMethods (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/identification-subject-methods"
+		};
+   }
+
+   rpc IdentitySchemes (google.protobuf.Empty) returns (IdentitySchemesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/identity-schemes"
+		};
+   }
+
+   rpc IncomeForeignTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/income-foreign-types"
+		};
+   }
+
+   rpc IncomeMainTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/income-main-types"
+		};
+   }
+
+   rpc IncomeMainTypesAML (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/income-main-types-aml"
+		};
+   }
+
+   rpc IncomeOtherTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/income-other-types"
+		};
+   }
+
+   rpc JobTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/job-types"
+		};
+   }
+
+   rpc LegalCapacityRestrictionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/legal-capacity-restriction-types"
+		};
+   }
+
+   rpc LoanInterestRateAnnouncedTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/loan-interest-rate-announced-types"
+		};
+   }
+
+   rpc LoanKinds (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/loan-kinds"
+		};
+   }
+
+   rpc LoanPurposes (google.protobuf.Empty) returns (LoanPurposesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/loan-purposes"
+		};
+   }
+
+   rpc Mandants (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/mandants"
+		};
+   }
+
+   rpc MaritalStatuses (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/marital-statuses"
+		};
+   }
+
+   rpc MarketingActions (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/marketing-actions"
+		};
+   }
+
+   rpc Nationalities (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/nationalities"
+		};
+   }
+
+   rpc NetMonthEarnings (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/net-month-earnings"
+		};
+   }
+
+   rpc ObligationCorrectionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/obligation-correction-types"
+		};
+   }
+
+   rpc ObligationLaExposures (google.protobuf.Empty) returns (ObligationLaExposuresResponse) {
+	   option (google.api.http) = {
+			get: "/v1/obligation-la-exposures"
+		};
+   }
+
+   rpc ObligationTypes (google.protobuf.Empty) returns (ObligationTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/obligation-types"
+		};
+   }
+
+   rpc PaymentDays (google.protobuf.Empty) returns (PaymentDaysResponse) {
+	   option (google.api.http) = {
+			get: "/v1/payment-days"
+		};
+   }
+
+   rpc PayoutTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/payout-types"
+		};
+   }
+
+   rpc PostCodes (google.protobuf.Empty) returns (PostCodesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/post-codes"
+		};
+   }
+
+   rpc ProductTypes (google.protobuf.Empty) returns (ProductTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/product-types"
+		};
+   }
+
+   rpc ProfessionCategories (google.protobuf.Empty) returns (ProfessionCategoriesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/profession-categories"
+		};
+   }
+
+   rpc ProfessionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/profession-types"
+		};
+   }
+
+   rpc ProofTypes (google.protobuf.Empty) returns (ProofTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/proof-types"
+		};
+   }
+
+   rpc PropertySettlements (google.protobuf.Empty) returns (PropertySettlementsResponse) {
+	   option (google.api.http) = {
+			get: "/v1/property-settlements"
+		};
+   }
+
+   rpc RealEstatePurchaseTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/real-estate-purchase-types"
+		};
+   }
+
+   rpc RealEstateTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/real-estate-types"
+		};
+   }
+
+   rpc RelationshipCustomerProductTypes (google.protobuf.Empty) returns (RelationshipCustomerProductTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/relationship-customer-product-types"
+		};
+   }
+
+   rpc RepaymentScheduleTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/repayment-schedule-types"
+		};
+   }
+
+   rpc RiskApplicationTypes (google.protobuf.Empty) returns (RiskApplicationTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/risk-application-types"
+		};
+   }
+
+   rpc SalesArrangementStates (google.protobuf.Empty) returns (SalesArrangementStatesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/sales-arrangement-states"
+		};
+   }
+
+   rpc SalesArrangementTypes (google.protobuf.Empty) returns (SalesArrangementTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/sales-arrangement-types"
+		};
+   }
+
+   rpc SignatureStatesNoby (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/signature-states-noby"
+		};
+   }
+
+   rpc SignatureTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/signature-types"
+		};
+   }
+
+   rpc SigningMethodsForNaturalPerson (google.protobuf.Empty) returns (SigningMethodsForNaturalPersonResponse) {
+	   option (google.api.http) = {
+			get: "/v1/signing-methods-for-natural-person"
+		};
+   }
+
+   rpc SmsNotificationTypes (google.protobuf.Empty) returns (SmsNotificationTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/sms-notification-types"
+		};
+   }
+
+   rpc StatementFrequencies (google.protobuf.Empty) returns (StatementFrequenciesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/statement-frequencies"
+		};
+   }
+
+   rpc StatementSubscriptionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/statement-subscription-types"
+		};
+   }
+
+   rpc StatementTypes (google.protobuf.Empty) returns (StatementTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/statement-types"
+		};
+   }
+
+   rpc TinFormatsByCountry (google.protobuf.Empty) returns (TinFormatsByCountryResponse) {
+	   option (google.api.http) = {
+			get: "/v1/tin-formats-by-country"
+		};
+   }
+
+   rpc TinNoFillReasonsByCountry (google.protobuf.Empty) returns (TinNoFillReasonsByCountryResponse) {
+	   option (google.api.http) = {
+			get: "/v1/tin-no-fill-reasons-by-country"
+		};
+   }
+
+   rpc WorkflowConsultationMatrix (google.protobuf.Empty) returns (WorkflowConsultationMatrixResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-consultation-matrix"
+		};
+   }
+
+   rpc WorkflowPriceExceptionDecisionTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-price-exception-decision-types"
+		};
+   }
+
+   rpc WorkflowProcessType (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-process-type"
+		};
+   }
+
+   rpc WorkflowTaskCategories (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-task-categories"
+		};
+   }
+
+   rpc WorkflowTaskConsultationTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-task-consultation-types"
+		};
+   }
+
+   rpc WorkflowTaskSigningResponseTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-task-signing-response-types"
+		};
+   }
+
+   rpc WorkflowTaskStates (google.protobuf.Empty) returns (WorkflowTaskStatesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-task-states"
+		};
+   }
+
+   rpc WorkflowTaskStatesNoby (google.protobuf.Empty) returns (WorkflowTaskStatesNobyResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-task-states-noby"
+		};
+   }
+
+   rpc WorkflowTaskTypes (google.protobuf.Empty) returns (WorkflowTaskTypesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/workflow-task-types"
+		};
+   }
+
+   rpc WorkSectors (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/work-sectors"
+		};
+   }  
+}

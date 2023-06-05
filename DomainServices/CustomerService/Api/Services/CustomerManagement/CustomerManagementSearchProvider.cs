@@ -1,21 +1,21 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
-using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
-using DomainServices.CustomerService.Api.Extensions;
+using CM = DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
 internal sealed class CustomerManagementSearchProvider
 {
-    private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
-    private readonly ICodebookServiceClients _codebook;
+    private readonly CM.ICustomerManagementClient _customerManagement;
+    private readonly ICodebookServiceClient _codebook;
 
-    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
-    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
+    private List<CountriesResponse.Types.CountryItem> _countries = null!;
+    private List<GendersResponse.Types.GenderItem> _genders = null!;
+    private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
 
-    public CustomerManagementSearchProvider(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
+    public CustomerManagementSearchProvider(CM.ICustomerManagementClient customerManagement, ICodebookServiceClient codebook)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;
@@ -27,17 +27,17 @@ internal sealed class CustomerManagementSearchProvider
 
         var foundCustomers = await _customerManagement.Search(ParseRequest(searchRequest), cancellationToken);
 
-        return foundCustomers.Where(c => c.Party is __Contracts.NaturalPersonSearchResult)
+        return foundCustomers.Where(c => c.Party.NaturalPersonAttributes is not null)
                              .Select(c =>
                              {
                                  var item = new SearchCustomersItem
                                  {
                                      Identity = new Identity(c.CustomerId, IdentitySchemes.Kb),
-                                     NaturalPerson = CreateNaturalPerson(c),
+                                     NaturalPerson = CreateNaturalPerson(c.Party.NaturalPersonAttributes),
                                      IdentificationDocument = CreateIdentificationDocument(c.PrimaryIdentificationDocument)
                                  };
 
-                                 FillAddressData(item, c.PrimaryAddress?.Address);
+                                 FillAddressData(item, c.PrimaryAddress?.AddressLinePoint);
 
                                  return item;
                              });
@@ -82,26 +82,24 @@ internal sealed class CustomerManagementSearchProvider
         return cmRequest;
     }
 
-    private NaturalPersonBasicInfo CreateNaturalPerson(__Contracts.CustomerSearchResultRow customer)
+    private NaturalPersonBasicInfo CreateNaturalPerson(CM.Contracts.NaturalPersonAttributesSearch customer)
     {
-        var np = (__Contracts.NaturalPersonSearchResult)customer.Party;
-
         return new NaturalPersonBasicInfo
         {
-            BirthNumber = np.CzechBirthNumber ?? string.Empty,
-            DateOfBirth = np.BirthDate,
-            FirstName = np.FirstName ?? string.Empty,
-            LastName = np.Surname ?? string.Empty,
-            GenderId = _genders.First(t => t.KbCmCode == np.GenderCode.ToString()).Id
+            BirthNumber = customer.CzechBirthNumber ?? string.Empty,
+            DateOfBirth = customer.BirthDate,
+            FirstName = customer.FirstName ?? string.Empty,
+            LastName = customer.Surname ?? string.Empty,
+            GenderId = _genders.FirstOrDefault(t => t.KbCmCode == customer.GenderCode)?.Id ?? 0
         };
     }
 
-    private Contracts.IdentificationDocument? CreateIdentificationDocument(__Contracts.IdentificationDocument? document)
+    private IdentificationDocument? CreateIdentificationDocument(CM.Contracts.IdentificationDocument? document)
     {
         if (document is null)
             return null;
 
-        return new Contracts.IdentificationDocument
+        return new IdentificationDocument
         {
             RegisterPlace = document.RegisterPlace ?? string.Empty,
             ValidTo = document.ValidTo,
@@ -113,7 +111,7 @@ internal sealed class CustomerManagementSearchProvider
         };
     }
 
-    private void FillAddressData(SearchCustomersItem result, __Contracts.Address? address)
+    private void FillAddressData(SearchCustomersItem result, CM.Contracts.AddressLinePoint? address)
     {
         if (address is null)
             return;

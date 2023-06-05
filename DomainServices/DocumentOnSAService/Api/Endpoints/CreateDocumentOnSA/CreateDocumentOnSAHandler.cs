@@ -33,14 +33,11 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
     {
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
 
-        if (salesArrangement is null)
-        {
-            throw new CisNotFoundException(19000, $"SalesArrangement{request.SalesArrangementId} does not exist.");
-        }
-
         var documentData = await _dataAggregatorServiceClient.GetDocumentData(new()
         {
             DocumentTypeId = request.DocumentTypeId!.Value,
+            DocumentTemplateVersionId = request.DocumentTemplateVersionId,
+            DocumentTemplateVariantId = request.DocumentTemplateVariantId,
             InputParameters = new()
             {
                 SalesArrangementId = request.SalesArrangementId!.Value,
@@ -65,6 +62,7 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
                 DocumentOnSAId = documentOnSaEntity.DocumentOnSAId,
                 DocumentTypeId = documentOnSaEntity.DocumentTypeId,
                 DocumentTemplateVersionId = documentOnSaEntity.DocumentTemplateVersionId,
+                DocumentTemplateVariantId = documentOnSaEntity.DocumentTemplateVariantId,
                 FormId = documentOnSaEntity.FormId ?? string.Empty,
                 EArchivId = documentOnSaEntity.EArchivId ?? string.Empty,
                 DmsxId = documentOnSaEntity.DmsxId ?? string.Empty,
@@ -72,7 +70,7 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
                 HouseholdId = documentOnSaEntity.HouseholdId,
                 IsValid = documentOnSaEntity.IsValid,
                 IsSigned = documentOnSaEntity.IsSigned,
-                IsDocumentArchived = documentOnSaEntity.IsDocumentArchived,
+                IsArchived = documentOnSaEntity.IsArchived,
                 SignatureMethodCode = documentOnSaEntity.SignatureMethodCode ?? string.Empty,
                 SignatureDateTime = documentOnSaEntity.SignatureDateTime is not null ? Timestamp.FromDateTime(DateTime.SpecifyKind(documentOnSaEntity.SignatureDateTime.Value, DateTimeKind.Utc)) : null,
                 SignatureConfirmedBy = documentOnSaEntity.SignatureConfirmedBy
@@ -86,13 +84,14 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
         {
             DocumentTypeId = request.DocumentTypeId!.Value,
             DocumentTemplateVersionId = dataResponse.DocumentTemplateVersionId,
+            DocumentTemplateVariantId = dataResponse.DocumentTemplateVariantId,
             FormId = request.FormId,
             EArchivId = request.EArchivId,
             SalesArrangementId = request.SalesArrangementId!.Value,
             Data = JsonSerializer.Serialize(dataResponse.DocumentData),
             IsValid = true,
             IsSigned = false,
-            IsDocumentArchived = false,
+            IsArchived = false,
             IsFinal = request.IsFinal,
         };
     }

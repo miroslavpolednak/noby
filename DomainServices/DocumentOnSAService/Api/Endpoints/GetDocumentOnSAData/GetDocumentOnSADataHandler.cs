@@ -21,14 +21,18 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
             {
                 DocumentTypeId = d.DocumentTypeId,
                 DocumentTemplateVersionId = d.DocumentTemplateVersionId,
-                Data = d.Data
+                DocumentTemplateVariantId = d.DocumentTemplateVariantId,
+                Data = d.Data,
+                SignatureTypeId = d.SignatureTypeId,
+                ExternalId = d.ExternalId,
+                Source = (Source)d.Source,
+                IsValid = d.IsValid,
+                IsSigned = d.IsSigned
             })
             .FirstOrDefaultAsync(cancellationToken);
 
         if (response is null)
-        {
-            throw new CisNotFoundException(19003, $"DocumentOnSA {request.DocumentOnSAId!.Value} does not exist.");
-        }
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId!.Value);
 
         return response;
     }

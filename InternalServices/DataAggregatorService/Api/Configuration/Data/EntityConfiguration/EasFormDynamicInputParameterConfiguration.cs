@@ -8,9 +8,11 @@ internal class EasFormDynamicInputParameterConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<EasFormDynamicInputParameter> builder)
     {
-        builder.HasKey(x => new { x.EasRequestTypeId, x.InputParameterId, x.TargetDataServiceId });
+        builder.HasKey(x => new { x.EasRequestTypeId, x.EasFormTypeId, x.InputParameterId, x.TargetDataServiceId });
 
         builder.HasOne(x => x.EasRequestType).WithMany().IsRequired();
+
+        builder.HasOne(x => x.EasFormType).WithMany().IsRequired();
 
         builder.HasOne(x => x.InputParameter).WithMany().IsRequired();
 

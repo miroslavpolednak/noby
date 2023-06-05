@@ -4,7 +4,7 @@ namespace DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1
 
 internal sealed class MockIdentifiedSubjectBrClient : IIdentifiedSubjectBrClient
 {
-    public Task<CreateIdentifiedSubjectResponse> CreateIdentifiedSubject(IdentifiedSubject request, bool hardCreate, CancellationToken cancellationToken = default)
+    public Task<IdentifiedSubjectResult<CreateIdentifiedSubjectResponse>> CreateIdentifiedSubject(IdentifiedSubject request, bool hardCreate, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

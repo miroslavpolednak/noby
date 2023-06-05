@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Result;
+﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
+using CIS.InternalServices.NotificationService.Contracts.Result;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Result;
@@ -9,7 +10,6 @@ public class GetResultRequestValidator : AbstractValidator<GetResultRequest>
     {
         RuleFor(request => request.NotificationId)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.Result.NotificationIdNotEmpty)
-                .WithMessage($"{nameof(GetResultRequest.NotificationId)} must be not empty.");
+            .WithErrorCode(ErrorHandling.ErrorCodeMapper.NotificationIdRequired);
     }
 }

@@ -24,9 +24,9 @@ internal sealed class AddressSearchHandler
     }
 
     private ExternalServices.AddressWhisperer.V1.IAddressWhispererClient _addressWhispererClient;
-    private DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
 
-    public AddressSearchHandler(ExternalServices.AddressWhisperer.V1.IAddressWhispererClient addressWhispererClient, DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService)
+    public AddressSearchHandler(ExternalServices.AddressWhisperer.V1.IAddressWhispererClient addressWhispererClient, DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         _addressWhispererClient = addressWhispererClient;
         _codebookService = codebookService;

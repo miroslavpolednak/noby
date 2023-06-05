@@ -1,29 +1,29 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
+using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.LoanApplicationData;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest.ConditionalValues;
 using DomainServices.OfferService.Contracts;
+using DomainServices.UserService.Clients;
+using DomainServices.UserService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
 [TransientService, SelfService]
-internal class ProductFormData : AggregatedData
+internal class ProductFormData : LoanApplicationBaseFormData
 {
-    public ProductFormData(HouseholdData householdData)
+    private readonly IUserServiceClient _userService;
+
+    public ProductFormData(HouseholdData householdData, IUserServiceClient userService) : base(householdData)
     {
-        HouseholdData = householdData;
+        _userService = userService;
     }
 
-    public HouseholdData HouseholdData { get; }
-
-    public MockValues MockValues { get; } = new();
-
-    public DefaultValues DefaultValues3601 { get; private set; } = null!;
-
-    public DefaultValues DefaultValues3602 { get; private set; } = null!;
+    public DynamicFormValues MainDynamicFormValues { get; set; } = null!;
 
     public ConditionalFormValues ConditionalFormValues { get; private set; } = null!;
+
+    public User? PerformerUser { get; private set; }
 
     public int? SalesArrangementStateId => _codebookManager.SalesArrangementStates.First(x => x.Id == SalesArrangement.State).StarbuildId;
 
@@ -35,33 +35,38 @@ internal class ProductFormData : AggregatedData
 
     public int? DrawingDurationId => _codebookManager.DrawingDurations.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingDurationId)?.DrawingDuration;
 
-    public IEnumerable<HouseholdDto> HouseholdList => new[] { HouseholdData.HouseholdDto };
-
     public long? MpIdentityId => GetMpIdentityId();
 
     public bool IsEmployeeBonusRequested => Offer.SimulationInputs.IsEmployeeBonusRequested == true;
 
     public IEnumerable<ResultFee> OfferFees => Offer.AdditionalSimulationResults.Fees.Where(f => f.UsageText.Contains('F', StringComparison.InvariantCultureIgnoreCase));
 
+    public string? ContractSegment => HouseholdData.Customers.Where(c => c.NaturalPerson.Segment is "PB" or "PC").Select(_ => "PRIV").FirstOrDefault();
+
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
-        DefaultValues3601 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3601, _codebookManager.DocumentTypes);
-        DefaultValues3602 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3602, _codebookManager.DocumentTypes);
-
         ProductTypeId = GetProductTypeId();
 
         ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(ProductTypeId, Offer.SimulationInputs.LoanKindId), this);
 
-        HouseholdData.PrepareCodebooks(_codebookManager);
-
-        return HouseholdData.Initialize(SalesArrangement.SalesArrangementId, cancellationToken);
+        return Task.WhenAll(base.LoadAdditionalData(cancellationToken), LoadPerformerData(cancellationToken));
     }
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        configurator.ProductTypes().DrawingTypes().DrawingDurations().SalesArrangementStates().SalesArrangementTypes().DocumentTypes();
+        base.ConfigureCodebooks(configurator);
+
+        configurator.ProductTypes().DrawingTypes().DrawingDurations().SalesArrangementStates().SalesArrangementTypes();
 
         HouseholdData.ConfigureCodebooks(configurator);
+    }
+
+    private async Task LoadPerformerData(CancellationToken cancellationToken)
+    {
+        if (MainDynamicFormValues.PerformerUserId is null)
+            return;
+
+        PerformerUser = await _userService.GetUser(MainDynamicFormValues.PerformerUserId.Value, cancellationToken);
     }
 
     private int GetProductTypeId()

@@ -12,6 +12,8 @@ internal class DocumentSpecialDataField
 
     public string? StringFormat { get; set; }
 
+    public string? DefaultTextIfNull { get; set; }
+
     public byte? TextAlign { get; set; }
 
     public Document Document { get; set; } = null!;

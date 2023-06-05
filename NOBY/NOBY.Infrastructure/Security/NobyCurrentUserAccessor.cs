@@ -55,9 +55,9 @@ public sealed class NobyCurrentUserAccessor
         var userInstance = await userService.GetUser(_user!.Id, cancellationToken);
         _userDetails = new NobyCurrentUserDetails
         {
-            DisplayName = userInstance.FullName,
-            CPM = userInstance.CPM,
-            ICP = userInstance.ICP
+            DisplayName = userInstance.UserInfo.DisplayName,
+            CPM = userInstance.UserInfo.Cpm,
+            ICP = userInstance.UserInfo.Icp
         };
 
         return _userDetails;

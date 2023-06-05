@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
@@ -6,7 +7,7 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCusto
 internal sealed class CreateCustomerRequestValidator
     : AbstractValidator<CreateCustomerRequest>
 {
-    public CreateCustomerRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public CreateCustomerRequestValidator(ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)

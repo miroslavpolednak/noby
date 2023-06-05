@@ -1,5 +1,5 @@
 ﻿using Avro.Specific;
-using CIS.InternalServices.NotificationService.Messaging.Partials;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Messages.Partials;
 using Confluent.Kafka;
 using Confluent.Kafka.SyncOverAsync;
 using Confluent.SchemaRegistry;
@@ -7,10 +7,9 @@ using cz.kb.osbs.mcs.sender.sendapi.v4.sms;
 using KB.Speed.MassTransit.DependencyInjection;
 using KB.Speed.MassTransit.Kafka;
 using KB.Speed.MassTransit.Kafka.Serializers;
+using KB.Speed.MassTransit.Tracing;
 using KB.Speed.Messaging.Kafka.DependencyInjection;
 using KB.Speed.Tracing.Extensions;
-using KB.Speed.Tracing.Instrumentations.AspNetCore;
-using KB.Speed.Tracing.Instrumentations.HttpClient;
 using MassTransit;
 using Mock.Mcs.Configuration;
 using Mock.Mcs.Messaging.Consumers;
@@ -23,14 +22,13 @@ public static class ServiceCollectionExtensions
 {
     public static WebApplicationBuilder AddMessaging(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSpeedTracing(builder.Configuration, providerBuilder =>
-        {
-            providerBuilder.SetDefaultResourceBuilder()
-                .AddDefaultExporter()
-                .AddSpeedAspNetInstrumentation()
-                .AddSpeedHttpClientInstrumentation()
-                .AddMassTransitInstrumentation();
-        }); 
+        builder.Services
+            .AddSpeedTracing()
+            .AddMassTransitTracingOptions(o =>
+            {
+                o.UseHeaderValidation = false;
+                o.HeaderValidationBehavior = InvalidHeaderBehavior.IgnoreErrors;
+            }); 
         
         var kafkaConfiguration = builder.GetKafkaConfiguration();
         var appConfiguration = builder.GetAppConfiguration();
@@ -77,15 +75,15 @@ public static class ServiceCollectionExtensions
                         }
                     });
                     
-                    var multipleTypeConfig = new MultipleTypeConfigBuilder<IMcsSenderCommand>()
+                    var multipleTypeConfig = new MultipleTypeConfigBuilder<IMcsSenderTopic>()
                         .AddType<SendEmail>(SendEmail._SCHEMA)
                         .AddType<SendSMS>(SendSMS._SCHEMA)
                         .Build();
                     
-                    k.TopicEndpoint<IMcsSenderCommand>(topics.McsSender, kafkaConfiguration.GroupId, conf =>
+                    k.TopicEndpoint<IMcsSenderTopic>(topics.McsSender, kafkaConfiguration.GroupId, conf =>
                     {
                         var schemaRegistryClient = context.GetRequiredService<ISchemaRegistryClient>();
-                        var valueDeserializer = new MultipleTypeDeserializer<IMcsSenderCommand>(multipleTypeConfig, schemaRegistryClient);
+                        var valueDeserializer = new MultipleTypeDeserializer<IMcsSenderTopic>(multipleTypeConfig, schemaRegistryClient);
 
                         conf.SetValueDeserializer(valueDeserializer.AsSyncOverAsync());
                         conf.ConfigureConsumer<SendEmailConsumer>(context);

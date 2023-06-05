@@ -6,7 +6,7 @@ namespace DomainServices.SalesArrangementService.Api.Endpoints.CreateSalesArrang
 internal sealed class CreateSalesArrangementRequestValidator
     : AbstractValidator<Contracts.CreateSalesArrangementRequest>
 {
-    public CreateSalesArrangementRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public CreateSalesArrangementRequestValidator(CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
@@ -19,6 +19,13 @@ internal sealed class CreateSalesArrangementRequestValidator
         RuleFor(t => t.SalesArrangementTypeId)
             .MustAsync(async (t, cancellationToken) => (await codebookService.SalesArrangementTypes(cancellationToken)).Any(c => c.Id == t))
             .WithErrorCode(ErrorCodeMapper.SalesArrangementTypeNotFound);
+
+        When(t => t.DataCase == Contracts.CreateSalesArrangementRequest.DataOneofCase.Mortgage && t.Mortgage is not null, () =>
+        {
+            RuleFor(t => t.Mortgage.Agent)
+                .Empty()
+                .WithErrorCode(ErrorCodeMapper.MortgageAgentIsNotEmpty);
+        });
     }
 }
 

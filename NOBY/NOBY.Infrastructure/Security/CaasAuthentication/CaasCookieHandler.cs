@@ -34,14 +34,14 @@ internal sealed class CaasCookieHandler
 
                 // zavolat user service a zjistit, jestli muze uzivatel do aplikace
                 var userServiceClient = (IUserServiceClient)context.HttpContext.RequestServices.GetService(typeof(IUserServiceClient))!;
-                var userInstance = await userServiceClient.GetUserByLogin(currentLogin);
+                var userInstance = await userServiceClient.GetUser(currentLogin);
 
                 //TODO nejaka kontrola prav?
 
                 // vytvorit claimy
                 var claims = new List<Claim>();
                 claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, currentLogin));
-                claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+                claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(System.Globalization.CultureInfo.InvariantCulture)));
 
                 var identity = new ClaimsIdentity(claims, context.Principal.Identity!.AuthenticationType, CIS.Core.Security.SecurityConstants.ClaimTypeId, "role");
                 var principal = new ClaimsPrincipal(identity);

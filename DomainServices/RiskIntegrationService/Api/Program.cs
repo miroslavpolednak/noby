@@ -6,6 +6,8 @@ using CIS.Infrastructure.Security;
 using ProtoBuf.Grpc.Server;
 using CIS.InternalServices;
 using DomainServices;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -53,6 +55,7 @@ builder.AddRipSwagger();
 
 // add grpc
 builder.AddRipGrpc();
+builder.Services.AddHealthChecks();
 #endregion register builder
 
 // kestrel configuration
@@ -74,8 +77,17 @@ app.UseAuthorization();
 app.UseCisServiceUserContext();
 
 app.MapCodeFirstGrpcHealthChecks();
+app.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, new HealthCheckOptions
+{
+    ResultStatusCodes =
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+    }
+});
 
-app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.CustomersExposureService>();
+app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.CustomerExposure.V2.CustomersExposureService>();
 app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseService>();
 app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.CreditWorthinessService>();
 app.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.LoanApplicationService>();
@@ -90,6 +102,7 @@ app.UseRipSwagger();
 
 // print gRPC PROTO file
 //var schemaGenerator = new ProtoBuf.Grpc.Reflection.SchemaGenerator();
+//var proto1 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.ILoanApplicationService>();
 //var proto1 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2.ICreditWorthinessService>();
 //var proto1 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.IRiskBusinessCaseService>();
 //File.WriteAllText("d:\\proto1.proto", proto1);

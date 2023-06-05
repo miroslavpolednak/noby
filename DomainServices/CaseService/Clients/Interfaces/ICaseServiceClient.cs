@@ -109,6 +109,8 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
     Task<List<WorkflowTask>> GetTaskList(long caseId, CancellationToken cancellationToken = default(CancellationToken));
 
+    Task<IList<ProcessTask>> GetProcessList(long caseId, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Update infa o kontaktech
     /// </summary>
@@ -119,4 +121,14 @@ public interface ICaseServiceClient
     Task UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default(CancellationToken));
 
     Task NotifyStarbuild(long caseId, string riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default);
+
+    Task<GetTaskDetailResponse> GetTaskDetail(int taskIdSb, CancellationToken cancellationToken = default);
+    
+    Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default(CancellationToken));
+    
+    Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task<bool> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default(CancellationToken));
 }

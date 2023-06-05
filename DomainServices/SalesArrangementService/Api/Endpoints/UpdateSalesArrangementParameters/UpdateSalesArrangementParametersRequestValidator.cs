@@ -6,7 +6,7 @@ namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrang
 internal sealed class UpdateSalesArrangementParametersRequestValidator
     : AbstractValidator<Contracts.UpdateSalesArrangementParametersRequest>
 {
-    public UpdateSalesArrangementParametersRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public UpdateSalesArrangementParametersRequestValidator(CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
@@ -25,25 +25,21 @@ internal sealed class UpdateSalesArrangementParametersRequestValidator
 internal sealed class SalesArrangementParametersMortgageValidator
     : AbstractValidator<Contracts.SalesArrangementParametersMortgage>
 {
-    public SalesArrangementParametersMortgageValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public SalesArrangementParametersMortgageValidator(CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.IncomeCurrencyCode)
-            .NotEmpty()
-            .WithErrorCode(ErrorCodeMapper.IncomeCurrencyCodeIsEmpty);
-        RuleFor(t => t.IncomeCurrencyCode)
             .MustAsync(async (code, cancellation) =>
             {
-                return (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
+                return string.IsNullOrEmpty(code) ||  
+                    (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
             })
             .WithErrorCode(ErrorCodeMapper.IncomeCurrencyCodeNotFound);
-
-        RuleFor(t => t.ResidencyCurrencyCode)
-            .NotEmpty()
-            .WithErrorCode(ErrorCodeMapper.ResidencyCurrencyCodeIsEmpty);
+        
         RuleFor(t => t.ResidencyCurrencyCode)
             .MustAsync(async (code, cancellation) =>
             {
-                return (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
+                return string.IsNullOrEmpty(code) || 
+                    (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
             })
             .WithErrorCode(ErrorCodeMapper.ResidencyCurrencyCodeNotFound);
 
@@ -62,7 +58,7 @@ internal sealed class SalesArrangementParametersMortgageValidator
 internal sealed class MortgageLoanRealEstateValidator
     : AbstractValidator<Contracts.SalesArrangementParametersMortgage.Types.LoanRealEstate>
 {
-    public MortgageLoanRealEstateValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public MortgageLoanRealEstateValidator(CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.RealEstateTypeId)
             .MustAsync(async (id, cancellation) =>

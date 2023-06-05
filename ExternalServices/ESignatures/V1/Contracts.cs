@@ -27,16 +27,6 @@ namespace ExternalServices.ESignatures.V1.Contracts
     internal partial class PrepareDocumentRequest
     {
 
-        [System.Text.Json.Serialization.JsonPropertyName("CurrentUserInfo")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public UserInfo CurrentUserInfo { get; set; } = new UserInfo();
-
-        [System.Text.Json.Serialization.JsonPropertyName("CreatorInfo")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public UserInfo CreatorInfo { get; set; } = new UserInfo();
-
         [System.Text.Json.Serialization.JsonPropertyName("DocumentData")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
@@ -52,6 +42,16 @@ namespace ExternalServices.ESignatures.V1.Contracts
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public System.Collections.Generic.ICollection<SigneeInfo>? OtherClients { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("CurrentUserInfo")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public UserInfo CurrentUserInfo { get; set; } = new UserInfo();
+
+        [System.Text.Json.Serialization.JsonPropertyName("CreatorInfo")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public UserInfo CreatorInfo { get; set; } = new UserInfo();
+
         [System.Text.Json.Serialization.JsonPropertyName("NonClientSignatures")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
@@ -61,27 +61,6 @@ namespace ExternalServices.ESignatures.V1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string? AdditionalData { get; set; } = default!;
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class UserInfo
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("CPM")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public string CPM { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("ICP")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? ICP { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("Name")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? Name { get; set; } = default!;
 
     }
 
@@ -135,11 +114,6 @@ namespace ExternalServices.ESignatures.V1.Contracts
     internal partial class ClientInfo
     {
 
-        [System.Text.Json.Serialization.JsonPropertyName("ExternalId")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? ExternalId { get; set; } = default!;
-
         [System.Text.Json.Serialization.JsonPropertyName("Name")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
@@ -170,6 +144,11 @@ namespace ExternalServices.ESignatures.V1.Contracts
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public System.Collections.Generic.ICollection<SignatureData>? Signatures { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("ExternalId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string ExternalId { get; set; } = default!;
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -190,6 +169,27 @@ namespace ExternalServices.ESignatures.V1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         public System.Collections.Generic.ICollection<SignatureData> Signatures { get; set; } = new System.Collections.ObjectModel.Collection<SignatureData>();
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class UserInfo
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("CPM")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string CPM { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ICP")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? ICP { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("Name")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? Name { get; set; } = default!;
 
     }
 
@@ -252,7 +252,7 @@ namespace ExternalServices.ESignatures.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResponseURL
+    internal partial class ResponseUrl
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("TargetUrl")]
@@ -320,8 +320,8 @@ namespace ExternalServices.ESignatures.V1.Contracts
 
         [System.Text.Json.Serialization.JsonPropertyName("DocumentExternalId")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? DocumentExternalId { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string DocumentExternalId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("EaCode")]
 
@@ -409,8 +409,8 @@ namespace ExternalServices.ESignatures.V1.Contracts
 
         [System.Text.Json.Serialization.JsonPropertyName("LastChangeDate")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public System.DateTime LastChangeDate { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.DateTime? LastChangeDate { get; set; } = default!;
 
     }
 
@@ -455,11 +455,6 @@ namespace ExternalServices.ESignatures.V1.Contracts
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         public string DocumentExternalId { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("Poznamka")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? Poznamka { get; set; } = default!;
-
         [System.Text.Json.Serialization.JsonPropertyName("Name")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
@@ -509,6 +504,11 @@ namespace ExternalServices.ESignatures.V1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string? FileContentType { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("Poznamka")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string Poznamka { get; set; } = default!;
 
     }
 
@@ -544,13 +544,8 @@ namespace ExternalServices.ESignatures.V1.Contracts
 
         [System.Text.Json.Serialization.JsonPropertyName("ContractNumber")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? ContractNumber { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("Poznamka")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? Poznamka { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string ContractNumber { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("Name")]
 
@@ -602,31 +597,211 @@ namespace ExternalServices.ESignatures.V1.Contracts
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string? FileContentType { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("Poznamka")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string Poznamka { get; set; } = default!;
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DocumentMetadata
+    internal partial class PrepareDocumentRequest2
     {
 
-        [System.Text.Json.Serialization.JsonPropertyName("Token")]
+        [System.Text.Json.Serialization.JsonPropertyName("DocumentData")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public DocumentInfo2 DocumentData { get; set; } = new DocumentInfo2();
+
+        [System.Text.Json.Serialization.JsonPropertyName("ClientData")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public ClientInfo2 ClientData { get; set; } = new ClientInfo2();
+
+        [System.Text.Json.Serialization.JsonPropertyName("OtherClients")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? Token { get; set; } = default!;
+        public System.Collections.Generic.ICollection<SigneeInfo2>? OtherClients { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("BusinessDateTime")]
+        [System.Text.Json.Serialization.JsonPropertyName("CurrentUserInfo")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public UserInfo CurrentUserInfo { get; set; } = new UserInfo();
+
+        [System.Text.Json.Serialization.JsonPropertyName("CreatorInfo")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public UserInfo CreatorInfo { get; set; } = new UserInfo();
+
+        [System.Text.Json.Serialization.JsonPropertyName("NonClientSignatures")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.DateTime? BusinessDateTime { get; set; } = default!;
+        public System.Collections.Generic.ICollection<SignatureData>? NonClientSignatures { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("ActiveGrouping")]
+        [System.Text.Json.Serialization.JsonPropertyName("AdditionalData")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long? ActiveGrouping { get; set; } = default!;
+        public string? AdditionalData { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class DocumentInfo2
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("Account")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public AccountInfo? Account { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ExpirationDate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.DateTime? ExpirationDate { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("TypeCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string TypeCode { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("TemplateVersion")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string TemplateVersion { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("Name")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string Name { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ExternalId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? ExternalId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("FormId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string FormId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("EaCodeMain")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? EaCodeMain { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("EaCodeOthers")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? EaCodeOthers { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ContractNumber")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string ContractNumber { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class ClientInfo2
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("UniversalId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? UniversalId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("Name")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string Name { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("BirthNumber_RegNumber")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? BirthNumber_RegNumber { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("BirthDate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.DateTime? BirthDate { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("PhoneNumber")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? PhoneNumber { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("EmailAddress")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? EmailAddress { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("Signatures")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.Collections.Generic.ICollection<SignatureMetadata>? Signatures { get; set; } = default!;
+        public System.Collections.Generic.ICollection<SignatureData>? Signatures { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ExternalId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string ExternalId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class SigneeInfo2
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("UniversalId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? UniversalId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("PhoneNumber")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? PhoneNumber { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("EmailAddress")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? EmailAddress { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("Signatures")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public System.Collections.Generic.ICollection<SignatureData> Signatures { get; set; } = new System.Collections.ObjectModel.Collection<SignatureData>();
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class AccountInfo
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("Prefix")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string Prefix { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("Core")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string Core { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class ResponseUrl2
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("ExternalId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? ExternalId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("TargetUrl")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? TargetUrl { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("Result")]
 
@@ -636,89 +811,180 @@ namespace ExternalServices.ESignatures.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class SignatureMetadata
+    internal partial class CreditDocuments2
     {
 
-        [System.Text.Json.Serialization.JsonPropertyName("Id")]
+        [System.Text.Json.Serialization.JsonPropertyName("DocumentsList")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public System.Collections.Generic.ICollection<CreditDocument2> DocumentsList { get; set; } = new System.Collections.ObjectModel.Collection<CreditDocument2>();
+
+        [System.Text.Json.Serialization.JsonPropertyName("Result")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long? Id { get; set; } = default!;
+        public ProcessingResult? Result { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class CreditDocument2
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("DelegatedTo")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? DelegatedTo { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("DocumentType")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public DocumentTypeInfo? DocumentType { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ExternalId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string ExternalId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("Status")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string Status { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("Category")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string Category { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ContractNumber")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string ContractNumber { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ClientName")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string ClientName { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("CreationDate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public System.DateTime CreationDate { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("LastChangeDate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.DateTime? LastChangeDate { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class DocumentTypeInfo
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("Code")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? Code { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("Name")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? Name { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class GetAvailableSigningMethodsRequest
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("DocumentTypeExternalCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string DocumentTypeExternalCode { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("DocumentTypeVersion")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string DocumentTypeVersion { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class AvailableSigningMethods
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("Methods")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.Collections.Generic.ICollection<AvailableSigningMethod>? Methods { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("Result")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public ProcessingResult? Result { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class AvailableSigningMethod
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("Type")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? Type { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("Category")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string? Category { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("Level")]
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class SubmitDispatchFormRequest
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("Documents")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public System.Collections.Generic.ICollection<DispatchFormDocument> Documents { get; set; } = new System.Collections.ObjectModel.Collection<DispatchFormDocument>();
+
+        [System.Text.Json.Serialization.JsonPropertyName("DocumentsValid")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long? Level { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("Grouping")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long? Grouping { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("Sequence")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long? Sequence { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("Anchor")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? Anchor { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("PosX")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long? PosX { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("PosY")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long? PosY { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("Width")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long? Width { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("Height")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long? Height { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("InfoText1")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? InfoText1 { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("InfoText2")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? InfoText2 { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("InfoText3")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? InfoText3 { get; set; } = default!;
+        public bool? DocumentsValid { get; set; } = default!;
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DocumentUploadResult
+    internal partial class DispatchFormDocument
     {
 
-        [System.Text.Json.Serialization.JsonPropertyName("Token")]
+        [System.Text.Json.Serialization.JsonPropertyName("ExternalId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public string ExternalId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("EaCode")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? Token { get; set; } = default!;
+        public string? EaCode { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("Result")]
+        [System.Text.Json.Serialization.JsonPropertyName("IsCancelled")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public ProcessingResult? Result { get; set; } = default!;
+        public bool? IsCancelled { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("AttachmentsComplete")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public bool? AttachmentsComplete { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("NotCompletedReason")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? NotCompletedReason { get; set; } = default!;
 
     }
 

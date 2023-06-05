@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+package DomainServices.UserService;
+option csharp_namespace = "DomainServices.UserService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "UserIdentity.proto";
+
+message User {
+	int32 UserId = 1;
+	repeated cis.types.UserIdentity UserIdentifiers = 2;
+	UserInfoObject UserInfo = 3;
+	UserAttributesObject UserAttributes = 4;
+	repeated int32 UserPermissions = 5;
+}
+
+message UserInfoObject {
+	string FirstName = 1;
+	string LastName = 2;
+	string DisplayName = 3;
+	google.protobuf.StringValue Cpm = 4;
+	google.protobuf.StringValue Icp = 5;
+	google.protobuf.StringValue Cin = 6;
+}
+
+message UserAttributesObject {
+	google.protobuf.StringValue PhoneNumber = 1;
+	google.protobuf.StringValue Email = 2;
+	bool IsUserVIP = 3;
+}

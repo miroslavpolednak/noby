@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Types;
-using CIS.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
 
@@ -14,6 +14,14 @@ internal sealed class ServicesMemoryCache
     public static void Clear()
     {
         _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 20 });
+    }
+
+    /// <summary>
+    /// Pouze pro testovani kese
+    /// </summary>
+    internal static bool IsKeyInCache(string environmentName)
+    {
+        return _cache.TryGetValue(new ApplicationEnvironmentName(environmentName), out object? cacheEntry);
     }
 
     public async Task<IReadOnlyList<Contracts.DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
@@ -48,9 +56,18 @@ internal sealed class ServicesMemoryCache
 
     private async Task<IReadOnlyList<Contracts.DiscoverableService>> getServicesFromDb(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
-        var list = await _connectionProvider
-            .ExecuteDapperRawSqlToList<Dto.ServiceModel>(_sqlQuery, new { name = environmentName.ToString() }, cancellationToken);
-
+        var list = await _dbContext.ServiceDiscoveryEntities
+            .AsNoTracking()
+            .Where(t => t.EnvironmentName == environmentName)
+            .Select(t => new
+            {
+                t.ServiceName,
+                ServiceType = (Contracts.ServiceTypes)t.ServiceType,
+                t.ServiceUrl,
+                t.AddToGlobalHealthCheck
+            })
+            .ToListAsync(cancellationToken);
+        
         if (!list.Any())
         {
             _logger.NoServicesForEnvironment(environmentName);
@@ -64,12 +81,11 @@ internal sealed class ServicesMemoryCache
                 ServiceName = t.ServiceName,
                 ServiceType = t.ServiceType,
                 ServiceUrl = t.ServiceUrl,
+                AddToGlobalHealthCheck = t.AddToGlobalHealthCheck
             })
             .ToArray()
             .AsReadOnly();
     }
-
-    const string _sqlQuery = "SELECT ServiceName, ServiceUrl, ServiceType FROM ServiceDiscovery WHERE EnvironmentName=@name";
 
     static MemoryCacheEntryOptions _entryOptions = new()
     {
@@ -79,13 +95,13 @@ internal sealed class ServicesMemoryCache
     };
 
     private readonly ILogger<ServicesMemoryCache> _logger;
-    private readonly Core.Data.IConnectionProvider _connectionProvider;
+    private readonly Database.ServiceDiscoveryDbContext _dbContext;
 
     public ServicesMemoryCache(
-        Core.Data.IConnectionProvider connectionProvider,
-        ILogger<ServicesMemoryCache> logger)
+        ILogger<ServicesMemoryCache> logger,
+        Database.ServiceDiscoveryDbContext dbContext)
     {
         _logger = logger;
-        _connectionProvider = connectionProvider;
+        _dbContext = dbContext;
     }
 }

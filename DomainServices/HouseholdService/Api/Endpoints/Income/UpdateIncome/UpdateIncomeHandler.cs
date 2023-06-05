@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Contracts;
 using Google.Protobuf;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.UpdateIncome;
@@ -70,10 +71,10 @@ internal sealed class UpdateIncomeHandler
             _ => throw new NotImplementedException("This customer income type serializer is not implemented")
         };
 
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
 
-    public UpdateIncomeHandler(Database.HouseholdServiceDbContext dbContext, CodebookService.Clients.ICodebookServiceClients codebookService)
+    public UpdateIncomeHandler(Database.HouseholdServiceDbContext dbContext, ICodebookServiceClient codebookService)
     {
         _dbContext = dbContext;
         _codebookService = codebookService;

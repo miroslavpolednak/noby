@@ -8,7 +8,9 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 using NOBY.Api.Endpoints.SalesArrangement.SendToCmp.Dto;
+using System.Threading;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CreateCustomerRequest = DomainServices.CustomerService.Contracts.CreateCustomerRequest;
 using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
@@ -19,7 +21,7 @@ internal sealed class SendToCmpHandler
     : IRequestHandler<SendToCmpRequest>
 {
 
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSaService;
@@ -27,7 +29,7 @@ internal sealed class SendToCmpHandler
     private readonly ICustomerServiceClient _customerService;
 
     public SendToCmpHandler(
-        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
+        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSaService,
@@ -53,7 +55,7 @@ internal sealed class SendToCmpHandler
         // check flow switches
         var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
         if (saCategory.SalesArrangementCategory == 1
-            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed))
+            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed && t.Value))
         {
             throw new NobyValidationException(90016);
         }
@@ -73,22 +75,37 @@ internal sealed class SendToCmpHandler
 
             await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
 
+            // odeslat do SB
+            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+
             // update case state
             await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
         }
-
-        // odeslat do SB
-        try
+        else
         {
+            // odeslat do SB
             await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
         }
-        catch when (saCategory.SalesArrangementCategory == 1)
-        {
-            //CaseState rollback
-            await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InProgress, cancellationToken);
+    }
 
-            throw;
+    private async Task validateFlowSwitches(int salesArrangementId, int salesArrangementCategory, CancellationToken cancellationToken)
+    {
+        var flowSwitches = await _salesArrangementService.GetFlowSwitches(salesArrangementId, cancellationToken);
+        
+        // HFICH-3630
+        if (salesArrangementCategory == 1 && !isSet(FlowSwitches.IsOfferGuaranteed))
+        {
+            throw new NobyValidationException(90016);
         }
+
+        // HFICH-5191
+        if (isSet(FlowSwitches.IsOfferWithDiscount) && isSet(FlowSwitches.IsWflTaskForIPApproved, false))
+        {
+            throw new NobyValidationException(90018);
+        }
+
+        bool isSet(FlowSwitches flowSwitch, bool value = true)
+            => flowSwitches?.Any(t => t.FlowSwitchId == (int)flowSwitch && t.Value == value) ?? false;
     }
 
     private async Task ValidateSalesArrangement(int salesArrangementId, bool ignoreWarnings, CancellationToken cancellationToken)

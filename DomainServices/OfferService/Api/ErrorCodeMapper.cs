@@ -18,6 +18,7 @@ internal sealed class ErrorCodeMapper
     public const int LoanDurationIsEmpty = 10011;
     public const int CollateralAmountIsEmpty = 10018;
     public const int GuaranteeDateToSet = 10019;
+    public const int CreditWorthinessNullInput = 10021;
 
     public static IErrorCodesDictionary Init()
     {
@@ -35,7 +36,8 @@ internal sealed class ErrorCodeMapper
             { LoanAmountIsEmpty, "SimulationInputs.LoanAmount is not specified" },
             { LoanDurationIsEmpty, "SimulationInputs.LoanDuration is not specified" },
             { CollateralAmountIsEmpty, "SimulationInputs.CollateralAmount is not specified" },
-            { GuaranteeDateToSet, "BasicParameters.GuaranteeDateTo is auto generated parameter - can't be set by consumer" }
+            { GuaranteeDateToSet, "BasicParameters.GuaranteeDateTo is auto generated parameter - can't be set by consumer" },
+            { CreditWorthinessNullInput, "Credit Worthiness was requested but the input is null" }
         });
 
         return Messages;

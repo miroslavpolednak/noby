@@ -79,12 +79,18 @@ internal static class NobyAppBuilder
                 {
                 })
                     .RequireAuthorization()
+                    .Produces(302)
                     .WithDescription("Přihlášení uživatele / redirect na auth provider.")
-                    .WithTags("Authentication")
-                    .WithName("signIn")
-                    .WithOpenApi();
+                    .WithTags("Users")
+                    .WithName("loginUserGet")
+                    .WithOpenApi(generatedOperation =>
+                    {
+                        generatedOperation.Summary = "Přihlášení uživatele / redirect na auth provider.";
+                        generatedOperation.Responses.First().Value.Description = "Redirect na CAAS";
+                        return generatedOperation;
+                    });
 
-                // sign out
+                // Odhlášení přihlášeného uživatele
                 t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint, 
                     ([FromServices] IHttpContextAccessor context, [FromServices] AppConfiguration configuration, [FromQuery] string? redirect) =>
                 {
@@ -101,13 +107,19 @@ internal static class NobyAppBuilder
                     context.HttpContext!.Response.Redirect(redirectUrl);
                 })
                     .RequireAuthorization()
-                    .WithDescription("Odhlášení uživatele.")
-                    .WithTags("Authentication")
-                    .WithName("signOut")
+                    .Produces(302)
+                    .WithTags("Users")
+                    .WithName("signoutUserGet")
                     .WithOpenApi(generatedOperation =>
                     {
+                        generatedOperation.Summary = "Odhlášení přihlášeného uživatele";
+                        generatedOperation.Description = "Provolání zajistí správné odhlášení přihlášeného uživatele. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=713A5C7F-13DB-4c88-863B-29C40F2EDE32\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>";
+                        
                         var parameter = generatedOperation.Parameters[0];
                         parameter.Description = "Absolutní URI kam má být uživatel přesměrován po odhlášení";
+
+                        generatedOperation.Responses.First().Value.Description = "Uživatel byl odhlášen";
+
                         return generatedOperation;
                     });
             });
@@ -118,6 +130,7 @@ internal static class NobyAppBuilder
         .UseSwagger()
         .UseSwaggerUI(c =>
         {
+            c.DisplayOperationId();
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "NOBY FRONTEND API");
         });
 

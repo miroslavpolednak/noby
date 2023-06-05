@@ -1,6 +1,6 @@
 ﻿using DomainServices.ProductService.Clients;
 using NOBY.Api.Endpoints.Product.GetProductObligationList.Dto;
-using NOBY.Api.SharedDto;
+using NOBY.Dto;
 using Contracts = DomainServices.ProductService.Contracts;
 
 namespace NOBY.Api.Endpoints.Product.GetProductObligationList;

@@ -1,4 +1,4 @@
-﻿using NOBY.Api.SharedDto;
+﻿using NOBY.Dto;
 
 namespace NOBY.Api.Endpoints.Customer.Shared;
 
@@ -11,8 +11,6 @@ public abstract class BaseCustomerDetail
     public IdentificationDocumentFull? IdentificationDocument { get; set; }
 
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
-
-    public CustomerIdentificationMethod? CustomerIdentification { get; set; }
 
     /// <summary>
     /// Objekt právního omezení	
