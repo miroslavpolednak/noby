@@ -3,7 +3,7 @@ import pytest
 
 from Tests.backend.pytest.tests.noby_rest.conftest import webapi_url, get_cookies, noby_sit1_url, get_noby_sit1_cookies, \
     get_noby_fat_cookies, noby_fat_url
-from request.simulation_mortgage.simulation_mortgage_basic_json import json_req_mortgage_basic_params
+from Tests.backend.pytest.tests.noby_rest.json.request.simulation_mortgage.simulation_mortgage_basic_json import json_req_mortgage_basic_params
 
 
 @pytest.fixture()
