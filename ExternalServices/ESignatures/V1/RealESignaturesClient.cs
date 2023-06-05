@@ -32,7 +32,7 @@ internal sealed class RealESignaturesClient
         throw new NotImplementedException();
     }
 
-    public Task SubmitDispatchForm(CancellationToken cancellationToken = default)
+    public Task SubmitDispatchForm(bool documentsValid, List<Dto.DispatchFormClientDocument> documents, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
