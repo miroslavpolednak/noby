@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System.Text;
+using System.Reflection;
 
 namespace CIS.Infrastructure.Telemetry;
 
@@ -11,6 +11,33 @@ namespace CIS.Infrastructure.Telemetry;
 /// </summary>
 public static class LoggingExtensions
 {
+    /// <summary>
+    /// Vytvoreni statickeho loggeru pro logovani startupu aplikace.
+    /// </summary>
+    public static Serilog.Core.Logger CreateStartupLogger(this WebApplicationBuilder builder)
+    {
+        var logger = new LoggerConfiguration()
+            .MinimumLevel.Debug();
+
+        // dotahnout konfiguraci
+        var configuration = builder.Configuration
+            .GetSection(_configurationTelemetryKey + ":Logging:Application")
+            .Get<LogConfiguration>()!;
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        var assemblyName = Assembly.GetEntryAssembly().GetName();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        logger
+            .Enrich.FromLogContext()
+            .Enrich.WithMachineName()
+            .Enrich.WithProperty("Assembly", $"{assemblyName!.Name}")
+            .Enrich.WithProperty("Version", $"{assemblyName!.Version}");
+
+        Helpers.AddOutputs(logger, configuration, null);
+        
+        return logger.CreateLogger();
+    }
+
     /// <summary>
     /// Přidává do aplikace logování pomocí Serilogu.
     /// </summary>
@@ -22,9 +49,10 @@ public static class LoggingExtensions
     public static WebApplicationBuilder AddCisLogging(this WebApplicationBuilder builder)
     {
         // get configuration from json file
-        var configSection = builder.Configuration.GetSection(_configurationTelemetryKey);
-        CisTelemetryConfiguration configuration = new();
-        configSection.Bind(configuration);
+        var configuration = builder.Configuration
+            .GetSection(_configurationTelemetryKey)
+            .Get<CisTelemetryConfiguration>()
+            ?? throw new CIS.Core.Exceptions.CisConfigurationNotFound(_configurationTelemetryKey);
         builder.Services.AddSingleton(configuration);
 
         // pridani custom enricheru
