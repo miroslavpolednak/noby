@@ -33,6 +33,6 @@ internal class EasServiceForm<TFormData> : EasForm<TFormData> where TFormData : 
 
     public override void SetFormResponseSpecificData(GetEasFormResponse response)
     {
-        response.ContractNumber = _formData.SalesArrangement.ContractNumber;
+        response.ContractNumber = _formData.Case.Data.ContractNumber;
     }
 }
