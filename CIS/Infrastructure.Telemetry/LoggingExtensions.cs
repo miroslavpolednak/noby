@@ -14,7 +14,7 @@ public static class LoggingExtensions
     /// <summary>
     /// Vytvoreni statickeho loggeru pro logovani startupu aplikace.
     /// </summary>
-    public static Serilog.Core.Logger CreateStartupLogger(this WebApplicationBuilder builder)
+    public static IStartupLogger CreateStartupLogger(this WebApplicationBuilder builder)
     {
         var logger = new LoggerConfiguration()
             .MinimumLevel.Debug();
@@ -35,7 +35,7 @@ public static class LoggingExtensions
 
         Helpers.AddOutputs(logger, configuration, null);
         
-        return logger.CreateLogger();
+        return new StartupLog.StartupLogger(logger.CreateLogger());
     }
 
     /// <summary>
