@@ -150,7 +150,8 @@ internal sealed class FormsDocumentService
 
             switch (documentDataDto.ValueCase)
             {
-                case 0: break;
+                case 0: break; //Should be just a StringFormat, the DataAggregator sends only the necessary data 
+
                 case 3:
                     documentPartData.Text = documentDataDto.Text ?? string.Empty;
                     break;
