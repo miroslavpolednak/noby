@@ -1,4 +1,5 @@
-﻿using DomainServices.OfferService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
@@ -62,7 +63,8 @@ internal static class Extensions
                     AuthorizedOverdraftsTotalAmount = request.CreditWorthinessSimpleInputs.AuthorizedOverdraftsTotalAmount
                 },
                 ChildrenCount = request.CreditWorthinessSimpleInputs.ChildrenCount
-            }
+            },
+            Identities = { request.CustomerIdentities?.Select(c=> new Identity(c)) ?? Enumerable.Empty<Identity>() }
         };
 
         if (request.Fees is not null)
