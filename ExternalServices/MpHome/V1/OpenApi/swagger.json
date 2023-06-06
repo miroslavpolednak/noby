@@ -8,7 +8,9 @@
   "paths": {
     "/api/address/search": {
       "post": {
-        "tags": ["Klient"],
+        "tags": [
+          "Klient"
+        ],
         "summary": "Našeptávání adresy z AddressWhispererBEService",
         "description": "Provolá AddressWhispererBEService na IIB a vrátí stránkovaný seznam adres. Dotazujeme se zprostředkovaně do RUIAN pro CZ/SK adresy a přes službu Google pro ostatní.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=046F9631-86E1-4f17-9527-C518700030CE\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "AddressSearch",
@@ -37,7 +39,9 @@
     },
     "/api/address/detail": {
       "post": {
-        "tags": ["Klient"],
+        "tags": [
+          "Klient"
+        ],
         "summary": "Získání detailu adresy přes AddressWhispererBEService",
         "description": "Provolánám získáme přes AddressWhispererBEService na IIB detail konkrétní adresy.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=312CA931-1DA0-4be2-AF0D-4D71962845F2\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetAddressDetail",
@@ -76,7 +80,9 @@
     },
     "/api/admin/discovery-service": {
       "get": {
-        "tags": ["System Administration"],
+        "tags": [
+          "System Administration"
+        ],
         "summary": "Seznam URL služeb zaregistrovaných v ServiceDiscovery",
         "operationId": "GetDiscoveryServices",
         "responses": {
@@ -98,7 +104,9 @@
     },
     "/api/case/{caseId}/tasks/consultation-type": {
       "get": {
-        "tags": ["Workflow Task"],
+        "tags": [
+          "Workflow Task"
+        ],
         "summary": "Získání relevantních typů konzultace",
         "description": "Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetConsultationTypes",
@@ -147,7 +155,9 @@
     },
     "/api/case/{caseId}/tasks/{taskId}/cancel": {
       "post": {
-        "tags": ["Workflow Task"],
+        "tags": [
+          "Workflow Task"
+        ],
         "summary": "Stornování úkolu ve SB",
         "description": "Stornování úkolu ve SB. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "CancelTask",
@@ -195,7 +205,9 @@
     },
     "/api/case/{caseId}/tasks": {
       "post": {
-        "tags": ["Workflow Task"],
+        "tags": [
+          "Workflow Task"
+        ],
         "summary": "Vytvoření nového workflow tasku do SB.",
         "description": "Vytvoření nového workflow tasku do SB.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=882E85E3-F6EA-4774-812E-3328006E8893\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "CreateTask",
@@ -244,7 +256,9 @@
         }
       },
       "get": {
-        "tags": ["Workflow Task"],
+        "tags": [
+          "Workflow Task"
+        ],
         "summary": "Seznam workflow tasků dotažený z SB.",
         "description": "Operace získá ze Starbuildu seznam úkolů a procesů k danému case ID. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "tasksByCaseIdGet",
@@ -279,7 +293,9 @@
     },
     "/api/case/{caseId}/tasks/current-price-exception": {
       "get": {
-        "tags": ["Workflow Task"],
+        "tags": [
+          "Workflow Task"
+        ],
         "summary": "Získání aktuální cenové výjimky",
         "description": "Operace vrátí detail Cenové výjimky. <br /> Pokud ještě ve Starbuild neexistuje workflow úkol, budou výsledkem data z Noby a uživatel dostane možnost založit workflow úkolu. <br /> Pokud již workflow úkol existuje, ale je stornovaný, budou výsledkem data z Noby a uživatel dostane možnost založení nového workflow úkolu. <br /> Pokud již workflow úkol existuje a není stornovaný, budou výsledkem data ze Starbuild. U dokončeného úkolu Ocenění nehraje roli, zda bylo Ocenění schváleno či zamítnuto. Uživatel uvidí detail tohoto ukončeného úkolu. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F8C65CF5-6A02-4d2a-B068-C3EDE901DAE5\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetCurrentPriceException",
@@ -314,7 +330,9 @@
     },
     "/api/case/{caseId}/sales-arrangement": {
       "post": {
-        "tags": ["Case"],
+        "tags": [
+          "Case"
+        ],
         "summary": "Vytvoření servisního SalesArrangement-u",
         "description": "Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=B3D75222-1F0D-4dc6-A228-BD237F42CA44\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br /><br />Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.<br /><br />\r\nPokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.",
         "operationId": "CreateSalesArrangement",
@@ -361,7 +379,9 @@
     },
     "/api/case/{caseId}/customers": {
       "get": {
-        "tags": ["Case"],
+        "tags": [
+          "Case"
+        ],
         "summary": "Detail dlužníků a spoludlužníků pro daný case",
         "description": "Vrací se seznam detailů customerů - filtruje se  na dlužníky a spoludlužníky.<br />Dlužník na prvním místě, dále spoludlužníci řazeni dle příjmení a jména.<br /><br /><i>DS:</i> SalesArrangementService/getSalesArrangementList<br /><i>DS:</i> SalesArrangementService/GetCustomerList (onSA)<br /><i>DS:</i> ProductService/GetCustomersOnProduct<br /><i>DS:</i> CustomerService/GetList<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=7F566103-49D8-4a7a-83C3-B690F4A1CC1C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetCustomers",
@@ -400,7 +420,9 @@
     },
     "/api/case/{caseId}": {
       "get": {
-        "tags": ["Case"],
+        "tags": [
+          "Case"
+        ],
         "summary": "Detail Case-u.",
         "description": "Načtení detailu Case-u<br /><br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=CCF1229F-2E77-4de4-8E4A-665594BCD9CA\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetCaseById",
@@ -436,7 +458,9 @@
     },
     "/api/case/dashboard-filters": {
       "get": {
-        "tags": ["Case"],
+        "tags": [
+          "Case"
+        ],
         "summary": "Počty Cases pro přihlášeného uživatele zgrupované podle nastavených filtrů.",
         "description": "<i>DS:</i> CseService/GetCaseCounts<br /><br />https://wiki.kb.cz/confluence/display/HT/getCaseCounts",
         "operationId": "GetDashboardFilters",
@@ -459,7 +483,9 @@
     },
     "/api/case/search": {
       "post": {
-        "tags": ["Case"],
+        "tags": [
+          "Case"
+        ],
         "summary": "Seznam Cases pro přihlášeného uživatele.",
         "description": "Endpoint umožnuje:<br />- vyhledat Case podle řetězce<br />- zobrazit pouze Cases v požadovaném stavu<br />- nastavit stránkovaní<br />- nastavit řazení [povolené: stateUpdated, customerName]<br /><i>DS:</i> CaseService/SearchCases<br /><br />https://wiki.kb.cz/confluence/display/HT/searchCases",
         "operationId": "SearchCases",
@@ -488,38 +514,42 @@
       }
     },
     "/api/case/identify": {
-      "post": {
-        "tags": ["Case"],
-        "summary": "Identifikace obchodního případu podle jednoho ze čtyř možných kritérií.",
-        "operationId": "IdentifyCase",
-        "description": "Endpoint umožnuje identifikovat obchodní případ podle:\r\n- čárového kódu dokumentu (formId)\r\n- čísla úvěrového účtu\r\n- ID obchodního případu\r\n- čísla smlouvy<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=60DB6DA4-D938-4901-98DC-0C8DF8011589\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
-        "requestBody": {
-          "description": "Typ kritéria a jeho hodnota pro vyhledávání",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Case.Identify.IdentifyRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
+        "post": {
+          "tags": [
+            "Case"
+          ],
+          "summary": "Identifikace obchodního případu podle jednoho ze čtyř možných kritérií.",
+          "operationId": "IdentifyCase",
+          "description": "Endpoint umožnuje identifikovat obchodní případ podle:\r\n- čárového kódu dokumentu (formId)\r\n- čísla úvěrového účtu\r\n- ID obchodního případu\r\n- čísla smlouvy<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=60DB6DA4-D938-4901-98DC-0C8DF8011589\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+          "requestBody": {
+            "description": "Typ kritéria a jeho hodnota pro vyhledávání",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Case.Identify.IdentifyResponse"
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Case.Identify.IdentifyRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NOBY.Api.Endpoints.Case.Identify.IdentifyResponse"
+                  }
                 }
               }
             }
           }
         }
-      }
-    },
+      },
     "/api/case/{caseId}/tasks/{taskId}": {
       "get": {
-        "tags": ["Workflow Task"],
+        "tags": [
+          "Workflow Task"
+        ],
         "summary": "Detail workflow tasku dotažený ze SB.",
         "description": "Detail workflow tasku dotažený ze SB. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=90CD722E-8955-43e6-9924-DC5FDDF6ED15\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetTaskDetail",
@@ -562,7 +592,9 @@
         }
       },
       "put": {
-        "tags": ["Workflow Task"],
+        "tags": [
+          "Workflow Task"
+        ],
         "summary": "Update workflow tasku do SB",
         "description": "Update workflow tasku do SB. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "UpdateTaskDetail",
@@ -619,7 +651,9 @@
     },
     "/api/case/{caseId}/parameters": {
       "get": {
-        "tags": ["Case"],
+        "tags": [
+          "Case"
+        ],
         "summary": "Parametry Case-u.",
         "description": "Vrátí parametry case s ohledem na stav case. Před předáním žádosti vrací lokálně uložená data. Po předání žádosti vrací data z KonsDB. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=EEB4BBAA-9996-43ff-BB50-61514A2B6107\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetCaseParameters",
@@ -654,7 +688,9 @@
     },
     "/api/case/{caseId}/menu/flags": {
       "get": {
-        "tags": ["Case"],
+        "tags": [
+          "Case"
+        ],
         "summary": "Příznaky v menu Case detailu",
         "description": "Implementováno pro položku menu Documents<br /><br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2E9DAC5D-A7F3-49a4-804D-770418854A10\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetCaseDocumentsFlag",
@@ -690,7 +726,9 @@
     },
     "/api/codebooks/get-all": {
       "get": {
-        "tags": ["Codebooks"],
+        "tags": [
+          "Codebooks"
+        ],
         "summary": "Kolekce vyžadaných číselniků.",
         "description": "Vrací číselníky identifikované query parametrem \"q\". Jednotlivé číselniky jsou oddělené čárkou.<br />\r\nAktuálně implementované číselniky jsou:\r\n            \r\nNa stránkách CFL (níže jména číselníků - odkazy na číselníky do CFL) je uvedeno u sloupců <b>(není v FE API)</b>, pokud nejsou na výstupu FE API.\r\n            \r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=421388420\">AcademicDegreesAfter</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=421388414\">AcademicDegreesBefore</a>\r\n- ActionCodesSavings - obsolete\r\n- ActionCodesSavingsLoan - obsolete\r\n- <a href=\"https://wiki.kb.cz/confluence/display/HT/CaseState\">CaseStates</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=430216251\">ClassificationOfEconomicActivities</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=392877756\">ContactTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=405522415\">Countries</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=483360846\">CountryCodePhoneIdc</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=424127746\">Currencies</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/CustomerProfile\">CustomerProfiles</a> - zatím není na FE API implementováno\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=421386916\">CustomerRoles</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=413658556\">AddressTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=455007953\">BankCodes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=438046695\">Developers</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=438046776\">DeveloperProjects</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/DocumentOnSAType\">DocumentOnSATypes</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/DocumentTemplateVersion\">DocumentTemplateVersions</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/DocumentTemplateVariant\">DocumentTemplateVariants</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=450580207\">DrawingDurations</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=444604999\">DrawingTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=400823251\">EaCodesMain</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=419562802\">EducationLevels</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=430216233\">EmploymentTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=438049777\">Fees</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=413645701\">FixedRatePeriods</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=405524365\">Genders</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK\">HouseholdTypes</a> - zatím není na FE API implementováno\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=392871926\">IdentificationDocumentTypes</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/IdentificationSubjectMethod+%28CB_IdentificationMethodType%29+-+MOCK\">IdentificationSubjectMethods</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=426158089\">IncomeMainTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=476967686\">IncomeMainTypesAML</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=430216188\">IncomeForeignTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=440881532\">IncomeOtherTypes</a> - zatím není na FE API implementováno\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=430216289\">JobTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=424118208\">LegalCapacityRestrictionTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=413109663\">LoanPurposes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=413108848\">LoanKinds</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=413108848\">LoanInterestRateAnnouncedTypes</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/Mandant\">Mandants</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=417279748\">MaritalStatuses</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=417279748\">MarketingActions</a>  - zatím není na FE API implementováno\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=476967710\">NetMonthEarnings</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=440890324\">ObligationCorrectionTypes</a> - zatím není na FE API implementováno\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=426150084\">ObligationTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=409432393\">FormTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=438046178\">PaymentDays</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/PayoutType\">PayoutTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=421389753\">PostCodes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=392883923\">ProductTypes</a> \r\n- <a href=\"https://wiki.kb.cz/display/HT/ProfessionCategory+%28CB_Prof_Cat1%29+-+MOCK\">ProfessionCategories</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=476967580\">ProfessionTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=413648025\">PropertySettlements</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=413632253\">RealEstateTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=413632953\">RealEstatePurchaseTypes</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/SalesArrangementState\">SalesArrangementStates</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/SalesArrangementType\">SalesArrangementTypes</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/SignatureType\">SignatureTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=417284324\">StatementTypes</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/TinFormatByCountry+%28CB_CmTrTinFormat%29+-+MOCK\">TinFormatsByCountry</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/TinNoFillReasonsByCountry+%28CB_CmTrTinCountry%29+-+MOCK\">TinNoFillReasonsByCountry</a>\r\n- <a href=\"https://wiki.kb.cz/display/HT/WorkflowTaskCategory\">WorkflowTaskCategories</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=440871662\">WorkflowTaskStates</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=440879561\">WorkflowTaskTypes</a>\r\n- <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=430216261\">WorkSectors</a>\r\n            \r\nStruktura číselníku který není k nalezení dle jména ve schematech response je schema GenericCodebookItem.",
         "operationId": "GetAll",
@@ -724,7 +762,9 @@
     },
     "/api/codebooks/supported": {
       "get": {
-        "tags": ["Codebooks"],
+        "tags": [
+          "Codebooks"
+        ],
         "operationId": "GetSupported",
         "responses": {
           "200": {
@@ -745,7 +785,9 @@
     },
     "/api/codebooks/fixation-period-length": {
       "get": {
-        "tags": ["Codebooks"],
+        "tags": [
+          "Codebooks"
+        ],
         "summary": "Číselník fixace úvěru.",
         "operationId": "GetFixationPeriodLength",
         "parameters": [
@@ -780,7 +822,9 @@
     },
     "/api/codebooks/product-loan-kinds": {
       "get": {
-        "tags": ["Codebooks"],
+        "tags": [
+          "Codebooks"
+        ],
         "summary": "Číselník druhu úveru.",
         "operationId": "GetProductLoanKinds",
         "parameters": [
@@ -814,7 +858,9 @@
     },
     "/api/codebooks/fixed-rate-periods": {
       "get": {
-        "tags": ["Codebooks"],
+        "tags": [
+          "Codebooks"
+        ],
         "summary": "FixedRatePeriod s filtrací na product",
         "operationId": "GetFixedRatePeriods",
         "parameters": [
@@ -848,7 +894,9 @@
     },
     "/api/customer": {
       "post": {
-        "tags": ["Klient"],
+        "tags": [
+          "Klient"
+        ],
         "summary": "Založení nového klienta",
         "description": "Vytvoření Customer entity, která zaštiťuje KB customera a MPSS customera.<br /><br />\r\nNa výstupu je Customer objekt s kompletními daty z KB CM.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "CreateCustomer",
@@ -883,7 +931,9 @@
     },
     "/api/customer/search": {
       "post": {
-        "tags": ["Klient"],
+        "tags": [
+          "Klient"
+        ],
         "summary": "Vyhledávání klientů",
         "description": "Endpoint umožňuje:\r\n- hledat podle zadaných kriterií\r\n- nastavit stránkovaní\r\n- nastavit řazení [lastName]\r\n<i>DS:</i> CustomerService/SearchCustomers",
         "operationId": "SearchCustomers",
@@ -912,7 +962,9 @@
     },
     "/api/customer/get": {
       "post": {
-        "tags": ["Klient"],
+        "tags": [
+          "Klient"
+        ],
         "summary": "Detail klienta",
         "description": "<i>DS:</i> CustomerService/GetCustomer",
         "operationId": "GetCustomerDetail",
@@ -941,7 +993,9 @@
     },
     "/api/customer-on-sa/{customerOnSAId}/identify-by-identity": {
       "post": {
-        "tags": ["Klient"],
+        "tags": [
+          "Klient"
+        ],
         "summary": "Identifikace klienta",
         "description": "Slouží pro identifikaci klienta.<br />\r\nMožné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=EF40D23F-A77A-4a04-AA79-38779970393E\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "IdentifyByIdentity",
@@ -978,7 +1032,9 @@
     },
     "/api/customer/identify": {
       "post": {
-        "tags": ["Klient"],
+        "tags": [
+          "Klient"
+        ],
         "summary": "Identifikace klienta",
         "description": "Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>, případně null / HTTP 204 při nenalezení klienta v KB customer managementu.<br /><br />\r\nV případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.",
         "operationId": "Identify",
@@ -1013,7 +1069,9 @@
     },
     "/api/customer/profile-check": {
       "post": {
-        "tags": ["Klient"],
+        "tags": [
+          "Klient"
+        ],
         "summary": "Profile check s profilem identifikovaný",
         "description": "Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.",
         "operationId": "ProfileCheck",
@@ -1042,7 +1100,9 @@
     },
     "/api/customer-on-sa/{customerOnSAId}": {
       "get": {
-        "tags": ["Klient"],
+        "tags": [
+          "Klient"
+        ],
         "summary": "Získání dat klienta (s lokálními změnami)",
         "description": "Vrací data klienta aktualizovaného o lokálně uložené změny. Podle kontextu produktu vracíme data z KB CM (pro červené produkty) nebo z KonsDB (pro modré produkty, prozatím nepodporováno).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=6452CB93-41C7-450f-A20F-E8CB5208F1DE\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetCustomerDetailWithChanges",
@@ -1078,7 +1138,9 @@
         }
       },
       "put": {
-        "tags": ["Klient"],
+        "tags": [
+          "Klient"
+        ],
         "summary": "Uložení dat klienta (pro uložení změn lokálně)",
         "description": "Ukládá data klienta (deltu oproti KB CM pro červené produkty, do budoucna i deltu oproti KonsDB pro modré produkty). <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=BB5766C4-CCC7-487e-B482-1B1C86D999F7\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "UpdateCustomerDetailWithChanges",
@@ -1115,7 +1177,9 @@
     },
     "/api/customer-on-sa/{customerOnSAId}/income/{incomeId}": {
       "delete": {
-        "tags": ["Klient - příjem"],
+        "tags": [
+          "Klient - příjem"
+        ],
         "summary": "Smazání příjmu customera",
         "description": "<strong>CustomerIncome.Delete</strong>\r\n<br />\r\n            Tento endpoint se v současné době asi používat nebude.<br /><i>DS:</i> SalesArrangementService/DeleteIncome",
         "operationId": "DeleteIncome",
@@ -1153,7 +1217,9 @@
         }
       },
       "get": {
-        "tags": ["Klient - příjem"],
+        "tags": [
+          "Klient - příjem"
+        ],
         "summary": "Detail příjmu customera",
         "description": "<strong>CustomerIncome.GetDetail</strong>\r\n<br />\r\n            Použít pro zobrazení detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domacnosti.<br /><i>DS:</i> SalesArrangementService/GetIncome",
         "operationId": "GetIncome",
@@ -1198,7 +1264,9 @@
         }
       },
       "put": {
-        "tags": ["Klient - příjem"],
+        "tags": [
+          "Klient - příjem"
+        ],
         "summary": "Update detailu příjmu customera",
         "description": "<strong>CustomerIncome.Update</strong>\r\n<br />\r\n            Použít pro update detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domácnosti.<br /><i>DS:</i> SalesArrangementService/UpdateIncome",
         "operationId": "UpdateIncome",
@@ -1247,7 +1315,9 @@
     },
     "/api/customer-on-sa/{customerOnSAId}/income": {
       "post": {
-        "tags": ["Klient - příjem"],
+        "tags": [
+          "Klient - příjem"
+        ],
         "summary": "Vytvoření příjmu customera",
         "description": "<strong>CustomerIncome.Create</strong>\r\n<br />\r\n<i>DS:</i> SalesArrangementService/CreateIncome",
         "operationId": "CreateIncome",
@@ -1305,7 +1375,9 @@
     },
     "/api/customer-on-sa/{customerOnSAId}/obligation/{obligationId}": {
       "delete": {
-        "tags": ["Klient - závazek"],
+        "tags": [
+          "Klient - závazek"
+        ],
         "summary": "Smazání závazku customera",
         "description": "<i>DS:</i> SalesArrangementService/DeleteObligation",
         "operationId": "DeleteObligation",
@@ -1343,7 +1415,9 @@
         }
       },
       "get": {
-        "tags": ["Klient - závazek"],
+        "tags": [
+          "Klient - závazek"
+        ],
         "summary": "Detail závazku customera",
         "description": "<i>DS:</i> SalesArrangementService/GetObligation",
         "operationId": "GetObligation",
@@ -1388,7 +1462,9 @@
         }
       },
       "put": {
-        "tags": ["Klient - závazek"],
+        "tags": [
+          "Klient - závazek"
+        ],
         "summary": "Update detailu závazku customera",
         "description": "<i>DS:</i> SalesArrangementService/UpdateObligation",
         "operationId": "UpdateObligation",
@@ -1437,7 +1513,9 @@
     },
     "/api/customer-on-sa/{customerOnSAId}/obligation": {
       "post": {
-        "tags": ["Klient - závazek"],
+        "tags": [
+          "Klient - závazek"
+        ],
         "summary": "Vytvoření závazku customera",
         "description": "<i>DS:</i> SalesArrangementService/CreateObligation",
         "operationId": "CreateObligation",
@@ -1495,7 +1573,9 @@
     },
     "/api/document/template/offer/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu nabídka ze šablony",
         "description": "Vygenerování dokumentu nabídka ze šablony k dané SalesArrangement. Pokud dokument pro tuto nabídku byl již vygenerován a byl uložen do eArchiv-u, tak je dokument načten z eArchiv-u..<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=01EE50D6-556E-47e8-ADD8-673A844864C2\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetOffer",
@@ -1532,7 +1612,9 @@
     },
     "/api/document/template/calculation/offer/{offerId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu kalkulace ze šablony",
         "description": "Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetCalculation",
@@ -1569,7 +1651,9 @@
     },
     "/api/document/template/payment-schedule/offer/{offerId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu splátkový kalendář ze šablony",
         "description": "Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetPaymentSchedule",
@@ -1606,7 +1690,9 @@
     },
     "/api/document/template/drawing/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu Žádost o čerpání",
         "description": "Vygenerování dokumentu Žádost o čerpání ze šablony k dané SalesArrangement.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=FF4A4806-9638-4287-8A4F-4CA027677E2B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\\\" />Diagram v EA</a>",
         "operationId": "GetDrawing",
@@ -1643,7 +1729,9 @@
     },
     "/api/document/template/general-change/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu Žádost o obecnou změnu",
         "description": "Vygenerování dokumentu Žádost o obecnou změnu ze šablony k dané SalesArrangement.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=176277CE-66F6-4abd-93E6-57F113B5AF16\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetGeneralChange",
@@ -1680,7 +1768,9 @@
     },
     "/api/document/template/HUBN/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu Žádost o HUBN",
         "description": "Vygenerování dokumentu Žádost o HUBN ze šablony k dané SalesArrangement.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0E17AE8A-C137-415b-B4FB-2C0D3995E0DD\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetHUBN",
@@ -1717,7 +1807,9 @@
     },
     "/api/document/template/customer-change/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí)",
         "description": "Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí) ze šablony k dané SalesArrangement.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=B7ED8950-BAA7-44a2-A069-2593B6D5121E\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetCustomerChange",
@@ -1754,7 +1846,9 @@
     },
     "/api/document/template/loan-application/main-household/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu Žádost o úvěr F3601",
         "description": "Vygenerování dokumentu Žádost o úvěr F3601 (dlužnická domácnost) ze šablony k dané SalesArrangement.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=DD734EDD-1344-43b2-B45E-3407255B993A\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetLoanApplicationMain",
@@ -1791,7 +1885,9 @@
     },
     "/api/document/template/loan-application/codebtor-household/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu Žádost o úvěr F3602",
         "description": "Vygenerování dokumentu Žádost o úvěr F3602 (spoludlužnická domácnost) k dané SalesArrangement.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=D5159266-11E9-4959-BDFA-71C1FCF46092\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetLoanApplicationCodebtor",
@@ -1828,7 +1924,9 @@
     },
     "/api/document/template/approach-customer-3602/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu Údaje o přistupujícím k dluhu",
         "description": "Vygenerování dokumentu Údaje o přistupujícím k dluhu k dané SalesArrangement.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=02F2D995-565F-4250-8C0A-BCE875C3AAB2\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetApproachCustomer",
@@ -1865,7 +1963,9 @@
     },
     "/api/document/template/remain-customer-3602/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu Údaje o zůstávajícím v dluhu",
         "description": "Vygenerování dokumentu Údaje o zůstávajícím v dluhu k dané SalesArrangement.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=1FFE176A-27E6-421e-B2A0-CBD1D4D31890\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetRemainCustomer",
@@ -1902,7 +2002,9 @@
     },
     "/api/document/template/add-codebtor-3602/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu Žádost o přidání spoludlužníka",
         "description": "Vygenerování dokumentu Žádost o přidání spoludlužníka k dané SalesArrangement.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=89B4A263-F822-410b-B3AB-E5806A1C7526\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetAddCodebtor",
@@ -1939,7 +2041,9 @@
     },
     "/api/document/template/type/{documentTypeId}/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Document"],
+        "tags": [
+          "Document"
+        ],
         "operationId": "TestDocument",
         "parameters": [
           {
@@ -1984,7 +2088,9 @@
     },
     "/api/document/{documentId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Načtení dokumentu z archivu",
         "description": "Načtení contentu dokumentu. Vrací se steam binárních dat.<br />\r\nNenačítají se dokumenty s EaCodeMain.IsVisibleForKb=false <br /><i>DS:</i> DocumentArchiveService/getDocument",
         "operationId": "GetDocument",
@@ -2005,7 +2111,10 @@
             "description": "0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default",
             "style": "form",
             "schema": {
-              "enum": [0, 1],
+              "enum": [
+                0,
+                1
+              ],
               "type": "integer",
               "description": "\n\n<small>Enum Values</small><ul><li>0 - attachment</li><li>1 - inline</li></ul>",
               "format": "int32"
@@ -2041,7 +2150,9 @@
     },
     "/api/document/{documentId}/status/{statusId}": {
       "put": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Nastavení stavu dokumentu ve frontě",
         "description": "Nastavení stavu dokumentu ve frontě k uložení do eArchiv-u.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=C23F8DBF-9F26-465b-BB34-8736133D020D\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "StatusDocumentSet",
@@ -2078,7 +2189,9 @@
     },
     "/api/case/{caseId}/documents": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Seznam dokumentů ke Case-u",
         "description": "Načtení seznamu dokumentů ke Case-u<br />\r\nNevrací se dokumenty s EaCodeMain.IsVisibleForKb=false<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=25F73554-B9DB-42a4-8CB5-25FC3B3F6902\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetDocumentList",
@@ -2112,7 +2225,9 @@
         }
       },
       "post": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Uložení dokumentů ke Case-u do archivu",
         "description": "Uložení dokumentů do archivu <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "SaveDocumentsToArchive",
@@ -2156,7 +2271,9 @@
     },
     "/api/document": {
       "post": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Nahrání dokumentu",
         "description": "Uložení binárních dat dokumentu do dočasného úložiště.",
         "operationId": "UploadDocument",
@@ -2209,7 +2326,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/signing/document-list": {
       "get": {
-        "tags": ["Podepisování"],
+        "tags": [
+          "Podepisování"
+        ],
         "summary": "Dokumenty Sales Arrangement-u k podpisu / v podepisovacím procesu.",
         "description": "Provolá <i>DS:DocumentOnSAService/getDocumentsToSignList</i> a zafiltruje na dokumenty s příznakem IsValid = true.<br /><br />\r\nStav podepisovacího procesu (signatureState) je vyhodnocován logikou popsanou v společných algoritmech viz <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=401893151\">Stavy podepisovacího procesu</a>",
         "operationId": "GetDocumentsSignList",
@@ -2245,7 +2364,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/signing/start": {
       "post": {
-        "tags": ["Podepisování"],
+        "tags": [
+          "Podepisování"
+        ],
         "summary": "Začít podepisování dokumentu",
         "description": "Spustí podepisovací proces pro zvolený typ dokumentu.<br /><br /><i>DS:DocumentOnSAService/startSigning</i>",
         "operationId": "StartSigning",
@@ -2300,7 +2421,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/stop": {
       "post": {
-        "tags": ["Podepisování"],
+        "tags": [
+          "Podepisování"
+        ],
         "summary": "Zrušit podepisování dokumentu",
         "description": "Zkontroluje, zda je pro daný dokument zahájen podepisovací proces a pokud ano, tak ho ukončí.<br /><br /><i>DS:DocumentOnSAService/getDocumentsToSignList</i><br /><i>DS:DocumentOnSAService/stopDocumentOnSASigning</i>",
         "operationId": "StopSigning",
@@ -2340,7 +2463,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually": {
       "post": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Manuální podpis DocumentOnSA",
         "description": "Provede Checkform, označí daný DocumentOnSA jako manuálně podepsaný a provede aktualizaci dat v KB CM (pokud možno)<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "SignDocumentManually",
@@ -2381,7 +2506,9 @@
     },
     "/api/document/template/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Vygenerování dokumentu z uložených dat dokumentu na sales arrangementu příp. z archivu",
         "description": "Pro započaté podepisovací procesy je požadováno zobrazovat náhledy a poskytovat dokumenty ke stažení.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F950B198-2C67-48e5-B1FE-C091131E6A63\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetDocumentOnSa",
@@ -2428,7 +2555,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}": {
       "get": {
-        "tags": ["Podepisování"],
+        "tags": [
+          "Podepisování"
+        ],
         "summary": "Detail podepisovaného dokumentu",
         "description": "Vrátí informace o podepisovaném dokumentu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=FA259E3F-5B8D-4ade-9F1A-7C1A943F1029\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetDocumentOnSaDetail",
@@ -2485,7 +2614,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/document-on-sa/search": {
       "post": {
-        "tags": ["Podepisování"],
+        "tags": [
+          "Podepisování"
+        ],
         "summary": "Vyhledání dokumentů na základě hlavního hesla (eArchivu)",
         "description": "Vyhledání formId (businessovém identifikátoru dokumentů) na sales arrangementu dle hlavního hesla (eArchivu).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0C28E9E5-7AC1-4265-8342-FCE63B33967F\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br /><br />",
         "operationId": "SearchDocumentsOnSa",
@@ -2554,7 +2685,9 @@
     },
     "/api/general-documents": {
       "get": {
-        "tags": ["Dokument"],
+        "tags": [
+          "Dokument"
+        ],
         "summary": "Seznam obecných dokumentů ke stažení",
         "description": "Načtení seznamu obecných dokumentů, které je možné stáhnout a vyplnit. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=EA4655D8-5314-469b-8C92-5D2324EF1824\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetGeneralDocuments",
@@ -2577,7 +2710,9 @@
     },
     "/api/household/list/{salesArrangementId}": {
       "get": {
-        "tags": ["Domácnost"],
+        "tags": [
+          "Domácnost"
+        ],
         "summary": "Seznam domácností",
         "description": "Vraci zakladni seznam domacností pro daný Sales Arrangement bez detailu.<br /><i>DS:</i> SalesArrangementService/GetHouseholdList",
         "operationId": "GetHouseholds",
@@ -2616,7 +2751,9 @@
     },
     "/api/household/{householdId}": {
       "get": {
-        "tags": ["Domácnost"],
+        "tags": [
+          "Domácnost"
+        ],
         "summary": "Detail domacnosti",
         "description": "Vrací detail dané domácnosti včetně detailu navázaných CustomerOnSA. Příznak druh/družka (areCustomersPartners) je počítán dynamicky při každém provolání dle logiky ve společných algoritmech.\r\n<i>DS:</i> SalesArrangementService/GetHousehold",
         "operationId": "GetHousehold",
@@ -2650,7 +2787,9 @@
         }
       },
       "delete": {
-        "tags": ["Domácnost"],
+        "tags": [
+          "Domácnost"
+        ],
         "summary": "Smazani domacnosti",
         "description": "<i>DS:</i> SalesArrangementService/DeleteHousehold",
         "operationId": "DeleteHousehold",
@@ -2697,7 +2836,9 @@
         }
       },
       "put": {
-        "tags": ["Domácnost"],
+        "tags": [
+          "Domácnost"
+        ],
         "summary": "Update existující domácnosti",
         "description": "<i>DS:</i> SalesArrangementService/UpdateHousehold",
         "operationId": "UpdateHousehold",
@@ -2735,7 +2876,9 @@
     },
     "/api/household": {
       "post": {
-        "tags": ["Domácnost"],
+        "tags": [
+          "Domácnost"
+        ],
         "summary": "Vytvořeni nové domacnosti",
         "description": "Vytvoří nový household zavoláním DS: SalesArrangementService/CreateHousehold a zároveň vytvoří prvního CustomerOnSA s rolí odpovídající vytvářené domácnosti (Spolužadatel na spolužadatelské a ručitel na ručitelské domácnosti) pomocí volání DS: SalesArrangementService/CreateCustomer.<br />\r\nPrázdná obálka CustomerOnSA je vytvářena, protože neexistuje businessově prázdná domácnost bez členů domácnosti.",
         "operationId": "CreateHousehold",
@@ -2774,7 +2917,9 @@
     },
     "/api/household/{householdId}/customers": {
       "put": {
-        "tags": ["Domácnost"],
+        "tags": [
+          "Domácnost"
+        ],
         "summary": "Update customeru na domácnosti",
         "description": "Založí, smaže nebo updatuje CustomerOnSAId1 a CustomerOnSAId2 podle objektu v requestu Customer1 a Customer2.<br /><br />\r\nZavoláním lockedIncome = true se zapíše timestamp zamknutí příjmů. Při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp.<br /><br />\r\nV případě, že se mění Cutomer na daném householdu, dojde k znevalidnění rozběhnutých či skončených podepisovacích proseců (nutno znovu podepsat).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=DF47934C-D0C7-46da-B13E-C3E648389EFB\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "UpdateCustomers",
@@ -2832,7 +2977,9 @@
     },
     "/api/offer/mortgage": {
       "post": {
-        "tags": ["Modelace"],
+        "tags": [
+          "Modelace"
+        ],
         "summary": "Simulace KB hypotéky.",
         "description": "Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F8D7E9A3-7589-42af-B2B3-9B34A243D6AB\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "MortgageOfferPost",
@@ -2865,7 +3012,9 @@
     },
     "/api/offer/mortgage/{offerId}": {
       "get": {
-        "tags": ["Modelace"],
+        "tags": [
+          "Modelace"
+        ],
         "summary": "Detail simulace dle ID simulace.",
         "description": "Detail provedené simulace dle ID simulace.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2AB0C760-7188-48ad-ABA7-D432D51A1A40\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetMortgageByOfferId",
@@ -2900,7 +3049,9 @@
     },
     "/api/offer/mortgage/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": ["Modelace"],
+        "tags": [
+          "Modelace"
+        ],
         "summary": "Detail provedené simulace dle ID Sales Arrangement.",
         "description": "Stejný endpoint jako GetMortgageByOfferId, jen podle jiného ID.<br /><i>DS:</i> SalesArrangementService/GetSalesArrangement (to get OfferId)<br /><i>DS:</i> OfferService/GetMortgageData",
         "operationId": "GetMortgageBySalesArrangement",
@@ -2935,7 +3086,9 @@
     },
     "/api/offer/mortgage/create-case": {
       "post": {
-        "tags": ["Modelace"],
+        "tags": [
+          "Modelace"
+        ],
         "summary": "Vytvoření nového případu (hypotéky) ze simulace.",
         "description": "Vytvoří nový Case, Sales Arrangement, Household, CustomerOnSA.<br />\r\nV případe identifikovaného klienta navíc vytvořit Product, RiskBusinessCaseId.<br />\r\nPokud je identifikován klient, v request modelu musí být naplněna vlastnost customer.<br />\r\nPokud se jedná o anonymní případ, musi být vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br /><br /><i>DS:</i> OfferService/GetMortgageData<br /><i>DS:</i> SalesArrangement/GetSalesArrangementByOfferId<br /><i>DS:</i> CaseService/CreateCase<br /><i>DS:</i> SalesArrangement/CreateSalesArrangement<br /><i>DS:</i> ProductService/CreateMortgage (pokud MpHome API na vytvoření produktu spadne na fatální chybu, tak tuto chybu ignorujeme a pokračujeme ve vytvoření Case)<br /><i>DS:</i> SalesArrangement/CreateHousehold<br /><i>DS:</i> SalesArrangement/CreateCustomerOnSA",
         "operationId": "CreateMortgageCase",
@@ -2968,7 +3121,9 @@
     },
     "/api/offer/mortgage/sales-arrangement/link": {
       "put": {
-        "tags": ["Modelace"],
+        "tags": [
+          "Modelace"
+        ],
         "summary": "Nalinkuje novou modelaci na stávající SA.",
         "description": "Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8996A9D6-2732-4011-9152-0EAE7FEECE07\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "LinkModelation",
@@ -3000,7 +3155,9 @@
     },
     "/api/offer/mortgage/{offerId}/full-payment-schedule": {
       "get": {
-        "tags": ["Modelace"],
+        "tags": [
+          "Modelace"
+        ],
         "summary": "Plný splátkový kalendář dle ID simulace.",
         "description": "Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId. Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy. Chyba simulační služby se propaguje.<br /><i>DS:</i> OfferService/GetMortgageOfferFPSchedule",
         "operationId": "GetFullPaymentScheduleByOfferId",
@@ -3038,7 +3195,9 @@
     },
     "/api/offer/mortgage/developer-project/search": {
       "post": {
-        "tags": ["Modelace"],
+        "tags": [
+          "Modelace"
+        ],
         "summary": "Vyhledání developerských projektů a developerů bez projektu.",
         "description": "Vyhledá developerské projekty na základě vyhledávacího textu.<br /><br />Vyhledává se v číselníku <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=438046695\">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=438046776\">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />\r\nText se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.",
         "operationId": "DeveloperSearch",
@@ -3077,7 +3236,9 @@
     },
     "/api/product/{caseId}/customers": {
       "get": {
-        "tags": ["Produkt"],
+        "tags": [
+          "Produkt"
+        ],
         "summary": "Vrátí seznam dlužníků a spoludlužníků na daném produktu",
         "description": "<i>DS:</i> ProductService/GetCustomersOnProduct<br /><i>DS:</i> CustomerService/GetList - použito KB ID",
         "operationId": "GetCustomersOnProduct",
@@ -3115,7 +3276,9 @@
     },
     "/api/product/{caseId}/obligations": {
       "get": {
-        "tags": ["Produkt"],
+        "tags": [
+          "Produkt"
+        ],
         "summary": "Vrátí seznam závazků na daném produktu",
         "description": "Seznam z závazků načtený z KonsDB.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=058D1B76-375C-4747-90DB-D4E3BE5C46F7\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetProductObligations",
@@ -3156,7 +3319,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/flow": {
       "get": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Detailní informace pro sluníčko",
         "description": "Provede vyhodnocení klapek na základě konfigurace v konfiguračním excelu a vrátí informace nutné pro správné zobrazení rozcestníku žádosti (sluníčka).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2709EE14-C343-4c7f-B733-A092E41EA839\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetFlowSwitches",
@@ -3192,7 +3357,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/validate": {
       "get": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Validace dat SalesArrangementu - checkform.",
         "description": "Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br /><br />Data z doménové služby jsou roztříděné do kategorií a seřazeny abecedně v rámci kategorie podle parametru 'parameter'<br /><br /><i>DS:</i> SalesArrangementService/validateSalesArrangement",
         "operationId": "ValidateSalesArrangement",
@@ -3230,7 +3397,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}": {
       "delete": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Smazaní SalesArrangement-u",
         "description": "Smazání pouze servisních žádostí (validace na servisní žádosti je v doménových službách).<br /><br /><i>DS:</i>SalesArrangementService/DeleteSalesArrangement",
         "operationId": "DeleteSalesArrangement",
@@ -3260,7 +3429,9 @@
         }
       },
       "get": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Detail Sales Arrangement-u.",
         "description": "<i>DS:SalesArrangementService/GetDetail</i><br /><br /><br />Obsahuje kompilaci údajů z SA a navázené Offer. Pro každý typ produktu se vrací jiná struktura Data objektu.",
         "operationId": "GetSalesArrangement",
@@ -3296,7 +3467,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/loan-application-assessment": {
       "get": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Vrací vyhodnocení dané úvěrové žádosti",
         "description": "Použít pro Skóring - výsledek vyhodnocení<br /> - výsledek vyhodnocení žádosti<br />- výsledek vyhodnocení za jednotlivé domácnosti</li><br />Možno vyžadovat nové vyhodnocení</li></ol><br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=CB8E73AD-C282-4555-B587-A571EE896E81\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetLoanApplicationAssessment",
@@ -3341,7 +3514,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/credit-worthiness": {
       "get": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Výpočet rozšírené bonity",
         "description": "<i>DS:</i> HouseholdService<br /><i>DS:</i> CustomerOnSaService",
         "operationId": "GetCreditWorthiness",
@@ -3377,7 +3552,9 @@
     },
     "/api/sales-arrangement/list/{caseId}": {
       "get": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Seznam Sales Arrangements pro Case.",
         "description": "Operace slouží k získání Sales Arrangements k danému ID obchodního případu (caseId). <br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=3A82DF69-AF0D-4ec4-8263-D42354C4891E\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetSalesArrangements",
@@ -3416,7 +3593,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/customers": {
       "get": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Seznam klientů navázaných na Sales Arrangement.",
         "description": "<i>DS:</i> SalesArrangementService/GetCustomerList<br /><i>DS:</i> CustomerService/GetCustomerDetail",
         "operationId": "GetCustomers",
@@ -3455,7 +3634,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/parameters": {
       "put": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Update dat SalesArrangement-u",
         "description": "Aktualizuje parametry produktového či servisního SalesArrangementu. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=18E19FC4-9238-4249-B43E-A26A9FBBC32C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "UpdateParameters",
@@ -3502,7 +3683,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/send": {
       "post": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Validace SalesArrangementu a odeslání do StarBuildu",
         "description": "Dojde ke zvalidování obsahu žádosti stejně, jako při operaci validace a předání datových vět na rozhraní Starbuildu.<br /><br />Pokud žádost obsahuje chyby, které nejsou/nemohou být ignorovány, vrací se chyba.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "SendToCmp",
@@ -3543,7 +3726,9 @@
     },
     "/api/sales-arrangement/{salesArrangementId}/comment": {
       "get": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Získání komentáře na SalesArrangementu.",
         "description": "Vrátí komentář produktové žádosti. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetComment",
@@ -3567,7 +3752,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.SalesArrangement.Dto.Comment"
+                    "$ref": "#/components/schemas/NOBY.Api.Endpoints.SalesArrangement.Dto.Comment"
                 }
               }
             }
@@ -3578,7 +3763,9 @@
         }
       },
       "put": {
-        "tags": ["Sales Arrangement"],
+        "tags": [
+          "Sales Arrangement"
+        ],
         "summary": "Aktualizace komentáře na SalesArrangementu.",
         "description": "Aktualizuje komentář produktové žádosti. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "UpdateComment",
@@ -3625,7 +3812,9 @@
     },
     "/api/test/rollback": {
       "post": {
-        "tags": ["Test"],
+        "tags": [
+          "Test"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -3663,7 +3852,9 @@
     },
     "/api/test/t1": {
       "get": {
-        "tags": ["Test"],
+        "tags": [
+          "Test"
+        ],
         "operationId": "T1",
         "responses": {
           "200": {
@@ -3674,7 +3865,9 @@
     },
     "/api/test/t2": {
       "get": {
-        "tags": ["Test"],
+        "tags": [
+          "Test"
+        ],
         "operationId": "T2",
         "responses": {
           "200": {
@@ -3685,7 +3878,9 @@
     },
     "/api/test/t3": {
       "get": {
-        "tags": ["Test"],
+        "tags": [
+          "Test"
+        ],
         "operationId": "T3",
         "responses": {
           "200": {
@@ -3696,7 +3891,9 @@
     },
     "/api/users": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Informace o prihlašeném uživateli.",
         "description": "Pokud je uživatel přihlášen (existuje platná auth cookie), vrací základní informace o uživateli.",
         "operationId": "GetCurrentUser",
@@ -3719,7 +3916,9 @@
     },
     "/api/users/signin": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Endpoint pro Simple Authentication provider.",
         "description": "Slouží pro vytvoření auth cookie v případe, že aplikace není napojena na CAAS.",
         "operationId": "SignIn",
@@ -3751,7 +3950,9 @@
     },
     "/api/users/mpss-cookie": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Získání obsahu auth cookie pro ePodpisy.",
         "description": "Endpoint vrací obsah MPSS.Security cookie, která slouží pro autentizaci ePodpisů na základě údajů získaných z UserService. Cookie je generovaná z projektu MPSS.Security.Noby, což je klon standardní MPSS.Security dll.",
         "operationId": "GetMpssSecurityCookie",
@@ -3868,7 +4069,11 @@
             "format": "int64"
           },
           "scheme": {
-            "enum": [0, 1, 2],
+            "enum": [
+              0,
+              1,
+              2
+            ],
             "type": "integer",
             "description": "Schema ve kterem je klient ulozeny - Kb | Mp\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Mp</li><li>2 - Kb</li></ul>",
             "format": "int32"
@@ -3948,7 +4153,12 @@
             "nullable": true
           },
           "serviceType": {
-            "enum": [0, 1, 2, 3],
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
             "type": "integer",
             "description": "\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Grpc</li><li>2 - Rest</li><li>3 - Proprietary</li></ul>",
             "format": "int32"
@@ -4492,7 +4702,11 @@
             "nullable": true
           },
           "mpHomeCode": {
-            "enum": [0, 1, 2],
+            "enum": [
+              0,
+              1,
+              2
+            ],
             "type": "integer",
             "description": "\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Male</li><li>2 - Female</li></ul>",
             "format": "int32"
@@ -4603,7 +4817,13 @@
             "format": "int32"
           },
           "code": {
-            "enum": [0, 1, 2, 3, 4],
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
             "type": "integer",
             "description": "\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - STD</li><li>2 - VIP</li><li>3 - DEV</li><li>4 - ZAM</li></ul>",
             "format": "int32"
@@ -5161,7 +5381,10 @@
             "nullable": true
           },
           "flag": {
-            "enum": [0, 1],
+            "enum": [
+              0,
+              1
+            ],
             "type": "integer",
             "description": "\n\n<small>Enum Values</small><ul><li>0 - None</li><li>1 - Inactive</li></ul>",
             "format": "int32"
@@ -5272,7 +5495,7 @@
             "nullable": true
           }
         },
-        "additionalProperties": {}
+        "additionalProperties": { }
       },
       "Microsoft.AspNetCore.Mvc.ValidationProblemDetails": {
         "type": "object",
@@ -5310,10 +5533,14 @@
             "readOnly": true
           }
         },
-        "additionalProperties": {}
+        "additionalProperties": { }
       },
       "NOBY.Api.Endpoints.Address.AddressSearch.AddressSearchRequest": {
-        "required": ["pageSize", "searchText", "sessionId"],
+        "required": [
+          "pageSize",
+          "searchText",
+          "sessionId"
+        ],
         "type": "object",
         "properties": {
           "sessionId": {
@@ -5375,7 +5602,12 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest": {
-        "required": ["addressId", "countryId", "sessionId", "title"],
+        "required": [
+          "addressId",
+          "countryId",
+          "sessionId",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "sessionId": {
@@ -5464,7 +5696,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.Cases.CancelTask.CancelTaskRequest": {
-        "required": ["taskIdSB"],
+        "required": [
+          "taskIdSB"
+        ],
         "type": "object",
         "properties": {
           "taskIdSB": {
@@ -5475,7 +5709,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest": {
-        "required": ["salesArrangementTypeId"],
+        "required": [
+          "salesArrangementTypeId"
+        ],
         "type": "object",
         "properties": {
           "salesArrangementTypeId": {
@@ -5498,7 +5734,11 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest": {
-        "required": ["processId", "taskTypeId", "taskUserRequest"],
+        "required": [
+          "processId",
+          "taskTypeId",
+          "taskUserRequest"
+        ],
         "type": "object",
         "properties": {
           "taskTypeId": {
@@ -5567,7 +5807,19 @@
             "nullable": true
           },
           "state": {
-            "enum": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10
+            ],
             "type": "integer",
             "description": "Stavy Case\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - InProgress</li><li>2 - InApproval</li><li>3 - InSigning</li><li>4 - InDisbursement</li><li>5 - InAdministration</li><li>6 - Finished</li><li>7 - Cancelled</li><li>8 - InApprovalConfirmed</li><li>9 - ToBeCancelled</li><li>10 - ToBeCancelledConfirmed</li></ul>",
             "format": "int32"
@@ -5629,11 +5881,15 @@
         },
         "additionalProperties": false
       },
-      "NOBY.Api.Endpoints.Cases.MenuFlags.Item": {
+      "NOBY.Api.Endpoints.Cases.MenuFlags.Item":  {
         "type": "object",
         "properties": {
           "flag": {
-            "enum": [0, 1, 2],
+            "enum": [
+              0,
+              1,
+              2
+            ],
             "type": "integer",
             "description": "Flag\n\n<small>Enum Values</small><ul><li>0 - No flag</li><li>1 - (!)</li><li>2 - Ve zpracování</li></ul>",
             "format": "int32"
@@ -5724,21 +5980,28 @@
             "example": "K VYŘÍZENÍ"
           },
           "stateFilter": {
-            "enum": [1, 2],
+            "enum": [
+              1,
+              2
+            ],
             "type": "integer",
             "description": "Filter Noby stavu úkolu\n\n<small>Enum Values</small><ul><li>1 - Active</li><li>2 - Finished</li></ul>",
             "format": "int32",
             "example": 1
           },
           "stateIndicator": {
-            "enum": [1, 2, 3],
+            "enum": [
+              1,
+              2,
+              3
+            ],
             "type": "integer",
             "description": "Indikátor barvy Noby stavu\n\n<small>Enum Values</small><ul><li>1 - Active</li><li>2 - Cancelled</li><li>3 - Ok</li></ul>",
             "format": "int32"
           }
+          },
+          "additionalProperties": false
         },
-        "additionalProperties": false
-      },
       "NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto": {
         "type": "object",
         "properties": {
@@ -6113,7 +6376,11 @@
         "description": "Tento objekt je relevantní pouze pro typ úkolu Dožádání"
       },
       "NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning": {
-        "required": ["documentForSigning", "expiration", "formId"],
+        "required": [
+          "documentForSigning",
+          "expiration",
+          "formId"
+        ],
         "type": "object",
         "properties": {
           "formId": {
@@ -6123,7 +6390,10 @@
             "example": "S00000014139920"
           },
           "signatureType": {
-            "enum": [0, 1],
+            "enum": [
+              0,
+              1
+            ],
             "type": "integer",
             "description": "Podepisování: způsob podpisu (0 - papírové podepisování, 1 - elektronické podepisování)\n\n<small>Enum Values</small><ul><li>0 - Paper</li><li>1 - Digital</li></ul>",
             "format": "int32",
@@ -6151,7 +6421,10 @@
         "description": "Tento objekt je relevantní pouze pro typ úkolu Podepisování"
       },
       "NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsPriceException": {
-        "required": ["expiration", "LoanInterestRate"],
+        "required": [
+          "expiration",
+          "LoanInterestRate"
+        ],
         "type": "object",
         "properties": {
           "expiration": {
@@ -6163,7 +6436,11 @@
           },
           "LoanInterestRate": {
             "type": "object",
-            "required": ["loanInterestRate", "loanInterestRateProvided", "loanInterestRateAnnouncedType"],
+            "required": [
+              "loanInterestRate",
+              "loanInterestRateProvided",
+              "loanInterestRateAnnouncedType"
+            ],
             "properties": {
               "loanInterestRate": {
                 "type": "string",
@@ -6343,7 +6620,11 @@
             "example": "SPRÁVA"
           },
           "stateIndicator": {
-            "enum": [1, 2, 3],
+            "enum": [
+              1,
+              2,
+              3
+            ],
             "type": "integer",
             "description": "Indikátor barvy Noby stavu\n\n<small>Enum Values</small><ul><li>1 - Active</li><li>2 - Cancelled</li><li>3 - Ok</li></ul>",
             "format": "int32"
@@ -6433,12 +6714,19 @@
       },
       "NOBY.Api.Endpoints.Case.Identify.IdentifyRequest": {
         "type": "object",
-        "required": ["criterion"],
+        "required": [
+          "criterion"
+        ],
         "properties": {
           "criterion": {
             "type": "integer",
             "format": "int32",
-            "enum": [0, 1, 2, 3],
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
             "description": "Kritérium vyhledávání: 0 - Čárový kód dokumentu (formId); 1 - Číslo úvěrového účtu; 2 - ID obchodního případu; 3 - Číslo smlouvy",
             "example": 0
           },
@@ -6453,7 +6741,7 @@
             ]
           }
         }
-      },
+      }, 
       "Value": {
         "type": "object",
         "description": "Tento objekt je relevantní pro kritéria 0 (čárový kód), 2 (ID obchodního případu) a 3 (číslo smlouvy)",
@@ -6511,7 +6799,10 @@
         }
       },
       "NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest": {
-        "required": ["taskIdSB", "taskTypeId"],
+        "required": [
+          "taskIdSB",
+          "taskTypeId"
+        ],
         "type": "object",
         "properties": {
           "taskIdSB": {
@@ -6738,7 +7029,15 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.Customer.Create.CreateRequest": {
-        "required": ["birthDate", "customerOnSAId", "firstName", "genderId", "identificationDocument", "lastName", "primaryAddress"],
+        "required": [
+          "birthDate",
+          "customerOnSAId",
+          "firstName",
+          "genderId",
+          "identificationDocument",
+          "lastName",
+          "primaryAddress"
+        ],
         "type": "object",
         "properties": {
           "hardCreate": {
@@ -6849,7 +7148,12 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.Customer.Create.Dto.Address": {
-        "required": ["city", "countryId", "postcode", "street"],
+        "required": [
+          "city",
+          "countryId",
+          "postcode",
+          "street"
+        ],
         "type": "object",
         "properties": {
           "addressTypeId": {
@@ -6973,7 +7277,11 @@
             "nullable": true
           },
           "gender": {
-            "enum": [0, 1, 2],
+            "enum": [
+              0,
+              1,
+              2
+            ],
             "type": "integer",
             "description": "Pohlaví\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Male</li><li>2 - Female</li></ul>",
             "format": "int32"
@@ -7105,7 +7413,14 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest": {
-        "required": ["dateOfBirth", "firstName", "identificationDocumentNumber", "identificationDocumentTypeId", "issuingCountryId", "lastName"],
+        "required": [
+          "dateOfBirth",
+          "firstName",
+          "identificationDocumentNumber",
+          "identificationDocumentTypeId",
+          "issuingCountryId",
+          "lastName"
+        ],
         "type": "object",
         "properties": {
           "firstName": {
@@ -7150,7 +7465,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.Customer.IdentifyByIdentity.IdentifyByIdentityRequest": {
-        "required": ["customerIdentity"],
+        "required": [
+          "customerIdentity"
+        ],
         "type": "object",
         "properties": {
           "customerIdentity": {
@@ -7400,7 +7717,11 @@
             "nullable": true
           },
           "gender": {
-            "enum": [0, 1, 2],
+            "enum": [
+              0,
+              1,
+              2
+            ],
             "type": "integer",
             "description": "Pohlaví\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Male</li><li>2 - Female</li></ul>",
             "format": "int32"
@@ -7567,7 +7888,13 @@
             "example": "CZK"
           },
           "incomeTypeId": {
-            "enum": [0, 1, 2, 3, 4],
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
             "type": "integer",
             "description": "Druhy příjmu\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Employement</li><li>2 - Enterprise</li><li>3 - Rent</li><li>4 - Other</li></ul>",
             "format": "int32"
@@ -7644,7 +7971,13 @@
             "nullable": true
           },
           "incomeTypeId": {
-            "enum": [0, 1, 2, 3, 4],
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
             "type": "integer",
             "description": "Druhy příjmu\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Employement</li><li>2 - Enterprise</li><li>3 - Rent</li><li>4 - Other</li></ul>",
             "format": "int32",
@@ -7836,7 +8169,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.CustomerIncome.UpdateIncome.UpdateIncomeRequest": {
-        "required": ["incomeTypeId"],
+        "required": [
+          "incomeTypeId"
+        ],
         "type": "object",
         "properties": {
           "sum": {
@@ -7853,7 +8188,13 @@
             "example": "CZK"
           },
           "incomeTypeId": {
-            "enum": [0, 1, 2, 3, 4],
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
             "type": "integer",
             "description": "Druhy příjmu\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Employement</li><li>2 - Enterprise</li><li>3 - Rent</li><li>4 - Other</li></ul>",
             "format": "int32"
@@ -8099,7 +8440,11 @@
             "format": "date"
           },
           "uploadStatus": {
-            "enum": [0, 1, 2],
+            "enum": [
+              0,
+              1,
+              2
+            ],
             "type": "integer",
             "description": "Stav přenosu dokumentu do eArchivu.\n\n<small>Enum Values</small><ul><li>0 - Uloženo v eArchivu</li><li>1 - Ve zpracování</li><li>2 - Chyba</li></ul>",
             "format": "int32",
@@ -8271,7 +8616,13 @@
             "nullable": true
           },
           "signatureState": {
-            "enum": [0, 1, 2, 3, 4],
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
             "type": "integer",
             "description": "\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Ready</li><li>2 - InTheProcess</li><li>3 - WaitingForScan</li><li>4 - Signed</li></ul>",
             "format": "int32"
@@ -8770,7 +9121,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchRequest": {
-        "required": ["searchText"],
+        "required": [
+          "searchText"
+        ],
         "type": "object",
         "properties": {
           "searchText": {
@@ -9382,7 +9735,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest": {
-        "required": ["resourceProcessId"],
+        "required": [
+          "resourceProcessId"
+        ],
         "type": "object",
         "properties": {
           "productTypeId": {
@@ -9592,7 +9947,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.Dto.Collateral": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -9639,7 +9996,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.Dto.CommentToChangeRequest": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -9712,7 +10071,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.Dto.DrawingAndOtherConditions": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -9729,7 +10090,9 @@
         "description": "Podmínky čerpání a další podmínky"
       },
       "NOBY.Api.Endpoints.SalesArrangement.Dto.LoanPurpose": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -9763,7 +10126,9 @@
         "description": "Účel úvěru"
       },
       "NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstate": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -9838,7 +10203,10 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing": {
-        "required": ["agent", "drawingDate"],
+        "required": [
+          "agent",
+          "drawingDate"
+        ],
         "type": "object",
         "properties": {
           "applicant": {
@@ -9871,7 +10239,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingAgent": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -10059,7 +10429,14 @@
             "nullable": true
           },
           "state": {
-            "enum": [0, 1, 2, 3, 4, 5],
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
             "type": "integer",
             "description": "\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - InProgress</li><li>2 - InApproval</li><li>3 - Cancelled</li><li>4 - IsSigned</li><li>5 - NewArrangement</li></ul>",
             "format": "int32"
@@ -10080,7 +10457,10 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.Dto.ValidateCategory": {
-        "required": ["categoryName", "validationMessages"],
+        "required": [
+          "categoryName",
+          "validationMessages"
+        ],
         "type": "object",
         "properties": {
           "categoryName": {
@@ -10099,7 +10479,11 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.Dto.ValidateMessage": {
-        "required": ["message", "parameter", "severity"],
+        "required": [
+          "message",
+          "parameter",
+          "severity"
+        ],
         "type": "object",
         "properties": {
           "parameter": {
@@ -10115,7 +10499,10 @@
             "example": "09.08.2022 Staré datum platnost od '01.09.2022' do '31.12.9999"
           },
           "severity": {
-            "enum": [1, 2],
+            "enum": [
+              1,
+              2
+            ],
             "type": "integer",
             "description": "Severita chyby\n\n<small>Enum Values</small><ul><li>1 - Warning</li><li>2 - Error</li></ul>",
             "format": "int32"
@@ -10127,7 +10514,10 @@
         "type": "object",
         "properties": {
           "worthinessResult": {
-            "enum": [1, 2],
+            "enum": [
+              1,
+              2
+            ],
             "type": "integer",
             "description": "\n\n<small>Enum Values</small><ul><li>1 - Success</li><li>2 - Failed</li></ul>",
             "format": "int32"
@@ -10180,7 +10570,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChange3602Detail": {
-        "required": ["householdId"],
+        "required": [
+          "householdId"
+        ],
         "type": "object",
         "properties": {
           "householdId": {
@@ -10197,7 +10589,14 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetail": {
-        "required": ["add", "agent", "applicants", "commentToChangeRequest", "release", "repaymentAccount"],
+        "required": [
+          "add",
+          "agent",
+          "applicants",
+          "commentToChangeRequest",
+          "release",
+          "repaymentAccount"
+        ],
         "type": "object",
         "properties": {
           "applicants": {
@@ -10225,7 +10624,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAdd": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -10260,7 +10661,10 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailAgent": {
-        "required": ["actualAgent", "isActive"],
+        "required": [
+          "actualAgent",
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -10318,7 +10722,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailRelease": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -10348,7 +10754,10 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateTo": {
-        "required": ["agreedDrawingDateTo", "isActive"],
+        "required": [
+          "agreedDrawingDateTo",
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -10370,7 +10779,10 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DrawingDateToExtended": {
-        "required": ["agreedDrawingDateTo", "isActive"],
+        "required": [
+          "agreedDrawingDateTo",
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -10398,7 +10810,10 @@
         "description": "Lhůta ukončení čerpání"
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.DueDate": {
-        "required": ["actualLoanDueDate", "connectionExtraordinaryPayment"],
+        "required": [
+          "actualLoanDueDate",
+          "connectionExtraordinaryPayment"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -10425,7 +10840,10 @@
         "description": "Splatnost"
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.ExpectedDateOfDrawing": {
-        "required": ["agreedExpectedDateOfDrawing", "isActive"],
+        "required": [
+          "agreedExpectedDateOfDrawing",
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -10592,7 +11010,11 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.LoanPaymentAmount": {
-        "required": ["actualLoanPaymentAmount", "connectionExtraordinaryPayment", "isActive"],
+        "required": [
+          "actualLoanPaymentAmount",
+          "connectionExtraordinaryPayment",
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -10619,7 +11041,12 @@
         "description": "Výše měsíční splátky"
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.PaymentAccount": {
-        "required": ["agreedBankCode", "agreedNumber", "agreedPrefix", "isActive"],
+        "required": [
+          "agreedBankCode",
+          "agreedNumber",
+          "agreedPrefix",
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -10677,7 +11104,10 @@
         "description": "Účet pro splácení"
       },
       "NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.PaymentDay": {
-        "required": ["agreedPaymentDay", "isActive"],
+        "required": [
+          "agreedPaymentDay",
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -11053,7 +11483,7 @@
             "format": "int64",
             "nullable": true
           },
-          "displayAssessmentResultInfoText": {
+          "displayAssessmentResultInfoText":{
             "type": "boolean",
             "description": "Zobrazit: Výsledek skóringu - informační hláška",
             "default": false,
@@ -11082,7 +11512,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateTo": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -11099,7 +11531,9 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DrawingDateToExtended": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -11122,7 +11556,9 @@
         "description": "Lhůta ukončení čerpání"
       },
       "NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.DueDate": {
-        "required": ["connectionExtraordinaryPayment"],
+        "required": [
+          "connectionExtraordinaryPayment"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -11144,7 +11580,9 @@
         "description": "Splatnost"
       },
       "NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.ExpectedDateOfDrawing": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -11270,7 +11708,11 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanAmount": {
-        "required": ["changeAgreedLoanAmount", "preserveAgreedPaymentAmount", "preserveLoanDueDate"],
+        "required": [
+          "changeAgreedLoanAmount",
+          "preserveAgreedPaymentAmount",
+          "preserveLoanDueDate"
+        ],
         "type": "object",
         "properties": {
           "changeAgreedLoanAmount": {
@@ -11295,7 +11737,10 @@
         "additionalProperties": false
       },
       "NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanPaymentAmount": {
-        "required": ["connectionExtraordinaryPayment", "isActive"],
+        "required": [
+          "connectionExtraordinaryPayment",
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -11317,7 +11762,9 @@
         "description": "Výše měsíční splátky"
       },
       "NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -11360,7 +11807,9 @@
         "description": "Účet pro splácení"
       },
       "NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentDay": {
-        "required": ["isActive"],
+        "required": [
+          "isActive"
+        ],
         "type": "object",
         "properties": {
           "isActive": {
@@ -11561,7 +12010,10 @@
         "additionalProperties": false
       },
       "NOBY.Api.SharedDto.IdentificationDocumentBase": {
-        "required": ["identificationDocumentTypeId", "number"],
+        "required": [
+          "identificationDocumentTypeId",
+          "number"
+        ],
         "type": "object",
         "properties": {
           "identificationDocumentTypeId": {
@@ -11578,7 +12030,14 @@
         "additionalProperties": false
       },
       "NOBY.Api.SharedDto.IdentificationDocumentFull": {
-        "required": ["identificationDocumentTypeId", "issuedBy", "issuedOn", "issuingCountryId", "number", "validTo"],
+        "required": [
+          "identificationDocumentTypeId",
+          "issuedBy",
+          "issuedOn",
+          "issuingCountryId",
+          "number",
+          "validTo"
+        ],
         "type": "object",
         "properties": {
           "identificationDocumentTypeId": {

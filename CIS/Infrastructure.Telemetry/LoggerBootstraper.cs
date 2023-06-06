@@ -95,7 +95,7 @@ internal sealed class LoggerBootstraper
         }
 
         // seq
-        if (configuration.Seq is not null)
+        if (!string.IsNullOrEmpty(configuration.Seq?.ServerUrl))
         {
             loggerConfiguration
                 .WriteTo
