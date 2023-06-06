@@ -55,7 +55,7 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
 
         var finalDocumentsOnSa = await Task.WhenAll(dynamicValues.Select(value => _formsDocumentService.CreateFinalDocumentOnSa(salesArrangement.SalesArrangementId, value, cancellationToken)));
 
-        dynamicValues.First(v => v.DocumentTypeId == (int)DocumentType.ZADOSTHU).PerformerUserId = await _performerProvider.LoadPerformerUserId(salesArrangement.CaseId, cancellationToken);
+        dynamicValues.First(v => v.DocumentTypeId == (int)DocumentTypes.ZADOSTHU).PerformerUserId = await _performerProvider.LoadPerformerUserId(salesArrangement.CaseId, cancellationToken);
 
         var easFormResponse = await _formsService.LoadProductForm(salesArrangement, dynamicValues, cancellationToken);
 

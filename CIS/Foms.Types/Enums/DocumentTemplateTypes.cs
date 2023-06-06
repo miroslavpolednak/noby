@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace CIS.Foms.Enums;
 
 [DataContract]
-public enum DocumentTemplateType : byte
+public enum DocumentTemplateTypes : byte
 {
     [Display(Name = "unknown", ShortName = "")]
     [EnumMember]

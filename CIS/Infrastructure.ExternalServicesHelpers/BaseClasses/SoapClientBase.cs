@@ -14,7 +14,7 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
 {
     private readonly TSoapClient _client;
     private readonly IExternalServiceConfiguration _configuration;
-    protected readonly ILogger Logger;
+    protected ILogger Logger { get; init; }
 
     protected TSoapClient Client => _client;
 
