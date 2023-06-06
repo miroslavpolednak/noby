@@ -16,26 +16,7 @@ public static class LoggingExtensions
     /// </summary>
     public static IStartupLogger CreateStartupLogger(this WebApplicationBuilder builder)
     {
-        var logger = new LoggerConfiguration()
-            .MinimumLevel.Debug();
-
-        // dotahnout konfiguraci
-        var configuration = builder.Configuration
-            .GetSection(_configurationTelemetryKey + ":Logging:Application")
-            .Get<LogConfiguration>()!;
-
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        var assemblyName = Assembly.GetEntryAssembly().GetName();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-        logger
-            .Enrich.FromLogContext()
-            .Enrich.WithMachineName()
-            .Enrich.WithProperty("Assembly", $"{assemblyName!.Name}")
-            .Enrich.WithProperty("Version", $"{assemblyName!.Version}");
-
-        Helpers.AddOutputs(logger, configuration, null);
-        
-        return new StartupLog.StartupLogger(logger.CreateLogger());
+        return StartupLog.StartupLogger.Create(builder);
     }
 
     /// <summary>
@@ -114,5 +95,5 @@ public static class LoggingExtensions
         return builder;
     }
 
-    const string _configurationTelemetryKey = "CisTelemetry";
+    internal const string _configurationTelemetryKey = "CisTelemetry";
 }

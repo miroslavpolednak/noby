@@ -22,7 +22,7 @@ var log = builder.CreateStartupLogger();
 
 try
 {
-    log.Debug("Registering services");
+    log.RegisteringServices();
 
     #region register builder
     builder.Services.AddAttributedServices(typeof(Program));
@@ -67,7 +67,7 @@ try
     // BUILD APP
     if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
     var app = builder.Build();
-    log.Debug("Application built");
+    log.ApplicationBuilt();
 
     app.UseServiceDiscovery();
     app.UseRouting();
@@ -80,17 +80,17 @@ try
     app.MapGrpcReflectionService();
     app.MapGrpcService<CaseService>();
 
-    log.Debug("Application run");
+    log.ApplicationRun();
     app.Run();
 }
 catch (Exception ex)
 {
-    log.Error(ex, "Error during startup");
+    log.CatchedException(ex);
 }
 finally
 {
-    log.Debug("Application closing");
-    log.Dispose();
+    log.ApplicationFinished();
+    log.CloseAndFlush();
     LoggingExtensions.CloseAndFlush();
 }
 
