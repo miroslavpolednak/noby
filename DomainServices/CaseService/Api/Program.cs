@@ -22,8 +22,6 @@ var log = builder.CreateStartupLogger();
 
 try
 {
-    log.RegisteringServices();
-
     #region register builder
     builder.Services.AddAttributedServices(typeof(Program));
 
@@ -89,8 +87,6 @@ catch (Exception ex)
 }
 finally
 {
-    log.ApplicationFinished();
-    log.CloseAndFlush();
     LoggingExtensions.CloseAndFlush();
 }
 

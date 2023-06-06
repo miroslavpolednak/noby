@@ -58,8 +58,11 @@ public static class LoggingExtensions
     /// </summary>
     public static void CloseAndFlush()
     {
+        StartupLog.StartupLogger.ApplicationFinished();
+
         Log.CloseAndFlush();
         AuditLogger.CloseAndFlush();
+        StartupLog.StartupLogger.CloseAndFlush();
 
         // kdyz tu neni sleep, tak se obcas nezapsal vsechen output pri ukonceni sluzby
         Thread.Sleep(2000);

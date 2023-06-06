@@ -36,7 +36,7 @@ public class DocumentController : ControllerBase
     {
         var request = new Offer.GetOfferRequest
         {
-            DocumentType = DocumentType.NABIDKA,
+            DocumentType = DocumentTypes.NABIDKA,
             InputParameters = _documentManager.GetSalesArrangementInput(salesArrangementId),
             ForPreview = false
         };
@@ -63,7 +63,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetOfferInput(offerId);
 
-        return GenerateGeneralDocument(DocumentType.KALKULHU, input, false, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.KALKULHU, input, false, cancellationToken);
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetOfferInput(offerId);
 
-        return GenerateGeneralDocument(DocumentType.SPLKALHU, input, false, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.SPLKALHU, input, false, cancellationToken);
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZADOCERP, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.ZADOCERP, input, cancellationToken);
     }
 
     /// <summary>
@@ -125,7 +125,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZAOZMPAR, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.ZAOZMPAR, input, cancellationToken);
     }
 
     /// <summary>
@@ -146,7 +146,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZAODHUBN, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.ZAODHUBN, input, cancellationToken);
     }
 
     /// <summary>
@@ -169,7 +169,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZAOZMDLU, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.ZAOZMDLU, input, cancellationToken);
     }
 
     /// <summary>
@@ -190,7 +190,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZADOSTHU, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.ZADOSTHU, input, cancellationToken);
     }
 
     /// <summary>
@@ -211,7 +211,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZADOSTHD, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.ZADOSTHD, input, cancellationToken);
     }
 
     /// <summary>
@@ -232,7 +232,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.PRISTOUP, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.PRISTOUP, input, cancellationToken);
     }
 
     /// <summary>
@@ -253,7 +253,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZUSTAVSI, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.ZUSTAVSI, input, cancellationToken);
     }
 
     /// <summary>
@@ -274,7 +274,7 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument(DocumentType.ZADOSTHD_SERVICE, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.ZADOSTHD_SERVICE, input, cancellationToken);
     }
 
     /// <summary>
@@ -295,15 +295,15 @@ public class DocumentController : ControllerBase
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
 
-        return GenerateGeneralDocument((DocumentType)documentTypeId, input, cancellationToken);
+        return GenerateGeneralDocument((DocumentTypes)documentTypeId, input, cancellationToken);
     }
 
-    private Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, CancellationToken cancellationToken)
+    private Task<IActionResult> GenerateGeneralDocument(DocumentTypes documentType, InputParameters inputParameters, CancellationToken cancellationToken)
     {
         return GenerateGeneralDocument(documentType, inputParameters, true, cancellationToken);
     }
 
-    private async Task<IActionResult> GenerateGeneralDocument(DocumentType documentType, InputParameters inputParameters, bool forPreview, CancellationToken cancellationToken)
+    private async Task<IActionResult> GenerateGeneralDocument(DocumentTypes documentType, InputParameters inputParameters, bool forPreview, CancellationToken cancellationToken)
     {
         var request = new GeneralDocument.GetGeneralDocumentRequest
         {

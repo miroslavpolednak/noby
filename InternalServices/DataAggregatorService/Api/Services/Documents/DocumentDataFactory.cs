@@ -15,27 +15,27 @@ internal class DocumentDataFactory
         _serviceProvider = serviceProvider;
     }
 
-    public AggregatedData CreateData(DocumentType documentType) =>
+    public AggregatedData CreateData(DocumentTypes documentType) =>
         documentType switch
         {
-            DocumentType.NABIDKA or DocumentType.KALKULHU => new OfferTemplateData(),
-            DocumentType.ZADOCERP => new DrawingTemplateData(),
-            DocumentType.ZADOSTHU => _serviceProvider.GetRequiredService<LoanApplication3601TemplateData>(),
-            DocumentType.ZADOSTHD => _serviceProvider.GetRequiredService<LoanApplication3602TemplateData>(),
-            DocumentType.ZAOZMPAR => new GeneralChangeTemplateData(),
-            DocumentType.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeTemplateData>(),
-            DocumentType.ZAODHUBN => new HUBNTemplateData(),
-            DocumentType.ZUSTAVSI or DocumentType.PRISTOUP or DocumentType.ZADOSTHD_SERVICE => _serviceProvider.GetRequiredService<CustomerChange3602TemplateData>(),
+            DocumentTypes.NABIDKA or DocumentTypes.KALKULHU => new OfferTemplateData(),
+            DocumentTypes.ZADOCERP => new DrawingTemplateData(),
+            DocumentTypes.ZADOSTHU => _serviceProvider.GetRequiredService<LoanApplication3601TemplateData>(),
+            DocumentTypes.ZADOSTHD => _serviceProvider.GetRequiredService<LoanApplication3602TemplateData>(),
+            DocumentTypes.ZAOZMPAR => new GeneralChangeTemplateData(),
+            DocumentTypes.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeTemplateData>(),
+            DocumentTypes.ZAODHUBN => new HUBNTemplateData(),
+            DocumentTypes.ZUSTAVSI or DocumentTypes.PRISTOUP or DocumentTypes.ZADOSTHD_SERVICE => _serviceProvider.GetRequiredService<CustomerChange3602TemplateData>(),
             _ => new AggregatedData()
         };
 
-    public IDocumentVersionDataProvider CreateVersionData(DocumentType documentType)
+    public IDocumentVersionDataProvider CreateVersionData(DocumentTypes documentType)
     {
         return documentType switch
         {
-            DocumentType.ZADOSTHU or DocumentType.ZADOSTHD or DocumentType.ZADOSTHD_SERVICE => _serviceProvider.GetRequiredService<LoanApplicationVersionDataProvider>(),
-            DocumentType.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeVersionDataProvider>(),
-            DocumentType.ZUSTAVSI or DocumentType.PRISTOUP => _serviceProvider.GetRequiredService<CustomerChange3602VersionDataProvider>(),
+            DocumentTypes.ZADOSTHU or DocumentTypes.ZADOSTHD or DocumentTypes.ZADOSTHD_SERVICE => _serviceProvider.GetRequiredService<LoanApplicationVersionDataProvider>(),
+            DocumentTypes.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeVersionDataProvider>(),
+            DocumentTypes.ZUSTAVSI or DocumentTypes.PRISTOUP => _serviceProvider.GetRequiredService<CustomerChange3602VersionDataProvider>(),
             _ => _serviceProvider.GetRequiredService<IDocumentVersionDataProvider>()
         };
     }

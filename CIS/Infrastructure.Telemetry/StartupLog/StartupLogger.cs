@@ -8,32 +8,32 @@ namespace CIS.Infrastructure.Telemetry.StartupLog;
 internal sealed class StartupLogger
     : IStartupLogger
 {
-    private readonly Serilog.Core.Logger _logger;
-
-    public StartupLogger(Serilog.Core.Logger logger)
-    {
-        _logger = logger;
-    }
-
-    public void RegisteringServices()
-        => _logger.Debug("Registering services");
+    internal static Serilog.Core.Logger? _logger;
 
     public void ApplicationBuilt()
-        => _logger.Debug("Registering services");
+        => _logger!.Debug("STARTUP: Application built");
 
     public void ApplicationRun()
-        => _logger.Debug("Registering services");
-
-    public void ApplicationFinished()
-        => _logger.Debug("Registering services");
+        => _logger!.Debug("STARTUP: Run");
 
     public void CatchedException(Exception? exception)
-        => _logger.Error(exception, "Startup exception");
+        => _logger!.Error(exception, "STARTUP: Exception");
 
-    public void CloseAndFlush()
+    internal static void ApplicationStarting()
+        => _logger!.Debug("STARTUP: Starting");
+
+    internal static void ApplicationFinished()
+        => _logger!.Debug("STARTUP: Finished");
+
+    internal static void CloseAndFlush()
     {
         if (_logger is not null)
             ((IDisposable)_logger).Dispose();
+    }
+
+    private StartupLogger() 
+    {
+        ApplicationStarting();
     }
 
     internal static IStartupLogger Create(WebApplicationBuilder builder)
@@ -45,6 +45,8 @@ internal sealed class StartupLogger
         var configuration = builder.Configuration
             .GetSection(LoggingExtensions._configurationTelemetryKey + ":Logging:Application")
             .Get<LogConfiguration>()!;
+        // env name
+        var envName = builder.Configuration.GetValue<string>(Core.CisGlobalConstants.EnvironmentConfigurationSectionName + ":EnvironmentName") ?? "";
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
         var assemblyName = Assembly.GetEntryAssembly().GetName();
@@ -53,10 +55,13 @@ internal sealed class StartupLogger
             .Enrich.FromLogContext()
             .Enrich.WithMachineName()
             .Enrich.WithProperty("Assembly", $"{assemblyName!.Name}")
-            .Enrich.WithProperty("Version", $"{assemblyName!.Version}");
+            .Enrich.WithProperty("Version", $"{assemblyName!.Version}")
+            .Enrich.WithProperty("CisEnvironment", envName);
 
         Helpers.AddOutputs(logger, configuration, null);
 
-        return new StartupLogger(logger.CreateLogger());
+        _logger = logger.CreateLogger();
+        
+        return new StartupLogger();
     }
 }

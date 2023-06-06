@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace CIS.Foms.Enums;
 
 [DataContract]
-public enum DocumentType : byte
+public enum DocumentTypes : byte
 {
     [EnumMember]
     Unknown = 0,
@@ -55,5 +54,7 @@ public enum DocumentType : byte
     ODSTOUP = 15,
 
     [EnumMember]
+#pragma warning disable CA1707 // Identifiers should not contain underscores
     ZADOSTHD_SERVICE = 16,
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 }
