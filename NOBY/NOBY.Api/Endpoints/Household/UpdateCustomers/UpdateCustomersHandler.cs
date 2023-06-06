@@ -175,7 +175,7 @@ internal sealed class UpdateCustomersHandler
                     var identities = (await _customerOnSAService.UpdateCustomer(new __HO.UpdateCustomerRequest
                         {
                             CustomerOnSAId = customer.CustomerOnSAId!.Value,
-                            Customer = customer.ToDomainServiceRequest(currentCustomerInstance.LockedIncomeDateTime)
+                            Customer = customer.ToDomainServiceRequest(currentCustomerInstance)
                         }, cancellationToken))
                         .CustomerIdentifiers;
 

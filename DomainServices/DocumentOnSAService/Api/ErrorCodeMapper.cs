@@ -2,7 +2,7 @@
 
 namespace DomainServices.DocumentOnSAService.Api;
 
-internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
+public sealed class ErrorCodeMapper : ErrorCodeMapperBase
 {
     public const int SalesArrangementNotExist = 19000;
     public const int SignatureMethodNotExist = 19002;

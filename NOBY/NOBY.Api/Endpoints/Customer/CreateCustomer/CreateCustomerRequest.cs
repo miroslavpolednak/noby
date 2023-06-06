@@ -59,7 +59,7 @@ public class CreateCustomerRequest
     /// <example>16</example>
     public int? CitizenshipCountryId { get; set; }
 
-    public SharedDto.ContactsDto? Contacts { get; set; }
+    public NOBY.Dto.ContactsDto? Contacts { get; set; }
 
     /// <summary>
     /// Rodné číslo CZ
@@ -73,5 +73,5 @@ public class CreateCustomerRequest
     public Dto.Address? PrimaryAddress { get; set; }
 
     [Required]
-    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
+    public NOBY.Dto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 }

@@ -331,6 +331,7 @@ message GetOperatorRequest {
 message GetOperatorResponse {
 	string PerformerLogin = 1;
 	string PerformerName = 2;
+	int32 PerformerCode = 3;
 }
 
 message HouseholdTypesResponse {

@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using NOBY.Api.Endpoints.Shared;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 
@@ -19,7 +18,7 @@ public class SaveDocumentsToArchiveRequest : IRequest
 
 public class DocumentsInformation
 {
-    public DocumentInformation DocumentInformation { get; set; } = null!;
+    public Dto.Documents.DocumentInformation DocumentInformation { get; set; } = null!;
 
     public string? FormId { get; set; }
 }

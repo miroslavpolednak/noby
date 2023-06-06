@@ -17,3 +17,5 @@ public partial class SignDocumentManuallyRequest : IRequest<Empty>, CIS.Core.Val
 public partial class GetDocumentsOnSAListRequest :IRequest<GetDocumentsOnSAListResponse>, CIS.Core.Validation.IValidatableRequest { }
 
 public partial class CreateDocumentOnSARequest : IRequest<CreateDocumentOnSAResponse>, CIS.Core.Validation.IValidatableRequest { }
+
+public partial class LinkEArchivIdToDocumentOnSARequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }

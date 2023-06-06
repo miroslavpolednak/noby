@@ -38,4 +38,10 @@ internal class ProductService : Contracts.v1.ProductService.ProductServiceBase
 
     public override async Task<GetCaseIdResponse> GetCaseId(GetCaseIdRequest request, ServerCallContext context)
         => await _mediator.Send(request);
+
+    public override async Task<GetCovenantListResponse> GetCovenantList(GetCovenantListRequest request, ServerCallContext context)
+        => await _mediator.Send(request);
+
+    public override async Task<GetCovenantDetailResponse> GetCovenantDetail(GetCovenantDetailRequest request, ServerCallContext context)
+        => await _mediator.Send(request);
 }

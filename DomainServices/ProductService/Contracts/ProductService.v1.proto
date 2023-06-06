@@ -12,6 +12,8 @@ import "Messages/CreateContractRelationship.proto";
 import "Messages/DeleteContractRelationship.proto";
 import "Messages/GetCustomersOnProduct.proto";
 import "Messages/GetCaseId.proto";
+import "Messages/GetCovenantDetail.proto";
+import "Messages/GetCovenantList.proto";
 
 service ProductService {
    rpc GetProductList (GetProductListRequest) returns (GetProductListResponse);
@@ -31,4 +33,8 @@ service ProductService {
    rpc GetCustomersOnProduct (GetCustomersOnProductRequest) returns (GetCustomersOnProductResponse);
 
    rpc GetCaseId (GetCaseIdRequest) returns (GetCaseIdResponse);
+   
+   rpc GetCovenantDetail (GetCovenantDetailRequest) returns (GetCovenantDetailResponse);
+   
+   rpc GetCovenantList (GetCovenantListRequest) returns (GetCovenantListResponse);
 }

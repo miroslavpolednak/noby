@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Clients;
-using NOBY.Api.SharedDto;
+using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.Customer.GetCustomerDetail;
 

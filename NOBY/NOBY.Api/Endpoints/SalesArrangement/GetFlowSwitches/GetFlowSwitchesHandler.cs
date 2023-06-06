@@ -33,7 +33,7 @@ internal sealed class GetFlowSwitchesHandler
         return response;
     }
 
-    private static GetFlowSwitchesResponseItemButton createSectionButton(Infrastructure.Services.FlowSwitches.FlowSwitchGroup group)
+    private static GetFlowSwitchesResponseItemButton createSectionButton(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
     {
         return new GetFlowSwitchesResponseItemButton
         {
@@ -41,7 +41,7 @@ internal sealed class GetFlowSwitchesHandler
         };
     }
 
-    private static GetFlowSwitchesResponseItem createSection(Infrastructure.Services.FlowSwitches.FlowSwitchGroup group)
+    private static GetFlowSwitchesResponseItem createSection(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
     {
         return new GetFlowSwitchesResponseItem
         {

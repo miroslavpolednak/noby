@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.OpenApi.Models;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
+using NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.StartupExtensions;
@@ -44,12 +45,13 @@ internal static class NobySwagger
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "ExternalServices.AddressWhisperer.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "DomainServices.CodebookService.Contracts.xml"));
+            x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "NOBY.Dto.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
             
             x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
             x.SchemaFilter<Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementSwaggerSchema> ();
             x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwaggerSchema>();
-            x.SchemaFilter<Endpoints.Cases.GetTaskDetail.GetTaskDetailSwaggerSchema>();
+            x.SchemaFilter<GetTaskDetailSwaggerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
         });

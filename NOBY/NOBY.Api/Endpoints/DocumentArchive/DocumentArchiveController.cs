@@ -4,7 +4,7 @@ using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 using NOBY.Api.Endpoints.DocumentArchive.SetDocumentStatusInQueue;
 using NOBY.Api.Endpoints.DocumentArchive.UploadDocument;
-using NOBY.Api.Endpoints.Shared;
+using NOBY.Dto.Documents;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.DocumentArchive;
@@ -37,12 +37,12 @@ public class DocumentArchiveController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocument(
         [FromRoute] string documentId,
-        [FromQuery] FileContentDisposition contentDisposition,
+        [FromQuery] FileContentDispositions contentDisposition,
         [FromQuery] DocumentSource source, // added prep. according to HFICH-5628 (without implementation)
         CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetDocumentRequest(documentId), cancellationToken);
-        if (contentDisposition == FileContentDisposition.inline)
+        if (contentDisposition == FileContentDispositions.inline)
         {
             return File(result.Content.BinaryData.ToArrayUnsafe(), result.Content.MineType);
         }

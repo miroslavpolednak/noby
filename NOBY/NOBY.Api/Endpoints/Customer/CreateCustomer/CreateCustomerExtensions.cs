@@ -1,8 +1,8 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
-using NOBY.Api.SharedDto;
 using CIS.Foms.Enums;
+using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 

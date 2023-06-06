@@ -1,10 +1,11 @@
 ﻿using DomainServices.CustomerService.Clients;
 using Newtonsoft.Json.Linq;
 using NOBY.Api.Endpoints.Customer.Shared;
-using NOBY.Api.SharedDto;
+using NOBY.Dto;
 using __Household = DomainServices.HouseholdService.Contracts;
 using __Customer = DomainServices.CustomerService.Contracts;
 using CIS.Foms.Enums;
+using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.Customer;
 

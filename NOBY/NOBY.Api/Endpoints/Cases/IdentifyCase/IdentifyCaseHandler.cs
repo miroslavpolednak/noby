@@ -58,7 +58,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         }
 
         var taskId = taskDetails.First().Key;
-        var taskDetailRequest = new NOBY.Api.Endpoints.Cases.GetTaskDetail.GetTaskDetailRequest(caseId, taskId);
+        var taskDetailRequest = new Workflow.GetTaskDetail.GetTaskDetailRequest(caseId, taskId);
         var taskDetailResponse = await _mediator.Send(taskDetailRequest, cancellationToken);
 
         return new IdentifyCaseResponse

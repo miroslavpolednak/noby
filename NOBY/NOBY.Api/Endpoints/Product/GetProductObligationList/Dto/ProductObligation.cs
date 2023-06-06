@@ -1,4 +1,4 @@
-﻿using NOBY.Api.SharedDto;
+﻿using NOBY.Dto;
 
 namespace NOBY.Api.Endpoints.Product.GetProductObligationList.Dto;
 

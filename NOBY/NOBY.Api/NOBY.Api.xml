@@ -87,36 +87,6 @@
             Seznam URL služeb zaregistrovaných v ServiceDiscovery
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetConsultationTypes(System.Int64,System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Získání relevantních typů konzultace
-            </summary>
-            <remarks>
-            Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <param name="processId">Noby proces ID. Jde o ID sady úkolů generované Starbuildem.</param>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CancelTask(System.Int64,System.Int64,NOBY.Api.Endpoints.Cases.CancelTask.CancelTaskRequest)">
-            <summary>
-            Stornování úkolu ve SB
-            </summary>
-            <remarks>
-            Stornování úkolu ve SB. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateTask(System.Int64,NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest)">
-            <summary>
-            Vytvoření nového workflow tasku do SB.
-            </summary>
-            <remarks>
-            Vytvoření nového workflow tasku do SB.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <response code="200">Noby task ID. Jde o ID sady úkolů generované Starbuildem.</response>
-            <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
-        </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateSalesArrangement(System.Int64,NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest)">
             <summary>
             Vytvoření servisního SalesArrangement-u
@@ -193,36 +163,6 @@
             </remarks>
             <param name="request">Typ kritéria a jeho hodnota pro vyhledávání.</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetTaskList(System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Seznam workflow tasků dotažený z SB.
-            </summary>
-            <remarks>
-            Operace získá ze Starbuildu seznam úkolů a procesů k danému case ID. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <returns>Seznam wf tasks z SB.</returns>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetTaskDetail(System.Int64,System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Detail workflow tasku dotažený ze SB.
-            </summary>
-            <remarks>
-            Detail workflow tasku dotažený ze SB. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=90CD722E-8955-43e6-9924-DC5FDDF6ED15"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <returns></returns>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.UpdateTaskDetail(System.Int64,System.Int64,NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest,System.Threading.CancellationToken)">
-            <summary>
-            Update workflow tasku do SB
-            </summary>
-            <remarks>
-            Update workflow tasku do SB. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <response code="404">Task or case not found</response>
-        </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseParameters(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Parametry Case-u.
@@ -233,7 +173,7 @@
             </remarks>
             <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseDocumentsFlag(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseMenuFlags(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Příznaky v menu Case detailu
             </summary>
@@ -242,6 +182,27 @@
              <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
              <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCovenants(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Podmínky ke splnění Case-u
+            </summary>
+            <remarks>
+            Seznam Podmínek ke splnění pro Case<br /><br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=4378EDFB-2A3D-46f6-8C51-0241A3436D5E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="caseId">ID Case-u</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCovenant(System.Int64,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Detail Podmínky ke splnění Case-u
+            </summary>
+            <remarks>
+            Detail Podmínky ke splnění pro Case<br /><br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=56FAFD66-E483-475d-9868-6B90A4ED889B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="caseId">ID Case-u</param>
+            <param name="covenantOrder">Pořadí podmínky ke splnění</param>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
             <summary>
@@ -258,33 +219,9 @@
             https://wiki.kb.cz/pages/viewpage.action?pageId=424119307#id-%C4%8Cerp%C3%A1ni%C5%BD%C3%A1dosto%C4%8Derp%C3%A1n%C3%AD-Kontrolyp%C5%99edformul%C3%A1%C5%99em%C4%8Derp%C3%A1n%C3%AD
             </remarks>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.TaskTypeId">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsItem.Flag">
             <summary>
-            ID typu úkolu (Předání na specialistu = 7, Konzultace = 3)
-            </summary>
-            <example>7</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.TaskSubtypeId">
-            <summary>
-            ID typu konzultace
-            </summary>
-            <example>0</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.ProcessId">
-            <summary>
-            ID nadřazeného procesu
-            </summary>
-            <example>24556</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest.TaskUserRequest">
-            <summary>
-            Text požadavku
-            </summary>
-            <example>Prosím o pomoc s tímto případem.</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.DocumentsMenuItem.Flag">
-            <summary>
-            0 - No flag, 1 - In processing, 2 - Error (!)
+            Příznak
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.LoanPurposeItem.Sum">
@@ -504,17 +441,100 @@
             IČP
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetConsultationTypes.GetConsultationTypesResponseItem.TaskSubtypeId">
+        <member name="T:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponse">
             <summary>
-            ID typu konzultace
+            Seznam podmínek ke splnění
             </summary>
-            <example>0</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetConsultationTypes.GetConsultationTypesResponseItem.taskSubtypeName">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponse.Sections">
             <summary>
-            Název typu konzultace
+            Seznam sekcí
             </summary>
-            <example>Dotaz (obecný)</example>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseSection">
+            <summary>
+            Sekce
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseSection.CovenantTypeId">
+            <summary>
+            Sekce - číselník CovenantType
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseSection.Phases">
+            <summary>
+            Seznam fází
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponsePhase">
+            <summary>
+            Fáze
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponsePhase.OrderLetter">
+            <summary>
+            Písmenná identifikace fáze
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponsePhase.Name">
+            <summary>
+            Název skupiny podmínek (fáze)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponsePhase.Covenants">
+            <summary>
+            Podmínky ke splnění
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant">
+            <summary>
+            Podmínka ke splnění
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.OrderLetter">
+            <summary>
+            Písmenná identifikace podmínky v sekci/skupině
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.Name">
+            <summary>
+            Jméno podmínky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.IsFulfilled">
+            <summary>
+            Podmínka splněna
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.FulfillDate">
+            <summary>
+            Termín pro splnění podmínky (datum, kdy by mělo byt splněno)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenant.GetCovenantResponse.Name">
+            <summary>
+            Jméno podmínky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenant.GetCovenantResponse.IsFulfilled">
+            <summary>
+            Podmínka splněna
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenant.GetCovenantResponse.FulfillDate">
+            <summary>
+            Termín pro splnění podmínky (datum, kdy by mělo byt splněno)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenant.GetCovenantResponse.Text">
+            <summary>
+            Text podmínky (jedná se o text ve smlouvě)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenant.GetCovenantResponse.Description">
+            <summary>
+            Vysvětlení činnosti, kterou je třeba udělat (vysvětlující text podmínky)
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleId">
             <summary>
@@ -555,146 +575,6 @@
             <summary>
             KBID
             </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsConsultationData">
-            <summary>
-            Tento objekt je relevantní pouze pro některé typy Konzultací, a to sice pro Dotaz k ocenění a pro Vyhotovení ZOV.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsConsultationData.OrderId">
-            <summary>
-            Konzultace: Číslo objednávky ocenění (Atribut je relevantní jen pro konzultaci Dotaz k ocenění a pro konzultaci Vyhotovení ZOV.)
-            </summary>
-            <example>123556</example>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsRequest">
-            <summary>
-            Tento objekt je relevantní pouze pro typ úkolu Dožádání
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsRequest.SentToCustomer">
-            <summary>
-            Dožádání: Příznak zaslání Dožádní přímo na klienta
-            </summary>
-            <example>false</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsRequest.OrderId">
-            <summary>
-            Dožádání: Číslo objednávky ocenění (Atribut je relevantní jen pro dožádání k ocenění.)
-            </summary>
-            <example>123556</example>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning">
-            <summary>
-            Tento objekt je relevantní pouze pro typ úkolu Podepisování
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning.FormId">
-            <summary>
-            Podepisování: ID čárového kódu dokumentu k podpisu (formId)
-            </summary>
-            <example>S00000014139920</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning.SignatureType">
-            <summary>
-            Podepisování: způsob podpisu (0 - papírové podepisování, 1 - elektronické podepisování)
-            </summary>
-            <example>0</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning.Expiration">
-            <summary>
-            Podepisování: Lhůta pro zajištění podpisu
-            </summary>
-            <example>24.12.2023</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning.DocumentForSigning">
-            <summary>
-            Podepisování: ID dokumentu k podpisu
-            </summary>
-            <example>01_23_046_111203_SF_0001</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning.ProposalForEntry">
-            <summary>
-            Podepisování: ID dokumentu návrhu na vklad
-            </summary>
-            <example>01_23_046_111203_SF_0001</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem.TaskRequest">
-            <summary>
-            Text požadavku
-            </summary>
-            <example>Prosím o součinnost.</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem.TaskResponse">
-            <summary>
-            Dožádání: odpověď
-            </summary>
-            <example>Posílám Vám požadované dokumenty.</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.TaskIdSB">
-            <summary>
-            SB ID úkolu, není zobrazeno na FE UI
-            </summary>
-            <example>22456</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.PerformerLogin">
-            <summary>
-            Login zadavatele/zpracovatele
-            </summary>
-            <example>14</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.PerformerName">
-            <summary>
-            Jméno a příjmení zadavatele/zpracovatele
-            </summary>
-            <example>Jan Novák</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.ProcessNameLong">
-            <summary>
-            Jméno typu procesu (nezkrácené)
-            </summary>
-            <example>Hlavní úvěrový proces</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail.TaskCommunication">
-            <summary>
-            Dožádání: Text požadavku a případné odpovědi (i včetně případných opakování komunikace). Řazeno chronologicky, nejstarší záznam je jako poslední.; Předání na specialistu: popis požadavku
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.ProcessId">
-            <summary>
-            Noby proces ID. Jde o ID sady úkolů generované Starbuildem.
-            </summary>
-            <example>22777</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.CreatedOn">
-            <summary>
-            Datum vytvoření procesu
-            </summary>
-            <example>12.12.2021</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.ProcessNameLong">
-            <summary>
-            Jméno typu procesu (nezkrácené)
-            </summary>
-            <example>Hlavní úvěrový proces</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.StateName">
-            <summary>
-            Název Noby stavu procesu
-            </summary>
-            <example>SPRÁVA</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.StateIndicator">
-            <summary>
-            Indikátor barvy Noby stavu
-            </summary>
-            <example>Active</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess.ProcessTypeId">
-            <summary>
-            ID typu procesu. 1 - Hlavní úvěrový proces, 2 - Změnový proces, 3 - Retenční proces
-            </summary>
-            <example>1</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount.Prefix">
             <summary>
@@ -765,30 +645,6 @@
             Kolekce nalezenych Case-s.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest.TaskIdSB">
-            <summary>
-            SB ID úkolu, není zobrazeno na FE UI
-            </summary>
-            <example>22456</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest.TaskTypeId">
-            <summary>
-            ID typu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK">číselníku typu úkolů</a>
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest.TaskResponseTypeId">
-            <summary>
-            ID typu odpovědi. 0 - V pořádku, 1 - Závada - upravený dokument, 2 - Závada - chybějící podpis
-            </summary>
-            <example>0</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest.TaskUserResponse">
-            <summary>
-            Text odpovědi
-            </summary>
-            <example>Vyplněno, co bylo potřeba.</example>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.Dto.CaseModel.CaseId">
             <summary>
             Unikátní Id obchodního případu
@@ -853,72 +709,6 @@
             <summary>
             Datum a cas posledni zmeny Case.
             </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.TaskId">
-            <summary>
-            Noby task ID. Jde o ID sady úkolů generované Starbuildem.
-            </summary>
-            <example>22777</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.CreatedOn">
-            <summary>
-            Datum vytvoření úkolu
-            </summary>
-            <example>12.12.2022</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.TaskTypeId">
-            <summary>
-            ID typu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK">číselníku typu úkolů</a>
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.TaskTypeName">
-            <summary>
-            Jméno typu úkolu
-            </summary>
-            <example>Dožádání</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.TaskSubtypeName">
-            <summary>
-            Označení úkolu (název podtypu úkolu)
-            </summary>
-            <example>Obecné</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.ProcessId">
-            <summary>
-            ID procesu
-            </summary>
-            <example>2344</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.ProcessNameShort">
-            <summary>
-            Jméno typu procesu (zkrácené)
-            </summary>
-            <example>Hlavní</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.StateId">
-            <summary>
-            ID Noby stavu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby">číselníku stavů úkolů</a>
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.StateName">
-            <summary>
-            Název Noby stavu úkolu
-            </summary>
-            <example>K VYŘÍZENÍ</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.StateFilter">
-            <summary>
-            Filter Noby stavu úkolu
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.Dto.WorkflowTask.StateIndicator">
-            <summary>
-            Indikátor barvy Noby stavu
-            </summary>
-            <example>1</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetAll(System.String,System.Threading.CancellationToken)">
              <summary>Kolekce vyžadaných číselniků.</summary>
@@ -1649,7 +1439,7 @@
             Stupeň vzdělání
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocument(System.String,NOBY.Api.Endpoints.Shared.FileContentDisposition,NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentSource,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocument(System.String,NOBY.Dto.Documents.FileContentDispositions,NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentSource,System.Threading.CancellationToken)">
              <summary>
              Načtení dokumentu z e-archivu nebo ze systému ePodpisů
              </summary>
@@ -1698,17 +1488,11 @@
             <br /><br /><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C23F8DBF-9F26-465b-BB34-8736133D020D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocumentList.DocumentsMetadata.UploadStatus">
-            <summary>
-            Stav přenosu dokumentu do eArchivu. Enum Values: 0 - Uloženo v EArchivu, 1 - Probíhá přenos, 2 - Chyba přenosu
-            </summary>
-            <example>1</example>
-        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.ValidateFormId(System.Int64,NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Threading.CancellationToken)">
             <summary>
             If formId exist on DocumentOnSa, return EArchiveId from documentOnSa
             </summary>
-            <returns>DocumentOnSa.EArchiveId</returns>
+            <returns>DocumentOnSa.DocumentOnSAId</returns>
             <exception cref="T:CIS.Core.Exceptions.CisValidationException">Unable to upload file for selected FormId</exception>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.CheckIfExistFormIdOnDocumentOnSa(NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Int64,System.Threading.CancellationToken)">
@@ -4265,179 +4049,146 @@
             </remarks>
             <returns>BASE64 obsah cookie, který se musí předat ePodpis widgetu</returns>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Shared.DocumentInformation.Guid">
+        <member name="M:NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskHandler.validatePriceException(System.Int64,System.Threading.CancellationToken)">
             <summary>
-            GUID dokumentu v dočasném úložišti
+            Validace zda jiz neexistuje aktivni price exception
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Shared.DocumentInformation.FileName">
+        <member name="P:NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest.TaskTypeId">
             <summary>
-            Jméno souboru
+            ID typu úkolu (Cenová výjimka = 2, Konzultace = 3, Předání na specialistu = 7)
             </summary>
+            <example>7</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Shared.DocumentInformation.EaCodeMainId">
+        <member name="P:NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest.TaskSubtypeId">
             <summary>
-            Id EA kódu
+            ID typu konzultace
             </summary>
+            <example>0</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Shared.DocumentInformation.Description">
+        <member name="P:NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest.ProcessId">
             <summary>
-            Popis dokumentu
+            ID nadřazeného procesu
             </summary>
+            <example>24556</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest.TaskUserRequest">
+            <summary>
+            Text požadavku
+            </summary>
+            <example>Prosím o pomoc s tímto případem.</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetConsultationTypes.GetConsultationTypesResponseItem.TaskSubtypeId">
+            <summary>
+            ID typu konzultace
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.GetConsultationTypes.GetConsultationTypesResponseItem.taskSubtypeName">
+            <summary>
+            Název typu konzultace
+            </summary>
+            <example>Dotaz (obecný)</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest.TaskIdSB">
+            <summary>
+            SB ID úkolu, není zobrazeno na FE UI
+            </summary>
+            <example>22456</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest.TaskTypeId">
+            <summary>
+            ID typu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK">číselníku typu úkolů</a>
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest.TaskResponseTypeId">
+            <summary>
+            ID typu odpovědi. 0 - V pořádku, 1 - Závada - upravený dokument, 2 - Závada - chybějící podpis
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest.TaskUserResponse">
+            <summary>
+            Text odpovědi
+            </summary>
+            <example>Vyplněno, co bylo potřeba.</example>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.GetConsultationTypes(System.Int64,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Získání relevantních typů konzultace
+            </summary>
+            <remarks>
+            Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="processId">Noby proces ID. Jde o ID sady úkolů generované Starbuildem.</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.CancelTask(System.Int64,System.Int64,NOBY.Api.Endpoints.Workflow.CancelTask.CancelTaskRequest)">
+            <summary>
+            Stornování úkolu ve SB
+            </summary>
+            <remarks>
+            Stornování úkolu ve SB. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.CreateTask(System.Int64,NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest)">
+            <summary>
+            Vytvoření nového workflow tasku do SB.
+            </summary>
+            <remarks>
+            Vytvoření nového workflow tasku do SB.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=882E85E3-F6EA-4774-812E-3328006E8893"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <response code="200">Noby task ID. Jde o ID sady úkolů generované Starbuildem.</response>
+            <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.GetTaskList(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Seznam workflow tasků dotažený z SB.
+            </summary>
+            <remarks>
+            Operace získá ze Starbuildu seznam úkolů a procesů k danému case ID. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <returns>Seznam wf tasks z SB.</returns>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.GetTaskDetail(System.Int64,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Detail workflow tasku dotažený ze SB.
+            </summary>
+            <remarks>
+            Detail workflow tasku dotažený ze SB. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=90CD722E-8955-43e6-9924-DC5FDDF6ED15"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <returns></returns>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.UpdateTaskDetail(System.Int64,System.Int64,NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest,System.Threading.CancellationToken)">
+            <summary>
+            Update workflow tasku do SB
+            </summary>
+            <remarks>
+            Update workflow tasku do SB. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <response code="404">Task or case not found</response>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.GetCurrentPriceException(System.Int64,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Získání aktuální cenové výjimky
+            </summary>
+            <remarks>
+            Operace vrátí detail Cenové výjimky. <br /> 
+            Pokud ještě ve Starbuild neexistuje workflow úkol, budou výsledkem data z Noby a uživatel dostane možnost založit workflow úkolu. <br /> 
+            Pokud již workflow úkol existuje, ale je stornovaný, budou výsledkem data z Noby a uživatel dostane možnost založení nového workflow úkolu. <br /> 
+            Pokud již workflow úkol existuje a není stornovaný, budou výsledkem data ze Starbuild. U dokončeného úkolu Ocenění nehraje roli, zda bylo Ocenění schváleno či zamítnuto. Uživatel uvidí detail tohoto ukončeného úkolu. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F8C65CF5-6A02-4d2a-B068-C3EDE901DAE5"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
         </member>
         <member name="T:NOBY.Api.Notifications.Handlers.CreateRiskBusinessCaseHandler">
             <summary>
             Zalozi RiskBusinessCase pro dany Sales Arrangement
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.BankAccount.Prefix">
-            <summary>
-            Předčíslí účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.BankAccount.Number">
-            <summary>
-            Číslo účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.BankAccount.BankCode">
-            <summary>
-            Kód banky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.BirthNumber">
-            <summary>
-            Rodné číslo CZ
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.FirstName">
-            <summary>
-            Jméno
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.LastName">
-            <summary>
-            Příjmení
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.DateOfBirth">
-            <summary>
-            Datum narození
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.PlaceOfBirth">
-            <summary>
-            Místo narození
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.BirthCountryId">
-            <summary>
-            Stát narození
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.Gender">
-            <summary>
-            Pohlaví
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.CitizenshipCountriesId">
-            <summary>
-            Státní příslušnost/občanství
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.EmailAddressConfirmedDto.EmailAddress">
-            <summary>
-            Emailová adresa
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.EmailAddressConfirmedDto.IsConfirmed">
-            <summary>
-            Příznak potvrzeného kontaktu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.EmailAddressDto.EmailAddress">
-            <summary>
-            Emailová adresa
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.EmailAddressDto.IsConfirmed">
-            <summary>
-            Příznak potvrzeného kontaktu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.IEmailAddressDto.EmailAddress">
-            <summary>
-            Emailová adresa
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.IEmailAddressDto.IsConfirmed">
-            <summary>
-            Příznak potvrzeného kontaktu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentBase.IdentificationDocumentTypeId">
-            <summary>
-            Typ osobního dokladu - číselník IdentificationDocumentType - (CIS_TYPY_DOKLADOV)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentBase.Number">
-            <summary>
-            Číslo osobního dokladu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentFull.IssuingCountryId">
-            <summary>
-            Stát vydání dokladu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentFull.IssuedBy">
-            <summary>
-            Doklad vydal
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.PhoneNumberConfirmedDto.PhoneNumber">
-            <summary>
-            Telefonní číslo
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.PhoneNumberConfirmedDto.PhoneIDC">
-            <summary>
-            Předvolba telefonního čísla
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.PhoneNumberConfirmedDto.IsConfirmed">
-            <summary>
-            Příznak potvrzeného kontaktu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.PhoneNumberDto.PhoneNumber">
-            <summary>
-            Telefonní číslo
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.PhoneNumberDto.PhoneIDC">
-            <summary>
-            Předvolba telefonního čísla
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.PhoneNumberDto.IsConfirmed">
-            <summary>
-            Příznak potvrzeného kontaktu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.IPhoneNumberDto.PhoneNumber">
-            <summary>
-            Telefonní číslo
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.IPhoneNumberDto.PhoneIDC">
-            <summary>
-            Předvolba telefonního čísla
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.SharedDto.IPhoneNumberDto.IsConfirmed">
-            <summary>
-            Příznak potvrzeného kontaktu
             </summary>
         </member>
         <member name="M:NOBY.Api.StartupExtensions.NobyAppBuilder.UseNobyAuthStrategy(Microsoft.AspNetCore.Builder.IApplicationBuilder)">

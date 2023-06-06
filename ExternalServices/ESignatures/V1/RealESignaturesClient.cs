@@ -1,30 +1,43 @@
 ﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.ExternalServicesHelpers;
 
 namespace ExternalServices.ESignatures.V1;
 
 internal sealed class RealESignaturesClient
     : IESignaturesClient
 {
-    public async Task<string?> GetDocumentStatus(string documentId, IdentitySchemes mandant, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<string> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default)
     {
-        string org = "mpss"; //TODO zatim zname jen mpss?
-
         var response = await _httpClient
-            .GetAsync(_httpClient.BaseAddress + $"/{org}/REST/DocumentService/GetDocumentStatus?id={documentId}", cancellationToken)
+            .GetAsync(_httpClient.BaseAddress + $"/{_organization}/REST/v2/DocumentService/GetDocumentStatus?id={documentId}", cancellationToken)
             .ConfigureAwait(false);
 
-        if (response.IsSuccessStatusCode)
+        var result = await response.Content.ReadFromJsonAsync<Contracts.ResponseStatus>(cancellationToken: cancellationToken)
+            ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(GetDocumentStatus), nameof(Contracts.ResponseStatus));
+
+        //TODO osetrit chybove stavy???
+        if ((result.Result?.Code ?? 0) == 0)
         {
-            var result = await response.Content.ReadFromJsonAsync<Contracts.ResponseStatus>(cancellationToken: cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(GetDocumentStatus), nameof(Contracts.ResponseStatus));
-            return result.Status;
+            return result.Status!;
         }
-        else
+        else 
         {
-            return null;
-            // TODO muze to vracet 400?
+            throw new CisExtServiceValidationException(result.Result!.Message ?? "");
         }
+        
     }
+
+    public Task DownloadDocumentPreview(string externalId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task SubmitDispatchForm(bool documentsValid, List<Dto.DispatchFormClientDocument> documents, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    private const string _organization = "mpss";
 
     private readonly HttpClient _httpClient;
     public RealESignaturesClient(HttpClient httpClient)

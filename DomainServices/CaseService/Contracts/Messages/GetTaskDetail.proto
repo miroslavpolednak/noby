@@ -18,17 +18,15 @@ message GetTaskDetailResponse {
 
 message TaskDetailItem {
 	google.protobuf.StringValue PerformanName = 1;
-
-	string ProcessNameLong = 2;
-
-	repeated TaskCommunicationItem TaskCommunication = 3;
-
-	repeated string TaskDocumentIds = 4;
-
+	google.protobuf.Int32Value PerformerCode = 2;
+	string ProcessNameLong = 3;
+	repeated TaskCommunicationItem TaskCommunication = 4;
+	repeated string TaskDocumentIds = 5;
 	oneof Amendments  {
 		AmendmentSigning Signing = 20;
 		AmendmentRequest Request = 21;
 		AmendmentConsultationData ConsultationData = 22;
+		AmendmentPriceException PriceException = 23;
 	}
 }
 
@@ -47,10 +45,30 @@ message AmendmentSigning {
 
 message AmendmentRequest {
 	google.protobuf.BoolValue SentToCustomer = 1;
-
 	google.protobuf.Int32Value OrderId = 2;
 }
 
-message AmendmentConsultationData{
+message AmendmentConsultationData {
 	google.protobuf.Int32Value OrderId = 1;
+}
+
+message AmendmentPriceException {
+	cis.types.GrpcDate Expiration = 1;
+	google.protobuf.Int32Value DecisionId = 2;
+	LoanInterestRateItem LoanInterestRate = 3;
+	repeated FeesItem Fees = 4;
+
+	message LoanInterestRateItem {
+		string LoanInterestRate = 1;
+		string LoanInterestRateProvided = 2;
+		int32 LoanInterestRateAnnouncedType = 3;
+		google.protobuf.StringValue LoanInterestRateDiscount = 4;
+	}
+
+	message FeesItem {
+		string FeeId = 1;
+		int32 TariffSum = 2;
+		int32 FinalSum = 3;
+		int32 DiscountPercentage = 4;
+	}
 }

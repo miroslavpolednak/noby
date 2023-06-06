@@ -1,5 +1,4 @@
-﻿using NOBY.Api.Endpoints.Shared;
-using NOBY.Infrastructure.Configuration;
+﻿using NOBY.Infrastructure.Configuration;
 using NOBY.Infrastructure.Services.TempFileManager;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.UploadDocument;

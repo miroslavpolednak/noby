@@ -73,6 +73,35 @@ internal static class CaseExtensions
                     };
                     break;
 
+                // price exception
+                case 2:
+                    taskDetail.PriceException = new()
+                    {
+                        Expiration = taskData.GetDate("ukol_overeni_ic_sazba_dat_do"),
+                        LoanInterestRate = new()
+                        {
+                            LoanInterestRate = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_nabid") ?? "",
+                            LoanInterestRateProvided = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_vysled") ?? "",
+                            LoanInterestRateAnnouncedType = taskData.GetInteger("ukol_overeni_ic_sazba_typ"),
+                            LoanInterestRateDiscount = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_sleva")
+                        },
+                        DecisionId = taskData.GetNInteger("ukol_overeni_ic_zpusob_reseni")
+                    };
+                    for (int i = 1; i < 20; i++)
+                    {
+                        if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")))
+                            break;
+
+                        taskDetail.PriceException.Fees.Add(new AmendmentPriceException.Types.FeesItem
+                        {
+                            FeeId = taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}"),
+                            TariffSum = taskData.GetInteger($"ukol_overeni_ic_popl_sazeb{i}"),
+                            FinalSum = taskData.GetInteger($"ukol_overeni_ic_popl_vysl{i}"),
+                            DiscountPercentage = taskData.GetInteger($"ukol_overeni_ic_popl_sleva_perc{i}")
+                        });
+                    }
+                    break;
+
                 case 6:
                     taskDetail.Signing = new()
                     {

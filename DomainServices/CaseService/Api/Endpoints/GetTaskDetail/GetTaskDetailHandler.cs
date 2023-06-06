@@ -44,6 +44,7 @@ internal sealed class GetTaskDetailHandler
         {
             var performer = await _codebookService.GetOperator(taskData["ukol_op_zpracovatel"], cancellationToken);
             taskDetail.PerformanName = performer.PerformerName;
+            taskDetail.PerformerCode = performer.PerformerCode;
         }
         catch { }
 
@@ -60,8 +61,8 @@ internal sealed class GetTaskDetailHandler
             {
                 taskDetail.TaskCommunication.Add(new TaskCommunicationItem()
                 {
-                    TaskResponse = taskData.GetValueOrDefault("ukol_overeni_odpoved"),
-                    TaskRequest = taskData.GetValueOrDefault("ukol_overeni_pozadavek")
+                    TaskResponse = taskData.GetValueOrDefault("ukol_overeni_odpoved") ?? "",
+                    TaskRequest = taskData.GetValueOrDefault("ukol_overeni_pozadavek") ?? ""
                 });
             }
         }
