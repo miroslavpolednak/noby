@@ -52,7 +52,7 @@ public sealed class WorkflowMapperService
         return taskDetail;
     }
 
-    private static object Map(_Case.WorkflowTask task, _Case.TaskDetailItem taskDetailItem,
+    private static object? Map(_Case.WorkflowTask task, _Case.TaskDetailItem taskDetailItem,
         List<GenericCodebookResponse.Types.GenericCodebookItem> decisionTypes,
         List<GenericCodebookResponse.Types.GenericCodebookItem> loanInterestRateAnnouncedTypes) =>
         taskDetailItem.AmendmentsCase switch
@@ -61,7 +61,7 @@ public sealed class WorkflowMapperService
             _Case.TaskDetailItem.AmendmentsOneofCase.Signing => Map(task, taskDetailItem.Signing),
             _Case.TaskDetailItem.AmendmentsOneofCase.ConsultationData => Map(taskDetailItem.ConsultationData),
             _Case.TaskDetailItem.AmendmentsOneofCase.PriceException => Map(taskDetailItem.PriceException, decisionTypes, loanInterestRateAnnouncedTypes),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => null
         };
 
 
