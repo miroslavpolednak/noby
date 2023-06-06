@@ -47,7 +47,10 @@ public sealed class WorkflowMapperService
             Amendments = Map(task, taskDetailItem, decisionTypes, loanInterestRateAnnouncedTypes)
         };
 
-        taskDetail.TaskCommunication.AddRange(taskDetailItem.TaskCommunication.Select(Map));
+        if (taskDetailItem?.TaskCommunication is not null)
+        {
+            taskDetail.TaskCommunication.AddRange(taskDetailItem.TaskCommunication.Select(Map));
+        }
 
         return taskDetail;
     }
