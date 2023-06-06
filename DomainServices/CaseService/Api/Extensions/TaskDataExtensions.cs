@@ -4,6 +4,11 @@ internal static class TaskDataExtensions
 {
     private static CultureInfo _czCulture = new CultureInfo("cs-CZ");
 
+    public static decimal GetDecimal(this IReadOnlyDictionary<string, string> taskData, string key)
+    {
+        return decimal.Parse(taskData[key], _czCulture);
+    }
+
     public static int GetInteger(this IReadOnlyDictionary<string, string> taskData, string key)
     {
         return int.Parse(taskData[key], CultureInfo.InvariantCulture);

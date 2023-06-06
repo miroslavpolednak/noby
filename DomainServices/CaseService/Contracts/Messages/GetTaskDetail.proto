@@ -2,6 +2,7 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
+import "GrpcDecimal.proto";
 import "GrpcDate.proto";
 import "Messages/WorkflowTask.proto";
 import "google/protobuf/wrappers.proto";
@@ -59,16 +60,16 @@ message AmendmentPriceException {
 	repeated FeesItem Fees = 4;
 
 	message LoanInterestRateItem {
-		string LoanInterestRate = 1;
-		string LoanInterestRateProvided = 2;
+		cis.types.GrpcDecimal LoanInterestRate = 1;
+		cis.types.GrpcDecimal LoanInterestRateProvided = 2;
 		int32 LoanInterestRateAnnouncedType = 3;
-		google.protobuf.StringValue LoanInterestRateDiscount = 4;
+		cis.types.GrpcDecimal LoanInterestRateDiscount = 4;
 	}
 
 	message FeesItem {
 		string FeeId = 1;
-		int32 TariffSum = 2;
-		int32 FinalSum = 3;
-		int32 DiscountPercentage = 4;
+		cis.types.GrpcDecimal TariffSum = 2;
+		cis.types.GrpcDecimal FinalSum = 3;
+		cis.types.GrpcDecimal DiscountPercentage = 4;
 	}
 }
