@@ -80,10 +80,10 @@ internal static class CaseExtensions
                         Expiration = taskData.GetDate("ukol_overeni_ic_sazba_dat_do"),
                         LoanInterestRate = new()
                         {
-                            LoanInterestRate = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_nabid") ?? "",
-                            LoanInterestRateProvided = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_vysled") ?? "",
+                            LoanInterestRate = taskData.GetDecimal("ukol_overeni_ic_sazba_nabid"),
+                            LoanInterestRateProvided = taskData.GetDecimal("ukol_overeni_ic_sazba_vysled"),
                             LoanInterestRateAnnouncedType = taskData.GetInteger("ukol_overeni_ic_sazba_typ"),
-                            LoanInterestRateDiscount = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_sleva")
+                            LoanInterestRateDiscount = taskData.GetDecimal("ukol_overeni_ic_sazba_sleva")
                         },
                         DecisionId = taskData.GetNInteger("ukol_overeni_ic_zpusob_reseni")
                     };

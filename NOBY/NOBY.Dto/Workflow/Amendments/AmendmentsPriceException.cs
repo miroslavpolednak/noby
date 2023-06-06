@@ -30,14 +30,14 @@ public class LoanInterestRates
     /// </summary>
     /// <example>2,49 %</example>
     [Required]
-    public string LoanInterestRate { get; set; } = null!;
+    public decimal LoanInterestRate { get; set; }
     
     /// <summary>
     /// Poskytnutá sazba
     /// </summary>
     /// <example>2 %</example>
     [Required]
-    public string LoanInterestRateProvided { get; set; } = null!;
+    public decimal LoanInterestRateProvided { get; set; }
     
     /// <summary>
     /// Typ sazby
@@ -50,7 +50,7 @@ public class LoanInterestRates
     /// Sleva ze sazby
     /// </summary>
     /// <example>0,49 %</example>
-    public string LoanInterestRateDiscount { get; set; } = null!;
+    public decimal? LoanInterestRateDiscount { get; set; }
 }
 
 public class Fee
@@ -65,17 +65,17 @@ public class Fee
     /// Sazebníková cena (Kč)
     /// </summary>
     /// <example>1000</example>
-    public int TariffSum { get; set; }
+    public decimal TariffSum { get; set; }
     
     /// <summary>
     /// Navrhovaná cena (Kč)
     /// </summary>
     /// <example>500</example>
-    public int FinalSum { get; set; }
+    public decimal FinalSum { get; set; }
     
     /// <summary>
     /// Sleva (%)
     /// </summary>
     /// <example>50</example>
-    public int DiscountPercentage { get; set; }
+    public decimal DiscountPercentage { get; set; }
 }
