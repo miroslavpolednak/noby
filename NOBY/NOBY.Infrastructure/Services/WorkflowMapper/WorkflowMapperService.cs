@@ -37,22 +37,16 @@ public sealed class WorkflowMapperService
         var decisionTypes = await _codebookService.WorkflowPriceExceptionDecisionTypes(cancellationToken);
         var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
         
-        var taskDetail = new WorkflowTaskDetail
+        return new WorkflowTaskDetail
         {
             TaskIdSB = task.TaskIdSb,
             PerformerCode = taskDetailItem.PerformerCode,
             PerformerName = taskDetailItem.PerformanName,
             PerformerLogin = task.PerformerLogin,
             ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
-            Amendments = Map(task, taskDetailItem, decisionTypes, loanInterestRateAnnouncedTypes)
+            Amendments = Map(task, taskDetailItem, decisionTypes, loanInterestRateAnnouncedTypes),
+            TaskCommunication = taskDetailItem.TaskCommunication?.Select(Map).ToList()
         };
-
-        if (taskDetailItem?.TaskCommunication is not null)
-        {
-            taskDetail.TaskCommunication.AddRange(taskDetailItem.TaskCommunication.Select(Map));
-        }
-
-        return taskDetail;
     }
 
     private static object? Map(_Case.WorkflowTask task, _Case.TaskDetailItem taskDetailItem,

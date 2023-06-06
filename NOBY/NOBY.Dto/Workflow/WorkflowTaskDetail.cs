@@ -35,7 +35,7 @@ public class WorkflowTaskDetail
     /// <summary>
     /// Dožádání: Text požadavku a případné odpovědi (i včetně případných opakování komunikace). Řazeno chronologicky, nejstarší záznam je jako poslední.; Předání na specialistu: popis požadavku
     /// </summary>
-    public List<TaskCommunicationItem> TaskCommunication { get; set; } = null!;
+    public List<TaskCommunicationItem>? TaskCommunication { get; set; } = null!;
 
     public object? Amendments { get; set; } = null!;
 }
