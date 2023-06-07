@@ -17,63 +17,71 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     ContentRootPath = runAsWinSvc ? AppContext.BaseDirectory : default
 });
 
-var config = new DataAggregatorConfiguration();
-builder.Configuration.Bind("DataAggregatorConfiguration", config);
-
-builder.Services.AddSingleton(config);
-
-builder.AddCisEnvironmentConfiguration();
-builder.AddCisCoreFeatures()
-       .AddCisLogging()
-       .AddCisTracing()
-       .AddCisServiceAuthentication();
-
-builder.Services
-       .AddCisServiceDiscovery()
-       .AddCodebookService()
-       .AddSalesArrangementService()
-       .AddCaseService()
-       .AddOfferService()
-       .AddUserService()
-       .AddCustomerService()
-       .AddProductService()
-       .AddHouseholdService()
-       .AddDocumentOnSAService();
-
-builder.Services.AddDbContext<ConfigurationContext>(opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("default")));
-
-builder.Services
-       .AddAttributedServices(typeof(Program))
-       .AddCisGrpcInfrastructure(typeof(Program))
-       .AddGrpcReflection()
-       .AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
-
-builder.AddCisGrpcHealthChecks();
-
-if (config.UseCacheForConfiguration)
-{
-    builder.Services.AddMemoryCache();
-    builder.Services.Decorate<IConfigurationManager, CachedConfigurationManager>();
-}
-
-if (runAsWinSvc) builder.Host.UseWindowsService();
-
-var app = builder.UseKestrelWithCustomConfiguration().Build();
-
-app.UseServiceDiscovery();
-app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapCisGrpcHealthChecks();
-
-app.MapGrpcService<DataAggregatorServiceGrpc>();
-app.MapGrpcReflectionService();
+var log = builder.CreateStartupLogger();
 
 try
 {
+    var config = new DataAggregatorConfiguration();
+    builder.Configuration.Bind("DataAggregatorConfiguration", config);
+
+    builder.Services.AddSingleton(config);
+
+    builder.AddCisEnvironmentConfiguration();
+    builder.AddCisCoreFeatures()
+           .AddCisLogging()
+           .AddCisTracing()
+           .AddCisServiceAuthentication();
+
+    builder.Services
+           .AddCisServiceDiscovery()
+           .AddCodebookService()
+           .AddSalesArrangementService()
+           .AddCaseService()
+           .AddOfferService()
+           .AddUserService()
+           .AddCustomerService()
+           .AddProductService()
+           .AddHouseholdService()
+           .AddDocumentOnSAService();
+
+    builder.Services.AddDbContext<ConfigurationContext>(opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("default")));
+
+    builder.Services
+           .AddAttributedServices(typeof(Program))
+           .AddCisGrpcInfrastructure(typeof(Program))
+           .AddGrpcReflection()
+           .AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
+
+    builder.AddCisGrpcHealthChecks();
+
+    if (config.UseCacheForConfiguration)
+    {
+        builder.Services.AddMemoryCache();
+        builder.Services.Decorate<IConfigurationManager, CachedConfigurationManager>();
+    }
+
+    if (runAsWinSvc) builder.Host.UseWindowsService();
+
+    var app = builder.UseKestrelWithCustomConfiguration().Build();
+    log.ApplicationBuilt();
+
+    app.UseServiceDiscovery();
+    app.UseRouting();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapCisGrpcHealthChecks();
+
+    app.MapGrpcService<DataAggregatorServiceGrpc>();
+    app.MapGrpcReflectionService();
+
+    log.ApplicationRun();
     app.Run();
+}
+catch (Exception ex)
+{
+    log.CatchedException(ex);
 }
 finally
 {
