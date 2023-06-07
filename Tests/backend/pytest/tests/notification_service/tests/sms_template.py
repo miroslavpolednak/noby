@@ -1,6 +1,7 @@
 import pytest
 import requests
-
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from ..conftest import URLS
 from ..json.request.sms_template_json import json_req_sms_full_template, \
     json_req_sms_template_bad_basic_without_identifier, \

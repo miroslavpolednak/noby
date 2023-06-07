@@ -1,6 +1,8 @@
 import uuid
 from time import sleep
 from urllib.parse import urlencode, quote
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 import pytest
 import requests
@@ -12,8 +14,7 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
     json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
     json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
-    json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e, \
-    json_req_sms_hsts_header
+    json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 

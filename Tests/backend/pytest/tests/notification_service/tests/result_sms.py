@@ -1,6 +1,7 @@
 import time
 import uuid
-
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 import pytest
 import requests
 
@@ -13,7 +14,7 @@ from ..json.request.sms_template_json import json_req_sms_full_template
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
 def test_get_sms_notification_id_states(auth_params, auth, json_data, ns_url):
-    """uvodni test pro zakladni napln sms bez priloh
+    """uvodni test pro zakladni napln sms bez priloh, realne sms neprijde - fake cislo
     """
     url_name = ns_url["url_name"]
     username = auth[0]
@@ -54,14 +55,12 @@ def test_get_sms_notification_id_states(auth_params, auth, json_data, ns_url):
             del expected_sms_data[attr]
 
     # Převede phoneNumber na objekt s countryCode a nationalNumber
-
-    # Převede phoneNumber na objekt s countryCode a nationalNumber
     phone_number = expected_sms_data.pop("phoneNumber")
     expected_sms_data["phone"] = {
         "countryCode": phone_number[:4],
         "nationalNumber": phone_number[4:]}
     assert resp["requestData"]["smsData"] == expected_sms_data
-    time.sleep(10)
+    time.sleep(15)
 
     #vola GET opet, abz si overil doruceni
     session = requests.session()
@@ -73,8 +72,11 @@ def test_get_sms_notification_id_states(auth_params, auth, json_data, ns_url):
     )
     resp = resp.json()
     assert resp['notificationId'] == notification_id
-    assert resp['state'] == 'Delivered'
-
+    assert resp['state'] == 'Unsent'
+    errors = resp.get('errors', [])
+    assert len(errors) > 0, 'No errors present'
+    assert errors[0]['code'] == 'SMS-MCH-04'
+    assert errors[0]['message'] == 'Failed connection to the operator - message cannot be sent'
 
 #TODO: koukni na response GET search, ve swagger vraci i vyparsovane parametry
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)

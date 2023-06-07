@@ -3,6 +3,8 @@ import pytest
 import requests
 import time
 import uuid
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from ..conftest import URLS
 from ..json.request.mail_kb_json import json_req_mail_kb_basic_legal
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal
@@ -48,7 +50,7 @@ def test_get_sms_notification_id_states(ns_url, auth_params, auth, json_data):
     assert len(resp['errors']) == 0
     assert 'createdBy' in resp
 
-    expected_sms_data = json_req_sms_basic_insg.copy()
+    expected_sms_data = json_req_sms_basic_insg_e2e.copy()
 
     # Odebere processingPriority, customId, documentid, text z expected_sms_data - insg nechce tento atribut vracet
     for attr in ["processingPriority", "text"]:

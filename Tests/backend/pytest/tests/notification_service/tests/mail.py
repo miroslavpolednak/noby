@@ -2,7 +2,8 @@ import itertools
 
 import pytest
 import requests
-
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from ..conftest import URLS
 from ..json.request.mail_kb_json import json_req_mail_kb_bad_11_attachments
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
