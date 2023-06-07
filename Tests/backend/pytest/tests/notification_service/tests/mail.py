@@ -5,7 +5,7 @@ import requests
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from ..conftest import URLS
-from ..json.request.mail_kb_json import json_req_mail_kb_bad_11_attachments
+from ..json.request.mail_kb_json import json_req_mail_kb_bad_11_attachments, json_req_mail_kb_basic_legal
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
     json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural, json_req_mail_mpss_bad_natural_legal, \
     json_req_mail_mpss_max_attachments, json_req_mail_mpss_bad_11_attachments, \
@@ -19,10 +19,34 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
 
 # základní test
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural,
-                                       json_req_mail_mpss_full_attachments,
-                                       json_req_mail_mpss_full_natural])
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, json_req_mail_kb_basic_legal])
 def test_mail(ns_url, auth_params, auth, json_data):
+    """kladny test"""
+    url_name = ns_url["url_name"]
+    url = ns_url["url"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/email",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    notification = resp.json()
+    print(notification)
+    assert "notificationId" in notification
+    notification_id = notification["notificationId"]
+    assert notification_id != ""
+
+    assert 'strict-transport-security' in resp.headers, \
+        'Expected "strict-transport-security" to be in headers'
+
+
+# základní test
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural])
+def test_mail_large_attachments(ns_url, auth_params, auth, json_data):
     """kladny test"""
     url_name = ns_url["url_name"]
     url = ns_url["url"]
