@@ -114,8 +114,11 @@ internal sealed class SimulateMortgageHandler
 
     private async Task<MortgageCreditWorthinessSimpleResults> CalculateCreditWorthinessSimple(SimulateMortgageRequest request, MortgageSimulationResults simulationResults, CancellationToken cancellationToken)
     {
+        var kbCustomerIdentity = request.Identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        
         var creditWorthinessRequest = new CreditWorthinessSimpleCalculateRequest
         {
+            PrimaryCustomerId = kbCustomerIdentity?.IdentityId.ToString(),
             ResourceProcessId = request.ResourceProcessId,
             ChildrenCount = request.CreditWorthinessSimpleInputs.ChildrenCount ?? 0,
             TotalMonthlyIncome = request.CreditWorthinessSimpleInputs.TotalMonthlyIncome,
