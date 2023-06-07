@@ -30,6 +30,7 @@ INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultS
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (190, 1, 'SalesArrangement.GeneralChange.DueDate.IsActive', NULL)
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (191, 1, 'SalesArrangement.GeneralChange.DrawingAndOtherConditions.IsActive', NULL)
 INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (192, 1, 'SalesArrangement.GeneralChange.CommentToChangeRequest.IsActive', NULL)
+INSERT [dbo].[DataField] ([DataFieldId], [DataServiceId], [FieldPath], [DefaultStringFormat]) VALUES (193, 1, 'SalesArrangement.GeneralChange.Collateral.IsActive', NULL)
 
 SET IDENTITY_INSERT [dbo].[DataField] OFF
 
@@ -41,6 +42,8 @@ INSERT [dbo].[DynamicStringFormat] ([DynamicStringFormatId], [DocumentDataFieldI
 INSERT [dbo].[DynamicStringFormat] ([DynamicStringFormatId], [DocumentDataFieldId], [Format], [Priority]) VALUES (98, 141, '--', 1)
 INSERT [dbo].[DynamicStringFormat] ([DynamicStringFormatId], [DocumentDataFieldId], [Format], [Priority]) VALUES (99, 143, '--', 1)
 INSERT [dbo].[DynamicStringFormat] ([DynamicStringFormatId], [DocumentDataFieldId], [Format], [Priority]) VALUES (100, 144, '--', 1)
+INSERT [dbo].[DynamicStringFormat] ([DynamicStringFormatId], [DocumentDataFieldId], [Format], [Priority]) VALUES (101, 136, '--', 1)
+INSERT [dbo].[DynamicStringFormat] ([DynamicStringFormatId], [DocumentDataFieldId], [Format], [Priority]) VALUES (102, 137, '--', 1)
 
 SET IDENTITY_INSERT [dbo].[DynamicStringFormat] OFF
 
@@ -52,7 +55,11 @@ INSERT INTO DynamicStringFormatCondition VALUES (97, 'False', 189)
 INSERT INTO DynamicStringFormatCondition VALUES (98, 'False', 190)
 INSERT INTO DynamicStringFormatCondition VALUES (99, 'False', 191)
 INSERT INTO DynamicStringFormatCondition VALUES (100, 'False', 192)
+INSERT INTO DynamicStringFormatCondition VALUES (101, 'False', 193)
+INSERT INTO DynamicStringFormatCondition VALUES (102, 'False', 193)
 
+UPDATE DocumentDataField SET DefaultTextIfNull = '--' WHERE DocumentDataFieldId = 136
+UPDATE DocumentDataField SET DefaultTextIfNull = '--' WHERE DocumentDataFieldId = 137
 UPDATE DocumentDataField SET DefaultTextIfNull = '--' WHERE DocumentDataFieldId = 139
 UPDATE DocumentDataField SET DefaultTextIfNull = '--' WHERE DocumentDataFieldId = 138
 UPDATE DocumentDataField SET DefaultTextIfNull = '--' WHERE DocumentDataFieldId = 140
@@ -63,6 +70,6 @@ UPDATE DocumentDataField SET DefaultTextIfNull = '--' WHERE DocumentDataFieldId 
 DELETE FROM DocumentDataField WHERE DocumentDataFieldId = 142
 
 INSERT INTO DocumentSpecialDataField VALUES (8, 'ZmenaLhutyCerpaniLabel', 1, 'ExtensionDrawingDateLabel', NULL, NULL, 'Změna lhůty čerpání')
-INSERT INTO DocumentSpecialDataField VALUES (8, 'ZmenaLhutyCerpaniL', 1, 'ExtensionDrawingDate', 'o {0} měsíců', NULL, '--')
+INSERT INTO DocumentSpecialDataField VALUES (8, 'ZmenaLhutyCerpani', 1, 'ExtensionDrawingDate', 'o {0} měsíců', NULL, '--')
 
 UPDATE DocumentSpecialDataField SET FieldPath = 'SignerName' WHERE DocumentId = 8 AND AcroFieldName = 'PodpisJmenoKlienta'
