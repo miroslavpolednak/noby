@@ -135,8 +135,8 @@ public class PdfFooter
         var identifiers = new[]
         {
             GetCaseIdIdentifier(footer.CaseId),
-            GetOfferIdIdentifier(footer.OfferId),
-            footer.DocumentId,
+            GetOfferIdIdentifier(footer.OfferId, footer.SalesArrangementId),
+            GetSalesArrangementIdIdentifier(footer.SalesArrangementId),
             GetDocumentNameIdentifier(request.DocumentTypeId, request.DocumentTemplateVersionId, request.DocumentTemplateVariantId),
             GetDocumentDate()
         };
@@ -159,8 +159,11 @@ public class PdfFooter
     private string? GetCaseIdIdentifier(long? caseId) =>
         caseId is null ? default : $"{PdfTextConstants.CaseIdIdentifierText}:{caseId.Value.ToString(_cultureInfo)}";
 
-    private string? GetOfferIdIdentifier(int? offerId) =>
-        offerId is null ? default : $"{PdfTextConstants.OfferIdIdentifierText}:{offerId.Value.ToString(_cultureInfo)}";
+    private string? GetOfferIdIdentifier(int? offerId, int? salesArrangementId) =>
+        offerId is null || salesArrangementId.HasValue ? default : $"{PdfTextConstants.OfferIdIdentifierText}:{offerId.Value.ToString(_cultureInfo)}";
+
+    private string? GetSalesArrangementIdIdentifier(int? salesArrangementId) =>
+        salesArrangementId is null ? default : $"{PdfTextConstants.SalesArrangementIdIdentifierText}:{salesArrangementId.Value.ToString(_cultureInfo)}";
 
     private string GetDocumentDate() => DateTime.Now.ToString("G", _cultureInfo);
 }

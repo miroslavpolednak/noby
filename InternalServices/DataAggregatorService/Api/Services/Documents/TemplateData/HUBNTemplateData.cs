@@ -1,6 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
+using System.Globalization;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
 
@@ -21,10 +22,15 @@ internal class HUBNTemplateData : AggregatedData
         configurator.Countries().DegreesBefore().LoanPurposes().RealEstateTypes().PurchaseTypes();
     }
 
-    private IEnumerable<string> GetLoanPurposes() =>
-        SalesArrangement.HUBN
-                        .LoanPurposes
-                        .Join(_codebookManager.LoanPurposes.Where(l => l.MandantId == 2), x => x.LoanPurposeId, y => y.Id, (_, y) => y.Name);
+    private IEnumerable<string> GetLoanPurposes()
+    {
+        var numberFormat = (NumberFormatInfo)CultureProvider.GetProvider().GetFormat(typeof(NumberFormatInfo))!;
+
+        return SalesArrangement.HUBN
+                                .LoanPurposes
+                                .Join(_codebookManager.LoanPurposes.Where(l => l.MandantId == 2), x => x.LoanPurposeId, y => y.Id, (x, y) => new { y.Name, x.Sum })
+                                .Select(p => string.Format(numberFormat,$"{p.Name}: " + "{0:#,0.##}" + $" {numberFormat.CurrencySymbol}", (decimal)p.Sum));
+    }
 
     private IEnumerable<string> GetLoanRealEstates()
     {
