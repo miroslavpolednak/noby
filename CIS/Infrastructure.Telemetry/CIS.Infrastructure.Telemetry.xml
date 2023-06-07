@@ -49,6 +49,11 @@
             Extension metody do startupu aplikace pro registraci logování.
             </summary>
         </member>
+        <member name="M:CIS.Infrastructure.Telemetry.LoggingExtensions.CreateStartupLogger(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            Vytvoreni statickeho loggeru pro logovani startupu aplikace.
+            </summary>
+        </member>
         <member name="M:CIS.Infrastructure.Telemetry.LoggingExtensions.AddCisLogging(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
             Přidává do aplikace logování pomocí Serilogu.

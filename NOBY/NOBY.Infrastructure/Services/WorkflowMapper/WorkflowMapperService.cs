@@ -37,22 +37,19 @@ public sealed class WorkflowMapperService
         var decisionTypes = await _codebookService.WorkflowPriceExceptionDecisionTypes(cancellationToken);
         var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
         
-        var taskDetail = new WorkflowTaskDetail
+        return new WorkflowTaskDetail
         {
             TaskIdSB = task.TaskIdSb,
             PerformerCode = taskDetailItem.PerformerCode,
             PerformerName = taskDetailItem.PerformanName,
             PerformerLogin = task.PerformerLogin,
             ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
-            Amendments = Map(task, taskDetailItem, decisionTypes, loanInterestRateAnnouncedTypes)
+            Amendments = Map(task, taskDetailItem, decisionTypes, loanInterestRateAnnouncedTypes),
+            TaskCommunication = taskDetailItem.TaskCommunication?.Select(Map).ToList()
         };
-
-        taskDetail.TaskCommunication.AddRange(taskDetailItem.TaskCommunication.Select(Map));
-
-        return taskDetail;
     }
 
-    private static object Map(_Case.WorkflowTask task, _Case.TaskDetailItem taskDetailItem,
+    private static object? Map(_Case.WorkflowTask task, _Case.TaskDetailItem taskDetailItem,
         List<GenericCodebookResponse.Types.GenericCodebookItem> decisionTypes,
         List<GenericCodebookResponse.Types.GenericCodebookItem> loanInterestRateAnnouncedTypes) =>
         taskDetailItem.AmendmentsCase switch
@@ -61,7 +58,7 @@ public sealed class WorkflowMapperService
             _Case.TaskDetailItem.AmendmentsOneofCase.Signing => Map(task, taskDetailItem.Signing),
             _Case.TaskDetailItem.AmendmentsOneofCase.ConsultationData => Map(taskDetailItem.ConsultationData),
             _Case.TaskDetailItem.AmendmentsOneofCase.PriceException => Map(taskDetailItem.PriceException, decisionTypes, loanInterestRateAnnouncedTypes),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => null
         };
 
 

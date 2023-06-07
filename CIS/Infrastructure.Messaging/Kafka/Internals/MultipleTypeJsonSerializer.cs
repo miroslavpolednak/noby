@@ -34,7 +34,7 @@ public sealed class MultipleTypeJsonSerializer<T> : IAsyncSerializer<T>
 
     public async Task<byte[]> SerializeAsync(T data, SerializationContext context)
     {
-        var type = data.GetType();
+        var type = data!.GetType();
         if (!_serializers.TryGetValue(type, out var serializer))
         {
             throw new ArgumentException(

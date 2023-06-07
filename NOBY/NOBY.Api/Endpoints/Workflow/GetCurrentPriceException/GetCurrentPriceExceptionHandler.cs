@@ -39,7 +39,7 @@ internal sealed class GetCurrentPriceExceptionHandler
                     ProcessNameLong = process?.ProcessNameLong ?? "",
                     Amendments = new NOBY.Dto.Workflow.AmendmentsPriceException
                     {
-                        Expiration = offer.BasicParameters.GuaranteeDateTo,
+                        Expiration = DateOnly.FromDateTime(offer.BasicParameters.GuaranteeDateTo),
                         LoanInterestRate = new()
                         {
                             LoanInterestRate = offer.SimulationResults.LoanInterestRate,

@@ -2,6 +2,7 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
+import "Identity.proto";
 import "ModificationStamp.proto";
 import "Messages/BasicParameters.proto";
 import "Messages/MortgageSimulationInputs.proto";
@@ -16,6 +17,7 @@ message SimulateMortgageRequest {
 	MortgageSimulationInputs SimulationInputs = 3;
 	bool IsCreditWorthinessSimpleRequested = 4;
 	MortgageCreditWorthinessSimpleInputs CreditWorthinessSimpleInputs = 5;
+	repeated cis.types.Identity Identities = 6;
 }
 
 message SimulateMortgageResponse {
