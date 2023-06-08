@@ -87,7 +87,7 @@ public sealed class WorkflowMapperService
         List<GenericCodebookResponse.Types.GenericCodebookItem> decisionTypes,
         List<GenericCodebookResponse.Types.GenericCodebookItem> loanInterestRateAnnouncedTypes) => new()
     {
-        Expiration = amendmentPriceException.Expiration,
+        Expiration = amendmentPriceException.Expiration is null ? default(DateOnly?) : amendmentPriceException.Expiration,
         Decision = decisionTypes
             .FirstOrDefault(t => t.Id == amendmentPriceException.DecisionId)?
             .Name ?? string.Empty,

@@ -10,7 +10,7 @@ public class AmendmentsPriceException
     /// <example>24.12.2023</example>
     [Required]
     [MinLength(1)]
-    public DateOnly Expiration { get; set; }
+    public DateOnly? Expiration { get; set; }
 
     [Required]
     public LoanInterestRates LoanInterestRate { get; set; } = null!;
