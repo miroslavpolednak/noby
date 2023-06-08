@@ -1,3 +1,4 @@
+import copy
 import datetime
 import pyodbc
 
@@ -105,3 +106,11 @@ def get_current_date():
 
 def greater_than_zero(items_count):
     return items_count > 0
+
+
+@pytest.fixture
+def modified_json_data(request, ns_url):
+    json_data = request.node.get_closest_marker("parametrize").args[1][0]
+    modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
+    modified_data['text'] = ns_url["url_name"] + " = " + modified_data['text']
+    return modified_data

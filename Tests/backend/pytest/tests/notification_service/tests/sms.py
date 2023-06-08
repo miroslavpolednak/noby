@@ -49,14 +49,17 @@ def test_sms_manualy(url_name, auth_params, auth, json_data):
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg_e2e])
-def test_E2E_real_sms(ns_url, auth_params, auth, json_data):
+def test_E2E_real_sms(ns_url, auth_params, auth, json_data, modified_json_data):
     url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
+    # Přidáváme hodnotu ns_url do JSON dat
+    json_data['text'] = json_data['text'] + " " + url_name
+
     resp = session.post(
         URLS[url_name] + "/v1/notification/sms",
-        json=json_data,
+        json=modified_json_data,
         auth=(username, password),
         verify=False
     )

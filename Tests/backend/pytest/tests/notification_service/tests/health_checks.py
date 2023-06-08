@@ -16,7 +16,7 @@ from ..json.request.sms_template_json import json_req_sms_full_template
 #est pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg_e2e])
-def test_get_sms_notification_id_states(ns_url, auth_params, auth, json_data):
+def test_get_sms_notification_id_states(ns_url, auth_params, auth, json_data, modified_json_data):
     """uvodni test pro zakladni napln sms bez priloh
     """
     url_name = ns_url["url_name"]
@@ -25,7 +25,7 @@ def test_get_sms_notification_id_states(ns_url, auth_params, auth, json_data):
     session = requests.session()
     resp = session.post(
         URLS[url_name] + "/v1/notification/sms",
-        json=json_data,
+        json=modified_json_data,
         auth=(username, password),
         verify=False
     )
@@ -76,7 +76,7 @@ def test_get_sms_notification_id_states(ns_url, auth_params, auth, json_data):
     resp = resp.json()
     assert resp['notificationId'] == notification_id
     assert resp['state'] == 'Delivered'
-
+    assert resp['state'] == 'Delivered'
 
 
 #TODO: koukni na response GET search, ve swagger vraci i vyparsovane parametry

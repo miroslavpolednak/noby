@@ -1,19 +1,19 @@
-#phone String
+#phone String E2E test
 json_req_sms_basic_insg_e2e = \
 {
   "phoneNumber": "+420607115686",
   "processingPriority": 1,
   "type": "INSIGN_PROCESS",
-  "text": "insg bez logování a chci háčky a čárky"
+  "text": "insg bez logování a odstraň háčky a čárky"
 }
 
-#phone String E2E test
+#phone String
 json_req_sms_basic_insg = \
 {
   "phoneNumber": "+420123456789",
   "processingPriority": 1,
   "type": "INSIGN_PROCESS",
-  "text": "e2e TEST insg bez logování a chci háčky a čárky"
+  "text": "e2e TEST insg bez logovani"
 }
 
 json_req_sms_basic_insg_uat = \
