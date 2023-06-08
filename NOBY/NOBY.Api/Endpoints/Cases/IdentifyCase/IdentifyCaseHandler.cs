@@ -30,7 +30,10 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         var document = documentListResponse.Metadata.FirstOrDefault();
         var caseId = document?.CaseId ?? throw new NobyValidationException("CaseId does not exist.");
 
-        await _caseServiceClient.ValidateCaseId(caseId, true, cancellationToken);
+        if (!await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken))
+        {
+            return new IdentifyCaseResponse { CaseId = null };
+        }
 
         var taskList = await _caseServiceClient.GetTaskList(caseId, cancellationToken);
         var taskSubList = taskList.Where(t => t.TaskTypeId == 6).ToList();
@@ -80,8 +83,8 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     
     private async Task<IdentifyCaseResponse> HandleByCaseId(long caseId, CancellationToken cancellationToken)
     {
-        await _caseServiceClient.ValidateCaseId(caseId, true, cancellationToken);
-        return new IdentifyCaseResponse { CaseId = caseId };
+        var found = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
+        return new IdentifyCaseResponse { CaseId = found ? caseId : null };
     }
     
     private async Task<IdentifyCaseResponse> HandleByContractNumber(string contractNumber, CancellationToken cancellationToken)
