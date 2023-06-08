@@ -88,29 +88,27 @@ public sealed class WorkflowMapperService
         List<GenericCodebookResponse.Types.GenericCodebookItem> loanInterestRateAnnouncedTypes) => new()
     {
         Expiration = amendmentPriceException.Expiration,
-        Decision = GetDecision(amendmentPriceException, decisionTypes),
-        Fees = amendmentPriceException.Fees.Select(Map).ToList(),
-        LoanInterestRate = Map(amendmentPriceException.LoanInterestRate, loanInterestRateAnnouncedTypes)
-    };
-    
-    private static Fee Map(_Case.AmendmentPriceException.Types.FeesItem feeItem) => new()
-    {
-        DiscountPercentage = feeItem.DiscountPercentage,
-        FeeId = feeItem.FeeId,
-        FinalSum = feeItem.FinalSum,
-        TariffSum = feeItem.TariffSum
-    };
-
-    private static LoanInterestRates Map(
-        _Case.AmendmentPriceException.Types.LoanInterestRateItem loanInterestRate,
-        List<GenericCodebookResponse.Types.GenericCodebookItem> loanInterestRateAnnouncedTypes) => new()
-    {
-        LoanInterestRate = loanInterestRate.LoanInterestRate,
-        LoanInterestRateDiscount = loanInterestRate.LoanInterestRateDiscount,
-        LoanInterestRateProvided = loanInterestRate.LoanInterestRateProvided,
-        LoanInterestRateAnnouncedTypeName = loanInterestRateAnnouncedTypes
-            .FirstOrDefault(t => t.Id == loanInterestRate.LoanInterestRateAnnouncedType)?
-            .Name ?? string.Empty
+        Decision = decisionTypes
+            .FirstOrDefault(t => t.Id == amendmentPriceException.DecisionId)?
+            .Name ?? string.Empty,
+        Fees = amendmentPriceException.Fees
+            .Select(t => new Fee()
+            {
+                DiscountPercentage = t.DiscountPercentage,
+                FeeId = t.FeeId,
+                FinalSum = t.FinalSum,
+                TariffSum = t.TariffSum
+            })
+            .ToList(),
+        LoanInterestRate = new()
+        {
+            LoanInterestRate = amendmentPriceException.LoanInterestRate.LoanInterestRate,
+            LoanInterestRateDiscount = amendmentPriceException.LoanInterestRate.LoanInterestRateDiscount,
+            LoanInterestRateProvided = amendmentPriceException.LoanInterestRate.LoanInterestRateProvided,
+            LoanInterestRateAnnouncedTypeName = loanInterestRateAnnouncedTypes
+                .FirstOrDefault(t => t.Id == amendmentPriceException.LoanInterestRate.LoanInterestRateAnnouncedType)?
+                .Name ?? string.Empty
+        }
     };
     
     private static TaskCommunicationItem Map(_Case.TaskCommunicationItem taskCommunicationItem) => new()
@@ -134,14 +132,6 @@ public sealed class WorkflowMapperService
         StateIndicator = Enum.Parse<StateIndicators>(taskState.Indicator, true)
     };
 
-    private static string GetDecision(
-        _Case.AmendmentPriceException amendmentPriceException,
-        List<GenericCodebookResponse.Types.GenericCodebookItem> decisionTypes)
-    {
-        return decisionTypes
-            .FirstOrDefault(t => t.Id == amendmentPriceException.DecisionId)?.Name ?? string.Empty;
-    }
-    
     private static WorkflowTaskStates GetWorkflowState(_Case.WorkflowTask task)
     {
         if (task.Cancelled)
