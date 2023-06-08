@@ -116,5 +116,21 @@ def modified_json_data(request, ns_url):
     now = datetime.datetime.now()
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
     # seskladani smsky
-    modified_data['text'] = " Prostredi: " + ns_url["url_name"] + ", " + " Cas provedeni: " + date_time + ", textova zprava: " + modified_data['text']
+    modified_data['text'] = " Prostredi: " + ns_url["url_name"] + ", " + " Cas provedeni: " + date_time + ", Zprava: " + modified_data['text']
+    return modified_data
+
+@pytest.fixture
+def modified_template_json_data(request, ns_url):
+    json_data = request.node.get_closest_marker("parametrize").args[1][0]
+    modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
+
+    # Přidáme aktuální datum a čas
+    now = datetime.datetime.now()
+    date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
+
+    # Seskladani smsky
+    for placeholder in modified_data['placeholders']:
+        if placeholder['key'] == 'zadej':
+            placeholder['value'] = " Prostredi: " + ns_url["url_name"] + ", " + " Cas provedeni: " + date_time + ", Zprava: " + placeholder['value']
+
     return modified_data

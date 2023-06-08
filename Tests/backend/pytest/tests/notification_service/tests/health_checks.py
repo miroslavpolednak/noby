@@ -10,7 +10,7 @@ from ..json.request.mail_kb_json import json_req_mail_kb_basic_legal
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal
 from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full_for_search, \
     json_req_sms_basic_insg_e2e
-from ..json.request.sms_template_json import json_req_sms_full_template
+from ..json.request.sms_template_json import json_req_sms_full_template, json_req_real_sms_full_template
 
 
 #est pro additional parameters napr. --ns-url sit_url
@@ -167,8 +167,8 @@ def test_mail_health_check(ns_url,  auth_params, auth, json_data):
 #zakladni test pro template
 #test pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_full_template])
-def test_sms_template(ns_url,  auth_params, auth, json_data):
+@pytest.mark.parametrize("json_data", [json_req_real_sms_full_template])
+def test_sms_template(ns_url,  auth_params, auth, json_data, modified_template_json_data):
     """SMS s template z tabulky CodebookService.dbo.SmsNotificationType"""
     url_name = ns_url["url_name"]
     username = auth[0]
@@ -176,7 +176,7 @@ def test_sms_template(ns_url,  auth_params, auth, json_data):
     session = requests.session()
     resp = session.post(
         URLS[url_name] + "/v1/notification/smsFromTemplate",
-        json=json_data,
+        json=modified_template_json_data,
         auth=(username, password),
         verify=False
     )
