@@ -112,5 +112,9 @@ def greater_than_zero(items_count):
 def modified_json_data(request, ns_url):
     json_data = request.node.get_closest_marker("parametrize").args[1][0]
     modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
-    modified_data['text'] = ns_url["url_name"] + " = " + modified_data['text']
+    # Přidáme aktuální datum a čas
+    now = datetime.datetime.now()
+    date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
+    # seskladani smsky
+    modified_data['text'] = " Prostredi: " + ns_url["url_name"] + ", " + " Cas provedeni: " + date_time + ", textova zprava: " + modified_data['text']
     return modified_data
