@@ -10,7 +10,7 @@ UPDATE DocumentDataField SET StringFormat = 'doložení průkazu energetické n�
 UPDATE DynamicStringFormat SET Format = '--' WHERE DynamicStringFormatId = 17
 
 --PaymentSchedule
-UPDATE DocumentDataField SET DataFieldId = 18, StringFormat = NULL WHERE DocumentDataFieldId = 158
+UPDATE DocumentDataField SET DocumentId = 3, DataFieldId = 18, StringFormat = NULL WHERE DocumentDataFieldId = 158
 
 --Common
 UPDATE DocumentDataField SET StringFormat = 'Tuto žádost přijal {0}.' WHERE AcroFieldName = 'ZadostPrijal'
