@@ -227,7 +227,7 @@
             </summary>
             <example>0,49 %</example>
         </member>
-        <member name="P:NOBY.Dto.Workflow.Fee.FeeId">
+        <member name="P:NOBY.Dto.Workflow.Fee.FeeName">
             <summary>
             Název poplatku
             </summary>
