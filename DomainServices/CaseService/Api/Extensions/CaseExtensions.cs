@@ -92,7 +92,7 @@ internal static class CaseExtensions
                         if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")))
                             break;
 
-                        taskDetail.PriceException.Fees.Add(new AmendmentPriceException.Types.FeesItem
+                        taskDetail.PriceException.Fees.Add(new PriceExceptionFeesItem
                         {
                             FeeId = taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}"),
                             TariffSum = taskData.GetInteger($"ukol_overeni_ic_popl_sazeb{i}"),
