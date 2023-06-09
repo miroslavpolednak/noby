@@ -60,7 +60,7 @@ public class Fee
     /// Název poplatku
     /// </summary>
     /// <example>Zpracování žádosti</example>
-    public string FeeId { get; set; } = null!;
+    public string FeeName { get; set; } = null!;
     
     /// <summary>
     /// Sazebníková cena (Kč)
