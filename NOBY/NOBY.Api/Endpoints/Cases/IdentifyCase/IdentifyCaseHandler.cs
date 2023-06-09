@@ -28,11 +28,19 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         var documentListResponse = await _documentArchiveServiceClient.GetDocumentList(documentListRequest, cancellationToken);
 
         var document = documentListResponse.Metadata.FirstOrDefault();
-        var caseId = document?.CaseId ?? throw new NobyValidationException("CaseId does not exist.");
+        var caseId = document?.CaseId;
 
-        await _caseServiceClient.ValidateCaseId(caseId, true, cancellationToken);
+        if (caseId == null)
+        {
+            return new IdentifyCaseResponse();
+        }
 
-        var taskList = await _caseServiceClient.GetTaskList(caseId, cancellationToken);
+        if (!await _caseServiceClient.ValidateCaseId(caseId.Value, false, cancellationToken))
+        {
+            return new IdentifyCaseResponse { CaseId = null };
+        }
+
+        var taskList = await _caseServiceClient.GetTaskList(caseId.Value, cancellationToken);
         var taskSubList = taskList.Where(t => t.TaskTypeId == 6).ToList();
 
         if (!taskSubList.Any())
@@ -58,7 +66,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         }
 
         var taskId = taskDetails.First().Key;
-        var taskDetailRequest = new Workflow.GetTaskDetail.GetTaskDetailRequest(caseId, taskId);
+        var taskDetailRequest = new Workflow.GetTaskDetail.GetTaskDetailRequest(caseId.Value, taskId);
         var taskDetailResponse = await _mediator.Send(taskDetailRequest, cancellationToken);
 
         return new IdentifyCaseResponse
@@ -73,24 +81,37 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     {
         var paymentAccount = new PaymentAccountObject { Prefix = account.Prefix, AccountNumber = account.Number };
         var request = new GetCaseIdRequest { PaymentAccount = paymentAccount };
-        var response = await _productServiceClient.GetCaseId(request, cancellationToken);
         
-        return await HandleByCaseId(response.CaseId, cancellationToken);
+        try
+        {
+            var response = await _productServiceClient.GetCaseId(request, cancellationToken);
+            return await HandleByCaseId(response.CaseId, cancellationToken);
+        }
+        catch (CisNotFoundException)
+        {
+            return new IdentifyCaseResponse();
+        }
     }
     
     private async Task<IdentifyCaseResponse> HandleByCaseId(long caseId, CancellationToken cancellationToken)
     {
-        await _caseServiceClient.ValidateCaseId(caseId, true, cancellationToken);
-        return new IdentifyCaseResponse { CaseId = caseId };
+        var found = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
+        return new IdentifyCaseResponse { CaseId = found ? caseId : null };
     }
     
     private async Task<IdentifyCaseResponse> HandleByContractNumber(string contractNumber, CancellationToken cancellationToken)
     {
         var contract = new ContractNumberObject { ContractNumber = contractNumber };
         var request = new GetCaseIdRequest { ContractNumber = contract };
-        var response = await _productServiceClient.GetCaseId(request, cancellationToken);
-
-        return await HandleByCaseId(response.CaseId, cancellationToken);
+        try
+        {
+            var response = await _productServiceClient.GetCaseId(request, cancellationToken);
+            return await HandleByCaseId(response.CaseId, cancellationToken);
+        }
+        catch (CisNotFoundException)
+        {
+            return new IdentifyCaseResponse();
+        }
     }
 
     private readonly IMediator _mediator;

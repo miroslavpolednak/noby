@@ -1,4 +1,6 @@
-﻿namespace DomainServices.CaseService.Api;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+
+namespace DomainServices.CaseService.Api;
 
 internal static class TaskDataExtensions
 {
@@ -41,4 +43,19 @@ internal static class TaskDataExtensions
     {
         return Convert.ToBoolean(int.Parse(taskData[key], CultureInfo.InvariantCulture));
     }
+
+    public static string ToSbFormat(this DateOnly date)
+        => date.ToString(_czCulture);
+
+    public static string ToSbFormat(this decimal d)
+        => d.ToString(_czCulture);
+
+    public static string ToSbFormat(this decimal? d)
+        => d.HasValue ? d.Value.ToString(_czCulture) : "";
+
+    public static string ToSbFormat(this GrpcDecimal d)
+        => ((decimal)d).ToString(_czCulture);
+
+    public static string ToSbFormat(this NullableGrpcDecimal d)
+        => d is null ? "" : ((decimal)d!).ToString(_czCulture);
 }

@@ -10,7 +10,7 @@ public class AmendmentsPriceException
     /// <example>24.12.2023</example>
     [Required]
     [MinLength(1)]
-    public DateOnly Expiration { get; set; }
+    public DateOnly? Expiration { get; set; }
 
     [Required]
     public LoanInterestRates LoanInterestRate { get; set; } = null!;
@@ -60,7 +60,7 @@ public class Fee
     /// Název poplatku
     /// </summary>
     /// <example>Zpracování žádosti</example>
-    public string FeeId { get; set; } = null!;
+    public string FeeName { get; set; } = null!;
     
     /// <summary>
     /// Sazebníková cena (Kč)

@@ -14,12 +14,12 @@ internal static class LoggerExtensions
     {
         _userAccessorAnonymous = LoggerMessage.Define(
             LogLevel.Debug,
-            new EventId(707, nameof(ClientUncoughtRpcException)),
+            new EventId(707, nameof(UserAccessorAnonymous)),
             "ICurrentUserAccessor does not contain authenticated user");
 
         _userAccessorNotFound = LoggerMessage.Define(
             LogLevel.Debug,
-            new EventId(708, nameof(ClientUncoughtRpcException)),
+            new EventId(708, nameof(UserAccessorNotFound)),
             "ICurrentUserAccessor does not exist in Service Collection");
 
         _clientInvalidArgument = LoggerMessage.Define<int, string, string>(

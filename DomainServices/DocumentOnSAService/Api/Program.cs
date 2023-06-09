@@ -17,59 +17,67 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region strongly typed configuration
-AppConfiguration appConfiguration = new();
+var log = builder.CreateStartupLogger();
+
+try
+{
+    #region strongly typed configuration
+    AppConfiguration appConfiguration = new();
 builder.Configuration.GetSection(AppConfiguration.SectionName).Bind(appConfiguration);
 appConfiguration.CheckAppConfiguration();
 #endregion strongly typed configuration
 
-#region register builder
-// strongly-typed app configuration
-builder.Services.AddSingleton(appConfiguration);
+    #region register builder
+    // strongly-typed app configuration
+    builder.Services.AddSingleton(appConfiguration);
 
-// globalni nastaveni prostredi
-builder
-    .AddCisCoreFeatures()
-    .AddCisEnvironmentConfiguration();
+    // globalni nastaveni prostredi
+    builder
+        .AddCisCoreFeatures()
+        .AddCisEnvironmentConfiguration();
 
-// logging 
-builder
-    .AddCisLogging()
-    .AddCisTracing();
+    // logging 
+    builder
+        .AddCisLogging()
+        .AddCisTracing();
 
-// authentication
-builder.AddCisServiceAuthentication();
+    // authentication
+    builder.AddCisServiceAuthentication();
 
-// add this service
-builder.AddDocumentOnSAServiceService();
+    // add this service
+    builder.AddDocumentOnSAServiceService();
 
-builder.AddDocumentOnSAServiceGrpc();
-builder.AddCisGrpcHealthChecks();
-#endregion
+    builder.AddDocumentOnSAServiceGrpc();
+    builder.AddCisGrpcHealthChecks();
+    #endregion
 
-// kestrel configuration
-builder.UseKestrelWithCustomConfiguration();
+    // kestrel configuration
+    builder.UseKestrelWithCustomConfiguration();
 
-// BUILD APP
-if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-var app = builder.Build();
+    // BUILD APP
+    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
+    var app = builder.Build();
+    log.ApplicationBuilt();
 
-app.UseRouting();
+    app.UseRouting();
 
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCisServiceUserContext();
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseCisServiceUserContext();
 
-//Dont know correct connection
-app.UseServiceDiscovery();
+    //Dont know correct connection
+    app.UseServiceDiscovery();
 
-app.MapCisGrpcHealthChecks();
-app.MapGrpcService<DocumentOnSAServiceGrpc>();
-app.MapGrpcReflectionService();
+    app.MapCisGrpcHealthChecks();
+    app.MapGrpcService<DocumentOnSAServiceGrpc>();
+    app.MapGrpcReflectionService();
 
-try
-{
+    log.ApplicationRun();
     app.Run();
+}
+catch (Exception ex)
+{
+    log.CatchedException(ex);
 }
 finally
 {

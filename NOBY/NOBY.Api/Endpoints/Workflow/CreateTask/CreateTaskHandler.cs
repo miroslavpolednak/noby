@@ -77,6 +77,26 @@ internal sealed class CreateTaskHandler
         request.PriceException.LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount);
         request.PriceException.LoanDuration = offerInstance.SimulationResults.LoanDuration;
         request.PriceException.LoanToValue = Convert.ToInt32(offerInstance.SimulationResults.LoanToValue);
+        request.PriceException.Expiration = ((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.Now); // nikdo nerekl co delat, pokud datum bude null...
+        request.PriceException.LoanInterestRate = new DomainServices.CaseService.Contracts.PriceExceptionLoanInterestRateItem
+        {
+            LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
+            LoanInterestRateProvided = offerInstance.SimulationResults.LoanInterestRateProvided,
+            LoanInterestRateAnnouncedType = offerInstance.SimulationResults.LoanInterestRateAnnouncedType,
+            LoanInterestRateDiscount = offerInstance.SimulationInputs.InterestRateDiscount
+        };
+
+        if (offerInstance.AdditionalSimulationResults.Fees is not null)
+        {
+            request.PriceException.Fees.AddRange(offerInstance.AdditionalSimulationResults.Fees.Select(t => new DomainServices.CaseService.Contracts.PriceExceptionFeesItem
+            {
+                FinalSum = (decimal?)t.FinalSum ?? 0,
+                TariffSum = (decimal?)t.TariffSum ?? 0,
+                DiscountPercentage = t.DiscountPercentage,
+                FeeId = t.FeeId.ToString()
+            }));
+        }
+
         if (offerInstance.AdditionalSimulationResults.MarketingActions is not null)
         {
             request.PriceException.AppliedMarketingActionsCodes.AddRange(offerInstance.AdditionalSimulationResults.MarketingActions.Where(t => t.Applied.GetValueOrDefault() == 1).Select(t => t.Code));
