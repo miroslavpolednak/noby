@@ -55,6 +55,7 @@ try
     var app = builder.Build();
     log.ApplicationBuilt();
 
+    app.UseHsts();
     app.UseRouting();
 
     app.MapGrpcReflectionService();
