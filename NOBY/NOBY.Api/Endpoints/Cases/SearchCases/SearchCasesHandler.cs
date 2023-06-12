@@ -1,7 +1,6 @@
 ﻿using CIS.Core.Security;
 using CIS.Core.Types;
 using CIS.Infrastructure.WebApi.Types;
-using _CS = DomainServices.CaseService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.SearchCases;
 
