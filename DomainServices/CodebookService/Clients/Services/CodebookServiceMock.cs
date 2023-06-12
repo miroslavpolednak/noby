@@ -5,9 +5,25 @@ namespace DomainServices.CodebookService.Clients.Services;
 public class CodebookServiceMock 
     : CodebookServiceBaseMock, ICodebookServiceClient
 {
+    public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> AcademicDegreesBefore(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<GenericCodebookResponse.Types.GenericCodebookItem>
+        {
+            new() { Id = 0, Name = "Neuvedeno", IsValid = true }
+        });
+    }
+
+    public override Task<List<CountriesResponse.Types.CountryItem>> Countries(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<CountriesResponse.Types.CountryItem>
+        {
+            new() { Id = 16, ShortName = "CZ", LongName = "Česká republika", IsDefault = true }
+        });
+    }
+
     public override Task<List<DocumentTypesResponse.Types.DocumentTypeItem>> DocumentTypes(CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(new List<Contracts.v1.DocumentTypesResponse.Types.DocumentTypeItem>
+        return Task.FromResult(new List<DocumentTypesResponse.Types.DocumentTypeItem>
         {
             new() {Id = 1 , ShortName="NABIDKA" , SalesArrangementTypeId=null,EACodeMainId=605569, FileName="Nabidka_HU"},
             new() {Id = 2 , ShortName="KALKULHU", SalesArrangementTypeId=null,EACodeMainId=null  , FileName="Kalkulace_HU"},
@@ -26,6 +42,64 @@ public class CodebookServiceMock
             new() {Id = 15, ShortName="ODSTOUP" , SalesArrangementTypeId=null,EACodeMainId=608522, FileName="Ukonceni_zadosti_HU"},
             new() {Id = 16, ShortName="ZADOSTHD", SalesArrangementTypeId=11  ,EACodeMainId=608243, FileName="Pridani_spoludluznika"}
             });
+    }
+
+    public override Task<List<DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem>> DocumentTemplateVersions(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem>
+        {
+            new() { Id = 1, DocumentTypeId = 1, DocumentVersion = "001", IsValid = true },
+            new() { Id = 2, DocumentTypeId = 2, DocumentVersion = "001", IsValid = true },
+            new() { Id = 3, DocumentTypeId = 3, DocumentVersion = "001", IsValid = true },
+            new() { Id = 4, DocumentTypeId = 4, DocumentVersion = "001", IsValid = true },
+            new() { Id = 5, DocumentTypeId = 5, DocumentVersion = "001", IsValid = true },
+            new() { Id = 6, DocumentTypeId = 6, DocumentVersion = "001", IsValid = true },
+        });
+    }
+
+    public override Task<List<DocumentTemplateVariantsResponse.Types.DocumentTemplateVariantItem>> DocumentTemplateVariants(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<DocumentTemplateVariantsResponse.Types.DocumentTemplateVariantItem>
+        {
+            new() { Id = 1, DocumentTemplateVersionId = 4, DocumentVariant = "A" },
+            new() { Id = 2, DocumentTemplateVersionId = 4, DocumentVariant = "B" },
+            new() { Id = 3, DocumentTemplateVersionId = 4, DocumentVariant = "C" },
+            new() { Id = 4, DocumentTemplateVersionId = 4, DocumentVariant = "D" },
+        });
+    }
+
+    public override Task<List<DrawingTypesResponse.Types.DrawingTypeItem>> DrawingTypes(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<DrawingTypesResponse.Types.DrawingTypeItem>
+        {
+            new() { Id = 1, Name = "Postupné", StarbuildId = 1 },
+            new() { Id = 2, Name = "Jednorázové", StarbuildId = 0 }
+        });
+    }
+
+    public override Task<List<DrawingDurationsResponse.Types.DrawingDurationItem>> DrawingDurations(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<DrawingDurationsResponse.Types.DrawingDurationItem>
+        {
+            new() { Id = 1, DrawingDuration = 12, IsValid = true }
+        });
+    }
+
+    public override Task<List<EducationLevelsResponse.Types.EducationLevelItem>> EducationLevels(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<EducationLevelsResponse.Types.EducationLevelItem>
+        {
+            new() { Id = 0, Name = "Neuvedeno", IsValid = true }
+        });
+    }
+
+    public override Task<List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem>> IdentificationDocumentTypes(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem>
+        {
+            new() { Id = 0, Name = "Nedefinovaný", ShortName = "ND" },
+            new() { Id = 1, Name = "Občabský průkaz", ShortName = "OP" }
+        });
     }
 
     public override Task<List<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem>> SalesArrangementTypes(CancellationToken cancellationToken = default)
@@ -56,6 +130,114 @@ public class CodebookServiceMock
             new() { Code = "PAAT", Order = 1, Name = "KB klíč", Description = null, IsValid = true, StarbuildEnumId = 2 },
             new() { Code = "INT_CERT_FILE", Order = 2, Name = "Interní certifikát v souboru", Description = null, IsValid = true, StarbuildEnumId = 2 },
             new() { Code = "APOC", Order = 3, Name = "Automatizovaný Podpis Osobním Certifikátem", Description = null, IsValid = true, StarbuildEnumId = 2 },
+        });
+    }
+
+    public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> SignatureTypes(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<GenericCodebookResponse.Types.GenericCodebookItem>
+        {
+            new() { Id = 1, Name = "Papírově", Code = "Paper", IsValid = true },
+            new() { Id = 2, Name = "Biometricky", Code = "Biometric", IsValid = true },
+            new() { Id = 3, Name = "Elektronicky", Code = "Eletronic", IsValid = true },
+
+        });
+    }
+
+    public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> LoanKinds(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<GenericCodebookResponse.Types.GenericCodebookItem>
+        {
+            new() { Id = 2001, MandantId = 2, Name = "Hypotéka bez nemovitosti", IsValid = true },
+            new() { Id = 2000, MandantId = 2, Name = "Standard", IsValid = true }
+        });
+    }
+
+    public override Task<List<LoanPurposesResponse.Types.LoanPurposeItem>> LoanPurposes(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<LoanPurposesResponse.Types.LoanPurposeItem>
+        {
+            new() { Id = 210, Name = "Neúčelové", IsValid = true, C4MId = 20, Order = 10}
+        });
+    }
+
+    public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> MaritalStatuses(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<GenericCodebookResponse.Types.GenericCodebookItem>
+        {
+            new() { Id = 0, Name = "Neuvedeno", IsValid = true }
+        });
+    }
+
+    public override Task<List<ProductTypesResponse.Types.ProductTypeItem>> ProductTypes(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<ProductTypesResponse.Types.ProductTypeItem>
+        {
+            new() { Id = 20001, Name = "Hypoteční úvěr", IsValid = true }
+        });
+    }
+
+    public override Task<List<PropertySettlementsResponse.Types.PropertySettlementItem>> PropertySettlements(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<PropertySettlementsResponse.Types.PropertySettlementItem>
+        {
+            new() { Id = 0, Name = "Netýká se", IsValid = true }
+        });
+    }
+
+    public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> RealEstateTypes(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<GenericCodebookResponse.Types.GenericCodebookItem>
+        {
+            new() { Id = 0, Name = "Unknown", IsValid = true }
+        });
+    }
+
+    public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> RealEstatePurchaseTypes(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<GenericCodebookResponse.Types.GenericCodebookItem>
+        {
+            new() { Id = 0, Name = "Unknown", IsValid = true }
+        });
+    }
+
+    public override Task<List<GendersResponse.Types.GenderItem>> Genders(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<GendersResponse.Types.GenderItem>
+        {
+            new() { Id = 0, Name = "Unknown" }
+        });
+    }
+
+    public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> EmploymentTypes(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<GenericCodebookResponse.Types.GenericCodebookItem>
+        {
+            new() { Id = 0, Name = "Unknown" }
+        });
+    }
+
+    public override Task<List<ObligationTypesResponse.Types.ObligationTypeItem>> ObligationTypes(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<ObligationTypesResponse.Types.ObligationTypeItem>
+        {
+            new() { Id = 0, Name = "Unknown" }
+        });
+    }
+
+    public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> LegalCapacityRestrictionTypes(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<GenericCodebookResponse.Types.GenericCodebookItem>
+        {
+            new() { Id = 0, Name = "Unknown" }
+        });
+    }
+
+    public override Task<List<SalesArrangementStatesResponse.Types.SalesArrangementStateItem>> SalesArrangementStates(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<SalesArrangementStatesResponse.Types.SalesArrangementStateItem>
+        {
+            new() { Id = 0, Name = "Unknown" }
         });
     }
 }

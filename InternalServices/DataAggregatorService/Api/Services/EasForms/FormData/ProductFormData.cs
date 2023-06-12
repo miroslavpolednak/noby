@@ -48,7 +48,7 @@ internal class ProductFormData : LoanApplicationBaseFormData
         ProductTypeId = GetProductTypeId();
 
         ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(ProductTypeId, Offer.SimulationInputs.LoanKindId), this);
-
+        
         return Task.WhenAll(base.LoadAdditionalData(cancellationToken), LoadPerformerData(cancellationToken));
     }
 

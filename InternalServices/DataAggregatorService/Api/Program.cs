@@ -87,3 +87,8 @@ finally
 {
     LoggingExtensions.CloseAndFlush();
 }
+
+public partial class Program
+{
+    // Expose the Program class for use with WebApplicationFactory<T>
+}
