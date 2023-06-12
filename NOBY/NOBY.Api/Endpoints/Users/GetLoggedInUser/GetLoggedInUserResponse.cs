@@ -11,17 +11,16 @@ public sealed class GetLoggedInUserResponse
     /// <summary>
     /// Všechny identity uživatele z XXVVSS
     /// </summary>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public List<CIS.Foms.Types.UserIdentity> UserIdentifiers { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
     /// <summary>
     /// Základní informace o přihlášeném uživateli
     /// </summary>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public GetLoggedInUserResponseUserInfo UserInfo { get; set; }
-
-    /// <summary>
-    /// Dodatečné informace o uživately a kontakty
-    /// </summary>
-    public GetLoggedInUserResponseAttributes UserAttributes { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
     public int[]? UserPermissions { get; set; }
 }
@@ -57,10 +56,7 @@ public sealed class GetLoggedInUserResponseUserInfo
     /// </summary>
     /// <example>12345678</example>
     public string? Cin { get; set; }
-}
 
-public sealed class GetLoggedInUserResponseAttributes
-{
     /// <summary>
     /// Telefon uživatele
     /// </summary>
@@ -77,4 +73,9 @@ public sealed class GetLoggedInUserResponseAttributes
     /// VIP flag uživatele
     /// </summary>
     public bool IsUserVIP { get; set; }
+
+    /// <summary>
+    /// Flag, zda se jedná o interního uživatele, či externistu
+    /// </summary>
+    public bool IsInternal { get; set; }
 }

@@ -20,15 +20,12 @@ internal sealed class GetLoggedInUserHandler
                 LastName = userInstance.UserInfo.LastName,
                 Cin = userInstance.UserInfo.Cin,
                 Cpm = userInstance.UserInfo.Cpm,
-                Icp = userInstance.UserInfo.Icp
+                Icp = userInstance.UserInfo.Icp,
+                EmailAddress = userInstance.UserInfo?.Email,
+                PhoneNumber = userInstance.UserInfo?.PhoneNumber,
+                IsUserVIP = userInstance.UserInfo?.IsUserVIP ?? false
             },
             UserIdentifiers = userInstance.UserIdentifiers.Select(t => (CIS.Foms.Types.UserIdentity)t!).ToList(),
-            UserAttributes = new GetLoggedInUserResponseAttributes
-            {
-                EmailAddress = userInstance.UserAttributes?.Email,
-                PhoneNumber = userInstance.UserAttributes?.PhoneNumber,
-                IsUserVIP = userInstance.UserAttributes?.IsUserVIP ?? false
-            },
             UserPermissions = getPermissions(userInstance.UserPermissions)
         };
     }
