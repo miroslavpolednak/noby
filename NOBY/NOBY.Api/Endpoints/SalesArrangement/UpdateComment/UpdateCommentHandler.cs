@@ -1,4 +1,6 @@
-﻿using CIS.Foms.Types.Enums;
+﻿using CIS.Foms.Enums;
+using CIS.Foms.Types.Enums;
+using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
@@ -7,14 +9,17 @@ namespace NOBY.Api.Endpoints.SalesArrangement.UpdateComment;
 internal sealed  class UpdateCommentHandler : IRequestHandler<UpdateCommentRequest>
 {
     private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ICodebookServiceClient _codebookService;
 
     public async Task Handle(UpdateCommentRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-
-        if ((SalesArrangementTypes)salesArrangement.SalesArrangementTypeId != SalesArrangementTypes.Mortgage)
+        var salesArrangementTypes = await _codebookService.SalesArrangementTypes(cancellationToken);
+        var salesArrangementType = salesArrangementTypes.Single(t => t.Id == salesArrangement.SalesArrangementTypeId);
+        
+        if (salesArrangementType.SalesArrangementCategory != (int)SalesArrangementCategories.ProductRequest)
         {
-            throw new NobyValidationException($"Invalid SalesArrangement id = {request.SalesArrangementId}, SalesArrangementTypeId must be {SalesArrangementTypes.Mortgage}");
+            throw new NobyValidationException($"Invalid SalesArrangement id = {request.SalesArrangementId}, must be of type {SalesArrangementCategories.ProductRequest}");
         }
         
         var mortgageParameters = new SalesArrangementParametersMortgage
@@ -42,8 +47,11 @@ internal sealed  class UpdateCommentHandler : IRequestHandler<UpdateCommentReque
         await _salesArrangementService.UpdateSalesArrangementParameters(updateParametersRequest, cancellationToken);
     }
     
-    public UpdateCommentHandler(ISalesArrangementServiceClient salesArrangementService)
+    public UpdateCommentHandler(
+        ISalesArrangementServiceClient salesArrangementService,
+        ICodebookServiceClient codebookService)
     {
         _salesArrangementService = salesArrangementService;
+        _codebookService = codebookService;
     }
 }
