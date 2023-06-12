@@ -38,7 +38,7 @@ public sealed class NobyApiExceptionMiddleware
         }
         catch (CisAuthorizationException)
         {
-            await Results.Unauthorized().ExecuteAsync(context);
+            await Results.Json(null, statusCode: 403).ExecuteAsync(context);
         }
         catch (AuthenticationException ex) // toto by nemelo nastat
         {

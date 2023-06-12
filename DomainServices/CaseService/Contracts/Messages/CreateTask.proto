@@ -2,6 +2,8 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
+import "Messages/GetTaskDetail.proto";
+import "GrpcDate.proto";
 import "google/protobuf/wrappers.proto";
 
 message CreateTaskRequest {
@@ -21,15 +23,14 @@ message CreateTaskResponse {
 }
 
 message TaskPriceException {
-	int32 ProductTypeId = 1;
-
-	int32 LoanAmount = 2;
-
-	int32 LoanDuration = 3;
-
-	int32 LoanToValue = 4;
-
-	int32 FixedRatePeriod = 5;
-
-	repeated string AppliedMarketingActionsCodes = 6;
+	cis.types.GrpcDate Expiration = 1;
+	google.protobuf.Int32Value DecisionId = 2;
+	PriceExceptionLoanInterestRateItem LoanInterestRate = 3;
+	repeated PriceExceptionFeesItem Fees = 4;
+	int32 ProductTypeId = 5;
+	int32 LoanAmount = 6;
+	int32 LoanDuration = 7;
+	int32 LoanToValue = 8;
+	int32 FixedRatePeriod = 9;
+	repeated string AppliedMarketingActionsCodes = 10;
 }

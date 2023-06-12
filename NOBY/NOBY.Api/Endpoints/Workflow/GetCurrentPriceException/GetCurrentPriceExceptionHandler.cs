@@ -51,7 +51,7 @@ internal sealed class GetCurrentPriceExceptionHandler
                         },
                         Fees = offer.AdditionalSimulationResults.Fees?.Select(t => new Dto.Workflow.Fee
                         {
-                            FeeId = t.FeeId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                            FeeName = t.Name.ToString(System.Globalization.CultureInfo.InvariantCulture),
                             TariffSum = (decimal?)t.TariffSum ?? 0,
                             FinalSum = (decimal?)t.FinalSum ?? 0,
                             DiscountPercentage = t.DiscountPercentage
