@@ -20,12 +20,12 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
 
     public async Task<GetDocumentDataResponse> Handle(GetDocumentDataRequest request, CancellationToken cancellationToken)
     {
-        var versionData = await _documentDataFactory.CreateVersionData((DocumentType)request.DocumentTypeId).GetDocumentVersionData(request, cancellationToken);
+        var versionData = await _documentDataFactory.CreateVersionData((DocumentTypes)request.DocumentTypeId).GetDocumentVersionData(request, cancellationToken);
 
         var documentKey = new DocumentKey(request.DocumentTypeId, versionData);
         var config = await _configurationManager.LoadDocumentConfiguration(documentKey, cancellationToken);
 
-        var documentMapper = await LoadDocumentData((DocumentType)request.DocumentTypeId, request.InputParameters, config, cancellationToken);
+        var documentMapper = await LoadDocumentData((DocumentTypes)request.DocumentTypeId, request.InputParameters, config, cancellationToken);
 
         return new GetDocumentDataResponse
         {
@@ -36,7 +36,7 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
         };
     }
 
-    private async Task<DocumentMapper> LoadDocumentData(DocumentType documentType, InputParameters inputParameters, DocumentConfiguration config, CancellationToken cancellationToken)
+    private async Task<DocumentMapper> LoadDocumentData(DocumentTypes documentType, InputParameters inputParameters, DocumentConfiguration config, CancellationToken cancellationToken)
     {
         var documentData = _documentDataFactory.CreateData(documentType);
 

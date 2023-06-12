@@ -4174,7 +4174,7 @@
             </remarks>
             <response code="404">Task or case not found</response>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.GetCurrentPriceException(System.Int64,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.GetCurrentPriceException(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Získání aktuální cenové výjimky
             </summary>

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System.Text;
+using System.Reflection;
 
 namespace CIS.Infrastructure.Telemetry;
 
@@ -11,6 +11,14 @@ namespace CIS.Infrastructure.Telemetry;
 /// </summary>
 public static class LoggingExtensions
 {
+    /// <summary>
+    /// Vytvoreni statickeho loggeru pro logovani startupu aplikace.
+    /// </summary>
+    public static IStartupLogger CreateStartupLogger(this WebApplicationBuilder builder)
+    {
+        return StartupLog.StartupLogger.Create(builder);
+    }
+
     /// <summary>
     /// Přidává do aplikace logování pomocí Serilogu.
     /// </summary>
@@ -22,9 +30,10 @@ public static class LoggingExtensions
     public static WebApplicationBuilder AddCisLogging(this WebApplicationBuilder builder)
     {
         // get configuration from json file
-        var configSection = builder.Configuration.GetSection(_configurationTelemetryKey);
-        CisTelemetryConfiguration configuration = new();
-        configSection.Bind(configuration);
+        var configuration = builder.Configuration
+            .GetSection(_configurationTelemetryKey)
+            .Get<CisTelemetryConfiguration>()
+            ?? throw new CIS.Core.Exceptions.CisConfigurationNotFound(_configurationTelemetryKey);
         builder.Services.AddSingleton(configuration);
 
         // pridani custom enricheru
@@ -49,8 +58,11 @@ public static class LoggingExtensions
     /// </summary>
     public static void CloseAndFlush()
     {
+        StartupLog.StartupLogger.ApplicationFinished();
+
         Log.CloseAndFlush();
         AuditLogger.CloseAndFlush();
+        StartupLog.StartupLogger.CloseAndFlush();
 
         // kdyz tu neni sleep, tak se obcas nezapsal vsechen output pri ukonceni sluzby
         Thread.Sleep(2000);
@@ -86,5 +98,5 @@ public static class LoggingExtensions
         return builder;
     }
 
-    const string _configurationTelemetryKey = "CisTelemetry";
+    internal const string _configurationTelemetryKey = "CisTelemetry";
 }

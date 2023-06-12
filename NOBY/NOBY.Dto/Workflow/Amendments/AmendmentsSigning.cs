@@ -24,6 +24,7 @@ public class AmendmentsSigning
     /// </summary>
     /// <example>24.12.2023</example>
     [Required]
+    [MinLength(1)]
     public DateOnly Expiration { get; set; }
 
 

@@ -3,7 +3,8 @@ using FluentValidation;
 
 namespace DomainServices.CaseService.Api.Endpoints.CompleteTask;
 
-internal class CompleteTaskRequestValidator : AbstractValidator<CompleteTaskRequest>
+internal sealed class CompleteTaskRequestValidator 
+    : AbstractValidator<CompleteTaskRequest>
 {
     public CompleteTaskRequestValidator()
     {

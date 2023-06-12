@@ -156,6 +156,8 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
 
             switch (documentDataDto.ValueCase)
             {
+                case 0: break; //Should be just a StringFormat, the DataAggregator sends only the necessary data 
+
                 case 3:
                     documentPartData.Text = documentDataDto.Text ?? string.Empty;
                     break;

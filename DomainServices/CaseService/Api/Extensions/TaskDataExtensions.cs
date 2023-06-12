@@ -1,8 +1,22 @@
-﻿namespace DomainServices.CaseService.Api;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+
+namespace DomainServices.CaseService.Api;
 
 internal static class TaskDataExtensions
 {
     private static CultureInfo _czCulture = new CultureInfo("cs-CZ");
+
+    public static decimal GetDecimal(this IReadOnlyDictionary<string, string> taskData, string key)
+    {
+        if (decimal.TryParse(taskData[key], CultureInfo.InvariantCulture, out decimal d))
+        {
+            return d;
+        }
+        else
+        {
+            return decimal.Parse(taskData[key], _czCulture);
+        }
+    }
 
     public static int GetInteger(this IReadOnlyDictionary<string, string> taskData, string key)
     {
@@ -36,4 +50,19 @@ internal static class TaskDataExtensions
     {
         return Convert.ToBoolean(int.Parse(taskData[key], CultureInfo.InvariantCulture));
     }
+
+    public static string ToSbFormat(this DateOnly date)
+        => date.ToString(_czCulture);
+
+    public static string ToSbFormat(this decimal d)
+        => d.ToString(CultureInfo.InvariantCulture);
+
+    public static string ToSbFormat(this decimal? d)
+        => d.HasValue ? d.Value.ToString(CultureInfo.InvariantCulture) : "";
+
+    public static string ToSbFormat(this GrpcDecimal d)
+        => ((decimal)d).ToString(CultureInfo.InvariantCulture);
+
+    public static string ToSbFormat(this NullableGrpcDecimal d)
+        => d is null ? "" : ((decimal)d!).ToString(CultureInfo.InvariantCulture);
 }

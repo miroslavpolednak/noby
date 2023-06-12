@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace CIS.Foms.Enums;
 
 [DataContract]
-public enum DocumentFileType : byte
+public enum DocumentFileTypes : byte
 {
     [Display(Name = "unknown")]
     [EnumMember]

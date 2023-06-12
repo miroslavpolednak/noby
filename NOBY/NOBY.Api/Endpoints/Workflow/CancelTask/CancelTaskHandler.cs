@@ -26,7 +26,9 @@ internal sealed class CancelTaskHandler
             var saId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
             await _salesArrangementService.SetFlowSwitches(saId, new()
             {
-                new() { FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist, Value = false }
+                new() { FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist, Value = false },
+                new() { FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPApproved, Value = false },
+                new() { FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPNotApproved, Value = false }
             }, cancellationToken);
         }
     }

@@ -5,7 +5,7 @@ namespace NOBY.Api.Endpoints.Document.Shared;
 
 internal class GetDocumentBaseRequest : IRequest<ReadOnlyMemory<byte>>
 {
-    public required DocumentType DocumentType { get; init; }
+    public required DocumentTypes DocumentType { get; init; }
 
     public int DocumentTemplateVersionId { get; set; }
 

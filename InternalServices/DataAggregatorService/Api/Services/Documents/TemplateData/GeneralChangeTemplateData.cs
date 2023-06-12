@@ -13,17 +13,57 @@ internal class GeneralChangeTemplateData : AggregatedData
 
     public string FullName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
+    public string SignerName => CustomerHelper.FullName(Customer);
+
     public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent, _codebookManager.Countries);
 
-    public string RepaymentAccount => 
-        BankAccountHelper.AccountNumber(GeneralChange.RepaymentAccount.Prefix, GeneralChange.RepaymentAccount.Number, GeneralChange.RepaymentAccount.BankCode);
+    public string? RepaymentAccount
+    {
+        get
+        {
+            if (GeneralChange.RepaymentAccount?.IsActive != true)
+                return default;
 
-    public string RepaymentAccountOwner =>
-        CustomerHelper.NameWithDateOfBirth($"{GeneralChange.RepaymentAccount.OwnerFirstName} {GeneralChange.RepaymentAccount.OwnerLastName}", GeneralChange.RepaymentAccount.OwnerDateOfBirth);
+            return BankAccountHelper.AccountNumber(GeneralChange.RepaymentAccount.Prefix, GeneralChange.RepaymentAccount.Number, GeneralChange.RepaymentAccount.BankCode);
+        }
+    }
 
-    public string RealEstateTypes => string.Join("; ", GetRealEstateTypes());
+    public string? RepaymentAccountOwner
+    {
+        get
+        {
+            if (GeneralChange.RepaymentAccount?.IsActive != true)
+                return default;
 
-    public string RealEstatePurchaseTypes => string.Join("; ", GetRealEstatePurchaseTypes());
+            return CustomerHelper.NameWithDateOfBirth($"{GeneralChange.RepaymentAccount.OwnerFirstName} {GeneralChange.RepaymentAccount.OwnerLastName}", GeneralChange.RepaymentAccount.OwnerDateOfBirth);
+        }
+    }
+
+    public string? RealEstateTypes => GeneralChange.LoanRealEstate?.IsActive == true ? string.Join("; ", GetRealEstateTypes()) : default;
+
+    public string? RealEstatePurchaseTypes => GeneralChange.LoanRealEstate?.IsActive == true ? string.Join("; ", GetRealEstatePurchaseTypes()) : default;
+
+    public string? ExtensionDrawingDateLabel
+    {
+        get
+        {
+            if (GeneralChange.DrawingDateTo?.IsActive != true || GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths == 0)
+                return default;
+
+            return GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths > 0 ? "Prodloužení lhůty čerpání" : "Zkrácení lhůty čerpání";
+        }
+    }
+
+    public int? ExtensionDrawingDate
+    {
+        get
+        {
+            if (GeneralChange.DrawingDateTo?.IsActive != true || (GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths ?? 0) == 0)
+                return default;
+
+            return Math.Abs(GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths!.Value);
+        }
+    }
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {

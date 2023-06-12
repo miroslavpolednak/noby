@@ -126,6 +126,6 @@ public class WorkflowController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetCurrentPriceException.GetCurrentPriceExceptionResponse> GetCurrentPriceException([FromRoute] long caseId, [FromQuery][Required] int salesArrangementId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetCurrentPriceException.GetCurrentPriceExceptionRequest(caseId, salesArrangementId), cancellationToken);
+    public async Task<GetCurrentPriceException.GetCurrentPriceExceptionResponse> GetCurrentPriceException([FromRoute] long caseId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCurrentPriceException.GetCurrentPriceExceptionRequest(caseId), cancellationToken);
 }
