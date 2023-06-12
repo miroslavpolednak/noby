@@ -3,14 +3,14 @@ using DomainServices.CaseService.Api.Messaging;
 
 namespace DomainServices.CaseService.Api.Messaging
 {
-    public interface IMarker2 : ISpecificRecord
+    public interface ISbWorkflowInputProcessingEvent : ISpecificRecord
     {
     }
 }
 
 namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
 {
-    public partial class CaseStateChanged_ProcessingCompleted : IMarker2
+    public partial class CaseStateChanged_ProcessingCompleted : ISbWorkflowInputProcessingEvent
     {
     }
 }

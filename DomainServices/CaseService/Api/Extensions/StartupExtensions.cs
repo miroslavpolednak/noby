@@ -35,10 +35,12 @@ internal static class StartupExtensions
         // kafka messaging
         builder.AddCisMessaging()
             .AddKafka()
-            .AddConsumer<Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer>()
             .AddConsumer<Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer>()
-            .AddConsumerTopicAvro<IMarker1>(appConfiguration.MainLoanProcessChangedTopic!)
-            .AddConsumerTopicAvro<IMarker2>(appConfiguration.CaseStateChangedProcessingCompletedTopic!)
+            .AddConsumer<Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer>()
+            .AddConsumer<Messaging.IndividualPricingProcessChanged.IndividualPricingProcessChangedConsumer>()
+            .AddConsumer<Messaging.WithdrawalProcessChanged.WithdrawalProcessChangedConsumer>()
+            .AddConsumerTopicAvro<ISbWorkflowProcessEvent>(appConfiguration.SbWorkflowProcessTopic!)
+            .AddConsumerTopicAvro<ISbWorkflowInputProcessingEvent>(appConfiguration.SbWorkflowInputProcessingTopic!)
             .Build();
 
         return builder;
