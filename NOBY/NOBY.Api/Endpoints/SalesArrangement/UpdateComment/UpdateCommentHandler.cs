@@ -1,5 +1,4 @@
 ﻿using CIS.Foms.Enums;
-using CIS.Foms.Types.Enums;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
