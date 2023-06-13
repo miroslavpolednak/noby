@@ -2,7 +2,6 @@
 using CIS.Infrastructure.gRPC;
 using Grpc.Core;
 using Grpc.Net.Client;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Net.Http.Headers;
 using Grpc.Core.Interceptors;
+using Microsoft.Extensions.Hosting;
 
 namespace CIS.Testing;
 
@@ -18,7 +18,7 @@ public class WebApplicationFactoryFixture<TStartup>
     : WebApplicationFactory<TStartup> where TStartup : class
 {
     private Action<IServiceCollection>? _configureServices;
-    private Action<WebHostBuilderContext, IConfigurationBuilder>? _configureAppConfiguration;
+    private Action<HostBuilderContext, IConfigurationBuilder>? _configureAppConfiguration;
 
     public CisWebApplicationFactoryOptions CisWebFactoryConfiguration { get; set; } = new();
 
@@ -74,13 +74,13 @@ public class WebApplicationFactoryFixture<TStartup>
         return this;
     }
 
-    public WebApplicationFactoryFixture<TStartup> ConfigureAppConfiguration(Action<WebHostBuilderContext, IConfigurationBuilder> configuration)
+    public WebApplicationFactoryFixture<TStartup> ConfigureAppConfiguration(Action<HostBuilderContext, IConfigurationBuilder> configuration)
     {
         _configureAppConfiguration = configuration;
         return this;
     }
 
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    protected override IHost CreateHost(IHostBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(nameof(builder));
 
@@ -122,6 +122,8 @@ public class WebApplicationFactoryFixture<TStartup>
 
             _configureServices?.Invoke(services);
         });
+
+        return base.CreateHost(builder);
     }
 
     protected override void Dispose(bool disposing)
