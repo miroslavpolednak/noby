@@ -12,4 +12,6 @@ public sealed class TaxResidenceCountryItem
     public int? CountryId { get; set; }
 
     public string? Tin { get; set; }
+
+    public string? TinMissingReasonDescription { get; set; }
 }
