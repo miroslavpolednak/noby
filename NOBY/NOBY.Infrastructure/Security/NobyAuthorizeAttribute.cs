@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DomainServices.UserService.Clients.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace NOBY.Infrastructure.Security;
@@ -7,25 +8,33 @@ namespace NOBY.Infrastructure.Security;
 public sealed class NobyAuthorizeAttribute 
     : TypeFilterAttribute
 {
-    public NobyAuthorizeAttribute(int requiredPermission)
+    public NobyAuthorizeAttribute(params UserPermissions[] requiredPermissions)
         : base(typeof(NobyAuthorizeFilter))
     {
-        Arguments = new object[] { requiredPermission };
+        Arguments = new object[] { requiredPermissions };
     }
 
     private sealed class NobyAuthorizeFilter
         : IAuthorizationFilter
     {
-        private readonly int _requiredPermission;
+        private readonly UserPermissions[] _requiredPermissions;
 
-        public NobyAuthorizeFilter(int requiredPermission)
+        public NobyAuthorizeFilter(UserPermissions[] requiredPermissions)
         {
-            _requiredPermission = requiredPermission;
+            _requiredPermissions = requiredPermissions;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (!context.HttpContext!.User.HasClaim(t => t.Type == AuthenticationConstants.NobyPermissionClaimType && t.Value == $"{_requiredPermission}"))
+            string[] perms = _requiredPermissions.Select(t => $"{(int)t}").ToArray();
+
+            if (!context
+                .HttpContext!
+                .User
+                .Claims
+                .Where(t => t.Type == AuthenticationConstants.NobyPermissionClaimType)
+                .Any(t => perms.Contains(t.Value))
+            )
             {
                 throw new CisAuthorizationException();
             }

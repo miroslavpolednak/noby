@@ -13,9 +13,10 @@ public class TestController : ControllerBase
         => await _mediator.Send(new RollbackRequest(id));
 
     [HttpGet("t1")]
-    [NobyAuthorize(1)]
+    [NobyAuthorize(UserPermissions.UC_getWflSigningAttachments, UserPermissions.CASEDETAIL_APPLICANT_ViewPersonInfo)]
     public async Task T1()
     {
+        
         throw new CisValidationException(111, "moje chybova hlaska");
     }
 

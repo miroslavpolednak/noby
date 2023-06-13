@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DomainServices.UserService.Clients.Authorization;
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 namespace NOBY.Infrastructure.Security;
 
-public class AppSecurityMiddleware
+public class NobySecurityMiddleware
 {
     private readonly RequestDelegate _next;
 
-    public AppSecurityMiddleware(RequestDelegate next) =>
+    public NobySecurityMiddleware(RequestDelegate next) =>
         _next = next;
 
     public async Task Invoke(
@@ -43,6 +44,10 @@ public class AppSecurityMiddleware
             var result = await userService.GetUser(userId);
 
             // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
+            if (!result.UserPermissions.Contains((int)UserPermissions.APPLICATION_BasicAccess))
+            {
+                //throw new CisAuthorizationException(DomainServices.UserService.Clients.UserPermissions.APPLICATION_BasicAccess.ToString());
+            }
 
             // doplnit prava uzivatele do claims
             claimsIdentity!.AddClaims(result.UserPermissions.Select(t => new Claim(AuthenticationConstants.NobyPermissionClaimType, $"{t}")));

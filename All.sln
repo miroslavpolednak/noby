@@ -200,6 +200,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\external-services-rest.md = Docs\topics\external-services-rest.md
 		Docs\topics\external-services-soap.md = Docs\topics\external-services-soap.md
 		Docs\topics\external-services.md = Docs\topics\external-services.md
+		Docs\topics\feapi-authorization.md = Docs\topics\feapi-authorization.md
 		Docs\topics\feapi-error-handling.md = Docs\topics\feapi-error-handling.md
 		Docs\topics\grpc-service-startup.md = Docs\topics\grpc-service-startup.md
 		Docs\topics\grpc-services-api.md = Docs\topics\grpc-services-api.md
