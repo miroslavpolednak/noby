@@ -65,14 +65,26 @@
         <member name="F:DomainServices.UserService.Contracts.User.UserIdFieldNumber">
             <summary>Field number for the "UserId" field.</summary>
         </member>
+        <member name="P:DomainServices.UserService.Contracts.User.UserId">
+            <summary>
+            ID uzivatele - V33ID
+            </summary>
+        </member>
         <member name="F:DomainServices.UserService.Contracts.User.UserIdentifiersFieldNumber">
             <summary>Field number for the "UserIdentifiers" field.</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.User.UserIdentifiers">
+            <summary>
+            Všechny identity uživatele z XXVVSS
+            </summary>
         </member>
         <member name="F:DomainServices.UserService.Contracts.User.UserInfoFieldNumber">
             <summary>Field number for the "UserInfo" field.</summary>
         </member>
-        <member name="F:DomainServices.UserService.Contracts.User.UserAttributesFieldNumber">
-            <summary>Field number for the "UserAttributes" field.</summary>
+        <member name="P:DomainServices.UserService.Contracts.User.UserInfo">
+            <summary>
+            Základní informace o přihlášeném uživateli
+            </summary>
         </member>
         <member name="F:DomainServices.UserService.Contracts.User.UserPermissionsFieldNumber">
             <summary>Field number for the "UserPermissions" field.</summary>
@@ -80,8 +92,18 @@
         <member name="F:DomainServices.UserService.Contracts.UserInfoObject.FirstNameFieldNumber">
             <summary>Field number for the "FirstName" field.</summary>
         </member>
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.FirstName">
+            <summary>
+            Jméno uživatele
+            </summary>
+        </member>
         <member name="F:DomainServices.UserService.Contracts.UserInfoObject.LastNameFieldNumber">
             <summary>Field number for the "LastName" field.</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.LastName">
+            <summary>
+            Přijmení uživatele
+            </summary>
         </member>
         <member name="F:DomainServices.UserService.Contracts.UserInfoObject.DisplayNameFieldNumber">
             <summary>Field number for the "DisplayName" field.</summary>
@@ -89,20 +111,53 @@
         <member name="F:DomainServices.UserService.Contracts.UserInfoObject.CpmFieldNumber">
             <summary>Field number for the "Cpm" field.</summary>
         </member>
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.Cpm">
+            <summary>
+            ČPM uživatele
+            </summary>
+        </member>
         <member name="F:DomainServices.UserService.Contracts.UserInfoObject.IcpFieldNumber">
             <summary>Field number for the "Icp" field.</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.Icp">
+            <summary>
+            IČP uživatele
+            </summary>
         </member>
         <member name="F:DomainServices.UserService.Contracts.UserInfoObject.CinFieldNumber">
             <summary>Field number for the "Cin" field.</summary>
         </member>
-        <member name="F:DomainServices.UserService.Contracts.UserAttributesObject.PhoneNumberFieldNumber">
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.Cin">
+            <summary>
+            IČO uživatele
+            </summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserInfoObject.PhoneNumberFieldNumber">
             <summary>Field number for the "PhoneNumber" field.</summary>
         </member>
-        <member name="F:DomainServices.UserService.Contracts.UserAttributesObject.EmailFieldNumber">
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.PhoneNumber">
+            <summary>
+            Telefon uživatele
+            </summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserInfoObject.EmailFieldNumber">
             <summary>Field number for the "Email" field.</summary>
         </member>
-        <member name="F:DomainServices.UserService.Contracts.UserAttributesObject.IsUserVIPFieldNumber">
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.Email">
+            <summary>
+            Emailová adresa uživatele
+            </summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserInfoObject.IsUserVIPFieldNumber">
             <summary>Field number for the "IsUserVIP" field.</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.IsUserVIP">
+            <summary>
+            VIP flag uživatele
+            </summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserInfoObject.IsInternalFieldNumber">
+            <summary>Field number for the "isInternal" field.</summary>
         </member>
     </members>
 </doc>

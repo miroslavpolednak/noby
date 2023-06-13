@@ -14,9 +14,13 @@ internal static class SwaggerExtensions
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "User Service API", Version = "v1" });
 
             // generate the XML docs that'll drive the swagger docs
-            var path = Path.Combine(AppContext.BaseDirectory, "DomainServices.UserService.Contracts.xml");
-            c.IncludeXmlComments(path);
-            c.IncludeGrpcXmlComments(path, includeControllerXmlComments: true);
+            var path1 = Path.Combine(AppContext.BaseDirectory, "DomainServices.UserService.Contracts.xml");
+            var path2 = Path.Combine(AppContext.BaseDirectory, "CIS.Infrastructure.gRPC.CisTypes.xml");
+
+            c.IncludeXmlComments(path1);
+            c.IncludeXmlComments(path2);
+            c.IncludeGrpcXmlComments(path1, includeControllerXmlComments: true);
+            c.IncludeGrpcXmlComments(path2, includeControllerXmlComments: true);
 
             c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
             {
@@ -56,3 +60,4 @@ internal static class SwaggerExtensions
         return app;
     }
 }
+

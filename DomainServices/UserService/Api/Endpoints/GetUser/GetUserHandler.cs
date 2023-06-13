@@ -61,6 +61,9 @@ internal class GetUserHandler
         // identity
         fillIdentities(dbIdentities, model);
 
+        // set is internal
+        model.UserInfo.IsInternal = !model.UserIdentifiers.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.BrokerId) && model.UserIdentifiers.Any();
+
         // perms
         dbPermissions.ForEach(t =>
         {

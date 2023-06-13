@@ -23,7 +23,8 @@ internal sealed class GetLoggedInUserHandler
                 Icp = userInstance.UserInfo.Icp,
                 EmailAddress = userInstance.UserInfo?.Email,
                 PhoneNumber = userInstance.UserInfo?.PhoneNumber,
-                IsUserVIP = userInstance.UserInfo?.IsUserVIP ?? false
+                IsUserVIP = userInstance.UserInfo?.IsUserVIP ?? false,
+                IsInternal = userInstance.UserInfo?.IsInternal ?? false
             },
             UserIdentifiers = userInstance.UserIdentifiers.Select(t => (CIS.Foms.Types.UserIdentity)t!).ToList(),
             UserPermissions = getPermissions(userInstance.UserPermissions)
