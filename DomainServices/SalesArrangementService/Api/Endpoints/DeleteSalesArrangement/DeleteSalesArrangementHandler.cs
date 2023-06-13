@@ -36,7 +36,14 @@ internal sealed class DeleteSalesArrangementHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private static int[] _allowedStates = new[] { (int)SalesArrangementStates.NewArrangement, (int)SalesArrangementStates.InProgress, (int)SalesArrangementStates.IsSigned  };
+    private static int[] _allowedStates = new[] 
+    { 
+        (int)SalesArrangementStates.NewArrangement, 
+        (int)SalesArrangementStates.InProgress,
+        (int)SalesArrangementStates.NewArrangement,
+        (int)SalesArrangementStates.ToSend,
+        (int)SalesArrangementStates.InSigning
+    };
 
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;

@@ -29,6 +29,7 @@ public enum SalesArrangementStates : byte
     [EnumMember]
     [Display(Name = "Podepsáno")]
     [CisStarbuildId(1)]
+    [Obsolete("Na confl je to preskrtnute, ale nevim o tom, ze by byl pokyn smazat...")]
     IsSigned = 4,
 
     [EnumMember]

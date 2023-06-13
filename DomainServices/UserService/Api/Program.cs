@@ -41,13 +41,16 @@ try
         .Services
             // add CIS services
             .AddCisServiceDiscovery()
+            // add swagger
+            .AddUserServiceSwagger()
             // add grpc infrastructure
             .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
             .AddGrpcReflection()
             .AddGrpc(options =>
             {
                 options.Interceptors.Add<GenericServerExceptionInterceptor>();
-            });
+            })
+            .AddJsonTranscoding();
 
     // add HC
     builder.AddCisGrpcHealthChecks();
@@ -61,6 +64,7 @@ try
     var app = builder.Build();
     log.ApplicationBuilt();
 
+    app.UseHsts();
     app.UseRouting();
 
     app.UseAuthentication();
@@ -69,6 +73,7 @@ try
     app.MapCisGrpcHealthChecks();
     app.MapGrpcReflectionService();
     app.MapGrpcService<UserService>();
+    app.UseUserServiceSwagger();
 
     log.ApplicationRun();
     app.Run();

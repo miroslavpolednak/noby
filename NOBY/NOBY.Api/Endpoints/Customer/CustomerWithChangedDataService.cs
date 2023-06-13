@@ -68,7 +68,8 @@ internal sealed class CustomerWithChangedDataService
             ResidenceCountries = dsCustomer.NaturalPerson?.TaxResidence?.ResidenceCountries.Select(c => new TaxResidenceCountryItem
             {
                 CountryId = c.CountryId,
-                Tin = c.Tin
+                Tin = c.Tin,
+                TinMissingReasonDescription = c.TinMissingReasonDescription
             }).ToList()
         };
         person.ProfessionCategoryId = dsCustomer.NaturalPerson?.ProfessionCategoryId;

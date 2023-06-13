@@ -18,7 +18,6 @@ using CIS.Infrastructure.BackgroundServices;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using ExternalServices.Eas.V1;
 using DomainServices.ProductService.Clients;
-using static DomainServices.ProductService.Contracts.v1.ProductService;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 

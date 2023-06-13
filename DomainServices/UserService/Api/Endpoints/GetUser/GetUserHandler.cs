@@ -51,10 +51,7 @@ internal class GetUserHandler
                 Cin = dbIdentities.ic,
                 Cpm = dbIdentities.cpm,
                 Icp = dbIdentities.icp,
-                DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}"
-            },
-            UserAttributes = new Contracts.UserAttributesObject
-            {
+                DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}",
                 Email = dbAttributes?.email,
                 PhoneNumber = dbAttributes?.phone,
                 IsUserVIP = !string.IsNullOrEmpty(dbAttributes?.VIPFlag)
@@ -63,6 +60,9 @@ internal class GetUserHandler
 
         // identity
         fillIdentities(dbIdentities, model);
+
+        // set is internal
+        model.UserInfo.IsInternal = !model.UserIdentifiers.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.BrokerId) && model.UserIdentifiers.Any();
 
         // perms
         dbPermissions.ForEach(t =>
