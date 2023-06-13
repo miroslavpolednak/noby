@@ -12,6 +12,7 @@ import "SignDocumentManually.proto";
 import "GetDocumentsOnSAList.proto";
 import "CreateDocumentOnSA.proto";
 import "LinkEArchivIdToDocumentOnSA.proto";
+import "GetElectronicDocumentFromQueue.proto";
 
 //DocumentOnSAService
 service DocumentOnSAService{
@@ -24,4 +25,5 @@ service DocumentOnSAService{
 	rpc GetDocumentsOnSAList(DomainServices.DocumentOnSAService.GetDocumentsOnSAList.GetDocumentsOnSAListRequest) returns (DomainServices.DocumentOnSAService.GetDocumentsOnSAList.GetDocumentsOnSAListResponse);
 	rpc CreateDocumentOnSA(DomainServices.DocumentOnSAService.CreateDocumentOnSA.CreateDocumentOnSARequest) returns (DomainServices.DocumentOnSAService.CreateDocumentOnSA.CreateDocumentOnSAResponse);
 	rpc LinkEArchivIdToDocumentOnSA(DomainServices.DocumentOnSAService.LinkEArchivIdToDocumentOnSA.LinkEArchivIdToDocumentOnSARequest) returns(google.protobuf.Empty);
+	rpc GetElectronicDocumentFromQueue(DomainServices.DocumentOnSAService.GetElectronicDocumentFromQueue.GetElectronicDocumentFromQueueRequest) returns(DomainServices.DocumentOnSAService.GetElectronicDocumentFromQueue.GetElectronicDocumentFromQueueResponse);
 }
