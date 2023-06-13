@@ -29,14 +29,14 @@ public class LoanInterestRates
     /// <summary>
     /// Nabídková sazba
     /// </summary>
-    /// <example>2,49 %</example>
+    /// <example>2.49</example>
     [Required]
     public decimal LoanInterestRate { get; set; }
     
     /// <summary>
     /// Poskytnutá sazba
     /// </summary>
-    /// <example>2 %</example>
+    /// <example>2.4</example>
     [Required]
     public decimal LoanInterestRateProvided { get; set; }
     
@@ -50,7 +50,7 @@ public class LoanInterestRates
     /// <summary>
     /// Sleva ze sazby
     /// </summary>
-    /// <example>0,49 %</example>
+    /// <example>0.09</example>
     public decimal? LoanInterestRateDiscount { get; set; }
 }
 
