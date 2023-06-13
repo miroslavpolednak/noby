@@ -47,4 +47,9 @@ public interface IDocumentOnSAServiceClient
     /// Metoda slouží k přidání eArchivového ID k Documentu na SA.
     /// </summary>
     Task LinkEArchivIdToDocumentOnSA(LinkEArchivIdToDocumentOnSARequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k vrácení PDF dokumentu z fronty ePodpisů.
+    /// </summary>
+    Task<GetElectronicDocumentFromQueueResponse> GetElectronicDocumentFromQueue(GetElectronicDocumentFromQueueRequest request, CancellationToken cancellationToken = default);
 }
