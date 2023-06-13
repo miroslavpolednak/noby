@@ -28,8 +28,10 @@ public class AppSecurityMiddleware
             if (context.User?.Identity is null || !context.User.Identity.IsAuthenticated)
                 throw new System.Security.Authentication.AuthenticationException("User Identity not found in HttpContext");
 
+            var claimsIdentity = context.User.Identity as ClaimsIdentity;
+
             // zjistit login uzivatele
-            var userIdClaimValue = (context.User.Identity as ClaimsIdentity)?
+            var userIdClaimValue = claimsIdentity?
                 .Claims
                 .FirstOrDefault(t => t.Type == CIS.Core.Security.SecurityConstants.ClaimTypeId)?
                 .Value;
@@ -39,6 +41,11 @@ public class AppSecurityMiddleware
 
             // ziskat instanci uzivatele z xxv
             var result = await userService.GetUser(userId);
+
+            // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
+
+            // doplnit prava uzivatele do claims
+            claimsIdentity!.AddClaims(result.UserPermissions.Select(t => new Claim(AuthenticationConstants.NobyPermissionClaimType, $"{t}")));
 
             // vlozit FOMS uzivatele do contextu
             context.User = new NobyUser(context.User.Identity, result);

@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using NOBY.Api.Endpoints.Test.Rollback;
-using System.Threading;
 
 namespace NOBY.Api.Endpoints.Test;
 
 [ApiController]
 [Route("api/test")]
-[AllowAnonymous]
+//[AllowAnonymous]
 public class TestController : ControllerBase
 {
     [HttpPost("rollback")]
@@ -14,6 +13,7 @@ public class TestController : ControllerBase
         => await _mediator.Send(new RollbackRequest(id));
 
     [HttpGet("t1")]
+    [NobyAuthorize(1)]
     public async Task T1()
     {
         throw new CisValidationException(111, "moje chybova hlaska");
