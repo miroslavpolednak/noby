@@ -9,8 +9,7 @@ message User {
 	int32 UserId = 1;
 	repeated cis.types.UserIdentity UserIdentifiers = 2;
 	UserInfoObject UserInfo = 3;
-	UserAttributesObject UserAttributes = 4;
-	repeated int32 UserPermissions = 5;
+	repeated int32 UserPermissions = 4;
 }
 
 message UserInfoObject {
@@ -20,10 +19,7 @@ message UserInfoObject {
 	google.protobuf.StringValue Cpm = 4;
 	google.protobuf.StringValue Icp = 5;
 	google.protobuf.StringValue Cin = 6;
-}
-
-message UserAttributesObject {
-	google.protobuf.StringValue PhoneNumber = 1;
-	google.protobuf.StringValue Email = 2;
-	bool IsUserVIP = 3;
+	google.protobuf.StringValue PhoneNumber = 7;
+	google.protobuf.StringValue Email = 8;
+	bool IsUserVIP = 9;
 }

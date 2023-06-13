@@ -19,7 +19,7 @@ internal class UserInfo
 
     public string FullNameWithDetails => $"{_user.UserInfo.DisplayName} (IČP: {ICP}, ČPM: {CPM})";
 
-    public string Phone => _user.UserAttributes.PhoneNumber;
+    public string Phone => _user.UserInfo.PhoneNumber;
 
-    public string Email => _user.UserAttributes.Email;
+    public string Email => _user.UserInfo.Email;
 }

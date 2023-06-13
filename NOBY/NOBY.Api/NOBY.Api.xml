@@ -3946,11 +3946,6 @@
             Základní informace o přihlášeném uživateli
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserAttributes">
-            <summary>
-            Dodatečné informace o uživately a kontakty
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.FirstName">
             <summary>
             Jméno uživatele
@@ -3981,21 +3976,26 @@
             </summary>
             <example>12345678</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.PhoneNumber">
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.PhoneNumber">
             <summary>
             Telefon uživatele
             </summary>
             <example>+420 601 234 567</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.EmailAddress">
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.EmailAddress">
             <summary>
             Emailová adresa uživatele
             </summary>
             <example>jarda@cimrman.cz</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.IsUserVIP">
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.IsUserVIP">
             <summary>
             VIP flag uživatele
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.IsInternal">
+            <summary>
+            Flag, zda se jedná o interního uživatele, či externistu
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Login">

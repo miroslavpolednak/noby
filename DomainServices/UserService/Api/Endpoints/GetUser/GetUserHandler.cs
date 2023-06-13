@@ -51,10 +51,7 @@ internal class GetUserHandler
                 Cin = dbIdentities.ic,
                 Cpm = dbIdentities.cpm,
                 Icp = dbIdentities.icp,
-                DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}"
-            },
-            UserAttributes = new Contracts.UserAttributesObject
-            {
+                DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}",
                 Email = dbAttributes?.email,
                 PhoneNumber = dbAttributes?.phone,
                 IsUserVIP = !string.IsNullOrEmpty(dbAttributes?.VIPFlag)
