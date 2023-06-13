@@ -6,7 +6,7 @@ namespace CIS.Infrastructure.Telemetry;
 
 internal static class Helpers
 {
-    const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] {Level:u} - [{TraceId}] [] [{Assembly}] [{Version}] [{MachineName}] [{CisUserId}] [{RequestPath}] - {Message}{NewLine}";
+    const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] [{Level:u}] [{TraceId}] [{SpanId}] [{ParentId}] [{CisAppKey}] [{Version}] [{Assembly}] [{SourceContext}] [{MachineName}] [{ClientIp}] [{CisUserId}] [{CisUserIdent}] [{RequestId}] [{RequestPath}] [{ConnectionId}] [{Message}] [{Exception}]{NewLine}";
 
     public static void AddOutputs(
         LoggerConfiguration loggerConfiguration, 
