@@ -17,7 +17,7 @@ public class StopSigningTests : IntegrationTestBase
     public StopSigningTests(WebApplicationFactoryFixture<Program> fixture) : base(fixture)
     {
         //Mocks default
-        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = 1, CaseId = 2 });
+        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = 1, CaseId = 2, State = 7 });
 
         var resp = new GetDocumentDataResponse
         {
@@ -57,7 +57,7 @@ public class StopSigningTests : IntegrationTestBase
         });
 
         await client.StopSigningAsync(new() { DocumentOnSAId = response.DocumentOnSa.DocumentOnSAId });
-        
+
         using var scope = Fixture.Services.CreateScope();
         using var dbContext = scope.ServiceProvider.GetRequiredService<DocumentOnSAServiceDbContext>();
         var entityAfterCall = await dbContext.DocumentOnSa.FirstAsync(r => r.DocumentOnSAId == response.DocumentOnSa.DocumentOnSAId);

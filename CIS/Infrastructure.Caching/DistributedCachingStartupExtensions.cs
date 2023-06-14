@@ -21,13 +21,22 @@ public static class DistributedCachingStartupExtensions
             .Get<CisDistributedCacheConfiguration>()
             ?? throw new Core.Exceptions.CisConfigurationNotFound(JsonCacheConfigurationKey);
 
+        builder.Services.AddSingleton<ICisDistributedCacheConfiguration>(Configuration);
+
         return Configuration.CacheType switch
         {
             ICisDistributedCacheConfiguration.CacheTypes.Redis => registerRedis(builder, Configuration),
             ICisDistributedCacheConfiguration.CacheTypes.InMemory => registerMemory(builder),
             ICisDistributedCacheConfiguration.CacheTypes.MsSql => registerMsSql(builder),
+            ICisDistributedCacheConfiguration.CacheTypes.None => registerNone(builder),
             _ => throw new Core.Exceptions.CisConfigurationException(0, "ICisDistributedCacheConfiguration.CacheType is not valid")
         };
+    }
+
+    private static WebApplicationBuilder registerNone(WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<IDistributedCache, Caching.MockDistributedCache>();
+        return builder;
     }
 
     private static WebApplicationBuilder registerRedis(

@@ -1,0 +1,32 @@
+syntax = "proto3";
+package DomainServices.DocumentOnSAService.GetElectronicDocumentFromQueue;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message GetElectronicDocumentFromQueueRequest{
+
+	int32 DocumentOnSAId = 1;
+
+	oneof EDocument {
+		MainDocument MainDocument = 2;
+		Attachment Attachment = 3;
+	}
+} 
+
+message GetElectronicDocumentFromQueueResponse{
+	  
+	bytes BinaryData = 1;
+}
+
+message MainDocument{
+
+	google.protobuf.Int32Value DocumentId = 1;
+
+	google.protobuf.StringValue ExternalId = 2;
+}
+
+message Attachment{
+ 
+	google.protobuf.Int32Value AttachmentId = 1;
+}

@@ -2,6 +2,8 @@
 
 public static class AuthenticationConstants
 {
+    public const string NobyPermissionClaimType = "NP";
+
     /// <summary>
     /// Název cookie do které bude uložena identita uživatele
     /// </summary>

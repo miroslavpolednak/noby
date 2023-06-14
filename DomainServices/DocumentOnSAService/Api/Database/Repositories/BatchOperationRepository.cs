@@ -4,7 +4,7 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Repositories;
 
 public interface IBatchOperationRepository
 {
-    Task UpdateIsDocumentArchiveState(List<string> EArchiveIds, CancellationToken cancelationToken);
+    Task UpdateIsDocumentArchiveState(IEnumerable<int> documentOnSaIds, CancellationToken cancelationToken);
 }
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.AsImplementedInterfacesService]
@@ -17,10 +17,10 @@ public class BatchOperationRepository : IBatchOperationRepository
         _dbContext = dbContext;
     }
 
-    public async Task UpdateIsDocumentArchiveState(List<string> EArchiveIds, CancellationToken cancelationToken)
+    public async Task UpdateIsDocumentArchiveState(IEnumerable<int> documentOnSaIds, CancellationToken cancelationToken)
     {
         var result = await _dbContext.DocumentOnSa
-            .Where(d => EArchiveIds.Contains(d.EArchivId!))
+            .Where(d => documentOnSaIds.Contains(d.DocumentOnSAId!))
             .ExecuteUpdateAsync(s => s
                 .SetProperty(d => d.IsArchived, d => true)
             , cancelationToken);

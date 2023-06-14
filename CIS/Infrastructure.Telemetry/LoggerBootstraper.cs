@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Enrichers.Span;
+using Serilog.Exceptions;
 using Serilog.Filters;
 using System.Reflection;
 
@@ -66,6 +67,7 @@ internal sealed class LoggerBootstraper
             .Enrich.WithClientIp()
             .Enrich.FromLogContext()
             .Enrich.WithMachineName()
+            .Enrich.WithExceptionDetails()
             .Enrich.WithProperty("Assembly", $"{_assemblyName!.Name}")
             .Enrich.WithProperty("Version", $"{_assemblyName!.Version}");
 

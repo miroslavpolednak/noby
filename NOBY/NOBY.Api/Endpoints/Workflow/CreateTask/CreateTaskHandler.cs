@@ -1,6 +1,7 @@
 ﻿using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using System.Globalization;
 
 namespace NOBY.Api.Endpoints.Workflow.CreateTask;
 
@@ -71,14 +72,15 @@ internal sealed class CreateTaskHandler
             throw new NobyValidationException($"OfferId is null for SalesArrangementId={saId}");
         }
         var offerInstance = await _offerService.GetMortgageOfferDetail(saInstance.OfferId.Value, cancellationToken);
-
+        
+        request.PriceException = new();
         request.PriceException.ProductTypeId = offerInstance.SimulationInputs.ProductTypeId;
         request.PriceException.FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod.GetValueOrDefault();
         request.PriceException.LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount);
         request.PriceException.LoanDuration = offerInstance.SimulationResults.LoanDuration;
         request.PriceException.LoanToValue = Convert.ToInt32(offerInstance.SimulationResults.LoanToValue);
         request.PriceException.Expiration = ((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.Now); // nikdo nerekl co delat, pokud datum bude null...
-        request.PriceException.LoanInterestRate = new DomainServices.CaseService.Contracts.PriceExceptionLoanInterestRateItem
+        request.PriceException.LoanInterestRate = new()
         {
             LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
             LoanInterestRateProvided = offerInstance.SimulationResults.LoanInterestRateProvided,
@@ -93,13 +95,17 @@ internal sealed class CreateTaskHandler
                 FinalSum = (decimal?)t.FinalSum ?? 0,
                 TariffSum = (decimal?)t.TariffSum ?? 0,
                 DiscountPercentage = t.DiscountPercentage,
-                FeeId = t.FeeId.ToString()
+                FeeId = t.FeeId.ToString(CultureInfo.InvariantCulture)
             }));
         }
 
         if (offerInstance.AdditionalSimulationResults.MarketingActions is not null)
         {
-            request.PriceException.AppliedMarketingActionsCodes.AddRange(offerInstance.AdditionalSimulationResults.MarketingActions.Where(t => t.Applied.GetValueOrDefault() == 1).Select(t => t.Code));
+            request.PriceException.AppliedMarketingActionsCodes.AddRange(
+                offerInstance.AdditionalSimulationResults.MarketingActions
+                    .Where(t => t.Applied.GetValueOrDefault() == 1)
+                    .Select(t => t.Code)
+            );
         }
     }
 

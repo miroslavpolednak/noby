@@ -45,8 +45,8 @@ public static class StartupExtensions
             if (cacheInstance is not null)
             {
                 var configuration = provider.GetRequiredService<IConfiguration>();
-                var useCache = configuration.GetValue<bool?>($"{CIS.Core.CisGlobalConstants.DomainServicesClientsConfigurationSectionName}:UserService:DisableDistributedCache") ?? false;
-                if (!useCache)
+                var doNotUseCache = configuration.GetValue<bool?>($"{CIS.Core.CisGlobalConstants.DomainServicesClientsConfigurationSectionName}:UserService:DisableDistributedCache") ?? false;
+                if (!doNotUseCache)
                 {
                     return new UserServiceClientCacheProvider
                     {

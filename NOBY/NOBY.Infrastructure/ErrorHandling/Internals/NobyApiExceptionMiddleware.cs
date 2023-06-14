@@ -1,6 +1,5 @@
 ﻿using System.Security.Authentication;
 using CIS.Infrastructure.Logging;
-using CIS.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.WebApi;

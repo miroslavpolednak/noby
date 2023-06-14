@@ -48,7 +48,7 @@ internal static class NobyAppBuilder
 
             // autentizace a autorizace
             appBuilder.UseAuthentication();
-            appBuilder.UseMiddleware<AppSecurityMiddleware>();
+            appBuilder.UseMiddleware<NobySecurityMiddleware>();
             appBuilder.UseAuthorization();
             
             // namapovani API modulu
