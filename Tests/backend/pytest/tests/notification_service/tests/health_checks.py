@@ -63,7 +63,7 @@ def test_get_sms_notification_id_states(ns_url, auth_params, auth, json_data, mo
         "countryCode": phone_number[:4],
         "nationalNumber": phone_number[4:]}
     assert resp["requestData"]["smsData"] == expected_sms_data
-    time.sleep(10)
+    time.sleep(14)
 
     #vola GET opet, abz si overil doruceni
     session = requests.session()
