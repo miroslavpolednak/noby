@@ -16,6 +16,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int HouseholdTypeIdNotExist = 19014;
     public const int ForSpecifiedDocumentTypeIdCannotFindHousehold = 19015;
     public const int DocumentTypeIdNotExist = 19016;
+    public const int UnableToStartSigningOrSign = 19018;
 
     // Non BL validation
     public const int SalesArrangementIdIsRequired = 19030;
@@ -43,7 +44,8 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { DocumentTypeIdIsRequired, " DocumentTypeId is required"},
             { FormIdIsRequired, "FormId is required"},
             { EArchivIdIsRequired, "EArchivId is required"},
-            { SignatureMethodCodeIsRequired, "SignatureMethodCode is required"}
+            { SignatureMethodCodeIsRequired, "SignatureMethodCode is required"},
+            { UnableToStartSigningOrSign, "Unable to start signing or sign (SalesArrangement is not in correct state)."}
     });
 
         return Messages;
