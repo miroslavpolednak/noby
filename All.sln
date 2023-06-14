@@ -304,6 +304,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00024-HFICH-6266.sql = DomainServices\CodebookService\DatabaseMigrations\00024-HFICH-6266.sql
 		DomainServices\CodebookService\DatabaseMigrations\00025-performercode.sql = DomainServices\CodebookService\DatabaseMigrations\00025-performercode.sql
 		DomainServices\CodebookService\DatabaseMigrations\00027-HFICH-6277_acad_title.sql = DomainServices\CodebookService\DatabaseMigrations\00027-HFICH-6277_acad_title.sql
+		DomainServices\CodebookService\DatabaseMigrations\00028-HFICH-6502.sql = DomainServices\CodebookService\DatabaseMigrations\00028-HFICH-6502.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"

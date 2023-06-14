@@ -31,11 +31,11 @@ public class CodebookServiceMock
     public override Task<List<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem>> SalesArrangementTypes(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(new List<Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem>{
-            new() {Id=1, Name="Žádost o hypotéční úvěr 20001",SalesArrangementCategory=1, ProductTypeId=20001, Description = null},
-            new() {Id=2 ,Name="Žádost o hypoteční překlenovací úvěry",  SalesArrangementCategory=1,ProductTypeId=20002, Description = null},
-            new() {Id=3 ,Name="Žádost o hypoteční úvěr bez příjmu",SalesArrangementCategory = 1, ProductTypeId = 20003, Description = null},
-            new() {Id=4 ,Name="Žádost o doprodej neúčelové části",SalesArrangementCategory = 1, ProductTypeId = 20004, Description = null},
-            new() {Id=5 ,Name="Žádost o americkou hypotéku",SalesArrangementCategory = 1, ProductTypeId = 20010, Description = null},
+            new() {Id=1, Name="Žádost o hypotéční úvěr 20001",SalesArrangementCategory=1, Description = null},
+            new() {Id=2 ,Name="Žádost o hypoteční překlenovací úvěry",  SalesArrangementCategory=1, Description = null},
+            new() {Id=3 ,Name="Žádost o hypoteční úvěr bez příjmu",SalesArrangementCategory = 1, Description = null},
+            new() {Id=4 ,Name="Žádost o doprodej neúčelové části",SalesArrangementCategory = 1, Description = null},
+            new() {Id=5 ,Name="Žádost o americkou hypotéku",SalesArrangementCategory = 1, Description = null},
             new() {Id=6 ,Name="Žádost o čerpání", SalesArrangementCategory = 2, Description = null},
             new() {Id=7 ,Name="Žádost o změnu podmínek smlouvy o hypotečním úvěru", SalesArrangementCategory = 2, Description = null},
             new() {Id=8 ,Name="Žádost o změnu / doplnění podmínek smlouvy o hypotečním úvěru bez nemovitosti", SalesArrangementCategory = 2, Description = null},
