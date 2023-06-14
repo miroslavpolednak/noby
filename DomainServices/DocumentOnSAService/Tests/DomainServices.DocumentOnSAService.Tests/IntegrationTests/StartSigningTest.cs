@@ -19,7 +19,7 @@ public class StartSigningTest : IntegrationTestBase
     public StartSigningTest(WebApplicationFactoryFixture<Program> fixture) : base(fixture)
     {
         //Mocks default
-        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = 1, CaseId = 2 });
+        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = 1, State = 1, CaseId = 2 });
 
         var resp = new GetDocumentDataResponse
         {
