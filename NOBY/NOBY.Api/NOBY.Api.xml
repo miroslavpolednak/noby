@@ -3907,6 +3907,12 @@
             Severita chyby
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Test.TestController.T1">
+            <summary>
+            Summary endpointu
+            </summary>
+            <remarks>Toto jsou remarks</remarks>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">
             <summary>
             ID uzivatele - xxvvss.v33id

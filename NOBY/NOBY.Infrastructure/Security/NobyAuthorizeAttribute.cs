@@ -8,9 +8,12 @@ namespace NOBY.Infrastructure.Security;
 public sealed class NobyAuthorizeAttribute 
     : TypeFilterAttribute
 {
+    public UserPermissions[] RequiredPermissions { get; init; }
+
     public NobyAuthorizeAttribute(params UserPermissions[] requiredPermissions)
         : base(typeof(NobyAuthorizeFilter))
     {
+        RequiredPermissions = requiredPermissions;
         Arguments = new object[] { requiredPermissions };
     }
 
