@@ -3,6 +3,7 @@
 ## grpcurl tests
         grpcurl -insecure 127.0.0.1:30010 list
         grpcurl -insecure -d "{\"Identity\":{\"identityScheme\":\"KbUid\",\"identity\":\"A0AXX9\"}}" -H "Authorization: Basic YTph" -H "noby-user-id: 267" 127.0.0.1:30010 DomainServices.UserService.v1.UserService/GetUser
+        grpcurl -insecure -d "{\"Identity\":{\"identityScheme\":\"OsCis\",\"identity\":\"614\"}}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "noby-user-id: 267" 172.30.35.51:30010 DomainServices.UserService.v1.UserService/GetUser
         grpcurl -insecure -d "{\"Identity\":{\"identityScheme\":\"OsCis\",\"identity\":\"614\"}}" -H "Authorization: Basic YTph" -H "noby-user-id: 267" 127.0.0.1:30010 DomainServices.UserService.v1.UserService/GetUser
 
 ## run batch

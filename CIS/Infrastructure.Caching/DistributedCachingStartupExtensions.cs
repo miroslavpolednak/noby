@@ -26,6 +26,7 @@ public static class DistributedCachingStartupExtensions
             ICisDistributedCacheConfiguration.CacheTypes.Redis => registerRedis(builder, Configuration),
             ICisDistributedCacheConfiguration.CacheTypes.InMemory => registerMemory(builder),
             ICisDistributedCacheConfiguration.CacheTypes.MsSql => registerMsSql(builder),
+            ICisDistributedCacheConfiguration.CacheTypes.None => builder,
             _ => throw new Core.Exceptions.CisConfigurationException(0, "ICisDistributedCacheConfiguration.CacheType is not valid")
         };
     }
