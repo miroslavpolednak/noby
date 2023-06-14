@@ -46,7 +46,7 @@ public class NobySecurityMiddleware
             // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
             if (!result.UserPermissions.Contains((int)UserPermissions.APPLICATION_BasicAccess))
             {
-                //throw new CisAuthorizationException(DomainServices.UserService.Clients.UserPermissions.APPLICATION_BasicAccess.ToString());
+                throw new CisAuthorizationException();
             }
 
             // doplnit prava uzivatele do claims

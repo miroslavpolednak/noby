@@ -1,101 +1,115 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.v1;
 using _Case = DomainServices.CaseService.Contracts;
-using NOBY.Dto.Workflow;
+using _Dto = NOBY.Dto.Workflow;
+using CIS.Core.Security;
+using NOBY.Infrastructure.Security;
 
 namespace NOBY.Infrastructure.Services.WorkflowMapper;
 
-[SelfService, TransientService]
-public sealed class WorkflowMapperService
+[TransientService, AsImplementedInterfacesService]
+internal sealed class WorkflowMapperService
+    : IWorkflowMapperService
 {
-    public async Task<Dto.Workflow.WorkflowTask> Map(_Case.WorkflowTask task, CancellationToken cancellationToken)
+
+    public _Dto.WorkflowProcess MapProcess(_Case.ProcessTask task)
     {
-        var taskStates = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
-        var workflowState = GetWorkflowState(task);
-        var taskState = taskStates.First(s => s.Id == (int)workflowState);
-
-        return Map(task, taskState);
-    }
-
-    public async Task<List<Dto.Workflow.WorkflowTask>> Map(List<_Case.WorkflowTask> tasks, CancellationToken cancellationToken)
-    {
-        var taskStates = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
-        var list = new List<Dto.Workflow.WorkflowTask>();
-
-        foreach (var task in tasks)
+        return new _Dto.WorkflowProcess
         {
-            var workflowState = GetWorkflowState(task);
-            var taskState = taskStates.First(s => s.Id == (int)workflowState);
-            list.Add(Map(task, taskState));
-        }
-
-        return list;
+            ProcessId = task.ProcessId,
+            CreatedOn = task.CreatedOn,
+            ProcessNameLong = task.ProcessNameLong,
+            StateName = task.StateName,
+            ProcessTypeId = task.ProcessTypeId,
+            StateIndicator = task.StateIndicator.HasValue ? (_Dto.StateIndicators)task.StateIndicator : _Dto.StateIndicators.Unknown //TODO co je default stav?
+        };
     }
 
-    public async Task<WorkflowTaskDetail> Map(_Case.WorkflowTask task, _Case.TaskDetailItem taskDetailItem, CancellationToken cancellationToken)
+    public async Task<_Dto.WorkflowTask> MapTask(_Case.WorkflowTask task, CancellationToken cancellationToken = default)
     {
-        var decisionTypes = await _codebookService.WorkflowPriceExceptionDecisionTypes(cancellationToken);
-        var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
-        var fees = await _codebookService.Fees(cancellationToken);
-        
-        return new WorkflowTaskDetail
+        var taskState = (await _codebookService.WorkflowTaskStatesNoby(cancellationToken))
+            .First(s => s.Id == (int)getWorkflowState(task));
+
+        return new()
+        {
+            TaskId = task.TaskId,
+            CreatedOn = task.CreatedOn,
+            TaskTypeId = task.TaskTypeId,
+            TaskTypeName = task.TaskTypeName,
+            TaskSubtypeName = task.TaskSubtypeName,
+            ProcessId = task.ProcessId,
+            ProcessNameShort = task.ProcessNameShort,
+            StateId = taskState.Id,
+            StateName = taskState.Name,
+            StateFilter = Enum.Parse<_Dto.StateFilters>(taskState.Filter, true),
+            StateIndicator = Enum.Parse<_Dto.StateIndicators>(taskState.Indicator, true)
+        };
+    }
+
+    public async Task<_Dto.WorkflowTaskDetail> MapTaskDetail(_Case.WorkflowTask task, _Case.TaskDetailItem taskDetailItem, CancellationToken cancellationToken = default)
+    {
+        return new _Dto.WorkflowTaskDetail
         {
             TaskIdSB = task.TaskIdSb,
             PerformerCode = taskDetailItem.PerformerCode,
             PerformerName = taskDetailItem.PerformanName,
             PerformerLogin = task.PerformerLogin,
             ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
-            Amendments = Map(task, taskDetailItem, decisionTypes, loanInterestRateAnnouncedTypes, fees),
-            TaskCommunication = taskDetailItem.TaskCommunication?.Select(Map).ToList()
+            TaskCommunication = taskDetailItem.TaskCommunication?.Select(t => new _Dto.TaskCommunicationItem
+            {
+                TaskRequest = t.TaskRequest,
+                TaskResponse = t.TaskResponse
+            }).ToList(),
+            Amendments = taskDetailItem.AmendmentsCase switch
+            {
+                _Case.TaskDetailItem.AmendmentsOneofCase.Request => mapAmendmentsRequest(taskDetailItem.Request),
+                _Case.TaskDetailItem.AmendmentsOneofCase.Signing => mapAmendmentsSigning(task, taskDetailItem.Signing),
+                _Case.TaskDetailItem.AmendmentsOneofCase.ConsultationData => mapAmendmentsConsultationData(taskDetailItem.ConsultationData),
+                _Case.TaskDetailItem.AmendmentsOneofCase.PriceException => await mapAmendmentsPriceException(taskDetailItem.PriceException, cancellationToken),
+                _ => null
+            }
         };
     }
 
-    private static object? Map(_Case.WorkflowTask task, _Case.TaskDetailItem taskDetailItem,
-        List<GenericCodebookResponse.Types.GenericCodebookItem> decisionTypes,
-        List<GenericCodebookResponse.Types.GenericCodebookItem> loanInterestRateAnnouncedTypes,
-        List<FeesResponse.Types.FeeItem> fees) =>
-        taskDetailItem.AmendmentsCase switch
-        {
-            _Case.TaskDetailItem.AmendmentsOneofCase.Request => Map(taskDetailItem.Request),
-            _Case.TaskDetailItem.AmendmentsOneofCase.Signing => Map(task, taskDetailItem.Signing),
-            _Case.TaskDetailItem.AmendmentsOneofCase.ConsultationData => Map(taskDetailItem.ConsultationData),
-            _Case.TaskDetailItem.AmendmentsOneofCase.PriceException => Map(taskDetailItem.PriceException, decisionTypes, loanInterestRateAnnouncedTypes, fees),
-            _ => null
-        };
-
-
-    private static AmendmentsRequest Map(_Case.AmendmentRequest request) => new()
+    private static _Dto.AmendmentsRequest mapAmendmentsRequest(_Case.AmendmentRequest request) => new()
     {
         OrderId = request.OrderId,
         SentToCustomer = request.SentToCustomer
     };
 
-    private static AmendmentsSigning Map(_Case.WorkflowTask task, _Case.AmendmentSigning signing) => new()
+    private _Dto.AmendmentsSigning mapAmendmentsSigning(_Case.WorkflowTask task, _Case.AmendmentSigning signing)
     {
-        SignatureType = GetSignatureType(task),
-        Expiration = signing.Expiration,
-        FormId = signing.FormId,
-        DocumentForSigning = signing.DocumentForSigning,
-        ProposalForEntry = signing.ProposalForEntry
-    };
+        var stateId = (int)getWorkflowState(task);
+        bool remove1 = (new[] { 3, 4, 5 }).Contains(stateId) || !_userAccessor.HasPermission(DomainServices.UserService.Clients.Authorization.UserPermissions.UC_getWflSigningDocuments);
 
-    private static AmendmentsConsultationData Map(_Case.AmendmentConsultationData consultationData) => new()
+        return new()
+        {
+            SignatureType = getSignatureType(task),
+            Expiration = signing.Expiration,
+            FormId = signing.FormId,
+            DocumentForSigning = remove1 || stateId == 2 ? "" : signing.DocumentForSigning,
+            ProposalForEntry = remove1 ? "" : signing.ProposalForEntry
+        };
+    }
+    
+    private static _Dto.AmendmentsConsultationData mapAmendmentsConsultationData(_Case.AmendmentConsultationData consultationData) => new()
     {
         OrderId = consultationData.OrderId
     };
 
-    private static AmendmentsPriceException Map(
-        _Case.AmendmentPriceException amendmentPriceException,
-        List<GenericCodebookResponse.Types.GenericCodebookItem> decisionTypes,
-        List<GenericCodebookResponse.Types.GenericCodebookItem> loanInterestRateAnnouncedTypes,
-        List<FeesResponse.Types.FeeItem> fees) => new()
+    private async Task<_Dto.AmendmentsPriceException> mapAmendmentsPriceException(_Case.AmendmentPriceException amendmentPriceException, CancellationToken cancellationToken)
     {
-        Expiration = amendmentPriceException.Expiration is null ? default(DateOnly?) : amendmentPriceException.Expiration,
-        Decision = decisionTypes
+        var decisionTypes = await _codebookService.WorkflowPriceExceptionDecisionTypes(cancellationToken);
+        var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
+        var fees = await _codebookService.Fees(cancellationToken);
+
+        return new()
+        {
+            Expiration = amendmentPriceException.Expiration is null ? default(DateOnly?) : amendmentPriceException.Expiration,
+            Decision = decisionTypes
             .FirstOrDefault(t => t.Id == amendmentPriceException.DecisionId)?
             .Name ?? string.Empty,
-        Fees = amendmentPriceException.Fees
-            .Select(t => new Fee()
+            Fees = amendmentPriceException.Fees
+            .Select(t => new _Dto.Fee()
             {
                 DiscountPercentage = t.DiscountPercentage,
                 FeeName = fees.FirstOrDefault(f => f.ShortName == t.FeeId)?.Name ?? string.Empty,
@@ -103,108 +117,90 @@ public sealed class WorkflowMapperService
                 TariffSum = t.TariffSum
             })
             .ToList(),
-        LoanInterestRate = new()
-        {
-            LoanInterestRate = amendmentPriceException.LoanInterestRate.LoanInterestRate,
-            LoanInterestRateDiscount = amendmentPriceException.LoanInterestRate.LoanInterestRateDiscount,
-            LoanInterestRateProvided = amendmentPriceException.LoanInterestRate.LoanInterestRateProvided,
-            LoanInterestRateAnnouncedTypeName = loanInterestRateAnnouncedTypes
+            LoanInterestRate = new()
+            {
+                LoanInterestRate = amendmentPriceException.LoanInterestRate.LoanInterestRate,
+                LoanInterestRateDiscount = amendmentPriceException.LoanInterestRate.LoanInterestRateDiscount,
+                LoanInterestRateProvided = amendmentPriceException.LoanInterestRate.LoanInterestRateProvided,
+                LoanInterestRateAnnouncedTypeName = loanInterestRateAnnouncedTypes
                 .FirstOrDefault(t => t.Id == amendmentPriceException.LoanInterestRate.LoanInterestRateAnnouncedType)?
                 .Name ?? string.Empty
-        }
-    };
-    
-    private static TaskCommunicationItem Map(_Case.TaskCommunicationItem taskCommunicationItem) => new()
-    {
-        TaskRequest = taskCommunicationItem.TaskRequest,
-        TaskResponse = taskCommunicationItem.TaskResponse
-    };
+            }
+        };
+    }
 
-    private static Dto.Workflow.WorkflowTask Map(_Case.WorkflowTask task, WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem taskState) => new()
-    {
-        TaskId = task.TaskId,
-        CreatedOn = task.CreatedOn,
-        TaskTypeId = task.TaskTypeId,
-        TaskTypeName = task.TaskTypeName,
-        TaskSubtypeName = task.TaskSubtypeName,
-        ProcessId = task.ProcessId,
-        ProcessNameShort = task.ProcessNameShort,
-        StateId = taskState.Id,
-        StateName = taskState.Name,
-        StateFilter = Enum.Parse<StateFilters>(taskState.Filter, true),
-        StateIndicator = Enum.Parse<StateIndicators>(taskState.Indicator, true)
-    };
-
-    private static WorkflowTaskStates GetWorkflowState(_Case.WorkflowTask task)
+    private static _Dto.WorkflowTaskStates getWorkflowState(_Case.WorkflowTask task)
     {
         if (task.Cancelled)
-            return WorkflowTaskStates.Cancelled;
+            return _Dto.WorkflowTaskStates.Cancelled;
 
         if (task.StateIdSb == 30)
-            return WorkflowTaskStates.Completed;
+            return _Dto.WorkflowTaskStates.Completed;
 
         return task.TaskTypeId switch
         {
-            1 => GetRequestState(task),
-            2 => GetPriceExceptionState(task),
-            3 or 7 => WorkflowTaskStates.Sent,
-            6 => GetSignatureState(task),
+            1 => getRequestState(task),
+            2 => getPriceExceptionState(task),
+            3 or 7 => _Dto.WorkflowTaskStates.Sent,
+            6 => getSignatureState(task),
             _ => throw new ArgumentOutOfRangeException()
         };
     }
 
-    private static WorkflowTaskStates GetRequestState(_Case.WorkflowTask task) =>
+    private static _Dto.WorkflowTaskStates getRequestState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => WorkflowTaskStates.ForProcessing,
-            2 => WorkflowTaskStates.Sent,
+            1 => _Dto.WorkflowTaskStates.ForProcessing,
+            2 => _Dto.WorkflowTaskStates.Sent,
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private static WorkflowTaskStates GetPriceExceptionState(_Case.WorkflowTask task) =>
+    private static _Dto.WorkflowTaskStates getPriceExceptionState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => WorkflowTaskStates.Sent,
-            2 => WorkflowTaskStates.Completed,
+            1 => _Dto.WorkflowTaskStates.Sent,
+            2 => _Dto.WorkflowTaskStates.Completed,
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private static SignatureType GetSignatureType(_Case.WorkflowTask task) =>
+    private static _Dto.SignatureType getSignatureType(_Case.WorkflowTask task) =>
         task.SignatureType switch
         {
-            "paper" => SignatureType.Paper,
-            "digital" => SignatureType.Digital,
+            "paper" => _Dto.SignatureType.Paper,
+            "digital" => _Dto.SignatureType.Digital,
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private static WorkflowTaskStates GetSignatureState(_Case.WorkflowTask task) =>
+    private static _Dto.WorkflowTaskStates getSignatureState(_Case.WorkflowTask task) =>
         task.SignatureType switch
         {
-            "paper" => GetPaperSignatureState(task),
-            "digital" => GetDigitalSignatureState(task),
+            "paper" => getPaperSignatureState(task),
+            "digital" => getDigitalSignatureState(task),
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private static WorkflowTaskStates GetDigitalSignatureState(_Case.WorkflowTask task) =>
+    private static _Dto.WorkflowTaskStates getDigitalSignatureState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => WorkflowTaskStates.ForProcessing,
+            1 => _Dto.WorkflowTaskStates.ForProcessing,
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private static WorkflowTaskStates GetPaperSignatureState(_Case.WorkflowTask task) =>
+    private static _Dto.WorkflowTaskStates getPaperSignatureState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => WorkflowTaskStates.ForProcessing,
-            2 => WorkflowTaskStates.OperationalSupport,
-            3 => WorkflowTaskStates.Sent,
+            1 => _Dto.WorkflowTaskStates.ForProcessing,
+            2 => _Dto.WorkflowTaskStates.OperationalSupport,
+            3 => _Dto.WorkflowTaskStates.Sent,
             _ => throw new ArgumentOutOfRangeException()
         };
 
+    private readonly ICurrentUserAccessor _userAccessor;
     private readonly ICodebookServiceClient _codebookService;
 
-    public WorkflowMapperService(ICodebookServiceClient codebookService)
+    public WorkflowMapperService(ICodebookServiceClient codebookService, ICurrentUserAccessor userAccessor)
     {
+        _userAccessor = userAccessor;
         _codebookService = codebookService;
     }
 }

@@ -2,12 +2,9 @@
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 
-internal sealed class GetTaskDetailHandler : IRequestHandler<GetTaskDetailRequest, GetTaskDetailResponse>
+internal sealed class GetTaskDetailHandler 
+    : IRequestHandler<GetTaskDetailRequest, GetTaskDetailResponse>
 {
-    private readonly Infrastructure.Services.WorkflowTask.IWorkflowTaskService _workflowTaskService;
-    private readonly ICaseServiceClient _caseService;
-    private static int[] _allowedTaskTypeIds = { 1, 2, 3, 6, 7 };
-    
     public async Task<GetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
     {
         var taskList = await _caseService.GetTaskList(request.CaseId, cancellationToken);
@@ -28,6 +25,10 @@ internal sealed class GetTaskDetailHandler : IRequestHandler<GetTaskDetailReques
             Documents = documents
         };
     }
+
+    private readonly Infrastructure.Services.WorkflowTask.IWorkflowTaskService _workflowTaskService;
+    private readonly ICaseServiceClient _caseService;
+    private static int[] _allowedTaskTypeIds = { 1, 2, 3, 6, 7 };
 
     public GetTaskDetailHandler(
             Infrastructure.Services.WorkflowTask.IWorkflowTaskService workflowTaskService,
