@@ -36,6 +36,7 @@ public class CustomerController : ControllerBase
     /// </remarks>
     /// <returns>Seznam nalezených klientů. BE služba není stránkovatelná, takže stránkovaní je jen jako fake na FE.</returns>
     [HttpPost("customer/search")]
+    [NobyAuthorize(UserPermissions.CLIENT_SearchPerson)]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "Klient" })]
@@ -83,6 +84,7 @@ public class CustomerController : ControllerBase
     /// V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
     /// </remarks>
     [HttpPost("customer/identify")]
+    [NobyAuthorize(UserPermissions.CLIENT_IdentifyPerson)]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]

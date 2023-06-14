@@ -16,7 +16,6 @@ public class TestController : ControllerBase
     [NobyAuthorize(UserPermissions.UC_getWflSigningAttachments, UserPermissions.CASEDETAIL_APPLICANT_ViewPersonInfo)]
     public async Task T1()
     {
-        
         throw new CisValidationException(111, "moje chybova hlaska");
     }
 

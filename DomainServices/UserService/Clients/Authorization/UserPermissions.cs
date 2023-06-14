@@ -1,6 +1,5 @@
 ﻿namespace DomainServices.UserService.Clients.Authorization;
 
-[Flags]
 public enum UserPermissions : int
 {
     UC_getWflSigningDocuments = 100,

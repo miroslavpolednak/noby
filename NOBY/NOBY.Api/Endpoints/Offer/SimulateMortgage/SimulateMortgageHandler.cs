@@ -1,4 +1,5 @@
-﻿using DomainServices.OfferService.Clients;
+﻿using CIS.Core.Security;
+using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
@@ -13,6 +14,12 @@ internal sealed class SimulateMortgageHandler
             || (request.Developer?.DeveloperId != null && request.Developer?.ProjectId == null && string.IsNullOrEmpty(request.Developer?.Description)))
         {
             throw new CisValidationException(90001, "Invalid developer parameters combination");
+        }
+
+        // validate permissions
+        if (request.IsEmployeeBonusRequested.GetValueOrDefault() && !_userAccessor.HasPermission(UserPermissions.LOANMODELING_EmployeeMortgageAccess))
+        {
+            throw new CisAuthorizationException();
         }
 
         // datum garance
@@ -50,11 +57,17 @@ internal sealed class SimulateMortgageHandler
             throw new CisValidationException(ex.ExceptionCode, ex.Message);
         }
     }
+
+    private readonly ICurrentUserAccessor _userAccessor;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
     
-    public SimulateMortgageHandler(IOfferServiceClient offerService, ISalesArrangementServiceClient salesArrangementService)
+    public SimulateMortgageHandler(
+        ICurrentUserAccessor userAccessor,
+        IOfferServiceClient offerService, 
+        ISalesArrangementServiceClient salesArrangementService)
     {
+        _userAccessor = userAccessor;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
     }

@@ -116,6 +116,7 @@ public class CasesController : ControllerBase
     /// </remarks>
     /// <param name="request">Typ kritéria a jeho hodnota pro vyhledávání.</param>
     [HttpPost("identify")]
+    [NobyAuthorize(UserPermissions.FEAPI_IdentifyCase)]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
