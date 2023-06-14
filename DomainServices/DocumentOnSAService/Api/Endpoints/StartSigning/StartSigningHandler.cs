@@ -99,7 +99,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
                 await _arrangementServiceClient.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
                 break;
             default:
-                throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSign);
+                throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidSalesArrangementState);
         }
     }
 
