@@ -14,6 +14,7 @@ using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System.Globalization;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocumentManually;
@@ -68,13 +69,18 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         if (documentOnSa is null)
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId!.Value);
 
-
         if (documentOnSa.SignatureMethodCode!.ToUpper(CultureInfo.InvariantCulture) != ManualSigningMethodCode || documentOnSa.IsSigned)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToSignDocumentOnSA, request.DocumentOnSAId!.Value);
 
-        UpdateDocumentOnSa(documentOnSa);
-
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
+
+        if (salesArrangement.State != (int)SalesArrangementStates.InSigning)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidSalesArrangementState);
+
+        if (documentOnSa.IsValid == false || documentOnSa.IsSigned || documentOnSa.IsFinal)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidDocument); 
+
+        UpdateDocumentOnSa(documentOnSa);
 
         await AddSignatureIfNotSetYet(documentOnSa, salesArrangement, cancellationToken);
 

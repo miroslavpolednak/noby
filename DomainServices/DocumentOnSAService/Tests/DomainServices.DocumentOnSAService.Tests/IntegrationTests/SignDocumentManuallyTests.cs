@@ -17,7 +17,7 @@ public class SignDocumentManuallyTests : IntegrationTestBase
     {
         // Service request No Saml call
         ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>())
-            .ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = 2, CaseId = 2, SalesArrangementTypeId = 6 }); //One of service type
+            .ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = 2, CaseId = 2, SalesArrangementTypeId = 6, State = 7 }); //One of service type
 
         ProductServiceClient.GetMortgage(Arg.Any<long>(), Arg.Any<CancellationToken>()).Returns(new GetMortgageResponse
         {
