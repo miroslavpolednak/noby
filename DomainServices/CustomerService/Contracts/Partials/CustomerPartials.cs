@@ -29,3 +29,7 @@ public partial class UpdateCustomerRequest
 public partial class UpdateCustomerIdentifiersRequest
     :MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class ValidateContactRequest
+    :MediatR.IRequest<ValidateContactResponse>, CIS.Core.Validation.IValidatableRequest
+{ }

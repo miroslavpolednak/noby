@@ -10,6 +10,7 @@ import "Messages/UpdateCustomerIdentifiers.proto";
 import "Messages/CustomerDetail.proto";
 import "Messages/CustomerList.proto";
 import "Messages/SearchCustomers.proto";
+import "Messages/ValidateContact.proto";
 import "google/protobuf/empty.proto";
 
 service CustomerService {
@@ -20,4 +21,5 @@ service CustomerService {
    rpc GetCustomerDetail(CustomerDetailRequest) returns (CustomerDetailResponse);
    rpc GetCustomerList(CustomerListRequest) returns (CustomerListResponse);
    rpc SearchCustomers(SearchCustomersRequest) returns (SearchCustomersResponse);
+   rpc ValidateContact(ValidateContactRequest) returns (ValidateContactResponse);
 }

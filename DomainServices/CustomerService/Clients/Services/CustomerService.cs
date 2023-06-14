@@ -49,4 +49,9 @@ internal sealed class CustomerService : ICustomerServiceClient
     {
         return _service.SearchCustomersAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
+
+    public Task<ValidateContactResponse> ValidateContact(ValidateContactRequest request, CancellationToken cancellationToken = default)
+    {
+        return _service.ValidateContactAsync(request, cancellationToken: cancellationToken).ResponseAsync;
+    }
 }
