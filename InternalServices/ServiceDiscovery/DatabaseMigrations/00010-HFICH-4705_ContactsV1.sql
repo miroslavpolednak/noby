@@ -1,0 +1,5 @@
+﻿INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'DEV', N'ES:Contacts:V1', N'https://be-cm-v1.fat.custmng.kbcloud/api', 3)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'FAT', N'ES:Contacts:V1', N'https://be-cm-v1.fat.custmng.kbcloud/api', 3)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'SIT1', N'ES:Contacts:V1', N'https://be-cm-v1.fat.custmng.kbcloud/api', 3)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'ES:Contacts:V1', N'https://be-cm-v1.stage.custmng.kbcloud/api', 3)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'PREPROD', N'ES:Contacts:V1', N'https://be-cm-v1.stage.custmng.kbcloud/api', 3)
