@@ -44,6 +44,14 @@ grpcurl -insecure -d "{\"SalesArrangementId\":20008,\"DocumentTypeId\":5,\"FormI
 ```
 grpcurl -insecure -d "{\"DocumentOnSAId\":1,\"EArchivId\":\"KBHXXD00000000000000000000007\"}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/LinkEArchivIdToDocumentOnSA
 ```
+### GetElectronicDocumentFromQueue
+```
+grpcurl -insecure -d "{\"DocumentOnSAId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GetElectronicDocumentFromQueue
+```
+### GetElectronicDocumentPreview
+```
+grpcurl -insecure -d "{\"DocumentOnSAId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GetElectronicDocumentPreview
+```
 
 ### Migrations
 1) Open Package manager console
