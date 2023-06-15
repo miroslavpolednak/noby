@@ -43,4 +43,6 @@ internal sealed class DocumentOnSAServiceGrpc : Contracts.v1.DocumentOnSAService
     public override async Task<GetElectronicDocumentFromQueueResponse> GetElectronicDocumentFromQueue(GetElectronicDocumentFromQueueRequest request, ServerCallContext context)
      => await _mediator.Send(request, context.CancellationToken);
 
+    public override async Task<GetElectronicDocumentPreviewResponse> GetElectronicDocumentPreview(GetElectronicDocumentPreviewRequest request, ServerCallContext context)
+     => await _mediator.Send(request, context.CancellationToken);
 }
