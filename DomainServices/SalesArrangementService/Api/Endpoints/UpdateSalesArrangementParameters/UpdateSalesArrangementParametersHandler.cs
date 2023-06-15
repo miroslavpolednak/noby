@@ -55,7 +55,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
         await _dbContext.SaveChangesAsync(cancellation);
 
         // pokud je zadost NEW, zmenit na InProgress
-        if (saInfoInstance.State == (int)SalesArrangementStates.NewArrangement)
+        if (!request.DoNotUpdateSalesArrangementState && saInfoInstance.State == (int)SalesArrangementStates.NewArrangement)
         {
             await updateSalesArrangementState(request.SalesArrangementId, cancellation);
         }

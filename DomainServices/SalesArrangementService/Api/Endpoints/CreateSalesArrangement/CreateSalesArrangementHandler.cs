@@ -66,6 +66,7 @@ internal sealed class CreateSalesArrangementHandler
                     break;
             }
             var updateMediatrRequest = new UpdateSalesArrangementParametersRequest(data);
+            updateMediatrRequest.DoNotUpdateSalesArrangementState = true; //POZOR, musi to byt tady!
 
             await _mediator.Send(updateMediatrRequest, cancellation);
         }

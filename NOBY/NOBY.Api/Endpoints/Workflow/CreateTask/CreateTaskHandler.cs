@@ -72,20 +72,22 @@ internal sealed class CreateTaskHandler
             throw new NobyValidationException($"OfferId is null for SalesArrangementId={saId}");
         }
         var offerInstance = await _offerService.GetMortgageOfferDetail(saInstance.OfferId.Value, cancellationToken);
-        
-        request.PriceException = new();
-        request.PriceException.ProductTypeId = offerInstance.SimulationInputs.ProductTypeId;
-        request.PriceException.FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod.GetValueOrDefault();
-        request.PriceException.LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount);
-        request.PriceException.LoanDuration = offerInstance.SimulationResults.LoanDuration;
-        request.PriceException.LoanToValue = Convert.ToInt32(offerInstance.SimulationResults.LoanToValue);
-        request.PriceException.Expiration = ((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.Now); // nikdo nerekl co delat, pokud datum bude null...
-        request.PriceException.LoanInterestRate = new()
+
+        request.PriceException = new()
         {
-            LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
-            LoanInterestRateProvided = offerInstance.SimulationResults.LoanInterestRateProvided,
-            LoanInterestRateAnnouncedType = offerInstance.SimulationResults.LoanInterestRateAnnouncedType,
-            LoanInterestRateDiscount = offerInstance.SimulationInputs.InterestRateDiscount
+            ProductTypeId = offerInstance.SimulationInputs.ProductTypeId,
+            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod.GetValueOrDefault(),
+            LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount),
+            LoanDuration = offerInstance.SimulationResults.LoanDuration,
+            LoanToValue = Convert.ToInt32(offerInstance.SimulationResults.LoanToValue),
+            Expiration = ((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.Now), // nikdo nerekl co delat, pokud datum bude null...
+            LoanInterestRate = new()
+            {
+                LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
+                LoanInterestRateProvided = offerInstance.SimulationResults.LoanInterestRateProvided,
+                LoanInterestRateAnnouncedType = offerInstance.SimulationResults.LoanInterestRateAnnouncedType,
+                LoanInterestRateDiscount = offerInstance.SimulationInputs.InterestRateDiscount
+            }
         };
 
         if (offerInstance.AdditionalSimulationResults.Fees is not null)

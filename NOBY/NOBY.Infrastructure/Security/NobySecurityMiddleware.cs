@@ -41,19 +41,19 @@ public class NobySecurityMiddleware
                 throw new System.Security.Authentication.AuthenticationException("User login is empty");
 
             // ziskat instanci uzivatele z xxv
-            var result = await userService.GetUser(userId);
+            var permissions = await userService.GetUserPermissions(userId);
 
             // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
-            if (!result.UserPermissions.Contains((int)UserPermissions.APPLICATION_BasicAccess))
+            if (!permissions.Contains((int)UserPermissions.APPLICATION_BasicAccess))
             {
                 throw new CisAuthorizationException();
             }
 
             // doplnit prava uzivatele do claims
-            claimsIdentity!.AddClaims(result.UserPermissions.Select(t => new Claim(AuthenticationConstants.NobyPermissionClaimType, $"{t}")));
+            claimsIdentity!.AddClaims(permissions.Select(t => new Claim(AuthenticationConstants.NobyPermissionClaimType, $"{t}")));
 
             // vlozit FOMS uzivatele do contextu
-            context.User = new NobyUser(context.User.Identity, result);
+            context.User = new NobyUser(context.User.Identity, userId);
         }
 
         await _next.Invoke(context);

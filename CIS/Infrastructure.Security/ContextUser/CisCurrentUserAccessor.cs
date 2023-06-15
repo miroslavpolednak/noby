@@ -9,7 +9,7 @@ public sealed class CisCurrentContextUserAccessor
     private readonly IHttpContextAccessor? _httpContext;
 
     private ICurrentUser? _user;
-    private Foms.Types.Interfaces.IFomsCurrentUserDetails? _userDetails;
+    private ICurrentUserDetails? _userDetails;
     private bool _userDetailsFetched;
 
     public CisCurrentContextUserAccessor(IHttpContextAccessor? httpContext)
@@ -50,16 +50,14 @@ public sealed class CisCurrentContextUserAccessor
             throw new InvalidOperationException("Missing authenticated user - can not fetch user details");
         if (_userDetailsFetched) return _userDetails!;
 
-        _userDetailsFetched = true;
-
         var userService = _httpContext!.HttpContext!.RequestServices.GetRequiredService<DomainServices.UserService.Clients.IUserServiceClient>();
         var userInstance = await userService.GetUser(_user!.Id, cancellationToken);
-        _userDetails = new FomsCurrentUserDetails
+        _userDetails = new CisUserDetails
         {
-            DisplayName = userInstance.UserInfo.DisplayName,
-            CPM = userInstance.UserInfo.Cpm,
-            ICP = userInstance.UserInfo.Icp
+            DisplayName = userInstance.UserInfo.DisplayName
         };
+
+        _userDetailsFetched = true;
 
         return _userDetails;
     }
@@ -67,9 +65,6 @@ public sealed class CisCurrentContextUserAccessor
     public async Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default(CancellationToken)) 
         where TDetails : ICurrentUserDetails
     {
-        if (typeof(TDetails) is not Foms.Types.Interfaces.IFomsCurrentUserDetails)
-            throw new InvalidOperationException("User detail type must be of Foms.Types.Interfaces.IFomsCurrentUserDetails");
-
         await EnsureDetails(cancellationToken);
         return (TDetails)_userDetails!;
     }

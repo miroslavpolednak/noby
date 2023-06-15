@@ -12,7 +12,7 @@ namespace NOBY.Infrastructure.Services.WorkflowTask;
 internal sealed class WorkflowTaskService
     : IWorkflowTaskService
 {
-    public async Task<(Dto.Workflow.WorkflowTask? Task, Dto.Workflow.WorkflowTaskDetail? TaskDetail, List<Dto.Documents.DocumentsMetadata>? Documents)> GetTaskDetail(
+    public async Task<(Dto.Workflow.WorkflowTask Task, Dto.Workflow.WorkflowTaskDetail TaskDetail, List<Dto.Documents.DocumentsMetadata> Documents)> GetTaskDetail(
         long caseId, 
         int taskIdSb, 
         CancellationToken cancellationToken = default)
@@ -33,7 +33,7 @@ internal sealed class WorkflowTaskService
         }
         else
         {
-            return (taskDto, taskDetailDto, null);
+            return (taskDto, taskDetailDto, new List<Dto.Documents.DocumentsMetadata>());
         }
     }
 

@@ -74,11 +74,13 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
 
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
-        if (salesArrangement.State != (int)SalesArrangementStates.InSigning)
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidSalesArrangementState);
 
-        if (documentOnSa.IsValid == false || documentOnSa.IsSigned || documentOnSa.IsFinal)
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidDocument); 
+        //ToDo temporary disabled, until DM will do change in SA validation
+        //if (salesArrangement.State != (int)SalesArrangementStates.InSigning)
+        //    throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidSalesArrangementState);
+
+        //if (documentOnSa.IsValid == false || documentOnSa.IsSigned || documentOnSa.IsFinal)
+        //    throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidDocument); 
 
         UpdateDocumentOnSa(documentOnSa);
 

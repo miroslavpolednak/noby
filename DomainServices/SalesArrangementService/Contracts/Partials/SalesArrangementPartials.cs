@@ -42,7 +42,9 @@ public partial class ValidateSalesArrangementRequest
 
 public partial class UpdateSalesArrangementParametersRequest
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
-{ }
+{
+    public bool DoNotUpdateSalesArrangementState { get; set; }
+}
 
 public partial class UpdateLoanAssessmentParametersRequest
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
