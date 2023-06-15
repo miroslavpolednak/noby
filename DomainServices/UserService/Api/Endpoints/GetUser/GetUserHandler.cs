@@ -55,6 +55,13 @@ internal class GetUserHandler
             }
         };
 
+        // mock pro Petra Hanusku
+        if (model.UserId == 3109)
+        {
+            model.UserInfo.Cpm = "99999396";
+            model.UserInfo.Icp = "000000396";
+        }
+
         // identity
         fillIdentities(dbIdentities, model);
 
