@@ -10,11 +10,10 @@ from ..json.request.sms_template_json import json_req_sms_full_template, \
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_full_template])
+@pytest.mark.parametrize("json_data", [json_req_sms_full_template_e2e])
 def test_e2e_real_sms_template(ns_url, auth_params, auth, json_data):
     """SMS s template z tabulky CodebookService.dbo.SmsNotificationType"""
     url_name = ns_url["url_name"]
-    url = ns_url["url"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -31,7 +30,7 @@ def test_e2e_real_sms_template(ns_url, auth_params, auth, json_data):
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_full_template_e2e])
+@pytest.mark.parametrize("json_data", [json_req_sms_full_template])
 def test_sms_template(ns_url,  auth_params, auth, json_data):
     """SMS s template z tabulky CodebookService.dbo.SmsNotificationType"""
     url_name = ns_url["url_name"]
