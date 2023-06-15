@@ -7,6 +7,9 @@
         <member name="F:DomainServices.UserService.Contracts.GetUserRequest.IdentityFieldNumber">
             <summary>Field number for the "Identity" field.</summary>
         </member>
+        <member name="F:DomainServices.UserService.Contracts.GetUserPermissionsRequest.UserIdFieldNumber">
+            <summary>Field number for the "UserId" field.</summary>
+        </member>
         <member name="T:DomainServices.UserService.Contracts.v1.UserServiceV1Reflection">
             <summary>Holder for reflection information generated from UserService.v1.proto</summary>
         </member>
@@ -49,6 +52,15 @@
             Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
             <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
             <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="T:DomainServices.UserService.Contracts.GetUserPermissionsReflection">
+            <summary>Holder for reflection information generated from Messages/GetUserPermissions.proto</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.GetUserPermissionsReflection.Descriptor">
+            <summary>File descriptor for Messages/GetUserPermissions.proto</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.GetUserPermissionsResponse.UserPermissionsFieldNumber">
+            <summary>Field number for the "UserPermissions" field.</summary>
         </member>
         <member name="T:DomainServices.UserService.Contracts.GetUserReflection">
             <summary>Holder for reflection information generated from Messages/GetUser.proto</summary>

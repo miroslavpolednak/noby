@@ -3,6 +3,7 @@ package DomainServices.UserService.v1;
 option csharp_namespace = "DomainServices.UserService.Contracts.v1";
 
 import "google/api/annotations.proto";
+import "Messages/GetUserPermissions.proto";
 import "Messages/GetUser.proto";
 import "Messages/User.proto";
 
@@ -10,6 +11,12 @@ service UserService {
    rpc GetUser(GetUserRequest) returns (User) {
 	   option (google.api.http) = {
 			get: "/v1/user"
+		};
+   }
+
+   rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse) {
+	   option (google.api.http) = {
+			get: "/v1/user-permissions"
 		};
    }
 }
