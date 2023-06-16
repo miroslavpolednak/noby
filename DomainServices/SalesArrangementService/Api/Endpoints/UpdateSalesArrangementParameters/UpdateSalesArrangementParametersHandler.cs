@@ -54,26 +54,10 @@ internal sealed class UpdateSalesArrangementParametersHandler
 
         await _dbContext.SaveChangesAsync(cancellation);
 
-        // pokud je zadost NEW, zmenit na InProgress
-        if (!request.DoNotUpdateSalesArrangementState && saInfoInstance.State == (int)SalesArrangementStates.NewArrangement)
-        {
-            await updateSalesArrangementState(request.SalesArrangementId, cancellation);
-        }
-
         // set flow switches
         await setFlowSwitches(request.SalesArrangementId, saInfoInstance.OfferGuaranteeDateTo, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    async Task updateSalesArrangementState(int salesArrangementId, CancellationToken cancellationToken)
-    {
-        var entity = await _dbContext.SalesArrangements
-            .FirstAsync(t => t.SalesArrangementId == salesArrangementId, cancellationToken);
-
-        entity.State = (int)SalesArrangementStates.InProgress;
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     static SalesArrangementTypes getParameterType(Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase datacase)
