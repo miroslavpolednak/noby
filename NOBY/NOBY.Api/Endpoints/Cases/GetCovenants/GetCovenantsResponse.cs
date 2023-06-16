@@ -54,6 +54,11 @@ public sealed class GetCovenantsResponsePhase
 public sealed class GetCovenantsResponseCovenant
 {
     /// <summary>
+    /// Pořadové číslo podmínky
+    /// </summary>
+    public int Order { get; set; }
+    
+    /// <summary>
     /// Písmenná identifikace podmínky v sekci/skupině
     /// </summary>
     public string? OrderLetter { get; set; }
