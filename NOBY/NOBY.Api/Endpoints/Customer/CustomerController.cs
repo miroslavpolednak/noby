@@ -95,6 +95,21 @@ public class CustomerController : ControllerBase
         => await _mediator.Send(request);
 
     /// <summary>
+    /// Validace emailu či telefonního čísla
+    /// </summary>
+    /// <remarks>
+    /// Validace kontatů (email či telefon) pomocí <i>DS:</i> CustomerService/validateContacts. Pro telefonní čísla vrací i informaci, zda se jedná o mobilní číslo.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("contact/validate")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [SwaggerOperation(Tags = new[] { "Klient" })]
+    [ProducesResponseType(typeof(ValidateContact.ValidateContactResponse), StatusCodes.Status200OK)]
+    public async Task<ValidateContact.ValidateContactResponse> ValidateContact([FromBody] ValidateContact.ValidateContactRequest request)
+        => await _mediator.Send(request);
+    
+    /// <summary>
     /// Profile check s profilem identifikovaný
     /// </summary>
     /// <remarks>

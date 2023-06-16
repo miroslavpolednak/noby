@@ -38,6 +38,7 @@
     <ProjectReference Include="..\..\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
     <ProjectReference Include="..\..\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
 	<ProjectReference Include="..\Contracts\DomainServices.CustomerService.Contracts.csproj" />
+	<ProjectReference Include="..\ExternalServices.Contacts\DomainServices.CustomerService.ExternalServices.Contacts.csproj" />
 	<ProjectReference Include="..\ExternalServices.CustomerManagement\DomainServices.CustomerService.ExternalServices.CustomerManagement.csproj" />
 	<ProjectReference Include="..\ExternalServices.CustomerProfile\DomainServices.CustomerService.ExternalServices.CustomerProfile.csproj" />
 	<ProjectReference Include="..\ExternalServices.IdentifiedSubjectBr\DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.csproj" />
