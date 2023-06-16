@@ -15,7 +15,7 @@ internal sealed class RealESignaturesClient
         var result = await response.Content.ReadFromJsonAsync<Contracts.ResponseStatus>(cancellationToken: cancellationToken)
             ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(GetDocumentStatus), nameof(Contracts.ResponseStatus));
 
-        //TODO osetrit chybove stavy???
+        //TODO osetrit chybove stavy vracet enum EDocumentStatuses???
         if ((result.Result?.Code ?? 0) == 0)
         {
             return result.Status!;

@@ -32,7 +32,6 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
 
         var response = new GetDocumentsSignListResponse();
         response.Data = result.DocumentsOnSAToSign
-            .Where(r => r.IsValid == true)
             .Select(s => new GetDocumentsSignListData
             {
                 DocumentOnSAId = s.DocumentOnSAId,
@@ -40,6 +39,7 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                 FormId = s.FormId,
                 IsSigned = s.IsSigned,
                 SignatureMethodCode = s.SignatureMethodCode,
+                SignatureTypeId = s.SignatureTypeId,
                 SignatureDateTime = s.SignatureDateTime is not null ? s.SignatureDateTime.ToDateTime() : null,
                 SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new() { DocumentOnSAId = s.DocumentOnSAId, EArchivId = s.EArchivId, IsSigned = s.IsSigned }, signatureStates),
                 EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(s.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains)
