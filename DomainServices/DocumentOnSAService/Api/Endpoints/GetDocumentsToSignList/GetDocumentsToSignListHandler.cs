@@ -9,6 +9,7 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
+using CIS.Foms.Types.Enums;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetDocumentsToSignList;
 
@@ -37,7 +38,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     public async Task<GetDocumentsToSignListResponse> Handle(GetDocumentsToSignListRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
-           
+
         var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
 
         var response = new GetDocumentsToSignListResponse();
@@ -69,15 +70,16 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     private async Task ComposeResultForProductRequest(GetDocumentsToSignListRequest request, GetDocumentsToSignListResponse response, CancellationToken cancellationToken)
     {
         var documentsOnSaRealEntity = await _dbContext.DocumentOnSa
-                                                    .AsNoTracking()
-                                                    .Where(e => e.SalesArrangementId == request.SalesArrangementId 
+                                                    .Where(e => e.SalesArrangementId == request.SalesArrangementId
                                                                 && e.IsValid
-                                                                && e.IsFinal ==false)
+                                                                && e.IsFinal == false)
                                                     .ToListAsync(cancellationToken);
+
+        // Evaluate eletronic signature status
+        await EvaluateElectronicDocumentStatus(documentsOnSaRealEntity, cancellationToken);
 
         var documentsOnSaToSignReal = _documentOnSaMapper.MapDocumentOnSaToSign(documentsOnSaRealEntity);
         response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignReal);
-
 
         var households = await _householdClient.GetHouseholdList(request.SalesArrangementId!.Value, cancellationToken);
         var householdsWithoutdocumentOnsa = households
@@ -86,6 +88,41 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
 
         var documentsOnSaToSignVirtual = CreateDocumentOnSaToSign(householdsWithoutdocumentOnsa);
         response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignVirtual);
+    }
+
+    private async Task EvaluateElectronicDocumentStatus(List<Database.Entities.DocumentOnSa> documentsOnSaRealEntity, CancellationToken cancellationToken)
+    {
+        foreach (var docOnSa in documentsOnSaRealEntity)
+        {
+            if (docOnSa.SignatureTypeId is null or not ((int)SignatureTypes.Electronic))
+                continue;
+
+            var elDocumentStatus = GetElDocumentStatusMock(docOnSa.ExternalId);
+
+            switch (elDocumentStatus)
+            {
+                case EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT:
+                    docOnSa.IsSigned = true;
+                    break;
+                case EDocumentStatuses.DELETED:
+                    docOnSa.IsValid = false;
+                    break;
+                case EDocumentStatuses.NEW or EDocumentStatuses.IN_PROGRESS or EDocumentStatuses.APPROVED:
+                    // Ignore
+                    break;
+                default:
+                    throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedStatusReturnedFromESignature, elDocumentStatus);
+            }
+        }
+
+        if (_dbContext.ChangeTracker.HasChanges())
+            await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    private static EDocumentStatuses GetElDocumentStatusMock(string? externalId)
+    {
+        //Call real service
+        return EDocumentStatuses.SIGNED;
     }
 
     private static DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypesResponse.Types.DocumentTypeItem documentTypeItem, int salesArrangementId)

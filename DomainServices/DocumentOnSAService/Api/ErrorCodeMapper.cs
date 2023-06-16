@@ -18,6 +18,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int DocumentTypeIdNotExist = 19016;
     public const int UnableToStartSigningOrSignInvalidSalesArrangementState = 19018;
     public const int UnableToStartSigningOrSignInvalidDocument = 19019;
+    public const int UnsupportedStatusReturnedFromESignature = 19021;
 
     // Non BL validation
     public const int SalesArrangementIdIsRequired = 19030;
@@ -47,8 +48,9 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { EArchivIdIsRequired, "EArchivId is required"},
             { SignatureMethodCodeIsRequired, "SignatureMethodCode is required"},
             { UnableToStartSigningOrSignInvalidSalesArrangementState, "Unable to start signing or sign (SalesArrangement is not in correct state)."},
-            { UnableToStartSigningOrSignInvalidDocument, "Unable to start signing or sign (DocumentOnSA is invalid or already signed)."}
-    });
+            { UnableToStartSigningOrSignInvalidDocument, "Unable to start signing or sign (DocumentOnSA is invalid or already signed)."},
+            { UnsupportedStatusReturnedFromESignature, "Unsupported status returned from ESignature: {PropertyValue}"}
+        });
 
         return Messages;
     }

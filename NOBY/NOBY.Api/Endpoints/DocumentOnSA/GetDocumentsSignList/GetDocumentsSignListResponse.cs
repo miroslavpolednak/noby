@@ -30,7 +30,13 @@ public class GetDocumentsSignListData
     /// <summary>
     /// Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
     /// </summary>
+    [Obsolete("Replaced with SignatureTypeId:  HFICH-6026")]
     public string? SignatureMethodCode { get; set; }
+
+    /// <summary>
+    /// Metoda podpisu (manuální/elektronický). Číselník SignatureType.
+    /// </summary>
+    public int? SignatureTypeId { get; set; }
 
     /// <summary>
     /// Timestamp, kdy došlo k podpisu celého dokumentu.
