@@ -86,7 +86,7 @@ internal sealed class UpdateParametersHandler
 
         // pokud je to servisni zadost
         // TODO upravit do HFICH-4601, tam bude vidlicka na je/neni serviska. Ted to ojebu jen tim IFem nize.
-        if (saInstance.SalesArrangementTypeId > 5)
+        if (saInstance.SalesArrangementTypeId > 5 && saInstance.State != (int)SalesArrangementStates.InProgress)
         {
             await _salesArrangementService.UpdateSalesArrangementState(request.SalesArrangementId, (int)SalesArrangementStates.InProgress, cancellationToken);
         }
