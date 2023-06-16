@@ -1630,6 +1630,11 @@
             Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.SignatureTypeId">
+            <summary>
+            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.SignatureDateTime">
             <summary>
             Timestamp, kdy došlo k podpisu celého dokumentu.
