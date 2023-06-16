@@ -136,23 +136,30 @@ def modified_template_json_data(request, ns_url):
     return modified_data
 
 
-#TODO: doupravit s healthchekcem NSB, protoze to nvraci request
 @pytest.fixture
-def modified_json_data_health(request):
-    json_data = request.node.get_closest_marker("parametrize").args[1][0]
+def modified_json_data_health(request, url_name):
+    marker = [m for m in request.node.iter_markers(name="parametrize")]
+    json_data = None
+    for m in marker:
+        if "json_data" in m.args[0]:
+            json_data = m.args[1][0]
     modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
     # Přidáme aktuální datum a čas
     now = datetime.datetime.now()
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
     # seskladani smsky
-    modified_data['text'] = modified_data[123]
+    modified_data['text'] = " Prostredi: " + url_name + ", " + " Cas provedeni: " + date_time + ", Zprava: " + modified_data['text']
     return modified_data
 
 
-#TODO: doupravit s healthchekcem NSB, protoze to nvraci request
 @pytest.fixture
-def modified_template_json_data_health(request, ns_url):
-    json_data = request.node.get_closest_marker("parametrize").args[1][0]
+def modified_template_json_data_health(request, url_name):
+    marker = [m for m in request.node.iter_markers(name="parametrize")]
+    json_data = None
+    for m in marker:
+        if "json_data" in m.args[0]:
+            json_data = m.args[1][0]
+
     modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
 
     # Přidáme aktuální datum a čas
@@ -162,6 +169,6 @@ def modified_template_json_data_health(request, ns_url):
     # Seskladani smsky
     for placeholder in modified_data['placeholders']:
         if placeholder['key'] == 'zadej':
-            placeholder['value'] = " Prostredi: " + ns_url["url_name"] + ", " + " Cas provedeni: " + date_time + ", Zprava: " + placeholder['value']
+            placeholder['value'] = " Prostredi: " + url_name + ", " + " Cas provedeni: " + date_time + ", Zprava: " + placeholder['value']
 
     return modified_data
