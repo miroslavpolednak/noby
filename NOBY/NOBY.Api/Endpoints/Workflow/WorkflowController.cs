@@ -1,5 +1,6 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace NOBY.Api.Endpoints.Workflow;
 
@@ -60,8 +61,8 @@ public class WorkflowController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<long> CreateTask([FromRoute] long caseId, [FromBody][Required] CreateTask.CreateTaskRequest request)
-        => await _mediator.Send(request.InfuseId(caseId));
+    public async Task<IActionResult> CreateTask([FromRoute] long caseId, [FromBody][Required] CreateTask.CreateTaskRequest request)
+        => Content((await _mediator.Send(request.InfuseId(caseId))).ToString(CultureInfo.InvariantCulture));
 
     /// <summary>
     /// Seznam workflow tasků dotažený z SB.
