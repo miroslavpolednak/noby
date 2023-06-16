@@ -491,6 +491,11 @@
             Podmínka ke splnění
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.Order">
+            <summary>
+            Pořadové číslo podmínky
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.OrderLetter">
             <summary>
             Písmenná identifikace podmínky v sekci/skupině
