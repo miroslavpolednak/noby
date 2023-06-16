@@ -16,7 +16,7 @@ internal sealed class GetFlowSwitchesHandler
         var response = new GetFlowSwitchesResponse
         {
             ModelationSection = createSection(mergedSwitches[FlowSwitchesGroups.ModelationSection]),
-            //IndividualPriceSection = createSection(mergedSwitches[CIS.Foms.Enums.FlowSwitchesGroups.IndividualPriceSection]),
+            IndividualPriceSection = createSection(mergedSwitches[FlowSwitchesGroups.IndividualPriceSection]),
             HouseholdSection = createSection(mergedSwitches[FlowSwitchesGroups.HouseholdSection]),
             ParametersSection = createSection(mergedSwitches[FlowSwitchesGroups.ParametersSection]),
             SigningSection = createSection(mergedSwitches[FlowSwitchesGroups.SigningSection]),
