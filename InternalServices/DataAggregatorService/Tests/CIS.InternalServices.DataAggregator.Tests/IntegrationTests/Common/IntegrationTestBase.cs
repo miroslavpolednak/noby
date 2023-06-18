@@ -16,7 +16,7 @@ using static CIS.InternalServices.DataAggregatorService.Contracts.V1.DataAggrega
 
 namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.Common;
 
-public class IntegrationTestBase : IClassFixture<WebApplicationFactoryFixture<Program>>
+public class IntegrationTestBase
 {
     protected ISalesArrangementServiceClient SalesArrangementServiceClient { get; } = Substitute.For<ISalesArrangementServiceClient>();
     protected ICaseServiceClient CaseServiceClient { get; } = Substitute.For<ICaseServiceClient>();
@@ -27,9 +27,9 @@ public class IntegrationTestBase : IClassFixture<WebApplicationFactoryFixture<Pr
     protected ICustomerOnSAServiceClient CustomerOnSAServiceClient { get; } = Substitute.For<ICustomerOnSAServiceClient>();
     protected IDocumentOnSAServiceClient DocumentOnSAServiceClient { get; } = Substitute.For<IDocumentOnSAServiceClient>();
 
-    public IntegrationTestBase(WebApplicationFactoryFixture<Program> fixture)
+    public IntegrationTestBase()
     {
-        Fixture = fixture;
+        Fixture = new WebApplicationFactoryFixture<Program>();
 
         ConfigureWebHost();
     }

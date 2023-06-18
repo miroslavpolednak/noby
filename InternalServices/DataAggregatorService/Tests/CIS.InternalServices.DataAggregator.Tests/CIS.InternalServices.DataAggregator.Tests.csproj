@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="IntegrationTests\Common\" />
+    <Folder Include="IntegrationTests\Common\Mocks\" />
     <Folder Include="IntegrationTests\GetEasForm\" />
   </ItemGroup>
 

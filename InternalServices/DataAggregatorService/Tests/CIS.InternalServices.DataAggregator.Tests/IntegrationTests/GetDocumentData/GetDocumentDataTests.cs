@@ -1,7 +1,6 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.InternalServices.DataAggregator.Tests.IntegrationTests.Common;
 using CIS.InternalServices.DataAggregatorService.Contracts;
-using FluentAssertions;
+using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.GetDocumentData;
@@ -10,21 +9,21 @@ public class GetDocumentDataTests : IntegrationTestBase
 {
     private readonly DocumentConfigurationBuilder _configurationBuilder;
 
-    public GetDocumentDataTests(WebApplicationFactoryFixture<Program> fixture) : base(fixture)
+    public GetDocumentDataTests()
     {
         _configurationBuilder = new DocumentConfigurationBuilder(Fixture.Services.CreateScope().ServiceProvider);
 
-        SalesArrangementServiceClient.MockGetSalesArrangement();
+        SalesArrangementServiceClient.MockGetSalesArrangement<SalesArrangementParametersMortgage>((sa, parameter) => sa.Mortgage = parameter);
         HouseholdServiceClient.MockHouseholdList(CustomerOnSAServiceClient);
         CustomerServiceClient.MockCustomerList();
         OfferServiceClient.MockGetOfferDetail();
     }
 
     [Fact]
-    public async Task GetDocumentData_CorrectInput_ShouldReturnData()
+    public async Task GetDocumentData_ValidDocumentType_ShouldReturnDocumentData()
     {
         var client = CreateGrpcClient();
-        await _configurationBuilder.DataFields().DocumentFieldsMapping().Table().Build();
+        await _configurationBuilder.DataFields().DocumentFields().Build();
 
         var response = await client.GetDocumentDataAsync(new GetDocumentDataRequest
         {
@@ -36,7 +35,23 @@ public class GetDocumentDataTests : IntegrationTestBase
         response.DocumentTemplateVariantId.Should().Be(DocumentConstants.DocumentTemplateVariantId);
         response.InputParameters.OfferId.Should().NotBeNull();
         response.DocumentData.Should().NotBeEmpty();
-        response.DocumentData.Should().ContainSingle(x => x.ValueCase == DocumentFieldData.ValueOneofCase.Table);
+    }
+
+    [Fact]
+    public async Task GetDocumentData_DocumentWithTable_ShouldReturnTable()
+    {
+        var client = CreateGrpcClient();
+        await _configurationBuilder.DataFields().Table().Build();
+
+        var response = await client.GetDocumentDataAsync(new GetDocumentDataRequest
+        {
+            DocumentTypeId = DocumentConstants.DocumentTypeTableId,
+            InputParameters = new InputParameters { SalesArrangementId = DocumentConstants.DefaultValidId }
+        });
+
+        response.DocumentData.Should().ContainSingle().And.Contain(x => x.ValueCase == DocumentFieldData.ValueOneofCase.Table);
+        response.DocumentData.First().Table.Columns.Should().NotBeEmpty();
+        response.DocumentData.First().Table.Rows.Should().NotBeEmpty();
     }
 
     [Fact]

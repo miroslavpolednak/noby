@@ -17,7 +17,7 @@ public class EasFormConfigurationBuilder
         _dbContext = serviceProvider.GetRequiredService<ConfigurationContext>();
     }
 
-    public EasFormConfigurationBuilder MapFields()
+    public EasFormConfigurationBuilder DataFields()
     {
         _dbContext.DataServices
                   .AddRange(CreateDataService(DataSource.General),
@@ -37,7 +37,9 @@ public class EasFormConfigurationBuilder
         {
             new() { DataFieldId = 1, DataServiceId = 1, FieldPath = "SalesArrangement.ContractNumber" },
             new() { DataFieldId = 2, DataServiceId = 1, FieldPath = "SalesArrangement.OfferId" },
-            new() { DataFieldId = 3, DataServiceId = 11, FieldPath = "Custom.DocumentOnSa.FinalDocument.FormId" }
+            new() { DataFieldId = 3, DataServiceId = 11, FieldPath = "Custom.DocumentOnSa.FinalDocument.FormId" },
+            new() { DataFieldId = 4, DataServiceId = 2, FieldPath = "Case.Data.ContractNumber" },
+            new() { DataFieldId = 5, DataServiceId = 1, FieldPath = "SalesArrangement.CaseId" },
         });
 
         _dbContext.EasRequestTypes.Add(new EasRequestType { EasRequestTypeId = 1, EasRequestTypeName = "Service" });
@@ -47,24 +49,48 @@ public class EasFormConfigurationBuilder
                                          new() { EasFormTypeId = 2, EasFormTypeName = "F3601", Version = 1, ValidFrom = DateTime.Now.AddYears(-1), ValidTo = DateTime.Now.AddYears(1) },
                                          new() { EasFormTypeId = 3, EasFormTypeName = "F3602", Version = 1, ValidFrom = DateTime.Now.AddYears(-1), ValidTo = DateTime.Now.AddYears(1) });
 
+        return this;
+
+        static DataService CreateDataService(DataSource dataSource) => new() { DataServiceId = (int)dataSource, DataServiceName = dataSource.ToString() };
+    }
+
+    public EasFormConfigurationBuilder ProductRequest()
+    {
         _dbContext.EasFormDataFields
                   .AddRange(new EasFormDataField { EasFormDataFieldId = 1, EasRequestTypeId = EasFormRequestType.Product.ToInt32(), EasFormTypeId = EasFormType.F3601.ToInt32(), DataFieldId = 1, JsonPropertyName = "cislo_smlouvy" },
                             new EasFormDataField { EasFormDataFieldId = 2, EasRequestTypeId = EasFormRequestType.Product.ToInt32(), EasFormTypeId = EasFormType.F3602.ToInt32(), DataFieldId = 1, JsonPropertyName = "cislo_smlouvy" },
                             new EasFormDataField { EasFormDataFieldId = 3, EasRequestTypeId = EasFormRequestType.Product.ToInt32(), EasFormTypeId = EasFormType.F3601.ToInt32(), DataFieldId = 3, JsonPropertyName = "business_id_formulare" });
 
-        _dbContext.EasFormSpecialDataFields.Add(new EasFormSpecialDataField { EasRequestTypeId = 2, JsonPropertyName = "developer_id", DataServiceId = 3, EasFormTypeId = 2, FieldPath = "ConditionalFormValues.DeveloperId" });
+        _dbContext.EasFormSpecialDataFields.Add(new EasFormSpecialDataField { EasRequestTypeId = EasFormRequestType.Product.ToInt32(), JsonPropertyName = "developer_id", DataServiceId = 3, EasFormTypeId = EasFormType.F3601.ToInt32(), FieldPath = "ConditionalFormValues.DeveloperId" });
 
         _dbContext.InputParameters.Add(new InputParameter { InputParameterId = 3, InputParameterName = "OfferId" });
 
         _dbContext.EasFormDynamicInputParameters.Add(new EasFormDynamicInputParameter { EasRequestTypeId = 2, InputParameterId = 3, TargetDataServiceId = 3, SourceDataFieldId = 2, EasFormTypeId = 2 });
 
         return this;
-
-        static DataService CreateDataService(DataSource dataSource) => new() { DataServiceId = (int)dataSource, DataServiceName = dataSource.ToString() };
     }
 
-    public async Task Build()
+    public EasFormConfigurationBuilder ServiceRequest()
     {
-        await _dbContext.SaveChangesAsync();
+        _dbContext.EasFormDataFields
+                  .AddRange(new EasFormDataField { EasFormDataFieldId = 4, EasRequestTypeId = EasFormRequestType.Service.ToInt32(), EasFormTypeId = EasFormType.F3700.ToInt32(), DataFieldId = 4, JsonPropertyName = "cislo_smlouvy" },
+                            new EasFormDataField { EasFormDataFieldId = 6, EasRequestTypeId = EasFormRequestType.Service.ToInt32(), EasFormTypeId = EasFormType.F3700.ToInt32(), DataFieldId = 3, JsonPropertyName = "business_id_formulare" });
+
+        _dbContext.EasFormSpecialDataFields.Add(new EasFormSpecialDataField
+        {
+            EasRequestTypeId = EasFormRequestType.Service.ToInt32(), JsonPropertyName = "zmocnenec", DataServiceId = 1, EasFormTypeId = EasFormType.F3700.ToInt32(), FieldPath = "IsAgent"
+        });
+
+        _dbContext.InputParameters.Add(new InputParameter { InputParameterId = 1, InputParameterName = "CaseId" });
+
+        _dbContext.EasFormDynamicInputParameters.Add(new EasFormDynamicInputParameter { EasRequestTypeId = EasFormRequestType.Service.ToInt32(), InputParameterId = 1, TargetDataServiceId = 2, SourceDataFieldId = 5, EasFormTypeId = EasFormType.F3700.ToInt32() });
+
+        return this;
+    }
+
+    public void Commit()
+    {
+        _dbContext.Database.EnsureDeleted();
+        _dbContext.SaveChanges();
     }
 }

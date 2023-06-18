@@ -14,6 +14,8 @@ public class DocumentConfigurationBuilder
         _dbContext = serviceProvider.GetRequiredService<ConfigurationContext>();
     }
 
+
+
     public DocumentConfigurationBuilder DataFields()
     {
         _dbContext.DataServices
@@ -42,15 +44,12 @@ public class DocumentConfigurationBuilder
 
         _dbContext.InputParameters.Add(new InputParameter { InputParameterId = 3, InputParameterName = "OfferId" });
 
-        _dbContext.DocumentDynamicInputParameters.Add(new DocumentDynamicInputParameter { DocumentId = DocumentConstants.DocumentTypeId, DocumentVersion = DocumentConstants.DocumentTemplateVersion, InputParameterId = 3, TargetDataServiceId = 3, SourceDataFieldId = 6 });
-        _dbContext.DocumentDynamicInputParameters.Add(new DocumentDynamicInputParameter { DocumentId = DocumentConstants.DocumentTypeId, DocumentVersion = DocumentConstants.DocumentTemplateVersion, InputParameterId = 3, TargetDataServiceId = 7, SourceDataFieldId = 6 });
-
         return this;
 
         static DataService CreateDataService(DataSource dataSource) => new() { DataServiceId = (int)dataSource, DataServiceName = dataSource.ToString() };
     }
 
-    public DocumentConfigurationBuilder DocumentFieldsMapping()
+    public DocumentConfigurationBuilder DocumentFields()
     {
         _dbContext.DocumentDataFields
                   .AddRange(new DocumentDataField { DocumentDataFieldId = 1, DocumentId = DocumentConstants.DocumentTypeId, DocumentVersion = DocumentConstants.DocumentTemplateVersion, DataFieldId = 1, AcroFieldName = "RegCislo" },
@@ -68,6 +67,8 @@ public class DocumentConfigurationBuilder
                             new DocumentDataFieldVariant { DocumentDataFieldId = 5, DocumentVariant = DocumentConstants.DocumentTemplateVariant },
                             new DocumentDataFieldVariant { DocumentDataFieldId = 6, DocumentVariant = DocumentConstants.DocumentTemplateVariant });
 
+        _dbContext.DocumentDynamicInputParameters.Add(new DocumentDynamicInputParameter { DocumentId = DocumentConstants.DocumentTypeId, DocumentVersion = DocumentConstants.DocumentTemplateVersion, InputParameterId = 3, TargetDataServiceId = 3, SourceDataFieldId = 6 });
+
         return this;
     }
 
@@ -76,7 +77,7 @@ public class DocumentConfigurationBuilder
         _dbContext.DocumentTables.Add(new DocumentTable
         {
             DocumentTableId = 1,
-            DocumentId = DocumentConstants.DocumentTypeId,
+            DocumentId = DocumentConstants.DocumentTypeTableId,
             DocumentVersion = DocumentConstants.DocumentTemplateVersion,
             DataFieldId = 8,
             AcroFieldPlaceholderName = "SplatkovyKalendar",
@@ -85,6 +86,8 @@ public class DocumentConfigurationBuilder
 
         _dbContext.DocumentTableColumns.Add(new DocumentTableColumn { DocumentTableId = 1, FieldPath = "Amount", Order = 3, Header = "Header 1" });
         _dbContext.DocumentTableColumns.Add(new DocumentTableColumn { DocumentTableId = 1, FieldPath = "PaymentNumber", Order = 3, Header = "Header 2" });
+
+        _dbContext.DocumentDynamicInputParameters.Add(new DocumentDynamicInputParameter { DocumentId = DocumentConstants.DocumentTypeTableId, DocumentVersion = DocumentConstants.DocumentTemplateVersion, InputParameterId = 3, TargetDataServiceId = 7, SourceDataFieldId = 6 });
 
         return this;
     }

@@ -9,4 +9,5 @@ public static class DocumentConstants
     public const string DocumentTemplateVariant = "D";
     public const int InvalidId = 0;
     public const int DefaultValidId = 1;
+    public const int DocumentTypeTableId = 3;
 }
