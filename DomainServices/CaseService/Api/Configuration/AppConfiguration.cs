@@ -2,19 +2,19 @@
 
 internal sealed class AppConfiguration
 {
-    public string? MainLoanProcessChangedTopic { get; set; }
+    public string? SbWorkflowProcessTopic { get; set; }
 
-    public string? CaseStateChangedProcessingCompletedTopic { get; set; }
+    public string? SbWorkflowInputProcessingTopic { get; set; }
 
     public void Validate()
     {
-        if (string.IsNullOrEmpty(MainLoanProcessChangedTopic))
+        if (string.IsNullOrEmpty(SbWorkflowProcessTopic))
         {
-            throw new CisConfigurationException(0, "MainLoanProcessChangedTopic Kafka topic is empty");
+            throw new CisConfigurationException(0, $"{nameof(SbWorkflowProcessTopic)} Kafka topic is empty");
         }
-        if (string.IsNullOrEmpty(CaseStateChangedProcessingCompletedTopic))
+        if (string.IsNullOrEmpty(SbWorkflowInputProcessingTopic))
         {
-            throw new CisConfigurationException(0, "CaseStateChangedProcessingCompletedTopic Kafka topic is empty");
+            throw new CisConfigurationException(0, $"{nameof(SbWorkflowInputProcessingTopic)} Kafka topic is empty");
         }
     }
 }

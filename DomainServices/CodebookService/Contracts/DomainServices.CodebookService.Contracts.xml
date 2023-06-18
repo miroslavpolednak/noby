@@ -980,9 +980,6 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.NameFieldNumber">
             <summary>Field number for the "Name" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.ProductTypeIdFieldNumber">
-            <summary>Field number for the "ProductTypeId" field.</summary>
-        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.SalesArrangementCategoryFieldNumber">
             <summary>Field number for the "SalesArrangementCategory" field.</summary>
         </member>

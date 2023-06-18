@@ -32,6 +32,7 @@ internal sealed class GetCovenantListHandler : IRequestHandler<GetCovenantListRe
         Name = covenant.Name,
         FulfillDate = covenant.FulfillDate,
         IsFulfilled = covenant.IsFulFilled != 0,
+        Order = covenant.Order,
         OrderLetter = covenant.OrderLetter,
         PhaseOrder = covenant.PhaseOrder,
         CovenantTypeId = covenant.CovenantTypeId,

@@ -28,7 +28,7 @@ internal sealed class CustomerChange3602BValidator
 
         // instance hypo
         var productInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
-        if (productInstance.Mortgage?.ContractSignedDate is null)
+        if (productInstance.Mortgage?.ContractSignedDate is not null)
         {
             throw new NobyValidationException(90014);
         }

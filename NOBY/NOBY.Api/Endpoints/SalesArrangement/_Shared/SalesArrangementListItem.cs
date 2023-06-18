@@ -2,6 +2,7 @@
 
 public class SalesArrangementListItem
 {
+    [Obsolete]
     public string? ProductName { get; set; }
 
     public int SalesArrangementId { get; set; }

@@ -15,6 +15,8 @@
 
 [Autentizace FE API](./topics/authentication-feapi.md)
 
+[Autorizace FE API](./topics/feapi-authorization.md)
+
 [gRPC služby - technický popis](./topics/grpc-services.md)
 
 [Implementace služeb třetích stran](./topics/external-services.md)

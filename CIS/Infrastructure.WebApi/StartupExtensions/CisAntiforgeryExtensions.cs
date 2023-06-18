@@ -10,7 +10,10 @@ public static class CisAntiforgeryExtensions
         {
             options.Cookie = new CookieBuilder
             {
-                Name = "XSRF"
+                Name = "XSRF",
+                SameSite = SameSiteMode.Strict,
+                SecurePolicy = CookieSecurePolicy.Always,
+                HttpOnly = true
             };
             options.HeaderName = "X-XSRF-TOKEN";
         });
@@ -48,6 +51,8 @@ public static class CisAntiforgeryExtensions
             {
                 context.Response.Cookies.Append("XSRF-TOKEN", headerToken, new CookieOptions
                 {
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
                     HttpOnly = false
                 });
             }

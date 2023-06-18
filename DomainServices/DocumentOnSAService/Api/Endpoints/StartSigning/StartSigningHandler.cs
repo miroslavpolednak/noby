@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Security;
+using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CodebookService.Clients;
@@ -8,7 +9,10 @@ using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Text.Json;
 using __Entity = DomainServices.DocumentOnSAService.Api.Database.Entities;
@@ -54,7 +58,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         await ValidateRequest(request, cancellationToken);
 
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
-        
+
         var houseHold = await GetHouseholdId(request.DocumentTypeId!.Value, request.SalesArrangementId!.Value, cancellationToken);
 
         // Check, if signing process has been already started. If started we have to invalidate exist signing processes
@@ -79,7 +83,25 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         var documentOnSaEntity = await MapToEntity(request, houseHold, formIdResponse.FormId, documentData, cancellationToken);
         await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        //ToDo temporary disabled, until DM will do change in SA validation
+        //await UpdateSalesArrangementStateIfNeeded(salesArrangement, cancellationToken);
+
         return MapToResponse(documentOnSaEntity);
+    }
+
+    private async Task UpdateSalesArrangementStateIfNeeded(SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
+        switch (salesArrangement.State)
+        {
+            case (int)SalesArrangementStates.InSigning://(7 Podepisování)
+                break; // Skip state change
+            case (int)SalesArrangementStates.InProgress://(1 Rozpracováno)
+                await _arrangementServiceClient.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
+                break;
+            default:
+                throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidSalesArrangementState);
+        }
     }
 
     private async Task ValidateRequest(StartSigningRequest request, CancellationToken cancellationToken)

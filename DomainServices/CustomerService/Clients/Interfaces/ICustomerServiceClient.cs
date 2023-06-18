@@ -59,4 +59,9 @@ public interface ICustomerServiceClient
     /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
     /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
     Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Validace kontaktu
+    /// </summary>
+    Task<ValidateContactResponse> ValidateContact(ValidateContactRequest request, CancellationToken cancellationToken = default);
 }

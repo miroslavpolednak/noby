@@ -314,7 +314,7 @@ INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl],
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'ES:Kyc:V1', N'https://cm-uat.kb.cz/be-cm/api', 3)
 GO
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'ES:MpHome:V1_1', N'https://hfuat1mpdigi.mpss.cz/api/1.1', 3)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'ES:MpHome:V1_1', N'https://hfuatmpdigi.mpss.cz/api/1.1', 3)
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'ES:Rip', N'https://rip-sit1.vsskb.cz', 3)
 GO

@@ -17,6 +17,7 @@ public class GetEasFormTests : IntegrationTestBase
         HouseholdServiceClient.MockHouseholdList(CustomerOnSAServiceClient);
         CustomerServiceClient.MockCustomerList();
         DocumentOnSAServiceClient.MockDocumentOnSa();
+        CaseServiceClient.MockGetCaseDetail();
     }
 
     [Fact]
@@ -47,7 +48,6 @@ public class GetEasFormTests : IntegrationTestBase
     public async Task GetEasForm_ServiceRequest_ShouldReturnOneForm()
     {
         SalesArrangementServiceClient.MockGetSalesArrangement<SalesArrangementParametersDrawing>((sa, parameter) => sa.Drawing = parameter);
-        CaseServiceClient.MockGetCaseDetail();
         _configurationBuilder.DataFields().ServiceRequest().Commit();
 
         var client = CreateGrpcClient();

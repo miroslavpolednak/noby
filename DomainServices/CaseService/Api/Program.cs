@@ -42,6 +42,7 @@ try
         .Services
             // add CIS services
             .AddSalesArrangementService()
+            .AddDocumentOnSAService()
             .AddCodebookService()
             .AddUserService()
             .AddCisServiceDiscovery()

@@ -1,19 +1,24 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using NOBY.Api.Endpoints.Test.Rollback;
-using System.Threading;
 
 namespace NOBY.Api.Endpoints.Test;
 
 [ApiController]
 [Route("api/test")]
-[AllowAnonymous]
+//[AllowAnonymous]
 public class TestController : ControllerBase
 {
     [HttpPost("rollback")]
     public async Task<RollbackResponse> SendToCmp([FromQuery] int? id)
         => await _mediator.Send(new RollbackRequest(id));
 
+    /// <summary>
+    /// Summary endpointu
+    /// </summary>
+    /// <remarks>Toto jsou remarks</remarks>
     [HttpGet("t1")]
+    [NobyAuthorize(UserPermissions.UC_getWflSigningAttachments, UserPermissions.CASEDETAIL_APPLICANT_ViewPersonInfo)]
+    [Infrastructure.Swagger.SwaggerEaDiagram("https://eadiagram.com/neco")]
     public async Task T1()
     {
         throw new CisValidationException(111, "moje chybova hlaska");

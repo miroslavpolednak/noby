@@ -57,6 +57,7 @@ internal sealed class GetCovenantsHandler
             FulfillDate = t.FulfillDate,
             IsFulfilled = t.IsFulfilled,
             Name = t.Name,
+            Order = t.Order,
             OrderLetter = t.OrderLetter
         };
     }

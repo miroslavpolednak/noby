@@ -17,9 +17,10 @@ message CovenantListItem {
     string Name = 1;
     bool IsFulfilled = 2;
     cis.types.NullableGrpcDate FulfillDate = 3;
-    string OrderLetter = 4;
-    int32 CovenantTypeId = 5;
-    int32 PhaseOrder = 6;
+    int32 Order = 4;
+    string OrderLetter = 5;
+    int32 CovenantTypeId = 6;
+    int32 PhaseOrder = 7;
 }
 
 message PhaseListItem {

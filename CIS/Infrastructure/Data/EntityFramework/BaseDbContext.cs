@@ -21,15 +21,15 @@ public abstract class BaseDbContext<TDbContext>
     /// <summary>
     /// Automaticka aplikace created/modified/actual interfacu
     /// </summary>
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        addInterfaceFields();
+        await addInterfaceFields(cancellationToken);
         return await base.SaveChangesAsync(cancellationToken);
     }
 
     public override int SaveChanges()
     {
-        addInterfaceFields();
+        addInterfaceFields().GetAwaiter().GetResult();
         return base.SaveChanges();
     }
 
@@ -66,7 +66,7 @@ public abstract class BaseDbContext<TDbContext>
     }
     #endregion DateOnly conversions
 
-    private void addInterfaceFields()
+    private async Task addInterfaceFields(CancellationToken cancellationToken = default)
     {
         foreach (var entry in this.ChangeTracker.Entries())
         {
@@ -77,8 +77,9 @@ public abstract class BaseDbContext<TDbContext>
                     {
                         if (CurrentUser!.IsAuthenticated)
                         {
+                            await CurrentUser!.EnsureDetails(cancellationToken);
                             obj1.CreatedUserId = CurrentUser!.User!.Id;
-                            obj1.CreatedUserName = CurrentUser!.User!.DisplayName;
+                            obj1.CreatedUserName = CurrentUser!.UserDetails!.DisplayName;
                         }
                         obj1.CreatedTime = CisDateTime.Now;
                     }
@@ -86,8 +87,9 @@ public abstract class BaseDbContext<TDbContext>
                     {
                         if (CurrentUser!.IsAuthenticated)
                         {
+                            await CurrentUser!.EnsureDetails(cancellationToken);
                             obj2.ModifiedUserId = CurrentUser!.User!.Id;
-                            obj2.ModifiedUserName = CurrentUser!.User!.DisplayName;
+                            obj2.ModifiedUserName = CurrentUser!.UserDetails!.DisplayName;
                         }
                     }
                     break;
@@ -97,8 +99,9 @@ public abstract class BaseDbContext<TDbContext>
                     {
                         if (CurrentUser!.IsAuthenticated)
                         {
+                            await CurrentUser!.EnsureDetails(cancellationToken);
                             obj3.ModifiedUserId = CurrentUser!.User!.Id;
-                            obj3.ModifiedUserName = CurrentUser!.User!.DisplayName;
+                            obj3.ModifiedUserName = CurrentUser!.UserDetails!.DisplayName;
                         }
                     }
                     break;

@@ -27,8 +27,6 @@ internal class ProductFormData : LoanApplicationBaseFormData
 
     public int? SalesArrangementStateId => _codebookManager.SalesArrangementStates.First(x => x.Id == SalesArrangement.State).StarbuildId;
 
-    public int ProductTypeId { get; private set; }
-
     public decimal? InterestRateDiscount => (decimal?)Offer.SimulationInputs.InterestRateDiscount * -1;
 
     public int? DrawingTypeId => _codebookManager.DrawingTypes.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingTypeId)?.StarbuildId;
@@ -45,10 +43,8 @@ internal class ProductFormData : LoanApplicationBaseFormData
 
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
-        ProductTypeId = GetProductTypeId();
+        ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(Case.Data.ProductTypeId, Offer.SimulationInputs.LoanKindId), this);
 
-        ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(ProductTypeId, Offer.SimulationInputs.LoanKindId), this);
-        
         return Task.WhenAll(base.LoadAdditionalData(cancellationToken), LoadPerformerData(cancellationToken));
     }
 
@@ -67,22 +63,6 @@ internal class ProductFormData : LoanApplicationBaseFormData
             return;
 
         PerformerUser = await _userService.GetUser(MainDynamicFormValues.PerformerUserId.Value, cancellationToken);
-    }
-
-    private int GetProductTypeId()
-    {
-        var salesArrangementType = _codebookManager.SalesArrangementTypes.FirstOrDefault(t => t.Id == SalesArrangement.SalesArrangementTypeId);
-
-        if (salesArrangementType?.ProductTypeId == null)
-            throw new InvalidOperationException(
-                $"SalesArrangementType with Id {SalesArrangement.SalesArrangementTypeId} does not exist or ProductTypeId is null.");
-
-        var productType = _codebookManager.ProductTypes.FirstOrDefault(t => t.Id == salesArrangementType.ProductTypeId.Value);
-
-        if (productType is null)
-            throw new InvalidOperationException($"ProductType with Id {salesArrangementType.ProductTypeId.Value} does not exist.");
-
-        return productType.Id;
     }
 
     private long? GetMpIdentityId()

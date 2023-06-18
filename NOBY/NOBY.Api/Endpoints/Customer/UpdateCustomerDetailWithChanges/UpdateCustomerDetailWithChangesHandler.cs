@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;

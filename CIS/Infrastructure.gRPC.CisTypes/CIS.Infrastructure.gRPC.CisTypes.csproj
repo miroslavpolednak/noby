@@ -54,4 +54,10 @@
 		<Protobuf Include="./Protos/NullableGrpcDateTime.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="CIS.Infrastructure.gRPC.CisTypes.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>

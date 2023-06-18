@@ -564,9 +564,8 @@ message SalesArrangementTypesResponse {
 	message SalesArrangementTypeItem {
 	   int32 Id = 1;
 	   string Name = 2;
-	   google.protobuf.Int32Value ProductTypeId = 3;
-	   int32 SalesArrangementCategory = 4;
-	   google.protobuf.StringValue Description = 5;
+	   int32 SalesArrangementCategory = 3;
+	   google.protobuf.StringValue Description = 4;
 	}
 }
 

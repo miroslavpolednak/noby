@@ -54,6 +54,8 @@ internal static class NobySwagger
             x.SchemaFilter<GetTaskDetailSwaggerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
+
+            x.OperationFilter<Infrastructure.Swagger.ApplySwaggerNobyAttributes>();
         });
 
         return builder;

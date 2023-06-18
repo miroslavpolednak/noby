@@ -2,6 +2,7 @@
 using DomainServices.SalesArrangementService.Clients;
 using CIS.Core;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CaseService.Clients;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangements;
 
@@ -30,7 +31,7 @@ internal sealed class GetSalesArrangementsHandler
         model.ForEach(t =>
         {
             var saType = saTypeList.FirstOrDefault(x => x.Id == t.SalesArrangementTypeId);
-            t.ProductName = productTypes.FirstOrDefault(t => t.Id == saType?.ProductTypeId)?.Name;
+            //t.ProductName = productTypes.FirstOrDefault(t => t.Id == saType?.ProductTypeId)?.Name;
             t.SalesArrangementTypeText = saType?.Name;
         });
 

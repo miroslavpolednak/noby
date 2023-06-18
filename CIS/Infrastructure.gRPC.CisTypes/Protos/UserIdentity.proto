@@ -7,6 +7,8 @@ message UserIdentity {
 	// login uzivatele
 	string identity = 1;
 
+	UserIdentitySchemes identityScheme = 2;
+
 	enum UserIdentitySchemes {
 		Unknown = 0;
 		KbUid = 4;
@@ -18,6 +20,4 @@ message UserIdentity {
 		Kbad = 10;
 		V33Id = 99;
 	}
-
-	UserIdentitySchemes identityScheme = 2;
 }

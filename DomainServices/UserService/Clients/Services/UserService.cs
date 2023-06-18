@@ -46,6 +46,26 @@ internal class UserService
             }, cancellationToken: cancellationToken);
     }
 
+    public async Task<int[]> GetUserPermissions(int userId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        // pokud bude user nalezen v kesi
+        if (_distributedCacheProvider.UseDistributedCache)
+        {
+            var cachedUser = await _distributedCacheProvider.DistributedCacheInstance!.GetAsync(Helpers.CreateUserPermissionsCacheKey(userId), cancellationToken);
+            if (cachedUser is not null)
+            {
+                return Contracts.GetUserPermissionsResponse.Parser.ParseFrom(cachedUser).UserPermissions.ToArray();
+            }
+        }
+
+        var response = await _service.GetUserPermissionsAsync(
+            new Contracts.GetUserPermissionsRequest
+            {
+                UserId = userId,
+            }, cancellationToken: cancellationToken);
+        return response.UserPermissions.ToArray();
+    }
+
     private readonly Contracts.v1.UserService.UserServiceClient _service;
     private readonly UserServiceClientCacheProvider _distributedCacheProvider;
 

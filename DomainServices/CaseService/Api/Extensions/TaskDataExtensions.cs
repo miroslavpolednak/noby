@@ -8,7 +8,14 @@ internal static class TaskDataExtensions
 
     public static decimal GetDecimal(this IReadOnlyDictionary<string, string> taskData, string key)
     {
-        return decimal.Parse(taskData[key], _czCulture);
+        if (decimal.TryParse(taskData[key], CultureInfo.InvariantCulture, out decimal d))
+        {
+            return d;
+        }
+        else
+        {
+            return decimal.Parse(taskData[key], _czCulture);
+        }
     }
 
     public static int GetInteger(this IReadOnlyDictionary<string, string> taskData, string key)
@@ -48,14 +55,14 @@ internal static class TaskDataExtensions
         => date.ToString(_czCulture);
 
     public static string ToSbFormat(this decimal d)
-        => d.ToString(_czCulture);
+        => d.ToString(CultureInfo.InvariantCulture);
 
     public static string ToSbFormat(this decimal? d)
-        => d.HasValue ? d.Value.ToString(_czCulture) : "";
+        => d.HasValue ? d.Value.ToString(CultureInfo.InvariantCulture) : "";
 
     public static string ToSbFormat(this GrpcDecimal d)
-        => ((decimal)d).ToString(_czCulture);
+        => ((decimal)d).ToString(CultureInfo.InvariantCulture);
 
     public static string ToSbFormat(this NullableGrpcDecimal d)
-        => d is null ? "" : ((decimal)d!).ToString(_czCulture);
+        => d is null ? "" : ((decimal)d!).ToString(CultureInfo.InvariantCulture);
 }

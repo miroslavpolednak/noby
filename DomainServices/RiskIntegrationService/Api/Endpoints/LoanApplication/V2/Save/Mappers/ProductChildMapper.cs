@@ -22,8 +22,8 @@ internal sealed class ProductChildMapper
             AplType = product.AplType ?? _riskApplicationType?.C4MAplTypeId,
             GlTableSelection = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "OST" : null,
             IsProductSecured = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? true : default(bool?),
-            LoanApplicationPurpose = tranformPurposes(product.Purposes, purposes, product, _riskApplicationType?.MandantId ?? 1),
-            LoanApplicationCollateral = product.Collaterals?.Select(tranformCollateral(collaterals))?.ToList(),
+            LoanApplicationPurpose = tranformPurposes(product.Purposes, purposes, product, _riskApplicationType?.MandantId),
+            LoanApplicationCollateral = product.Collaterals?.Select(tranformCollateral(collaterals, _riskApplicationType?.MandantId))?.ToList(),
             AmountRequired = product.RequiredAmount.ToAmount(),
             AmountInvestment = product.InvestmentAmount.ToAmount(),
             AmountOwnResources = product.OwnResourcesAmount.ToAmount(),
@@ -133,7 +133,7 @@ internal sealed class ProductChildMapper
             })
             .ToList();
 
-    private static Func<_V2.LoanApplicationProductCollateral, _C4M.LoanApplicationCollateral> tranformCollateral(List<CollateralTypesResponse.Types.CollateralTypeItem> collaterals)
+    private static Func<_V2.LoanApplicationProductCollateral, _C4M.LoanApplicationCollateral> tranformCollateral(List<CollateralTypesResponse.Types.CollateralTypeItem> collaterals, int? mandantId)
         => t => new _C4M.LoanApplicationCollateral
         {
             AppraisedValue = t.AppraisedValue.ToAmount(),
@@ -144,10 +144,10 @@ internal sealed class ProductChildMapper
                 Instance = Constants.KBCZ,
                 Resource = Constants.Collateral
             }.ToC4M(),
-            CategoryCode = collaterals.FirstOrDefault(x => x.CollateralType == t.CollateralType)?.CodeBgm ?? "NE"
+            CategoryCode = t.CollateralType != null ? collaterals.FirstOrDefault(x => x.CollateralType == t.CollateralType && x.MandantId == mandantId)?.CodeBgm : "NE"
         };
 
-    private static List<_C4M.LoanApplicationPurpose>? tranformPurposes(List<_V2.LoanApplicationProductPurpose>? productPurposes, List<LoanPurposesResponse.Types.LoanPurposeItem> purposes, _V2.LoanApplicationProduct product, int mandantId)
+    private static List<_C4M.LoanApplicationPurpose>? tranformPurposes(List<_V2.LoanApplicationProductPurpose>? productPurposes, List<LoanPurposesResponse.Types.LoanPurposeItem> purposes, _V2.LoanApplicationProduct product, int? mandantId)
         => (product.ProductTypeId == 20001 && product.LoanKindId == 2001)
             ? new List<_C4M.LoanApplicationPurpose> { new _C4M.LoanApplicationPurpose { Code = 35, Amount = product.RequiredAmount } }
             : productPurposes?

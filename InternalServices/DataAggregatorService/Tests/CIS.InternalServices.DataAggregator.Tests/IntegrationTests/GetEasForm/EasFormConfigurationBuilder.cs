@@ -40,6 +40,7 @@ public class EasFormConfigurationBuilder
             new() { DataFieldId = 3, DataServiceId = 11, FieldPath = "Custom.DocumentOnSa.FinalDocument.FormId" },
             new() { DataFieldId = 4, DataServiceId = 2, FieldPath = "Case.Data.ContractNumber" },
             new() { DataFieldId = 5, DataServiceId = 1, FieldPath = "SalesArrangement.CaseId" },
+            new() { DataFieldId = 6, DataServiceId = 2, FieldPath = "Case.Data.ProductTypeId" },
         });
 
         _dbContext.EasRequestTypes.Add(new EasRequestType { EasRequestTypeId = 1, EasRequestTypeName = "Service" });
@@ -59,13 +60,16 @@ public class EasFormConfigurationBuilder
         _dbContext.EasFormDataFields
                   .AddRange(new EasFormDataField { EasFormDataFieldId = 1, EasRequestTypeId = EasFormRequestType.Product.ToInt32(), EasFormTypeId = EasFormType.F3601.ToInt32(), DataFieldId = 1, JsonPropertyName = "cislo_smlouvy" },
                             new EasFormDataField { EasFormDataFieldId = 2, EasRequestTypeId = EasFormRequestType.Product.ToInt32(), EasFormTypeId = EasFormType.F3602.ToInt32(), DataFieldId = 1, JsonPropertyName = "cislo_smlouvy" },
-                            new EasFormDataField { EasFormDataFieldId = 3, EasRequestTypeId = EasFormRequestType.Product.ToInt32(), EasFormTypeId = EasFormType.F3601.ToInt32(), DataFieldId = 3, JsonPropertyName = "business_id_formulare" });
+                            new EasFormDataField { EasFormDataFieldId = 3, EasRequestTypeId = EasFormRequestType.Product.ToInt32(), EasFormTypeId = EasFormType.F3601.ToInt32(), DataFieldId = 3, JsonPropertyName = "business_id_formulare" },
+                            new EasFormDataField { EasFormDataFieldId = 4, EasRequestTypeId = EasFormRequestType.Product.ToInt32(), EasFormTypeId = EasFormType.F3601.ToInt32(), DataFieldId = 6, JsonPropertyName = "uv_produkt" });
 
         _dbContext.EasFormSpecialDataFields.Add(new EasFormSpecialDataField { EasRequestTypeId = EasFormRequestType.Product.ToInt32(), JsonPropertyName = "developer_id", DataServiceId = 3, EasFormTypeId = EasFormType.F3601.ToInt32(), FieldPath = "ConditionalFormValues.DeveloperId" });
 
+        _dbContext.InputParameters.Add(new InputParameter { InputParameterId = 1, InputParameterName = "CaseId" });
         _dbContext.InputParameters.Add(new InputParameter { InputParameterId = 3, InputParameterName = "OfferId" });
 
-        _dbContext.EasFormDynamicInputParameters.Add(new EasFormDynamicInputParameter { EasRequestTypeId = 2, InputParameterId = 3, TargetDataServiceId = 3, SourceDataFieldId = 2, EasFormTypeId = 2 });
+        _dbContext.EasFormDynamicInputParameters.Add(new EasFormDynamicInputParameter { EasRequestTypeId = EasFormRequestType.Product.ToInt32(), InputParameterId = 3, TargetDataServiceId = 3, SourceDataFieldId = 2, EasFormTypeId = EasFormType.F3601.ToInt32() });
+        _dbContext.EasFormDynamicInputParameters.Add(new EasFormDynamicInputParameter { EasRequestTypeId = EasFormRequestType.Product.ToInt32(), InputParameterId = 1, TargetDataServiceId = 2, SourceDataFieldId = 5, EasFormTypeId = EasFormType.F3601.ToInt32() });
 
         return this;
     }

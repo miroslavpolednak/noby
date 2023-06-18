@@ -23,22 +23,14 @@ internal sealed class NotifyStarbuildHandler
         // get case owner
         var ownerInstance = await _userService.GetUser(caseInstance.OwnerUserId, cancellationToken);
 
-        // vytahnout povolena SATypeId pro tento ProductTypeId
-        var allowedSaTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))
-            .Where(t => t.ProductTypeId == caseInstance.ProductTypeId)
-            .Select(t => t.Id)
-            .ToList();
-
         // get rbcid
         // zkus se kouknout, jestli to rbcid nahodou fakt neexistuje na SA - protoze kdyby jo, tak ho musime poslat do SB
         if (string.IsNullOrEmpty(request.RiskBusinessCaseId))
         {
-            var saList = await _salesArrangementService.GetSalesArrangementList(caseInstance.CaseId, cancellationToken: cancellationToken);
-            
-            request.RiskBusinessCaseId = saList
-                .SalesArrangements
-                .FirstOrDefault(t => allowedSaTypeId.Contains(t.SalesArrangementTypeId))?
-                .RiskBusinessCaseId;
+            var productSaId = await _salesArrangementService.GetProductSalesArrangementId(caseInstance.CaseId, cancellationToken);
+            var productSaInstance = await _salesArrangementService.GetSalesArrangement(productSaId, cancellationToken);
+
+            request.RiskBusinessCaseId = productSaInstance.RiskBusinessCaseId;
         }
 
         //TODO login
