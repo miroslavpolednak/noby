@@ -157,6 +157,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         entity.SalesArrangementId = request.SalesArrangementId!.Value;
         entity.HouseholdId = houseHold.HouseholdId;
         entity.SignatureMethodCode = request.SignatureMethodCode;
+        entity.SignatureTypeId = request.SignatureTypeId;
         entity.Data = JsonSerializer.Serialize(getDocumentDataResponse.DocumentData);
         entity.IsValid = true;
         entity.IsSigned = false;
