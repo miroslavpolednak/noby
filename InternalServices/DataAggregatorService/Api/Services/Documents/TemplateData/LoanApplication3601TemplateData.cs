@@ -13,7 +13,8 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
 
     protected override HouseholdInfo CurrentHousehold => HouseholdMain!;
 
-    public LoanApplication3601TemplateData(ICustomerServiceClient customerService, ICustomerOnSAServiceClient customerOnSAService) : base(customerService)
+    public LoanApplication3601TemplateData(ICustomerServiceClient customerService, ICustomerOnSAServiceClient customerOnSAService, ICustomerChangeDataMerger customerChangeDataMerger) 
+        : base(customerService, customerChangeDataMerger)
     {
         _customerOnSAService = customerOnSAService;
     }

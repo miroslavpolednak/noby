@@ -1,4 +1,5 @@
-﻿using DomainServices.CustomerService.Clients;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomerChangeData;
+using DomainServices.CustomerService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ServiceWrappers;
 
@@ -6,10 +7,12 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.S
 internal class CustomerServiceWrapper : IServiceWrapper
 {
     private readonly ICustomerServiceClient _customerService;
+    private readonly CustomerChangeDataLoader _customerChangeDataLoader;
 
-    public CustomerServiceWrapper(ICustomerServiceClient customerService)
+    public CustomerServiceWrapper(ICustomerServiceClient customerService, CustomerChangeDataLoader customerChangeDataLoader)
     {
         _customerService = customerService;
+        _customerChangeDataLoader = customerChangeDataLoader;
     }
 
     public DataSource DataSource => DataSource.CustomerService;
@@ -19,5 +22,8 @@ internal class CustomerServiceWrapper : IServiceWrapper
         input.ValidateCustomerIdentity();
 
         data.Customer = await _customerService.GetCustomerDetail(input.CustomerIdentity, cancellationToken);
+
+        if (input.SalesArrangementId.HasValue) 
+            await _customerChangeDataLoader.LoadChangedCustomerData(data.Customer, input.SalesArrangementId.Value, cancellationToken);
     }
 }
