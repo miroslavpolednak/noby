@@ -19,15 +19,18 @@ internal sealed class NativeAdLoginValidator
     {
         var opt = _options.Get(InternalServicesAuthentication.DefaultSchemeName);
 
-        var ldapConnection = new LdapConnection(new LdapDirectoryIdentifier($"ldap://{opt.AdHost}:{opt.AdPort}"));
-        ldapConnection.AuthType = AuthType.Basic;
-        ldapConnection.SessionOptions.ProtocolVersion = 3;
-        ldapConnection.SessionOptions.SecureSocketLayer = opt.IsSsl;
-        ldapConnection.SessionOptions.VerifyServerCertificate += (sender, certificate) => true;
-
         try
         {
-            ldapConnection.Bind(new System.Net.NetworkCredential($"{opt.DomainUsernamePrefix}{login}", password));
+            using (var ldapConnection = new LdapConnection($"{opt.AdHost}:{opt.AdPort}"))
+            {
+                ldapConnection.AuthType = AuthType.Negotiate;
+                ldapConnection.SessionOptions.ProtocolVersion = 3;
+                ldapConnection.SessionOptions.SecureSocketLayer = opt.IsSsl;
+                ldapConnection.SessionOptions.VerifyServerCertificate += (sender, certificate) => true;
+
+                ldapConnection.Bind(new System.Net.NetworkCredential(login, password, "vsskb.cz"));
+            }
+
             return Task.FromResult(true);
         }
         catch (Exception err)
