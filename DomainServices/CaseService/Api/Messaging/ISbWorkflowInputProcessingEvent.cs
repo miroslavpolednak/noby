@@ -8,7 +8,7 @@ namespace DomainServices.CaseService.Api.Messaging
     }
 }
 
-namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
+namespace cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1
 {
     public partial class CaseStateChanged_ProcessingCompleted : ISbWorkflowInputProcessingEvent
     {

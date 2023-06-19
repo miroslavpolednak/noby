@@ -6,7 +6,7 @@ using Microsoft.Extensions.Caching.Distributed;
 namespace DomainServices.CaseService.Api.Messaging.CaseStateChangedProcessingCompleted;
 
 internal sealed class CaseStateChanged_ProcessingCompletedConsumer
-    : IConsumer<cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.CaseStateChanged_ProcessingCompleted>
+    : IConsumer<cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1.CaseStateChanged_ProcessingCompleted>
 {
     private readonly CaseServiceDbContext _dbContext;
     private readonly IDistributedCache _distributedCache;
@@ -19,7 +19,7 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
         _logger = logger;
     }
 
-    public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.CaseStateChanged_ProcessingCompleted> context)
+    public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1.CaseStateChanged_ProcessingCompleted> context)
     {
         var cache = await _distributedCache.GetObjectAsync<SharedDto.CaseStateChangeRequestId>($"CaseStateChanged_{context.Message.workflowInputProcessingContext.requestId}");
         if (cache is null)
@@ -37,7 +37,7 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
             return;
         }
 
-        if (context.Message.workflowInputProcessingContext.requestProcessingResult == cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.RequestProcessingResultEnum.OK)
+        if (context.Message.workflowInputProcessingContext.requestProcessingResult == cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1.RequestProcessingResultEnum.OK)
         {
             entity.StateUpdatedInStarbuild = (byte)Contracts.UpdatedInStarbuildStates.Ok;
 
