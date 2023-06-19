@@ -4,7 +4,7 @@ using MassTransit;
 namespace DomainServices.CaseService.Api.Messaging.MainLoanProcessChanged;
 
 internal sealed class MainLoanProcessChangedConsumer
-    : IConsumer<cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.MainLoanProcessChanged>
+    : IConsumer<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.MainLoanProcessChanged>
 {
     private readonly CaseServiceDbContext _dbContext;
     private readonly ILogger<MainLoanProcessChangedConsumer> _logger;
@@ -15,12 +15,12 @@ internal sealed class MainLoanProcessChangedConsumer
         _logger = logger;
     }
 
-    public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.MainLoanProcessChanged> context)
+    public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.MainLoanProcessChanged> context)
     {
         var state = context.Message.state switch
         {
-            cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.ProcessStateEnum.TERMINATED => 7,
-            cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.ProcessStateEnum.COMPLETED => 6,
+            cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.TERMINATED => 7,
+            cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED => 6,
             _ => context.Message.processData.@private.mainLoanProcessData.processPhase.code
         };
 

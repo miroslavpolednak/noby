@@ -8,7 +8,7 @@ namespace DomainServices.CaseService.Api.Messaging
     }
 }
 
-namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1
+namespace cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1
 {
     public partial class MainLoanProcessChanged : ISbWorkflowProcessEvent
     {
