@@ -90,8 +90,8 @@ internal sealed class IdentifiedSubjectService
             {
                 ResidenceCountries = request.NaturalPerson?.TaxResidence?.ResidenceCountries?.Select(x => new ExternalServices.Kyc.V1.Contracts.TaxResidenceCountry
                 {
-                    Tin = x.Tin,
-                    TinMissingReasonDescription = x.TinMissingReasonDescription,
+                    Tin = x.Tin.ToCMString(),
+                    TinMissingReasonDescription = x.TinMissingReasonDescription.ToCMString(),
                     CountryCode = _countries.FirstOrDefault(c => c.Id == x.CountryId)?.ShortName
                 }).ToList(),
                 ValidFrom = request.NaturalPerson!.TaxResidence.ValidFrom
@@ -179,7 +179,7 @@ internal sealed class IdentifiedSubjectService
             Surname = naturalPerson.LastName,
             GenderCode = FastEnum.Parse<__Contracts.NaturalPersonAttributesGenderCode>(_genders.First(g => g.Id == naturalPerson.GenderId).KbCmCode, true),
             BirthDate = naturalPerson.DateOfBirth,
-            Title = _titles.FirstOrDefault(t => t.Id == naturalPerson.DegreeBeforeId)?.Name,
+            Title = _titles.FirstOrDefault(t => t.Id == naturalPerson.DegreeBeforeId)?.Name?.ToUpperInvariant(),
             CzechBirthNumber = naturalPerson.BirthNumber.ToCMString(),
             CitizenshipCodes = citizenshipCodes.Any() ? citizenshipCodes : null,
             BirthCountryCode = _countries.FirstOrDefault(c => c.Id == naturalPerson.BirthCountryId)?.ShortName,
