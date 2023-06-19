@@ -1,0 +1,48 @@
+﻿using Microsoft.Extensions.Options;
+using System.DirectoryServices.Protocols;
+
+namespace CIS.Infrastructure.Security.LoginValidator;
+
+internal sealed class NativeAdLoginValidator
+    : ILoginValidator
+{
+    private readonly ILogger<ILoginValidator> _logger;
+    private IOptionsMonitor<CisServiceAuthenticationOptions> _options;
+
+    public NativeAdLoginValidator(ILogger<ILoginValidator> logger, IOptionsMonitor<CisServiceAuthenticationOptions> options)
+    {
+        _options = options;
+        _logger = logger;
+    }
+
+    public Task<bool> Validate(string login, string password)
+    {
+        var opt = _options.Get(InternalServicesAuthentication.DefaultSchemeName);
+
+        var ldapConnection = new LdapConnection(new LdapDirectoryIdentifier($"ldap://{opt.AdHost}:{opt.AdPort}"));
+        ldapConnection.AuthType = AuthType.Basic;
+        ldapConnection.SessionOptions.ProtocolVersion = 3;
+        ldapConnection.SessionOptions.SecureSocketLayer = opt.IsSsl;
+        ldapConnection.SessionOptions.VerifyServerCertificate += (sender, certificate) => true;
+
+        try
+        {
+            ldapConnection.Bind(new System.Net.NetworkCredential($"{opt.DomainUsernamePrefix}{login}", password));
+            return Task.FromResult(true);
+        }
+        catch (Exception err)
+        {
+            using (_logger.BeginScope(new Dictionary<string, object>
+            {
+                { "AdHost", opt.AdHost ?? "" },
+                { "AdPort", opt.AdPort },
+                { "DomainUsernamePrefix", opt.DomainUsernamePrefix ?? "" },
+                { "Password", password }
+            }))
+            {
+                _logger.AdConnectionFailed(login, err);
+            }
+            return Task.FromResult(false);
+        }
+    }
+}

@@ -1,6 +1,7 @@
 ﻿using CIS.Infrastructure.Security.ContextUser;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using DomainServices;
+using CIS.Infrastructure.Security.LoginValidator;
 
 namespace CIS.Infrastructure.Security;
 
@@ -40,6 +41,9 @@ public static class StartupExtensions
                 break;
             case Configuration.CisServiceAuthenticationConfiguration.LoginValidators.ActiveDirectory:
                 builder.Services.TryAddSingleton<ILoginValidator, AdLoginValidator>();
+                break;
+            case Configuration.CisServiceAuthenticationConfiguration.LoginValidators.NativeActiveDirectory:
+                builder.Services.TryAddSingleton<ILoginValidator, NativeAdLoginValidator>();
                 break;
             default:
                 throw new System.Security.Authentication.AuthenticationException($"Unknown LoginValidator {c.Validator}");

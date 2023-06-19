@@ -8,6 +8,7 @@ public sealed class CisServiceAuthenticationConfiguration
     public enum LoginValidators
     {
         ActiveDirectory,
+        NativeActiveDirectory,
         StaticCollection
     }
 
