@@ -23,6 +23,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             DocumentTypeId = request.DocumentTypeId,
             SalesArrangementId = request.SalesArrangementId,
             SignatureMethodCode = request.SignatureMethodCode,
+            SignatureTypeId = request.SignatureTypeId
         }, cancellationToken);
 
         return await MapToResponse(result, cancellationToken);
