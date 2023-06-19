@@ -28,4 +28,9 @@ public sealed class CisServiceAuthenticationConfiguration
     /// Port na domenovem serveru, vychozi je 389
     /// </summary>
     public int? AdPort { get; set; } = 389;
+
+    /// <summary>
+    /// True pokud se jedna o SSL connection
+    /// </summary>
+    public bool IsSsl { get; set; }
 }

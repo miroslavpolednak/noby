@@ -52,6 +52,7 @@ public static class StartupExtensions
                 options.DomainUsernamePrefix = c.DomainUsernamePrefix;
                 options.AdHost = c.AdHost;
                 options.AdPort = c.AdPort ?? 0;
+                options.IsSsl = c.IsSsl;
             });
 
         builder.Services.AddAuthorization();

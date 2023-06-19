@@ -50,6 +50,11 @@
             Port na domenovem serveru, vychozi je 389
             </summary>
         </member>
+        <member name="P:CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.IsSsl">
+            <summary>
+            True pokud se jedna o SSL connection
+            </summary>
+        </member>
         <member name="M:CIS.Infrastructure.Security.CisServiceAuthenticationHandler.authenticateUser(System.String,System.String)">
             <summary>
             Autentizace uzivatele proti AD
@@ -70,6 +75,11 @@
         <member name="P:CIS.Infrastructure.Security.CisServiceAuthenticationOptions.AdPort">
             <summary>
             Port na domenovem serveru, vychozi je 389
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Security.CisServiceAuthenticationOptions.IsSsl">
+            <summary>
+            True pokud se jedna o SSL connection
             </summary>
         </member>
         <member name="T:CIS.Infrastructure.Security.AuthHeaderParser">

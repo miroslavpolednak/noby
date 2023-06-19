@@ -25,6 +25,7 @@ internal sealed class AdLoginValidator : ILoginValidator
         {
             using (var cn = new LdapConnection())
             {
+                cn.SecureSocketLayer = opt.IsSsl;
                 await cn.ConnectAsync(opt.AdHost, opt.AdPort);
                 await cn.BindAsync($"{opt.DomainUsernamePrefix}{login}", password);
 
