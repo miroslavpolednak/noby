@@ -29,7 +29,7 @@ internal sealed class AdLoginValidator
                 cn.UserDefinedServerCertValidationDelegate += new RemoteCertificateValidationCallback((sender, certificate, chain, errors) => true);
                 cn.SecureSocketLayer = opt.IsSsl;
                 await cn.ConnectAsync(opt.AdHost, opt.AdPort);
-                await cn.BindAsync($"{opt.DomainUsernamePrefix}{login}", password);
+                await cn.BindAsync($"{opt.Domain}\\{login}", password);
 
                 return cn.Bound;
             }
@@ -40,7 +40,7 @@ internal sealed class AdLoginValidator
             {
                 { "AdHost", opt.AdHost ?? "" },
                 { "AdPort", opt.AdPort },
-                { "DomainUsernamePrefix", opt.DomainUsernamePrefix ?? "" },
+                { "Domain", opt.Domain ?? "" },
                 { "Password", password }
             }))
             {

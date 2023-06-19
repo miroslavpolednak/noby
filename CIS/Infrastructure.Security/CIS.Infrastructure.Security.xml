@@ -34,10 +34,9 @@
             Konfigurace autentizace doménové služby
             </summary>
         </member>
-        <member name="P:CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.DomainUsernamePrefix">
+        <member name="P:CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.Domain">
             <summary>
-            Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb\"
-            Pozor, musi byt vcetne \ na konci
+            Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb.cz"
             </summary>
         </member>
         <member name="P:CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.AdHost">
@@ -61,7 +60,7 @@
             </summary>
             <returns>True pokud se podarilo overit username/password</returns>
         </member>
-        <member name="P:CIS.Infrastructure.Security.CisServiceAuthenticationOptions.DomainUsernamePrefix">
+        <member name="P:CIS.Infrastructure.Security.CisServiceAuthenticationOptions.Domain">
             <summary>
             Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb\"
             Pozor, musi byt vcetne \ na konci

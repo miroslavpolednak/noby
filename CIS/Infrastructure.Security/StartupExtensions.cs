@@ -53,7 +53,7 @@ public static class StartupExtensions
             .AddAuthentication(InternalServicesAuthentication.DefaultSchemeName)
             .AddScheme<CisServiceAuthenticationOptions, CisServiceAuthenticationHandler>(InternalServicesAuthentication.DefaultSchemeName, options =>
             {
-                options.DomainUsernamePrefix = c.DomainUsernamePrefix;
+                options.Domain = c.Domain;
                 options.AdHost = c.AdHost;
                 options.AdPort = c.AdPort ?? 0;
                 options.IsSsl = c.IsSsl;

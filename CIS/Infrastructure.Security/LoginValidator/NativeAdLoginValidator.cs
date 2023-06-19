@@ -28,7 +28,7 @@ internal sealed class NativeAdLoginValidator
                 ldapConnection.SessionOptions.SecureSocketLayer = opt.IsSsl;
                 ldapConnection.SessionOptions.VerifyServerCertificate += (sender, certificate) => true;
 
-                ldapConnection.Bind(new System.Net.NetworkCredential(login, password, "vsskb.cz"));
+                ldapConnection.Bind(new System.Net.NetworkCredential(login, password, opt.Domain));
             }
 
             return Task.FromResult(true);
@@ -39,7 +39,7 @@ internal sealed class NativeAdLoginValidator
             {
                 { "AdHost", opt.AdHost ?? "" },
                 { "AdPort", opt.AdPort },
-                { "DomainUsernamePrefix", opt.DomainUsernamePrefix ?? "" },
+                { "Domain", opt.Domain ?? "" },
                 { "Password", password }
             }))
             {

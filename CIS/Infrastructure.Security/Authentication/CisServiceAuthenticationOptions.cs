@@ -9,7 +9,7 @@ public sealed class CisServiceAuthenticationOptions
     /// Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb\"
     /// Pozor, musi byt vcetne \ na konci
     /// </summary>
-    public string? DomainUsernamePrefix { get; set; } = "vsskb\\";
+    public string? Domain { get; set; } = "vsskb";
 
     /// <summary>
     /// Adresa domenoveho serveru

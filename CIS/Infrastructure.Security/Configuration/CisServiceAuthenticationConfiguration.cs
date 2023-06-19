@@ -15,10 +15,9 @@ public sealed class CisServiceAuthenticationConfiguration
     public LoginValidators Validator { get; set; } = LoginValidators.ActiveDirectory;
 
     /// <summary>
-    /// Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb\"
-    /// Pozor, musi byt vcetne \ na konci
+    /// Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb.cz"
     /// </summary>
-    public string? DomainUsernamePrefix { get; set; }
+    public string? Domain { get; set; }
 
     /// <summary>
     /// Adresa domenoveho serveru
