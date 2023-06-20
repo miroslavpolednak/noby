@@ -13,8 +13,8 @@ Base = declarative_base()
 
 URLS = {
     "dev_url": "https://ds-notification-dev.vsskb.cz:30016",
+    "fat_url": "https://ds-notification-fat.vsskb.cz:31016",
     "sit_url": "https://ds-notification-sit1.vsskb.cz:32016",
-    "fat_url": "https://ds-notification-sit1.vsskb.cz:31016",
     "uat_url": "https://ds-notification-uat.vsskb.cz:33016",
 }
 
