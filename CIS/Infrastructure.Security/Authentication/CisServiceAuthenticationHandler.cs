@@ -48,7 +48,7 @@ internal sealed class CisServiceAuthenticationHandler
 
         if (!loginResult.Success) // nepodarilo se parsovat login a heslo
             return AuthenticateResult.Fail(loginResult.ErrorMessage!);
-        else if (!await authenticateUser(loginResult.Login!, loginResult.Password!)) // nepodarila se autentizace proti AD
+        else if (!await authenticateUser(loginResult.Login!, loginResult.Password!)) // nepodarila se autentizace
             return AuthenticateResult.Fail("Login or password incorrect");
         else
         {

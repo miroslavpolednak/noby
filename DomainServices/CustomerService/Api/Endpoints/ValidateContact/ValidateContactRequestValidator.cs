@@ -6,14 +6,14 @@ internal sealed class ValidateContactRequestValidator : AbstractValidator<Valida
 {
     public ValidateContactRequestValidator()
     {
-        RuleFor(request => request.ContactType)
-            .NotEmpty()
-                .WithMessage("ContactType required.")
-                .WithErrorCode("0");
-
         RuleFor(request => request.Contact)
             .NotEmpty()
-                .WithMessage("ContactType required.")
-                .WithErrorCode("0");
+                .WithMessage("Contact must not be empty.")
+                .WithErrorCode("11031");
+        
+        RuleFor(request => request.ContactType)
+            .NotEmpty()
+                .WithMessage("ContactType must not be empty.")
+                .WithErrorCode("11032");
     }
 }

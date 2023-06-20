@@ -9,7 +9,7 @@ public sealed class CisServiceAuthenticationOptions
     /// Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb\"
     /// Pozor, musi byt vcetne \ na konci
     /// </summary>
-    public string? DomainUsernamePrefix { get; set; } = "vsskb\\";
+    public string? Domain { get; set; } = "vsskb";
 
     /// <summary>
     /// Adresa domenoveho serveru
@@ -20,4 +20,9 @@ public sealed class CisServiceAuthenticationOptions
     /// Port na domenovem serveru, vychozi je 389
     /// </summary>
     public int AdPort { get; set; } = 389;
+
+    /// <summary>
+    /// True pokud se jedna o SSL connection
+    /// </summary>
+    public bool IsSsl { get; set; }
 }
