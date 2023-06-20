@@ -22,7 +22,8 @@ internal sealed class ValidateContactHandler: IRequestHandler<ValidateContactReq
     private static ValidateContactResponse Map(DomainServices.CustomerService.Contracts.ValidateContactResponse response) => new()
     {
         IsContactValid = response.IsContactValid,
-        ContactType = Map(response.ContactType)
+        ContactType = Map(response.ContactType),
+        IsMobile = response.IsMobile
     };
     
     private static ContactType Map(Dto.ContactType contactType) => contactType switch

@@ -10,4 +10,9 @@ public sealed class ValidateContactResponse
     public bool IsContactValid { get; set; } 
     
     public ContactType ContactType { get; set; }
+    
+    /// <summary>
+    /// Je to mobilní číslo?
+    /// </summary>
+    public bool? IsMobile { get; set; }
 }
