@@ -3,18 +3,18 @@ using DomainServices.ProductService.Contracts;
 
 namespace DomainServices.ProductService.Clients.Services;
 
-internal class ProductService : IProductServiceClient
+internal sealed class ProductServiceClient : IProductServiceClient
 {
 
     #region Construction
 
-    private readonly ILogger<ProductService> _logger;
+    private readonly ILogger<ProductServiceClient> _logger;
     private readonly Contracts.v1.ProductService.ProductServiceClient _service;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
-    public ProductService(
+    public ProductServiceClient(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        ILogger<ProductService> logger,
+        ILogger<ProductServiceClient> logger,
         Contracts.v1.ProductService.ProductServiceClient service)
     {
         _userAccessor = userAccessor;

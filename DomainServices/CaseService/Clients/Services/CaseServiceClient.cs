@@ -3,7 +3,7 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Clients.Services;
 
-internal sealed class CaseService
+internal sealed class CaseServiceClient
     : ICaseServiceClient
 {
     public async Task<bool> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default(CancellationToken))
@@ -164,6 +164,6 @@ internal sealed class CaseService
     }
 
     private readonly Contracts.v1.CaseService.CaseServiceClient _service;
-    public CaseService(Contracts.v1.CaseService.CaseServiceClient service)
+    public CaseServiceClient(Contracts.v1.CaseService.CaseServiceClient service)
         => _service = service;
 }
