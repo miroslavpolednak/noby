@@ -1,6 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Clients;
+using DomainServices.SalesArrangementService.Clients;
 using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
@@ -58,6 +59,9 @@ internal sealed class CreateCustomerHandler
         // nas customer
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
 
+        // SA
+        var saInstance = await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken);
+
         // update customerOnSA. Dostanu nove PartnerId
         var updateResponse = await _customerOnSAService.UpdateCustomer(customerOnSA.ToUpdateRequest(customerKb), cancellationToken);
 
@@ -66,28 +70,42 @@ internal sealed class CreateCustomerHandler
             .ToResponseDto(isVerified)
             .InputDataComparison(request);
 
-        // pokud je vse OK, zalozit customera v konsDb
-        try
+        if (customerOnSA.CustomerRoleId == (int)CustomerRoles.Debtor)
         {
-            await _customerService.CreateCustomer(request.ToDomainService(Mandants.Mp, new Identity(updateResponse.PartnerId!.Value, IdentitySchemes.Mp), new Identity(kbId, IdentitySchemes.Kb)), cancellationToken);
+            var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, customerOnSA.SalesArrangementId, request.CustomerOnSAId, updateResponse.CustomerIdentifiers);
+            await _mediator.Publish(notification, cancellationToken);
         }
-        catch (Exception ex)
+        else
         {
-            _logger.LogInformation("Can not create customer in KonsDB", ex);
+            // pokud je vse OK, zalozit customera v konsDb
+            try
+            {
+                await _customerService.CreateCustomer(request.ToDomainService(Mandants.Mp, new Identity(updateResponse.PartnerId!.Value, IdentitySchemes.Mp), new Identity(kbId, IdentitySchemes.Kb)), cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation("Can not create customer in KonsDB", ex);
+            }
         }
 
         return model;
     }
 
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IMediator _mediator;
     private readonly ILogger<CreateCustomerHandler> _logger;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ICustomerServiceClient _customerService;
 
     public CreateCustomerHandler(
+        ISalesArrangementServiceClient salesArrangementService,
+        IMediator mediator,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         ICustomerServiceClient customerService,
         ILogger<CreateCustomerHandler> logger)
     {
+        _salesArrangementService = salesArrangementService;
+        _mediator = mediator;
         _customerOnSAService = customerOnSAService;
         _customerService = customerService;
         _logger = logger;
