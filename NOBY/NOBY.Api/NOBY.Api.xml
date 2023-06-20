@@ -1404,6 +1404,11 @@
             Kolekce nalezenych klientu.
             </summary>
         </member>
+        <member name="T:NOBY.Api.Endpoints.Customer.ValidateContact.Dto.ContactType">
+            <summary>
+            Typ kontatku
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactRequest.Contact">
             <summary>
             telefonní číslo s mezinárodní předvolbou nebo email
@@ -1413,6 +1418,11 @@
         <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactResponse.IsContactValid">
             <summary>
             Je kontakt validni?
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactResponse.IsMobile">
+            <summary>
+            Je to mobilní číslo?
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Shared.BaseCustomerDetail.LegalCapacity">
