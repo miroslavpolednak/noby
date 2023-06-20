@@ -16,6 +16,11 @@ URLS = {
     "fat_url": "https://ds-notification-fat.vsskb.cz:31016",
     "sit_url": "https://ds-notification-sit1.vsskb.cz:32016",
     "uat_url": "https://ds-notification-uat.vsskb.cz:33016",
+
+    "dev_url_discovery": "https://ds-discovery-dev.vsskb.cz:30011",
+    "fat_url_discovery": "https://ds-discovery-fat.vsskb.cz:31011",
+    "sit_url_discovery": "https://ds-discovery-sit1.vsskb.cz:32011",
+    "uat_url_discovery": "https://ds-discovery-uat.vsskb.cz:33011"
 }
 
 
