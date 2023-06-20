@@ -15,6 +15,7 @@ public class CustomerObligationController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="obligationId">ID závazku ke smazani</param>
     [HttpDelete("{customerOnSAId:int}/obligation/{obligationId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -33,6 +34,7 @@ public class CustomerObligationController : ControllerBase
     /// <see cref="Dto.ObligationFullDto"/>
     /// </returns>
     [HttpGet("{customerOnSAId:int}/obligation/{obligationId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(typeof(Dto.ObligationFullDto), StatusCodes.Status200OK)]
@@ -49,6 +51,7 @@ public class CustomerObligationController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="obligationId">ID závazku</param>
     [HttpPut("{customerOnSAId:int}/obligation/{obligationId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -64,6 +67,7 @@ public class CustomerObligationController : ControllerBase
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     [HttpPost("{customerOnSAId:int}/obligation")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]

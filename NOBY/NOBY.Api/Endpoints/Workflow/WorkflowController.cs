@@ -35,6 +35,7 @@ public class WorkflowController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/tasks/{taskId:int}/cancel")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -105,6 +106,7 @@ public class WorkflowController : ControllerBase
     /// </remarks>
     /// <response code="404">Task or case not found</response>
     [HttpPut("{caseId:long}/tasks/{taskId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
