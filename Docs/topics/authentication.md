@@ -79,9 +79,9 @@ Aktuálně podporujeme dva režimy autentizace technického uživatele:
 // autentizace na AD
 "CisSecurity": {
   "ServiceAuthentication": {
-    "Validator": "ActiveDirectory",
-    "DomainUsernamePrefix": "vsskb\\",
-    "AdHost": "vsskb.cz"
+    "Validator": "NativeActiveDirectory",
+    "Domain": "vsskb.cz",
+    "AdHost": "vsskb.cz","AdPort": 636,"IsSsl": true
   }
 }
 ```
