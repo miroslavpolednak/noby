@@ -143,6 +143,170 @@
         }
       }
     },
+    "/api/case/{caseId}/real-estate-valuations": {
+      "get": {
+        "tags": ["Real Estate Valuation"],
+        "summary": "Získání seznamu Ocenění nemovitostí",
+        "description": "Operace vrací seznam všech ocenění nemovitostí k danému case ID. Seznam je sloučením ocenění objektů úvěru ze žádosti o úvěr a manuálně zadaných dalších objektů zajištění. Operace nevrací objednávky ocenění, které nevznikly v Noby. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0DCD023D-ACF8-4744-B198-FE4FC2A84223\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetRealEstateValuationList",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Real Estate Valuation"],
+        "summary": "Založení Ocenění nemovitosti",
+        "description": "Operace založí nové Ocenění nemovitosti k danému case ID. Jde buď o založení Ocenění nemovitosti k objektu úvěru ze žádosti o úvěr nebo o manuální založení dalšího objektu zajištění. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5A275F67-67AC-4851-8FE9-51F2B685B990\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "CreateRealEstateValuation",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Atributy zakládaného nového Ocenění nemovitosti",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/case/{caseId}/real-estate-valuations/{realEstateValuationId}": {
+      "delete": {
+        "tags": ["Real Estate Valuation"],
+        "summary": "Smazání Ocenění nemovitosti",
+        "description": "Smazání Ocenění konkrétní nemovitosti ještě před odesláním do ACV. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=6525504B-D598-4113-AA2A-846571769C40\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "DeleteRealEstateValuation",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "realEstateValuationId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Real Estate Valuation"],
+        "summary": "Patch developera Ocenění nemovitosti",
+        "description": "Patch Ocenění konkrétní nemovitosti ještě před odesláním do ACV. Patch updatuje nastavení developer toggle na objektu Ocenění nemovitosti. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "PatchDeveloperOnRealEstateValuation",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "realEstateValuationId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Editované atributy a jejich nové hodnoty",
+          "content": {
+            "application/merge-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NOBY.Api.Endpoints.RealEstateValuation.PatchRealEstateValuationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/api/case/{caseId}/customers": {
       "get": {
         "tags": ["Case"],
@@ -2102,6 +2266,47 @@
           },
           "404": {
             "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview": {
+      "post": {
+        "tags": ["Document"],
+        "summary": "Odeslání náhledu klientovi",
+        "description": "Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "SenDocumentPreview",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "documentOnSAId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -6282,18 +6487,18 @@
         "description": "Tento objekt je relevantní pouze pro kritérium 1 (číslo úvěrového účtu).",
         "properties": {
           "prefix": {
+            "maxLength": 6,
             "type": "string",
             "description": "Prefix čísla úvěrového účtu, podle kterého se má vyhledávat",
             "nullable": true,
-            "example": "43",
-            "maxLength": 6
+            "example": "43"
           },
           "number": {
+            "maxLength": 10,
+            "minLength": 3,
             "type": "string",
             "description": "Core čísla úvěrového účtu, podle kterého se má vyhledávat",
-            "example": "9105464622",
-            "minLength": 3,
-            "maxLength": 10
+            "example": "9105464622"
           }
         },
         "additionalProperties": false
@@ -9484,6 +9689,206 @@
         },
         "additionalProperties": false
       },
+      "NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationRequest": {
+        "type": "object",
+        "required": ["realEstateTypeId"],
+        "properties": {
+          "realEstateTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "ID typu nemovitosti",
+            "example": 1
+          },
+          "isLoanRealEstate": {
+            "type": "boolean",
+            "description": "True pokud jde o nemovitost, která je objektem úvěru",
+            "example": true,
+            "nullable": true
+          },
+          "developerApplied": {
+            "type": "boolean",
+            "description": "True pokud je aplikované hromadné ocenění z developerského projektu",
+            "example": false,
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Atributy k nově zakládanému Ocenění nemovitosti"
+      },
+      "NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationResponse": {
+        "type": "object",
+        "properties": {
+          "realEstateValuationId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "description": "ID Ocenění nemovitosti v Noby",
+            "example": 3456
+          }
+        },
+        "additionalProperties": false,
+        "description": "ID nově založeného Ocenění nemovitosti v Noby"
+      },
+      "NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationListResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/NOBY.Dto.RealEstateValuation.RealEstateValuationListItem"
+        }
+      },
+      "NOBY.Dto.RealEstateValuation.RealEstateValuationListItem": {
+        "type": "object",
+        "required": [
+          "caseId",
+          "realEstateTypeId",
+          "realEstateTypeName",
+          "valuationStateId",
+          "valuationStateName",
+          "valuationStateIndicator",
+          "isLoanRealEstate",
+          "valuationTypeId",
+          "developerAllowed",
+          "developerApplied"
+        ],
+        "properties": {
+          "realEstateValuationId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "description": "ID Ocenění nemovitosti v Noby",
+            "example": 3456
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "description": "Číslo objednávky ocenění",
+            "example": 123455
+          },
+          "caseId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID obchodního případu (caseId)",
+            "example": 304556
+          },
+          "realEstateTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "ID typu nemovitosti",
+            "example": 1
+          },
+          "realEstateTypeName": {
+            "type": "string",
+            "description": "Název typu nemovitosti",
+            "example": "Rodinný dům, vila"
+          },
+          "valuationStateId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "ID stavu Ocenění nemovitosti",
+            "example": 8
+          },
+          "valuationStateIndicator": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [0, 1, 2, 3, 4, 5, 6],
+            "description": "Indikátor stavu Ocenění nemovitosti, 0 - Unknown, 1 - Active, 2 - Cancelled, 3 - OK, 4 - Passive, 5 - Warning, 6 - Initial",
+            "example": 4
+          },
+          "valuationStateName": {
+            "type": "string",
+            "description": "Název stavu Ocenění nemovitosti",
+            "example": "Probíhá ocenění"
+          },
+          "isLoanRealEstate": {
+            "type": "boolean",
+            "description": "True pokud jde o nemovitost, která je objektem úvěru",
+            "example": true
+          },
+          "realEstateStateName": {
+            "type": "string",
+            "nullable": true,
+            "description": "Název stavu nemovitosti",
+            "example": "V rekonstrukci"
+          },
+          "valuationTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [0, 1, 2, 3],
+            "description": "Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard",
+            "example": "DTS"
+          },
+          "address": {
+            "type": "string",
+            "nullable": true,
+            "description": "Adresa nemovitosti",
+            "example": "Novákovo nábřeží 1972, 521 71 Žďár nad Sázavou"
+          },
+          "valuationSentDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "Datum odeslání žádosti o Ocenění nemovitosti",
+            "example": "31.12.2023"
+          },
+          "valuationResultCurrentPrice": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "description": "Současná cena nemovitosti v Kč",
+            "example": 3000000
+          },
+          "valuationResultFuturePrice": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "description": "Budoucí cena nemovitosti v Kč",
+            "example": 3250000
+          },
+          "isRevaluationRequired": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "True pokud je potřeba kontrolní ocenění",
+            "example": false
+          },
+          "developerAllowed": {
+            "type": "boolean",
+            "description": "Informace o tom, zda byl na modelaci použit developer a zda je možné využít hromadné ocenění.",
+            "example": true
+          },
+          "developerApplied": {
+            "type": "boolean",
+            "description": "True pokud je aplikované hromadné ocenění z developerského projektu",
+            "example": false
+          }
+        },
+        "additionalProperties": false,
+        "description": "Objednávka ocenění: přehledové údaje"
+      },
+      "NOBY.Api.Endpoints.RealEstateValuation.PatchRealEstateValuationRequest": {
+        "type": "object",
+        "properties": {
+          "developerApplied": {
+            "type": "boolean",
+            "description": "True pokud je aplikované hromadné ocenění z developerského projektu",
+            "example": false
+          }
+        },
+        "additionalProperties": false,
+        "description": "Editovatelné atributy Ocenění nemovitosti"
+      },
+      "NOBY.Api.Endpoints.RealEstateValuation.PatchRealEstateValuationResponse": {
+        "type": "object",
+        "properties": {
+          "realEstateValuationId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "ID Ocenění nemovitosti v Noby",
+            "example": 3456
+          }
+        },
+        "additionalProperties": false,
+        "description": "ID Ocenění nemovitosti v Noby u kterého proběhl úspěšný patch atributů."
+      },
       "NOBY.Api.Endpoints.SalesArrangement.Dto.Collateral": {
         "required": ["isActive"],
         "type": "object",
@@ -11973,7 +12378,7 @@
       "NOBY.Dto.Workflow.Fee": {
         "type": "object",
         "properties": {
-          "feeId": {
+          "feeName": {
             "type": "string",
             "description": "Název poplatku",
             "example": "Zpracování žádosti"
@@ -12150,9 +12555,9 @@
             "example": 1
           },
           "stateIndicator": {
-            "enum": [0, 1, 2, 3],
+            "enum": [0, 1, 2, 3, 4, 5, 6],
             "type": "integer",
-            "description": "Indikátor barvy Noby stavu\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Active</li><li>2 - Cancelled</li><li>3 - Ok</li></ul>",
+            "description": "Indikátor barvy Noby stavu\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Active</li><li>2 - Cancelled</li><li>3 - Ok</li><li>4 - Passive</li><li>5 - Warning</li><li>6 - Initial</li></ul>",
             "format": "int32",
             "example": 1
           }
