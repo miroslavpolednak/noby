@@ -36,7 +36,7 @@ internal sealed class CreateCustomerHandler
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11025")
         {
             _logger.LogInformation("CreateCustomer: registry failed", ex);
-            throw new CisValidationException(90007, "KBCM_NOT_FOUND_IN_BR");
+            throw new NobyValidationException(90007, "KBCM_NOT_FOUND_IN_BR");
         }
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11026")
         {
