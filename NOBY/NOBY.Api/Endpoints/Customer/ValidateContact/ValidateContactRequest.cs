@@ -12,6 +12,10 @@ public sealed class ValidateContactRequest : IRequest<ValidateContactResponse>
     [Required]
     public string Contact { get; set; } = null!;
     
+    /// <summary>
+    /// Typ kontatku
+    /// </summary>
+    /// <example>1</example>
     [Required]
     public ContactType ContactType { get; set; }
 }
