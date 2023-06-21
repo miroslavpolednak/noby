@@ -12,5 +12,5 @@ message CreateRealEstateValuationRequest {
 }
 
 message CreateRealEstateValuationResponse {
-    int32 NobyOrderId = 1;
+    int32 RealEstateValuationId = 1;
 }

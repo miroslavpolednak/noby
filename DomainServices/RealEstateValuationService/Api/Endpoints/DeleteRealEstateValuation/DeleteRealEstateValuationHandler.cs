@@ -8,8 +8,8 @@ internal sealed class DeleteRealEstateValuationHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.RealEstateValuations.FirstOrDefaultAsync(t => t.RealEstateValuationId == request.NobyOrderId, cancellationToken)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.NobyOrderId);
+        var entity = await _dbContext.RealEstateValuations.FirstOrDefaultAsync(t => t.RealEstateValuationId == request.RealEstateValuationId, cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.RealEstateValuationId);
 
         // ulozit do DB
         _dbContext.RealEstateValuations.Remove(entity);

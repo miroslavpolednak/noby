@@ -5,7 +5,7 @@ namespace NOBY.Api.Endpoints.Product;
 
 [ApiController]
 [Route("api/product")]
-public class ProductController : ControllerBase
+public sealed class ProductController : ControllerBase
 {
     private readonly IMediator _mediator;
     public ProductController(IMediator mediator) => _mediator = mediator;

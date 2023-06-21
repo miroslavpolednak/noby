@@ -8,7 +8,7 @@ internal sealed class DeleteRealEstateValuationHandlerRequestValidator
 {
     public DeleteRealEstateValuationHandlerRequestValidator()
     {
-        RuleFor(t => t.NobyOrderId)
+        RuleFor(t => t.RealEstateValuationId)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.RealEstateValuationIdEmpty);
     }

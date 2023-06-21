@@ -8,15 +8,15 @@ internal sealed class RealEstateValuationServiceClient
     public async Task<int> CreateRealEstateValuation(CreateRealEstateValuationRequest request, CancellationToken cancellationToken = default)
     {
         var result = await _service.CreateRealEstateValuationAsync(request, cancellationToken: cancellationToken);
-        return result.NobyOrderId;
+        return result.RealEstateValuationId;
     }
 
-    public async Task DeleteRealEstateValuation(long caseId, int nobyOrderId, CancellationToken cancellationToken = default)
+    public async Task DeleteRealEstateValuation(long caseId, int realEstateValuationId, CancellationToken cancellationToken = default)
     {
         await _service.DeleteRealEstateValuationAsync(new DeleteRealEstateValuationRequest
         {
             CaseId = caseId,
-            NobyOrderId = nobyOrderId
+            RealEstateValuationId = realEstateValuationId
         }, cancellationToken: cancellationToken);
     }
 

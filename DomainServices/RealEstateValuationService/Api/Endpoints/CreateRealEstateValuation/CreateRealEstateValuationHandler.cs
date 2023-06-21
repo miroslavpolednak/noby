@@ -11,7 +11,7 @@ internal sealed class CreateRealEstateValuationHandler
 
         return new CreateRealEstateValuationResponse
         {
-            NobyOrderId = 1
+            RealEstateValuationId = 1
         };
     }
 
