@@ -134,12 +134,14 @@ internal sealed class CustomerManagementDetailProvider
         // tax residence countries
         if (customer.TaxResidence?.ResidenceCountries?.Any() ?? false)
         {
-            person.TaxResidence.ResidenceCountries.AddRange(customer.TaxResidence.ResidenceCountries.Select(t => new NaturalPersonResidenceCountry
-            {
-                CountryId = _countries.FirstOrDefault(c => c.ShortName == t.CountryCode)?.Id,
-                Tin = t.Tin,
-                TinMissingReasonDescription = t.TinMissingReasonDescription
-            }));
+            person.TaxResidence.ResidenceCountries
+                  .AddRange(customer.TaxResidence.ResidenceCountries
+                                    .Select(t => new NaturalPersonResidenceCountry
+                                    {
+                                        CountryId = _countries.FirstOrDefault(c => c.ShortName == t.CountryCode)?.Id,
+                                        Tin = t.Tin,
+                                        TinMissingReasonDescription = t.TinMissingReasonDescription
+                                    }).OrderByDescending(t => t.CountryId == 16));
         }
 
         if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())

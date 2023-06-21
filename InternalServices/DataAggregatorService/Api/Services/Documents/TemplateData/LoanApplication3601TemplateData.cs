@@ -1,7 +1,6 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.LoanApplication;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
-using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
@@ -13,8 +12,7 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
 
     protected override HouseholdInfo CurrentHousehold => HouseholdMain!;
 
-    public LoanApplication3601TemplateData(ICustomerServiceClient customerService, ICustomerOnSAServiceClient customerOnSAService, ICustomerChangeDataMerger customerChangeDataMerger) 
-        : base(customerService, customerChangeDataMerger)
+    public LoanApplication3601TemplateData(CustomerWithChangesService customerWithChangesService, ICustomerOnSAServiceClient customerOnSAService) : base(customerWithChangesService)
     {
         _customerOnSAService = customerOnSAService;
     }

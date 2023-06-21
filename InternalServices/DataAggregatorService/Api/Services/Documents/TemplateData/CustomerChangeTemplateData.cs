@@ -1,23 +1,19 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
-using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomerChangeData;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.CustomerChange;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
-using DomainServices.CustomerService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
 
 [TransientService, SelfService]
 internal class CustomerChangeTemplateData : AggregatedData
 {
-    private readonly ICustomerServiceClient _customerService;
-    private readonly CustomerChangeDataLoader _customerChangeDataLoader;
+    private readonly CustomerWithChangesService _customerService;
 
     private IList<CustomerInfo> _customerDetails = null!;
 
-    public CustomerChangeTemplateData(ICustomerServiceClient customerService, CustomerChangeDataLoader customerChangeDataLoader)
+    public CustomerChangeTemplateData(CustomerWithChangesService customerService)
     {
         _customerService = customerService;
-        _customerChangeDataLoader = customerChangeDataLoader;
     }
 
     public CustomerInfo Customer1 => GetCustomerInfo(1)!;
@@ -86,9 +82,7 @@ internal class CustomerChangeTemplateData : AggregatedData
     {
         var customerIdentities = SalesArrangement.CustomerChange.Applicants.Select(a => a.Identity).ToList();
 
-        var customers = (await _customerService.GetCustomerList(customerIdentities, cancellationToken)).Customers;
-
-        await _customerChangeDataLoader.LoadChangedCustomerData(customers, SalesArrangement.SalesArrangementId, cancellationToken);
+        var customers = await _customerService.GetCustomerList(customerIdentities, SalesArrangement.SalesArrangementId, cancellationToken);
 
         _customerDetails = customers.Select(customer => new CustomerInfo(customer, _codebookManager.DegreesBefore, _codebookManager.Countries)).ToList();
     }

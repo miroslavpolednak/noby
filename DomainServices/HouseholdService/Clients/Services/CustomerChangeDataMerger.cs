@@ -11,12 +11,24 @@ namespace DomainServices.HouseholdService.Clients.Services;
 
 public class CustomerChangeDataMerger : ICustomerChangeDataMerger
 {
-    public void Merge(CustomerDetailResponse customer, CustomerOnSA customerOnSA)
+    public void MergeAll(CustomerDetailResponse customer, CustomerOnSA customerOnSA)
     {
-        if (string.IsNullOrWhiteSpace(customerOnSA.CustomerChangeData))
+        var delta = GetCustomerChangeDataDelta(customerOnSA);
+
+        if (delta is null)
             return;
 
-        var delta = JsonSerializer.Deserialize<CustomerChangeDataDelta>(customerOnSA.CustomerChangeData);
+        RewriteWithDelta(customer.NaturalPerson, delta.NaturalPerson);
+        RewriteWithDelta(customer.NaturalPerson?.TaxResidence, delta.NaturalPerson?.TaxResidences);
+        RewriteWithDelta(customer.Addresses, delta.Addresses);
+        RewriteWithDelta(customer.Contacts, delta.MobilePhone, delta.EmailAddress);
+
+        customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
+    }
+
+    public void MergeClientData(CustomerDetailResponse customer, CustomerOnSA customerOnSA)
+    {
+        var delta = GetCustomerChangeDataDelta(customerOnSA);
 
         if (delta is null)
             return;
@@ -25,8 +37,25 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
         RewriteWithDelta(customer.Addresses, delta.Addresses);
         RewriteWithDelta(customer.Contacts, delta.MobilePhone, delta.EmailAddress);
 
-        customer.NaturalPerson.TaxResidence = MapDeltaToTaxResidence(delta.NaturalPerson?.TaxResidences) ?? customer.NaturalPerson.TaxResidence;
         customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
+    }
+
+    public void MergeTaxResidence(NaturalPersonTaxResidence? taxResidence, CustomerOnSA customerOnSA)
+    {
+        if (taxResidence is null)
+            return;
+
+        var delta = GetCustomerChangeDataDelta(customerOnSA)?.NaturalPerson?.TaxResidences;
+
+        RewriteWithDelta(taxResidence, delta);
+    }
+
+    private static CustomerChangeDataDelta? GetCustomerChangeDataDelta(CustomerOnSA customerOnSA)
+    {
+        if (string.IsNullOrWhiteSpace(customerOnSA.CustomerChangeData))
+            return default;
+
+        return JsonSerializer.Deserialize<CustomerChangeDataDelta>(customerOnSA.CustomerChangeData);
     }
 
     private static void RewriteWithDelta(NaturalPerson naturalPerson, NaturalPersonDelta? delta)
@@ -107,15 +136,13 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
             contacts.Add(emailAddress);
     }
 
-    private static NaturalPersonTaxResidence? MapDeltaToTaxResidence(NaturalPersonDelta.TaxResidenceDelta? delta)
+    private static void RewriteWithDelta(NaturalPersonTaxResidence? taxResidence, NaturalPersonDelta.TaxResidenceDelta? delta)
     {
-        if (delta is null)
-            return default;
+        if (taxResidence is null || delta is null)
+            return;
 
-        var taxResidence = new NaturalPersonTaxResidence
-        {
-            ValidFrom = delta.ValidFrom
-        };
+        taxResidence.ValidFrom = delta.ValidFrom;
+        taxResidence.ResidenceCountries.Clear();
 
         if (delta.ResidenceCountries is not null)
         {
@@ -124,10 +151,8 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
                 CountryId = r.CountryId,
                 Tin = r.Tin,
                 TinMissingReasonDescription = r.TinMissingReasonDescription
-            }));
+            }).OrderByDescending(t => t.CountryId == 16));
         }
-
-        return taxResidence;
     }
 
     private static IdentificationDocument? MapDeltaToIdentificationDocument(IdentificationDocumentDelta? delta)

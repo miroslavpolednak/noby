@@ -142,7 +142,7 @@ internal class HouseholdData
         {
             var customerDetail = _customers[GetCustomerId(customerOnSA)];
 
-            _customerChangeDataMerger.Merge(customerDetail, customerOnSA);
+            _customerChangeDataMerger.MergeAll(customerDetail, customerOnSA);
 
             yield return new Customer(customerOnSA, customerDetail)
             {
