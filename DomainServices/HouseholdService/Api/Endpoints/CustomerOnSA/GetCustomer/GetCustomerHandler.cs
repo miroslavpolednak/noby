@@ -26,7 +26,8 @@ internal sealed class GetCustomerHandler
             CustomerRoleId = (int)entity.CustomerRoleId,
             LockedIncomeDateTime = entity.LockedIncomeDateTime,
             MaritalStatusId = entity.MaritalStatusId,
-            CustomerChangeData = entity.ChangeData
+            CustomerChangeData = entity.ChangeData,
+            CustomerChangeMetadata = CustomerChangeMetadata.Parser.ParseFrom(entity.ChangeMetadataBin)
         };
 
         if (entity.AdditionalDataBin != null)

@@ -20,6 +20,12 @@ internal sealed class UpdateCustomerDetailHandler
         entity.AdditionalDataBin = request.CustomerAdditionalData == null ? null : request.CustomerAdditionalData.ToByteArray();
         // change data
         entity.ChangeData = request.CustomerChangeData;
+        // change metadata
+        if (request.CustomerChangeMetadata is not null)
+        {
+            entity.ChangeMetadata = Newtonsoft.Json.JsonConvert.SerializeObject(request.CustomerChangeMetadata);
+            entity.ChangeMetadataBin = request.CustomerChangeMetadata.ToByteArray();
+        }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
