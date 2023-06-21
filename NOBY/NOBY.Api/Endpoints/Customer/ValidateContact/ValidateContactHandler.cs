@@ -31,7 +31,7 @@ internal sealed class ValidateContactHandler: IRequestHandler<ValidateContactReq
         Dto.ContactType.Unknown => ContactType.Unknown,
         Dto.ContactType.Phone => ContactType.Phone,
         Dto.ContactType.Email => ContactType.Email,
-        _ => throw new ArgumentException()
+        _ => throw new CisValidationException(11033, "ContactType has unexpected value.")
     };
     
     private static Dto.ContactType Map(ContactType contactType) => contactType switch
