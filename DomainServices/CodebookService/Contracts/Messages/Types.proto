@@ -311,6 +311,7 @@ message GetDeveloperProjectResponse {
 	google.protobuf.StringValue Recommandation = 7;
 	google.protobuf.StringValue Place = 8;
 	bool IsValid = 9;
+	int32 MassEvaluation = 10;
 }
 
 message GetGeneralDocumentListResponse {

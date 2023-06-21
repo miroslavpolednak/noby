@@ -9,6 +9,10 @@ public sealed class ValidateContactResponse
     /// </summary>
     public bool IsContactValid { get; set; } 
     
+    /// <summary>
+    /// Typ kontatku
+    /// </summary>
+    /// <example>1</example>
     public ContactType ContactType { get; set; }
     
     /// <summary>
