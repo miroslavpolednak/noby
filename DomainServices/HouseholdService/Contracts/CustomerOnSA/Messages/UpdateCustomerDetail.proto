@@ -4,6 +4,7 @@ option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "Messages/CustomerAdditionalData.proto";
+import "Messages/CustomerChangeMetadata.proto";
 
 message UpdateCustomerDetailRequest {
     int32 CustomerOnSAId = 1;
@@ -11,5 +12,7 @@ message UpdateCustomerDetailRequest {
     CustomerAdditionalData CustomerAdditionalData = 2;
 
     google.protobuf.StringValue CustomerChangeData = 3;
+
+    CustomerChangeMetadata CustomerChangeMetadata = 4;
 }
 

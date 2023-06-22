@@ -9,6 +9,7 @@ import "NullableGrpcDateTime.proto";
 import "Messages/Obligation.proto";
 import "Messages/IncomeInList.proto";
 import "Messages/CustomerAdditionalData.proto";
+import "Messages/CustomerChangeMetadata.proto";
 
 message CustomerOnSA {
     int32 CustomerOnSAId = 1;
@@ -36,4 +37,6 @@ message CustomerOnSA {
     CustomerAdditionalData CustomerAdditionalData = 13;
 
     google.protobuf.StringValue CustomerChangeData = 14;
+
+    CustomerChangeMetadata CustomerChangeMetadata = 15;
 }
