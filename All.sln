@@ -200,7 +200,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\external-services-rest.md = Docs\topics\external-services-rest.md
 		Docs\topics\external-services-soap.md = Docs\topics\external-services-soap.md
 		Docs\topics\external-services.md = Docs\topics\external-services.md
-		Docs\topics\feapi-authorization.md = Docs\topics\feapi-authorization.md
 		Docs\topics\feapi-error-handling.md = Docs\topics\feapi-error-handling.md
 		Docs\topics\grpc-service-startup.md = Docs\topics\grpc-service-startup.md
 		Docs\topics\grpc-services-api.md = Docs\topics\grpc-services-api.md
@@ -321,7 +320,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00007-PCP.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00007-PCP.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00008-HFICH-5177_CustomerManagementV2.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00008-HFICH-5177_CustomerManagementV2.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00009-HFICH-6050_MpHome.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00009-HFICH-6050_MpHome.sql
-		InternalServices\ServiceDiscovery\DatabaseMigrations\00010-HFICH-4705_ContactsV1.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00010-HFICH-4705_ContactsV1.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7}"
@@ -1434,7 +1432,7 @@ Global
 		{74B9DC89-6BBD-486B-9931-D097E67B2240} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 		{20605836-F726-489B-A0C6-BD9F34182CC3} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
 		{2DDF5C65-4751-48A4-A79D-EC209AD02E57} = {20605836-F726-489B-A0C6-BD9F34182CC3}
-		{B25C9B74-74A9-4443-91E4-3739743AD41E} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
+		{AFACD1D2-6FCA-4210-9AA7-D5601BB7EC63} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

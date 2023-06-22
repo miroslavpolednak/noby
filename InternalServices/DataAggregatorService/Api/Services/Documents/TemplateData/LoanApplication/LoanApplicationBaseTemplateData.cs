@@ -3,20 +3,20 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
-using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
+using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.LoanApplication;
 
 internal abstract class LoanApplicationBaseTemplateData : AggregatedData
 {
-    private readonly ICustomerServiceClient _customerService;
+    private readonly CustomerWithChangesService _customerWithChangesService;
 
     protected abstract HouseholdInfo CurrentHousehold { get; }
 
-    protected LoanApplicationBaseTemplateData(ICustomerServiceClient customerService)
+    protected LoanApplicationBaseTemplateData(CustomerWithChangesService customerWithChangesService)
     {
-        _customerService = customerService;
+        _customerWithChangesService = customerWithChangesService;
     }
 
     public LoanApplicationCustomer Customer1 { get; private set; } = null!;
@@ -49,21 +49,21 @@ internal abstract class LoanApplicationBaseTemplateData : AggregatedData
 
     private async Task SetDebtorAndCodebtorData(Identity identity1, Identity? identity2, CancellationToken cancellationToken)
     {
-        var response = await _customerService.GetCustomerList(new[] { identity1, identity2 }.Where(identity => identity is not null).Cast<Identity>(), cancellationToken);
+        var customers = await _customerWithChangesService.GetCustomerList(new[] { CurrentHousehold.CustomerOnSa1, CurrentHousehold.CustomerOnSa2 }.OfType<CustomerOnSA>(), cancellationToken);
 
-        Customer1 = CreateCustomer(identity1.IdentityId);
+        Customer1 = CreateCustomer(GetDetail(identity1.IdentityId));
         Customer1Income = new LoanApplicationIncome(CurrentHousehold.CustomerOnSa1!);
         Customer1Obligation = new LoanApplicationObligation(CurrentHousehold.CustomerOnSa1!);
 
         if (identity2 is not null)
         {
-            Customer2 = CreateCustomer(identity2.IdentityId);
+            Customer2 = CreateCustomer(GetDetail(identity2.IdentityId));
             Customer2Income = new LoanApplicationIncome(CurrentHousehold.CustomerOnSa2!);
             Customer2Obligation = new LoanApplicationObligation(CurrentHousehold.CustomerOnSa2!);
         }
 
-        LoanApplicationCustomer CreateCustomer(long id) => new(GetDetail(id), _codebookManager.DegreesBefore, _codebookManager.Countries, _codebookManager.IdentificationDocumentTypes, _codebookManager.EducationLevels);
-        CustomerDetailResponse GetDetail(long id) => response.Customers.First(c => c.Identities.Any(i => i.IdentityId == id));
+        LoanApplicationCustomer CreateCustomer(CustomerDetailResponse customer) => new(customer, _codebookManager.DegreesBefore, _codebookManager.Countries, _codebookManager.IdentificationDocumentTypes, _codebookManager.EducationLevels);
+        CustomerDetailResponse GetDetail(long id) => customers.First(c => c.Identities.Any(i => i.IdentityId == id && i.IdentityScheme == Identity.Types.IdentitySchemes.Kb));
     }
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)

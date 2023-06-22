@@ -6,10 +6,12 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.S
 internal class CustomerServiceWrapper : IServiceWrapper
 {
     private readonly ICustomerServiceClient _customerService;
+    private readonly CustomerWithChangesService _customerWithChangesService;
 
-    public CustomerServiceWrapper(ICustomerServiceClient customerService)
+    public CustomerServiceWrapper(ICustomerServiceClient customerService, CustomerWithChangesService customerWithChangesService)
     {
         _customerService = customerService;
+        _customerWithChangesService = customerWithChangesService;
     }
 
     public DataSource DataSource => DataSource.CustomerService;
@@ -18,6 +20,13 @@ internal class CustomerServiceWrapper : IServiceWrapper
     {
         input.ValidateCustomerIdentity();
 
-        data.Customer = await _customerService.GetCustomerDetail(input.CustomerIdentity, cancellationToken);
+        if (input.SalesArrangementId.HasValue)
+        {
+            data.Customer = await _customerWithChangesService.GetCustomerDetail(input.CustomerIdentity, input.SalesArrangementId.Value, cancellationToken);
+        }
+        else
+        {
+            data.Customer = await _customerService.GetCustomerDetail(input.CustomerIdentity, cancellationToken);
+        }
     }
 }
