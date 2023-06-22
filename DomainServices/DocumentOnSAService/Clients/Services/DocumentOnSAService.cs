@@ -67,4 +67,9 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
     {
         return await _client.GetElectronicDocumentFromQueueAsync(request, cancellationToken: cancellationToken);
     }
+
+    public async Task SetDocumentOnSAArchived(SetDocumentOnSAArchivedRequest request, CancellationToken cancellationToken = default)
+    {
+        await _client.SetDocumentOnSAArchivedAsync(request, cancellationToken: cancellationToken);
+    }
 }

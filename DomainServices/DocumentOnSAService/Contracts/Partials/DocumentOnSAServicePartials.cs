@@ -24,3 +24,5 @@ public partial class GetElectronicDocumentFromQueueRequest : IRequest<GetElectro
 
 public partial class GetElectronicDocumentPreviewRequest : IRequest<GetElectronicDocumentPreviewResponse>, CIS.Core.Validation.IValidatableRequest { }
 
+public partial class SetDocumentOnSAArchivedRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
+
