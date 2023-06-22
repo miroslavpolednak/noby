@@ -28,6 +28,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("document/template/offer/sales-arrangement/{salesArrangementId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -55,6 +56,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
     [HttpGet("document/template/calculation/offer/{offerId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -75,6 +77,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
     [HttpGet("document/template/payment-schedule/offer/{offerId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -95,6 +98,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("document/template/drawing/sales-arrangement/{salesArrangementId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -116,6 +120,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("document/template/general-change/sales-arrangement/{salesArrangementId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -137,6 +142,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("document/template/HUBN/sales-arrangement/{salesArrangementId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -160,6 +166,7 @@ public class DocumentController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("document/template/customer-change/sales-arrangement/{salesArrangementId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -181,6 +188,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("document/template/loan-application/main-household/sales-arrangement/{salesArrangementId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -202,6 +210,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("document/template/loan-application/codebtor-household/sales-arrangement/{salesArrangementId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -223,6 +232,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("document/template/approach-customer-3602/sales-arrangement/{salesArrangementId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -244,6 +254,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("document/template/remain-customer-3602/sales-arrangement/{salesArrangementId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -265,6 +276,7 @@ public class DocumentController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("document/template/add-codebtor-3602/sales-arrangement/{salesArrangementId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]

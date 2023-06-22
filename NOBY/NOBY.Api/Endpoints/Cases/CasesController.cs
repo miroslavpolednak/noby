@@ -20,6 +20,7 @@ public class CasesController : ControllerBase
     /// Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
     /// </remarks>
     [HttpPost("{caseId:long}/sales-arrangement")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]

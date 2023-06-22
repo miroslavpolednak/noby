@@ -31,6 +31,7 @@ public class SalesArrangementController : ControllerBase
     /// <i>DS:</i> SalesArrangementService/validateSalesArrangement
     /// </remarks>
     [HttpGet("{salesArrangementId:int}/validate")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(ValidateSalesArrangement.ValidateSalesArrangementResponse), StatusCodes.Status200OK)]
@@ -48,6 +49,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID</param>
     [HttpDelete("{salesArrangementId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -152,6 +154,7 @@ public class SalesArrangementController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=18E19FC4-9238-4249-B43E-A26A9FBBC32C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/parameters")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -169,6 +172,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
     [HttpPost("{salesArrangementId:int}/send")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -200,6 +204,7 @@ public class SalesArrangementController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/comment")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
