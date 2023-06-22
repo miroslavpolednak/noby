@@ -66,7 +66,7 @@ internal sealed class CreateTaskHandler
     private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, CancellationToken cancellationToken)
     {
         var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
-        var saInstance = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
+        var saInstance = await _salesArrangementService.GetSalesArrangement(saId.SalesArrangementId, cancellationToken);
         if (!saInstance.OfferId.HasValue)
         {
             throw new NobyValidationException($"OfferId is null for SalesArrangementId={saId}");

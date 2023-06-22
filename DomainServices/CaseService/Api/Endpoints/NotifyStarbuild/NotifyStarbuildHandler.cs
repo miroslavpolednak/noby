@@ -28,7 +28,7 @@ internal sealed class NotifyStarbuildHandler
         if (string.IsNullOrEmpty(request.RiskBusinessCaseId))
         {
             var productSaId = await _salesArrangementService.GetProductSalesArrangement(caseInstance.CaseId, cancellationToken);
-            var productSaInstance = await _salesArrangementService.GetSalesArrangement(productSaId, cancellationToken);
+            var productSaInstance = await _salesArrangementService.GetSalesArrangement(productSaId.SalesArrangementId, cancellationToken);
 
             request.RiskBusinessCaseId = productSaInstance.RiskBusinessCaseId;
         }

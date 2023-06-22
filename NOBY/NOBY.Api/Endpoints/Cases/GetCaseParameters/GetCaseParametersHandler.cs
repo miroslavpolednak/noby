@@ -81,7 +81,7 @@ internal sealed class GetCaseParametersHandler
 
         // load SalesArrangement
         var salesArrangementId = await _salesArrangementService.GetProductSalesArrangement(caseInstance.CaseId, cancellation);
-        var salesArrangementInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation);
+        var salesArrangementInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId.SalesArrangementId, cancellation);
 
         // load Offer
         var offerId = salesArrangementInstance?.OfferId;
