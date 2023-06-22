@@ -22,7 +22,11 @@ internal class CustomerServiceWrapper : IServiceWrapper
 
         if (input.SalesArrangementId.HasValue)
         {
-            data.Customer = await _customerWithChangesService.GetCustomerDetail(input.CustomerIdentity, input.SalesArrangementId.Value, cancellationToken);
+            var (customer, customerOnSA) = await _customerWithChangesService.GetCustomerDetail(input.CustomerIdentity, input.SalesArrangementId.Value, cancellationToken);
+
+            data.Customer = customer;
+            data.CustomerOnSA = customerOnSA;
+
         }
         else
         {

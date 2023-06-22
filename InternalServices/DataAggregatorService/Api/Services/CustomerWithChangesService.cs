@@ -20,7 +20,7 @@ public class CustomerWithChangesService
         _customerChangeDataMerger = customerChangeDataMerger;
     }
 
-    public async Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<(CustomerDetailResponse customer, CustomerOnSA? customerOnSA)> GetCustomerDetail(Identity identity, int salesArrangementId, CancellationToken cancellationToken)
     {
         var customer = await _customerService.GetCustomerDetail(identity, cancellationToken);
         var customerOnSaList = await _customerOnSAService.GetCustomerList(salesArrangementId, cancellationToken);
@@ -30,7 +30,7 @@ public class CustomerWithChangesService
         if (customerOnSa is not null)
             _customerChangeDataMerger.MergeAll(customer, customerOnSa);
 
-        return customer;
+        return (customer, customerOnSa);
     }
 
     public async Task<IList<CustomerDetailResponse>> GetCustomerList(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)

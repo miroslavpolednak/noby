@@ -399,6 +399,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00025-ServiceCustomerChange3602_RemovedOfferIdParameter.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00025-ServiceCustomerChange3602_RemovedOfferIdParameter.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00026-HFICH-6338_Service3602_ContractNumber_FromCase.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00026-HFICH-6338_Service3602_ContractNumber_FromCase.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00027-Offer_GeneralChange_fixes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00027-Offer_GeneralChange_fixes.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00028-HFICH-6502_ProductTypeId.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00028-HFICH-6502_ProductTypeId.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00029-HFICH-4098_TaxResidency.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00029-HFICH-4098_TaxResidency.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -1427,7 +1429,6 @@ Global
 		{74B9DC89-6BBD-486B-9931-D097E67B2240} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 		{20605836-F726-489B-A0C6-BD9F34182CC3} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
 		{2DDF5C65-4751-48A4-A79D-EC209AD02E57} = {20605836-F726-489B-A0C6-BD9F34182CC3}
-		{AFACD1D2-6FCA-4210-9AA7-D5601BB7EC63} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}
