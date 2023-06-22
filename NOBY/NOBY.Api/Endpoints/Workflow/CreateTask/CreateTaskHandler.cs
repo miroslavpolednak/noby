@@ -65,7 +65,7 @@ internal sealed class CreateTaskHandler
 
     private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, CancellationToken cancellationToken)
     {
-        var saId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
+        var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
         var saInstance = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
         if (!saInstance.OfferId.HasValue)
         {

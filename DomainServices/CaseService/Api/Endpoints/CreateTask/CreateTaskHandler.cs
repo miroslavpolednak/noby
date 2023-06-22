@@ -58,7 +58,7 @@ internal sealed class CreateTaskHandler
     {
         if (request.TaskTypeId == 2)
         {
-            var saId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
+            var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
             await _salesArrangementService.SetFlowSwitches(saId, new()
             {
                 new() { FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist, Value = false }

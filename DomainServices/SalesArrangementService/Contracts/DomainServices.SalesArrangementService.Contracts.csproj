@@ -16,7 +16,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Messages\GetProductSalesArrangementId.proto" />
+	  <None Remove="Messages\GetProductSalesArrangement.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -35,7 +35,7 @@
 	<ItemGroup>
 		<Protobuf Include="SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 
-		<Protobuf Include="Messages\GetProductSalesArrangementId.proto" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\GetProductSalesArrangement.proto" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Parameters\SalesArrangementParametersCustomerChange3602.proto" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Parameters\SalesArrangementParametersCustomerChange.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Parameters/SalesArrangementParametersHUBN.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />

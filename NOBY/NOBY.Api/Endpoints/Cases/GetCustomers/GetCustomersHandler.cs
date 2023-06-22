@@ -21,7 +21,7 @@ internal sealed class GetCustomersHandler
 
         if (caseInstance.State == (int)CIS.Foms.Enums.CaseStates.InProgress)
         {
-            var saId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
+            var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
             // z parameters nacist Agent
             var saDetail = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
             

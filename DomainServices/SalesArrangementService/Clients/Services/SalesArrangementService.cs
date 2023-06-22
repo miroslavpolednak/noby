@@ -5,9 +5,9 @@ namespace DomainServices.SalesArrangementService.Clients.Services;
 internal sealed class SalesArrangementService 
     : ISalesArrangementServiceClient
 {
-    public async Task<int> GetProductSalesArrangementId(long caseId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<int> GetProductSalesArrangement(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        return (await _service.GetProductSalesArrangementIdAsync(
+        return (await _service.GetProductSalesArrangementAsync(
             new()
             {
                 CaseId = caseId,
