@@ -40,8 +40,8 @@ internal sealed class WorkflowMapperService
             ProcessNameShort = task.ProcessNameShort,
             StateId = taskState.Id,
             StateName = taskState.Name,
-            StateFilter = Enum.Parse<_Dto.StateFilters>(taskState.Filter, true),
-            StateIndicator = Enum.Parse<_Dto.StateIndicators>(taskState.Indicator, true)
+            StateFilter = (_Dto.StateFilters)taskState.Filter,
+            StateIndicator = (_Dto.StateIndicators)taskState.Indicator
         };
     }
 
