@@ -21,7 +21,7 @@ public class SetDocumentOnSAArchivedHandler : IRequestHandler<SetDocumentOnSAArc
                                                .FirstOrDefaultAsync(cancellationToken)
                                                ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
         
-        if (documentOnSa.SignatureTypeId == (int)SignatureTypes.Electronic)
+        if (documentOnSa.SignatureTypeId is not null && documentOnSa.SignatureTypeId == (int)SignatureTypes.Electronic)
         {
             // ToDo call SubmitDispatchForm (This method is't ready yet)
         }
