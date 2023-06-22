@@ -404,6 +404,12 @@ service CodebookService {
 		};
    }
 
+   rpc RealEstateStates (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/real-estate-states"
+		};
+   }
+
    rpc RealEstateTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/real-estate-types"
