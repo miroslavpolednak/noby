@@ -17,6 +17,26 @@ internal class HUBNTemplateData : AggregatedData
 
     public IEnumerable<string> LoanRealEstates => GetLoanRealEstates();
 
+    public string DrawingDateToText
+    {
+        get
+        {
+            if (SalesArrangement.HUBN.DrawingDateTo?.IsActive != true || SalesArrangement.HUBN.DrawingDateTo.ExtensionDrawingDateToByMonths <= 0)
+                return "--";
+
+            var monthText = SalesArrangement.HUBN.DrawingDateTo.ExtensionDrawingDateToByMonths!.Value switch
+            {
+                1 => "měsíc",
+                2 or 3 or 4 => "měsíce",
+                _ => "měsíců"
+            };
+
+            var agreedDrawingToText = ((DateTime)SalesArrangement.HUBN.DrawingDateTo.AgreedDrawingDateTo).ToString("d", CultureProvider.GetProvider());
+
+            return $"o {SalesArrangement.HUBN.DrawingDateTo.ExtensionDrawingDateToByMonths} {monthText} od původní lhůty čerpání {agreedDrawingToText}";
+        }
+    }
+
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
         configurator.Countries().DegreesBefore().LoanPurposes().RealEstateTypes().PurchaseTypes();

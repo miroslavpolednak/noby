@@ -28,7 +28,7 @@ internal class DrawingTemplateData : AggregatedData
     {
         get
         {
-            if (SalesArrangement.Drawing.RepaymentAccount is null)
+            if (SalesArrangement.Drawing.RepaymentAccount?.IsAccountNumberMissing != true)
                 return string.Empty;
 
             var account = SalesArrangement.Drawing.RepaymentAccount;
