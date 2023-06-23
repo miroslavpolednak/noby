@@ -297,6 +297,12 @@
             </summary>
             <example>01_23_046_111203_SF_0001</example>
         </member>
+        <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.DocumentForSigningType">
+            <summary>
+            Podepisování: Typ dokumentu k podpisu. D pro úvěrovou smlouvu, A pro zástavní smlouvu.
+            </summary>
+            <example>A</example>
+        </member>
         <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.ProposalForEntry">
             <summary>
             Podepisování: ID dokumentu návrhu na vklad
