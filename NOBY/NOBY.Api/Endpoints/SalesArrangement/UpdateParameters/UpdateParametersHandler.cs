@@ -32,9 +32,7 @@ internal sealed class UpdateParametersHandler
                         {
                             throw new NobyValidationException(90019);
                         }
-                        
                         updateRequest.Mortgage = o1.ToDomainService();
-
                     }
                     break;
 
@@ -102,27 +100,26 @@ internal sealed class UpdateParametersHandler
             
             await _salesArrangementService.UpdateSalesArrangementState(request.SalesArrangementId, (int)SalesArrangementStates.InProgress, cancellationToken);
         }
+        else
+        {
+            // nastavit flowSwitch ParametersSavedAtLeastOnce pouze pro NE servisni SA
+            await setFlowSwitches(saInstance, cancellationToken);
+        }
         
         // update SA
         await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken);
-
-        // nastavit flowSwitch ParametersSavedAtLeastOnce pouze pro NE servisni SA
-        await setFlowSwitches(saInstance, cancellationToken);
     }
 
     private async Task setFlowSwitches(_SA.SalesArrangement saInstance, CancellationToken cancellationToken)
     {
-        if ((await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == saInstance.SalesArrangementTypeId)?.SalesArrangementCategory == 1)
+        await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
         {
-            await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
+            new()
             {
-                new()
-                {
-                    FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce,
-                    Value = true
-                }
-            }, cancellationToken);
-        }
+                FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce,
+                Value = true
+            }
+        }, cancellationToken);
     }
 
     static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
