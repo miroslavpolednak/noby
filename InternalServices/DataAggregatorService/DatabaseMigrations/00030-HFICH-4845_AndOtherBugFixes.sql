@@ -48,7 +48,7 @@ INSERT INTO DynamicStringFormatCondition VALUES (111, 'True', 205)
 
 UPDATE DocumentDataField SET DefaultTextIfNull = '--' WHERE DocumentDataFieldId = 152
 
-UPDATE DocumentDataField SET StringFormat = 'Tuto žádost prijal {0}.' + CHAR(13) + CHAR(10) +'Přijetí této žádosti není její akceptací Komerční bankou, a.s.' WHERE DocumentDataFieldId = 165
+UPDATE DocumentDataField SET StringFormat = 'Tuto žádost prijal {0}.' + CHAR(13) + CHAR(10) +'Přijetí této žádosti není její akceptací Komerční bankou, a.s.', TextAlign = 1 WHERE DocumentDataFieldId = 165
 
 --HFICH-4785 ODSTOUP
 INSERT INTO Document VALUES (15, 'ODSTOUP')
