@@ -26,8 +26,8 @@ internal sealed class GetCurrentPriceExceptionHandler
         }
         else
         {
-            var productSAId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
-            var offer = await _offerService.GetMortgageOfferDetail(productSAId, cancellationToken);
+            var productSA = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+            var offer = await _offerService.GetMortgageOfferDetail(productSA.OfferId.GetValueOrDefault(), cancellationToken);
             var process = (await _caseService.GetProcessList(request.CaseId, cancellationToken)).FirstOrDefault(t => t.ProcessTypeId == 1);
             string? taskTypeName = (await _codebookService.WorkflowTaskTypes(cancellationToken)).FirstOrDefault(t => t.Id == 2)?.Name;
             var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);

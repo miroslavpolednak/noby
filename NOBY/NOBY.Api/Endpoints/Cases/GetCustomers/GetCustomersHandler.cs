@@ -21,12 +21,12 @@ internal sealed class GetCustomersHandler
 
         if (caseInstance.State == (int)CIS.Foms.Enums.CaseStates.InProgress)
         {
-            var saId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
+            var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
             // z parameters nacist Agent
-            var saDetail = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
+            var saDetail = await _salesArrangementService.GetSalesArrangement(saId.SalesArrangementId, cancellationToken);
             
             // vsichni customeri z CustomerOnSA
-            var customers = await _customerOnSAService.GetCustomerList(saId, cancellationToken);
+            var customers = await _customerOnSAService.GetCustomerList(saId.SalesArrangementId, cancellationToken);
 
             // vybrat a transformovat jen vlastnik, spoludluznik
             customerIdentities = customers

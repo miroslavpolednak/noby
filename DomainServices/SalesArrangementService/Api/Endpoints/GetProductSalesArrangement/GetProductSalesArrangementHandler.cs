@@ -4,10 +4,10 @@ using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.GetProductSalesArrangement;
 
-internal sealed class GetProductSalesArrangementIdHandler
-    : IRequestHandler<__SA.GetProductSalesArrangementIdRequest, __SA.GetProductSalesArrangementIdResponse>
+internal sealed class GetProductSalesArrangementHandler
+    : IRequestHandler<__SA.GetProductSalesArrangementRequest, __SA.GetProductSalesArrangementResponse>
 {
-    public async Task<__SA.GetProductSalesArrangementIdResponse> Handle(__SA.GetProductSalesArrangementIdRequest request, CancellationToken cancellationToken)
+    public async Task<__SA.GetProductSalesArrangementResponse> Handle(__SA.GetProductSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         var saTypes = (await _codebookService.SalesArrangementTypes(cancellationToken))
             .Where(t => t.SalesArrangementCategory == 1)
@@ -17,20 +17,21 @@ internal sealed class GetProductSalesArrangementIdHandler
         var sa = await _dbContext.SalesArrangements
             .AsNoTracking()
             .Where(t => saTypes.Contains(t.SalesArrangementTypeId))
-            .Select(t => new { t.SalesArrangementId })
+            .Select(t => new { t.SalesArrangementId, t.OfferId })
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound);
 
-        return new __SA.GetProductSalesArrangementIdResponse
+        return new __SA.GetProductSalesArrangementResponse
         {
-            SalesArrangementId = sa.SalesArrangementId
+            SalesArrangementId = sa.SalesArrangementId,
+            OfferId = sa.OfferId
         };
     }
 
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly ICodebookServiceClient _codebookService;
 
-    public GetProductSalesArrangementIdHandler(Database.SalesArrangementServiceDbContext dbContext, ICodebookServiceClient codebookService) 
+    public GetProductSalesArrangementHandler(Database.SalesArrangementServiceDbContext dbContext, ICodebookServiceClient codebookService) 
     {
         _dbContext = dbContext;
         _codebookService = codebookService;
