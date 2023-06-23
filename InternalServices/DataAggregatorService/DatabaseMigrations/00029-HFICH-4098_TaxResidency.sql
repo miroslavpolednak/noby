@@ -30,10 +30,10 @@ INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [Document
 VALUES (255, 13, '001', 196, 'DuvodNeposkytnuti', NULL, NULL, NULL)
 
 INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign]) 
-VALUES (256, 13, '001', 197, 'ObcanUSA', 'Potvrzuji, že nejsem občanem Spojených států amerických.', NULL, NULL)
+VALUES (256, 13, '001', 29, 'ObcanUSA', 'Potvrzuji, že nejsem občanem Spojených států amerických.', NULL, NULL)
 
 INSERT [dbo].[DocumentDataField] ([DocumentDataFieldId], [DocumentId], [DocumentVersion], [DataFieldId], [AcroFieldName], [StringFormat], [DefaultTextIfNull], [TextAlign]) 
-VALUES (257, 13, '001', 198, 'RezidentUSA', 'Potvrzuji, že nejsem občanem Spojených států amerických.', NULL, NULL)
+VALUES (257, 13, '001', 29, 'RezidentUSA', 'Potvrzuji, že nejsem rezidentem Spojených států amerických pro daňové účely.', NULL, NULL)
 
 SET IDENTITY_INSERT [dbo].[DocumentDataField] OFF
 
@@ -55,8 +55,8 @@ INSERT INTO DynamicStringFormatCondition VALUES (107, '226', 198)
 
 INSERT INTO DocumentSpecialDataField VALUES (13, 'JmenoPrijmeni', 5, 'FullName', NULL, NULL, NULL)
 INSERT INTO DocumentSpecialDataField VALUES (13, 'TrvalyPobyt', 5, 'PermanentAddress', NULL, NULL, NULL)
-INSERT INTO DocumentSpecialDataField VALUES (13, 'KorespondencniAdresa', 5, 'CorrespondenceAddress', NULL, NULL, NULL)
+INSERT INTO DocumentSpecialDataField VALUES (13, 'KorespondencniAdresa', 5, 'CorrespondenceAddress', NULL, NULL, 'adresa trvalého pobytu')
 INSERT INTO DocumentSpecialDataField VALUES (13, 'MistoNarozeni', 5, 'BirthPlace', NULL, NULL, NULL)
 INSERT INTO DocumentSpecialDataField VALUES (13, 'ZemeDanoveRezidence', 5, 'TaxResidencyCountries', NULL, NULL, NULL)
 INSERT INTO DocumentSpecialDataField VALUES (13, 'PoskytujeTIN', 5, 'TaxResidencyCountriesTinMandatory', NULL, NULL, NULL)
-INSERT INTO DocumentSpecialDataField VALUES (13, 'PodpisJmeno', 5, 'SignerName', NULL, NULL, NULL)
+INSERT INTO DocumentSpecialDataField VALUES (13, 'PodpisJmenoKlienta', 5, 'SignerName', NULL, NULL, NULL)

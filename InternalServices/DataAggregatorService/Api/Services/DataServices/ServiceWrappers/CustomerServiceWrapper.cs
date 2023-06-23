@@ -18,6 +18,16 @@ internal class CustomerServiceWrapper : IServiceWrapper
 
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
+        if (input.CustomerOnSaId.HasValue)
+        {
+            var (customer, customerOnSA) = await _customerWithChangesService.GetCustomerDetail(input.CustomerOnSaId.Value, cancellationToken);
+
+            data.Customer = customer;
+            data.CustomerOnSA = customerOnSA;
+
+            return;
+        }
+
         input.ValidateCustomerIdentity();
 
         if (input.SalesArrangementId.HasValue)
@@ -26,7 +36,6 @@ internal class CustomerServiceWrapper : IServiceWrapper
 
             data.Customer = customer;
             data.CustomerOnSA = customerOnSA;
-
         }
         else
         {
