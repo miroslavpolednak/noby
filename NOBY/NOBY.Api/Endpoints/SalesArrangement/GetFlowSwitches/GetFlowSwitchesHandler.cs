@@ -33,12 +33,7 @@ internal sealed class GetFlowSwitchesHandler
         if (response.SigningSection.IsCompleted)
         {
             var documentsToSignListResponse = await _documentOnSaService.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
-            var allDocumentSigned = documentsToSignListResponse.DocumentsOnSAToSign.All(d => d.IsSigned);
-
-            if (!allDocumentSigned)
-            {
-                response.SigningSection.IsCompleted = false;
-            }
+            response.SigningSection.IsCompleted = documentsToSignListResponse.DocumentsOnSAToSign.All(d => d.IsSigned);
         }
         
         return response;
