@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged
+namespace cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged
 {
 	using System;
 	using System.Collections.Generic;
@@ -28,38 +28,39 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanproce
 				"andatory. Additionally, specific case categories can have additional data.In wmt" +
 				" it is called business request (there is child entity for it).. ## Case that enc" +
 				"ompasses process(es) related to loan risk assessmentC4M: Business Case. CDM enti" +
-				"ty name(s): Case,LoanRiskCase.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.work" +
-				"flow.processevents.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"caseId\",\"type\":" +
-				"{\"type\":\"record\",\"name\":\"CaseId\",\"doc\":\"Multiattribute representing unique ident" +
-				"ifier of case.It is multiattribute because there is multiple case management sol" +
-				"utions running now. CDM entity name(s): CaseId.\",\"namespace\":\"cz.mpss.api.starbu" +
-				"ild.mortgage.workflow.processevents.v1.mainloanprocesschanged\",\"fields\":[{\"name\"" +
-				":\"id\",\"doc\":\"Unique identifier of case id itself. CDM attribute class name: Case" +
-				"IdId.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,36}$\"" +
-				"}}]}},{\"name\":\"loanRiskCase\",\"type\":{\"type\":\"record\",\"name\":\"RiskBusinessCaseId\"" +
-				",\"doc\":\"\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.workflow.processevents.v1." +
-				"mainloanprocesschanged\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.jav" +
-				"a.string\":\"String\"}}]}},{\"name\":\"mortgageInstance\",\"type\":{\"type\":\"record\",\"name" +
-				"\":\"MortgageInstance\",\"doc\":\"Mortgage product instance. CDM entity name(s): Mortg" +
-				"ageInstance.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.workflow.processevents" +
-				".v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"Starbuild\",\"type\":{\"type\":\"record" +
-				"\",\"name\":\"StarbuildInstanceId\",\"doc\":\"Multiattribute property of marketable item" +
-				" instance.Multiattribute: Identifiers of marketable item instances are not yet u" +
-				"nified, there is no one central catalogue.This also covers identifiers valid for" +
-				" only some part of marketable item instance lifecycle, e.g. proposed product.E.g" +
-				". PCP identifiers, TSS identifiers.#CZ#Viceatributova promenna instanci prodejny" +
-				"ch polozek. Viceatributovost: Identifikatory instanci prodejych polozek zatim ne" +
-				"jsou sjednoceny. Neexistujce centralni katalog. Pokryva tez identifikatory, kter" +
-				"e jsou platne pouze pro nektere casti zivotniho cyklu instanci prodejnych poloze" +
-				"k (napriklad navrhovany produkt). Priklad: PCP identifikator, TSS identifikator." +
-				" CDM entity name(s): InstanceId.\",\"namespace\":\"cz.mpss.api.starbuild.mortgage.wo" +
-				"rkflow.processevents.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"id\",\"doc\":\"Id" +
-				"entifier of product instance item itself.#CZ#Vlastni identifikator instance prod" +
-				"ejne polozky. CDM attribute class name: InstanceIdId.\",\"type\":{\"type\":\"string\",\"" +
-				"avro.java.string\":\"String\",\"pattern\":\"^.{0,30}$\"}}]}}]}}]}");
-		private cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged.CaseId _caseId;
-		private cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged.RiskBusinessCaseId _loanRiskCase;
-		private cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged.MortgageInstance _mortgageInstance;
+				"ty name(s): Case,LoanRiskCase.\",\"namespace\":\"cz.mpss.api.starbuild.mortgageworkf" +
+				"low.mortgageprocessevents.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"caseId\"," +
+				"\"type\":{\"type\":\"record\",\"name\":\"CaseId\",\"doc\":\"Multiattribute representing uniqu" +
+				"e identifier of case.It is multiattribute because there is multiple case managem" +
+				"ent solutions running now. CDM entity name(s): CaseId.\",\"namespace\":\"cz.mpss.api" +
+				".starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged\",\"fi" +
+				"elds\":[{\"name\":\"id\",\"doc\":\"Unique identifier of case id itself. CDM attribute cl" +
+				"ass name: CaseIdId.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"patter" +
+				"n\":\"^.{0,36}$\"}}]}},{\"name\":\"loanRiskCase\",\"type\":{\"type\":\"record\",\"name\":\"RiskB" +
+				"usinessCaseId\",\"doc\":\"\",\"namespace\":\"cz.mpss.api.starbuild.mortgageworkflow.mort" +
+				"gageprocessevents.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"id\",\"type\":{\"typ" +
+				"e\":\"string\",\"avro.java.string\":\"String\"}}]}},{\"name\":\"mortgageInstance\",\"type\":{" +
+				"\"type\":\"record\",\"name\":\"MortgageInstance\",\"doc\":\"Mortgage product instance. CDM " +
+				"entity name(s): MortgageInstance.\",\"namespace\":\"cz.mpss.api.starbuild.mortgagewo" +
+				"rkflow.mortgageprocessevents.v1.mainloanprocesschanged\",\"fields\":[{\"name\":\"Starb" +
+				"uild\",\"type\":{\"type\":\"record\",\"name\":\"StarbuildInstanceId\",\"doc\":\"Multiattribute" +
+				" property of marketable item instance.Multiattribute: Identifiers of marketable " +
+				"item instances are not yet unified, there is no one central catalogue.This also " +
+				"covers identifiers valid for only some part of marketable item instance lifecycl" +
+				"e, e.g. proposed product.E.g. PCP identifiers, TSS identifiers.#CZ#Viceatributov" +
+				"a promenna instanci prodejnych polozek. Viceatributovost: Identifikatory instanc" +
+				"i prodejych polozek zatim nejsou sjednoceny. Neexistujce centralni katalog. Pokr" +
+				"yva tez identifikatory, ktere jsou platne pouze pro nektere casti zivotniho cykl" +
+				"u instanci prodejnych polozek (napriklad navrhovany produkt). Priklad: PCP ident" +
+				"ifikator, TSS identifikator. CDM entity name(s): InstanceId.\",\"namespace\":\"cz.mp" +
+				"ss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschange" +
+				"d\",\"fields\":[{\"name\":\"id\",\"doc\":\"Identifier of product instance item itself.#CZ#" +
+				"Vlastni identifikator instance prodejne polozky. CDM attribute class name: Insta" +
+				"nceIdId.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,30" +
+				"}$\"}}]}}]}}]}");
+		private cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged.CaseId _caseId;
+		private cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged.RiskBusinessCaseId _loanRiskCase;
+		private cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged.MortgageInstance _mortgageInstance;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -67,7 +68,7 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanproce
 				return Case._SCHEMA;
 			}
 		}
-		public cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged.CaseId caseId
+		public cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged.CaseId caseId
 		{
 			get
 			{
@@ -78,7 +79,7 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanproce
 				this._caseId = value;
 			}
 		}
-		public cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged.RiskBusinessCaseId loanRiskCase
+		public cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged.RiskBusinessCaseId loanRiskCase
 		{
 			get
 			{
@@ -89,7 +90,7 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanproce
 				this._loanRiskCase = value;
 			}
 		}
-		public cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged.MortgageInstance mortgageInstance
+		public cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged.MortgageInstance mortgageInstance
 		{
 			get
 			{
@@ -114,9 +115,9 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanproce
 		{
 			switch (fieldPos)
 			{
-			case 0: this.caseId = (cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged.CaseId)fieldValue; break;
-			case 1: this.loanRiskCase = (cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged.RiskBusinessCaseId)fieldValue; break;
-			case 2: this.mortgageInstance = (cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged.MortgageInstance)fieldValue; break;
+			case 0: this.caseId = (cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged.CaseId)fieldValue; break;
+			case 1: this.loanRiskCase = (cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged.RiskBusinessCaseId)fieldValue; break;
+			case 2: this.mortgageInstance = (cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged.MortgageInstance)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

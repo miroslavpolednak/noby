@@ -17,6 +17,7 @@ public class CustomerIncomeController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID příjmu ke smazání</param>
     [HttpDelete("{customerOnSAId:int}/income/{incomeId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -37,6 +38,7 @@ public class CustomerIncomeController : ControllerBase
     /// <see cref="Dto.IncomeDataEmployement"/>
     /// </returns>
     [HttpGet("{customerOnSAId:int}/income/{incomeId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(typeof(GetIncome.GetIncomeResponse), StatusCodes.Status200OK)]
@@ -55,6 +57,7 @@ public class CustomerIncomeController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID příjmu</param>
     [HttpPut("{customerOnSAId:int}/income/{incomeId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -71,6 +74,7 @@ public class CustomerIncomeController : ControllerBase
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     [HttpPost("{customerOnSAId:int}/income")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]

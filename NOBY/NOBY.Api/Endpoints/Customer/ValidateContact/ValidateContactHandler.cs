@@ -22,7 +22,8 @@ internal sealed class ValidateContactHandler: IRequestHandler<ValidateContactReq
     private static ValidateContactResponse Map(DomainServices.CustomerService.Contracts.ValidateContactResponse response) => new()
     {
         IsContactValid = response.IsContactValid,
-        ContactType = Map(response.ContactType)
+        ContactType = Map(response.ContactType),
+        IsMobile = response.IsMobile
     };
     
     private static ContactType Map(Dto.ContactType contactType) => contactType switch
@@ -30,7 +31,7 @@ internal sealed class ValidateContactHandler: IRequestHandler<ValidateContactReq
         Dto.ContactType.Unknown => ContactType.Unknown,
         Dto.ContactType.Phone => ContactType.Phone,
         Dto.ContactType.Email => ContactType.Email,
-        _ => throw new ArgumentException()
+        _ => throw new CisValidationException(11033, "ContactType has unexpected value.")
     };
     
     private static Dto.ContactType Map(ContactType contactType) => contactType switch

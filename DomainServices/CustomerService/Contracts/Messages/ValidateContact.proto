@@ -2,6 +2,8 @@
 package DomainServices.CustomerService;
 option csharp_namespace = "DomainServices.CustomerService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+
 message ValidateContactRequest {
     ContactType ContactType = 1;
 	string Contact = 2;
@@ -10,6 +12,7 @@ message ValidateContactRequest {
 message ValidateContactResponse {
     ContactType ContactType = 1;
     bool IsContactValid = 2;
+    google.protobuf.BoolValue IsMobile = 3;
 }
 
 enum ContactType {

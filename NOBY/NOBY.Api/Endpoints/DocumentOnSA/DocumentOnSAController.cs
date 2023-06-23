@@ -49,6 +49,7 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId"> ID Sales Arrangement </param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/start")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(typeof(StartSigningResponse), StatusCodes.Status200OK)]
@@ -69,6 +70,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/stop")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -85,6 +87,7 @@ public class DocumentOnSAController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -104,6 +107,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
     [HttpGet("document/template/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Pdf)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]

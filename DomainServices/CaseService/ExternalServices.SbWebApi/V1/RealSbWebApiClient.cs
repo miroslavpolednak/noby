@@ -80,9 +80,9 @@ internal sealed class RealSbWebApiClient
             Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
             Message = new()
             {
-                Client_benefits = 0,
-                Case_id = Convert.ToInt32(request.CaseId),//IT anal neni schopna rict co s tim
-                Uver_id = Convert.ToInt32(request.CaseId),//IT anal neni schopna rict co s tim
+                Client_benefits = request.IsEmployeeBonusRequested.HasValue ? (request.IsEmployeeBonusRequested.Value ? 1 : 0) : null,
+                Case_id = Convert.ToInt32(request.CaseId),//IT anal nevi co s tim
+                Uver_id = Convert.ToInt32(request.CaseId),//IT anal nevi co s tim
                 Loan_no = request.ContractNumber,
                 Jmeno_prijmeni = request.ClientFullName,
                 Case_state = request.CaseStateName,

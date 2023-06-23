@@ -1311,6 +1311,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.IsValidFieldNumber">
             <summary>Field number for the "IsValid" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetDeveloperProjectResponse.MassEvaluationFieldNumber">
+            <summary>Field number for the "MassEvaluation" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.GetOperatorRequest.PerformerLoginFieldNumber">
             <summary>Field number for the "PerformerLogin" field.</summary>
         </member>

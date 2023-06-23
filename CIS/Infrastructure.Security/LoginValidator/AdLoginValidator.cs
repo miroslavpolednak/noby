@@ -6,7 +6,8 @@ namespace CIS.Infrastructure.Security;
 /// <summary>
 /// Validace login/pwd proti AD
 /// </summary>
-internal sealed class AdLoginValidator : ILoginValidator
+internal sealed class AdLoginValidator 
+    : ILoginValidator
 {
     private readonly ILogger<ILoginValidator> _logger;
     private IOptionsMonitor<CisServiceAuthenticationOptions> _options;
@@ -25,8 +26,10 @@ internal sealed class AdLoginValidator : ILoginValidator
         {
             using (var cn = new LdapConnection())
             {
+                cn.UserDefinedServerCertValidationDelegate += new RemoteCertificateValidationCallback((sender, certificate, chain, errors) => true);
+                cn.SecureSocketLayer = opt.IsSsl;
                 await cn.ConnectAsync(opt.AdHost, opt.AdPort);
-                await cn.BindAsync($"{opt.DomainUsernamePrefix}{login}", password);
+                await cn.BindAsync($"{opt.Domain}\\{login}", password);
 
                 return cn.Bound;
             }
@@ -37,7 +40,7 @@ internal sealed class AdLoginValidator : ILoginValidator
             {
                 { "AdHost", opt.AdHost ?? "" },
                 { "AdPort", opt.AdPort },
-                { "DomainUsernamePrefix", opt.DomainUsernamePrefix ?? "" },
+                { "Domain", opt.Domain ?? "" },
                 { "Password", password }
             }))
             {

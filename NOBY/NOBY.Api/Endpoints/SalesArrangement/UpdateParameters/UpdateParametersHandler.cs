@@ -1,5 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
+using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -31,9 +32,7 @@ internal sealed class UpdateParametersHandler
                         {
                             throw new NobyValidationException(90019);
                         }
-                        
                         updateRequest.Mortgage = o1.ToDomainService();
-
                     }
                     break;
 
@@ -83,34 +82,44 @@ internal sealed class UpdateParametersHandler
                     throw new NotImplementedException($"SalesArrangementTypeId {saInstance.SalesArrangementTypeId} parameters model cast to domain service is not implemented");
             }
         }
+        
+        var salesArrangementTypes = await _codebookService.SalesArrangementTypes(cancellationToken);
+        var salesArrangementType = salesArrangementTypes.Single(t => t.Id == saInstance.SalesArrangementTypeId);
 
-        // pokud je to servisni zadost
-        // TODO upravit do HFICH-4601, tam bude vidlicka na je/neni serviska. Ted to ojebu jen tim IFem nize.
-        if (saInstance.SalesArrangementTypeId > 5 && saInstance.State != (int)SalesArrangementStates.InProgress)
+        if (salesArrangementType.SalesArrangementCategory != (int)SalesArrangementCategories.ProductRequest)
         {
+            var documentResponse = await _documentOnSaService.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
+
+            foreach (var documentOnSaToSign in documentResponse.DocumentsOnSAToSign)
+            {
+                if (documentOnSaToSign is { IsValid: true, IsSigned: false, DocumentOnSAId: not null })
+                {
+                    await _documentOnSaService.StopSigning(documentOnSaToSign.DocumentOnSAId.Value, cancellationToken);
+                }
+            }
+            
             await _salesArrangementService.UpdateSalesArrangementState(request.SalesArrangementId, (int)SalesArrangementStates.InProgress, cancellationToken);
         }
-
+        else
+        {
+            // nastavit flowSwitch ParametersSavedAtLeastOnce pouze pro NE servisni SA
+            await setFlowSwitches(saInstance, cancellationToken);
+        }
+        
         // update SA
         await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken);
-
-        // nastavit flowSwitch ParametersSavedAtLeastOnce pouze pro NE servisni SA
-        await setFlowSwitches(saInstance, cancellationToken);
     }
 
     private async Task setFlowSwitches(_SA.SalesArrangement saInstance, CancellationToken cancellationToken)
     {
-        if ((await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == saInstance.SalesArrangementTypeId)?.SalesArrangementCategory == 1)
+        await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
         {
-            await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
+            new()
             {
-                new()
-                {
-                    FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce,
-                    Value = true
-                }
-            }, cancellationToken);
-        }
+                FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce,
+                Value = true
+            }
+        }, cancellationToken);
     }
 
     static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
@@ -121,10 +130,15 @@ internal sealed class UpdateParametersHandler
 
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IDocumentOnSAServiceClient _documentOnSaService;
 
-    public UpdateParametersHandler(ISalesArrangementServiceClient salesArrangementService, ICodebookServiceClient codebookService)
+    public UpdateParametersHandler(
+        ICodebookServiceClient codebookService,
+        ISalesArrangementServiceClient salesArrangementService,
+        IDocumentOnSAServiceClient documentOnSaService)
     {
         _codebookService = codebookService;
+        _documentOnSaService = documentOnSaService;
         _salesArrangementService = salesArrangementService;
     }
 }

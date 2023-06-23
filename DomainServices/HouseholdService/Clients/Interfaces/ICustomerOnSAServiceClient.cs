@@ -5,6 +5,8 @@ namespace DomainServices.HouseholdService.Clients;
 
 public interface ICustomerOnSAServiceClient
 {
+    Task<List<GetCustomerChangeMetadataResponse.Types.GetCustomerChangeMetadataResponseItem>?> GetCustomerChangeMetadata(int salesArrangementId, CancellationToken cancellationToken = default);
+
     Task UpdateCustomerDetail(UpdateCustomerDetailRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>

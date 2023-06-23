@@ -19,7 +19,7 @@ public class GetElectronicDocumentFromQueueHandler : IRequestHandler<GetElectron
         var externalId = await _dbContext.DocumentOnSa.Where(r => r.DocumentOnSAId == request.DocumentOnSAId)
                                                 .Select(r => r.ExternalId)
                                                 .FirstOrDefaultAsync(cancellationToken)
-                                                ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist);
+                                                ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
         //ToDo connect to real service
         return request.EDocumentCase switch
         {

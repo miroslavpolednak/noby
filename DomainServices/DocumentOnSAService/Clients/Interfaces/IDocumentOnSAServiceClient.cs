@@ -52,4 +52,9 @@ public interface IDocumentOnSAServiceClient
     /// Metoda slouží k vrácení PDF dokumentu z fronty ePodpisů.
     /// </summary>
     Task<GetElectronicDocumentFromQueueResponse> GetElectronicDocumentFromQueue(GetElectronicDocumentFromQueueRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k úpravě dat na DocumentOnSA
+    /// </summary>
+    Task SetDocumentOnSAArchived(SetDocumentOnSAArchivedRequest request, CancellationToken cancellationToken = default);
 }

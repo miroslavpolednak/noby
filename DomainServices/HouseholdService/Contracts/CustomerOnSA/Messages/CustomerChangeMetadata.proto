@@ -1,0 +1,9 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+message CustomerChangeMetadata {
+    bool WereClientDataChanged = 1;
+
+    bool WasCRSChanged = 2;
+}

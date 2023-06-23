@@ -26,7 +26,9 @@ public class GetDocumentsInQueueHandler : IRequestHandler<GetDocumentsInQueueReq
                 s.FileName,
                 s.Status,
                 s.FormId,
-                s.EaCodeMainId
+                s.EaCodeMainId,
+                s.CreatedOn,
+                s.Description
             }).Take(MaxBatchSize)
               .ToListAsync(cancellationToken);
 
@@ -37,7 +39,9 @@ public class GetDocumentsInQueueHandler : IRequestHandler<GetDocumentsInQueueReq
             Filename = d.FileName,
             FormId = d.FormId,
             StatusInQueue = d.Status,
-            EaCodeMainId = d.EaCodeMainId
+            EaCodeMainId = d.EaCodeMainId,
+            CreatedOn = d.CreatedOn,
+            Description = d.Description
         }));
 
         return response;

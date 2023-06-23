@@ -1,38 +1,32 @@
 ﻿using CIS.Core;
-using CIS.Core.Security;
+using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using DomainServices.CodebookService.Clients;
-using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Net.Mime;
+using _DocOnSaSource = DomainServices.DocumentOnSAService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
 
 public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataRequest, GetDocumentOnSADataResponse>
 {
     private readonly IDocumentOnSAServiceClient _documentOnSaClient;
-    private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
     private readonly ICodebookServiceClient _codebookServiceClients;
     private readonly IDateTime _dateTime;
 
     public GetDocumentOnSADataHandler(
         IDocumentOnSAServiceClient documentOnSaClient,
-        IDocumentArchiveServiceClient documentArchiveServiceClient,
-        ICurrentUserAccessor currentUserAccessor,
         IDocumentGeneratorServiceClient documentGeneratorServiceClient,
         ICodebookServiceClient codebookServiceClients,
         IDateTime dateTime)
     {
         _documentOnSaClient = documentOnSaClient;
-        _documentArchiveServiceClient = documentArchiveServiceClient;
-        _currentUserAccessor = currentUserAccessor;
         _documentGeneratorServiceClient = documentGeneratorServiceClient;
         _codebookServiceClients = codebookServiceClients;
         _dateTime = dateTime;
@@ -43,46 +37,47 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         var documentOnSas = await _documentOnSaClient.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
 
         if (!documentOnSas.DocumentsOnSAToSign.Any(d => d.DocumentOnSAId == request.DocumentOnSAId))
-        {
             throw new NobyValidationException($"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
-        }
 
         var documentOnSa = documentOnSas.DocumentsOnSAToSign.Single(r => r.DocumentOnSAId == request.DocumentOnSAId);
+        var documentOnSaData = await _documentOnSaClient.GetDocumentOnSAData(documentOnSa.DocumentOnSAId!.Value, cancellationToken);
 
-        if (documentOnSa.IsArchived)
+        if (documentOnSaData.SignatureTypeId is not null && documentOnSaData.SignatureTypeId != (int)SignatureTypes.Paper)
+            throw new NobyValidationException("Only paper signed documents can be generated");
+
+        if (!documentOnSaData.IsValid)
+            throw new NobyValidationException("Unable to generate document for invalid document");
+
+        return documentOnSaData.Source switch
         {
-            return await GetDocumentFromEArchive(documentOnSa, cancellationToken);
-        }
-        else
-        {
-            return await GetDocumentFromDocumentGenerator(documentOnSa, cancellationToken);
-        }
+            _DocOnSaSource.Source.Noby => await GetDocumentFromDocumentGenerator(documentOnSa, documentOnSaData, cancellationToken),
+            _DocOnSaSource.Source.Workflow => await GetDocumentFromEQueue(documentOnSa, cancellationToken),
+            _ => throw new NobyValidationException("Unsupported kind of document source")
+        };
     }
 
-    private async Task<GetDocumentOnSADataResponse> GetDocumentFromEArchive(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
+    private async Task<GetDocumentOnSADataResponse> GetDocumentFromEQueue(_DocOnSaSource.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
     {
-        var user = _currentUserAccessor.User;
-
-        var document = await _documentArchiveServiceClient.GetDocument(new()
+        var docData = await _documentOnSaClient.GetElectronicDocumentFromQueue(new()
         {
-            DocumentId = documentOnSa.EArchivId,
-            UserLogin = user is null ? "Unknow NOBY user" : user.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),
-            WithContent = true
-
+            DocumentOnSAId = documentOnSa.DocumentOnSAId!.Value,
+            //ToDo fill in correct (other) params
+            Attachment = new _DocOnSaSource.Attachment
+            {
+                AttachmentId = 1
+            }
         }, cancellationToken);
 
         return new GetDocumentOnSADataResponse
         {
-            ContentType = document.Content.MineType,
-            Filename = document.Metadata.Filename,
-            FileData = document.Content.BinaryData.ToArrayUnsafe()
+            ContentType = MediaTypeNames.Application.Pdf,
+            Filename = await GetFileName(documentOnSa, cancellationToken),
+            FileData = docData.BinaryData.ToArrayUnsafe()
         };
     }
 
-    private async Task<GetDocumentOnSADataResponse> GetDocumentFromDocumentGenerator(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
+    private async Task<GetDocumentOnSADataResponse> GetDocumentFromDocumentGenerator(_DocOnSaSource.DocumentOnSAToSign documentOnSa, _DocOnSaSource.GetDocumentOnSADataResponse documentOnSaData, CancellationToken cancellationToken)
     {
-        var documentOnSaData = await _documentOnSaClient.GetDocumentOnSAData(documentOnSa.DocumentOnSAId!.Value, cancellationToken);
-
         var generateDocumentRequest = CreateDocumentRequest(documentOnSa, documentOnSaData);
 
         var resutl = await _documentGeneratorServiceClient.GenerateDocument(generateDocumentRequest, cancellationToken);
@@ -102,7 +97,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
     }
 
-    private static GenerateDocumentRequest CreateDocumentRequest(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, DomainServices.DocumentOnSAService.Contracts.GetDocumentOnSADataResponse documentOnSaData)
+    private static GenerateDocumentRequest CreateDocumentRequest(_DocOnSaSource.DocumentOnSAToSign documentOnSa, _DocOnSaSource.GetDocumentOnSADataResponse documentOnSaData)
     {
         var generateDocumentRequest = new GenerateDocumentRequest
         {
@@ -118,7 +113,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         return generateDocumentRequest;
     }
 
-    private static DocumentFooter CreateFooter(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa)
+    private static DocumentFooter CreateFooter(_DocOnSaSource.DocumentOnSAToSign documentOnSa)
     {
         return new DocumentFooter
         {
@@ -128,7 +123,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         };
     }
 
-    private static GenerateDocumentPart CreateDocPart(DomainServices.DocumentOnSAService.Contracts.GetDocumentOnSADataResponse documentOnSaData)
+    private static GenerateDocumentPart CreateDocPart(_DocOnSaSource.GetDocumentOnSADataResponse documentOnSaData)
     {
         var documentDataDtos = JsonConvert.DeserializeObject<List<DocumentDataDto>>(documentOnSaData.Data);
 

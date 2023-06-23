@@ -1,6 +1,6 @@
 ﻿using CIS.Core;
+using ExternalServices.Sulm.V1.Contracts;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
 
 namespace ExternalServices.Sulm.V1;
@@ -14,10 +14,10 @@ internal sealed class RealSulmClient
         string purposeCode,
         CancellationToken cancellationToken = default(CancellationToken))
     {
-        var request = createRequest(kbCustomerId, userIdentities, purposeCode);
+        var request = createRegisterRequest(kbCustomerId, userIdentities, purposeCode);
 
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + _apiBasePath + "start", request, cancellationToken)
+            .PostAsJsonAsync(_httpClient.BaseAddress + _apiBasePath + "register", request, cancellationToken)
             .ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)
@@ -32,10 +32,10 @@ internal sealed class RealSulmClient
         string purposeCode, 
         CancellationToken cancellationToken = default(CancellationToken))
     {
-        var request = createRequest(kbCustomerId, userIdentities, purposeCode);
+        var request = terminateRegisterRequest(kbCustomerId, userIdentities, purposeCode);
         
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + _apiBasePath + "stop", request, cancellationToken)
+            .PostAsJsonAsync(_httpClient.BaseAddress + _apiBasePath + "terminate", request, cancellationToken)
             .ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)
@@ -44,33 +44,50 @@ internal sealed class RealSulmClient
         }
     }
 
-    private static Dto.StartUseRequest createRequest(
+    private static RegisterClientPurposeRequest createRegisterRequest(
         long kbCustomerId,
         IList<CIS.Foms.Types.UserIdentity> userIdentities,
         string purposeCode)
     {
         var identity = getKbIdentity(userIdentities);
 
-        return new Dto.StartUseRequest
+        return new RegisterClientPurposeRequest
         {
-            channelCode = ISulmClient.GetChannelCode(userIdentities),
-            clientId = kbCustomerId.ToString(System.Globalization.CultureInfo.InvariantCulture),
-            userIdType = identity.Scheme.GetAttribute<DisplayAttribute>()!.Name!,
-            userId = identity.Identity,
-            purposeCode = purposeCode
+            ChannelCode = ISulmClient.GetChannelCode(userIdentities),
+            ClientId = kbCustomerId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            PurposeCode = purposeCode,
+            UserId = identity.Identity,
+            UserIdType = identity.Scheme.GetAttribute<DisplayAttribute>()!.Name!
+        };
+    }
+
+    private static TerminateClientPurposeRequest terminateRegisterRequest(
+        long kbCustomerId,
+        IList<CIS.Foms.Types.UserIdentity> userIdentities,
+        string purposeCode)
+    {
+        var identity = getKbIdentity(userIdentities);
+
+        return new TerminateClientPurposeRequest
+        {
+            ChannelCode = ISulmClient.GetChannelCode(userIdentities),
+            ClientId = kbCustomerId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            PurposeCode = purposeCode,
+            UserId = identity.Identity,
+            UserIdType = identity.Scheme.GetAttribute<DisplayAttribute>()!.Name!
         };
     }
 
     private static async Task processUnsuccessfulResult(HttpResponseMessage response, CancellationToken cancellationToken)
     {
-        var result = await response.Content.ReadFromJsonAsync<Dto.Error>(cancellationToken: cancellationToken);
+        var result = await response.Content.ReadFromJsonAsync<Error>(cancellationToken: cancellationToken);
         if (result is null)
         {
             throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
         }
         else
         {
-            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} error {response.StatusCode}: {result.code}");
+            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} error {response.StatusCode}: {result.Code}");
         }
 
     }
@@ -82,7 +99,7 @@ internal sealed class RealSulmClient
             ?? throw new CisExtServiceValidationException(0, "SULM integration: KB Identity not found");
     }
 
-    private const string _apiBasePath = "api/customers/sulm/v1/use/";
+    private const string _apiBasePath = "api/customers/sulm/v1/client/purpose/";
 
     private readonly HttpClient _httpClient;
     public RealSulmClient(HttpClient httpClient)

@@ -73,6 +73,10 @@ internal sealed class CreateCustomerHandler
         entity.AdditionalData = Newtonsoft.Json.JsonConvert.SerializeObject(additionalData);
         entity.AdditionalDataBin = additionalData.ToByteArray();
 
+        CustomerChangeMetadata changeMetadata = new();
+        entity.ChangeMetadata = Newtonsoft.Json.JsonConvert.SerializeObject(changeMetadata);
+        entity.ChangeMetadataBin = changeMetadata.ToByteArray();
+
         // ulozit do DB
         _dbContext.Customers.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);

@@ -311,6 +311,7 @@ message GetDeveloperProjectResponse {
 	google.protobuf.StringValue Recommandation = 7;
 	google.protobuf.StringValue Place = 8;
 	bool IsValid = 9;
+	int32 MassEvaluation = 10;
 }
 
 message GetGeneralDocumentListResponse {
@@ -680,8 +681,8 @@ message WorkflowTaskStatesNobyResponse {
 	message WorkflowTaskStatesNobyItem {
 		int32 Id = 1;
 		string Name = 2;
-		string Filter = 3;
-		string Indicator = 4;
+		int32 Filter = 3;
+		int32 Indicator = 4;
 	}
 }
 

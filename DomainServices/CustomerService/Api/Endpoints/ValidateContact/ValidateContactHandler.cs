@@ -19,11 +19,12 @@ internal sealed class ValidateContactHandler : IRequestHandler<ValidateContactRe
     private async Task<ValidateContactResponse> HandlePhone(ValidateContactRequest request, CancellationToken cancellationToken)
     {
         var result = await _contactClient.ValidatePhone(request.Contact, cancellationToken);
-            
+
         return new ValidateContactResponse
         {
             ContactType = ContactType.Phone,
-            IsContactValid = result.ValidationResult == ValidateContactResponseValidationResult.VALID
+            IsContactValid = result.ValidationResult == ValidateContactResponseValidationResult.VALID,
+            IsMobile = result.AdditionalContactInformations.IsMobile
         };
     }
 

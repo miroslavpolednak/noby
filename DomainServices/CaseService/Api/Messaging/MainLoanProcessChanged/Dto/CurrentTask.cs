@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged
+namespace cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanproce
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class CurrentTask : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""CurrentTask"",""doc"":""Task is a unit of work that usually performs 1 role in 1 time in 1 place.Lombardi: task instance, wmt:.... CDM entity name(s): Task."",""namespace"":""cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged"",""fields"":[{""name"":""id"",""doc"":""Identifier of a task instance within a 'BPM' system where task originates. Not unique across BPM system instances.In IBM BAW also known as: tkiid, taskId. CDM attribute class name: TaskId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,50}$""}},{""name"":""name"",""doc"":""Runtime name of the task. Typically,  what is presented to users in task/work queue.In IBM BAW also known as: subject.Note: Limited to 255 chars due to column definition in BAW internal database (BPMDB). CDM attribute class name: TaskName."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,255}$""}},{""name"":""type"",""type"":""int""}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""CurrentTask"",""doc"":""Task is a unit of work that usually performs 1 role in 1 time in 1 place.Lombardi: task instance, wmt:.... CDM entity name(s): Task."",""namespace"":""cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged"",""fields"":[{""name"":""id"",""doc"":""Identifier of a task instance within a 'BPM' system where task originates. Not unique across BPM system instances.In IBM BAW also known as: tkiid, taskId. CDM attribute class name: TaskId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,50}$""}},{""name"":""name"",""doc"":""Runtime name of the task. Typically,  what is presented to users in task/work queue.In IBM BAW also known as: subject.Note: Limited to 255 chars due to column definition in BAW internal database (BPMDB). CDM attribute class name: TaskName."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,255}$""}},{""name"":""type"",""type"":""int""}]}");
 		/// <summary>
 		/// Identifier of a task instance within a 'BPM' system where task originates. Not unique across BPM system instances.In IBM BAW also known as: tkiid, taskId. CDM attribute class name: TaskId.
 		/// </summary>

@@ -8,16 +8,16 @@ public sealed class CisServiceAuthenticationConfiguration
     public enum LoginValidators
     {
         ActiveDirectory,
+        NativeActiveDirectory,
         StaticCollection
     }
 
     public LoginValidators Validator { get; set; } = LoginValidators.ActiveDirectory;
 
     /// <summary>
-    /// Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb\"
-    /// Pozor, musi byt vcetne \ na konci
+    /// Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb.cz"
     /// </summary>
-    public string? DomainUsernamePrefix { get; set; }
+    public string? Domain { get; set; }
 
     /// <summary>
     /// Adresa domenoveho serveru
@@ -28,4 +28,9 @@ public sealed class CisServiceAuthenticationConfiguration
     /// Port na domenovem serveru, vychozi je 389
     /// </summary>
     public int? AdPort { get; set; } = 389;
+
+    /// <summary>
+    /// True pokud se jedna o SSL connection
+    /// </summary>
+    public bool IsSsl { get; set; }
 }

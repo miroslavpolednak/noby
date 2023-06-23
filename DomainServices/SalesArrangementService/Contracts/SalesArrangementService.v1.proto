@@ -16,7 +16,7 @@ import "Messages/UpdateSalesArrangementParameters.proto";
 import "Messages/DeleteSalesArrangement.proto";
 import "Messages/UpdateOfferDocumentId.proto";
 import "Messages/GetSalesArrangement.proto";
-import "Messages/GetProductSalesArrangementId.proto";
+import "Messages/GetProductSalesArrangement.proto";
 import "Messages/SendToCmp.proto";
 import "Messages/GetFlowSwitches.proto";
 import "Messages/SetFlowSwitches.proto";
@@ -28,7 +28,7 @@ service SalesArrangementService {
 	// zakladni informace o SA
 	rpc GetSalesArrangement (GetSalesArrangementRequest) returns (SalesArrangement);
 
-	rpc GetProductSalesArrangementId (GetProductSalesArrangementIdRequest) returns (GetProductSalesArrangementIdResponse);
+	rpc GetProductSalesArrangement (GetProductSalesArrangementRequest) returns (GetProductSalesArrangementResponse);
 	
 	// vrait SA pro danou modelaci
     rpc GetSalesArrangementByOfferId (GetSalesArrangementByOfferIdRequest) returns (GetSalesArrangementByOfferIdResponse);
