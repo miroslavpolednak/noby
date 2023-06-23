@@ -37,14 +37,16 @@ INSERT INTO DynamicStringFormatCondition VALUES (108, 'True', 201)
 INSERT INTO DynamicStringFormatCondition VALUES (109, 'True', 200)
 INSERT INTO DynamicStringFormatCondition VALUES (109, 'True', 202)
 
-UPDATE DocumentDataField SET StringFormat = '--' WHERE DocumentDataFieldId = 154
+UPDATE DocumentDataField SET StringFormat = '--', DefaultTextIfNull = '--' WHERE DocumentDataFieldId = 154
 INSERT INTO DynamicStringFormatCondition VALUES (110, 'True', 204)
 
 DELETE FROM DocumentDataField WHERE DocumentDataFieldId = 153
 INSERT INTO DocumentSpecialDataField VALUES (10, 'LhutaUkonceniCerpani', 1, 'DrawingDateToText', NULL, NULL, NULL)
 
-UPDATE DocumentDataField SET StringFormat = '--', TextAlign = 4 WHERE DocumentDataFieldId = 155
+UPDATE DocumentDataField SET StringFormat = '--', DefaultTextIfNull = '--', TextAlign = 4 WHERE DocumentDataFieldId = 155
 INSERT INTO DynamicStringFormatCondition VALUES (111, 'True', 205)
+
+UPDATE DocumentDataField SET DefaultTextIfNull = '--' WHERE DocumentDataFieldId = 152
 
 UPDATE DocumentDataField SET StringFormat = 'Tuto žádost prijal {0}.' + CHAR(13) + CHAR(10) +'Přijetí této žádosti není její akceptací Komerční bankou, a.s.' WHERE DocumentDataFieldId = 165
 
@@ -61,4 +63,4 @@ SET IDENTITY_INSERT [dbo].[DocumentDataField] OFF
 INSERT INTO DocumentSpecialDataField VALUES (15, 'JmenoPrijmeni', 5, 'FullName', NULL, NULL, NULL)
 INSERT INTO DocumentSpecialDataField VALUES (15, 'Ulice', 5, 'Street', NULL, NULL, NULL)
 INSERT INTO DocumentSpecialDataField VALUES (15, 'PscMesto', 5, 'City', NULL, NULL, NULL)
-INSERT INTO DocumentSpecialDataField VALUES (15, 'TextOznameni', 5, 'AnnouncementText', NULL, 4, NULL)
+INSERT INTO DocumentSpecialDataField VALUES (15, 'TextOznameni', 1, 'AnnouncementText', NULL, 4, NULL)

@@ -30,7 +30,7 @@ internal class ApplicationTerminationTemplateData : AggregatedData
     }
 
     public string AnnouncementText => "dovolujeme si Vás informovat, že na základě Vašeho požadavku byla Vaše žádost o poskytnutí úvěru " +
-                                      $"č. {SalesArrangement.CaseId} ze dne {(DateTime)SalesArrangement.Created.DateTime} v našem systému ukončena.";
+                                      $"č. {SalesArrangement.CaseId} ze dne {((DateTime)SalesArrangement.Created.DateTime).ToString("d", CultureProvider.GetProvider())} v našem systému ukončena.";
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
