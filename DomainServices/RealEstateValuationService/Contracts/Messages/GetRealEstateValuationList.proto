@@ -2,10 +2,12 @@
 package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
+import "Messages/RealEstateValuationListItem.proto";
+
 message GetRealEstateValuationListRequest {
     int64 CaseId = 1;
 }
 
 message GetRealEstateValuationListResponse {
-    repeated int32 RealEstateValuationId = 1;
+    repeated RealEstateValuationListItem RealEstateValuationList = 1;
 }

@@ -5,9 +5,9 @@ namespace DomainServices.RealEstateValuationService.Api;
 internal sealed class ErrorCodeMapper
     : ErrorCodeMapperBase
 {
-    public const int RealEstateValuationIdEmpty = 13000;
-    public const int RealEstateValuationNotFound = 13000;
-    public const int CaseIdEmpty = 13000;
+    public const int RealEstateValuationIdEmpty = 22001;
+    public const int RealEstateValuationNotFound = 22000;
+    public const int CaseIdEmpty = 22002;
 
     public static IErrorCodesDictionary Init()
     {

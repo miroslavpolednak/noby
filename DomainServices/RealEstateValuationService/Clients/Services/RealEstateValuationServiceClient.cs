@@ -20,13 +20,23 @@ internal sealed class RealEstateValuationServiceClient
         }, cancellationToken: cancellationToken);
     }
 
-    public async Task<GetRealEstateValuationListResponse> GetRealEstateValuationList(long caseId, CancellationToken cancellationToken = default)
+    public async Task<List<RealEstateValuationListItem>> GetRealEstateValuationList(long caseId, CancellationToken cancellationToken = default)
     {
         var result = await _service.GetRealEstateValuationListAsync(new GetRealEstateValuationListRequest
         {
             CaseId = caseId
         }, cancellationToken: cancellationToken);
-        return result;
+        return result.RealEstateValuationList.ToList();
+    }
+
+    public async Task PatchDeveloperOnRealEstateValuation(int realEstateValuationId, int valuationStateId, bool developerApplied, CancellationToken cancellationToken = default)
+    {
+        await _service.PatchDeveloperOnRealEstateValuationAsync(new PatchDeveloperOnRealEstateValuationRequest
+        {
+            RealEstateValuationId = realEstateValuationId,
+            ValuationStateId = valuationStateId,
+            DeveloperApplied = developerApplied
+        }, cancellationToken: cancellationToken);
     }
 
     private readonly Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient _service;

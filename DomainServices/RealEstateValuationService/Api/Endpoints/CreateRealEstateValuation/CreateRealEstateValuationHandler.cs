@@ -8,10 +8,23 @@ internal sealed class CreateRealEstateValuationHandler
 {
     public async Task<CreateRealEstateValuationResponse> Handle(CreateRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
+        var entity = new Database.Entities.RealEstateValuation
+        {
+            CaseId = request.CaseId,
+            DeveloperAllowed = request.DeveloperAllowed,
+            DeveloperApplied = request.DeveloperApplied,
+            IsLoanRealEstate = request.IsLoanRealEstate,
+            IsRevaluationRequired = request.IsRevaluationRequired,
+            RealEstateTypeId = request.RealEstateTypeId,
+            ValuationStateId = request.ValuationStateId,
+            ValuationTypeId = (int)request.ValuationTypeId
+        };
+        _dbContext.RealEstateValuations.Add(entity);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new CreateRealEstateValuationResponse
         {
-            RealEstateValuationId = 1
+            RealEstateValuationId = entity.RealEstateValuationId
         };
     }
 

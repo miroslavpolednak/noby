@@ -8,5 +8,7 @@ public interface IRealEstateValuationServiceClient
 
     Task DeleteRealEstateValuation(long caseId, int realEstateValuationId, CancellationToken cancellationToken = default);
 
-    Task<GetRealEstateValuationListResponse> GetRealEstateValuationList(long caseId, CancellationToken cancellationToken = default);
+    Task<List<RealEstateValuationListItem>> GetRealEstateValuationList(long caseId, CancellationToken cancellationToken = default);
+
+    Task PatchDeveloperOnRealEstateValuation(int realEstateValuationId, int valuationStateId, bool developerApplied, CancellationToken cancellationToken = default);
 }
