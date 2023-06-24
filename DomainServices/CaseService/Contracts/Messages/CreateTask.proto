@@ -24,13 +24,12 @@ message CreateTaskResponse {
 
 message TaskPriceException {
 	cis.types.GrpcDate Expiration = 1;
-	google.protobuf.Int32Value DecisionId = 2;
-	PriceExceptionLoanInterestRateItem LoanInterestRate = 3;
-	repeated PriceExceptionFeesItem Fees = 4;
-	int32 ProductTypeId = 5;
-	int32 LoanAmount = 6;
-	int32 LoanDuration = 7;
-	int32 LoanToValue = 8;
-	int32 FixedRatePeriod = 9;
-	repeated string AppliedMarketingActionsCodes = 10;
+	PriceExceptionLoanInterestRateItem LoanInterestRate = 2;
+	repeated PriceExceptionFeesItem Fees = 3;
+	int32 ProductTypeId = 4;
+	int32 LoanAmount = 5;
+	int32 LoanDuration = 6;
+	int32 LoanToValue = 7;
+	int32 FixedRatePeriod = 8;
+	repeated string AppliedMarketingActionsCodes = 9;
 }
