@@ -49,6 +49,8 @@ public class CodebookManager : ICodebookManagerConfigurator
 
     public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> SignatureTypes { get; private set; } = null!;
 
+    public List<Codebook.TinNoFillReasonsByCountryResponse.Types.TinNoFillReasonsByCountryItem> TinNoFillReasonsByCountry { get; private set; } = null!;
+
     public Task Load(ICodebookServiceClient codebookService, CancellationToken cancellationToken)
     {
         return Task.WhenAll(_codebooksToLoad.Select(call => call(codebookService, cancellationToken)));
@@ -197,6 +199,13 @@ public class CodebookManager : ICodebookManagerConfigurator
     ICodebookManagerConfigurator ICodebookManagerConfigurator.SignatureTypes()
     {
         _codebooksToLoad.Add(async (service, ct) => SignatureTypes = await service.SignatureTypes(ct));
+
+        return this;
+    }
+
+    ICodebookManagerConfigurator ICodebookManagerConfigurator.TinNoFillReasonsByCountry()
+    {
+        _codebooksToLoad.Add(async (service, ct) => TinNoFillReasonsByCountry = await service.TinNoFillReasonsByCountry(ct));
 
         return this;
     }

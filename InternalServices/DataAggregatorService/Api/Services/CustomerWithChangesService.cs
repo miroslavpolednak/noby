@@ -20,7 +20,7 @@ public class CustomerWithChangesService
         _customerChangeDataMerger = customerChangeDataMerger;
     }
 
-    public async Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<(CustomerDetailResponse customer, CustomerOnSA? customerOnSA)> GetCustomerDetail(Identity identity, int salesArrangementId, CancellationToken cancellationToken)
     {
         var customer = await _customerService.GetCustomerDetail(identity, cancellationToken);
         var customerOnSaList = await _customerOnSAService.GetCustomerList(salesArrangementId, cancellationToken);
@@ -30,7 +30,23 @@ public class CustomerWithChangesService
         if (customerOnSa is not null)
             _customerChangeDataMerger.MergeAll(customer, customerOnSa);
 
-        return customer;
+        return (customer, customerOnSa);
+    }
+
+    public async Task<(CustomerDetailResponse customer, CustomerOnSA? customerOnSA)> GetCustomerDetail(int customerOnSaId, CancellationToken cancellationToken)
+    {
+        await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
+
+        var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
+
+        var customerIdentity = customerOnSa.CustomerIdentifiers.MaxBy(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
+                               ?? throw new InvalidOperationException($"CustomerOnSa {customerOnSa} has no identity");
+
+        var customer = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);
+
+        _customerChangeDataMerger.MergeAll(customer, customerOnSa);
+
+        return (customer, customerOnSa);
     }
 
     public async Task<IList<CustomerDetailResponse>> GetCustomerList(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)
@@ -40,7 +56,14 @@ public class CustomerWithChangesService
         var response = await _customerService.GetCustomerList(customersOnSaWithKbIdentity.Keys, cancellationToken);
 
         foreach (var customerDetail in response.Customers)
-            MergeCustomerChanges(customerDetail, customersOnSaWithKbIdentity);
+        {
+            var customerOnSa = GetCustomerOnSA(customerDetail, customersOnSaWithKbIdentity);
+
+            if (customerOnSa is null)
+                continue;
+
+            _customerChangeDataMerger.MergeAll(customerDetail, customerOnSa);
+        }
 
         return response.Customers;
     }
@@ -53,35 +76,37 @@ public class CustomerWithChangesService
         var customersOnSaWithKbIdentity = GetCustomersOnSaWithIdentity(customersOnSa);
 
         foreach (var customerDetail in customers)
-            MergeCustomerChanges(customerDetail, customersOnSaWithKbIdentity);
+        {
+            var customerOnSa = GetCustomerOnSA(customerDetail, customersOnSaWithKbIdentity);
+
+            if (customerOnSa is null)
+                continue;
+
+            //CustomerOnSa full detail
+            customerOnSa = await _customerOnSAService.GetCustomer(customerOnSa.CustomerOnSAId, cancellationToken);
+
+            _customerChangeDataMerger.MergeAll(customerDetail, customerOnSa);
+        }
 
         return customers;
     }
 
-    private void MergeCustomerChanges(CustomerDetailResponse customerDetail, IReadOnlyDictionary<Identity, CustomerOnSA> customerOnSaWithIdentity)
-    {
-        var kbIdentity = GetKbIdentity(customerDetail);
-
-        if (kbIdentity is null)
-            return;
-
-        var customerOnSa = customerOnSaWithIdentity.GetValueOrDefault(kbIdentity);
-
-        if (customerOnSa is null)
-            return;
-
-        _customerChangeDataMerger.MergeAll(customerDetail, customerOnSa);
-    }
-
     private static Dictionary<Identity, CustomerOnSA> GetCustomersOnSaWithIdentity(IEnumerable<CustomerOnSA> customersOnSa) =>
         customersOnSa.Select(c => new
-                     {
-                         CustomerOnSa = c,
-                         KbIdentity = c.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
-                     })
+        {
+            CustomerOnSa = c,
+            KbIdentity = c.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
+        })
                      .Where(c => c.KbIdentity is not null)
                      .ToDictionary(k => k.KbIdentity!, v => v.CustomerOnSa);
 
-    private static Identity? GetKbIdentity(CustomerDetailResponse customerDetail) => 
+    private static CustomerOnSA? GetCustomerOnSA(CustomerDetailResponse customerDetail, IReadOnlyDictionary<Identity, CustomerOnSA> customersOnSaWithKbIdentity)
+    {
+        var kbIdentity = GetKbIdentity(customerDetail);
+
+        return kbIdentity is null ? default : customersOnSaWithKbIdentity.GetValueOrDefault(kbIdentity);
+    }
+
+    private static Identity? GetKbIdentity(CustomerDetailResponse customerDetail) =>
         customerDetail.Identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
 }

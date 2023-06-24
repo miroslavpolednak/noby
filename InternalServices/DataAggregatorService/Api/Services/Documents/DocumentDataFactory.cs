@@ -26,6 +26,8 @@ internal class DocumentDataFactory
             DocumentTypes.ZAOZMDLU => _serviceProvider.GetRequiredService<CustomerChangeTemplateData>(),
             DocumentTypes.ZAODHUBN => new HUBNTemplateData(),
             DocumentTypes.ZUSTAVSI or DocumentTypes.PRISTOUP or DocumentTypes.ZADOSTHD_SERVICE => _serviceProvider.GetRequiredService<CustomerChange3602TemplateData>(),
+            DocumentTypes.DANRESID => new CustomerTaxResidencyTemplateData(),
+            DocumentTypes.ODSTOUP => new ApplicationTerminationTemplateData(),
             _ => new AggregatedData()
         };
 

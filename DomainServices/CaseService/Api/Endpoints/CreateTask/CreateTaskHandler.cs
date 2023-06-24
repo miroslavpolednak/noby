@@ -80,7 +80,6 @@ internal sealed class CreateTaskHandler
         metadata.Add("ukol_overeni_ic_splatnost_uveru_poc_mes", priceException.LoanDuration.ToString(CultureInfo.InvariantCulture));
         metadata.Add("ukol_overeni_ic_uver_ltv", priceException.LoanToValue.ToString(CultureInfo.InvariantCulture));
         metadata.Add("ukol_overeni_ic_fixace_uveru_poc_mes", priceException.FixedRatePeriod.ToString(CultureInfo.InvariantCulture));
-        metadata.Add("ukol_overeni_ic_zpusob_reseni", priceException.DecisionId?.ToString(CultureInfo.InvariantCulture) ?? "");
 
         for (var i = 0; i < (priceException.Fees?.Count ?? 0); i++)
         {

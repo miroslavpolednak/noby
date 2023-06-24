@@ -6,6 +6,7 @@ using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.HouseholdService.Contracts.Dto;
 using Google.Protobuf.Collections;
+using UpdateCustomerRequest = DomainServices.CustomerService.Contracts.UpdateCustomerRequest;
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
@@ -18,10 +19,8 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
         if (delta is null)
             return;
 
-        RewriteWithDelta(customer.NaturalPerson, delta.NaturalPerson);
+        MergeClientData(delta, customer.NaturalPerson, customer.Addresses, customer.Contacts);
         RewriteWithDelta(customer.NaturalPerson?.TaxResidence, delta.NaturalPerson?.TaxResidences);
-        RewriteWithDelta(customer.Addresses, delta.Addresses);
-        RewriteWithDelta(customer.Contacts, delta.MobilePhone, delta.EmailAddress);
 
         customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
     }
@@ -33,9 +32,19 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
         if (delta is null)
             return;
 
-        RewriteWithDelta(customer.NaturalPerson, delta.NaturalPerson);
-        RewriteWithDelta(customer.Addresses, delta.Addresses);
-        RewriteWithDelta(customer.Contacts, delta.MobilePhone, delta.EmailAddress);
+        MergeClientData(delta, customer.NaturalPerson, customer.Addresses, customer.Contacts);
+
+        customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
+    }
+
+    public void MergeClientData(UpdateCustomerRequest customer, CustomerOnSA customerOnSA)
+    {
+        var delta = GetCustomerChangeDataDelta(customerOnSA);
+
+        if (delta is null)
+            return;
+
+        MergeClientData(delta, customer.NaturalPerson, customer.Addresses, customer.Contacts);
 
         customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
     }
@@ -56,6 +65,13 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
             return default;
 
         return JsonSerializer.Deserialize<CustomerChangeDataDelta>(customerOnSA.CustomerChangeData);
+    }
+
+    private static void MergeClientData(CustomerChangeDataDelta delta, NaturalPerson naturalPerson, RepeatedField<GrpcAddress> addresses, RepeatedField<Contact> contacts)
+    {
+        RewriteWithDelta(naturalPerson, delta.NaturalPerson);
+        RewriteWithDelta(addresses, delta.Addresses);
+        RewriteWithDelta(contacts, delta.MobilePhone, delta.EmailAddress);
     }
 
     private static void RewriteWithDelta(NaturalPerson naturalPerson, NaturalPersonDelta? delta)
