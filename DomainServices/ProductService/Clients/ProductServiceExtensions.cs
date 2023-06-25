@@ -18,14 +18,14 @@ public static class ProductServiceExtensions
     public static IServiceCollection AddProductService(this IServiceCollection services)
     {
         services.AddCisServiceDiscovery();
-        services.TryAddTransient<IProductServiceClient, __Services.ProductService>();
+        services.TryAddTransient<IProductServiceClient, __Services.ProductServiceClient>();
         services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.ProductService.ProductServiceClient>(ServiceName);
         return services;
     }
 
     public static IServiceCollection AddProductService(this IServiceCollection services, string serviceUrl)
     {
-        services.TryAddTransient<IProductServiceClient, __Services.ProductService>();
+        services.TryAddTransient<IProductServiceClient, __Services.ProductServiceClient>();
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.ProductService.ProductServiceClient>(serviceUrl);
         return services;
     }

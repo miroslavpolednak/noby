@@ -43,6 +43,7 @@ try
         .AddOfferService()
         .AddRiskIntegrationService()
         .AddCodebookService()
+        .AddRealEstateValuationService()
         .AddCustomerService()
         .AddProductService()
         .AddCaseService()
