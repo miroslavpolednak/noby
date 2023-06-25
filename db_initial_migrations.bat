@@ -8,6 +8,8 @@
 
 .\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=SalesArrangementService;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\SalesArrangementService\DatabaseMigrations"
 
+.\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=RealEstateValuationService;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\RealEstateValuationService\DatabaseMigrations"
+
 .\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=CIS;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\DatabaseMigrations"
 
 .\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=DataAggregatorService;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\DataAggregatorService\DatabaseMigrations"
@@ -19,3 +21,4 @@
 .\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=DocumentArchiveService;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\DocumentArchiveService\DatabaseMigrations"
 
 .\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=NOBY;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\NOBY\DatabaseMigrations"
+z
