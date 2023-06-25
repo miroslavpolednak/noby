@@ -17,3 +17,11 @@ public partial class GetRealEstateValuationListRequest
 public partial class PatchDeveloperOnRealEstateValuationRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class GetRealEstateValuationDetailRequest
+    : MediatR.IRequest<RealEstateValuationDetail>, CIS.Core.Validation.IValidatableRequest
+{ }
+
+public partial class GetRealEstateValuationDetailByOrderIdRequest
+    : MediatR.IRequest<RealEstateValuationDetail>, CIS.Core.Validation.IValidatableRequest
+{ }

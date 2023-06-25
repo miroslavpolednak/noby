@@ -7,6 +7,9 @@ import "Messages/CreateRealEstateValuation.proto";
 import "Messages/DeleteRealEstateValuation.proto";
 import "Messages/GetRealEstateValuationList.proto";
 import "Messages/PatchDeveloperOnRealEstateValuation.proto";
+import "Messages/RealEstateValuationDetail.proto";
+import "Messages/GetRealEstateValuationDetail.proto";
+import "Messages/GetRealEstateValuationDetailByOrderId.proto";
 
 service RealEstateValuationService {
    rpc CreateRealEstateValuation (CreateRealEstateValuationRequest) returns (CreateRealEstateValuationResponse);
@@ -16,4 +19,8 @@ service RealEstateValuationService {
    rpc GetRealEstateValuationList (GetRealEstateValuationListRequest) returns (GetRealEstateValuationListResponse);
 
    rpc PatchDeveloperOnRealEstateValuation (PatchDeveloperOnRealEstateValuationRequest) returns (google.protobuf.Empty);
+
+   rpc GetRealEstateValuationDetail (GetRealEstateValuationDetailRequest) returns (RealEstateValuationDetail);
+
+   rpc GetRealEstateValuationDetailByOrderId (GetRealEstateValuationDetailByOrderIdRequest) returns (RealEstateValuationDetail);
 }

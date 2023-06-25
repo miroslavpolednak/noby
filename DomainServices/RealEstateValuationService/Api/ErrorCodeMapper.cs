@@ -8,6 +8,7 @@ internal sealed class ErrorCodeMapper
     public const int RealEstateValuationIdEmpty = 22001;
     public const int RealEstateValuationNotFound = 22000;
     public const int CaseIdEmpty = 22002;
+    public const int OrderIdEmpty = 22003;
 
     public static IErrorCodesDictionary Init()
     {
@@ -15,6 +16,7 @@ internal sealed class ErrorCodeMapper
         {
             { CaseIdEmpty, "CaseId is empty" },
             { RealEstateValuationIdEmpty, "RealEstateValuationId is empty" },
+            { OrderIdEmpty, "OrderId is empty" },
             { RealEstateValuationNotFound, "RealEstateValuation {PropertyValue} not found" }
         });
 

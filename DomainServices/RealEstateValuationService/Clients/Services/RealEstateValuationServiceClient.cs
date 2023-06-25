@@ -39,6 +39,22 @@ internal sealed class RealEstateValuationServiceClient
         }, cancellationToken: cancellationToken);
     }
 
+    public async Task<RealEstateValuationDetail> GetRealEstateValuationDetail(int realEstateValuationId, CancellationToken cancellationToken = default)
+    {
+        return await _service.GetRealEstateValuationDetailAsync(new GetRealEstateValuationDetailRequest
+        {
+            RealEstateValuationId = realEstateValuationId
+        }, cancellationToken: cancellationToken);
+    }
+
+    public async Task<RealEstateValuationDetail> GetRealEstateValuationDetailByOrderId(int orderId, CancellationToken cancellationToken = default)
+    {
+        return await _service.GetRealEstateValuationDetailByOrderIdAsync(new GetRealEstateValuationDetailByOrderIdRequest
+        {
+            OrderId = orderId
+        }, cancellationToken: cancellationToken);
+    }
+
     private readonly Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient _service;
     public RealEstateValuationServiceClient(Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient service)
         => _service = service;

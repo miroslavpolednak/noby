@@ -11,24 +11,7 @@ internal sealed class GetRealEstateValuationListHandler
         var list = await _dbContext.RealEstateValuations
             .AsNoTracking()
             .Where(t => t.CaseId == request.CaseId)
-            .Select(t => new RealEstateValuationListItem
-            {
-                RealEstateTypeId = t.RealEstateTypeId,
-                CaseId = t.CaseId,
-                IsLoanRealEstate = t.IsLoanRealEstate,
-                DeveloperApplied = t.DeveloperApplied,
-                DeveloperAllowed = t.DeveloperAllowed,
-                RealEstateValuationId = t.RealEstateValuationId,
-                ValuationStateId = t.ValuationStateId,
-                ValuationTypeId = (ValuationTypes)t.ValuationTypeId,
-                IsRevaluationRequired = t.IsRevaluationRequired,
-                ValuationSentDate = t.ValuationSentDate,
-                RealEstateStateId = t.RealEstateStateId,
-                Address = t.Address,
-                OrderId = t.OrderId,
-                ValuationResultCurrentPrice = t.ValuationResultCurrentPrice,
-                ValuationResultFuturePrice = t.ValuationResultFuturePrice
-            })
+            .Select(Database.Mappers.RealEstateDetail())
             .ToListAsync(cancellationToken);
 
         var response = new GetRealEstateValuationListResponse();

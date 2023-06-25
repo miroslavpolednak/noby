@@ -12,6 +12,7 @@ internal sealed class RealEstateValuation
 
     public long CaseId { get; set; }
     public int RealEstateTypeId { get; set; }
+    public int? RealEstateSubtypeId { get; set; }
     public int ValuationStateId { get; set; }
     public bool IsLoanRealEstate { get; set; }
     public int ValuationTypeId { get; set; }
