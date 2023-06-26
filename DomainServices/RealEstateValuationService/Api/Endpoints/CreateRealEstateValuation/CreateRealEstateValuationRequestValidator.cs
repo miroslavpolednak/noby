@@ -16,5 +16,9 @@ internal sealed class CreateRealEstateValuationRequestValidator
         RuleFor(t => t.RealEstateTypeId)
             .MustAsync(async (t, cancellationToken) => (await codebookService.RealEstateTypes(cancellationToken)).Any(c => c.Id == t))
             .WithErrorCode(ErrorCodeMapper.RealEstateTypeIdNotFound);
+
+        RuleFor(t => t.ValuationStateId)
+            .MustAsync(async (t, cancellationToken) => (await codebookService.WorkflowTaskStatesNoby(cancellationToken)).Any(c => c.Id == t))
+            .WithErrorCode(ErrorCodeMapper.ValuationStateIdNotFound);
     }
 }
