@@ -36,6 +36,13 @@ public class AmendmentsSigning
     public string DocumentForSigning { get; set; } = null!;
 
     /// <summary>
+    /// Podepisování: Typ dokumentu k podpisu. D pro úvěrovou smlouvu, A pro zástavní smlouvu.
+    /// </summary>
+    /// <example>A</example>
+    [Required]
+    public string DocumentForSigningType { get; set; } = null!;
+    
+    /// <summary>
     /// Podepisování: ID dokumentu návrhu na vklad
     /// </summary>
     /// <example>01_23_046_111203_SF_0001</example>
