@@ -42,7 +42,7 @@ message AmendmentSigning {
 	string FormId = 1;
 	cis.types.GrpcDate Expiration = 2;
 	string DocumentForSigning = 3;
-	google.protobuf.StringValue ProposalForEntry = 4;
+	repeated string ProposalForEntry = 4;
 	string DocumentForSigningType = 5;
 }
 
