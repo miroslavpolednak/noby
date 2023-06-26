@@ -1,11 +1,11 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Helpers;
-using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
+using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using DomainServices.CodebookService.Clients;
 using MediatR;
@@ -15,20 +15,20 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Sms;
 public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 {
     private readonly IDateTime _dateTime;
-    private readonly McsSmsProducer _mcsSmsProducer;
-    private readonly UserAdapterService _userAdapterService;
-    private readonly NotificationRepository _repository;
+    private readonly IMcsSmsProducer _mcsSmsProducer;
+    private readonly IUserAdapterService _userAdapterService;
+    private readonly INotificationRepository _repository;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly SmsAuditLogger _auditLogger;
+    private readonly ISmsAuditLogger _auditLogger;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
         IDateTime dateTime,
-        McsSmsProducer mcsSmsProducer,
-        UserAdapterService userAdapterService,
-        NotificationRepository repository,
+        IMcsSmsProducer mcsSmsProducer,
+        IUserAdapterService userAdapterService,
+        INotificationRepository repository,
         ICodebookServiceClient codebookService,
-        SmsAuditLogger auditLogger,
+        ISmsAuditLogger auditLogger,
         ILogger<SendSmsHandler> logger)
     {
         _dateTime = dateTime;

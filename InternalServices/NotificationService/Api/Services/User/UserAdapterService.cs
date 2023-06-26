@@ -1,13 +1,12 @@
-﻿using CIS.Core.Attributes;
-using CIS.Core.Exceptions;
+﻿using CIS.Core.Exceptions;
 using CIS.Core.Security;
 using CIS.InternalServices.NotificationService.Api.Configuration;
+using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using Microsoft.Extensions.Options;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
+namespace CIS.InternalServices.NotificationService.Api.Services.User;
 
-[ScopedService, SelfService]
-public class UserAdapterService
+public class UserAdapterService : IUserAdapterService
 {
     private readonly IServiceUserAccessor _userAccessor;
     private readonly Dictionary<string, Consumer> _consumers;

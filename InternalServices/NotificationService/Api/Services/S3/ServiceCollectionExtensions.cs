@@ -1,6 +1,7 @@
 ﻿using Amazon.Runtime;
 using Amazon.S3;
 using CIS.InternalServices.NotificationService.Api.Configuration;
+using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.S3;
 
@@ -21,7 +22,8 @@ public static class ServiceCollectionExtensions
 
                 var credentials = new BasicAWSCredentials(s3Configuration.AccessKey, s3Configuration.SecretKey);
                 return new AmazonS3Client(credentials, config);
-            });
+            })
+            .AddScoped<IS3AdapterService, S3AdapterService>();
 
         return builder;
     }
