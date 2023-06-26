@@ -87,6 +87,7 @@ internal sealed class WorkflowMapperService
             Expiration = signing.Expiration,
             FormId = signing.FormId,
             DocumentForSigning = remove1 || stateId == 2 ? "" : signing.DocumentForSigning,
+            DocumentForSigningType = signing.DocumentForSigningType,
             ProposalForEntry = remove1 ? "" : signing.ProposalForEntry
         };
     }
