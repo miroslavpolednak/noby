@@ -29,6 +29,7 @@ internal sealed class GetRealEstateValuationDetailHandler
 
         if (details?.SpecificDetailBin is not null)
         {
+
         }
 
         return response;
