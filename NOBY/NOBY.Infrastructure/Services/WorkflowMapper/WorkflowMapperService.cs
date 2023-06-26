@@ -88,7 +88,7 @@ internal sealed class WorkflowMapperService
             FormId = signing.FormId,
             DocumentForSigning = remove1 || stateId == 2 ? "" : signing.DocumentForSigning,
             DocumentForSigningType = signing.DocumentForSigningType,
-            ProposalForEntry = remove1 ? "" : signing.ProposalForEntry
+            ProposalForEntry = remove1 ? "" : (signing.ProposalForEntry == null || !signing.ProposalForEntry.Any() ? "" : signing.ProposalForEntry[0])
         };
     }
     
