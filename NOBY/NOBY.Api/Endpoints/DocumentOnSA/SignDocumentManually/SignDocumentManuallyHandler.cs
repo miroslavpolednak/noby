@@ -220,7 +220,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
             ValidTo = identificationDocument.ValidTo,
             IssuedOn = identificationDocument.IssuedOn,
             IssuedBy = identificationDocument.IssuedBy ?? string.Empty,
-            RegisterPlace = identificationDocument.RegisterPlace ?? string.Empty
+            RegisterPlace = identificationDocument.RegisterPlace
         };
     }
 

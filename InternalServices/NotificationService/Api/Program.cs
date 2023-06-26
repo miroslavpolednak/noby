@@ -5,7 +5,6 @@ using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Endpoints.v1;
-using CIS.InternalServices.NotificationService.Api.Extensions;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Api.Services.Smtp;
@@ -13,7 +12,10 @@ using ProtoBuf.Grpc.Server;
 using DomainServices;
 using CIS.InternalServices;
 using CIS.InternalServices.NotificationService.Api.ErrorHandling;
+using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging;
+using CIS.InternalServices.NotificationService.Api.Services.User;
+using CIS.InternalServices.NotificationService.Api.Swagger;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
@@ -69,18 +71,24 @@ try
     // codebook client
     builder.Services.AddCodebookService();
 
+    // audit logger
+    builder.AddSmsAuditLogger();
+    
+    // repository
+    builder.AddRepository();
+
     // messaging - kafka consumers and producers
     builder.AddMessaging();
 
+    // user
+    builder.AddUserAdapter();
+    
     // s3 client
     builder.AddS3Client();
 
     // smtp
     builder.AddSmtpClient();
-
-    // database
-    builder.AddEntityFramework<NotificationDbContext>(connectionStringKey: "nobyDb");
-
+    
     // swagger
     builder.AddCustomSwagger();
 

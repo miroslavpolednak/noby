@@ -1,13 +1,12 @@
-﻿using CIS.Core.Attributes;
-using CIS.Core.Exceptions;
+﻿using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using Microsoft.EntityFrameworkCore;
 using Result = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction.Result;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories;
 
-[ScopedService, SelfService]
-public class NotificationRepository
+public class NotificationRepository : INotificationRepository
 {
     private readonly NotificationDbContext _dbContext;
 

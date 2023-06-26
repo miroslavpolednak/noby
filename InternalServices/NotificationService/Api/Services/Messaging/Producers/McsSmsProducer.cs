@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using CIS.Core;
-using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Messages.Partials;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
 using MassTransit;
 using Microsoft.Extensions.Options;
@@ -10,8 +10,7 @@ using Headers = CIS.InternalServices.NotificationService.Api.Services.Messaging.
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
 
-[ScopedService, SelfService]
-public class McsSmsProducer
+public class McsSmsProducer : IMcsSmsProducer
 {
     private readonly ITopicProducer<IMcsSenderTopic> _producer;
     private readonly IDateTime _dateTime;
