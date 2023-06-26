@@ -35,7 +35,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
             return new IdentifyCaseResponse();
         }
 
-        if (!await _caseServiceClient.ValidateCaseId(caseId.Value, false, cancellationToken))
+        if (!(await _caseServiceClient.ValidateCaseId(caseId.Value, false, cancellationToken)).Exists)
         {
             return new IdentifyCaseResponse { CaseId = null };
         }
@@ -95,7 +95,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     
     private async Task<IdentifyCaseResponse> HandleByCaseId(long caseId, CancellationToken cancellationToken)
     {
-        var found = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
+        var found = (await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken)).Exists;
         return new IdentifyCaseResponse { CaseId = found ? caseId : null };
     }
     
