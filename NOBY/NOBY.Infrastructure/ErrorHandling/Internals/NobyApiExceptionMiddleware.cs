@@ -79,6 +79,10 @@ public sealed class NobyApiExceptionMiddleware
         {
             await Results.Json(ex.Errors, statusCode: 400).ExecuteAsync(context);
         }
+        catch (NobyServerException ex)
+        {
+            await Results.Json(singleErrorResult(ex.Error.ErrorCode, ex.Error.Message), statusCode: 500).ExecuteAsync(context);
+        }
         // osetrena validace na urovni api call
         catch (CisValidationException ex)
         {

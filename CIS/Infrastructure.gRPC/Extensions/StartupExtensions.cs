@@ -95,6 +95,13 @@ public static class StartupExtensions
             .WithTransientLifetime());
 
         // set default validator translation language
+        services.AddFluentValidationErrorHandling(validationMessages);
+
+        return services;
+    }
+
+    public static IServiceCollection AddFluentValidationErrorHandling(this IServiceCollection services, CIS.Core.ErrorCodes.IErrorCodesDictionary? validationMessages = null)
+    {
         if (validationMessages is not null)
         {
             ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo(ExceptionHandling.FluentValidationLanguageManager.DefaultLanguage);

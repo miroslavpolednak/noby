@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using CIS.Core;
-using CIS.Core.Attributes;
+using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using DomainServices.CodebookService.Contracts.v1;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +8,7 @@ using Newtonsoft.Json;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 
-[ScopedService, SelfService]
-public class SmsAuditLogger
+public class SmsAuditLogger : ISmsAuditLogger
 {
     // todo: change application logging to audit logging
     private readonly IDateTime _dateTime;

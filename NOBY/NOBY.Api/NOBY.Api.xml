@@ -2576,6 +2576,27 @@
              </remarks>
              <returns>Seznam závazků na produktu</returns>
         </member>
+        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
+            <summary>
+            Atributy k nově zakládanému Ocenění nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest.RealEstateTypeId">
+            <summary>
+            ID typu nemovitosti
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest.IsLoanRealEstate">
+            <summary>
+            True pokud jde o nemovitost, která je objektem úvěru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest.DeveloperApplied">
+            <summary>
+            True pokud je aplikované hromadné ocenění z developerského projektu
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItemButton.IsActive">
             <summary>
             Je sekce aktivní/neaktivní (lze prokliknout)?

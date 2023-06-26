@@ -41,7 +41,7 @@ internal sealed class CreateCustomerHandler
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11026")
         {
             _logger.LogInformation("CreateCustomer: registry failed", ex);
-            throw new CisException(90008, "KBCM_UNAVAILABLE_BR");
+            throw new NobyServerException(90008, "KBCM_UNAVAILABLE_BR");
         }
         catch
         {

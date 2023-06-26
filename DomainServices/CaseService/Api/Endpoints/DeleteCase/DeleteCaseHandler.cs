@@ -9,7 +9,7 @@ internal sealed class DeleteCaseHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteCaseRequest request, CancellationToken cancellation)
     {
         // case entity
-        var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation) 
+        var entity = await _dbContext.Cases.FirstOrDefaultAsync(t => t.CaseId == request.CaseId, cancellation) 
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // pocet SA na Case

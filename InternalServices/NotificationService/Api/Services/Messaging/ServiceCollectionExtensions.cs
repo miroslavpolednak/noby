@@ -3,6 +3,8 @@ using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Consumers;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Infrastructure;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Messages.Partials;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Abstraction;
 using Confluent.Kafka;
 using Confluent.Kafka.SyncOverAsync;
 using Confluent.SchemaRegistry;
@@ -37,6 +39,11 @@ public static class ServiceCollectionExtensions
                 .AddConsumerTopicAvro<IMpssSendEmailTopic>(topics.NobySendEmail)
                 .AddProducerAvro<IMpssSendEmailTopic>(topics.NobySendEmail)
             .Build();
+
+        builder.Services
+            .AddScoped<IMcsEmailProducer, McsEmailProducer>()
+            .AddScoped<IMcsSmsProducer, McsSmsProducer>()
+            .AddScoped<IMpssEmailProducer, MpssEmailProducer>();
 
         return builder;
     }

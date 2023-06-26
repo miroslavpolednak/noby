@@ -311,6 +311,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00032-HFICH-5896.sql = DomainServices\CodebookService\DatabaseMigrations\00032-HFICH-5896.sql
 		DomainServices\CodebookService\DatabaseMigrations\00034-HFICH-3996.sql = DomainServices\CodebookService\DatabaseMigrations\00034-HFICH-3996.sql
 		DomainServices\CodebookService\DatabaseMigrations\00035-HFICH-6535.sql = DomainServices\CodebookService\DatabaseMigrations\00035-HFICH-6535.sql
+		DomainServices\CodebookService\DatabaseMigrations\00036-HFICH-6670.sql = DomainServices\CodebookService\DatabaseMigrations\00036-HFICH-6670.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -456,6 +457,19 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregator.Tests", "InternalServices\DataAggregatorService\Tests\CIS.InternalServices.DataAggregator.Tests\CIS.InternalServices.DataAggregator.Tests.csproj", "{2DDF5C65-4751-48A4-A79D-EC209AD02E57}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.Contacts", "DomainServices\CustomerService\ExternalServices.Contacts\DomainServices.CustomerService.ExternalServices.Contacts.csproj", "{B25C9B74-74A9-4443-91E4-3739743AD41E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RealEstateValuationService", "RealEstateValuationService", "{332FCD7A-C97A-4FE0-9E95-51E050CFC3F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.Contracts", "DomainServices\RealEstateValuationService\Contracts\DomainServices.RealEstateValuationService.Contracts.csproj", "{0E9E1FBD-CB22-48F3-B47A-32442481C3A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.Clients", "DomainServices\RealEstateValuationService\Clients\DomainServices.RealEstateValuationService.Clients.csproj", "{A5F197F5-C838-4623-B662-35454EED1B26}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{A57610AF-B011-4FAB-974B-B3FB39A6703E}"
+	ProjectSection(SolutionItems) = preProject
+		DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.Api", "DomainServices\RealEstateValuationService\Api\DomainServices.RealEstateValuationService.Api.csproj", "{8291DE0E-0447-471D-A402-B44B3FF30ED5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1297,6 +1311,30 @@ Global
 		{B25C9B74-74A9-4443-91E4-3739743AD41E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B25C9B74-74A9-4443-91E4-3739743AD41E}.Release|x64.ActiveCfg = Release|Any CPU
 		{B25C9B74-74A9-4443-91E4-3739743AD41E}.Release|x64.Build.0 = Release|Any CPU
+		{0E9E1FBD-CB22-48F3-B47A-32442481C3A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E9E1FBD-CB22-48F3-B47A-32442481C3A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E9E1FBD-CB22-48F3-B47A-32442481C3A5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0E9E1FBD-CB22-48F3-B47A-32442481C3A5}.Debug|x64.Build.0 = Debug|Any CPU
+		{0E9E1FBD-CB22-48F3-B47A-32442481C3A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E9E1FBD-CB22-48F3-B47A-32442481C3A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E9E1FBD-CB22-48F3-B47A-32442481C3A5}.Release|x64.ActiveCfg = Release|Any CPU
+		{0E9E1FBD-CB22-48F3-B47A-32442481C3A5}.Release|x64.Build.0 = Release|Any CPU
+		{A5F197F5-C838-4623-B662-35454EED1B26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5F197F5-C838-4623-B662-35454EED1B26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5F197F5-C838-4623-B662-35454EED1B26}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A5F197F5-C838-4623-B662-35454EED1B26}.Debug|x64.Build.0 = Debug|Any CPU
+		{A5F197F5-C838-4623-B662-35454EED1B26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5F197F5-C838-4623-B662-35454EED1B26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5F197F5-C838-4623-B662-35454EED1B26}.Release|x64.ActiveCfg = Release|Any CPU
+		{A5F197F5-C838-4623-B662-35454EED1B26}.Release|x64.Build.0 = Release|Any CPU
+		{8291DE0E-0447-471D-A402-B44B3FF30ED5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8291DE0E-0447-471D-A402-B44B3FF30ED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8291DE0E-0447-471D-A402-B44B3FF30ED5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8291DE0E-0447-471D-A402-B44B3FF30ED5}.Debug|x64.Build.0 = Debug|Any CPU
+		{8291DE0E-0447-471D-A402-B44B3FF30ED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8291DE0E-0447-471D-A402-B44B3FF30ED5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8291DE0E-0447-471D-A402-B44B3FF30ED5}.Release|x64.ActiveCfg = Release|Any CPU
+		{8291DE0E-0447-471D-A402-B44B3FF30ED5}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1440,6 +1478,11 @@ Global
 		{20605836-F726-489B-A0C6-BD9F34182CC3} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
 		{2DDF5C65-4751-48A4-A79D-EC209AD02E57} = {20605836-F726-489B-A0C6-BD9F34182CC3}
 		{B25C9B74-74A9-4443-91E4-3739743AD41E} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
+		{332FCD7A-C97A-4FE0-9E95-51E050CFC3F9} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}
+		{0E9E1FBD-CB22-48F3-B47A-32442481C3A5} = {332FCD7A-C97A-4FE0-9E95-51E050CFC3F9}
+		{A5F197F5-C838-4623-B662-35454EED1B26} = {332FCD7A-C97A-4FE0-9E95-51E050CFC3F9}
+		{A57610AF-B011-4FAB-974B-B3FB39A6703E} = {332FCD7A-C97A-4FE0-9E95-51E050CFC3F9}
+		{8291DE0E-0447-471D-A402-B44B3FF30ED5} = {332FCD7A-C97A-4FE0-9E95-51E050CFC3F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

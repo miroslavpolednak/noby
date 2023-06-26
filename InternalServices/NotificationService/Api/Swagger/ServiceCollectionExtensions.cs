@@ -1,8 +1,8 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace CIS.InternalServices.NotificationService.Api.Extensions;
+namespace CIS.InternalServices.NotificationService.Api.Swagger;
 
-internal static class SwaggerExtensions
+internal static class ServiceCollectionExtensions
 {
     public static WebApplicationBuilder AddCustomSwagger(this WebApplicationBuilder builder)
     {
