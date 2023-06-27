@@ -1,5 +1,6 @@
 ﻿using DomainServices.DocumentArchiveService.Api.Database;
 using DomainServices.DocumentArchiveService.Contracts;
+using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocumentsInQueue;
@@ -28,7 +29,8 @@ public class GetDocumentsInQueueHandler : IRequestHandler<GetDocumentsInQueueReq
                 s.FormId,
                 s.EaCodeMainId,
                 s.CreatedOn,
-                s.Description
+                s.Description,
+                DocumentData = request.WithContent ? s.DocumentData : null,
             }).Take(MaxBatchSize)
               .ToListAsync(cancellationToken);
 
@@ -41,7 +43,8 @@ public class GetDocumentsInQueueHandler : IRequestHandler<GetDocumentsInQueueReq
             StatusInQueue = d.Status,
             EaCodeMainId = d.EaCodeMainId,
             CreatedOn = d.CreatedOn,
-            Description = d.Description
+            Description = d.Description,
+            DocumentData = d.DocumentData is not null ? ByteString.CopyFrom(d.DocumentData) : ByteString.CopyFromUtf8(string.Empty)
         }));
 
         return response;

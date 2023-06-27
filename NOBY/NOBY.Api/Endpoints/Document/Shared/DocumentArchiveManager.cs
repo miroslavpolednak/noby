@@ -11,6 +11,9 @@ namespace NOBY.Api.Endpoints.Document.Shared;
 [TransientService, SelfService]
 internal sealed class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocumentIdManager : IDocumentIdManager<TEntityId>
 {
+    // Document has been successfully transferred to Archive
+    public const int QueueStateSuccess = 400;
+
     private readonly TDocumentIdManager _documentIdManager;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly ICodebookServiceClient _codebookService;
@@ -42,6 +45,23 @@ internal sealed class DocumentArchiveManager<TDocumentIdManager, TEntityId> wher
 
     public async Task<ReadOnlyMemory<byte>> GetDocument(string documentId, GetDocumentBaseRequest documentRequest, CancellationToken cancellationToken)
     {
+        return await CheckIfDocWasTansferredToEArchive(documentId, cancellationToken)
+            ? await LoadFromEArchive(documentId, documentRequest, cancellationToken)
+            : await LoadFromEArchiveQueue(documentId, cancellationToken);
+    }
+
+    private async Task<ReadOnlyMemory<byte>> LoadFromEArchiveQueue(string documentId, CancellationToken cancellationToken)
+    {
+        var queueRequest = new GetDocumentsInQueueRequest();
+        queueRequest.EArchivIds.Add(documentId);
+        queueRequest.WithContent = true;
+
+        var documentsInQueue = await _documentArchiveService.GetDocumentsInQueue(queueRequest, cancellationToken);
+        return documentsInQueue.QueuedDocuments.Single(r => r.EArchivId == documentId).DocumentData.Memory;
+    }
+
+    private async Task<ReadOnlyMemory<byte>> LoadFromEArchive(string documentId, GetDocumentBaseRequest documentRequest, CancellationToken cancellationToken)
+    {
         var request = new GetDocumentRequest
         {
             DocumentId = documentId,
@@ -50,10 +70,21 @@ internal sealed class DocumentArchiveManager<TDocumentIdManager, TEntityId> wher
         };
 
         var response = await _documentArchiveService.GetDocument(request, cancellationToken);
-
         documentRequest.InputParameters.CaseId = response.Metadata.CaseId;
-
         return response.Content.BinaryData.Memory;
+    }
+
+    private async Task<bool> CheckIfDocWasTansferredToEArchive(string documentId, CancellationToken cancellationToken)
+    {
+        var queueRequest = new GetDocumentsInQueueRequest();
+        queueRequest.EArchivIds.Add(documentId);
+
+        var documentsInQueue = await _documentArchiveService.GetDocumentsInQueue(queueRequest, cancellationToken);
+
+        var documentInQueue = documentsInQueue.QueuedDocuments.FirstOrDefault(r => r.EArchivId == documentId)
+            ?? throw new NobyValidationException("Unable to find document in EArchive queue");
+
+        return documentInQueue.StatusInQueue == QueueStateSuccess;
     }
 
     public async Task SaveDocumentToArchive(TEntityId entityId, DocumentArchiveData archiveData, CancellationToken cancellationToken)
