@@ -13,7 +13,7 @@ public class DocumentsMetadata
     public DateOnly CreatedOn { get; set; }
 
     /// <summary>
-    /// Stav přenosu dokumentu do eArchivu. Enum Values: 0 - Uloženo v EArchivu, 1 - Probíhá přenos, 2 - Chyba přenosu
+    /// Stav přenosu dokumentu do eArchivu. Enum Values: 0 - Uloženo v eArchivu, 1 - Ve zpracování, 2 - Chyba
     /// </summary>
     /// <example>1</example>
     public UploadStatuses UploadStatus { get; set; }

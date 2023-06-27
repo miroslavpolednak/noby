@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Exceptions;
+using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.Testing;
 using DomainServices.DocumentOnSAService.Api.Database;
@@ -19,7 +20,7 @@ public class StartSigningTest : IntegrationTestBase
     public StartSigningTest(WebApplicationFactoryFixture<Program> fixture) : base(fixture)
     {
         //Mocks default
-        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = 1, CaseId = 2 });
+        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = 1, State = 1, CaseId = 2 });
 
         var resp = new GetDocumentDataResponse
         {
@@ -55,7 +56,8 @@ public class StartSigningTest : IntegrationTestBase
         {
             SalesArrangementId = salesArrangementId,
             DocumentTypeId = documentTypeId,
-            SignatureMethodCode = signatureMethodCode
+            SignatureMethodCode = signatureMethodCode,
+            SignatureTypeId = (int)SignatureTypes.Paper,
         });
 
         // response check
@@ -80,6 +82,7 @@ public class StartSigningTest : IntegrationTestBase
         docOnSaEntity!.EArchivId.Should().Be(eArchiveId);
         docOnSaEntity!.FormId.Should().Be("N00000000000101");
         docOnSaEntity!.IsValid.Should().BeTrue();
+        docOnSaEntity.SignatureTypeId.Should().Be((int)SignatureTypes.Paper);
     }
 
     [Fact]

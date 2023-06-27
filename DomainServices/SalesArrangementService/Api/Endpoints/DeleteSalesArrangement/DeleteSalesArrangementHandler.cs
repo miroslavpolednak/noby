@@ -19,7 +19,7 @@ internal sealed class DeleteSalesArrangementHandler
                 throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, saInstance.SalesArrangementTypeId);
 
             // kontrola na stav
-            if (saInstance.State != (int)SalesArrangementStates.InProgress && saInstance.State != (int)SalesArrangementStates.IsSigned)
+            if (!_allowedStates.Contains(saInstance.State))
                 throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SalesArrangementCantDelete, saInstance.State);
         }
 
@@ -35,6 +35,15 @@ internal sealed class DeleteSalesArrangementHandler
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
+
+    private static int[] _allowedStates = new[] 
+    { 
+        (int)SalesArrangementStates.NewArrangement, 
+        (int)SalesArrangementStates.InProgress,
+        (int)SalesArrangementStates.NewArrangement,
+        (int)SalesArrangementStates.ToSend,
+        (int)SalesArrangementStates.InSigning
+    };
 
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;

@@ -1,0 +1,18 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+import "Messages/CustomerChangeMetadata.proto";
+
+message GetCustomerChangeMetadataRequest {
+    int32 SalesArrangementId = 1;
+}
+
+message GetCustomerChangeMetadataResponse {
+    repeated GetCustomerChangeMetadataResponseItem CustomersOnSAMetadata = 1;
+
+    message GetCustomerChangeMetadataResponseItem {
+        int32 CustomerOnSAId = 1;
+        CustomerChangeMetadata CustomerChangeMetadata = 2;
+    }
+}

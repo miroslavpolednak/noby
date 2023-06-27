@@ -80,9 +80,9 @@ internal sealed class RealSbWebApiClient
             Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
             Message = new()
             {
-                Client_benefits = 0,
-                Case_id = Convert.ToInt32(request.CaseId),//IT anal neni schopna rict co s tim
-                Uver_id = Convert.ToInt32(request.CaseId),//IT anal neni schopna rict co s tim
+                Client_benefits = request.IsEmployeeBonusRequested.HasValue ? (request.IsEmployeeBonusRequested.Value ? 1 : 0) : null,
+                Case_id = Convert.ToInt32(request.CaseId),//IT anal nevi co s tim
+                Uver_id = Convert.ToInt32(request.CaseId),//IT anal nevi co s tim
                 Loan_no = request.ContractNumber,
                 Jmeno_prijmeni = request.ClientFullName,
                 Case_state = request.CaseStateName,
@@ -106,14 +106,18 @@ internal sealed class RealSbWebApiClient
 
     public async Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default)
     {
-        var sbRequest = new WFS_Manage_CompleteTask
+        var sbRequest = new WFS_Request_CompleteTask
         {
-            Task_id = request.TaskIdSb,
-            Metadata = request.Metadata.Select(t => new WFS_MetadataItem
+            Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
+            Message = new WFS_Manage_CompleteTask
             {
-                Mtdt_def = t.Key,
-                Mtdt_val = t.Value
-            }).ToList()
+                Task_id = request.TaskIdSb,
+                Metadata = request.Metadata.Select(t => new WFS_MetadataItem
+                {
+                    Mtdt_def = t.Key,
+                    Mtdt_val = t.Value
+                }).ToList()
+            }
         };
 
         var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/completetask", sbRequest, cancellationToken);
@@ -171,7 +175,9 @@ internal sealed class RealSbWebApiClient
 
             if (string.IsNullOrEmpty(userInstance.UserInfo.Cpm) || string.IsNullOrEmpty(userInstance.UserInfo.Icp))
             {
-                return userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous";
+                var s = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous";
+                var idx = s.IndexOf('\\');
+                return idx > 0 ? s[(idx + 1)..] : s;
             }
             else
             {

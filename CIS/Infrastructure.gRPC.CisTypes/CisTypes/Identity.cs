@@ -31,4 +31,23 @@ public partial class Identity
             IdentityScheme = FastEnum.Parse<Types.IdentitySchemes>(identity.Scheme.ToString()),
         };
     }
+
+    public static bool operator ==(Identity? left, Identity? right)
+    {
+        if (ReferenceEquals(left, right))
+            return true;
+
+        if (left is null)
+            return false;
+
+        if (right is null)
+            return false;
+
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Identity? left, Identity? right)
+    {
+        return !(left == right);
+    }
 }

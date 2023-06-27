@@ -5,7 +5,7 @@ namespace NOBY.Api.Endpoints.Product;
 
 [ApiController]
 [Route("api/product")]
-public class ProductController : ControllerBase
+public sealed class ProductController : ControllerBase
 {
     private readonly IMediator _mediator;
     public ProductController(IMediator mediator) => _mediator = mediator;
@@ -19,6 +19,7 @@ public class ProductController : ControllerBase
     /// </remarks>
     /// <returns>Seznam klientů na produktu</returns>
     [HttpGet("{caseId:long}/customers")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
     [ProducesResponseType(typeof(List<GetCustomersOnProduct.GetCustomersOnProductCustomer>), StatusCodes.Status200OK)]
@@ -35,6 +36,7 @@ public class ProductController : ControllerBase
     /// </remarks>
     /// <returns>Seznam závazků na produktu</returns>
     [HttpGet("{caseId:long}/obligations")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
     [ProducesResponseType(typeof(List<ProductObligation>), StatusCodes.Status200OK)]

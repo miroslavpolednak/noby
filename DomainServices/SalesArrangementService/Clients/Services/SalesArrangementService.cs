@@ -5,14 +5,15 @@ namespace DomainServices.SalesArrangementService.Clients.Services;
 internal sealed class SalesArrangementService 
     : ISalesArrangementServiceClient
 {
-    public async Task<int> GetProductSalesArrangementId(long caseId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<(int SalesArrangementId, int? OfferId)> GetProductSalesArrangement(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        return (await _service.GetProductSalesArrangementIdAsync(
+        var response = (await _service.GetProductSalesArrangementAsync(
             new()
             {
                 CaseId = caseId,
             }, cancellationToken: cancellationToken)
-            ).SalesArrangementId;
+            );
+        return (response.SalesArrangementId, response.OfferId);
     }
 
     public async Task DeleteSalesArrangement(int salesArrangementId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))

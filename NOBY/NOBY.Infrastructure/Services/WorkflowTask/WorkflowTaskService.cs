@@ -3,6 +3,8 @@ using DomainServices.CaseService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using NOBY.Infrastructure.Services.DocumentHelper;
 using NOBY.Infrastructure.Services.WorkflowMapper;
+using CIS.Core.Security;
+using NOBY.Infrastructure.Security;
 
 namespace NOBY.Infrastructure.Services.WorkflowTask;
 
@@ -10,7 +12,7 @@ namespace NOBY.Infrastructure.Services.WorkflowTask;
 internal sealed class WorkflowTaskService
     : IWorkflowTaskService
 {
-    public async Task<(Dto.Workflow.WorkflowTask? Task, Dto.Workflow.WorkflowTaskDetail? TaskDetail, List<Dto.Documents.DocumentsMetadata>? Documents)> GetTaskDetail(
+    public async Task<(Dto.Workflow.WorkflowTask Task, Dto.Workflow.WorkflowTaskDetail TaskDetail, List<Dto.Documents.DocumentsMetadata> Documents)> GetTaskDetail(
         long caseId, 
         int taskIdSb, 
         CancellationToken cancellationToken = default)
@@ -18,9 +20,25 @@ internal sealed class WorkflowTaskService
         var taskDetails = await _caseService.GetTaskDetail(taskIdSb, cancellationToken);
         var taskDetail = taskDetails.TaskDetail
             ?? throw new CisNotFoundException(90001, $"TaskDetail for Task {taskIdSb} not found.");
-        
-        var documentIds = taskDetail.TaskDocumentIds.ToHashSet();
 
+        var taskDto = await _mapper.MapTask(taskDetails.TaskObject, cancellationToken);
+        var taskDetailDto = await _mapper.MapTaskDetail(taskDetails.TaskObject, taskDetail, cancellationToken);
+
+        bool docsAllowed = taskDto.TaskTypeId != 6 || _userAccessor.HasPermission(DomainServices.UserService.Clients.Authorization.UserPermissions.UC_getWflSigningAttachments);
+
+        if ((taskDetail.TaskDocumentIds?.Any() ?? false) && docsAllowed)
+        {
+            var finalDocs = await getDocuments(caseId, taskDetail.TaskDocumentIds.ToArray(), cancellationToken);
+            return (taskDto, taskDetailDto, finalDocs);
+        }
+        else
+        {
+            return (taskDto, taskDetailDto, new List<Dto.Documents.DocumentsMetadata>());
+        }
+    }
+
+    private async Task<List<Dto.Documents.DocumentsMetadata>> getDocuments(long caseId, string[] taskDocumentIds, CancellationToken cancellationToken)
+    {
         var documentListResponse = await _documentArchiveService.GetDocumentList(new()
         {
             CaseId = caseId
@@ -36,23 +54,25 @@ internal sealed class WorkflowTaskService
         var mergedDocumentMetadata = _documentHelper.MergeDocuments(documentListMetadata, documentInQueueMetadata);
         var mergedDocumentMetadataFiltered = await _documentHelper.FilterDocumentsVisibleForKb(mergedDocumentMetadata, cancellationToken);
 
-        var taskDetailDto = await _mapper.Map(taskDetails.TaskObject, taskDetail, cancellationToken);
-        var taskDto = await _mapper.Map(taskDetails.TaskObject, cancellationToken);
-
-        return (taskDto, taskDetailDto, mergedDocumentMetadataFiltered.Where(m => documentIds.Contains(m.DocumentId)).ToList());
+        return mergedDocumentMetadataFiltered
+            .Where(m => taskDocumentIds.Contains(m.DocumentId))
+            .ToList();
     }
 
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly ICaseServiceClient _caseService;
     private readonly IDocumentHelperService _documentHelper;
-    private readonly WorkflowMapperService _mapper;
+    private readonly IWorkflowMapperService _mapper;
+    private readonly ICurrentUserAccessor _userAccessor;
 
     public WorkflowTaskService(
-            WorkflowMapperService mapper,
+            ICurrentUserAccessor userAccessor,
+            IWorkflowMapperService mapper,
             ICaseServiceClient caseService,
             IDocumentArchiveServiceClient documentArchiveService,
             IDocumentHelperService documentHelper)
     {
+        _userAccessor = userAccessor;
         _mapper = mapper;
         _caseService = caseService;
         _documentArchiveService = documentArchiveService;

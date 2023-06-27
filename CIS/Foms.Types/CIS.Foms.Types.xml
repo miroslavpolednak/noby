@@ -9,11 +9,6 @@
             Custom DTO pro NOBY
             </summary>
         </member>
-        <member name="T:CIS.Foms.Types.Interfaces.IFomsCurrentUserDetails">
-            <summary>
-            Detail uživatele aplikace NOBY
-            </summary>
-        </member>
         <member name="T:CIS.Foms.Types.Address">
             <summary>
             Adresa - bydliste, kontaktni atd.

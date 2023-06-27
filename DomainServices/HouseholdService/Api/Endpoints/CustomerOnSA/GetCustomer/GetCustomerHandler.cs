@@ -32,6 +32,9 @@ internal sealed class GetCustomerHandler
         if (entity.AdditionalDataBin != null)
             customerInstance.CustomerAdditionalData = CustomerAdditionalData.Parser.ParseFrom(entity.AdditionalDataBin);
 
+        if (entity.ChangeMetadataBin != null)
+            customerInstance.CustomerChangeMetadata = CustomerChangeMetadata.Parser.ParseFrom(entity.ChangeMetadataBin);
+
         // identity
         if (entity.Identities is not null)
             customerInstance.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new Identity(t.IdentityId, t.IdentityScheme)));

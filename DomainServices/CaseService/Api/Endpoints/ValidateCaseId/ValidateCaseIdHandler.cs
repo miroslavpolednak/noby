@@ -8,9 +8,12 @@ internal sealed class ValidateCaseIdHandler
 {
     public async Task<ValidateCaseIdResponse> Handle(ValidateCaseIdRequest request, CancellationToken cancellationToken)
     {
-        bool exists = await _dbContext.Cases.AnyAsync(t => t.CaseId ==  request.CaseId, cancellationToken);
+        var instance = await _dbContext.Cases
+            .Where(t => t.CaseId ==  request.CaseId)
+            .Select(t => new { t.OwnerUserId })
+            .FirstOrDefaultAsync(cancellationToken);
 
-        if (request.ThrowExceptionIfNotFound && !exists)
+        if (request.ThrowExceptionIfNotFound && instance is null)
         {
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
         }
@@ -18,7 +21,8 @@ internal sealed class ValidateCaseIdHandler
         {
             return new ValidateCaseIdResponse
             {
-                Exists = exists
+                Exists = instance is not null,
+                OwnerUserId = instance?.OwnerUserId
             };
         }
     }

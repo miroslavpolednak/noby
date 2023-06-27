@@ -13,13 +13,10 @@ internal class GetUserHandler
         {
             // zkusit cache
             string cacheKey = Helpers.CreateUserCacheKey(request.Identity.Identity);
-            if (_distributedCache is not null)
+            var cachedBytes = await _distributedCache.GetAsync(cacheKey, cancellationToken);
+            if (cachedBytes != null)
             {
-                var cachedBytes = await _distributedCache.GetAsync(cacheKey, cancellationToken);
-                if (cachedBytes != null)
-                {
-                    return Contracts.User.Parser.ParseFrom(cachedBytes);
-                }
+                return Contracts.User.Parser.ParseFrom(cachedBytes);
             }
         }
 
@@ -51,18 +48,25 @@ internal class GetUserHandler
                 Cin = dbIdentities.ic,
                 Cpm = dbIdentities.cpm,
                 Icp = dbIdentities.icp,
-                DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}"
-            },
-            UserAttributes = new Contracts.UserAttributesObject
-            {
+                DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}",
                 Email = dbAttributes?.email,
                 PhoneNumber = dbAttributes?.phone,
                 IsUserVIP = !string.IsNullOrEmpty(dbAttributes?.VIPFlag)
             }
         };
 
+        // mock pro Petra Hanusku
+        if (model.UserId == 3109)
+        {
+            model.UserInfo.Cpm = "99999396";
+            model.UserInfo.Icp = "000000396";
+        }
+
         // identity
         fillIdentities(dbIdentities, model);
+
+        // set is internal
+        model.UserInfo.IsInternal = !model.UserIdentifiers.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.BrokerId) && model.UserIdentifiers.Any();
 
         // perms
         dbPermissions.ForEach(t =>
@@ -73,14 +77,11 @@ internal class GetUserHandler
             }
         });
 
-        if (_distributedCache is not null)
+        await _distributedCache.SetAsync(Helpers.CreateUserCacheKey(model.UserId), model.ToByteArray(), new DistributedCacheEntryOptions
         {
-            await _distributedCache.SetAsync(Helpers.CreateUserCacheKey(model.UserId), model.ToByteArray(), new DistributedCacheEntryOptions
-            {
-                AbsoluteExpiration = DateTimeOffset.Now.AddHours(1),
-            },
-            cancellationToken);
-        }
+            AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(_minutesInCache),
+        },
+        cancellationToken);
 
         return model;
     }
@@ -137,12 +138,13 @@ internal class GetUserHandler
             });
     }
 
+    private const int _minutesInCache = 30;
     private readonly Database.UserServiceDbContext _dbContext;
-    private readonly IDistributedCache? _distributedCache;
+    private readonly IDistributedCache _distributedCache;
 
     public GetUserHandler(
         Database.UserServiceDbContext dbContext,
-        IDistributedCache? distributedCache)
+        IDistributedCache distributedCache)
     {
         _dbContext = dbContext;
         _distributedCache = distributedCache;

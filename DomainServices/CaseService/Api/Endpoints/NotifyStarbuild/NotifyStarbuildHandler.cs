@@ -23,22 +23,14 @@ internal sealed class NotifyStarbuildHandler
         // get case owner
         var ownerInstance = await _userService.GetUser(caseInstance.OwnerUserId, cancellationToken);
 
-        // vytahnout povolena SATypeId pro tento ProductTypeId
-        var allowedSaTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))
-            .Where(t => t.ProductTypeId == caseInstance.ProductTypeId)
-            .Select(t => t.Id)
-            .ToList();
-
         // get rbcid
         // zkus se kouknout, jestli to rbcid nahodou fakt neexistuje na SA - protoze kdyby jo, tak ho musime poslat do SB
         if (string.IsNullOrEmpty(request.RiskBusinessCaseId))
         {
-            var saList = await _salesArrangementService.GetSalesArrangementList(caseInstance.CaseId, cancellationToken: cancellationToken);
-            
-            request.RiskBusinessCaseId = saList
-                .SalesArrangements
-                .FirstOrDefault(t => allowedSaTypeId.Contains(t.SalesArrangementTypeId))?
-                .RiskBusinessCaseId;
+            var productSaId = await _salesArrangementService.GetProductSalesArrangement(caseInstance.CaseId, cancellationToken);
+            var productSaInstance = await _salesArrangementService.GetSalesArrangement(productSaId.SalesArrangementId, cancellationToken);
+
+            request.RiskBusinessCaseId = productSaInstance.RiskBusinessCaseId;
         }
 
         //TODO login
@@ -51,7 +43,7 @@ internal sealed class NotifyStarbuildHandler
             ProductTypeId = caseInstance.ProductTypeId,
             OwnerUserCpm = ownerInstance.UserInfo.Cpm,
             OwnerUserIcp = ownerInstance.UserInfo.Icp,
-            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId,
+            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId!,
             RiskBusinessCaseId = request.RiskBusinessCaseId,
             IsEmployeeBonusRequested = caseInstance.IsEmployeeBonusRequested
         };
@@ -78,14 +70,12 @@ internal sealed class NotifyStarbuildHandler
     private readonly UserService.Clients.IUserServiceClient _userService;
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly Database.CaseServiceDbContext _dbContext;
     private readonly IDistributedCache _distributedCache;
 
     public NotifyStarbuildHandler(
         IDistributedCache distributedCache,
         Database.CaseServiceDbContext dbContext,
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
         CodebookService.Clients.ICodebookServiceClient codebookService,
         UserService.Clients.IUserServiceClient userService,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
@@ -93,7 +83,6 @@ internal sealed class NotifyStarbuildHandler
     {
         _distributedCache = distributedCache;
         _dbContext = dbContext;
-        _userAccessor = userAccessor;
         _codebookService = codebookService;
         _userService = userService;
         _sbWebApiClient = sbWebApiClient;

@@ -34,4 +34,7 @@ internal sealed class CustomerService : Contracts.V1.CustomerService.CustomerSer
 
     public override async Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<ValidateContactResponse> ValidateContact(ValidateContactRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
 }

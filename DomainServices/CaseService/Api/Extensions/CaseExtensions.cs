@@ -80,10 +80,10 @@ internal static class CaseExtensions
                         Expiration = taskData.GetDate("ukol_overeni_ic_sazba_dat_do"),
                         LoanInterestRate = new()
                         {
-                            LoanInterestRate = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_nabid") ?? "",
-                            LoanInterestRateProvided = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_vysled") ?? "",
+                            LoanInterestRate = taskData.GetDecimal("ukol_overeni_ic_sazba_nabid"),
+                            LoanInterestRateProvided = taskData.GetDecimal("ukol_overeni_ic_sazba_vysled"),
                             LoanInterestRateAnnouncedType = taskData.GetInteger("ukol_overeni_ic_sazba_typ"),
-                            LoanInterestRateDiscount = taskData.GetValueOrDefault("ukol_overeni_ic_sazba_sleva")
+                            LoanInterestRateDiscount = taskData.GetDecimal("ukol_overeni_ic_sazba_sleva")
                         },
                         DecisionId = taskData.GetNInteger("ukol_overeni_ic_zpusob_reseni")
                     };
@@ -92,7 +92,7 @@ internal static class CaseExtensions
                         if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")))
                             break;
 
-                        taskDetail.PriceException.Fees.Add(new AmendmentPriceException.Types.FeesItem
+                        taskDetail.PriceException.Fees.Add(new PriceExceptionFeesItem
                         {
                             FeeId = taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}"),
                             TariffSum = taskData.GetInteger($"ukol_overeni_ic_popl_sazeb{i}"),
@@ -108,8 +108,13 @@ internal static class CaseExtensions
                         FormId = taskData.GetValueOrDefault("ukol_podpis_dokument_form_id") ?? "",
                         Expiration = taskData.GetDate("ukol_podpis_lhuta_do"),
                         DocumentForSigning = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_id") ?? "",
-                        ProposalForEntry = taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")
+                        DocumentForSigningType = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_typ") ?? ""
                     };
+
+                    if (string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")))
+                    {
+                        taskDetail.Signing.ProposalForEntry.AddRange(taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")!.Split(',', StringSplitOptions.RemoveEmptyEntries));
+                    }
                     break;
 
                 case 3 when _allowedConsultationTypes.Contains(taskData.GetNInteger("ukol_konzultace_oblast").GetValueOrDefault()):

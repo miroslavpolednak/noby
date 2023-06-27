@@ -21,4 +21,9 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\CIS\Testing\CIS.Testing.csproj" />
+      <ProjectReference Include="..\..\Api\CIS.InternalServices.NotificationService.Api.csproj" />
+    </ItemGroup>
+
 </Project>

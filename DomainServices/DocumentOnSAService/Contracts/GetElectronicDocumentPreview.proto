@@ -1,0 +1,15 @@
+syntax = "proto3";
+package DomainServices.DocumentOnSAService.GetElectronicDocumentPreview;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message GetElectronicDocumentPreviewRequest{
+
+	int32 DocumentOnSAId = 1;
+} 
+
+message GetElectronicDocumentPreviewResponse{
+	  
+	bytes BinaryData = 1;
+}

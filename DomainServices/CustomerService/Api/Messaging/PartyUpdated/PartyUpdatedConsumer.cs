@@ -5,7 +5,6 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using MassTransit;
-using Namotion.Reflection;
 using UpdateCustomerRequest = DomainServices.HouseholdService.Contracts.UpdateCustomerRequest;
 
 namespace DomainServices.CustomerService.Api.Messaging.PartyUpdated;

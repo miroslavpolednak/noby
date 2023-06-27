@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-	  <Product>Common Infrastructure Solution</Product>
+	  <Product>MPSS DomainServices</Product>
 	  <Authors>Filip Tuma</Authors>
 	  <Nullable>enable</Nullable>
 	  <Platforms>AnyCPU;x64</Platforms>

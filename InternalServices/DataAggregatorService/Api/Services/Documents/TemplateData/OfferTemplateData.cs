@@ -59,15 +59,12 @@ internal class OfferTemplateData : AggregatedData
     {
         get
         {
-            var numberProvider = (NumberFormatInfo)CultureInfo.GetCultureInfo("cs").NumberFormat.Clone();
-            numberProvider.CurrencySymbol = "Kč";
-
             return string.Join(Environment.NewLine,
                                Offer.AdditionalSimulationResults
                                     .Fees
                                     .Where(f => f.IncludeInRPSN)
                                     .Select(f => (decimal?)f.FinalSum ?? 0m)
-                                    .Select(f => f.ToString("C2", numberProvider)));
+                                    .Select(f => f.ToString("C2", CultureProvider.GetProvider())));
         }
     }
 

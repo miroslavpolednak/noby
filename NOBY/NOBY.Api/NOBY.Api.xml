@@ -154,11 +154,12 @@
             </summary>
             <remarks>
             Endpoint umožnuje identifikovat obchodní případ podle:
+            
             - čárového kódu dokumentu (formId)
             - čísla úvěrového účtu
             - ID obchodního případu
             - čísla smlouvy
-            <br /><br />
+            
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=60DB6DA4-D938-4901-98DC-0C8DF8011589"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="request">Typ kritéria a jeho hodnota pro vyhledávání.</param>
@@ -491,6 +492,11 @@
             Podmínka ke splnění
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.Order">
+            <summary>
+            Pořadové číslo podmínky
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponseCovenant.OrderLetter">
             <summary>
             Písmenná identifikace podmínky v sekci/skupině
@@ -773,6 +779,7 @@
              - <a href="https://wiki.kb.cz/display/HT/ProfessionCategory+%28CB_Prof_Cat1%29+-+MOCK">ProfessionCategories</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967580">ProfessionTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413648025">PropertySettlements</a>
+             - <a href="https://wiki.kb.cz/display/HT/RealEstateState">RealEstateStates</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632253">RealEstateTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632953">RealEstatePurchaseTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
@@ -1238,6 +1245,15 @@
             V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.ValidateContact(NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactRequest)">
+            <summary>
+            Validace emailu či telefonního čísla
+            </summary>
+            <remarks>
+            Validace kontatů (email či telefon) pomocí <i>DS:</i> CustomerService/validateContacts. Pro telefonní čísla vrací i informaci, zda se jedná o mobilní číslo.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.ProfileCheck(CIS.Foms.Types.CustomerIdentity)">
             <summary>
             Profile check s profilem identifikovaný
@@ -1387,6 +1403,34 @@
         <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.SearchCustomersResponse.Rows">
             <summary>
             Kolekce nalezenych klientu.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactRequest.Contact">
+            <summary>
+            telefonní číslo s mezinárodní předvolbou nebo email
+            </summary>
+            <example>+420 777 457 283</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactRequest.ContactType">
+            <summary>
+            Typ kontatku
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactResponse.IsContactValid">
+            <summary>
+            Je kontakt validni?
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactResponse.ContactType">
+            <summary>
+            Typ kontatku
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactResponse.IsMobile">
+            <summary>
+            Je to mobilní číslo?
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.Shared.BaseCustomerDetail.LegalCapacity">
@@ -1630,6 +1674,11 @@
             Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.SignatureTypeId">
+            <summary>
+            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.SignatureDateTime">
             <summary>
             Timestamp, kdy došlo k podpisu celého dokumentu.
@@ -1643,6 +1692,11 @@
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningRequest.SignatureMethodCode">
             <summary>
             Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningRequest.SignatureTypeId">
+            <summary>
+            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.DocumentOnSAId">
@@ -2521,6 +2575,59 @@
              <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=058D1B76-375C-4747-90DB-D4E3BE5C46F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
              </remarks>
              <returns>Seznam závazků na produktu</returns>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
+            <summary>
+            Atributy k nově zakládanému Ocenění nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest.RealEstateTypeId">
+            <summary>
+            ID typu nemovitosti
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest.IsLoanRealEstate">
+            <summary>
+            True pokud jde o nemovitost, která je objektem úvěru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest.DeveloperApplied">
+            <summary>
+            True pokud je aplikované hromadné ocenění z developerského projektu
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.CreateRealEstateValuation(System.Int64,NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest,System.Threading.CancellationToken)">
+            <summary>
+            Založení Ocenění nemovitosti
+            </summary>
+            <remarks>
+            Operace založí nové Ocenění nemovitosti k danému case ID. Jde buď o založení Ocenění nemovitosti k objektu úvěru ze žádosti o úvěr nebo o manuální založení dalšího objektu zajištění.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5A275F67-67AC-4851-8FE9-51F2B685B990"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteRealEstateValuation(System.Int64,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazání Ocenění nemovitosti
+            </summary>
+            <remarks>
+            Smazání Ocenění konkrétní nemovitosti ještě před odesláním do ACV.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6525504B-D598-4113-AA2A-846571769C40"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="caseId"></param>
+            <param name="realEstateValuationId"></param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.GetListRealEstateValuation(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Získání seznamu Ocenění nemovitostí
+            </summary>
+            <remarks>
+            Operace vrací seznam všech ocenění nemovitostí k danému case ID. Seznam je sloučením ocenění objektů úvěru ze žádosti o úvěr a manuálně zadaných dalších objektů zajištění. Operace nevrací objednávky ocenění, které nevznikly v Noby.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0DCD023D-ACF8-4744-B198-FE4FC2A84223"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItemButton.IsActive">
             <summary>
@@ -3907,6 +4014,12 @@
             Severita chyby
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Test.TestController.T1">
+            <summary>
+            Summary endpointu
+            </summary>
+            <remarks>Toto jsou remarks</remarks>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">
             <summary>
             ID uzivatele - xxvvss.v33id
@@ -3946,11 +4059,6 @@
             Základní informace o přihlášeném uživateli
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserAttributes">
-            <summary>
-            Dodatečné informace o uživately a kontakty
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.FirstName">
             <summary>
             Jméno uživatele
@@ -3981,21 +4089,26 @@
             </summary>
             <example>12345678</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.PhoneNumber">
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.PhoneNumber">
             <summary>
             Telefon uživatele
             </summary>
             <example>+420 601 234 567</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.EmailAddress">
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.EmailAddress">
             <summary>
             Emailová adresa uživatele
             </summary>
             <example>jarda@cimrman.cz</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseAttributes.IsUserVIP">
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.IsUserVIP">
             <summary>
             VIP flag uživatele
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo.IsInternal">
+            <summary>
+            Flag, zda se jedná o interního uživatele, či externistu
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Login">
@@ -4174,7 +4287,7 @@
             </remarks>
             <response code="404">Task or case not found</response>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.GetCurrentPriceException(System.Int64,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.GetCurrentPriceException(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Získání aktuální cenové výjimky
             </summary>

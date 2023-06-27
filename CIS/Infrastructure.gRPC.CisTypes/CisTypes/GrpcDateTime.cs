@@ -14,6 +14,21 @@ public partial class GrpcDateTime
         Nanos = nanos;
     }
 
+    public static implicit operator DateTime?(GrpcDateTime time)
+    {
+        if (time == null)
+            return null;
+
+        try
+        {
+            return new DateTime(time.Year, time.Month, time.Day, time.Hours, time.Minutes, time.Seconds, time.Nanos);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     public static implicit operator DateTime(GrpcDateTime time)
     {
         try

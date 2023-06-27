@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged
+namespace cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanproce
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class CaseId : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""CaseId"",""doc"":""Multiattribute representing unique identifier of case.It is multiattribute because there is multiple case management solutions running now. CDM entity name(s): CaseId."",""namespace"":""cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged"",""fields"":[{""name"":""id"",""doc"":""Unique identifier of case id itself. CDM attribute class name: CaseIdId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,36}$""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""CaseId"",""doc"":""Multiattribute representing unique identifier of case.It is multiattribute because there is multiple case management solutions running now. CDM entity name(s): CaseId."",""namespace"":""cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged"",""fields"":[{""name"":""id"",""doc"":""Unique identifier of case id itself. CDM attribute class name: CaseIdId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,36}$""}}]}");
 		/// <summary>
 		/// Unique identifier of case id itself. CDM attribute class name: CaseIdId.
 		/// </summary>

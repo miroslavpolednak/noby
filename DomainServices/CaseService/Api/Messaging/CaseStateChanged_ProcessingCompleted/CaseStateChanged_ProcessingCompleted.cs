@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
+namespace cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1
 {
 	using System;
 	using System.Collections.Generic;
@@ -14,12 +14,12 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
 	using global::Avro.Specific;
 	
 	/// <summary>
-	/// General entity for any event. CDM entity name(s): Event.
+	/// Event is published when a state change of mortgage case is processed in Starbuild workflow. Schema belongs to API MortgageInputProcessingEvents.v1. Root type description: General entity for any event. CDM entity name(s): Event.
 	/// </summary>
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class CaseStateChanged_ProcessingCompleted : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""CaseStateChanged_ProcessingCompleted"",""doc"":""General entity for any event. CDM entity name(s): Event."",""namespace"":""cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1"",""fields"":[{""name"":""eventId"",""doc"":""Unique identifier of event. CDM attribute class name: EventId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}},{""name"":""occurredOn"",""doc"":""Date and time when event occurred. CDM attribute class name: EventOccurredOn."",""type"":{""type"":""long"",""logicalType"":""local-timestamp-millis""}},{""name"":""workflowInputProcessingContext"",""type"":{""type"":""record"",""name"":""WorkflowInputProcessingContext"",""doc"":"""",""namespace"":""cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1"",""fields"":[{""name"":""requestId"",""type"":""int""},{""name"":""requestProcessingResult"",""type"":{""type"":""enum"",""name"":""RequestProcessingResultEnum"",""doc"":"""",""namespace"":""cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1"",""symbols"":[""CANCELED"",""ERROR"",""IGNORED"",""OK""]}}]}}],""javaAnnotation"":""cz.kb.api.common.annotation.ConfluentSchemaRegistryCompatible""}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""CaseStateChanged_ProcessingCompleted"",""doc"":""Event is published when a state change of mortgage case is processed in Starbuild workflow. Schema belongs to API MortgageInputProcessingEvents.v1. Root type description: General entity for any event. CDM entity name(s): Event."",""namespace"":""cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1"",""fields"":[{""name"":""eventId"",""doc"":""Unique identifier of event. CDM attribute class name: EventId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}},{""name"":""occurredOn"",""doc"":""Date and time when event occurred. CDM attribute class name: EventOccurredOn."",""type"":{""type"":""long"",""logicalType"":""timestamp-millis""}},{""name"":""workflowInputProcessingContext"",""type"":{""type"":""record"",""name"":""WorkflowInputProcessingContext"",""doc"":"""",""namespace"":""cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1"",""fields"":[{""name"":""requestId"",""type"":""int""},{""name"":""requestProcessingResult"",""type"":{""type"":""enum"",""name"":""RequestProcessingResultEnum"",""doc"":"""",""namespace"":""cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1"",""symbols"":[""CANCELED"",""ERROR"",""IGNORED"",""OK""]}}]}}],""javaAnnotation"":""cz.kb.api.common.annotation.ConfluentSchemaRegistryCompatible""}");
 		/// <summary>
 		/// Unique identifier of event. CDM attribute class name: EventId.
 		/// </summary>
@@ -28,7 +28,7 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
 		/// Date and time when event occurred. CDM attribute class name: EventOccurredOn.
 		/// </summary>
 		private System.DateTime _occurredOn;
-		private cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.WorkflowInputProcessingContext _workflowInputProcessingContext;
+		private cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1.WorkflowInputProcessingContext _workflowInputProcessingContext;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -64,7 +64,7 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
 				this._occurredOn = value;
 			}
 		}
-		public cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.WorkflowInputProcessingContext workflowInputProcessingContext
+		public cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1.WorkflowInputProcessingContext workflowInputProcessingContext
 		{
 			get
 			{
@@ -91,7 +91,7 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
 			{
 			case 0: this.eventId = (System.String)fieldValue; break;
 			case 1: this.occurredOn = (System.DateTime)fieldValue; break;
-			case 2: this.workflowInputProcessingContext = (cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.WorkflowInputProcessingContext)fieldValue; break;
+			case 2: this.workflowInputProcessingContext = (cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1.WorkflowInputProcessingContext)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

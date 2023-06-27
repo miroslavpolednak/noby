@@ -2,9 +2,10 @@
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Handlers.Email.Requests;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services.S3;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.Smtp;
+using CIS.InternalServices.NotificationService.Api.Services.Smtp.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -15,17 +16,17 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
 public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, SendEmailConsumeResponse>
 {
     private readonly IDateTime _dateTime;
-    private readonly NotificationRepository _repository;
-    private readonly SmtpAdapterService _smtpAdapterService;
-    private readonly S3AdapterService _s3AdapterService;
+    private readonly INotificationRepository _repository;
+    private readonly ISmtpAdapterService _smtpAdapterService;
+    private readonly IS3AdapterService _s3AdapterService;
     private readonly S3Buckets _buckets;
     private readonly ILogger<SendEmailConsumeHandler> _logger;
 
     public SendEmailConsumeHandler(
         IDateTime dateTime,
-        NotificationRepository repository,
-        SmtpAdapterService smtpAdapterService,
-        S3AdapterService s3AdapterService,
+        INotificationRepository repository,
+        ISmtpAdapterService smtpAdapterService,
+        IS3AdapterService s3AdapterService,
         IOptions<AppConfiguration> options,
         ILogger<SendEmailConsumeHandler> logger)
     {

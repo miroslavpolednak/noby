@@ -42,6 +42,8 @@ internal class CommonVersionDataProvider : IDocumentVersionDataProvider
 
     private async Task<DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem?> GetLatestVersion(int documentTypeId, CancellationToken cancellationToken)
     {
+        var test = _codebookService.GetType();
+
         var documentVersions = await _codebookService.DocumentTemplateVersions(cancellationToken);
 
         return documentVersions.FirstOrDefault(d => d.DocumentTypeId == documentTypeId && d.IsValid);;

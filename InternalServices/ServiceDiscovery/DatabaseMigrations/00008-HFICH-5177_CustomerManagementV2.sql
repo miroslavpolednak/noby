@@ -9,7 +9,7 @@ UPDATE ServiceDiscovery SET ServiceUrl = 'https://be-cm-v1.fat.custmng.kbcloud/a
 UPDATE ServiceDiscovery SET ServiceUrl = 'https://be-cm-v1.fat.custmng.kbcloud/api' WHERE EnvironmentName = 'SIT1' AND ServiceName = 'ES:CustomerProfile:V1'
 UPDATE ServiceDiscovery SET ServiceUrl = 'https://be-cm-v1.stage.custmng.kbcloud/api' WHERE EnvironmentName = 'UAT' AND ServiceName = 'ES:CustomerProfile:V1'
 
-UPDATE ServiceDiscovery SET ServiceUrl = 'https://be-cm-v1.stage.custmng.kbcloud/api' WHERE EnvironmentName = 'DEV' AND ServiceName = 'ES:Kyc:V1'
-UPDATE ServiceDiscovery SET ServiceUrl = 'https://be-cm-v1.stage.custmng.kbcloud/api' WHERE EnvironmentName = 'FAT' AND ServiceName = 'ES:Kyc:V1'
-UPDATE ServiceDiscovery SET ServiceUrl = 'https://be-cm-v1.stage.custmng.kbcloud/api' WHERE EnvironmentName = 'SIT1' AND ServiceName = 'ES:Kyc:V1'
+UPDATE ServiceDiscovery SET ServiceUrl = 'https://be-cm-v1.fat.custmng.kbcloud/api' WHERE EnvironmentName = 'DEV' AND ServiceName = 'ES:Kyc:V1'
+UPDATE ServiceDiscovery SET ServiceUrl = 'https://be-cm-v1.fat.custmng.kbcloud/api' WHERE EnvironmentName = 'FAT' AND ServiceName = 'ES:Kyc:V1'
+UPDATE ServiceDiscovery SET ServiceUrl = 'https://be-cm-v1.fat.custmng.kbcloud/api' WHERE EnvironmentName = 'SIT1' AND ServiceName = 'ES:Kyc:V1'
 UPDATE ServiceDiscovery SET ServiceUrl = 'https://be-cm-v1.stage.custmng.kbcloud/api' WHERE EnvironmentName = 'UAT' AND ServiceName = 'ES:Kyc:V1'

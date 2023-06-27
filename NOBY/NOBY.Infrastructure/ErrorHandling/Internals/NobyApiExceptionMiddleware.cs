@@ -1,6 +1,5 @@
 ﻿using System.Security.Authentication;
 using CIS.Infrastructure.Logging;
-using CIS.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.WebApi;
@@ -38,7 +37,7 @@ public sealed class NobyApiExceptionMiddleware
         }
         catch (CisAuthorizationException)
         {
-            await Results.Unauthorized().ExecuteAsync(context);
+            await Results.Json(null, statusCode: 403).ExecuteAsync(context);
         }
         catch (AuthenticationException ex) // toto by nemelo nastat
         {
@@ -79,6 +78,10 @@ public sealed class NobyApiExceptionMiddleware
         catch (NobyValidationException ex)
         {
             await Results.Json(ex.Errors, statusCode: 400).ExecuteAsync(context);
+        }
+        catch (NobyServerException ex)
+        {
+            await Results.Json(singleErrorResult(ex.Error.ErrorCode, ex.Error.Message), statusCode: 500).ExecuteAsync(context);
         }
         // osetrena validace na urovni api call
         catch (CisValidationException ex)

@@ -16,11 +16,15 @@ internal sealed class GetCustomerDetailWithChangesHandler
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken);
 
         // kontrola mandanta
-        var productTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == salesArrangement.SalesArrangementTypeId).ProductTypeId;
+        /*var productTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == salesArrangement.SalesArrangementTypeId).ProductTypeId;
         // mandant produktu
-        var productMandant = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == productTypeId).MandantId;
+        var productMandant = (await _codebookService.ProductTypes(cancellationToken))
+            .FirstOrDefault(t => t.Id == productTypeId)?
+            .MandantId
+            ?? throw new NobyValidationException("ProductTypeId not found");
+
         if (productMandant != 2) // muze byt jen KB
-            throw new CisValidationException("Product type mandant is not KB");
+            throw new NobyValidationException("Product type mandant is not KB");*/
 
         var (data, _) = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSA, cancellationToken);
         return data;

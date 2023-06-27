@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.UserService;
+option csharp_namespace = "DomainServices.UserService.Contracts";
+
+message GetUserPermissionsRequest {
+	int32 UserId = 1;
+}
+
+message GetUserPermissionsResponse {
+	repeated int32 UserPermissions = 1;
+}

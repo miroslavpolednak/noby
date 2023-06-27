@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged
+namespace cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged
 {
 	using System;
 	using System.Collections.Generic;
@@ -20,8 +20,8 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.processevents.v1.mainloanproce
 	public partial class RiskBusinessCaseId : global::Avro.Specific.ISpecificRecord
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"RiskBusinessCaseId\",\"doc\":\"\",\"namespace\":\"cz.mpss.api.st" +
-				"arbuild.mortgage.workflow.processevents.v1.mainloanprocesschanged\",\"fields\":[{\"n" +
-				"ame\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
+				"arbuild.mortgageworkflow.mortgageprocessevents.v1.mainloanprocesschanged\",\"field" +
+				"s\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
 		private string _id;
 		public virtual global::Avro.Schema Schema
 		{

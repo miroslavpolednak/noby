@@ -19,6 +19,11 @@ public class MockUserService : IUserServiceClient
         return Task.FromResult(CreateUser());
     }
 
+    public Task<int[]> GetUserPermissions(int userId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        return Task.FromResult(Array.Empty<int>());
+    }
+
     private static User CreateUser(
         int id = 3048,
         string czechIdentificationNumber = "12345678",

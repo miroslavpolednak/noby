@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
@@ -128,13 +127,11 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         if (identificationMethodId != 1 && identificationMethodId != 8)
         {
             var user = await _userServiceClient.GetUser(_userAccessor.User!.Id, cancellationToken);
-            var isBroker = user.UserIdentifiers.Any(u =>
-                u.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId);
-
+            
             additionalData.CustomerIdentification ??= new __Household.CustomerIdentificationObject();
             additionalData.CustomerIdentification.IdentificationDate = DateTime.Now.Date;
             additionalData.CustomerIdentification.CzechIdentificationNumber = user.UserInfo.Cin;
-            additionalData.CustomerIdentification.IdentificationMethodId = isBroker ? 8 : 1;
+            additionalData.CustomerIdentification.IdentificationMethodId = user.UserInfo.IsInternal ? 1 : 8;
         }
 
         return additionalData;

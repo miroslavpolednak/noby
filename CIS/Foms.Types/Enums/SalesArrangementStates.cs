@@ -29,6 +29,7 @@ public enum SalesArrangementStates : byte
     [EnumMember]
     [Display(Name = "Podepsáno")]
     [CisStarbuildId(1)]
+    [Obsolete("Na confl je to preskrtnute, ale nevim o tom, ze by byl pokyn smazat...")]
     IsSigned = 4,
 
     [EnumMember]
@@ -38,19 +39,16 @@ public enum SalesArrangementStates : byte
     NewArrangement = 5,
 
     [EnumMember]
-    [CisDefaultValue]
     [Display(Name = "Vyčerpáno")]
     [CisStarbuildId(1)]
     Disbursed = 6,
 
     [EnumMember]
-    [CisDefaultValue]
     [Display(Name = "Podepisování")]
     [CisStarbuildId(1)]
     InSigning = 7,
 
     [EnumMember]
-    [CisDefaultValue]
     [Display(Name = "K odeslání")]
     [CisStarbuildId(1)]
     ToSend = 8

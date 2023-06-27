@@ -19,3 +19,10 @@ public partial class GetDocumentsOnSAListRequest :IRequest<GetDocumentsOnSAListR
 public partial class CreateDocumentOnSARequest : IRequest<CreateDocumentOnSAResponse>, CIS.Core.Validation.IValidatableRequest { }
 
 public partial class LinkEArchivIdToDocumentOnSARequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
+
+public partial class GetElectronicDocumentFromQueueRequest : IRequest<GetElectronicDocumentFromQueueResponse>, CIS.Core.Validation.IValidatableRequest { }
+
+public partial class GetElectronicDocumentPreviewRequest : IRequest<GetElectronicDocumentPreviewResponse>, CIS.Core.Validation.IValidatableRequest { }
+
+public partial class SetDocumentOnSAArchivedRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
+

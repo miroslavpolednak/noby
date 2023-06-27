@@ -18,4 +18,6 @@ message InputParameters {
 	cis.types.Identity CustomerIdentity = 5;
 
 	google.protobuf.BoolValue IsDocumentFinal = 6;
+
+	google.protobuf.Int32Value CustomerOnSaId = 7;
 }

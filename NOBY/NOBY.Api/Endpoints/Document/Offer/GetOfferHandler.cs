@@ -61,6 +61,7 @@ internal sealed class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnl
         var generateDocumentRequest = await _documentGenerator.CreateRequest(request, cancellationToken);
 
         generateDocumentRequest.DocumentFooter.DocumentId = documentId;
+        generateDocumentRequest.DocumentFooter.SalesArrangementId = request.InputParameters.SalesArrangementId;
 
         return await _documentGenerator.GenerateDocument(generateDocumentRequest, cancellationToken);
     }

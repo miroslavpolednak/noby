@@ -1,5 +1,4 @@
-﻿using CIS.Core.Attributes;
-using NOBY.Dto.Documents;
+﻿using NOBY.Dto.Documents;
 using __Contract = DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
@@ -32,7 +31,9 @@ internal sealed class DocumentHelperService
             DocumentId = s.EArchivId,
             EaCodeMainId = s.EaCodeMainId,
             FileName = s.Filename,
-            UploadStatus = getUploadStatus(s.StatusInQueue)
+            UploadStatus = getUploadStatus(s.StatusInQueue),
+            CreatedOn = s.CreatedOn,
+            Description = s.Description
         });
     }
 
@@ -66,7 +67,7 @@ internal sealed class DocumentHelperService
 
     public async Task<IReadOnlyCollection<CategoryEaCodeMain>> CalculateCategoryEaCodeMain(List<DocumentsMetadata> documentsMetadata, CancellationToken cancellationToken)
     {
-        EaCodeMainItems = EaCodeMainItems ?? await _codebookServiceClient.EaCodesMain(cancellationToken);
+        EaCodeMainItems ??= await _codebookServiceClient.EaCodesMain(cancellationToken);
 
         var dataWithEaCodeMain = documentsMetadata.Select(data =>
         new

@@ -2,6 +2,7 @@
 
 public enum StateFilters
 {
+    Unknown = 0,
     Active = 1,
-    Finished
+    Finished = 2
 }

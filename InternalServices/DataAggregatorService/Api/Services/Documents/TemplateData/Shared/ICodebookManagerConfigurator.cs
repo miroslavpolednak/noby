@@ -23,4 +23,5 @@ public interface ICodebookManagerConfigurator
     ICodebookManagerConfigurator DocumentTypes();
     ICodebookManagerConfigurator EducationLevels();
     ICodebookManagerConfigurator SignatureTypes();
+    ICodebookManagerConfigurator TinNoFillReasonsByCountry();
 }

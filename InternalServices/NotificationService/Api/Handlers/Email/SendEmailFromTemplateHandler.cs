@@ -1,10 +1,10 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services.S3;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -14,11 +14,11 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
 public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplateRequest, SendEmailFromTemplateResponse>
 {
     private readonly IDateTime _dateTime;
-    private readonly MpssEmailProducer _mpssEmailProducer;
-    private readonly McsEmailProducer _mcsEmailProducer;
-    private readonly UserAdapterService _userAdapterService;
-    private readonly NotificationRepository _repository;
-    private readonly S3AdapterService _s3Service;
+    private readonly IMpssEmailProducer _mpssEmailProducer;
+    private readonly IMcsEmailProducer _mcsEmailProducer;
+    private readonly IUserAdapterService _userAdapterService;
+    private readonly INotificationRepository _repository;
+    private readonly IS3AdapterService _s3Service;
     private readonly S3Buckets _buckets;
     private readonly HashSet<string> _mcsSenders;
     private readonly HashSet<string> _mpssSenders;
@@ -26,11 +26,11 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
 
     public SendEmailFromTemplateHandler(
         IDateTime dateTime,
-        MpssEmailProducer mpssEmailProducer,
-        McsEmailProducer mcsEmailProducer,
-        UserAdapterService userAdapterService,
-        NotificationRepository repository,
-        S3AdapterService s3Service,
+        IMpssEmailProducer mpssEmailProducer,
+        IMcsEmailProducer mcsEmailProducer,
+        IUserAdapterService userAdapterService,
+        INotificationRepository repository,
+        IS3AdapterService s3Service,
         IOptions<AppConfiguration> options,
         ILogger<SendEmailFromTemplateHandler> logger)
     {

@@ -35,12 +35,18 @@ internal sealed class GetCaseMenuFlagsHandler
 
     private async Task<GetCaseMenuFlagsItem> getCovenants(long caseId, CancellationToken cancellationToken)
     {
-        var productInstance = await _productService.GetMortgage(caseId, cancellationToken);
+        bool isActive = false;
+        try
+        {
+            var productInstance = await _productService.GetMortgage(caseId, cancellationToken);
+            isActive = productInstance.Mortgage?.ContractSignedDate != null;
+        }
+        catch { } // je v poradku, ze toto nekdy spadne - produkt nemusi byt v KonsDb
 
         return new GetCaseMenuFlagsItem
         {
             Flag = GetCaseMenuFlagsTypes.NoFlag,
-            IsActive = productInstance.Mortgage?.ContractSignedDate != null
+            IsActive = isActive
         };
     }
 

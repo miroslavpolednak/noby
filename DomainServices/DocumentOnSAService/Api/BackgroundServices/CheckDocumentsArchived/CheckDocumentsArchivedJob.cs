@@ -33,34 +33,40 @@ public sealed class CheckDocumentsArchivedJob
 
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
-        var unArchivedDocOnSaIds = await _dbContext.DocumentOnSa
-            .Where(d => !string.IsNullOrEmpty(d.EArchivId) && d.IsArchived == false)
-            .Take(_configuration.MaxBatchSize)
-            .Select(s => s.EArchivId)
-        .ToListAsync(cancellationToken);
+        var unArchivedEArchiveLinkeds = await _dbContext.EArchivIdsLinked
+                                            .AsNoTracking()
+                                            .Where(d => d.DocumentOnSa.IsArchived == false)
+                                            .Take(_configuration.MaxBatchSize)
+                                            .ToListAsync(cancellationToken);
 
-        if (!unArchivedDocOnSaIds.Any())
+        if (!unArchivedEArchiveLinkeds.Any())
             return;
 
-        _logger.LogInformation("{ServiceName}: {Count} unarchived documentsOnSa", typeof(CheckDocumentsArchivedJob).Name, unArchivedDocOnSaIds.Count);
+        _logger.LogInformation("{ServiceName}: {Count} unarchived documentsOnSa", typeof(CheckDocumentsArchivedJob).Name, unArchivedEArchiveLinkeds.Count);
 
-        var successfullyArchivedDocumentIds = await GetSuccessfullyArchivedDocumentIds(unArchivedDocOnSaIds!, cancellationToken);
+        var successfullyArchivedDocumentIds = await GetSuccessfullyArchivedDocumentIds(unArchivedEArchiveLinkeds.Select(s => s.EArchivId)!, cancellationToken);
 
         _logger.LogInformation("{ServiceName}:From {UnArchCount} unarchived documentsOnSa, {ArchCount} have been already archived}",
-                                typeof(CheckDocumentsArchivedJob).Name,
-                                unArchivedDocOnSaIds.Count,
-                                successfullyArchivedDocumentIds.Count);
+                                   typeof(CheckDocumentsArchivedJob).Name,
+                                   unArchivedEArchiveLinkeds.Count,
+                                   successfullyArchivedDocumentIds.Count);
 
         if (!successfullyArchivedDocumentIds.Any())
             return;
 
-        await _batchOperationRepository.UpdateIsDocumentArchiveState(successfullyArchivedDocumentIds, cancellationToken);
+
+        var docOnSaIdsForUpdate = unArchivedEArchiveLinkeds
+                                  .Where(d => successfullyArchivedDocumentIds.Contains(d.EArchivId))
+                                  .Select(s => s.DocumentOnSAId)
+                                  .Distinct();
+
+        await _batchOperationRepository.UpdateIsDocumentArchiveState(docOnSaIdsForUpdate, cancellationToken);
     }
 
-    private async Task<List<string>> GetSuccessfullyArchivedDocumentIds(List<string> unArchivedDocOnSaIds, CancellationToken cancellationToken)
+    private async Task<List<string>> GetSuccessfullyArchivedDocumentIds(IEnumerable<string> unArchivedDocOnSaEaIds, CancellationToken cancellationToken)
     {
         var request = new GetDocumentsInQueueRequest();
-        request.EArchivIds.AddRange(unArchivedDocOnSaIds);
+        request.EArchivIds.AddRange(unArchivedDocOnSaEaIds);
         var documentInQueue = await _documentArchiveServiceClient.GetDocumentsInQueue(request, cancellationToken);
         var successfullyArchivedDocumentIds = documentInQueue.QueuedDocuments
                                               .Where(d => d.StatusInQueue == SuccessfullyArchivedStatus)

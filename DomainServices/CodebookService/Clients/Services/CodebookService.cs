@@ -37,6 +37,5 @@ internal partial class CodebookService
     {
         _service = service;
         _cache = cache;
-    }
-        
+    }        
 }

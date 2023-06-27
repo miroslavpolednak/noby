@@ -35,7 +35,7 @@ internal sealed class LoanApplicationVersionDataProvider : DocumentVersionDataPr
 
         var salesArrangementId = request.InputParameters.SalesArrangementId!.Value;
 
-        var numberOfDebtorsTask = LoadNumberOfDebtors(salesArrangementId, (DocumentType)request.DocumentTypeId, cancellationToken);
+        var numberOfDebtorsTask = LoadNumberOfDebtors(salesArrangementId, (DocumentTypes)request.DocumentTypeId, cancellationToken);
         var isCreatorBrokerTask = IsCreatorBroker(salesArrangementId, cancellationToken);
 
         await Task.WhenAll(numberOfDebtorsTask, isCreatorBrokerTask);
@@ -62,7 +62,7 @@ internal sealed class LoanApplicationVersionDataProvider : DocumentVersionDataPr
         return user?.UserIdentifiers.Any(i => i.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId) ?? false;
     }
 
-    private async Task<int> LoadNumberOfDebtors(int salesArrangementId, DocumentType documentType, CancellationToken cancellationToken)
+    private async Task<int> LoadNumberOfDebtors(int salesArrangementId, DocumentTypes documentType, CancellationToken cancellationToken)
     {
         var households = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
 
@@ -72,12 +72,12 @@ internal sealed class LoanApplicationVersionDataProvider : DocumentVersionDataPr
         return household is { CustomerOnSAId1: not null, CustomerOnSAId2: not null } ? 2 : 1;
     }
 
-    private static HouseholdTypes GetHouseholdType(DocumentType documentType)
+    private static HouseholdTypes GetHouseholdType(DocumentTypes documentType)
     {
         return documentType switch
         {
-            DocumentType.ZADOSTHU => HouseholdTypes.Main,
-            DocumentType.ZADOSTHD or DocumentType.ZADOSTHD_SERVICE => HouseholdTypes.Codebtor,
+            DocumentTypes.ZADOSTHU => HouseholdTypes.Main,
+            DocumentTypes.ZADOSTHD or DocumentTypes.ZADOSTHD_SERVICE => HouseholdTypes.Codebtor,
             _ => throw new ArgumentOutOfRangeException(nameof(documentType), documentType, null)
         };
     }

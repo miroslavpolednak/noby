@@ -6,12 +6,21 @@ namespace DomainServices.HouseholdService.Clients.Services;
 internal sealed class CustomerOnSAService
     : ICustomerOnSAServiceClient
 {
-    public async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<GetCustomerChangeMetadataResponse.Types.GetCustomerChangeMetadataResponseItem>?> GetCustomerChangeMetadata(int salesArrangementId, CancellationToken cancellationToken = default)
+    {
+        var result = await _service.GetCustomerChangeMetadataAsync(new GetCustomerChangeMetadataRequest
+        {
+            SalesArrangementId = salesArrangementId
+        }, cancellationToken: cancellationToken);
+        return result.CustomersOnSAMetadata?.ToList();
+    }
+
+    public async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default)
     {
         return await _service.CreateCustomerAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default)
     {
         await _service.DeleteCustomerAsync(
             new()
@@ -21,7 +30,7 @@ internal sealed class CustomerOnSAService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task<CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default)
     {
         return await _service.GetCustomerAsync(
             new()
@@ -40,7 +49,7 @@ internal sealed class CustomerOnSAService
         return result.Customers.ToList();
     }
 
-    public async Task<List<CustomerOnSA>> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<CustomerOnSA>> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default)
     {
         var result = await _service.GetCustomerListAsync(
             new()
@@ -50,25 +59,25 @@ internal sealed class CustomerOnSAService
         return result.Customers.ToList();
     }
 
-    public async Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default)
     {
         return await _service.UpdateCustomerAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateCustomerDetail(UpdateCustomerDetailRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateCustomerDetail(UpdateCustomerDetailRequest request, CancellationToken cancellationToken = default)
     {
         await _service.UpdateCustomerDetailAsync(request, cancellationToken: cancellationToken);
     }
 
     #region Income
 
-    public async Task<int> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<int> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default)
     {
         var result = await _service.CreateIncomeAsync(request, cancellationToken: cancellationToken);
         return result.IncomeId;
     }
 
-    public async Task DeleteIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeleteIncome(int incomeId, CancellationToken cancellationToken = default)
     {
         await _service.DeleteIncomeAsync(
             new()
@@ -77,7 +86,7 @@ internal sealed class CustomerOnSAService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task<Income> GetIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<Income> GetIncome(int incomeId, CancellationToken cancellationToken = default)
     {
         return await _service.GetIncomeAsync(
             new()
@@ -86,7 +95,7 @@ internal sealed class CustomerOnSAService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task<List<IncomeInList>> GetIncomeList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<IncomeInList>> GetIncomeList(int customerOnSAId, CancellationToken cancellationToken = default)
     {
         var result = await _service.GetIncomeListAsync(
             new()
@@ -96,12 +105,12 @@ internal sealed class CustomerOnSAService
         return result.Incomes.ToList();
     }
 
-    public async Task UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default)
     {
         await _service.UpdateIncomeAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default)
     {
         await _service.UpdateIncomeBaseDataAsync(request, cancellationToken: cancellationToken);
     }
@@ -110,13 +119,13 @@ internal sealed class CustomerOnSAService
 
     #region Obligation
 
-    public async Task<int> CreateObligation(CreateObligationRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<int> CreateObligation(CreateObligationRequest request, CancellationToken cancellationToken = default)
     {
         var result = await _service.CreateObligationAsync(request, cancellationToken: cancellationToken);
         return result.ObligationId;
     }
 
-    public async Task DeleteObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeleteObligation(int ObligationId, CancellationToken cancellationToken = default)
     {
         await _service.DeleteObligationAsync(
             new()
@@ -125,7 +134,7 @@ internal sealed class CustomerOnSAService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task<Obligation> GetObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<Obligation> GetObligation(int ObligationId, CancellationToken cancellationToken = default)
     {
         return await _service.GetObligationAsync(
             new()
@@ -134,7 +143,7 @@ internal sealed class CustomerOnSAService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task<List<Obligation>> GetObligationList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<Obligation>> GetObligationList(int customerOnSAId, CancellationToken cancellationToken = default)
     {
         var result = await _service.GetObligationListAsync(
             new()
@@ -144,7 +153,7 @@ internal sealed class CustomerOnSAService
         return result.Obligations.ToList();
     }
 
-    public async Task UpdateObligation(Obligation request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateObligation(Obligation request, CancellationToken cancellationToken = default)
     {
         await _service.UpdateObligationAsync(request, cancellationToken: cancellationToken);
     }

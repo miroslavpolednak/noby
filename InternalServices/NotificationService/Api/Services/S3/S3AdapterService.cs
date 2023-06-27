@@ -1,11 +1,10 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
-using CIS.Core.Attributes;
+using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.S3;
 
-[ScopedService, SelfService]
-public class S3AdapterService
+public class S3AdapterService : IS3AdapterService
 {
     private readonly IAmazonS3 _s3Client;
 

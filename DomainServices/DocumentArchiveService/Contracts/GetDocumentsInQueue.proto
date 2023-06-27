@@ -3,6 +3,7 @@ package DomainServices.DocumentArchiveService.GetDocumentsInQueue;
 option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts";
 
 import "google/protobuf/wrappers.proto";
+import "GrpcDate.proto";
 
 message GetDocumentsInQueueRequest {
 
@@ -13,7 +14,7 @@ message GetDocumentsInQueueRequest {
 
 	repeated int32 StatusesInQueue = 3;
 
-
+	bool WithContent = 4;
 }
 
 message GetDocumentsInQueueResponse{
@@ -33,4 +34,13 @@ message QueuedDocument {
 	string FormId = 4;
 
 	int32 EaCodeMainId = 5;
+
+	// Popis dokumentu
+    google.protobuf.StringValue Description = 6;
+
+	// Datum přijetí dokumentu
+    cis.types.GrpcDate CreatedOn = 7;
+
+	// Soubour (pole bajtů) ve formě base64string 
+    bytes DocumentData = 8;
 }

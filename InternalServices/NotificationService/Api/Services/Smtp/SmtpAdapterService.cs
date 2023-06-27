@@ -1,13 +1,12 @@
-﻿using CIS.Core.Attributes;
-using CIS.InternalServices.NotificationService.Api.Configuration;
+﻿using CIS.InternalServices.NotificationService.Api.Configuration;
+using CIS.InternalServices.NotificationService.Api.Services.Smtp.Abstraction;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Smtp;
 
-[ScopedService, SelfService]
-public class SmtpAdapterService
+public class SmtpAdapterService : ISmtpAdapterService
 {
     private readonly SmtpConfiguration _smtpConfiguration;
 
