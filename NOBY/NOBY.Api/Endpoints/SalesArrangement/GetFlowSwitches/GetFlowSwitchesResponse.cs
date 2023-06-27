@@ -9,6 +9,7 @@ public sealed class GetFlowSwitchesResponse
     public GetFlowSwitchesResponseItem SigningSection { get; set; } = null!;
     public GetFlowSwitchesResponseItem EvaluationSection { get; set; } = null!;
     public GetFlowSwitchesResponseItemButton SendButton { get; set; } = null!;
+    public GetFlowSwitchesResponseItem IndividualPriceSection { get; set; } = null!;
 }
 
 public sealed class GetFlowSwitchesResponseItemButton

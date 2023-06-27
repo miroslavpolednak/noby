@@ -4,6 +4,7 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using System.ComponentModel.DataAnnotations;
 using CIS.Core;
 using NOBY.Api.Extensions;
+using CIS.Core.Security;
 
 namespace NOBY.Api.Endpoints.Cases.GetCustomers;
 
@@ -14,6 +15,13 @@ internal sealed class GetCustomersHandler
     {
         // data o CASE-u
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
+
+        // perm check
+        if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
+        {
+            throw new CisAuthorizationException();
+        }
+
         // seznam zemi
         var countries = (await _codebookService.Countries(cancellationToken));
 
@@ -21,12 +29,12 @@ internal sealed class GetCustomersHandler
 
         if (caseInstance.State == (int)CIS.Foms.Enums.CaseStates.InProgress)
         {
-            var saId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
+            var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
             // z parameters nacist Agent
-            var saDetail = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
+            var saDetail = await _salesArrangementService.GetSalesArrangement(saId.SalesArrangementId, cancellationToken);
             
             // vsichni customeri z CustomerOnSA
-            var customers = await _customerOnSAService.GetCustomerList(saId, cancellationToken);
+            var customers = await _customerOnSAService.GetCustomerList(saId.SalesArrangementId, cancellationToken);
 
             // vybrat a transformovat jen vlastnik, spoludluznik
             customerIdentities = customers
@@ -128,6 +136,7 @@ internal sealed class GetCustomersHandler
     private static int[] _allowedCustomerRoles = new[] { 1, 2 };
     private static List<int>? _allowedSalesArrangementTypes;
 
+    private readonly ICurrentUserAccessor _currentUser;
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
     private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
@@ -136,6 +145,7 @@ internal sealed class GetCustomersHandler
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public GetCustomersHandler(
+        ICurrentUserAccessor currentUser,
         DomainServices.ProductService.Clients.IProductServiceClient productService,
         DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
@@ -143,6 +153,7 @@ internal sealed class GetCustomersHandler
         DomainServices.CaseService.Clients.ICaseServiceClient caseService, 
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
+        _currentUser = currentUser;
         _productService = productService;
         _customerService = customerService;
         _customerOnSAService = customerOnSAService;

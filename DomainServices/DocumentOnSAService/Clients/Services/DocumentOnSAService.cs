@@ -55,11 +55,21 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
 
     public async Task<CreateDocumentOnSAResponse> CreateDocumentOnSA(CreateDocumentOnSARequest request, CancellationToken cancellationToken = default)
     {
-       return await _client.CreateDocumentOnSAAsync(request, cancellationToken: cancellationToken);
+        return await _client.CreateDocumentOnSAAsync(request, cancellationToken: cancellationToken);
     }
 
     public async Task LinkEArchivIdToDocumentOnSA(LinkEArchivIdToDocumentOnSARequest request, CancellationToken cancellationToken = default)
     {
-        await _client.LinkEArchivIdToDocumentOnSAAsync(request,cancellationToken: cancellationToken);
+        await _client.LinkEArchivIdToDocumentOnSAAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task<GetElectronicDocumentFromQueueResponse> GetElectronicDocumentFromQueue(GetElectronicDocumentFromQueueRequest request, CancellationToken cancellationToken = default)
+    {
+        return await _client.GetElectronicDocumentFromQueueAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task SetDocumentOnSAArchived(SetDocumentOnSAArchivedRequest request, CancellationToken cancellationToken = default)
+    {
+        await _client.SetDocumentOnSAArchivedAsync(request, cancellationToken: cancellationToken);
     }
 }

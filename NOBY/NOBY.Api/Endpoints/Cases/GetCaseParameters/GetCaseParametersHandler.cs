@@ -80,10 +80,8 @@ internal sealed class GetCaseParametersHandler
         */
 
         // load SalesArrangement
-        var saTypeIds = (await _codebookService.SalesArrangementTypes(cancellation)).Where(i => i.ProductTypeId.HasValue).Select(i => i.Id).ToList();
-        var salesArrangementList = await _salesArrangementService.GetSalesArrangementList(caseInstance.CaseId, cancellation);
-        var salesArrangementId = salesArrangementList.SalesArrangements.First(i => saTypeIds.Contains(i.SalesArrangementTypeId)).SalesArrangementId;
-        var salesArrangementInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation);
+        var salesArrangementId = await _salesArrangementService.GetProductSalesArrangement(caseInstance.CaseId, cancellation);
+        var salesArrangementInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId.SalesArrangementId, cancellation);
 
         // load Offer
         var offerId = salesArrangementInstance?.OfferId;

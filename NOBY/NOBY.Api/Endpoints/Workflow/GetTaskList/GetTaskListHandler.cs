@@ -1,60 +1,39 @@
 ﻿using DomainServices.CaseService.Clients;
-using NOBY.Dto.Workflow;
 using NOBY.Infrastructure.Services.WorkflowMapper;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskList;
 
-internal sealed class GetTaskListHandler : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
+internal sealed class GetTaskListHandler 
+    : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
 {
-    private readonly WorkflowMapperService _mapper;
-    private readonly ICaseServiceClient _caseService;
-    private static int[] _allowdTaskTypes = new[] { 1, 2, 3, 6, 7 };
-    private static int[] _allowdProcessTypes = new[] { 1, 2, 3 };
-
-    public GetTaskListHandler(WorkflowMapperService mapper, ICaseServiceClient caseService)
-    {
-        _mapper = mapper;
-        _caseService = caseService;
-    }
-
     public async Task<GetTaskListResponse> Handle(GetTaskListRequest request, CancellationToken cancellationToken)
     {
-        var workflowTasks = LoadWorkflowTasks(request.CaseId, cancellationToken);
-        var workflowProcesses = LoadWorkflowProcesses(request.CaseId, cancellationToken);
+        var response = new GetTaskListResponse();
 
-        return new GetTaskListResponse
+        var tasks = (await _caseService.GetTaskList(request.CaseId, cancellationToken))
+            .Where(t => _allowedTaskTypes.Contains(t.TaskTypeId))
+            .ToList();
+        foreach (var task in tasks)
         {
-            Tasks = await workflowTasks,
-            Processes = await workflowProcesses
-        };
+            response.Tasks.Add(await _mapper.MapTask(task, cancellationToken));
+        }
+
+        var processes = (await _caseService.GetProcessList(request.CaseId, cancellationToken))
+            .Where(t => _allowedProcessTypes.Contains(t.ProcessTypeId))
+            .ToList();
+        response.Processes = processes.Select(p => _mapper.MapProcess(p)).ToList();
+
+        return response;
     }
 
-    private async Task<List<WorkflowTask>?> LoadWorkflowTasks(long caseId, CancellationToken cancellationToken)
+    private readonly ICaseServiceClient _caseService;
+    private readonly IWorkflowMapperService _mapper;
+    private static int[] _allowedTaskTypes = new[] { 1, 2, 3, 6, 7 };
+    private static int[] _allowedProcessTypes = new[] { 1, 2, 3 };
+
+    public GetTaskListHandler(ICaseServiceClient caseService, IWorkflowMapperService mapper)
     {
-        var tasks = (await _caseService.GetTaskList(caseId, cancellationToken))
-            .Where(t => _allowdTaskTypes.Contains(t.TaskTypeId))
-            .ToList();
-
-        if (!tasks.Any())
-            return default;
-
-        return await _mapper.Map(tasks, cancellationToken);
-    }
-
-    private async Task<List<WorkflowProcess>> LoadWorkflowProcesses(long caseId, CancellationToken cancellationToken)
-    {
-        var processes = (await _caseService.GetProcessList(caseId, cancellationToken))
-            .Where(t => _allowdProcessTypes.Contains(t.ProcessTypeId))
-            .ToList();
-
-        return processes.Select(p => new WorkflowProcess
-        {
-            ProcessId = p.ProcessId,
-            CreatedOn = p.CreatedOn,
-            ProcessNameLong = p.ProcessNameLong,
-            StateName = p.StateName,
-            ProcessTypeId = p.ProcessTypeId,
-            StateIndicator = p.StateIndicator.HasValue ? (StateIndicators)p.StateIndicator : StateIndicators.Unknown //TODO co je default stav?
-        }).ToList();
+        _caseService = caseService;
+        _mapper = mapper;
     }
 }

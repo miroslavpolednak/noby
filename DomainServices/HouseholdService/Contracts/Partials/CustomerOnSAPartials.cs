@@ -1,5 +1,9 @@
 ﻿namespace DomainServices.HouseholdService.Contracts;
 
+public partial class GetCustomerChangeMetadataRequest
+    : MediatR.IRequest<GetCustomerChangeMetadataResponse>
+{ }
+
 public partial class CreateCustomerRequest
     : MediatR.IRequest<CreateCustomerResponse>, CIS.Core.Validation.IValidatableRequest
 { }

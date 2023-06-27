@@ -35,7 +35,7 @@ internal sealed class CustomerChange3602CBuilder
         await salesArrangementService.UpdateSalesArrangementParameters(new()
         {
             SalesArrangementId = salesArrangementId,
-            CustomerChange3602A = new()
+            CustomerChange3602C = new()
             {
                 HouseholdId = householdResult.HouseholdId
             }

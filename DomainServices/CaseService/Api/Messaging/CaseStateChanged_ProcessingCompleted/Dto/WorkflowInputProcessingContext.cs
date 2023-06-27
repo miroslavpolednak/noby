@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
+namespace cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,9 +19,9 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class WorkflowInputProcessingContext : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""WorkflowInputProcessingContext"",""doc"":"""",""namespace"":""cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1"",""fields"":[{""name"":""requestId"",""type"":""int""},{""name"":""requestProcessingResult"",""type"":{""type"":""enum"",""name"":""RequestProcessingResultEnum"",""doc"":"""",""namespace"":""cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1"",""symbols"":[""CANCELED"",""ERROR"",""IGNORED"",""OK""]}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""WorkflowInputProcessingContext"",""doc"":"""",""namespace"":""cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1"",""fields"":[{""name"":""requestId"",""type"":""int""},{""name"":""requestProcessingResult"",""type"":{""type"":""enum"",""name"":""RequestProcessingResultEnum"",""doc"":"""",""namespace"":""cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1"",""symbols"":[""CANCELED"",""ERROR"",""IGNORED"",""OK""]}}]}");
 		private int _requestId;
-		private cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.RequestProcessingResultEnum _requestProcessingResult;
+		private cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1.RequestProcessingResultEnum _requestProcessingResult;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -40,7 +40,7 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
 				this._requestId = value;
 			}
 		}
-		public cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.RequestProcessingResultEnum requestProcessingResult
+		public cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1.RequestProcessingResultEnum requestProcessingResult
 		{
 			get
 			{
@@ -65,7 +65,7 @@ namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
 			switch (fieldPos)
 			{
 			case 0: this.requestId = (System.Int32)fieldValue; break;
-			case 1: this.requestProcessingResult = (cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1.RequestProcessingResultEnum)fieldValue; break;
+			case 1: this.requestProcessingResult = (cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1.RequestProcessingResultEnum)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

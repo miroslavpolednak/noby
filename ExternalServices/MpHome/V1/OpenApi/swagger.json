@@ -96,222 +96,6 @@
         }
       }
     },
-    "/api/case/{caseId}/tasks/consultation-type": {
-      "get": {
-        "tags": ["Workflow Task"],
-        "summary": "Získání relevantních typů konzultace",
-        "description": "Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
-        "operationId": "GetConsultationTypes",
-        "parameters": [
-          {
-            "name": "caseId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "processId",
-            "in": "query",
-            "description": "Noby proces ID. Jde o ID sady úkolů generované Starbuildem.",
-            "required": true,
-            "style": "form",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetConsultationTypes.GetConsultationTypesResponseItem"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/api/case/{caseId}/tasks/{taskId}/cancel": {
-      "post": {
-        "tags": ["Workflow Task"],
-        "summary": "Stornování úkolu ve SB",
-        "description": "Stornování úkolu ve SB. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
-        "operationId": "CancelTask",
-        "parameters": [
-          {
-            "name": "caseId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "taskId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.CancelTask.CancelTaskRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/api/case/{caseId}/tasks": {
-      "post": {
-        "tags": ["Workflow Task"],
-        "summary": "Vytvoření nového workflow tasku do SB.",
-        "description": "Vytvoření nového workflow tasku do SB.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=882E85E3-F6EA-4774-812E-3328006E8893\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
-        "operationId": "CreateTask",
-        "parameters": [
-          {
-            "name": "caseId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int64",
-                  "description": "Noby task ID. Jde o ID sady úkolů generované Starbuildem.",
-                  "example": 22777
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "get": {
-        "tags": ["Workflow Task"],
-        "summary": "Seznam workflow tasků dotažený z SB.",
-        "description": "Operace získá ze Starbuildu seznam úkolů a procesů k danému case ID. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
-        "operationId": "tasksByCaseIdGet",
-        "parameters": [
-          {
-            "name": "caseId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetTaskList.GetTaskListResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/api/case/{caseId}/tasks/current-price-exception": {
-      "get": {
-        "tags": ["Workflow Task"],
-        "summary": "Získání aktuální cenové výjimky",
-        "description": "Operace vrátí detail Cenové výjimky. <br /> Pokud ještě ve Starbuild neexistuje workflow úkol, budou výsledkem data z Noby a uživatel dostane možnost založit workflow úkolu. <br /> Pokud již workflow úkol existuje, ale je stornovaný, budou výsledkem data z Noby a uživatel dostane možnost založení nového workflow úkolu. <br /> Pokud již workflow úkol existuje a není stornovaný, budou výsledkem data ze Starbuild. U dokončeného úkolu Ocenění nehraje roli, zda bylo Ocenění schváleno či zamítnuto. Uživatel uvidí detail tohoto ukončeného úkolu. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F8C65CF5-6A02-4d2a-B068-C3EDE901DAE5\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
-        "operationId": "GetCurrentPriceException",
-        "parameters": [
-          {
-            "name": "caseId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetTaskDetail.GetTaskDetailResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
     "/api/case/{caseId}/sales-arrangement": {
       "post": {
         "tags": ["Case"],
@@ -352,6 +136,170 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/case/{caseId}/real-estate-valuations": {
+      "get": {
+        "tags": ["Real Estate Valuation"],
+        "summary": "Získání seznamu Ocenění nemovitostí",
+        "description": "Operace vrací seznam všech ocenění nemovitostí k danému case ID. Seznam je sloučením ocenění objektů úvěru ze žádosti o úvěr a manuálně zadaných dalších objektů zajištění. Operace nevrací objednávky ocenění, které nevznikly v Noby. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0DCD023D-ACF8-4744-B198-FE4FC2A84223\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetRealEstateValuationList",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Real Estate Valuation"],
+        "summary": "Založení Ocenění nemovitosti",
+        "description": "Operace založí nové Ocenění nemovitosti k danému case ID. Jde buď o založení Ocenění nemovitosti k objektu úvěru ze žádosti o úvěr nebo o manuální založení dalšího objektu zajištění. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5A275F67-67AC-4851-8FE9-51F2B685B990\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "CreateRealEstateValuation",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Atributy zakládaného nového Ocenění nemovitosti",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/case/{caseId}/real-estate-valuations/{realEstateValuationId}": {
+      "delete": {
+        "tags": ["Real Estate Valuation"],
+        "summary": "Smazání Ocenění nemovitosti",
+        "description": "Smazání Ocenění konkrétní nemovitosti ještě před odesláním do ACV. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=6525504B-D598-4113-AA2A-846571769C40\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "DeleteRealEstateValuation",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "realEstateValuationId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Real Estate Valuation"],
+        "summary": "Patch developera Ocenění nemovitosti",
+        "description": "Patch Ocenění konkrétní nemovitosti ještě před odesláním do ACV. Patch updatuje nastavení developer toggle na objektu Ocenění nemovitosti. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "PatchDeveloperOnRealEstateValuation",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "realEstateValuationId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Editované atributy a jejich nové hodnoty",
+          "content": {
+            "application/merge-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NOBY.Api.Endpoints.RealEstateValuation.PatchRealEstateValuationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
           },
           "404": {
             "description": "Not Found"
@@ -491,14 +439,14 @@
       "post": {
         "tags": ["Case"],
         "summary": "Identifikace obchodního případu podle jednoho ze čtyř možných kritérií.",
+        "description": "Endpoint umožnuje identifikovat obchodní případ podle:\r\n- čárového kódu dokumentu (formId)\r\n- čísla úvěrového účtu\r\n- ID obchodního případu\r\n- čísla smlouvy\r\n<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=60DB6DA4-D938-4901-98DC-0C8DF8011589\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "IdentifyCase",
-        "description": "Endpoint umožnuje identifikovat obchodní případ podle:\r\n- čárového kódu dokumentu (formId)\r\n- čísla úvěrového účtu\r\n- ID obchodního případu\r\n- čísla smlouvy<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=60DB6DA4-D938-4901-98DC-0C8DF8011589\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "requestBody": {
-          "description": "Typ kritéria a jeho hodnota pro vyhledávání",
+          "description": "Typ kritéria a jeho hodnota pro vyhledávání.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Case.Identify.IdentifyRequest"
+                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest"
               }
             }
           }
@@ -509,110 +457,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Case.Identify.IdentifyResponse"
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponse"
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/api/case/{caseId}/tasks/{taskId}": {
-      "get": {
-        "tags": ["Workflow Task"],
-        "summary": "Detail workflow tasku dotažený ze SB.",
-        "description": "Detail workflow tasku dotažený ze SB. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=90CD722E-8955-43e6-9924-DC5FDDF6ED15\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
-        "operationId": "GetTaskDetail",
-        "parameters": [
-          {
-            "name": "caseId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "taskId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetTaskDetail.GetTaskDetailResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "put": {
-        "tags": ["Workflow Task"],
-        "summary": "Update workflow tasku do SB",
-        "description": "Update workflow tasku do SB. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
-        "operationId": "UpdateTaskDetail",
-        "parameters": [
-          {
-            "name": "caseId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "taskId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Task or case not found"
           }
         }
       }
@@ -656,8 +504,8 @@
       "get": {
         "tags": ["Case"],
         "summary": "Příznaky v menu Case detailu",
-        "description": "Implementováno pro položku menu Documents<br /><br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2E9DAC5D-A7F3-49a4-804D-770418854A10\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
-        "operationId": "GetCaseDocumentsFlag",
+        "description": "Implementováno pro položku menu Documents<br /><br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2E9DAC5D-A7F3-49a4-804D-770418854A10\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetCaseMenuFlags",
         "parameters": [
           {
             "name": "caseId",
@@ -678,6 +526,89 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.MenuFlags"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/case/{caseId}/covenants": {
+      "get": {
+        "tags": ["Case"],
+        "summary": "Podmínky ke splnění Case-u",
+        "description": "Seznam Podmínek ke splnění pro Case<br /><br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=4378EDFB-2A3D-46f6-8C51-0241A3436D5E\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetCaseCovenants",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "description": "ID Case-u",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.CovenantsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/case/{caseId}/covenant/{covenantOrder}": {
+      "get": {
+        "tags": ["Case"],
+        "summary": "Detail Podmínky ke splnění Case-u",
+        "description": "Detail Podmínky ke splnění pro Case<br /><br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=56FAFD66-E483-475d-9868-6B90A4ED889B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetCaseCovenantDetail",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "description": "ID Case-u",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "covenantOrder",
+            "in": "path",
+            "description": "Pořadí podmínky ke splnění",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.Covenant"
                 }
               }
             }
@@ -1937,10 +1868,12 @@
         }
       }
     },
-    "/api/document/template/type/{documentTypeId}/sales-arrangement/{salesArrangementId}": {
+    "/api/sales-arrangement/{salesArrangementId}/document-type/{documentTypeId}/preview": {
       "get": {
-        "tags": ["Document"],
-        "operationId": "TestDocument",
+        "tags": ["Dokument"],
+        "summary": "Vygenerování náhledu dokumentu",
+        "description": "Vrací se steam binárních dat.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=258EEA87-9394-42ec-B51F-C13F091686E0\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetDocumentPreview",
         "parameters": [
           {
             "name": "documentTypeId",
@@ -1978,8 +1911,7 @@
           "404": {
             "description": "Not Found"
           }
-        },
-        "deprecated": true
+        }
       }
     },
     "/api/document/{documentId}": {
@@ -2211,7 +2143,7 @@
       "get": {
         "tags": ["Podepisování"],
         "summary": "Dokumenty Sales Arrangement-u k podpisu / v podepisovacím procesu.",
-        "description": "Provolá <i>DS:DocumentOnSAService/getDocumentsToSignList</i> a zafiltruje na dokumenty s příznakem IsValid = true.<br /><br />\r\nStav podepisovacího procesu (signatureState) je vyhodnocován logikou popsanou v společných algoritmech viz <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=401893151\">Stavy podepisovacího procesu</a>",
+        "description": "Vrací seznam rozpodepsaných a podepsaných dokumentů.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=294380C5-4F9D-4dce-9D32-C1AD842ED84B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetDocumentsSignList",
         "parameters": [
           {
@@ -2338,6 +2270,47 @@
         }
       }
     },
+    "/api/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview": {
+      "post": {
+        "tags": ["Document"],
+        "summary": "Odeslání náhledu klientovi",
+        "description": "Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "SenDocumentPreview",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "documentOnSAId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/api/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually": {
       "post": {
         "tags": ["Sales Arrangement"],
@@ -2382,8 +2355,8 @@
     "/api/document/template/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}": {
       "get": {
         "tags": ["Dokument"],
-        "summary": "Vygenerování dokumentu z uložených dat dokumentu na sales arrangementu příp. z archivu",
-        "description": "Pro započaté podepisovací procesy je požadováno zobrazovat náhledy a poskytovat dokumenty ke stažení.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F950B198-2C67-48e5-B1FE-C091131E6A63\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "summary": "Poskytuje dokument k fyzickému podepisování",
+        "description": "Pro podepisovací procesy, které jsou validní poskytuje dokument ke stažení pro fyzické podepsání.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F950B198-2C67-48e5-B1FE-C091131E6A63\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetDocumentOnSa",
         "parameters": [
           {
@@ -2416,6 +2389,54 @@
               "application/pdf": {
                 "schema": {
                   "$ref": "#/components/schemas/System.IO.Stream"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/preview": {
+      "get": {
+        "tags": ["Dokument"],
+        "summary": "Vygenerování náhledu rozpodepsaného dokumentu",
+        "description": "Dle zdroje podepisovaného dokumentu, typu podepisování a stavu podepisování dojde k vrácení PDF pro náhled dokumentu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A1B54B66-9AF8-4e5c-A240-93FEF635449F\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\\\" />Diagram v EA</a>",
+        "operationId": "GetDocumentOnSAPreview",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "documentOnSAId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3379,7 +3400,7 @@
       "get": {
         "tags": ["Sales Arrangement"],
         "summary": "Seznam Sales Arrangements pro Case.",
-        "description": "Operace slouží k získání Sales Arrangements k danému ID obchodního případu (caseId). <br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=3A82DF69-AF0D-4ec4-8263-D42354C4891E\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "description": "Operace slouží k získání Sales Arrangements k danému ID obchodního případu (caseId). <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=3A82DF69-AF0D-4ec4-8263-D42354C4891E\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetSalesArrangements",
         "parameters": [
           {
@@ -3749,6 +3770,26 @@
         }
       }
     },
+    "/api/logged-in-user": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Informace a oprávnění o přihlášeném uživateli",
+        "description": "Vrací o uživateli data z XXVVSS - základní údaje, identity (počítáme s tím, že je alespoň jedna, vetšinou více) a set oprávnění pro identitu, kterou se přihlásil. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea?m=1&o=FC765415-4D2E-4b7c-B1C8-3F4B78A005DD\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetLoggedInUser",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/users/mpss-cookie": {
       "get": {
         "tags": ["Users"],
@@ -3775,6 +3816,321 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/case/{caseId}/tasks/consultation-type": {
+      "get": {
+        "tags": ["Workflow Task"],
+        "summary": "Získání relevantních typů konzultace",
+        "description": "Získání typů konzultací, které jsou povolené pro daný typ procesu a danou fázi procesu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2B1DEBE7-BFDB-44f4-8733-DE0A3F7A994C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetConsultationTypes",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "processId",
+            "in": "query",
+            "description": "Noby proces ID. Jde o ID sady úkolů generované Starbuildem.",
+            "required": true,
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NOBY.Api.Endpoints.Workflow.GetConsultationTypes.GetConsultationTypesResponseItem"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/case/{caseId}/tasks/{taskId}/cancel": {
+      "post": {
+        "tags": ["Workflow Task"],
+        "summary": "Stornování úkolu ve SB",
+        "description": "Stornování úkolu ve SB. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "CancelTask",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Workflow.CancelTask.CancelTaskRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/case/{caseId}/tasks": {
+      "post": {
+        "tags": ["Workflow Task"],
+        "summary": "Vytvoření nového workflow tasku do SB.",
+        "description": "Vytvoření nového workflow tasku do SB.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=882E85E3-F6EA-4774-812E-3328006E8893\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "CreateTask",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Noby task ID. Jde o ID sady úkolů generované Starbuildem.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "example": 22777
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Workflow Task"],
+        "summary": "Seznam workflow tasků dotažený z SB.",
+        "description": "Operace získá ze Starbuildu seznam úkolů a procesů k danému case ID. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0460E3F9-7DE1-48e9-BAF6-CD5D1AC60F82\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetTaskList",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Workflow.GetTaskList.GetTaskListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/case/{caseId}/tasks/{taskId}": {
+      "get": {
+        "tags": ["Workflow Task"],
+        "summary": "Detail workflow tasku dotažený ze SB.",
+        "description": "Detail workflow tasku dotažený ze SB. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=90CD722E-8955-43e6-9924-DC5FDDF6ED15\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetTaskDetail",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Workflow.GetTaskDetail.GetTaskDetailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Workflow Task"],
+        "summary": "Update workflow tasku do SB",
+        "description": "Update workflow tasku do SB. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "UpdateTaskDetail",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Task or case not found"
+          }
+        }
+      }
+    },
+    "/api/case/{caseId}/tasks/current-price-exception": {
+      "get": {
+        "tags": ["Workflow Task"],
+        "summary": "Získání aktuální cenové výjimky",
+        "description": "Operace vrátí detail Cenové výjimky. <br /> \r\nPokud ještě ve Starbuild neexistuje workflow úkol, budou výsledkem data z Noby a uživatel dostane možnost založit workflow úkolu. <br /> \r\nPokud již workflow úkol existuje, ale je stornovaný, budou výsledkem data z Noby a uživatel dostane možnost založení nového workflow úkolu. <br /> \r\nPokud již workflow úkol existuje a není stornovaný, budou výsledkem data ze Starbuild. U dokončeného úkolu Ocenění nehraje roli, zda bylo Ocenění schváleno či zamítnuto. Uživatel uvidí detail tohoto ukončeného úkolu. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F8C65CF5-6A02-4d2a-B068-C3EDE901DAE5\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetCurrentPriceException",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NOBY.Api.Endpoints.Workflow.GetCurrentPriceException.GetCurrentPriceExceptionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -5463,17 +5819,6 @@
         },
         "additionalProperties": false
       },
-      "NOBY.Api.Endpoints.Cases.CancelTask.CancelTaskRequest": {
-        "required": ["taskIdSB"],
-        "type": "object",
-        "properties": {
-          "taskIdSB": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
       "NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest": {
         "required": ["salesArrangementTypeId"],
         "type": "object",
@@ -5493,45 +5838,6 @@
             "type": "integer",
             "description": "ID Sales Arrangement",
             "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "NOBY.Api.Endpoints.Cases.CreateTask.CreateTaskRequest": {
-        "required": ["processId", "taskTypeId", "taskUserRequest"],
-        "type": "object",
-        "properties": {
-          "taskTypeId": {
-            "type": "integer",
-            "description": "ID typu úkolu (Cenová výjimka = 2, Konzultace = 3, Předání na specialistu = 7)",
-            "format": "int32",
-            "example": 7
-          },
-          "taskSubtypeId": {
-            "type": "integer",
-            "description": "ID typu konzultace",
-            "format": "int32",
-            "nullable": true,
-            "example": 0
-          },
-          "processId": {
-            "type": "integer",
-            "description": "ID nadřazeného procesu",
-            "format": "int64",
-            "example": 24556
-          },
-          "taskUserRequest": {
-            "minLength": 1,
-            "type": "string",
-            "description": "Text požadavku",
-            "example": "Prosím o pomoc s tímto případem."
-          },
-          "attachments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/NOBY.Api.Endpoints.Shared.DocumentInformation"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -5624,6 +5930,11 @@
         "type": "object",
         "properties": {
           "documentsMenuItem": {
+            "description": "Položka menu Dokumenty",
+            "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.MenuFlags.Item"
+          },
+          "covenantsMenuItem": {
+            "description": "Položka menu Podmínky ke splnění",
             "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.MenuFlags.Item"
           }
         },
@@ -5635,8 +5946,132 @@
           "flag": {
             "enum": [0, 1, 2],
             "type": "integer",
-            "description": "Flag\n\n<small>Enum Values</small><ul><li>0 - No flag</li><li>1 - (!)</li><li>2 - Ve zpracování</li></ul>",
+            "description": "Příznak\n\n<small>Enum Values</small><ul><li>0 - No flag</li><li>1 - (!)</li><li>2 - Ve zpracování</li></ul>",
             "format": "int32"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true,
+            "nullable": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Cases.CovenantsResponse": {
+        "type": "object",
+        "description": "Seznam podmínek ke splnění",
+        "properties": {
+          "sections": {
+            "type": "array",
+            "description": "Seznam sekcí",
+            "items": {
+              "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.Covenants.SectionItem"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Cases.Covenants.SectionItem": {
+        "type": "object",
+        "description": "Sekce",
+        "properties": {
+          "covenantTypeId": {
+            "type": "integer",
+            "description": "Sekce - číselník CovenantType",
+            "format": "int32",
+            "nullable": false
+          },
+          "phases": {
+            "type": "array",
+            "description": "Seznam fází",
+            "items": {
+              "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.Covenants.Phase"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Cases.Covenants.Phase": {
+        "type": "object",
+        "description": "Fáze",
+        "properties": {
+          "orderLetter": {
+            "type": "string",
+            "description": "Písmenná identifikace fáze",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Název skupiny podmínek (fáze)",
+            "nullable": true
+          },
+          "covenants": {
+            "type": "array",
+            "description": "Podmínky ke splnění",
+            "items": {
+              "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.Covenants.Item"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Cases.Covenants.Item": {
+        "type": "object",
+        "description": "Podmínka ke splnění",
+        "properties": {
+          "orderLetter": {
+            "type": "string",
+            "description": "Písmenná identifikace podmínky v sekci/skupině",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Jméno podmínky",
+            "nullable": true
+          },
+          "isFulfilled": {
+            "type": "boolean",
+            "description": "Podmínka splněna",
+            "nullable": false
+          },
+          "fulfillDate": {
+            "type": "string",
+            "description": "Termín pro splnění podmínky (datum, kdy by mělo byt splněno)",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Cases.Covenant": {
+        "type": "object",
+        "description": "Podmínka ke splnění",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Jméno podmínky",
+            "nullable": true
+          },
+          "isFulfilled": {
+            "type": "boolean",
+            "description": "Podmínka splněna",
+            "nullable": false
+          },
+          "fulfillDate": {
+            "type": "string",
+            "description": "Termín pro splnění podmínky (datum, kdy by mělo byt splněno)",
+            "format": "date-time",
+            "nullable": true
+          },
+          "text": {
+            "type": "string",
+            "description": "Text podmínky (jedná se o text ve smlouvě)",
+            "nullable": true
+          },
+          "descrition": {
+            "type": "string",
+            "description": "Vysvětlení činnosti, kterou je třeba udělat (vysvětlující text podmínky)",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -5665,75 +6100,6 @@
           },
           "taskCount": {
             "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "NOBY.Api.Endpoints.Cases.Dto.WorkflowTask": {
-        "type": "object",
-        "properties": {
-          "taskId": {
-            "type": "integer",
-            "description": "Noby task ID. Jde o ID sady úkolů generované Starbuildem.",
-            "format": "int64",
-            "example": 22777
-          },
-          "createdOn": {
-            "type": "string",
-            "description": "Datum vytvoření úkolu",
-            "format": "date-time",
-            "example": "12.12.2022"
-          },
-          "taskTypeId": {
-            "type": "integer",
-            "description": "ID typu úkolu podle <a href=\"https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK\">číselníku typu úkolů</a>",
-            "format": "int32",
-            "example": 1
-          },
-          "taskTypeName": {
-            "type": "string",
-            "description": "Jméno typu úkolu",
-            "example": "Dožádání"
-          },
-          "taskSubtypeName": {
-            "type": "string",
-            "description": "Označení úkolu (název podtypu úkolu)",
-            "example": "Obecné"
-          },
-          "processId": {
-            "type": "integer",
-            "description": "ID procesu",
-            "format": "int64",
-            "example": 2344
-          },
-          "processNameShort": {
-            "type": "string",
-            "description": "Jméno typu procesu (zkrácené)",
-            "example": "Hlavní"
-          },
-          "stateId": {
-            "type": "integer",
-            "description": "ID Noby stavu úkolu podle <a href=\"https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby\">číselníku stavů úkolů</a>",
-            "format": "int32",
-            "example": 1
-          },
-          "stateName": {
-            "type": "string",
-            "description": "Název Noby stavu úkolu",
-            "example": "K VYŘÍZENÍ"
-          },
-          "stateFilter": {
-            "enum": [1, 2],
-            "type": "integer",
-            "description": "Filter Noby stavu úkolu\n\n<small>Enum Values</small><ul><li>1 - Active</li><li>2 - Finished</li></ul>",
-            "format": "int32",
-            "example": 1
-          },
-          "stateIndicator": {
-            "enum": [1, 2, 3],
-            "type": "integer",
-            "description": "Indikátor barvy Noby stavu\n\n<small>Enum Values</small><ul><li>1 - Active</li><li>2 - Cancelled</li><li>3 - Ok</li></ul>",
             "format": "int32"
           }
         },
@@ -6001,23 +6367,6 @@
         },
         "additionalProperties": false
       },
-      "NOBY.Api.Endpoints.Cases.GetConsultationTypes.GetConsultationTypesResponseItem": {
-        "type": "object",
-        "properties": {
-          "taskSubtypeId": {
-            "type": "integer",
-            "description": "ID typu konzultace",
-            "format": "int32",
-            "example": 0
-          },
-          "taskSubtypeName": {
-            "type": "string",
-            "description": "Název typu konzultace",
-            "example": "Dotaz (obecný)"
-          }
-        },
-        "additionalProperties": false
-      },
       "NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer": {
         "type": "object",
         "properties": {
@@ -6078,304 +6427,6 @@
         },
         "additionalProperties": false
       },
-      "NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsConsultationData": {
-        "type": "object",
-        "properties": {
-          "orderId": {
-            "type": "integer",
-            "description": "Konzultace: Číslo objednávky ocenění (Atribut je relevantní jen pro konzultaci Dotaz k ocenění a pro konzultaci Vyhotovení ZOV.)",
-            "format": "int32",
-            "nullable": true,
-            "example": 123556
-          }
-        },
-        "additionalProperties": false,
-        "description": "Tento objekt je relevantní pouze pro některé typy Konzultací, a to sice pro Dotaz k ocenění a pro Vyhotovení ZOV."
-      },
-      "NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsRequest": {
-        "type": "object",
-        "properties": {
-          "sentToCustomer": {
-            "type": "boolean",
-            "description": "Dožádání: Příznak zaslání Dožádní přímo na klienta",
-            "nullable": true,
-            "example": false
-          },
-          "orderId": {
-            "type": "integer",
-            "description": "Dožádání: Číslo objednávky ocenění (Atribut je relevantní jen pro dožádání k ocenění.)",
-            "format": "int32",
-            "nullable": true,
-            "example": 123556
-          }
-        },
-        "additionalProperties": false,
-        "description": "Tento objekt je relevantní pouze pro typ úkolu Dožádání"
-      },
-      "NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning": {
-        "required": ["documentForSigning", "expiration", "formId"],
-        "type": "object",
-        "properties": {
-          "formId": {
-            "minLength": 1,
-            "type": "string",
-            "description": "Podepisování: ID čárového kódu dokumentu k podpisu (formId)",
-            "example": "S00000014139920"
-          },
-          "signatureType": {
-            "enum": [0, 1],
-            "type": "integer",
-            "description": "Podepisování: způsob podpisu (0 - papírové podepisování, 1 - elektronické podepisování)\n\n<small>Enum Values</small><ul><li>0 - Paper</li><li>1 - Digital</li></ul>",
-            "format": "int32",
-            "example": 0
-          },
-          "expiration": {
-            "minLength": 1,
-            "type": "string",
-            "description": "Podepisování: Lhůta pro zajištění podpisu",
-            "example": "24.12.2023"
-          },
-          "documentForSigning": {
-            "minLength": 1,
-            "type": "string",
-            "description": "Podepisování: ID dokumentu k podpisu",
-            "example": "01_23_046_111203_SF_0001"
-          },
-          "proposalForEntry": {
-            "type": "string",
-            "description": "Podepisování: ID dokumentu návrhu na vklad",
-            "example": "01_23_046_111203_SF_0001"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Tento objekt je relevantní pouze pro typ úkolu Podepisování"
-      },
-      "NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsPriceException": {
-        "required": ["expiration", "LoanInterestRate"],
-        "type": "object",
-        "properties": {
-          "expiration": {
-            "minLength": 1,
-            "type": "string",
-            "format": "date",
-            "description": "Cenová výjimka: Platnost cenové výjimky",
-            "example": "24.12.2023"
-          },
-          "LoanInterestRate": {
-            "type": "object",
-            "required": ["loanInterestRate", "loanInterestRateProvided", "loanInterestRateAnnouncedType"],
-            "properties": {
-              "loanInterestRate": {
-                "type": "string",
-                "description": "Nabídková sazba",
-                "example": "2,49 %"
-              },
-              "loanInterestRateProvided": {
-                "type": "string",
-                "description": "Poskytnutá sazba",
-                "example": "2 %"
-              },
-              "loanInterestRateAnnouncedTypeName": {
-                "type": "string",
-                "description": "Typ sazby",
-                "example": "standardní"
-              },
-              "loanInterestRateDiscount": {
-                "type": "string",
-                "description": "Sleva ze sazby",
-                "example": "0,49 %"
-              }
-            }
-          },
-          "Fees": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Fee"
-            }
-          },
-          "decision": {
-            "type": "string",
-            "description": "Rozhodnutí",
-            "example": "Schváleno"
-          }
-        }
-      },
-      "Fee": {
-        "type": "object",
-        "properties": {
-          "feeId": {
-            "type": "string",
-            "description": "Název poplatku",
-            "example": "Zpracování žádosti"
-          },
-          "tariffSum": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Sazebníková cena (Kč)",
-            "example": 1000
-          },
-          "finalSum": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Navrhovaná cena (Kč)",
-            "example": 500
-          },
-          "discountPercentage": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Sleva (%)",
-            "example": 50
-          }
-        }
-      },
-      "NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem": {
-        "type": "object",
-        "properties": {
-          "taskRequest": {
-            "type": "string",
-            "description": "Text požadavku",
-            "example": "Prosím o součinnost."
-          },
-          "taskResponse": {
-            "type": "string",
-            "description": "Dožádání: odpověď",
-            "example": "Posílám Vám požadované dokumenty."
-          }
-        },
-        "additionalProperties": false
-      },
-      "NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail": {
-        "type": "object",
-        "properties": {
-          "taskIdSB": {
-            "type": "integer",
-            "description": "SB ID úkolu, není zobrazeno na FE UI",
-            "format": "int32",
-            "example": 22456
-          },
-          "performerLogin": {
-            "type": "string",
-            "description": "Login zadavatele/zpracovatele",
-            "nullable": true,
-            "example": "14"
-          },
-          "performerName": {
-            "type": "string",
-            "description": "Jméno a příjmení zadavatele/zpracovatele",
-            "nullable": true,
-            "example": "Jan Novák"
-          },
-          "processNameLong": {
-            "type": "string",
-            "description": "Jméno typu procesu (nezkrácené)",
-            "example": "Hlavní úvěrový proces"
-          },
-          "taskCommunication": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.TaskCommunicationItem"
-            },
-            "description": "Dožádání: Text požadavku a případné odpovědi (i včetně případných opakování komunikace). Řazeno chronologicky, nejstarší záznam je jako poslední.; Předání na specialistu: popis požadavku"
-          },
-          "amendments": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsConsultationData"
-              },
-              {
-                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsRequest"
-              },
-              {
-                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsSigning"
-              },
-              {
-                "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.Amendments.AmendmentsPriceException"
-              }
-            ],
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "NOBY.Api.Endpoints.Cases.GetTaskDetail.GetTaskDetailResponse": {
-        "type": "object",
-        "properties": {
-          "task": {
-            "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.Dto.WorkflowTask"
-          },
-          "taskDetail": {
-            "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetTaskDetail.Dto.WorkflowTaskDetail"
-          },
-          "documents": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/NOBY.Api.Endpoints.DocumentArchive.GetDocumentList.DocumentsMetadata"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess": {
-        "type": "object",
-        "properties": {
-          "processId": {
-            "type": "integer",
-            "description": "Noby proces ID. Jde o ID sady úkolů generované Starbuildem.",
-            "format": "int64",
-            "example": 22777
-          },
-          "createdOn": {
-            "type": "string",
-            "description": "Datum vytvoření procesu",
-            "format": "date-time",
-            "example": "12.12.2021"
-          },
-          "processNameLong": {
-            "type": "string",
-            "description": "Jméno typu procesu (nezkrácené)",
-            "nullable": true,
-            "example": "Hlavní úvěrový proces"
-          },
-          "stateName": {
-            "type": "string",
-            "description": "Název Noby stavu procesu",
-            "example": "SPRÁVA"
-          },
-          "stateIndicator": {
-            "enum": [1, 2, 3],
-            "type": "integer",
-            "description": "Indikátor barvy Noby stavu\n\n<small>Enum Values</small><ul><li>1 - Active</li><li>2 - Cancelled</li><li>3 - Ok</li></ul>",
-            "format": "int32"
-          },
-          "processTypeId": {
-            "type": "integer",
-            "description": "ID typu procesu. 1 - Hlavní úvěrový proces, 2 - Změnový proces, 3 - Retenční proces",
-            "format": "int32",
-            "example": 1
-          }
-        },
-        "additionalProperties": false
-      },
-      "NOBY.Api.Endpoints.Cases.GetTaskList.GetTaskListResponse": {
-        "type": "object",
-        "properties": {
-          "tasks": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.Dto.WorkflowTask"
-            },
-            "nullable": true
-          },
-          "processes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetTaskList.Dto.WorkflowProcess"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
       "NOBY.Api.Endpoints.Cases.GetTotalsByStates.GetDashboardFiltersResponse": {
         "type": "object",
         "properties": {
@@ -6431,118 +6482,80 @@
         },
         "additionalProperties": false
       },
-      "NOBY.Api.Endpoints.Case.Identify.IdentifyRequest": {
-        "type": "object",
-        "required": ["criterion"],
-        "properties": {
-          "criterion": {
-            "type": "integer",
-            "format": "int32",
-            "enum": [0, 1, 2, 3],
-            "description": "Kritérium vyhledávání: 0 - Čárový kód dokumentu (formId); 1 - Číslo úvěrového účtu; 2 - ID obchodního případu; 3 - Číslo smlouvy",
-            "example": 0
-          },
-          "value": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Value"
-              },
-              {
-                "$ref": "#/components/schemas/Account"
-              }
-            ]
-          }
-        }
-      },
-      "Value": {
-        "type": "object",
-        "description": "Tento objekt je relevantní pro kritéria 0 (čárový kód), 2 (ID obchodního případu) a 3 (číslo smlouvy)",
-        "properties": {
-          "value": {
-            "type": "string",
-            "description": "Hodnota, podle které se má vyhledávat.",
-            "example": "S00000014139920"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Account": {
+      "NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount": {
         "type": "object",
         "description": "Tento objekt je relevantní pouze pro kritérium 1 (číslo úvěrového účtu).",
         "properties": {
           "prefix": {
-            "type": "integer",
-            "description": "Prefix čísla úvěrového účtu, podle kterého se má vyhledávat",
-            "format": "int32",
             "maxLength": 6,
-            "example": 43,
-            "nullable": true
+            "type": "string",
+            "description": "Prefix čísla úvěrového účtu, podle kterého se má vyhledávat",
+            "nullable": true,
+            "example": "43"
           },
-          "accountNumber": {
-            "type": "integer",
-            "description": "Core čísla úvěrového účtu, podle kterého se má vyhledávat",
-            "format": "int64",
-            "minLength": 3,
+          "number": {
             "maxLength": 10,
-            "example": 9105464622
+            "minLength": 3,
+            "type": "string",
+            "description": "Core čísla úvěrového účtu, podle kterého se má vyhledávat",
+            "example": "9105464622"
           }
         },
         "additionalProperties": false
       },
-      "NOBY.Api.Endpoints.Case.Identify.IdentifyResponse": {
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/caseId"
+      "NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest": {
+        "required": ["criterion"],
+        "type": "object",
+        "properties": {
+          "criterion": {
+            "enum": [0, 1, 2, 3],
+            "type": "integer",
+            "description": "Kritérium vyhledávání: 0 - Čárový kód dokumentu (formId); 1 - Číslo úvěrového účtu; 2 - ID obchodního případu; 3 - Číslo smlouvy\n\n<small>Enum Values</small><ul><li>0 - FormId</li><li>1 - PaymentAccount</li><li>2 - CaseId</li><li>3 - ContractNumber</li></ul>",
+            "format": "int32",
+            "example": 0
           },
-          {
-            "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.GetTaskDetail.GetTaskDetailResponse"
+          "formId": {
+            "type": "string",
+            "description": "Tato hodnota je relevantní pro kritérium 0 (čárový kód)",
+            "nullable": true
+          },
+          "account": {
+            "$ref": "#/components/schemas/NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount"
+          },
+          "caseId": {
+            "type": "integer",
+            "description": "Tato hodnota je relevantní pro kritérium 2 (ID obchodního případu)",
+            "format": "int64",
+            "nullable": true
+          },
+          "contractNumber": {
+            "type": "string",
+            "description": "Tato hodnota je relevantní pro kritérium 3 (číslo smlouvy)",
+            "nullable": true
           }
-        ]
+        },
+        "additionalProperties": false
       },
-      "caseId": {
+      "NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponse": {
         "type": "object",
         "properties": {
           "caseId": {
             "type": "integer",
-            "format": "int64",
             "description": "ID obchodního případu",
+            "format": "int64",
+            "nullable": true,
             "example": 24777
-          }
-        }
-      },
-      "NOBY.Api.Endpoints.Cases.UpdateTaskDetail.UpdateTaskDetailRequest": {
-        "required": ["taskIdSB", "taskTypeId"],
-        "type": "object",
-        "properties": {
-          "taskIdSB": {
-            "type": "integer",
-            "description": "SB ID úkolu, není zobrazeno na FE UI",
-            "format": "int32",
-            "example": 22456
           },
-          "taskTypeId": {
-            "type": "integer",
-            "description": "ID typu úkolu podle <a href=\"https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK\">číselníku typu úkolů</a>",
-            "format": "int32",
-            "example": 1
+          "task": {
+            "$ref": "#/components/schemas/NOBY.Dto.Workflow.WorkflowTask"
           },
-          "taskResponseTypeId": {
-            "type": "integer",
-            "description": "ID typu odpovědi. 0 - V pořádku, 1 - Závada - upravený dokument, 2 - Závada - chybějící podpis",
-            "format": "int32",
-            "nullable": true,
-            "example": 0
+          "taskDetail": {
+            "$ref": "#/components/schemas/NOBY.Dto.Workflow.WorkflowTaskDetail"
           },
-          "taskUserResponse": {
-            "type": "string",
-            "description": "Text odpovědi",
-            "nullable": true,
-            "example": "Vyplněno, co bylo potřeba."
-          },
-          "attachments": {
+          "documents": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NOBY.Api.Endpoints.Shared.DocumentInformation"
+              "$ref": "#/components/schemas/NOBY.Dto.Documents.DocumentsMetadata"
             },
             "nullable": true
           }
@@ -7457,10 +7470,20 @@
           "countryId": {
             "type": "integer",
             "format": "int32",
+            "description": "Id země z číselníku států",
+            "example": 16,
             "nullable": true
           },
           "tin": {
             "type": "string",
+            "description": "DIČ (Tax Identification Number)",
+            "example": "12345678901",
+            "nullable": true
+          },
+          "tinMissingReasonDescription": {
+            "type": "string",
+            "description": "Důvod nevyplnění TIN",
+            "example": "TIN není možné získat",
             "nullable": true
           }
         },
@@ -8076,45 +8099,13 @@
         },
         "additionalProperties": false
       },
-      "NOBY.Api.Endpoints.DocumentArchive.GetDocumentList.DocumentsMetadata": {
-        "type": "object",
-        "properties": {
-          "documentId": {
-            "type": "string"
-          },
-          "eaCodeMainId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdOn": {
-            "type": "string",
-            "format": "date"
-          },
-          "uploadStatus": {
-            "enum": [0, 1, 2],
-            "type": "integer",
-            "description": "Stav přenosu dokumentu do eArchivu.\n\n<small>Enum Values</small><ul><li>0 - Uloženo v eArchivu</li><li>1 - Ve zpracování</li><li>2 - Chyba</li></ul>",
-            "format": "int32",
-            "example": 1
-          }
-        },
-        "additionalProperties": false
-      },
       "NOBY.Api.Endpoints.DocumentArchive.GetDocumentList.GetDocumentListResponse": {
         "type": "object",
         "properties": {
           "documentsMetadata": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NOBY.Api.Endpoints.DocumentArchive.GetDocumentList.DocumentsMetadata"
+              "$ref": "#/components/schemas/NOBY.Dto.Documents.DocumentsMetadata"
             },
             "nullable": true
           }
@@ -8262,6 +8253,13 @@
           "signatureMethodCode": {
             "type": "string",
             "description": "Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.",
+            "nullable": true,
+            "deprecated": true
+          },
+          "signatureTypeId": {
+            "type": "integer",
+            "description": "Metoda podpisu (manuální/elektronický). Číselník SignatureType.",
+            "format": "int32",
             "nullable": true
           },
           "signatureDateTime": {
@@ -8948,6 +8946,9 @@
           },
           "simulationResults": {
             "$ref": "#/components/schemas/NOBY.Api.Endpoints.Offer.Dto.MortgageOutputs"
+          },
+          "creditWorthinessSimpleInputs": {
+            "$ref": "#/components/schemas/NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleInputs"
           }
         },
         "additionalProperties": false
@@ -9512,9 +9513,72 @@
             "description": "ID Sales Arrangement-u",
             "format": "int32",
             "nullable": true
+          },
+          "customerIdentities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            },
+            "nullable": true
+          },
+          "creditWorthinessSimpleInputs": {
+            "$ref": "#/components/schemas/NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleInputs"
           }
         },
         "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleInputs": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní",
+            "nullable": false
+          },
+          "totalMonthlyIncome": {
+            "type": "number",
+            "description": "Celkové měsíční příjmy",
+            "format": "double",
+            "nullable": true
+          },
+          "expensesRent": {
+            "type": "number",
+            "description": "Měsíční výdaje spojené s bydlením",
+            "format": "double",
+            "nullable": true
+          },
+          "expensesOther": {
+            "type": "number",
+            "description": "Ostatní měsíční výdaje",
+            "format": "double",
+            "nullable": true
+          },
+          "loansInstallmentsAmount": {
+            "type": "number",
+            "description": "Splátky úvěrů a hypoték",
+            "format": "double",
+            "nullable": true
+          },
+          "creditCardsAmount": {
+            "type": "number",
+            "description": "Limity kreditních karet",
+            "format": "double",
+            "nullable": true
+          },
+          "authorizedOverdraftsTotalAmount": {
+            "type": "number",
+            "description": "Limity debetů",
+            "format": "double",
+            "nullable": true
+          },
+          "childrenCount": {
+            "type": "integer",
+            "description": "Počet dětí",
+            "format": "int32",
+            "nullable": true
+          }
+        }
       },
       "NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse": {
         "type": "object",
@@ -9531,9 +9595,43 @@
           },
           "simulationResults": {
             "$ref": "#/components/schemas/NOBY.Api.Endpoints.Offer.Dto.MortgageOutputs"
+          },
+          "creditWorthinessSimpleResults": {
+            "$ref": "#/components/schemas/NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults"
           }
         },
         "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults": {
+        "type": "object",
+        "properties": {
+          "worthinessResult": {
+            "enum": [0, 1, 2],
+            "type": "integer",
+            "description": "Výsledek bonity\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Success</li><li>2 - Failed</li></ul>",
+            "format": "int32"
+          },
+          "installmentLimit": {
+            "type": "integer",
+            "description": "Měsíční splátka (maximum)",
+            "format": "int32"
+          },
+          "maxAmount": {
+            "type": "integer",
+            "description": "Výše úvěru (maximum)",
+            "format": "int32"
+          },
+          "remainsLivingAnnuity": {
+            "type": "integer",
+            "description": "Zbývá na živobytí s požadovanou splátkou",
+            "format": "int32"
+          },
+          "remainsLivingInst": {
+            "type": "integer",
+            "description": "Zbývá na živobytí s maximální splátkou",
+            "format": "int32"
+          }
+        }
       },
       "NOBY.Api.Endpoints.Product.GetCustomersOnProduct.GetCustomersOnProductCustomer": {
         "type": "object",
@@ -9590,6 +9688,206 @@
           }
         },
         "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationRequest": {
+        "type": "object",
+        "required": ["realEstateTypeId"],
+        "properties": {
+          "realEstateTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "ID typu nemovitosti",
+            "example": 1
+          },
+          "isLoanRealEstate": {
+            "type": "boolean",
+            "description": "True pokud jde o nemovitost, která je objektem úvěru",
+            "example": true,
+            "nullable": true
+          },
+          "developerApplied": {
+            "type": "boolean",
+            "description": "True pokud je aplikované hromadné ocenění z developerského projektu",
+            "example": false,
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Atributy k nově zakládanému Ocenění nemovitosti"
+      },
+      "NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationResponse": {
+        "type": "object",
+        "properties": {
+          "realEstateValuationId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "description": "ID Ocenění nemovitosti v Noby",
+            "example": 3456
+          }
+        },
+        "additionalProperties": false,
+        "description": "ID nově založeného Ocenění nemovitosti v Noby"
+      },
+      "NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationListResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/NOBY.Dto.RealEstateValuation.RealEstateValuationListItem"
+        }
+      },
+      "NOBY.Dto.RealEstateValuation.RealEstateValuationListItem": {
+        "type": "object",
+        "required": [
+          "caseId",
+          "realEstateTypeId",
+          "realEstateTypeName",
+          "valuationStateId",
+          "valuationStateName",
+          "valuationStateIndicator",
+          "isLoanRealEstate",
+          "valuationTypeId",
+          "developerAllowed",
+          "developerApplied"
+        ],
+        "properties": {
+          "realEstateValuationId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "description": "ID Ocenění nemovitosti v Noby",
+            "example": 3456
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "description": "Číslo objednávky ocenění",
+            "example": 123455
+          },
+          "caseId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID obchodního případu (caseId)",
+            "example": 304556
+          },
+          "realEstateTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "ID typu nemovitosti",
+            "example": 1
+          },
+          "realEstateTypeName": {
+            "type": "string",
+            "description": "Název typu nemovitosti",
+            "example": "Rodinný dům, vila"
+          },
+          "valuationStateId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "ID stavu Ocenění nemovitosti",
+            "example": 8
+          },
+          "valuationStateIndicator": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [0, 1, 2, 3, 4, 5, 6],
+            "description": "Indikátor stavu Ocenění nemovitosti, 0 - Unknown, 1 - Active, 2 - Cancelled, 3 - OK, 4 - Passive, 5 - Warning, 6 - Initial",
+            "example": 4
+          },
+          "valuationStateName": {
+            "type": "string",
+            "description": "Název stavu Ocenění nemovitosti",
+            "example": "Probíhá ocenění"
+          },
+          "isLoanRealEstate": {
+            "type": "boolean",
+            "description": "True pokud jde o nemovitost, která je objektem úvěru",
+            "example": true
+          },
+          "realEstateStateName": {
+            "type": "string",
+            "nullable": true,
+            "description": "Název stavu nemovitosti",
+            "example": "V rekonstrukci"
+          },
+          "valuationTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [0, 1, 2, 3],
+            "description": "Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard",
+            "example": "DTS"
+          },
+          "address": {
+            "type": "string",
+            "nullable": true,
+            "description": "Adresa nemovitosti",
+            "example": "Novákovo nábřeží 1972, 521 71 Žďár nad Sázavou"
+          },
+          "valuationSentDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "Datum odeslání žádosti o Ocenění nemovitosti",
+            "example": "31.12.2023"
+          },
+          "valuationResultCurrentPrice": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "description": "Současná cena nemovitosti v Kč",
+            "example": 3000000
+          },
+          "valuationResultFuturePrice": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "description": "Budoucí cena nemovitosti v Kč",
+            "example": 3250000
+          },
+          "isRevaluationRequired": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "True pokud je potřeba kontrolní ocenění",
+            "example": false
+          },
+          "developerAllowed": {
+            "type": "boolean",
+            "description": "Informace o tom, zda byl na modelaci použit developer a zda je možné využít hromadné ocenění.",
+            "example": true
+          },
+          "developerApplied": {
+            "type": "boolean",
+            "description": "True pokud je aplikované hromadné ocenění z developerského projektu",
+            "example": false
+          }
+        },
+        "additionalProperties": false,
+        "description": "Objednávka ocenění: přehledové údaje"
+      },
+      "NOBY.Api.Endpoints.RealEstateValuation.PatchRealEstateValuationRequest": {
+        "type": "object",
+        "properties": {
+          "developerApplied": {
+            "type": "boolean",
+            "description": "True pokud je aplikované hromadné ocenění z developerského projektu",
+            "example": false
+          }
+        },
+        "additionalProperties": false,
+        "description": "Editovatelné atributy Ocenění nemovitosti"
+      },
+      "NOBY.Api.Endpoints.RealEstateValuation.PatchRealEstateValuationResponse": {
+        "type": "object",
+        "properties": {
+          "realEstateValuationId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "ID Ocenění nemovitosti v Noby",
+            "example": 3456
+          }
+        },
+        "additionalProperties": false,
+        "description": "ID Ocenění nemovitosti v Noby u kterého proběhl úspěšný patch atributů."
       },
       "NOBY.Api.Endpoints.SalesArrangement.Dto.Collateral": {
         "required": ["isActive"],
@@ -10716,6 +11014,11 @@
             "description": "Druh zadosti. Ciselnik SalesArrangementTypes.",
             "format": "int32"
           },
+          "state": {
+            "type": "integer",
+            "description": "Stav žádosti. Číselník SalesArrangementState.",
+            "format": "int32"
+          },
           "loanApplicationAssessmentId": {
             "type": "string",
             "nullable": true
@@ -11417,33 +11720,6 @@
         },
         "additionalProperties": false
       },
-      "NOBY.Api.Endpoints.Shared.DocumentInformation": {
-        "type": "object",
-        "properties": {
-          "guid": {
-            "type": "string",
-            "description": "GUID dokumentu v dočasném úložišti",
-            "format": "uuid",
-            "nullable": true
-          },
-          "fileName": {
-            "type": "string",
-            "description": "Jméno souboru"
-          },
-          "eaCodeMainId": {
-            "type": "integer",
-            "description": "Id EA kódu",
-            "format": "int32",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "description": "Popis dokumentu",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "NOBY.Api.Endpoints.Test.Rollback.RollbackResponse": {
         "type": "object",
         "additionalProperties": false
@@ -11477,6 +11753,109 @@
         },
         "additionalProperties": false
       },
+      "NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "description": "ID uzivatele - V33ID",
+            "format": "int32",
+            "example": 61958
+          },
+          "userIdentifiers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CIS.Foms.Types.UserIdentity"
+            },
+            "description": "Všechny identity uživatele z XXVVSS"
+          },
+          "userInfo": {
+            "$ref": "#/components/schemas/NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo"
+          },
+          "userPermissions": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponseUserInfo": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "Jméno uživatele",
+            "nullable": true,
+            "example": "Jaroslav"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Přijmení uživatele",
+            "nullable": true,
+            "example": "Cimrman"
+          },
+          "cpm": {
+            "type": "string",
+            "description": "ČPM uživatele",
+            "nullable": true,
+            "example": "99800001"
+          },
+          "icp": {
+            "type": "string",
+            "description": "IČP uživatele",
+            "nullable": true,
+            "example": "999999999"
+          },
+          "cin": {
+            "type": "string",
+            "description": "IČO uživatele",
+            "nullable": true,
+            "example": "12345678"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Telefon uživatele",
+            "nullable": true,
+            "example": "+420 601 234 567"
+          },
+          "emailAddress": {
+            "type": "string",
+            "description": "Emailová adresa uživatele",
+            "nullable": true,
+            "example": "jarda@cimrman.cz"
+          },
+          "isUserVIP": {
+            "type": "boolean",
+            "description": "VIP flag uživatele"
+          },
+          "isInternal": {
+            "type": "boolean",
+            "description": "Flag, zda se jedná o interního uživatele, či externistu"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CIS.Foms.Types.UserIdentity": {
+        "type": "object",
+        "properties": {
+          "identity": {
+            "type": "string",
+            "description": "ID uživatele"
+          },
+          "scheme": {
+            "enum": [0, 4, 5, 6, 7, 8, 9, 10, 99],
+            "type": "integer",
+            "description": "Identitní schéma\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>4 - KbUid</li><li>5 - M04Id</li><li>6 - M17Id</li><li>7 - BrokerId</li><li>8 - Mpad</li><li>9 - OsCis</li><li>10 - Kbad</li><li>99 - V33Id</li></ul>",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Identita uživatele NOBY aplikace"
+      },
       "NOBY.Api.Endpoints.Users.SignIn.SignInRequest": {
         "type": "object",
         "properties": {
@@ -11485,6 +11864,169 @@
             "description": "Login uzivatel z xxvvss databaze.",
             "nullable": true,
             "example": "990614w"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Workflow.CancelTask.CancelTaskRequest": {
+        "required": ["taskIdSB"],
+        "type": "object",
+        "properties": {
+          "taskIdSB": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest": {
+        "required": ["processId", "taskTypeId", "taskUserRequest"],
+        "type": "object",
+        "properties": {
+          "taskTypeId": {
+            "type": "integer",
+            "description": "ID typu úkolu (Cenová výjimka = 2, Konzultace = 3, Předání na specialistu = 7)",
+            "format": "int32",
+            "example": 7
+          },
+          "taskSubtypeId": {
+            "type": "integer",
+            "description": "ID typu konzultace",
+            "format": "int32",
+            "nullable": true,
+            "example": 0
+          },
+          "processId": {
+            "type": "integer",
+            "description": "ID nadřazeného procesu",
+            "format": "int64",
+            "example": 24556
+          },
+          "taskUserRequest": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Text požadavku",
+            "example": "Prosím o pomoc s tímto případem."
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NOBY.Dto.Documents.DocumentInformation"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Workflow.GetConsultationTypes.GetConsultationTypesResponseItem": {
+        "type": "object",
+        "properties": {
+          "taskSubtypeId": {
+            "type": "integer",
+            "description": "ID typu konzultace",
+            "format": "int32",
+            "example": 0
+          },
+          "taskSubtypeName": {
+            "type": "string",
+            "description": "Název typu konzultace",
+            "example": "Dotaz (obecný)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Workflow.GetCurrentPriceException.GetCurrentPriceExceptionResponse": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "$ref": "#/components/schemas/NOBY.Dto.Workflow.WorkflowTask"
+          },
+          "taskDetail": {
+            "$ref": "#/components/schemas/NOBY.Dto.Workflow.WorkflowTaskDetail"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NOBY.Dto.Documents.DocumentsMetadata"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Workflow.GetTaskDetail.GetTaskDetailResponse": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "$ref": "#/components/schemas/NOBY.Dto.Workflow.WorkflowTask"
+          },
+          "taskDetail": {
+            "$ref": "#/components/schemas/NOBY.Dto.Workflow.WorkflowTaskDetail"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NOBY.Dto.Documents.DocumentsMetadata"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Workflow.GetTaskList.GetTaskListResponse": {
+        "type": "object",
+        "properties": {
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NOBY.Dto.Workflow.WorkflowTask"
+            },
+            "nullable": true
+          },
+          "processes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NOBY.Dto.Workflow.WorkflowProcess"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest": {
+        "required": ["taskIdSB", "taskTypeId"],
+        "type": "object",
+        "properties": {
+          "taskIdSB": {
+            "type": "integer",
+            "description": "SB ID úkolu, není zobrazeno na FE UI",
+            "format": "int32",
+            "example": 22456
+          },
+          "taskTypeId": {
+            "type": "integer",
+            "description": "ID typu úkolu podle <a href=\"https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK\">číselníku typu úkolů</a>",
+            "format": "int32",
+            "example": 1
+          },
+          "taskResponseTypeId": {
+            "type": "integer",
+            "description": "ID typu odpovědi. 0 - V pořádku, 1 - Závada - upravený dokument, 2 - Závada - chybějící podpis",
+            "format": "int32",
+            "nullable": true,
+            "example": 0
+          },
+          "taskUserResponse": {
+            "type": "string",
+            "description": "Text odpovědi",
+            "nullable": true,
+            "example": "Vyplněno, co bylo potřeba."
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NOBY.Dto.Documents.DocumentInformation"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11530,6 +12072,65 @@
           },
           "mobilePhone": {
             "$ref": "#/components/schemas/NOBY.Api.SharedDto.PhoneNumberDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Dto.Documents.DocumentInformation": {
+        "type": "object",
+        "properties": {
+          "guid": {
+            "type": "string",
+            "description": "GUID dokumentu v dočasném úložišti",
+            "format": "uuid",
+            "nullable": true
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Jméno souboru"
+          },
+          "eaCodeMainId": {
+            "type": "integer",
+            "description": "Id EA kódu",
+            "format": "int32",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Popis dokumentu",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Dto.Documents.DocumentsMetadata": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "eaCodeMainId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date"
+          },
+          "uploadStatus": {
+            "enum": [0, 1, 2],
+            "type": "integer",
+            "description": "Stav přenosu dokumentu do eArchivu. Enum Values: 0 - Uloženo v eArchivu, 1 - Ve zpracování, 2 - Chyba\n\n<small>Enum Values</small><ul><li>0 - SaveInEArchive</li><li>1 - InProgress</li><li>2 - Error</li></ul>",
+            "format": "int32",
+            "example": 1
           }
         },
         "additionalProperties": false
@@ -11667,6 +12268,357 @@
           "phoneIDC": {
             "type": "string",
             "description": "Předvolba telefonního čísla",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Dto.Workflow.AmendmentsConsultationData": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "integer",
+            "description": "Konzultace: Číslo objednávky ocenění (Atribut je relevantní jen pro konzultaci Dotaz k ocenění a pro konzultaci Vyhotovení ZOV.)",
+            "format": "int32",
+            "nullable": true,
+            "example": 123556
+          }
+        },
+        "additionalProperties": false,
+        "description": "Tento objekt je relevantní pouze pro některé typy Konzultací, a to sice pro Dotaz k ocenění a pro Vyhotovení ZOV."
+      },
+      "NOBY.Dto.Workflow.AmendmentsPriceException": {
+        "required": ["expiration", "loanInterestRate"],
+        "type": "object",
+        "properties": {
+          "expiration": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Cenová výjimka: Platnost cenové výjimky",
+            "format": "date",
+            "example": "24.12.2023"
+          },
+          "loanInterestRate": {
+            "$ref": "#/components/schemas/NOBY.Dto.Workflow.LoanInterestRates"
+          },
+          "fees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NOBY.Dto.Workflow.Fee"
+            },
+            "nullable": true
+          },
+          "decision": {
+            "type": "string",
+            "description": "Rozhodnutí",
+            "example": "Schváleno"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Dto.Workflow.AmendmentsRequest": {
+        "type": "object",
+        "properties": {
+          "sentToCustomer": {
+            "type": "boolean",
+            "description": "Dožádání: Příznak zaslání Dožádní přímo na klienta",
+            "nullable": true,
+            "example": false
+          },
+          "orderId": {
+            "type": "integer",
+            "description": "Dožádání: Číslo objednávky ocenění (Atribut je relevantní jen pro dožádání k ocenění.)",
+            "format": "int32",
+            "nullable": true,
+            "example": 123556
+          }
+        },
+        "additionalProperties": false,
+        "description": "Tento objekt je relevantní pouze pro typ úkolu Dožádání"
+      },
+      "NOBY.Dto.Workflow.AmendmentsSigning": {
+        "required": ["documentForSigning", "expiration", "formId"],
+        "type": "object",
+        "properties": {
+          "formId": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Podepisování: ID čárového kódu dokumentu k podpisu (formId)",
+            "example": "S00000014139920"
+          },
+          "signatureType": {
+            "enum": [0, 1],
+            "type": "integer",
+            "description": "Podepisování: způsob podpisu (0 - papírové podepisování, 1 - elektronické podepisování)\n\n<small>Enum Values</small><ul><li>0 - Paper</li><li>1 - Digital</li></ul>",
+            "format": "int32",
+            "example": 0
+          },
+          "expiration": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Podepisování: Lhůta pro zajištění podpisu",
+            "format": "date",
+            "example": "24.12.2023"
+          },
+          "documentForSigning": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Podepisování: ID dokumentu k podpisu",
+            "example": "01_23_046_111203_SF_0001"
+          },
+          "proposalForEntry": {
+            "type": "string",
+            "description": "Podepisování: ID dokumentu návrhu na vklad",
+            "example": "01_23_046_111203_SF_0001"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Tento objekt je relevantní pouze pro typ úkolu Podepisování"
+      },
+      "NOBY.Dto.Workflow.Fee": {
+        "type": "object",
+        "properties": {
+          "feeName": {
+            "type": "string",
+            "description": "Název poplatku",
+            "example": "Zpracování žádosti"
+          },
+          "tariffSum": {
+            "type": "number",
+            "description": "Sazebníková cena (Kč)",
+            "format": "double",
+            "example": 1000
+          },
+          "finalSum": {
+            "type": "number",
+            "description": "Navrhovaná cena (Kč)",
+            "format": "double",
+            "example": 500
+          },
+          "discountPercentage": {
+            "type": "number",
+            "description": "Sleva (%)",
+            "format": "double",
+            "example": 50
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Dto.Workflow.LoanInterestRates": {
+        "required": ["loanInterestRate", "loanInterestRateAnnouncedTypeName", "loanInterestRateProvided"],
+        "type": "object",
+        "properties": {
+          "loanInterestRate": {
+            "minLength": 1,
+            "type": "number",
+            "description": "Nabídková sazba",
+            "format": "double",
+            "example": 2.49
+          },
+          "loanInterestRateProvided": {
+            "minLength": 1,
+            "type": "number",
+            "description": "Poskytnutá sazba",
+            "format": "double",
+            "example": 2.4
+          },
+          "loanInterestRateAnnouncedTypeName": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Typ sazby",
+            "example": "standardní"
+          },
+          "loanInterestRateDiscount": {
+            "type": "number",
+            "description": "Sleva ze sazby",
+            "format": "double",
+            "example": 0.09
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Dto.Workflow.TaskCommunicationItem": {
+        "type": "object",
+        "properties": {
+          "taskRequest": {
+            "type": "string",
+            "description": "Text požadavku",
+            "example": "Prosím o součinnost."
+          },
+          "taskResponse": {
+            "type": "string",
+            "description": "Dožádání: odpověď",
+            "example": "Posílám Vám požadované dokumenty."
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Dto.Workflow.WorkflowProcess": {
+        "type": "object",
+        "properties": {
+          "processId": {
+            "type": "integer",
+            "description": "Noby proces ID. Jde o ID sady úkolů generované Starbuildem.",
+            "format": "int64",
+            "example": 22777
+          },
+          "createdOn": {
+            "type": "string",
+            "description": "Datum vytvoření procesu",
+            "format": "date-time",
+            "example": "12.12.2021"
+          },
+          "processNameLong": {
+            "type": "string",
+            "description": "Jméno typu procesu (nezkrácené)",
+            "nullable": true,
+            "example": "Hlavní úvěrový proces"
+          },
+          "stateName": {
+            "type": "string",
+            "description": "Název Noby stavu procesu",
+            "example": "SPRÁVA"
+          },
+          "stateIndicator": {
+            "enum": [0, 1, 2, 3],
+            "type": "integer",
+            "description": "Indikátor barvy Noby stavu\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Active</li><li>2 - Cancelled</li><li>3 - Ok</li></ul>",
+            "format": "int32"
+          },
+          "processTypeId": {
+            "type": "integer",
+            "description": "ID typu procesu. 1 - Hlavní úvěrový proces, 2 - Změnový proces, 3 - Retenční proces",
+            "format": "int32",
+            "example": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Dto.Workflow.WorkflowTask": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "integer",
+            "description": "Noby task ID. Jde o ID sady úkolů generované Starbuildem.",
+            "format": "int64",
+            "example": 22777
+          },
+          "createdOn": {
+            "type": "string",
+            "description": "Datum vytvoření úkolu",
+            "format": "date-time",
+            "example": "12.12.2022"
+          },
+          "taskTypeId": {
+            "type": "integer",
+            "description": "ID typu úkolu podle <a href=\"https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK\">číselníku typu úkolů</a>",
+            "format": "int32",
+            "example": 1
+          },
+          "taskTypeName": {
+            "type": "string",
+            "description": "Jméno typu úkolu",
+            "example": "Dožádání"
+          },
+          "taskSubtypeName": {
+            "type": "string",
+            "description": "Označení úkolu (název podtypu úkolu)",
+            "example": "Obecné"
+          },
+          "processId": {
+            "type": "integer",
+            "description": "ID procesu",
+            "format": "int64",
+            "example": 2344
+          },
+          "processNameShort": {
+            "type": "string",
+            "description": "Jméno typu procesu (zkrácené)",
+            "example": "Hlavní"
+          },
+          "stateId": {
+            "type": "integer",
+            "description": "ID Noby stavu úkolu podle <a href=\"https://wiki.kb.cz/display/HT/WorkflowTaskStateNoby\">číselníku stavů úkolů</a>",
+            "format": "int32",
+            "example": 1
+          },
+          "stateName": {
+            "type": "string",
+            "description": "Název Noby stavu úkolu",
+            "example": "K VYŘÍZENÍ"
+          },
+          "stateFilter": {
+            "enum": [1, 2],
+            "type": "integer",
+            "description": "Filter Noby stavu úkolu\n\n<small>Enum Values</small><ul><li>1 - Active</li><li>2 - Finished</li></ul>",
+            "format": "int32",
+            "example": 1
+          },
+          "stateIndicator": {
+            "enum": [0, 1, 2, 3, 4, 5, 6],
+            "type": "integer",
+            "description": "Indikátor barvy Noby stavu\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Active</li><li>2 - Cancelled</li><li>3 - Ok</li><li>4 - Passive</li><li>5 - Warning</li><li>6 - Initial</li></ul>",
+            "format": "int32",
+            "example": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "NOBY.Dto.Workflow.WorkflowTaskDetail": {
+        "type": "object",
+        "properties": {
+          "taskIdSB": {
+            "type": "integer",
+            "description": "SB ID úkolu, není zobrazeno na FE UI",
+            "format": "int32",
+            "example": 22456
+          },
+          "performerLogin": {
+            "type": "string",
+            "description": "Login zadavatele/zpracovatele",
+            "nullable": true,
+            "example": "14"
+          },
+          "performerName": {
+            "type": "string",
+            "description": "Jméno a příjmení zadavatele/zpracovatele",
+            "nullable": true,
+            "example": "Jan Novák"
+          },
+          "performerCode": {
+            "type": "integer",
+            "description": "Kód zadavatele/zpracovatele",
+            "format": "int32",
+            "nullable": true,
+            "example": 9943
+          },
+          "processNameLong": {
+            "type": "string",
+            "description": "Jméno typu procesu (nezkrácené)",
+            "example": "Hlavní úvěrový proces"
+          },
+          "taskCommunication": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NOBY.Dto.Workflow.TaskCommunicationItem"
+            },
+            "description": "Dožádání: Text požadavku a případné odpovědi (i včetně případných opakování komunikace). Řazeno chronologicky, nejstarší záznam je jako poslední.; Předání na specialistu: popis požadavku"
+          },
+          "amendments": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NOBY.Dto.Workflow.AmendmentsConsultationData"
+              },
+              {
+                "$ref": "#/components/schemas/NOBY.Dto.Workflow.AmendmentsPriceException"
+              },
+              {
+                "$ref": "#/components/schemas/NOBY.Dto.Workflow.AmendmentsRequest"
+              },
+              {
+                "$ref": "#/components/schemas/NOBY.Dto.Workflow.AmendmentsSigning"
+              }
+            ],
             "nullable": true
           }
         },

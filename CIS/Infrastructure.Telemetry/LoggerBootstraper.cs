@@ -4,8 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Enrichers.Span;
+using Serilog.Exceptions;
 using Serilog.Filters;
-using Serilog.Sinks.MSSqlServer;
 using System.Reflection;
 
 namespace CIS.Infrastructure.Telemetry;
@@ -18,7 +18,6 @@ internal sealed class LoggerBootstraper
     private readonly LogBehaviourTypes _logType;
     private readonly IServiceProvider _serviceProvider;
 
-    const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] {Level:u} - [{TraceId}] [] [{Assembly}] [{Version}] [{MachineName}] [{CisUserId}] [{RequestPath}] - {Message}{NewLine}";
     static string[] _excludedGrpcRequestPaths = new[]
     {
         "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo",
@@ -62,12 +61,13 @@ internal sealed class LoggerBootstraper
     public void EnrichLogger(LoggerConfiguration loggerConfiguration)
     {
         loggerConfiguration
-            .ReadFrom.Configuration(_generalConfiguration)
+            .ReadFrom.Configuration(_generalConfiguration!)
             .Enrich.With(_serviceProvider.GetRequiredService<Enrichers.NobyHeadersEnricher>())
             .Enrich.WithSpan()
             .Enrich.WithClientIp()
             .Enrich.FromLogContext()
             .Enrich.WithMachineName()
+            .Enrich.WithExceptionDetails()
             .Enrich.WithProperty("Assembly", $"{_assemblyName!.Name}")
             .Enrich.WithProperty("Version", $"{_assemblyName!.Version}");
 
@@ -82,69 +82,8 @@ internal sealed class LoggerBootstraper
         }
     }
 
-#pragma warning disable CA1822 // Mark members as static
     public void AddOutputs(LoggerConfiguration loggerConfiguration, LogConfiguration configuration)
-#pragma warning restore CA1822 // Mark members as static
     {
-        // app insights
-        if (configuration.ApplicationInsights is not null)
-        {
-            loggerConfiguration
-                .WriteTo
-                .ApplicationInsights(_serviceProvider.GetRequiredService<TelemetryConfiguration>(), TelemetryConverter.Traces);
-        }
-
-        // seq
-        if (configuration.Seq is not null)
-        {
-            loggerConfiguration
-                .WriteTo
-                .Seq(configuration.Seq.ServerUrl, eventBodyLimitBytes: 1048576);
-        }
-
-        // logovani do souboru
-        if (configuration.File is not null)
-        {
-            var path = Path.Combine(configuration.File.Path, configuration.File.Filename);
-
-#pragma warning disable CA1305 // Specify IFormatProvider
-            loggerConfiguration
-                .WriteTo
-                .Async(a => a.File(path, buffered: true, rollingInterval: RollingInterval.Day, outputTemplate: _fileLoggerTemplate), bufferSize: 1000);
-#pragma warning restore CA1305 // Specify IFormatProvider
-        }
-
-        // logovani do databaze
-        //TODO tohle poradne dodelat nebo uplne vyhodit - moc se mi do DB logovat nechce, ale jestli nebude nic jinyho nez Logman, tak asi nutnost
-        if (!string.IsNullOrEmpty(configuration.Database?.ConnectionString))
-        {
-            MSSqlServerSinkOptions sqlOptions = new()
-            {
-                AutoCreateSqlTable = true,
-                SchemaName = "dbo",
-                TableName = "CisLog"
-            };
-            ColumnOptions sqlColumns = new();
-
-#pragma warning disable CA1305 // Specify IFormatProvider
-            loggerConfiguration
-                .WriteTo
-                .MSSqlServer(
-                    connectionString: configuration.Database.ConnectionString,
-                    sinkOptions: sqlOptions,
-                    columnOptions: sqlColumns
-                );
-#pragma warning restore CA1305 // Specify IFormatProvider
-        }
-        
-        // console output
-        if (configuration.UseConsole)
-        {
-#pragma warning disable CA1305 // Specify IFormatProvider
-            loggerConfiguration
-                .WriteTo
-                .Console();
-#pragma warning restore CA1305 // Specify IFormatProvider
-        }
+        Helpers.AddOutputs(loggerConfiguration, configuration, _serviceProvider.GetService<TelemetryConfiguration>());
     }
 }

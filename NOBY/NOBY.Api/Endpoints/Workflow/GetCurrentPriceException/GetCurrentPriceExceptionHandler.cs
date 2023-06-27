@@ -26,8 +26,8 @@ internal sealed class GetCurrentPriceExceptionHandler
         }
         else
         {
-            var productSAId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
-            var offer = await _offerService.GetMortgageOfferDetail(productSAId, cancellationToken);
+            var productSA = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+            var offer = await _offerService.GetMortgageOfferDetail(productSA.OfferId.GetValueOrDefault(), cancellationToken);
             var process = (await _caseService.GetProcessList(request.CaseId, cancellationToken)).FirstOrDefault(t => t.ProcessTypeId == 1);
             string? taskTypeName = (await _codebookService.WorkflowTaskTypes(cancellationToken)).FirstOrDefault(t => t.Id == 2)?.Name;
             var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
@@ -39,22 +39,22 @@ internal sealed class GetCurrentPriceExceptionHandler
                     ProcessNameLong = process?.ProcessNameLong ?? "",
                     Amendments = new NOBY.Dto.Workflow.AmendmentsPriceException
                     {
-                        Expiration = offer.BasicParameters.GuaranteeDateTo,
+                        Expiration = DateOnly.FromDateTime(offer.BasicParameters.GuaranteeDateTo),
                         LoanInterestRate = new()
                         {
-                            LoanInterestRate = offer.SimulationResults.LoanInterestRate?.ToString() ?? "",
-                            LoanInterestRateProvided = offer.SimulationResults.LoanInterestRateProvided?.ToString() ?? "",
+                            LoanInterestRate = offer.SimulationResults.LoanInterestRate,
+                            LoanInterestRateProvided = offer.SimulationResults.LoanInterestRateProvided,
                             LoanInterestRateAnnouncedTypeName = loanInterestRateAnnouncedTypes
                                 .FirstOrDefault(t => t.Id == offer.SimulationResults.LoanInterestRateAnnouncedType)?
                                 .Name ?? string.Empty,
-                            LoanInterestRateDiscount = offer.SimulationInputs.InterestRateDiscount?.ToString() ?? ""
+                            LoanInterestRateDiscount = offer.SimulationInputs.InterestRateDiscount
                         },
                         Fees = offer.AdditionalSimulationResults.Fees?.Select(t => new Dto.Workflow.Fee
                         {
-                            FeeId = t.FeeId.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                            //TariffSum = t.TariffSum,
-                            //FinalSum = t.FinalSum,
-                            //DiscountPercentage = t.DiscountPercentage
+                            FeeName = t.Name.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                            TariffSum = (decimal?)t.TariffSum ?? 0,
+                            FinalSum = (decimal?)t.FinalSum ?? 0,
+                            DiscountPercentage = t.DiscountPercentage
                         })?.ToList()
                     }
                 },

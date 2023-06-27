@@ -23,8 +23,11 @@ import "Messages/DeleteObligation.proto";
 import "Messages/GetObligation.proto";
 import "Messages/DeleteIncome.proto";
 import "Messages/UpdateCustomerDetail.proto";
+import "Messages/GetCustomerChangeMetadata.proto";
 
 service CustomerOnSAService {
+	rpc GetCustomerChangeMetadata (GetCustomerChangeMetadataRequest) returns (GetCustomerChangeMetadataResponse);
+
     // zalozeni noveho customera
 	rpc CreateCustomer (CreateCustomerRequest) returns (CreateCustomerResponse);
 	

@@ -19,7 +19,7 @@ message IdentificationDocument {
 
    string IssuedBy = 6;
 
-   string RegisterPlace = 7;
+   google.protobuf.StringValue RegisterPlace = 7;
 }
 
 message IdentificationDocumentSearch {

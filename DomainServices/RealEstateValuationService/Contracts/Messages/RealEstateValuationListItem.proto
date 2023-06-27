@@ -1,0 +1,26 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Messages/ValuationTypes.proto";
+import "NullableGrpcDate.proto";
+
+message RealEstateValuationListItem {
+    int32 RealEstateValuationId = 1;
+    google.protobuf.Int32Value OrderId = 2;
+    int64 CaseId = 3;
+    int32 RealEstateTypeId = 4;
+    google.protobuf.Int32Value RealEstateSubtypeId = 16;
+    int32 ValuationStateId = 5;
+    bool IsLoanRealEstate = 6;
+    google.protobuf.Int32Value RealEstateStateId = 7;
+    ValuationTypes ValuationTypeId = 8;
+    google.protobuf.StringValue Address = 9;
+    cis.types.NullableGrpcDate ValuationSentDate = 10;
+    google.protobuf.Int32Value ValuationResultCurrentPrice = 11;
+    google.protobuf.Int32Value ValuationResultFuturePrice = 12;
+    bool IsRevaluationRequired = 13;
+    bool DeveloperAllowed = 14;
+    bool DeveloperApplied = 15;
+}

@@ -2,6 +2,8 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+
 message ValidateCaseIdRequest {
 	int64 CaseId =  1;
 	bool ThrowExceptionIfNotFound = 2;
@@ -9,4 +11,5 @@ message ValidateCaseIdRequest {
 
 message ValidateCaseIdResponse {
 	bool Exists = 1;
+	google.protobuf.Int32Value OwnerUserId = 2;
 }

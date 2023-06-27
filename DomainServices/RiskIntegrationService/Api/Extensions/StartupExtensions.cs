@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.StartupExtensions;
+﻿using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.StartupExtensions;
 using DomainServices.RiskIntegrationService.ExternalServices;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
@@ -32,6 +33,9 @@ internal static class StartupExtensions
 
         // MVC
         builder.Services.AddControllers();
+
+        var validationMessages = ErrorCodeMapper.Init();
+        builder.Services.AddFluentValidationErrorHandling(validationMessages);
 
         // register c4m clients
         builder.AddExternalService<ExternalServices.CreditWorthiness.V3.ICreditWorthinessClient>();

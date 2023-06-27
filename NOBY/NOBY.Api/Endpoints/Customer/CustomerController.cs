@@ -15,6 +15,7 @@ public class CustomerController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
@@ -36,6 +37,7 @@ public class CustomerController : ControllerBase
     /// </remarks>
     /// <returns>Seznam nalezených klientů. BE služba není stránkovatelná, takže stránkovaní je jen jako fake na FE.</returns>
     [HttpPost("customer/search")]
+    [NobyAuthorize(UserPermissions.CLIENT_SearchPerson)]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "Klient" })]
@@ -83,6 +85,7 @@ public class CustomerController : ControllerBase
     /// V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
     /// </remarks>
     [HttpPost("customer/identify")]
+    [NobyAuthorize(UserPermissions.CLIENT_IdentifyPerson)]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
@@ -92,6 +95,21 @@ public class CustomerController : ControllerBase
     public async Task<SearchCustomers.Dto.CustomerInList> Identify([FromBody] Identify.IdentifyRequest request)
         => await _mediator.Send(request);
 
+    /// <summary>
+    /// Validace emailu či telefonního čísla
+    /// </summary>
+    /// <remarks>
+    /// Validace kontatů (email či telefon) pomocí <i>DS:</i> CustomerService/validateContacts. Pro telefonní čísla vrací i informaci, zda se jedná o mobilní číslo.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("contact/validate")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [SwaggerOperation(Tags = new[] { "Klient" })]
+    [ProducesResponseType(typeof(ValidateContact.ValidateContactResponse), StatusCodes.Status200OK)]
+    public async Task<ValidateContact.ValidateContactResponse> ValidateContact([FromBody] ValidateContact.ValidateContactRequest request)
+        => await _mediator.Send(request);
+    
     /// <summary>
     /// Profile check s profilem identifikovaný
     /// </summary>
@@ -130,6 +148,7 @@ public class CustomerController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BB5766C4-CCC7-487e-B482-1B1C86D999F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("customer-on-sa/{customerOnSAId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(StatusCodes.Status200OK)]

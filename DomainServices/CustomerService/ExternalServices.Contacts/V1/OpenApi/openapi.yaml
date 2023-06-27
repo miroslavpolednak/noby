@@ -1,0 +1,878 @@
+openapi: 3.0.1
+info:
+  description: 'Contact service, contains operations for customers contact maintenance'
+  title: ContactService.v1
+  version: 1.8.2
+servers:
+  - url: https://cm-be-v1.dev.custmng.kbcloud/api
+    description: DEV environment
+  - url: https://cm-be-v1.fat.custmng.kbcloud/api
+    description: SIT environment
+  - url: https://cm-be-v1.stage.custmng.kbcloud/api
+    description: STAGE environment
+  - url: https://cm-be-v1.edu.custmng.kbcloud/api
+    description: EDU environment
+  - url: https://cm-be-v1.prod.custmng.kbcloud/api
+    description: Production environment
+paths:
+  /public/v1/customers/{customerId}/contacts:
+    get:
+      operationId: getCustomerContacts
+      tags:
+        - ContactService.v1
+      summary: getCustomerContacts
+      description: "Operation returns customers contacts."
+      parameters:
+        - name: customerId
+          in: path
+          description: Identifier of the customer whose contacts will be returned (KBID - identifier of customer in Customer Management system)
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 123
+        - name: contactTypeCode
+          in: query
+          description: Contact type code is used for filtering output contacts. Values are defined in CSC codebook CM_CON_TYP
+          required: false
+          schema:
+            type: array
+            items :
+              format: int64
+              type: integer
+          example: 5
+        - name: onlyMobile
+          in: query
+          description: flag for filtering mobile phones
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+          description: List of customer contacts
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+    put:
+      summary: setContact
+      tags:
+        - ContactService.v1
+      operationId: setContact
+      description: Operation sets customers contact (according contact method).
+      parameters:
+        - name: customerId
+          in: path
+          description: Identifier of the customer whose contacts will be set (KBID - identifier of customer in Customer Management system)
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 123
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Party-Identity-In-Service'
+        - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      requestBody:
+        $ref: '#/components/requestBodies/Contact'
+      responses:
+        "204":
+          description: Contact created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+  /public/v1/customers/{customerId}/primary-phone:
+    get:
+      operationId: getPrimaryPhone
+      tags:
+        - ContactService.v1
+      summary: getPrimaryPhone
+      description: "Operation returns customers primary phone."
+      parameters:
+        - name: customerId
+          in: path
+          description: Identifier of the customer whose primary phone number will be returned (KBID - identifier of customer in Customer Management system)
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 123
+        - name: getAllPrimaryPhones
+          in: query
+          description: Flag indicating whether all available types of primary phone should be returned. In order 5,1,3
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrimaryPhoneGetData'
+          description: List of customer contacts
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+    put:
+      operationId: setPrimaryPhone
+      tags:
+        - ContactService.v1
+      summary: setPrimaryPhone
+      description: "Operation sets customers primary phone."
+      parameters:
+        - name: customerId
+          in: path
+          description: Identifier of the customer whose primary phone will be set (KBID - identifier of customer in Customer Management system)
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 123
+        - name: handOverToSubsidiary
+          in: query
+          description: Flag indicating whether contact should be handed over to subsidiaries
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: false
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Party-Identity-In-Service'
+        - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      requestBody:
+        $ref: '#/components/requestBodies/PrimaryPhone'
+      responses:
+        "204":
+          description: Primary phone created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+  /public/v1/customers/{customerId}/primary-email:
+    get:
+      operationId: getPrimaryEmail
+      tags:
+        - ContactService.v1
+      summary: getPrimaryEmail
+      description: "Operation returns customers primary email."
+      parameters:
+        - name: customerId
+          in: path
+          description: Identifier of the customer whose primary email address will be returned (KBID - identifier of customer in Customer Management system)
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 123
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrimaryEmail'
+          description: List of customer contacts
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+    put:
+      operationId: setPrimaryEmail
+      tags:
+        - ContactService.v1
+      summary: setPrimaryEmail
+      description: "Operation sets customers primary email."
+      parameters:
+        - name: customerId
+          in: path
+          description: Identifier of the customer whose primary email will be set (KBID - identifier of customer in Customer Management system)
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 123
+        - name: handOverToSubsidiary
+          in: query
+          description: Flag indicating whether contact should be handed over to subsidiaries
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: false
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Party-Identity-In-Service'
+        - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      requestBody:
+        $ref: '#/components/requestBodies/PrimaryEmail'
+      responses:
+        "204":
+          description: Primary email created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+  /public/v1/phone-idc-country-codes:
+    get:
+      operationId: getPhoneIdcCountries
+      tags:
+        - ContactService.v1
+      summary: getPhoneIdcCountries
+      description: Returns code book phone international destination code mapped to country codes
+      parameters:
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/PhoneIdcCountry'
+          description: List of customer contacts
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+  /public/v1/customers/{customerId}/non-personalized-doc-email:
+    get:
+      operationId: getNonPersonalizedDocEmail
+      tags:
+        - ContactService.v1
+      summary: getNonPersonalizedDocEmail
+      description: "Operation returns customers email for non-personalized documentation."
+      parameters:
+        - name: customerId
+          in: path
+          description: Identifier of the customer whose email for non-personalized documentation will be returned (KBID - identifier of customer in Customer Management system)
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 123
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Email'
+          description: Email for non-personalized documentation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+  /public/v1/contacts/validate-phone:
+    post:
+      operationId: validatePhone
+      tags:
+        - ContactService.v1
+      summary: validatePhone
+      description: "Operation validates customers phone."
+      parameters:
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      requestBody:
+        $ref: '#/components/requestBodies/Phone'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateContactResponse'
+          description: Phone validation response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+  /public/v1/contacts/validate-email:
+    post:
+      operationId: validateEmail
+      tags:
+        - ContactService.v1
+      summary: validateEmail
+      description: "Operation validates customers email."
+      parameters:
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-KB-Caller-System-Identity'
+      requestBody:
+        $ref: '#/components/requestBodies/Email'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateContactResponse'
+          description: Email validation response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation error - mostly invalid data in request is provided provided
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Authentication information is missing or is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: You are not authorized to run this operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Resource not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected error occured
+components:
+  requestBodies:
+    Contact:
+      description: Contact to set
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ContactBase'
+    PrimaryPhone:
+      description: Primary phone to set
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PrimaryPhone'
+    PrimaryEmail:
+      description: Primary email to set
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PrimaryEmail'
+    Phone:
+      description: Phone for validation
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Phone'
+    Email:
+      description: Email for validation
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Email'
+  schemas:
+    ContactBase:
+      description: Customer contact - email, phone, web, fax
+      properties:
+        contactMethodCode:
+          format: int64
+          type: integer
+          description: Contact method code
+          example:
+            5
+        contactValue:
+          type: string
+          description: Contact value - phone number, email address, fax number, web page url
+          maxLength: 254
+          example:
+            +420 732650192
+      required:
+        - contactMethodCode
+        - contactValue
+    Contact:
+      allOf:
+        - type : object
+          description: Customer contact - email, phone, web, fax
+          properties:
+            contactId:
+              format: int64
+              type: integer
+              description: primary key of stored contact
+              example:
+                123123132
+          required:
+            - contactId
+        - $ref: '#/components/schemas/ContactBase'
+    Phone:
+      description: Customer phone
+      properties:
+        phoneNumber:
+          type: string
+          description: Phone number with international destination country code like +420
+          maxLength: 19
+          example:
+            +420 777569933
+      required:
+        - phoneNumber
+      type: object
+    PrimaryPhone:
+      allOf:
+        - type : object
+          description: Customer primary phone
+          properties:
+            confirmed:
+              type: boolean
+              description: Flag indicating that phone is confirmed by client
+              example:
+                true
+          required:
+            - confirmed
+        - $ref: '#/components/schemas/Phone'
+    PrimaryPhoneGetData:
+      allOf:
+        - type: object
+          description: Customer primary phone
+          properties:
+            isMobile:
+              type: boolean
+              description: Flag whether it is a mobile phone. Flag is determined only for czech and slovak phone numbers
+              example:
+                true
+            componentPhone:
+              $ref: '#/components/schemas/ComponentPhone'
+          required:
+            - isMobile
+        - $ref: '#/components/schemas/PrimaryPhone'
+    ComponentPhone:
+      type: object
+      description: Phone splited to international destination code and national part of number
+      properties:
+          phoneIDC:
+            type: string
+            pattern: ^[+]{1}[1-9]{1}[0-9]{0,3}$
+            description: Phone international destination code, i.e. +420, +1 etc.
+            maxLength: 5
+            example: '+420'
+          phoneNumber:
+            type: string
+            pattern: ^[0-9]{1,13}$
+            description: Local part of phone number, including national destination code i.e. 777112233.
+            maxLength: 13
+            example: 777569933
+      required:
+        - phoneNumber
+    Email:
+      description: Customer email
+      properties:
+        emailAddress:
+          type: string
+          description: Email
+          maxLength: 254
+          example:
+            jefim_xaver_vyskocil@seznam.cz
+      required:
+        - emailAddress
+      type: object
+    PrimaryEmail:
+      allOf:
+        - type : object
+          description: Customer primary email
+          properties:
+            confirmed:
+              type: boolean
+              description: Flag indicating that email is confirmed by client
+              example:
+                true
+          required:
+            - confirmed
+        - $ref: '#/components/schemas/Email'
+    PhoneIdcCountry:
+      type: object
+      required:
+        - code
+        - name
+        - nameEnglish
+        - phoneIDC
+        - phoneNumberMaxLength
+      properties:
+        code:
+          type: string
+          description: ISO contry code - two characters, i.e. CZ, SK
+          maxLength: 2
+        name:
+          type: string
+          description: Country name
+          maxLength: 120
+        nameEnglish:
+          type: string
+          description: Country name in english language
+          maxLength: 120
+        shortName:
+          type: string
+          description: Country short name
+          maxLength: 120
+        shortNameEnglish:
+          type: string
+          description: Country short name in english language
+          maxLength: 120
+        phoneIDC:
+          type: string
+          description: Phone international destination code
+          pattern: ^[+]{1}[1-9]{1}[0-9]{0,2}$
+          maxLength: 4
+          minLength: 1
+        phoneNumberMaxLength:
+          type: integer
+          description: Maximal length of phone number minus phone idc length
+          maxLength: 2
+          minLength: 1
+        isPriority:
+          type: boolean
+          description: Indication whether the country should be listed in the priority country list during selection
+      example:
+        code: CZ
+        name: Česká republika
+        nameEnglish: Czech republic
+        phoneIDC: '+420'
+        phoneNumberMaxLength: 9
+      description: Code book of phone international destination codes mapped to country
+    ValidateContactResponse:
+      description: Validation result with list of issues
+      properties:
+        validationResult:
+          type: string
+          description: Validation result
+          enum:
+            - VALID
+            - ERROR
+          example:
+            VALID
+        additionalContactInformations:
+          $ref: '#/components/schemas/AdditionalContactInformations'
+        validationIssueCodes:
+          type: array
+          description: List of validation issue codes
+          items:
+            type: string
+          example:
+            - PHONE_1
+            - EMAIL_1
+      required:
+        - validationResult
+      type: object
+    AdditionalContactInformations:
+      description: Additional informations about the validated contact
+      type: object
+      properties:
+        isMobile:
+          type: boolean
+          example: true
+          description: Flag whether it is a mobile phone. If the flag is blank, we have not been able to determine with certainty whether it is a mobile phone number.
+    Error:
+      type: object
+      properties:
+        httpStatusCode:
+          type: integer
+          description: Http status code
+        category:
+          type: integer
+          description: Error category
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        uuid:
+          type: string
+          description: Error uuid
+        detail:
+          description: Error detail
+      required:
+        - httpStatusCode
+        - category
+        - code
+        - message
+        - uuid
+  parameters:
+    X-KB-Caller-System-Identity:
+      name: X-KB-Caller-System-Identity
+      description: "[Caller system](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-CallerSystemIdentity)"
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "{\"app\":\"CM\",\"appComp\":\"cm-dch-prs-consumer\"}"
+    X-KB-Orig-System-Identity:
+      name: X-KB-Orig-System-Identity
+      description: "[System that as a first triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-OrigSystemIdentity)"
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "{\"app\":\"CM\",\"appComp\":\"CM_FE.INT\"}"
+    X-KB-Party-Identity-In-Service:
+      name: X-KB-Party-Identity-In-Service
+      description: "[Human user identity that triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-PartyIdentityInService)"
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "{\"partyIdIS\":[{\"partyId\":{\"id\":\"A09FK3\",\"idScheme\":{\"code\":\"KBUID\"}},\"usg\":\"BA\"},{\"partyId\":{\"id\":\"JMARKOVA\",\"idScheme\":{\"code\":\"KBAD\"}},\"usg\":\"BA\"}]}"
+    X-B3-TraceId:
+      name: X-B3-TraceId
+      description: "[Trace Id](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-TraceId)"
+      in: header
+      required: true
+      schema:
+        type: string
+        example: 614b21fe65a3e6cbf8507e2a3d304691

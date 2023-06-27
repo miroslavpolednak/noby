@@ -15,63 +15,70 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region register builder.Services
-builder.Services.AddAttributedServices(typeof(Program));
+var log = builder.CreateStartupLogger();
 
-// globalni nastaveni prostredi
-builder
-    .AddCisCoreFeatures()
-    .AddCisEnvironmentConfiguration();
+try { 
+    #region register builder.Services
+    builder.Services.AddAttributedServices(typeof(Program));
 
-// logging 
-builder
-    .AddCisLogging()
-    .AddCisTracing()
-    // authentication
-    .AddCisServiceAuthentication()
-    // add self
-    .AddCodebookService()
-    // add BE services
-    .Services
-        // add CIS services
-        .AddCisServiceDiscovery()
-        // add swagger
-        .AddCodebookServiceSwagger()
-        // add grpc infrastructure
-        .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
-        .AddGrpcReflection()
-        .AddGrpc(options =>
-        {
-            options.Interceptors.Add<GenericServerExceptionInterceptor>();
-        })
-        .AddJsonTranscoding();
+    // globalni nastaveni prostredi
+    builder
+        .AddCisCoreFeatures()
+        .AddCisEnvironmentConfiguration();
 
-// add HC
-builder.AddCisGrpcHealthChecks();
-#endregion register builder.Services
+    // logging 
+    builder
+        .AddCisLogging()
+        .AddCisTracing()
+        // authentication
+        .AddCisServiceAuthentication()
+        // add self
+        .AddCodebookService()
+        // add BE services
+        .Services
+            // add CIS services
+            .AddCisServiceDiscovery()
+            // add swagger
+            .AddCodebookServiceSwagger()
+            // add grpc infrastructure
+            .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+            .AddGrpcReflection()
+            .AddGrpc(options =>
+            {
+                options.Interceptors.Add<GenericServerExceptionInterceptor>();
+            })
+            .AddJsonTranscoding();
 
-// kestrel configuration
-builder.UseKestrelWithCustomConfiguration();
+    // add HC
+    builder.AddCisGrpcHealthChecks();
+    #endregion register builder.Services
 
-// BUILD APP
-if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-var app = builder.Build();
+    // kestrel configuration
+    builder.UseKestrelWithCustomConfiguration();
 
-app.UseServiceDiscovery();
-app.UseRouting();
+    // BUILD APP
+    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
+    var app = builder.Build();
+    log.ApplicationBuilt();
 
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCisServiceUserContext();
+    app.UseServiceDiscovery();
+    app.UseRouting();
 
-app.MapCisGrpcHealthChecks();
-app.MapGrpcReflectionService();
-app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.CodebookService>();
-app.UseCodebookServiceSwagger();
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseCisServiceUserContext();
 
-try
-{
+    app.MapCisGrpcHealthChecks();
+    app.MapGrpcReflectionService();
+    app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.CodebookService>();
+    app.UseCodebookServiceSwagger();
+
+    log.ApplicationRun();
     app.Run();
+}
+catch (Exception ex)
+{
+    log.CatchedException(ex);
 }
 finally
 {

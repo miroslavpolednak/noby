@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DomainServices.UserService.Clients.Authorization;
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 namespace NOBY.Infrastructure.Security;
 
-public class AppSecurityMiddleware
+public class NobySecurityMiddleware
 {
     private readonly RequestDelegate _next;
 
-    public AppSecurityMiddleware(RequestDelegate next) =>
+    public NobySecurityMiddleware(RequestDelegate next) =>
         _next = next;
 
     public async Task Invoke(
@@ -28,8 +29,10 @@ public class AppSecurityMiddleware
             if (context.User?.Identity is null || !context.User.Identity.IsAuthenticated)
                 throw new System.Security.Authentication.AuthenticationException("User Identity not found in HttpContext");
 
+            var claimsIdentity = context.User.Identity as ClaimsIdentity;
+
             // zjistit login uzivatele
-            var userIdClaimValue = (context.User.Identity as ClaimsIdentity)?
+            var userIdClaimValue = claimsIdentity?
                 .Claims
                 .FirstOrDefault(t => t.Type == CIS.Core.Security.SecurityConstants.ClaimTypeId)?
                 .Value;
@@ -38,10 +41,19 @@ public class AppSecurityMiddleware
                 throw new System.Security.Authentication.AuthenticationException("User login is empty");
 
             // ziskat instanci uzivatele z xxv
-            var result = await userService.GetUser(userId);
+            var permissions = await userService.GetUserPermissions(userId);
+
+            // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
+            if (!permissions.Contains((int)UserPermissions.APPLICATION_BasicAccess))
+            {
+                throw new CisAuthorizationException();
+            }
+
+            // doplnit prava uzivatele do claims
+            claimsIdentity!.AddClaims(permissions.Select(t => new Claim(AuthenticationConstants.NobyPermissionClaimType, $"{t}")));
 
             // vlozit FOMS uzivatele do contextu
-            context.User = new NobyUser(context.User.Identity, result);
+            context.User = new NobyUser(context.User.Identity, userId);
         }
 
         await _next.Invoke(context);

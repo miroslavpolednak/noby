@@ -807,11 +807,6 @@
             Login uzivatele
             </summary>
         </member>
-        <member name="P:CIS.Core.Security.ICurrentUser.DisplayName">
-            <summary>
-            Jmeno a prijmeni uzivatele
-            </summary>
-        </member>
         <member name="T:CIS.Core.Security.ICurrentUserAccessor">
             <summary>
             Helper pro ziskani akltuálně přihlášeného fyzickeho uzivatele, ktery aplikaci/sluzbu vola

@@ -42,7 +42,7 @@ internal class EasFormFactory
     private IEasForm CreateProductEasForm(IEnumerable<DynamicFormValues> dynamicFormValues, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes)
     {
         var productData = CreateData<ProductFormData>();
-        productData.MainDynamicFormValues = dynamicFormValues.First(d => d.DocumentTypeId == (int)DocumentType.ZADOSTHU);
+        productData.MainDynamicFormValues = dynamicFormValues.First(d => d.DocumentTypeId == (int)DocumentTypes.ZADOSTHU);
 
         return new EasProductForm(productData, documentTypes);
     }

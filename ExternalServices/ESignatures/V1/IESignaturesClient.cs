@@ -1,5 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
+using static ExternalServices.ESignatures.Dto.DispatchFormClientDocument;
 
 namespace ExternalServices.ESignatures.V1;
 
@@ -8,9 +9,9 @@ public interface IESignaturesClient
 {
     Task<string> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default);
 
-    Task DownloadDocumentPreview(CancellationToken cancellationToken = default);
+    Task DownloadDocumentPreview(string externalId, CancellationToken cancellationToken = default);
 
-    Task SubmitDispatchForm(CancellationToken cancellationToken = default);
+    Task SubmitDispatchForm(bool documentsValid, List<Dto.DispatchFormClientDocument> documents, CancellationToken cancellationToken = default);
 
     const string Version = "V1";
 }

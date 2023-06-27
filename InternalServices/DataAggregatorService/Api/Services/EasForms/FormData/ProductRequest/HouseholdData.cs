@@ -15,6 +15,7 @@ internal class HouseholdData
     private readonly ICustomerOnSAServiceClient _customerOnSaService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerServiceClient _customerService;
+    private readonly ICustomerChangeDataMerger _customerChangeDataMerger;
 
     private Dictionary<long, CustomerDetailResponse> _customers = null!;
     private Dictionary<int, string> _academicDegreesBefore = null!;
@@ -24,11 +25,12 @@ internal class HouseholdData
 
     private int _firstEmploymentTypeId;
 
-    public HouseholdData(ICustomerOnSAServiceClient customerOnSaService, IHouseholdServiceClient householdService, ICustomerServiceClient customerService)
+    public HouseholdData(ICustomerOnSAServiceClient customerOnSaService, IHouseholdServiceClient householdService, ICustomerServiceClient customerService, ICustomerChangeDataMerger customerChangeDataMerger)
     {
         _customerOnSaService = customerOnSaService;
         _householdService = householdService;
         _customerService = customerService;
+        _customerChangeDataMerger = customerChangeDataMerger;
     }
 
     public HouseholdDto HouseholdDto { get; private set; } = null!;
@@ -39,7 +41,7 @@ internal class HouseholdData
 
     public Dictionary<int, Income> Incomes { get; private set; } = null!;
 
-    public IEnumerable<Customer> Customers => GetCustomers();
+    public IEnumerable<Customer> Customers { get; private set; } = Enumerable.Empty<Customer>();
 
     public bool? IsSpouseInDebt { get; set; }
 
@@ -75,6 +77,8 @@ internal class HouseholdData
         var household = Households.FirstOrDefault(h => h.HouseholdId == householdId);
 
         HouseholdDto = household ?? throw new InvalidOperationException($"Requested Household ({householdId}) was not found.");
+
+        Customers = GetCustomers().ToList();
     }
 
     private async Task<List<HouseholdDto>> LoadHouseholds(int salesArrangementId, CancellationToken cancellationToken)
@@ -132,20 +136,27 @@ internal class HouseholdData
 
     private IEnumerable<Customer> GetCustomers()
     {
-        return CustomersOnSa.Where(c => c.CustomerOnSAId == HouseholdDto.CustomerOnSaId1 || c.CustomerOnSAId == HouseholdDto.CustomerOnSaId2)
-                            .OrderBy(c => c.CustomerOnSAId)
-                            .Select(c => new Customer(c, _customers[GetCustomerId(c)])
-                            {
-                                HouseholdNumber = HouseholdDto.Number,
-                                IsPartner = AreCustomersPartners(),
-                                FirstEmploymentTypeId = _firstEmploymentTypeId,
-                                Incomes = Incomes,
-                                AcademicDegreesBefore = _academicDegreesBefore,
-                                GenderCodes = _genders,
-                                ObligationTypes = _obligationTypes,
-                                LegalCapacityTypes = _legalCapacityTypes,
-                                IsSpouseInDebt = IsSpouseInDebt
-                            }).ToList();
+        var customersOnSa = CustomersOnSa.Where(c => c.CustomerOnSAId == HouseholdDto.CustomerOnSaId1 || c.CustomerOnSAId == HouseholdDto.CustomerOnSaId2).OrderBy(c => c.CustomerOnSAId);
+
+        foreach (var customerOnSA in customersOnSa)
+        {
+            var customerDetail = _customers[GetCustomerId(customerOnSA)];
+
+            _customerChangeDataMerger.MergeAll(customerDetail, customerOnSA);
+
+            yield return new Customer(customerOnSA, customerDetail)
+            {
+                HouseholdNumber = HouseholdDto.Number,
+                IsPartner = AreCustomersPartners(),
+                FirstEmploymentTypeId = _firstEmploymentTypeId,
+                Incomes = Incomes,
+                AcademicDegreesBefore = _academicDegreesBefore,
+                GenderCodes = _genders,
+                ObligationTypes = _obligationTypes,
+                LegalCapacityTypes = _legalCapacityTypes,
+                IsSpouseInDebt = IsSpouseInDebt
+            };
+        }
 
         static long GetCustomerId(CustomerOnSA customerOnSa)
         {

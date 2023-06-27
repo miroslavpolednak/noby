@@ -1,6 +1,7 @@
 ﻿using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using System.Globalization;
 
 namespace NOBY.Api.Endpoints.Workflow.CreateTask;
 
@@ -64,22 +65,49 @@ internal sealed class CreateTaskHandler
 
     private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, CancellationToken cancellationToken)
     {
-        var saId = await _salesArrangementService.GetProductSalesArrangementId(request.CaseId, cancellationToken);
-        var saInstance = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
+        var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+        var saInstance = await _salesArrangementService.GetSalesArrangement(saId.SalesArrangementId, cancellationToken);
         if (!saInstance.OfferId.HasValue)
         {
             throw new NobyValidationException($"OfferId is null for SalesArrangementId={saId}");
         }
         var offerInstance = await _offerService.GetMortgageOfferDetail(saInstance.OfferId.Value, cancellationToken);
 
-        request.PriceException.ProductTypeId = offerInstance.SimulationInputs.ProductTypeId;
-        request.PriceException.FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod.GetValueOrDefault();
-        request.PriceException.LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount);
-        request.PriceException.LoanDuration = offerInstance.SimulationResults.LoanDuration;
-        request.PriceException.LoanToValue = Convert.ToInt32(offerInstance.SimulationResults.LoanToValue);
+        request.PriceException = new()
+        {
+            ProductTypeId = offerInstance.SimulationInputs.ProductTypeId,
+            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod.GetValueOrDefault(),
+            LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount),
+            LoanDuration = offerInstance.SimulationResults.LoanDuration,
+            LoanToValue = Convert.ToInt32(offerInstance.SimulationResults.LoanToValue),
+            Expiration = ((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.Now), // nikdo nerekl co delat, pokud datum bude null...
+            LoanInterestRate = new()
+            {
+                LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
+                LoanInterestRateProvided = offerInstance.SimulationResults.LoanInterestRateProvided,
+                LoanInterestRateAnnouncedType = offerInstance.SimulationResults.LoanInterestRateAnnouncedType,
+                LoanInterestRateDiscount = offerInstance.SimulationInputs.InterestRateDiscount
+            }
+        };
+
+        if (offerInstance.AdditionalSimulationResults.Fees is not null)
+        {
+            request.PriceException.Fees.AddRange(offerInstance.AdditionalSimulationResults.Fees.Select(t => new DomainServices.CaseService.Contracts.PriceExceptionFeesItem
+            {
+                FinalSum = (decimal?)t.FinalSum ?? 0,
+                TariffSum = (decimal?)t.TariffSum ?? 0,
+                DiscountPercentage = t.DiscountPercentage,
+                FeeId = t.FeeId.ToString(CultureInfo.InvariantCulture)
+            }));
+        }
+
         if (offerInstance.AdditionalSimulationResults.MarketingActions is not null)
         {
-            request.PriceException.AppliedMarketingActionsCodes.AddRange(offerInstance.AdditionalSimulationResults.MarketingActions.Where(t => t.Applied.GetValueOrDefault() == 1).Select(t => t.Code));
+            request.PriceException.AppliedMarketingActionsCodes.AddRange(
+                offerInstance.AdditionalSimulationResults.MarketingActions
+                    .Where(t => t.Applied.GetValueOrDefault() == 1)
+                    .Select(t => t.Code)
+            );
         }
     }
 

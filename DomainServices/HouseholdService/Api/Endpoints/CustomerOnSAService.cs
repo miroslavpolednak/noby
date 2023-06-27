@@ -8,6 +8,9 @@ namespace DomainServices.HouseholdService.Api.Endpoints;
 internal sealed class CustomerOnSAService
     : Contracts.v1.CustomerOnSAService.CustomerOnSAServiceBase
 {
+    public override async Task<GetCustomerChangeMetadataResponse> GetCustomerChangeMetadata(GetCustomerChangeMetadataRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     public override async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 

@@ -1,0 +1,1 @@
+UPDATE [dbo].[SqlQuery] SET SqlQueryText='SELECT Id, Idc, [Name], IsPriority, CAST(CASE WHEN Id=''CZ+420'' THEN 1 ELSE 0 END as bit) ''IsDefault'', CAST(1 as bit) ''IsValid'' FROM [dbo].[CountryCodePhoneIdc] ORDER BY IsPriority DESC, [Name] ASC' WHERE SqlQueryId='CountryCodePhoneIdc'

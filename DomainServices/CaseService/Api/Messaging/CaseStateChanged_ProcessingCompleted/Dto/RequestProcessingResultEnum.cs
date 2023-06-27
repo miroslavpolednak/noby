@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.mpss.api.starbuild.mortgage.workflow.inputprocessingevents.v1
+namespace cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1
 {
 	using System;
 	using System.Collections.Generic;

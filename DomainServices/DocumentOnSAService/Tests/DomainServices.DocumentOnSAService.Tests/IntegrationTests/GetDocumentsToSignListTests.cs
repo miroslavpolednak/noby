@@ -1,11 +1,14 @@
-﻿using CIS.Testing;
+﻿using CIS.Foms.Enums;
+using CIS.Testing;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
+using System.Runtime.CompilerServices;
 using Xunit;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests;
@@ -36,7 +39,8 @@ public class GetDocumentsToSignListTests : IntegrationTestBase
         using var scope = Fixture.Services.CreateScope();
         using var dbContext = scope.ServiceProvider.GetRequiredService<DocumentOnSAServiceDbContext>();
 
-        dbContext.DocumentOnSa.AddRange(docOnSaEntity, CreateDocOnSaEntity(householdId: 2));
+        // signatureTypeId: 3 => Electronic 
+        dbContext.DocumentOnSa.AddRange(docOnSaEntity, CreateDocOnSaEntity(householdId: 2, signatureTypeId: 3));
         await dbContext.SaveChangesAsync();
 
         var client = CreateGrpcClient();
@@ -46,7 +50,11 @@ public class GetDocumentsToSignListTests : IntegrationTestBase
         response.DocumentsOnSAToSign.Any(r => string.IsNullOrWhiteSpace(r.FormId)).Should().BeTrue();
         // Real
         response.DocumentsOnSAToSign.Where(r => !string.IsNullOrWhiteSpace(r.FormId)).Should().HaveCount(2);
-
+        // Check if Electronic docOnSa update correctly
+        response.DocumentsOnSAToSign.First(r => r.SignatureTypeId == (int)SignatureTypes.Electronic).IsSigned.Should().BeTrue();
+        var eDocOnSaSignature = await dbContext.DocumentOnSa.FirstAsync(r => r.SignatureTypeId == (int)SignatureTypes.Electronic);
+        await dbContext.Entry(eDocOnSaSignature).ReloadAsync();
+        eDocOnSaSignature.IsSigned.Should().BeTrue();
         // Simulate only entity (household with DoOnSa) 
         HouseholdServiceClient.GetHouseholdList(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(new List<Household>
         {

@@ -92,12 +92,12 @@ internal sealed class CodebookService
     public override Task<DocumentFileTypesResponse> DocumentFileTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new DocumentFileTypesResponse()).AddItems(
             FastEnum
-                .GetValues<CIS.Foms.Enums.DocumentFileType>()
+                .GetValues<CIS.Foms.Enums.DocumentFileTypes>()
                 .Select(t => new DocumentFileTypesResponse.Types.DocumentFileTypeItem()
                 {
                     Id = (int)t,
                     DocumenFileType = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
-                    IsPrintingSupported = t == CIS.Foms.Enums.DocumentFileType.PdfA || t == CIS.Foms.Enums.DocumentFileType.OpenForm
+                    IsPrintingSupported = t == CIS.Foms.Enums.DocumentFileTypes.PdfA || t == CIS.Foms.Enums.DocumentFileTypes.OpenForm
                 })
             )
         );
@@ -108,7 +108,7 @@ internal sealed class CodebookService
     public override Task<DocumentTemplateTypesResponse> DocumentTemplateTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new DocumentTemplateTypesResponse()).AddItems(
             FastEnum
-                .GetValues<CIS.Foms.Enums.DocumentFileType>()
+                .GetValues<CIS.Foms.Enums.DocumentFileTypes>()
                 .Select(t => new DocumentTemplateTypesResponse.Types.DocumentTemplateTypeItem()
                 {
                     Id = (int)t,
@@ -498,6 +498,12 @@ internal sealed class CodebookService
         });
 
     public override Task<GenericCodebookResponse> RealEstatePurchaseTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetGenericItems();
+
+    public override Task<GenericCodebookResponse> RealEstateStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetGenericItems();
+
+    public override Task<GenericCodebookResponse> RealEstateSubtypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> RealEstateTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)

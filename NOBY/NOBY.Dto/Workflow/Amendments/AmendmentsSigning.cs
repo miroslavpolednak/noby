@@ -24,6 +24,7 @@ public class AmendmentsSigning
     /// </summary>
     /// <example>24.12.2023</example>
     [Required]
+    [MinLength(1)]
     public DateOnly Expiration { get; set; }
 
 
@@ -34,6 +35,15 @@ public class AmendmentsSigning
     [Required]
     public string DocumentForSigning { get; set; } = null!;
 
+    /// <summary>
+    /// Podepisování: Typ dokumentu k podpisu. D pro úvěrovou smlouvu, A pro zástavní smlouvu.
+    /// </summary>
+    /// <example>A</example>
+    [Required]
+    [MinLength(1)]
+    [MaxLength(1)]
+    public string DocumentForSigningType { get; set; } = null!;
+    
     /// <summary>
     /// Podepisování: ID dokumentu návrhu na vklad
     /// </summary>

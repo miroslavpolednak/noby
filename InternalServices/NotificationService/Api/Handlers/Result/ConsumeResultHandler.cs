@@ -1,8 +1,8 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Handlers.Result.Requests;
-using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
+using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using DomainServices.CodebookService.Clients;
@@ -15,7 +15,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
     private readonly IServiceProvider _provider;
     private readonly IDateTime _dateTime;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly SmsAuditLogger _auditLogger;
+    private readonly ISmsAuditLogger _auditLogger;
     private readonly ILogger<ConsumeResultHandler> _logger;
 
     private static readonly Dictionary<string, NotificationState> _map = new()
@@ -30,7 +30,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
         IServiceProvider provider,
         IDateTime dateTime,
         ICodebookServiceClient codebookService,
-        SmsAuditLogger auditLogger,
+        ISmsAuditLogger auditLogger,
         ILogger<ConsumeResultHandler> logger)
     {
         _provider = provider;
@@ -52,7 +52,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
         try
         {
             await using var scope = _provider.CreateAsyncScope();
-            var repository = scope.ServiceProvider.GetRequiredService<NotificationRepository>();
+            var repository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
             var result = await repository.GetResult(id, cancellationToken);
             result.ResultTimestamp = _dateTime.Now;
             result.State = _map[report.state];

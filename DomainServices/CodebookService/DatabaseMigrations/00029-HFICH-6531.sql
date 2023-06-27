@@ -1,0 +1,14 @@
+UPDATE [dbo].[SqlQuery] SET SqlQueryText='SELECT 
+	DEVELOPER_PROJEKT_ID ''Id'', 
+	DEVELOPER_ID ''DeveloperId'', 
+	PROJEKT ''Name'', 
+	UPOZORNENI_PRO_KB ''WarningForKb'', 
+	UPOZORNENI_PRO_MPSS ''WarningForMp'', 
+	STRANKY_PROJEKTU ''Web'', 
+	LOKALITA ''Place'', 
+	CASE WHEN HROMADNE_OCENENI=-1 THEN ''Probíhá zpracování'' WHEN HROMADNE_OCENENI=0 THEN ''NE'' ELSE ''ANO'' END ''MassEvaluationText'', 
+	DOPORUCENI ''Recommandation'', 
+	CAST(HROMADNE_OCENENI as int) ''MassValuation'',
+	CAST(CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], ''9999-12-31'') THEN 1 ELSE 0 END as bit) ''IsValid'' 
+FROM [SBR].[CIS_DEVELOPER_PROJEKTY_SPV]
+WHERE DEVELOPER_PROJEKT_ID=@DeveloperProjectId AND DEVELOPER_ID=@DeveloperId' WHERE SqlQueryId='GetDeveloperProject'

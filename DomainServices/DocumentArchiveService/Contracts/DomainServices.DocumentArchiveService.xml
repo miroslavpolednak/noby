@@ -134,6 +134,9 @@
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest.StatusesInQueueFieldNumber">
             <summary>Field number for the "StatusesInQueue" field.</summary>
         </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest.WithContentFieldNumber">
+            <summary>Field number for the "WithContent" field.</summary>
+        </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest.EArchivIdFieldNumber">
             <summary>Field number for the "EArchivId" field.</summary>
         </member>
@@ -695,6 +698,30 @@
         </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.EaCodeMainIdFieldNumber">
             <summary>Field number for the "EaCodeMainId" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.Description">
+            <summary>
+            Popis dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.CreatedOnFieldNumber">
+            <summary>Field number for the "CreatedOn" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.CreatedOn">
+            <summary>
+            Datum přijetí dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.DocumentDataFieldNumber">
+            <summary>Field number for the "DocumentData" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.DocumentData">
+            <summary>
+            Soubour (pole bajtů) ve formě base64string 
+            </summary>
         </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueReflection">
             <summary>Holder for reflection information generated from SetDocumentStatusInQueue.proto</summary>

@@ -9,7 +9,6 @@ using _HO = DomainServices.HouseholdService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using DomainServices.CustomerService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using System.Threading;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
@@ -24,11 +23,11 @@ internal sealed class CreateMortgageCaseHandler
         // chyba pokud simulace je uz nalinkovana na jiny SA
         if (await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.OfferId, cancellationToken) is not null)
             throw new NobyValidationException($"OfferId {request.OfferId} has been already linked to another contract");
-        
+
         // get default saTypeId from productTypeId
         int salesArrangementTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))
-            .FirstOrDefault(t => t.ProductTypeId == offerInstance.SimulationInputs.ProductTypeId)
-            ?.Id ?? throw new NobyValidationException($"Default SalesArrangementTypeId for ProductTypeId {offerInstance.SimulationInputs.ProductTypeId} not found");
+            .First(t => t.SalesArrangementCategory == 1)
+            .Id;
 
         // vytvorit case
         _logger.SharedCreateCaseStarted(offerInstance.OfferId);

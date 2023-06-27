@@ -8,8 +8,8 @@ public partial class GetSalesArrangementRequest
     : MediatR.IRequest<SalesArrangement>, CIS.Core.Validation.IValidatableRequest
 { }
 
-public partial class GetProductSalesArrangementIdRequest
-    : MediatR.IRequest<GetProductSalesArrangementIdResponse>
+public partial class GetProductSalesArrangementRequest
+    : MediatR.IRequest<GetProductSalesArrangementResponse>
 { }
 
 public partial class GetSalesArrangementByOfferIdRequest
