@@ -69,6 +69,7 @@ public class StartSigningTest : IntegrationTestBase
         response.DocumentOnSa.EArchivId.Should().Be(eArchiveId);
         response.DocumentOnSa.FormId.Should().Be("N00000000000101");
         response.DocumentOnSa.IsValid.Should().BeTrue();
+        response.DocumentOnSa.SignatureTypeId.Should().Be((int)SignatureTypes.Paper);
 
         using var scope = Fixture.Services.CreateScope();
         using var dbContext = scope.ServiceProvider.GetRequiredService<DocumentOnSAServiceDbContext>();

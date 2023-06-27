@@ -9,7 +9,7 @@ public static class PhoneNumberExtensions
     public static Phone? ParsePhone(this string value)
     {
         var normalizedPhoneNumber = value.NormalizePhoneNumber();
-        var regex = new Regex(@"^\+(?<CountryCode>\d{1,3})(?<NationalDestinationCode>\d{2,3})(?<SubscriberNumber>\d{4,})$");
+        var regex = new Regex(@"^\+(?<CountryCode>\d{1,3})(?<NationalDestinationCode>\d{2,3})(?<SubscriberNumber>\d{4,9})$");
         var match = regex.Match(normalizedPhoneNumber);
 
         if (!match.Success)

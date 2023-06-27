@@ -3,6 +3,7 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
+using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
@@ -27,6 +28,7 @@ internal sealed class SendToCmpHandler
     private readonly ICustomerOnSAServiceClient _customerOnSaService;
     private readonly IProductServiceClient _productService;
     private readonly ICustomerServiceClient _customerService;
+    private readonly IDocumentOnSAServiceClient _documentOnSAService;
 
     public SendToCmpHandler(
         DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
@@ -34,7 +36,8 @@ internal sealed class SendToCmpHandler
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSaService,
         IProductServiceClient productService,
-        ICustomerServiceClient customerService)
+        ICustomerServiceClient customerService,
+        IDocumentOnSAServiceClient documentOnSAService)
     {
         _codebookService = codebookService;
         _caseService = caseService;
@@ -42,6 +45,7 @@ internal sealed class SendToCmpHandler
         _customerOnSaService = customerOnSaService;
         _productService = productService;
         _customerService = customerService;
+        _documentOnSAService = documentOnSAService;
     }
 
     public async Task Handle(SendToCmpRequest request, CancellationToken cancellationToken)
@@ -75,6 +79,8 @@ internal sealed class SendToCmpHandler
 
             await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
 
+            await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
+
             // odeslat do SB
             await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
 
@@ -83,15 +89,25 @@ internal sealed class SendToCmpHandler
         }
         else
         {
+            await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
+
             // odeslat do SB
             await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
         }
     }
 
+    private async Task ArchiveElectronicDocumets(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var digitallySignedDocuments = (await _documentOnSAService.GetDocumentsOnSAList(salesArrangementId, cancellationToken))
+                                       .DocumentsOnSA.Where(d => d.IsSigned && d.SignatureTypeId == (int)SignatureTypes.Electronic);
+        
+        await Task.WhenAll(digitallySignedDocuments.Select(doc => _documentOnSAService.SetDocumentOnSAArchived(doc.DocumentOnSAId!.Value, cancellationToken)));
+    }
+
     private async Task validateFlowSwitches(int salesArrangementId, int salesArrangementCategory, CancellationToken cancellationToken)
     {
         var flowSwitches = await _salesArrangementService.GetFlowSwitches(salesArrangementId, cancellationToken);
-        
+
         // HFICH-3630
         if (salesArrangementCategory == 1 && !isSet(FlowSwitches.IsOfferGuaranteed))
         {
@@ -180,7 +196,7 @@ internal sealed class SendToCmpHandler
             }
         }
         catch (CisNotFoundException)
-        { 
+        {
             await CreateCustomerMp(customerOnSa.IdentityMp, customerOnSa.IdentityKb, cancellationToken);
         }
     }

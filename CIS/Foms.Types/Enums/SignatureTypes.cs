@@ -12,7 +12,7 @@ public enum SignatureTypes : byte
     Unknown = 0,
     
     [EnumMember]
-    [Display(Name = "Papírově")]
+    [Display(Name = "Fyzicky")]
     Paper = 1,
         
     [EnumMember]
