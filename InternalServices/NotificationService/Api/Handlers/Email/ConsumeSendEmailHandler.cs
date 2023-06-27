@@ -13,22 +13,22 @@ using Entity = CIS.InternalServices.NotificationService.Api.Services.Repositorie
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
 
-public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, SendEmailConsumeResponse>
+public class ConsumeSendEmailHandler : IRequestHandler<ConsumeSendEmailRequest, ConsumeSendEmailResponse>
 {
     private readonly IDateTime _dateTime;
     private readonly INotificationRepository _repository;
     private readonly ISmtpAdapterService _smtpAdapterService;
     private readonly IS3AdapterService _s3AdapterService;
     private readonly S3Buckets _buckets;
-    private readonly ILogger<SendEmailConsumeHandler> _logger;
+    private readonly ILogger<ConsumeSendEmailHandler> _logger;
 
-    public SendEmailConsumeHandler(
+    public ConsumeSendEmailHandler(
         IDateTime dateTime,
         INotificationRepository repository,
         ISmtpAdapterService smtpAdapterService,
         IS3AdapterService s3AdapterService,
         IOptions<AppConfiguration> options,
-        ILogger<SendEmailConsumeHandler> logger)
+        ILogger<ConsumeSendEmailHandler> logger)
     {
         _dateTime = dateTime;
         _repository = repository;
@@ -38,7 +38,7 @@ public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, 
         _buckets = options.Value.S3Buckets;
     }
 
-    private bool TryGetResult(SendEmailConsumeRequest request, CancellationToken cancellationToken, out Entity.Result? result)
+    private bool TryGetResult(ConsumeSendEmailRequest request, CancellationToken cancellationToken, out Entity.Result? result)
     {
         try
         {
@@ -47,11 +47,11 @@ public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, 
         }
         catch (CisNotFoundException e)
         {
-            _logger.LogWarning(e, $"Cannot handle {nameof(SendEmailConsumeRequest)}, because result with id = '{request.Id}' was not found.");
+            _logger.LogWarning(e, $"Cannot handle {nameof(ConsumeSendEmailRequest)}, because result with id = '{request.Id}' was not found.");
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"{nameof(SendEmailConsumeHandler)} failed.");
+            _logger.LogError(e, $"{nameof(ConsumeSendEmailHandler)} failed.");
         }
 
         result = default;
@@ -59,7 +59,7 @@ public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, 
     }
 
     private async Task<List<SmtpAttachment>> GetAttachments(
-        SendEmailConsumeRequest request,
+        ConsumeSendEmailRequest request,
         CancellationToken token)
     {
         var smtpAttachments = new List<SmtpAttachment>();
@@ -73,17 +73,17 @@ public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, 
         return smtpAttachments;
     }
     
-    public async Task<SendEmailConsumeResponse> Handle(SendEmailConsumeRequest request, CancellationToken cancellationToken)
+    public async Task<ConsumeSendEmailResponse> Handle(ConsumeSendEmailRequest request, CancellationToken cancellationToken)
     {
         if (!TryGetResult(request, cancellationToken, out var result) || result is null)
         {
-            return new SendEmailConsumeResponse();
+            return new ConsumeSendEmailResponse();
         }
 
         if (result.State is NotificationState.Sent or NotificationState.Error || result.ResultTimestamp != null)
         {
-            _logger.LogWarning($"{nameof(SendEmailConsumeRequest)} with id = '{result.Id}' was already processed.");
-            return new SendEmailConsumeResponse();
+            _logger.LogWarning($"{nameof(ConsumeSendEmailRequest)} with id = '{result.Id}' was already processed.");
+            return new ConsumeSendEmailResponse();
         }
         
         try
@@ -98,18 +98,18 @@ public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, 
             );
             
             result.State = NotificationState.Sent;
-            _logger.LogDebug($"{nameof(SendEmailConsumeRequest)} was handled. MPSS Email was sent.");
+            _logger.LogDebug($"{nameof(ConsumeSendEmailRequest)} was handled. MPSS Email was sent.");
         }
         catch (Exception e)
         {
             // todo: result.ErrorSet ?
             result.State = NotificationState.Error;
-            _logger.LogError(e, $"{nameof(SendEmailConsumeHandler)} failed.");
+            _logger.LogError(e, $"{nameof(ConsumeSendEmailHandler)} failed.");
         }
 
         result.ResultTimestamp = _dateTime.Now;
         await _repository.SaveChanges(cancellationToken);
 
-        return new SendEmailConsumeResponse();
+        return new ConsumeSendEmailResponse();
     }
 }

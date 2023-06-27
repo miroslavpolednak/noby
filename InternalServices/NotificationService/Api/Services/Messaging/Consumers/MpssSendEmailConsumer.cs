@@ -20,7 +20,7 @@ public class MpssSendEmailConsumer : IConsumer<MpssSendApi.v1.email.SendEmail>
 
         if (Guid.TryParse(sendEmail.id, out var id))
         {
-            var request = new SendEmailConsumeRequest
+            var request = new ConsumeSendEmailRequest
             {
                 Id = id,
                 From = sendEmail.sender.value,

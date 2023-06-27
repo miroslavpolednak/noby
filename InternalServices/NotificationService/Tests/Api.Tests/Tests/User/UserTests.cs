@@ -15,7 +15,7 @@ using CIS.InternalServices.NotificationService.Contracts.Sms;
 using CIS.Testing.Common;
 using Moq;
 
-namespace CIS.InternalServices.NotificationService.Api.Tests;
+namespace CIS.InternalServices.NotificationService.Api.Tests.Tests.User;
 
 public class UserTests
 {
