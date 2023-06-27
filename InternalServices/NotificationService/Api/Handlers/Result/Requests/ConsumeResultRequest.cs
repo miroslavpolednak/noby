@@ -3,7 +3,7 @@ using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Result.Requests;
 
-public class ResultConsumeRequest : IRequest<ResultConsumeResponse>
+public class ConsumeResultRequest : IRequest<ConsumeResultResponse>
 {
     public NotificationReport NotificationReport { get; set; } = null!;
 }

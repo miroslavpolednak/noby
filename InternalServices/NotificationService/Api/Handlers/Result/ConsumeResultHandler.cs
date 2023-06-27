@@ -10,7 +10,7 @@ using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Result;
 
-public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, ResultConsumeResponse>
+public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, ConsumeResultResponse>
 {
     private readonly IServiceProvider _provider;
     private readonly IDateTime _dateTime;
@@ -40,13 +40,13 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
         _logger = logger;
     }
 
-    public async Task<ResultConsumeResponse> Handle(ResultConsumeRequest request, CancellationToken cancellationToken)
+    public async Task<ConsumeResultResponse> Handle(ConsumeResultRequest request, CancellationToken cancellationToken)
     {
         var report = request.NotificationReport;
         if (!Guid.TryParse(report.id, out var id))
         {
             _logger.LogDebug("Skipped for notificationId: {id}", report.id);
-            return new ResultConsumeResponse();
+            return new ConsumeResultResponse();
         }
 
         try
@@ -94,6 +94,6 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
             _logger.LogError(e, "Update result failed for notificationId: {id}", report.id);
         }
 
-        return new ResultConsumeResponse();
+        return new ConsumeResultResponse();
     }
 }

@@ -22,7 +22,7 @@ public static class CodebookExtensions
                     McsCode = "McsCodeA",
                     Description = "DescriptionA",
                     SmsText = string.Empty,
-                    IsAuditLogEnabled = true
+                    IsAuditLogEnabled = false
                 },
                 new()
                 {
@@ -30,7 +30,7 @@ public static class CodebookExtensions
                     McsCode = "McsCodeB",
                     Description = "DescriptionB",
                     SmsText = string.Empty,
-                    IsAuditLogEnabled = false
+                    IsAuditLogEnabled = true
                 },
                 new()
                 {

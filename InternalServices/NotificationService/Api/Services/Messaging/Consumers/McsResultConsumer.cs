@@ -16,7 +16,7 @@ public class McsResultConsumer : IConsumer<NotificationReport>
 
     public async Task Consume(ConsumeContext<NotificationReport> context)
     {
-        var request = new ResultConsumeRequest { NotificationReport = context.Message };
+        var request = new ConsumeResultRequest { NotificationReport = context.Message };
         await _mediator.Send(request);
     }
 }
