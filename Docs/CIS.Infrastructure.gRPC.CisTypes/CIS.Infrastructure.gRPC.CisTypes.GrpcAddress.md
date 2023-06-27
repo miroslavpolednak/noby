@@ -134,6 +134,19 @@ public const int HouseNumberFieldNumber = 3;
 #### Field Value
 [System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
 
+<a name='CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.IsAddressConfirmedFieldNumber'></a>
+
+## GrpcAddress.IsAddressConfirmedFieldNumber Field
+
+Field number for the "IsAddressConfirmed" field.
+
+```csharp
+public const int IsAddressConfirmedFieldNumber = 17;
+```
+
+#### Field Value
+[System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
+
 <a name='CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.IsPrimaryFieldNumber'></a>
 
 ## GrpcAddress.IsPrimaryFieldNumber Field
@@ -181,6 +194,19 @@ Field number for the "PrimaryAddressFrom" field.
 
 ```csharp
 public const int PrimaryAddressFromFieldNumber = 14;
+```
+
+#### Field Value
+[System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
+
+<a name='CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.SingleLineAddressPointFieldNumber'></a>
+
+## GrpcAddress.SingleLineAddressPointFieldNumber Field
+
+Field number for the "SingleLineAddressPoint" field.
+
+```csharp
+public const int SingleLineAddressPointFieldNumber = 16;
 ```
 
 #### Field Value

@@ -16,6 +16,20 @@ public interface IRollbackAction<TRequest>
 `TRequest`
 
 Mediatr Request type
+### Properties
+
+<a name='CIS.Infrastructure.CisMediatR.Rollback.IRollbackAction_TRequest_.OverrideThrownException'></a>
+
+## IRollbackAction<TRequest>.OverrideThrownException Property
+
+Pokud bude nastaveno na True, tak se misto exception, ktera rollback zpusobila, vrati exception z OverrideException()
+
+```csharp
+bool OverrideThrownException { get; }
+```
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
 ### Methods
 
 <a name='CIS.Infrastructure.CisMediatR.Rollback.IRollbackAction_TRequest_.ExecuteRollback(System.Exception,TRequest,System.Threading.CancellationToken)'></a>
@@ -47,3 +61,23 @@ Puvodni Mediatr request
 
 #### Returns
 [System.Threading.Tasks.Task](https://docs.microsoft.com/en-us/dotnet/api/System.Threading.Tasks.Task 'System.Threading.Tasks.Task')
+
+<a name='CIS.Infrastructure.CisMediatR.Rollback.IRollbackAction_TRequest_.OnOverrideException(System.Exception)'></a>
+
+## IRollbackAction<TRequest>.OnOverrideException(Exception) Method
+
+Vytvoreni exception misto puvodni, ktera spustila rollback
+
+```csharp
+System.Exception OnOverrideException(System.Exception exception);
+```
+#### Parameters
+
+<a name='CIS.Infrastructure.CisMediatR.Rollback.IRollbackAction_TRequest_.OnOverrideException(System.Exception).exception'></a>
+
+`exception` [System.Exception](https://docs.microsoft.com/en-us/dotnet/api/System.Exception 'System.Exception')
+
+Puvodni vyjimka
+
+#### Returns
+[System.Exception](https://docs.microsoft.com/en-us/dotnet/api/System.Exception 'System.Exception')

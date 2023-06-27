@@ -44,3 +44,21 @@ Pri ukonceni aplikaci se ujisti, ze vsechny sinky jsou vyprazdnene
 ```csharp
 public static void CloseAndFlush();
 ```
+
+<a name='CIS.Infrastructure.Telemetry.LoggingExtensions.CreateStartupLogger(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder)'></a>
+
+## LoggingExtensions.CreateStartupLogger(this WebApplicationBuilder) Method
+
+Vytvoreni statickeho loggeru pro logovani startupu aplikace.
+
+```csharp
+public static CIS.Infrastructure.Telemetry.IStartupLogger CreateStartupLogger(this Microsoft.AspNetCore.Builder.WebApplicationBuilder builder);
+```
+#### Parameters
+
+<a name='CIS.Infrastructure.Telemetry.LoggingExtensions.CreateStartupLogger(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder).builder'></a>
+
+`builder` [Microsoft.AspNetCore.Builder.WebApplicationBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Builder.WebApplicationBuilder 'Microsoft.AspNetCore.Builder.WebApplicationBuilder')
+
+#### Returns
+[CIS.Infrastructure.Telemetry.IStartupLogger](https://docs.microsoft.com/en-us/dotnet/api/CIS.Infrastructure.Telemetry.IStartupLogger 'CIS.Infrastructure.Telemetry.IStartupLogger')

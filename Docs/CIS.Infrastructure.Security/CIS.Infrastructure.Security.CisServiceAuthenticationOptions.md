@@ -36,16 +36,29 @@ public int AdPort { get; set; }
 #### Property Value
 [System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
 
-<a name='CIS.Infrastructure.Security.CisServiceAuthenticationOptions.DomainUsernamePrefix'></a>
+<a name='CIS.Infrastructure.Security.CisServiceAuthenticationOptions.Domain'></a>
 
-## CisServiceAuthenticationOptions.DomainUsernamePrefix Property
+## CisServiceAuthenticationOptions.Domain Property
 
 Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb\"  
 Pozor, musi byt vcetne \ na konci
 
 ```csharp
-public string? DomainUsernamePrefix { get; set; }
+public string? Domain { get; set; }
 ```
 
 #### Property Value
 [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+<a name='CIS.Infrastructure.Security.CisServiceAuthenticationOptions.IsSsl'></a>
+
+## CisServiceAuthenticationOptions.IsSsl Property
+
+True pokud se jedna o SSL connection
+
+```csharp
+public bool IsSsl { get; set; }
+```
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')

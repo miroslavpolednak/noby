@@ -101,6 +101,19 @@ public string? HouseNumber { get; set; }
 #### Property Value
 [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
 
+<a name='CIS.Foms.Types.Address.IsAddressConfirmed'></a>
+
+## Address.IsAddressConfirmed Property
+
+Zda je adresa ověřená jako kontaktní adresa
+
+```csharp
+public System.Nullable<bool> IsAddressConfirmed { get; set; }
+```
+
+#### Property Value
+[System.Nullable&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')
+
 <a name='CIS.Foms.Types.Address.Postcode'></a>
 
 ## Address.Postcode Property
@@ -122,6 +135,19 @@ Praha obvod
 
 ```csharp
 public string? PragueDistrict { get; set; }
+```
+
+#### Property Value
+[System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+<a name='CIS.Foms.Types.Address.SingleLineAddressPoint'></a>
+
+## Address.SingleLineAddressPoint Property
+
+Adresa v řádkovém formátu
+
+```csharp
+public string? SingleLineAddressPoint { get; set; }
 ```
 
 #### Property Value

@@ -38,16 +38,28 @@ public System.Nullable<int> AdPort { get; set; }
 #### Property Value
 [System.Nullable&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')[System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')
 
-<a name='CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.DomainUsernamePrefix'></a>
+<a name='CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.Domain'></a>
 
-## CisServiceAuthenticationConfiguration.DomainUsernamePrefix Property
+## CisServiceAuthenticationConfiguration.Domain Property
 
-Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb\"  
-Pozor, musi byt vcetne \ na konci
+Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb.cz"
 
 ```csharp
-public string? DomainUsernamePrefix { get; set; }
+public string? Domain { get; set; }
 ```
 
 #### Property Value
 [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+<a name='CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.IsSsl'></a>
+
+## CisServiceAuthenticationConfiguration.IsSsl Property
+
+True pokud se jedna o SSL connection
+
+```csharp
+public bool IsSsl { get; set; }
+```
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
