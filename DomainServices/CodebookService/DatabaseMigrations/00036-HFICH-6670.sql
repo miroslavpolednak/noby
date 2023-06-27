@@ -1,6 +1,8 @@
 CREATE TABLE [dbo].[RealEstateSubtypes](
 	[Id] [int] NOT NULL,
-	[Name] [nvarchar](100) NOT NULL,
+	[Name] [nvarchar](1000) NOT NULL,
+	ShortName nvarchar(100) NOT NULL,
+	RealEstateTypeId int NOT NULL
  CONSTRAINT [PK_RealEstateSubtypes] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -8,6 +10,5 @@ CREATE TABLE [dbo].[RealEstateSubtypes](
 ) ON [PRIMARY]
 GO
 
-INSERT INTO [dbo].[RealEstateSubtypes] (Id, [Name]) VALUES
-	(1, N'Rodinný dům do 6 obytných místností'),
-	(2, N'Rodinný dům od 7 obytných místností');
+INSERT INTO [dbo].[RealEstateSubtypes] (Id, ShortName, [Name], RealEstateTypeId) VALUES
+	(1, N'Rodinný dům do 6 obytných místností', N'Rodinný dům do 6 obytných místností', 1);

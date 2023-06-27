@@ -61,7 +61,7 @@ internal sealed class GetCovenantsHandler
             OrderLetter = t.OrderLetter
         };
     }
-    
+
     private readonly IProductServiceClient _productService;
 
     public GetCovenantsHandler(IProductServiceClient productService)

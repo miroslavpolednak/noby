@@ -94,3 +94,17 @@ static void CheckPermission(this ClaimsPrincipal principal, int permission);
 static void CheckPermission(this ICurrentUserAccessor userAccessor, DomainServices.UserService.Clients.Authorization.UserPermissions permission);
 static void CheckPermission(this ICurrentUserAccessor userAccessor, int permission);
 ```
+
+## Custom autorizačí endpoint atributy
+V namespace `NOBY.Infrastructure.Security.Attributes` jsou custom `IAsyncAuthorizationFilter` atributy, které je možné použít pro standardní autorizace uživatelů.
+
+Jedná se o atributy:
+
+### AuthorizeCaseOwnerAttribute
+Ověření zda je aktuální uživatelem vlastníkem daného *CaseId* (Case.OwnerUserId) nebo má právo na zobrazení všech Cases.  
+*CaseId* je načítáno automaticky z route - v route tedy musí být parametr `caseId`.
+```csharp
+[HttpGet("case/{caseId:long}")]
+[AuthorizeCaseOwner]
+public async Task GetSomething(long caseId) {}
+```

@@ -2,7 +2,7 @@
 
 public sealed class LoanPurposeItem
 {
-    public DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem? LoanPurpose { get; set; }
+    public DomainServices.CodebookService.Contracts.IBaseCodebook? LoanPurpose { get; set; }
 
     /// <summary>
     /// Výše účelu v Kč

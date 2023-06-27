@@ -13,6 +13,7 @@ message CreateTaskRequest {
 	google.protobuf.StringValue TaskRequest = 4;
 	repeated string TaskDocumentsId = 5;
 	int64 CaseId = 6;
+	google.protobuf.Int32Value OrderId = 8;
 
 	optional TaskPriceException PriceException = 7;
 }

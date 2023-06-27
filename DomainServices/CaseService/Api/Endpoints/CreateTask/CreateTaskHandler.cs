@@ -21,6 +21,11 @@ internal sealed class CreateTaskHandler
         if (request.TaskTypeId == 3)
         {
             metadata.Add("ukol_konzultace_oblast", $"{request.TaskSubtypeId}");
+
+            if (request.TaskSubtypeId == 1 || request.TaskSubtypeId == 7)
+            {
+                metadata.Add("ukol_konzultace_order_id", $"{request.OrderId}");
+            }
         }
 
         // ID dokumentu

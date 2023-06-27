@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace NOBY.Infrastructure.Security;
+namespace NOBY.Infrastructure.Security.Attributes;
 
 [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
-public sealed class NobyAuthorizeAttribute 
+public sealed class NobyAuthorizeAttribute
     : TypeFilterAttribute
 {
     public UserPermissions[] RequiredPermissions { get; init; }
