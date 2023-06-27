@@ -414,6 +414,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00028-HFICH-6502_ProductTypeId.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00028-HFICH-6502_ProductTypeId.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00029-HFICH-4098_TaxResidency.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00029-HFICH-4098_TaxResidency.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00030-HFICH-4845_AndOtherBugFixes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00030-HFICH-4845_AndOtherBugFixes.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00031-HFICH-5985_RiskLoanApplication_FirstPart.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00031-HFICH-5985_RiskLoanApplication_FirstPart.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
