@@ -13,4 +13,6 @@ internal class ConfigurationRepositoryFactory
     public DocumentConfigurationRepository CreateDocumentRepository() => new(_dbContext);
 
     public EasFormConfigurationRepository CreateEasFormConfigurationRepository() => new(_dbContext);
+
+    public RiskLoanApplicationConfigurationRepository CreateRiskLoanApplicationRepository() => new(_dbContext);
 }

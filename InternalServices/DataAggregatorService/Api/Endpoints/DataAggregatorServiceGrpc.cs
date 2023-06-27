@@ -17,4 +17,7 @@ internal class DataAggregatorServiceGrpc : Contracts.V1.DataAggregatorService.Da
 
     public override Task<GetEasFormResponse> GetEasForm(GetEasFormRequest request, ServerCallContext context) => 
         _mediator.Send(request, context.CancellationToken);
+
+    public override Task<GetRiskLoanApplicationDataResponse> GetRiskLoanApplicationData(GetRiskLoanApplicationDataRequest request, ServerCallContext context) => 
+        _mediator.Send(request, context.CancellationToken);
 }
