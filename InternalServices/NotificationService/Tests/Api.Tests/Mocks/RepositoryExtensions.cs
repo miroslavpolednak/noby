@@ -110,6 +110,19 @@ public static class RepositoryExtensions
                 It.IsNotIn(Results.Select(result => result.Id)),
                 It.IsAny<CancellationToken>()))
             .ThrowsAsync(new CisNotFoundException(0, "Result not found."));
+
+        mockRepository
+            .Setup(r => r.SearchResultsBy(
+                It.IsAny<string?>(),
+                It.IsAny<string?>(),
+                It.IsAny<string?>(),
+                It.IsAny<string?>()))
+            .Returns((string? identity, string? identityScheme, string? customId, string? documentId) =>
+                Task.FromResult(Results
+                    .Where(r => string.IsNullOrEmpty(identity) || r.Identity == identity)
+                    .Where(r => string.IsNullOrEmpty(identityScheme) || r.IdentityScheme == identityScheme)
+                    .Where(r => string.IsNullOrEmpty(customId) || r.CustomId == customId)
+                    .Where(r => string.IsNullOrEmpty(documentId) || r.DocumentId == documentId)));
         
         mockRepository
             .Setup(r => r.NewSmsResult())

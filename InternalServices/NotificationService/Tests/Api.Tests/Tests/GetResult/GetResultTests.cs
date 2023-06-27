@@ -23,13 +23,12 @@ public class GetResultTests
         _fixture.MockAppConfig();
         _fixture.MockCodebookService();
         _fixture.MockRepository();
+        _fixture.MockUserAdapterService("UsernameA");
     }
 
     [Fact]
     public async Task GetSmsResult()
     {
-        _fixture.MockUserAdapterService("UsernameA");
-        
         var guid = RepositoryExtensions.SmsResultId1;
         var token = CancellationToken.None;
         var request = new GetResultRequest { NotificationId = guid };
@@ -61,8 +60,6 @@ public class GetResultTests
     [Fact]
     public async Task GetEmailResult()
     {
-        _fixture.MockUserAdapterService("UsernameA");
-        
         var guid = RepositoryExtensions.EmailResultId1;
         var token = CancellationToken.None;
         var request = new GetResultRequest { NotificationId = guid };
@@ -92,8 +89,6 @@ public class GetResultTests
     [Fact]
     public async Task GetNotExistingResult()
     {
-        _fixture.MockUserAdapterService("UsernameA");
-        
         var guid = Guid.NewGuid();
         var token = CancellationToken.None;
         var request = new GetResultRequest { NotificationId = guid };
