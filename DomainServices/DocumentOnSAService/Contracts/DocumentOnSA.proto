@@ -27,4 +27,6 @@ message DocumentOnSA {
 
 	google.protobuf.StringValue EArchivId  = 9;
 
+	google.protobuf.Int32Value SignatureTypeId = 10;
+
 }

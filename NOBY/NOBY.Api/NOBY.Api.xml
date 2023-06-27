@@ -1588,11 +1588,11 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSa(System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Vygenerování dokumentu z uložených dat dokumentu na sales arrangementu příp. z archivu
+            Stažení dokumentu k fyzickému podepisování
             </summary>
             <remarks>
-            Pro započaté podepisovací procesy je požadováno zobrazovat náhledy a poskytovat dokumenty ke stažení.<br /> Slouží pro podepisování - neobsahuje vodoznak. <br/><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F950B198-2C67-48e5-B1FE-C091131E6A63"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání.<br /><br />
+            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F950B198-2C67-48e5-B1FE-C091131E6A63"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
@@ -1722,6 +1722,11 @@
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.SignatureMethodCode">
             <summary>
             Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.SignatureTypeId">
+            <summary>
+            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetOffer(System.Int32,System.Threading.CancellationToken)">
@@ -2596,6 +2601,38 @@
             <summary>
             True pokud je aplikované hromadné ocenění z developerského projektu
             </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.CreateRealEstateValuation(System.Int64,NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest,System.Threading.CancellationToken)">
+            <summary>
+            Založení Ocenění nemovitosti
+            </summary>
+            <remarks>
+            Operace založí nové Ocenění nemovitosti k danému case ID. Jde buď o založení Ocenění nemovitosti k objektu úvěru ze žádosti o úvěr nebo o manuální založení dalšího objektu zajištění.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5A275F67-67AC-4851-8FE9-51F2B685B990"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteRealEstateValuation(System.Int64,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazání Ocenění nemovitosti
+            </summary>
+            <remarks>
+            Smazání Ocenění konkrétní nemovitosti ještě před odesláním do ACV.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6525504B-D598-4113-AA2A-846571769C40"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="caseId"></param>
+            <param name="realEstateValuationId"></param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.GetListRealEstateValuation(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Získání seznamu Ocenění nemovitostí
+            </summary>
+            <remarks>
+            Operace vrací seznam všech ocenění nemovitostí k danému case ID. Seznam je sloučením ocenění objektů úvěru ze žádosti o úvěr a manuálně zadaných dalších objektů zajištění. Operace nevrací objednávky ocenění, které nevznikly v Noby.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0DCD023D-ACF8-4744-B198-FE4FC2A84223"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItemButton.IsActive">
             <summary>

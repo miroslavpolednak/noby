@@ -12,7 +12,7 @@ public sealed class WorkflowTask
     /// Datum vytvoření úkolu
     /// </summary>
     /// <example>12.12.2022</example>
-    public DateTime CreatedOn { get; set; }
+    public DateTime? CreatedOn { get; set; }
 
     /// <summary>
     /// ID typu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK">číselníku typu úkolů</a>

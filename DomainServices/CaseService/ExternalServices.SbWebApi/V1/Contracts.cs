@@ -255,7 +255,7 @@ namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("system")]
-
+ 
         public string? System { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("login")]
@@ -454,6 +454,11 @@ namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string? SumLoansMandant { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("postalCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string? PostalCode { get; set; } = default!;
+
         [System.Text.Json.Serialization.JsonPropertyName("result")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
@@ -602,7 +607,7 @@ namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("idOwner")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? IdOwner { get; set; } = default!;
+        public long? IdOwner { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("warrantorRoleType")]
 
@@ -644,7 +649,7 @@ namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("idOwner")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string? IdOwner { get; set; } = default!;
+        public long? IdOwner { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("warrantorRoleType")]
 
@@ -961,6 +966,7 @@ namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("system")]
+ 
         public string? System { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("login")]

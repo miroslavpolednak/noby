@@ -3,7 +3,7 @@ using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Email.Requests;
 
-public class SendEmailConsumeRequest : IRequest<SendEmailConsumeResponse>
+public class ConsumeSendEmailRequest : IRequest<ConsumeSendEmailResponse>
 {
     public Guid Id { get; set; }
     public string From { get; set; } = null!;

@@ -108,9 +108,13 @@ internal static class CaseExtensions
                         FormId = taskData.GetValueOrDefault("ukol_podpis_dokument_form_id") ?? "",
                         Expiration = taskData.GetDate("ukol_podpis_lhuta_do"),
                         DocumentForSigning = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_id") ?? "",
-                        DocumentForSigningType = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_typ") ?? "",
-                        ProposalForEntry = taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")
+                        DocumentForSigningType = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_typ") ?? ""
                     };
+
+                    if (string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")))
+                    {
+                        taskDetail.Signing.ProposalForEntry.AddRange(taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")!.Split(',', StringSplitOptions.RemoveEmptyEntries));
+                    }
                     break;
 
                 case 3 when _allowedConsultationTypes.Contains(taskData.GetNInteger("ukol_konzultace_oblast").GetValueOrDefault()):

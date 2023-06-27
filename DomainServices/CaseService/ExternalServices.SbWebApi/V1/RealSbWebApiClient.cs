@@ -106,14 +106,18 @@ internal sealed class RealSbWebApiClient
 
     public async Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default)
     {
-        var sbRequest = new WFS_Manage_CompleteTask
+        var sbRequest = new WFS_Request_CompleteTask
         {
-            Task_id = request.TaskIdSb,
-            Metadata = request.Metadata.Select(t => new WFS_MetadataItem
+            Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
+            Message = new WFS_Manage_CompleteTask
             {
-                Mtdt_def = t.Key,
-                Mtdt_val = t.Value
-            }).ToList()
+                Task_id = request.TaskIdSb,
+                Metadata = request.Metadata.Select(t => new WFS_MetadataItem
+                {
+                    Mtdt_def = t.Key,
+                    Mtdt_val = t.Value
+                }).ToList()
+            }
         };
 
         var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/completetask", sbRequest, cancellationToken);

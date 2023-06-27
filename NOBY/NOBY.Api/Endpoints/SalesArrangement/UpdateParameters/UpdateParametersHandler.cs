@@ -97,8 +97,11 @@ internal sealed class UpdateParametersHandler
                     await _documentOnSaService.StopSigning(documentOnSaToSign.DocumentOnSAId.Value, cancellationToken);
                 }
             }
-            
-            await _salesArrangementService.UpdateSalesArrangementState(request.SalesArrangementId, (int)SalesArrangementStates.InProgress, cancellationToken);
+
+            if (saInstance.State != (int)SalesArrangementStates.InProgress)
+            {
+                await _salesArrangementService.UpdateSalesArrangementState(request.SalesArrangementId, (int)SalesArrangementStates.InProgress, cancellationToken);
+            }
         }
         else
         {

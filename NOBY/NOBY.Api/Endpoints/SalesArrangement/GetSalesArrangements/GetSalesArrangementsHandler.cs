@@ -3,6 +3,7 @@ using DomainServices.SalesArrangementService.Clients;
 using CIS.Core;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients;
+using CIS.Core.Security;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangements;
 
@@ -11,6 +12,13 @@ internal sealed class GetSalesArrangementsHandler
 {
     public async Task<List<Dto.SalesArrangementListItem>> Handle(GetSalesArrangementsRequest request, CancellationToken cancellationToken)
     {
+        var caseInstance = await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
+        // check perm
+        if (caseInstance.OwnerUserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
+        {
+            throw new CisAuthorizationException();
+        }
+
         var result = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken);
 
         // seznam typu k doplneni nazvu SA
@@ -37,13 +45,19 @@ internal sealed class GetSalesArrangementsHandler
         return model;
     }
 
+    private readonly ICurrentUserAccessor _currentUser;
+    private readonly ICaseServiceClient _caseService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public GetSalesArrangementsHandler(
+        ICurrentUserAccessor currentUser,
+        ICaseServiceClient caseServiceClient,
         ISalesArrangementServiceClient salesArrangementService, 
         ICodebookServiceClient codebookService)
     {
+        _currentUser = currentUser;
+        _caseService = caseServiceClient;
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
     }
