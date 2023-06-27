@@ -23,7 +23,7 @@ internal sealed class GetRealEstateValuationDetailHandler
 
         var response = new RealEstateValuationDetail
         {
-            GeneralDetail = realEstate,
+            RealEstateValuationGeneralDetails = realEstate,
             LoanPurposeDetails = details?.LoanPurposeDetailsBin is null ? null : LoanPurposeDetailsObject.Parser.ParseFrom(details.LoanPurposeDetailsBin)
         };
 

@@ -6,7 +6,7 @@ import "google/protobuf/wrappers.proto";
 import "Messages/RealEstateValuationListItem.proto";
 
 message RealEstateValuationDetail {
-    RealEstateValuationListItem GeneralDetail = 1;
+    RealEstateValuationListItem RealEstateValuationGeneralDetails = 1;
     google.protobuf.Int32Value realEstateSubtypeId = 2;
     LoanPurposeDetailsObject LoanPurposeDetails = 3;
     oneof SpecificDetail {

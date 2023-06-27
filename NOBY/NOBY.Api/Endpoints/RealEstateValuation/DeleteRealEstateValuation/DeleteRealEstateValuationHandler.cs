@@ -11,13 +11,13 @@ internal sealed class DeleteRealEstateValuationHandler
         var instance = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
         // podvrhnute caseId
-        if (instance.GeneralDetail.CaseId != request.CaseId)
+        if (instance.RealEstateValuationGeneralDetails.CaseId != request.CaseId)
         {
             throw new CisAuthorizationException();
         }
 
         // spatny stav REV
-        if (instance.GeneralDetail.ValuationStateId != 7)
+        if (instance.RealEstateValuationGeneralDetails.ValuationStateId != 7)
         {
             throw new CisAuthorizationException();
         }
