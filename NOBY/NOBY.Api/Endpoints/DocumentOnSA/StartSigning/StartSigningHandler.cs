@@ -44,6 +44,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             FormId = result.DocumentOnSa.FormId,
             IsSigned = result.DocumentOnSa.IsSigned,
             SignatureMethodCode = result.DocumentOnSa.SignatureMethodCode,
+            SignatureTypeId = result.DocumentOnSa.SignatureTypeId,
             SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
             {
                 DocumentOnSAId = result.DocumentOnSa.DocumentOnSAId,
