@@ -4196,6 +4196,11 @@
             </summary>
             <example>Prosím o pomoc s tímto případem.</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest.OrderId">
+            <summary>
+            ID objednávky ocenění, pokud se vytváří konzultace "Dotaz k ocenění" nebo "Vyhotovení zprávy o stavu výstavby"
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Workflow.GetConsultationTypes.GetConsultationTypesResponseItem.TaskSubtypeId">
             <summary>
             ID typu konzultace
