@@ -4,9 +4,6 @@
         <name>DomainServices.CodebookService.Contracts</name>
     </assembly>
     <members>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.ItemsFieldNumber">
-            <summary>Field number for the "Items" field.</summary>
-        </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types">
             <summary>Container for nested types declared in the GenericCodebookResponse message type.</summary>
         </member>
@@ -36,6 +33,9 @@
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem.IsDefaultFieldNumber">
             <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.BankCodesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
@@ -662,9 +662,6 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types.IdentitySchemeItem.ChannelIdFieldNumber">
             <summary>Field number for the "ChannelId" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.ItemsFieldNumber">
-            <summary>Field number for the "Items" field.</summary>
-        </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types">
             <summary>Container for nested types declared in the LoanPurposesResponse message type.</summary>
         </member>
@@ -688,6 +685,9 @@
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.ProductTypeIdsFieldNumber">
             <summary>Field number for the "ProductTypeIds" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.ObligationLaExposuresResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
@@ -773,9 +773,6 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.PostCodesResponse.Types.PostCodeItem.MunicipalityFieldNumber">
             <summary>Field number for the "Municipality" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.ItemsFieldNumber">
-            <summary>Field number for the "Items" field.</summary>
-        </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types">
             <summary>Container for nested types declared in the ProductTypesResponse message type.</summary>
         </member>
@@ -823,6 +820,9 @@
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.LoanKindIdsFieldNumber">
             <summary>Field number for the "LoanKindIds" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.ProfessionCategoriesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>

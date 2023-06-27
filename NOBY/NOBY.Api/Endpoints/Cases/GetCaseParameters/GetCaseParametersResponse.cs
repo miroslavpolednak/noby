@@ -10,7 +10,7 @@ public sealed class GetCaseParametersResponse
     /// <summary>
     /// Typ úvěru (číselník).
     /// </summary>
-    public DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem? ProductType { get; set; }
+    public DomainServices.CodebookService.Contracts.IBaseCodebook? ProductType { get; set; }
 
     /// <summary>
 	/// ČÍslo smlouvy.

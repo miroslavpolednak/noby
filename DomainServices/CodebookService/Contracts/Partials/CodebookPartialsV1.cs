@@ -1,6 +1,12 @@
 ﻿namespace DomainServices.CodebookService.Contracts.v1;
 
-public partial class GenericCodebookResponse : IItemsResponse<GenericCodebookResponse.Types.GenericCodebookItem> { }
+public partial class GenericCodebookResponse : IItemsResponse<GenericCodebookResponse.Types.GenericCodebookItem> 
+{
+    public partial class Types
+    {
+        public partial class GenericCodebookItem : IBaseCodebook { }
+    }
+}
 public partial class BankCodesResponse : IItemsResponse<BankCodesResponse.Types.BankCodeItem> { }
 public partial class CollateralTypesResponse : IItemsResponse<CollateralTypesResponse.Types.CollateralTypeItem> { }
 public partial class ContactTypesResponse : IItemsResponse<ContactTypesResponse.Types.ContactTypeItem> { }
@@ -29,12 +35,24 @@ public partial class HousingConditionsResponse : IItemsResponse<HousingCondition
 public partial class ChannelsResponse : IItemsResponse<ChannelsResponse.Types.ChannelItem> { }
 public partial class IdentificationDocumentTypesResponse : IItemsResponse<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> { }
 public partial class IdentitySchemesResponse : IItemsResponse<IdentitySchemesResponse.Types.IdentitySchemeItem> { }
-public partial class LoanPurposesResponse : IItemsResponse<LoanPurposesResponse.Types.LoanPurposeItem> { }
+public partial class LoanPurposesResponse : IItemsResponse<LoanPurposesResponse.Types.LoanPurposeItem>
+{
+    public partial class Types
+    {
+        public partial class LoanPurposeItem : IBaseCodebook { }
+    }
+}
 public partial class ObligationLaExposuresResponse : IItemsResponse<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> { }
 public partial class ObligationTypesResponse : IItemsResponse<ObligationTypesResponse.Types.ObligationTypeItem> { }
 public partial class PaymentDaysResponse : IItemsResponse<PaymentDaysResponse.Types.PaymentDayItem> { }
 public partial class PostCodesResponse : IItemsResponse<PostCodesResponse.Types.PostCodeItem> { }
-public partial class ProductTypesResponse : IItemsResponse<ProductTypesResponse.Types.ProductTypeItem> { }
+public partial class ProductTypesResponse : IItemsResponse<ProductTypesResponse.Types.ProductTypeItem>
+{
+    public partial class Types
+    {
+        public partial class ProductTypeItem : IBaseCodebook { }
+    }
+}
 public partial class ProfessionCategoriesResponse : IItemsResponse<ProfessionCategoriesResponse.Types.ProfessionCategoryItem> { }
 public partial class ProofTypesResponse : IItemsResponse<ProofTypesResponse.Types.ProofTypeItem> { }
 public partial class PropertySettlementsResponse : IItemsResponse<PropertySettlementsResponse.Types.PropertySettlementItem> { }

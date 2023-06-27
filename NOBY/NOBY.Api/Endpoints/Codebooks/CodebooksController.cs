@@ -139,7 +139,7 @@ public class CodebooksController : ControllerBase
     public async Task<List<GenericCodebookResponse.Types.GenericCodebookItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         var loanKindsIds = (await svc.ProductTypes(cancellationToken))
-            .FirstOrDefault(t => t.Id == productTypeId && t.IsValid)?
+            .FirstOrDefault(t => t.Id == productTypeId && t.IsValid.GetValueOrDefault())?
             .LoanKindIds
             .ToList();
         if (loanKindsIds is null) return null;
