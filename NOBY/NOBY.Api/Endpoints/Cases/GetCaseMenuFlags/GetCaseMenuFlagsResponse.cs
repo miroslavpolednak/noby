@@ -20,7 +20,7 @@ public sealed class GetCaseMenuFlagsItem
 public enum GetCaseMenuFlagsTypes
 {
     NoFlag = 0,
-    ExclamationMark = 1,
-    InProcessing = 2
+    InProcessing = 1,
+    ExclamationMark = 2
 
 }
