@@ -40,6 +40,7 @@ internal sealed class ErrorCodeMapper
     public const int AgentNotFound = 18078;
     public const int SalesArrangementStateIsEmpty = 18079;
     public const int RepaymentAccountCantChange = 18081;
+    public const int ContractNumberIsAlreadySet = 18084;
     
     public static IErrorCodesDictionary Init()
     {
@@ -77,7 +78,8 @@ internal sealed class ErrorCodeMapper
             { FormValidation7, "Main household´s CustomerOnSAId1 not defined [{PropertyValue}]." },
             { FormValidation8, "Sales arrangement households contain duplicit customers [{PropertyValue}] on sales arrangement." },
             { FormValidation9, "Income mandatory fields not provided [{PropertyValue}]." },
-            { FormValidation10, "Customers [{PropertyValue}] on sales arrangement don't correspond to customers on households." }
+            { FormValidation10, "Customers [{PropertyValue}] on sales arrangement don't correspond to customers on households." },
+            { ContractNumberIsAlreadySet, "Contract number on SalesArrangement {SalesArrangementId} already exists." }
         });
 
         return Messages;
