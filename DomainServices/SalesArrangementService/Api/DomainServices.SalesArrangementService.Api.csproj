@@ -45,7 +45,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Endpoints\SetContractNumber\" />
 	  <Folder Include="Services\Forms\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="CIS.Foms.Types">
+	    <HintPath>..\..\CaseService\ExternalServices.SbWebApi\bin\Debug\net7.0\CIS.Foms.Types.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 </Project>
