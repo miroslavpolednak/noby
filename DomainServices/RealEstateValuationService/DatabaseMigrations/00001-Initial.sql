@@ -56,6 +56,7 @@ CREATE TABLE [dbo].[RealEstateValuationDetail](
 	[LoanPurposeDetailsBin] [varbinary](max) NULL,
 	[SpecificDetail] [nvarchar](max) NULL,
 	[SpecificDetailBin] [varbinary](max) NULL,
+	[CreatedUserName] [nvarchar](100) NOT NULL,
 	[CreatedUserId] [int] NOT NULL,
 	[CreatedTime] [datetime] NOT NULL,
 	[ModifiedUserId] [int] NULL,

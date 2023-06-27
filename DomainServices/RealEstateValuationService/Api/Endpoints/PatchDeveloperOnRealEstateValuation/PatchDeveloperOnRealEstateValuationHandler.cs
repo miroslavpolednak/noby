@@ -8,7 +8,9 @@ internal sealed class PatchDeveloperOnRealEstateValuationHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(PatchDeveloperOnRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.RealEstateValuations.FirstOrDefaultAsync(t => t.RealEstateValuationId == request.RealEstateValuationId, cancellationToken)
+        var entity = await _dbContext
+            .RealEstateValuations
+            .FirstOrDefaultAsync(t => t.RealEstateValuationId == request.RealEstateValuationId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.RealEstateValuationId);
 
         // ulozit do DB

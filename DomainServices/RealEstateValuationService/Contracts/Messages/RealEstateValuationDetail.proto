@@ -15,28 +15,3 @@ message RealEstateValuationDetail {
         SpecificDetailParcelObject ParcelDetails = 21;
     }
 }
-
-message LoanPurposeDetailsObject {
-    repeated int32 LoanPurposes = 1;
-}
-
-message SpecificDetailHouseAndFlatObject {
-    bool PoorCondition = 1;
-    bool OwnershipRestricted = 2;
-    SpecificDetailFlatOnlyDetails FlatOnlyDetails = 3;
-    SpecificDetailFinishedHouseAndFlatDetails FinishedHouseAndFlatDetails = 4;
-}
-
-message SpecificDetailFlatOnlyDetails {
-    bool SpecialPlacement = 1;
-    bool Basement = 2;
-}
-
-message SpecificDetailFinishedHouseAndFlatDetails {
-    bool Leased = 1;
-    bool LeaseApplicable = 2;
-}
-
-message SpecificDetailParcelObject {
-    google.protobuf.Int32Value ParcelNumber = 1;
-}
