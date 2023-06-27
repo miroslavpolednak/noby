@@ -18,7 +18,6 @@ CREATE TABLE [dbo].[RealEstateValuation](
 	[RealEstateValuationId] [int] IDENTITY(1,1) NOT NULL,
 	[CaseId] [bigint] NOT NULL,
 	[RealEstateTypeId] [int] NOT NULL,
-	[RealEstateSubtypeId] [int] NULL,
 	[ValuationStateId] [int] NOT NULL,
 	[IsLoanRealEstate] [bit] NOT NULL,
 	[ValuationTypeId] [int] NOT NULL,
@@ -27,7 +26,7 @@ CREATE TABLE [dbo].[RealEstateValuation](
 	[DeveloperApplied] [bit] NOT NULL,
 	[ValuationSentDate] [date] NULL,
 	[Address] [nvarchar](500) NULL,
-	[RealEstateStateId] [int] NULL,
+	[RealEstateStateId] [int] NOT NULL,
 	[OrderId] [int] NULL,
 	[ValuationResultCurrentPrice] [int] NULL,
 	[ValuationResultFuturePrice] [int] NULL,
@@ -52,6 +51,7 @@ GO
 
 CREATE TABLE [dbo].[RealEstateValuationDetail](
 	[RealEstateValuationId] [int] NOT NULL,
+	[RealEstateSubtypeId] [int] NULL,
 	[LoanPurposeDetails] [nvarchar](max) NULL,
 	[LoanPurposeDetailsBin] [varbinary](max) NULL,
 	[SpecificDetail] [nvarchar](max) NULL,

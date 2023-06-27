@@ -9,10 +9,11 @@ message CreateRealEstateValuationRequest {
     int32 RealEstateTypeId = 2;
     int32 ValuationStateId = 3;
     bool IsLoanRealEstate = 4;
-    ValuationTypes ValuationTypeId = 5;
-    bool IsRevaluationRequired = 6;
-    bool DeveloperAllowed = 7;
-    bool DeveloperApplied = 8;
+    int32 RealEstateStateId = 5;
+    ValuationTypes ValuationTypeId = 6;
+    bool IsRevaluationRequired = 7;
+    bool DeveloperAllowed = 8;
+    bool DeveloperApplied = 9;
 }
 
 message CreateRealEstateValuationResponse {

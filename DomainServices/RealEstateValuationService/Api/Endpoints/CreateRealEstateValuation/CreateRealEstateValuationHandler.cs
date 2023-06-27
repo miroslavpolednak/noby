@@ -17,7 +17,8 @@ internal sealed class CreateRealEstateValuationHandler
             IsRevaluationRequired = request.IsRevaluationRequired,
             RealEstateTypeId = request.RealEstateTypeId,
             ValuationStateId = request.ValuationStateId,
-            ValuationTypeId = (int)request.ValuationTypeId
+            ValuationTypeId = (int)request.ValuationTypeId,
+            RealEstateStateId = request.RealEstateStateId
         };
         _dbContext.RealEstateValuations.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);

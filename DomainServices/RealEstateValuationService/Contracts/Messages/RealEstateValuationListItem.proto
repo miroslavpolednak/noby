@@ -11,7 +11,6 @@ message RealEstateValuationListItem {
     google.protobuf.Int32Value OrderId = 2;
     int64 CaseId = 3;
     int32 RealEstateTypeId = 4;
-    google.protobuf.Int32Value RealEstateSubtypeId = 16;
     int32 ValuationStateId = 5;
     bool IsLoanRealEstate = 6;
     google.protobuf.Int32Value RealEstateStateId = 7;

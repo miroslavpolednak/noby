@@ -7,7 +7,7 @@ import "Messages/RealEstateValuationListItem.proto";
 
 message RealEstateValuationDetail {
     RealEstateValuationListItem RealEstateValuationGeneralDetails = 1;
-    google.protobuf.Int32Value realEstateSubtypeId = 2;
+    google.protobuf.Int32Value RealEstateSubtypeId = 2;
     LoanPurposeDetailsObject LoanPurposeDetails = 3;
     oneof SpecificDetail {
         SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 20;
@@ -37,5 +37,5 @@ message SpecificDetailFinishedHouseAndFlatDetails {
 }
 
 message SpecificDetailParcelObject {
-    int32 ParcelNumber = 1;
+    google.protobuf.Int32Value ParcelNumber = 1;
 }
