@@ -40,6 +40,8 @@ public class AmendmentsSigning
     /// </summary>
     /// <example>A</example>
     [Required]
+    [MinLength(1)]
+    [MaxLength(1)]
     public string DocumentForSigningType { get; set; } = null!;
     
     /// <summary>
