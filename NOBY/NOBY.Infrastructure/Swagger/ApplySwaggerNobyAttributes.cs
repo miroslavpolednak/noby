@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using NOBY.Infrastructure.Security.Attributes;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Infrastructure.Swagger;
@@ -9,10 +10,10 @@ public class ApplySwaggerNobyAttributes
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         // prava
-        var authorizeAttributes = context.MethodInfo.GetCustomAttributes(typeof(Security.NobyAuthorizeAttribute), false);
+        var authorizeAttributes = context.MethodInfo.GetCustomAttributes(typeof(NobyAuthorizeAttribute), false);
         if (authorizeAttributes is not null && authorizeAttributes.Any())
         {
-            string perms = string.Join("<br/><font color=\"lightgrey\">[AND]</font><br/>", authorizeAttributes.Select(t => string.Join(" <font color=\"lightgrey\">[OR]</font> ", ((Security.NobyAuthorizeAttribute)t).RequiredPermissions)));
+            string perms = string.Join("<br/><font color=\"lightgrey\">[AND]</font><br/>", authorizeAttributes.Select(t => string.Join(" <font color=\"lightgrey\">[OR]</font> ", ((NobyAuthorizeAttribute)t).RequiredPermissions)));
             operation.Description = $"{operation.Description}<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>{perms}";
         }
         

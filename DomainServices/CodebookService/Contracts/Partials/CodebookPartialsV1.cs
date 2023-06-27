@@ -52,3 +52,4 @@ public partial class WorkflowConsultationMatrixResponse : IItemsResponse<Workflo
 public partial class WorkflowTaskStatesResponse : IItemsResponse<WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem> { }
 public partial class WorkflowTaskStatesNobyResponse : IItemsResponse<WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem> { }
 public partial class WorkflowTaskTypesResponse : IItemsResponse<WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem> { }
+public partial class RealEstateSubtypesResponse : IItemsResponse<RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem> { }

@@ -1196,6 +1196,24 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem.CategoryIdFieldNumber">
             <summary>Field number for the "CategoryId" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.Types">
+            <summary>Container for nested types declared in the RealEstateSubtypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem.ShortnameFieldNumber">
+            <summary>Field number for the "Shortname" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem.RealEstateTypeIdFieldNumber">
+            <summary>Field number for the "RealEstateTypeId" field.</summary>
+        </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.CodebookServiceV1Reflection">
             <summary>Holder for reflection information generated from CodebookService.v1.proto</summary>
         </member>

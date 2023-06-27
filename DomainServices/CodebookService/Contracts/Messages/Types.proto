@@ -530,6 +530,17 @@ message RelationshipCustomerProductTypesResponse {
 	}
 }
 
+message RealEstateSubtypesResponse {
+	repeated RealEstateSubtypesResponseItem Items = 1;
+
+	message RealEstateSubtypesResponseItem {
+		int32 Id = 1;
+		string Shortname = 2;
+		string Name = 3;
+		int32 RealEstateTypeId = 4;
+	}
+}
+
 message RiskApplicationTypesResponse {
 	repeated RiskApplicationTypeItem Items = 1;
 

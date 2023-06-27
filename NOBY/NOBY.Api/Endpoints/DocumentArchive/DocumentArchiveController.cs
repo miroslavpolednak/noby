@@ -65,6 +65,7 @@ public class DocumentArchiveController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(typeof(GetDocumentListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeCaseOwner]
     public async Task<GetDocumentListResponse> GetDocumentList([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDocumentListRequest(caseId), cancellationToken);
 

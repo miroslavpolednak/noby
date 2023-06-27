@@ -5,3 +5,4 @@ global using Microsoft.AspNetCore.Mvc;
 global using NOBY.Infrastructure.ErrorHandling;
 global using NOBY.Infrastructure.Security;
 global using DomainServices.UserService.Clients.Authorization;
+global using NOBY.Infrastructure.Security.Attributes;
