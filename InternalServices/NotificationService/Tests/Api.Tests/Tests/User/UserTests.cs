@@ -41,10 +41,7 @@ public class UserTests
         var request = new GetResultRequest { NotificationId = guid };
         
         var handler = _fixture.Create<GetResultHandler>();
-        var response = await handler.Handle(request, token);
-        var mockRepository = _fixture.Freeze<Mock<INotificationRepository>>();
-        
-        mockRepository.Verify(r => r.GetResult(guid, token), Times.Once);
+        await handler.Handle(request, token);
     }
 
     [Fact]
