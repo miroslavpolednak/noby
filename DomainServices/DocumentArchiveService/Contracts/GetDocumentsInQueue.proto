@@ -13,6 +13,8 @@ message GetDocumentsInQueueRequest {
     google.protobuf.Int64Value CaseId = 2;
 
 	repeated int32 StatusesInQueue = 3;
+
+	bool WithContent = 4;
 }
 
 message GetDocumentsInQueueResponse{
@@ -38,4 +40,7 @@ message QueuedDocument {
 
 	// Datum přijetí dokumentu
     cis.types.GrpcDate CreatedOn = 7;
+
+	// Soubour (pole bajtů) ve formě base64string 
+    bytes DocumentData = 8;
 }
