@@ -30,7 +30,7 @@ public class WorkflowProcess
     /// Indikátor barvy Noby stavu
     /// </summary>
     /// <example>Active</example>
-    public StateIndicators StateIndicator { get; set; }
+    public ProcessStateIndicators StateIndicator { get; set; }
 
     /// <summary>
     /// ID typu procesu. 1 - Hlavní úvěrový proces, 2 - Změnový proces, 3 - Retenční proces
