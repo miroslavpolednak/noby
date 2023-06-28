@@ -780,6 +780,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967580">ProfessionTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413648025">PropertySettlements</a>
              - <a href="https://wiki.kb.cz/display/HT/RealEstateState">RealEstateStates</a>
+             - <a href="https://wiki.kb.cz/display/HT/RealEstateSubtype">RealEstateSubtypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632253">RealEstateTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632953">RealEstatePurchaseTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
@@ -2566,8 +2567,7 @@
             Vrátí seznam dlužníků a spoludlužníků na daném produktu
             </summary>
             <remarks>
-            <i>DS:</i> ProductService/GetCustomersOnProduct<br />
-            <i>DS:</i> CustomerService/GetList - použito KB ID
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DFD7FC8B-6D32-4a81-9608-A502E6F0E74B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Seznam klientů na produktu</returns>
         </member>

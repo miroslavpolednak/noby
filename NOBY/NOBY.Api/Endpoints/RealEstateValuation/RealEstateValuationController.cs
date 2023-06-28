@@ -34,10 +34,14 @@ public sealed class RealEstateValuationController : ControllerBase
     /// <param name="realEstateValuationId"></param>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task DeleteRealEstateValuation([FromRoute] long caseId, [FromRoute] int realEstateValuationId, CancellationToken cancellationToken)
-        => await _mediator.Send(new DeleteRealEstateValuation.DeleteRealEstateValuationRequest(caseId, realEstateValuationId), cancellationToken);
+    public async Task<IActionResult> DeleteRealEstateValuation([FromRoute] long caseId, [FromRoute] int realEstateValuationId, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new DeleteRealEstateValuation.DeleteRealEstateValuationRequest(caseId, realEstateValuationId), cancellationToken);
+        return NoContent();
+    }
+        
 
     /// <summary>
     /// Získání seznamu Ocenění nemovitostí
