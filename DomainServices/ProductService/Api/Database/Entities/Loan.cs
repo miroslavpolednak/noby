@@ -69,7 +69,7 @@ internal class Loan
 
 	public string? PredcisliUctu { get; set; }
 
-    public int? HuVypisFrekvence { get; set; }
+    public short? HuVypisFrekvence { get; set; }
 
     [Column(TypeName = "decimal(16, 4)")]
     [Precision(16, 4)]
