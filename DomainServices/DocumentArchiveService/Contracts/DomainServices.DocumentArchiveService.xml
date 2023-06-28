@@ -150,7 +150,7 @@
         </member>
         <member name="P:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest.StatusInQueue">
             <summary>
-            Stav dokument ve frontě
+            Stav dokument ve frontì
             </summary>
         </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveServiceV1Reflection">
