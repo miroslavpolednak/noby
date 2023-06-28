@@ -1,17 +1,17 @@
 ﻿using CIS.Core.Security;
 using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
+using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using System.Runtime.InteropServices;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation;
 
 internal sealed class CreateRealEstateValuationHandler
-    : IRequestHandler<CreateRealEstateValuationRequest>
+    : IRequestHandler<CreateRealEstateValuationRequest, int>
 {
-    public async Task Handle(CreateRealEstateValuationRequest request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
@@ -39,11 +39,11 @@ internal sealed class CreateRealEstateValuationHandler
 
             if (offerInstance.SimulationInputs.Developer?.DeveloperId != null 
                 && offerInstance.SimulationInputs.Developer?.ProjectId != null
-                && revRequest.IsLoanRealEstate
-                && "mass eval" == "")
+                && revRequest.IsLoanRealEstate)
             {
-                revRequest.DeveloperAllowed = true;
+                var project = await _codebookService.GetDeveloperProject(offerInstance.SimulationInputs.Developer.DeveloperId.Value, offerInstance.SimulationInputs.Developer.ProjectId.Value, cancellationToken);
 
+                revRequest.DeveloperAllowed = _allowedMassValuations.Contains(project.MassEvaluation);
                 if (request.DeveloperApplied)
                 {
                     revRequest.ValuationStateId = 4;
@@ -56,9 +56,12 @@ internal sealed class CreateRealEstateValuationHandler
             throw new CisAuthorizationException();
         }
 
-        await _realEstateValuationService.CreateRealEstateValuation(revRequest, cancellationToken);
+        return await _realEstateValuationService.CreateRealEstateValuation(revRequest, cancellationToken);
     }
 
+    private static int[] _allowedMassValuations = new int[] { -1, 1 };
+
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICurrentUserAccessor _currentUser;
@@ -66,12 +69,14 @@ internal sealed class CreateRealEstateValuationHandler
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
     public CreateRealEstateValuationHandler(
+        ICodebookServiceClient codebookService,
         IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService,
         ICurrentUserAccessor currentUserAccessor,
         IRealEstateValuationServiceClient realEstateValuationService, 
         ICaseServiceClient caseService)
     {
+        _codebookService = codebookService;
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
         _currentUser = currentUserAccessor;

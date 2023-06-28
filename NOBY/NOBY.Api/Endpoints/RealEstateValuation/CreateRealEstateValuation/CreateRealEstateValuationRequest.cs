@@ -7,7 +7,7 @@ namespace NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation;
 /// Atributy k nově zakládanému Ocenění nemovitosti
 /// </summary>
 public sealed class CreateRealEstateValuationRequest
-    : IRequest
+    : IRequest<int>
 {
     [JsonIgnore]
     internal long CaseId;

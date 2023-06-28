@@ -16,10 +16,11 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations")]
     [Consumes("application/json")]
+    [Produces("text/plain")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task CreateRealEstateValuation([FromRoute] long caseId, [FromBody] CreateRealEstateValuation.CreateRealEstateValuationRequest request, CancellationToken cancellationToken)
+    public async Task<int> CreateRealEstateValuation([FromRoute] long caseId, [FromBody] CreateRealEstateValuation.CreateRealEstateValuationRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(caseId), cancellationToken);
 
     /// <summary>
