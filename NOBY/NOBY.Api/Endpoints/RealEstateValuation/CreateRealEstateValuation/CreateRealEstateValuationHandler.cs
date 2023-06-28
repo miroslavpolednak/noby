@@ -1,5 +1,10 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Core.Security;
+using CIS.Foms.Enums;
+using DomainServices.CaseService.Clients;
+using DomainServices.OfferService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
+using DomainServices.SalesArrangementService.Clients;
+using System.Runtime.InteropServices;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation;
 
@@ -8,20 +13,68 @@ internal sealed class CreateRealEstateValuationHandler
 {
     public async Task Handle(CreateRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
+        var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
-        await _realEstateValuationService.CreateRealEstateValuation(new DomainServices.RealEstateValuationService.Contracts.CreateRealEstateValuationRequest
+        // perm check
+        if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
         {
-            CaseId = request.CaseId
-        }, cancellationToken);
+            throw new CisAuthorizationException();
+        }
+
+        var revRequest = new DomainServices.RealEstateValuationService.Contracts.CreateRealEstateValuationRequest
+        {
+            CaseId = request.CaseId,
+            RealEstateTypeId = request.RealEstateTypeId,
+            IsLoanRealEstate = request.IsLoanRealEstate,
+            ValuationTypeId = DomainServices.RealEstateValuationService.Contracts.ValuationTypes.Unknown,
+            DeveloperApplied = request.DeveloperApplied,
+            ValuationStateId = 7
+        };
+
+        if (caseInstance.State != (int)CaseStates.InProgress)
+        {
+            var saInstance = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+
+            var offerInstance = await _offerService.GetMortgageOfferDetail(saInstance.OfferId!.Value, cancellationToken);
+
+            if (offerInstance.SimulationInputs.Developer?.DeveloperId != null 
+                && offerInstance.SimulationInputs.Developer?.ProjectId != null
+                && revRequest.IsLoanRealEstate
+                && "mass eval" == "")
+            {
+                revRequest.DeveloperAllowed = true;
+
+                if (request.DeveloperApplied)
+                {
+                    revRequest.ValuationStateId = 4;
+                }
+            }
+        }
+
+        if (!revRequest.DeveloperAllowed && request.DeveloperApplied)
+        {
+            throw new CisAuthorizationException();
+        }
+
+        await _realEstateValuationService.CreateRealEstateValuation(revRequest, cancellationToken);
     }
 
+    private readonly IOfferServiceClient _offerService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ICurrentUserAccessor _currentUser;
     private readonly ICaseServiceClient _caseService;
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
     public CreateRealEstateValuationHandler(
+        IOfferServiceClient offerService,
+        ISalesArrangementServiceClient salesArrangementService,
+        ICurrentUserAccessor currentUserAccessor,
         IRealEstateValuationServiceClient realEstateValuationService, 
         ICaseServiceClient caseService)
     {
+        _offerService = offerService;
+        _salesArrangementService = salesArrangementService;
+        _currentUser = currentUserAccessor;
         _realEstateValuationService = realEstateValuationService;
         _caseService = caseService;
     }
