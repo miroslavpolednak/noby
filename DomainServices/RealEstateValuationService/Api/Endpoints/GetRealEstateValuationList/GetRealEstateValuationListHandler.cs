@@ -11,7 +11,8 @@ internal sealed class GetRealEstateValuationListHandler
         var list = await _dbContext.RealEstateValuations
             .AsNoTracking()
             .Where(t => t.CaseId == request.CaseId)
-            .Select(Database.Mappers.RealEstateDetail())
+            .OrderBy(t => t.RealEstateValuationId)
+            .Select(Mappers.RealEstateDetail())
             .ToListAsync(cancellationToken);
 
         var response = new GetRealEstateValuationListResponse();

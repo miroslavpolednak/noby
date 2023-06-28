@@ -25,16 +25,3 @@ System.DateTime Now { get; }
 
 #### Property Value
 [System.DateTime](https://docs.microsoft.com/en-us/dotnet/api/System.DateTime 'System.DateTime')
-
-<a name='CIS.Core.IDateTime.OffsetNow'></a>
-
-## IDateTime.OffsetNow Property
-
-Current time
-
-```csharp
-System.DateTimeOffset OffsetNow { get; }
-```
-
-#### Property Value
-[System.DateTimeOffset](https://docs.microsoft.com/en-us/dotnet/api/System.DateTimeOffset 'System.DateTimeOffset')

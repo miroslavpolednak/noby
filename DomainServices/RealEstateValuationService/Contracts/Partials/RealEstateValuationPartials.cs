@@ -25,3 +25,7 @@ public partial class GetRealEstateValuationDetailRequest
 public partial class GetRealEstateValuationDetailByOrderIdRequest
     : MediatR.IRequest<RealEstateValuationDetail>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class UpdateRealEstateValuationDetailRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+{ }

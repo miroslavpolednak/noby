@@ -270,6 +270,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		NOBY\DatabaseMigrations\00006-HFICH-5716_fix.sql = NOBY\DatabaseMigrations\00006-HFICH-5716_fix.sql
 		NOBY\DatabaseMigrations\00007-HFICH-5561.sql = NOBY\DatabaseMigrations\00007-HFICH-5561.sql
 		NOBY\DatabaseMigrations\00008-HFICH-5198.sql = NOBY\DatabaseMigrations\00008-HFICH-5198.sql
+		NOBY\DatabaseMigrations\00009-perms.sql = NOBY\DatabaseMigrations\00009-perms.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.ExternalServices.Sdf", "DomainServices\DocumentArchiveService\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj", "{F969A020-76AF-48A6-BF8F-959A58D0C982}"
@@ -470,6 +471,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{A57610AF-B011-4FAB-974B-B3FB39A6703E}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00012-REV.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00012-REV.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.Api", "DomainServices\RealEstateValuationService\Api\DomainServices.RealEstateValuationService.Api.csproj", "{8291DE0E-0447-471D-A402-B44B3FF30ED5}"

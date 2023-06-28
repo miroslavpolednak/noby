@@ -12,20 +12,24 @@ public static class CisMediatrStartupExtensions
 Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; CisMediatrStartupExtensions
 ### Methods
 
-<a name='CIS.Infrastructure.CisMediatR.CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection)'></a>
+<a name='CIS.Infrastructure.CisMediatR.CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection,System.Type[])'></a>
 
-## CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(this IServiceCollection) Method
+## CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(this IServiceCollection, Type[]) Method
 
 Pridava moznost rollbacku do Mediatr handleru. Rollback se spusti vyhozenim exception kdykoliv v prubehu exekuce handleru. Po ukonceni rollbacku se dana exception propaguje standardne dal do pipeline.
 
 ```csharp
-public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddCisMediatrRollbackCapability(this Microsoft.Extensions.DependencyInjection.IServiceCollection services);
+public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddCisMediatrRollbackCapability(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, params System.Type[] types);
 ```
 #### Parameters
 
-<a name='CIS.Infrastructure.CisMediatR.CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection).services'></a>
+<a name='CIS.Infrastructure.CisMediatR.CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection,System.Type[]).services'></a>
 
 `services` [Microsoft.Extensions.DependencyInjection.IServiceCollection](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.DependencyInjection.IServiceCollection 'Microsoft.Extensions.DependencyInjection.IServiceCollection')
+
+<a name='CIS.Infrastructure.CisMediatR.CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(thisMicrosoft.Extensions.DependencyInjection.IServiceCollection,System.Type[]).types'></a>
+
+`types` [System.Type](https://docs.microsoft.com/en-us/dotnet/api/System.Type 'System.Type')[[]](https://docs.microsoft.com/en-us/dotnet/api/System.Array 'System.Array')
 
 #### Returns
 [Microsoft.Extensions.DependencyInjection.IServiceCollection](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.DependencyInjection.IServiceCollection 'Microsoft.Extensions.DependencyInjection.IServiceCollection')

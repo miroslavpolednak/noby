@@ -4,38 +4,14 @@ option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "Messages/RealEstateValuationListItem.proto";
+import "Messages/Types.proto";
 
 message RealEstateValuationDetail {
     RealEstateValuationListItem RealEstateValuationGeneralDetails = 1;
-    google.protobuf.Int32Value realEstateSubtypeId = 2;
+    google.protobuf.Int32Value RealEstateSubtypeId = 2;
     LoanPurposeDetailsObject LoanPurposeDetails = 3;
     oneof SpecificDetail {
         SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 20;
         SpecificDetailParcelObject ParcelDetails = 21;
     }
-}
-
-message LoanPurposeDetailsObject {
-    repeated int32 LoanPurposes = 1;
-}
-
-message SpecificDetailHouseAndFlatObject {
-    bool PoorCondition = 1;
-    bool OwnershipRestricted = 2;
-    SpecificDetailFlatOnlyDetails FlatOnlyDetails = 3;
-    SpecificDetailFinishedHouseAndFlatDetails FinishedHouseAndFlatDetails = 4;
-}
-
-message SpecificDetailFlatOnlyDetails {
-    bool SpecialPlacement = 1;
-    bool Basement = 2;
-}
-
-message SpecificDetailFinishedHouseAndFlatDetails {
-    bool Leased = 1;
-    bool LeaseApplicable = 2;
-}
-
-message SpecificDetailParcelObject {
-    int32 ParcelNumber = 1;
 }

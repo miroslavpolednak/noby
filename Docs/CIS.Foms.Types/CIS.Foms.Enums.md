@@ -82,11 +82,35 @@ Identifikovaní klienti na spolužadatelské domácnosti
 
 Identifikovaní klienti na hlavní domácnosti
 
+<a name='CIS.Foms.Enums.FlowSwitches.DoesWflTaskForIPExist'></a>
+
+`DoesWflTaskForIPExist` 8
+
+IC: Zadán WFL úkol na IC
+
 <a name='CIS.Foms.Enums.FlowSwitches.IsOfferGuaranteed'></a>
 
 `IsOfferGuaranteed` 1
 
 Nabídka s platnou garancí
+
+<a name='CIS.Foms.Enums.FlowSwitches.IsOfferWithDiscount'></a>
+
+`IsOfferWithDiscount` 7
+
+IC: Sleva ze sazby nebo na poplatku na modelaci
+
+<a name='CIS.Foms.Enums.FlowSwitches.IsWflTaskForIPApproved'></a>
+
+`IsWflTaskForIPApproved` 9
+
+IC: WFL úkol na IC je schválen
+
+<a name='CIS.Foms.Enums.FlowSwitches.IsWflTaskForIPNotApproved'></a>
+
+`IsWflTaskForIPNotApproved` 10
+
+IC: WFL úkol na IC je zamítnut
 
 <a name='CIS.Foms.Enums.FlowSwitches.ParametersSavedAtLeastOnce'></a>
 

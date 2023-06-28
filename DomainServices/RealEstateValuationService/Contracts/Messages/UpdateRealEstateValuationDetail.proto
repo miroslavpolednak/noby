@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Messages/Types.proto";
+
+message UpdateRealEstateValuationDetailRequest {
+    int32 RealEstateValuationId = 1;
+    bool IsLoanRealEstate = 2;
+    google.protobuf.Int32Value RealEstateStateId = 3;
+    google.protobuf.StringValue Address = 4;
+    google.protobuf.Int32Value RealEstateSubtypeId = 5;
+    LoanPurposeDetailsObject LoanPurposeDetails = 6;
+    oneof SpecificDetail {
+        SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 20;
+        SpecificDetailParcelObject ParcelDetails = 21;
+    }
+}

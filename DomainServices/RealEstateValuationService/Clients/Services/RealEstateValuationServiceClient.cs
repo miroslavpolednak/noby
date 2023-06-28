@@ -1,4 +1,5 @@
 ﻿using DomainServices.RealEstateValuationService.Contracts;
+using StackExchange.Redis;
 
 namespace DomainServices.RealEstateValuationService.Clients.Services;
 
@@ -53,6 +54,11 @@ internal sealed class RealEstateValuationServiceClient
         {
             OrderId = orderId
         }, cancellationToken: cancellationToken);
+    }
+
+    public async Task UpdateRealEstateValuationDetail(UpdateRealEstateValuationDetailRequest request, CancellationToken cancellationToken = default)
+    {
+        await _service.UpdateRealEstateValuationDetailAsync(request, cancellationToken: cancellationToken);
     }
 
     private readonly Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient _service;

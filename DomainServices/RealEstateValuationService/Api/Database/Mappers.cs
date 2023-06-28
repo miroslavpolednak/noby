@@ -9,7 +9,6 @@ internal static class Mappers
         return t => new Contracts.RealEstateValuationListItem
         {
             RealEstateTypeId = t.RealEstateTypeId,
-            RealEstateSubtypeId = t.RealEstateSubtypeId,
             CaseId = t.CaseId,
             IsLoanRealEstate = t.IsLoanRealEstate,
             DeveloperApplied = t.DeveloperApplied,
