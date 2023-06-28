@@ -1,4 +1,4 @@
-INSERT INTO dbo.SqlQuery (SqlQueryId, SqlQueryText,DatabaseProvider) VALUES ('GetAcvRealEstateType', 'SELECT TOP 1 [AcvRealEstateTypeId] FROM [MpssIntegration].[dbo].[AcvRealEstateType] WHERE [RealEstateTypeId]=@RealEstateTypeId AND [RealEstateSubtypeId]=@RealEstateSubtypeId AND [RealEstateStateId]=@RealEstateStateId',4);
+INSERT INTO dbo.SqlQuery (SqlQueryId, SqlQueryText,DatabaseProvider) VALUES ('GetAcvRealEstateType', 'SELECT TOP 1 [AcvRealEstateTypeId] FROM [dbo].[AcvRealEstateType] WHERE [RealEstateTypeId]=@RealEstateTypeId AND [RealEstateSubtypeId]=@RealEstateSubtypeId AND [RealEstateStateId]=@RealEstateStateId',4);
 GO
 
 DROP TABLE IF EXISTS [dbo].[AcvRealEstateType];
