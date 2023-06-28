@@ -133,7 +133,6 @@ internal sealed class GetCaseParametersHandler
             respone.Statement = new StatementDto
             {
                 TypeId = mortgageData.Statement.TypeId,
-                TypeName = (await _codebookService.StatementTypes(cancellationToken)).FirstOrDefault(x => x.Id == mortgageData.Statement?.TypeId)?.Name,
                 TypeShortName = (await _codebookService.StatementTypes(cancellationToken)).FirstOrDefault(x => x.Id == mortgageData.Statement?.TypeId)?.ShortName,
                 SubscriptionType = (await _codebookService.StatementSubscriptionTypes(cancellationToken)).FirstOrDefault(x => x.Id == mortgageData.Statement?.SubscriptionTypeId)?.Name,
                 Frequency = (await _codebookService.StatementFrequencies(cancellationToken)).FirstOrDefault(x => x.Id == mortgageData.Statement?.FrequencyId)?.Name,

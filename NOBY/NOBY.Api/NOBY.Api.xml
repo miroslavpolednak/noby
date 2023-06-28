@@ -236,12 +236,6 @@
             </summary>
             <example>2</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.TypeName">
-            <summary>
-            Typ výpisů
-            </summary>
-            <example>elektronicky</example>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.TypeShortName">
             <summary>
             Typ výpisů
