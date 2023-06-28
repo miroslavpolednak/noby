@@ -51,5 +51,17 @@ public class DocumentOnSa : ICreated
 
     public int? SignatureTypeId { get; set; }
 
+    public int? CustomerOnSAId1 { get; set; }
+
+    public int? CustomerOnSAId2 { get; set; }
+
+    public long? CaseId { get; set; }
+
+    public int? TaskId { get; set; }
+
+    public bool IsPreviewSentToCustomer { get; set; }
+
     public ICollection<EArchivIdsLinked> EArchivIdsLinkeds { get; } = new List<EArchivIdsLinked>();
+    
+    public ICollection<SigningIdentity> SigningIdentities { get; } = new List<SigningIdentity>();
 }
