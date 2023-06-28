@@ -75,3 +75,7 @@ INSERT [dbo].[RealEstateSubtypes] ([Id], [ShortName], [Name], [RealEstateTypeId]
 GO
 INSERT [dbo].[RealEstateSubtypes] ([Id], [ShortName], [Name], [RealEstateTypeId]) VALUES (31, N'Nebytový prostor', N'Nebytový prostor (jednotka) vymezený podle zákona (nemá upřesnění typu nemovitosti)', 9)
 GO
+
+
+INSERT [dbo].[SqlQuery] ([SqlQueryId], [SqlQueryText], [DatabaseProvider]) VALUES (N'RealEstateSubtypes', N'SELECT Id, Name FROM dbo.RealEstateSubtypes ORDER BY Id', 4)
+GO
