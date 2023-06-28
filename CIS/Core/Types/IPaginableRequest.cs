@@ -13,13 +13,13 @@ public interface IPaginableRequest
     /// </summary>
     /// <example>10</example>
     int PageSize { get; }
-    
+
     /// <summary>
     /// Offset prvního záznamu vytaženého ze zdrojových dat - zero based.
     /// </summary>
     /// <example>0</example>
     int RecordOffset { get; }
-    
+
     /// <summary>
     /// Informace o tom, zda aktuální instance requestu obsahuje nastavení řazení záznamů.
     /// </summary>

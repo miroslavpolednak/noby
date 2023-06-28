@@ -1,27 +1,26 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
 using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
-using ExternalServices.Eas.V1;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement;
 
-internal class ValidateSalesArrangementHandler
+internal sealed class ValidateSalesArrangementHandler
     : IRequestHandler<ValidateSalesArrangementRequest, ValidateSalesArrangementResponse>
 {
     private static readonly int[] ValidCommonValues = { 0, 6 };
 
     private readonly Services.ValidationTransformationServiceFactory _transformationServiceFactory;
-    private readonly IEasClient _easClient;
     private readonly Services.Forms.FormsService _formsService;
+    private readonly Services.Forms.EasFormsManager _easFormsManager;
 
     public ValidateSalesArrangementHandler(
         Services.ValidationTransformationServiceFactory transformationServiceFactory,
-        IEasClient easClient,
-        Services.Forms.FormsService formsService)
+        Services.Forms.FormsService formsService,
+        Services.Forms.EasFormsManager easFormsManager)
     {
         _transformationServiceFactory = transformationServiceFactory;
-        _easClient = easClient;
         _formsService = formsService;
+        _easFormsManager = easFormsManager;
     }
 
     public async Task<ValidateSalesArrangementResponse> Handle(ValidateSalesArrangementRequest request, CancellationToken cancellationToken)
@@ -39,62 +38,60 @@ internal class ValidateSalesArrangementHandler
         return category switch
         {
             SalesArrangementCategories.ProductRequest => await ProcessProductRequest(salesArrangement, cancellationToken),
-            SalesArrangementCategories.ServiceRequest => await _formsService.LoadServiceForm(salesArrangement.SalesArrangementId, Enumerable.Empty<DynamicFormValues>(), cancellationToken),
+            SalesArrangementCategories.ServiceRequest => await ProcessServiceRequest(salesArrangement, cancellationToken),
             _ => throw new NotImplementedException()
         };
     }
 
     private async Task<GetEasFormResponse> ProcessProductRequest(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
-        await _formsService.UpdateContractNumber(salesArrangement, cancellationToken);
+        var dynamicFormValues = _formsService.CreateProductDynamicFormValues(salesArrangement, cancellationToken);
 
-        var response = await _formsService.LoadProductForm(salesArrangement, Enumerable.Empty<DynamicFormValues>(), cancellationToken);
+        await _easFormsManager.UpdateContractNumberIfNeeded(salesArrangement, cancellationToken);
 
-        return response;
+        return await _formsService.LoadProductForm(salesArrangement, await dynamicFormValues.ToListAsync(cancellationToken), cancellationToken);
+    }
+
+    private async Task<GetEasFormResponse> ProcessServiceRequest(SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
+        var dynamicFormValues = await _formsService.CreateServiceDynamicFormValues(salesArrangement, cancellationToken);
+
+        return await _formsService.LoadServiceForm(salesArrangement.SalesArrangementId, new[] { dynamicFormValues }, cancellationToken);
     }
 
     private async Task<ValidateSalesArrangementResponse> CheckForms(GetEasFormResponse easForm, CancellationToken cancellationToken)
     {
-        var response = new ValidateSalesArrangementResponse();
-
-        foreach (var form in easForm.Forms)
+        var checkForms = easForm.Forms.Select(f => new Eas.EasWrapper.CheckFormData
         {
-            var checkFormData = new Eas.EasWrapper.CheckFormData
-            {
-                //formular_id = 3601001,
-                //cislo_smlouvy = formData.Arrangement.ContractNumber,
-                formular_id = GetFormId(form.EasFormType),
-                cislo_smlouvy = easForm.ContractNumber,
-                // dokument_id = "9876543210",                      // ??? dokument_id je nepovinné, to neposílej
-                dokument_id = "9876543210",    // TODO: dočasný mock - odstranit až si to Assecco odladí
-                datum_prijeti = DateTime.Now.Date,                         // ??? datum prijeti dej v D1.2 aktuální datum
-                data = form.Json,
-            };
+            formular_id = Services.Forms.EasFormsManager.GetFormId(f.EasFormType),
+            cislo_smlouvy = easForm.ContractNumber,
+            dokument_id = "", //null neprojde
+            datum_prijeti = DateTime.Now.Date,
+            data = f.Json,
+        });
 
-            var checkFormResult = await _easClient.CheckFormV2(checkFormData, cancellationToken);
+        var validationResult = await Task.WhenAll(checkForms.Select(data => SendAndValidateForm(data, cancellationToken)));
 
-            if (!ValidCommonValues.Contains(checkFormResult.CommonValue))
-            {
-                var message = $"Check form common error [CommonValue: {checkFormResult.CommonValue}, CommonText: {checkFormResult.CommonText}]";
-                throw new CisValidationException(checkFormResult.CommonValue == 2 ? 18041 : 18040, message);
-            }
+        return new ValidateSalesArrangementResponse
+        {
+            ValidationMessages = { validationResult.SelectMany(messages => messages) }
+        };
+    }
 
-            var transformationService = _transformationServiceFactory.CreateService(checkFormData.formular_id);
-            response.ValidationMessages.AddRange(transformationService.TransformErrors(form.Json, checkFormResult.Detail?.errors));
+    private async Task<List<ValidationMessage>> SendAndValidateForm(Eas.EasWrapper.CheckFormData checkFormData, CancellationToken cancellationToken)
+    {
+        var checkFormResult = await _easFormsManager.CheckForms(checkFormData, cancellationToken);
+
+        if (!ValidCommonValues.Contains(checkFormResult.CommonValue))
+        {
+            var message = $"Check form common error [CommonValue: {checkFormResult.CommonValue}, CommonText: {checkFormResult.CommonText}]";
+
+            throw new CisValidationException(checkFormResult.CommonValue == 2 ? ErrorCodeMapper.SendAndValidateForm2 : ErrorCodeMapper.SendAndValidateForm1, message);
         }
 
-        return response;
-
-        static int GetFormId(EasFormType type)
-        {
-            return type switch
-            {
-                EasFormType.F3601 => 3601001,
-                EasFormType.F3602 => 3602001,
-                EasFormType.F3700 => 3700001,
-                _ => 0
-            };
-        }
+        var transformationService = _transformationServiceFactory.CreateService(checkFormData.formular_id);
+        
+        return transformationService.TransformErrors(checkFormData.data, checkFormResult.Detail?.errors);
     }
 }
 

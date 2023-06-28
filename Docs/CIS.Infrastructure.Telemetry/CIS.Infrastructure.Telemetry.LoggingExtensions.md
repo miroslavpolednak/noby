@@ -45,20 +45,20 @@ Pri ukonceni aplikaci se ujisti, ze vsechny sinky jsou vyprazdnene
 public static void CloseAndFlush();
 ```
 
-<a name='CIS.Infrastructure.Telemetry.LoggingExtensions.UseCisLogging(thisMicrosoft.AspNetCore.Builder.IApplicationBuilder)'></a>
+<a name='CIS.Infrastructure.Telemetry.LoggingExtensions.CreateStartupLogger(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder)'></a>
 
-## LoggingExtensions.UseCisLogging(this IApplicationBuilder) Method
+## LoggingExtensions.CreateStartupLogger(this WebApplicationBuilder) Method
 
-Podle nastavení v appsettings.json zařazuje middleware pro logování buď gRPC nebo Webapi.
+Vytvoreni statickeho loggeru pro logovani startupu aplikace.
 
 ```csharp
-public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseCisLogging(this Microsoft.AspNetCore.Builder.IApplicationBuilder webApplication);
+public static CIS.Infrastructure.Telemetry.IStartupLogger CreateStartupLogger(this Microsoft.AspNetCore.Builder.WebApplicationBuilder builder);
 ```
 #### Parameters
 
-<a name='CIS.Infrastructure.Telemetry.LoggingExtensions.UseCisLogging(thisMicrosoft.AspNetCore.Builder.IApplicationBuilder).webApplication'></a>
+<a name='CIS.Infrastructure.Telemetry.LoggingExtensions.CreateStartupLogger(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder).builder'></a>
 
-`webApplication` [Microsoft.AspNetCore.Builder.IApplicationBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Builder.IApplicationBuilder 'Microsoft.AspNetCore.Builder.IApplicationBuilder')
+`builder` [Microsoft.AspNetCore.Builder.WebApplicationBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Builder.WebApplicationBuilder 'Microsoft.AspNetCore.Builder.WebApplicationBuilder')
 
 #### Returns
-[Microsoft.AspNetCore.Builder.IApplicationBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Builder.IApplicationBuilder 'Microsoft.AspNetCore.Builder.IApplicationBuilder')
+[CIS.Infrastructure.Telemetry.IStartupLogger](https://docs.microsoft.com/en-us/dotnet/api/CIS.Infrastructure.Telemetry.IStartupLogger 'CIS.Infrastructure.Telemetry.IStartupLogger')

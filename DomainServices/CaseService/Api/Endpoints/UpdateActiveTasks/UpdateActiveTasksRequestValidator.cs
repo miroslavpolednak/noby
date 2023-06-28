@@ -3,16 +3,17 @@ using FluentValidation;
 
 namespace DomainServices.CaseService.Api.Endpoints.UpdateActiveTasks;
 
-internal class UpdateActiveTasksRequestValidator : AbstractValidator<UpdateActiveTasksRequest>
+internal sealed class UpdateActiveTasksRequestValidator 
+    : AbstractValidator<UpdateActiveTasksRequest>
 {
     public UpdateActiveTasksRequestValidator()
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
-            .WithMessage("Case Id must be > 0").WithErrorCode("13016");
+            .WithErrorCode(ErrorCodeMapper.CaseIdIsEmpty);
 
         RuleFor(t => t.Tasks)
-          .Must(tasks => !tasks.GroupBy(t => t.TaskProcessId).Any(i => i.Count() > 1))
-          .WithMessage($"TaskProcessId must be unique").WithErrorCode("13001");
+          .Must(tasks => !tasks.GroupBy(t => t.TaskId).Any(i => i.Count() > 1))
+          .WithErrorCode(ErrorCodeMapper.TaskProcessIdNotUnique);
     }
 }

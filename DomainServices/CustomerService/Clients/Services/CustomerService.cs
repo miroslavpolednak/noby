@@ -3,7 +3,7 @@ using DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.CustomerService.Clients.Services;
 
-internal class CustomerService : ICustomerServiceClient
+internal sealed class CustomerService : ICustomerServiceClient
 {
     private readonly Contracts.V1.CustomerService.CustomerServiceClient _service;
 
@@ -48,5 +48,10 @@ internal class CustomerService : ICustomerServiceClient
     public Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default)
     {
         return _service.SearchCustomersAsync(request, cancellationToken: cancellationToken).ResponseAsync;
+    }
+
+    public Task<ValidateContactResponse> ValidateContact(ValidateContactRequest request, CancellationToken cancellationToken = default)
+    {
+        return _service.ValidateContactAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
 }

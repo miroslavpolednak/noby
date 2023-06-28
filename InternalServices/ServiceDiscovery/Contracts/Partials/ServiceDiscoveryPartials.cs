@@ -7,7 +7,3 @@ public partial class GetServiceRequest
 public partial class GetServicesRequest
     : MediatR.IRequest<GetServicesResponse>
 { }
-
-public partial class ClearCacheRequest
-    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
-{ }

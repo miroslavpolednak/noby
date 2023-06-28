@@ -1,7 +1,7 @@
-﻿using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
+﻿using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using CIS.Core;
+using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
@@ -15,13 +15,13 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         {
             IncomeConfirmed = income.IsIncomeConfirmed,
             LastConfirmedDate = income.LastConfirmedDate ?? System.DateTime.MinValue,
-            EmploymentIncome = await mapIncomesEmployment(income.EmploymentIncomes, verification),
+            EmploymentIncomes = await mapIncomesEmployment(income.EmploymentIncomes, verification),
             EntrepreneurIncome = await mapIncomesEntrepreneur(income.EntrepreneurIncome),
             RentIncome = await mapIncomesRent(income.RentIncome),
-            OtherIncome = await mapIncomesOther(income.OtherIncomes)
+            OtherIncomes = await mapIncomesOther(income.OtherIncomes)
         };
 
-        model.IncomeCollected = model.EntrepreneurIncome is not null || model.EmploymentIncome is not null || model.RentIncome is not null || model.OtherIncome is not null;
+        model.IncomeCollected = model.EntrepreneurIncome is not null || model.EmploymentIncomes is not null || model.RentIncome is not null || model.OtherIncomes is not null;
 
         return model;
     }
@@ -33,34 +33,23 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         return (await income.SelectAsync(async t => new _C4M.LoanApplicationEmploymentIncome
             {
                 EmployerIdentificationNumber = t.EmployerIdentificationNumber,
-                EmployerType = t.WorkSectorId,
                 EmployerName = t.EmployerName,
-                Nace = t.ClassificationOfEconomicActivityId,
-                Profession = t.JobTypeId,
-                Street = t.Address?.Street,
-                StreetNumber = t.Address?.StreetNumber,
-                HouseNumber = t.Address?.HouseNumber,
-                Postcode = getZipCode(t.Address?.Postcode),//TODO c4m predela na string
-                City = t.Address?.City,
-                CountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(x => x.Id == t.Address?.CountryId)?.ShortName,
+                EmployerCountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(x => x.Id == t.CountryId.GetValueOrDefault())?.ShortName,
                 JobTitle = t.JobDescription,
-                Phone = string.IsNullOrEmpty(t.PhoneNumber) ? null : new PhoneContact { ContactType = PhoneContactContactType.BUSINESS, PhoneNumber = t.PhoneNumber },
-                AccountNumber = t.BankAccount?.ConvertToString(),
-                Domiciled = t.IsDomicile,
-                ProofType = await getProofType<LoanApplicationEmploymentIncomeProofType>(t.ProofTypeId),
-                MonthlyIncomeAmount = t.MonthlyIncomeAmount is null ? null : t.MonthlyIncomeAmount!.Amount.ToAmount(),
-                ForeignEmploymentType = (await _codebookService.IncomeForeignTypes(_cancellationToken)).FirstOrDefault(x => x.Id == t.IncomeForeignTypeId)?.Code,
-                GrossAnnualIncome = t.GrossAnnualIncome.HasValue ? Convert.ToDouble(t.GrossAnnualIncome!, System.Globalization.CultureInfo.InvariantCulture) : null,
+                AccountantContacts = string.IsNullOrEmpty(t.PhoneNumber) ? null : new List<_C4M.Contact> { new _C4M.Contact { ContactCategory = _C4M.ContactCategoryType.BUSINESS, ContactType = _C4M.ContactType.PHONE, Value = t.PhoneNumber } },
+                Domiciled = t.IsDomicile.ToInt(),
+                ProofType = await getProofType<_C4M.ProofType>(t.ProofTypeId),
+                ProofMonthlyIncomeAmount = t.MonthlyIncomeAmount is null ? null : t.MonthlyIncomeAmount!.Amount.ToAmount(),
+                ForeignEmploymentTypeCode = (await _codebookService.IncomeForeignTypes(_cancellationToken)).FirstOrDefault(x => x.Id == t.IncomeForeignTypeId)?.Code,
                 ProofConfirmationContactPhone = t.ConfirmationContactPhone,
                 ProofConfirmationContactSurname = t.ConfirmationPerson,
                 ProofCreatedOn = t.ConfirmationDate,
                 ProbationaryPeriod = t.JobTrialPeriod,
                 NoticePeriod = t.NoticePeriod,
-                EmploymentType = (await _codebookService.EmploymentTypes(_cancellationToken)).FirstOrDefault(x => x.Id == t.EmploymentTypeId)?.Code,
+                EmploymentTypeCode = (await _codebookService.EmploymentTypes(_cancellationToken)).FirstOrDefault(x => x.Id == t.EmploymentTypeId)?.Code,
                 FirstContractFrom = t.FirstWorkContractSince,
-                CurrentContractFrom = t.CurrentWorkContractSince,
-                CurrentContractTo = t.CurrentWorkContractTo,
-                VerificationPriority = verification,
+                DateRange = t.CurrentWorkContractSince != null || t.CurrentWorkContractTo != null ? new _C4M.DateRange { DateFrom = t.CurrentWorkContractSince, DateTo = t.CurrentWorkContractTo} : null,
+                VerificationPriority = verification.ToInt(),
                 IssuedByExternalAccountant = t.ConfirmationByCompany,
                 IncomeDeduction = getDeductions(t.IncomeDeduction)
         }))
@@ -74,18 +63,12 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         return new _C4M.LoanApplicationEntrepreneurIncome
         {
             EntrepreneurIdentificationNumber = income.EntrepreneurIdentificationNumber,
-            Nace = income.ClassificationOfEconomicActivityId,
-            Profession = income.JobTypeId,
-            Street = income.Address?.Street,
-            StreetNumber = income.Address?.StreetNumber,
-            HouseNumber = income.Address?.HouseNumber,
-            Postcode = getZipCode(income.Address?.Postcode),//TODO zmeni c4m long na string?
-            City = income.Address?.City,
-            CountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(t => t.Id == income.Address?.CountryId)?.ShortName,
-            EstablishedOn = income.EstablishedOn,
-            Domiciled = income.IsDomicile,
-            ProofType = await getProofType<LoanApplicationEntrepreneurIncomeProofType>(income.ProofTypeId),
-            AnnualIncomeAmount = income.AnnualIncomeAmount.ToAmount(),
+            CountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(t => t.Id == income.CountryId.GetValueOrDefault())?.ShortName,
+            DateRange = income.EstablishedOn != null ? new _C4M.DateRange { DateFrom = income.EstablishedOn } : null,
+            Domiciled = income.IsDomicile.ToInt(),
+            ProofType = await getProofType<_C4M.ProofType>(income.ProofTypeId),
+            DeclaredIncome = income.AnnualIncomeAmount.ToAmount(),
+            DeclaredIncomePeriod = _C4M.IncomePeriodType.YEAR,
             LumpSumModified = income.LumpSumModified,
             LumpSumTaxationRegime = income.LumpSumTaxationRegime
         };
@@ -94,44 +77,38 @@ internal sealed class HouseholdCustomerIncomeChildMapper
     private async Task<_C4M.LoanApplicationRentIncome?> mapIncomesRent(_V2.LoanApplicationRentIncome? income)
         => income is null ? null : new _C4M.LoanApplicationRentIncome
         {
-            AccountNumber = income.BankAccount?.ConvertToString(),
-            Domiciled = income.IsDomicile,
-            MonthlyIncomeAmount = income.MonthlyIncomeAmount.ToAmount(),
-            ProofType = await getProofType<LoanApplicationRentIncomeProofType>(income.ProofTypeId)
+            Domiciled = income.IsDomicile.ToInt(),
+            DeclaredIncome = income.MonthlyIncomeAmount.ToAmount(),
+            DeclaredIncomePeriod = _C4M.IncomePeriodType.MONTH,
+            ProofType = await getProofType<_C4M.ProofType>(income.ProofTypeId)
         };
 
     private async Task<List<_C4M.LoanApplicationOtherIncome>?> mapIncomesOther(List<_V2.LoanApplicationOtherIncome>? incomes)
         => incomes is null ? null : (await incomes.SelectAsync(async income => new _C4M.LoanApplicationOtherIncome
         {
-            AccountNumber = income.BankAccount?.ConvertToString(),
-            Domiciled = income.IsDomicile,
-            MonthlyIncomeAmount = income.MonthlyIncomeAmount.ToAmount(),
-            Type = (await _codebookService.IncomeOtherTypes(_cancellationToken)).FirstOrDefault(x => x.Id == income.IncomeOtherTypeId)?.Code,
-            ProofType = await getProofType<LoanApplicationOtherIncomeProofType>(income.ProofTypeId)
+            Domiciled = income.IsDomicile.ToInt(),
+            DeclaredIncome = income.MonthlyIncomeAmount.ToAmount(),
+            DeclaredIncomePeriod = _C4M.IncomePeriodType.MONTH,
+            OtherIncomeTypeCode = (await _codebookService.IncomeOtherTypes(_cancellationToken)).FirstOrDefault(x => x.Id == income.IncomeOtherTypeId)?.Code,
+            ProofType = await getProofType<_C4M.ProofType>(income.ProofTypeId)
         })).ToList();
 
     private static List<_C4M.IncomeDeduction> getDeductions(_V2.LoanApplicationEmploymentIncomeDeduction? deduction)
-        => new List<IncomeDeduction>
+        => new ()
         {
-            new IncomeDeduction { Type = IncomeDeductionType.EXECUTION, Amount = (deduction?.Execution).ToAmountDefault() },
-            new IncomeDeduction { Type = IncomeDeductionType.INSTALLMENTS, Amount = (deduction?.Installments).ToAmountDefault() },
-            new IncomeDeduction { Type = IncomeDeductionType.OTHER, Amount = (deduction?.Other).ToAmountDefault() }
+            new _C4M.IncomeDeduction { Type = _C4M.IncomeDeductionType.EXECUTION, Amount = (deduction?.Execution).ToAmountDefault() },
+            new _C4M.IncomeDeduction { Type = _C4M.IncomeDeductionType.INSTALLMENTS, Amount = (deduction?.Installments).ToAmountDefault() },
+            new _C4M.IncomeDeduction { Type = _C4M.IncomeDeductionType.OTHER, Amount = (deduction?.Other).ToAmountDefault() }
         };
 
     private async Task<TResponse?> getProofType<TResponse>(int? proofTypeId) where TResponse : struct
         => Helpers.GetEnumFromString<TResponse>((await _codebookService.ProofTypes(_cancellationToken)).FirstOrDefault(t => t.Id == proofTypeId)?.Code);
 
-    private static long? getZipCode(string? zip)
-    {
-        long code;
-        return long.TryParse(zip, out code) ? code : null;
-    }
-
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CancellationToken _cancellationToken;
 
     public HouseholdCustomerIncomeChildMapper(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         CancellationToken cancellationToken)
     {
         _cancellationToken = cancellationToken;

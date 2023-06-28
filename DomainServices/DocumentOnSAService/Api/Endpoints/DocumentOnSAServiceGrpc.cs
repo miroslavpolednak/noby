@@ -20,10 +20,7 @@ internal sealed class DocumentOnSAServiceGrpc : Contracts.v1.DocumentOnSAService
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<Empty> StopSigning(StopSigningRequest request, ServerCallContext context)
-    {
-        await _mediator.Send(request, context.CancellationToken);
-        return new Empty();
-    }
+        => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<GetDocumentsToSignListResponse> GetDocumentsToSignList(GetDocumentsToSignListRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
@@ -32,8 +29,23 @@ internal sealed class DocumentOnSAServiceGrpc : Contracts.v1.DocumentOnSAService
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<Empty> SignDocumentManually(SignDocumentManuallyRequest request, ServerCallContext context)
-    {
-        await _mediator.Send(request, context.CancellationToken);
-        return new Empty();
-    }
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<GetDocumentsOnSAListResponse> GetDocumentsOnSAList(GetDocumentsOnSAListRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<CreateDocumentOnSAResponse> CreateDocumentOnSA(CreateDocumentOnSARequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Empty> LinkEArchivIdToDocumentOnSA(LinkEArchivIdToDocumentOnSARequest request, ServerCallContext context)
+     => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<GetElectronicDocumentFromQueueResponse> GetElectronicDocumentFromQueue(GetElectronicDocumentFromQueueRequest request, ServerCallContext context)
+     => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<GetElectronicDocumentPreviewResponse> GetElectronicDocumentPreview(GetElectronicDocumentPreviewRequest request, ServerCallContext context)
+     => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Empty> SetDocumentOnSAArchived(SetDocumentOnSAArchivedRequest request, ServerCallContext context)
+     => await _mediator.Send(request, context.CancellationToken);
 }

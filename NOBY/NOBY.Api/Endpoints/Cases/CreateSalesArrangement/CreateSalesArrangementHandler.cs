@@ -18,19 +18,22 @@ internal sealed class CreateSalesArrangementHandler
         // vytvorit SA
         var newSaId = await _salesArrangementService.CreateSalesArrangement(createRequest, cancellationToken);
 
+        // post procesing
+        await builder.PostCreateProcessing(newSaId, cancellationToken);
+
         return new CreateSalesArrangementResponse
         {
             SalesArrangementId = newSaId
         };
     }
 
-    private readonly Services.CreateSalesArrangementParametersFactory _createService;
+    private readonly CreateSalesArrangementParametersFactory _createService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
-
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
+    
     public CreateSalesArrangementHandler(
-        Services.CreateSalesArrangementParametersFactory createService,
-        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService, 
+        CreateSalesArrangementParametersFactory createService,
+        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService, 
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _createService = createService;

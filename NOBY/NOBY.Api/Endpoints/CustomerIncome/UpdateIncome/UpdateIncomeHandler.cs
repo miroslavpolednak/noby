@@ -3,7 +3,7 @@ using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.CustomerIncome.UpdateIncome;
 
-internal class UpdateIncomeHandler
+internal sealed class UpdateIncomeHandler
     : IRequestHandler<UpdateIncomeRequest>
 {
     public async Task Handle(UpdateIncomeRequest request, CancellationToken cancellationToken)

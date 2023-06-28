@@ -1,8 +1,6 @@
 ﻿using DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Clients;
 using Microsoft.EntityFrameworkCore;
-using Grpc.Core;
-using CIS.Infrastructure.gRPC;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetMortgageOfferFPSchedule;
 
@@ -11,10 +9,12 @@ internal sealed class GetMortgageOfferFPScheduleHandler
 {
     public async Task<GetMortgageOfferFPScheduleResponse> Handle(GetMortgageOfferFPScheduleRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.Offers
-           .AsNoTracking()
-           .Where(t => t.OfferId == request.OfferId)
-           .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
+        var entity = await _dbContext
+            .Offers
+            .AsNoTracking()
+            .Where(t => t.OfferId == request.OfferId)
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OfferNotFound, request.OfferId);
 
         // load codebook DrawingDuration for remaping Id -> DrawingDuration
         var drawingDurationsById = (await _codebookService.DrawingDurations(cancellationToken)).ToDictionary(i => i.Id);
@@ -38,11 +38,11 @@ internal sealed class GetMortgageOfferFPScheduleHandler
     }
 
     private readonly Database.OfferServiceDbContext _dbContext;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
 
     public GetMortgageOfferFPScheduleHandler(
-        Database.OfferServiceDbContext dbContext, ICodebookServiceClients codebookService, EasSimulationHT.IEasSimulationHTClient easSimulationHTClient)
+        Database.OfferServiceDbContext dbContext, ICodebookServiceClient codebookService, EasSimulationHT.IEasSimulationHTClient easSimulationHTClient)
     {
         _dbContext = dbContext;
         _codebookService = codebookService;

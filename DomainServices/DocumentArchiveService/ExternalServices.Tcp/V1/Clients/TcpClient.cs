@@ -30,7 +30,7 @@ public class TcpClient : ITcpClient
 
             if (result.Contains("item not found"))
             {
-                throw new CisNotFoundException(14002, "No document exist on specified url");
+                throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.TcpDocumentNotExistOnUrl);
             }
             else
             {

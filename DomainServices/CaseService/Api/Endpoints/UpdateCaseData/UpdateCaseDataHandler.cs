@@ -9,12 +9,16 @@ internal sealed class UpdateCaseDataHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateCaseDataRequest request, CancellationToken cancellation)
     {
         // zjistit zda existuje case
-        var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation)
-            ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
+        var entity = await _dbContext
+            .Cases
+            .FirstOrDefaultAsync(t => t.CaseId == request.CaseId, cancellation)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // zkontrolovat ProdInstType
         if (!(await _codebookService.ProductTypes(cancellation)).Any(t => t.Id == request.Data.ProductTypeId))
-            throw new CisNotFoundException(13014, nameof(request.Data.ProductTypeId), request.Data.ProductTypeId);
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ProductTypeIdNotFound, request.Data.ProductTypeId);
+        }
 
         var bonusChanged = entity.IsEmployeeBonusRequested != request.Data.IsEmployeeBonusRequested;
 
@@ -31,14 +35,9 @@ internal sealed class UpdateCaseDataHandler
         {
             try
             {
-                await _mediator.Publish(new Notifications.CaseStateChangedNotification
+                await _mediator.Send(new NotifyStarbuildRequest
                 {
-                    CaseId = request.CaseId,
-                    CaseStateId = entity.State,
-                    ClientName = $"{entity.FirstNameNaturalPerson} {entity.Name}",
-                    ProductTypeId = request.Data.ProductTypeId,
-                    CaseOwnerUserId = entity.OwnerUserId,
-                    IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested
+                    CaseId = request.CaseId
                 }, cancellation);
             }
             catch (Exception ex)
@@ -53,13 +52,13 @@ internal sealed class UpdateCaseDataHandler
 
     private readonly ILogger<UpdateCaseDataHandler> _logger;
     private readonly IMediator _mediator;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CaseServiceDbContext _dbContext;
 
     public UpdateCaseDataHandler(
         ILogger<UpdateCaseDataHandler> logger,
         IMediator mediator,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         CaseServiceDbContext dbContext)
     {
         _logger = logger;

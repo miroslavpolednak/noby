@@ -4,7 +4,6 @@
 	  <TargetFramework>net7.0</TargetFramework>
 	  <Company>Wookiee.Apps s.r.o.</Company>
 	  <Product>Common Infrastructure Solution</Product>
-	  <Authors>Filip Tuma</Authors>
 	  <LangVersion>preview</LangVersion>
 	  <Nullable>enable</Nullable>
 	  <Platforms>AnyCPU;x64</Platforms>
@@ -17,9 +16,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.21.12" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.51.0" />
-		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.51.0" />
+		<PackageReference Include="Google.Protobuf" Version="3.23.3" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.54.0" />
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.54.0" />
 	</ItemGroup>
 
 	<ItemGroup>

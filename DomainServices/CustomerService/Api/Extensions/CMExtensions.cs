@@ -1,12 +1,12 @@
 ﻿using CIS.Foms.Enums;
 using FastEnumUtility;
-using __MpHome = ExternalServices.MpHome.V1_1.Contracts;
+using __MpHome = ExternalServices.MpHome.V1.Contracts;
 
 namespace DomainServices.CustomerService.Api;
 
 public static class CMExtensions
 {
-    public static string? ToCMString(this string str)
+    public static string? ToCMString(this string? str)
     {
         return string.IsNullOrWhiteSpace(str) ? null : str;
     }
@@ -23,15 +23,15 @@ public static class CMExtensions
         {
             case (int)ContactTypes.Mobil:
                 if (string.IsNullOrEmpty(contact.Value))
-                    item.Mobile = new MobilePhone();
+                    item.Mobile = new MobilePhoneItem();
                 else if (contact.Value.Length == 9)
-                    item.Mobile = new MobilePhone { PhoneNumber = contact.Value, PhoneIDC = "" };
+                    item.Mobile = new MobilePhoneItem { PhoneNumber = contact.Value, PhoneIDC = "" };
                 else
-                    item.Mobile = new MobilePhone { PhoneNumber = contact.Value[^9..], PhoneIDC = contact.Value[..^9] };
+                    item.Mobile = new MobilePhoneItem { PhoneNumber = contact.Value[^9..].Trim(), PhoneIDC = contact.Value[..^9].Trim() };
                 break;
 
             case (int)ContactTypes.Email:
-                item.Email = new EmailAddress { Address = contact.Value ?? "" };
+                item.Email = new EmailAddressItem { EmailAddress = contact.Value ?? "" };
                 break;
 
             default:
@@ -41,7 +41,7 @@ public static class CMExtensions
         return item;
     }
 
-    public static __MpHome.ContactRequest ToExternalService(this DomainServices.CustomerService.Contracts.Contact contact, List<CodebookService.Contracts.Endpoints.ContactTypes.ContactTypeItem> contactTypes)
+    public static __MpHome.ContactRequest ToExternalService(this DomainServices.CustomerService.Contracts.Contact contact, List<CodebookService.Contracts.v1.ContactTypesResponse.Types.ContactTypeItem> contactTypes)
     {
         var item = new __MpHome.ContactRequest
         {
@@ -49,7 +49,7 @@ public static class CMExtensions
             Primary = true,
             Value = contact.DataCase switch
             {
-                Contact.DataOneofCase.Email => contact.Email?.Address,
+                Contact.DataOneofCase.Email => contact.Email?.EmailAddress,
                 Contact.DataOneofCase.Mobile => $"{contact.Mobile?.PhoneIDC}{contact.Mobile?.PhoneNumber}",
                 _ => throw new NotImplementedException()
             }

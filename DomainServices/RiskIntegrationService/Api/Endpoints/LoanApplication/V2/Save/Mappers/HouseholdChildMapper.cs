@@ -1,8 +1,8 @@
-﻿using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
+﻿using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
+using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
 using CIS.Core;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
@@ -19,7 +19,7 @@ internal sealed class HouseholdChildMapper
             return new _C4M.LoanApplicationHousehold
             {
                 Id = household!.HouseholdId,
-                RoleCode = Helpers.GetEnumFromString<LoanApplicationHouseholdRoleCode>(householdTypes.FirstOrDefault(t => t.Id == household.HouseholdTypeId)?.RdmCode),
+                RoleCode = Helpers.GetEnumFromString<_C4M.RoleType>(householdTypes.FirstOrDefault(t => t.Id == household.HouseholdTypeId)?.RdmCode),
                 ChildrenUnderAnd10 = household.ChildrenUpToTenYearsCount,
                 ChildrenOver10 = household.ChildrenOverTenYearsCount,
                 HouseholdExpensesSummary = mapExpenses(household.Expenses),
@@ -36,8 +36,8 @@ internal sealed class HouseholdChildMapper
     {
         // vytvorit prazdnou kolekci
         var list = FastEnum
-            .GetValues<CreditLiabilitiesSummaryProductClusterCode>()
-            .Select(t => new CreditLiabilitiesSummary
+            .GetValues<_C4M.CreditLiabilitiesSummaryType>()
+            .Select(t => new _C4M.CreditLiabilitiesSummary
             {
                 ProductClusterCode = t
             })
@@ -49,7 +49,7 @@ internal sealed class HouseholdChildMapper
             obligations.GroupBy(t =>
                 {
                     var typeCode = types.FirstOrDefault(x => x.Id == t.ObligationTypeId)?.Code ?? throw new CisValidationException(17008, $"ObligationTypeId={t.ObligationTypeId} does not exist");
-                    return FastEnum.Parse<CreditLiabilitiesSummaryProductClusterCode>(typeCode);
+                    return FastEnum.Parse<_C4M.CreditLiabilitiesSummaryType>(typeCode);
                 })
                 .ToList()
                 .ForEach(g =>
@@ -67,8 +67,8 @@ internal sealed class HouseholdChildMapper
     {
         // vytvorit prazdnou kolekci
         var list = FastEnum
-            .GetValues<LoanInstallmentsSummaryProductClusterCode>()
-            .Select(t => new LoanInstallmentsSummary
+            .GetValues<_C4M.LoanInstallmentsSummaryType>()
+            .Select(t => new _C4M.LoanInstallmentsSummary
             {
                 ProductClusterCode = t
             })
@@ -82,7 +82,7 @@ internal sealed class HouseholdChildMapper
                 .GroupBy(t =>
                 {
                     var typeCode = types.FirstOrDefault(x => x.Id == t.ObligationTypeId)?.Code ?? throw new CisValidationException(17008, $"ObligationTypeId={t.ObligationTypeId} does not exist");
-                    return FastEnum.Parse<LoanInstallmentsSummaryProductClusterCode>(typeCode);
+                    return FastEnum.Parse<_C4M.LoanInstallmentsSummaryType>(typeCode);
                 })
                 .ToList()
                 .ForEach(g =>
@@ -102,20 +102,20 @@ internal sealed class HouseholdChildMapper
     static List<_C4M.ExpensesSummary> mapExpenses(Contracts.Shared.V1.ExpensesSummary? expenses)
         => new()
         {
-            new() { Amount = (expenses?.Rent ?? 0M).ToAmount(), Category = ExpensesSummaryCategory.RENT },
-            new() { Amount = (expenses?.Saving ?? 0).ToAmount(), Category = ExpensesSummaryCategory.SAVINGS },
-            new() { Amount = (expenses?.Insurance ?? 0).ToAmount(), Category = ExpensesSummaryCategory.INSURANCE },
-            new() { Amount = (expenses?.Other ?? 0).ToAmount(), Category = ExpensesSummaryCategory.OTHER },
-            new() { Amount = (0M).ToAmount(), Category = ExpensesSummaryCategory.ALIMONY }
+            new() { Amount = (expenses?.Rent ?? 0M).ToAmount(), Category = _C4M.ExpensesSummaryCategoryType.RENT },
+            new() { Amount = (expenses?.Saving ?? 0).ToAmount(), Category = _C4M.ExpensesSummaryCategoryType.SAVINGS },
+            new() { Amount = (expenses?.Insurance ?? 0).ToAmount(), Category = _C4M.ExpensesSummaryCategoryType.INSURANCE },
+            new() { Amount = (expenses?.Other ?? 0).ToAmount(), Category = _C4M.ExpensesSummaryCategoryType.OTHER },
+            new() { Amount = (0M).ToAmount(), Category = _C4M.ExpensesSummaryCategoryType.ALIMONY }
         };
 
     private readonly HouseholdCustomerChildMapper _customerMapper;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CancellationToken _cancellationToken;
 
     public HouseholdChildMapper(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
-        _RAT.RiskApplicationTypeItem riskApplicationType,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
+        RiskApplicationTypesResponse.Types.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellationToken)
     {
         _cancellationToken = cancellationToken;

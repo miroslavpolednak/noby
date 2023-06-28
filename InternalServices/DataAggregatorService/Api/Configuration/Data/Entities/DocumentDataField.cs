@@ -16,6 +16,8 @@ internal class DocumentDataField
 
     public string? DefaultTextIfNull { get; set; }
 
+    public byte? TextAlign { get; set; }
+
     public Document Document { get; set; } = null!;
 
     public DataField DataField { get; set; } = null!;

@@ -2,8 +2,6 @@
 
 public class SalesArrangementListItem
 {
-    public string? ProductName { get; set; }
-
     public int SalesArrangementId { get; set; }
     
     public int? OfferId { get; set; }

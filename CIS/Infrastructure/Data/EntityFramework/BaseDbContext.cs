@@ -21,7 +21,7 @@ public abstract class BaseDbContext<TDbContext>
     /// <summary>
     /// Automaticka aplikace created/modified/actual interfacu
     /// </summary>
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await addInterfaceFields(cancellationToken);
         return await base.SaveChangesAsync(cancellationToken);
@@ -29,7 +29,8 @@ public abstract class BaseDbContext<TDbContext>
 
     public override int SaveChanges()
     {
-        throw new NotImplementedException("Use async version of SaveChanges() method!");
+        addInterfaceFields().GetAwaiter().GetResult();
+        return base.SaveChanges();
     }
 
     #region DateOnly conversions
@@ -65,7 +66,7 @@ public abstract class BaseDbContext<TDbContext>
     }
     #endregion DateOnly conversions
 
-    private async Task addInterfaceFields(CancellationToken cancellationToken)
+    private async Task addInterfaceFields(CancellationToken cancellationToken = default)
     {
         foreach (var entry in this.ChangeTracker.Entries())
         {
@@ -76,7 +77,7 @@ public abstract class BaseDbContext<TDbContext>
                     {
                         if (CurrentUser!.IsAuthenticated)
                         {
-                            await CurrentUser.EnsureDetails(cancellationToken);
+                            await CurrentUser!.EnsureDetails(cancellationToken);
                             obj1.CreatedUserId = CurrentUser!.User!.Id;
                             obj1.CreatedUserName = CurrentUser!.UserDetails!.DisplayName;
                         }
@@ -86,7 +87,7 @@ public abstract class BaseDbContext<TDbContext>
                     {
                         if (CurrentUser!.IsAuthenticated)
                         {
-                            await CurrentUser.EnsureDetails(cancellationToken);
+                            await CurrentUser!.EnsureDetails(cancellationToken);
                             obj2.ModifiedUserId = CurrentUser!.User!.Id;
                             obj2.ModifiedUserName = CurrentUser!.UserDetails!.DisplayName;
                         }
@@ -98,7 +99,7 @@ public abstract class BaseDbContext<TDbContext>
                     {
                         if (CurrentUser!.IsAuthenticated)
                         {
-                            await CurrentUser.EnsureDetails(cancellationToken);
+                            await CurrentUser!.EnsureDetails(cancellationToken);
                             obj3.ModifiedUserId = CurrentUser!.User!.Id;
                             obj3.ModifiedUserName = CurrentUser!.UserDetails!.DisplayName;
                         }

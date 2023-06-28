@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using CIS.Core.Exceptions;
+using DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Dto;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 
 namespace DomainServices.CustomerService.Api.Extensions;
@@ -14,7 +15,7 @@ internal sealed class CustomerManagementErrorMap
         MapErrors();
     }
 
-    public long ResolveAndThrowIfError(__Contracts.CreateIdentifiedSubjectResponse response)
+    public static long ResolveAndThrowIfError(__Contracts.CreateIdentifiedSubjectResponse response)
     {
         switch (response.ResponseCode)
         {
@@ -24,7 +25,7 @@ internal sealed class CustomerManagementErrorMap
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED when response.IdentifiedSubjects.Count == 1:
                 {
                     // nemame jak vratit ID (nevracime Result object), takze do zpravy...
-                    throw new CisValidationException(11023, response.IdentifiedSubjects.First().CustomerId.ToString());
+                    throw new CisValidationException(11023, response.IdentifiedSubjects.First().CustomerId.ToString(System.Globalization.CultureInfo.InvariantCulture));
                 }
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED:
@@ -34,24 +35,29 @@ internal sealed class CustomerManagementErrorMap
                 }
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.NOT_FOUND_IN_BR:
-                throw new CisValidationException(11024, "KB CM: Unable to identify customer in state registry ");
+                throw new CisValidationException(11025, "KB CM: Unable to identify customer in state registry ");
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.UNAVAILABLE_BR:
                 throw new CisValidationException(11026, "KB CM: State registry is unavailable");
 
             default:
-                throw new InvalidEnumArgumentException(nameof(response.ResponseCode), (int)response.ResponseCode, typeof(__Contracts.CreateIdentifiedSubjectResponseResponseCode));
+                throw new InvalidEnumArgumentException(nameof(response.ResponseCode), (int)(response.ResponseCode ?? 0), typeof(__Contracts.CreateIdentifiedSubjectResponseResponseCode));
         }
     }
 
-    public void ResolveValidationError(string errorCode)
+    public void ResolveValidationError(IdentifiedSubjectError errorData)
     {
-        if (!_errors.ContainsKey(errorCode))
-            return;
+        foreach (var errorMessage in errorData.Detail)
+        {
+            if (!_errors.ContainsKey(errorMessage))
+                continue;
 
-        var error = _errors[errorCode];
+            var error = _errors[errorMessage];
 
-        throw new CisValidationException(error.ErrorCode, $"{errorCode} - {error.Description}");
+            throw new CisValidationException(error.ErrorCode, $"{errorData.Message}, {errorMessage} - {error.Description}");
+        }
+
+        throw new CisValidationException($"{errorData.Message}, Detail: {string.Join("; ", errorData.Detail)}");
     }
 
     private void MapErrors()
@@ -72,7 +78,7 @@ internal sealed class CustomerManagementErrorMap
         AddError(11021,
                  "KB CM: Unable to create customer - Address parameters are incorrect",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_POST_CODE_INVALID",
-                 "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY," +
+                 "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_ADDRESS_POINT_INVALID",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_BUILDING_NUMBER_EMPTY",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_PRAGUE_DISTRICT_EMPTY",
@@ -81,7 +87,7 @@ internal sealed class CustomerManagementErrorMap
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_PO_BOX_FORBIDDEN_FIELDS_USED",
                  "CM_PRIMARY_ADDRESS_COMPONENT_FORMAT_PO_BOX_NONNUMERICAL",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_POST_CODE_INVALID",
-                 "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY," +
+                 "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_CITY_DISTRICT_EMPTY",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_ADDRESS_POINT_INVALID",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_BUILDING_NUMBER_EMPTY",
                  "CM_CONTACT_ADDRESS_COMPONENT_FORMAT_PRAGUE_DISTRICT_EMPTY",
@@ -119,7 +125,7 @@ internal sealed class CustomerManagementErrorMap
         }
     }
 
-    private record Error
+    private sealed record Error
     {
         public int ErrorCode { get; init; }
 

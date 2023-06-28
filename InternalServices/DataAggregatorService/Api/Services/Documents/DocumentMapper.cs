@@ -36,13 +36,14 @@ internal class DocumentMapper
         {
             var stringFormat = sourceData.StringFormat;
 
-            if (sourceData.SourceFieldId.HasValue && dynamicStringFormats.ContainsKey(sourceData.SourceFieldId.Value))
-                stringFormat = dynamicStringFormats[sourceData.SourceFieldId.Value];
+            if (sourceData.SourceFieldId.HasValue && dynamicStringFormats.TryGetValue(sourceData.SourceFieldId.Value, out var format))
+                stringFormat = format;
 
             var fieldData = new DocumentFieldData
             {
                 FieldName = sourceData.AcroFieldName,
                 StringFormat = stringFormat,
+                TextAlign = sourceData.TextAlign
             };
 
             SetDocumentFieldDataValue(fieldData, sourceData.Value);
@@ -60,7 +61,7 @@ internal class DocumentMapper
                       .Where(d => d.Format is not null)
                       .ToDictionary(d => d.Key, d => d.Format!);
 
-    private void SetDocumentFieldDataValue(DocumentFieldData fieldData, object? value)
+    private static void SetDocumentFieldDataValue(DocumentFieldData fieldData, object? value)
     {
         if (TrySetCommonValue(fieldData, value))
             return;
@@ -83,7 +84,7 @@ internal class DocumentMapper
                 continue;
 
             if (collectionSource is not IEnumerable collection)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException($"Path {table.CollectionSourcePath} does not return IEnumerable.");
 
             yield return new DocumentFieldData
             {

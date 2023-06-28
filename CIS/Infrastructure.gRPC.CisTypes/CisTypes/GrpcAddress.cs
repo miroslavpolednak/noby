@@ -19,13 +19,14 @@ public partial class GrpcAddress
             CityDistrict = address.CityDistrict,
             PragueDistrict = address.PragueDistrict,
             CountrySubdivision = address.CountrySubdivision,
-            PrimaryAddressFrom = address.PrimaryAddressFrom,
             AddressPointId = address.AddressPointId,
             DeliveryDetails = address.DeliveryDetails,
-            EvidenceNumber = address.EvidenceNumber
+            EvidenceNumber = address.EvidenceNumber,
+            SingleLineAddressPoint = address.SingleLineAddressPoint,
+            IsAddressConfirmed = address.IsAddressConfirmed
         };
     }
-
+    
     public static implicit operator GrpcAddress?(Foms.Types.Address? address)
     {
         if (address is null) return null;
@@ -45,8 +46,9 @@ public partial class GrpcAddress
             CityDistrict = address.CityDistrict ?? string.Empty,
             PragueDistrict = address.PragueDistrict ?? string.Empty,
             CountrySubdivision = address.CountrySubdivision ?? string.Empty,
-            PrimaryAddressFrom = address.PrimaryAddressFrom,
-            AddressPointId = address.AddressPointId ?? string.Empty
+            AddressPointId = address.AddressPointId ?? string.Empty,
+            SingleLineAddressPoint = address.SingleLineAddressPoint,
+            IsAddressConfirmed = address.IsAddressConfirmed
         };
     }
 }

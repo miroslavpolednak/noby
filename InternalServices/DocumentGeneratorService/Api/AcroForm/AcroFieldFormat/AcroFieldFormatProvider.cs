@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormatters;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
 
@@ -10,11 +9,9 @@ public class AcroFieldFormatProvider : IFormatProvider, ICustomFormatter
 
     public AcroFieldFormatProvider()
     {
-        var cultureInfo = (CultureInfo)CultureInfo.GetCultureInfo("cs").Clone();
+        _cultureInfo = (CultureInfo)CultureInfo.GetCultureInfo("cs").Clone();
 
-        cultureInfo.NumberFormat.CurrencySymbol = "Kč";
-
-        _cultureInfo = cultureInfo;
+        _cultureInfo.NumberFormat.CurrencySymbol = "Kč";
     }
 
     public string Format(object value, string? format) =>
@@ -25,13 +22,7 @@ public class AcroFieldFormatProvider : IFormatProvider, ICustomFormatter
         if (typeof(ICustomFormatter) == formatType)
             return this;
 
-        if (typeof(NumberFormatInfo) == formatType)
-            return _cultureInfo.NumberFormat;
-
-        if (typeof(DateTimeFormatInfo) == formatType)
-            return _cultureInfo.DateTimeFormat;
-
-        return default;
+        return _cultureInfo.GetFormat(formatType);
     }
 
     string ICustomFormatter.Format(string? format, object? arg, IFormatProvider? formatProvider)

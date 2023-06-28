@@ -1,6 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Api.Services;
-using Newtonsoft.Json.Linq;
-using System.Collections.Immutable;
+﻿using Newtonsoft.Json.Linq;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using static DomainServices.SalesArrangementService.Api.Services.ValidationTransformationCache;
@@ -12,7 +10,7 @@ internal sealed partial class ValidationTransformationServiceFactory
     private sealed class ValidationTransformationService
         : IValidationTransformationService
     {
-        public List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.Error[]>? errors)
+        public List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.ErrorDto[]>? errors)
         {
             // no errors -> empty list
             if (errors is null || !errors.Any()) return new List<Contracts.ValidationMessage>(0);
@@ -112,7 +110,7 @@ internal sealed partial class ValidationTransformationServiceFactory
 
             TransformationItem getTransformationItem(string key)
             {
-                if (_transformationMatrix.Any(t => t.Key == key))
+                if (_transformationMatrix.ContainsKey(key))
                 {
                     return _transformationMatrix[key];
                 }
@@ -137,9 +135,9 @@ internal sealed partial class ValidationTransformationServiceFactory
 
         // instance props
         private JObject? _jsonFormData;
-        private readonly ImmutableDictionary<string, TransformationItem> _transformationMatrix;
+        private readonly IReadOnlyDictionary<string, TransformationItem> _transformationMatrix;
 
-        public ValidationTransformationService(ImmutableDictionary<string, TransformationItem> transformationMatrix)
+        public ValidationTransformationService(IReadOnlyDictionary<string, TransformationItem> transformationMatrix)
         {
             _transformationMatrix = transformationMatrix;
         }

@@ -22,8 +22,8 @@ internal sealed class LinkModelationHandler
             EmailForOffer = request.OfferContacts?.EmailAddress?.EmailAddress ?? "",
             PhoneNumberForOffer = new _Ca.Phone
             {
-                PhoneNumber = request.OfferContacts?.PhoneNumber?.PhoneNumber ?? "",
-                PhoneIDC = request.OfferContacts?.PhoneNumber?.PhoneIDC ?? ""
+                PhoneNumber = request.OfferContacts?.MobilePhone?.PhoneNumber ?? "",
+                PhoneIDC = request.OfferContacts?.MobilePhone?.PhoneIDC ?? ""
             }
         };
         await _caseService.UpdateOfferContacts(saInstance.CaseId, offerContacts, cancellationToken);

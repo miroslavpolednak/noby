@@ -19,4 +19,6 @@ internal class Relationship
     public DateTime? PlatnostOd { get; set; }
 
     public virtual Partner Partner { get; set; } = null!;
+
+    public bool? Zmocnenec { get; set; }
 }

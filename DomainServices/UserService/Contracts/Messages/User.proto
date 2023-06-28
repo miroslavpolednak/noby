@@ -1,0 +1,49 @@
+﻿syntax = "proto3";
+package DomainServices.UserService;
+option csharp_namespace = "DomainServices.UserService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "UserIdentity.proto";
+
+message User {
+	// ID uzivatele - V33ID
+	int32 UserId = 1;
+
+	// Všechny identity uživatele z XXVVSS
+	repeated cis.types.UserIdentity UserIdentifiers = 2;
+
+	// Základní informace o přihlášeném uživateli
+	UserInfoObject UserInfo = 3;
+
+	repeated int32 UserPermissions = 4;
+}
+
+message UserInfoObject {
+	// Jméno uživatele
+	string FirstName = 1;
+
+	// Přijmení uživatele
+	string LastName = 2;
+
+	string DisplayName = 3;
+
+	// ČPM uživatele
+	google.protobuf.StringValue Cpm = 4;
+
+	// IČP uživatele
+	google.protobuf.StringValue Icp = 5;
+
+	// IČO uživatele
+	google.protobuf.StringValue Cin = 6;
+
+	// Telefon uživatele
+	google.protobuf.StringValue PhoneNumber = 7;
+
+	// Emailová adresa uživatele
+	google.protobuf.StringValue Email = 8;
+
+	// VIP flag uživatele
+	bool IsUserVIP = 9;
+
+	bool isInternal = 10;
+}

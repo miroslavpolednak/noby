@@ -42,11 +42,11 @@ public sealed class GetCustomersResponseCustomer
     /// </summary>
     public string? KBID { get; set; }
 
-    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
+    public NOBY.Dto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 
-    public SharedDto.ContactsConfirmedDto? Contacts { get; set; }
+    public NOBY.Dto.ContactsConfirmedDto? Contacts { get; set; }
 
-    public DomainServices.CodebookService.Contracts.GenericCodebookItem? CitizenshipCountry { get; set; }
+    public DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem? CitizenshipCountry { get; set; }
 
     public CIS.Foms.Types.Address? PermanentAddress { get; set; }
 

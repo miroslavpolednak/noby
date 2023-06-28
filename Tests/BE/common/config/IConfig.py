@@ -1,4 +1,5 @@
 from common.mssql.DbConnection import DbConnection as MsSqlDbConnection
+from common.enums.ETestEnvironment import ETestEnvironment
 from common.enums.EService import EService
 from common.enums.EServiceType import EServiceType
 
@@ -7,6 +8,11 @@ class IConfig:
     @property
     def env_name(self) -> str:
         """Returns name of environment [DEV, FAT, SIT] """
+        return None
+
+    @property
+    def environment(self) -> ETestEnvironment:
+        """Returns environment [DEV, FAT, SIT] """
         return None
 
     @property

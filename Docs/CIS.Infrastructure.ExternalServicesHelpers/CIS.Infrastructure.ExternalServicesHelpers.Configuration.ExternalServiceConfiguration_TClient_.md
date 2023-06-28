@@ -68,23 +68,35 @@ Implements [ImplementationType](CIS.Infrastructure.ExternalServicesHelpers.Confi
 #### Property Value
 [CIS.Foms.Enums.ServiceImplementationTypes](https://docs.microsoft.com/en-us/dotnet/api/CIS.Foms.Enums.ServiceImplementationTypes 'CIS.Foms.Enums.ServiceImplementationTypes')
 
-<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.LogPayloads'></a>
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.LogRequestPayload'></a>
 
-## ExternalServiceConfiguration<TClient>.LogPayloads Property
+## ExternalServiceConfiguration<TClient>.LogRequestPayload Property
 
-Zapne logovani request a response payloadu a hlavicek. Default: true
+True = do logu se ulozi plny payload odpovedi externi sluzby
 
 ```csharp
-public bool LogPayloads { get; set; }
+public bool LogRequestPayload { get; set; }
 ```
 
-Implements [LogPayloads](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogPayloads 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogPayloads')
+Implements [LogRequestPayload](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogRequestPayload 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogRequestPayload')
 
 #### Property Value
 [System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
 
-### Remarks
-Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.LogResponsePayload'></a>
+
+## ExternalServiceConfiguration<TClient>.LogResponsePayload Property
+
+True = do logu se ulozi plny request poslany do externi sluzby
+
+```csharp
+public bool LogResponsePayload { get; set; }
+```
+
+Implements [LogResponsePayload](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogResponsePayload 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogResponsePayload')
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
 
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.Password'></a>
 
@@ -163,6 +175,24 @@ Implements [ServiceUrl](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.IIs
 
 #### Property Value
 [System.Uri](https://docs.microsoft.com/en-us/dotnet/api/System.Uri 'System.Uri')
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.UseLogging'></a>
+
+## ExternalServiceConfiguration<TClient>.UseLogging Property
+
+Zapne logovani request a response payloadu a hlavicek. Default: true
+
+```csharp
+public bool UseLogging { get; set; }
+```
+
+Implements [UseLogging](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseLogging 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseLogging')
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
+
+### Remarks
+Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.
 
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.Username'></a>
 

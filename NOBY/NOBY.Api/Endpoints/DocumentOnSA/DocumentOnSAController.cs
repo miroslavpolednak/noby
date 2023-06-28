@@ -5,6 +5,9 @@ using NOBY.Api.Endpoints.DocumentOnSA.StopSigning;
 using NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
 using System.Net.Mime;
+using NOBY.Api.Endpoints.DocumentOnSA.Search;
+using DomainServices.SalesArrangementService.Contracts;
+using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -28,9 +31,10 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/document-list")]
-    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(GetDocumentsSignListResponse))]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(typeof(GetDocumentsSignListResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetDocumentsSignListResponse> GetDocumentsSignList(
         [FromRoute] int salesArrangementId,
         CancellationToken cancellationToken)
@@ -45,14 +49,15 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId"> ID Sales Arrangement </param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/start")]
-    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(StartSigningResponse))]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(typeof(StartSigningResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<StartSigningResponse> StartSigning(
          [FromRoute] int salesArrangementId,
-         [FromBody] StartSigningRequest request,
-         CancellationToken cancellationToken)
-    => await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId), cancellationToken);
+         [FromBody] StartSigningRequest request)
+    => await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
 
     /// <summary>
     /// Zrušit podepisování dokumentu
@@ -65,49 +70,102 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/stop")]
-    [SwaggerResponse(StatusCodes.Status200OK)]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task StopSigning(
-    [FromRoute] int salesArrangementId,
-    [FromRoute] int documentOnSAId,
-    CancellationToken cancellationToken)
-    => await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId), cancellationToken);
+        [FromRoute] int salesArrangementId,
+        [FromRoute] int documentOnSAId)
+    => await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId));
 
     /// <summary>
     /// Manuální podpis DocumentOnSA
     /// </summary>
     /// <remarks>
     /// Provede Checkform, označí daný DocumentOnSA jako manuálně podepsaný a provede aktualizaci dat v KB CM (pokud možno)<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually")]
-    [SwaggerResponse(StatusCodes.Status200OK)]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task SignDocumentManually(
-     [FromRoute] int salesArrangementId,
-     [FromRoute] int documentOnSAId,
-     CancellationToken cancellationToken)
-     => await _mediator.Send(new SignDocumentManuallyRequest(salesArrangementId, documentOnSAId), cancellationToken);
+        [FromRoute] int salesArrangementId,
+        [FromRoute] int documentOnSAId)
+     => await _mediator.Send(new SignDocumentManuallyRequest(salesArrangementId, documentOnSAId));
 
     /// <summary>
-    /// Vygenerování dokumentu z uložených dat dokumentu na sales arrangementu příp. z archivu
+    /// Stažení dokumentu k fyzickému podepisování
     /// </summary>
     /// <remarks>
-    /// Pro započaté podepisovací procesy je požadováno zobrazovat náhledy a poskytovat dokumenty ke stažení.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=F950B198-2C67-48e5-B1FE-C091131E6A63"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání.<br /><br />
+    /// <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F950B198-2C67-48e5-B1FE-C091131E6A63"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
     [HttpGet("document/template/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}")]
-    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(Stream))]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Pdf)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocumentOnSa(
-     [FromRoute] int salesArrangementId,
-     [FromRoute] int documentOnSAId,
-     CancellationToken cancellationToken)
+       [FromRoute] int salesArrangementId,
+       [FromRoute] int documentOnSAId,
+       CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(new GetDocumentOnSADataRequest(salesArrangementId, documentOnSAId), cancellationToken);
         return File(response.FileData, response.ContentType, response.Filename);
     }
+
+    /// <summary>
+    /// Detail podepisovaného dokumentu
+    /// </summary>
+    /// <remarks>
+    /// Vrátí informace o podepisovaném dokumentu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FA259E3F-5B8D-4ade-9F1A-7C1A943F1029"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId"></param>
+    /// <param name="documentOnSAId"></param>
+    [HttpGet("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}")]
+    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetDocumentOnSADetailResponse> GetDocumentOnSaDetail(
+        [FromRoute] int salesArrangementId,
+        [FromRoute] int documentOnSAId,
+        CancellationToken cancellationToken)
+    => await _mediator.Send(new GetDocumentOnSADetailRequest(salesArrangementId, documentOnSAId), cancellationToken);
+
+    /// <summary>
+    /// Vyhledání dokumentů na základě hlavního hesla (eArchivu)
+    /// </summary>
+    /// <remarks>
+    /// Vyhledání formId (businessovém identifikátoru dokumentů) na sales arrangementu dle hlavního hesla (eArchivu).<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0C28E9E5-7AC1-4265-8342-FCE63B33967F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+    /// </remarks>
+    /// <param name="salesArrangementId"></param>
+    /// <param name="request"></param>
+    [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/search")]
+    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(typeof(SearchResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> SearchDocumentsOnSa(
+             [FromRoute] int salesArrangementId,
+             [FromBody] SearchRequest request)
+    {
+        var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
+
+        if (result.FormIds is null || !result.FormIds.Any())
+            return NoContent();
+
+        return Ok(result);
+    }
+
+
+
 }

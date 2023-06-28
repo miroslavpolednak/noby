@@ -5,11 +5,12 @@ using CIS.Foms.Enums;
 using CIS.Infrastructure.Data;
 using Dapper;
 using DomainServices.CodebookService.Clients;
-using ExternalServices.MpHome.V1_1;
-using ExternalServices.MpHome.V1_1.Contracts;
+using DomainServices.CodebookService.Contracts.v1;
+using ExternalServices.MpHome.V1;
+using ExternalServices.MpHome.V1.Contracts;
 using FastEnumUtility;
 using Google.Protobuf.Collections;
-using IdentificationDocument = ExternalServices.MpHome.V1_1.Contracts.IdentificationDocument;
+using IdentificationDocument = ExternalServices.MpHome.V1.Contracts.IdentificationDocument;
 
 namespace DomainServices.CustomerService.Api.Services.KonsDb;
 
@@ -18,14 +19,14 @@ public class MpDigiClient
 {
     private readonly IMpHomeClient _mpHomeClient;
     private readonly IConnectionProvider _konsDbProvider;
-    private readonly ICodebookServiceClients _codebook;
+    private readonly ICodebookServiceClient _codebook;
 
-    private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
-    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
-    private List<CodebookService.Contracts.Endpoints.ContactTypes.ContactTypeItem> _contactTypes = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _titles = null!;
+    private List<CountriesResponse.Types.CountryItem> _countries = null!;
+    private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
+    private List<ContactTypesResponse.Types.ContactTypeItem> _contactTypes = null!;
 
-    public MpDigiClient(IMpHomeClient mpHomeClient, IConnectionProvider konsDbProvider, ICodebookServiceClients codebook)
+    public MpDigiClient(IMpHomeClient mpHomeClient, IConnectionProvider konsDbProvider, ICodebookServiceClient codebook)
     {
         _mpHomeClient = mpHomeClient;
         _konsDbProvider = konsDbProvider;
@@ -85,7 +86,7 @@ public class MpDigiClient
     {
         var command = new CommandDefinition(Sql.SqlScripts.PartnerExists, parameters: new { partnerId }, cancellationToken: cancellationToken);
 
-        return await _konsDbProvider.ExecuteDapperQuery(ExistsQuery, cancellationToken);
+        return await _konsDbProvider.ExecuteDapperQueryAsync(ExistsQuery, cancellationToken);
         
         Task<bool> ExistsQuery(IDbConnection dbConnection) => dbConnection.ExecuteScalarAsync<bool>(command);
     }
@@ -160,7 +161,7 @@ public class MpDigiClient
         return _titles.FirstOrDefault(t => t.Id == naturalPerson.DegreeBeforeId)?.Name;
     }
 
-    private long? ExtractKbId(RepeatedField<Identity> identities)
+    private static long? ExtractKbId(RepeatedField<Identity> identities)
     {
         return identities
             .Where(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
@@ -172,14 +173,17 @@ public class MpDigiClient
         if (document is null)
             return;
 
-        request.IdentificationDocuments.Add(new IdentificationDocument
+        request.IdentificationDocuments = new List<IdentificationDocument>()
         {
-            Number = document.Number,
-            Type = FastEnum.Parse<IdentificationCardType>(_docTypes.First(d => d.Id == document.IdentificationDocumentTypeId).MpDigiApiCode),
-            ValidTo = document.ValidTo,
-            IssuedBy = document.IssuedBy,
-            IssuedOn = document.IssuedOn,
-            IssuingCountry = _countries.FirstOrDefault(c => c.Id == document.IssuingCountryId)?.ShortName
-        });
+            new IdentificationDocument
+            {
+                Number = document.Number,
+                Type = FastEnum.Parse<IdentificationCardType>(_docTypes.First(d => d.Id == document.IdentificationDocumentTypeId).MpDigiApiCode),
+                ValidTo = document.ValidTo,
+                IssuedBy = document.IssuedBy,
+                IssuedOn = document.IssuedOn,
+                IssuingCountry = _countries.FirstOrDefault(c => c.Id == document.IssuingCountryId)?.ShortName ?? ""
+            }
+        };
     }
 }

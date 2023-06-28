@@ -1,10 +1,9 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
-using contracts = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.GetHouseholds;
 
-internal class GetHouseholdsHandler
+internal sealed class GetHouseholdsHandler
     : IRequestHandler<GetHouseholdsRequest, List<Dto.HouseholdInList>>
 {
     public async Task<List<Dto.HouseholdInList>> Handle(GetHouseholdsRequest request, CancellationToken cancellationToken)
@@ -25,12 +24,12 @@ internal class GetHouseholdsHandler
             .ToList();
     }
 
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IHouseholdServiceClient _householdService;
     
     public GetHouseholdsHandler(
         IHouseholdServiceClient householdService,
-        ICodebookServiceClients codebookService)
+        ICodebookServiceClient codebookService)
     {
         _codebookService = codebookService;
         _householdService = householdService;

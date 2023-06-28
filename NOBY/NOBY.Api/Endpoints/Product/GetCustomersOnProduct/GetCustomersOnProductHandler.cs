@@ -1,6 +1,5 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using _Cust = DomainServices.CustomerService.Contracts;
-using _Pr = DomainServices.ProductService.Contracts;
 
 namespace NOBY.Api.Endpoints.Product.GetCustomersOnProduct;
 

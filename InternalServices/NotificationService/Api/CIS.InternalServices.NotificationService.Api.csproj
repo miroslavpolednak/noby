@@ -9,35 +9,41 @@
     <DocumentationFile>InternalServices.NotificationService.Api.xml</DocumentationFile>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
+	</PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.4" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.103.9" />
-    <PackageReference Include="Confluent.Kafka.DependencyInjection" Version="2.1.2" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.51.0" />
-    <PackageReference Include="MailKit" Version="3.5.0" />
-    <PackageReference Include="MediatR" Version="12.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.3">
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.106.1" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.54.0" />
+    <PackageReference Include="MailKit" Version="4.1.0" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
-    <PackageReference Include="Polly" Version="7.2.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.1" />
+    <PackageReference Include="Polly" Version="7.2.4" />
     <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.1.1" />
     <PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
-    <PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- DO NOT UPGRADE VERSIONS -->
-    <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="0.7.2.1" />
-    <PackageReference Include="MassTransit" Version="8.0.9" />
-    <PackageReference Include="MassTransit.Kafka" Version="8.0.9" />
+    <PackageReference Include="Apache.Avro" Version="1.11.1" />
+    <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="1.1.0.16-SNAPSHOT" />
+    <PackageReference Include="MassTransit" Version="8.0.13" />
+    <PackageReference Include="MassTransit.Kafka" Version="8.0.13" />
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
@@ -46,7 +52,14 @@
     <ProjectReference Include="..\..\..\NOBY\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
     <ProjectReference Include="..\..\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
     <ProjectReference Include="..\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
-    <ProjectReference Include="..\Mcs\CIS.InternalServices.NotificationService.Mcs.csproj" />
   </ItemGroup>
-
+  
+  <ItemGroup>
+    <None Include="Services\Messaging\AvroSchemas\Mcs\NotificationReport.json" />
+    <None Include="Services\Messaging\AvroSchemas\Mcs\SendEmail.json" />
+    <None Include="Services\Messaging\AvroSchemas\Mcs\SendSMS.json" />
+    <None Include="Services\Messaging\AvroSchemas\Mpss\NotificationReport.json" />
+    <None Include="Services\Messaging\AvroSchemas\Mpss\SendEmail.json" />
+  </ItemGroup>
+  
 </Project>

@@ -6,7 +6,7 @@ internal static class GrpcExtensions
 {
     public static void AddDocumentOnSAServiceGrpc(this WebApplicationBuilder builder)
     {
-        builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+        builder.Services.AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init());
         builder.Services.AddGrpc(options =>
         {
             options.Interceptors.Add<GenericServerExceptionInterceptor>();

@@ -1,17 +1,25 @@
-syntax = "proto3";
+﻿syntax = "proto3";
 package CIS.InternalServices.ServiceDiscovery.v1;
 
 option csharp_namespace = "CIS.InternalServices.ServiceDiscovery.Contracts.v1";
 
-import "google/protobuf/empty.proto";
-import "GetService.proto";
-import "GetServices.proto";
-import "ClearCache.proto";
+import "google/api/annotations.proto";
+import "Messages/GetService.proto";
+import "Messages/GetServices.proto";
 
+// Repository adres služeb / aplikací používaných pro NOBY
 service DiscoveryService {
-   rpc GetService (CIS.InternalServices.ServiceDiscovery.GetServiceRequest) returns (CIS.InternalServices.ServiceDiscovery.GetServiceResponse);
+	// Vrací instanci konkrétní služby pro dané prostředí a typ
+	rpc GetService (CIS.InternalServices.ServiceDiscovery.GetServiceRequest) returns (CIS.InternalServices.ServiceDiscovery.GetServiceResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/service"
+		};
+	}
 
-   rpc GetServices (CIS.InternalServices.ServiceDiscovery.GetServicesRequest) returns (CIS.InternalServices.ServiceDiscovery.GetServicesResponse);
-
-   rpc ClearCache (CIS.InternalServices.ServiceDiscovery.ClearCacheRequest) returns (google.protobuf.Empty);
+	// Vrací seznam služeb pro dané prostředí
+	rpc GetServices (CIS.InternalServices.ServiceDiscovery.GetServicesRequest) returns (CIS.InternalServices.ServiceDiscovery.GetServicesResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/services"
+		};
+	}
 }

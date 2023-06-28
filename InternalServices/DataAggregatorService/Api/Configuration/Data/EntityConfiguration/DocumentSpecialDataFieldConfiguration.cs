@@ -12,9 +12,11 @@ internal class DocumentSpecialDataFieldConfiguration : IEntityTypeConfiguration<
 
         builder.Property(x => x.AcroFieldName).HasMaxLength(100).IsRequired();
 
-        builder.Property(x => x.FieldPath).HasMaxLength(500);
+        builder.Property(x => x.FieldPath).HasMaxLength(250);
 
         builder.Property(x => x.StringFormat).HasMaxLength(50).IsRequired(false);
+
+        builder.Property(x => x.DefaultTextIfNull).HasMaxLength(500).IsRequired(false);
 
         builder.HasOne(x => x.Document);
 

@@ -17,6 +17,6 @@ internal sealed class GetAllRequest : IRequest<List<GetAllResponseItem>>
               .Select(y => y.Key)
               .ToList();
         if (duplicates.Any())
-            throw new CisException(ErrorCodes.CodebookDuplicatedInQueryParam, $"Codebooks {string.Join(",", duplicates)} duplicated in request");
+            throw new NobyValidationException($"Codebooks {string.Join(",", duplicates)} duplicated in request");
     }
 }

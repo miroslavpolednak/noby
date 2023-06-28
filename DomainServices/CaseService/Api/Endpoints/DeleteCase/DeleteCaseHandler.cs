@@ -9,14 +9,16 @@ internal sealed class DeleteCaseHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteCaseRequest request, CancellationToken cancellation)
     {
         // case entity
-        var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation) 
-            ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
+        var entity = await _dbContext.Cases.FirstOrDefaultAsync(t => t.CaseId == request.CaseId, cancellation) 
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // pocet SA na Case
         var count = (await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellation)).SalesArrangements.Count;
 
         if (count > 0)
-            throw new CisValidationException(13021, "Unable to delete Case – one or more SalesArrangements exists for this case");
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CantDeleteCase);
+        }
 
         // ulozit do DB
         _dbContext.Cases.Remove(entity);

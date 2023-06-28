@@ -1,17 +1,18 @@
 ﻿using DomainServices.CustomerService.Clients;
 using Newtonsoft.Json.Linq;
 using NOBY.Api.Endpoints.Customer.Shared;
-using NOBY.Api.SharedDto;
+using NOBY.Dto;
 using __Household = DomainServices.HouseholdService.Contracts;
 using __Customer = DomainServices.CustomerService.Contracts;
 using CIS.Foms.Enums;
+using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.Customer;
 
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class CustomerWithChangedDataService
 {
-    public async Task<TResponse> GetCustomerFromCM<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
+    public async Task<(TResponse Customer, int? IdentificationMethodId)> GetCustomerFromCM<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
         where TResponse : Shared.BaseCustomerDetail
     {
         // kontrola identity KB
@@ -23,10 +24,10 @@ internal sealed class CustomerWithChangedDataService
         var customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
         // convert DS contract to FE model
-        return fillResponseDto<TResponse>(customer, customerOnSA);
+        return (fillResponseDto<TResponse>(customer, customerOnSA), customer.CustomerIdentification?.IdentificationMethodId);
     }
 
-    public async Task<TResponse> GetCustomerWithChangedData<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
+    public async Task<(TResponse Customer, int? IdentificationMethodId)> GetCustomerWithChangedData<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
         where TResponse : Shared.BaseCustomerDetail
     {
         // convert DS contract to FE model
@@ -36,7 +37,7 @@ internal sealed class CustomerWithChangedDataService
         if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
         {
             // provide saved changes to original model
-            var original = JObject.FromObject(model);
+            var original = JObject.FromObject(model.Customer);
             var delta = JObject.Parse(customerOnSA.CustomerChangeData);
 
             original.Merge(delta, new JsonMergeSettings
@@ -45,7 +46,7 @@ internal sealed class CustomerWithChangedDataService
                 MergeNullValueHandling = MergeNullValueHandling.Merge
             });
 
-            return original.ToObject<TResponse>()!;
+            return (original.ToObject<TResponse>()!, model.IdentificationMethodId);
         }
         else
         {
@@ -61,30 +62,32 @@ internal sealed class CustomerWithChangedDataService
         NaturalPerson person = new();
         dsCustomer.NaturalPerson?.FillResponseDto(person);
         person.EducationLevelId = dsCustomer.NaturalPerson?.EducationLevelId;
-        //person.ProfessionCategoryId = customer.NaturalPerson?
-        //person.ProfessionId = customer.NaturalPerson ?;
-        //person.NetMonthEarningAmountId = customer.NaturalPerson
-        //person.NetMonthEarningTypeId = customer.NaturalPerson ?;
+        person.TaxResidences = new TaxResidenceItem
+        {
+            validFrom = dsCustomer.NaturalPerson?.TaxResidence?.ValidFrom,
+            ResidenceCountries = dsCustomer.NaturalPerson?.TaxResidence?.ResidenceCountries.Select(c => new TaxResidenceCountryItem
+            {
+                CountryId = c.CountryId,
+                Tin = c.Tin,
+                TinMissingReasonDescription = c.TinMissingReasonDescription
+            }).ToList()
+        };
+        person.ProfessionCategoryId = dsCustomer.NaturalPerson?.ProfessionCategoryId;
+        person.ProfessionId = dsCustomer.NaturalPerson?.ProfessionId;
+        person.NetMonthEarningAmountId = dsCustomer.NaturalPerson?.NetMonthEarningAmountId;
+        person.NetMonthEarningTypeId = dsCustomer.NaturalPerson?.NetMonthEarningTypeId;
         newCustomer.IsBrSubscribed = dsCustomer.NaturalPerson?.IsBrSubscribed;
         
         newCustomer.HasRelationshipWithCorporate = customerOnSA.CustomerAdditionalData?.HasRelationshipWithCorporate;
         newCustomer.HasRelationshipWithKB = customerOnSA.CustomerAdditionalData?.HasRelationshipWithKB;
         newCustomer.HasRelationshipWithKBEmployee = customerOnSA.CustomerAdditionalData?.HasRelationshipWithKBEmployee;
         newCustomer.IsUSPerson = customerOnSA.CustomerAdditionalData?.IsUSPerson;
-        newCustomer.IsAddressWhispererUsed = customerOnSA.CustomerAdditionalData?.IsAddressWhispererUsed;
         newCustomer.IsPoliticallyExposed = customerOnSA.CustomerAdditionalData?.IsPoliticallyExposed;
 
         newCustomer.NaturalPerson = person;
         newCustomer.JuridicalPerson = null;
         newCustomer.IdentificationDocument = dsCustomer.IdentificationDocument?.ToResponseDto();
         newCustomer.Addresses = dsCustomer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList();
-
-        newCustomer.CustomerIdentification = new CustomerIdentificationMethod
-        {
-            CzechIdentificationNumber = dsCustomer.CustomerIdentification?.CzechIdentificationNumber,
-            IdentificationDate = dsCustomer.CustomerIdentification?.IdentificationDate,
-            IdentificationMethodId = dsCustomer.CustomerIdentification?.IdentificationMethodId
-        };
 
         // https://jira.kb.cz/browse/HFICH-4200
         // docasne reseni nez se CM rozmysli jak na to
@@ -117,9 +120,9 @@ internal sealed class CustomerWithChangedDataService
         if (!string.IsNullOrEmpty(phone?.Mobile?.PhoneNumber))
         {
             var newPhone = (TPhone)Activator.CreateInstance(typeof(TPhone))!;
-            newPhone.IsConfirmed = phone.IsConfirmed;
+            newPhone.IsConfirmed = phone.Mobile.IsPhoneConfirmed;
             newPhone.PhoneNumber = phone.Mobile.PhoneNumber;
-            newPhone.PhoneIDC = phone.Mobile.PhoneNumber;
+            newPhone.PhoneIDC = phone.Mobile.PhoneIDC;
             return newPhone;
         }
         else
@@ -130,11 +133,11 @@ internal sealed class CustomerWithChangedDataService
         where TEmail : IEmailAddressDto
     {
         var email = dsCustomer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email);
-        if (!string.IsNullOrEmpty(email?.Email?.Address))
+        if (!string.IsNullOrEmpty(email?.Email?.EmailAddress))
         {
             var newEmail = (TEmail)Activator.CreateInstance(typeof(TEmail))!;
-            newEmail.IsConfirmed = email.IsConfirmed;
-            newEmail.EmailAddress = email.Email.Address;
+            newEmail.IsConfirmed = email.Email.IsEmailConfirmed;
+            newEmail.EmailAddress = email.Email.EmailAddress;
             return newEmail;
         }
         else

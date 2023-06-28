@@ -1,16 +1,15 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
-using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
 using CIS.Core.Security;
-using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
 using CIS.Core.Configuration;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class SaveRequestMapper
 {
-    public async Task<_C4M.LoanApplication> MapToC4m(_V2.LoanApplicationSaveRequest request, CancellationToken cancellation)
+    public async Task<_C4M.LoanApplicationRequest> MapToC4m(_V2.LoanApplicationSaveRequest request, CancellationToken cancellation)
     {
         // neprislo LTV, zkus ho spocitat
         if (request.Product.Ltv.GetValueOrDefault() == 0 && request.Product.RequiredAmount.GetValueOrDefault() > 0)
@@ -34,19 +33,19 @@ internal sealed class SaveRequestMapper
             && request.Households.All(t => t.Customers?.All(c => !c.Income?.OtherIncomes?.Any() ?? true) ?? true)
             && request.Households.All(t => t.Customers?.All(c => c.Income?.EntrepreneurIncome?.AnnualIncomeAmount is null) ?? true)
             && request.Households.All(t => t.Customers?.All(c => c.Income?.RentIncome?.MonthlyIncomeAmount is null) ?? true)
-            && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.First().EmploymentTypeId == 2) ?? false)
-            && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.First().Address?.CountryId == 16) ?? false);
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.FirstOrDefault()?.EmploymentTypeId == 2) ?? false)
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.FirstOrDefault()?.CountryId.GetValueOrDefault() == 16) ?? false);
 
         // mappers instances
         var productChildMapper = new ProductChildMapper(_codebookService, riskApplicationType, cancellation);
         var householdMapper = new HouseholdChildMapper(_codebookService, riskApplicationType, cancellation);
 
-        var requestModel = new _C4M.LoanApplication
+        var requestModel = new _C4M.LoanApplicationRequest
         {
-            Id = _C4M.ResourceIdentifier.CreateId(request.SalesArrangementId.ToEnvironmentId(_cisEnvironment.EnvironmentName!), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name!)),
+            Id = _C4M.ResourceIdentifier.CreateId(request.SalesArrangementId.ToEnvironmentId(_cisEnvironment.EnvironmentName!), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name!)).ToC4M(),
             AppendixCode = request.AppendixCode,
-            DistributionChannelCode = Helpers.GetEnumFromString<_C4M.LoanApplicationDistributionChannelCode>((await _codebookService.Channels(cancellation)).FirstOrDefault(t => t.Id == request.DistributionChannelId)?.Code, LoanApplicationDistributionChannelCode.BR),
-            LoanApplicationDataVersion = request.LoanApplicationDataVersion,
+            DistributionChannelCode = Helpers.GetEnumFromString<_C4M.DistributionChannelType>((await _codebookService.Channels(cancellation)).FirstOrDefault(t => t.Id == request.DistributionChannelId)?.Code, _C4M.DistributionChannelType.BR),
+            LoanApplicationSnapshotId = request.LoanApplicationDataVersion,
             LoanApplicationHousehold = await householdMapper.MapHouseholds(request.Households, verification),
             LoanApplicationProduct = await productChildMapper.MapProduct(request.Product),
             LoanApplicationProductRelation = await productChildMapper.MapProductRelations(request.ProductRelations),
@@ -59,17 +58,20 @@ internal sealed class SaveRequestMapper
         if (request.UserIdentity is not null)
         {
             var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-            if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
-                requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
-            else
-                requestModel.Person = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+            if (userInstance != null)
+            {
+                if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                    requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
+                else
+                    requestModel.Person = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+            }            
         }
 
         return requestModel;
     }
 
     // najit odpovidajici produkt
-    private async Task<_RAT.RiskApplicationTypeItem?> getRiskApplicationType(_V2.LoanApplicationProduct product, CancellationToken cancellation)
+    private async Task<RiskApplicationTypesResponse.Types.RiskApplicationTypeItem?> getRiskApplicationType(_V2.LoanApplicationProduct product, CancellationToken cancellation)
     {
         // product 
         var products = (await _codebookService.RiskApplicationTypes(cancellation))
@@ -103,7 +105,7 @@ internal sealed class SaveRequestMapper
     }
 
     private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly IServiceUserAccessor _serviceUserAccessor;
     private readonly AppConfiguration _configuration;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
@@ -112,7 +114,7 @@ internal sealed class SaveRequestMapper
         AppConfiguration configuration,
         IServiceUserAccessor serviceUserAccessor,
         CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         ICisEnvironmentConfiguration cisEnvironment)
     {
         _configuration = configuration;

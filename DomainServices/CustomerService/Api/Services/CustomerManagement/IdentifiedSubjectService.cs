@@ -5,25 +5,26 @@ using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
 using FastEnumUtility;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
 internal sealed class IdentifiedSubjectService
 {
-    private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
+    private readonly ExternalServices.CustomerManagement.V2.ICustomerManagementClient _customerManagement;
     private readonly ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient _identifiedSubjectClient;
-    private readonly ICodebookServiceClients _codebook;
+    private readonly ICodebookServiceClient _codebook;
     private readonly CustomerManagementErrorMap _errorMap;
     private readonly ExternalServices.Kyc.V1.IKycClient _kycClient;
 
-    private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
-    private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
-    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
-    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
+    private List<GendersResponse.Types.GenderItem> _genders = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _titles = null!;
+    private List<CountriesResponse.Types.CountryItem> _countries = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _maritals = null!;
+    private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
 
-    public IdentifiedSubjectService(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
+    public IdentifiedSubjectService(ExternalServices.CustomerManagement.V2.ICustomerManagementClient customerManagement, ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClient codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
     {
         _customerManagement = customerManagement;
         _identifiedSubjectClient = identifiedSubjectClient;
@@ -40,7 +41,10 @@ internal sealed class IdentifiedSubjectService
 
         var response = await _identifiedSubjectClient.CreateIdentifiedSubject(identifiedSubject, request.HardCreate, cancellationToken);
 
-        return new Identity(_errorMap.ResolveAndThrowIfError(response), IdentitySchemes.Kb);
+        if (response.Error is not null) 
+            _errorMap.ResolveValidationError(response.Error);
+
+        return new Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response.Result!), IdentitySchemes.Kb);
     }
 
     public async Task UpdateSubject(UpdateCustomerRequest request, CancellationToken cancellationToken)
@@ -86,8 +90,8 @@ internal sealed class IdentifiedSubjectService
             {
                 ResidenceCountries = request.NaturalPerson?.TaxResidence?.ResidenceCountries?.Select(x => new ExternalServices.Kyc.V1.Contracts.TaxResidenceCountry
                 {
-                    Tin = x.Tin,
-                    TinMissingReasonDescription = x.TinMissingReasonDescription,
+                    Tin = x.Tin.ToCMString(),
+                    TinMissingReasonDescription = x.TinMissingReasonDescription.ToCMString(),
                     CountryCode = _countries.FirstOrDefault(c => c.Id == x.CountryId)?.ShortName
                 }).ToList(),
                 ValidFrom = request.NaturalPerson!.TaxResidence.ValidFrom
@@ -109,7 +113,7 @@ internal sealed class IdentifiedSubjectService
             }/*,
             MaritalStatus = new()
             {
-                Code = _maritals.FirstOrDefault(t => t.Id == request.NaturalPerson?.MaritalStatusStateId)?.RdmMaritalStatusCode ?? ""
+                Code = _maritals.FirstOrDefault(t => t.Id == request.NaturalPerson?.MaritalStatusStateId)?.RdmCode ?? ""
             }*/
         };
 
@@ -138,7 +142,7 @@ internal sealed class IdentifiedSubjectService
             },
             PrimaryAddress = CreateAddress(request.Addresses, AddressTypes.Permanent, CreatePrimaryAddress),
             ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
-            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Abroad, CreateTemporaryStayAddress),
+            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Other, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
             CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
@@ -157,7 +161,7 @@ internal sealed class IdentifiedSubjectService
             },
             PrimaryAddress = CreateAddress(request.Addresses, AddressTypes.Permanent, CreatePrimaryAddress),
             ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
-            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Abroad, CreateTemporaryStayAddress),
+            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Other, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
             CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
@@ -175,17 +179,17 @@ internal sealed class IdentifiedSubjectService
             Surname = naturalPerson.LastName,
             GenderCode = FastEnum.Parse<__Contracts.NaturalPersonAttributesGenderCode>(_genders.First(g => g.Id == naturalPerson.GenderId).KbCmCode, true),
             BirthDate = naturalPerson.DateOfBirth,
-            Title = _titles.FirstOrDefault(t => t.Id == naturalPerson.DegreeBeforeId)?.Name,
+            Title = _titles.FirstOrDefault(t => t.Id == naturalPerson.DegreeBeforeId)?.Name?.ToUpperInvariant(),
             CzechBirthNumber = naturalPerson.BirthNumber.ToCMString(),
             CitizenshipCodes = citizenshipCodes.Any() ? citizenshipCodes : null,
             BirthCountryCode = _countries.FirstOrDefault(c => c.Id == naturalPerson.BirthCountryId)?.ShortName,
-            MaritalStatusCode = _maritals.First(m => m.Id == naturalPerson.MaritalStatusStateId).RdmMaritalStatusCode,
+            MaritalStatusCode = _maritals.First(m => m.Id == naturalPerson.MaritalStatusStateId).RdmCode,
             BirthPlace = naturalPerson.PlaceOfBirth.ToCMString(),
             BirthName = naturalPerson.BirthName.ToCMString()
         };
     }
 
-    private TAddress? CreateAddress<TAddress>(IEnumerable<GrpcAddress> addresses, AddressTypes addressType, Func<__Contracts.Address, DateTime?, TAddress> factory)
+    private TAddress? CreateAddress<TAddress>(IEnumerable<GrpcAddress> addresses, AddressTypes addressType, Func<GrpcAddress, __Contracts.Address, DateTime?, TAddress> factory)
     {
         var address = addresses.FirstOrDefault(a => a.AddressTypeId == (int)addressType);
 
@@ -208,27 +212,27 @@ internal sealed class IdentifiedSubjectService
             AddressPointId = address.AddressPointId.ToCMString()
         };
 
-        return factory(parsedAddress, address.PrimaryAddressFrom);
+        return factory(address, parsedAddress, address.PrimaryAddressFrom);
     }
 
-    private static __Contracts.PrimaryAddress CreatePrimaryAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+    private static __Contracts.PrimaryAddress CreatePrimaryAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
         new()
         {
             Address = address,
             PrimaryAddressFrom = primaryAddressFrom
         };  
     
-    private static __Contracts.ContactAddress CreateContactAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+    private static __Contracts.ContactAddress CreateContactAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
         new()
         {
             Address = address,
-            Confirmed = true
+            Confirmed = requestAddress.IsAddressConfirmed ?? false
         };
 
-    private static __Contracts.TemporaryStayAddress CreateTemporaryStayAddress(__Contracts.Address address, DateTime? primaryAddressFrom) =>
+    private static __Contracts.TemporaryStayAddress CreateTemporaryStayAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
         new() { Address = address };
 
-    private __Contracts.IdentificationDocument? CreateIdentificationDocument(Contracts.IdentificationDocument? document)
+    private __Contracts.IdentificationDocument? CreateIdentificationDocument(IdentificationDocument? document)
     {
         if (document is null)
             return default;
@@ -244,7 +248,7 @@ internal sealed class IdentifiedSubjectService
         };
     }
 
-    private __Contracts.CustomerIdentification? CreateCustomerIdentification(CustomerIdentification? customerIdentification)
+    private static __Contracts.CustomerIdentification? CreateCustomerIdentification(CustomerIdentification? customerIdentification)
     {
         if (customerIdentification is null)
             return default;
@@ -266,7 +270,8 @@ internal sealed class IdentifiedSubjectService
         return new()
         {
             PhoneIDC = phone.Mobile.PhoneIDC,
-            PhoneNumber = phone.Mobile.PhoneNumber
+            PhoneNumber = phone.Mobile.PhoneNumber,
+            Confirmed = phone.Mobile.IsPhoneConfirmed
         };
     }
 
@@ -279,7 +284,8 @@ internal sealed class IdentifiedSubjectService
 
         return new()
         {
-            EmailAddress = email.Email.Address
+            EmailAddress = email.Email.EmailAddress,
+            Confirmed = email.Email.IsEmailConfirmed
         };
     }
 }

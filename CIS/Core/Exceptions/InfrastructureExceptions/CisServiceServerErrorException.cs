@@ -3,7 +3,7 @@
 /// <summary>
 /// HTTP 500. Vyhazuje se pokud naše doménová nebo infrastrkuturní služba vrátí server error - 500.
 /// </summary>
-public sealed class CisServiceServerErrorException 
+public sealed class CisServiceServerErrorException
     : BaseCisException
 {
     /// <summary>

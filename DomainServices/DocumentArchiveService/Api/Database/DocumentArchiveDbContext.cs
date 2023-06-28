@@ -6,15 +6,18 @@ namespace DomainServices.DocumentArchiveService.Api.Database;
 
 public class DocumentArchiveDbContext : BaseDbContext<DocumentArchiveDbContext>
 {
+    public static bool IsSqlite { get; set; }
+
     public DocumentArchiveDbContext(BaseDbContextAggregate<DocumentArchiveDbContext> aggregate) : base(aggregate)
     {
     }
 
     public DbSet<DocumentInterface> DocumentInterface { get; set; }
 
+    public DbSet<FormInstanceInterface> FormInstanceInterface { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Program).Assembly);
     }
-
 }

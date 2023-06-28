@@ -4,6 +4,8 @@ internal class EasFormDynamicInputParameter
 {
     public int EasRequestTypeId { get; set; }
 
+    public int EasFormTypeId { get; set; }
+
     public int InputParameterId { get; set; }
 
     public int TargetDataServiceId { get; set; }
@@ -11,6 +13,8 @@ internal class EasFormDynamicInputParameter
     public int SourceDataFieldId { get; set; }
 
     public EasRequestType EasRequestType { get; set; } = null!;
+
+    public EasFormType EasFormType { get; set; } = null!;
 
     public InputParameter InputParameter { get; set; } = null!;
 

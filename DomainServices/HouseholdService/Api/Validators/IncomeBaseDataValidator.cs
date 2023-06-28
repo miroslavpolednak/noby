@@ -1,12 +1,13 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Validators;
 
-public class IncomeBaseDataValidator
+internal sealed class IncomeBaseDataValidator
     : AbstractValidator<IncomeBaseData>
 {
-    public IncomeBaseDataValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public IncomeBaseDataValidator(ICodebookServiceClient codebookService)
     {
         // check codebooks
         RuleFor(t => t.CurrencyCode)
@@ -15,6 +16,6 @@ public class IncomeBaseDataValidator
                 return (await codebookService.Currencies(cancellation)).Any(t => t.Code == currencyCode);
             })
             .When(t => !string.IsNullOrEmpty(t.CurrencyCode))
-            .WithMessage("CurrencyId is not valid").WithErrorCode("16030");
+            .WithErrorCode(ErrorCodeMapper.CurrencyNotValid);
     }
 }

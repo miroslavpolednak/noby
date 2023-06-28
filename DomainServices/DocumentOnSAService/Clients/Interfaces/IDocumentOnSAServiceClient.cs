@@ -32,4 +32,29 @@ public interface IDocumentOnSAServiceClient
     /// Metoda slouží k zahájení podepisovacího procesu
     /// </summary>
     Task SignDocumentManually(int documentOnSAId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k poskytnutí seznamu všechn dokumentů.
+    /// </summary>
+    Task<GetDocumentsOnSAListResponse> GetDocumentsOnSAList(int salesArrangementId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k vložení záznamu do tabulky DocumentOnSA obsahující zahájené podepisovací procesy 
+    /// </summary>
+    Task<CreateDocumentOnSAResponse> CreateDocumentOnSA(CreateDocumentOnSARequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k přidání eArchivového ID k Documentu na SA.
+    /// </summary>
+    Task LinkEArchivIdToDocumentOnSA(LinkEArchivIdToDocumentOnSARequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k vrácení PDF dokumentu z fronty ePodpisů.
+    /// </summary>
+    Task<GetElectronicDocumentFromQueueResponse> GetElectronicDocumentFromQueue(GetElectronicDocumentFromQueueRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k úpravě dat na DocumentOnSA
+    /// </summary>
+    Task SetDocumentOnSAArchived(int documentOnSAId, CancellationToken cancellationToken = default);
 }

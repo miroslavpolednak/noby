@@ -1,4 +1,5 @@
-﻿using DomainServices.OfferService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
@@ -27,9 +28,7 @@ internal static class Extensions
                 Developer = request.Developer is null ? null : new Developer
                 {
                     DeveloperId = request.Developer.DeveloperId,
-                    NewDeveloperCin = request.Developer.NewDeveloperCin,
-                    NewDeveloperName = request.Developer.NewDeveloperName,
-                    NewDeveloperProjectName = request.Developer.NewDeveloperProjectName,
+                    Description = request.Developer.Description,
                     ProjectId = request.Developer.ProjectId
                 },
                 RealEstateInsurance = request.RealEstateInsurance is null ? null : new RealEstateInsurance
@@ -46,9 +45,26 @@ internal static class Extensions
             BasicParameters = new()
             {
                 FinancialResourcesOwn = request.FinancialResourcesOwn,
-                FinancialResourcesOther = request.FinancialResourcesOther,
-                StatementTypeId = request.StatementTypeId
-            }
+                FinancialResourcesOther = request.FinancialResourcesOther
+            },
+            IsCreditWorthinessSimpleRequested = request.CreditWorthinessSimpleInputs?.IsActive ?? false,
+            CreditWorthinessSimpleInputs = request.CreditWorthinessSimpleInputs is null ? null : new MortgageCreditWorthinessSimpleInputs
+            {
+                TotalMonthlyIncome = request.CreditWorthinessSimpleInputs.TotalMonthlyIncome,
+                ExpensesSummary = new ExpensesSummary
+                {
+                    Rent = request.CreditWorthinessSimpleInputs.ExpensesRent,
+                    Other = request.CreditWorthinessSimpleInputs.ExpensesOther
+                },
+                ObligationsSummary = new ObligationsSummary
+                {
+                    LoansInstallmentsAmount = request.CreditWorthinessSimpleInputs.LoansInstallmentsAmount,
+                    CreditCardsAmount = request.CreditWorthinessSimpleInputs.CreditCardsAmount,
+                    AuthorizedOverdraftsTotalAmount = request.CreditWorthinessSimpleInputs.AuthorizedOverdraftsTotalAmount
+                },
+                ChildrenCount = request.CreditWorthinessSimpleInputs.ChildrenCount
+            },
+            Identities = { request.CustomerIdentities?.Select(c=> new Identity(c)) ?? Enumerable.Empty<Identity>() }
         };
 
         if (request.Fees is not null)

@@ -4,13 +4,12 @@ namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 
 public class SaveDocumentsToArchiveRequest : IRequest
 {
-
     [JsonIgnore]
     internal long CaseId;
 
     public List<DocumentsInformation> DocumentsInformation { get; set; } = null!;
 
-    internal SaveDocumentsToArchiveRequest InfuseCaseId(long caseId)
+    internal SaveDocumentsToArchiveRequest InfuseId(long caseId)
     {
         CaseId = caseId;
         return this;
@@ -19,23 +18,7 @@ public class SaveDocumentsToArchiveRequest : IRequest
 
 public class DocumentsInformation
 {
-    /// <summary>
-    /// GUID dokumentu v dočasném úložišti
-    /// </summary>
-    public Guid? Guid { get; set; }
+    public Dto.Documents.DocumentInformation DocumentInformation { get; set; } = null!;
 
-    /// <summary>
-    /// Jméno souboru
-    /// </summary>
-    public string FileName { get; set; } = null!;
-
-    /// <summary>
-    /// Id EA kódu
-    /// </summary>
-    public int? EaCodeMainId { get; set; }
-
-    /// <summary>
-    /// Popis dokumentu
-    /// </summary>
-    public string? Description { get; set; }
+    public string? FormId { get; set; }
 }

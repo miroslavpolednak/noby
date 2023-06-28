@@ -13,8 +13,5 @@ public interface IDateTime
     /// </summary>
     DateTime Now { get; }
 
-    /// <summary>
-    /// Current time
-    /// </summary>
-    DateTimeOffset OffsetNow { get; }
+    DateTime UtcNow { get; }
 }

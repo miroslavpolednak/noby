@@ -10,6 +10,6 @@ internal sealed class DeleteCaseRequestValidator
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
-            .WithMessage("CaseId must be > 0").WithErrorCode("13016");
+            .WithErrorCode(ErrorCodeMapper.CaseIdIsEmpty);
     }
 }

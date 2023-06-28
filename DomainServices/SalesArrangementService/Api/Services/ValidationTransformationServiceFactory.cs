@@ -1,6 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Api.Services;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Immutable;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Services;
 
@@ -24,13 +22,14 @@ internal sealed partial class ValidationTransformationServiceFactory
                     Path = t.FieldPath
                 })
                 .ToList()
-                .ToImmutableDictionary(k => k.Path, v => new ValidationTransformationCache.TransformationItem
+                .ToDictionary(k => k.Path, v => new ValidationTransformationCache.TransformationItem
                 {
                     Category = v.Category,
                     CategoryOrder = v.CategoryOrder,
                     Text = v.Text,
                     AlterSeverity = v.AlterSeverity
                 })
+                .AsReadOnly()
         );
 
         return formId switch

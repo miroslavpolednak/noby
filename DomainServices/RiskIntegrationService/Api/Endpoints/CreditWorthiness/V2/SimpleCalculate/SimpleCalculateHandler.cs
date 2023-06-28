@@ -1,4 +1,6 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.SimpleCalculate;
 
@@ -19,18 +21,18 @@ internal sealed class SimpleCalculateHandler
         return response.ToServiceResponse(request.Product.LoanPaymentAmount);
     }
 
-    private async Task<CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem> getRiskApplicationType(int productTypeId, CancellationToken cancellationToken)
+    private async Task<RiskApplicationTypesResponse.Types.RiskApplicationTypeItem> getRiskApplicationType(int productTypeId, CancellationToken cancellationToken)
         => (await _codebookService.RiskApplicationTypes(cancellationToken))
             .FirstOrDefault(t => t.ProductTypeId is not null && t.ProductTypeId.Contains(productTypeId))
         ?? throw new CisValidationException(17006, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly ExternalServices.CreditWorthiness.V1.ICreditWorthinessClient _client;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
+    private readonly _C4M.ICreditWorthinessClient _client;
     private readonly Calculate.Mappers.CalculateRequestMapper _requestMapper;
 
     public SimpleCalculateHandler(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
-        ExternalServices.CreditWorthiness.V1.ICreditWorthinessClient client,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
+        _C4M.ICreditWorthinessClient client,
         Calculate.Mappers.CalculateRequestMapper requestMapper)
     {
         _codebookService = codebookService;

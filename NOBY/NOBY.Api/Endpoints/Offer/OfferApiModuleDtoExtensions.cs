@@ -1,5 +1,7 @@
 ﻿using DomainServices.OfferService.Contracts;
 using Google.Protobuf.Collections;
+using NOBY.Api.Endpoints.Offer.Dto;
+using NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
 namespace NOBY.Api.Endpoints.Offer;
 
@@ -19,14 +21,11 @@ internal static class OfferApiModuleDtoExtensions
             ExpectedDateOfDrawing = input.ExpectedDateOfDrawing,
             FinancialResourcesOwn = basicParams.FinancialResourcesOwn,
             FinancialResourcesOther = basicParams.FinancialResourcesOther,
-            StatementTypeId = basicParams.StatementTypeId,
             LoanPurposes = input.LoanPurposes?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
             Developer = input.Developer is null ? null : new Dto.Developer
             {
                 DeveloperId = input.Developer.DeveloperId,
-                NewDeveloperProjectName = input.Developer.NewDeveloperProjectName,
-                NewDeveloperCin = input.Developer.NewDeveloperCin,
-                NewDeveloperName = input.Developer.NewDeveloperName,
+                Description = input.Developer.Description,
                 ProjectId = input.Developer.ProjectId
             },
             DrawingDurationId = input.DrawingDurationId,
@@ -133,4 +132,37 @@ internal static class OfferApiModuleDtoExtensions
             TariffTextWithAmount = t.TariffTextWithAmount,
             UsageText = t.UsageText
         }).ToList();
+
+    public static CreditWorthinessSimpleResults? ToApiResponse(this MortgageCreditWorthinessSimpleResults? result)
+    {
+        if (result is null)
+            return null;
+
+        return new CreditWorthinessSimpleResults
+        {
+            WorthinessResult = (SimulateMortgage.WorthinessResult)result.WorthinessResult,
+            InstallmentLimit = result.InstallmentLimit ?? 0,
+            MaxAmount = result.MaxAmount ?? 0,
+            RemainsLivingAnnuity = result.RemainsLivingAnnuity ?? 0,
+            RemainsLivingInst = result.RemainsLivingInst ?? 0,
+        };
+    }
+
+    public static CreditWorthinessSimpleInputs? ToApiResponse(this MortgageCreditWorthinessSimpleInputs? inputs, bool isActive)
+    {
+        if (inputs is null)
+            return null;
+
+        return new CreditWorthinessSimpleInputs
+        {
+            IsActive = isActive,
+            TotalMonthlyIncome = inputs.TotalMonthlyIncome,
+            ExpensesRent = inputs.ExpensesSummary?.Rent,
+            ExpensesOther = inputs.ExpensesSummary?.Other,
+            LoansInstallmentsAmount = inputs.ObligationsSummary?.LoansInstallmentsAmount,
+            CreditCardsAmount = inputs.ObligationsSummary?.CreditCardsAmount,
+            AuthorizedOverdraftsTotalAmount = inputs.ObligationsSummary?.AuthorizedOverdraftsTotalAmount,
+            ChildrenCount = inputs.ChildrenCount
+        };
+    }
 }

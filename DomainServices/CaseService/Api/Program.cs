@@ -18,68 +18,73 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region register builder
-// globalni nastaveni prostredi
-builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
-
-// logging 
-builder
-    .AddCisLogging()
-    .AddCisTracing();
-
-// health checks
-builder.AddCisHealthChecks();
-builder.Services.AddAttributedServices(typeof(Program));
-
-// authentication
-builder.AddCisServiceAuthentication();
-
-// add BE services
-builder.Services
-    .AddSalesArrangementService()
-    .AddCodebookService()
-    .AddUserService()
-    .AddCisServiceDiscovery();
-
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
-builder.Services.AddCisMediatrRollbackCapability();
-
-// add this service
-builder.AddCaseService();
-
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
-#endregion register builder
-
-// kestrel configuration
-builder.UseKestrelWithCustomConfiguration();
-
-// BUILD APP
-if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-var app = builder.Build();
-
-app.UseServiceDiscovery();
-app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCisServiceUserContext();
-app.UseCisLogging();
-
-app.MapCisHealthChecks();
-
-app.MapGrpcService<CaseService>();
-
-app.MapGrpcReflectionService();
+var log = builder.CreateStartupLogger();
 
 try
 {
+    #region register builder
+    builder.Services.AddAttributedServices(typeof(Program));
+
+    // globalni nastaveni prostredi
+    builder
+        .AddCisCoreFeatures()
+        .AddCisEnvironmentConfiguration();
+
+    builder
+        // logging
+        .AddCisLogging()
+        .AddCisTracing()
+        // authentication
+        .AddCisServiceAuthentication()
+        // add self
+        .AddCaseService()
+        // add BE services
+        .Services
+            // add CIS services
+            .AddSalesArrangementService()
+            .AddDocumentOnSAService()
+            .AddCodebookService()
+            .AddUserService()
+            .AddCisServiceDiscovery()
+            // add rollback
+            .AddCisMediatrRollbackCapability()
+            // add grpc infrastructure
+            .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+            .AddGrpcReflection()
+            .AddGrpc(options =>
+            {
+                options.Interceptors.Add<GenericServerExceptionInterceptor>();
+            });
+
+    // add HC
+    builder.AddCisGrpcHealthChecks();
+    #endregion register builder
+
+    // kestrel configuration
+    builder.UseKestrelWithCustomConfiguration();
+
+    // BUILD APP
+    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
+    var app = builder.Build();
+    log.ApplicationBuilt();
+
+    app.UseServiceDiscovery();
+    app.UseRouting();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseCisServiceUserContext();
+
+    app.MapCisGrpcHealthChecks();
+    app.MapGrpcReflectionService();
+    app.MapGrpcService<CaseService>();
+
+    log.ApplicationRun();
     app.Run();
+}
+catch (Exception ex)
+{
+    log.CatchedException(ex);
 }
 finally
 {

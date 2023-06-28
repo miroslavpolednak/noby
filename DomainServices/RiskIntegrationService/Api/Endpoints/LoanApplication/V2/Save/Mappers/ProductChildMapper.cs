@@ -1,7 +1,9 @@
-﻿using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
+﻿using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
-using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V1.Contracts;
+using DomainServices.RiskIntegrationService.ExternalServices.LoanApplication.V3.Contracts;
+using DomainServices.RiskIntegrationService.ExternalServices;
+using DomainServices.CodebookService.Contracts.v1;
+
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
 internal sealed class ProductChildMapper
@@ -14,14 +16,14 @@ internal sealed class ProductChildMapper
         var purposes = await _codebookService.LoanPurposes(_cancellationToken);
         var collaterals = await _codebookService.CollateralTypes(_cancellationToken);
 
-        return new LoanApplicationProduct
+        return new _C4M.LoanApplicationProduct
         {
-            ProductClusterCode = _riskApplicationType?.C4mAplCode,
-            AplType = product.AplType ?? _riskApplicationType?.C4mAplTypeId,
+            ProductClusterCode = _riskApplicationType?.C4MAplCode,
+            AplType = product.AplType ?? _riskApplicationType?.C4MAplTypeId,
             GlTableSelection = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "OST" : null,
             IsProductSecured = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? true : default(bool?),
-            LoanApplicationPurpose = tranformPurposes(product.Purposes, purposes, product),
-            LoanApplicationCollateral = product.Collaterals?.Select(tranformCollateral(collaterals))?.ToList(),
+            LoanApplicationPurpose = tranformPurposes(product.Purposes, purposes, product, _riskApplicationType?.MandantId),
+            LoanApplicationCollateral = product.Collaterals?.Select(tranformCollateral(collaterals, _riskApplicationType?.MandantId))?.ToList(),
             AmountRequired = product.RequiredAmount.ToAmount(),
             AmountInvestment = product.InvestmentAmount.ToAmount(),
             AmountOwnResources = product.OwnResourcesAmount.ToAmount(),
@@ -29,9 +31,9 @@ internal sealed class ProductChildMapper
             Maturity = product.LoanDuration,
             Annuity = Convert.ToInt64(product.LoanPaymentAmount ?? 0),
             FixationPeriod = product.FixedRatePeriod,
-            InterestRate = product.LoanInterestRate,
-            RepaymentScheduleType = Helpers.GetEnumFromString<LoanApplicationProductRepaymentScheduleType>((await _codebookService.RepaymentScheduleTypes(_cancellationToken)).FirstOrDefault(t => t.Id == product.RepaymentScheduleTypeId)?.Code, LoanApplicationProductRepaymentScheduleType.A),
-            InstallmentPeriod = Helpers.GetEnumFromString<LoanApplicationProductInstallmentPeriod>(product.InstallmentPeriod, LoanApplicationProductInstallmentPeriod.M),
+            InterestRate = product.LoanInterestRate != null ? Decimal.ToDouble(product.LoanInterestRate.Value) : null,
+            RepaymentScheduleType = Helpers.GetEnumFromString<_C4M.RepaymentScheduleType>((await _codebookService.RepaymentScheduleTypes(_cancellationToken)).FirstOrDefault(t => t.Id == product.RepaymentScheduleTypeId)?.Code, _C4M.RepaymentScheduleType.A),
+            InstallmentPeriod = Helpers.GetEnumFromString<_C4M.InstallmentPeriodType>(product.InstallmentPeriod, _C4M.InstallmentPeriodType.M),
             InstallmentCount = product.InstallmentCount,
             DrawingPeriodStart = product.DrawingPeriodStart,
             DrawingPeriodEnd = product.DrawingPeriodEnd,
@@ -57,8 +59,8 @@ internal sealed class ProductChildMapper
         return relations
             .Select(t => new _C4M.LoanApplicationProductRelation
             {
-                ProductId = getProductId(t),
-                ProductType = t.ProductType,
+                ProductId = getProductId(t)?.ToC4M(),
+                ProductType = getProductType(t),
                 RelationType = t.RelationType,
                 Value = new _C4M.LoanApplicationProductRelationValue
                 {
@@ -70,11 +72,11 @@ internal sealed class ProductChildMapper
                     CustomerId = new _C4M.ResourceIdentifier
                     {
                         Id = x.CustomerId,
-                        Domain = "CM",
-                        Resource = "Customer",
+                        Domain = Constants.CM,
+                        Resource = Constants.Customer,
                         Instance = Helpers.GetResourceInstanceFromMandant(_riskApplicationType.MandantId)
-                    },
-                    RoleCode = Helpers.GetRequiredEnumFromString<_C4M.LoanApplicationProductRelationCounterpartyRoleCode>(customerRoles.FirstOrDefault(c => c.Id == x.CustomerRoleId)?.RdmCode ?? "")
+                    }.ToC4M(),
+                    RoleCode = Helpers.GetRequiredEnumFromString<_C4M.RoleType>(customerRoles.FirstOrDefault(c => c.Id == x.CustomerRoleId)?.RdmCode ?? "")
                 }).ToList()
             })
             .ToList();
@@ -93,7 +95,7 @@ internal sealed class ProductChildMapper
             } else if (!string.IsNullOrEmpty(relation.BankAccount?.Number)) {
                 return new _C4M.ResourceIdentifier
                 {
-                    Id = String.IsNullOrEmpty(relation.BankAccount.NumberPrefix) ? relation.BankAccount.Number : $"{relation.BankAccount.NumberPrefix}-{relation.BankAccount.Number}",
+                    Id = (relation.BankAccount.NumberPrefix ?? "").PadLeft(6, '0') + relation.BankAccount.Number.PadLeft(10, '0'),
                     Instance = relation.BankAccount.BankCode switch {
                         "7990" => "MPSS",
                         "0100" => "KBCZ",
@@ -106,6 +108,14 @@ internal sealed class ProductChildMapper
             {
                 return null;
             }
+        }
+
+        string getProductType(_V2.LoanApplicationProductRelation relation)
+        {
+            if (!string.IsNullOrWhiteSpace(relation.ProductType))
+                return relation.ProductType;
+
+            return relation.BankAccount?.BankCode == "0100" ? "KBGROUP" : "OFI";
         }
     }
 
@@ -123,28 +133,28 @@ internal sealed class ProductChildMapper
             })
             .ToList();
 
-    private static Func<_V2.LoanApplicationProductCollateral, LoanApplicationCollateral> tranformCollateral(List<DomainServices.CodebookService.Contracts.Endpoints.CollateralTypes.CollateralTypeItem> collaterals)
-        => t => new LoanApplicationCollateral
+    private static Func<_V2.LoanApplicationProductCollateral, _C4M.LoanApplicationCollateral> tranformCollateral(List<CollateralTypesResponse.Types.CollateralTypeItem> collaterals, int? mandantId)
+        => t => new _C4M.LoanApplicationCollateral
         {
             AppraisedValue = t.AppraisedValue.ToAmount(),
             Id = string.IsNullOrEmpty(t.Id) ? null : new _C4M.ResourceIdentifier
             {
                 Id = t.Id,
-                Domain = "CAM",
-                Instance = "KBCZ",
-                Resource = "Collateral"
-            },
-            CategoryCode = collaterals.FirstOrDefault(x => x.CollateralType == t.CollateralType)?.CodeBgm ?? "NE"
+                Domain = Constants.CAM,
+                Instance = Constants.KBCZ,
+                Resource = Constants.Collateral
+            }.ToC4M(),
+            CategoryCode = t.CollateralType != null ? collaterals.FirstOrDefault(x => x.CollateralType == t.CollateralType && x.MandantId == mandantId)?.CodeBgm : "NE"
         };
 
-    private static List<LoanApplicationPurpose>? tranformPurposes(List<_V2.LoanApplicationProductPurpose>? productPurposes, List<DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes.LoanPurposesItem> purposes, _V2.LoanApplicationProduct product)
+    private static List<_C4M.LoanApplicationPurpose>? tranformPurposes(List<_V2.LoanApplicationProductPurpose>? productPurposes, List<LoanPurposesResponse.Types.LoanPurposeItem> purposes, _V2.LoanApplicationProduct product, int? mandantId)
         => (product.ProductTypeId == 20001 && product.LoanKindId == 2001)
-            ? new List<LoanApplicationPurpose> { new LoanApplicationPurpose { Code = 35, Amount = product.RequiredAmount } }
+            ? new List<_C4M.LoanApplicationPurpose> { new _C4M.LoanApplicationPurpose { Code = 35, Amount = product.RequiredAmount } }
             : productPurposes?
-                .Select(t => new LoanApplicationPurpose
+                .Select(t => new _C4M.LoanApplicationPurpose
                 {
                     Amount = t.Amount,
-                    Code = purposes.FirstOrDefault(x => x.C4mId.HasValue && x.Id == t.LoanPurposeId)?.C4mId ?? -1
+                    Code = purposes.FirstOrDefault(x => x.C4MId.HasValue && x.MandantId == mandantId && x.Id == t.LoanPurposeId)?.C4MId ?? -1
                 })
                 .ToList();
 
@@ -173,13 +183,13 @@ internal sealed class ProductChildMapper
     };
 
 
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly CancellationToken _cancellationToken;
-    private readonly _RAT.RiskApplicationTypeItem _riskApplicationType;
+    private readonly RiskApplicationTypesResponse.Types.RiskApplicationTypeItem _riskApplicationType;
 
     public ProductChildMapper(
-        CodebookService.Clients.ICodebookServiceClients codebookService,
-        _RAT.RiskApplicationTypeItem riskApplicationType,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
+        RiskApplicationTypesResponse.Types.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellationToken)
     {
         _riskApplicationType = riskApplicationType;

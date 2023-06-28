@@ -10,9 +10,11 @@ internal sealed class GetCustomerHandler
     public async Task<Contracts.CustomerOnSA> Handle(GetCustomerRequest request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.Customers
+            .Include(t => t.Identities)
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw new CisNotFoundException(ErrorCodeMapper.CustomerOnSANotFound, ErrorCodeMapper.GetMessage(ErrorCodeMapper.CustomerOnSANotFound, request.CustomerOnSAId));
 
         var customerInstance = new Contracts.CustomerOnSA
         {
@@ -29,13 +31,13 @@ internal sealed class GetCustomerHandler
 
         if (entity.AdditionalDataBin != null)
             customerInstance.CustomerAdditionalData = CustomerAdditionalData.Parser.ParseFrom(entity.AdditionalDataBin);
-        
+
+        if (entity.ChangeMetadataBin != null)
+            customerInstance.CustomerChangeMetadata = CustomerChangeMetadata.Parser.ParseFrom(entity.ChangeMetadataBin);
+
         // identity
-        var identities = await _dbContext.CustomersIdentities
-            .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
-        customerInstance.CustomerIdentifiers.AddRange(identities.Select(t => new Identity(t.IdentityId, t.IdentityScheme)));
+        if (entity.Identities is not null)
+            customerInstance.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new Identity(t.IdentityId, t.IdentityScheme)));
 
         // obligations
         var obligations = await _dbContext.CustomersObligations

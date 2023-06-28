@@ -1,16 +1,21 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Handlers.Result.Requests;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
+using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+using DomainServices.CodebookService.Clients;
 using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Result;
 
-public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, ResultConsumeResponse>
+public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, ConsumeResultResponse>
 {
+    private readonly IServiceProvider _provider;
     private readonly IDateTime _dateTime;
-    private readonly NotificationRepository _repository;
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly ISmsAuditLogger _auditLogger;
     private readonly ILogger<ConsumeResultHandler> _logger;
 
     private static readonly Dictionary<string, NotificationState> _map = new()
@@ -22,32 +27,49 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
     };
 
     public ConsumeResultHandler(
+        IServiceProvider provider,
         IDateTime dateTime,
-        NotificationRepository repository,
+        ICodebookServiceClient codebookService,
+        ISmsAuditLogger auditLogger,
         ILogger<ConsumeResultHandler> logger)
     {
+        _provider = provider;
         _dateTime = dateTime;
-        _repository = repository;
+        _codebookService = codebookService;
+        _auditLogger = auditLogger;
         _logger = logger;
     }
 
-    public async Task<ResultConsumeResponse> Handle(ResultConsumeRequest request, CancellationToken cancellationToken)
+    public async Task<ConsumeResultResponse> Handle(ConsumeResultRequest request, CancellationToken cancellationToken)
     {
         var report = request.NotificationReport;
         if (!Guid.TryParse(report.id, out var id))
         {
             _logger.LogDebug("Skipped for notificationId: {id}", report.id);
+            return new ConsumeResultResponse();
         }
 
         try
         {
-            var result = await _repository.GetResult(id, cancellationToken);
+            await using var scope = _provider.CreateAsyncScope();
+            var repository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
+            var result = await repository.GetResult(id, cancellationToken);
             result.ResultTimestamp = _dateTime.Now;
             result.State = _map[report.state];
 
-            // todo: extend result with Type, fetch codebook sms notification type by result type, if audit is enabled, log
+            if (result is SmsResult smsResult)
+            {
+                var smsTypes = await _codebookService.SmsNotificationTypes(cancellationToken);
+                var smsType = smsTypes.FirstOrDefault(s => s.Code == smsResult.Type);
+
+                if (smsType?.IsAuditLogEnabled ?? false)
+                {
+                    _auditLogger.LogKafkaResultReceived(report);
+                }
+            }
+            
             var errorCodes = report.notificationErrors?
-                .Select(e => new ResultError()
+                .Select(e => new ResultError
                 {
                     Code = e.code,
                     Message = e.message
@@ -59,9 +81,9 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
             errorSet.UnionWith(errorCodes);
             result.ErrorSet = errorSet;
 
-            await _repository.SaveChanges(cancellationToken);
-            
-            _logger.LogInformation($"Result updated for notificationId: {id}");
+            await repository.SaveChanges(cancellationToken);
+
+            _logger.LogDebug($"Result updated for notificationId: {id}");
         }
         catch (CisNotFoundException)
         {
@@ -72,6 +94,6 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
             _logger.LogError(e, "Update result failed for notificationId: {id}", report.id);
         }
 
-        return new ResultConsumeResponse();
+        return new ConsumeResultResponse();
     }
 }

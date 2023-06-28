@@ -5,7 +5,7 @@ internal sealed class StaticLoginValidator : ILoginValidator
     private static readonly Dictionary<string, string> _logins = new()
     {
         { "a", "a" },
-        { "b", "b" },
+        { "test", "Test" },
         { "sb", "pwd" },
         { "epodpisy", "epodpisy" },
         { "insign", "insign" }

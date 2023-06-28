@@ -14,6 +14,12 @@ internal sealed class GetCustomerListHandler
             .AsNoTracking()
             .Select(CustomerOnSAServiceExpressions.CustomerDetail())
             .ToListAsync(cancellationToken);
+
+        if (!customers.Any())
+        {
+            await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+        }
+
         var ids = customers.Select(t => t.CustomerOnSAId).ToList();
 
         var identities = await _dbContext.CustomersIdentities
@@ -33,19 +39,15 @@ internal sealed class GetCustomerListHandler
         var model = new GetCustomerListResponse();
         model.Customers.AddRange(customers);
 
-        _logger.FoundItems(model.Customers.Count);
-
         return model;
     }
 
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly HouseholdServiceDbContext _dbContext;
-    private readonly ILogger<GetCustomerListHandler> _logger;
 
-    public GetCustomerListHandler(
-        HouseholdServiceDbContext dbContext,
-        ILogger<GetCustomerListHandler> logger)
+    public GetCustomerListHandler(HouseholdServiceDbContext dbContext, SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _dbContext = dbContext;
-        _logger = logger;
+        _salesArrangementService = salesArrangementService;
     }
 }

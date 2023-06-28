@@ -1,19 +1,23 @@
 ﻿namespace DomainServices.HouseholdService.Contracts;
 
+public partial class GetCustomerChangeMetadataRequest
+    : MediatR.IRequest<GetCustomerChangeMetadataResponse>
+{ }
+
 public partial class CreateCustomerRequest
     : MediatR.IRequest<CreateCustomerResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 
 public partial class CreateIncomeRequest
-    : MediatR.IRequest<CreateIncomeResponse>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<CreateIncomeResponse>, CIS.Core.Validation.IValidatableRequest, IIncome
 { }
 
 public partial class CreateObligationRequest
-    : MediatR.IRequest<CreateObligationResponse>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<CreateObligationResponse>, CIS.Core.Validation.IValidatableRequest, IObligation
 { }
 
 public partial class DeleteCustomerRequest
-    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 
 public partial class DeleteIncomeRequest
@@ -26,6 +30,10 @@ public partial class DeleteObligationRequest
 
 public partial class GetCustomerRequest
     : MediatR.IRequest<CustomerOnSA>
+{ }
+
+public partial class GetCustomersByIdentityRequest
+    : MediatR.IRequest<GetCustomersByIdentityResponse>
 { }
 
 public partial class GetCustomerListRequest
@@ -53,7 +61,7 @@ public partial class UpdateCustomerRequest
 { }
 
 public partial class UpdateIncomeRequest
-    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest, IIncome
 { }
 
 public partial class UpdateIncomeBaseDataRequest
@@ -61,7 +69,7 @@ public partial class UpdateIncomeBaseDataRequest
 { }
 
 public partial class Obligation
-    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest, IObligation
 { }
 
 public partial class UpdateCustomerDetailRequest

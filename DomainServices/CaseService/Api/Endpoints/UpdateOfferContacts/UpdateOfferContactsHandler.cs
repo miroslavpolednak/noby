@@ -10,7 +10,7 @@ internal sealed class UpdateOfferContactsHandler
     {
         // zjistit zda existuje case
         var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation)
-            ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // ulozit do DB
         entity.EmailForOffer = request.OfferContacts.EmailForOffer;

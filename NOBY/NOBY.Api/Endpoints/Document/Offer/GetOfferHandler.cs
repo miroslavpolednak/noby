@@ -3,7 +3,7 @@ using NOBY.Api.Endpoints.Document.Shared.DocumentIdManager;
 
 namespace NOBY.Api.Endpoints.Document.Offer;
 
-internal class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnlyMemory<byte>>
+internal sealed class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnlyMemory<byte>>
 {
     private readonly DocumentGenerator _documentGenerator;
     private readonly DocumentManager _documentManager;
@@ -21,18 +21,15 @@ internal class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnlyMemory
     public async Task<ReadOnlyMemory<byte>> Handle(GetOfferRequest request, CancellationToken cancellationToken)
     {
         var salesArrangementId = request.InputParameters.SalesArrangementId!.Value;
-        //var documentId = await _documentArchiveManager.GetDocumentId(salesArrangementId, cancellationToken);
+        var documentInfo = await _documentArchiveManager.GetDocumentInfo(salesArrangementId, cancellationToken);
 
-        return await GenerateAndSaveOffer(request, salesArrangementId, cancellationToken);
+        if (string.IsNullOrWhiteSpace(documentInfo.DocumentId))
+            return await GenerateAndSaveOffer(request, salesArrangementId, documentInfo.ContractNumber, cancellationToken);
 
-        //TODO: DocumentArchiveService - GetDocument funguje z důvodu chybějícího propisu dokumentů do eArchivu.
-        //if (string.IsNullOrWhiteSpace(documentId))
-        //    return await GenerateAndSaveOffer(request, salesArrangementId, cancellationToken);
-
-        //return await _documentArchiveManager.GetDocument(documentId, request, cancellationToken);
+        return await _documentArchiveManager.GetDocument(documentInfo.DocumentId, request, cancellationToken);
     }
 
-    private async Task<ReadOnlyMemory<byte>> GenerateAndSaveOffer(GetDocumentBaseRequest request, int salesArrangementId, CancellationToken cancellationToken)
+    private async Task<ReadOnlyMemory<byte>> GenerateAndSaveOffer(GetDocumentBaseRequest request, int salesArrangementId, string? contractNumber, CancellationToken cancellationToken)
     {
         var documentId = await _documentArchiveManager.GenerateDocumentId(cancellationToken);
 
@@ -50,7 +47,9 @@ internal class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnlyMemory
                 CaseId = request.InputParameters.CaseId!.Value,
                 UserId = _documentManager.UserId,
                 DocumentData = documentData,
-                FileName = await _documentManager.GetFileName(request, cancellationToken)
+                FileName = await _documentManager.GetFileName(request, cancellationToken),
+                DocumentTypeId = (int)request.DocumentType,
+                ContractNumber = contractNumber
             };
 
             await _documentArchiveManager.SaveDocumentToArchive(salesArrangementId, archiveData, cancellationToken);
@@ -62,6 +61,7 @@ internal class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnlyMemory
         var generateDocumentRequest = await _documentGenerator.CreateRequest(request, cancellationToken);
 
         generateDocumentRequest.DocumentFooter.DocumentId = documentId;
+        generateDocumentRequest.DocumentFooter.SalesArrangementId = request.InputParameters.SalesArrangementId;
 
         return await _documentGenerator.GenerateDocument(generateDocumentRequest, cancellationToken);
     }

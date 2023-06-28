@@ -58,6 +58,9 @@
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.UserLoginFieldNumber">
             <summary>Field number for the "UserLogin" field.</summary>
         </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.FormIdFieldNumber">
+            <summary>Field number for the "FormId" field.</summary>
+        </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.DocumentIdFieldNumber">
             <summary>Field number for the "documentId" field.</summary>
         </member>
@@ -109,6 +112,47 @@
             Příznak (1/0 ano/ne), který určuje, zda se při archivaci vytvoří věta na rozhraní kdv, pokud ea kód použitý pro archivaci je pro kdv určen (Default: 0).
             </summary>
         </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.SendDocumentOnlyFieldNumber">
+            <summary>Field number for the "SendDocumentOnly" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.SendDocumentOnly">
+            <summary>
+            Zasílá se jen dokument bez DV (true jen doc bez DV) default: true
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest.EArchivIdsFieldNumber">
+            <summary>Field number for the "EArchivIds" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest.CaseIdFieldNumber">
+            <summary>Field number for the "CaseId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest.CaseId">
+            <summary>
+            Unikátní Id obchodního případu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest.StatusesInQueueFieldNumber">
+            <summary>Field number for the "StatusesInQueue" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest.WithContentFieldNumber">
+            <summary>Field number for the "WithContent" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest.EArchivIdFieldNumber">
+            <summary>Field number for the "EArchivId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest.EArchivId">
+            <summary>
+            ID dokumentu v eArchiv-u
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest.StatusInQueueFieldNumber">
+            <summary>Field number for the "StatusInQueue" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest.StatusInQueue">
+            <summary>
+            Stav dokument ve frontì
+            </summary>
+        </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveServiceV1Reflection">
             <summary>Holder for reflection information generated from DocumentArchiveService.v1.proto</summary>
         </member>
@@ -150,9 +194,25 @@
             <param name="context">The context of the server-side call handler being invoked.</param>
             <returns>The response to send back to the client (wrapped by a task).</returns>
         </member>
-        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.GetGetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.ServerCallContext)">
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.GetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.ServerCallContext)">
             <summary>
             Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.GetDocumentsInQueue(DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Metoda slouží k získání seznamu dokumentů z lokálně uložené fronty dokumentů k odeslání nebo již odeslaných nebo dokumentů v chybových stavech
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.SetDocumentStatusInQueue(DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Metoda slouží k nastavení stavu dokumentu ve frontě.
             </summary>
             <param name="request">The request received from the client.</param>
             <param name="context">The context of the server-side call handler being invoked.</param>
@@ -284,7 +344,7 @@
             <param name="options">The options for the call.</param>
             <returns>The call object.</returns>
         </member>
-        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
             Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
             </summary>
@@ -294,7 +354,7 @@
             <param name="cancellationToken">An optional token for canceling the call.</param>
             <returns>The response received from the server.</returns>
         </member>
-        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
             <summary>
             Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
             </summary>
@@ -302,7 +362,7 @@
             <param name="options">The options for the call.</param>
             <returns>The response received from the server.</returns>
         </member>
-        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
             Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
             </summary>
@@ -312,9 +372,81 @@
             <param name="cancellationToken">An optional token for canceling the call.</param>
             <returns>The call object.</returns>
         </member>
-        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
             <summary>
             Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentsInQueue(DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Metoda slouží k získání seznamu dokumentů z lokálně uložené fronty dokumentů k odeslání nebo již odeslaných nebo dokumentů v chybových stavech
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentsInQueue(DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Metoda slouží k získání seznamu dokumentů z lokálně uložené fronty dokumentů k odeslání nebo již odeslaných nebo dokumentů v chybových stavech
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentsInQueueAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Metoda slouží k získání seznamu dokumentů z lokálně uložené fronty dokumentů k odeslání nebo již odeslaných nebo dokumentů v chybových stavech
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentsInQueueAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Metoda slouží k získání seznamu dokumentů z lokálně uložené fronty dokumentů k odeslání nebo již odeslaných nebo dokumentů v chybových stavech
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.SetDocumentStatusInQueue(DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Metoda slouží k nastavení stavu dokumentu ve frontě.
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.SetDocumentStatusInQueue(DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Metoda slouží k nastavení stavu dokumentu ve frontě.
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.SetDocumentStatusInQueueAsync(DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Metoda slouží k nastavení stavu dokumentu ve frontě.
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.SetDocumentStatusInQueueAsync(DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Metoda slouží k nastavení stavu dokumentu ve frontě.
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="options">The options for the call.</param>
@@ -537,6 +669,65 @@
             <summary>
             Metadata dokumentu
             </summary>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueReflection">
+            <summary>Holder for reflection information generated from GetDocumentsInQueue.proto</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueReflection.Descriptor">
+            <summary>File descriptor for GetDocumentsInQueue.proto</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentsInQueueResponse.QueuedDocumentsFieldNumber">
+            <summary>Field number for the "QueuedDocuments" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.EArchivIdFieldNumber">
+            <summary>Field number for the "EArchivId" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.FilenameFieldNumber">
+            <summary>Field number for the "Filename" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.StatusInQueueFieldNumber">
+            <summary>Field number for the "StatusInQueue" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.StatusInQueue">
+            <summary>
+            Status dokumentu (100 - k přenosu, 300 chyba přenosu, 400 - úspěšně přeneseno)
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.FormIdFieldNumber">
+            <summary>Field number for the "FormId" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.EaCodeMainIdFieldNumber">
+            <summary>Field number for the "EaCodeMainId" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.Description">
+            <summary>
+            Popis dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.CreatedOnFieldNumber">
+            <summary>Field number for the "CreatedOn" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.CreatedOn">
+            <summary>
+            Datum přijetí dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.DocumentDataFieldNumber">
+            <summary>Field number for the "DocumentData" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.QueuedDocument.DocumentData">
+            <summary>
+            Soubour (pole bajtů) ve formě base64string 
+            </summary>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueReflection">
+            <summary>Holder for reflection information generated from SetDocumentStatusInQueue.proto</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.SetDocumentStatusInQueueReflection.Descriptor">
+            <summary>File descriptor for SetDocumentStatusInQueue.proto</summary>
         </member>
     </members>
 </doc>

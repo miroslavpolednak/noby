@@ -3,8 +3,21 @@
 public sealed class SignInRequest : IRequest
 {
     /// <summary>
-    /// Login uzivatel z xxvvss databaze.
+    /// OsCis
     /// </summary>
-    /// <example>990614w</example>
+    /// <example>614</example>
+    [Obsolete]
     public string? Login { get; set; }
+
+    /// <summary>
+    /// ID uzivatele v ramci vybraneho identitniho schematu.
+    /// </summary>
+    /// <example>A09V61</example>
+    public string? IdentityId { get; set; }
+
+    /// <summary>
+    /// Vybranne identitni schema pro prihlaseni, moznosti jsou: <a href="https://wiki.kb.cz/display/HT/IdentityScheme">https://wiki.kb.cz/display/HT/IdentityScheme</a>
+    /// </summary>
+    /// <example>KBUID</example>
+    public string? IdentityScheme { get; set; }
 }

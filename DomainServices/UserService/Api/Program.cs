@@ -16,60 +16,71 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region register builder.Services
-// globalni nastaveni prostredi
-builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
-builder.Services.AddAttributedServices(typeof(Program));
-builder.Services.AddCisDistributedCache();
-
-// logging 
-builder
-    .AddCisLogging()
-    .AddCisTracing();
-
-// health checks
-builder.AddCisHealthChecks();
-
-// authentication
-builder.AddCisServiceAuthentication();
-
-// add services
-builder.Services.AddCisServiceDiscovery();
-
-builder.Services.AddCisGrpcInfrastructure(typeof(Program));
-builder.AddUserService();
-
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
-#endregion register builder.Services
-
-// kestrel configuration
-builder.UseKestrelWithCustomConfiguration();
-
-// BUILD APP
-if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-var app = builder.Build();
-
-app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCisLogging();
-
-app.MapCisHealthChecks();
-
-app.MapGrpcService<UserService>();
-
-app.MapGrpcReflectionService();
+var log = builder.CreateStartupLogger();
 
 try
 {
+    #region register builder.Services
+    builder.Services.AddAttributedServices(typeof(Program));
+
+    // globalni nastaveni prostredi
+    builder
+        .AddCisCoreFeatures()
+        .AddCisEnvironmentConfiguration();
+
+    builder
+        // logging 
+        .AddCisLogging()
+        .AddCisTracing()
+        // authentication
+        .AddCisServiceAuthentication()
+        // add distributed cache
+        .AddCisDistributedCache()
+        // add self
+        .AddUserService()
+        .Services
+            // add CIS services
+            .AddCisServiceDiscovery()
+            // add swagger
+            .AddUserServiceSwagger()
+            // add grpc infrastructure
+            .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+            .AddGrpcReflection()
+            .AddGrpc(options =>
+            {
+                options.Interceptors.Add<GenericServerExceptionInterceptor>();
+            })
+            .AddJsonTranscoding();
+
+    // add HC
+    builder.AddCisGrpcHealthChecks();
+    #endregion register builder.Services
+
+    // kestrel configuration
+    builder.UseKestrelWithCustomConfiguration();
+
+    // BUILD APP
+    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
+    var app = builder.Build();
+    log.ApplicationBuilt();
+
+    app.UseHsts();
+    app.UseRouting();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapCisGrpcHealthChecks();
+    app.MapGrpcReflectionService();
+    app.MapGrpcService<UserService>();
+    app.UseUserServiceSwagger();
+
+    log.ApplicationRun();
     app.Run();
+}
+catch (Exception ex)
+{
+    log.CatchedException(ex);
 }
 finally
 {

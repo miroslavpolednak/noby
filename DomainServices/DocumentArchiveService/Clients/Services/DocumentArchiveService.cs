@@ -27,7 +27,17 @@ public class DocumentArchiveService
 
     public async Task<GetDocumentListResponse> GetDocumentList(GetDocumentListRequest request, CancellationToken cancellationToken = default)
     {
-        return await _service.GetGetDocumentListAsync(request, cancellationToken: cancellationToken);
+        return await _service.GetDocumentListAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task<GetDocumentsInQueueResponse> GetDocumentsInQueue(GetDocumentsInQueueRequest request, CancellationToken cancellationToken = default)
+    {
+       return await _service.GetDocumentsInQueueAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task SetDocumentStatusInQueue(SetDocumentStatusInQueueRequest request, CancellationToken cancellationToken = default)
+    {
+        await _service.SetDocumentStatusInQueueAsync(request, cancellationToken: cancellationToken);
     }
 
     public async Task UploadDocument(UploadDocumentRequest request, CancellationToken cancellationToken = default)

@@ -1,18 +1,23 @@
-﻿using FluentValidation;
+﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
+using FluentValidation;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementState;
 
-internal class UpdateSalesArrangementStateRequestValidator
+internal sealed class UpdateSalesArrangementStateRequestValidator
     : AbstractValidator<Contracts.UpdateSalesArrangementStateRequest>
 {
-    public UpdateSalesArrangementStateRequestValidator()
+    public UpdateSalesArrangementStateRequestValidator(CodebookService.Clients.ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementId Id must be > 0").WithErrorCode("18010");
+            .WithErrorCode(ErrorCodeMapper.SalesArrangementIdIsEmpty);
 
         RuleFor(t => t.State)
             .GreaterThan(0)
-            .WithMessage("SalesArrangement State must be > 0").WithErrorCode("18079");
+            .WithErrorCode(ErrorCodeMapper.SalesArrangementStateIsEmpty);
+
+        RuleFor(t => t.State)
+            .MustAsync(async (t, cancellationToken) => (await codebookService.SalesArrangementStates(cancellationToken)).Any(c => c.Id == t))
+            .WithErrorCode(ErrorCodeMapper.SalesArrangementStateNotFound);
     }
 }

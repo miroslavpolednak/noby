@@ -3,7 +3,6 @@ using DomainServices.CustomerService.ExternalServices.CustomerManagement.Dto;
 using DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.WebUtilities;
-using System.Collections.Immutable;
 using System.Globalization;
 
 namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1;
@@ -21,7 +20,7 @@ internal sealed class RealCustomerManagementClient
         return await Common.Helpers.ProcessResponse<CustomerBaseInfo>(StartupExtensions.ServiceName, response, cancellationToken);
     }
 
-    public async Task<ImmutableList<CustomerBaseInfo>> GetList(IEnumerable<long> customerIds, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IReadOnlyList<CustomerBaseInfo>> GetList(IEnumerable<long> customerIds, CancellationToken cancellationToken = default(CancellationToken))
     {
         var uri = QueryHelpers.AddQueryString(_httpClient.BaseAddress + $"/public/v1/customers/base-info", getQueryBuilder()!);
         var response = await _httpClient
@@ -29,10 +28,10 @@ internal sealed class RealCustomerManagementClient
             .ConfigureAwait(false);
 
         return (await Common.Helpers.ProcessResponse<List<CustomerBaseInfo>>(StartupExtensions.ServiceName, response, cancellationToken))
-            .ToImmutableList();
+            .ToArray().AsReadOnly();
     }
 
-    public async Task<ImmutableList<CustomerSearchResultRow>> Search(CustomerManagementSearchRequest searchRequest, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IReadOnlyList<CustomerSearchResultRow>> Search(CustomerManagementSearchRequest searchRequest, CancellationToken cancellationToken = default(CancellationToken))
     {
         var query = new Dictionary<string, string?>
         {
@@ -66,10 +65,10 @@ internal sealed class RealCustomerManagementClient
             .ConfigureAwait(false);
 
         return (await Common.Helpers.ProcessResponse<CustomerSearchResult>(StartupExtensions.ServiceName, response, cancellationToken))
-            .ResultRows.ToImmutableList();
+            .ResultRows.ToArray().AsReadOnly();
     }
 
-    private QueryBuilder getQueryBuilder()
+    private static QueryBuilder getQueryBuilder()
         => new QueryBuilder
         {
             { "showPrimaryAddress", "true" },

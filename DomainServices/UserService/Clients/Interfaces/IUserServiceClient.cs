@@ -2,10 +2,11 @@
 
 public interface IUserServiceClient
 {
-    /// <summary>
-    /// Vraci detail uzivatele
-    /// </summary>
-    Task<Contracts.User> GetUserByLogin(string login, CancellationToken cancellationToken = default(CancellationToken));
+    Task<Contracts.User> GetUser(string loginWithScheme, CancellationToken cancellationToken = default(CancellationToken));
 
     Task<Contracts.User> GetUser(int userId, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task<Contracts.User> GetUser(CIS.Foms.Types.UserIdentity identity, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task<int[]> GetUserPermissions(int userId, CancellationToken cancellationToken = default(CancellationToken));
 }

@@ -1,8 +1,7 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
-using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1.Contracts;
-using _cl = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V1;
+using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V3.Contracts;
+using _cl = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V3;
 using CIS.Core.Configuration;
-using CIS.Core.Types;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateCase;
 
@@ -15,17 +14,16 @@ internal sealed class CreateCaseHandler
 
         var requestModel = new _C4M.Create
         {
-            ItChannel = FastEnum.Parse<_C4M.CreateItChannel>(chanel, true),
-            LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId.ToEnvironmentId(_cisEnvironment.EnvironmentName!), chanel),
-            ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcess(request.ResourceProcessId, chanel)
+            ItChannel = FastEnum.Parse<_C4M.ItSubChannelType>(chanel, true),
+            LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId.ToEnvironmentId(_cisEnvironment.EnvironmentName!), chanel).ToC4M(),
+            ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcess(request.ResourceProcessId, chanel)?.ToC4M()
         };
 
         var response = await _client.CreateCase(requestModel, cancellationToken);
 
         return new _V2.RiskBusinessCaseCreateResponse()
         {
-            //TODO C4M
-            RiskBusinessCaseId = response.RiskBusinessCaseId//.Id
+            RiskBusinessCaseId = response.RiskBusinessCaseId
         };
     }
 

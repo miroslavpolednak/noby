@@ -1,58 +1,82 @@
 ﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
-using DomainServices.CodebookService.Clients;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.SalesArrangementService.Contracts;
-using Codebook = DomainServices.CodebookService.Contracts.Endpoints;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
 
 internal class GeneralChangeTemplateData : AggregatedData
 {
-    private List<Codebook.Countries.CountriesItem> _countries = null!;
-    private List<Codebook.RealEstateTypes.RealEstateTypeItem> _realEstateTypes = null!;
-    private List<Codebook.RealEstatePurchaseTypes.RealEstatePurchaseTypeItem> _purchaseTypes = null!;
-
     protected SalesArrangementParametersGeneralChange GeneralChange => SalesArrangement.GeneralChange;
 
-    public string PaymentAccount => Mortgage.PaymentAccount.Prefix + "-" + Mortgage.PaymentAccount.Number;
+    public string PaymentAccount => BankAccountHelper.AccountNumber(Mortgage.PaymentAccount.Prefix, Mortgage.PaymentAccount.Number, Mortgage.PaymentAccount.BankCode);
 
-    public string FullName => Customer.NaturalPerson.FirstName + " " + Customer.NaturalPerson.LastName;
+    public string FullName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
-    public string PermanentAddress => FormatAddress(Customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Permanent));
+    public string SignerName => CustomerHelper.FullName(Customer);
 
-    public string RepaymentAccount => GeneralChange.RepaymentAccount.Prefix + "-" + GeneralChange.RepaymentAccount.Number;
+    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent, _codebookManager.Countries);
 
-    public string RepaymentAccountOwner => $"{GeneralChange.RepaymentAccount.OwnerFirstName} {GeneralChange.RepaymentAccount.OwnerLastName}";
-
-    public string RealEstateTypes => string.Join(", ", GetRealEstateTypes());
-
-    public string RealEstatePurchaseTypes => string.Join(", ", GetRealEstatePurchaseTypes());
-
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
+    public string? RepaymentAccount
     {
-        _countries = await codebookService.Countries(cancellationToken);
-        _realEstateTypes = await codebookService.RealEstateTypes(cancellationToken);
-        _purchaseTypes = await codebookService.RealEstatePurchaseTypes(cancellationToken);
+        get
+        {
+            if (GeneralChange.RepaymentAccount?.IsActive != true)
+                return default;
+
+            return BankAccountHelper.AccountNumber(GeneralChange.RepaymentAccount.Prefix, GeneralChange.RepaymentAccount.Number, GeneralChange.RepaymentAccount.BankCode);
+        }
     }
 
-    private string FormatAddress(GrpcAddress? address)
+    public string? RepaymentAccountOwner
     {
-        if (address is null)
-            return string.Empty;
+        get
+        {
+            if (GeneralChange.RepaymentAccount?.IsActive != true)
+                return default;
 
-        var countryName = _countries.First(c => c.Id == address.CountryId).LongName;
+            return CustomerHelper.NameWithDateOfBirth($"{GeneralChange.RepaymentAccount.OwnerFirstName} {GeneralChange.RepaymentAccount.OwnerLastName}", GeneralChange.RepaymentAccount.OwnerDateOfBirth);
+        }
+    }
 
-        return $"{address.Street} {address.HouseNumber}/{address.StreetNumber}, {address.Postcode} {address.City}, {countryName}";
+    public string? RealEstateTypes => GeneralChange.LoanRealEstate?.IsActive == true ? string.Join("; ", GetRealEstateTypes()) : default;
+
+    public string? RealEstatePurchaseTypes => GeneralChange.LoanRealEstate?.IsActive == true ? string.Join("; ", GetRealEstatePurchaseTypes()) : default;
+
+    public string? ExtensionDrawingDateLabel
+    {
+        get
+        {
+            if (GeneralChange.DrawingDateTo?.IsActive != true || GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths == 0)
+                return default;
+
+            return GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths > 0 ? "Prodloužení lhůty čerpání" : "Zkrácení lhůty čerpání";
+        }
+    }
+
+    public int? ExtensionDrawingDate
+    {
+        get
+        {
+            if (GeneralChange.DrawingDateTo?.IsActive != true || (GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths ?? 0) == 0)
+                return default;
+
+            return Math.Abs(GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths!.Value);
+        }
+    }
+
+    protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
+    {
+        configurator.Countries().DegreesBefore().RealEstateTypes().PurchaseTypes();
     }
 
     private IEnumerable<string> GetRealEstateTypes() =>
         GeneralChange.LoanRealEstate
                      .LoanRealEstates
-                     .Join(_realEstateTypes, x => x.RealEstateTypeId, y => y.Id, (_, y) => y.Name);
+                     .Join(_codebookManager.RealEstateTypes, x => x.RealEstateTypeId, y => y.Id, (_, y) => y.Name);
 
     private IEnumerable<string> GetRealEstatePurchaseTypes() =>
         GeneralChange.LoanRealEstate
                      .LoanRealEstates
-                     .Join(_purchaseTypes, x => x.RealEstatePurchaseTypeId, y => y.Id, (_, y) => y.Name);
+                     .Join(_codebookManager.PurchaseTypes, x => x.RealEstatePurchaseTypeId, y => y.Id, (_, y) => y.Name);
 }

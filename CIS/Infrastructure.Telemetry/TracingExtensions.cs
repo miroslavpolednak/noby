@@ -15,28 +15,31 @@ public static class TracingExtensions
     /// <param name="serviceName">Nazev sluzby, ktery se zobrazi v exporteru. Pokud neni zadano, hleda se v ICisEnvironmentConfiguration[DefaultApplicationKey]</param>
     public static WebApplicationBuilder AddCisTracing(this WebApplicationBuilder builder, string? serviceName = null)
     {
-        builder.Services.AddOpenTelemetryTracing(b =>
-        {
-            // set service name
-            if (string.IsNullOrEmpty(serviceName))
+        builder.Services.AddOpenTelemetry()
+            .WithTracing(b =>
             {
-                var environmentConfiguration = b.GetServices().FirstOrDefault(t => t.ServiceType.Name == "ICisEnvironmentConfiguration")?.ImplementationInstance;
-                if (environmentConfiguration is not null)
-                    b.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(((Core.Configuration.ICisEnvironmentConfiguration)environmentConfiguration).DefaultApplicationKey));
-            }
-            else
-                b.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName));
+                // set service name
+                /*if (string.IsNullOrEmpty(serviceName))
+                {
+                    var environmentConfiguration = b.GetServices().FirstOrDefault(t => t.ServiceType.Name == "ICisEnvironmentConfiguration")?.ImplementationInstance;
+                    if (environmentConfiguration is not null)
+                        b.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(((Core.Configuration.ICisEnvironmentConfiguration)environmentConfiguration).DefaultApplicationKey));
+                }
+                else
+                {
+                    b.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName));
+                }*/
 
-            // uses the default Jaeger settings
-            b.AddJaegerExporter();
+                // uses the default Jaeger settings
+                b.AddJaegerExporter();
 
-            // receive traces from built-in sources
-            b.AddEntityFrameworkCoreInstrumentation();
-            b.AddSqlClientInstrumentation();
-            b.AddHttpClientInstrumentation();
-            b.AddAspNetCoreInstrumentation();
-            b.AddGrpcClientInstrumentation(options => options.SuppressDownstreamInstrumentation = true);
-        });
+                // receive traces from built-in sources
+                b.AddEntityFrameworkCoreInstrumentation();
+                b.AddSqlClientInstrumentation();
+                b.AddHttpClientInstrumentation();
+                b.AddAspNetCoreInstrumentation();
+                b.AddGrpcClientInstrumentation(options => options.SuppressDownstreamInstrumentation = true);
+            });
 
         return builder;
     }

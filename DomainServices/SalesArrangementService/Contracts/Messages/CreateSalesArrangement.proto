@@ -6,7 +6,8 @@ import "Parameters/SalesArrangementParametersMortgage.proto";
 import "Parameters/SalesArrangementParametersDrawing.proto";
 import "Parameters/SalesArrangementParametersGeneralChange.proto";
 import "Parameters/SalesArrangementParametersHUBN.proto";
-import "NullableGrpcDecimal.proto";
+import "Parameters/SalesArrangementParametersCustomerChange.proto";
+import "Parameters/SalesArrangementParametersCustomerChange3602.proto";
 import "google/protobuf/wrappers.proto";
 
 message CreateSalesArrangementRequest {
@@ -20,14 +21,16 @@ message CreateSalesArrangementRequest {
 	google.protobuf.Int32Value OfferId = 3;
 	
 	string ContractNumber = 4;
-
-	google.protobuf.Int32Value SalesArrangementSignatureTypeId = 5;
 	
 	oneof Data {
         SalesArrangementParametersMortgage Mortgage = 20;
 		SalesArrangementParametersDrawing Drawing = 21;
 		SalesArrangementParametersGeneralChange GeneralChange = 22;
 		SalesArrangementParametersHUBN HUBN = 23;
+		SalesArrangementParametersCustomerChange CustomerChange = 24;
+		SalesArrangementParametersCustomerChange3602 CustomerChange3602A = 25;
+		SalesArrangementParametersCustomerChange3602 CustomerChange3602B = 26;
+		SalesArrangementParametersCustomerChange3602 CustomerChange3602C = 27;
     }
 }
 

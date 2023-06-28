@@ -16,11 +16,18 @@ public static class CisMediatrStartupExtensions
     /// Dale je nutne vytvorit vlastni kod rollbacku. To je trida dedici z <see cref="IRollbackAction{TRequest}">IRollbackAction</see> - vlozeni teto tridy do DI je v gesci volajici aplikace.
     /// Pro prenos dat mezi Mediatr handlerem a rollback akci je pouzita scoped instance <see cref="IRollbackBag">IRollbackBag</see>. Do teto instance by mel handler postupne ukladat metadata potrebna pro rollback (napr. vytvorena Id entit).
     /// </remarks>
-    public static IServiceCollection AddCisMediatrRollbackCapability(this IServiceCollection services)
+    public static IServiceCollection AddCisMediatrRollbackCapability(this IServiceCollection services, params Type[] types)
     {
         services.AddScoped<IRollbackBag, RollbackBag>();
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RollbackBehavior<,>));
+
+        // najit vsechny handlery
+        services.Scan(selector => selector
+            .FromAssembliesOf(types)
+            .AddClasses(x => x.AssignableTo(typeof(IRollbackAction<>)))
+            .AsImplementedInterfaces()
+            .WithTransientLifetime());
 
         return services;
     }

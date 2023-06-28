@@ -16,7 +16,7 @@ public sealed class KestrelConfiguration
     /// <summary>
     /// SSL certifikát použitý pro vytvoření HTTPS tunelu
     /// </summary>
-    public CertificateInfo? Certificate {  get; set; }
+    public CertificateInfo? Certificate { get; set; }
 
     /// <summary>
     /// Nastavení endpointu
@@ -27,7 +27,7 @@ public sealed class KestrelConfiguration
         /// Port na kterém endpoint poslouchá
         /// </summary>
         /// <example>30000</example>
-        public int Port {  get; set; }
+        public int Port { get; set; }
 
         /// <summary>
         /// Druh protokolu použitý pro daný endpoint
@@ -36,7 +36,7 @@ public sealed class KestrelConfiguration
         /// 1 = HTTP 1.1
         /// 2 = HTTP 2
         /// </remarks>
-        public int Protocol {  get; set; }
+        public int Protocol { get; set; }
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public sealed class KestrelConfiguration
         /// <remarks>
         /// Pouze pokud Location=FileSystem
         /// </remarks>
-        public string? Password {  get; set; }
+        public string? Password { get; set; }
 
         /// <summary>
         /// Název složky ve Windows Certificate store
@@ -92,7 +92,7 @@ public sealed class KestrelConfiguration
         public string? Thumbprint { get; set; }
 
         /// <summary>
-        /// Možné způsoby 
+        /// Možné způsoby
         /// </summary>
         public enum LocationTypes
         {

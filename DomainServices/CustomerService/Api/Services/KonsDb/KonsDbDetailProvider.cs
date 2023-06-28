@@ -5,6 +5,7 @@ using CIS.Foms.Enums;
 using CIS.Infrastructure.Data;
 using Dapper;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Api.Services.KonsDb.Dto;
 
 namespace DomainServices.CustomerService.Api.Services.KonsDb;
@@ -13,11 +14,11 @@ namespace DomainServices.CustomerService.Api.Services.KonsDb;
 public class KonsDbDetailProvider
 {
     private readonly IConnectionProvider _connectionProvider;
-    private readonly ICodebookServiceClients _codebook;
+    private readonly ICodebookServiceClient _codebook;
 
-    private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _titles = null!;
 
-    public KonsDbDetailProvider(IConnectionProvider connectionProvider, ICodebookServiceClients codebook)
+    public KonsDbDetailProvider(IConnectionProvider connectionProvider, ICodebookServiceClient codebook)
     {
         _connectionProvider = connectionProvider;
         _codebook = codebook;
@@ -80,7 +81,7 @@ public class KonsDbDetailProvider
     {
         var command = new CommandDefinition(Sql.SqlScripts.GetDetail, parameters: new { partnerId }, cancellationToken: cancellationToken);
 
-        var result = await _connectionProvider.ExecuteDapperQuery(DetailQuery, cancellationToken);
+        var result = await _connectionProvider.ExecuteDapperQueryAsync(DetailQuery, cancellationToken);
 
         return result.GroupBy(p => p.PartnerId).Select(p =>
         {
@@ -109,7 +110,7 @@ public class KonsDbDetailProvider
     {
         var command = new CommandDefinition(Sql.SqlScripts.GetList, parameters: new { partnerIds }, cancellationToken: cancellationToken);
 
-        var result = await _connectionProvider.ExecuteDapperQuery(ListQuery, cancellationToken);
+        var result = await _connectionProvider.ExecuteDapperQueryAsync(ListQuery, cancellationToken);
 
         return result.GroupBy(p => p.PartnerId).Select(p =>
         {
@@ -134,7 +135,7 @@ public class KonsDbDetailProvider
         }
     }
 
-    private IEnumerable<Identity> GetIdentities(long partnerId, long? kbId)
+    private static IEnumerable<Identity> GetIdentities(long partnerId, long? kbId)
     {
         yield return new Identity(partnerId, IdentitySchemes.Mp);
 
@@ -149,7 +150,7 @@ public class KonsDbDetailProvider
             FirstName = partner.FirstName ?? string.Empty,
             LastName = partner.LastName ?? string.Empty,
             GenderId = partner.GenderId,
-            DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, partner.DegreeBefore, StringComparison.InvariantCultureIgnoreCase))?.Id,
+            DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, partner.DegreeBefore, StringComparison.OrdinalIgnoreCase))?.Id,
             BirthNumber = partner.BirthNumber ?? string.Empty,
             DateOfBirth = partner.BirthDate,
             PlaceOfBirth = partner.PlaceOfBirth ?? string.Empty,

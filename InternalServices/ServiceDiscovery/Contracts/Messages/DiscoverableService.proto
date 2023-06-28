@@ -1,0 +1,30 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.ServiceDiscovery;
+
+option csharp_namespace = "CIS.InternalServices.ServiceDiscovery.Contracts";
+
+message DiscoverableService {
+	// Název / kód služby
+	string ServiceName = 1;
+
+	// Base URI služby
+	string ServiceUrl = 2;
+
+	// Typ služby: gRPC, REST, Externí služba
+	ServiceTypes ServiceType = 3;
+
+	bool AddToGlobalHealthCheck = 4;
+}
+
+enum ServiceTypes {
+   Unknown = 0;
+
+   // gRPC služby
+   Grpc = 1;
+
+   // REST služba
+   Rest = 2;
+
+   // Služba externího dodavatele
+   Proprietary = 3;
+}

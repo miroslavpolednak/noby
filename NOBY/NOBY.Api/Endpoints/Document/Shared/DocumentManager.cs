@@ -10,10 +10,10 @@ namespace NOBY.Api.Endpoints.Document.Shared;
 [TransientService, SelfService]
 public class DocumentManager
 {
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ICurrentUserAccessor _userAccessor;
 
-    public DocumentManager(ICodebookServiceClients codebookService, ICurrentUserAccessor userAccessor)
+    public DocumentManager(ICodebookServiceClient codebookService, ICurrentUserAccessor userAccessor)
     {
         _codebookService = codebookService;
         _userAccessor = userAccessor;

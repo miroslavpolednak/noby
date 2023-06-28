@@ -7,14 +7,17 @@ message UserIdentity {
 	// login uzivatele
 	string identity = 1;
 
+	UserIdentitySchemes identityScheme = 2;
+
 	enum UserIdentitySchemes {
 		Unknown = 0;
-		KbUId = 4;
+		KbUid = 4;
 		M04Id = 5;
 		M17Id = 6;
 		BrokerId = 7;
 		Mpad = 8;
+		OsCis = 9;
+		Kbad = 10;
+		V33Id = 99;
 	}
-
-	UserIdentitySchemes identityScheme = 2;
 }

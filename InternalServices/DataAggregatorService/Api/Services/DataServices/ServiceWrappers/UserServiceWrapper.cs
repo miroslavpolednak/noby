@@ -1,4 +1,5 @@
-﻿using DomainServices.UserService.Clients;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
+using DomainServices.UserService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ServiceWrappers;
 
@@ -12,11 +13,14 @@ internal class UserServiceWrapper : IServiceWrapper
         _userService = userService;
     }
 
+    public DataSource DataSource => DataSource.UserService;
+
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
-        if (!input.UserId.HasValue)
-            throw new ArgumentNullException(nameof(InputParameters.UserId));
+        input.ValidateUserId();
 
-        data.User = await _userService.GetUser(input.UserId.Value, cancellationToken);
+        var user = await _userService.GetUser(input.UserId!.Value, cancellationToken);
+
+        data.User = new UserInfo(user);
     }
 }

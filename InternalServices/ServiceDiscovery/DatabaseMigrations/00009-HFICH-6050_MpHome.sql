@@ -1,0 +1,1 @@
+UPDATE ServiceDiscovery SET ServiceName='ES:MpHome:V1' where ServiceName='ES:MpHome:V1_1'

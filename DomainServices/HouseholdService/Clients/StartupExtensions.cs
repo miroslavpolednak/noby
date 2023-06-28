@@ -1,10 +1,10 @@
 ﻿using CIS.Infrastructure.gRPC;
-using Microsoft.Extensions.DependencyInjection;
-using DomainServices.HouseholdService.Clients;
-using __Services = DomainServices.HouseholdService.Clients.Services;
-using __Contracts = DomainServices.HouseholdService.Contracts;
 using CIS.InternalServices;
+using DomainServices.HouseholdService.Clients;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using __Contracts = DomainServices.HouseholdService.Contracts;
+using __Services = DomainServices.HouseholdService.Clients.Services;
 
 namespace DomainServices;
 
@@ -19,6 +19,8 @@ public static class StartupExtensions
     {
         services.AddCisServiceDiscovery();
 
+        services.TryAddSingleton<ICustomerChangeDataMerger, __Services.CustomerChangeDataMerger>();
+
         services.TryAddTransient<IHouseholdServiceClient, __Services.HouseholdService>();
         services.TryAddTransient<ICustomerOnSAServiceClient, __Services.CustomerOnSAService>();
 
@@ -29,6 +31,8 @@ public static class StartupExtensions
 
     public static IServiceCollection AddHouseholdService(this IServiceCollection services, string serviceUrl)
     {
+        services.TryAddSingleton<ICustomerChangeDataMerger, __Services.CustomerChangeDataMerger>();
+
         services.TryAddTransient<IHouseholdServiceClient, __Services.HouseholdService>();
         services.TryAddTransient<ICustomerOnSAServiceClient, __Services.CustomerOnSAService>();
 

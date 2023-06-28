@@ -7,11 +7,11 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Endpoints.GetDocumentDa
 
 internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, GetDocumentDataResponse>
 {
-    private readonly Configuration.ConfigurationManager _configurationManager;
+    private readonly IConfigurationManager _configurationManager;
     private readonly DataServicesLoader _dataServicesLoader;
     private readonly DocumentDataFactory _documentDataFactory;
 
-    public GetDocumentDataHandler(Configuration.ConfigurationManager configurationManager, DataServicesLoader dataServicesLoader, DocumentDataFactory documentDataFactory)
+    public GetDocumentDataHandler(IConfigurationManager configurationManager, DataServicesLoader dataServicesLoader, DocumentDataFactory documentDataFactory)
     {
         _configurationManager = configurationManager;
         _dataServicesLoader = dataServicesLoader;
@@ -20,22 +20,25 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
 
     public async Task<GetDocumentDataResponse> Handle(GetDocumentDataRequest request, CancellationToken cancellationToken)
     {
-        var config = await _configurationManager.LoadDocumentConfiguration(request.DocumentTypeId, request.DocumentTemplateVersionId, cancellationToken);
+        var versionData = await _documentDataFactory.CreateVersionData((DocumentTypes)request.DocumentTypeId).GetDocumentVersionData(request, cancellationToken);
 
-        var documentMapper = await LoadDocumentData((DocumentType)request.DocumentTypeId, request.InputParameters, config, cancellationToken);
+        var documentKey = new DocumentKey(request.DocumentTypeId, versionData);
+        var config = await _configurationManager.LoadDocumentConfiguration(documentKey, cancellationToken);
+
+        var documentMapper = await LoadDocumentData((DocumentTypes)request.DocumentTypeId, request.InputParameters, config, cancellationToken);
 
         return new GetDocumentDataResponse
         {
             DocumentTemplateVersionId = config.DocumentTemplateVersionId,
-            DocumentTemplateVersion = config.DocumentTemplateVersion,
+            DocumentTemplateVariantId = config.DocumentTemplateVariantId,
             DocumentData = { documentMapper.MapDocumentFieldData() },
             InputParameters = request.InputParameters
         };
     }
 
-    private async Task<DocumentMapper> LoadDocumentData(DocumentType documentType, InputParameters inputParameters, DocumentConfiguration config, CancellationToken cancellationToken)
+    private async Task<DocumentMapper> LoadDocumentData(DocumentTypes documentType, InputParameters inputParameters, DocumentConfiguration config, CancellationToken cancellationToken)
     {
-        var documentData = _documentDataFactory.Create(documentType);
+        var documentData = _documentDataFactory.CreateData(documentType);
 
         await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, documentData, cancellationToken);
 

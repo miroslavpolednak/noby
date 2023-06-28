@@ -2,6 +2,9 @@ import sqlite3
 from typing import List
 
 class DbManager():
+
+    __ENCODING: str ='utf-8'
+
     def __init__(self, path_to_db: str):
         self._path_to_db = path_to_db
         
@@ -13,9 +16,13 @@ class DbManager():
         return self._path_to_db
 
     @staticmethod
-    def get_file_content(path_to_file: str):
+    def get_file_content(path_to_file: str, encoding: str = None):
+
+        if encoding is None:
+            encoding = DbManager.__ENCODING
+
         file_content = None
-        with open(path_to_file, 'r') as f:
+        with open(path_to_file, 'r', encoding=encoding) as f:
             file_content = f.read()
         return file_content
 
@@ -48,6 +55,18 @@ class DbManager():
         db.commit()
         db.close()
 
+    def exec_nonquery(self, sql_commands: List[str]):
+        # connect to DB
+        db = sqlite3.connect(self._path_to_db)
+        cursor = db.cursor()
+
+        for sql in sql_commands:
+            cursor.executescript(sql)
+
+        # commit & close
+        db.commit()
+        db.close()
+
     def exec_query(self, query: str)->List[dict]:
         data = None
         columns = None
@@ -72,4 +91,24 @@ class DbManager():
             rows.append(r)
             
         return rows
+    
+    def exec_scalar(self, query: str):
+        data = None
+        columns = None
 
+        with self.create_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute(query)
+
+            columns = list(map(lambda d: d[0], cursor.description))
+
+            # fetch all data
+            data = cursor.fetchall()
+
+        assert len(columns) == 1, f'Query returns more columns!'
+        assert len(data) <=1, f'Query returns more rows!'
+
+        if len(data) == 0:
+            return None
+
+        return data[0][0]

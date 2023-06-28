@@ -1,0 +1,1 @@
+UPDATE DataField SET DefaultStringFormat = '{0:#,#.##} Kč/měsíčně' WHERE DataFieldId = 11

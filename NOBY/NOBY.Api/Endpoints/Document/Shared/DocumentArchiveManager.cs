@@ -1,33 +1,36 @@
 ﻿using CIS.Core.Attributes;
 using CIS.Core.Configuration;
+using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
-using DomainServices.UserService.Clients;
 using Google.Protobuf;
 using NOBY.Api.Endpoints.Document.Shared.DocumentIdManager;
 
 namespace NOBY.Api.Endpoints.Document.Shared;
 
 [TransientService, SelfService]
-internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocumentIdManager : IDocumentIdManager<TEntityId>
+internal sealed class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocumentIdManager : IDocumentIdManager<TEntityId>
 {
+    // Document has been successfully transferred to Archive
+    public const int QueueStateSuccess = 400;
+
     private readonly TDocumentIdManager _documentIdManager;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly IUserServiceClient _userServiceClient;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ICisEnvironmentConfiguration _environmentConfiguration;
 
     public DocumentArchiveManager(TDocumentIdManager documentIdManager,
                                   IDocumentArchiveServiceClient documentArchiveService,
-                                  IUserServiceClient userServiceClient,
+                                  ICodebookServiceClient codebookService,
                                   ICisEnvironmentConfiguration environmentConfiguration)
     {
         _documentIdManager = documentIdManager;
         _documentArchiveService = documentArchiveService;
-        _userServiceClient = userServiceClient;
+        _codebookService = codebookService;
         _environmentConfiguration = environmentConfiguration;
     }
 
-    public Task<string> GetDocumentId(TEntityId entityId, CancellationToken cancellationToken) =>
+    public Task<DocumentInfo> GetDocumentInfo(TEntityId entityId, CancellationToken cancellationToken) =>
         _documentIdManager.LoadDocumentId(entityId, cancellationToken);
 
     public Task<string> GenerateDocumentId(CancellationToken cancellationToken)
@@ -42,16 +45,51 @@ internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocu
 
     public async Task<ReadOnlyMemory<byte>> GetDocument(string documentId, GetDocumentBaseRequest documentRequest, CancellationToken cancellationToken)
     {
-        var response = await _documentArchiveService.GetDocument(new GetDocumentRequest { DocumentId = documentId }, cancellationToken);
+        return await CheckIfDocWasTansferredToEArchive(documentId, cancellationToken)
+            ? await LoadFromEArchive(documentId, documentRequest, cancellationToken)
+            : await LoadFromEArchiveQueue(documentId, cancellationToken);
+    }
 
+    private async Task<ReadOnlyMemory<byte>> LoadFromEArchiveQueue(string documentId, CancellationToken cancellationToken)
+    {
+        var queueRequest = new GetDocumentsInQueueRequest();
+        queueRequest.EArchivIds.Add(documentId);
+        queueRequest.WithContent = true;
+
+        var documentsInQueue = await _documentArchiveService.GetDocumentsInQueue(queueRequest, cancellationToken);
+        return documentsInQueue.QueuedDocuments.Single(r => r.EArchivId == documentId).DocumentData.Memory;
+    }
+
+    private async Task<ReadOnlyMemory<byte>> LoadFromEArchive(string documentId, GetDocumentBaseRequest documentRequest, CancellationToken cancellationToken)
+    {
+        var request = new GetDocumentRequest
+        {
+            DocumentId = documentId,
+            UserLogin = documentRequest.InputParameters.UserId.ToString(),
+            WithContent = true
+        };
+
+        var response = await _documentArchiveService.GetDocument(request, cancellationToken);
         documentRequest.InputParameters.CaseId = response.Metadata.CaseId;
-
         return response.Content.BinaryData.Memory;
+    }
+
+    private async Task<bool> CheckIfDocWasTansferredToEArchive(string documentId, CancellationToken cancellationToken)
+    {
+        var queueRequest = new GetDocumentsInQueueRequest();
+        queueRequest.EArchivIds.Add(documentId);
+
+        var documentsInQueue = await _documentArchiveService.GetDocumentsInQueue(queueRequest, cancellationToken);
+
+        var documentInQueue = documentsInQueue.QueuedDocuments.FirstOrDefault(r => r.EArchivId == documentId)
+            ?? throw new NobyValidationException("Unable to find document in EArchive queue");
+
+        return documentInQueue.StatusInQueue == QueueStateSuccess;
     }
 
     public async Task SaveDocumentToArchive(TEntityId entityId, DocumentArchiveData archiveData, CancellationToken cancellationToken)
     {
-        var user = await _userServiceClient.GetUser(archiveData.UserId, cancellationToken);
+        var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
 
         var request = new UploadDocumentRequest
         {
@@ -60,10 +98,11 @@ internal class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocu
             {
                 DocumentId = archiveData.DocumentId,
                 CaseId = archiveData.CaseId,
-                AuthorUserLogin = user.CPM,
-                EaCodeMainId = 605469,
+                AuthorUserLogin = archiveData.UserId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                EaCodeMainId = documentTypes.First(d => d.Id == archiveData.DocumentTypeId).EACodeMainId,
                 Filename = archiveData.FileName,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.Now,
+                ContractNumber = string.IsNullOrWhiteSpace(archiveData.ContractNumber) ? "HF00111111125" : archiveData.ContractNumber
             }
         };
 

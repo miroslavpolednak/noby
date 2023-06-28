@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
@@ -6,26 +7,22 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCusto
 internal sealed class CreateCustomerRequestValidator
     : AbstractValidator<CreateCustomerRequest>
 {
-    static DateTime _dateOfBirthMin = new DateTime(1900, 1, 1);
-
-    public CreateCustomerRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public CreateCustomerRequestValidator(ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementId must be > 0").WithErrorCode("16010");
+            .WithErrorCode(ErrorCodeMapper.SalesArrangementIdIsEmpty);
 
         RuleFor(t => t.CustomerRoleId)
             .GreaterThan(0)
-            .WithMessage("CustomerRoleId must be > 0").WithErrorCode("16045");
-
-        RuleFor(t => t.CustomerRoleId)
-            .GreaterThan(0)
+            .WithErrorCode(ErrorCodeMapper.CustomerRoleIdIsEmpty)
             .MustAsync(async (t, cancellationToken) => (await codebookService.CustomerRoles(cancellationToken)).Any(c => c.Id == t))
-            .WithMessage(t => $"CustomerRoleId {t.CustomerRoleId} does not exist.").WithErrorCode("16021");
+            .WithErrorCode(ErrorCodeMapper.CustomerRoleNotFound);
 
-        RuleFor(t => t.Customer.DateOfBirthNaturalPerson)
-            .Must(d => d > _dateOfBirthMin && d < DateTime.Now)
-            .WithMessage("Date of birth is out of range").WithErrorCode("16038")
-            .When(t => t.Customer.DateOfBirthNaturalPerson is not null);
+        RuleFor(t => t.Customer)
+            .SetInheritanceValidator(v =>
+            {
+                v.Add(new Validators.CustomerOnSAValidator());
+            });
     }
 }

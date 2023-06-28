@@ -1,9 +1,9 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using CIS.InternalServices.ServiceDiscovery.Api;
 using CIS.InternalServices.ServiceDiscovery.Api.Endpoints;
-using Microsoft.AspNetCore.HttpLogging;
-using System.Reflection.PortableExecutable;
+using Microsoft.AspNetCore.Mvc;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -15,57 +15,68 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region register builder.Services
-// globalni nastaveni prostredi
-builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
-builder.Services.AddAttributedServices(typeof(Program));
-
-// add .NET logging
-builder.Services.AddHttpLogging(logging =>
-{
-    logging.LoggingFields = HttpLoggingFields.All;
-});
-
-// add mediatr
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
-
-// health checks
-builder.AddCisHealthChecks();
-// logging, tracing
-builder
-    .AddCisLogging()
-    .AddCisTracing();
-
-// add general Dapper repository
-builder.Services.AddDapper(builder.Configuration.GetConnectionString("default")!);
-
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
-#endregion register builder.Services
-
-// kestrel configuration
-builder.UseKestrelWithCustomConfiguration();
-
-// BUILD APP
-if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-var app = builder.Build();
-
-app.UseRouting();
-app.UseCisLogging();
-app.UseHttpLogging();
-
-app.MapCisHealthChecks();
-app.MapGrpcService<DiscoveryService>();
-app.MapGrpcReflectionService();
+var log = builder.CreateStartupLogger();
 
 try
 {
+    #region register builder.Services
+    // globalni nastaveni prostredi
+    var envConfiguration = builder
+        .AddCisCoreFeatures()
+        .AddCisEnvironmentConfiguration();
+    builder.Services.AddAttributedServices(typeof(Program));
+
+    // add mediatr
+    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+    // logging, tracing
+    builder
+        .AddCisLogging()
+        .AddCisTracing();
+
+    // add general Dapper repository
+    builder.AddBaseEntityFramework<CIS.InternalServices.ServiceDiscovery.Api.Database.ServiceDiscoveryDbContext>();
+
+    // add GRPC
+    builder.Services.AddGrpc(options =>
+    {
+        options.Interceptors.Add<GenericServerExceptionInterceptor>();
+    }).AddJsonTranscoding();
+    builder.Services
+        .AddGrpcReflection()
+        .AddServiceDiscoverySwagger();
+    #endregion register builder.Services
+
+    // kestrel configuration
+    builder.UseKestrelWithCustomConfiguration();
+
+    // BUILD APP
+    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
+    var app = builder.Build();
+    log.ApplicationBuilt();
+
+    app.UseHsts();
+    app.UseRouting();
+
+    app.MapGrpcReflectionService();
+    app.UseServiceDiscoverySwagger();
+
+    app.MapGrpcService<DiscoveryService>();
+    // add global healthcheck as json api
+    app.MapGet(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, async (
+                [FromServices] CIS.InternalServices.ServiceDiscovery.Api.Endpoints.GlobalHealtCheck.GlobalHealthCheckHandler handler,
+                CancellationToken cancellationToken) 
+                => await handler.Handle(cancellationToken))
+        .WithTags("Monitoring")
+        .WithName("Globální HealthCheck endpoint sdružující HC všech služeb v NOBY.")
+        .WithOpenApi();
+
+    log.ApplicationRun();
     app.Run();
+}
+catch (Exception ex)
+{
+    log.CatchedException(ex);
 }
 finally
 {

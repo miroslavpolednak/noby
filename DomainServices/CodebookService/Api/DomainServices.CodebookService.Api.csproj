@@ -2,28 +2,31 @@
 
   <PropertyGroup>
 	  <TargetFramework>net7.0</TargetFramework>
-	  <Authors>Filip Tuma</Authors>
 	  <Company>Wookiee.Apps s.r.o.</Company>
 	  <Product>MPSS DomainServices</Product>
-	  <LangVersion>preview</LangVersion>
 	  <Nullable>enable</Nullable>
 	  <Platforms>AnyCPU;x64</Platforms>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Version>1.0.0.0</Version>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<InternalsVisibleTo Include="DomainServices.CodebookService.Tests" />
 	</ItemGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Dapper" Version="2.0.123" />
-		<PackageReference Include="MediatR" Version="12.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
-		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.1.1" />
-		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.1.1" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.54.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.54.0" />
+		<PackageReference Include="Dapper" Version="2.0.143" />
+		<PackageReference Include="MediatR" Version="12.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.3.8" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.8" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -33,10 +36,5 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.CodebookService.Contracts.csproj" />
-		<ProjectReference Include="..\Endpoints\DomainServices.CodebookService.Endpoints.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\ApiGenerators\DomainServices.CodebookService.ApiGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 package CIS.InternalServices.DataAggregatorService;
 option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "EasForm/DynamicFormValues.proto";
 import "EasForm/ProductData.proto";
 
@@ -26,7 +27,7 @@ message GetEasFormResponse {
 message Form {
     EasFormType EasFormType = 1;
 
-    optional DynamicFormValues DynamicFormValues = 2;
+    DynamicFormValues DynamicFormValues = 2;
 
     optional DefaultValues DefaultValues = 3;
 
@@ -36,5 +37,5 @@ message Form {
 message DefaultValues {
     string FormType = 1;
 
-    string PasswordCode = 2;
+    google.protobuf.Int32Value EaCodeMainId = 2;
 }

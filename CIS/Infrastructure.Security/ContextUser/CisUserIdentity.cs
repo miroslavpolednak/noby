@@ -1,18 +1,18 @@
-﻿using System.Security.Claims;
+﻿using CIS.Core.Security;
+using System.Security.Claims;
 
 namespace CIS.Infrastructure.Security.ContextUser;
 
 internal sealed class CisUserIdentity
-    : ClaimsIdentity, Core.Security.ICurrentUser
+    : ClaimsIdentity, ICurrentUser
 {
-    private readonly int _id;
-
-    public CisUserIdentity(int userId)
-        : base(InternalServicesAuthentication.ContextUserSchemeName, ClaimTypes.NameIdentifier, ClaimTypes.Role)
+    public int Id { get; init; }
+    public string? Login { get; init; }
+    
+    public CisUserIdentity(int userId, string? login)
+        : base(InternalServicesAuthentication.ContextUserSchemeName, SecurityConstants.ClaimTypeId, "role")
     {
-        _id = userId;
-        this.AddClaim(new Claim(ClaimTypes.NameIdentifier, userId.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+        Id = userId;
+        Login = login;
     }
-
-    public int Id => _id;
 }

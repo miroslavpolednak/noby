@@ -2,10 +2,10 @@
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services.S3;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -15,11 +15,11 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
 public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailResponse>
 {
     private readonly IDateTime _dateTime;
-    private readonly MpssEmailProducer _mpssEmailProducer;
-    private readonly McsEmailProducer _mcsEmailProducer;
-    private readonly UserAdapterService _userAdapterService;
-    private readonly NotificationRepository _repository;
-    private readonly S3AdapterService _s3Service;
+    private readonly IMpssEmailProducer _mpssEmailProducer;
+    private readonly IMcsEmailProducer _mcsEmailProducer;
+    private readonly IUserAdapterService _userAdapterService;
+    private readonly INotificationRepository _repository;
+    private readonly IS3AdapterService _s3Service;
     private readonly S3Buckets _buckets;
     private readonly HashSet<string> _mcsSenders;
     private readonly HashSet<string> _mpssSenders;
@@ -27,11 +27,11 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
 
     public SendEmailHandler(
         IDateTime dateTime,
-        MpssEmailProducer mpssEmailProducer,
-        McsEmailProducer mcsEmailProducer,
-        UserAdapterService userAdapterService,
-        NotificationRepository repository,
-        S3AdapterService s3Service,
+        IMpssEmailProducer mpssEmailProducer,
+        IMcsEmailProducer mcsEmailProducer,
+        IUserAdapterService userAdapterService,
+        INotificationRepository repository,
+        IS3AdapterService s3Service,
         IOptions<AppConfiguration> options,
         ILogger<SendEmailHandler> logger)
     {
@@ -49,6 +49,10 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
     
     public async Task<SendEmailResponse> Handle(SendEmailRequest request, CancellationToken cancellationToken)
     {
+        var username = _userAdapterService
+            .CheckSendEmailAccess()
+            .GetUsername();
+        
         var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
         var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
         var bucketName = _mcsSenders.Contains(domainName)
@@ -60,14 +64,14 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
             foreach (var attachment in request.Attachments)
             {
                 var content = Convert.FromBase64String(attachment.Binary);
-                var objectKey = await _s3Service.UploadFile(content, bucketName);
+                var objectKey = await _s3Service.UploadFile(content, bucketName, cancellationToken);
                 attachmentKeyFilenames.Add(new (objectKey, attachment.Filename));
             }
         }
         catch (Exception e)
         {
             _logger.LogError(e, $"Could not upload attachments to S3 bucket {bucketName}.");
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
         }
 
         var result = _repository.NewEmailResult();
@@ -77,7 +81,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         result.DocumentId = request.DocumentId;
         result.RequestTimestamp = _dateTime.Now;
 
-        result.CreatedBy = _userAdapterService.GetUsername();
+        result.CreatedBy = username;
         
         try
         {
@@ -87,7 +91,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         catch (Exception e)
         {
             _logger.LogError(e, $"Could not create EmailResult.");
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.CreateEmailResultFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.CreateEmailResultFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
         }
 
         try
@@ -144,7 +148,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
             _logger.LogError(e, "Could not produce message SendEmail to KAFKA.");
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.ProduceSendEmailError, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendEmailError, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
         }
 
         return new SendEmailResponse { NotificationId = result.Id };

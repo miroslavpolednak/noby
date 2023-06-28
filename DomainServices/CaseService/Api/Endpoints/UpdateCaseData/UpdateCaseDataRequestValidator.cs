@@ -10,14 +10,14 @@ internal sealed class UpdateCaseDataRequestValidator
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
-            .WithMessage("CaseId must be > 0").WithErrorCode("13016");
+            .WithErrorCode(ErrorCodeMapper.CaseIdIsEmpty);
 
         RuleFor(t => t.Data.ProductTypeId)
             .GreaterThan(0)
-            .WithMessage(t => "ProductTypeId must be > 0").WithErrorCode("13002");
+            .WithErrorCode(ErrorCodeMapper.ProductTypeIdIsEmpty);
 
         RuleFor(t => (decimal)t.Data.TargetAmount)
             .GreaterThan(0)
-            .WithMessage("Target amount must be > 0").WithErrorCode("13018");
+            .WithErrorCode(ErrorCodeMapper.TargetAmountIsEmpty);
     }
 }

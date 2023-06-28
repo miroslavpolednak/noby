@@ -1,4 +1,6 @@
-﻿using CIS.Core.Validation;
+﻿using System.ComponentModel.DataAnnotations;
+using CIS.Foms.Types;
+using NOBY.Api.Endpoints.Offer.Dto;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
@@ -9,6 +11,7 @@ public sealed class SimulateMortgageRequest
     /// Unikatni identifikator pro session simulace.
     /// Musi byt parsovatelny na .NET Guid type.
     /// </summary>
+    [Required]
     public string? ResourceProcessId { get; set; }
 
     /// <summary>
@@ -20,4 +23,8 @@ public sealed class SimulateMortgageRequest
     /// ID Sales Arrangement-u
     /// </summary>
     public int? SalesArrangementId { get; set; }
+    
+    public List<CustomerIdentity>? CustomerIdentities { get; set; }
+
+    public CreditWorthinessSimpleInputs? CreditWorthinessSimpleInputs { get; set; }
 }

@@ -1,7 +1,9 @@
 ﻿using ExternalServices.AddressWhisperer;
-using System.Text.Json.Serialization;
 using NOBY.Infrastructure.Security;
 using ExternalServices.AddressWhisperer.V1;
+using NOBY.Infrastructure.ErrorHandling.Internals;
+using CIS.Infrastructure.StartupExtensions;
+using MPSS.Security.Noby;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -10,6 +12,9 @@ internal static class NobyServices
     public static WebApplicationBuilder AddNobyServices(this WebApplicationBuilder builder)
     {
         var assemblyType = typeof(IApiAssembly);
+
+        // memory cache
+        builder.Services.AddLazyCache();
 
         // user accessor
         builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, NobyCurrentUserAccessor>();
@@ -22,7 +27,7 @@ internal static class NobyServices
 
         builder.Services
             .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(Infrastructure.ErrorHandling.NobyValidationBehavior<,>));
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(NobyValidationBehavior<,>));
 
         // add validators
         builder.Services.Scan(selector => selector
@@ -30,20 +35,30 @@ internal static class NobyServices
             .AddClasses(x => x.AssignableTo(typeof(FluentValidation.IValidator<>)))
             .AsImplementedInterfaces()
             .WithTransientLifetime());
-
+        
         // controllers and validation
         builder.Services
-            .AddControllers()
+            .AddControllers(x => x.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None }))
+            .ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressMapClientErrors = true;
+            })
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForNullableDateTime());
-                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
-
             });
 
+        // dbcontext
+        builder.AddEntityFramework<Database.FeApiDbContext>();
+
+        // add distributed cache
+        builder.AddCisDistributedCache();
+
         // ext services
-        builder.AddExternalService<IAddressWhispererClient>();
+        builder.AddExternalService<IAddressWhispererClient>(CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue, CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue);
+
+        // pridat mpss cookie
+        builder.AddMpssSecurityCookie();
 
         return builder;
     }

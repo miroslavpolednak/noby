@@ -9,7 +9,6 @@ using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Model;
 using Ixtent.ContentServer.ExtendedServices.Model;
 using CIS.Core.Extensions;
 using Polly;
-using CIS.Core.Exceptions;
 
 namespace DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Clients;
 internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedServices>, ISdfClient
@@ -104,7 +103,7 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
         {
             if (exp.Message.Contains("DocumentNotFound"))
             {
-                throw new CisNotFoundException(14003, "Unable to get/find document(s) from eArchive (SCP/SDF)");
+                throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CspDocumentNotFound);
             }
             else if (exp.Message.Contains("Invalid username/password specified"))
             {
@@ -185,6 +184,16 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
                 Attribute = "DOK_Vazba_pro_SP",
                 InputGroup = "Obchodni_pripad",
                 Value = query.FolderDocumentId
+            });
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.FormId))
+        {
+            queryParameters.Add(new QueryParameter
+            {
+                Attribute = "DOK_ID_formulare",
+                InputGroup = "Dokument",
+                Value = query.FormId
             });
         }
 

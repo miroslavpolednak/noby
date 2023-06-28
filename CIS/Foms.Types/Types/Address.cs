@@ -64,13 +64,20 @@ public class Address
     /// </summary>
     public string? CountrySubdivision { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public DateTime? PrimaryAddressFrom { get; set; }
-
     /// <summary>
     /// Id adresního bodu
     /// </summary>
     public string? AddressPointId { get; set; }
+
+    /// <summary>
+    /// Adresa v řádkovém formátu
+    /// </summary>
+    public string? SingleLineAddressPoint { get; init; }
+
+    /// <summary>
+    /// Zda je adresa ověřená jako kontaktní adresa
+    /// </summary>
+    public bool? IsAddressConfirmed { get; set; }
 
     public override bool Equals(object? obj)
     {

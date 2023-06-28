@@ -1,0 +1,46 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentArchiveService.GetDocumentsInQueue;
+option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "GrpcDate.proto";
+
+message GetDocumentsInQueueRequest {
+
+	repeated string EArchivIds = 1;
+
+	// Unikátní Id obchodního případu
+    google.protobuf.Int64Value CaseId = 2;
+
+	repeated int32 StatusesInQueue = 3;
+
+	bool WithContent = 4;
+}
+
+message GetDocumentsInQueueResponse{
+	
+	repeated QueuedDocument QueuedDocuments = 1;
+}
+
+message QueuedDocument {
+	
+	string EArchivId = 1;
+	
+	string Filename = 2;
+
+	 // Status dokumentu (100 - k přenosu, 300 chyba přenosu, 400 - úspěšně přeneseno)
+    int32 StatusInQueue = 3;
+
+	string FormId = 4;
+
+	int32 EaCodeMainId = 5;
+
+	// Popis dokumentu
+    google.protobuf.StringValue Description = 6;
+
+	// Datum přijetí dokumentu
+    cis.types.GrpcDate CreatedOn = 7;
+
+	// Soubour (pole bajtů) ve formě base64string 
+    bytes DocumentData = 8;
+}

@@ -1,4 +1,6 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Sms;
+using CIS.Infrastructure.CisMediatR.GrpcValidation;
+using CIS.InternalServices.NotificationService.Api.Validators.Common;
+using CIS.InternalServices.NotificationService.Contracts.Sms;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Sms;
@@ -8,33 +10,27 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SendSmsFrom
     public SendSmsFromTemplateRequestValidator()
     {
         RuleFor(request => request.PhoneNumber)
-            .NotNull()
-                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PhoneNumberRequired)
-                .WithMessage($"{nameof(SendSmsFromTemplateRequest.PhoneNumber)} required.")
+            .NotEmpty()
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplatePhoneNumberRequired)
             .SetValidator(new PhoneNumberValidator())
-                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PhoneNumberInvalid)
-                .WithMessage($"Invalid {nameof(SendSmsRequest.PhoneNumber)}.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplatePhoneNumberInvalid);
         
         RuleFor(request => request.ProcessingPriority)
             .GreaterThan(0)
-                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.ProcessPriorityInvalid)
-                .WithMessage($"Invalid {nameof(SendSmsRequest.ProcessingPriority)}.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplateProcessPriorityInvalid);
         
         RuleFor(request => request.Type)
             .NotEmpty()
-                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.TypeInvalid)
-                .WithMessage($"Invalid {nameof(SendSmsFromTemplateRequest.Type)}.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplateTypeInvalid);
 
         RuleFor(request => request.Placeholders)
             .NotNull()
-                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PlaceholdersRequired)
-                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} required.")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplatePlaceholdersRequired)
             .Must(placeholders =>
             {
                 return placeholders.Select(p => p.Value).All(p => p.Length > 0);
             })
-                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PlaceholdersInvalid)
-                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} must contain non-empty values.")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplatePlaceholdersInvalid)
             .Must(placeholders =>
             {
                 var totalCount = placeholders.Count;
@@ -42,7 +38,27 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SendSmsFrom
 
                 return totalCount == uniqueCount;
             })
-                .WithErrorCode(ErrorCodes.Validation.SendSmsFromTemplate.PlaceholdersInvalid)
-                .WithMessage($"{nameof(SendSmsFromTemplateRequest.Placeholders)} must contain unique keys.");
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplatePlaceholdersInvalid);
+
+        When(request => request.Identifier is not null, () =>
+        {
+            RuleFor(request => request.Identifier!)
+                .SetValidator(new IdentifierValidator())
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentifierInvalid);
+        });
+        
+        When(request => request.DocumentId is not null, () =>
+        {
+            RuleFor(request => request.DocumentId!)
+                .SetValidator(new DocumentIdValidator())
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+        });
+        
+        When(request => request.CustomId is not null, () =>
+        {
+            RuleFor(request => request.CustomId!)
+                .SetValidator(new CustomIdValidator())
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
+        });
     }
 }

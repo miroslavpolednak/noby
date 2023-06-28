@@ -7,7 +7,7 @@ using _Document = CIS.InternalServices.DocumentGeneratorService.Contracts;
 namespace NOBY.Api.Endpoints.Document.Shared;
 
 [TransientService, SelfService]
-internal class DocumentGenerator
+internal sealed class DocumentGenerator
 {
     private readonly IDataAggregatorServiceClient _dataAggregator;
     private readonly IDocumentGeneratorServiceClient _documentGenerator;
@@ -42,7 +42,8 @@ internal class DocumentGenerator
 
         var result = await _dataAggregator.GetDocumentData(documentDataRequest, cancellationToken);
 
-        documentRequest.DocumentTemplateVersion = result.DocumentTemplateVersion;
+        documentRequest.DocumentTemplateVersionId = result.DocumentTemplateVersionId;
+        documentRequest.DocumentTemplateVariantId = result.DocumentTemplateVariantId;
         documentRequest.InputParameters = result.InputParameters;
 
         return result.DocumentData;
@@ -52,14 +53,17 @@ internal class DocumentGenerator
         new()
         {
             DocumentTypeId = (int)request.DocumentType,
-            DocumentTemplateVersion = request.DocumentTemplateVersion,
+            DocumentTemplateVersionId = request.DocumentTemplateVersionId,
+            DocumentTemplateVariantId = request.DocumentTemplateVariantId,
+            ForPreview = request.ForPreview,
             OutputType = _Document.OutputFileType.Pdfa,
             Parts =
             {
                 new _Document.GenerateDocumentPart
                 {
                     DocumentTypeId = (int)request.DocumentType,
-                    DocumentTemplateVersion = request.DocumentTemplateVersion,
+                    DocumentTemplateVersionId = request.DocumentTemplateVersionId,
+                    DocumentTemplateVariantId = request.DocumentTemplateVariantId,
                     Data = { documentData.Select(CreateDocumentPartData) }
                 }
             },
@@ -75,7 +79,8 @@ internal class DocumentGenerator
         var partData = new _Document.GenerateDocumentPartData
         {
             Key = fieldData.FieldName,
-            StringFormat = fieldData.StringFormat
+            StringFormat = fieldData.StringFormat,
+            TextAlign = (_Document.TextAlign)(fieldData.TextAlign ?? 0)
         };
 
         switch (fieldData.ValueCase)

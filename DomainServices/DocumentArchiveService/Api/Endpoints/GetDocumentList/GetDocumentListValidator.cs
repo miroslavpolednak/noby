@@ -16,7 +16,7 @@ public class GetDocumentListValidator : AbstractValidator<GetDocumentListRequest
 
         RuleFor(t => t)
         .Must(ValidateOneOfMainParameterIsNotEmpty)
-        .WithMessage("One of main parameters have to be fill in (CaseId, PledgeAgreementNumber, ContractNumber, OrderId, FolderDocumentId)");
+        .WithErrorCode(ErrorCodeMapper.OneOfMainParametersFillIn);
     }
 
     private readonly Func<GetDocumentListRequest, bool> ValidateOneOfMainParameterIsNotEmpty = (request) =>
@@ -26,6 +26,7 @@ public class GetDocumentListValidator : AbstractValidator<GetDocumentListRequest
               string.IsNullOrWhiteSpace(request.AuthorUserLogin) &&
               string.IsNullOrWhiteSpace(request.PledgeAgreementNumber) &&
               string.IsNullOrWhiteSpace(request.ContractNumber) &&
+              string.IsNullOrWhiteSpace(request.FormId) &&
               request.OrderId is null
             )
         {

@@ -1,10 +1,11 @@
-# Autentizace FE a doménových služeb
+# Autentizace doménových služeb
 
 ## Přihlášený uživatel - fyzická osoba používající FE NOBY
 Instanci přihlášeného uživatele (tj. uživatele sedícího u NOBY aplikace) je možné získat z DI interfacem `ICurrentUserAccessor`.
 Instance uživatele jako taková je reprezentována interfacem `ICurrentUser` - je dostupná jako vlastnost interface `ICurrentUserAccessor.User`.
 
-Mezi službami se uživatel předává ve formě HTTP headeru "**mp-user-id**", který obsahuje *v33id* aktuálního uživatele.
+Mezi službami se uživatel předává ve formě HTTP headeru "**noby-user-id**", který obsahuje *v33id* aktuálního uživatele.
+Zároveň se mezi službami předává HTTP header **noby-user-ident**, který obsahuje login aktuálně přihlášeného uživatele ve formátu `[schema]=[username]` - např. KBUID=UZ6X9WE.
 
 Registrace `ICurrentUserAccessor` (do DI) probíhá během startupu:
 ```csharp
@@ -78,9 +79,9 @@ Aktuálně podporujeme dva režimy autentizace technického uživatele:
 // autentizace na AD
 "CisSecurity": {
   "ServiceAuthentication": {
-    "Validator": "ActiveDirectory",
-    "DomainUsernamePrefix": "vsskb\\",
-    "AdHost": "vsskb.cz"
+    "Validator": "NativeActiveDirectory",
+    "Domain": "vsskb.cz",
+    "AdHost": "vsskb.cz","AdPort": 636,"IsSsl": true
   }
 }
 ```

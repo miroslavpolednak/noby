@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+import "Messages/ValuationTypes.proto";
+
+message CreateRealEstateValuationRequest {
+    int64 CaseId = 1;
+    int32 RealEstateTypeId = 2;
+    int32 ValuationStateId = 3;
+    bool IsLoanRealEstate = 4;
+    int32 RealEstateStateId = 5;
+    ValuationTypes ValuationTypeId = 6;
+    bool IsRevaluationRequired = 7;
+    bool DeveloperAllowed = 8;
+    bool DeveloperApplied = 9;
+}
+
+message CreateRealEstateValuationResponse {
+    int32 RealEstateValuationId = 1;
+}

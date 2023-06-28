@@ -44,19 +44,6 @@ public sealed class RiskBusinessCaseServiceController
     public async Task<_sh.LoanApplicationAssessmentResponse> CreateAssessment([FromBody] _V2.RiskBusinessCaseCreateAssessmentRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 
-    ///// <summary>
-    ///// Žádost o vyhodnocení úvěrové žádosti - asynchronní
-    ///// </summary>
-    ///// <remarks>
-    ///// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
-    ///// </remarks>
-    //[HttpPost("assessment-asynchronous")]
-    //[Produces("application/json")]
-    //[SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
-    //[ProducesResponseType(typeof(_V2.RiskBusinessCaseCreateAssessmentAsynchronousResponse), StatusCodes.Status200OK)]
-    //public async Task<_V2.RiskBusinessCaseCreateAssessmentAsynchronousResponse> CreateAssessmentAsynchronous([FromBody] _V2.RiskBusinessCaseCreateAssessmentAsynchronousRequest request, CancellationToken cancellationToken)
-    //    => await _mediator.Send(request, cancellationToken);
-
     /// <summary>
     /// Dokončení úvěrové žádosti
     /// </summary>

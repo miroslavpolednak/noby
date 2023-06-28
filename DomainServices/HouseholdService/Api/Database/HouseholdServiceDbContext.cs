@@ -6,6 +6,7 @@ internal sealed class HouseholdServiceDbContext
     : BaseDbContext<HouseholdServiceDbContext>
 {
 #pragma warning disable CS8618
+
     public HouseholdServiceDbContext(BaseDbContextAggregate<HouseholdServiceDbContext> aggregate)
 #pragma warning restore CS8618
         : base(aggregate) { }

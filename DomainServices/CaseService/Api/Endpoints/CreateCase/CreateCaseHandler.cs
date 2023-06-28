@@ -2,7 +2,6 @@
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 using ExternalServices.Eas.V1;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.CaseService.Api.Endpoints.CreateCase;
 
@@ -16,7 +15,7 @@ internal sealed class CreateCaseHandler
         //TODO zkontrolovat existenci vlastnika?
 
         // get default case state
-        int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault).Id;
+        int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault.GetValueOrDefault()).Id;
 
         // ziskat caseId
         long newCaseId = await _easClient.GetCaseId(CIS.Foms.Enums.IdentitySchemes.Kb, request.Data.ProductTypeId, cancellation);
@@ -24,7 +23,7 @@ internal sealed class CreateCaseHandler
 
         // vytvorit entitu
         var entity = createDatabaseEntity(request, newCaseId);
-        entity.OwnerUserName = userInstance.FullName;//dotazene jmeno majitele caseu (poradce)
+        entity.OwnerUserName = userInstance.UserInfo.DisplayName;//dotazene jmeno majitele caseu (poradce)
         entity.State = defaultCaseState;//vychozi status
 
         try
@@ -37,18 +36,13 @@ internal sealed class CreateCaseHandler
         }
         catch (DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
         {
-            throw new CisAlreadyExistsException(13015, nameof(Database.Entities.Case), newCaseId);
+            throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.CaseAlreadyExist, newCaseId);
         }
 
-        // fire notification
-        await _mediator.Publish(new Notifications.CaseStateChangedNotification
+        // notify SB about state change
+        await _mediator.Send(new Contracts.NotifyStarbuildRequest
         {
-            CaseId = newCaseId,
-            CaseStateId = defaultCaseState,
-            ClientName = $"{request.Customer?.FirstNameNaturalPerson} {request.Customer?.Name}",
-            ProductTypeId = request.Data.ProductTypeId,
-            CaseOwnerUserId = request.CaseOwnerUserId,
-            IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested
+            CaseId = newCaseId
         }, cancellation);
         
         return new CreateCaseResponse()
@@ -63,7 +57,8 @@ internal sealed class CreateCaseHandler
         {
             CaseId = caseId,
 
-            StateUpdateTime = _dateTime.Now,
+            StateUpdatedInStarbuild = (int)UpdatedInStarbuildStates.Unknown,
+            StateUpdateTime = _dbContext.CisDateTime.Now,
             ProductTypeId = request.Data.ProductTypeId,
 
             Name = request.Customer.Name,
@@ -94,27 +89,24 @@ internal sealed class CreateCaseHandler
 
     private readonly IRollbackBag _bag;
     private readonly IMediator _mediator;
-    private readonly CIS.Core.IDateTime _dateTime;
     private readonly CaseServiceDbContext _dbContext;
     private readonly ILogger<CreateCaseHandler> _logger;
     private readonly IEasClient _easClient;
-    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly UserService.Clients.IUserServiceClient _userService;
 
     public CreateCaseHandler(
         IRollbackBag bag,
         IMediator mediator,
-        CIS.Core.IDateTime dateTime,
         UserService.Clients.IUserServiceClient userService,
-        CodebookService.Clients.ICodebookServiceClients codebookService,
+        CodebookService.Clients.ICodebookServiceClient codebookService,
         IEasClient easClient,
         CaseServiceDbContext dbContext,
         ILogger<CreateCaseHandler> logger)
     {
         _bag = bag;
         _mediator = mediator;
-        _dateTime = dateTime;
-        _userService = userService;
+         _userService = userService;
         _easClient = easClient;
         _dbContext = dbContext;
         _logger = logger;

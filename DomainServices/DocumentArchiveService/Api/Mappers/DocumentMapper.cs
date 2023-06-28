@@ -42,7 +42,8 @@ public class DocumentMapper : IDocumentMapper
             ContractNumber = request.ContractNumber,
             OrderId = request.OrderId,
             FolderDocumentId = request.FolderDocumentId,
-            UserLogin = request.UserLogin
+            UserLogin = request.UserLogin,
+            FormId = request.FormId
         };
     }
 
@@ -55,8 +56,7 @@ public class DocumentMapper : IDocumentMapper
         metadata.Filename = result.Filename ?? string.Empty;
         metadata.DocumentId = result.DocumentId ?? string.Empty;
         metadata.EaCodeMainId = result.EaCodeMainId;
-        metadata.Filename = result.Filename ?? string.Empty;
-        metadata.Description = string.Empty; // This value isn´t in TCP archive
+        metadata.Description = result.Filename ?? string.Empty; // This weird initialization is based on requirement from StarBuild. 
         metadata.OrderId = int.TryParse(result.OrderId, out var orderId) ? orderId : null;
         metadata.CreatedOn = result.CreatedOn;
         metadata.AuthorUserLogin = result.AuthorUserLogin ?? string.Empty;
@@ -85,10 +85,11 @@ public class DocumentMapper : IDocumentMapper
             ContractNumber = request.ContractNumber,
             OrderId = request.OrderId,
             FolderDocumentId = request.FolderDocumentId,
+            FormId = request.FormId
         };
     }
 
-    private IEnumerable<int> GetMinorCodes(string minorCodes)
+    private static IEnumerable<int> GetMinorCodes(string minorCodes)
     {
         if (string.IsNullOrWhiteSpace(minorCodes))
         {

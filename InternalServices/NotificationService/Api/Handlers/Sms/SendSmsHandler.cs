@@ -1,14 +1,13 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
-using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Helpers;
+using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Infrastructure;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
+using CIS.InternalServices.NotificationService.Api.Services.Messaging.Producers.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
-using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.SmsNotificationTypes;
+using DomainServices.CodebookService.Clients;
 using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Sms;
@@ -16,20 +15,20 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Sms;
 public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 {
     private readonly IDateTime _dateTime;
-    private readonly McsSmsProducer _mcsSmsProducer;
-    private readonly UserAdapterService _userAdapterService;
-    private readonly NotificationRepository _repository;
-    private readonly ICodebookService _codebookService;
-    private readonly IAuditLogger _auditLogger;
+    private readonly IMcsSmsProducer _mcsSmsProducer;
+    private readonly IUserAdapterService _userAdapterService;
+    private readonly INotificationRepository _repository;
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly ISmsAuditLogger _auditLogger;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
         IDateTime dateTime,
-        McsSmsProducer mcsSmsProducer,
-        UserAdapterService userAdapterService,
-        NotificationRepository repository,
-        ICodebookService codebookService,
-        IAuditLogger auditLogger,
+        IMcsSmsProducer mcsSmsProducer,
+        IUserAdapterService userAdapterService,
+        INotificationRepository repository,
+        ICodebookServiceClient codebookService,
+        ISmsAuditLogger auditLogger,
         ILogger<SendSmsHandler> logger)
     {
         _dateTime = dateTime;
@@ -43,11 +42,14 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
     
     public async Task<SendSmsResponse> Handle(SendSmsRequest request, CancellationToken cancellationToken)
     {
-        var smsTypes = await _codebookService.SmsNotificationTypes(new SmsNotificationTypesRequest(), cancellationToken);
+        var username = _userAdapterService
+            .CheckSendSmsAccess()
+            .GetUsername();
+        
+        var smsTypes = await _codebookService.SmsNotificationTypes(cancellationToken);
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {string.Join(',', smsTypes.Select(s => s.Code))}");
-
-        var auditEnabled = smsType.IsAuditLogEnabled;
+        
         var result = _repository.NewSmsResult();
         var phone = request.PhoneNumber.ParsePhone();
         result.Identity = request.Identifier?.Identity;
@@ -57,11 +59,10 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         result.RequestTimestamp = _dateTime.Now;
 
         result.Type = request.Type;
-        result.Text = request.Text;
         result.CountryCode = phone.CountryCode;
         result.PhoneNumber = phone.NationalNumber;
 
-        result.CreatedBy = _userAdapterService.GetUsername();
+        result.CreatedBy = username;
         
         try
         {
@@ -71,7 +72,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         catch (Exception e)
         {
             _logger.LogError(e, $"Could not create SmsResult.");
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.CreateSmsResultFailed, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.CreateSmsResultFailed, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
         }
         
         var consumerId = _userAdapterService.GetConsumerId();
@@ -88,29 +89,17 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         
         try
         {
-            if (auditEnabled)
-            {
-                _auditLogger.Log("todo - Producing message SendSMS to KAFKA.");
-            }
-            
+            _auditLogger.LogKafkaProducing(smsType, username);
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
-
-            if (auditEnabled)
-            {
-                _auditLogger.Log("todo - Produced message SendSMS to KAFKA.");
-            }
+            _auditLogger.LogKafkaProduced(smsType, result.Id, username);
         }
         catch (Exception e)
         {
-            if (auditEnabled)
-            {
-                _auditLogger.Log("todo - Could not produce message SendSMS to KAFKA.");
-            }
-            
+            _auditLogger.LogKafkaError(smsType, username);
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
-            throw new CisServiceServerErrorException(ErrorCodes.Internal.ProduceSendSmsError, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendSmsError, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
         }
 
         return new SendSmsResponse { NotificationId = result.Id };

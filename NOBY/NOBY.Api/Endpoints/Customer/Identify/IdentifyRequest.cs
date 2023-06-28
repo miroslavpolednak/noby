@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Customer.Identify;
 
 public sealed class IdentifyRequest
-    : IRequest<Search.Dto.CustomerInList>
+    : IRequest<SearchCustomers.Dto.CustomerInList?>
 {
     /// <summary>
     /// Jméno customera

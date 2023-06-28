@@ -1,91 +1,68 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
+using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.LoanApplicationData;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest.ConditionalValues;
-using DomainServices.CodebookService.Clients;
+using DomainServices.OfferService.Contracts;
+using DomainServices.UserService.Clients;
+using DomainServices.UserService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
 [TransientService, SelfService]
-internal class ProductFormData : AggregatedData
+internal class ProductFormData : LoanApplicationBaseFormData
 {
-    private List<DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementStates.SalesArrangementStateItem> _salesArrangementStates = null!;
-    private List<DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes.SalesArrangementTypeItem> _salesArrangementTypes = null!;
-    private List<DomainServices.CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeItem> _productTypes = null!;
-    private List<DomainServices.CodebookService.Contracts.Endpoints.DrawingTypes.DrawingTypeItem> _drawingTypes = null!;
-    private List<DomainServices.CodebookService.Contracts.Endpoints.DrawingDurations.DrawingDurationItem> _drawingDurations = null!;
+    private readonly IUserServiceClient _userService;
 
-    public ProductFormData(HouseholdData householdData)
+    public ProductFormData(HouseholdData householdData, IUserServiceClient userService) : base(householdData)
     {
-        HouseholdData = householdData;
+        _userService = userService;
     }
 
-    public AggregatedData AggregatedData => this;
-
-    public HouseholdData HouseholdData { get; }
-
-    public MockValues MockValues { get; } = new();
-
-    public DefaultValues DefaultValues3601 { get; } = DefaultValuesFactory.Create(EasFormType.F3601);
-
-    public DefaultValues DefaultValues3602 { get; } = DefaultValuesFactory.Create(EasFormType.F3602);
-
-    public DynamicFormValues? DynamicFormValues { get; set; }
+    public DynamicFormValues MainDynamicFormValues { get; set; } = null!;
 
     public ConditionalFormValues ConditionalFormValues { get; private set; } = null!;
 
-    public int? SalesArrangementStateId => _salesArrangementStates.First(x => x.Id == SalesArrangement.State).StarbuildId;
+    public User? PerformerUser { get; private set; }
 
-    public DateTime FirstSignedDate => (DateTime?)SalesArrangement.FirstSignedDate ?? DateTime.Now;
-
-    public int ProductTypeId { get; private set; }
+    public int? SalesArrangementStateId => _codebookManager.SalesArrangementStates.First(x => x.Id == SalesArrangement.State).StarbuildId;
 
     public decimal? InterestRateDiscount => (decimal?)Offer.SimulationInputs.InterestRateDiscount * -1;
 
-    public int? DrawingTypeId => _drawingTypes.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingTypeId)?.StarbuildId;
+    public int? DrawingTypeId => _codebookManager.DrawingTypes.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingTypeId)?.StarbuildId;
 
-    public int? DrawingDurationId => _drawingDurations.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingDurationId)?.DrawingDuration;
-
-    public IEnumerable<HouseholdDto> HouseholdList => new[] { HouseholdData.HouseholdDto };
+    public int? DrawingDurationId => _codebookManager.DrawingDurations.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingDurationId)?.DrawingDuration;
 
     public long? MpIdentityId => GetMpIdentityId();
 
     public bool IsEmployeeBonusRequested => Offer.SimulationInputs.IsEmployeeBonusRequested == true;
 
+    public IEnumerable<ResultFee> OfferFees => Offer.AdditionalSimulationResults.Fees.Where(f => f.UsageText.Contains('F', StringComparison.InvariantCultureIgnoreCase));
+
+    public string? ContractSegment => HouseholdData.Customers.Where(c => c.NaturalPerson.Segment is "PB" or "PC").Select(_ => "PRIV").FirstOrDefault();
+
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
-        ProductTypeId = GetProductTypeId();
+        ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(Case.Data.ProductTypeId, Offer.SimulationInputs.LoanKindId), this);
 
-        ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(ProductTypeId, Offer.SimulationInputs.LoanKindId), this);
-
-        return HouseholdData.Initialize(SalesArrangement.SalesArrangementId);
+        return Task.WhenAll(base.LoadAdditionalData(cancellationToken), LoadPerformerData(cancellationToken));
     }
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
+    protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        _salesArrangementStates = await codebookService.SalesArrangementStates(cancellationToken);
-        _salesArrangementTypes = await codebookService.SalesArrangementTypes(cancellationToken);
-        _productTypes = await codebookService.ProductTypes(cancellationToken);
-        _drawingTypes = await codebookService.DrawingTypes(cancellationToken);
-        _drawingDurations = await codebookService.DrawingDurations(cancellationToken);
+        base.ConfigureCodebooks(configurator);
 
-        await HouseholdData.LoadCodebooks(codebookService);
+        configurator.ProductTypes().DrawingTypes().DrawingDurations().SalesArrangementStates().SalesArrangementTypes();
+
+        HouseholdData.ConfigureCodebooks(configurator);
     }
 
-    private int GetProductTypeId()
+    private async Task LoadPerformerData(CancellationToken cancellationToken)
     {
-        var salesArrangementType = _salesArrangementTypes.FirstOrDefault(t => t.Id == SalesArrangement.SalesArrangementTypeId);
+        if (MainDynamicFormValues.PerformerUserId is null)
+            return;
 
-        if (salesArrangementType?.ProductTypeId == null)
-            throw new InvalidOperationException(
-                $"SalesArrangementType with Id {SalesArrangement.SalesArrangementTypeId} does not exist or ProductTypeId is null.");
-
-        var productType = _productTypes.FirstOrDefault(t => t.Id == salesArrangementType.ProductTypeId.Value);
-
-        if (productType is null)
-            throw new InvalidOperationException($"ProductType with Id {salesArrangementType.ProductTypeId.Value} does not exist.");
-
-        return productType.Id;
+        PerformerUser = await _userService.GetUser(MainDynamicFormValues.PerformerUserId.Value, cancellationToken);
     }
 
     private long? GetMpIdentityId()

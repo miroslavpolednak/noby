@@ -1,0 +1,439 @@
+openapi: 3.0.3
+info:
+  title: SULM API
+  description: SULM Rest API
+  version: v1.0.9
+servers:
+  - url: https://localhost:8080
+security:
+  - basicAuth: []
+paths:
+  /customers/sulm/v1/client/purpose/register:
+    post:
+      tags:
+        - sulm
+      description:
+        Založ účel.
+      operationId: registerClientPurpose
+      parameters:
+        - $ref: '#/components/parameters/X-KB-Trace-Id'
+        - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
+      requestBody:
+        description: Register client purpose.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterClientPurposeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SulmResponse'
+        '400':
+          description: Bad Request (Validation error)
+#          $ref: '#/components/schemas/SulmResponse'
+        '401':
+          description: Unauthorized
+#          $ref: '#/components/schemas/SulmResponse'
+        '403':
+          description: Forbidden
+#          $ref: '#/components/schemas/SulmResponse'
+        '404':
+          description: Not Found
+#          $ref: '#/components/schemas/SulmResponse'
+        '500':
+          description: Not Allowed
+#          $ref: '#/components/schemas/SulmResponse'
+
+  /customers/sulm/v1/client/purpose/terminate:
+    post:
+      tags:
+        - sulm
+      description:
+        Odstraň účel
+      operationId: terminateClientPurpose
+      parameters:
+        - $ref: '#/components/parameters/X-KB-Trace-Id'
+        - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
+      requestBody:
+        description: Terminate client purpose.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TerminateClientPurposeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SulmResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /customers/sulm/v1/deprecated/client/{clientId}/category/{systemId}:
+    get:
+      tags:
+        - sulm
+      description:
+        Zjisti stav účelu.
+      operationId: getClientCategory
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '[0-9]+'
+            description: Id klienta.
+            example: 1234567989
+        - name: systemId
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+            description: Perspektiva, pro kterou je požadováno vyhodnotit stav klienta.
+            example: CM_PRS
+        - $ref: '#/components/parameters/X-KB-Trace-Id'
+        - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetClientCategoryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /customers/sulm/v1/client/{clientId}/purpose/{purposeCode}:
+    get:
+      tags:
+        - sulm
+      description:
+        Zjisti pro zadaného klienta/prospekta, zda-li má účel aktivní nebo ne.
+      operationId: getClientPurpose
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '[0-9]+'
+            description: Id klienta.
+            example: 1234567989
+        - name: purposeCode
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 4
+            description: Kód účelu - přiděluje vlastník služby SULM.
+            example: MPAP
+        - $ref: '#/components/parameters/X-KB-Trace-Id'
+        - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetClientPurposeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /customers/sulm/v1/client/{clientId}/purposes/active:
+    get:
+      tags:
+        - sulm
+      description:
+        Pro zadaného klienta/prospekta vrátí seznam aktuálních účelů.
+      operationId: getClientActivePurposes
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '[0-9]+'
+            description: Id klienta.
+            example: 1234567989
+        - $ref: '#/components/parameters/X-KB-Trace-Id'
+        - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetClientActivePurposesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'          
+components:
+  schemas:
+    RegisterClientPurposeRequest:
+      type: object
+      required:
+        - clientId
+        - purposeCode
+        - channelCode
+        - userId
+        - userIdType
+      properties:
+        clientId:
+          type: string
+          pattern: '[0-9]+'
+          description: Id klienta.
+          example: 1234567989
+        purposeCode:
+          type: string
+          description: Kód účelu.
+          minLength: 1
+          maxLength: 4
+          example: MPAP
+        channelCode:
+          type: string
+          minLength: 0
+          maxLength: 30
+          description: Id Kanálu.
+          example: CH0001
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Id Volajícího.
+          example: A12345
+        userIdType:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Typ Id volajícího.
+          example: KBUID
+    TerminateClientPurposeRequest:
+      type: object
+      required:
+        - clientId
+        - purposeCode
+        - channelCode
+        - userId
+        - userIdType
+      properties:
+        clientId:
+          type: string
+          pattern: '[0-9]+'
+          description: Id klienta.
+          example: 1234567989
+        purposeCode:
+          type: string
+          description: Kód účelu.
+          minLength: 1
+          maxLength: 4
+          example: MPAP
+        channelCode:
+          type: string
+          minLength: 0
+          maxLength: 30
+          description: Id Kanálu.
+          example: CH0001
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Id Volajícího.
+          example: A12345
+        userIdType:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Typ Id volajícího.
+          example: KBUID
+    GetClientCategoryResponse:
+      type: object
+      properties:
+        returnValue:
+          type: string
+          minLength: 1
+          maxLength: 1
+          description: Kód stavu klienta.
+          example: A
+        returnCode:
+          type: string
+          description: Návratový kód
+          example: SULM_00001Y
+        returnText:
+          type: string
+          description: Slovní popis případné chyby nebo provedené akce.
+    GetClientActivePurposesResponse:
+      type: object
+      properties:
+        purposes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivePurpose'
+    GetClientPurposeResponse:
+      type: object
+      properties:
+        purpose:
+            $ref: '#/components/schemas/Purpose'
+    Purpose:
+      type: object
+      properties:
+        isActive:
+          type: boolean
+          description: Účel záznamu je aktivní.
+          example: true
+    ActivePurpose:
+      type: object
+      properties:
+        purposeCode:
+          type: string
+          nullable: true
+          minLength: 1
+          maxLength: 4
+          description: Kód účelu - přiděluje vlastník služby SULM.
+          example: CRMP
+        validTo:
+          type: string
+          nullable: true
+          format: date
+          description: Plánovaný konec platnosti (expirace) účelu.
+          example: 2023-12-25
+    SulmResponse:
+      type: object
+      properties:
+        returnCode:
+          type: string
+          description: Návratový kód.
+          example: SULM_00001Y
+        returnText:
+          type: string
+          description: Slovní popis případné chyby nebo provedené akce.
+
+    Errors:
+      type: object
+      description: "Errors as defined in https://wiki.kb.cz/confluence/display/APIM/Error+processing"
+      properties:
+        errors:
+          type: object
+          items:
+            $ref: "#/components/schemas/Error"
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        type:
+          type: string
+          description: Error type
+        category:
+          type: string
+          description: Error category
+        scope:
+          type: string
+          description: Error scope
+        uuid:
+          type: string
+          description: Error unique identifier
+        data:
+          type: object
+          description: list of named parameters for current message
+
+  responses:
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotAllowed:
+      description: Not allowed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+  parameters:
+    X-KB-Trace-Id:
+      name: X-KB-Trace-Id
+      in: header
+      required: true
+      schema:
+        type: string
+        title: Trace ID
+    X-KB-Orig-System-Identity:
+      name: X-KB-Orig-System-Identity
+      in: header
+      required: true
+      schema:
+        type: object
+        title: Originator System Identity
+        properties:
+          app:
+            type: string
+          appComp:
+            type: string
+        required:
+          - app
+          - appComp

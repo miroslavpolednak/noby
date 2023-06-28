@@ -29,6 +29,22 @@ DS:CustomerService
 ### Remarks
 [typ_sluzby]:[nazev_sluzby] - DS (Doménová služba), CIS (Infrastrukturní služba)
 
+<a name='CIS.Core.Configuration.ICisEnvironmentConfiguration.DisableServiceDiscovery'></a>
+
+## ICisEnvironmentConfiguration.DisableServiceDiscovery Property
+
+Pokud je nastaveno na True, nebude se v infrastruktuře služeb automaticky dotahovat URL návazných komponent z ServiceDiscovery.
+
+```csharp
+bool DisableServiceDiscovery { get; }
+```
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
+
+### Remarks
+Pravděpodobně se použije pouze pro infra testy.
+
 <a name='CIS.Core.Configuration.ICisEnvironmentConfiguration.EnvironmentName'></a>
 
 ## ICisEnvironmentConfiguration.EnvironmentName Property

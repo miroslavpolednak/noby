@@ -1,56 +1,68 @@
 ﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
-using DomainServices.CodebookService.Clients;
-using Codebook = DomainServices.CodebookService.Contracts.Endpoints;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
+using System.Globalization;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
 
 internal class HUBNTemplateData : AggregatedData
 {
-    private List<Codebook.Countries.CountriesItem> _countries = null!;
-    private List<Codebook.LoanPurposes.LoanPurposesItem> _loanPurposes = null!;
-    private List<Codebook.RealEstateTypes.RealEstateTypeItem> _realEstateTypes = null!;
-    private List<Codebook.RealEstatePurchaseTypes.RealEstatePurchaseTypeItem> _purchaseTypes = null!;
+    public string PaymentAccount => BankAccountHelper.AccountNumber(Mortgage.PaymentAccount.Prefix, Mortgage.PaymentAccount.Number, Mortgage.PaymentAccount.BankCode);
 
-    public string PaymentAccount => Mortgage.PaymentAccount.Prefix + "-" + Mortgage.PaymentAccount.Number;
+    public string FullName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
-    public string FullName => Customer.NaturalPerson.FirstName + " " + Customer.NaturalPerson.LastName;
-
-    public string PermanentAddress => FormatAddress(Customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Permanent));
+    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent, _codebookManager.Countries);
 
     public IEnumerable<string> LoanPurposes => GetLoanPurposes();
 
     public IEnumerable<string> LoanRealEstates => GetLoanRealEstates();
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
+    public string DrawingDateToText
     {
-        _countries = await codebookService.Countries(cancellationToken);
-        _loanPurposes = await codebookService.LoanPurposes(cancellationToken);
-        _realEstateTypes = await codebookService.RealEstateTypes(cancellationToken);
-        _purchaseTypes = await codebookService.RealEstatePurchaseTypes(cancellationToken);
+        get
+        {
+            if (SalesArrangement.HUBN.DrawingDateTo?.IsActive != true || SalesArrangement.HUBN.DrawingDateTo.ExtensionDrawingDateToByMonths <= 0)
+                return "--";
+
+            var monthText = SalesArrangement.HUBN.DrawingDateTo.ExtensionDrawingDateToByMonths!.Value switch
+            {
+                1 => "měsíc",
+                2 or 3 or 4 => "měsíce",
+                _ => "měsíců"
+            };
+
+            var agreedDrawingToText = ((DateTime)SalesArrangement.HUBN.DrawingDateTo.AgreedDrawingDateTo).ToString("d", CultureProvider.GetProvider());
+
+            return $"o {SalesArrangement.HUBN.DrawingDateTo.ExtensionDrawingDateToByMonths} {monthText} od původní lhůty čerpání {agreedDrawingToText}";
+        }
     }
 
-    private string FormatAddress(GrpcAddress? address)
+    protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        if (address is null)
-            return string.Empty;
-
-        var countryName = _countries.First(c => c.Id == address.CountryId).LongName;
-
-        return $"{address.Street} {address.HouseNumber}/{address.StreetNumber}, {address.Postcode} {address.City}, {countryName}";
+        configurator.Countries().DegreesBefore().LoanPurposes().RealEstateTypes().PurchaseTypes();
     }
 
-    private IEnumerable<string> GetLoanPurposes() =>
-        SalesArrangement.HUBN
-                        .LoanPurposes
-                        .Join(_loanPurposes.Where(l => l.MandantId == 2), x => x.LoanPurposeId, y => y.Id, (_, y) => y.Name);
+    private IEnumerable<string> GetLoanPurposes()
+    {
+        var numberFormat = (NumberFormatInfo)CultureProvider.GetProvider().GetFormat(typeof(NumberFormatInfo))!;
+
+        var loanPurposes = SalesArrangement.HUBN
+                                           .LoanPurposes
+                                           .Join(_codebookManager.LoanPurposes.Where(l => l.MandantId == 2), x => x.LoanPurposeId, y => y.Id, (x, y) => new { y.Name, x.Sum })
+                                           .Select(p => string.Format(numberFormat, $"{p.Name}: " + "{0:#,0.##}" + $" {numberFormat.CurrencySymbol}", (decimal)p.Sum))
+                                           .ToList();
+
+        if (loanPurposes.Count < 5)
+            loanPurposes.Add("--");
+
+        return loanPurposes;
+    }
 
     private IEnumerable<string> GetLoanRealEstates()
     {
         var realEstates = from l in SalesArrangement.HUBN.LoanRealEstates
-            join r in _realEstateTypes on l.RealEstateTypeId equals r.Id
-            join p in _purchaseTypes on l.RealEstatePurchaseTypeId equals p.Id
+            join r in _codebookManager.RealEstateTypes on l.RealEstateTypeId equals r.Id
+            join p in _codebookManager.PurchaseTypes on l.RealEstatePurchaseTypeId equals p.Id
             select new
             {
                 LoanRealEstate = l,
@@ -58,8 +70,14 @@ internal class HUBNTemplateData : AggregatedData
                 PurchaseTypeName = p.Name.Trim()
             };
 
-        return realEstates.Select(r => r.LoanRealEstate.IsCollateral
-                                      ? $"{r.RealEstateTypeName}, {r.PurchaseTypeName}, slouží k zajištění"
-                                      : $"{r.RealEstateTypeName}, {r.PurchaseTypeName}");
+        var result = realEstates.Select(r => r.LoanRealEstate.IsCollateral
+                                            ? $"{r.RealEstateTypeName}, {r.PurchaseTypeName}, slouží k zajištění"
+                                            : $"{r.RealEstateTypeName}, {r.PurchaseTypeName}")
+                                .ToList();
+
+        if (result.Count < 3)
+            result.Add("--");
+
+        return result;
     }
 }

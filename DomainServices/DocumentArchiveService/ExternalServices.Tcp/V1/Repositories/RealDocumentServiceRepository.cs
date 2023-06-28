@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Data;
-using CIS.Core.Exceptions;
 using CIS.Infrastructure.Data;
 using CIS.Infrastructure.Data.Dapper.Oracle;
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp.Data;
@@ -60,6 +59,8 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
 
     private const string FolderDocumentIdCondition = " AND ds.NULAVAZBA_ID = :FolderDocumentId";
 
+    private const string FormIdCondition = " AND ds.NULAFORMULAR_ID = :FormId";
+
     private static int MaxReceivedRowsCount = 5000;
 
     private static string MaxReceivedRows = $"FETCH NEXT {MaxReceivedRowsCount} ROWS ONLY";
@@ -76,14 +77,14 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
     {
         var parameters = new OracleDynamicParameters();
 
-        var result = await _connectionProvider.ExecuteDapperRawSqlToList<DocumentServiceQueryResult>(
+        var result = await _connectionProvider.ExecuteDapperRawSqlToListAsync<DocumentServiceQueryResult>(
                                        ComposeSqlWithFilter(query, parameters),
                                        parameters,
                                        cancellationToken);
 
         if (result.Count >= MaxReceivedRowsCount)
         {
-            throw new CisValidationException(9701, "To many results returned from external service, please specify filter more accurately.");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ToManyResultsFromExternalService);
         }
 
         return result;
@@ -95,30 +96,23 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
         parameters.Add("ExternalDocumentId", OracleDbType.NVarchar2, ParameterDirection.Input, $"0{query.DocumentId}");
 
         var result = await _connectionProvider
-            .ExecuteDapperRawSqlFirstOrDefault<DocumentServiceQueryResult>(
+            .ExecuteDapperRawSqlFirstOrDefaultAsync<DocumentServiceQueryResult>(
             $"{DocumentMainSql} {GetDocumentByExternalIdWhereSql}",
             parameters,
             cancellationToken);
 
         if (result is null)
         {
-            throw new CisNotFoundException(14002, "Unable to get/find document from eArchive (TCP)");
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.TcpDocumentNotFound);
         }
 
         return result;
     }
 
-    private string ComposeSqlWithFilter(FindTcpDocumentQuery query, OracleDynamicParameters parameters)
+    private static string ComposeSqlWithFilter(FindTcpDocumentQuery query, OracleDynamicParameters parameters)
     {
-        if (query is null)
-        {
-            throw new ArgumentNullException(nameof(query));
-        }
-
-        if (parameters is null)
-        {
-            throw new ArgumentNullException(nameof(parameters));
-        }
+        ArgumentNullException.ThrowIfNull(nameof(query));
+        ArgumentNullException.ThrowIfNull(nameof(parameters));
 
         var sb = new StringBuilder(DocumentMainSql);
 
@@ -165,6 +159,12 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
         {
             parameters.Add("CreatedOn", OracleDbType.Varchar2, ParameterDirection.Input, query.CreatedOn.Value.ToString("yyyy-MM-dd"));
             sb.Append(CreatedOnCondition);
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.FormId))
+        {
+            parameters.Add("FormId", OracleDbType.NVarchar2, ParameterDirection.Input, $"0{query.FormId}");
+            sb.Append(FormIdCondition);
         }
 
         sb.Append(Environment.NewLine);

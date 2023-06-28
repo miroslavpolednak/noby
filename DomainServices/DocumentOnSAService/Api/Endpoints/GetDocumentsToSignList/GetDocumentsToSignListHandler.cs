@@ -1,45 +1,43 @@
 ﻿using CIS.Foms.Enums;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.Endpoints.DocumentTypes;
-using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.DocumentOnSAService.Api.Database;
+using DomainServices.DocumentOnSAService.Api.Mappers;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
-using _Entity = DomainServices.DocumentOnSAService.Api.Database.Entities;
+using CIS.Foms.Types.Enums;
+
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetDocumentsToSignList;
 
 public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignListRequest, GetDocumentsToSignListResponse>
 {
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
-    private readonly ICodebookServiceClients _codebookServiceClients;
+    private readonly ICodebookServiceClient _codebookServiceClients;
+    private readonly IDocumentOnSaMapper _documentOnSaMapper;
     private readonly IHouseholdServiceClient _householdClient;
 
     public GetDocumentsToSignListHandler(
         DocumentOnSAServiceDbContext dbContext,
         ISalesArrangementServiceClient arrangementServiceClient,
-        ICodebookServiceClients codebookServiceClients,
+        ICodebookServiceClient codebookServiceClients,
+        IDocumentOnSaMapper documentOnSaMapper,
         IHouseholdServiceClient householdClient)
     {
         _dbContext = dbContext;
         _arrangementServiceClient = arrangementServiceClient;
         _codebookServiceClients = codebookServiceClients;
+        _documentOnSaMapper = documentOnSaMapper;
         _householdClient = householdClient;
     }
 
     public async Task<GetDocumentsToSignListResponse> Handle(GetDocumentsToSignListRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
-
-        if (salesArrangement is null)
-        {
-            throw new CisNotFoundException(19000, $"SalesArrangement{request.SalesArrangementId!.Value} does not exist.");
-        }
 
         var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
 
@@ -55,7 +53,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         }
         else
         {
-            throw new ArgumentException($"This kind of {nameof(SalesArrangementCategories)} {salesArrangementType.SalesArrangementCategory} is not supported");
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SalesArrangementCategoryNotSupported, salesArrangementType.SalesArrangementCategory);
         }
 
         return response;
@@ -72,13 +70,16 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     private async Task ComposeResultForProductRequest(GetDocumentsToSignListRequest request, GetDocumentsToSignListResponse response, CancellationToken cancellationToken)
     {
         var documentsOnSaRealEntity = await _dbContext.DocumentOnSa
-                                                    .AsNoTracking()
-                                                    .Where(e => e.SalesArrangementId == request.SalesArrangementId && e.IsValid)
+                                                    .Where(e => e.SalesArrangementId == request.SalesArrangementId
+                                                                && e.IsValid
+                                                                && e.IsFinal == false)
                                                     .ToListAsync(cancellationToken);
 
-        var documentsOnSaToSignReal = CreateDocumentOnSaToSign(documentsOnSaRealEntity);
-        response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignReal);
+        // Evaluate eletronic signature status
+        await EvaluateElectronicDocumentStatus(documentsOnSaRealEntity, cancellationToken);
 
+        var documentsOnSaToSignReal = _documentOnSaMapper.MapDocumentOnSaToSign(documentsOnSaRealEntity);
+        response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignReal);
 
         var households = await _householdClient.GetHouseholdList(request.SalesArrangementId!.Value, cancellationToken);
         var householdsWithoutdocumentOnsa = households
@@ -89,31 +90,42 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignVirtual);
     }
 
-    private IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<_Entity.DocumentOnSa> documentOnSas)
+    private async Task EvaluateElectronicDocumentStatus(List<Database.Entities.DocumentOnSa> documentsOnSaRealEntity, CancellationToken cancellationToken)
     {
-        foreach (var documentOnSa in documentOnSas)
+        foreach (var docOnSa in documentsOnSaRealEntity)
         {
-            yield return new DocumentOnSAToSign
+            if (docOnSa.SignatureTypeId is null or not ((int)SignatureTypes.Electronic))
+                continue;
+
+            var elDocumentStatus = GetElDocumentStatusMock(docOnSa.ExternalId);
+
+            switch (elDocumentStatus)
             {
-                DocumentOnSAId = documentOnSa.DocumentOnSAId,
-                DocumentTypeId = documentOnSa.DocumentTypeId,
-                DocumentTemplateVersionId = documentOnSa.DocumentTemplateVersionId,
-                FormId = documentOnSa.FormId ?? string.Empty,
-                EArchivId = documentOnSa.EArchivId ?? string.Empty,
-                DmsxId = documentOnSa.DmsxId ?? string.Empty,
-                SalesArrangementId = documentOnSa.SalesArrangementId,
-                HouseholdId = documentOnSa.HouseholdId,
-                IsValid = documentOnSa.IsValid,
-                IsSigned = documentOnSa.IsSigned,
-                IsDocumentArchived = documentOnSa.IsDocumentArchived,
-                SignatureMethodCode = documentOnSa.SignatureMethodCode ?? string.Empty,
-                SignatureDateTime = documentOnSa.SignatureDateTime is not null ? Timestamp.FromDateTime(DateTime.SpecifyKind(documentOnSa.SignatureDateTime.Value, DateTimeKind.Utc) ) : null,
-                SignatureConfirmedBy = documentOnSa.SignatureConfirmedBy
-            };
+                case EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT:
+                    docOnSa.IsSigned = true;
+                    break;
+                case EDocumentStatuses.DELETED:
+                    docOnSa.IsValid = false;
+                    break;
+                case EDocumentStatuses.NEW or EDocumentStatuses.IN_PROGRESS or EDocumentStatuses.APPROVED:
+                    // Ignore
+                    break;
+                default:
+                    throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedStatusReturnedFromESignature, elDocumentStatus);
+            }
         }
+
+        if (_dbContext.ChangeTracker.HasChanges())
+            await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    private DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypeItem documentTypeItem, int salesArrangementId)
+    private static EDocumentStatuses GetElDocumentStatusMock(string? externalId)
+    {
+        //Call real service
+        return EDocumentStatuses.SIGNED;
+    }
+
+    private static DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypesResponse.Types.DocumentTypeItem documentTypeItem, int salesArrangementId)
     {
         return new DocumentOnSAToSign
         {
@@ -121,12 +133,11 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
             SalesArrangementId = salesArrangementId,
             IsValid = true,
             IsSigned = false,
-            IsDocumentArchived = false
+            IsArchived = false
         };
-
     }
 
-    private IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<Household> households)
+    private static IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<Household> households)
     {
         foreach (var household in households)
         {
@@ -137,22 +148,22 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
                 HouseholdId = household.HouseholdId,
                 IsValid = true,
                 IsSigned = false,
-                IsDocumentArchived = false
+                IsArchived = false
             };
         }
     }
 
-    private async Task<SalesArrangementTypeItem> GetSalesArrangementType(SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem> GetSalesArrangementType(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var salesArrangementTypes = await _codebookServiceClients.SalesArrangementTypes(cancellationToken);
         var salesArrangementType = salesArrangementTypes.Single(r => r.Id == salesArrangement.SalesArrangementTypeId);
         return salesArrangementType;
     }
 
-    private int GetDocumentTypeId(int householdTypeId) => householdTypeId switch
+    private static int GetDocumentTypeId(int householdTypeId) => householdTypeId switch
     {
         1 => 4,
         2 => 5,
-        _ => throw new ArgumentException($"HouseholdTypeId {householdTypeId} does not exist.", nameof(householdTypeId))
+        _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.HouseholdTypeIdNotExist, householdTypeId)
     };
 }

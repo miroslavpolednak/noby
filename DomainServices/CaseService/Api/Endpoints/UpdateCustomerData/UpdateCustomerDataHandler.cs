@@ -10,9 +10,13 @@ internal sealed class UpdateCustomerDataHandler
     {
         // zjistit zda existuje case
         var entity = await _dbContext.Cases.FindAsync(new object[] { request.CaseId }, cancellation)
-            ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
         //TODO zkontrolovat existenci klienta?
 
+        var customerNameChanged =
+            !string.Equals(entity.Name, request.Customer.Name, StringComparison.OrdinalIgnoreCase) ||
+            !string.Equals(entity.FirstNameNaturalPerson, request.Customer.FirstNameNaturalPerson, StringComparison.OrdinalIgnoreCase);
+        
         // ulozit do DB
         entity.DateOfBirthNaturalPerson = request.Customer.DateOfBirthNaturalPerson;
         entity.Name = request.Customer.Name;
@@ -23,13 +27,22 @@ internal sealed class UpdateCustomerDataHandler
 
         await _dbContext.SaveChangesAsync(cancellation);
 
+        if (customerNameChanged)
+        {
+            await _mediator.Send(new NotifyStarbuildRequest { CaseId = request.CaseId  }, cancellation);    
+        }
+
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private readonly IMediator _mediator;
     private readonly CaseServiceDbContext _dbContext;
 
-    public UpdateCustomerDataHandler(CaseServiceDbContext dbContext)
+    public UpdateCustomerDataHandler(
+        IMediator mediator,
+        CaseServiceDbContext dbContext)
     {
+        _mediator = mediator;
         _dbContext = dbContext;
     }
 }

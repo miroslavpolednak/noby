@@ -3,12 +3,15 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
+using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 using NOBY.Api.Endpoints.SalesArrangement.SendToCmp.Dto;
+using System.Threading;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CreateCustomerRequest = DomainServices.CustomerService.Contracts.CreateCustomerRequest;
 using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
@@ -19,20 +22,22 @@ internal sealed class SendToCmpHandler
     : IRequestHandler<SendToCmpRequest>
 {
 
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSaService;
     private readonly IProductServiceClient _productService;
     private readonly ICustomerServiceClient _customerService;
+    private readonly IDocumentOnSAServiceClient _documentOnSAService;
 
     public SendToCmpHandler(
-        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
+        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSaService,
         IProductServiceClient productService,
-        ICustomerServiceClient customerService)
+        ICustomerServiceClient customerService,
+        IDocumentOnSAServiceClient documentOnSAService)
     {
         _codebookService = codebookService;
         _caseService = caseService;
@@ -40,6 +45,7 @@ internal sealed class SendToCmpHandler
         _customerOnSaService = customerOnSaService;
         _productService = productService;
         _customerService = customerService;
+        _documentOnSAService = documentOnSAService;
     }
 
     public async Task Handle(SendToCmpRequest request, CancellationToken cancellationToken)
@@ -47,28 +53,75 @@ internal sealed class SendToCmpHandler
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
+        // pokud je to produktovy SA, tak dal, jinak rovnou odeslat
+        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
+
+        // check flow switches
+        var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
+        if (saCategory.SalesArrangementCategory == 1
+            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed && t.Value))
+        {
+            throw new NobyValidationException(90016);
+        }
+
         await ValidateSalesArrangement(saInstance.SalesArrangementId, request.IgnoreWarnings, cancellationToken);
 
-        var customersData = await LoadCustomersData(saInstance.SalesArrangementId, saInstance.CaseId, cancellationToken);
-
-        foreach (var customerOnSa in customersData.CustomersOnSa)
-        {
-            await CreateCustomerMpIfNotExists(customerOnSa, cancellationToken);
-
-            await CreateContractRelationshipIfNotExists(customersData.RedundantCustomersOnProduct, customerOnSa, saInstance.CaseId, cancellationToken);
-        }
-
-        await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
-
-        // odeslat do SB
-        await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
-
-        // update case state, pokud to neni servisni zadost.
-        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
         if (saCategory.SalesArrangementCategory == 1)
         {
+            var customersData = await LoadCustomersData(saInstance.SalesArrangementId, saInstance.CaseId, cancellationToken);
+
+            foreach (var customerOnSa in customersData.CustomersOnSa)
+            {
+                await CreateCustomerMpIfNotExists(customerOnSa, cancellationToken);
+
+                await CreateContractRelationshipIfNotExists(customersData.RedundantCustomersOnProduct, customerOnSa, saInstance.CaseId, cancellationToken);
+            }
+
+            await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
+
+            await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
+
+            // odeslat do SB
+            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+
+            // update case state
             await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
         }
+        else
+        {
+            await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
+
+            // odeslat do SB
+            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+        }
+    }
+
+    private async Task ArchiveElectronicDocumets(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var digitallySignedDocuments = (await _documentOnSAService.GetDocumentsOnSAList(salesArrangementId, cancellationToken))
+                                       .DocumentsOnSA.Where(d => d.IsSigned && d.SignatureTypeId == (int)SignatureTypes.Electronic);
+        
+        await Task.WhenAll(digitallySignedDocuments.Select(doc => _documentOnSAService.SetDocumentOnSAArchived(doc.DocumentOnSAId!.Value, cancellationToken)));
+    }
+
+    private async Task validateFlowSwitches(int salesArrangementId, int salesArrangementCategory, CancellationToken cancellationToken)
+    {
+        var flowSwitches = await _salesArrangementService.GetFlowSwitches(salesArrangementId, cancellationToken);
+
+        // HFICH-3630
+        if (salesArrangementCategory == 1 && !isSet(FlowSwitches.IsOfferGuaranteed))
+        {
+            throw new NobyValidationException(90016);
+        }
+
+        // HFICH-5191
+        if (isSet(FlowSwitches.IsOfferWithDiscount) && isSet(FlowSwitches.IsWflTaskForIPApproved, false))
+        {
+            throw new NobyValidationException(90018);
+        }
+
+        bool isSet(FlowSwitches flowSwitch, bool value = true)
+            => flowSwitches?.Any(t => t.FlowSwitchId == (int)flowSwitch && t.Value == value) ?? false;
     }
 
     private async Task ValidateSalesArrangement(int salesArrangementId, bool ignoreWarnings, CancellationToken cancellationToken)
@@ -143,7 +196,7 @@ internal sealed class SendToCmpHandler
             }
         }
         catch (CisNotFoundException)
-        { 
+        {
             await CreateCustomerMp(customerOnSa.IdentityMp, customerOnSa.IdentityKb, cancellationToken);
         }
     }
@@ -180,22 +233,13 @@ internal sealed class SendToCmpHandler
             return;
         }
 
-        var createRequest = new CreateContractRelationshipRequest
+        var relationshipTypeId = (CustomerRoles)customerOnSa.Customer.CustomerRoleId switch
         {
-            ProductId = caseId,
-            Relationship = new Relationship
-            {
-                PartnerId = customerOnSa.IdentityMp.IdentityId,
-                ContractRelationshipTypeId = (CustomerRoles)customerOnSa.Customer.CustomerRoleId switch
-                {
-                    CustomerRoles.Debtor => 1,
-                    CustomerRoles.Codebtor => 2,
-                    _ => 0
-                }
-            }
+            CustomerRoles.Debtor => 1,
+            CustomerRoles.Codebtor => 2,
+            _ => 0
         };
-
-        await RunTaskAndIgnoreMpHomeErrors(_productService.CreateContractRelationship(createRequest, cancellationToken));
+        await RunTaskAndIgnoreMpHomeErrors(_productService.CreateContractRelationship(customerOnSa.IdentityMp.IdentityId, caseId, relationshipTypeId, cancellationToken));
 
         bool IdentityPredicate(Identity identity) => identity.IdentityId == customerOnSa.IdentityMp.IdentityId && identity.IdentityScheme == Identity.Types.IdentitySchemes.Mp;
     }
@@ -204,11 +248,7 @@ internal sealed class SendToCmpHandler
     {
         foreach (var redundantCustomerOnProduct in redundantCustomersOnProduct)
         {
-            await _productService.DeleteContractRelationship(new DeleteContractRelationshipRequest
-            {
-                PartnerId = redundantCustomerOnProduct.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId,
-                ProductId = caseId
-            }, cancellationToken);
+            await _productService.DeleteContractRelationship(redundantCustomerOnProduct.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId, caseId, cancellationToken);
         }
     }
 

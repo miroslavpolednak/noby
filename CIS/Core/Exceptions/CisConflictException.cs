@@ -6,7 +6,7 @@
 /// <remarks>
 /// Např. pokud mám vrátit detail klienta, ale v CM je více klientů se stejným ID.
 /// </remarks>
-public sealed class CisConflictException 
+public sealed class CisConflictException
     : BaseCisException
 {
     /// <param name="message">Chybová zpráva</param>

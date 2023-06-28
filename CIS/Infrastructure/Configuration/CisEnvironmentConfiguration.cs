@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.Configuration;
 
-internal sealed class CisEnvironmentConfiguration
+public sealed class CisEnvironmentConfiguration
     : Core.Configuration.ICisEnvironmentConfiguration
 {
     public string? DefaultApplicationKey { get; set; }
@@ -12,4 +12,6 @@ internal sealed class CisEnvironmentConfiguration
     public string? InternalServicesLogin { get; set; }
 
     public string? InternalServicePassword { get; set; }
+
+    public bool DisableServiceDiscovery { get; set; }
 }

@@ -6,6 +6,7 @@ import "google/protobuf/empty.proto";
 import "Messages/CustomerOnSA.proto";
 import "Messages/CreateCustomer.proto";
 import "Messages/GetCustomer.proto";
+import "Messages/GetCustomersByIdentity.proto";
 import "Messages/GetCustomerList.proto";
 import "Messages/UpdateCustomer.proto";
 import "Messages/CreateIncome.proto";
@@ -22,8 +23,11 @@ import "Messages/DeleteObligation.proto";
 import "Messages/GetObligation.proto";
 import "Messages/DeleteIncome.proto";
 import "Messages/UpdateCustomerDetail.proto";
+import "Messages/GetCustomerChangeMetadata.proto";
 
 service CustomerOnSAService {
+	rpc GetCustomerChangeMetadata (GetCustomerChangeMetadataRequest) returns (GetCustomerChangeMetadataResponse);
+
     // zalozeni noveho customera
 	rpc CreateCustomer (CreateCustomerRequest) returns (CreateCustomerResponse);
 	
@@ -32,6 +36,9 @@ service CustomerOnSAService {
 	
 	// get single
 	rpc GetCustomer (GetCustomerRequest) returns (CustomerOnSA);
+	
+	// get by identity
+	rpc GetCustomersByIdentity (GetCustomersByIdentityRequest) returns (GetCustomersByIdentityResponse);
 	
 	// get list
 	rpc GetCustomerList (GetCustomerListRequest) returns (GetCustomerListResponse);

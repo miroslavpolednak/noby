@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCustomers;
 
-internal class GetCustomersValidator
+internal sealed class GetCustomersValidator
     : AbstractValidator<GetCustomersRequest>
 {
     public GetCustomersValidator()

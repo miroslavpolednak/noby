@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Endpoints.SearchCustomers;
 
-internal class SearchCustomersRequestValidator : AbstractValidator<SearchCustomersRequest>
+internal sealed class SearchCustomersRequestValidator : AbstractValidator<SearchCustomersRequest>
 {
     public SearchCustomersRequestValidator()
     {
@@ -17,7 +17,7 @@ internal class SearchCustomersRequestValidator : AbstractValidator<SearchCustome
             .WithMessage("Mandant must be not empty").WithErrorCode("11008");
 
         RuleFor(t => t)
-            .Must(t => t.Identity != null || t.NaturalPerson != null || t.IdentificationDocument != null || !string.IsNullOrEmpty(t.Email) || !string.IsNullOrEmpty(t.PhoneNumber))
+            .Must(t => t.Identity != null || t.NaturalPerson != null || t.IdentificationDocument != null || !string.IsNullOrEmpty(t.Email?.EmailAddress) || !string.IsNullOrEmpty(t.MobilePhone?.PhoneNumber))
             .WithMessage("At least one of search field is required").WithErrorCode("11009");
 
         RuleFor(t => t.NaturalPerson.LastName)
@@ -25,17 +25,20 @@ internal class SearchCustomersRequestValidator : AbstractValidator<SearchCustome
             .When(t => t.NaturalPerson != null && !string.IsNullOrEmpty(t.NaturalPerson.FirstName))
             .WithMessage("LastName must be not empty").WithErrorCode("11010");
 
-        RuleFor(t => t.Email)
-            .EmailAddress()
-            .When(t => !string.IsNullOrEmpty(t.Email))
-            .WithMessage("Email is not valid").WithErrorCode("11011");
+        When(t => t.Email is not null, () =>
+        {
+            RuleFor(t => t.Email.EmailAddress)
+                .EmailAddress()
+                .When(t => !string.IsNullOrEmpty(t.Email.EmailAddress))
+                .WithMessage("Email is not valid").WithErrorCode("11011");
+        });
 
         When(t => t.NaturalPerson?.DateOfBirth != null,
              () =>
              {
                  RuleFor(t => t)
                      .Must(t => t.Identity != null || !string.IsNullOrWhiteSpace(t.NaturalPerson.LastName) || !string.IsNullOrWhiteSpace(t.NaturalPerson.BirthNumber) ||
-                                t.IdentificationDocument != null || !string.IsNullOrEmpty(t.Email) || !string.IsNullOrEmpty(t.PhoneNumber))
+                                t.IdentificationDocument != null || !string.IsNullOrEmpty(t.Email?.EmailAddress) || !string.IsNullOrEmpty(t.MobilePhone?.PhoneNumber))
                      .WithMessage("One more parameter, which can be sent to CM, is needed to search by date of birth.")
                      .WithErrorCode("11029");
              });

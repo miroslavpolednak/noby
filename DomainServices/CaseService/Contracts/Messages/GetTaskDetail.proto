@@ -1,0 +1,77 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "GrpcDecimal.proto";
+import "GrpcDate.proto";
+import "NullableGrpcDecimal.proto";
+import "Messages/WorkflowTask.proto";
+import "google/protobuf/wrappers.proto";
+
+message GetTaskDetailRequest {
+	int32 TaskIdSb = 1;
+}
+
+message GetTaskDetailResponse {
+	WorkflowTask TaskObject = 1;
+
+	TaskDetailItem TaskDetail = 2;
+}
+
+message TaskDetailItem {
+	google.protobuf.StringValue PerformanName = 1;
+	google.protobuf.Int32Value PerformerCode = 2;
+	string ProcessNameLong = 3;
+	repeated TaskCommunicationItem TaskCommunication = 4;
+	repeated string TaskDocumentIds = 5;
+	oneof Amendments  {
+		AmendmentSigning Signing = 20;
+		AmendmentRequest Request = 21;
+		AmendmentConsultationData ConsultationData = 22;
+		AmendmentPriceException PriceException = 23;
+	}
+}
+
+message TaskCommunicationItem {
+	google.protobuf.StringValue TaskResponse = 1;
+
+	string TaskRequest = 2;
+}
+
+message AmendmentSigning {
+	string FormId = 1;
+	cis.types.GrpcDate Expiration = 2;
+	string DocumentForSigning = 3;
+	repeated string ProposalForEntry = 4;
+	string DocumentForSigningType = 5;
+}
+
+message AmendmentRequest {
+	google.protobuf.BoolValue SentToCustomer = 1;
+	google.protobuf.Int32Value OrderId = 2;
+}
+
+message AmendmentConsultationData {
+	google.protobuf.Int32Value OrderId = 1;
+}
+
+message AmendmentPriceException {
+	cis.types.GrpcDate Expiration = 1;
+	google.protobuf.Int32Value DecisionId = 2;
+	PriceExceptionLoanInterestRateItem LoanInterestRate = 3;
+	repeated PriceExceptionFeesItem Fees = 4;
+}
+
+message PriceExceptionLoanInterestRateItem {
+	cis.types.GrpcDecimal LoanInterestRate = 1;
+	cis.types.GrpcDecimal LoanInterestRateProvided = 2;
+	int32 LoanInterestRateAnnouncedType = 3;
+	cis.types.NullableGrpcDecimal LoanInterestRateDiscount = 4;
+}
+
+message PriceExceptionFeesItem {
+	string FeeId = 1;
+	cis.types.GrpcDecimal TariffSum = 2;
+	cis.types.GrpcDecimal FinalSum = 3;
+	cis.types.GrpcDecimal DiscountPercentage = 4;
+}

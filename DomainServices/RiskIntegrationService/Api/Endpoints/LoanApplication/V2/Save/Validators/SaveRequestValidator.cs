@@ -43,10 +43,6 @@ internal sealed class SaveRequestValidator
             RuleForEach(t => t.ProductRelations)
                 .ChildRules(x =>
                 {
-                    x.RuleFor(x => x.ProductType)
-                        .NotEmpty()
-                        .WithErrorCode("ProductRelations.ProductType");
-
                     x.RuleFor(x => x.RelationType)
                         .NotEmpty()
                         .WithErrorCode("ProductRelations.");
@@ -71,6 +67,25 @@ internal sealed class SaveRequestValidator
                                 .NotEmpty()
                                 .WithErrorCode("ProductRelations.Customers.CustomerId");
                         });
+
+                    x.When(x => x.BankAccount != null, () =>
+                    {
+                        x.RuleFor(x => x.BankAccount)
+                        .ChildRules(x2 =>
+                        {
+                            x2.RuleFor(x2 => x2!.NumberPrefix)
+                            .MaximumLength(6)
+                            .WithErrorCode("ProductRelations.BankAccount.NumberPrefix")
+                            .Must(x2 => x2 == null || (int.TryParse(x2, out var val) && val >= 0))
+                            .WithErrorCode("ProductRelations.BankAccount.NumberPrefix");
+
+                            x2.RuleFor(x2 => x2!.Number)
+                            .MaximumLength(10)
+                            .WithErrorCode("ProductRelations.BankAccount.Number")
+                            .Must(x2 => x2 == null || (long.TryParse(x2, out var val) && val > 0))
+                            .WithErrorCode("ProductRelations.BankAccount.Number");
+                        });
+                    });
                 });
         });
     }

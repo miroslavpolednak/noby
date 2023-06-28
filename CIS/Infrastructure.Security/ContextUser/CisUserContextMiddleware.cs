@@ -5,7 +5,9 @@ internal sealed class CisUserContextMiddleware
     private readonly ILogger<CisUserContextMiddleware> _logger;
     private readonly RequestDelegate _next;
 
-    public CisUserContextMiddleware(RequestDelegate next, ILoggerFactory logFactory)
+    public CisUserContextMiddleware(
+        RequestDelegate next, 
+        ILoggerFactory logFactory)
     {
         _logger = logFactory.CreateLogger<CisUserContextMiddleware>();
         _next = next;
@@ -14,9 +16,13 @@ internal sealed class CisUserContextMiddleware
     public async Task InvokeAsync(HttpContext httpContext)
     {
         int? partyId = CurrentUserAccessorHelpers.GetUserIdFromHeaders(httpContext.Request);
+
         if (partyId.HasValue)
         {
-            httpContext.User.AddIdentity(new CisUserIdentity(partyId.Value));
+            // vytvorit identitu
+            var identity = new CisUserIdentity(partyId.Value, CurrentUserAccessorHelpers.GetUserIdentFromHeaders(httpContext.Request));
+            httpContext.User.AddIdentity(identity);
+
             _logger.ContextUserAdded(partyId.Value);
         }
 

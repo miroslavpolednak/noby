@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.CustomerService.Api.Endpoints;
 
 [Authorize]
-internal class CustomerService : Contracts.V1.CustomerService.CustomerServiceBase
+internal sealed class CustomerService : Contracts.V1.CustomerService.CustomerServiceBase
 {
     private readonly IMediator _mediator;
 
@@ -24,11 +24,7 @@ internal class CustomerService : Contracts.V1.CustomerService.CustomerServiceBas
         => _mediator.Send(request, context.CancellationToken);
 
     public override async Task<Empty> UpdateCustomerIdentifiers(UpdateCustomerIdentifiersRequest request, ServerCallContext context)
-    {
-        await _mediator.Send(request, context.CancellationToken);
-
-        return new Empty();
-    }
+        => await _mediator.Send(request, context.CancellationToken);
 
     public override Task<CustomerDetailResponse> GetCustomerDetail(CustomerDetailRequest request, ServerCallContext context)
         => _mediator.Send(request, context.CancellationToken);
@@ -37,5 +33,8 @@ internal class CustomerService : Contracts.V1.CustomerService.CustomerServiceBas
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<ValidateContactResponse> ValidateContact(ValidateContactRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 }

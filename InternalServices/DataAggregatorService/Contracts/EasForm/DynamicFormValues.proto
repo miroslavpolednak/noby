@@ -3,8 +3,16 @@
 package CIS.InternalServices.DataAggregatorService;
 option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts";
 
-message DynamicFormValues {
-	string DocumentId = 1;
+import "google/protobuf/wrappers.proto";
 
-	string FormId = 2;
+message DynamicFormValues {
+	int32 DocumentTypeId = 1;
+
+	google.protobuf.StringValue DocumentId = 2;
+
+	google.protobuf.StringValue FormId = 3;
+
+	google.protobuf.Int32Value HouseholdId = 4;
+
+	google.protobuf.Int32Value PerformerUserId = 5;
 }

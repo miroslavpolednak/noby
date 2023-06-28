@@ -72,8 +72,8 @@ Vrací informace o konrkétní službě identifikované jejím unikátním jmén
 Vrácí všechny služby daného typu, dostupné v daném prostředí.
 
 ## grpcurl tests
-        grpcurl -insecure 172.30.35.51:5002 list
-
-        grpcurl -insecure -d "{\"Environment\":\"DEV\"}" -H "Authorization: Basic YTph" -H "mp-user-id: 267" 127.0.0.1:5005 CIS.InternalServices.ServiceDiscovery.v1.DiscoveryService/GetServices
-        grpcurl -insecure -d "{\"Environment\":\"FAT\"}" 172.30.35.51:5002 CIS.InternalServices.ServiceDiscovery.v1.DiscoveryService/GetServices
-        grpcurl -insecure 172.30.35.51:30000 CIS.InternalServices.ServiceDiscovery.v1.DiscoveryService/ClearCache
+grpcurl -insecure 172.30.35.51:5002 list
+`
+grpcurl -insecure -d "{\"Environment\":\"DEV\"}" -H "Authorization: Basic YTph" -H "noby-user-id: 267" -H "noby-user-ident: xxxxx" 127.0.0.1:30000 CIS.InternalServices.ServiceDiscovery.v1.DiscoveryService/GetServices
+grpcurl -insecure -d "{\"Environment\":\"FAT\"}" 172.30.35.51:5002 CIS.InternalServices.ServiceDiscovery.v1.DiscoveryService/GetServices
+grpcurl -insecure 172.30.35.51:30000 CIS.InternalServices.ServiceDiscovery.v1.DiscoveryService/ClearCache

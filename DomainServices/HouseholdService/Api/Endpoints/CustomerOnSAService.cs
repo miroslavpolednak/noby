@@ -8,6 +8,9 @@ namespace DomainServices.HouseholdService.Api.Endpoints;
 internal sealed class CustomerOnSAService
     : Contracts.v1.CustomerOnSAService.CustomerOnSAServiceBase
 {
+    public override async Task<GetCustomerChangeMetadataResponse> GetCustomerChangeMetadata(GetCustomerChangeMetadataRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     public override async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
@@ -15,6 +18,9 @@ internal sealed class CustomerOnSAService
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<Contracts.CustomerOnSA> GetCustomer(GetCustomerRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<GetCustomersByIdentityResponse> GetCustomersByIdentity(GetCustomersByIdentityRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<GetCustomerListResponse> GetCustomerList(GetCustomerListRequest request, ServerCallContext context)
@@ -30,10 +36,10 @@ internal sealed class CustomerOnSAService
     public override async Task<CreateObligationResponse> CreateObligation(CreateObligationRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateObligation(Obligation request, ServerCallContext context)
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateObligation(Contracts.Obligation request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<Obligation> GetObligation(GetObligationRequest request, ServerCallContext context)
+    public override async Task<Contracts.Obligation> GetObligation(GetObligationRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteObligation(DeleteObligationRequest request, ServerCallContext context)
@@ -49,7 +55,7 @@ internal sealed class CustomerOnSAService
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteIncome(DeleteIncomeRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<Income> GetIncome(GetIncomeRequest request, ServerCallContext context)
+    public override async Task<Contracts.Income> GetIncome(GetIncomeRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<GetIncomeListResponse> GetIncomeList(GetIncomeListRequest request, ServerCallContext context)

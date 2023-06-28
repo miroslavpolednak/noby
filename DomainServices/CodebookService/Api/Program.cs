@@ -1,15 +1,11 @@
 using CIS.Infrastructure.StartupExtensions;
-using ProtoBuf.Grpc.Server;
 using DomainServices.CodebookService.Api;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.Telemetry;
-using Microsoft.OpenApi.Models;
-using CIS.Infrastructure.Caching;
 using CIS.Infrastructure.Security;
+using CIS.InternalServices;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
-var endpointsType = typeof(DomainServices.CodebookService.Endpoints.IEndpointsAssembly);
-var assembly = endpointsType.Assembly;
+bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
 //TODO workaround until .NET6 UseWindowsService() will work with WebApplication
 var webAppOptions = runAsWinSvc 
@@ -19,94 +15,70 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region register builder.Services
-// globalni nastaveni prostredi
-builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
-builder.Services.AddAttributedServices(typeof(Program), endpointsType);
-builder.Services.AddCisDistributedCache();
+var log = builder.CreateStartupLogger();
 
-// logging 
-builder
-    .AddCisLogging()
-    .AddCisTracing();
+try { 
+    #region register builder.Services
+    builder.Services.AddAttributedServices(typeof(Program));
 
-// add mediatr
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
+    // globalni nastaveni prostredi
+    builder
+        .AddCisCoreFeatures()
+        .AddCisEnvironmentConfiguration();
 
-// health checks
-builder.AddCisHealthChecks();
+    // logging 
+    builder
+        .AddCisLogging()
+        .AddCisTracing()
+        // authentication
+        .AddCisServiceAuthentication()
+        // add self
+        .AddCodebookService()
+        // add BE services
+        .Services
+            // add CIS services
+            .AddCisServiceDiscovery()
+            // add swagger
+            .AddCodebookServiceSwagger()
+            // add grpc infrastructure
+            .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
+            .AddGrpcReflection()
+            .AddGrpc(options =>
+            {
+                options.Interceptors.Add<GenericServerExceptionInterceptor>();
+            })
+            .AddJsonTranscoding();
 
-// add general Dapper repository
-builder.Services
-    .AddDapper(builder.Configuration.GetConnectionString("default"))
-    .AddDapper<DomainServices.CodebookService.Endpoints.IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd"))
-    .AddDapper<DomainServices.CodebookService.Endpoints.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb"));
+    // add HC
+    builder.AddCisGrpcHealthChecks();
+    #endregion register builder.Services
 
-// authentication
-builder.AddCisServiceAuthentication();
+    // kestrel configuration
+    builder.UseKestrelWithCustomConfiguration();
 
-// current project related
-builder
-    .AddCodebookService()
-    .AddCodebookServiceEndpointsStartup(assembly);
+    // BUILD APP
+    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
+    var app = builder.Build();
+    log.ApplicationBuilt();
 
-//swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(x =>
-{
-    x.SwaggerDoc("v1", new OpenApiInfo { Title = "Codebook Service API", Version = "v1" });
+    app.UseServiceDiscovery();
+    app.UseRouting();
 
-    // všechny parametry budou camel case
-    x.DescribeAllParametersInCamelCase();
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseCisServiceUserContext();
 
-    x.CustomSchemaIds(type => type.ToString());
-});
+    app.MapCisGrpcHealthChecks();
+    app.MapGrpcReflectionService();
+    app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.CodebookService>();
+    app.UseCodebookServiceSwagger();
 
-// add grpc reflection
-builder.Services.AddCodeFirstGrpcReflection();
-#endregion register builder.Services
-
-// kestrel configuration
-builder.UseKestrelWithCustomConfiguration();
-
-// BUILD APP
-if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-var app = builder.Build();
-
-app
-    .UseSwagger()
-    .UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Codebook Service API");
-    });
-
-app.UseRouting();
-
-// auth
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCisServiceUserContext();
-app.UseCisLogging();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
-
-    endpoints.MapGrpcService<DomainServices.CodebookService.Api.Services.CodebookService>();
-
-    endpoints.MapCodeFirstGrpcReflectionService();
-
-    endpoints.MapCodebookJsonApi();
-});
-
-// print gRPC PROTO file
-//CIS.Infrastructure.gRPC.GrpcHelpers.CreateProtoFileFromContract<Contracts.ICodebookService("d:\\Visual Studio Projects\\MPSS-FOMS\\DomainServices\\CodebookService\\Contracts\\protos\\CodebookService.proto");
-
-try
-{
+    log.ApplicationRun();
     app.Run();
+}
+catch (Exception ex)
+{
+    log.CatchedException(ex);
 }
 finally
 {

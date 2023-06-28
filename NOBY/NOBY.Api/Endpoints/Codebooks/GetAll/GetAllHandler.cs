@@ -3,7 +3,7 @@ using NOBY.Api.Endpoints.Codebooks.CodebookMap;
 
 namespace NOBY.Api.Endpoints.Codebooks.GetAll;
 
-internal class GetAllHandler
+internal sealed class GetAllHandler
     : IRequestHandler<GetAllRequest, List<GetAllResponseItem>>
 {
     public async Task<List<GetAllResponseItem>> Handle(GetAllRequest request, CancellationToken cancellationToken)
@@ -25,11 +25,11 @@ internal class GetAllHandler
         return model;
     }
 
-    private readonly ICodebookServiceClients _codebooks;
+    private readonly ICodebookServiceClient _codebooks;
     private readonly ICodebookMap _codebookMap;
     private readonly ILogger<GetAllHandler> _logger;
 
-    public GetAllHandler(ICodebookServiceClients codebooks, ICodebookMap codebookMap, ILogger<GetAllHandler> logger)
+    public GetAllHandler(ICodebookServiceClient codebooks, ICodebookMap codebookMap, ILogger<GetAllHandler> logger)
     {
         _logger = logger;
         _codebooks = codebooks;

@@ -13,7 +13,7 @@ public class LoanApplicationProductRelation
     public decimal? RemainingExposure { get; set; }
 
     [ProtoMember(4)]
-    public string ProductType { get; set; } = null!;
+    public string? ProductType { get; set; } = null!;
 
     [ProtoMember(5)]
     public string RelationType { get; set; } = null!;

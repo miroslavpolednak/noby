@@ -7,12 +7,12 @@ public class NobyUser
     : ClaimsPrincipal, CIS.Core.Security.ICurrentUser
 {
     public int Id { get; init; }
-    public string DisplayName { get; init; }
-
-    public NobyUser(IIdentity identity, DomainServices.UserService.Contracts.User userInstance) 
+    public string Login { get; init; }
+    
+    public NobyUser(IIdentity identity, int userId)
         : base(identity) 
     {
-        Id = userInstance.Id;
-        DisplayName = userInstance.FullName;
+        Id = userId;
+        Login = ((ClaimsIdentity)identity).Claims.FirstOrDefault(t => t.Type == CIS.Core.Security.SecurityConstants.ClaimTypeIdent)!.Value;
     }
 }

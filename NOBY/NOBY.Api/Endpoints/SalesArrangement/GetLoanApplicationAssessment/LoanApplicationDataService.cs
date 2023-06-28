@@ -18,7 +18,7 @@ using DomainServices.HouseholdService.Clients;
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
-internal class LoanApplicationDataService
+internal sealed class LoanApplicationDataService
 {
 
     #region Construction
@@ -31,7 +31,7 @@ internal class LoanApplicationDataService
     private readonly ICaseServiceClient _caseService;
     private readonly IUserServiceClient _userService;
     private readonly ICustomerServiceClient _customerService;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
 
     public LoanApplicationDataService(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
@@ -42,7 +42,7 @@ internal class LoanApplicationDataService
         ICaseServiceClient caseService,
         IUserServiceClient userService,
         ICustomerServiceClient customerService,
-        ICodebookServiceClients codebookService
+        ICodebookServiceClient codebookService
         )
     {
         _userAccessor = userAccessor;

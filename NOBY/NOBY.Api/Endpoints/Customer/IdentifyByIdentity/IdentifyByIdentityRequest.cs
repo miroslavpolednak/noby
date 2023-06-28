@@ -1,13 +1,15 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
 public sealed class IdentifyByIdentityRequest
-    : IRequest
+    : IRequest<MediatR.Unit>, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 {
     /// <summary>
     /// Identita klienta
     /// </summary>
+    [Required]
     public CIS.Foms.Types.CustomerIdentity? CustomerIdentity { get; set; }
 
     [JsonIgnore]

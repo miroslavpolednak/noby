@@ -2,10 +2,11 @@
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentArchiveService.Api.Database.Entities;
 using Microsoft.EntityFrameworkCore;
+using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.UploadDocument;
 
-public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest>
+public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest, Empty>
 {
     private readonly DocumentArchiveDbContext _context;
 
@@ -14,16 +15,17 @@ public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentReques
         _context = context;
     }
 
-    public async Task Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
-    
+    public async Task<Empty> Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
     {
         if (await _context.DocumentInterface.AnyAsync(e => e.DocumentId == request.Metadata.DocumentId, cancellationToken))
         {
-            throw new CisAlreadyExistsException(14015, "File with documentid already exist in database");
+           throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.FileWithDocumentidExist);
         }
 
         await _context.DocumentInterface.AddAsync(MapToEntity(request), cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+
+        return new Empty();
     }
 
     private static DocumentInterface MapToEntity(UploadDocumentRequest request)
@@ -51,11 +53,12 @@ public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentReques
             entity.FolderDocument = request.Metadata.FolderDocument;
         }
         entity.FolderDocumentId = request.Metadata.FolderDocumentId;
-        entity.Kdv = MapToKdv(request.NotifyStarBuild);
+        entity.Kdv = MapToShortWithTrueDefault(request.NotifyStarBuild);
+        entity.SendDocumentOnly = MapToShortWithTrueDefault(request.SendDocumentOnly);
         return entity;
     }
 
-    private static short MapToKdv(bool? notifyStarBuild) => notifyStarBuild switch
+    private static short MapToShortWithTrueDefault(bool? value) => value switch
     {
         true => 1,
         false => 0,

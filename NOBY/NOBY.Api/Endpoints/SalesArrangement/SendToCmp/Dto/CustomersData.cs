@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp.Dto;
 
-internal class CustomersData
+internal sealed class CustomersData
 {
     public required ICollection<CustomerOnSaExtended> CustomersOnSa { get; init; }
 

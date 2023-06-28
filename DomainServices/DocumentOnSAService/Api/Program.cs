@@ -17,71 +17,76 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region strongly typed configuration
-AppConfiguration appConfiguration = new();
+var log = builder.CreateStartupLogger();
+
+try
+{
+    #region strongly typed configuration
+    AppConfiguration appConfiguration = new();
 builder.Configuration.GetSection(AppConfiguration.SectionName).Bind(appConfiguration);
 appConfiguration.CheckAppConfiguration();
 #endregion strongly typed configuration
 
-#region register builder
-// strongly-typed app configuration
-builder.Services.AddSingleton(appConfiguration);
+    #region register builder
+    // strongly-typed app configuration
+    builder.Services.AddSingleton(appConfiguration);
 
-// globalni nastaveni prostredi
-builder
-    .AddCisEnvironmentConfiguration()
-    .AddCisCoreFeatures();
+    // globalni nastaveni prostredi
+    builder
+        .AddCisCoreFeatures()
+        .AddCisEnvironmentConfiguration();
 
-// logging 
-builder
-    .AddCisLogging()
-    .AddCisTracing();
+    // logging 
+    builder
+        .AddCisLogging()
+        .AddCisTracing();
 
-// health checks
-builder.AddCisHealthChecks();
+    // authentication
+    builder.AddCisServiceAuthentication();
 
-// authentication
-builder.AddCisServiceAuthentication();
+    // add this service
+    builder.AddDocumentOnSAServiceService();
 
-// add this service
-builder.AddDocumentOnSAServiceService();
+    builder.AddDocumentOnSAServiceGrpc();
+    builder.AddCisGrpcHealthChecks();
+    #endregion
 
-builder.AddDocumentOnSAServiceGrpc();
+    // kestrel configuration
+    builder.UseKestrelWithCustomConfiguration();
 
-#endregion
+    // BUILD APP
+    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
+    var app = builder.Build();
+    log.ApplicationBuilt();
 
-// kestrel configuration
-builder.UseKestrelWithCustomConfiguration();
+    app.UseRouting();
 
-// BUILD APP
-if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-var app = builder.Build();
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseCisServiceUserContext();
 
-app.UseRouting();
+    //Dont know correct connection
+    app.UseServiceDiscovery();
 
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCisServiceUserContext();
+    app.MapCisGrpcHealthChecks();
+    app.MapGrpcService<DocumentOnSAServiceGrpc>();
+    app.MapGrpcReflectionService();
 
-app.UseCisLogging();
-
-//Dont know correct connection
-app.UseServiceDiscovery();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
-
-    endpoints.MapGrpcService<DocumentOnSAServiceGrpc>();
-
-    endpoints.MapGrpcReflectionService();
-});
-
-try
-{
+    log.ApplicationRun();
     app.Run();
+}
+catch (Exception ex)
+{
+    log.CatchedException(ex);
 }
 finally
 {
     LoggingExtensions.CloseAndFlush();
+}
+
+#pragma warning disable CA1050 // Declare types in namespaces
+public partial class Program
+#pragma warning restore CA1050 // Declare types in namespaces
+{
+    // Expose the Program class for use with WebApplicationFactory<T>
 }

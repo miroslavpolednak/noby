@@ -20,6 +20,10 @@ public class LoanApplicationIncome
 
     public decimal? IncomeOther => IncomeSum(CustomerIncomeTypes.Other);
 
-    private decimal? IncomeSum(CustomerIncomeTypes incomeType) =>
-        _incomesByType[incomeType].Select(i => (decimal?)i.Sum).FirstOrDefault();
+    private decimal? IncomeSum(CustomerIncomeTypes incomeType)
+    {
+        var result = _incomesByType[incomeType].Select(i => (decimal?)i.Sum).Where(income => income.HasValue).Sum();
+
+        return result == 0m ? null : result;
+    }
 }

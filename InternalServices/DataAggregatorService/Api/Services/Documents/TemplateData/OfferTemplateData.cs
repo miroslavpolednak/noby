@@ -1,16 +1,11 @@
 ﻿using System.Globalization;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
-using DomainServices.CodebookService.Clients;
-using Codebook = DomainServices.CodebookService.Contracts.Endpoints;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
 
 internal class OfferTemplateData : AggregatedData
 {
-    private List<Codebook.ProductTypes.ProductTypeItem> _productTypes = null!;
-    private List<Codebook.LoanKinds.LoanKindsItem> _loanKinds = null!;
-    private List<Codebook.LoanPurposes.LoanPurposesItem> _loanPurposes = null!;
-
     public string OfferHeader1 => GetLoanKindOfferHeader();
 
     public string OfferHeader2 => GetProductTypeOfferHeader();
@@ -34,7 +29,7 @@ internal class OfferTemplateData : AggregatedData
     {
         get
         {
-            var phone = string.IsNullOrWhiteSpace(Case.OfferContacts.PhoneNumberForOffer?.PhoneNumber) ? null : $"telefon: {Case.OfferContacts.PhoneNumberForOffer?.PhoneIDC}{Case.OfferContacts.PhoneNumberForOffer?.PhoneNumber}";
+            var phone = string.IsNullOrWhiteSpace(Case.OfferContacts.PhoneNumberForOffer?.PhoneNumber) ? null : $"telefon: {Case.OfferContacts.PhoneNumberForOffer?.PhoneIDC} {Case.OfferContacts.PhoneNumberForOffer?.PhoneNumber}";
             var email = string.IsNullOrWhiteSpace(Case.OfferContacts.EmailForOffer) ? null : $"e-mail: {Case.OfferContacts.EmailForOffer}";
 
             return string.Join(" | ", new[] { phone, email }.Where(str => !string.IsNullOrWhiteSpace(str)));
@@ -51,9 +46,10 @@ internal class OfferTemplateData : AggregatedData
             return string.Join("; ",
                                Offer.SimulationInputs
                                     .LoanPurposes
-                                    .Select(x => _loanPurposes.Where(p => p.MandantId == 2 && p.Id == x.LoanPurposeId)
-                                                              .Select(p => p.Name)
-                                                              .FirstOrDefault()));
+                                    .Select(x => _codebookManager.LoanPurposes
+                                                                 .Where(p => p.MandantId == 2 && p.Id == x.LoanPurposeId)
+                                                                 .Select(p => p.Name)
+                                                                 .FirstOrDefault()));
         }
     }
 
@@ -63,15 +59,12 @@ internal class OfferTemplateData : AggregatedData
     {
         get
         {
-            var numberProvider = (NumberFormatInfo)CultureInfo.GetCultureInfo("cs").NumberFormat.Clone();
-            numberProvider.CurrencySymbol = "Kč";
-
             return string.Join(Environment.NewLine,
                                Offer.AdditionalSimulationResults
                                     .Fees
                                     .Where(f => f.IncludeInRPSN)
                                     .Select(f => (decimal?)f.FinalSum ?? 0m)
-                                    .Select(f => f.ToString("C2", numberProvider)));
+                                    .Select(f => f.ToString("C2", CultureProvider.GetProvider())));
         }
     }
 
@@ -88,11 +81,9 @@ internal class OfferTemplateData : AggregatedData
         }
     }
 
-    public override async Task LoadCodebooks(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
+    protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        _productTypes = await codebookService.ProductTypes(cancellationToken);
-        _loanKinds = await codebookService.LoanKinds(cancellationToken);
-        _loanPurposes = await codebookService.LoanPurposes(cancellationToken);
+        configurator.ProductTypes().LoanKinds().LoanPurposes();
     }
 
     private string GetLoanKindOfferHeader()
@@ -100,10 +91,11 @@ internal class OfferTemplateData : AggregatedData
         if (Offer.SimulationInputs.LoanKindId == 2001)
             return string.Empty;
 
-        return _productTypes.Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.ProductTypeId)
-                            .Select(x => x.Name.ToUpperInvariant())
-                            .DefaultIfEmpty(string.Empty)
-                            .First();
+        return _codebookManager.ProductTypes
+                               .Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.ProductTypeId)
+                               .Select(x => x.Name.ToUpperInvariant())
+                               .DefaultIfEmpty(string.Empty)
+                               .First();
     }
 
     private string GetProductTypeOfferHeader()
@@ -111,9 +103,9 @@ internal class OfferTemplateData : AggregatedData
         if (Offer.SimulationInputs.LoanKindId != 2001)
             return string.Empty;
 
-        return _loanKinds.Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.LoanKindId)
-                         .Select(x => x.Name.ToUpperInvariant())
-                         .DefaultIfEmpty(string.Empty)
-                         .First();
+        return _codebookManager.LoanKinds.Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.LoanKindId)
+                               .Select(x => x.Name.ToUpperInvariant())
+                               .DefaultIfEmpty(string.Empty)
+                               .First();
     }
 }

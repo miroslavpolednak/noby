@@ -15,5 +15,23 @@ message GetDocumentOnSADataResponse{
 
 	google.protobuf.Int32Value DocumentTemplateVersionId = 2;
 
-	string Data = 3;
+	google.protobuf.Int32Value DocumentTemplateVariantId = 3;
+	
+	google.protobuf.Int32Value SignatureTypeId = 4;
+
+	google.protobuf.StringValue ExternalId = 5;
+
+	Source Source = 6;
+
+	bool IsValid = 7;
+
+	bool IsSigned = 8;
+
+	google.protobuf.StringValue Data = 9;
+}
+
+enum Source {
+	Unknown = 0;
+	Noby = 1;
+    Workflow = 2;
 }

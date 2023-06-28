@@ -1,0 +1,18 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+import "NullableGrpcDate.proto";
+
+message GetCovenantDetailRequest {
+    int64 CaseId = 1;
+    int32 Order = 2;
+}
+
+message GetCovenantDetailResponse {
+    string Name = 1;
+    bool IsFulfilled = 2;
+    cis.types.NullableGrpcDate FulfillDate = 3;
+    string Text = 4;
+    string Description = 5;
+}

@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.CustomerIncome.DeleteIncome;
 
-internal class DeleteIncomeHandler
+internal sealed class DeleteIncomeHandler
     : IRequestHandler<DeleteIncomeRequest>
 {
     public async Task Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)

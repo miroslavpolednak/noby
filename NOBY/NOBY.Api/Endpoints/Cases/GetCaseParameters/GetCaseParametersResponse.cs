@@ -1,5 +1,5 @@
 ﻿using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
-using NOBY.Api.SharedDto;
+using NOBY.Dto;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
 
@@ -10,7 +10,7 @@ public sealed class GetCaseParametersResponse
     /// <summary>
     /// Typ úvěru (číselník).
     /// </summary>
-    public DomainServices.CodebookService.Contracts.GenericCodebookItem? ProductType { get; set; }
+    public DomainServices.CodebookService.Contracts.IBaseCodebook? ProductType { get; set; }
 
     /// <summary>
 	/// ČÍslo smlouvy.
@@ -60,7 +60,7 @@ public sealed class GetCaseParametersResponse
     /// <summary>
 	/// Druh uveru (číselník).
 	/// </summary>
-    public DomainServices.CodebookService.Contracts.GenericCodebookItem? LoanKind { get; set; }
+    public DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem? LoanKind { get; set; }
 
     /// <summary>
     /// Dlužná částka včetně příslušenství.
@@ -132,13 +132,55 @@ public sealed class GetCaseParametersResponse
     /// </summary>
     public int? FixedRatePeriodRefix { get; set; }
 
+    public BranchConsultantDto? BranchConsultant { get; set; }
+
+    public ThirdPartyConsultantDto? ThirdPartyConsultant { get; set; }
+
+    public StatementDto? Statement { get; set; }
+}
+
+public sealed class BranchConsultantDto
+{
     /// <summary>
-    /// Pobočka banky, pod kterou spadá úvěr.
+    /// Pobočka banky, pod kterou spadá úvěr
+    /// </summary>
+    public string? BranchName { get; set; }
+
+    /// <summary>
+    /// Poradce, pod kterého spadá úvěr
+    /// </summary>
+    public string? ConsultantName { get; set; }
+
+    /// <summary>
+    /// ČPM
     /// </summary>
     public string? Cpm { get; set; }
 
     /// <summary>
-    /// Poradce třetí strana.
+    /// IČP
+    /// </summary>
+    public string? Icp { get; set; }
+}
+
+public sealed class ThirdPartyConsultantDto
+{
+    /// <summary>
+    /// Pobočka/společnost třetí strany
+    /// </summary>
+    public string? BranchName { get; set; }
+
+    /// <summary>
+    /// Poradce třetí strany
+    /// </summary>
+    public string? ConsultantName { get; set; }
+
+    /// <summary>
+    /// ČPM
+    /// </summary>
+    public string? Cpm { get; set; }
+
+    /// <summary>
+    /// IČP
     /// </summary>
     public string? Icp { get; set; }
 }

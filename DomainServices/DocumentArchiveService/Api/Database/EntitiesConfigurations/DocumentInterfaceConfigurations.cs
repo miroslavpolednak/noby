@@ -34,7 +34,7 @@ public class DocumentInterfaceConfigurations : IEntityTypeConfiguration<Document
          .HasColumnType("bigint");
 
         builder.Property(e => e.CreatedOn)
-        .HasColumnName("DATUM_PRIJETI")
+        .HasColumnName("CREATED_ON")
         .HasColumnType("datetime");
 
         builder.Property(e => e.AuthorUserLogin)
@@ -79,5 +79,9 @@ public class DocumentInterfaceConfigurations : IEntityTypeConfiguration<Document
         builder.Property(e => e.Kdv)
         .HasColumnName("KDV")
         .HasColumnType("tinyint");
+
+        builder.Property(e => e.SendDocumentOnly)
+            .HasColumnName("SEND_DOCUMENT_ONLY")
+            .HasColumnType("tinyint");
     }
 }

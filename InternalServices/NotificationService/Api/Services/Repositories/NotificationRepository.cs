@@ -1,14 +1,12 @@
-﻿using CIS.Core.Attributes;
-using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
+﻿using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using Microsoft.EntityFrameworkCore;
 using Result = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction.Result;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories;
 
-[ScopedService, SelfService]
-public class NotificationRepository
+public class NotificationRepository : INotificationRepository
 {
     private readonly NotificationDbContext _dbContext;
 
@@ -43,7 +41,7 @@ public class NotificationRepository
     public async Task<Result> GetResult(Guid id, CancellationToken token = default)
     {
         return await _dbContext.Results.FindAsync(new object?[] { id }, token)
-               ?? throw new CisNotFoundException(ErrorCodes.Internal.ResultNotFound, $"Result with id = '{id}' not found.");
+               ?? throw new CisNotFoundException(ErrorHandling.ErrorCodeMapper.ResultNotFound, $"Result with id = '{id}' not found.");
     }
 
     public async Task<IEnumerable<Result>> SearchResultsBy(string? identity, string? identityScheme, string? customId, string? documentId)

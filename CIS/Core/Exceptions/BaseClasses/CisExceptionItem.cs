@@ -10,6 +10,6 @@ namespace CIS.Core.Exceptions;
 public record CisExceptionItem(string ExceptionCode, string Message)
 {
     public CisExceptionItem(int exceptionCode, string message)
-        : this(exceptionCode.ToString(CultureInfo.InvariantCulture), message) 
+        : this(exceptionCode.ToString(CultureInfo.InvariantCulture), message)
     { }
 }

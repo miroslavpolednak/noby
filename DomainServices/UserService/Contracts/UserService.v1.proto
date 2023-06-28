@@ -2,10 +2,21 @@
 package DomainServices.UserService.v1;
 option csharp_namespace = "DomainServices.UserService.Contracts.v1";
 
-import "Types.proto";
+import "google/api/annotations.proto";
+import "Messages/GetUserPermissions.proto";
+import "Messages/GetUser.proto";
+import "Messages/User.proto";
 
 service UserService {
-   rpc GetUserByLogin (DomainServices.UserService.GetUserByLoginRequest) returns (DomainServices.UserService.User);
+   rpc GetUser(GetUserRequest) returns (User) {
+	   option (google.api.http) = {
+			get: "/v1/user"
+		};
+   }
 
-   rpc GetUser(DomainServices.UserService.GetUserRequest) returns (DomainServices.UserService.User);
+   rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse) {
+	   option (google.api.http) = {
+			get: "/v1/user-permissions"
+		};
+   }
 }

@@ -22,3 +22,16 @@ int Id { get; }
 
 #### Property Value
 [System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
+
+<a name='CIS.Core.Security.ICurrentUser.Login'></a>
+
+## ICurrentUser.Login Property
+
+Login uzivatele
+
+```csharp
+string? Login { get; }
+```
+
+#### Property Value
+[System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')

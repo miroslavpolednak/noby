@@ -8,7 +8,7 @@ import "NullableGrpcDate.proto";
 message GrpcAddress {
   string Street = 1;
   
-  string StreetNumber = 2;
+  google.protobuf.StringValue StreetNumber = 2;
   
   string HouseNumber = 3;
   
@@ -35,4 +35,8 @@ message GrpcAddress {
   cis.types.NullableGrpcDate PrimaryAddressFrom = 14;
 
   string AddressPointId = 15; 
+
+  google.protobuf.StringValue SingleLineAddressPoint = 16;
+
+  google.protobuf.BoolValue IsAddressConfirmed = 17;
 }

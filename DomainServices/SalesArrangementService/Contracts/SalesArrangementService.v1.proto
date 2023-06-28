@@ -16,7 +16,11 @@ import "Messages/UpdateSalesArrangementParameters.proto";
 import "Messages/DeleteSalesArrangement.proto";
 import "Messages/UpdateOfferDocumentId.proto";
 import "Messages/GetSalesArrangement.proto";
+import "Messages/GetProductSalesArrangement.proto";
 import "Messages/SendToCmp.proto";
+import "Messages/GetFlowSwitches.proto";
+import "Messages/SetFlowSwitches.proto";
+import "Messages/SetContractNumber.proto";
 
 service SalesArrangementService {
 	// zalozeni noveho SA
@@ -24,6 +28,8 @@ service SalesArrangementService {
    
 	// zakladni informace o SA
 	rpc GetSalesArrangement (GetSalesArrangementRequest) returns (SalesArrangement);
+
+	rpc GetProductSalesArrangement (GetProductSalesArrangementRequest) returns (GetProductSalesArrangementResponse);
 	
 	// vrait SA pro danou modelaci
     rpc GetSalesArrangementByOfferId (GetSalesArrangementByOfferIdRequest) returns (GetSalesArrangementByOfferIdResponse);
@@ -53,4 +59,10 @@ service SalesArrangementService {
 	rpc DeleteSalesArrangement (DeleteSalesArrangementRequest) returns (google.protobuf.Empty);
 
 	rpc UpdateOfferDocumentId (UpdateOfferDocumentIdRequest) returns (google.protobuf.Empty);
+
+	rpc GetFlowSwitches (GetFlowSwitchesRequest) returns (GetFlowSwitchesResponse);
+
+	rpc SetFlowSwitches (SetFlowSwitchesRequest) returns (google.protobuf.Empty);
+
+	rpc SetContractNumber (SetContractNumberRequest) returns (SetContractNumberResponse);
 }

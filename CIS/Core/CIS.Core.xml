@@ -83,6 +83,12 @@
             <remarks>Pokud není zadáno, nebude fungovat automatické dohledávání adres služeb v Clients projektech.</remarks>
             <example>https://177.0.0.55:30000</example>
         </member>
+        <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.DisableServiceDiscovery">
+            <summary>
+            Pokud je nastaveno na True, nebude se v infrastruktuře služeb automaticky dotahovat URL návazných komponent z ServiceDiscovery.
+            </summary>
+            <remarks>Pravděpodobně se použije pouze pro infra testy.</remarks>
+        </member>
         <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.InternalServicesLogin">
             <summary>
             Login uživatele pod kterým se daná služba autentizuje do ostatních služeb v rámci NOBY
@@ -204,7 +210,7 @@
         </member>
         <member name="T:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes">
             <summary>
-            Možné způsoby 
+            Možné způsoby
             </summary>
         </member>
         <member name="F:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes.FileSystem">
@@ -581,7 +587,7 @@
             Validační chyba.
             </summary>
             <remarks>
-            Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation. 
+            Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation.
             Může také ošetřovat stavy místo ArgumentException nebo ArgumentNullException a podobně.
             </remarks>
         </member>
@@ -601,7 +607,7 @@
             <param name="exceptionCode">CIS error kód</param>
             <param name="message">Chybová zpráva</param>
         </member>
-        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Immutable.ImmutableList{CIS.Core.Exceptions.CisExceptionItem})">
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IReadOnlyList{CIS.Core.Exceptions.CisExceptionItem})">
             <param name="errors">Seznam chyb</param>
         </member>
         <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IEnumerable{CIS.Core.Exceptions.CisExceptionItem})">
@@ -766,14 +772,24 @@
             Interfaces pro získání informací o přihlášeném uživatel a technickém uživateli služby.
             </summary>
         </member>
-        <member name="T:CIS.Core.Security.Constants">
+        <member name="T:CIS.Core.Security.SecurityConstants">
             <summary>
             Konstanty pro nastavení auth providerů atd.
             </summary>
         </member>
-        <member name="F:CIS.Core.Security.Constants.ContextUserHttpHeaderKey">
+        <member name="F:CIS.Core.Security.SecurityConstants.ContextUserHttpHeaderUserIdKey">
             <summary>
             Klíč pro HTTP hlavičku s informací o v33id aktuálně přihlášeného uživatele.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Security.SecurityConstants.ContextUserHttpHeaderUserIdentKey">
+            <summary>
+            Klíč pro HTTP hlavičku s informací o loginu (CAAS) aktuálně přihlášeného uživatele.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Security.SecurityConstants.ClaimTypeIdent">
+            <summary>
+            Type claimu, který obsahuje login (CAAS login) přihlášeného uživatele
             </summary>
         </member>
         <member name="T:CIS.Core.Security.ICurrentUser">
@@ -784,6 +800,11 @@
         <member name="P:CIS.Core.Security.ICurrentUser.Id">
             <summary>
             v33id
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUser.Login">
+            <summary>
+            Login uzivatele
             </summary>
         </member>
         <member name="T:CIS.Core.Security.ICurrentUserAccessor">
@@ -863,6 +884,79 @@
             URL health check endpointu pro vsechny sluzby/aplikace.
             </summary>
         </member>
+        <member name="F:CIS.Core.CisGlobalConstants.ExternalServicesConfigurationSectionName">
+            <summary>
+            Name of section in appsettings.json which holds configuration settings for external services.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.CisGlobalConstants.ExternalServicesServiceDiscoveryKeyPrefix">
+            <summary>
+            Prefix for external service's Key in ServiceDiscovery database.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.CisGlobalConstants.DomainServicesClientsConfigurationSectionName">
+            <summary>
+            Name of section in appsettings.json which holds configuration settings for domain services.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.CisGlobalConstants.EnvironmentConfigurationSectionName">
+            <summary>
+            Name of section in appsettings.json which holds CIS environment configuration
+            </summary>
+        </member>
+        <member name="T:CIS.Core.ErrorCodes.ErrorCodeMapperBase">
+            <summary>
+            Base třída pro zadávání chybových hlášek zejména pro FluentValidation a Rpc exceptions.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.ErrorCodes.ErrorCodeMapperBase.Messages">
+            <summary>
+            Slovník chybových hlášek [ExceptionCode, ExceptionMessage].
+            </summary>
+        </member>
+        <member name="M:CIS.Core.ErrorCodes.ErrorCodeMapperBase.GetMessage(System.Int32,System.Object)">
+            <summary>
+            Vrátí chybovou hláškou podle zadaného ExceptionCode - ten musí být uvedený v překladovém slovníku Messages.
+            </summary>
+            <param name="exceptionCode">Kód chybové hlášky.</param>
+            <param name="parameter">Volitelně parametr, který bude vložen do nalezené hlášky místo {PropertyValue}.</param>
+            <exception cref="T:System.NotImplementedException">ExceptionCode nebyl nalezen v Messages.</exception>
+        </member>
+        <member name="M:CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(System.Int32,System.Object)">
+            <summary>
+            Vytvoří vyjímku typu NotFound s textem pro daný ExceptionCode.
+            </summary>
+            <param name="exceptionCode">Kód chybové hlášky.</param>
+            <param name="parameter">Volitelně ID entity, která nebyla nalezena.</param>
+            <returns>Instance vyjímky, která má být vyvolána.</returns>
+        </member>
+        <member name="M:CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(System.Int32,System.Object)">
+            <summary>
+            Vytvoří vyjímku typu ValidationFound s textem pro daný ExceptionCode.
+            </summary>
+            <param name="exceptionCode">Kód chybové hlášky.</param>
+            <param name="parameter">Volitelně parametr, který má být vložen na placeholder {PropertyValue}.</param>
+            <returns>Instance vyjímky, která má být vyvolána.</returns>
+        </member>
+        <member name="M:CIS.Core.ErrorCodes.ErrorCodeMapperBase.SetMessages(System.Collections.Generic.IDictionary{System.Int32,System.String})">
+            <summary>
+            Inicializuje kolekci chybových hlášek Messages. Tato kolekce je private, lze ji tedy z child třídy nastavit jen touto metodou.
+            </summary>
+            <remarks>Volat ve statickém konstruktoru child třídy?</remarks>
+            <param name="messages">[ExceptionCode, ExceptionMessage]</param>
+        </member>
+        <member name="T:CIS.Core.ErrorCodes.ErrorCodeMapperBase.ErrorCodesDictionary">
+            <summary>
+            Implementace IErrorCodesDictionary je private, aby nešla kolekce chybových hlášek vytvořit jinde, než v této base třídě.
+            </summary>
+            <remarks>Pokud tedy nebude někdo příliš kreativní a nevytvoří si vlastní implementaci...</remarks>
+        </member>
+        <member name="T:CIS.Core.ErrorCodes.IErrorCodesDictionary">
+            <summary>
+            Slovník obsahující mapování chybových kódů na chybové hlášky.
+            Implementace slovníku je v base třídě ErrorCodeMapperBase, jiná implementace by neměla existovat.
+            </summary>
+        </member>
         <member name="T:CIS.Core.AttributeExtensions">
             <summary>
             Extension metody na C# atributy
@@ -900,11 +994,6 @@
             </remarks>
         </member>
         <member name="P:CIS.Core.IDateTime.Now">
-            <summary>
-            Current time
-            </summary>
-        </member>
-        <member name="P:CIS.Core.IDateTime.OffsetNow">
             <summary>
             Current time
             </summary>

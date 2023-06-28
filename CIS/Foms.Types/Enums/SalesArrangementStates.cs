@@ -13,7 +13,6 @@ public enum SalesArrangementStates : byte
     
     [EnumMember]
     [Display(Name = "Rozpracováno")]
-    [CisDefaultValue]
     [CisStarbuildId(1)]
     InProgress = 1,
         
@@ -30,5 +29,27 @@ public enum SalesArrangementStates : byte
     [EnumMember]
     [Display(Name = "Podepsáno")]
     [CisStarbuildId(1)]
-    IsSigned = 4
+    [Obsolete("Na confl je to preskrtnute, ale nevim o tom, ze by byl pokyn smazat...")]
+    IsSigned = 4,
+
+    [EnumMember]
+    [CisDefaultValue]
+    [Display(Name = "Nová")]
+    [CisStarbuildId(1)]
+    NewArrangement = 5,
+
+    [EnumMember]
+    [Display(Name = "Vyčerpáno")]
+    [CisStarbuildId(1)]
+    Disbursed = 6,
+
+    [EnumMember]
+    [Display(Name = "Podepisování")]
+    [CisStarbuildId(1)]
+    InSigning = 7,
+
+    [EnumMember]
+    [Display(Name = "K odeslání")]
+    [CisStarbuildId(1)]
+    ToSend = 8
 }

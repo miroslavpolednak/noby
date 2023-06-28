@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
 using System.Collections.Concurrent;
-using System.Collections.Immutable;
 
 namespace DomainServices.SalesArrangementService.Api.Services;
 
@@ -27,9 +26,9 @@ internal static class ValidationTransformationCache
         public Database.FormValidationTransformationAlterSeverity AlterSeverity { get; init; }
     }
 
-    internal static ImmutableDictionary<string, TransformationItem> GetOrCreate(int key, Func<ImmutableDictionary<string, TransformationItem>> createItems)
+    internal static IReadOnlyDictionary<string, TransformationItem> GetOrCreate(int key, Func<IReadOnlyDictionary<string, TransformationItem>> createItems)
     {
-        ImmutableDictionary<string, TransformationItem> cacheEntry;
+        IReadOnlyDictionary<string, TransformationItem>? cacheEntry;
         if (!_cache.TryGetValue(key, out cacheEntry))
         {
             SemaphoreSlim mylock = _locks.GetOrAdd(key, k => new SemaphoreSlim(1, 1));
@@ -57,6 +56,6 @@ internal static class ValidationTransformationCache
                 mylock.Release();
             }
         }
-        return cacheEntry;
+        return cacheEntry!;
     }
 }

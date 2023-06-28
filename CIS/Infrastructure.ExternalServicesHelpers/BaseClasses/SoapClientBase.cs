@@ -8,15 +8,15 @@ using System.ServiceModel.Security;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
 
-public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposable
-    where SoapClient : ClientBase<SoapClientChannel>, new()
-    where SoapClientChannel : class
+public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposable
+    where TSoapClient : ClientBase<TSoapClientChannel>, new()
+    where TSoapClientChannel : class
 {
-    private readonly SoapClient _client;
+    private readonly TSoapClient _client;
     private readonly IExternalServiceConfiguration _configuration;
-    private readonly ILogger _logger;
+    protected ILogger Logger { get; init; }
 
-    protected SoapClient Client => _client;
+    protected TSoapClient Client => _client;
 
     protected IExternalServiceConfiguration Configuration => _configuration;
 
@@ -25,8 +25,8 @@ public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposabl
         ILogger logger)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-        _logger = logger;
-        _client = new SoapClient();
+        Logger = logger;
+        _client = new TSoapClient();
         _client.Endpoint.Address = new EndpointAddress(_configuration.ServiceUrl);
         _client.Endpoint.Binding = CreateBinding();
 
@@ -60,15 +60,25 @@ public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposabl
 
     public void Dispose()
     {
-        if (_client.State == CommunicationState.Faulted)
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
         {
-            _client.Abort();
-        }
-        else
-        {
-            _client.Close();
+            if (_client.State == CommunicationState.Faulted)
+            {
+                _client.Abort();
+            }
+            else
+            {
+                _client.Close();
+            }
         }
     }
+
     protected abstract Binding CreateBinding();
     protected abstract string ServiceName { get; }
 
@@ -78,19 +88,18 @@ public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposabl
         {
             return await fce();
         }
-        catch (InvalidOperationException ex)
+        catch (Exception ex) when (ex is InvalidOperationException || ex is EndpointNotFoundException)
         {
-            _logger.LogError(ex, ex.Message);
-            throw new CIS.Core.Exceptions.CisServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
-        }
-        catch (EndpointNotFoundException ex)
-        {
-            _logger.LogError("Endpoint '{uri}' not found", _configuration.ServiceUrl);
-            throw new CIS.Core.Exceptions.CisServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
+            Logger.ExtServiceUnavailable(ServiceName, ex);
+            throw new CisServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+#pragma warning disable CA2254 // Template should be a static expression
+            Logger.LogError(e, e.Message);
+#pragma warning restore CA2254 // Template should be a static expression
+#pragma warning restore CA1848 // Use the LoggerMessage delegates
             throw;
         }
     }

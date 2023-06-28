@@ -10,7 +10,7 @@ internal class DocumentTableColumnConfiguration : IEntityTypeConfiguration<Docum
     {
         builder.HasKey(x => new { x.DocumentTableId, x.FieldPath });
 
-        builder.Property(x => x.FieldPath).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.FieldPath).HasMaxLength(250).IsRequired();
 
         builder.Property(x => x.Order).IsRequired();
 

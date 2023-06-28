@@ -64,29 +64,24 @@ Počet nalezených záznamů.
 ### Remarks
 Např. entit v databázi nebo položek v keši.
 
-<a name='CIS.Infrastructure.Logging.LoggerExtensions.LogSerializedObject(thisMicrosoft.Extensions.Logging.ILogger,string,object,Microsoft.Extensions.Logging.LogLevel)'></a>
+<a name='CIS.Infrastructure.Logging.LoggerExtensions.LogValidationResults(thisMicrosoft.Extensions.Logging.ILogger,CIS.Core.Exceptions.CisValidationException)'></a>
 
-## LoggerExtensions.LogSerializedObject(this ILogger, string, object, LogLevel) Method
+## LoggerExtensions.LogValidationResults(this ILogger, CisValidationException) Method
 
-TODO: odstranit? Logovat do log contextu?
+Logování chyb zejména z FluentValidation.
 
 ```csharp
-public static void LogSerializedObject(this Microsoft.Extensions.Logging.ILogger logger, string name, object objectToLog, Microsoft.Extensions.Logging.LogLevel logLevel=Microsoft.Extensions.Logging.LogLevel.Debug);
+public static void LogValidationResults(this Microsoft.Extensions.Logging.ILogger logger, CIS.Core.Exceptions.CisValidationException ex);
 ```
 #### Parameters
 
-<a name='CIS.Infrastructure.Logging.LoggerExtensions.LogSerializedObject(thisMicrosoft.Extensions.Logging.ILogger,string,object,Microsoft.Extensions.Logging.LogLevel).logger'></a>
+<a name='CIS.Infrastructure.Logging.LoggerExtensions.LogValidationResults(thisMicrosoft.Extensions.Logging.ILogger,CIS.Core.Exceptions.CisValidationException).logger'></a>
 
 `logger` [Microsoft.Extensions.Logging.ILogger](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.Logging.ILogger 'Microsoft.Extensions.Logging.ILogger')
 
-<a name='CIS.Infrastructure.Logging.LoggerExtensions.LogSerializedObject(thisMicrosoft.Extensions.Logging.ILogger,string,object,Microsoft.Extensions.Logging.LogLevel).name'></a>
+<a name='CIS.Infrastructure.Logging.LoggerExtensions.LogValidationResults(thisMicrosoft.Extensions.Logging.ILogger,CIS.Core.Exceptions.CisValidationException).ex'></a>
 
-`name` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+`ex` [CIS.Core.Exceptions.CisValidationException](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.Exceptions.CisValidationException 'CIS.Core.Exceptions.CisValidationException')
 
-<a name='CIS.Infrastructure.Logging.LoggerExtensions.LogSerializedObject(thisMicrosoft.Extensions.Logging.ILogger,string,object,Microsoft.Extensions.Logging.LogLevel).objectToLog'></a>
-
-`objectToLog` [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object')
-
-<a name='CIS.Infrastructure.Logging.LoggerExtensions.LogSerializedObject(thisMicrosoft.Extensions.Logging.ILogger,string,object,Microsoft.Extensions.Logging.LogLevel).logLevel'></a>
-
-`logLevel` [Microsoft.Extensions.Logging.LogLevel](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.Logging.LogLevel 'Microsoft.Extensions.Logging.LogLevel')
+### Remarks
+Do logu uloží seznam chyb (Errors kolekci) do kontextu pod klíčem "Errors".

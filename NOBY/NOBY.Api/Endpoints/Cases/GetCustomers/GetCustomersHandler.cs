@@ -1,10 +1,10 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
-using _HO = DomainServices.HouseholdService.Contracts;
+﻿using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using CIS.Infrastructure.gRPC.CisTypes;
 using System.ComponentModel.DataAnnotations;
 using CIS.Core;
-using NOBY.Api.SharedDto;
+using NOBY.Api.Extensions;
+using CIS.Core.Security;
 
 namespace NOBY.Api.Endpoints.Cases.GetCustomers;
 
@@ -15,6 +15,13 @@ internal sealed class GetCustomersHandler
     {
         // data o CASE-u
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
+
+        // perm check
+        if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
+        {
+            throw new CisAuthorizationException();
+        }
+
         // seznam zemi
         var countries = (await _codebookService.Countries(cancellationToken));
 
@@ -22,20 +29,12 @@ internal sealed class GetCustomersHandler
 
         if (caseInstance.State == (int)CIS.Foms.Enums.CaseStates.InProgress)
         {
-            // get allowed SA types
-            if (_allowedSalesArrangementTypes is null)
-                _allowedSalesArrangementTypes = (await _codebookService.SalesArrangementTypes(cancellationToken))
-                    .Where(t => t.ProductTypeId.GetValueOrDefault() > 0).Select(t => t.Id)
-                    .ToList();
-
-            // get salesArrangementId
-            var saInstances = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken);
-            var saId = saInstances.SalesArrangements.First(t => _allowedSalesArrangementTypes.Contains(t.SalesArrangementTypeId)).SalesArrangementId;
+            var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
             // z parameters nacist Agent
-            var saDetail = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
+            var saDetail = await _salesArrangementService.GetSalesArrangement(saId.SalesArrangementId, cancellationToken);
             
             // vsichni customeri z CustomerOnSA
-            var customers = await _customerOnSAService.GetCustomerList(saId, cancellationToken);
+            var customers = await _customerOnSAService.GetCustomerList(saId.SalesArrangementId, cancellationToken);
 
             // vybrat a transformovat jen vlastnik, spoludluznik
             customerIdentities = customers
@@ -116,13 +115,13 @@ internal sealed class GetCustomersHandler
                 }
             };
 
-            var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.Address;
+            var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.EmailAddress;
             if (!string.IsNullOrEmpty(email))
                 model.Contacts.EmailAddress = new() { EmailAddress = email };
 
             var phone = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
             if (!string.IsNullOrEmpty(phone))
-                model.Contacts.PhoneNumber = new()
+                model.Contacts.MobilePhone = new()
                 {
                     PhoneNumber = phone,
                     PhoneIDC = customer.Contacts!.First(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil).Mobile.PhoneIDC
@@ -137,21 +136,24 @@ internal sealed class GetCustomersHandler
     private static int[] _allowedCustomerRoles = new[] { 1, 2 };
     private static List<int>? _allowedSalesArrangementTypes;
 
+    private readonly ICurrentUserAccessor _currentUser;
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
     private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public GetCustomersHandler(
+        ICurrentUserAccessor currentUser,
         DomainServices.ProductService.Clients.IProductServiceClient productService,
         DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
-        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
+        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         DomainServices.CaseService.Clients.ICaseServiceClient caseService, 
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
+        _currentUser = currentUser;
         _productService = productService;
         _customerService = customerService;
         _customerOnSAService = customerOnSAService;

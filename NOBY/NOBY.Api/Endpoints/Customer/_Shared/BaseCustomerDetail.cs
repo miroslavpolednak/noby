@@ -1,4 +1,4 @@
-﻿using NOBY.Api.SharedDto;
+﻿using NOBY.Dto;
 
 namespace NOBY.Api.Endpoints.Customer.Shared;
 
@@ -12,8 +12,6 @@ public abstract class BaseCustomerDetail
 
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
 
-    public CustomerIdentificationMethod? CustomerIdentification { get; set; }
-
     /// <summary>
     /// Objekt právního omezení	
     /// </summary>
@@ -23,11 +21,6 @@ public abstract class BaseCustomerDetail
     /// Přihlášen k aktualizaci dat ze základních registrů
     /// </summary>
     public bool? IsBrSubscribed { get; set; }
-
-    /// <summary>
-    /// Příznak podle kterého zobrazujeme na FE výsledek z našeptávače
-    /// </summary>
-    public bool? IsAddressWhispererUsed { get; set; }
 
     /// <summary>
     /// Zvláštní vztah ke Komerční bance

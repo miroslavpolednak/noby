@@ -3,7 +3,7 @@
 /// <summary>
 /// Implementace <see cref="IIsActual"/>
 /// </summary>
-public class BaseIsActual 
+public class BaseIsActual
     : IIsActual
 {
     public bool IsActual { get; set; }

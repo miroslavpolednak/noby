@@ -22,9 +22,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="FastEnum" Version="1.8.0" />
-		<PackageReference Include="Google.Protobuf" Version="3.21.12" />
-		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.51.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.51.0">
+		<PackageReference Include="Google.Protobuf" Version="3.23.3" />
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.54.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.56.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -52,6 +52,12 @@
 		<Protobuf Include="./Protos/GrpcAddress.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 		<Protobuf Include="./Protos/UserIdentity.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 		<Protobuf Include="./Protos/NullableGrpcDateTime.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="CIS.Infrastructure.gRPC.CisTypes.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

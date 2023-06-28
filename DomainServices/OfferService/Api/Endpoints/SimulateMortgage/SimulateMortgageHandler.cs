@@ -2,6 +2,8 @@
 using DomainServices.CodebookService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.OfferService.Api.Database;
+using DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2;
+using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using Google.Protobuf;
 using ExternalServices.EasSimulationHT.V1;
 
@@ -27,6 +29,10 @@ internal sealed class SimulateMortgageHandler
         var results = easSimulationRes.ToSimulationResults();
         var additionalResults = easSimulationRes.ToAdditionalSimulationResults();
 
+        MortgageCreditWorthinessSimpleResults? creditWorthinessResult = null;
+        if (request.IsCreditWorthinessSimpleRequested) 
+            creditWorthinessResult = await CalculateCreditWorthinessSimple(request, results, cancellationToken);
+
         // save to DB
         var entity = new Database.Entities.Offer
         {
@@ -35,11 +41,13 @@ internal sealed class SimulateMortgageHandler
             SimulationInputsBin = request.SimulationInputs.ToByteArray(),
             SimulationResultsBin = results.ToByteArray(),
             AdditionalSimulationResultsBin = additionalResults.ToByteArray(),
-            //TODO casem odstranit
             BasicParameters = Newtonsoft.Json.JsonConvert.SerializeObject(request.BasicParameters),
             SimulationInputs = Newtonsoft.Json.JsonConvert.SerializeObject(request.SimulationInputs),
             SimulationResults = Newtonsoft.Json.JsonConvert.SerializeObject(results),
-            AdditionalSimulationResults = Newtonsoft.Json.JsonConvert.SerializeObject(additionalResults)
+            AdditionalSimulationResults = Newtonsoft.Json.JsonConvert.SerializeObject(additionalResults),
+            IsCreditWorthinessSimpleRequested = request.IsCreditWorthinessSimpleRequested,
+            CreditWorthinessSimpleInputs = request.CreditWorthinessSimpleInputs is null ? null : Newtonsoft.Json.JsonConvert.SerializeObject(request.CreditWorthinessSimpleInputs),
+            CreditWorthinessSimpleInputsBin = request.CreditWorthinessSimpleInputs?.ToByteArray(),
         };
         _dbContext.Offers.Add(entity);
 
@@ -55,7 +63,8 @@ internal sealed class SimulateMortgageHandler
             BasicParameters = request.BasicParameters,
             SimulationInputs = request.SimulationInputs,
             SimulationResults = results,
-            AdditionalSimulationResults = additionalResults
+            AdditionalSimulationResults = additionalResults,
+            CreditWorthinessSimpleResults = creditWorthinessResult
         };
     }
 
@@ -103,21 +112,79 @@ internal sealed class SimulateMortgageHandler
         }
     }
 
+    private async Task<MortgageCreditWorthinessSimpleResults> CalculateCreditWorthinessSimple(SimulateMortgageRequest request, MortgageSimulationResults simulationResults, CancellationToken cancellationToken)
+    {
+        var kbCustomerIdentity = request.Identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        
+        var creditWorthinessRequest = new CreditWorthinessSimpleCalculateRequest
+        {
+            PrimaryCustomerId = kbCustomerIdentity?.IdentityId.ToString(),
+            ResourceProcessId = request.ResourceProcessId,
+            ChildrenCount = request.CreditWorthinessSimpleInputs.ChildrenCount ?? 0,
+            TotalMonthlyIncome = request.CreditWorthinessSimpleInputs.TotalMonthlyIncome,
+            ExpensesSummary = request.CreditWorthinessSimpleInputs.ExpensesSummary is null
+                ? null
+                : new CreditWorthinessSimpleExpensesSummary
+                {
+                    Rent = request.CreditWorthinessSimpleInputs.ExpensesSummary.Rent,
+                    Other = request.CreditWorthinessSimpleInputs.ExpensesSummary.Other
+                },
+            ObligationsSummary = request.CreditWorthinessSimpleInputs.ObligationsSummary is null
+                ? null
+                : new CreditWorthinessSimpleObligationsSummary
+                {
+                    CreditCardsAmount = request.CreditWorthinessSimpleInputs.ObligationsSummary.CreditCardsAmount,
+                    AuthorizedOverdraftsAmount = request.CreditWorthinessSimpleInputs.ObligationsSummary.AuthorizedOverdraftsTotalAmount,
+                    LoansInstallmentsAmount = request.CreditWorthinessSimpleInputs.ObligationsSummary.LoansInstallmentsAmount,
+                },
+            Product = new CreditWorthinessProduct
+            {
+                ProductTypeId = request.SimulationInputs.ProductTypeId,
+                LoanDuration = simulationResults.LoanDuration,
+                LoanInterestRate = simulationResults.LoanInterestRate,
+                LoanAmount = (int)(decimal)simulationResults.LoanAmount,
+                LoanPaymentAmount = (int)((decimal?)simulationResults.LoanPaymentAmount ?? 0m),
+                FixedRatePeriod = request.SimulationInputs.FixedRatePeriod ?? 0
+            }
+        };
+
+        try
+        {
+            var result = await _creditWorthinessService.SimpleCalculate(creditWorthinessRequest, cancellationToken);
+
+            return new MortgageCreditWorthinessSimpleResults
+            {
+                InstallmentLimit = (int)result.InstallmentLimit,
+                MaxAmount = (int)result.MaxAmount,
+                RemainsLivingAnnuity = (int?)result.RemainsLivingAnnuity,
+                RemainsLivingInst = (int?)result.RemainsLivingInst,
+                WorthinessResult = (WorthinessResult)result.WorthinessResult
+            };
+        }
+        catch
+        {
+            return new MortgageCreditWorthinessSimpleResults { WorthinessResult = WorthinessResult.Unknown };
+        }
+    }
+
     private readonly ILogger<SimulateMortgageHandler> _logger;
-    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IEasSimulationHTClient _easSimulationHTClient;
+    private readonly ICreditWorthinessServiceClient _creditWorthinessService;
     private readonly OfferServiceDbContext _dbContext;
 
     public SimulateMortgageHandler(
         OfferServiceDbContext dbContext,
         ILogger<SimulateMortgageHandler> logger,
-        ICodebookServiceClients codebookService,
-        IEasSimulationHTClient easSimulationHTClient
-        )
+        ICodebookServiceClient codebookService,
+        IEasSimulationHTClient easSimulationHTClient,
+        ICreditWorthinessServiceClient creditWorthinessService
+    )
     {
         _logger = logger;
         _codebookService = codebookService;
         _easSimulationHTClient = easSimulationHTClient;
+        _creditWorthinessService = creditWorthinessService;
         _dbContext = dbContext;
     }
 }

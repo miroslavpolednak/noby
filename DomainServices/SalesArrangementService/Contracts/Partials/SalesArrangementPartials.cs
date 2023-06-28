@@ -8,6 +8,10 @@ public partial class GetSalesArrangementRequest
     : MediatR.IRequest<SalesArrangement>, CIS.Core.Validation.IValidatableRequest
 { }
 
+public partial class GetProductSalesArrangementRequest
+    : MediatR.IRequest<GetProductSalesArrangementResponse>
+{ }
+
 public partial class GetSalesArrangementByOfferIdRequest
     : MediatR.IRequest<GetSalesArrangementByOfferIdResponse>, CIS.Core.Validation.IValidatableRequest
 { }
@@ -50,4 +54,15 @@ public partial class DeleteSalesArrangementRequest
 
 public partial class UpdateOfferDocumentIdRequest
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
+{ }
+
+public partial class GetFlowSwitchesRequest
+    : MediatR.IRequest<GetFlowSwitchesResponse>, CIS.Core.Validation.IValidatableRequest
+{ }
+
+public partial class SetFlowSwitchesRequest
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
+{ }
+
+public partial class SetContractNumberRequest : MediatR.IRequest<SetContractNumberResponse> 
 { }

@@ -1,5 +1,5 @@
-﻿using NOBY.Api.SharedDto;
-using dto = NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
+﻿using NOBY.Dto;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
 
@@ -8,14 +8,14 @@ internal static class Extensions
    
     #region Codebooks
 
-    public static DomainServices.CodebookService.Contracts.GenericCodebookItem? ToCodebookItem(this DomainServices.CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeItem item)
+    public static GenericCodebookResponse.Types.GenericCodebookItem? ToCodebookItem(this ProductTypesResponse.Types.ProductTypeItem item)
     {
         if (item == null)
         {
             return null;
         }
 
-        return new DomainServices.CodebookService.Contracts.GenericCodebookItem
+        return new GenericCodebookResponse.Types.GenericCodebookItem
         {
             Id = item.Id,
             Name = item.Name,
@@ -23,14 +23,14 @@ internal static class Extensions
         };
     }
 
-    public static DomainServices.CodebookService.Contracts.GenericCodebookItem? ToCodebookItem(this DomainServices.CodebookService.Contracts.Endpoints.LoanKinds.LoanKindsItem item)
+    public static GenericCodebookResponse.Types.GenericCodebookItem? ToCodebookItem(this GenericCodebookResponse.Types.GenericCodebookItem item)
     {
         if (item == null)
         {
             return null;
         }
 
-        return new DomainServices.CodebookService.Contracts.GenericCodebookItem
+        return new GenericCodebookResponse.Types.GenericCodebookItem
         {
             Id = item.Id,
             Name = item.Name,
@@ -38,14 +38,14 @@ internal static class Extensions
         };
     }
 
-    public static DomainServices.CodebookService.Contracts.GenericCodebookItem? ToCodebookItem(this DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes.LoanPurposesItem item)
+    public static GenericCodebookResponse.Types.GenericCodebookItem? ToCodebookItem(this LoanPurposesResponse.Types.LoanPurposeItem item)
     {
         if (item == null)
         {
             return null;
         }
 
-        return new DomainServices.CodebookService.Contracts.GenericCodebookItem
+        return new GenericCodebookResponse.Types.GenericCodebookItem
         {
             Id = item.Id,
             Name = item.Name,
