@@ -30,8 +30,6 @@ public sealed class RealEstateValuationController : ControllerBase
     /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6525504B-D598-4113-AA2A-846571769C40"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    /// <param name="caseId"></param>
-    /// <param name="realEstateValuationId"></param>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
