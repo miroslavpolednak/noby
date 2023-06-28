@@ -86,7 +86,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.TinFormatsByCountry(ct));
         AddCodebook((s, ct) => s.TinNoFillReasonsByCountry(ct));
         AddCodebook((s, ct) => s.RealEstateStates(ct), c => c.Cast<GenericCodebookResponse.Types.GenericCodebookItem>().Where(t => t.Id > 0));
-        AddCodebook((s, ct) => s.RealEstateSubtypes(ct), c => c.Cast<GenericCodebookResponse.Types.GenericCodebookItem>().Where(t => t.Id > 0));
+        AddCodebook((s, ct) => s.RealEstateSubtypes(ct));
         AddCodebook((s, ct) => s.RealEstateTypes(ct), c => c.Cast<GenericCodebookResponse.Types.GenericCodebookItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.RealEstatePurchaseTypes(ct));
         AddCodebook((s, ct) => s.WorkflowTaskStatesNoby(ct));
