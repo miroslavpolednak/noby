@@ -7,8 +7,8 @@ public static class Helpers
     public static RealEstateTypes GetRealEstateType(RealEstateValuationListItem realEstateDetail)
         => realEstateDetail.RealEstateTypeId switch
         {
-            1 or 2 or 3 or 5 or 6 => RealEstateTypes.Hf,
-            9 => RealEstateTypes.Hff,
+            1 or 5 or 6 => RealEstateTypes.Hf,
+            2 or 3 or 9 => RealEstateTypes.Hff,
             4 or 7 => RealEstateTypes.P,
             _ => RealEstateTypes.O
         };
