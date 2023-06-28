@@ -15,8 +15,7 @@ public class ProductController : ControllerBase
     /// Vrátí seznam dlužníků a spoludlužníků na daném produktu
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> ProductService/GetCustomersOnProduct<br />
-    /// <i>DS:</i> CustomerService/GetList - použito KB ID
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DFD7FC8B-6D32-4a81-9608-A502E6F0E74B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Seznam klientů na produktu</returns>
     [HttpGet("{caseId:long}/customers")]
