@@ -38,13 +38,13 @@ internal sealed class CreateRealEstateValuationHandler
             var offerInstance = await _offerService.GetMortgageOfferDetail(saInstance.OfferId!.Value, cancellationToken);
 
             if (offerInstance.SimulationInputs.Developer?.DeveloperId != null 
-                && offerInstance.SimulationInputs.Developer?.ProjectId != null
-                && revRequest.IsLoanRealEstate)
+                && offerInstance.SimulationInputs.Developer?.ProjectId != null)
             {
                 var project = await _codebookService.GetDeveloperProject(offerInstance.SimulationInputs.Developer.DeveloperId.Value, offerInstance.SimulationInputs.Developer.ProjectId.Value, cancellationToken);
 
-                revRequest.DeveloperAllowed = _allowedMassValuations.Contains(project.MassEvaluation);
-                if (request.DeveloperApplied)
+                revRequest.DeveloperAllowed = _allowedMassValuations.Contains(project.MassEvaluation) && request.IsLoanRealEstate;
+
+                if (request.DeveloperApplied && revRequest.DeveloperAllowed)
                 {
                     revRequest.ValuationStateId = 4;
                 }
