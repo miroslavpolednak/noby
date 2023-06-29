@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Core.Security;
+using DomainServices.CaseService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -12,7 +13,13 @@ internal sealed class GetSalesArrangementHandler
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
-        
+
+        // perm check
+        if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
+        {
+            throw new CisAuthorizationException();
+        }
+
         return new GetSalesArrangementResponse()
         {
             ProductTypeId = caseInstance.Data.ProductTypeId,
@@ -43,17 +50,20 @@ internal sealed class GetSalesArrangementHandler
             _ => throw new NotImplementedException($"getParameters for {saInstance.ParametersCase} not implemented")
         };
 
+    private readonly ICurrentUserAccessor _currentUser;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
     
     public GetSalesArrangementHandler(
+        ICurrentUserAccessor currentUser,
         ICaseServiceClient caseService,
         DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         DomainServices.OfferService.Clients.IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService)
     {
+        _currentUser = currentUser;
         _codebookService = codebookService;
         _offerService = offerService;
         _caseService = caseService;

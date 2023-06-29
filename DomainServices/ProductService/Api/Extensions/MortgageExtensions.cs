@@ -94,7 +94,7 @@ internal static class MortgageExtensions
             {
                 TypeId = eLoan.HuVypisTyp,
                 SubscriptionTypeId = eLoan.HuVypisZodb,
-                FrequencyId = eLoan.HuVypisZodb,
+                FrequencyId = eLoan.HuVypisFrekvence,
                 EmailAddress1 = eLoan.VypisEmail1,
                 EmailAddress2 = eLoan.VypisEmail2
             },

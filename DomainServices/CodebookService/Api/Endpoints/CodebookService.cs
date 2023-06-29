@@ -186,6 +186,12 @@ internal sealed class CodebookService
             )
         );
 
+    public override async Task<GetAcvRealEstateTypeResponse> GetAcvRealEstateType(GetAcvRealEstateTypeRequest request, ServerCallContext context)
+    {
+        return (await _db.GetFirstOrDefault<GetAcvRealEstateTypeResponse>(new { request.RealEstateStateId, request.RealEstateSubtypeId, request.RealEstateTypeId }))
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AcvRealEstateTypeNotFound);
+    }
+
     public override async Task<GetDeveloperResponse> GetDeveloper(GetDeveloperRequest request, ServerCallContext context)
     {
         return (await _db.GetListWithParam<GetDeveloperResponse>(new { request.DeveloperId }))

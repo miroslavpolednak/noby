@@ -1350,5 +1350,23 @@
         <member name="P:DomainServices.CodebookService.Contracts.v1.GenericCodebookReflection.Descriptor">
             <summary>File descriptor for Messages/GenericCodebook.proto</summary>
         </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeReflection">
+            <summary>Holder for reflection information generated from Messages/GetAcvRealEstateType.proto</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeReflection.Descriptor">
+            <summary>File descriptor for Messages/GetAcvRealEstateType.proto</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeRequest.RealEstateTypeIdFieldNumber">
+            <summary>Field number for the "RealEstateTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeRequest.RealEstateSubtypeIdFieldNumber">
+            <summary>Field number for the "RealEstateSubtypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeRequest.RealEstateStateIdFieldNumber">
+            <summary>Field number for the "RealEstateStateId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeResponse.AcvRealEstateTypeIdFieldNumber">
+            <summary>Field number for the "AcvRealEstateTypeId" field.</summary>
+        </member>
     </members>
 </doc>
