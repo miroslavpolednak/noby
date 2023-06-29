@@ -77,5 +77,5 @@ INSERT [dbo].[RealEstateSubtypes] ([Id], [ShortName], [Name], [RealEstateTypeId]
 GO
 
 
-INSERT [dbo].[SqlQuery] ([SqlQueryId], [SqlQueryText], [DatabaseProvider]) VALUES (N'RealEstateSubtypes', N'SELECT Id, Name FROM dbo.RealEstateSubtypes ORDER BY Id', 4)
+INSERT [dbo].[SqlQuery] ([SqlQueryId], [SqlQueryText], [DatabaseProvider]) VALUES (N'RealEstateSubtypes', N'SELECT [Id], [ShortName], [Name], [RealEstateTypeId] FROM dbo.RealEstateSubtypes ORDER BY Id', 4)
 GO

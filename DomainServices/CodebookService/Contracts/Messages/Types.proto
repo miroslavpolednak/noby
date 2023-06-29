@@ -535,7 +535,7 @@ message RealEstateSubtypesResponse {
 
 	message RealEstateSubtypesResponseItem {
 		int32 Id = 1;
-		string Shortname = 2;
+		string ShortName = 2;
 		string Name = 3;
 		int32 RealEstateTypeId = 4;
 	}
