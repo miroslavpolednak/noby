@@ -13,12 +13,20 @@ public static class Helpers
             _ => RealEstateTypes.O
         };
 
-    public static int GetRealEstateTypeIcon(RealEstateValuationListItem realEstateDetail)
+    public static RealEstateTypeIcons GetRealEstateTypeIcon(RealEstateValuationListItem realEstateDetail)
         => realEstateDetail.RealEstateTypeId switch
         {
-            1 or 5 or 6 => 1,
-            2 or 3 or 9 => 2,
-            4 or 7 => 3,
-            _ => 4
+            1 or 5 or 6 => RealEstateTypeIcons.House,
+            2 or 3 or 9 => RealEstateTypeIcons.LocationCity,
+            4 or 7 => RealEstateTypeIcons.Custom,
+            _ => RealEstateTypeIcons.Domain
         };
+}
+
+public enum RealEstateTypeIcons
+{
+    House = 1,
+    LocationCity = 2,
+    Custom = 3,
+    Domain = 4
 }
