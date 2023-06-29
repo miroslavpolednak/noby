@@ -62,9 +62,11 @@ internal sealed class IndividualPricingProcessChangedConsumer
 
     public IndividualPricingProcessChangedConsumer(
         IMediator mediator,
-        ISalesArrangementServiceClient salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService,
+        ICodebookServiceClient codebookService)
     {
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
+        _codebookService = codebookService;
     }
 }
