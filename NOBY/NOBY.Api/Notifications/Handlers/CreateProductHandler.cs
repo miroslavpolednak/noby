@@ -52,8 +52,6 @@ internal sealed class CreateProductHandler
         _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
 
         _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
-
-        await _productService.CreateContractRelationship(mpId.Value, result, (int)CustomerRoles.Debtor, cancellationToken);
     }
 
     private readonly Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
