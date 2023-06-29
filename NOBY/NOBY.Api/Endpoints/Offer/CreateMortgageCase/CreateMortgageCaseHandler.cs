@@ -9,6 +9,7 @@ using _HO = DomainServices.HouseholdService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using DomainServices.CustomerService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
+using CIS.Foms.Enums;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
@@ -62,6 +63,9 @@ internal sealed class CreateMortgageCaseHandler
         var createCustomerResult = await _customerOnSAService.CreateCustomer(createCustomerRequest, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyCustomerOnSAId, createCustomerResult.CustomerOnSAId);
 
+        //Contract Number
+        await _salesArrangementService.SetContractNumber(salesArrangementId, createCustomerResult.CustomerOnSAId, cancellationToken);
+
         // updatovat Agent v SA parameters, vytvarime prazdny objekt Parameters pouze s agentem
         await updateSalesArrangementParameters(salesArrangementId, createCustomerResult.CustomerOnSAId, cancellationToken);
 
@@ -78,7 +82,15 @@ internal sealed class CreateMortgageCaseHandler
         // mam identifikovaneho customera
         var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers);
         await _mediator.Publish(notification, cancellationToken);
-        
+
+        var identifiedFlowSwitch = new FlowSwitch
+        {
+            FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnMainHousehold,
+            Value = true
+        };
+
+        await _salesArrangementService.SetFlowSwitches(notification.SalesArrangementId, new List<FlowSwitch> { identifiedFlowSwitch }, cancellationToken);
+
         return new CreateMortgageCaseResponse
         {
             SalesArrangementId = salesArrangementId,

@@ -1,4 +1,5 @@
-﻿using DomainServices.ProductService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.OfferService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
@@ -51,6 +52,8 @@ internal sealed class CreateProductHandler
         _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
 
         _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
+
+        await _productService.CreateContractRelationship(mpId.Value, result, (int)CustomerRoles.Debtor, cancellationToken);
     }
 
     private readonly Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;

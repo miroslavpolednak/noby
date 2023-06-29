@@ -168,6 +168,17 @@ internal sealed class SalesArrangementService
         await _service.SetFlowSwitchesAsync(request, cancellationToken: cancellationToken);
     }
 
+    public async Task<SetContractNumberResponse> SetContractNumber(int salesArrangementId, int customerOnSaId, CancellationToken cancellationToken = default)
+    {
+        var request = new SetContractNumberRequest
+        {
+            SalesArrangementId = salesArrangementId,
+            CustomerOnSaId = customerOnSaId
+        };
+
+        return await _service.SetContractNumberAsync(request, cancellationToken: cancellationToken);
+    }
+
     private readonly Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service;
 
     public SalesArrangementService(Contracts.v1.SalesArrangementService.SalesArrangementServiceClient service)

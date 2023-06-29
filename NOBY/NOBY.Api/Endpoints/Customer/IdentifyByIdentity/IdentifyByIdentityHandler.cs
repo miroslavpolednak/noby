@@ -5,6 +5,8 @@ using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.CisMediatR.Rollback;
+using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.ProductService.Clients;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
@@ -44,10 +46,17 @@ internal sealed class IdentifyByIdentityHandler
         {
             var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers);
             await _mediator.Publish(notification, cancellationToken);
+
+            await _salesArrangementService.SetContractNumber(saInstance.SalesArrangementId, request.CustomerOnSAId, cancellationToken);
         }
         else // vytvoreni klienta v konsDb. Pro dluznika se to dela v notification, pro ostatni se to dubluje tady
         {
             await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResult.CustomerIdentifiers, cancellationToken);
+
+            var partnerId = updateResult.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
+            var relationshipTypeId = customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
+
+            await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
         }
 
         // HFICH-5396
@@ -129,6 +138,7 @@ internal sealed class IdentifyByIdentityHandler
     private readonly IRollbackBag _bag;
     private readonly Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
     private readonly IHouseholdServiceClient _householdService;
+    private readonly IProductServiceClient _productService;
     private readonly IMediator _mediator;
     private readonly ICustomerServiceClient _customerService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
@@ -141,11 +151,13 @@ internal sealed class IdentifyByIdentityHandler
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerServiceClient customerService,
         ICustomerOnSAServiceClient customerOnSAService,
-        IHouseholdServiceClient householdService)
+        IHouseholdServiceClient householdService, 
+        IProductServiceClient productService)
     {
         _bag = bag;
         _createOrUpdateCustomerKonsDb = createOrUpdateCustomerKonsDb;
         _householdService = householdService;
+        _productService = productService;
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
         _customerService = customerService;
