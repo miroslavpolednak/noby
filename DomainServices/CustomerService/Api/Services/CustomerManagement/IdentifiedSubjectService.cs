@@ -179,7 +179,7 @@ internal sealed class IdentifiedSubjectService
             Surname = naturalPerson.LastName,
             GenderCode = FastEnum.Parse<__Contracts.NaturalPersonAttributesGenderCode>(_genders.First(g => g.Id == naturalPerson.GenderId).KbCmCode, true),
             BirthDate = naturalPerson.DateOfBirth,
-            Title = _titles.FirstOrDefault(t => t.Id == naturalPerson.DegreeBeforeId)?.Name?.ToUpperInvariant(),
+            Title = _titles.FirstOrDefault(t => t.Id != 0 && t.Id == naturalPerson.DegreeBeforeId)?.Name?.ToUpperInvariant(),
             CzechBirthNumber = naturalPerson.BirthNumber.ToCMString(),
             CitizenshipCodes = citizenshipCodes.Any() ? citizenshipCodes : null,
             BirthCountryCode = _countries.FirstOrDefault(c => c.Id == naturalPerson.BirthCountryId)?.ShortName,
