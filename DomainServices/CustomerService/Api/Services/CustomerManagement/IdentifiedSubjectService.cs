@@ -6,6 +6,7 @@ using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSu
 using DomainServices.CustomerService.Api.Extensions;
 using FastEnumUtility;
 using DomainServices.CodebookService.Contracts.v1;
+using DomainServices.CustomerService.ExternalServices.Kyc.V1.Contracts;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -23,6 +24,9 @@ internal sealed class IdentifiedSubjectService
     private List<CountriesResponse.Types.CountryItem> _countries = null!;
     private List<GenericCodebookResponse.Types.GenericCodebookItem> _maritals = null!;
     private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _professionTypes = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _netMonthEarnings = null!;
+    private List<GenericCodebookResponse.Types.GenericCodebookItem> _incomeMainTypesAML = null!;
 
     public IdentifiedSubjectService(ExternalServices.CustomerManagement.V2.ICustomerManagementClient customerManagement, ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClient codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
     {
@@ -72,10 +76,36 @@ internal sealed class IdentifiedSubjectService
 
     private async Task callSetKyc(long customerId, UpdateCustomerRequest request, bool? isPoliticallyExposed, CancellationToken cancellationToken)
     {
-        var model = new ExternalServices.Kyc.V1.Contracts.Kyc
+        var model = new Kyc
         {
-            IsUSPerson = request.NaturalPerson?.IsUSPerson ?? false
+            IsUSPerson = request.NaturalPerson.IsUSPerson ?? false
         };
+
+        if (request.NaturalPerson.ProfessionCategoryId.HasValue || request.NaturalPerson.ProfessionId.HasValue)
+        {
+            model.NaturalPersonKyc = new NaturalPersonKyc
+            {
+                Employment = new Employment
+                {
+                    CategoryCode = request.NaturalPerson.ProfessionCategoryId ?? 0,
+                    ProfessionCode = int.Parse(_professionTypes.First(p => p.Id == request.NaturalPerson.ProfessionId).RdmCode, CultureInfo.InvariantCulture)
+                }
+            };
+        }
+
+        if (request.NaturalPerson.NetMonthEarningAmountId.HasValue)
+        {
+            model.NaturalPersonKyc ??= new NaturalPersonKyc();
+
+            model.NaturalPersonKyc.FinancialProfile = new FinancialProfile
+            {
+                NetMonthEarningCode = _netMonthEarnings.First(n => n.Id == request.NaturalPerson.NetMonthEarningAmountId).RdmCode,
+                MainSourceOfEarnings = new MainSourceOfEarnings
+                {
+                    Code = int.Parse(_incomeMainTypesAML.First(i => i.Id == request.NaturalPerson.NetMonthEarningTypeId).RdmCode, CultureInfo.InvariantCulture)
+                }
+            };
+        }
 
         // jedine v tomto pripade se muze do CM poslat neco v IsPoliticallyExposed
         if (!isPoliticallyExposed.HasValue && (request.NaturalPerson?.IsUSPerson ?? false))
@@ -85,18 +115,16 @@ internal sealed class IdentifiedSubjectService
 
         if (request.NaturalPerson?.TaxResidence is not null)
         {
-#pragma warning disable CS8601 // Possible null reference assignment.
-            model.TaxResidence = new ExternalServices.Kyc.V1.Contracts.TaxResidence
+            model.TaxResidence = new TaxResidence
             {
-                ResidenceCountries = request.NaturalPerson?.TaxResidence?.ResidenceCountries?.Select(x => new ExternalServices.Kyc.V1.Contracts.TaxResidenceCountry
+                ResidenceCountries = request.NaturalPerson.TaxResidence.ResidenceCountries?.Select(x => new TaxResidenceCountry
                 {
                     Tin = x.Tin.ToCMString(),
                     TinMissingReasonDescription = x.TinMissingReasonDescription.ToCMString(),
-                    CountryCode = _countries.FirstOrDefault(c => c.Id == x.CountryId)?.ShortName
+                    CountryCode = _countries.First(c => c.Id == x.CountryId).ShortName
                 }).ToList(),
-                ValidFrom = request.NaturalPerson!.TaxResidence.ValidFrom
+                ValidFrom = request.NaturalPerson.TaxResidence.ValidFrom
             };
-#pragma warning restore CS8601 // Possible null reference assignment.
         }
 
         await _kycClient.SetKyc(customerId, model, cancellationToken);
@@ -122,13 +150,16 @@ internal sealed class IdentifiedSubjectService
 
     private Task InitializeCodebooks(CancellationToken cancellationToken)
     {
-        return Task.WhenAll(Genders(), Titles(), Countries(), Maritals(), DocTypes());
+        return Task.WhenAll(Genders(), Titles(), Countries(), Maritals(), DocTypes(), ProfessionTypes(), NetMonthEarnings(), IncomeMainTypesAML());
 
         async Task Genders() => _genders = await _codebook.Genders(cancellationToken);
         async Task Titles() => _titles = await _codebook.AcademicDegreesBefore(cancellationToken);
         async Task Countries() => _countries = await _codebook.Countries(cancellationToken);
         async Task Maritals() => _maritals = await _codebook.MaritalStatuses(cancellationToken);
         async Task DocTypes() => _docTypes = await _codebook.IdentificationDocumentTypes(cancellationToken);
+        async Task ProfessionTypes() => _professionTypes = await _codebook.ProfessionTypes(cancellationToken);
+        async Task NetMonthEarnings() => _netMonthEarnings = await _codebook.NetMonthEarnings(cancellationToken);
+        async Task IncomeMainTypesAML() => _incomeMainTypesAML = await _codebook.IncomeMainTypesAML(cancellationToken);
     }
 
     private __Contracts.IdentifiedSubject BuildCreateRequest(CreateCustomerRequest request)
@@ -179,7 +210,7 @@ internal sealed class IdentifiedSubjectService
             Surname = naturalPerson.LastName,
             GenderCode = FastEnum.Parse<__Contracts.NaturalPersonAttributesGenderCode>(_genders.First(g => g.Id == naturalPerson.GenderId).KbCmCode, true),
             BirthDate = naturalPerson.DateOfBirth,
-            Title = _titles.FirstOrDefault(t => t.Id == naturalPerson.DegreeBeforeId)?.Name?.ToUpperInvariant(),
+            Title = _titles.FirstOrDefault(t => t.Id != 0 && t.Id == naturalPerson.DegreeBeforeId)?.Name?.ToUpperInvariant(),
             CzechBirthNumber = naturalPerson.BirthNumber.ToCMString(),
             CitizenshipCodes = citizenshipCodes.Any() ? citizenshipCodes : null,
             BirthCountryCode = _countries.FirstOrDefault(c => c.Id == naturalPerson.BirthCountryId)?.ShortName,
