@@ -2287,18 +2287,12 @@
             Vytvoření nového případu (hypotéky) ze simulace.
             </summary>
             <remarks>
-            Vytvoří nový Case, Sales Arrangement, Household, CustomerOnSA.<br/>
-            V případe identifikovaného klienta navíc vytvořit Product, RiskBusinessCaseId.<br/>
-            Pokud je identifikován klient, v request modelu musí být naplněna vlastnost customer.<br/>
-            Pokud se jedná o anonymní případ, musi být vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/><br/>
-            <i>DS:</i> OfferService/GetMortgageData<br/>
-            <i>DS:</i> SalesArrangement/GetSalesArrangementByOfferId<br/>
-            <i>DS:</i> CaseService/CreateCase<br/>
-            <i>DS:</i> SalesArrangement/CreateSalesArrangement<br/>
-            <i>DS:</i> ProductService/CreateMortgage (pokud MpHome API na vytvoření produktu spadne na fatální chybu, tak tuto chybu ignorujeme a pokračujeme ve vytvoření Case)<br/>
-            <i>DS:</i> SalesArrangement/CreateHousehold<br/>
-            <i>DS:</i> SalesArrangement/CreateCustomerOnSA<br/><br/>
-            Endpoint podporuje rollback.
+            Vytvoří nový Case, Sales Arrangement, Household, CustomerOnSA.<br />
+            V případe identifikovaného klienta navíc vytvořit Product, RiskBusinessCaseId.<br />
+            Pokud je identifikován klient, v request modelu musí být naplněna vlastnost customer.<br />
+            Pokud se jedná o anonymní případ, musi být vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br /><br />
+            Endpoint podporuje rollback.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0F7EBD29-3702-4289-8AD3-9C0A44A4449C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="request">Identifikace klienta a ID simulace.</param>
             <returns>ID nově vytvořeného Case</returns>
