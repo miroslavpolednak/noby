@@ -2,17 +2,18 @@
 using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
+using DomainServices.OfferService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.SalesArrangementService.Contracts.v1;
+using System.Threading;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation;
 
 internal sealed class GetListRealEstateValuationHandler
-    : IRequestHandler<GetListRealEstateValuationRequest>
+    : IRequestHandler<GetListRealEstateValuationRequest, List<RealEstateValuationListItem>>
 {
-    public async Task Handle(GetListRealEstateValuationRequest request, CancellationToken cancellationToken)
+    public async Task<List<RealEstateValuationListItem>> Handle(GetListRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
@@ -22,17 +23,52 @@ internal sealed class GetListRealEstateValuationHandler
             throw new CisAuthorizationException();
         }
 
-        List<RealEstateValuationListItem> computedValuations = new();
+        // dopocitana oceneni na zaklade dat v SA
+        List<RealEstateValuationListItem>? computedValuations = null;
         if (caseInstance.State != (int)CaseStates.InProgress)
         {
-            var saId = (await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken)).SalesArrangementId;
-
-            var saInstance = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
-
+            computedValuations = await getComputedValuations(request.CaseId, cancellationToken);
         }
 
+        // oceneni ulozena u nas v DB
         var existingValuations = await getExistingValuations(request.CaseId, cancellationToken);
 
+        if (computedValuations?.Any() ?? false)
+        {
+            //todo
+            return existingValuations;
+        }
+        else
+        {
+            return existingValuations;
+        }
+    }
+
+    private async Task<List<RealEstateValuationListItem>?> getComputedValuations(long caseId, CancellationToken cancellationToken)
+    {
+        var saId = (await _salesArrangementService.GetProductSalesArrangement(caseId, cancellationToken)).SalesArrangementId;
+
+        var saInstance = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
+
+        var offerInstance = await _offerService.GetMortgageOfferDetail(saInstance.OfferId!.Value, cancellationToken);
+
+        var state = (await _codebookService.WorkflowTaskStatesNoby(cancellationToken))
+            .First(t => t.Id == 6);
+
+        return saInstance.Mortgage
+            .LoanRealEstates?
+            .Where(t => t.IsCollateral)
+            .Select(t => new RealEstateValuationListItem
+            {
+                CaseId = saInstance.CaseId,
+                RealEstateTypeId = t.RealEstateTypeId,
+                RealEstateTypeIcon = Helpers.GetRealEstateTypeIcon(t.RealEstateTypeId),
+                ValuationStateId = state.Id,
+                ValuationStateIndicator = state.Indicator,
+                ValuationStateName = state.Name,
+                IsLoanRealEstate = true
+            })
+            .ToList();
     }
 
     private async Task<List<RealEstateValuationListItem>> getExistingValuations(long caseId, CancellationToken cancellationToken)
@@ -53,7 +89,7 @@ internal sealed class GetListRealEstateValuationHandler
                     OrderId = t.OrderId,
                     CaseId = t.CaseId,
                     RealEstateTypeId = t.RealEstateTypeId,
-                    RealEstateTypeIcon = Helpers.GetRealEstateTypeIcon(t),
+                    RealEstateTypeIcon = Helpers.GetRealEstateTypeIcon(t.RealEstateTypeId),
                     ValuationStateId = t.RealEstateValuationId,
                     ValuationStateIndicator = state.Indicator,
                     ValuationStateName = state.Name,
@@ -72,6 +108,7 @@ internal sealed class GetListRealEstateValuationHandler
             .ToList();
     }
 
+    private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ICurrentUserAccessor _currentUser;
@@ -79,12 +116,14 @@ internal sealed class GetListRealEstateValuationHandler
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
     public GetListRealEstateValuationHandler(
+        IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService,
         ICodebookServiceClient codebookService,
         IRealEstateValuationServiceClient realEstateValuationService,
         ICaseServiceClient caseService,
         ICurrentUserAccessor currentUserAccessor)
     {
+        _offerService = offerService;
         _salesArrangementService = salesArrangementService;
         _caseService = caseService;
         _codebookService = codebookService;

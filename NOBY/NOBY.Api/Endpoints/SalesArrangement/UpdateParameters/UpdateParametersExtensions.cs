@@ -31,7 +31,7 @@ internal static class UpdateParametersExtensions
             {
                 IsCollateral = x.IsCollateral,
                 RealEstatePurchaseTypeId = x.RealEstatePurchaseTypeId,
-                RealEstateTypeId = x.RealEstateTypeId,
+                RealEstateTypeId = x.RealEstateTypeId
             }));
 
         return model;
