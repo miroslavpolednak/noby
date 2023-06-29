@@ -186,6 +186,12 @@ internal sealed class CodebookService
             )
         );
 
+    public override async Task<GetAcvRealEstateTypeResponse> GetAcvRealEstateType(GetAcvRealEstateTypeRequest request, ServerCallContext context)
+    {
+        return (await _db.GetFirstOrDefault<GetAcvRealEstateTypeResponse>(new { request.RealEstateStateId, request.RealEstateSubtypeId, request.RealEstateTypeId }))
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AcvRealEstateTypeNotFound);
+    }
+
     public override async Task<GetDeveloperResponse> GetDeveloper(GetDeveloperRequest request, ServerCallContext context)
     {
         return (await _db.GetListWithParam<GetDeveloperResponse>(new { request.DeveloperId }))
@@ -503,8 +509,8 @@ internal sealed class CodebookService
     public override Task<GenericCodebookResponse> RealEstateStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 
-    public override Task<GenericCodebookResponse> RealEstateSubtypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _db.GetGenericItems();
+    public override Task<RealEstateSubtypesResponse> RealEstateSubtypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetItems<RealEstateSubtypesResponse, RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem>();
 
     public override Task<GenericCodebookResponse> RealEstateTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();

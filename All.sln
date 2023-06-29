@@ -269,6 +269,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		NOBY\DatabaseMigrations\00006-HFICH-5716_fix.sql = NOBY\DatabaseMigrations\00006-HFICH-5716_fix.sql
 		NOBY\DatabaseMigrations\00007-HFICH-5561.sql = NOBY\DatabaseMigrations\00007-HFICH-5561.sql
 		NOBY\DatabaseMigrations\00008-HFICH-5198.sql = NOBY\DatabaseMigrations\00008-HFICH-5198.sql
+		NOBY\DatabaseMigrations\00009-perms.sql = NOBY\DatabaseMigrations\00009-perms.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.ExternalServices.Sdf", "DomainServices\DocumentArchiveService\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj", "{F969A020-76AF-48A6-BF8F-959A58D0C982}"
@@ -312,6 +313,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00034-HFICH-3996.sql = DomainServices\CodebookService\DatabaseMigrations\00034-HFICH-3996.sql
 		DomainServices\CodebookService\DatabaseMigrations\00035-HFICH-6535.sql = DomainServices\CodebookService\DatabaseMigrations\00035-HFICH-6535.sql
 		DomainServices\CodebookService\DatabaseMigrations\00036-HFICH-6670.sql = DomainServices\CodebookService\DatabaseMigrations\00036-HFICH-6670.sql
+		DomainServices\CodebookService\DatabaseMigrations\00037-HFICH-6731.sql = DomainServices\CodebookService\DatabaseMigrations\00037-HFICH-6731.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -355,6 +357,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00003-HFICH-6054_HFICH-5974_SignatureProps.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00003-HFICH-6054_HFICH-5974_SignatureProps.sql
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00004-HFICH-6054_HFICH-5974_SignatureProps.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00004-HFICH-6054_HFICH-5974_SignatureProps.sql
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00005-HFICH-6530_SignatureTypeId_Paper.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00005-HFICH-6530_SignatureTypeId_Paper.sql
+		DomainServices\DocumentOnSAService\DatabaseMigrations\00006-HFICH-3917_DocOnSa_JsonMap.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00006-HFICH-3917_DocOnSa_JsonMap.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness", "DomainServices\RiskIntegrationService\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj", "{FF60B12F-B083-46BE-B8DA-FD91ABE2D831}"
@@ -468,6 +471,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{A57610AF-B011-4FAB-974B-B3FB39A6703E}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00012-REV.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00012-REV.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.Api", "DomainServices\RealEstateValuationService\Api\DomainServices.RealEstateValuationService.Api.csproj", "{8291DE0E-0447-471D-A402-B44B3FF30ED5}"

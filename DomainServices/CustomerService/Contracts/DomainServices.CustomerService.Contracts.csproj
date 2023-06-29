@@ -19,9 +19,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.23.2" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.53.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.54.0">
+		<PackageReference Include="Google.Protobuf" Version="3.23.3" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.54.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.56.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -45,6 +45,6 @@
 		<Protobuf Include="Messages/IdentificationDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/CustomerIdentification.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/UpdateCustomerIdentifiers.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="Messages/ValidateContact.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos"/>
+		<Protobuf Include="Messages/ValidateContact.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 	</ItemGroup>
 </Project>

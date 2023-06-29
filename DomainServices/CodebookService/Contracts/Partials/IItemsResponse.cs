@@ -7,3 +7,10 @@ public interface IItemsResponse<TItem>
 {
     RepeatedField<TItem> Items { get; }
 }
+
+public interface IBaseCodebook
+{
+    int Id { get; set; }
+    string Name { get; set; }
+    bool? IsValid { get; set; }
+}

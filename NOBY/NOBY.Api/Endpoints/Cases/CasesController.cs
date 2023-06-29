@@ -27,6 +27,7 @@ public class CasesController : ControllerBase
     [ProducesResponseType(typeof(CreateSalesArrangement.CreateSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeCaseOwner]
     public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request)
         => await _mediator.Send(request.InfuseId(caseId));
 
@@ -156,6 +157,7 @@ public class CasesController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeCaseOwner]
     public async Task<GetCaseMenuFlagsResponse> GetCaseMenuFlags([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCaseMenuFlagsRequest(caseId), cancellationToken);
 
@@ -172,6 +174,7 @@ public class CasesController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeCaseOwner]
     public async Task<GetCovenants.GetCovenantsResponse> GetCovenants([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCovenants.GetCovenantsRequest(caseId), cancellationToken);
 
@@ -189,6 +192,7 @@ public class CasesController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeCaseOwner]
     public async Task<GetCovenant.GetCovenantResponse> GetCovenant([FromRoute] long caseId, [FromRoute] int covenantOrder, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCovenant.GetCovenantRequest(caseId, covenantOrder), cancellationToken);
 }

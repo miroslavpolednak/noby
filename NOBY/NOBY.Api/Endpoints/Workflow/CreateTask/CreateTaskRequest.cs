@@ -42,5 +42,11 @@ public sealed class CreateTaskRequest
     [Required]
     public string TaskUserRequest { get; set; } = string.Empty;
 
+    /// <summary>
+    /// ID objednávky ocenění, pokud se vytváří konzultace "Dotaz k ocenění" nebo "Vyhotovení zprávy o stavu výstavby"
+    /// </summary>
+    /// <example>123455</example>
+    public int? OrderId { get; set; }
+
     public List<NOBY.Dto.Documents.DocumentInformation>? Attachments { get; set; }
 }

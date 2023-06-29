@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DataAggregatorService;
+option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts";
+
+message GetRiskLoanApplicationDataRequest {
+	int32 SalesArrangementId = 1;
+}
+
+message GetRiskLoanApplicationDataResponse {
+
+}

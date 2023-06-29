@@ -21,4 +21,3 @@
 .\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=DocumentArchiveService;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\DocumentArchiveService\DatabaseMigrations"
 
 .\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=NOBY;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\NOBY\DatabaseMigrations"
-z

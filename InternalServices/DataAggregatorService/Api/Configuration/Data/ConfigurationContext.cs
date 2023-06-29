@@ -44,6 +44,10 @@ internal class ConfigurationContext : DbContext
 
     public DbSet<InputParameter> InputParameters => Set<InputParameter>();
 
+    public DbSet<RiskLoanApplicationDataField> RiskLoanApplicationDataFields => Set<RiskLoanApplicationDataField>();
+
+    public DbSet<RiskLoanApplicationSpecialDataField> RiskLoanApplicationSpecialDataFields => Set<RiskLoanApplicationSpecialDataField>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);

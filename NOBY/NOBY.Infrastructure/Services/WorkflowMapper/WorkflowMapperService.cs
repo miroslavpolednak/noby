@@ -20,7 +20,7 @@ internal sealed class WorkflowMapperService
             ProcessNameLong = task.ProcessNameLong,
             StateName = task.StateName,
             ProcessTypeId = task.ProcessTypeId,
-            StateIndicator = task.StateIndicator.HasValue ? (_Dto.StateIndicators)task.StateIndicator : _Dto.StateIndicators.Unknown //TODO co je default stav?
+            StateIndicator = task.StateIndicator.HasValue ? (_Dto.ProcessStateIndicators)task.StateIndicator : _Dto.ProcessStateIndicators.Unknown //TODO co je default stav?
         };
     }
 

@@ -73,6 +73,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967580">ProfessionTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413648025">PropertySettlements</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateState">RealEstateStates</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/RealEstateSubtype">RealEstateSubtypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632253">RealEstateTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632953">RealEstatePurchaseTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
@@ -139,7 +140,7 @@ public class CodebooksController : ControllerBase
     public async Task<List<GenericCodebookResponse.Types.GenericCodebookItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         var loanKindsIds = (await svc.ProductTypes(cancellationToken))
-            .FirstOrDefault(t => t.Id == productTypeId && t.IsValid)?
+            .FirstOrDefault(t => t.Id == productTypeId && t.IsValid.GetValueOrDefault())?
             .LoanKindIds
             .ToList();
         if (loanKindsIds is null) return null;

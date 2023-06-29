@@ -63,3 +63,6 @@ public partial class GetFlowSwitchesRequest
 public partial class SetFlowSwitchesRequest
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class SetContractNumberRequest : MediatR.IRequest<SetContractNumberResponse> 
+{ }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
@@ -17,8 +17,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Configuration\RiskLoanApplication\" />
 		<Folder Include="Endpoints\GetDocumentData\" />
 		<Folder Include="Endpoints\GetEasForm\" />
+		<Folder Include="Endpoints\GetRiskLoanApplicationData\" />
+		<Folder Include="Generators\RiskLoanApplication\" />
 		<Folder Include="Services\Documents\TemplateData\LoanApplication\" />
 		<Folder Include="Services\Documents\TemplateData\CustomerChange\" />
 		<Folder Include="Services\EasForms\FormData\LoanApplicationData\" />
@@ -27,11 +30,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="FastMember" Version="1.5.0" />
-		<PackageReference Include="Grpc.AspNetCore.Server" Version="2.53.0" />
-		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.53.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server" Version="2.54.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.54.0" />
 		<PackageReference Include="MediatR" Version="12.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
-		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.8" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.1" />
 		<PackageReference Include="Scrutor" Version="4.2.2" />
 	</ItemGroup>
 

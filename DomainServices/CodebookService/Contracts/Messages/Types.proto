@@ -406,7 +406,7 @@ message LoanPurposesResponse {
 	   google.protobuf.Int32Value MandantId = 3;
 	   google.protobuf.Int32Value Order = 4;
 	   google.protobuf.Int32Value C4MId = 5;
-	   bool IsValid = 6;
+	   google.protobuf.BoolValue IsValid = 6;
 	   repeated int32 ProductTypeIds = 7;
 	}
 }
@@ -466,7 +466,7 @@ message ProductTypesResponse {
 	   int32 Id = 1;
 	   string Name = 2;
 	   google.protobuf.Int32Value MandantId = 3;
-	   bool IsValid = 4;
+	   google.protobuf.BoolValue IsValid = 4;
 	   int32 Order = 5;
 	   google.protobuf.Int32Value LoanAmountMin = 6;
 	   google.protobuf.Int32Value LoanAmountMax = 7;
@@ -527,6 +527,17 @@ message RelationshipCustomerProductTypesResponse {
 	   google.protobuf.StringValue RdmCode = 3;
 	   google.protobuf.StringValue MpDigiApiCode = 4;
 	   google.protobuf.StringValue NameNoby = 5;
+	}
+}
+
+message RealEstateSubtypesResponse {
+	repeated RealEstateSubtypesResponseItem Items = 1;
+
+	message RealEstateSubtypesResponseItem {
+		int32 Id = 1;
+		string ShortName = 2;
+		string Name = 3;
+		int32 RealEstateTypeId = 4;
 	}
 }
 

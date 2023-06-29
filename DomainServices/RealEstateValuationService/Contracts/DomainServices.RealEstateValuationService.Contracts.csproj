@@ -15,9 +15,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.23.2" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.53.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.54.0">
+		<PackageReference Include="Google.Protobuf" Version="3.23.3" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.54.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.56.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -28,6 +28,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Protobuf Include="Messages\Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\UpdateRealEstateValuationDetail.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\GetRealEstateValuationDetailByOrderId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\GetRealEstateValuationDetail.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\RealEstateValuationDetail.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />

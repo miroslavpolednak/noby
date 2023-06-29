@@ -41,7 +41,8 @@ internal sealed class CreateTaskHandler
             ProcessId = request.ProcessId,
             TaskTypeId = request.TaskTypeId,
             TaskRequest = request.TaskUserRequest ?? "",
-            TaskSubtypeId = request.TaskSubtypeId
+            TaskSubtypeId = request.TaskSubtypeId,
+            OrderId = request.OrderId
         };
         // pokud existuji nahrane prilohy
         if (documentIds.Any())

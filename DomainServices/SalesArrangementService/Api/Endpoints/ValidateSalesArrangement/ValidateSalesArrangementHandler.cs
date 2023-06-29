@@ -11,16 +11,16 @@ internal sealed class ValidateSalesArrangementHandler
 
     private readonly Services.ValidationTransformationServiceFactory _transformationServiceFactory;
     private readonly Services.Forms.FormsService _formsService;
-    private readonly Services.Forms.EasFormsManager _easFormsManager;
+    private readonly Eas.IEasClient _easClient;
 
     public ValidateSalesArrangementHandler(
         Services.ValidationTransformationServiceFactory transformationServiceFactory,
         Services.Forms.FormsService formsService,
-        Services.Forms.EasFormsManager easFormsManager)
+        Eas.IEasClient easClient)
     {
         _transformationServiceFactory = transformationServiceFactory;
         _formsService = formsService;
-        _easFormsManager = easFormsManager;
+        _easClient = easClient;
     }
 
     public async Task<ValidateSalesArrangementResponse> Handle(ValidateSalesArrangementRequest request, CancellationToken cancellationToken)
@@ -47,8 +47,6 @@ internal sealed class ValidateSalesArrangementHandler
     {
         var dynamicFormValues = _formsService.CreateProductDynamicFormValues(salesArrangement, cancellationToken);
 
-        await _easFormsManager.UpdateContractNumberIfNeeded(salesArrangement, cancellationToken);
-
         return await _formsService.LoadProductForm(salesArrangement, await dynamicFormValues.ToListAsync(cancellationToken), cancellationToken);
     }
 
@@ -63,7 +61,7 @@ internal sealed class ValidateSalesArrangementHandler
     {
         var checkForms = easForm.Forms.Select(f => new Eas.EasWrapper.CheckFormData
         {
-            formular_id = Services.Forms.EasFormsManager.GetFormId(f.EasFormType),
+            formular_id = GetFormId(f.EasFormType),
             cislo_smlouvy = easForm.ContractNumber,
             dokument_id = "", //null neprojde
             datum_prijeti = DateTime.Now.Date,
@@ -80,7 +78,7 @@ internal sealed class ValidateSalesArrangementHandler
 
     private async Task<List<ValidationMessage>> SendAndValidateForm(Eas.EasWrapper.CheckFormData checkFormData, CancellationToken cancellationToken)
     {
-        var checkFormResult = await _easFormsManager.CheckForms(checkFormData, cancellationToken);
+        var checkFormResult = await _easClient.CheckFormV2(checkFormData, cancellationToken);
 
         if (!ValidCommonValues.Contains(checkFormResult.CommonValue))
         {
@@ -92,6 +90,17 @@ internal sealed class ValidateSalesArrangementHandler
         var transformationService = _transformationServiceFactory.CreateService(checkFormData.formular_id);
         
         return transformationService.TransformErrors(checkFormData.data, checkFormResult.Detail?.errors);
+    }
+
+    private static int GetFormId(EasFormType type)
+    {
+        return type switch
+        {
+            EasFormType.F3601 => 3601001,
+            EasFormType.F3602 => 3602001,
+            EasFormType.F3700 => 3700001,
+            _ => 0
+        };
     }
 }
 

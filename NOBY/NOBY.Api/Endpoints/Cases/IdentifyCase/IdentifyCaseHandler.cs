@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Core.Security;
+using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
@@ -35,10 +36,12 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
             return new IdentifyCaseResponse();
         }
 
-        if (!(await _caseServiceClient.ValidateCaseId(caseId.Value, false, cancellationToken)).Exists)
+        var caseInstance = await _caseServiceClient.ValidateCaseId(caseId.Value, false, cancellationToken);
+        if (!caseInstance.Exists)
         {
             return new IdentifyCaseResponse { CaseId = null };
         }
+        caseOwnerCheck(caseInstance.OwnerUserId!.Value);
 
         var taskList = await _caseServiceClient.GetTaskList(caseId.Value, cancellationToken);
         var taskSubList = taskList.Where(t => t.TaskTypeId == 6).ToList();
@@ -95,8 +98,17 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     
     private async Task<IdentifyCaseResponse> HandleByCaseId(long caseId, CancellationToken cancellationToken)
     {
-        var found = (await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken)).Exists;
-        return new IdentifyCaseResponse { CaseId = found ? caseId : null };
+        var caseInstance = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
+
+        if (caseInstance.Exists)
+        {
+            caseOwnerCheck(caseInstance.OwnerUserId!.Value);
+            return new IdentifyCaseResponse { CaseId = caseId };
+        }
+        else
+        {
+            return new IdentifyCaseResponse();
+        }
     }
     
     private async Task<IdentifyCaseResponse> HandleByContractNumber(string contractNumber, CancellationToken cancellationToken)
@@ -106,6 +118,9 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         try
         {
             var response = await _productServiceClient.GetCaseId(request, cancellationToken);
+            var caseInstance = await _caseServiceClient.ValidateCaseId(response.CaseId, false, cancellationToken);
+            caseOwnerCheck(caseInstance.OwnerUserId!.Value);
+
             return await HandleByCaseId(response.CaseId, cancellationToken);
         }
         catch (CisNotFoundException)
@@ -114,17 +129,28 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         }
     }
 
+    private void caseOwnerCheck(int ownerUserId)
+    {
+        if (ownerUserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
+        {
+            throw new CisAuthorizationException();
+        }
+    }
+
     private readonly IMediator _mediator;
+    private readonly ICurrentUserAccessor _currentUser;
     private readonly IProductServiceClient _productServiceClient;
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     
     public IdentifyCaseHandler(
+        ICurrentUserAccessor currentUser,
         IMediator mediator,
         IProductServiceClient productServiceClient,
         ICaseServiceClient caseServiceClient,
         IDocumentArchiveServiceClient documentArchiveServiceClient)
     {
+        _currentUser = currentUser;
         _mediator = mediator;
         _productServiceClient = productServiceClient;
         _caseServiceClient = caseServiceClient;

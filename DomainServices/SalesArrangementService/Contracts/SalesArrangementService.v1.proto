@@ -20,6 +20,7 @@ import "Messages/GetProductSalesArrangement.proto";
 import "Messages/SendToCmp.proto";
 import "Messages/GetFlowSwitches.proto";
 import "Messages/SetFlowSwitches.proto";
+import "Messages/SetContractNumber.proto";
 
 service SalesArrangementService {
 	// zalozeni noveho SA
@@ -62,4 +63,6 @@ service SalesArrangementService {
 	rpc GetFlowSwitches (GetFlowSwitchesRequest) returns (GetFlowSwitchesResponse);
 
 	rpc SetFlowSwitches (SetFlowSwitchesRequest) returns (google.protobuf.Empty);
+
+	rpc SetContractNumber (SetContractNumberRequest) returns (SetContractNumberResponse);
 }

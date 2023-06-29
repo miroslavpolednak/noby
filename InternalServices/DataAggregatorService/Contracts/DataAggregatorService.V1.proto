@@ -6,9 +6,12 @@ option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts.
 import "Document/GetDocumentData.proto";
 import "EasForm/GetEasFormRequest.proto";
 import "EasForm/GetEasFormResponse.proto";
+import "RiskLoanApplication/GetRiskLoanApplicationData.proto";
 
 service DataAggregatorService {
 	rpc GetDocumentData(GetDocumentDataRequest) returns(GetDocumentDataResponse);
 
 	rpc GetEasForm(GetEasFormRequest) returns(GetEasFormResponse);
+
+	rpc GetRiskLoanApplicationData(GetRiskLoanApplicationDataRequest) returns(GetRiskLoanApplicationDataResponse);
 }

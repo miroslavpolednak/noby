@@ -1,0 +1,28 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+message LoanPurposeDetailsObject {
+    repeated int32 LoanPurposes = 1;
+}
+
+message SpecificDetailHouseAndFlatObject {
+    bool PoorCondition = 1;
+    bool OwnershipRestricted = 2;
+    SpecificDetailFlatOnlyDetails FlatOnlyDetails = 3;
+    SpecificDetailFinishedHouseAndFlatDetails FinishedHouseAndFlatDetails = 4;
+}
+
+message SpecificDetailFlatOnlyDetails {
+    bool SpecialPlacement = 1;
+    bool Basement = 2;
+}
+
+message SpecificDetailFinishedHouseAndFlatDetails {
+    bool Leased = 1;
+    bool LeaseApplicable = 2;
+}
+
+message SpecificDetailParcelObject {
+    int32 ParcelNumber = 1;
+}
