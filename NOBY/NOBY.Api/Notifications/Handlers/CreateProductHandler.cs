@@ -46,7 +46,7 @@ internal sealed class CreateProductHandler
         var request = new _Product.CreateMortgageRequest
         {
             CaseId = notification.CaseId,
-            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
+            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value, saInstance.ContractNumber)
         };
         var result = await _productService.CreateMortgage(request, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
