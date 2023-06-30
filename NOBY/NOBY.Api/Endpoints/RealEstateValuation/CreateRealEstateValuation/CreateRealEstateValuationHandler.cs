@@ -1,7 +1,6 @@
 ﻿using CIS.Core.Security;
 using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
-using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using DomainServices.SalesArrangementService.Clients;
