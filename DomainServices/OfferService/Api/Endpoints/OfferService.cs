@@ -23,6 +23,9 @@ public class OfferService
     public override async Task<GetMortgageOfferFPScheduleResponse> GetMortgageOfferFPSchedule(GetMortgageOfferFPScheduleRequest request, ServerCallContext context)
       => await _mediator.Send(request);
 
+    public override async Task<GetOfferDeveloperResponse> GetOfferDeveloper(GetOfferDeveloperRequest request, ServerCallContext context)
+      => await _mediator.Send(request);
+
     private readonly IMediator _mediator;
     public OfferService(IMediator mediator)
         => _mediator = mediator;

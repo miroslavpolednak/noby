@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message GetOfferDeveloperRequest {
+	int32 OfferId = 1;
+}
+
+message GetOfferDeveloperResponse {
+	google.protobuf.Int32Value DeveloperId = 1;
+	google.protobuf.Int32Value ProjectId = 2;
+	bool IsDeveloperAllowed = 3;
+	bool IsDeveloperSet = 4;
+}

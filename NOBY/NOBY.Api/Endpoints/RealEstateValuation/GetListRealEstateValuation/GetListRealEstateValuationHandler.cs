@@ -6,7 +6,6 @@ using DomainServices.OfferService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using System.Threading;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation;
 
@@ -25,7 +24,7 @@ internal sealed class GetListRealEstateValuationHandler
 
         // dopocitana oceneni na zaklade dat v SA
         List<RealEstateValuationListItem>? computedValuations = null;
-        if (caseInstance.State != (int)CaseStates.InProgress)
+        if (caseInstance.State == (int)CaseStates.InProgress)
         {
             computedValuations = await getComputedValuations(request.CaseId, cancellationToken);
         }
@@ -35,7 +34,8 @@ internal sealed class GetListRealEstateValuationHandler
 
         if (computedValuations?.Any() ?? false)
         {
-            //todo
+            var arr = existingValuations.Where(t => t.IsLoanRealEstate).Select(t => t.RealEstateTypeId).ToArray();
+            existingValuations.AddRange(computedValuations.Where(t => !arr.Contains(t.RealEstateTypeId)));
             return existingValuations;
         }
         else
@@ -44,13 +44,15 @@ internal sealed class GetListRealEstateValuationHandler
         }
     }
 
+    /// <summary>
+    /// Ziskat dopocitane nemovitosti - tj. ty, ktere jsou zadane na Offer pro dany SA
+    /// </summary>
     private async Task<List<RealEstateValuationListItem>?> getComputedValuations(long caseId, CancellationToken cancellationToken)
     {
         var saId = (await _salesArrangementService.GetProductSalesArrangement(caseId, cancellationToken)).SalesArrangementId;
-
         var saInstance = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
 
-        var offerInstance = await _offerService.GetMortgageOfferDetail(saInstance.OfferId!.Value, cancellationToken);
+        var developer = await _offerService.GetOfferDeveloper(saInstance.OfferId!.Value, cancellationToken);
 
         var state = (await _codebookService.WorkflowTaskStatesNoby(cancellationToken))
             .First(t => t.Id == 6);
@@ -64,13 +66,17 @@ internal sealed class GetListRealEstateValuationHandler
                 RealEstateTypeId = t.RealEstateTypeId,
                 RealEstateTypeIcon = Helpers.GetRealEstateTypeIcon(t.RealEstateTypeId),
                 ValuationStateId = state.Id,
-                ValuationStateIndicator = state.Indicator,
+                ValuationStateIndicator = (ValuationStateIndicators)state.Indicator,
                 ValuationStateName = state.Name,
-                IsLoanRealEstate = true
+                IsLoanRealEstate = true,
+                DeveloperAllowed = developer.IsDeveloperAllowed
             })
             .ToList();
     }
 
+    /// <summary>
+    /// Ziskat realne ulozene nemovitosti, ktere mame u nas v DB
+    /// </summary>
     private async Task<List<RealEstateValuationListItem>> getExistingValuations(long caseId, CancellationToken cancellationToken)
     {
         var revList = await _realEstateValuationService.GetRealEstateValuationList(caseId, cancellationToken);
@@ -91,10 +97,10 @@ internal sealed class GetListRealEstateValuationHandler
                     RealEstateTypeId = t.RealEstateTypeId,
                     RealEstateTypeIcon = Helpers.GetRealEstateTypeIcon(t.RealEstateTypeId),
                     ValuationStateId = t.RealEstateValuationId,
-                    ValuationStateIndicator = state.Indicator,
+                    ValuationStateIndicator = (ValuationStateIndicators)state.Indicator,
                     ValuationStateName = state.Name,
                     IsLoanRealEstate = t.IsLoanRealEstate,
-                    RealEstateStateId = t.RealEstateStateId.GetValueOrDefault(),
+                    RealEstateStateId = (RealEstateStateIds)t.RealEstateStateId.GetValueOrDefault(),
                     ValuationTypeId = t.ValuationTypeId,
                     Address = t.Address,
                     ValuationSentDate = t.ValuationSentDate,

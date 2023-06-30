@@ -51,7 +51,7 @@ public sealed class RealEstateValuationListItem
     /// Indikátor stavu Ocenění nemovitosti, 0 - Unknown, 1 - Active, 2 - Cancelled, 3 - OK, 4 - Passive, 5 - Warning, 6 - Initial
     /// </summary>
     [Required]
-    public int ValuationStateIndicator { get; set; }
+    public ValuationStateIndicators ValuationStateIndicator { get; set; }
 
     /// <summary>
     /// Název stavu Ocenění nemovitosti
@@ -69,7 +69,7 @@ public sealed class RealEstateValuationListItem
     /// ID stavu nemovitosti. 0 - Unknown, 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
     /// </summary>
     [Required]
-    public int RealEstateStateId { get; set; }
+    public RealEstateStateIds RealEstateStateId { get; set; }
 
     /// <summary>
     /// Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
@@ -116,4 +116,26 @@ public sealed class RealEstateValuationListItem
     /// </summary>
     [Required]
     public bool DeveloperApplied { get; set; }
+}
+
+//ITA chce enumy - me to neprijde dobre, fakticky se i na DS pouzivaji jen id, ale...
+public enum RealEstateStateIds
+{
+    Unknown = 0,
+    x1 = 1,
+    x2 = 2,
+    x3 = 3,
+    x4 = 4
+}
+
+//ITA chce enumy - me to neprijde dobre, fakticky se i na DS pouzivaji jen id, ale...
+public enum ValuationStateIndicators
+{
+    Unknown = 0, 
+    Active = 1, 
+    Cancelled = 2, 
+    OK = 3, 
+    Passive = 4,
+    Warning = 5,
+    Initial = 6
 }

@@ -1,0 +1,1 @@
+UPDATE SqlQuery SET SqlQueryText='SELECT CAST(KOD as int) ''Kod'', [TEXT] ''Text'' FROM SBR.HTEDM_CIS_WFL_CISELNIKY_HODNOTY WHERE ciselnik_id = 139' WHERE SqlQueryId='WorkflowConsultationMatrixResponse1'
