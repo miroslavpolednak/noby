@@ -4,12 +4,15 @@ namespace NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 
 public class GetDocumentRequest : IRequest<GetDocumentResponse>
 {
-    public GetDocumentRequest(string documentId)
+    public GetDocumentRequest(string documentId, DocumentSource source)
     {
         DocumentId = documentId;
+        Source = source;
     }
 
     public string DocumentId { get; }
+    
+    public DocumentSource Source { get; }
 }
 
 

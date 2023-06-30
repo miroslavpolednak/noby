@@ -38,17 +38,17 @@ public class DocumentArchiveController : ControllerBase
     public async Task<IActionResult> GetDocument(
         [FromRoute] string documentId,
         [FromQuery] FileContentDispositions contentDisposition,
-        [FromQuery] DocumentSource source, // added prep. according to HFICH-5628 (without implementation)
+        [FromQuery] DocumentSource source,
         CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetDocumentRequest(documentId), cancellationToken);
+        var result = await _mediator.Send(new GetDocumentRequest(documentId, source), cancellationToken);
         if (contentDisposition == FileContentDispositions.inline)
         {
-            return File(result.Content.BinaryData.ToArrayUnsafe(), result.Content.MineType);
+            return File(result.Content.BinaryData, result.Content.MimeType);
         }
         else
         {
-            return File(result.Content.BinaryData.ToArrayUnsafe(), result.Content.MineType, result.Metadata.Filename);
+            return File(result.Content.BinaryData, result.Content.MimeType, result.Metadata.Filename);
         }
     }
 
