@@ -1,5 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1;
+using DomainServices.CaseService.Api.Endpoints.LinkTaskToCase;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
@@ -17,15 +18,17 @@ internal sealed class IndividualPricingProcessChangedConsumer
     
     public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.IndividualPricingProcessChanged> context)
     {
-        var message = context.Message;
         var token = context.CancellationToken;
-
+        var message = context.Message;
+        
+        var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
+        await _mediator.Send(new LinkTaskToCaseRequest{ TaskId = currentTaskId }, token);
+        
         if (message.state != ProcessStateEnum.COMPLETED)
         {
             return;
         }
         
-        var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId }, token);
         var decisionId = taskDetail.TaskDetail.PriceException.DecisionId;
         var flowSwitchId = decisionId switch
