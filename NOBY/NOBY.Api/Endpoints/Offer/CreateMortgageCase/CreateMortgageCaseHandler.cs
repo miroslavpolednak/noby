@@ -63,9 +63,6 @@ internal sealed class CreateMortgageCaseHandler
         var createCustomerResult = await _customerOnSAService.CreateCustomer(createCustomerRequest, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyCustomerOnSAId, createCustomerResult.CustomerOnSAId);
 
-        //Contract Number
-        await _salesArrangementService.SetContractNumber(salesArrangementId, createCustomerResult.CustomerOnSAId, cancellationToken);
-
         // updatovat Agent v SA parameters, vytvarime prazdny objekt Parameters pouze s agentem
         await updateSalesArrangementParameters(salesArrangementId, createCustomerResult.CustomerOnSAId, cancellationToken);
 
@@ -78,6 +75,10 @@ internal sealed class CreateMortgageCaseHandler
         }, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyHouseholdId, householdId);
         _logger.EntityCreated(nameof(Household), householdId);
+
+        //Contract Number
+        if (request.Identity is not null)
+            await _salesArrangementService.SetContractNumber(salesArrangementId, createCustomerResult.CustomerOnSAId, cancellationToken);
 
         // mam identifikovaneho customera
         var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers);
