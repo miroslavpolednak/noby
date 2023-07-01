@@ -74,7 +74,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPatch("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
+    [HttpPatch("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/developer")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

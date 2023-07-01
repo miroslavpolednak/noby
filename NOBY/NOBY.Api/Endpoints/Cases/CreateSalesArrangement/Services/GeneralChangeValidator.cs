@@ -21,7 +21,7 @@ internal sealed class GeneralChangeValidator
 
         if (productInstance.Mortgage?.ContractSignedDate is null)
         {
-            throw new CisValidationException(90014, "productInstance.Mortgage?.ContractSignedDate is null");
+            throw new NobyValidationException(90014);
         }
 
         return new GeneralChangeBuilder(_logger, _request, _httpContextAccessor);
