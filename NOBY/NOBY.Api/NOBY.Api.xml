@@ -2620,6 +2620,40 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0DCD023D-ACF8-4744-B198-FE4FC2A84223"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.IsLoanRealEstate">
+            <summary>
+            True pokud jde o nemovitost, která je objektem úvěru. Default: false
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.RealEstateStateId">
+            <summary>
+            ID stavu nemovitosti. 0 - Unknown, 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.Address">
+            <summary>
+            Adresa nemovitosti
+            </summary>
+            <example>ovákovo nábřeží 1972, 521 71 Žďár nad Sázavou</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.RealEstateSubtypeId">
+            <summary>
+            ID Upřesnění typu nemovitosti. Slouží jako podklad pro překlad typu nemovitosti do ACV.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.LoanPurposeDetails">
+            <summary>
+            Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.SpecificDetails">
+            <summary>
+            Objekty <see cref="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.SpecificDetails"/> jsou řízeny business logikou <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135">Ocenění nemovitosti - varianty nemovitostí</a>.<br />
+            Objekt <see cref="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.HouseAndFlatDetails"/> bude použit v případě, že jde o variantu nemovitosti HF. <br />
+            Objekt <see cref="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.ParcelDetails"/> bude použit v případě, že jde o variantu nemovitosti P.<br />
+            Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů <see cref="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.SpecificDetails"/>.
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItemButton.IsActive">
             <summary>
             Je sekce aktivní/neaktivní (lze prokliknout)?

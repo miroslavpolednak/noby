@@ -58,6 +58,14 @@ public sealed class RealEstateValuationController : ControllerBase
     public async Task GetListRealEstateValuation([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetListRealEstateValuation.GetListRealEstateValuationRequest(caseId), cancellationToken);
 
+    [HttpPut("real-estate-valuations")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    public async Task UpdateRealEstateValuationDetail([FromBody] UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request, cancellationToken);
+    }
+
     private readonly IMediator _mediator;
     public RealEstateValuationController(IMediator mediator) => _mediator = mediator;
 }

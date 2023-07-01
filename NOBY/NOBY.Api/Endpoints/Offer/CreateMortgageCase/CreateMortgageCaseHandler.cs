@@ -87,7 +87,7 @@ internal sealed class CreateMortgageCaseHandler
         var identifiedFlowSwitch = new FlowSwitch
         {
             FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnMainHousehold,
-            Value = true
+            Value = request.Identity is not null
         };
 
         await _salesArrangementService.SetFlowSwitches(notification.SalesArrangementId, new List<FlowSwitch> { identifiedFlowSwitch }, cancellationToken);

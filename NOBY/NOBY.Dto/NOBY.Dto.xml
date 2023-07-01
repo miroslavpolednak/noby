@@ -180,6 +180,92 @@
             Příznak potvrzeného kontaktu
             </summary>
         </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail.RealEstateVariant">
+            <summary>
+            Varianta nemovitosti pro determinování relevantních atributů
+            </summary>
+            <example>HF</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail.CaseInProgress">
+            <summary>
+            True pokud je daný case ve stavu InProgress
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail.RealEstateSubtypeId">
+            <summary>
+            ID Upřesnění typu nemovitosti. Slouží jako podklad pro překlad typu nemovitosti do ACV.
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail.LoanPurposeDetails">
+            <summary>
+            ID účelu úvěru podle číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413109663">LoanPurpose (CIS_UCEL_UVERU_INT1)</a>
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail.SpecificDetails">
+            <summary>
+            Objekty SpecificDetails jsou řízeny business logikou <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135">Ocenění nemovitosti - varianty nemovitostí</a>.<br />
+            Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.<br />
+            Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.<br />
+            Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
+            </summary>
+        </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.HouseAndFlatDetails">
+            <summary>
+            Objekt je použit pouze v případě, že jde o variantu nemovitosti HF (Dům a byt) nebo HF+F (Byt)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.HouseAndFlatDetails.PoorCondition">
+            <summary>
+            True pokud jde o zanedbanou nemovitost
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.HouseAndFlatDetails.OwnershipRestricted">
+            <summary>
+            True pokud jsou vlastnická práva nějakým způsobem omezena
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.HouseAndFlatDetails.FlatOnlyDetails">
+            <summary>
+            Objekt je použit pouze v případě varianty nemovitosti HF+F Byt.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.HouseAndFlatDetails.FinishedHouseAndFlatDetails">
+            <summary>
+            Objekt je použit pouze v případě, že jde o variantu nemovitosti HF (Dům a byt) nebo HF+F (Byt) a že je nemovitost ve stavu "Dokončená".
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.HouseAndFlatDetails.FlatOnlyDetailsDto.SpecialPlacement">
+            <summary>
+            True pokud je byt v rodinném, jiném než bytovém domě
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.HouseAndFlatDetails.FlatOnlyDetailsDto.Basement">
+            <summary>
+            True pokud jde o umístění v suterénu
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.HouseAndFlatDetails.FinishedHouseAndFlatDetailsDto.Leased">
+            <summary>
+            True pokud je nemovitost pronajata
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.HouseAndFlatDetails.FinishedHouseAndFlatDetailsDto.LeaseApplicable">
+            <summary>
+            Obecná pronajímatelnost
+            </summary>
+        </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.ParcelDetails">
+            <summary>
+            Objekt je použit pouze v případě, že jde o variantu nemovitosti P (Pozemek)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.ParcelDetails.ParcelNumber">
+            <summary>
+            Číslo parcely
+            </summary>
+            <example>1</example>
+        </member>
         <member name="T:NOBY.Dto.Workflow.AmendmentsConsultationData">
             <summary>
             Tento objekt je relevantní pouze pro některé typy Konzultací, a to sice pro Dotaz k ocenění a pro Vyhotovení ZOV.
