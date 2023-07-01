@@ -2590,6 +2590,129 @@
             True pokud je aplikované hromadné ocenění z developerského projektu
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.GetListRealEstateValuationHandler.getComputedValuations(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Ziskat dopocitane nemovitosti - tj. ty, ktere jsou zadane na Offer pro dany SA
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.GetListRealEstateValuationHandler.getExistingValuations(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Ziskat realne ulozene nemovitosti, ktere mame u nas v DB
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem">
+            <summary>
+            Objednávka ocenění: přehledové údaje
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.RealEstateValuationId">
+            <summary>
+            ID Ocenění nemovitosti v Noby
+            </summary>
+            <example>3456</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.OrderId">
+            <summary>
+            Číslo objednávky ocenění
+            </summary>
+            <example>123455</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.CaseId">
+            <summary>
+            ID obchodního případu (caseId)
+            </summary>
+            <example>304556</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.RealEstateTypeId">
+            <summary>
+            ID typu nemovitosti
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.RealEstateTypeIcon">
+            <summary>
+            Id ikony typu nemovitosti. 1 - house, 2 - location city, 3 - custom, 4 - domain
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.ValuationStateId">
+            <summary>
+            ID stavu Ocenění nemovitosti
+            </summary>
+            <example>8</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.ValuationStateIndicator">
+            <summary>
+            Indikátor stavu Ocenění nemovitosti, 0 - Unknown, 1 - Active, 2 - Cancelled, 3 - OK, 4 - Passive, 5 - Warning, 6 - Initial
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.ValuationStateName">
+            <summary>
+            Název stavu Ocenění nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.IsLoanRealEstate">
+            <summary>
+            True pokud jde o nemovitost, která je objektem úvěru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.RealEstateStateId">
+            <summary>
+            ID stavu nemovitosti. 0 - Unknown, 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.ValuationTypeId">
+            <summary>
+            Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.Address">
+            <summary>
+            Adresa nemovitosti
+            </summary>
+            <example>Novákovo nábřeží 1972, 521 71 Žďár nad Sázavou</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.ValuationSentDate">
+            <summary>
+            Datum odeslání žádosti o Ocenění nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.ValuationResultCurrentPrice">
+            <summary>
+            Současná cena nemovitosti v Kč
+            </summary>
+            <example>3000000</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.ValuationResultFuturePrice">
+            <summary>
+            Budoucí cena nemovitosti v Kč
+            </summary>
+            <example>3250000</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.IsRevaluationRequired">
+            <summary>
+            True pokud je potřeba kontrolní ocenění
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.DeveloperAllowed">
+            <summary>
+            Informace o tom, zda byl na modelaci použit developer a zda je možné využít hromadné ocenění.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.RealEstateValuationListItem.DeveloperApplied">
+            <summary>
+            True pokud je aplikované hromadné ocenění z developerského projektu
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest">
+            <summary>
+            Editovatelné atributy Ocenění nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest.DeveloperApplied">
+            <summary>
+            True pokud je aplikované hromadné ocenění z developerského projektu
+            </summary>
+        </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.CreateRealEstateValuation(System.Int64,NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest,System.Threading.CancellationToken)">
             <summary>
             Založení Ocenění nemovitosti
@@ -2620,39 +2743,15 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0DCD023D-ACF8-4744-B198-FE4FC2A84223"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.IsLoanRealEstate">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.PatchDeveloperOnRealEstateValuation(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest,System.Threading.CancellationToken)">
             <summary>
-            True pokud jde o nemovitost, která je objektem úvěru. Default: false
+            Patch developera Ocenění nemovitosti
             </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.RealEstateStateId">
-            <summary>
-            ID stavu nemovitosti. 0 - Unknown, 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.Address">
-            <summary>
-            Adresa nemovitosti
-            </summary>
-            <example>ovákovo nábřeží 1972, 521 71 Žďár nad Sázavou</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.RealEstateSubtypeId">
-            <summary>
-            ID Upřesnění typu nemovitosti. Slouží jako podklad pro překlad typu nemovitosti do ACV.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.LoanPurposeDetails">
-            <summary>
-            Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.SpecificDetails">
-            <summary>
-            Objekty <see cref="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.SpecificDetails"/> jsou řízeny business logikou <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135">Ocenění nemovitosti - varianty nemovitostí</a>.<br />
-            Objekt <see cref="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.HouseAndFlatDetails"/> bude použit v případě, že jde o variantu nemovitosti HF. <br />
-            Objekt <see cref="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto.ParcelDetails"/> bude použit v případě, že jde o variantu nemovitosti P.<br />
-            Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů <see cref="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.SpecificDetails"/>.
-            </summary>
+            <remarks>
+            Patch toggle developera na Ocenění konkrétní nemovitosti ještě před odesláním do ACV.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItemButton.IsActive">
             <summary>

@@ -341,7 +341,8 @@ internal sealed class CodebookService
                     IsValid = t.IsValid,
                     MandantId = t.MandantId,
                     Name = t.Name,
-                    Order = t.Order
+                    Order = t.Order,
+                    AcvId = t.AcvId
                 };
                 if (!string.IsNullOrEmpty(t.ProductTypeIds))
                 {
