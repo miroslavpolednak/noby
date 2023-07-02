@@ -1,4 +1,6 @@
-﻿namespace NOBY.Dto.Workflow;
+﻿using NOBY.Dto.Attributes;
+
+namespace NOBY.Dto.Workflow;
 
 public class WorkflowTaskDetail
 {
@@ -37,5 +39,6 @@ public class WorkflowTaskDetail
     /// </summary>
     public List<TaskCommunicationItem>? TaskCommunication { get; set; } = null!;
 
+    [SwaggerOneOf<AmendmentsConsultationData, AmendmentsPriceException, AmendmentsRequest, AmendmentsSigning>]
     public object? Amendments { get; set; } = null!;
 }
