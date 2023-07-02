@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
 using Newtonsoft.Json.Serialization;
-using NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto;
+using NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail;
 

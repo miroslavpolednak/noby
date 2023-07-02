@@ -1,19 +1,22 @@
-﻿using System.Text.Json.Serialization;
-using NOBY.Dto.RealEstateValuation.RealEstateValuationDetailDto;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails;
+using NOBY.Dto.Attributes;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail;
 
 public class UpdateRealEstateValuationDetailRequest : IRequest
 {
     [JsonIgnore]
-    public long CaseId { get; set; }
+    internal long CaseId { get; set; }
 
     [JsonIgnore]
-    public int RealEstateValuationId { get; set; }
+    internal int RealEstateValuationId { get; set; }
 
     /// <summary>
     /// True pokud jde o nemovitost, která je objektem úvěru. Default: false
     /// </summary>
+    [Required]
     public bool IsLoanRealEstate { get; set; }
 
     /// <summary>
@@ -32,17 +35,17 @@ public class UpdateRealEstateValuationDetailRequest : IRequest
     /// </summary>
     public int? RealEstateSubtypeId { get; set; }
 
-    /// <summary>
-    /// Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).
-    /// </summary>
     public LoanPurposeDetail? LoanPurposeDetails { get; set; }
 
-    /// <summary>
-    /// Objekty <see cref="SpecificDetails"/> jsou řízeny business logikou <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135">Ocenění nemovitosti - varianty nemovitostí</a>.<br />
-    /// Objekt <see cref="HouseAndFlatDetails"/> bude použit v případě, že jde o variantu nemovitosti HF. <br />
-    /// Objekt <see cref="ParcelDetails"/> bude použit v případě, že jde o variantu nemovitosti P.<br />
-    /// Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů <see cref="SpecificDetails"/>.
-    /// </summary>
     [JsonConverter(typeof(SpecificDetailsConverter))]
+    [SwaggerOneOf<HouseAndFlatDetails, ParcelDetails>]
     public ISpecificDetails? SpecificDetails { get; set; }
+
+    internal UpdateRealEstateValuationDetailRequest InfuseId(long caseId, int realEstateValuationId)
+    {
+        CaseId = caseId;
+        RealEstateValuationId = realEstateValuationId;
+
+        return this;
+    }
 }

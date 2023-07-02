@@ -4,8 +4,9 @@ using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
-using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.Api.Endpoints.RealEstateValuation.Shared;
+using Helpers = DomainServices.RealEstateValuationService.Contracts.Helpers;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation;
 
@@ -83,35 +84,7 @@ internal sealed class GetListRealEstateValuationHandler
 
         var states = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
 
-        return revList
-            .Select(t =>
-            {
-                // tvrdi ze tam bude vzdy zaznam a v EA neni zadne osetreni...
-                var state = states.First(x => x.Id == t.ValuationStateId);
-
-                return new RealEstateValuationListItem
-                {
-                    RealEstateValuationId = t.RealEstateValuationId,
-                    OrderId = t.OrderId,
-                    CaseId = t.CaseId,
-                    RealEstateTypeId = t.RealEstateTypeId,
-                    RealEstateTypeIcon = Helpers.GetRealEstateTypeIcon(t.RealEstateTypeId),
-                    ValuationStateId = t.RealEstateValuationId,
-                    ValuationStateIndicator = (ValuationStateIndicators)state.Indicator,
-                    ValuationStateName = state.Name,
-                    IsLoanRealEstate = t.IsLoanRealEstate,
-                    RealEstateStateId = (RealEstateStateIds)t.RealEstateStateId.GetValueOrDefault(),
-                    ValuationTypeId = t.ValuationTypeId,
-                    Address = t.Address,
-                    ValuationSentDate = t.ValuationSentDate,
-                    ValuationResultCurrentPrice = t.ValuationResultCurrentPrice,
-                    ValuationResultFuturePrice = t.ValuationResultFuturePrice,
-                    IsRevaluationRequired = t.IsRevaluationRequired,
-                    DeveloperAllowed = t.DeveloperAllowed,
-                    DeveloperApplied = t.DeveloperApplied
-                };
-            })
-            .ToList();
+        return revList.Select(item => item.MapToApiResponse<RealEstateValuationListItem>(states)).ToList();
     }
 
     private readonly IOfferServiceClient _offerService;
