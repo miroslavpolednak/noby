@@ -24,5 +24,6 @@ public enum UserPermissions : int
     CASEDETAIL_DOCUMENT_InsertDocument = 217,
     CASEDETAIL_APPLICANT_ViewPersonInfo = 218,
     CLIENT_IdentifyPerson = 219,
-    CLIENT_SearchPerson = 220
+    CLIENT_SearchPerson = 220,
+    SIGNING_DOCUMENT_UploadDrawingDocument = 221
 }
