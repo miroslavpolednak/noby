@@ -8,7 +8,7 @@ public static class Helpers
     const string _mpInstanceName = "MPSS";
 
     public static string GetResourceIdentifierInstanceForDealer(string? identityScheme)
-        => string.IsNullOrEmpty(identityScheme) ? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ResourceIdentifierIdIsEmpty) : _kbPersonSchemas.Contains(identityScheme) ? _kbInstanceName : _mpInstanceName;
+        => string.IsNullOrEmpty(identityScheme) ? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ResourceIdentifierDealerSchemeIsNull) : _kbPersonSchemas.Contains(identityScheme) ? _kbInstanceName : _mpInstanceName;
 
 }
 
