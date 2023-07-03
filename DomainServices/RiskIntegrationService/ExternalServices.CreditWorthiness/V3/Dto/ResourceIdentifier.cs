@@ -1,4 +1,6 @@
-﻿namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
+﻿using CIS.Core;
+
+namespace DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
 
 public class ResourceIdentifier
     : ExternalServices.Dto.C4mResourceIdentifier
@@ -22,12 +24,12 @@ public class ResourceIdentifier
         };
 
     public static ResourceIdentifier CreateResourceIdentifier(string domain, string resource, RiskIntegrationService.Contracts.Shared.Identity humanUser, string? id = null)
-        => new()
+        => new ()
         {
             Instance = ExternalServices.Helpers.GetResourceIdentifierInstanceForDealer(humanUser.IdentityScheme),
             Domain = domain,
             Resource = resource,
-            Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(17000, $"Can not find Id for ResourceIdentifier {domain}/{resource}"),
+            Id = id ?? humanUser.IdentityId ?? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ResourceIdentifierIdIsEmpty, $"{domain}/{resource}"),
             Variant = resource == "Broker" ? humanUser.IdentityScheme! : null
         };
 }

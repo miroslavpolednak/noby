@@ -99,7 +99,7 @@ internal sealed class ProductChildMapper
                     Instance = relation.BankAccount.BankCode switch {
                         "7990" => "MPSS",
                         "0100" => "KBCZ",
-                        _ => throw new CisValidationException(17008, $"Transofrmation for BankCode={relation.BankAccount.BankCode} does not exist")
+                        _ => throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.BankCodeNotFound, relation.BankAccount.BankCode)
                     },
                     Domain = "PCP",
                     Resource = "LoanSoldProduct"
