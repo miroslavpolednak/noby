@@ -1,7 +1,6 @@
 ﻿using CIS.Core.Security;
 using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
-using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using DomainServices.SalesArrangementService.Clients;
@@ -34,20 +33,13 @@ internal sealed class CreateRealEstateValuationHandler
         if (caseInstance.State != (int)CaseStates.InProgress)
         {
             var saInstance = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+            var developer = await _offerService.GetOfferDeveloper(saInstance.OfferId!.Value, cancellationToken);
 
-            var offerInstance = await _offerService.GetMortgageOfferDetail(saInstance.OfferId!.Value, cancellationToken);
-
-            if (offerInstance.SimulationInputs.Developer?.DeveloperId != null 
-                && offerInstance.SimulationInputs.Developer?.ProjectId != null)
+            revRequest.DeveloperAllowed = developer.IsDeveloperAllowed && request.IsLoanRealEstate;
+            
+            if (request.DeveloperApplied && revRequest.DeveloperAllowed)
             {
-                var project = await _codebookService.GetDeveloperProject(offerInstance.SimulationInputs.Developer.DeveloperId.Value, offerInstance.SimulationInputs.Developer.ProjectId.Value, cancellationToken);
-
-                revRequest.DeveloperAllowed = _allowedMassValuations.Contains(project.MassEvaluation) && request.IsLoanRealEstate;
-
-                if (request.DeveloperApplied && revRequest.DeveloperAllowed)
-                {
-                    revRequest.ValuationStateId = 4;
-                }
+                revRequest.ValuationStateId = 4;
             }
         }
 
@@ -59,9 +51,6 @@ internal sealed class CreateRealEstateValuationHandler
         return await _realEstateValuationService.CreateRealEstateValuation(revRequest, cancellationToken);
     }
 
-    private static int[] _allowedMassValuations = new int[] { -1, 1 };
-
-    private readonly ICodebookServiceClient _codebookService;
     private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICurrentUserAccessor _currentUser;
@@ -69,14 +58,12 @@ internal sealed class CreateRealEstateValuationHandler
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
     public CreateRealEstateValuationHandler(
-        ICodebookServiceClient codebookService,
         IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService,
         ICurrentUserAccessor currentUserAccessor,
         IRealEstateValuationServiceClient realEstateValuationService, 
         ICaseServiceClient caseService)
     {
-        _codebookService = codebookService;
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
         _currentUser = currentUserAccessor;

@@ -1,4 +1,6 @@
 ﻿using System.Text.Json.Serialization;
+using NOBY.Api.Endpoints.CustomerIncome.Dto;
+using NOBY.Dto.Attributes;
 
 namespace NOBY.Api.Endpoints.CustomerIncome.CreateIncome;
 
@@ -13,6 +15,7 @@ public sealed class CreateIncomeRequest
     /// <summary>
     /// Detailni informace o prijmu
     /// </summary>
+    [SwaggerOneOf<IncomeDataEmployement, IncomeDataEntrepreneur, IncomeDataOther>]
     public object? Data { get; set; }
 
     internal CreateIncomeRequest InfuseId(int customerOnSAId)

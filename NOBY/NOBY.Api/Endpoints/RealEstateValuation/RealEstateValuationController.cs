@@ -1,4 +1,5 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
+using System.Net.Mime;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation;
 
@@ -20,7 +21,10 @@ public sealed class RealEstateValuationController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<int> CreateRealEstateValuation([FromRoute] long caseId, [FromBody] CreateRealEstateValuation.CreateRealEstateValuationRequest request, CancellationToken cancellationToken)
+    public async Task<int> CreateRealEstateValuation(
+        [FromRoute] long caseId, 
+        [FromBody] CreateRealEstateValuation.CreateRealEstateValuationRequest request, 
+        CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(caseId), cancellationToken);
 
     /// <summary>
@@ -35,12 +39,32 @@ public sealed class RealEstateValuationController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteRealEstateValuation([FromRoute] long caseId, [FromRoute] int realEstateValuationId, CancellationToken cancellationToken)
+    [AuthorizeCaseOwner]
+    public async Task<IActionResult> DeleteRealEstateValuation(
+        [FromRoute] long caseId, 
+        [FromRoute] int realEstateValuationId, 
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(new DeleteRealEstateValuation.DeleteRealEstateValuationRequest(caseId, realEstateValuationId), cancellationToken);
         return NoContent();
     }
-        
+
+    /// <summary>
+    /// Získání detailu Ocenění nemovitostí
+    /// </summary>
+    /// <remarks>
+    /// Operace vrací detail Ocenění nemovitostí.
+    ///
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7301EE13-E1C2-4795-A5FA-F8A646C4D057"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(typeof(Shared.RealEstateValuationDetail), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeCaseOwner]
+    public async Task<Shared.RealEstateValuationDetail> GetRealEstateValuationDetail(long caseId, int realEstateValuationId, CancellationToken cancellationToken) => 
+        await _mediator.Send(new GetRealEstateValuationDetail.GetRealEstateValuationDetailRequest(caseId, realEstateValuationId), cancellationToken);
 
     /// <summary>
     /// Získání seznamu Ocenění nemovitostí
@@ -55,8 +79,57 @@ public sealed class RealEstateValuationController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task GetListRealEstateValuation([FromRoute] long caseId, CancellationToken cancellationToken)
+    public async Task GetListRealEstateValuation(
+        [FromRoute] long caseId, 
+        CancellationToken cancellationToken)
         => await _mediator.Send(new GetListRealEstateValuation.GetListRealEstateValuationRequest(caseId), cancellationToken);
+
+    /// <summary>
+    /// Aktualizace detailu Ocenění nemovitostí
+    /// </summary>
+    /// <remarks>
+    /// Operace edituje detail Ocenění nemovitostí.
+    ///
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=39883A18-AA29-4f7d-9E4E-BC2D5F81B115"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeCaseOwner]
+    public async Task<IActionResult> UpdateRealEstateValuationDetail(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Patch developera Ocenění nemovitosti
+    /// </summary>
+    /// <remarks>
+    /// Patch toggle developera na Ocenění konkrétní nemovitosti ještě před odesláním do ACV.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPatch("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/developer")]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeCaseOwner]
+    public async Task<IActionResult> PatchDeveloperOnRealEstateValuation(
+        [FromRoute] long caseId, 
+        [FromRoute] int realEstateValuationId, 
+        [FromBody] PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest request, 
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+        return NoContent();
+    }
 
     private readonly IMediator _mediator;
     public RealEstateValuationController(IMediator mediator) => _mediator = mediator;

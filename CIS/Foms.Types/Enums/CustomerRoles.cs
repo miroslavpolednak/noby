@@ -25,5 +25,5 @@ public enum CustomerRoles : byte
     
     [Display(Name = "Ručitel", ShortName = "R")]
     [EnumMember]
-    Garantor = 128,
+    Garantor = 8
 }

@@ -11,7 +11,7 @@ internal sealed class ErrorCodeMapper
     {
         SetMessages(new Dictionary<int, string>()
         {
-            { xxx, "" }
+            { xxx, "xxx" }
         });
 
         return Messages;
