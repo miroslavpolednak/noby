@@ -6,8 +6,9 @@ using NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
 using System.Net.Mime;
 using NOBY.Api.Endpoints.DocumentOnSA.Search;
-using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
+using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
+using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -60,6 +61,20 @@ public class DocumentOnSAController : ControllerBase
     => await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
 
     /// <summary>
+    /// Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování<br /><br />
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task SendDocumentPreview([FromRoute] int salesArrangementId, [FromRoute] int documentOnSAId)
+        => await _mediator.Send(new SendDocumentPreviewRequest(salesArrangementId, documentOnSAId));
+    
+    /// <summary>
     /// Zrušit podepisování dokumentu
     /// </summary>
     /// <remarks>
@@ -78,6 +93,28 @@ public class DocumentOnSAController : ControllerBase
         [FromRoute] int salesArrangementId,
         [FromRoute] int documentOnSAId)
     => await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId));
+
+    /// <summary>
+    /// Vygenerování náhledu rozpodepsaného dokumentu
+    /// </summary>
+    /// <remarks>
+    /// Dle zdroje podepisovaného dokumentu, typu podepisování a stavu podepisování dojde k vrácení PDF pro náhled dokumentu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A1B54B66-9AF8-4e5c-A240-93FEF635449F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSaId}/preview")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetDocumentOnSAPreview(
+        [FromRoute] int salesArrangementId,
+        [FromRoute] int documentOnSAId,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await _mediator.Send(new GetDocumentOnSAPreviewRequest(salesArrangementId, documentOnSAId), cancellationToken);
+        return File(response.FileData, response.ContentType, response.Filename);
+    }
 
     /// <summary>
     /// Manuální podpis DocumentOnSA
