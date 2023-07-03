@@ -89,6 +89,7 @@ public class DocumentArchiveController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks> 
     [HttpPost("case/{caseId:long}/documents")]
+    [NobyAuthorize(UserPermissions.DASHBOARD_AccessAllCases)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> SaveDocumentsToArchive(

@@ -47,7 +47,7 @@ internal sealed class UpdateCustomersHandler
             }
 
             // HFICH-4165 - nastaveni flowSwitches
-            bool isSecondCustomerIdentified = c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false;
+            bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
             await setFlowSwitches(householdInstance.HouseholdTypeId, householdInstance.SalesArrangementId, isSecondCustomerIdentified, cancellationToken);
         }
 
