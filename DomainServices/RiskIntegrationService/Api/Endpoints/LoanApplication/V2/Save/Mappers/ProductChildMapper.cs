@@ -154,7 +154,7 @@ internal sealed class ProductChildMapper
                 .Select(t => new _C4M.LoanApplicationPurpose
                 {
                     Amount = t.Amount,
-                    Code = purposes.FirstOrDefault(x => x.C4MId.HasValue && x.MandantId == mandantId && x.Id == t.LoanPurposeId)?.C4MId ?? -1
+                    Code = purposes.FirstOrDefault(x => x.C4MId.HasValue && x.MandantId == mandantId && x.Id == t.LoanPurposeId)?.C4MId ?? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.LoanPurposeIdNotFound, t.LoanPurposeId)
                 })
                 .ToList();
 

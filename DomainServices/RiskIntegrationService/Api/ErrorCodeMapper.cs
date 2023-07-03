@@ -18,6 +18,7 @@ internal sealed class ErrorCodeMapper
     public const int ResourceIdentifierDealerSchemeIsNull = 17012;
     public const int C4MEnumNotFound = 17013;
     public const int BankCodeNotFound = 17014;
+    public const int LoanPurposeIdNotFound = 17015;
 
     public static IErrorCodesDictionary Init()
     {
@@ -35,7 +36,8 @@ internal sealed class ErrorCodeMapper
             { DealerSchemeIsNull, "IsKbGroupPerson() input parameter is null" },
             { ResourceIdentifierDealerSchemeIsNull, "GetResourceIdentifierInstanceForDealer() input parameter is null" },
             { C4MEnumNotFound, "Can't cast '{PropertyValue}' to C4M enum" },
-            { BankCodeNotFound, "Transformation for BankCode={PropertyValue} does not exist" }
+            { BankCodeNotFound, "Transformation for BankCode={PropertyValue} does not exist" },
+            { LoanPurposeIdNotFound, "Loan Purpose Id {PropertyValue} not found" }
         });
 
         return Messages;
