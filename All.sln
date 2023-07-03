@@ -257,6 +257,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00007-HFICH-3975_removed_signature_attributes.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00007-HFICH-3975_removed_signature_attributes.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00008-HFICH-4862_validation_comment.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00008-HFICH-4862_validation_comment.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00009-Validation_Comment_Fixed_Text.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00009-Validation_Comment_Fixed_Text.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00010-HFICH-6859_BusinessCaseId_Severity.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00010-HFICH-6859_BusinessCaseId_Severity.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
@@ -418,6 +419,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00028-HFICH-6502_ProductTypeId.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00028-HFICH-6502_ProductTypeId.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00029-HFICH-4098_TaxResidency.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00029-HFICH-4098_TaxResidency.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00030-HFICH-4845_AndOtherBugFixes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00030-HFICH-4845_AndOtherBugFixes.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00032-HFICH-6859_ContractSignatureTypeId.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00032-HFICH-6859_ContractSignatureTypeId.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
