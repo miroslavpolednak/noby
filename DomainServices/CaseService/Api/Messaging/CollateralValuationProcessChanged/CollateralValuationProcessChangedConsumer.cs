@@ -11,7 +11,9 @@ internal sealed class CollateralValuationProcessChangedConsumer
         var message = context.Message;
         
         var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
-        await _linkTaskToCase.Link(currentTaskId, token);
+        var caseId = long.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
+
+        await _linkTaskToCase.Link(caseId, currentTaskId, token);
     }
 
     private readonly Services.LinkTaskToCaseService _linkTaskToCase;

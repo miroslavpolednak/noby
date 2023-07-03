@@ -11,7 +11,7 @@ internal sealed class ActiveTask
 
     public long CaseId { get; set; }
 
-    public long TaskProcessId { get; set; }
+    public long TaskId { get; set; }
 
     public int TaskTypeId { get; set; }
 

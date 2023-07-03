@@ -17,7 +17,6 @@ import "Messages/DeleteCase.proto";
 import "Messages/GetTaskDetail.proto";
 import "Messages/GetTaskList.proto";
 import "Messages/GetProcessList.proto";
-import "Messages/UpdateActiveTasks.proto";
 import "Messages/UpdateOfferContacts.proto";
 import "Messages/NotifyStarbuild.proto";
 import "Messages/CancelTask.proto";
@@ -50,8 +49,6 @@ service CaseService {
    rpc GetTaskList (GetTaskListRequest) returns (GetTaskListResponse);
 
    rpc GetProcessList (GetProcessListRequest) returns (GetProcessListResponse);
-
-   rpc UpdateActiveTasks (UpdateActiveTasksRequest) returns (google.protobuf.Empty);
 
    rpc UpdateOfferContacts (UpdateOfferContactsRequest) returns (google.protobuf.Empty);
 

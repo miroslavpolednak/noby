@@ -41,7 +41,7 @@ internal sealed class SearchCasesHandler
             .Select(t => new
             {
                 t.CaseId,
-                t.TaskProcessId,
+                t.TaskId,
                 t.TaskTypeId,
                 t.TaskIdSb
             })
@@ -53,7 +53,8 @@ internal sealed class SearchCasesHandler
                 .Where(x => x.CaseId == t.CaseId)
                 .Select(x => new ActiveTask 
                 { 
-                    TaskId = x.TaskProcessId, 
+                    TaskId = x.TaskId, 
+                    TaskIdSb = x.TaskIdSb,
                     TaskTypeId = x.TaskTypeId 
                 })
                 .ToList()

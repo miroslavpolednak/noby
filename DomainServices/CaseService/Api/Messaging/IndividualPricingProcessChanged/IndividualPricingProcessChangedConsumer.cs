@@ -17,7 +17,9 @@ internal sealed class IndividualPricingProcessChangedConsumer
         var message = context.Message;
         
         var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
-        await _linkTaskToCase.Link(currentTaskId, token);
+        var caseId = long.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
+
+        await _linkTaskToCase.Link(caseId, currentTaskId, token);
         
         if (message.state != ProcessStateEnum.COMPLETED)
         {
@@ -44,7 +46,6 @@ internal sealed class IndividualPricingProcessChangedConsumer
             FlowSwitchId = flowSwitchId
         };
 
-        var caseId = int.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
         var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, token);
         var salesArrangementTypes = await _codebookService.SalesArrangementTypes(token);
 

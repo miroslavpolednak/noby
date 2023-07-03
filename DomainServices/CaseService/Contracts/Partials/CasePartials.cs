@@ -55,10 +55,6 @@ public partial class GetTaskListByContractRequest
 public partial class GetProcessListRequest : MediatR.IRequest<GetProcessListResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 
-public partial class UpdateActiveTasksRequest
-    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
-{ }
-
 public partial class UpdateOfferContactsRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
