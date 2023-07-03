@@ -1,9 +1,9 @@
 ALTER TABLE [dbo].[ActiveTask] SET ( SYSTEM_VERSIONING = OFF  )
 GO
 
-ALTER TABLE [dbo].[ActiveTask] ADD TaskIdSb INT NOT NULL;
+ALTER TABLE [dbo].[ActiveTask] ADD TaskIdSb INT NOT NULL DEFAULT(0);
 GO
-ALTER TABLE [dbo].[ActiveTaskHistory] ADD TaskIdSb INT NOT NULL;
+ALTER TABLE [dbo].[ActiveTaskHistory] ADD TaskIdSb INT NOT NULL DEFAULT(0);
 GO
 sp_rename 'ActiveTask.TaskProcessId', 'TaskId', 'COLUMN';
 GO
