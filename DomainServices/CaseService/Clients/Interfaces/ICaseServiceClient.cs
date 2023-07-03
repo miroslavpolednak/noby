@@ -17,7 +17,7 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: {SB error key}; {SB error message}</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task<long> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken));
+    Task<long> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci pocet CASE pro daneho uzivatele v jednotlivych stavech
@@ -25,7 +25,7 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; CaseOwnerUserId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task<List<GetCaseCountsResponse.Types.CaseCountsItem>> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<List<GetCaseCountsResponse.Types.CaseCountsItem>> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci detail Case
@@ -34,13 +34,13 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task<Case> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<Case> GetCaseDetail(long caseId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Seznam Case pro uzivatele
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; CaseOwnerUserId must be > 0</exception>
-    Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int userId, List<int>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken));
+    Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int userId, List<int>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Zmena majitele Case
@@ -51,7 +51,7 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13022; User not found: {}</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task LinkOwnerToCase(long caseId, int ownerUserId, CancellationToken cancellationToken = default(CancellationToken));
+    Task LinkOwnerToCase(long caseId, int ownerUserId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Update zakladnich udaju Case - cislo smlouvy
@@ -63,7 +63,7 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task UpdateCaseData(long caseId, CaseData data, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateCaseData(long caseId, CaseData data, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Update stavu Case
@@ -76,7 +76,7 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13017; Case State must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task UpdateCaseState(long caseId, int state, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateCaseState(long caseId, int state, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Update infa o klientovi na case
@@ -86,7 +86,7 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task UpdateCustomerData(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateCustomerData(long caseId, CustomerData customer, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Smazani case
@@ -96,7 +96,7 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13021; Unable to delete Case – one or more SalesArrangements exists for this case</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task DeleteCase(long caseId, CancellationToken cancellationToken = default(CancellationToken));
+    Task DeleteCase(long caseId, CancellationToken cancellationToken = default);
 
 
     /// <summary>
@@ -107,7 +107,7 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task<List<WorkflowTask>> GetTaskList(long caseId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<List<WorkflowTask>> GetTaskList(long caseId, CancellationToken cancellationToken = default);
 
     Task<IList<ProcessTask>> GetProcessList(long caseId, CancellationToken cancellationToken = default);
 
@@ -118,17 +118,19 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default);
 
-    Task NotifyStarbuild(long caseId, string riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken));
+    Task NotifyStarbuild(long caseId, string riskBusinessCaseId, CancellationToken cancellationToken = default);
 
     Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default);
 
     Task<GetTaskDetailResponse> GetTaskDetail(int taskIdSb, CancellationToken cancellationToken = default);
     
-    Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default(CancellationToken));
+    Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default);
     
-    Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default);
 
-    Task<ValidateCaseIdResponse> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default(CancellationToken));
+    Task<ValidateCaseIdResponse> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
+
+    Task UpdateActiveTasks(UpdateActiveTasksRequest request, CancellationToken cancellationToken = default);
 }

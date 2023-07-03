@@ -44,4 +44,6 @@ message ActiveTask {
 	int64 TaskId = 1;
 
 	int32 TaskTypeId = 2;
+
+	int32 TaskIdSb = 3;
 }

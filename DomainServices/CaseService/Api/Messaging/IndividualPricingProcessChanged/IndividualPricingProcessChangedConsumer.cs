@@ -1,6 +1,5 @@
 ﻿using CIS.Foms.Enums;
 using cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1;
-using DomainServices.CaseService.Api.Endpoints.LinkTaskToCase;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
@@ -12,17 +11,13 @@ namespace DomainServices.CaseService.Api.Messaging.IndividualPricingProcessChang
 internal sealed class IndividualPricingProcessChangedConsumer
     : IConsumer<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.IndividualPricingProcessChanged>
 {
-    private readonly IMediator _mediator;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClient _codebookService;
-    
     public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.IndividualPricingProcessChanged> context)
     {
         var token = context.CancellationToken;
         var message = context.Message;
         
         var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
-        await _mediator.Send(new LinkTaskToCaseRequest{ TaskId = currentTaskId }, token);
+        await _linkTaskToCase.Link(currentTaskId, token);
         
         if (message.state != ProcessStateEnum.COMPLETED)
         {
@@ -63,11 +58,18 @@ internal sealed class IndividualPricingProcessChangedConsumer
         }
     }
 
+    private readonly IMediator _mediator;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly Services.LinkTaskToCaseService _linkTaskToCase;
+
     public IndividualPricingProcessChangedConsumer(
         IMediator mediator,
+        Services.LinkTaskToCaseService linkTaskToCase,
         ISalesArrangementServiceClient salesArrangementService,
         ICodebookServiceClient codebookService)
     {
+        _linkTaskToCase = linkTaskToCase;
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
         _codebookService = codebookService;

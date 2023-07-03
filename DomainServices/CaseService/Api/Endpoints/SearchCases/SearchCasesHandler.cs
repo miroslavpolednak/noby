@@ -42,7 +42,8 @@ internal sealed class SearchCasesHandler
             {
                 t.CaseId,
                 t.TaskProcessId,
-                t.TaskTypeId
+                t.TaskTypeId,
+                t.TaskIdSb
             })
             .ToListAsync(cancellation);
 

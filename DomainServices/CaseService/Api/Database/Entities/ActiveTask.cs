@@ -14,4 +14,6 @@ internal sealed class ActiveTask
     public long TaskProcessId { get; set; }
 
     public int TaskTypeId { get; set; }
+
+    public int TaskIdSb { get; set; }
 }

@@ -157,6 +157,11 @@ internal sealed class CaseServiceClient
         }, cancellationToken: cancellationToken);
     }
     
+    public async Task UpdateActiveTasks(UpdateActiveTasksRequest request, CancellationToken cancellationToken = default)
+    {
+        await _service.UpdateActiveTasksAsync(request, cancellationToken: cancellationToken);
+    }
+
     public async Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         return await _service.CreateTaskAsync(request, cancellationToken: cancellationToken);

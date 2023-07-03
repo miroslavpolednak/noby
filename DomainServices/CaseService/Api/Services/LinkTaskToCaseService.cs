@@ -2,16 +2,17 @@
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 
-namespace DomainServices.CaseService.Api.Endpoints.LinkTaskToCase;
+namespace DomainServices.CaseService.Api.Services;
 
-public class LinkTaskToCaseHandler : IRequestHandler<LinkTaskToCaseRequest>
+[CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
+internal sealed class LinkTaskToCaseService
 {
     private readonly IMediator _mediator;
     private readonly ICodebookServiceClient _codebookService;
-    
-    public async Task Handle(LinkTaskToCaseRequest request, CancellationToken cancellationToken)
+
+    public async Task Link(int taskId, CancellationToken cancellationToken)
     {
-        var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = request.TaskId }, cancellationToken);
+        var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = taskId }, cancellationToken);
 
         var stateIdSb = taskDetail.TaskObject.StateIdSb;
         var taskTypeId = taskDetail.TaskObject.TaskTypeId;
@@ -26,15 +27,15 @@ public class LinkTaskToCaseHandler : IRequestHandler<LinkTaskToCaseRequest>
         {
             var taskList = await _mediator.Send(new GetTaskListRequest(), cancellationToken);
             var tasksIds = taskList.Tasks.Select(t => t.TaskId).ToHashSet();
-            
+
         }
         else
         {
-            
+
         }
     }
 
-    public LinkTaskToCaseHandler(IMediator mediator, ICodebookServiceClient codebookService)
+    public LinkTaskToCaseService(IMediator mediator, ICodebookServiceClient codebookService)
     {
         _mediator = mediator;
         _codebookService = codebookService;

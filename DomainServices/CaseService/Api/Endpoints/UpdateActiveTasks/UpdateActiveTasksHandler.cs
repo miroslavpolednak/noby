@@ -48,7 +48,8 @@ internal sealed class UpdateActiveTasksHandler
                 { 
                     CaseId = caseId, 
                     TaskProcessId = t.TaskId, 
-                    TaskTypeId = t.TaskTypeId 
+                    TaskTypeId = t.TaskTypeId,
+                    TaskIdSb = t.TaskIdSb
                 })
             );
         }
@@ -60,6 +61,7 @@ internal sealed class UpdateActiveTasksHandler
             entities.Where(e => idsToUpdate.Contains(e.TaskProcessId)).ToList().ForEach(e =>
             {
                 e.TaskTypeId = tasksToUpdateById[e.TaskProcessId].TaskTypeId;
+                e.TaskIdSb = tasksToUpdateById[e.TaskProcessId].TaskIdSb;
             });
         }
 
