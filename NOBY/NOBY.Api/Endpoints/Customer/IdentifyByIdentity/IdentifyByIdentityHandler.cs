@@ -46,8 +46,6 @@ internal sealed class IdentifyByIdentityHandler
         {
             var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers);
             await _mediator.Publish(notification, cancellationToken);
-
-            await _salesArrangementService.SetContractNumber(saInstance.SalesArrangementId, request.CustomerOnSAId, cancellationToken);
         }
         else // vytvoreni klienta v konsDb. Pro dluznika se to dela v notification, pro ostatni se to dubluje tady
         {
