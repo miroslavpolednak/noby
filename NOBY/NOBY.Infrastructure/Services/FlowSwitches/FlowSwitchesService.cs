@@ -68,6 +68,9 @@ internal sealed class FlowSwitchesService
         }, DateTime.Now.AddDays(1));
     }
 
+    /// <summary>
+    /// Vychozi nastaveni kategorii klapek. Nastavi default pro kazdou skupinu a seznam klapek, ktere musi byt nastaveny aby byla nastavena i kategorie.
+    /// </summary>
     public FlowSwitchGroupDefault[] getFlowSwitchGroups()
     {
         return _cache.GetOrAdd("FlowSwitchesGroups", () =>

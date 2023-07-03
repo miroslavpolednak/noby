@@ -7,6 +7,7 @@ import "Messages/GetMortgageOffer.proto";
 import "Messages/GetMortgageOfferDetail.proto";
 import "Messages/SimulateMortgage.proto";
 import "Messages/GetMortgageOfferFPSchedule.proto";
+import "Messages/GetOfferDeveloper.proto";
 
 service OfferService {
 	rpc GetOffer (DomainServices.OfferService.GetOfferRequest) returns (DomainServices.OfferService.GetOfferResponse);
@@ -18,4 +19,6 @@ service OfferService {
 	rpc SimulateMortgage (DomainServices.OfferService.SimulateMortgageRequest) returns (DomainServices.OfferService.SimulateMortgageResponse);
 
 	rpc GetMortgageOfferFPSchedule (DomainServices.OfferService.GetMortgageOfferFPScheduleRequest) returns (DomainServices.OfferService.GetMortgageOfferFPScheduleResponse);
+
+	rpc GetOfferDeveloper (GetOfferDeveloperRequest) returns (GetOfferDeveloperResponse);
 }

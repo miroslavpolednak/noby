@@ -2,6 +2,8 @@
 package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+
 message LoanPurposeDetailsObject {
     repeated int32 LoanPurposes = 1;
 }
@@ -24,5 +26,5 @@ message SpecificDetailFinishedHouseAndFlatDetails {
 }
 
 message SpecificDetailParcelObject {
-    int32 ParcelNumber = 1;
+    google.protobuf.Int32Value ParcelNumber = 1;
 }

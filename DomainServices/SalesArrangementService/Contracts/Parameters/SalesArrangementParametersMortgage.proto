@@ -16,7 +16,7 @@ message SalesArrangementParametersMortgage {
     string Comment = 8;
 
 	message LoanRealEstate {
-		int64 RealEstateTypeId = 1;
+		int32 RealEstateTypeId = 1;
 		bool IsCollateral = 2;
 		int32 RealEstatePurchaseTypeId = 3;
 	}

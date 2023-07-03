@@ -2,7 +2,7 @@
 using System.Text;
 using Microsoft.OpenApi.Models;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
-using NOBY.Api.Endpoints.Workflow.GetTaskDetail;
+using NOBY.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.StartupExtensions;
@@ -33,7 +33,8 @@ internal static class NobySwagger
             //x.UseOneOfForPolymorphism();
 
             x.SupportNonNullableReferenceTypes();
-            
+            x.UseAllOfToExtendReferenceSchemas();
+
             // všechny parametry budou camel case
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();
@@ -48,14 +49,11 @@ internal static class NobySwagger
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "NOBY.Dto.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
             
-            x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
-            x.SchemaFilter<Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementSwaggerSchema> ();
-            x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwaggerSchema>();
-            x.SchemaFilter<GetTaskDetailSwaggerSchema>();
+            x.SchemaFilter<SwaggerOneOfSchemaFilter>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
 
-            x.OperationFilter<Infrastructure.Swagger.ApplySwaggerNobyAttributes>();
+            x.OperationFilter<ApplySwaggerNobyAttributes>();
         });
 
         return builder;

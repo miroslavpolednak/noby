@@ -288,7 +288,7 @@ internal sealed class IdentifiedSubjectService
         {
             IdentificationMethodCode = customerIdentification.IdentificationMethodId.ToString(CultureInfo.InvariantCulture),
             IdentificationDate = customerIdentification.IdentificationDate,
-            CzechIdentificationNumber = customerIdentification.CzechIdentificationNumber.ToCMString()
+            CzechIdentificationNumber = customerIdentification.CzechIdentificationNumber?.Trim().ToCMString()
         };
     }
 

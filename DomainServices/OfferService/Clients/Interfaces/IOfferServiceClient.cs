@@ -9,21 +9,21 @@ public interface IOfferServiceClient
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10000; Offer #{offerId} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
-    Task<GetOfferResponse> GetOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<GetOfferResponse> GetOffer(int offerId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Získání základních informací o simulaci KB Hypotéky
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10000; Offer #{offerId} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
-    Task<GetMortgageOfferResponse> GetMortgageOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<GetMortgageOfferResponse> GetMortgageOffer(int offerId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Získání detailních informací o simulaci KB Hypotéky
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10000; Offer #{offerId} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
-    Task<GetMortgageOfferDetailResponse> GetMortgageOfferDetail(int offerId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<GetMortgageOfferDetailResponse> GetMortgageOfferDetail(int offerId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Simulace KB Hypotéky
@@ -39,13 +39,14 @@ public interface IOfferServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10010; SimulationInputs.LoanAmount is not specified</exception>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10011; SimulationInputs.LoanDuration is not specified</exception>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10018; SimulationInputs.CollateralAmount is not specified</exception>
-    Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Získání plného splátkového kalendáře KB Hypotéky
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10000; Offer #{offerId} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
-    Task<GetMortgageOfferFPScheduleResponse> GetMortgageOfferFPSchedule(int offerId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<GetMortgageOfferFPScheduleResponse> GetMortgageOfferFPSchedule(int offerId, CancellationToken cancellationToken = default);
 
+    Task<GetOfferDeveloperResponse> GetOfferDeveloper(int offerId, CancellationToken cancellationToken  = default);
 }

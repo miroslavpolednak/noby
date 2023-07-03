@@ -381,6 +381,7 @@ message IdentificationDocumentTypesResponse {
 		string RdmCode = 4;
 		bool IsDefault= 5;
 		google.protobuf.StringValue MpDigiApiCode = 6;
+		int32 PersonType = 7;
 	}
 }
 
@@ -408,6 +409,7 @@ message LoanPurposesResponse {
 	   google.protobuf.Int32Value C4MId = 5;
 	   google.protobuf.BoolValue IsValid = 6;
 	   repeated int32 ProductTypeIds = 7;
+	   google.protobuf.StringValue AcvId = 8;
 	}
 }
 
