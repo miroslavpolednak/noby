@@ -58,9 +58,6 @@ internal sealed class CaseService
     public override Task<GetProcessListResponse> GetProcessList(GetProcessListRequest request, ServerCallContext context) => 
         _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<Empty> UpdateActiveTasks(UpdateActiveTasksRequest request, ServerCallContext context)
-        => await _mediator.Send(request, context.CancellationToken);
-
     public override async Task<Empty> NotifyStarbuild(NotifyStarbuildRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 

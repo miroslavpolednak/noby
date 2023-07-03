@@ -2,13 +2,24 @@
 
 namespace DomainServices.CaseService.Api.Messaging.CollateralValuationProcessChanged;
 
-public class CollateralValuationProcessChangedConsumer
+internal sealed class CollateralValuationProcessChangedConsumer
     : IConsumer<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged> 
 {
-    public Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged> context)
+    public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged> context)
     {
+        var token = context.CancellationToken;
         var message = context.Message;
+        
         var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
-        return Task.CompletedTask;
+        var caseId = long.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
+
+        await _linkTaskToCase.Link(caseId, currentTaskId, token);
+    }
+
+    private readonly Services.LinkTaskToCaseService _linkTaskToCase;
+
+    public CollateralValuationProcessChangedConsumer(Services.LinkTaskToCaseService linkTaskToCase)
+    {
+        _linkTaskToCase = linkTaskToCase;
     }
 }
