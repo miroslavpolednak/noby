@@ -37,6 +37,18 @@ internal sealed class RealESignaturesClient
         throw new NotImplementedException();
     }
 
+    public async Task<(int? Code, string? Message)> SendDocumentPreview(string externalId, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient
+            .PostAsync(_httpClient.BaseAddress + $"/{_organization}/REST/v2/DocumentService/SendDocumentPreview?externalId={externalId}", null, cancellationToken)
+            .ConfigureAwait(false);
+
+        var result = await response.Content.ReadFromJsonAsync<Contracts.ProcessingResult>(cancellationToken: cancellationToken)
+            ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(SendDocumentPreview), nameof(Contracts.ProcessingResult));
+
+        return (result.Code, result.Message);
+    }
+
     private const string _organization = "mpss";
 
     private readonly HttpClient _httpClient;

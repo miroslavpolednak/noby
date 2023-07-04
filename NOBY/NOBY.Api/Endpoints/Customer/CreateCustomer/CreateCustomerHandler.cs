@@ -30,18 +30,18 @@ internal sealed class CreateCustomerHandler
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11024")
         {
             _logger.LogInformation("CreateCustomer: more clients found", ex);
-            throw new CisConflictException(90006, ex.Message);
+            throw new NobyValidationException(90006, 409);
         }
         // Registry nefungují
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11025")
         {
             _logger.LogInformation("CreateCustomer: registry failed", ex);
-            throw new NobyValidationException(90007, "KBCM_NOT_FOUND_IN_BR");
+            throw new NobyValidationException(90007);
         }
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11026")
         {
             _logger.LogInformation("CreateCustomer: registry failed", ex);
-            throw new NobyServerException(90008, "KBCM_UNAVAILABLE_BR");
+            throw new NobyServerException(90008);
         }
         catch
         {
