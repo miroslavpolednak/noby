@@ -41,7 +41,7 @@ internal sealed class CreateCustomerHandler
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11026")
         {
             _logger.LogInformation("CreateCustomer: registry failed", ex);
-            throw new NobyServerException(90008);
+            throw new NobyValidationException(90008, 500);
         }
         catch
         {
