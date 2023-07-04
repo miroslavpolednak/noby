@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using NOBY.Api.Endpoints.Test.Rollback;
+﻿using NOBY.Api.Endpoints.Test.Rollback;
 
 namespace NOBY.Api.Endpoints.Test;
 
@@ -27,7 +26,7 @@ public class TestController : ControllerBase
     [HttpGet("t2")]
     public async Task T2()
     {
-        throw new CisNotFoundException(111, "moje chybova hlaska");
+        throw new NotImplementedException();
     }
 
     [HttpGet("t3")]
