@@ -133,6 +133,7 @@ internal static class CaseExtensions
     {
         return new ActiveTask
         {
+            TaskIdSb = workflowTask.TaskIdSb,
             TaskId = workflowTask.TaskId,
             TaskTypeId = workflowTask.TaskTypeId
         };

@@ -12,7 +12,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<Contracts.RiskBusinessCase>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(17001, StartupExtensions.ServiceName, nameof(CreateCase), nameof(Contracts.RiskBusinessCase));
+                ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CreateCase), nameof(Contracts.RiskBusinessCase));
 
         return result;
     }
@@ -24,7 +24,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<LoanApplicationAssessment>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(17001, StartupExtensions.ServiceName, nameof(CreateCaseAssessment), nameof(LoanApplicationAssessment));
+                ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CreateCaseAssessment), nameof(LoanApplicationAssessment));
 
         return result;
     }
@@ -36,7 +36,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<RiskBusinessCaseCommit>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(17001, StartupExtensions.ServiceName, nameof(CommitCase), nameof(RiskBusinessCaseCommit));
+                ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CommitCase), nameof(RiskBusinessCaseCommit));
 
         return result;
     }

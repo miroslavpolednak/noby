@@ -11,21 +11,21 @@ namespace DomainServices.CaseService.Api.Messaging.IndividualPricingProcessChang
 internal sealed class IndividualPricingProcessChangedConsumer
     : IConsumer<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.IndividualPricingProcessChanged>
 {
-    private readonly IMediator _mediator;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClient _codebookService;
-    
     public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.IndividualPricingProcessChanged> context)
     {
-        var message = context.Message;
         var token = context.CancellationToken;
+        var message = context.Message;
+        
+        var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
+        var caseId = long.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
 
+        await _linkTaskToCase.Link(caseId, currentTaskId, token);
+        
         if (message.state != ProcessStateEnum.COMPLETED)
         {
             return;
         }
         
-        var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId }, token);
         var decisionId = taskDetail.TaskDetail.PriceException.DecisionId;
         var flowSwitchId = decisionId switch
@@ -46,7 +46,6 @@ internal sealed class IndividualPricingProcessChangedConsumer
             FlowSwitchId = flowSwitchId
         };
 
-        var caseId = int.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
         var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, token);
         var salesArrangementTypes = await _codebookService.SalesArrangementTypes(token);
 
@@ -60,11 +59,18 @@ internal sealed class IndividualPricingProcessChangedConsumer
         }
     }
 
+    private readonly IMediator _mediator;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly Services.LinkTaskToCaseService _linkTaskToCase;
+
     public IndividualPricingProcessChangedConsumer(
         IMediator mediator,
+        Services.LinkTaskToCaseService linkTaskToCase,
         ISalesArrangementServiceClient salesArrangementService,
         ICodebookServiceClient codebookService)
     {
+        _linkTaskToCase = linkTaskToCase;
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
         _codebookService = codebookService;

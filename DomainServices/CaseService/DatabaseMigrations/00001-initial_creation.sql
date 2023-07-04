@@ -59,7 +59,6 @@ SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[CaseHistory])
 )
 GO
 
-
 CREATE TABLE [dbo].[ActiveTask](
 	[ActiveTaskId] [int] IDENTITY(1,1) NOT NULL,
 	[CaseId] [bigint] NOT NULL,

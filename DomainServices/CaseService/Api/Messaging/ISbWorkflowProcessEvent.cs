@@ -10,14 +10,23 @@ namespace DomainServices.CaseService.Api.Messaging
 
 namespace cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1
 {
-    public partial class MainLoanProcessChanged : ISbWorkflowProcessEvent
+    public partial class CollateralValuationProcessChanged : ISbWorkflowProcessEvent
     {
     }
-}
-
-namespace cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1
-{
+    
+    public partial class ConsultationRequestProcessChanged : ISbWorkflowProcessEvent
+    {
+    }
+    
     public partial class IndividualPricingProcessChanged : ISbWorkflowProcessEvent
+    {
+    }
+    
+    public partial class InformationRequestProcessChanged : ISbWorkflowProcessEvent
+    {
+    }
+    
+    public partial class MainLoanProcessChanged : ISbWorkflowProcessEvent
     {
     }
     

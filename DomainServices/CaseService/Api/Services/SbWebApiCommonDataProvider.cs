@@ -7,12 +7,12 @@ namespace DomainServices.CaseService.Api.Services;
 internal sealed class SbWebApiCommonDataProvider
 {
     private readonly ICodebookServiceClient _codebookService;
-    private readonly IMediator _mediator;
+    private readonly Services.UpdateActiveTasksService _updateActiveTasks;
 
-    public SbWebApiCommonDataProvider(ICodebookServiceClient codebookService, IMediator mediator)
+    public SbWebApiCommonDataProvider(ICodebookServiceClient codebookService, Services.UpdateActiveTasksService updateActiveTasks)
     {
         _codebookService = codebookService;
-        _mediator = mediator;
+        _updateActiveTasks = updateActiveTasks;
     }
 
     public async Task<GetTaskListResponse> GetAndUpdateTasksList(long caseId, Func<IList<int>, Task<IList<IReadOnlyDictionary<string, string>>>> loadData, CancellationToken cancellationToken)
@@ -25,12 +25,7 @@ internal sealed class SbWebApiCommonDataProvider
             .ToList();
 
         // update active tasks
-        var updateRequest = new UpdateActiveTasksRequest
-        {
-            CaseId = caseId
-        };
-        updateRequest.Tasks.AddRange(tasks.Select(i => i.ToUpdateTaskItem()));
-        await _mediator.Send(updateRequest, cancellationToken);
+        await _updateActiveTasks.UpdateCaseTasks(caseId, tasks.Select(i => i.ToUpdateTaskItem()).ToList(), cancellationToken);
 
         // response
         var response = new GetTaskListResponse();
