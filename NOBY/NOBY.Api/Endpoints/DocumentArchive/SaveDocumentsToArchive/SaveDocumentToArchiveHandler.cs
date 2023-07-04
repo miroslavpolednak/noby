@@ -10,6 +10,7 @@ using DomainServices.UserService.Clients;
 using Google.Protobuf;
 using System.Globalization;
 using System.Threading;
+using CIS.Foms.Types.Enums;
 using static DomainServices.DocumentOnSAService.Contracts.v1.DocumentOnSAService;
 using _DocOnSa = NOBY.Api.Endpoints.DocumentOnSA.Search;
 
@@ -64,6 +65,8 @@ public class SaveDocumentToArchiveHandler
 
         foreach (var docInfo in request.DocumentsInformation)
         {
+            await CheckDrawingPermissionIfArrangementIsDrawing(docInfo.DocumentInformation.EaCodeMainId, cancellationToken);
+
             int? documentOnSAId = null;
             await CheckIfFormIdRequired(docInfo, cancellationToken);
 
@@ -99,6 +102,19 @@ public class SaveDocumentToArchiveHandler
                     EArchivId = uploadItem.uploadRequest.Metadata.DocumentId
                 },
                         cancellationToken);
+    }
+
+    private async Task CheckDrawingPermissionIfArrangementIsDrawing(int? eaCodeMainId, CancellationToken cancellationToken)
+    {
+        var documentTypes = await _codebookServiceClient.DocumentTypes(cancellationToken);
+
+        if (!documentTypes.Any(d => d.SalesArrangementTypeId == (int)SalesArrangementTypes.Drawing && d.EACodeMainId == eaCodeMainId))
+            return;
+
+        if (_currentUserAccessor.HasPermission(UserPermissions.SIGNING_DOCUMENT_UploadDrawingDocument))
+            return;
+
+        throw new CisAuthorizationException();
     }
 
     private async Task CheckIfFormIdRequired(DocumentsInformation docInfo, CancellationToken cancellationToken)

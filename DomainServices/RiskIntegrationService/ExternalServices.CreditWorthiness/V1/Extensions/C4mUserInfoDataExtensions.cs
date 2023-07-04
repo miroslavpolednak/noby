@@ -36,7 +36,7 @@ public static class C4mUserInfoDataExtensions
             Instance = ExternalServices.Helpers.GetResourceIdentifierInstanceForDealer(humanUser.IdentityScheme),
             Domain = domain,
             Resource = resource,
-            Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(17000, $"Can not find Id for ResourceIdentifier {domain}/{resource}"),
+            Id = id ?? humanUser.IdentityId ?? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ResourceIdentifierIdIsEmpty, $"{domain}/{resource}"),
             Variant = resource == "Broker" ? humanUser.IdentityScheme! : null
         };
 }

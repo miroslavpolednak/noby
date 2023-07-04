@@ -48,7 +48,7 @@ internal sealed class HouseholdChildMapper
             var types = await _codebookService.ObligationTypes(_cancellationToken);
             obligations.GroupBy(t =>
                 {
-                    var typeCode = types.FirstOrDefault(x => x.Id == t.ObligationTypeId)?.Code ?? throw new CisValidationException(17008, $"ObligationTypeId={t.ObligationTypeId} does not exist");
+                    var typeCode = types.FirstOrDefault(x => x.Id == t.ObligationTypeId)?.Code ?? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ObligationTypeIdNotFound, t.ObligationTypeId);
                     return FastEnum.Parse<_C4M.CreditLiabilitiesSummaryType>(typeCode);
                 })
                 .ToList()
@@ -81,7 +81,7 @@ internal sealed class HouseholdChildMapper
                 .Where(t => t.ObligationTypeId == 1 || t.ObligationTypeId == 2 || t.ObligationTypeId == 5)
                 .GroupBy(t =>
                 {
-                    var typeCode = types.FirstOrDefault(x => x.Id == t.ObligationTypeId)?.Code ?? throw new CisValidationException(17008, $"ObligationTypeId={t.ObligationTypeId} does not exist");
+                    var typeCode = types.FirstOrDefault(x => x.Id == t.ObligationTypeId)?.Code ?? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ObligationTypeIdNotFound, t.ObligationTypeId);
                     return FastEnum.Parse<_C4M.LoanInstallmentsSummaryType>(typeCode);
                 })
                 .ToList()

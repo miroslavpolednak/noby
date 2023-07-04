@@ -19,7 +19,7 @@ public class ResourceIdentifier
             Instance = Helpers.GetResourceIdentifierInstanceForDealer(humanUser.IdentityScheme),
             Domain = Constants.BM,
             Resource = Constants.Broker,
-            Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(17000, $"Can not find Id for ResourceIdentifier"),
+            Id = id ?? humanUser.IdentityId ?? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ResourceIdentifierIdIsEmpty, ""),
             Variant = humanUser.IdentityScheme!
         };
 }
