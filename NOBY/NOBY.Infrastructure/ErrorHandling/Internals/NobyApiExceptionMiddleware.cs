@@ -69,15 +69,10 @@ public sealed class NobyApiExceptionMiddleware
         {
             await Results.Json(singleErrorResult(ex), statusCode: 404).ExecuteAsync(context);
         }
-        // conflict 409
-        catch (CisConflictException ex)
-        {
-            await Results.Json(singleErrorResult(ex), statusCode: 409).ExecuteAsync(context);
-        }
         // osetrena validace na urovni FE API
         catch (NobyValidationException ex)
         {
-            await Results.Json(ex.Errors, statusCode: 400).ExecuteAsync(context);
+            await Results.Json(ex.Errors, statusCode: ex.HttpStatusCode).ExecuteAsync(context);
         }
         catch (NobyServerException ex)
         {

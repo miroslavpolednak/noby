@@ -14,36 +14,24 @@ internal sealed class GetCovenantsHandler
         {
             Sections = covenantGroups.Select(group =>
             {
-                List<GetCovenantsResponsePhase> phases = list.Phases
-                    .OrderBy(t => t.Order)
-                    .Select(t => new GetCovenantsResponsePhase()
-                    {
-                        Name = t.Name,
-                        OrderLetter = t.OrderLetter,
-                        Covenants = list.Covenants
-                            .Where(c => c.PhaseOrder == t.Order)
-                            .Select(mapCovenant())
-                            
-                            .ToList()
-                    })
-                    .ToList();
-
-                if (list.Covenants.Any(t => t.PhaseOrder == 0))
-                {
-                    phases.Insert(0, new()
-                    {
-                        Covenants = list.Covenants
-                            .Where(t => t.PhaseOrder == 0)
-                            .Select(mapCovenant())
-                            .OrderBy(c => c.OrderLetter)
-                            .ToList()
-                    });
-                }
-
                 return new GetCovenantsResponseSection
                 {
                     CovenantTypeId = group.Key,
-                    Phases = phases
+                    Phases = group
+                        .GroupBy(x => x.PhaseOrder)
+                        .OrderBy(x => x)
+                        .Select(t =>
+                        {
+                            var phase = list.Phases.FirstOrDefault(p => p.Order == t.Key);
+
+                            return new GetCovenantsResponsePhase()
+                            {
+                                Name = phase?.Name,
+                                OrderLetter = phase?.OrderLetter,
+                                Covenants = t.Select(mapCovenant()).ToList()
+                            };
+                        })
+                        .ToList()
                 };
             })
             .ToList()
