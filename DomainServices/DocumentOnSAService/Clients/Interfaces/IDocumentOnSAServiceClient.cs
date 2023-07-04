@@ -57,4 +57,9 @@ public interface IDocumentOnSAServiceClient
     /// Metoda slouží k úpravě dat na DocumentOnSA
     /// </summary>
     Task SetDocumentOnSAArchived(int documentOnSAId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k odeslání náhledu dokumentu klientovi v případě elektronického podpisu
+    /// </summary>
+    Task SendDocumentPreview(int documentOnSAId, CancellationToken cancellationToken = default);
 }
