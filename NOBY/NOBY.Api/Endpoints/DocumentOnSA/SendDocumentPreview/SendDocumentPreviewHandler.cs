@@ -1,4 +1,6 @@
-﻿using DomainServices.DocumentOnSAService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.DocumentOnSAService.Clients;
+using DomainServices.DocumentOnSAService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
 
@@ -10,18 +12,20 @@ public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewReq
     { 
         var documentsResponse = await _documentOnSaService.GetDocumentsOnSAList(request.SalesArrangementId, cancellationToken);
         var documentOnSA = documentsResponse.DocumentsOnSA.FirstOrDefault(d => d.DocumentOnSAId == request.DocumentOnSAId);
-
+        
         if (documentOnSA is null)
         {
             throw new CisNotFoundException(90001, "DocumentOnSA does not exist on provided sales arrangement.");
         }
 
-        var isElectronicAndWorkflow = documentOnSA.SignatureTypeId == 3; // && documentOnSA.Source == 2 ??
+        var documentOnSAData = await _documentOnSaService.GetDocumentOnSAData(request.DocumentOnSAId, cancellationToken);
+
+        var isElectronicAndWorkflow = documentOnSA.SignatureTypeId == (int)SignatureTypes.Electronic && documentOnSAData.Source == Source.Workflow;
         var isValidOrFinal = documentOnSA.IsValid || documentOnSA.IsFinal;
 
         if (isElectronicAndWorkflow && isValidOrFinal)
         {
-            // await _documentOnSaService.SendDocumentPreview()
+            await _documentOnSaService.SendDocumentPreview(request.DocumentOnSAId, cancellationToken);
         }
 
         throw new CisValidationException($"Invalid DocumentOnSA Id = {request.DocumentOnSAId}.");
