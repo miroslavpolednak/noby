@@ -35,11 +35,10 @@ public class UpdateRealEstateValuationDetailRequest : IRequest
     /// </summary>
     public int? RealEstateSubtypeId { get; set; }
 
-    public LoanPurposeDetail? LoanPurposeDetails { get; set; }
+    public Shared.LoanPurposeDetail? LoanPurposeDetails { get; set; }
 
-    [JsonConverter(typeof(SpecificDetailsConverter))]
     [SwaggerOneOf<HouseAndFlatDetails, ParcelDetails>]
-    public ISpecificDetails? SpecificDetails { get; set; }
+    public object? SpecificDetails { get; set; }
 
     internal UpdateRealEstateValuationDetailRequest InfuseId(long caseId, int realEstateValuationId)
     {

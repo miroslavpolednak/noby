@@ -54,7 +54,7 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
         };
     }
 
-    private static ISpecificDetails? GetSpecificDetailsObject(__Contracts.RealEstateValuationDetail valuationDetail)
+    private static object? GetSpecificDetailsObject(__Contracts.RealEstateValuationDetail valuationDetail)
     {
         return valuationDetail.SpecificDetailCase switch
         {

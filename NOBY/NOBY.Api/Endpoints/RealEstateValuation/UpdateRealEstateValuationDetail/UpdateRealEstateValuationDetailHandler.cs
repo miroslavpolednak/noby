@@ -1,8 +1,10 @@
-﻿using CIS.Foms.Enums;
+﻿using System.Text.Json;
+using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using NOBY.Api.Endpoints.RealEstateValuation.Shared;
 using NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails;
+using System.Text.Json.Nodes;
 using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail;
@@ -82,6 +84,8 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
 
         var variant = RealEstateVariantHelper.GetRealEstateVariant(valuationDetail.RealEstateValuationGeneralDetails.RealEstateTypeId);
 
+        ParseAndSetSpecificDetails(request, variant);
+
         switch (variant)
         {
             case RealEstateVariant.HouseAndFlat: CheckHouseAndFlatDetails(request);
@@ -98,6 +102,19 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
 
             default: throw new NotImplementedException();
         }
+    }
+
+    private static void ParseAndSetSpecificDetails(UpdateRealEstateValuationDetailRequest request, RealEstateVariant variant)
+    {
+        if (request.SpecificDetails is not JsonElement jsonElement)
+            return;
+
+        request.SpecificDetails = variant switch
+        {
+            RealEstateVariant.HouseAndFlat or RealEstateVariant.OnlyFlat => jsonElement.Deserialize<HouseAndFlatDetails>(),
+            RealEstateVariant.Parcel => jsonElement.Deserialize<ParcelDetails>(),
+            _ => default
+        };
     }
 
     private static void CheckHouseAndFlatDetails(UpdateRealEstateValuationDetailRequest request)
