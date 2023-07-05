@@ -1,5 +1,4 @@
 ﻿using ExternalServices.AddressWhisperer;
-using NOBY.Infrastructure.Security;
 using ExternalServices.AddressWhisperer.V1;
 using NOBY.Infrastructure.ErrorHandling.Internals;
 using CIS.Infrastructure.StartupExtensions;

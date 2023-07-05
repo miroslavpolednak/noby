@@ -13,6 +13,11 @@ internal sealed class MockESignaturesClient
         throw new NotImplementedException();
     }
 
+    public Task<(int? Code, string? Message)> SendDocumentPreview(string externalId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task SubmitDispatchForm(bool documentsValid, List<Dto.DispatchFormClientDocument> documents, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
