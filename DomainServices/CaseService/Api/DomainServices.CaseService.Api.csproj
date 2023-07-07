@@ -41,4 +41,7 @@
 		<ProjectReference Include="..\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="DomainServices.CaseService.Tests" />
+	</ItemGroup>
 </Project>

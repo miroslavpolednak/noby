@@ -2,9 +2,10 @@
 using _CIS = CIS.Infrastructure.gRPC.CisTypes;
 
 namespace DomainServices.UserService.Clients.Services;
+
 public class MockUserService : IUserServiceClient
 {
-    public Task<Contracts.User> GetUser(string loginWithScheme, CancellationToken cancellationToken = default(CancellationToken))
+    public Task<User> GetUser(string loginWithScheme, CancellationToken cancellationToken = default(CancellationToken))
     {
         return Task.FromResult(CreateUser());
     }
@@ -28,7 +29,8 @@ public class MockUserService : IUserServiceClient
         int id = 3048,
         string czechIdentificationNumber = "12345678",
         string fullName = "Filip Tůma",
-        string CPM = "99614w",
+        string cpm = "99614w",
+        string icp = "",
         string identity = """{ "identity": "990614w", "identityScheme": "Mpad" }""",
         _CIS.UserIdentity.Types.UserIdentitySchemes dentityScheme = _CIS.UserIdentity.Types.UserIdentitySchemes.Mpad
         )
@@ -38,8 +40,13 @@ public class MockUserService : IUserServiceClient
             UserId = id,
             UserInfo = new UserInfoObject
             {
-                Cpm = CPM,
-                Icp = "",
+                Cpm = cpm,
+                Icp = icp,
+                FirstName = "Filip",
+                LastName = "Tuma",
+                Email = "a@mpss.cz",
+                PhoneNumber = "999999999",
+                DisplayName = fullName,
                 Cin = czechIdentificationNumber
             }
         };
