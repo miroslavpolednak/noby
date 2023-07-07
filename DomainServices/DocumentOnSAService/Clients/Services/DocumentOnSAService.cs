@@ -73,6 +73,11 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
         await _client.SetDocumentOnSAArchivedAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
     }
 
+    public async Task<GetElectronicDocumentPreviewResponse> GetElectronicDocumentPreview(int documentOnSAId, CancellationToken cancellationToken = default)
+    {
+        return await _client.GetElectronicDocumentPreviewAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
+    }
+    
     public async Task SendDocumentPreview(int documentOnSAId, CancellationToken cancellationToken = default)
     {
         await _client.SendDocumentPreviewAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
