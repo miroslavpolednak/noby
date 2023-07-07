@@ -84,6 +84,7 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
         naturalPerson.FirstName = delta.FirstName ?? naturalPerson.FirstName;
         naturalPerson.LastName = delta.LastName ?? naturalPerson.LastName;
         naturalPerson.DateOfBirth = delta.DateOfBirth ?? naturalPerson.DateOfBirth;
+        naturalPerson.BirthName = delta.BirthName ?? naturalPerson.BirthName;
         naturalPerson.PlaceOfBirth = delta.PlaceOfBirth ?? naturalPerson.PlaceOfBirth;
         naturalPerson.BirthCountryId = delta.BirthCountryId ?? naturalPerson.BirthCountryId;
         naturalPerson.GenderId = delta.Gender != Genders.Unknown ? (int)delta.Gender : naturalPerson.GenderId;

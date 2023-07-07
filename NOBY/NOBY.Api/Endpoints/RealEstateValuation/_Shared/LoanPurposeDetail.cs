@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails;
+namespace NOBY.Api.Endpoints.RealEstateValuation.Shared;
 
 /// <summary>
 /// Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).

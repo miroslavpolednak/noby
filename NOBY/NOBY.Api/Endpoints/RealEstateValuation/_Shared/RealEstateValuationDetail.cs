@@ -31,5 +31,5 @@ public class RealEstateValuationDetail : RealEstateValuationListItem
     public LoanPurposeDetail? LoanPurposeDetails { get; set; }
 
     [SwaggerOneOf<HouseAndFlatDetails, ParcelDetails>]
-    public ISpecificDetails? SpecificDetails { get; set; }
+    public object? SpecificDetails { get; set; }
 }
