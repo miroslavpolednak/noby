@@ -1205,8 +1205,8 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem.IdFieldNumber">
             <summary>Field number for the "Id" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem.ShortnameFieldNumber">
-            <summary>Field number for the "Shortname" field.</summary>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem.ShortNameFieldNumber">
+            <summary>Field number for the "ShortName" field.</summary>
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem.NameFieldNumber">
             <summary>Field number for the "Name" field.</summary>

@@ -46,6 +46,10 @@ public class GetDocumentsSignListData
     public SignatureState SignatureState { get; set; } = null!;
 
     public EACodeMainItem EACodeMainItem { get; set; } = null!;
+
+    public int? CustomerOnSAId1 { get; set; }
+
+    public int? CustomerOnSAId2 { get; set; }
 }
 
 public class SignatureState

@@ -3,8 +3,8 @@ package DomainServices.DocumentOnSAService.StartSigning;
 option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
 
 import "google/protobuf/wrappers.proto";
+import "Identity.proto";
 import "DocumentOnSA.proto";
-
 
 message StartSigningRequest {
 
@@ -15,8 +15,29 @@ message StartSigningRequest {
 	google.protobuf.Int32Value DocumentTemplateVersionId = 4;
 	google.protobuf.Int32Value DocumentTemplateVariantId = 5;
 	google.protobuf.Int32Value SignatureTypeId = 6;
+	google.protobuf.Int64Value CaseId = 7;
+	google.protobuf.Int32Value TaskId = 8;
+	google.protobuf.Int32Value CustomerOnSAId1 = 9;
+	google.protobuf.Int32Value CustomerOnSAId2 = 10;
+	SigningIdentity CustomerOnSAId1SigningIdentity = 11;
+	SigningIdentity CustomerOnSAId2SigningIdentity = 12;
 }
 
 message StartSigningResponse {
 	DocumentOnSA DocumentOnSa = 1;
+}
+
+message SigningIdentity {
+	repeated cis.types.Identity CustomerIdentifiers = 1;
+	google.protobuf.Int32Value CustomerOnSAId = 2;
+	google.protobuf.StringValue SignatureDataCode = 3;
+	google.protobuf.StringValue FirstName = 4;
+	google.protobuf.StringValue LastName = 5;
+	MobilePhone MobilePhone = 6;
+	google.protobuf.StringValue EmailAddress = 7;
+}
+
+message MobilePhone {
+	google.protobuf.StringValue PhoneNumber = 1;
+	google.protobuf.StringValue PhoneIDC  = 2;
 }

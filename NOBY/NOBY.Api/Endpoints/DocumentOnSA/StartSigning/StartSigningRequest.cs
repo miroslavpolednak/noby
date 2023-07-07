@@ -23,6 +23,10 @@ public class StartSigningRequest : IRequest<StartSigningResponse>
     /// </summary>
     public int? SignatureTypeId { get; set; }
 
+    public int? CustomerOnSAId1 { get; set; }
+
+    public int? CustomerOnSAId2 { get; set; }
+
     internal StartSigningRequest InfuseSalesArrangementId(int salesArrangementId)
     {
         SalesArrangementId = salesArrangementId;
