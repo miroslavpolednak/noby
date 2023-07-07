@@ -70,7 +70,7 @@ public class DocumentOnSAController : ControllerBase
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
-    [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task SendDocumentPreview([FromRoute] int salesArrangementId, [FromRoute] int documentOnSAId)
         => await _mediator.Send(new SendDocumentPreviewRequest(salesArrangementId, documentOnSAId));
