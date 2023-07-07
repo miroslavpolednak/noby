@@ -18,6 +18,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int DocumentTypeIdNotExist = 19016;
     public const int UnableToStartSigningOrSignInvalidSalesArrangementState = 19018;
     public const int UnableToStartSigningOrSignInvalidDocument = 19019;
+    public const int UnableToSendDocumentPreviewForPaperSignedDocuments = 19020;
     public const int UnsupportedStatusReturnedFromESignature = 19021;
 
     // Non BL validation
@@ -49,6 +50,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { SignatureMethodCodeIsRequired, "SignatureMethodCode is required"},
             { UnableToStartSigningOrSignInvalidSalesArrangementState, "Unable to start signing or sign (SalesArrangement is not in correct state)."},
             { UnableToStartSigningOrSignInvalidDocument, "Unable to start signing or sign (DocumentOnSA is invalid or already signed)."},
+            { UnableToSendDocumentPreviewForPaperSignedDocuments, "Unable to send electronic document preview for paper signed documents."},
             { UnsupportedStatusReturnedFromESignature, "Unsupported status returned from ESignature: {PropertyValue}"}
         });
 

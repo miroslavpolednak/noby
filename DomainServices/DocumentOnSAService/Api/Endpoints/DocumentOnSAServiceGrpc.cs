@@ -48,4 +48,7 @@ internal sealed class DocumentOnSAServiceGrpc : Contracts.v1.DocumentOnSAService
 
     public override async Task<Empty> SetDocumentOnSAArchived(SetDocumentOnSAArchivedRequest request, ServerCallContext context)
      => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Empty> SendDocumentPreview(SendDocumentPreviewRequest request, ServerCallContext context) 
+    => await _mediator.Send(request, context.CancellationToken);
 }
