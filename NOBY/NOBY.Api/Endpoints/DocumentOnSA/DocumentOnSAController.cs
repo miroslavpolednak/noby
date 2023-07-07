@@ -61,9 +61,10 @@ public class DocumentOnSAController : ControllerBase
     => await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
 
     /// <summary>
-    /// Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování<br /><br />
+    /// Odeslání náhledu klientovi
     /// </summary>
     /// <remarks>
+    /// Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview")]
