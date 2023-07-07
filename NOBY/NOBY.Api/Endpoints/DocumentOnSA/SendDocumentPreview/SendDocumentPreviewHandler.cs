@@ -17,10 +17,8 @@ public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewReq
         {
             throw new CisNotFoundException(90001, "DocumentOnSA does not exist on provided sales arrangement.");
         }
-
-        var documentOnSAData = await _documentOnSaService.GetDocumentOnSAData(request.DocumentOnSAId, cancellationToken);
-
-        var isElectronicAndWorkflow = documentOnSA.SignatureTypeId == (int)SignatureTypes.Electronic && documentOnSAData.Source == Source.Workflow;
+        
+        var isElectronicAndWorkflow = documentOnSA is { SignatureTypeId: (int)SignatureTypes.Electronic, Source: Source.Workflow };
         var isValidOrFinal = documentOnSA.IsValid || documentOnSA.IsFinal;
 
         if (isElectronicAndWorkflow && isValidOrFinal)
