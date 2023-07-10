@@ -189,6 +189,7 @@
             <summary>
             ID účelu úvěru podle číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413109663">LoanPurpose (CIS_UCEL_UVERU_INT1)</a>
             </summary>
+            <example>204</example>
         </member>
         <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail">
             <summary>
@@ -205,12 +206,21 @@
             <summary>
             True pokud je daný case ve stavu InProgress
             </summary>
+            <example>true</example>
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail.RealEstateSubtypeId">
             <summary>
             ID Upřesnění typu nemovitosti. Slouží jako podklad pro překlad typu nemovitosti do ACV.
             </summary>
             <example>1</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail.SpecificDetails">
+            <summary>
+            Objekty SpecificDetails jsou řízeny business logikou <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135">Ocenění nemovitosti - varianty nemovitostí</a>.<br />
+            Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.<br />
+            Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.<br />
+            Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
+            </summary>
         </member>
         <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem">
             <summary>
@@ -324,11 +334,13 @@
             <summary>
             True pokud jde o zanedbanou nemovitost
             </summary>
+            <example>false</example>
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.OwnershipRestricted">
             <summary>
             True pokud jsou vlastnická práva nějakým způsobem omezena
             </summary>
+            <example>false</example>
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.FlatOnlyDetails">
             <summary>
@@ -344,21 +356,25 @@
             <summary>
             True pokud je byt v rodinném, jiném než bytovém domě
             </summary>
+            <example>false</example>
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.FlatOnlyDetailsDto.Basement">
             <summary>
             True pokud jde o umístění v suterénu
             </summary>
+            <example>false</example>
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.FinishedHouseAndFlatDetailsDto.Leased">
             <summary>
             True pokud je nemovitost pronajata
             </summary>
+            <example>false</example>
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.FinishedHouseAndFlatDetailsDto.LeaseApplicable">
             <summary>
             Obecná pronajímatelnost
             </summary>
+            <example>false</example>
         </member>
         <member name="T:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelDetails">
             <summary>

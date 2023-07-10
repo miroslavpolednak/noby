@@ -27,7 +27,7 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         {
             RealEstateValuationId = request.RealEstateValuationId,
             IsLoanRealEstate = request.IsLoanRealEstate,
-            RealEstateStateId = request.RealEstateStateId,
+            RealEstateStateId = (int?)request.RealEstateStateId,
             Address = request.Address,
             RealEstateSubtypeId = request.RealEstateSubtypeId,
             LoanPurposeDetails = request.LoanPurposeDetails is null ? null : new __Contracts.LoanPurposeDetailsObject
@@ -123,12 +123,12 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
 
         if (houseAndFlatDetails.FinishedHouseAndFlatDetails is null)
         {
-            if (request.RealEstateStateId is 1)
+            if (request.RealEstateStateId is RealEstateStateIds.Finished)
                 throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
         }
         else
         {
-            if (request.RealEstateStateId is not 1)
+            if (request.RealEstateStateId is not RealEstateStateIds.Finished)
                 throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
         }
     }

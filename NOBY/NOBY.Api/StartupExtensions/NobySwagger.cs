@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
@@ -86,18 +87,23 @@ internal static class NobySwagger
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
-            if (!context.Type.IsEnum)
+            var requestedType = Nullable.GetUnderlyingType(context.Type) ?? context.Type;
+
+            if (!requestedType.IsEnum)
                 return;
 
             var sb = new StringBuilder(schema.Description ?? string.Empty);
 
-            sb.Append("\n\n<small>Enum Values</small>");
+            if (sb.Length > 0)
+                sb.Append("\n\n");
+
+            sb.Append("<small>Enum Values</small>");
 
             sb.Append("<ul>");
 
-            foreach (var enumValue in Enum.GetValues(context.Type))
+            foreach (var enumValue in Enum.GetValues(requestedType))
             {
-                sb.Append($"<li>{Convert.ToInt32(enumValue)} - {enumValue}</li>");
+                sb.Append(CultureInfo.InvariantCulture, $"<li>{Convert.ToInt32(enumValue, CultureInfo.InvariantCulture)} - {enumValue}</li>");
             }
 
             sb.Append("</ul>");
