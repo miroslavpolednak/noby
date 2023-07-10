@@ -20,14 +20,17 @@ public sealed class RealEstateValuationController : ControllerBase
     [Consumes("application/json")]
     [Produces("text/plain")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<int> CreateRealEstateValuation(
+    public async Task<IActionResult> CreateRealEstateValuation(
         [FromRoute] long caseId, 
         [Required] [FromBody] CreateRealEstateValuation.CreateRealEstateValuationRequest request, 
         CancellationToken cancellationToken)
-        => await _mediator.Send(request.InfuseId(caseId), cancellationToken);
-
+    {
+        var id = await _mediator.Send(request.InfuseId(caseId), cancellationToken);
+        return Content(id.ToString(System.Globalization.CultureInfo.InvariantCulture));
+    }
+    
     /// <summary>
     /// Smazání Ocenění nemovitosti
     /// </summary>

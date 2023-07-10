@@ -10,10 +10,10 @@ namespace NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail
 public class UpdateRealEstateValuationDetailRequest : IRequest
 {
     [JsonIgnore]
-    internal long CaseId { get; set; }
+    internal long CaseId;
 
     [JsonIgnore]
-    internal int RealEstateValuationId { get; set; }
+    internal int RealEstateValuationId;
 
     /// <summary>
     /// True pokud jde o nemovitost, která je objektem úvěru. Default: false

@@ -189,7 +189,7 @@
             <summary>
             ID účelu úvěru podle číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413109663">LoanPurpose (CIS_UCEL_UVERU_INT1)</a>
             </summary>
-            <example>204</example>
+            <example>[204]</example>
         </member>
         <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail">
             <summary>
