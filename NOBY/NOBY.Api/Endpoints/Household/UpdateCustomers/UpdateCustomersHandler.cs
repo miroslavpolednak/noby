@@ -7,8 +7,8 @@ using DomainServices.SalesArrangementService.Clients;
 using __HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CodebookService.Clients;
-using Microsoft.AspNetCore.Components.Web;
 #endregion usings
+
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
 internal sealed class UpdateCustomersHandler
