@@ -1527,6 +1527,91 @@
             <br /><br /><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C23F8DBF-9F26-465b-BB34-8736133D020D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.CaseId">
+            <summary>
+            Unikátní Id obchodního případu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.DocumentId">
+            <summary>
+            ID dokumentu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.EaCodeMainId">
+            <summary>
+            EaCodeMain.Id https://wiki.kb.cz/display/HT/EaCodeMain
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.Filename">
+            <summary>
+            Jméno souboru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.Description">
+            <summary>
+            Popis dokumentu 
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.CreatedOn">
+            <summary>
+            Datum přijetí dokumentu 
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.AuthorUserLogin">
+            <summary>
+            Login autora dokumentu, kdo dokument uložil
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.Status">
+            <summary>
+            Status dokumentu 
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.FolderDocument">
+            <summary>
+            Jedná se o seskupování dokumentů do virtuálních složek 
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.SourceSystem">
+            <summary>
+            zdrojová aplikace dokumentu 
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.FormId">
+            <summary>
+            ID formuláře 
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.ContractNumber">
+            <summary>
+            Číslo smlouvy 
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.PledgeAgreementNumber">
+            <summary>
+            Číslo zástavní smlouvy 
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.Completeness">
+            <summary>
+            Kompletnost jen archiv TCP 1 - kompletní, 0 = nekompletní, null = neurčeno 
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.MinorCodes">
+            <summary>
+            Vedlejší heslo jen archiv TCP 
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.FileInfo.BinaryData">
+            <summary>
+            Soubour (pole bajtů) ve formě base64string
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.FileInfo.MimeType">
+            <summary>
+            MIME typ dokumentu 
+            </summary>
+        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.ValidateFormId(System.Int64,NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Threading.CancellationToken)">
             <summary>
             If formId exist on DocumentOnSa, return EArchiveId from documentOnSa

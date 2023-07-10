@@ -1,5 +1,4 @@
-﻿#region usings
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
@@ -7,7 +6,6 @@ using DomainServices.SalesArrangementService.Clients;
 using __HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CodebookService.Clients;
-#endregion usings
 
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
@@ -41,7 +39,9 @@ internal sealed class UpdateCustomersHandler
         if (c1.CancelSigning || c2.CancelSigning)
         {
             var documentsToSign = await _documentOnSAService.GetDocumentsToSignList(householdInstance.SalesArrangementId, cancellationToken);
-            foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && t.IsValid))
+            bool onlyNotSigned = (c1.CancelSigning && !c1.OnHouseholdCustomerOnSAId.HasValue) || (c2.CancelSigning && !c2.OnHouseholdCustomerOnSAId.HasValue);
+
+            foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && (!t.IsSigned || !onlyNotSigned)))
             {
                 await _documentOnSAService.StopSigning(document.DocumentOnSAId!.Value, cancellationToken);
             }
