@@ -83,7 +83,7 @@ public sealed class RealEstateValuationController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(typeof(List<Dto.RealEstateValuation.RealEstateValuationListItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<Dto.RealEstateValuation.RealEstateValuationListItem>> GetListRealEstateValuation(
+    public async Task<List<Dto.RealEstateValuation.RealEstateValuationListItem>> GetRealEstateValuationList(
         [FromRoute] long caseId, 
         CancellationToken cancellationToken)
         => await _mediator.Send(new GetRealEstateValuationList.GetRealEstateValuationListRequest(caseId), cancellationToken);
