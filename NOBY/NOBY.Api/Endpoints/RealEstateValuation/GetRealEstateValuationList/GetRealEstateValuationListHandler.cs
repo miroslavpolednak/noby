@@ -8,12 +8,12 @@ using DomainServices.SalesArrangementService.Clients;
 using NOBY.Dto.RealEstateValuation;
 using Helpers = DomainServices.RealEstateValuationService.Contracts.Helpers;
 
-namespace NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation;
+namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationList;
 
-internal sealed class GetListRealEstateValuationHandler
-    : IRequestHandler<GetListRealEstateValuationRequest, List<RealEstateValuationListItem>>
+internal sealed class GetRealEstateValuationListHandler
+    : IRequestHandler<GetRealEstateValuationListRequest, List<RealEstateValuationListItem>>
 {
-    public async Task<List<RealEstateValuationListItem>> Handle(GetListRealEstateValuationRequest request, CancellationToken cancellationToken)
+    public async Task<List<RealEstateValuationListItem>> Handle(GetRealEstateValuationListRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
@@ -94,7 +94,7 @@ internal sealed class GetListRealEstateValuationHandler
     private readonly ICaseServiceClient _caseService;
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
-    public GetListRealEstateValuationHandler(
+    public GetRealEstateValuationListHandler(
         IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService,
         ICodebookServiceClient codebookService,

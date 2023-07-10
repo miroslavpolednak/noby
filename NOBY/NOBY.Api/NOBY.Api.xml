@@ -2693,12 +2693,12 @@
             True pokud je aplikované hromadné ocenění z developerského projektu
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.GetListRealEstateValuationHandler.getComputedValuations(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationList.GetRealEstateValuationListHandler.getComputedValuations(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Ziskat dopocitane nemovitosti - tj. ty, ktere jsou zadane na Offer pro dany SA
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.GetListRealEstateValuationHandler.getExistingValuations(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationList.GetRealEstateValuationListHandler.getExistingValuations(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Ziskat realne ulozene nemovitosti, ktere mame u nas v DB
             </summary>

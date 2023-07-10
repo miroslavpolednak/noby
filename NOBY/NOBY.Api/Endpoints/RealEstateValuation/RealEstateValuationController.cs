@@ -64,8 +64,11 @@ public sealed class RealEstateValuationController : ControllerBase
     [ProducesResponseType(typeof(GetRealEstateValuationDetail.GetRealEstateValuationDetailResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeCaseOwner]
-    public async Task<GetRealEstateValuationDetail.GetRealEstateValuationDetailResponse> GetRealEstateValuationDetail(long caseId, int realEstateValuationId, CancellationToken cancellationToken) => 
-        await _mediator.Send(new GetRealEstateValuationDetail.GetRealEstateValuationDetailRequest(caseId, realEstateValuationId), cancellationToken);
+    public async Task<GetRealEstateValuationDetail.GetRealEstateValuationDetailResponse> GetRealEstateValuationDetail(
+        long caseId, 
+        int realEstateValuationId, 
+        CancellationToken cancellationToken) 
+        => await _mediator.Send(new GetRealEstateValuationDetail.GetRealEstateValuationDetailRequest(caseId, realEstateValuationId), cancellationToken);
 
     /// <summary>
     /// Získání seznamu Ocenění nemovitostí
@@ -78,12 +81,12 @@ public sealed class RealEstateValuationController : ControllerBase
     [HttpGet("{caseId:long}/real-estate-valuations")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<Dto.RealEstateValuation.RealEstateValuationListItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task GetListRealEstateValuation(
+    public async Task<List<Dto.RealEstateValuation.RealEstateValuationListItem>> GetListRealEstateValuation(
         [FromRoute] long caseId, 
         CancellationToken cancellationToken)
-        => await _mediator.Send(new GetListRealEstateValuation.GetListRealEstateValuationRequest(caseId), cancellationToken);
+        => await _mediator.Send(new GetRealEstateValuationList.GetRealEstateValuationListRequest(caseId), cancellationToken);
 
     /// <summary>
     /// Aktualizace detailu Ocenění nemovitostí
