@@ -2693,12 +2693,12 @@
             True pokud je aplikované hromadné ocenění z developerského projektu
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.GetListRealEstateValuationHandler.getComputedValuations(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationList.GetRealEstateValuationListHandler.getComputedValuations(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Ziskat dopocitane nemovitosti - tj. ty, ktere jsou zadane na Offer pro dany SA
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation.GetListRealEstateValuationHandler.getExistingValuations(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationList.GetRealEstateValuationListHandler.getExistingValuations(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Ziskat realne ulozene nemovitosti, ktere mame u nas v DB
             </summary>
@@ -2743,7 +2743,7 @@
              <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7301EE13-E1C2-4795-A5FA-F8A646C4D057"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
              </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.GetListRealEstateValuation(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.GetRealEstateValuationList(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Získání seznamu Ocenění nemovitostí
             </summary>
