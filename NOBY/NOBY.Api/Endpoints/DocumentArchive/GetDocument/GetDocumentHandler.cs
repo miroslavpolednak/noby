@@ -16,17 +16,8 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
         _currentUserAccessor = currentUserAccessor;
         _documentArchiveService = documentArchiveService;
     }
-
+    
     public async Task<GetDocumentResponse> Handle(GetDocumentRequest request, CancellationToken cancellationToken)
-    {
-        return request.Source switch
-        {
-            DocumentSource.EArchive => await HandleFromEArchive(request, cancellationToken),
-            _ => throw new ArgumentOutOfRangeException()
-        };
-    }
-
-    private async Task<GetDocumentResponse> HandleFromEArchive(GetDocumentRequest request, CancellationToken cancellationToken)
     {
         var user = _currentUserAccessor.User;
         
