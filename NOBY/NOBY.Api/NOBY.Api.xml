@@ -1560,7 +1560,7 @@
             </remarks>
             <param name="salesArrangementId"> ID Sales Arrangement </param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SendDocumentPreview(System.Int32,System.Int32)">
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SendDocumentOnSAPreview(System.Int32,System.Int32)">
             <summary>
             Odeslání náhledu klientovi
             </summary>

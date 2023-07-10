@@ -4,11 +4,11 @@ using DomainServices.DocumentOnSAService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
 
-public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewRequest>
+public class SendDocumentOnSAPreviewHandler : IRequestHandler<SendDocumentOnSAPreviewRequest>
 {
     private readonly IDocumentOnSAServiceClient _documentOnSaService;
     
-    public async Task Handle(SendDocumentPreviewRequest request, CancellationToken cancellationToken)
+    public async Task Handle(SendDocumentOnSAPreviewRequest request, CancellationToken cancellationToken)
     { 
         var documentsResponse = await _documentOnSaService.GetDocumentsOnSAList(request.SalesArrangementId, cancellationToken);
         var documentOnSA = documentsResponse.DocumentsOnSA.FirstOrDefault(d => d.DocumentOnSAId == request.DocumentOnSAId);
@@ -29,7 +29,7 @@ public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewReq
         throw new CisValidationException($"Invalid DocumentOnSA Id = {request.DocumentOnSAId}.");
     }
 
-    public SendDocumentPreviewHandler(IDocumentOnSAServiceClient documentOnSaService)
+    public SendDocumentOnSAPreviewHandler(IDocumentOnSAServiceClient documentOnSaService)
     {
         _documentOnSaService = documentOnSaService;
     }
