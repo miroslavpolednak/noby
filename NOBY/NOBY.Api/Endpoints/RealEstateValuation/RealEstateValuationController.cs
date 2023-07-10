@@ -61,10 +61,10 @@ public sealed class RealEstateValuationController : ControllerBase
     [HttpGet("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
-    [ProducesResponseType(typeof(Shared.RealEstateValuationDetail), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetRealEstateValuationDetail.GetRealEstateValuationDetailResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeCaseOwner]
-    public async Task<Shared.RealEstateValuationDetail> GetRealEstateValuationDetail(long caseId, int realEstateValuationId, CancellationToken cancellationToken) => 
+    public async Task<GetRealEstateValuationDetail.GetRealEstateValuationDetailResponse> GetRealEstateValuationDetail(long caseId, int realEstateValuationId, CancellationToken cancellationToken) => 
         await _mediator.Send(new GetRealEstateValuationDetail.GetRealEstateValuationDetailRequest(caseId, realEstateValuationId), cancellationToken);
 
     /// <summary>

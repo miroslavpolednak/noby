@@ -84,7 +84,7 @@ internal sealed class GetListRealEstateValuationHandler
 
         var states = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
 
-        return revList.Select(item => item.MapToApiResponse<RealEstateValuationListItem>(states)).ToList();
+        return revList.Select(item => item.MapToApiResponse(states)).ToList();
     }
 
     private readonly IOfferServiceClient _offerService;

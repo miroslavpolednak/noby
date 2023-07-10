@@ -7,7 +7,7 @@ namespace NOBY.Api.Endpoints.RealEstateValuation.Shared;
 /// <summary>
 /// Detail Ocenění nemovitosti
 /// </summary>
-public class RealEstateValuationDetail : RealEstateValuationListItem
+public class RealEstateValuationDetail
 {
     /// <summary>
     /// Varianta nemovitosti pro determinování relevantních atributů
