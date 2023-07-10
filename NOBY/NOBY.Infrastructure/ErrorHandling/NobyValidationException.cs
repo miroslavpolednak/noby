@@ -7,10 +7,24 @@ public sealed class NobyValidationException
 {
     public const int DefaultExceptionCode = 90001;
 
+    public int HttpStatusCode { get; init; } = 400;
+
     /// <summary>
     /// Seznam chyb.
     /// </summary>
     public IReadOnlyList<ApiErrorItem> Errors { get; init; }
+
+    public NobyValidationException(int exceptionCode, int httpStatusCode)
+        : this(exceptionCode)
+    {
+        HttpStatusCode = httpStatusCode;
+    }
+
+    public NobyValidationException(string message, int httpStatusCode)
+        : this(message)
+    {
+        HttpStatusCode = httpStatusCode;
+    }
 
     public NobyValidationException(int exceptionCode)
     {

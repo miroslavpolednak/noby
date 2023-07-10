@@ -99,7 +99,7 @@ internal sealed class ProductChildMapper
                     Instance = relation.BankAccount.BankCode switch {
                         "7990" => "MPSS",
                         "0100" => "KBCZ",
-                        _ => throw new CisValidationException(17008, $"Transofrmation for BankCode={relation.BankAccount.BankCode} does not exist")
+                        _ => throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.BankCodeNotFound, relation.BankAccount.BankCode)
                     },
                     Domain = "PCP",
                     Resource = "LoanSoldProduct"
@@ -149,12 +149,12 @@ internal sealed class ProductChildMapper
 
     private static List<_C4M.LoanApplicationPurpose>? tranformPurposes(List<_V2.LoanApplicationProductPurpose>? productPurposes, List<LoanPurposesResponse.Types.LoanPurposeItem> purposes, _V2.LoanApplicationProduct product, int? mandantId)
         => (product.ProductTypeId == 20001 && product.LoanKindId == 2001)
-            ? new List<_C4M.LoanApplicationPurpose> { new _C4M.LoanApplicationPurpose { Code = 35, Amount = product.RequiredAmount } }
+            ? new List<_C4M.LoanApplicationPurpose> { new _C4M.LoanApplicationPurpose { Code = "35", Amount = product.RequiredAmount } }
             : productPurposes?
                 .Select(t => new _C4M.LoanApplicationPurpose
                 {
                     Amount = t.Amount,
-                    Code = purposes.FirstOrDefault(x => x.C4MId.HasValue && x.MandantId == mandantId && x.Id == t.LoanPurposeId)?.C4MId ?? -1
+                    Code = purposes.FirstOrDefault(x => x.C4MId.HasValue && x.MandantId == mandantId && x.Id == t.LoanPurposeId)?.C4MId.ToString() ?? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.LoanPurposeIdNotFound, t.LoanPurposeId)
                 })
                 .ToList();
 

@@ -10,7 +10,7 @@ internal sealed class SimpleCalculateHandler
     public async Task<_V2.CreditWorthinessSimpleCalculateResponse> Handle(_V2.CreditWorthinessSimpleCalculateRequest request, CancellationToken cancellationToken)
     {
         // appl type pro aktualni produkt
-        var riskApplicationType = await getRiskApplicationType(request.Product!.ProductTypeId, cancellationToken);
+        var riskApplicationType = Helpers.GetRiskApplicationType(await _codebookService.RiskApplicationTypes(cancellationToken), request.Product!.ProductTypeId);
 
         // request pro hlavni bonita sluzbu
         var requestModel = await _requestMapper.MapToC4m(request.ToFullRequest(), riskApplicationType, cancellationToken);
@@ -20,11 +20,6 @@ internal sealed class SimpleCalculateHandler
 
         return response.ToServiceResponse(request.Product.LoanPaymentAmount);
     }
-
-    private async Task<RiskApplicationTypesResponse.Types.RiskApplicationTypeItem> getRiskApplicationType(int productTypeId, CancellationToken cancellationToken)
-        => (await _codebookService.RiskApplicationTypes(cancellationToken))
-            .FirstOrDefault(t => t.ProductTypeId is not null && t.ProductTypeId.Contains(productTypeId))
-        ?? throw new CisValidationException(17006, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly _C4M.ICreditWorthinessClient _client;

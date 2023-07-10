@@ -84,8 +84,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        //ToDo temporary disabled, until DM will do change in SA validation
-        //await UpdateSalesArrangementStateIfNeeded(salesArrangement, cancellationToken);
+        await UpdateSalesArrangementStateIfNeeded(salesArrangement, cancellationToken);
 
         return MapToResponse(documentOnSaEntity);
     }

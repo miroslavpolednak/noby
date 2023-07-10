@@ -18,6 +18,7 @@ using CIS.Infrastructure.BackgroundServices;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using ExternalServices.Eas.V1;
 using DomainServices.ProductService.Clients;
+using ExternalServices.ESignatures.V1;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 
@@ -29,6 +30,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
     internal IHouseholdServiceClient HouseholdServiceClient { get; }
     internal IDocumentArchiveServiceClient DocumentArchiveServiceClient { get; }
     internal IEasClient EasClient { get; }
+    internal IESignaturesClient ESignaturesClient { get; }
     internal ICustomerOnSAServiceClient CustomerOnSAServiceClient { get; }
     internal IProductServiceClient ProductServiceClient { get; }
 
@@ -41,6 +43,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         HouseholdServiceClient = Substitute.For<IHouseholdServiceClient>();
         DocumentArchiveServiceClient = Substitute.For<IDocumentArchiveServiceClient>();
         EasClient = Substitute.For<IEasClient>();
+        ESignaturesClient = Substitute.For<IESignaturesClient>();
         CustomerOnSAServiceClient = Substitute.For<ICustomerOnSAServiceClient>();
         ProductServiceClient = Substitute.For<IProductServiceClient>();
 
@@ -77,6 +80,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
             services.RemoveAll<IHouseholdServiceClient>().AddTransient(r => HouseholdServiceClient);
             services.RemoveAll<IDocumentArchiveServiceClient>().AddTransient(r => DocumentArchiveServiceClient);
             services.RemoveAll<IEasClient>().AddTransient(r => EasClient);
+            services.RemoveAll<IESignaturesClient>().AddTransient(r => ESignaturesClient);
             services.RemoveAll<ICustomerOnSAServiceClient>().AddTransient(r => CustomerOnSAServiceClient);
             services.RemoveAll<IProductServiceClient>().AddTransient(r=> ProductServiceClient);
         });

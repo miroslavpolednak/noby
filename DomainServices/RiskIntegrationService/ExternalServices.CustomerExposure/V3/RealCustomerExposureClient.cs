@@ -12,7 +12,7 @@ internal sealed class RealCustomerExposureClient
             .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<LoanApplicationRelatedExposureResult>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
-            ?? throw new CisExtServiceResponseDeserializationException(17001, StartupExtensions.ServiceName, nameof(Calculate), nameof(LoanApplicationRelatedExposureResult));
+            ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(Calculate), nameof(LoanApplicationRelatedExposureResult));
 
         return result;
     }

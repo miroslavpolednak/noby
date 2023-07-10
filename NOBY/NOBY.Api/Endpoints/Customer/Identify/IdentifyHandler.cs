@@ -49,7 +49,7 @@ internal sealed class IdentifyHandler
             return null;
 
         _logger.LogInformation("More than 1 client found");
-        throw new CisConflictException($"More than 1 client found: {string.Join(", ", searchResult.Customers.Select(t => t.Identity?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture)))}");
+        throw new NobyValidationException($"More than 1 client found: {string.Join(", ", searchResult.Customers.Select(t => t.Identity?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture)))}", 409);
     }
 
     private readonly ILogger<IdentifyHandler> _logger;

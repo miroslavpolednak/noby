@@ -24,7 +24,7 @@ public class Covenant
     public short IsFulFilled { get; set; }
     
     [Column("SplnitDo")]
-    public DateTime FulfillDate { get; set; }
+    public DateTime? FulfillDate { get; set; }
 
     [Column("TypSmlouvaPoradiPismeno")]
     public string OrderLetter { get; set; } = null!;

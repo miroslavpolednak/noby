@@ -76,10 +76,6 @@ internal sealed class CreateMortgageCaseHandler
         _bag.Add(CreateMortgageCaseRollback.BagKeyHouseholdId, householdId);
         _logger.EntityCreated(nameof(Household), householdId);
 
-        //Contract Number
-        if (request.Identity is not null)
-            await _salesArrangementService.SetContractNumber(salesArrangementId, createCustomerResult.CustomerOnSAId, cancellationToken);
-
         // mam identifikovaneho customera
         var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers);
         await _mediator.Publish(notification, cancellationToken);

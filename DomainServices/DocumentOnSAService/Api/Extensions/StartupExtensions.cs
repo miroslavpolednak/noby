@@ -32,6 +32,9 @@ internal static class StartupExtensions
         // sulm
         builder.AddExternalService<ExternalServices.Sulm.V1.ISulmClient>();
 
+        // ePodpisy
+        builder.AddExternalService<ExternalServices.ESignatures.V1.IESignaturesClient>();
+        
         // registrace background jobu
         builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
         builder.AddCisBackgroundServiceCustomConfiguration<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();

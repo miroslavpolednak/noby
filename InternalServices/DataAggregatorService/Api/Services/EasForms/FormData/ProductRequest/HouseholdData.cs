@@ -45,6 +45,8 @@ internal class HouseholdData
 
     public bool? IsSpouseInDebt { get; set; }
 
+    public bool CustomersHasPRIV => _customers.Values.Any(c => c.NaturalPerson.Segment is "PB" or "PC");
+
     public async Task Initialize(int salesArrangementId, CancellationToken cancellationToken)
     {
         CustomersOnSa = await LoadCustomersOnSA(salesArrangementId, cancellationToken);

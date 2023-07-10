@@ -1560,6 +1560,15 @@
             </remarks>
             <param name="salesArrangementId"> ID Sales Arrangement </param>
         </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SendDocumentPreview(System.Int32,System.Int32)">
+            <summary>
+            Odeslání náhledu klientovi
+            </summary>
+            <remarks>
+            Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.StopSigning(System.Int32,System.Int32)">
             <summary>
             Zrušit podepisování dokumentu
@@ -1571,6 +1580,15 @@
             </remarks>
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSAPreview(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Vygenerování náhledu rozpodepsaného dokumentu
+            </summary>
+            <remarks>
+            Dle zdroje podepisovaného dokumentu, typu podepisování a stavu podepisování dojde k vrácení PDF pro náhled dokumentu.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A1B54B66-9AF8-4e5c-A240-93FEF635449F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SignDocumentManually(System.Int32,System.Int32)">
             <summary>
@@ -2691,6 +2709,16 @@
             ID Upřesnění typu nemovitosti. Slouží jako podklad pro překlad typu nemovitosti do ACV.
             </summary>
         </member>
+        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.Shared.LoanPurposeDetail">
+            <summary>
+            Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.Shared.LoanPurposeDetail.LoanPurposes">
+            <summary>
+            ID účelu úvěru podle číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413109663">LoanPurpose (CIS_UCEL_UVERU_INT1)</a>
+            </summary>
+        </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.Shared.RealEstateValuationDetail">
             <summary>
             Detail Ocenění nemovitosti
@@ -2859,24 +2887,6 @@
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails.HouseAndFlatDetails.FinishedHouseAndFlatDetailsDto.LeaseApplicable">
             <summary>
             Obecná pronajímatelnost
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails.ISpecificDetails">
-            <summary>
-            Objekty SpecificDetails jsou řízeny business logikou <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135">Ocenění nemovitosti - varianty nemovitostí</a>.<br />
-            Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.<br />
-            Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.<br />
-            Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails.LoanPurposeDetail">
-            <summary>
-            Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails.LoanPurposeDetail.LoanPurposes">
-            <summary>
-            ID účelu úvěru podle číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413109663">LoanPurpose (CIS_UCEL_UVERU_INT1)</a>
             </summary>
         </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails.ParcelDetails">
@@ -4382,13 +4392,13 @@
             <summary>
             ID uzivatele v ramci vybraneho identitniho schematu.
             </summary>
-            <example>A09V61</example>
+            <example>3255</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.IdentityScheme">
             <summary>
             Vybranne identitni schema pro prihlaseni, moznosti jsou: <a href="https://wiki.kb.cz/display/HT/IdentityScheme">https://wiki.kb.cz/display/HT/IdentityScheme</a>
             </summary>
-            <example>KBUID</example>
+            <example>M17ID</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetCurrentUser(System.Threading.CancellationToken)">
             <summary>
