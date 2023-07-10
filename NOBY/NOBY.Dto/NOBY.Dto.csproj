@@ -22,5 +22,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
 		<ProjectReference Include="..\..\CIS\Foms.Types\CIS.Foms.Types.csproj" />
+		<ProjectReference Include="..\..\DomainServices\RealEstateValuationService\Contracts\DomainServices.RealEstateValuationService.Contracts.csproj" />
 	</ItemGroup>
 </Project>

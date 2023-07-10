@@ -2,9 +2,8 @@
 using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
-using NOBY.Api.Endpoints.RealEstateValuation.Shared;
-using NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails;
-using System.Text.Json.Nodes;
+using NOBY.Dto.RealEstateValuation;
+using NOBY.Dto.RealEstateValuation.SpecificDetails;
 using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail;
@@ -88,31 +87,31 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
 
         switch (variant)
         {
-            case RealEstateVariant.HouseAndFlat: CheckHouseAndFlatDetails(request);
+            case RealEstateVariants.HouseAndFlat: CheckHouseAndFlatDetails(request);
                 break;
 
-            case RealEstateVariant.OnlyFlat: CheckOnlyFlatDetails(request);
+            case RealEstateVariants.OnlyFlat: CheckOnlyFlatDetails(request);
                 break;
 
-            case RealEstateVariant.Parcel: CheckParcelDetails(request);
+            case RealEstateVariants.Parcel: CheckParcelDetails(request);
                 break;
 
-            case RealEstateVariant.Other: CheckOtherDetails(request);
+            case RealEstateVariants.Other: CheckOtherDetails(request);
                 break;
 
             default: throw new NotImplementedException();
         }
     }
 
-    private static void ParseAndSetSpecificDetails(UpdateRealEstateValuationDetailRequest request, RealEstateVariant variant)
+    private static void ParseAndSetSpecificDetails(UpdateRealEstateValuationDetailRequest request, RealEstateVariants variant)
     {
         if (request.SpecificDetails is not JsonElement jsonElement)
             return;
 
         request.SpecificDetails = variant switch
         {
-            RealEstateVariant.HouseAndFlat or RealEstateVariant.OnlyFlat => jsonElement.Deserialize<HouseAndFlatDetails>(),
-            RealEstateVariant.Parcel => jsonElement.Deserialize<ParcelDetails>(),
+            RealEstateVariants.HouseAndFlat or RealEstateVariants.OnlyFlat => jsonElement.Deserialize<HouseAndFlatDetails>(),
+            RealEstateVariants.Parcel => jsonElement.Deserialize<ParcelDetails>(),
             _ => default
         };
     }

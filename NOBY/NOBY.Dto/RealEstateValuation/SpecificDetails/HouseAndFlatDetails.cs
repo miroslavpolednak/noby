@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails;
+﻿namespace NOBY.Dto.RealEstateValuation.SpecificDetails;
 
 /// <summary>
 /// Objekt je použit pouze v případě, že jde o variantu nemovitosti HF (Dům a byt) nebo HF+F (Byt)
 /// </summary>
-public class HouseAndFlatDetails
+public sealed class HouseAndFlatDetails
 {
     /// <summary>
     /// True pokud jde o zanedbanou nemovitost
@@ -29,7 +27,7 @@ public class HouseAndFlatDetails
     /// </summary>
     public FinishedHouseAndFlatDetailsDto? FinishedHouseAndFlatDetails { get; init; }
 
-    public class FlatOnlyDetailsDto
+    public sealed class FlatOnlyDetailsDto
     {
         /// <summary>
         /// True pokud je byt v rodinném, jiném než bytovém domě
@@ -44,7 +42,7 @@ public class HouseAndFlatDetails
         public bool Basement { get; init; }
     }
 
-    public class FinishedHouseAndFlatDetailsDto
+    public sealed class FinishedHouseAndFlatDetailsDto
     {
         /// <summary>
         /// True pokud je nemovitost pronajata

@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using DomainServices.RealEstateValuationService.Contracts;
 
-namespace NOBY.Api.Endpoints.RealEstateValuation.Shared;
+namespace NOBY.Dto.RealEstateValuation;
 
 /// <summary>
 /// Objednávka ocenění: přehledové údaje
 /// </summary>
-public class RealEstateValuationListItem
+public sealed class RealEstateValuationListItem
 {
     /// <summary>
     /// ID Ocenění nemovitosti v Noby

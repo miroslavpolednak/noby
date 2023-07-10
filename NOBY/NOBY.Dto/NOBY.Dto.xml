@@ -180,6 +180,197 @@
             Příznak potvrzeného kontaktu
             </summary>
         </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.LoanPurposeDetail">
+            <summary>
+            Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.LoanPurposeDetail.LoanPurposes">
+            <summary>
+            ID účelu úvěru podle číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413109663">LoanPurpose (CIS_UCEL_UVERU_INT1)</a>
+            </summary>
+        </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail">
+            <summary>
+            Detail Ocenění nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail.RealEstateVariant">
+            <summary>
+            Varianta nemovitosti pro determinování relevantních atributů
+            </summary>
+            <example>HF</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail.CaseInProgress">
+            <summary>
+            True pokud je daný case ve stavu InProgress
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail.RealEstateSubtypeId">
+            <summary>
+            ID Upřesnění typu nemovitosti. Slouží jako podklad pro překlad typu nemovitosti do ACV.
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem">
+            <summary>
+            Objednávka ocenění: přehledové údaje
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.RealEstateValuationId">
+            <summary>
+            ID Ocenění nemovitosti v Noby
+            </summary>
+            <example>3456</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.OrderId">
+            <summary>
+            Číslo objednávky ocenění
+            </summary>
+            <example>123455</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.CaseId">
+            <summary>
+            ID obchodního případu (caseId)
+            </summary>
+            <example>304556</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.RealEstateTypeId">
+            <summary>
+            ID typu nemovitosti
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.RealEstateTypeIcon">
+            <summary>
+            Id ikony typu nemovitosti. 1 - house, 2 - location city, 3 - custom, 4 - domain
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.ValuationStateId">
+            <summary>
+            ID stavu Ocenění nemovitosti
+            </summary>
+            <example>8</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.ValuationStateIndicator">
+            <summary>
+            Indikátor stavu Ocenění nemovitosti, 0 - Unknown, 1 - Active, 2 - Cancelled, 3 - OK, 4 - Passive, 5 - Warning, 6 - Initial
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.ValuationStateName">
+            <summary>
+            Název stavu Ocenění nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.IsLoanRealEstate">
+            <summary>
+            True pokud jde o nemovitost, která je objektem úvěru
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.RealEstateStateId">
+            <summary>
+            ID stavu nemovitosti. 0 - Unknown, 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.ValuationTypeId">
+            <summary>
+            Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.Address">
+            <summary>
+            Adresa nemovitosti
+            </summary>
+            <example>Novákovo nábřeží 1972, 521 71 Žďár nad Sázavou</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.ValuationSentDate">
+            <summary>
+            Datum odeslání žádosti o Ocenění nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.ValuationResultCurrentPrice">
+            <summary>
+            Současná cena nemovitosti v Kč
+            </summary>
+            <example>3000000</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.ValuationResultFuturePrice">
+            <summary>
+            Budoucí cena nemovitosti v Kč
+            </summary>
+            <example>3250000</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.IsRevaluationRequired">
+            <summary>
+            True pokud je potřeba kontrolní ocenění
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.DeveloperAllowed">
+            <summary>
+            Informace o tom, zda byl na modelaci použit developer a zda je možné využít hromadné ocenění.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.DeveloperApplied">
+            <summary>
+            True pokud je aplikované hromadné ocenění z developerského projektu
+            </summary>
+        </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails">
+            <summary>
+            Objekt je použit pouze v případě, že jde o variantu nemovitosti HF (Dům a byt) nebo HF+F (Byt)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.PoorCondition">
+            <summary>
+            True pokud jde o zanedbanou nemovitost
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.OwnershipRestricted">
+            <summary>
+            True pokud jsou vlastnická práva nějakým způsobem omezena
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.FlatOnlyDetails">
+            <summary>
+            Objekt je použit pouze v případě varianty nemovitosti HF+F Byt.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.FinishedHouseAndFlatDetails">
+            <summary>
+            Objekt je použit pouze v případě, že jde o variantu nemovitosti HF (Dům a byt) nebo HF+F (Byt) a že je nemovitost ve stavu "Dokončená".
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.FlatOnlyDetailsDto.SpecialPlacement">
+            <summary>
+            True pokud je byt v rodinném, jiném než bytovém domě
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.FlatOnlyDetailsDto.Basement">
+            <summary>
+            True pokud jde o umístění v suterénu
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.FinishedHouseAndFlatDetailsDto.Leased">
+            <summary>
+            True pokud je nemovitost pronajata
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails.FinishedHouseAndFlatDetailsDto.LeaseApplicable">
+            <summary>
+            Obecná pronajímatelnost
+            </summary>
+        </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelDetails">
+            <summary>
+            Objekt je použit pouze v případě, že jde o variantu nemovitosti P (Pozemek)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelDetails.ParcelNumber">
+            <summary>
+            Číslo parcely
+            </summary>
+            <example>1</example>
+        </member>
         <member name="T:NOBY.Dto.Workflow.AmendmentsConsultationData">
             <summary>
             Tento objekt je relevantní pouze pro některé typy Konzultací, a to sice pro Dotaz k ocenění a pro Vyhotovení ZOV.

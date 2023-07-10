@@ -1,9 +1,9 @@
-﻿namespace NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails;
+﻿namespace NOBY.Dto.RealEstateValuation.SpecificDetails;
 
 /// <summary>
 /// Objekt je použit pouze v případě, že jde o variantu nemovitosti P (Pozemek)
 /// </summary>
-public class ParcelDetails
+public sealed class ParcelDetails
 {
     /// <summary>
     /// Číslo parcely

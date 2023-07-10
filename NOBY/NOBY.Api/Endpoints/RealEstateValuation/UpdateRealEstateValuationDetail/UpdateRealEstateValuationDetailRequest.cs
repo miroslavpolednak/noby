@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails;
 using NOBY.Dto.Attributes;
+using NOBY.Dto.RealEstateValuation.SpecificDetails;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail;
 
@@ -35,7 +35,7 @@ public class UpdateRealEstateValuationDetailRequest : IRequest
     /// </summary>
     public int? RealEstateSubtypeId { get; set; }
 
-    public Shared.LoanPurposeDetail? LoanPurposeDetails { get; set; }
+    public Dto.RealEstateValuation.LoanPurposeDetail? LoanPurposeDetails { get; set; }
 
     [SwaggerOneOf<HouseAndFlatDetails, ParcelDetails>]
     public object? SpecificDetails { get; set; }

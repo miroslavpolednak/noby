@@ -5,7 +5,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using NOBY.Api.Endpoints.RealEstateValuation.Shared;
+using NOBY.Dto.RealEstateValuation;
 using Helpers = DomainServices.RealEstateValuationService.Contracts.Helpers;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetListRealEstateValuation;

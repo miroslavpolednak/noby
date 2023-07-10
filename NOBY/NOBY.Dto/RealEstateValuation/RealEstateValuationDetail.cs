@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails;
 using NOBY.Dto.Attributes;
 
-namespace NOBY.Api.Endpoints.RealEstateValuation.Shared;
+namespace NOBY.Dto.RealEstateValuation;
 
 /// <summary>
 /// Detail Ocenění nemovitosti
 /// </summary>
-public class RealEstateValuationDetail
+public sealed class RealEstateValuationDetail
 {
     /// <summary>
     /// Varianta nemovitosti pro determinování relevantních atributů
@@ -30,6 +29,6 @@ public class RealEstateValuationDetail
 
     public LoanPurposeDetail? LoanPurposeDetails { get; set; }
 
-    [SwaggerOneOf<HouseAndFlatDetails, ParcelDetails>]
+    [SwaggerOneOf<SpecificDetails.HouseAndFlatDetails, SpecificDetails.ParcelDetails>]
     public object? SpecificDetails { get; set; }
 }
