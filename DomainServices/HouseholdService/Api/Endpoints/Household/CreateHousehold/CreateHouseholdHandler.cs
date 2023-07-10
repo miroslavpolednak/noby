@@ -33,18 +33,31 @@ internal sealed class CreateHouseholdHandler
 
         _logger.EntityCreated(nameof(Database.Entities.Household), entity.HouseholdId);
 
+        // pokud se jedna o spoludluznickou, nastavujeme flowswitch
+        if (request.HouseholdTypeId == (int)HouseholdTypes.Codebtor)
+        {
+            await _salesArrangementService.SetFlowSwitches(request.SalesArrangementId, new()
+            {
+                new()
+                {
+                    FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnCodebtorHousehold,
+                    Value = false
+                }
+            }, cancellationToken);
+        }
+
         return new CreateHouseholdResponse()
         {
             HouseholdId = entity.HouseholdId
         };
     }
 
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
+    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateHouseholdHandler> _logger;
 
     public CreateHouseholdHandler(
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
+        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateHouseholdHandler> logger)
     {
