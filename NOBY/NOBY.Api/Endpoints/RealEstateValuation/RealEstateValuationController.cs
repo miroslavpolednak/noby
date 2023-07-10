@@ -1,4 +1,5 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation;
@@ -23,7 +24,7 @@ public sealed class RealEstateValuationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<int> CreateRealEstateValuation(
         [FromRoute] long caseId, 
-        [FromBody] CreateRealEstateValuation.CreateRealEstateValuationRequest request, 
+        [Required] [FromBody] CreateRealEstateValuation.CreateRealEstateValuationRequest request, 
         CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(caseId), cancellationToken);
 
@@ -101,7 +102,7 @@ public sealed class RealEstateValuationController : ControllerBase
     public async Task<IActionResult> UpdateRealEstateValuationDetail(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromBody] UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest request,
+        [Required] [FromBody] UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest request,
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
@@ -124,7 +125,7 @@ public sealed class RealEstateValuationController : ControllerBase
     public async Task<IActionResult> PatchDeveloperOnRealEstateValuation(
         [FromRoute] long caseId, 
         [FromRoute] int realEstateValuationId, 
-        [FromBody] PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest request, 
+        [Required] [FromBody] PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest request, 
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);

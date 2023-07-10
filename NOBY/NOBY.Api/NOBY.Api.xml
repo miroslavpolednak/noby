@@ -2705,7 +2705,7 @@
         </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest">
             <summary>
-            Editovatelné atributy Ocenění nemovitosti
+            Editovatelný toggle developera na Ocenění nemovitosti
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest.DeveloperApplied">
