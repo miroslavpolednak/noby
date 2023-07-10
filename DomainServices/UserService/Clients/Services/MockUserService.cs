@@ -26,7 +26,7 @@ public class MockUserService : IUserServiceClient
     }
 
     private static User CreateUser(
-        int id = 3048,
+        int id = DefaultUserId,
         string czechIdentificationNumber = "12345678",
         string fullName = "Filip Tůma",
         string cpm = "99614w",
@@ -61,4 +61,5 @@ public class MockUserService : IUserServiceClient
         return user;
     }
 
+    public const int DefaultUserId = 3048;
 }

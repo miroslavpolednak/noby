@@ -11,6 +11,7 @@ public abstract class IntegrationTestBase
     : IClassFixture<WebApplicationFactoryFixture<Program>>
 {
     protected Mock<DomainServices.CaseService.ExternalServices.SbWebApi.V1.ISbWebApiClient> MockSbWebApi { get; private set; }
+    protected Mock<global::ExternalServices.Eas.V1.IEasClient> MockEas { get; private set; }
 
     public IntegrationTestBase(WebApplicationFactoryFixture<Program> fixture)
     {
@@ -38,11 +39,10 @@ public abstract class IntegrationTestBase
 
                 var sa = new Mock<SalesArrangementService.Clients.ISalesArrangementServiceClient>();
                 var doc = new Mock<DocumentOnSAService.Clients.IDocumentOnSAServiceClient>();
-                var eas = new Mock<global::ExternalServices.Eas.V1.IEasClient>();
-
+                
                 services.Replace(new ServiceDescriptor(typeof(SalesArrangementService.Clients.ISalesArrangementServiceClient), t => sa.Object, ServiceLifetime.Transient));
                 services.Replace(new ServiceDescriptor(typeof(DocumentOnSAService.Clients.IDocumentOnSAServiceClient), t => doc.Object, ServiceLifetime.Transient));
-                services.Replace(new ServiceDescriptor(typeof(global::ExternalServices.Eas.V1.IEasClient), t => eas.Object, ServiceLifetime.Scoped));
+                services.Replace(new ServiceDescriptor(typeof(global::ExternalServices.Eas.V1.IEasClient), t => MockEas.Object, ServiceLifetime.Scoped));
                 services.Replace(new ServiceDescriptor(typeof(DomainServices.CaseService.ExternalServices.SbWebApi.V1.ISbWebApiClient), t => MockSbWebApi.Object, ServiceLifetime.Scoped));
             });
     }
@@ -50,8 +50,15 @@ public abstract class IntegrationTestBase
     private void setupMocks()
     {
         MockSbWebApi = new Mock<DomainServices.CaseService.ExternalServices.SbWebApi.V1.ISbWebApiClient>();
-        MockSbWebApi.Setup(t => t.CancelTask(It.Is<int>(i => i == 1), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
-        MockSbWebApi.Setup(t => t.CancelTask(It.Is<int>(i => i == 2), It.IsAny<CancellationToken>())).Throws(new CisExtServiceValidationException(2, "exception"));
+        MockSbWebApi
+            .Setup(t => t.CancelTask(It.Is<int>(i => i == 1), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+        MockSbWebApi
+            .Setup(t => t.CancelTask(It.Is<int>(i => i == 2), It.IsAny<CancellationToken>()))
+            .Throws(new CisExtServiceValidationException(2, "exception"));
+
+        MockEas = new Mock<global::ExternalServices.Eas.V1.IEasClient>();
+        
     }
 
     protected virtual void PrepareDatabase()

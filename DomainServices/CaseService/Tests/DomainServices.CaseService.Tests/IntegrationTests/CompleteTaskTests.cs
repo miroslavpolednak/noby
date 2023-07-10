@@ -39,14 +39,7 @@ public class CompleteTaskTests
             TaskUserResponse = ""
         });
 
-        var sbRequest = new ExternalServices.SbWebApi.Dto.CompleteTask.CompleteTaskRequest 
-        { 
-            TaskIdSb = 1,
-            Metadata = new Dictionary<string, string>
-            {
-                { "", "" }
-            }
-        };
+        //TODO co tady testovat? dublovat logiku z handleru? To nedava smysl...
     }
 
     public CompleteTaskTests(WebApplicationFactoryFixture<Program> fixture)
