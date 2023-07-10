@@ -122,8 +122,16 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         if (request.SpecificDetails is not HouseAndFlatDetails houseAndFlatDetails)
             throw new CisAuthorizationException("SpecificDetails does not contain the HouseAndFlatDetails object");
 
-        if (request.RealEstateStateId is null || request.RealEstateStateId != 1 && houseAndFlatDetails.FinishedHouseAndFlatDetails is not null)
-            throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
+        if (houseAndFlatDetails.FinishedHouseAndFlatDetails is null)
+        {
+            if (request.RealEstateStateId is 1)
+                throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
+        }
+        else
+        {
+            if (request.RealEstateStateId is not 1)
+                throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
+        }
     }
 
     private static void CheckOnlyFlatDetails(UpdateRealEstateValuationDetailRequest request)

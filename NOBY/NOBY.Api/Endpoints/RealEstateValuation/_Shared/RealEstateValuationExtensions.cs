@@ -5,13 +5,12 @@ namespace NOBY.Api.Endpoints.RealEstateValuation.Shared;
 
 internal static class RealEstateValuationExtensions
 {
-    public static TApiResponse MapToApiResponse<TApiResponse>(this __Contracts.RealEstateValuationListItem dsValuationListItem, IList<WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem> states)
-        where TApiResponse : RealEstateValuationListItem, new()
+    public static RealEstateValuationListItem MapToApiResponse(this __Contracts.RealEstateValuationListItem dsValuationListItem, IList<WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem> states)
     {
         // tvrdi ze tam bude vzdy zaznam a v EA neni zadne osetreni...
         var state = states.First(x => x.Id == dsValuationListItem.ValuationStateId);
 
-        return new TApiResponse
+        return new RealEstateValuationListItem
         {
             RealEstateValuationId = dsValuationListItem.RealEstateValuationId,
             OrderId = dsValuationListItem.OrderId,
