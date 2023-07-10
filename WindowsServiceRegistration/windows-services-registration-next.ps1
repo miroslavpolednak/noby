@@ -205,6 +205,7 @@ function GetServices([string]$env) {
         , [SVC]::New('UserService', $env).DependsOn(@($service_discovery))
         , [SVC]::New('DocumentArchiveService', $env).DependsOn(@($service_discovery))
         , [SVC]::New('DocumentOnSAService', $env).DependsOn(@($service_discovery))
+        , [SVC]::New('RealEstateValuationService', $env).DependsOn(@($service_discovery))
     );
 
     return $services;
