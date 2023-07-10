@@ -8,7 +8,7 @@ using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail;
 
-internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEstateValuationDetailRequest, RealEstateValuationDetail>
+internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEstateValuationDetailRequest, GetRealEstateValuationDetailResponse>
 {
     private readonly ICaseServiceClient _caseService;
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
@@ -21,7 +21,7 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
         _codebookService = codebookService;
     }
 
-    public async Task<RealEstateValuationDetail> Handle(GetRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
+    public async Task<GetRealEstateValuationDetailResponse> Handle(GetRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         var valuationDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
@@ -31,15 +31,18 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
 
         var states = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
 
-        var detail = valuationDetail.RealEstateValuationGeneralDetails.MapToApiResponse<RealEstateValuationDetail>(states);
-
-        detail.CaseInProgress = caseInstance.State == (int)CaseStates.InProgress;
-        detail.RealEstateVariant = GetRealEstateVariant(valuationDetail.RealEstateValuationGeneralDetails.RealEstateTypeId);
-        detail.RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId;
-        detail.LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = valuationDetail.LoanPurposeDetails.LoanPurposes };
-        detail.SpecificDetails = GetSpecificDetailsObject(valuationDetail);
-
-        return detail;
+        return new GetRealEstateValuationDetailResponse
+        {
+            RealEstateValuationListItem = valuationDetail.RealEstateValuationGeneralDetails.MapToApiResponse(states),
+            RealEstateValuationDetail = new RealEstateValuationDetail
+            {
+                CaseInProgress = caseInstance.State == (int)CaseStates.InProgress,
+                RealEstateVariant = GetRealEstateVariant(valuationDetail.RealEstateValuationGeneralDetails.RealEstateTypeId),
+                RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId,
+                LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = valuationDetail.LoanPurposeDetails.LoanPurposes },
+                SpecificDetails = GetSpecificDetailsObject(valuationDetail)
+            }
+        };
     }
 
     private static string GetRealEstateVariant(int realEstateTypeId)

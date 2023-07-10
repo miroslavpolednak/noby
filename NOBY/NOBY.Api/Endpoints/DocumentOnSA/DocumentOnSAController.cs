@@ -69,11 +69,11 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task SendDocumentPreview([FromRoute] int salesArrangementId, [FromRoute] int documentOnSAId)
-        => await _mediator.Send(new SendDocumentPreviewRequest(salesArrangementId, documentOnSAId));
+    public async Task SendDocumentOnSAPreview([FromRoute] int salesArrangementId, [FromRoute] int documentOnSAId)
+        => await _mediator.Send(new SendDocumentOnSAPreviewRequest(salesArrangementId, documentOnSAId));
     
     /// <summary>
     /// Zrušit podepisování dokumentu

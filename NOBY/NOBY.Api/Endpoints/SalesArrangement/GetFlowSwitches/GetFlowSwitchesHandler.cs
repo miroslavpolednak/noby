@@ -25,9 +25,9 @@ internal sealed class GetFlowSwitchesHandler
             SendButton = createSectionButton(mergedSwitches[FlowSwitchesGroups.SendButton])
         };
 
-        if (existingSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferWithDiscount && t.Value))
+        if (existingSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferWithDiscount && t.Value!.Value))
         {
-            response.ModelationSection.IsCompleted = response.ModelationSection.IsCompleted && !existingSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsWflTaskForIPNotApproved && t.Value);
+            response.ModelationSection.IsCompleted = response.ModelationSection.IsCompleted && !existingSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsWflTaskForIPNotApproved && t.Value!.Value);
         }
 
         if (response.SigningSection.IsCompleted)

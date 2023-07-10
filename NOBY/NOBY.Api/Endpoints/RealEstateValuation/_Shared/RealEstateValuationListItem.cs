@@ -122,10 +122,10 @@ public class RealEstateValuationListItem
 public enum RealEstateStateIds
 {
     Unknown = 0,
-    x1 = 1,
-    x2 = 2,
-    x3 = 3,
-    x4 = 4
+    Finished = 1,
+    Reconstruction = 2,
+    Project = 3,
+    Construction = 4
 }
 
 //ITA chce enumy - me to neprijde dobre, fakticky se i na DS pouzivaji jen id, ale...

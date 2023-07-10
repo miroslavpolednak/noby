@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation;
 
 /// <summary>
-/// Editovatelné atributy Ocenění nemovitosti
+/// Editovatelný toggle developera na Ocenění nemovitosti
 /// </summary>
 public sealed class PatchDeveloperOnRealEstateValuationRequest
     : IRequest

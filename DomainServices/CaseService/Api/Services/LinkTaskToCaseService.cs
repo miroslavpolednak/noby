@@ -32,10 +32,6 @@ internal sealed class LinkTaskToCaseService
                 TaskTypeId = taskTypeId
             });
         }
-        else if (isActive && savedTask is not null)
-        {
-            // co mam updatovat???
-        }
         else if (savedTask is not null)
         {
             _dbContext.ActiveTasks.Remove(savedTask);
