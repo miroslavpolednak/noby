@@ -1,6 +1,4 @@
-﻿using DomainServices.DocumentArchiveService.Contracts;
-
-namespace NOBY.Api.Endpoints.DocumentArchive.GetDocument;
+﻿namespace NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 
 public class GetDocumentRequest : IRequest<GetDocumentResponse>
 {
@@ -11,8 +9,9 @@ public class GetDocumentRequest : IRequest<GetDocumentResponse>
     }
 
     public string DocumentId { get; }
-    
-    public DocumentSource Source { get; }
+
+    [Obsolete("Allowed source will be only EArchive")]
+    public DocumentSource Source { get; } = DocumentSource.EArchive;
 }
 
 

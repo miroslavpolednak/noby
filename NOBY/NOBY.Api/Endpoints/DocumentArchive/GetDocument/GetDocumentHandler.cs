@@ -1,8 +1,6 @@
 ﻿using CIS.Core.Security;
 using CIS.Infrastructure.gRPC;
 using DomainServices.DocumentArchiveService.Clients;
-using DomainServices.DocumentOnSAService.Clients;
-using DomainServices.DocumentOnSAService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 
@@ -10,17 +8,13 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
 {
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly IDocumentOnSAServiceClient _documentOnSaService;
-    
 
     public GetDocumentHandler(
         ICurrentUserAccessor currentUserAccessor,
-        IDocumentArchiveServiceClient documentArchiveService,
-        IDocumentOnSAServiceClient documentOnSaService)
+        IDocumentArchiveServiceClient documentArchiveService)
     {
         _currentUserAccessor = currentUserAccessor;
         _documentArchiveService = documentArchiveService;
-        _documentOnSaService = documentOnSaService;
     }
 
     public async Task<GetDocumentResponse> Handle(GetDocumentRequest request, CancellationToken cancellationToken)
@@ -28,7 +22,6 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
         return request.Source switch
         {
             DocumentSource.EArchive => await HandleFromEArchive(request, cancellationToken),
-            DocumentSource.QueueEPodpisy => await HandleFromEPodpisy(request, cancellationToken),
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -73,25 +66,6 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
                 Completeness = documentResponse.Metadata.Completeness,
                 MinorCodes = documentResponse.Metadata.MinorCodes.ToArray(),
             }
-        };
-    }
-
-    private async Task<GetDocumentResponse> HandleFromEPodpisy(GetDocumentRequest request, CancellationToken cancellationToken)
-    {
-        var result = await _documentOnSaService.GetElectronicDocumentFromQueue(
-            new GetElectronicDocumentFromQueueRequest
-            {
-
-            },
-            cancellationToken);
-
-        return new GetDocumentResponse
-        {
-            Content = new FileInfo
-            {
-                BinaryData = result.BinaryData.ToArrayUnsafe(),
-            },
-            Metadata = new DocumentMetadata()
         };
     }
 }
