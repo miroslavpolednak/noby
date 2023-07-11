@@ -92,7 +92,7 @@ public sealed class RealEstateValuationListItem
     /// Datum odeslání žádosti o Ocenění nemovitosti
     /// </summary>
     /// <example>31.12.2023</example>
-    public DateTime? ValuationSentDate { get; set; }
+    public DateOnly? ValuationSentDate { get; set; }
 
     /// <summary>
     /// Současná cena nemovitosti v Kč
