@@ -17,6 +17,7 @@ public sealed class PatchDeveloperOnRealEstateValuationRequest
     /// <summary>
     /// True pokud je aplikované hromadné ocenění z developerského projektu
     /// </summary>
+    /// <example>false</example>
     public bool DeveloperApplied { get; set; }
 
     internal PatchDeveloperOnRealEstateValuationRequest InfuseId(long caseId, int realEstateValuationId)
