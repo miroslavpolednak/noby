@@ -82,13 +82,13 @@ def authenticated_seqlog_session():
     session = requests.Session()
 
     response = session.post(
-        url="http://172.30.35.51:6341/api/users/login",
+        url="https://172.30.35.51:6341/api/users/login",
         json={
              "Username": "seqadmin",
             "Password": "Rud514",
             "NewPassword": "",
         },
-        verify=False,  # Přeskočit ověření certifikátu
+        verify=False  # Přeskočit ověření certifikátu
     )
 
     if response.status_code != 200:

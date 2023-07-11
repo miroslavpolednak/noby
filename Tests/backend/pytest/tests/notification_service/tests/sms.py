@@ -7,7 +7,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 import pytest
 import requests
 
-from ..conftest import URLS, greater_than_zero
+from ..conftest import URLS, greater_than_zero, ns_url, auth
 from ..json.request.seg_log import json_req_basic_log
 from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
     json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_sb, \
@@ -177,7 +177,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data, expected_resul
         "shortCircuitAfter": 100}
 
     encoded_params = "&".join(f"{key}={quote(str(value), safe='')}" for key, value in params.items())
-    url = f"http://172.30.35.51:6341/api/events/signal?{encoded_params}"
+    url = f"https://172.30.35.51:6341/api/events/signal?{encoded_params}"
 
     resp = authenticated_seqlog_session.post(
         url,
