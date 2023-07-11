@@ -105,6 +105,11 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
     private async Task ValidateRequest(StartSigningRequest request, CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(request.SignatureMethodCode))
+        {
+            return;
+        }
+        
         var signingMethods = await _codebookServiceClient.SigningMethodsForNaturalPerson(cancellationToken);
         if (!signingMethods.Any(r => r.Code.ToUpper(CultureInfo.InvariantCulture) == request.SignatureMethodCode.ToUpper(CultureInfo.InvariantCulture)))
         {
