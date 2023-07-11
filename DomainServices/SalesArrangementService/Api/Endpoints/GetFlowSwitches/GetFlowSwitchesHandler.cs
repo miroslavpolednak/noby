@@ -22,7 +22,9 @@ internal sealed class GetFlowSwitchesHandler
         if (flowSwitches is null || flowSwitches.Count == 0)
         {
             if (!(await _dbContext.SalesArrangements.AnyAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)))
+            {
                 throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
+            }
         }
 
         var response = new __SA.GetFlowSwitchesResponse();

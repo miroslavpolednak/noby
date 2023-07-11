@@ -7,6 +7,6 @@ import "Messages/FlowSwitch.proto";
 message SetFlowSwitchesRequest {
 	int32 SalesArrangementId = 1;
 
-	repeated FlowSwitch FlowSwitches = 2;
+	repeated EditableFlowSwitch FlowSwitches = 2;
 }
 

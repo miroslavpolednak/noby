@@ -99,7 +99,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
             {
                 SalesArrangementId = salesArrangementId
             };
-            flowSwitchesRequest.FlowSwitches.Add(new Contracts.FlowSwitch
+            flowSwitchesRequest.FlowSwitches.Add(new Contracts.EditableFlowSwitch
             {
                 FlowSwitchId = (int)FlowSwitches.IsOfferGuaranteed,
                 Value = true

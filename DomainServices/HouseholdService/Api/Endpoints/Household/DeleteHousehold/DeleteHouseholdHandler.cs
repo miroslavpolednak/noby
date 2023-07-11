@@ -49,7 +49,7 @@ internal sealed class DeleteHouseholdHandler
         // pokud se jedna o spoludluznickou, smazat flowswitch
         if (household.HouseholdTypeId == HouseholdTypes.Codebtor)
         {
-            await _salesArrangementService.SetFlowSwitches(household.SalesArrangementId, new List<SalesArrangementService.Contracts.FlowSwitch>
+            await _salesArrangementService.SetFlowSwitches(household.SalesArrangementId, new List<SalesArrangementService.Contracts.EditableFlowSwitch>
             {
                 new()
                 {

@@ -76,7 +76,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
     /// </summary>
     private async Task setFlowSwitches(long caseId, int salesArrangementId, __Offer.GetMortgageOfferResponse offerInstance, __Offer.GetMortgageOfferResponse? offerInstanceOld, CancellationToken cancellation)
     {
-        List<__SA.FlowSwitch> flowSwitchesToSet = new();
+        List<__SA.EditableFlowSwitch> flowSwitchesToSet = new();
 
         // Pokud existuje sleva na poplatku nebo sazbě (libovolný poplatek DiscountPercentage z kolekce SimulationInputs.Fees > 0 nebo SimulationInputs.InterestRateDiscount > 0),
         bool isOfferWithDiscount = (offerInstance.SimulationInputs.Fees?.Any(t => t.DiscountPercentage > 0) ?? false) || (offerInstance.SimulationInputs.InterestRateDiscount ?? 0) > 0M;
