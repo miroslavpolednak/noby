@@ -40,7 +40,7 @@ internal sealed class IndividualPricingProcessChangedConsumer
             return;
         }
         
-        var flowSwitch = new FlowSwitch
+        var flowSwitch = new EditableFlowSwitch
         {
             Value = true,
             FlowSwitchId = flowSwitchId

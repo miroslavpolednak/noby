@@ -4,9 +4,9 @@ using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 namespace DomainServices.CaseService.Api.Endpoints.CompleteTask;
 
 internal sealed class CompleteTaskHandler 
-    : IRequestHandler<CompleteTaskRequest>
+    : IRequestHandler<CompleteTaskRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task Handle(CompleteTaskRequest request, CancellationToken cancellationToken)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(CompleteTaskRequest request, CancellationToken cancellationToken)
     {
         var sbRequest = new ExternalServices.SbWebApi.Dto.CompleteTask.CompleteTaskRequest
         {
@@ -26,6 +26,8 @@ internal sealed class CompleteTaskHandler
         }
 
         await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
+
+        return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
     private static string getTaskUserResponseDef(int taskTypeId)

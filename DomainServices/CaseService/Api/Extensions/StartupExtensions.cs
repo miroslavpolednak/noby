@@ -34,7 +34,7 @@ internal static class StartupExtensions
 
         // kafka messaging
         builder.AddCisMessaging()
-            .AddKafka()
+            .AddKafka(typeof(StartupExtensions).Assembly)
             .AddConsumer<Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer>()
             .AddConsumer<Messaging.CollateralValuationProcessChanged.CollateralValuationProcessChangedConsumer>()
             .AddConsumer<Messaging.ConsultationRequestProcessChanged.ConsultationRequestProcessChangedConsumer>()

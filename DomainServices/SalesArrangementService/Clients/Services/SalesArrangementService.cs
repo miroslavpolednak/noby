@@ -125,7 +125,7 @@ internal sealed class SalesArrangementService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellationToken = default)
     {
          await _service.UpdateLoanAssessmentParametersAsync(
             new()
@@ -138,7 +138,7 @@ internal sealed class SalesArrangementService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateOfferDocumentId(int salesArrangementId, string offerDocumentId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateOfferDocumentId(int salesArrangementId, string offerDocumentId, CancellationToken cancellationToken = default)
     {
         await _service.UpdateOfferDocumentIdAsync(
             new()
@@ -148,7 +148,7 @@ internal sealed class SalesArrangementService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task<List<FlowSwitch>> GetFlowSwitches(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<FlowSwitch>> GetFlowSwitches(int salesArrangementId, CancellationToken cancellationToken = default)
     {
         return (await _service.GetFlowSwitchesAsync(
             new()
@@ -157,7 +157,7 @@ internal sealed class SalesArrangementService
             }, cancellationToken: cancellationToken)).FlowSwitches.ToList();
     }
 
-    public async Task SetFlowSwitches(int salesArrangementId, List<FlowSwitch> flowSwitches, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task SetFlowSwitches(int salesArrangementId, List<EditableFlowSwitch> flowSwitches, CancellationToken cancellationToken = default)
     {
         var request = new SetFlowSwitchesRequest
         {

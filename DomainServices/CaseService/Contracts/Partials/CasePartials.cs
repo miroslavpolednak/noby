@@ -2,7 +2,8 @@
 
 namespace DomainServices.CaseService.Contracts;
 
-public partial class CompleteTaskRequest : MediatR.IRequest
+public partial class CompleteTaskRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 
 public partial class CreateCaseRequest

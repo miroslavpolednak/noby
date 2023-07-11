@@ -1,13 +1,14 @@
 ﻿using CIS.Infrastructure.Messaging.Kafka;
 using KB.Speed.Messaging.Kafka.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
+using System.Reflection;
 
 namespace CIS.Infrastructure.Messaging;
 
 internal sealed class CisMessagingBuilder
     : ICisMessagingBuilder
 {
-    public ICisMessagingKafkaBuilder AddKafka()
+    public ICisMessagingKafkaBuilder AddKafka(Assembly? assembly = null)
     {
         var configuration = AppBuilder.GetKafkaRiderConfiguration();
 
@@ -17,7 +18,11 @@ internal sealed class CisMessagingBuilder
         AppBuilder.Services.AddJsonDeserializerConfiguration();
         AppBuilder.Services.AddApicurioSchemaRegistry();
 
-        return new CisMessagingKafkaBuilder(this, configuration);
+        if (assembly is null)
+        {
+            assembly = Assembly.GetEntryAssembly()!;
+        }
+        return new CisMessagingKafkaBuilder(this, configuration, assembly);
     }
 
     internal readonly WebApplicationBuilder AppBuilder;

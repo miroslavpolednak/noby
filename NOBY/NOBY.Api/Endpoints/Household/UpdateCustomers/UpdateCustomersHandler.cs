@@ -64,7 +64,7 @@ internal sealed class UpdateCustomersHandler
     private async Task setFlowSwitches(int householdTypeId, int salesArrangementId, bool isSecondCustomerIdentified, CancellationToken cancellationToken)
     {
         // kolekce flow switches, kterou na konci ulozime na SA
-        var flowSwitchesToSet = new List<DomainServices.SalesArrangementService.Contracts.FlowSwitch>();
+        var flowSwitchesToSet = new List<DomainServices.SalesArrangementService.Contracts.EditableFlowSwitch>();
 
         switch (householdTypeId)
         {

@@ -1,9 +1,10 @@
 ﻿using DomainServices.CodebookService.Contracts.v1;
+using NOBY.Dto.RealEstateValuation;
 using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
-namespace NOBY.Api.Endpoints.RealEstateValuation.Shared;
+namespace NOBY.Api.Endpoints.RealEstateValuation;
 
-internal static class RealEstateValuationExtensions
+public static class RealEstateValuationExtensions
 {
     public static RealEstateValuationListItem MapToApiResponse(this __Contracts.RealEstateValuationListItem dsValuationListItem, IList<WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem> states)
     {

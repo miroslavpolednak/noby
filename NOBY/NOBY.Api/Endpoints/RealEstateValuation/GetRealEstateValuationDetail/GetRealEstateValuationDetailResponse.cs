@@ -1,4 +1,4 @@
-﻿using NOBY.Api.Endpoints.RealEstateValuation.Shared;
+﻿using NOBY.Dto.RealEstateValuation;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail;
 

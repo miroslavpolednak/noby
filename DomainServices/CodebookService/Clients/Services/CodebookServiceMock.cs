@@ -5,6 +5,9 @@ namespace DomainServices.CodebookService.Clients.Services;
 public class CodebookServiceMock 
     : CodebookServiceBaseMock, ICodebookServiceClient
 {
+    public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> CaseStates(CancellationToken cancellationToken = default)
+        => Helpers.GetGenericItems<CIS.Foms.Enums.CaseStates>();
+
     public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> AcademicDegreesBefore(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(new List<GenericCodebookResponse.Types.GenericCodebookItem>

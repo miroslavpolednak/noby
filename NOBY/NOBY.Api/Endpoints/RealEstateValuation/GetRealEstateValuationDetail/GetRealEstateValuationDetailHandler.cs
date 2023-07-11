@@ -2,8 +2,8 @@
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
-using NOBY.Api.Endpoints.RealEstateValuation.Shared;
-using NOBY.Api.Endpoints.RealEstateValuation.Shared.SpecificDetails;
+using NOBY.Dto.RealEstateValuation;
+using NOBY.Dto.RealEstateValuation.SpecificDetails;
 using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail;
@@ -39,7 +39,7 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
                 CaseInProgress = caseInstance.State == (int)CaseStates.InProgress,
                 RealEstateVariant = GetRealEstateVariant(valuationDetail.RealEstateValuationGeneralDetails.RealEstateTypeId),
                 RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId,
-                LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = valuationDetail.LoanPurposeDetails.LoanPurposes },
+                LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = valuationDetail.LoanPurposeDetails.LoanPurposes.ToList() },
                 SpecificDetails = GetSpecificDetailsObject(valuationDetail)
             }
         };
@@ -49,10 +49,10 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
     {
         return RealEstateVariantHelper.GetRealEstateVariant(realEstateTypeId) switch
         {
-            RealEstateVariant.HouseAndFlat => "HF",
-            RealEstateVariant.OnlyFlat => "HF+F",
-            RealEstateVariant.Parcel => "P",
-            RealEstateVariant.Other => "O",
+            RealEstateVariants.HouseAndFlat => "HF",
+            RealEstateVariants.OnlyFlat => "HF+F",
+            RealEstateVariants.Parcel => "P",
+            RealEstateVariants.Other => "O",
             _ => throw new NotImplementedException()
         };
     }

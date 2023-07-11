@@ -1,5 +1,6 @@
 ﻿using Avro.Specific;
 using MassTransit;
+using System.Reflection;
 
 namespace CIS.Infrastructure.Messaging.Kafka;
 
@@ -10,7 +11,7 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
     {
         _kafkaConfigurationActions.Add((configurator, context) =>
         {
-            configurator.AddTopicEndpointAvro<TTopicMarker>(context, _consumerImplementations, topic, groupId);
+            configurator.AddTopicEndpointAvro<TTopicMarker>(context, _consumerImplementations, topic, groupId, _contractsAssembly);
         });
         return this;
     }
@@ -19,7 +20,7 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
     {
         _kafkaConfigurationActions.Add((configurator, context) =>
         {
-            configurator.AddTopicEndpointJson<TTopicMarker>(context, _consumerImplementations, topic, groupId);
+            configurator.AddTopicEndpointJson<TTopicMarker>(context, _consumerImplementations, topic, groupId, _contractsAssembly);
         });
         return this;
     }
@@ -40,7 +41,7 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
     {
         _riderConfigurationActions.Add(configurator =>
         {
-            configurator.AddProducerAvro<TTopicMarker>(topic);
+            configurator.AddProducerAvro<TTopicMarker>(topic, _contractsAssembly);
         });
         return this;
     }
@@ -50,7 +51,7 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
     {
         _riderConfigurationActions.Add(configurator =>
         {
-            configurator.AddProducerJson<TTopicMarker>(topic);
+            configurator.AddProducerJson<TTopicMarker>(topic, _contractsAssembly);
         });
         return this;
     }
@@ -107,13 +108,15 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
 
     private readonly Configuration.IKafkaRiderConfiguration _configuration;
     private readonly CisMessagingBuilder _builder;
+    private readonly Assembly _contractsAssembly;
 
     private List<Type> _consumerImplementations = new();
     private List<Action<IRiderRegistrationConfigurator>> _riderConfigurationActions = new();
     private List<Action<IKafkaFactoryConfigurator, IRiderRegistrationContext>> _kafkaConfigurationActions = new();
 
-    public CisMessagingKafkaBuilder(CisMessagingBuilder builder, Configuration.IKafkaRiderConfiguration configuration)
+    public CisMessagingKafkaBuilder(CisMessagingBuilder builder, Configuration.IKafkaRiderConfiguration configuration, Assembly contractsAssembly)
     {
+        _contractsAssembly = contractsAssembly;
         _builder = builder;
         _configuration = configuration;
     }
