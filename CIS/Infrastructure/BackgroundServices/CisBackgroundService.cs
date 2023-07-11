@@ -69,7 +69,15 @@ internal sealed class CisBackgroundService<TBackgroundService>
         _logger.BackgroundServiceNextRun(_serviceName, next);
         
         var nextRun = Convert.ToInt32((next - DateTime.Now).TotalMilliseconds);
-        await Task.Delay(nextRun, stoppingToken);
+        if (nextRun <= 1000)
+        {
+            await Task.Delay(nextRun + 100, stoppingToken);
+            await waitUntilNext(stoppingToken);
+        }
+        else
+        {
+            await Task.Delay(nextRun, stoppingToken);
+        }
     }
 
     private CrontabSchedule getCrontabSchedule()
