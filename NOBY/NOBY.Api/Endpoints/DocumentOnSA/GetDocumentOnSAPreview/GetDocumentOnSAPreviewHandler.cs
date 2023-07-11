@@ -1,12 +1,8 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC;
-using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
-using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
-using Newtonsoft.Json;
-using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
 
@@ -51,71 +47,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
         }
 
         var documentOnSAData = await _documentOnSaService.GetDocumentOnSAData(documentOnSA.DocumentOnSAId ?? 0, cancellationToken);
-        var documentDataList = JsonConvert.DeserializeObject<List<DocumentDataDto>>(documentOnSAData.Data);
-        
-        var generateDocumentRequest = new GenerateDocumentRequest
-        {
-            DocumentTypeId = documentOnSA.DocumentTypeId!.Value,
-            DocumentTemplateVersionId = documentOnSA.DocumentTemplateVersionId!.Value,
-            DocumentTemplateVariantId = documentOnSA.DocumentTemplateVariantId,
-            ForPreview = true,
-            OutputType = OutputFileType.Pdfa,
-            Parts =
-            {
-                new GenerateDocumentPart
-                {
-                    DocumentTypeId = documentOnSA.DocumentTypeId!.Value,
-                    DocumentTemplateVersionId = documentOnSA.DocumentTemplateVersionId!.Value,
-                    DocumentTemplateVariantId = documentOnSA.DocumentTemplateVariantId,
-                    Data =
-                    {
-                        documentDataList?.Select(d =>
-                        {
-                            var documentPartData = new GenerateDocumentPartData
-                            {
-                                Key = d.FieldName,
-                                StringFormat = d.StringFormat,
-                                TextAlign = (TextAlign)(d.TextAlign ?? 0)
-                            };
-                            
-                            switch (d.ValueCase)
-                            {
-                                case 0:
-                                    break;
-                                case 3:
-                                    documentPartData.Text = d.Text;
-                                    break;
-                                case 4:
-                                    documentPartData.Date = new DateTime(d.Date!.Year, d.Date!.Month, d.Date!.Day);
-                                    break;
-                                case 5:
-                                    documentPartData.Number = d.Number;
-                                    break;
-                                case 6:
-                                    documentPartData.DecimalNumber = new GrpcDecimal(d.DecimalNumber!.Units, d.DecimalNumber!.Nanos);
-                                    break;
-                                case 7:
-                                    documentPartData.LogicalValue = d.LogicalValue;
-                                    break;
-                                case 8:
-                                    throw new NotSupportedException("GenericTable is not supported");
-                                default:
-                                    throw new NotSupportedException("Notsupported oneof object");
-                            }
-                            
-                            return documentPartData;
-                        })
-                    }
-                }
-            },
-            DocumentFooter = new DocumentFooter
-            {
-                SalesArrangementId = documentOnSA.SalesArrangementId,
-                DocumentId = documentOnSA.EArchivId,
-                BarcodeText = documentOnSA.FormId
-            }
-        };
-        
+        var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSA, documentOnSAData);
         var document = await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
 
         return new GetDocumentOnSAPreviewResponse
