@@ -22,7 +22,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         {
             DocumentTypeId = request.DocumentTypeId,
             SalesArrangementId = request.SalesArrangementId,
-            SignatureMethodCode = request.SignatureMethodCode,
+            SignatureMethodCode = request.SignatureMethodCode ?? string.Empty,
             SignatureTypeId = request.SignatureTypeId
         }, cancellationToken);
 
