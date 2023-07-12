@@ -41,7 +41,7 @@ public static class LoggingExtensions
         builder.Services.AddSingleton(configuration);
 
         // pridani custom enricheru
-        builder.Services.AddTransient<Enrichers.NobyHeadersEnricher>();
+        builder.Services.AddTransient<Enrichers.CisHeadersEnricher>();
 
         // auditni log
         if (configuration?.Logging?.Audit is not null)
@@ -51,7 +51,7 @@ public static class LoggingExtensions
                 // get server IP
                 var server = serviceProvider.GetRequiredService<IServer>();
                 var addresses = server.Features.Get<IServerAddressesFeature>()!.Addresses;
-                var serverIp = addresses.First()[8..^1];
+                var serverIp = addresses.First()[7..^1];
 
                 var cisConfiguration = serviceProvider.GetRequiredService<ICisEnvironmentConfiguration>();
                 

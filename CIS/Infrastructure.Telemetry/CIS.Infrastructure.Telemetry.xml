@@ -49,7 +49,7 @@
             Logovani do Sequ
             </summary>
         </member>
-        <member name="T:CIS.Infrastructure.Telemetry.Enrichers.NobyHeadersEnricher">
+        <member name="T:CIS.Infrastructure.Telemetry.Enrichers.CisHeadersEnricher">
             <summary>
             Doda do kontextu log item ID a Login uzivatele
             </summary>

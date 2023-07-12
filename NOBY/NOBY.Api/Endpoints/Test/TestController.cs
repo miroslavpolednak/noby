@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.Telemetry;
+using CIS.Infrastructure.Telemetry.AuditLog;
 using Microsoft.AspNetCore.Authorization;
 using NOBY.Api.Endpoints.Test.Rollback;
 
@@ -29,7 +30,10 @@ public class TestController : ControllerBase
     public async Task T2()
     {
         var logger = _context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
-        logger.Log(CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Prvni);
+        logger.Log(
+            CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Prvni,
+            identities: new List<AuditLoggerHeaderItem> { new() { Id = "aaa", Type = "bbb" } }
+        );
     }
 
     [HttpGet("t3")]

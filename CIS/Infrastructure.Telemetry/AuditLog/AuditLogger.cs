@@ -1,26 +1,32 @@
 ﻿using CIS.Core.Security;
 using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
+using static CIS.Infrastructure.Telemetry.AuditLog.AuditLogger;
 
 namespace CIS.Infrastructure.Telemetry.AuditLog;
 
 internal sealed class AuditLogger
     : IAuditLogger
 {
-    private readonly IHttpContextAccessor _contextAccessor;
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly AuditLoggerHelper _helper;
-
-    public AuditLogger(AuditLoggerHelper helper, IHttpContextAccessor contextAccessor, ICurrentUserAccessor currentUser)
+    public void Log(
+        AuditEventTypes eventType,
+        ICollection<AuditLoggerHeaderItem>? identities = null,
+        ICollection<AuditLoggerHeaderItem>? products = null,
+        AuditLoggerHeaderItem? operation = null)
     {
-        _helper = helper;
-        _contextAccessor = contextAccessor;
-        _currentUser = currentUser;
-    }
+        var user = Helpers.GetCurrentUser(_currentUser, _contextAccessor);
 
-    public void Log(AuditEventTypes eventType)
-    {
-        var headers = new AuditEventHeaders(getIpAddress());
-        _helper.Log(eventType, ref headers);
+        var context = new AuditEventContext()
+        {
+            EventType = eventType,
+            Identities = identities,
+            Products = products,
+            Operation = operation,
+            ClientIp = getIpAddress(),
+            UserIdent = user.UserIdent,
+            Correlation = Activity.Current?.Id
+        };
+        _helper.Log(context);
     }
 
     private string getIpAddress()
@@ -32,5 +38,16 @@ internal sealed class AuditLogger
             if (idx > 0) return proxyIps[..idx];
         }
         return _contextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "";
+    }
+
+    private readonly IHttpContextAccessor _contextAccessor;
+    private readonly ICurrentUserAccessor _currentUser;
+    private readonly AuditLoggerHelper _helper;
+
+    public AuditLogger(AuditLoggerHelper helper, IHttpContextAccessor contextAccessor, ICurrentUserAccessor currentUser)
+    {
+        _helper = helper;
+        _contextAccessor = contextAccessor;
+        _currentUser = currentUser;
     }
 }
