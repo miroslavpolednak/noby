@@ -11,12 +11,23 @@ internal sealed class CreateHouseholdHandler
     public async Task<Dto.HouseholdInList> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)
     {
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-        if ((await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == saInstance.SalesArrangementTypeId)?.SalesArrangementCategory != 1 && !request.HardCreate)
+        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == saInstance.SalesArrangementTypeId)?.SalesArrangementCategory;
+        if (saCategory != (int)SalesArrangementCategories.ProductRequest && !request.HardCreate)
+        {
             throw new NobyValidationException("SalesArrangementTypeId is Service SA");
-        
-        // nazev typu domacnosti
-        string householdTypeName = (await _codebookService.HouseholdTypes(cancellationToken)).FirstOrDefault(x => x.Id == request.HouseholdTypeId)?.Name ??
-            throw new NobyValidationException($"Household type {request.HouseholdTypeId} not found");
+        }
+
+        // typ domacnosti
+        var householdType = (await _codebookService.HouseholdTypes(cancellationToken))
+            .FirstOrDefault(x => x.Id == request.HouseholdTypeId)
+            ?? throw new NobyValidationException($"Household type {request.HouseholdTypeId} not found");
+
+        // kontrola max mnozstvi domacnosti
+        var householdList = await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken);
+        if (householdList.Count(t => t.HouseholdTypeId == request.HouseholdTypeId) >= householdType.MaxHouseholdsForSA)
+        {
+            throw new NobyValidationException("Maximum count for this household type already reached");
+        }
 
         // vytvorit domacnost
         var requestModel = new _HO.CreateHouseholdRequest
@@ -54,7 +65,7 @@ internal sealed class CreateHouseholdHandler
         {
             HouseholdId = householdId,
             HouseholdTypeId = request.HouseholdTypeId,
-            HouseholdTypeName = householdTypeName
+            HouseholdTypeName = householdType.Name
         };
     }
 
