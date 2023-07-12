@@ -10,9 +10,11 @@ internal sealed class AuditLogger
 {
     public void Log(
         AuditEventTypes eventType,
+        string message,
         ICollection<AuditLoggerHeaderItem>? identities = null,
         ICollection<AuditLoggerHeaderItem>? products = null,
         AuditLoggerHeaderItem? operation = null,
+        string? result = null,
         IDictionary<string, string>? bodyBefore = null,
         IDictionary<string, string>? bodyAfter = null)
     {
@@ -21,6 +23,9 @@ internal sealed class AuditLogger
         var context = new AuditEventContext()
         {
             EventType = eventType,
+            Message = message,
+            AuditEventIdent = Guid.NewGuid(),
+            Result = result,
             Identities = identities,
             Products = products,
             Operation = operation,

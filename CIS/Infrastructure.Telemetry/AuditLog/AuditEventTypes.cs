@@ -5,6 +5,6 @@ namespace CIS.Infrastructure.Telemetry.AuditLog;
 public enum AuditEventTypes 
     : int
 {
-    [Display(Name = "", ShortName = "")]
-    Prvni = 1
+    [AuditEventTypeDescriptor("popis", "NOBY_001")]
+    Noby001 = 1
 }

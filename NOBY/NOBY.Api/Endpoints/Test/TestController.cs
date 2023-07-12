@@ -31,7 +31,8 @@ public class TestController : ControllerBase
     {
         var logger = _context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
         logger.Log(
-            CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Prvni,
+            CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby001,
+            "Nejaka fajn zprava",
             identities: new List<AuditLoggerHeaderItem> { new() { Id = "aaa", Type = "bbb" } },
             bodyBefore: new Dictionary<string, string> { { "aaa", "bbb" }, { "ccc", "dddd" } }
         );

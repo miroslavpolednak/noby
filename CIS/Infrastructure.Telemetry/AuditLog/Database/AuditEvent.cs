@@ -1,5 +1,5 @@
 ﻿namespace CIS.Infrastructure.Telemetry.AuditLog.Database;
 
-internal record AuditEvent(int AuditEventTypeId, string Detail)
+internal record AuditEvent(Guid EventID, string AuditEventTypeId, string Detail)
 {
 }

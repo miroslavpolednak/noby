@@ -29,6 +29,11 @@
             Kod pro ukladani v Logmanu
             </summary>
         </member>
+        <member name="P:CIS.Infrastructure.Telemetry.Configuration.AuditLogConfiguration.EamVersion">
+            <summary>
+            Verze logovaciho schematu
+            </summary>
+        </member>
         <member name="P:CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.File">
             <summary>
             Logovani do souboru

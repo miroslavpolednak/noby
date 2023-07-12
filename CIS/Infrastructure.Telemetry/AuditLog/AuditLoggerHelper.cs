@@ -1,29 +1,39 @@
-﻿using CIS.Core.Configuration;
-using Serilog.Formatting.Json;
+﻿using CIS.Core;
+using CIS.Core.Configuration;
+using FastEnumUtility;
 using System.Globalization;
-using System.ServiceModel.Description;
 
 namespace CIS.Infrastructure.Telemetry.AuditLog;
 
 internal sealed class AuditLoggerHelper
 {
-    private readonly JsonValueFormatter _valueFormatter;
     private readonly Database.DatabaseWriter _databaseWriter;
     private AuditLoggerDefaults _loggerDefaults;
+    static Dictionary<AuditEventTypes, AuditEventTypeDescriptorAttribute> _eventTypeDescriptors = new();
+
+    // cache event types
+    static AuditLoggerHelper()
+    {
+        var values = FastEnum.GetValues<AuditEventTypes>();
+        foreach (var v in values)
+        {
+            _eventTypeDescriptors.Add(v, v.GetAttribute<AuditEventTypeDescriptorAttribute>()!);
+        }
+    }
 
     public AuditLoggerHelper(string serverIp, ICisEnvironmentConfiguration environmentConfiguration, AuditLogConfiguration auditConfiguration)
     {
-        _valueFormatter = new JsonValueFormatter(typeTagName: "$type");
         _databaseWriter = new Database.DatabaseWriter(auditConfiguration.ConnectionString);
-        _loggerDefaults = new AuditLoggerDefaults(serverIp, environmentConfiguration.DefaultApplicationKey!, auditConfiguration.EamApplication, environmentConfiguration.EnvironmentName!);
+        _loggerDefaults = new AuditLoggerDefaults(serverIp, environmentConfiguration.DefaultApplicationKey!, auditConfiguration.EamApplication, auditConfiguration.EamVersion, environmentConfiguration.EnvironmentName!);
     }
 
     public void Log(AuditEventContext context)
     {
+        var eventDescriptor = _eventTypeDescriptors[context.EventType];
         StringWriter json = new();
-        AuditLoggerJsonWriter.CreateJson(json, _valueFormatter, ref _loggerDefaults, context);
+        AuditLoggerJsonWriter.CreateJson(json, ref _loggerDefaults, context, eventDescriptor.Code.AsSpan(), eventDescriptor.Version);
 
-        var eventObject = new Database.AuditEvent((int)context.EventType, json.ToString());
+        var eventObject = new Database.AuditEvent(context.AuditEventIdent, eventDescriptor.Code, json.ToString());
         _databaseWriter.Write(ref eventObject);
     }
 }
@@ -33,15 +43,16 @@ internal static class AuditLoggerJsonWriter
     private static CultureInfo _culture = CultureInfo.InvariantCulture;
 
     public static void CreateJson(
-        StringWriter output, 
-        JsonValueFormatter valueFormatter, 
+        StringWriter output,
         ref AuditLoggerDefaults loggerDefaults, 
-        AuditEventContext context)
+        AuditEventContext context,
+        ReadOnlySpan<char> eventTypeId,
+        int eventTypeVersion)
     {
         var time = DateTime.Now.ToString("o", _culture).AsSpan();
 
         output.Write("{\"id\":\"");
-        output.Write(Guid.NewGuid().ToString());
+        output.Write(context.AuditEventIdent.ToString());
         output.Write("\",");
 
         #region meta
@@ -57,7 +68,7 @@ internal static class AuditLoggerJsonWriter
 
         // version
         output.Write(",\"version\":");
-        output.Write(3);
+        output.Write(loggerDefaults.EamVersion.AsSpan());
 
         // eam
         output.Write(",\"eamApplication\":");
@@ -69,12 +80,15 @@ internal static class AuditLoggerJsonWriter
         #region header
         output.Write(",\"header\":{");
 
+        output.Write("\"message\":");
+        write(output, context.Message.AsSpan());
+
         #region event
-        output.Write("\"event\":{");
+        output.Write(",\"event\":{");
 
         // correlation
         output.Write("\"correlation\":");
-        write(output, context.Correlation);
+        write(output, context.Correlation.AsSpan());
 
         // time
         output.Write(",\"time\":{\"tsServer\":");
@@ -84,9 +98,9 @@ internal static class AuditLoggerJsonWriter
         // type
         output.Write(",\"type\":{");
         output.Write("\"id\":");
-        output.Write(1);
+        write(output, eventTypeId);
         output.Write(",\"version\":");
-        output.Write(1);
+        output.Write(eventTypeVersion);
         output.Write("}");
 
         // source
@@ -122,23 +136,26 @@ internal static class AuditLoggerJsonWriter
         if (context.Identities is not null && context.Identities.Any())
         {
             output.Write(",\"identity\":[");
-            writeHeaderCollection(output, context.Identities);
+            writeHeaderIdentity(output, context.Identities);
             output.Write("]");
         }
 
         if (context.Products is not null && context.Products.Any())
         {
             output.Write(",\"product\":[");
-            writeHeaderCollection(output, context.Products);
+            writeHeaderProduct(output, context.Products);
             output.Write("]");
         }
 
         if (context.Operation is not null)
         {
-            output.Write(",\"operation\":{\"id\":");
-            write(output, context.Operation.Id);
-            output.Write(",\"idSchema\":");
-            write(output, context.Operation.Type);
+            output.Write(",\"operation\":{\"type\":");
+            write(output, context.Operation.Type.AsSpan());
+            if (!string.IsNullOrEmpty(context.Operation.Id))
+            {
+                output.Write(",\"id\":");
+                write(output, context.Operation.Id.AsSpan());
+            }
             output.Write("}");
         }
 
@@ -168,23 +185,40 @@ internal static class AuditLoggerJsonWriter
         {
             if (i++ > 0) output.Write(",");
             output.Write("\"");
-            output.Write(item.Key);
+            output.Write(item.Key.AsSpan());
             output.Write("\":\"");
-            output.Write(item.Value);
+            output.Write(item.Value.AsSpan());
             output.Write("\"");
         }
     }
 
-    private static void writeHeaderCollection(StringWriter output, ICollection<AuditLoggerHeaderItem> items)
+    private static void writeHeaderIdentity(StringWriter output, ICollection<AuditLoggerHeaderItem> items)
     {
         int i = 0;
         foreach (var identity in items)
         {
             if (i++ > 0) output.Write(",");
             output.Write("{\"id\":");
-            write(output, identity.Id);
+            write(output, identity.Id.AsSpan());
             output.Write(",\"idSchema\":");
-            write(output, identity.Type);
+            write(output, identity.Type.AsSpan());
+            output.Write("}");
+        }
+    }
+
+    private static void writeHeaderProduct(StringWriter output, ICollection<AuditLoggerHeaderItem> items)
+    {
+        int i = 0;
+        foreach (var product in items)
+        {
+            if (i++ > 0) output.Write(",");
+            output.Write("{\"type\":");
+            write(output, product.Type.AsSpan());
+            if (!string.IsNullOrEmpty(product.Id))
+            {
+                output.Write(",\"id\":");
+                write(output, product.Id.AsSpan());
+            }
             output.Write("}");
         }
     }

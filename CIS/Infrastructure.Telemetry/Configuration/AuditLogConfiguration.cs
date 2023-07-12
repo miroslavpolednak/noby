@@ -10,5 +10,10 @@ public sealed class AuditLogConfiguration
     /// <summary>
     /// Kod pro ukladani v Logmanu
     /// </summary>
-    public string EamApplication { get; set; } = "";
+    public string EamApplication { get; set; } = "NOBY";
+
+    /// <summary>
+    /// Verze logovaciho schematu
+    /// </summary>
+    public string EamVersion { get; set; } = "3";
 }

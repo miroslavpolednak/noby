@@ -5,7 +5,7 @@ namespace CIS.Infrastructure.Telemetry.AuditLog.Database;
 
 internal sealed class DatabaseWriter
 {
-    private const string _insertSql = "INSERT INTO dbo.AuditEvent (AuditEventTypeId, Detail) VALUES (@AuditEventTypeId, @Detail)";
+    private const string _insertSql = "INSERT INTO dbo.AuditEvent (EventID, AuditEventTypeId, Detail) VALUES (@EventID, @AuditEventTypeId, @Detail)";
     private readonly string _connectionString;
 
     internal DatabaseWriter(string connectionString)

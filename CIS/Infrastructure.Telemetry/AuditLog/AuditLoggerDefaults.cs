@@ -3,7 +3,8 @@
 internal record AuditLoggerDefaults(
     string ServerIp,
     string CisAppKey, 
-    string EamApplication, 
+    string EamApplication,
+    string EamVersion,
     string EnvironmentName)
 {
 }
