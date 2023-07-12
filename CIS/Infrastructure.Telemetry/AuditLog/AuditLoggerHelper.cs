@@ -145,7 +145,34 @@ internal static class AuditLoggerJsonWriter
         output.Write("}");
         #endregion header
 
+        #region body
+        output.Write(",\"body\":{");
+
+        if (context.BodyBefore is not null)
+        {
+            output.Write("\"objectsBefore\":{");
+            writeBodyCollection(output, context.BodyBefore);
+            output.Write("}");
+        }
+
         output.Write("}");
+        #endregion body
+
+        output.Write("}");
+    }
+
+    private static void writeBodyCollection(StringWriter output, IDictionary<string, string> items)
+    {
+        int i = 0;
+        foreach (var item in items)
+        {
+            if (i++ > 0) output.Write(",");
+            output.Write("\"");
+            output.Write(item.Key);
+            output.Write("\":\"");
+            output.Write(item.Value);
+            output.Write("\"");
+        }
     }
 
     private static void writeHeaderCollection(StringWriter output, ICollection<AuditLoggerHeaderItem> items)

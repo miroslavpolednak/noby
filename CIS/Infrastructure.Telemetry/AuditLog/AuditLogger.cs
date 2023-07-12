@@ -12,7 +12,9 @@ internal sealed class AuditLogger
         AuditEventTypes eventType,
         ICollection<AuditLoggerHeaderItem>? identities = null,
         ICollection<AuditLoggerHeaderItem>? products = null,
-        AuditLoggerHeaderItem? operation = null)
+        AuditLoggerHeaderItem? operation = null,
+        IDictionary<string, string>? bodyBefore = null,
+        IDictionary<string, string>? bodyAfter = null)
     {
         var user = Helpers.GetCurrentUser(_currentUser, _contextAccessor);
 
@@ -22,6 +24,8 @@ internal sealed class AuditLogger
             Identities = identities,
             Products = products,
             Operation = operation,
+            BodyAfter = bodyAfter,
+            BodyBefore = bodyBefore,
             ClientIp = getIpAddress(),
             UserIdent = user.UserIdent,
             Correlation = Activity.Current?.Id

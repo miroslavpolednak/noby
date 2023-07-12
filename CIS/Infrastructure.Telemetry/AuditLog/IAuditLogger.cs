@@ -9,5 +9,7 @@ public interface IAuditLogger
         AuditEventTypes eventType,
         ICollection<AuditLoggerHeaderItem>? identities = null,
         ICollection<AuditLoggerHeaderItem>? products = null,
-        AuditLoggerHeaderItem? operation = null);
+        AuditLoggerHeaderItem? operation = null,
+        IDictionary<string, string>? bodyBefore = null,
+        IDictionary<string, string>? bodyAfter = null);
 }
