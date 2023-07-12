@@ -1,31 +1,36 @@
-﻿using Serilog;
+﻿using CIS.Core.Security;
+using Microsoft.AspNetCore.Http;
 
-namespace CIS.Infrastructure.Telemetry;
+namespace CIS.Infrastructure.Telemetry.AuditLog;
 
 internal sealed class AuditLogger
     : IAuditLogger
 {
-    static Serilog.Core.Logger? _logger;
+    private readonly IHttpContextAccessor _contextAccessor;
+    private readonly ICurrentUserAccessor _currentUser;
+    private readonly AuditLoggerHelper _helper;
 
-    public void Log(string message)
+    public AuditLogger(AuditLoggerHelper helper, IHttpContextAccessor contextAccessor, ICurrentUserAccessor currentUser)
     {
-        if (_logger is not null)
-            _logger.Information(message);
+        _helper = helper;
+        _contextAccessor = contextAccessor;
+        _currentUser = currentUser;
     }
 
-    internal static void SetupLogger(LoggerBootstraper bootstrapper, LogConfiguration configuration)
+    public void Log(AuditEventTypes eventType)
     {
-        var logger = new LoggerConfiguration();
-
-        bootstrapper.EnrichLogger(logger);
-        bootstrapper.AddOutputs(logger, configuration);
-
-        _logger = logger.CreateLogger();
+        var headers = new AuditEventHeaders(getIpAddress());
+        _helper.Log(eventType, ref headers);
     }
 
-    internal static void CloseAndFlush()
+    private string getIpAddress()
     {
-        if (_logger is not null)
-            ((IDisposable)_logger).Dispose();
+        string? proxyIps = _contextAccessor.HttpContext?.Request?.Headers?["X-Forwarded-For"].FirstOrDefault();
+        if (!string.IsNullOrEmpty(proxyIps))
+        {
+            int idx = proxyIps.IndexOf(',', 1);
+            if (idx > 0) return proxyIps[..idx];
+        }
+        return _contextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "";
     }
 }

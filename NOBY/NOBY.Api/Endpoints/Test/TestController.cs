@@ -1,10 +1,12 @@
-﻿using NOBY.Api.Endpoints.Test.Rollback;
+﻿using CIS.Infrastructure.Telemetry;
+using Microsoft.AspNetCore.Authorization;
+using NOBY.Api.Endpoints.Test.Rollback;
 
 namespace NOBY.Api.Endpoints.Test;
 
 [ApiController]
 [Route("api/test")]
-//[AllowAnonymous]
+[AllowAnonymous]
 public class TestController : ControllerBase
 {
     [HttpPost("rollback")]
@@ -26,7 +28,8 @@ public class TestController : ControllerBase
     [HttpGet("t2")]
     public async Task T2()
     {
-        throw new NotImplementedException();
+        var logger = _context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
+        logger.Log(CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Prvni);
     }
 
     [HttpGet("t3")]

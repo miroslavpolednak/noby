@@ -1,6 +1,8 @@
-﻿namespace CIS.Infrastructure.Telemetry;
+﻿using CIS.Infrastructure.Telemetry.AuditLog;
+
+namespace CIS.Infrastructure.Telemetry;
 
 public interface IAuditLogger
 {
-    void Log(string message);
+    void Log(AuditEventTypes eventType);
 }
