@@ -33,7 +33,10 @@ public class TestController : ControllerBase
         logger.Log(
             CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby001,
             "Nejaka fajn zprava",
+            result: "OK",
             identities: new List<AuditLoggerHeaderItem> { new() { Id = "aaa", Type = "bbb" } },
+            products: new List<AuditLoggerHeaderItem> { new() { Id = "111", Type = "Uver" } },
+            operation: new() { Id = "111", Type = "CreateCase" },
             bodyBefore: new Dictionary<string, string> { { "aaa", "bbb" }, { "ccc", "dddd" } }
         );
     }
