@@ -222,6 +222,12 @@ internal sealed class CodebookService
                     Id = (int)t,
                     Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
                     RdmCode = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.ShortName ?? "",
+                    MaxHouseholdsForSA = t switch
+                    {
+                        CIS.Foms.Enums.HouseholdTypes.Main => 1,
+                        CIS.Foms.Enums.HouseholdTypes.Codebtor => 1,
+                        _ => 0
+                    },
                     DocumentTypeId = t switch
                     {
                         CIS.Foms.Enums.HouseholdTypes.Main => 4,

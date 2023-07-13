@@ -343,6 +343,7 @@ message HouseholdTypesResponse {
 		string Name = 2;
 		string RdmCode = 3;
 		google.protobuf.Int32Value DocumentTypeId = 4;
+		int32 MaxHouseholdsForSA = 5;
 	}
 }
 
