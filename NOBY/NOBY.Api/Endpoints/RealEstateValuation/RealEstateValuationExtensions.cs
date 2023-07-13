@@ -18,7 +18,7 @@ public static class RealEstateValuationExtensions
             CaseId = dsValuationListItem.CaseId,
             RealEstateTypeId = dsValuationListItem.RealEstateTypeId,
             RealEstateTypeIcon = __Contracts.Helpers.GetRealEstateTypeIcon(dsValuationListItem.RealEstateTypeId),
-            ValuationStateId = dsValuationListItem.RealEstateValuationId,
+            ValuationStateId = dsValuationListItem.ValuationStateId,
             ValuationStateIndicator = (ValuationStateIndicators)state.Indicator,
             ValuationStateName = state.Name,
             IsLoanRealEstate = dsValuationListItem.IsLoanRealEstate,

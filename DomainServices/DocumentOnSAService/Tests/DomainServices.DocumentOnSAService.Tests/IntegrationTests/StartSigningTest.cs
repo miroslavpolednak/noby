@@ -94,6 +94,7 @@ public class StartSigningTest : IntegrationTestBase
 
         var salesArrangementId = 1;
         var documentTypeId = 4;
+        var signatureTypeId = 5;
         var signatureMethodCode = "NotExistMethod";
 
         Func<Task> act = async () =>
@@ -102,11 +103,12 @@ public class StartSigningTest : IntegrationTestBase
                     {
                         SalesArrangementId = salesArrangementId,
                         DocumentTypeId = documentTypeId,
-                        SignatureMethodCode = signatureMethodCode
+                        SignatureMethodCode = signatureMethodCode,
+                        SignatureTypeId = signatureTypeId
                     });
                 };
 
-        await act.Should().ThrowAsync<CisNotFoundException>().WithMessage($"SignatureMethod {signatureMethodCode} does not exist.");
+        await act.Should().ThrowAsync<CisNotFoundException>().WithMessage($"SignatureType {signatureTypeId} does not exist.");
     }
 
     [Fact]
@@ -116,6 +118,7 @@ public class StartSigningTest : IntegrationTestBase
         var client = CreateGrpcClient();
 
         var documentTypeId = 4;
+        var signatureTypeId = 5;
         var signatureMethodCode = "NotExistMethod";
 
         Func<Task> act = async () =>
@@ -123,7 +126,8 @@ public class StartSigningTest : IntegrationTestBase
             var response = await client.StartSigningAsync(new()
             {
                 DocumentTypeId = documentTypeId,
-                SignatureMethodCode = signatureMethodCode
+                SignatureMethodCode = signatureMethodCode,
+                SignatureTypeId = signatureTypeId
             });
         };
 

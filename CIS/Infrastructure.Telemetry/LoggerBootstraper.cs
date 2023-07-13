@@ -62,7 +62,7 @@ internal sealed class LoggerBootstraper
     {
         loggerConfiguration
             .ReadFrom.Configuration(_generalConfiguration!)
-            .Enrich.With(_serviceProvider.GetRequiredService<Enrichers.NobyHeadersEnricher>())
+            .Enrich.With(_serviceProvider.GetRequiredService<Enrichers.CisHeadersEnricher>())
             .Enrich.WithSpan()
             .Enrich.WithClientIp()
             .Enrich.FromLogContext()

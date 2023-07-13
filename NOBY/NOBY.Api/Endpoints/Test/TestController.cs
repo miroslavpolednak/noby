@@ -1,10 +1,13 @@
-﻿using NOBY.Api.Endpoints.Test.Rollback;
+﻿using CIS.Infrastructure.Telemetry;
+using CIS.Infrastructure.Telemetry.AuditLog;
+using Microsoft.AspNetCore.Authorization;
+using NOBY.Api.Endpoints.Test.Rollback;
 
 namespace NOBY.Api.Endpoints.Test;
 
 [ApiController]
 [Route("api/test")]
-//[AllowAnonymous]
+[AllowAnonymous]
 public class TestController : ControllerBase
 {
     [HttpPost("rollback")]
@@ -26,7 +29,16 @@ public class TestController : ControllerBase
     [HttpGet("t2")]
     public async Task T2()
     {
-        throw new NotImplementedException();
+        var logger = _context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
+        logger.Log(
+            CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby001,
+            "Nejaka fajn zprava",
+            result: "OK",
+            identities: new List<AuditLoggerHeaderItem> { new() { Id = "aaa", Type = "bbb" } },
+            products: new List<AuditLoggerHeaderItem> { new() { Id = "111", Type = "Uver" } },
+            operation: new() { Id = "111", Type = "CreateCase" },
+            bodyBefore: new Dictionary<string, string> { { "aaa", "bbb" }, { "ccc", "dddd" } }
+        );
     }
 
     [HttpGet("t3")]

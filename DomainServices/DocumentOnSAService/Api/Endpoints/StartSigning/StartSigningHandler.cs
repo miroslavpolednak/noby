@@ -11,9 +11,6 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
-using System.Globalization;
 using System.Text.Json;
 using __Entity = DomainServices.DocumentOnSAService.Api.Database.Entities;
 using __Household = DomainServices.HouseholdService.Contracts;
@@ -105,15 +102,11 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
     private async Task ValidateRequest(StartSigningRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(request.SignatureMethodCode))
+        var signatureTypes = await _codebookServiceClient.SignatureTypes(cancellationToken);
+
+        if (signatureTypes.All(signatureType => request.SignatureTypeId != signatureType.Id))
         {
-            return;
-        }
-        
-        var signingMethods = await _codebookServiceClient.SigningMethodsForNaturalPerson(cancellationToken);
-        if (!signingMethods.Any(r => r.Code.ToUpper(CultureInfo.InvariantCulture) == request.SignatureMethodCode.ToUpper(CultureInfo.InvariantCulture)))
-        {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SignatureMethodNotExist, request.SignatureMethodCode);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SignatureTypeNotExist, request.SignatureTypeId);
         }
     }
 

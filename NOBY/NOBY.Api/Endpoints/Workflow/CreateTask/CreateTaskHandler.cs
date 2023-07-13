@@ -11,7 +11,15 @@ internal sealed class CreateTaskHandler
     public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
         // kontrola existence Case
-        var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
+        DomainServices.CaseService.Contracts.Case caseInstance;
+        try
+        {
+            caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
+        }
+        catch (CisValidationException ex) when (ex.Errors.Any(x => x.ExceptionCode == "13029"))
+        {
+            throw new CisAuthorizationException("TaskTypeId is not allowed");
+        }
 
         // validace price exception
         if (request.TaskTypeId == 2)

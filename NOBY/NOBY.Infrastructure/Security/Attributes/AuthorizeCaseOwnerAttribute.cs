@@ -11,7 +11,7 @@ namespace NOBY.Infrastructure.Security.Attributes;
 public sealed class AuthorizeCaseOwnerAttribute
     : TypeFilterAttribute
 {
-    public AuthorizeCaseOwnerAttribute(params UserPermissions[] requiredPermissions)
+    public AuthorizeCaseOwnerAttribute()
         : base(typeof(CaseOwnerAuthorizeFilter))
     {
     }

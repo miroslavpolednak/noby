@@ -569,6 +569,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.Types.HouseholdTypeItem.DocumentTypeIdFieldNumber">
             <summary>Field number for the "DocumentTypeId" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.Types.HouseholdTypeItem.MaxHouseholdsForSAFieldNumber">
+            <summary>Field number for the "MaxHouseholdsForSA" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.HousingConditionsResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
