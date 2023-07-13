@@ -1,4 +1,5 @@
-﻿using NOBY.Api.Endpoints.Product.GetProductObligationList.Dto;
+﻿using System.Net.Mime;
+using NOBY.Api.Endpoints.Product.GetProductObligationList.Dto;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Product;
@@ -48,4 +49,17 @@ public sealed class ProductController : ControllerBase
 
         return items.Any() ? Ok(items) : NoContent();
     }
+
+    /// <summary>
+    /// Vrátí Case ID podle zadaného PCP ID
+    /// </summary>
+    /// <remarks>Vyhledá Case ID podle PCP ID v KonsDB</remarks>
+    /// <param name="pcpId">PCP ID</param>
+    [HttpGet("caseid-by-pcpid/{pcpId:required}")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(Tags = new[] { "Produkt" })]
+    [ProducesResponseType(typeof(GetCaseIdByPcpId.GetCaseIdByPcpIdResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetCaseIdByPcpId.GetCaseIdByPcpIdResponse> GetCaseIdByPcpId([FromRoute] string pcpId, CancellationToken cancellationToken) => 
+        await _mediator.Send(new GetCaseIdByPcpId.GetCaseIdByPcpIdRequest(pcpId), cancellationToken);
 }

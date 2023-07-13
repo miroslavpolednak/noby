@@ -2672,6 +2672,13 @@
              </remarks>
              <returns>Seznam závazků na produktu</returns>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Product.ProductController.GetCaseIdByPcpId(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Vrátí Case ID podle zadaného PCP ID
+            </summary>
+            <remarks>Vyhledá Case ID podle PCP ID v KonsDB</remarks>
+            <param name="pcpId">PCP ID</param>
+        </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
             <summary>
             Atributy k nově zakládanému Ocenění nemovitosti

@@ -39,6 +39,19 @@ internal sealed class GetCaseIdHandler
                 }
                 return new GetCaseIdResponse { CaseId = caseId2!.Value };
 
+            case GetCaseIdRequest.RequestParametersOneofCase.PcpId:
+            {
+                var caseId3 = await _dbContext.LoanReservations
+                                              .AsNoTracking()
+                                              .Where(r => r.PcpInstId == request.PcpId.PcpId).Select(r => (long?)r.UverId)
+                                              .FirstOrDefaultAsync(cancellation);
+
+                if (!caseId3.HasValue)
+                    throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PcpIdNotFound, request.PcpId.PcpId);
+
+                return new GetCaseIdResponse { CaseId = caseId3.Value };
+            }
+
             default:
                 throw new NotImplementedException();
         }

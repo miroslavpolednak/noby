@@ -18,7 +18,6 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations")]
     [AuthorizeCaseOwner]
-    [NobyAuthorize(UserPermissions.DASHBOARD_AccessAllCases)]
     [Consumes("application/json")]
     [Produces("text/plain")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
@@ -43,7 +42,6 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
     [AuthorizeCaseOwner]
-    [NobyAuthorize(UserPermissions.DASHBOARD_AccessAllCases)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -66,7 +64,6 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpGet("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
     [AuthorizeCaseOwner]
-    [NobyAuthorize(UserPermissions.DASHBOARD_AccessAllCases)]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(typeof(GetRealEstateValuationDetail.GetRealEstateValuationDetailResponse), StatusCodes.Status200OK)]
@@ -87,7 +84,6 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpGet("{caseId:long}/real-estate-valuations")]
     [AuthorizeCaseOwner]
-    [NobyAuthorize(UserPermissions.DASHBOARD_AccessAllCases)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(typeof(List<Dto.RealEstateValuation.RealEstateValuationListItem>), StatusCodes.Status200OK)]
@@ -107,7 +103,6 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpPut("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
     [AuthorizeCaseOwner]
-    [NobyAuthorize(UserPermissions.DASHBOARD_AccessAllCases)]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -132,7 +127,6 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpPatch("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/developer")]
     [AuthorizeCaseOwner]
-    [NobyAuthorize(UserPermissions.DASHBOARD_AccessAllCases)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
