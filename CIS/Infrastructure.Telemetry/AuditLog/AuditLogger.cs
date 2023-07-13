@@ -20,7 +20,7 @@ internal sealed class AuditLogger
     {
         var user = Helpers.GetCurrentUser(_currentUser, _contextAccessor);
 
-        var context = new AuditEventContext()
+        var context = new Dto.AuditEventContext()
         {
             EventType = eventType,
             Message = message,

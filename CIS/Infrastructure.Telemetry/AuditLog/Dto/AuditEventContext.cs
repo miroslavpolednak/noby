@@ -1,6 +1,6 @@
 ﻿using static CIS.Infrastructure.Telemetry.AuditLog.AuditLogger;
 
-namespace CIS.Infrastructure.Telemetry.AuditLog;
+namespace CIS.Infrastructure.Telemetry.AuditLog.Dto;
 
 internal sealed class AuditEventContext
 {

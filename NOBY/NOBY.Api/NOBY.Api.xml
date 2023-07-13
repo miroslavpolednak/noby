@@ -4297,12 +4297,6 @@
             Flag, zda se jedná o interního uživatele, či externistu
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Login">
-            <summary>
-            OsCis
-            </summary>
-            <example>614</example>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.IdentityId">
             <summary>
             ID uzivatele v ramci vybraneho identitniho schematu.
