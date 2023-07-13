@@ -492,7 +492,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateVa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{313AD43F-5EBC-4F37-9FD4-A34AA1CF64E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.CaseService.Tests", "DomainServices\CaseService\Tests\DomainServices.CaseService.Tests\DomainServices.CaseService.Tests.csproj", "{E52FD672-587D-4912-A28A-D367323109D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.Tests", "DomainServices\CaseService\Tests\DomainServices.CaseService.Tests\DomainServices.CaseService.Tests.csproj", "{E52FD672-587D-4912-A28A-D367323109D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuditDatabaseMigrations", "AuditDatabaseMigrations", "{3DA6733C-DF12-4DCB-8665-3945A2EF8185}"
+	ProjectSection(SolutionItems) = preProject
+		NOBY\AuditDatabaseMigrations\00001-initial_create.sql = NOBY\AuditDatabaseMigrations\00001-initial_create.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1516,6 +1521,7 @@ Global
 		{8291DE0E-0447-471D-A402-B44B3FF30ED5} = {332FCD7A-C97A-4FE0-9E95-51E050CFC3F9}
 		{313AD43F-5EBC-4F37-9FD4-A34AA1CF64E6} = {1AB95406-90FE-4CAA-8536-6846B37A450E}
 		{E52FD672-587D-4912-A28A-D367323109D4} = {313AD43F-5EBC-4F37-9FD4-A34AA1CF64E6}
+		{3DA6733C-DF12-4DCB-8665-3945A2EF8185} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

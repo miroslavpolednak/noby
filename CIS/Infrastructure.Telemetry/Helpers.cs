@@ -1,12 +1,53 @@
 ﻿using Microsoft.ApplicationInsights.Extensibility;
 using Serilog.Sinks.MSSqlServer;
 using Serilog;
+using CIS.Core.Security;
+using Microsoft.AspNetCore.Http;
 
 namespace CIS.Infrastructure.Telemetry;
 
 internal static class Helpers
 {
     const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] [{Level:u}] [{TraceId}] [{SpanId}] [{ParentId}] [{CisAppKey}] [{Version}] [{Assembly}] [{SourceContext}] [{MachineName}] [{ClientIp}] [{CisUserId}] [{CisUserIdent}] [{RequestId}] [{RequestPath}] [{ConnectionId}] [{Message}] [{Exception}]{NewLine}";
+
+    public static (int? UserId, string? UserIdent) GetCurrentUser(ICurrentUserAccessor? userAccessor, IHttpContextAccessor httpContextAccessor)
+    {
+        // mam v kontextu instanci uzivatele
+        if (userAccessor is not null && userAccessor.IsAuthenticated)
+        {
+            return (userAccessor.User!.Id, userAccessor.User!.Login);
+        }
+        // neni instance uzivatele, zkus se kouknout do http hlavicek
+        else if (hasKey(SecurityConstants.ContextUserHttpHeaderUserIdKey))
+        {
+            int? userId = null;
+            string? userIdent = null;
+
+            if (int.TryParse(httpContextAccessor.HttpContext!.Request.Headers[SecurityConstants.ContextUserHttpHeaderUserIdKey].First(), out int u))
+            {
+                userId = u;
+            }
+
+            if (hasKey(SecurityConstants.ContextUserHttpHeaderUserIdentKey))
+            {
+                userIdent = httpContextAccessor.HttpContext!.Request.Headers[SecurityConstants.ContextUserHttpHeaderUserIdentKey].First();
+            }
+
+            return (userId, userIdent);
+        }
+        // posledni pokus - muze byt jiz vytvorena claims identity, ale jeste neni v kontextu User z auth middlewaru
+        else if (httpContextAccessor.HttpContext?.User?.HasClaim(t => t.Type == SecurityConstants.ClaimTypeIdent) ?? false)
+        {
+            return (null, httpContextAccessor.HttpContext!.User.Claims.First(t => t.Type == SecurityConstants.ContextUserHttpHeaderUserIdentKey).Value);
+        }
+
+        return (null, null);
+
+        bool hasKey(string key)
+        {
+            return httpContextAccessor.HttpContext?.Request?.Headers?.ContainsKey(key) ?? false;
+        }
+    }
 
     public static void AddOutputs(
         LoggerConfiguration loggerConfiguration, 

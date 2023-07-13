@@ -1,11 +1,7 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
-using CIS.Infrastructure.gRPC;
-using ExternalServices;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace DomainServices.ProductService.ExternalServices.Pcp.V1;
 

@@ -6,5 +6,5 @@ internal sealed class LoggingConfiguration
 
     public LogConfiguration? Application { get; set; }
 
-    public LogConfiguration? Audit { get; set; }
+    public AuditLogConfiguration? Audit { get; set; }
 }
