@@ -32,6 +32,7 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
         var getDocumentListResult = await _client.GetDocumentList(new()
         {
             CaseId = request.CaseId,
+            FormId = request.FormId,
             UserLogin = user is null ? "Unknow NOBY user" : user.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),
 
         }, cancellationToken);
