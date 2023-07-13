@@ -35,13 +35,13 @@ public sealed class ProductController : ControllerBase
     /// </remarks>
     /// <returns>Seznam závazků na produktu</returns>
     [HttpGet("{caseId:long}/obligations")]
+    [AuthorizeCaseOwner]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
     [ProducesResponseType(typeof(List<ProductObligation>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeCaseOwner]
     public async Task<IActionResult> GetProductObligations([FromRoute] long caseId, CancellationToken cancellationToken)
     {
         var items = await _mediator.Send(new GetProductObligationList.GetProductObligationListRequest(caseId), cancellationToken);
