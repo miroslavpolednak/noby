@@ -30,6 +30,19 @@ internal sealed class AuditLoggerHelper
     public void Log(AuditEventContext context)
     {
         var eventDescriptor = _eventTypeDescriptors[context.EventType];
+
+        // check event result
+        if (eventDescriptor.Results is null && !string.IsNullOrEmpty(context.Result))
+        {
+            throw new InvalidOperationException($"Audit log event of type '{context.EventType}' can not contain result");
+        }
+        else if (eventDescriptor.Results is not null 
+            && !string.IsNullOrEmpty(context.Result)
+            && !eventDescriptor.Results.Contains(context.Result))
+        {
+            throw new InvalidOperationException($"Audit log result '{context.Result}' is not valid for event of type '{context.EventType}'");
+        }
+
         StringWriter json = new();
         AuditLoggerJsonWriter.CreateJson(json, ref _loggerDefaults, context, eventDescriptor.Code.AsSpan(), eventDescriptor.Version);
 
@@ -89,6 +102,10 @@ internal static class AuditLoggerJsonWriter
         // correlation
         output.Write("\"correlation\":");
         write(output, context.Correlation.AsSpan());
+
+        // result
+        output.Write(",\"result\":");
+        write(output, context.Result.AsSpan());
 
         // time
         output.Write(",\"time\":{\"tsServer\":");
