@@ -423,7 +423,7 @@ internal sealed class CodebookService
         {
             var items = _db.GetList<ProductTypesResponse.Types.ProductTypeItem>(nameof(ProductTypes), 1);
             var extensions = _db.GetDynamicList(nameof(ProductTypes), 2);
-            var loanKinds = _db.Xxd.GetOrCreateCachedResponse<GenericCodebookResponse, GenericCodebookResponse.Types.GenericCodebookItem>(_db.Sql[nameof(LoanKinds)].Query, nameof(LoanKinds))
+            var loanKinds = _db.SelfDb.GetOrCreateCachedResponse<GenericCodebookResponse, GenericCodebookResponse.Types.GenericCodebookItem>(_db.Sql["ProductTypes2"].Query, nameof(LoanKinds))
                 .Items
                 .Select(t => t.Id)
                 .ToArray();
