@@ -2672,6 +2672,13 @@
              </remarks>
              <returns>Seznam závazků na produktu</returns>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Product.ProductController.GetCaseIdByPcpId(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Vrátí Case ID podle zadaného PCP ID
+            </summary>
+            <remarks>Vyhledá Case ID podle PCP ID v KonsDB</remarks>
+            <param name="pcpId">PCP ID</param>
+        </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
             <summary>
             Atributy k nově zakládanému Ocenění nemovitosti
@@ -2687,11 +2694,13 @@
             <summary>
             True pokud jde o nemovitost, která je objektem úvěru
             </summary>
+            <example>true</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest.DeveloperApplied">
             <summary>
             True pokud je aplikované hromadné ocenění z developerského projektu
             </summary>
+            <example>false</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationList.GetRealEstateValuationListHandler.getComputedValuations(System.Int64,System.Threading.CancellationToken)">
             <summary>
@@ -2712,6 +2721,7 @@
             <summary>
             True pokud je aplikované hromadné ocenění z developerského projektu
             </summary>
+            <example>false</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.CreateRealEstateValuation(System.Int64,NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest,System.Threading.CancellationToken)">
             <summary>
