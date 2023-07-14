@@ -7,6 +7,8 @@ using UserIdentity = CIS.Infrastructure.gRPC.CisTypes.UserIdentity;
 using __Household = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Clients;
 using CIS.Foms.Enums;
+using DomainServices.DocumentOnSAService.Clients;
+using System.Threading;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
@@ -60,14 +62,64 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
 
         // ----- update naseho detailu instance customera
         // updatujeme CustomerChangeData a CustomerAdditionalData na nasi entite CustomerOnSA
+        var delta = createDelta(originalModel, request);
+
         var updateRequest = new __Household.UpdateCustomerDetailRequest
         {
             CustomerOnSAId = customerOnSA.CustomerOnSAId,
-            CustomerChangeData = createJsonDelta(originalModel, request),
-            CustomerChangeMetadata = createMetadata(originalModel, request),
+            CustomerChangeData = createJsonFromDelta(delta),
+            CustomerChangeMetadata = createMetadata(originalModel, request, delta),
             CustomerAdditionalData = await createAdditionalData(customerOnSA, request, identificationMethodId, cancellationToken)
         };
         await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
+
+        // jestlize se na klientovi neco menilo
+        if (updateRequest.CustomerChangeMetadata.WasCRSChanged || updateRequest.CustomerChangeMetadata.WereClientDataChanged)
+        {
+            await cancelSigning(
+                customerOnSA.CustomerOnSAId,
+                customerOnSA.SalesArrangementId,
+                updateRequest.CustomerChangeMetadata.WereClientDataChanged,
+                cancellationToken);
+        }
+    }
+
+    private async Task cancelSigning(
+        int customerOnSAId,
+        int salesArrangementId, 
+        bool wereClientDataChanged,
+        CancellationToken cancellationToken)
+    {
+        var documentsToSign = await _documentOnSAService.GetDocumentsToSignList(salesArrangementId, cancellationToken);
+
+        if (wereClientDataChanged) // zmena klientskych udaju
+        {
+            var household = (await _householdService.GetHouseholdList(salesArrangementId, cancellationToken))
+                .First(t => t.CustomerOnSAId1 == customerOnSAId || t.CustomerOnSAId2 == customerOnSAId);
+
+            foreach (var doc in documentsToSign.DocumentsOnSAToSign.Where(t => t.HouseholdId == household.HouseholdId))
+            {
+                await _documentOnSAService.StopSigning(doc.DocumentOnSAId!.Value, cancellationToken);
+            }
+
+            // set flow switches
+            await _salesArrangementService.SetFlowSwitches(salesArrangementId, new()
+            {
+                new() 
+                { 
+                    FlowSwitchId = (int)(household.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.Was3601MainChangedAfterSigning : FlowSwitches.Was3602CodebtorChangedAfterSigning),
+                    Value = true 
+                }
+            }, cancellationToken);
+        }
+        else // zmena pouze CRS
+        {
+            var crsDoc = documentsToSign.DocumentsOnSAToSign.FirstOrDefault(t => t.DocumentTypeId == 14 && t.DocumentOnSAId.HasValue);
+            if (crsDoc != null)
+            {
+                await _documentOnSAService.StopSigning(crsDoc.DocumentOnSAId!.Value, cancellationToken);
+            }
+        }
     }
 
     /// <summary>
@@ -82,7 +134,10 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             || customerOnSA.MaritalStatusId != request.NaturalPerson?.MaritalStatusId;
     }
 
-    private static __Household.CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request)
+    /// <summary>
+    /// Vytvori metadata CustomerOnSA
+    /// </summary>
+    private static __Household.CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request, dynamic? delta)
     {
         var metadata = new __Household.CustomerChangeMetadata();
 
@@ -90,20 +145,40 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         {
             metadata.WasCRSChanged = true;
         }
-        else
+        else if (!ModelComparers.AreObjectsEqual(request.NaturalPerson?.TaxResidences, originalModel?.NaturalPerson?.TaxResidences))
         {
-
+            metadata.WasCRSChanged = true;
         }
 
-        metadata.WereClientDataChanged = true;
+        if (delta is not null)
+        {
+            var dict = (IDictionary<string, Object>)delta;
+            if (dict.Count > 0 && 
+                (dict.Count > 1 
+                || !dict.ContainsKey("NaturalPerson")
+                || (dict.ContainsKey("NaturalPerson") && ((IDictionary<string, Object>)dict["NaturalPerson"]).Any(t => t.Key != "TaxResidences"))
+                || !metadata.WasCRSChanged))
+            {
+                metadata.WereClientDataChanged = true;
+            }
+        }
 
         return metadata;
+    }
+
+    private static string? createJsonFromDelta(dynamic? delta)
+    {
+        if (delta is not null && ((IDictionary<string, Object>)delta).Count > 0)
+        {
+            return JsonConvert.SerializeObject(delta);
+        }
+        return null;
     }
 
     /// <summary>
     /// Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
     /// </summary>
-    private static string? createJsonDelta(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request)
+    private static dynamic? createDelta(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request)
     {
         // compare objects
         dynamic delta = new System.Dynamic.ExpandoObject();
@@ -120,14 +195,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         if (!(originalModel?.MobilePhone?.IsConfirmed ?? false))
             ModelComparers.CompareObjects(request.MobilePhone, originalModel!.MobilePhone, "MobilePhone", delta);
 
-        // vytvoreni JSONu z delta objektu
-        string? finalJson = null;
-        if (((IDictionary<string, Object>)delta).Count > 0)
-        {
-            finalJson = JsonConvert.SerializeObject(delta);
-        }
-
-        return finalJson;
+        return delta;
     }
 
     /// <summary>
@@ -171,6 +239,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     }
 
     private readonly CustomerWithChangedDataService _changedDataService;
+    private readonly IHouseholdServiceClient _householdService;
+    private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ICaseServiceClient _caseService;    
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
@@ -183,13 +253,17 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSAService,
         IUserServiceClient userServiceClient,
-        ICurrentUserAccessor userAccessor)
+        IDocumentOnSAServiceClient documentOnSAService,
+        ICurrentUserAccessor userAccessor,
+        IHouseholdServiceClient householdService)
     {
+        _documentOnSAService = documentOnSAService;
         _caseService = caseService;
         _changedDataService = changedDataService;
         _salesArrangementService = salesArrangementService;
         _customerOnSAService = customerOnSAService;
         _userServiceClient = userServiceClient;
         _userAccessor = userAccessor;
+        _householdService = householdService;
     }
 }
