@@ -68,7 +68,7 @@ public static class StartupExtensions
             foundServices.ForEach(instance =>
             {
                 var service = servicesInServiceDiscovery
-                .FirstOrDefault(t => t.ServiceName == instance!.ServiceName && t.ServiceType == (__Contracts.ServiceTypes)instance.ServiceType);
+                    .FirstOrDefault(t => t.ServiceName == instance!.ServiceName && t.ServiceType == (__Contracts.ServiceTypes)instance.ServiceType);
 
                 // nastavit URL ze ServiceDiscovery
                 if (Uri.TryCreate(service?.ServiceUrl, UriKind.Absolute, out var serviceUri))

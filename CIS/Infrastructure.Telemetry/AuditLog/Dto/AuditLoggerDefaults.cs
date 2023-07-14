@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.Telemetry.AuditLog.Dto;
 
-internal record AuditLoggerDefaults(
+internal sealed record AuditLoggerDefaults(
     string ServerIp,
     string CisAppKey,
     string EamApplication,

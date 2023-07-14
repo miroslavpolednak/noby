@@ -1,7 +1,6 @@
 ﻿using CIS.Infrastructure.Telemetry;
 using DomainServices.UserService.Clients;
 using DomainServices.UserService.Clients.Authorization;
-using DomainServices.UserService.Contracts.v1;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
