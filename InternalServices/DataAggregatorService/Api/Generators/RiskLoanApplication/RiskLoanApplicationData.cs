@@ -9,6 +9,11 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.RiskLoanApplication;
 
+/// <summary>
+/// <a href="https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplication">https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplication</a> <br />
+/// <a href="https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplicationAssessment">https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplicationAssessment</a>
+/// </summary>
+[TransientService, SelfService]
 internal class RiskLoanApplicationData : AggregatedData
 {
     private readonly IHouseholdServiceClient _householdService;
@@ -22,7 +27,17 @@ internal class RiskLoanApplicationData : AggregatedData
         _customerService = customerService;
     }
 
+    public int AppendixCode => Case.Data.ProductTypeId == 20004 ? 25 : 0;
+
+    public string LoanApplicationVersion => DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture);
+
     public List<LoanApplicationHousehold> Households { get; private set; } = new();
+
+    public decimal? InvestmentAmount => (decimal)Offer.SimulationResults.LoanAmount + ((decimal?)Offer.BasicParameters.FinancialResourcesOwn ?? 0M) + ((decimal?)Offer.BasicParameters.FinancialResourcesOther ?? 0M);
+
+    public List<int> MarketingActions => Offer.AdditionalSimulationResults.MarketingActions.Where(i => i.MarketingActionId.HasValue && i.Applied == 1).Select(i => i.MarketingActionId!.Value).ToList();
+
+    public IEnumerable<object> Collaterals => new[] { new { Amount = Offer.SimulationInputs.CollateralAmount } };
 
     public override async Task LoadAdditionalData(CancellationToken cancellationToken)
     {

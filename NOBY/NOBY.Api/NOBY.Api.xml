@@ -2995,11 +2995,6 @@
             Domácnosti
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.LoanApplicationData.LoanApplicationDataVersion">
-            <summary>
-            Tatáž verze data (timestamp), která se používá pro LoanApplicationSave a CreateAssesment:
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.Dto.CustomerChange3602Detail.HouseholdId">
             <summary>
             ID domacnosti

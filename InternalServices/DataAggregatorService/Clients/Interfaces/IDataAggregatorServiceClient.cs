@@ -7,4 +7,6 @@ public interface IDataAggregatorServiceClient
     Task<GetDocumentDataResponse> GetDocumentData(GetDocumentDataRequest request, CancellationToken cancellationToken = default);
 
     Task<GetEasFormResponse> GetEasForm(GetEasFormRequest request, CancellationToken cancellationToken = default);
+
+    Task<GetRiskLoanApplicationDataResponse> GetRiskLoanApplicationData(GetRiskLoanApplicationDataRequest request, CancellationToken cancellationToken = default);
 }

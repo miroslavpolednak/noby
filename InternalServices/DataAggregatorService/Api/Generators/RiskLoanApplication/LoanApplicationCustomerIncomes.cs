@@ -57,7 +57,7 @@ public class LoanApplicationCustomerIncomes
 
         public decimal Sum => (decimal?)_incomeInList.Sum ?? default;
 
-        public int ProofTypeId => 2;
+        public int ProofTypeId => 6;
 
         public string? EmployerIdentificationNumber => new[] { Income?.Employer?.Cin, Income?.Employer?.BirthNumber }.FirstOrDefault(str => !string.IsNullOrWhiteSpace(str));
 
