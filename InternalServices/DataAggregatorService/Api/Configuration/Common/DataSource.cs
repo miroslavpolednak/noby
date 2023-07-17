@@ -13,5 +13,6 @@ internal enum DataSource
     HouseholdService,
     HouseholdMainService,
     HouseholdCodebtorService,
-    DocumentOnSa
+    DocumentOnSa,
+    HouseholdAllService
 }

@@ -38,6 +38,7 @@ internal class ServiceMap
         AddService<OfferServiceWrapper>(DataSource.OfferPaymentScheduleService, s => s.LoadPaymentSchedule);
         AddService<HouseholdServiceWrapper>(DataSource.HouseholdMainService, s => s.LoadMainHouseholdDetail);
         AddService<HouseholdServiceWrapper>(DataSource.HouseholdCodebtorService, s => s.LoadCodebtorHouseholdDetail);
+        AddService<HouseholdServiceWrapper>(DataSource.HouseholdAllService, s => s.LoadAllHouseholdsDetail);
     }
 
     private void AddService<TService>(DataSource dataSource) where TService : IServiceWrapper

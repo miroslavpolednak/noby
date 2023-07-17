@@ -37,6 +37,8 @@ internal class AggregatedData
 
     public MortgageData Mortgage { get; set; } = null!;
 
+    public List<HouseholdInfo> Households { get; } = new(2);
+
     public HouseholdInfo? HouseholdMain { get; set; }
 
     public HouseholdInfo? HouseholdCodebtor { get; set; }
