@@ -8,7 +8,6 @@ using __Household = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Clients;
 using CIS.Foms.Enums;
 using DomainServices.DocumentOnSAService.Clients;
-using System.Threading;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 

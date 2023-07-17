@@ -11,7 +11,7 @@ internal sealed class GetCaseCountsHandler
     {
         // vytahnout data z DB
         var model = (await _dbContext.Cases
-            .Where(t => t.OwnerUserId == request.CaseOwnerUserId)
+            .Where(t => t.OwnerUserId == request.CaseOwnerUserId && !_disallowedCaseStates.Contains(t.State))
             .GroupBy(t => t.State)
             .AsNoTracking()
             .Select(t => new { State = t.Key, Count = t.Count() })
@@ -24,6 +24,7 @@ internal sealed class GetCaseCountsHandler
         return result;
     }
 
+    private static int[] _disallowedCaseStates = new[] { 10 };
     private readonly CaseServiceDbContext _dbContext;
 
     public GetCaseCountsHandler(CaseServiceDbContext dbContext)

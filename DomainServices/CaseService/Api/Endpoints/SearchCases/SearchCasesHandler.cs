@@ -74,7 +74,7 @@ internal sealed class SearchCasesHandler
         // base query
         var query = _dbContext.Cases
             .AsNoTracking()
-            .Where(t => t.OwnerUserId == request.CaseOwnerUserId);
+            .Where(t => t.OwnerUserId == request.CaseOwnerUserId && !_disallowedCaseStates.Contains(t.State));
 
         // omezeni na state
         if (request.State?.Any() ?? false)
@@ -107,6 +107,7 @@ internal sealed class SearchCasesHandler
         new("StateUpdatedOn", "StateUpdateTime")
     };
 
+    private static int[] _disallowedCaseStates = new[] { 10 };
     private readonly CaseServiceDbContext _dbContext;
 
     public SearchCasesHandler(CaseServiceDbContext dbContext)
