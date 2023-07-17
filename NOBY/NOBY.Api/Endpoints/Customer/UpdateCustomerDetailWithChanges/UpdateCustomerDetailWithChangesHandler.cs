@@ -89,14 +89,16 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         bool wereClientDataChanged,
         CancellationToken cancellationToken)
     {
-        var documentsToSign = await _documentOnSAService.GetDocumentsToSignList(salesArrangementId, cancellationToken);
+        var documentsToSign = (await _documentOnSAService.GetDocumentsToSignList(salesArrangementId, cancellationToken))
+            .DocumentsOnSAToSign
+            .Where(t => t.DocumentOnSAId.HasValue);
 
         if (wereClientDataChanged) // zmena klientskych udaju
         {
             var household = (await _householdService.GetHouseholdList(salesArrangementId, cancellationToken))
                 .First(t => t.CustomerOnSAId1 == customerOnSAId || t.CustomerOnSAId2 == customerOnSAId);
 
-            foreach (var doc in documentsToSign.DocumentsOnSAToSign.Where(t => t.HouseholdId == household.HouseholdId))
+            foreach (var doc in documentsToSign.Where(t => t.HouseholdId == household.HouseholdId))
             {
                 await _documentOnSAService.StopSigning(doc.DocumentOnSAId!.Value, cancellationToken);
             }
@@ -113,7 +115,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         }
         else // zmena pouze CRS
         {
-            var crsDoc = documentsToSign.DocumentsOnSAToSign.FirstOrDefault(t => t.DocumentTypeId == 14 && t.DocumentOnSAId.HasValue);
+            var crsDoc = documentsToSign.FirstOrDefault(t => t.DocumentTypeId == 13);
             if (crsDoc != null)
             {
                 await _documentOnSAService.StopSigning(crsDoc.DocumentOnSAId!.Value, cancellationToken);
