@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using DomainServices.UserService.Clients.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
@@ -26,7 +27,8 @@ public sealed class MockAuthenticationHandler
         var claims = new[] 
         {
             new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, "65466"),
-            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, "KBUID=A09V61")
+            new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, "KBUID=A09V61"),
+            new Claim(AuthenticationConstants.NobyPermissionClaimType, $"{(int)UserPermissions.APPLICATION_BasicAccess}")
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, AuthenticationConstants.MockAuthScheme);

@@ -1400,6 +1400,23 @@
             Kolekce nalezenych klientu.
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.isStoredModelDifferentToRequest(DomainServices.HouseholdService.Contracts.CustomerOnSA,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
+            <summary>
+            Vraci true, pokud se zmenily zakladni udaje CustomerOnSA instance 
+            (tj. pole, ktera jsou primo na entite, nikoliv v JSON datech)
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createJsonDelta(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
+            <summary>
+            Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createAdditionalData(DomainServices.HouseholdService.Contracts.CustomerOnSA,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Vytvori / upravi JSON data v prop CustomerAdditionalData
+            Data se upravuji na zaklade toho, co prijde v requestu.
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactRequest.Contact">
             <summary>
             telefonní číslo s mezinárodní předvolbou nebo email
@@ -1491,7 +1508,7 @@
             <param name="documentId">ID dokumentu</param>
             <param name="contentDisposition">0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocumentList(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocumentList(System.Int64,System.String,System.Threading.CancellationToken)">
             <summary>
             Seznam dokumentů ke Case-u
             </summary>
@@ -4291,12 +4308,6 @@
             <summary>
             Flag, zda se jedná o interního uživatele, či externistu
             </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Login">
-            <summary>
-            OsCis
-            </summary>
-            <example>614</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.IdentityId">
             <summary>

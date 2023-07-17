@@ -3,13 +3,6 @@
 public sealed class SignInRequest : IRequest
 {
     /// <summary>
-    /// OsCis
-    /// </summary>
-    /// <example>614</example>
-    [Obsolete]
-    public string? Login { get; set; }
-
-    /// <summary>
     /// ID uzivatele v ramci vybraneho identitniho schematu.
     /// </summary>
     /// <example>3255</example>

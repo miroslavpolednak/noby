@@ -36,8 +36,6 @@ try {
         .AddCodebookService()
         // add BE services
         .Services
-            // add CIS services
-            .AddCisServiceDiscovery()
             // add swagger
             .AddCodebookServiceSwagger()
             // add grpc infrastructure
@@ -61,7 +59,6 @@ try {
     var app = builder.Build();
     log.ApplicationBuilt();
 
-    app.UseServiceDiscovery();
     app.UseRouting();
 
     app.UseAuthentication();

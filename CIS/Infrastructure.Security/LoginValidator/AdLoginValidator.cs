@@ -26,7 +26,9 @@ internal sealed class AdLoginValidator
         {
             using (var cn = new LdapConnection())
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 cn.UserDefinedServerCertValidationDelegate += new RemoteCertificateValidationCallback((sender, certificate, chain, errors) => true);
+#pragma warning restore CS0618 // Type or member is obsolete
                 cn.SecureSocketLayer = opt.IsSsl;
                 await cn.ConnectAsync(opt.AdHost, opt.AdPort);
                 await cn.BindAsync($"{opt.Domain}\\{login}", password);

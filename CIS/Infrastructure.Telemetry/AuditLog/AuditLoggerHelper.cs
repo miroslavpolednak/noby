@@ -1,5 +1,7 @@
 ﻿using CIS.Core;
 using CIS.Core.Configuration;
+using CIS.Infrastructure.Telemetry.AuditLog.Attributes;
+using CIS.Infrastructure.Telemetry.AuditLog.Dto;
 using FastEnumUtility;
 using System.Globalization;
 
@@ -186,6 +188,15 @@ internal static class AuditLoggerJsonWriter
         {
             output.Write("\"objectsBefore\":{");
             writeBodyCollection(output, context.BodyBefore);
+            output.Write("}");
+        }
+
+        if (context.BodyAfter is not null)
+        {
+            if (context.BodyBefore is not null) output.Write(",");
+
+            output.Write("\"objectsAfter\":{");
+            writeBodyCollection(output, context.BodyAfter);
             output.Write("}");
         }
 

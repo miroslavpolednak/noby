@@ -45,13 +45,13 @@ internal sealed class GetCaseParametersHandler
 
         return new GetCaseParametersResponse
         {
-            ProductType = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == offerInstance.SimulationInputs.ProductTypeId),
+            ProductType = (await _codebookService.ProductTypes(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.ProductTypeId),
             ContractNumber = salesArrangementInstance.ContractNumber,
             LoanAmount = offerInstance.SimulationResults.LoanAmount,
             LoanInterestRate = offerInstance.SimulationResults.LoanInterestRateProvided,
             DrawingDateTo = offerInstance.SimulationResults.DrawingDateTo,
             LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount,
-            LoanKind = (await _codebookService.LoanKinds(cancellationToken)).First(t => t.Id == offerInstance.SimulationInputs.LoanKindId),
+            LoanKind = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.LoanKindId),
             FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod,
             LoanPurposes = offerInstance.SimulationInputs.LoanPurposes.Select(i => new LoanPurposeItem
             {
