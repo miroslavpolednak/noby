@@ -33,7 +33,7 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
         {
             CaseId = request.CaseId,
             FormId = request.FormId,
-            UserLogin = user is null ? "Unknow NOBY user" : user.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            UserLogin = user is null ? "Unknown NOBY user" : user.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),
 
         }, cancellationToken);
 

@@ -2,7 +2,7 @@
 
 public class GetDocumentListRequest:IRequest<GetDocumentListResponse>
 {
-	public GetDocumentListRequest(long caseId, string formId)
+	public GetDocumentListRequest(long caseId, string? formId)
 	{
         CaseId = caseId;
         FormId = formId;
@@ -10,5 +10,5 @@ public class GetDocumentListRequest:IRequest<GetDocumentListResponse>
 
     public long CaseId { get; }
 
-    public string FormId { get; }
+    public string? FormId { get; }
 }
