@@ -6,6 +6,11 @@ public class DocumentsMetadata
 
     public int? EaCodeMainId { get; set; }
 
+    /// <summary>
+    /// Businessové ID
+    /// </summary>
+    public string? FormId { get; set; }
+    
     public string FileName { get; set; } = null!;
 
     public string? Description { get; set; }

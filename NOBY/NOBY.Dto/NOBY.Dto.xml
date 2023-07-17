@@ -79,6 +79,11 @@
             Popis dokumentu
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Documents.DocumentsMetadata.FormId">
+            <summary>
+            Businessové ID
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Documents.DocumentsMetadata.UploadStatus">
             <summary>
             Stav přenosu dokumentu do eArchivu. Enum Values: 0 - Uloženo v eArchivu, 1 - Ve zpracování, 2 - Chyba
