@@ -358,6 +358,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00004-HFICH-6054_HFICH-5974_SignatureProps.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00004-HFICH-6054_HFICH-5974_SignatureProps.sql
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00005-HFICH-6530_SignatureTypeId_Paper.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00005-HFICH-6530_SignatureTypeId_Paper.sql
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00006-HFICH-3917_DocOnSa_JsonMap.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00006-HFICH-3917_DocOnSa_JsonMap.sql
+		DomainServices\DocumentOnSAService\DatabaseMigrations\00007-HFICH-3917_DocumentTypeIdNull.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00007-HFICH-3917_DocumentTypeIdNull.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness", "DomainServices\RiskIntegrationService\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj", "{FF60B12F-B083-46BE-B8DA-FD91ABE2D831}"
