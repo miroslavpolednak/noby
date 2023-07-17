@@ -1,5 +1,4 @@
-﻿using NOBY.Api.Endpoints.Offer.DeveloperSearch;
-using Swashbuckle.AspNetCore.Annotations;
+﻿using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Offer;
 
@@ -26,7 +25,7 @@ public class OfferController : ControllerBase
     [ProducesResponseType(typeof(SimulateMortgage.SimulateMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<SimulateMortgage.SimulateMortgageResponse> SimulateMortgage([FromBody] SimulateMortgage.SimulateMortgageRequest request)
-        => await _mediator.Send(request);
+        => await _mediator.Send(request ?? new SimulateMortgage.SimulateMortgageRequest());
 
     /// <summary>
     /// Detail provedené simulace dle ID simulace.
@@ -79,7 +78,7 @@ public class OfferController : ControllerBase
     [ProducesResponseType(typeof(CreateMortgageCase.CreateMortgageCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<CreateMortgageCase.CreateMortgageCaseResponse> CreateMortgageCase([FromBody] CreateMortgageCase.CreateMortgageCaseRequest request)
-        => await _mediator.Send(request);
+        => await _mediator.Send(request ?? new Offer.CreateMortgageCase.CreateMortgageCaseRequest());
 
     /// <summary>
     /// Nalinkuje novou modelaci na stávající SA.
@@ -93,7 +92,7 @@ public class OfferController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Modelace" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task LinkModelation([FromBody] LinkModelation.LinkModelationRequest request)
-        => await _mediator.Send(request);
+        => await _mediator.Send(request ?? new Offer.LinkModelation.LinkModelationRequest());
 
     /// <summary>
     /// Plný splátkový kalendář dle ID simulace.
@@ -123,7 +122,7 @@ public class OfferController : ControllerBase
     [HttpPost("mortgage/developer-project/search")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Modelace" })]
-    [ProducesResponseType(typeof(DeveloperSearchResponse), StatusCodes.Status200OK)]
-    public async Task<DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearchRequest request)
-        => await _mediator.Send(request);
+    [ProducesResponseType(typeof(DeveloperSearch.DeveloperSearchResponse), StatusCodes.Status200OK)]
+    public async Task<DeveloperSearch.DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearch.DeveloperSearchRequest request)
+        => await _mediator.Send(request ?? new DeveloperSearch.DeveloperSearchRequest());
 }

@@ -60,11 +60,11 @@ public class DocumentArchiveController : ControllerBase
     /// </remarks> 
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("case/{caseId:long}/documents")]
+    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(typeof(GetDocumentListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeCaseOwner]
     public async Task<GetDocumentListResponse> GetDocumentList([FromRoute] long caseId, [FromQuery] string formId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDocumentListRequest(caseId, formId), cancellationToken);
 

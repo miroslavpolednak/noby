@@ -21,7 +21,6 @@ namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocumentManually;
 
 public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest, Empty>
 {
-    private const string ManualSigningMethodCode = "PHYSICAL";
     /// <summary>
     /// Form 3601
     /// </summary>
@@ -69,12 +68,11 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         if (documentOnSa is null)
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId!.Value);
 
-        if (documentOnSa.SignatureMethodCode!.ToUpper(CultureInfo.InvariantCulture) != ManualSigningMethodCode || documentOnSa.IsSigned)
+        if (documentOnSa.SignatureTypeId != (int)SignatureTypes.Paper || documentOnSa.IsSigned)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToSignDocumentOnSA, request.DocumentOnSAId!.Value);
-
+        
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
-
-
+        
         //ToDo temporary disabled, until DM will do change in SA validation
         //if (salesArrangement.State != (int)SalesArrangementStates.InSigning)
         //    throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidSalesArrangementState);

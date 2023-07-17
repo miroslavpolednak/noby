@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using CIS.Infrastructure.Telemetry;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
@@ -47,6 +49,9 @@ internal sealed class CaasOpendIdHandler
                 // autentizacni requesty
                 if (context.HttpContext.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment))
                 {
+                    var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
+                    logger.Log(CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
+
                     context.ProtocolMessage.State = getRedirectUri(context.HttpContext.Request);
                     return Task.CompletedTask;
                 }

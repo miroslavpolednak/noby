@@ -1400,6 +1400,23 @@
             Kolekce nalezenych klientu.
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.isStoredModelDifferentToRequest(DomainServices.HouseholdService.Contracts.CustomerOnSA,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
+            <summary>
+            Vraci true, pokud se zmenily zakladni udaje CustomerOnSA instance 
+            (tj. pole, ktera jsou primo na entite, nikoliv v JSON datech)
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createJsonDelta(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
+            <summary>
+            Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createAdditionalData(DomainServices.HouseholdService.Contracts.CustomerOnSA,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Vytvori / upravi JSON data v prop CustomerAdditionalData
+            Data se upravuji na zaklade toho, co prijde v requestu.
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactRequest.Contact">
             <summary>
             telefonní číslo s mezinárodní předvolbou nebo email
@@ -2671,6 +2688,13 @@
              <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=058D1B76-375C-4747-90DB-D4E3BE5C46F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
              </remarks>
              <returns>Seznam závazků na produktu</returns>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Product.ProductController.GetCaseIdByPcpId(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Vrátí Case ID podle zadaného PCP ID
+            </summary>
+            <remarks>Vyhledá Case ID podle PCP ID v KonsDB</remarks>
+            <param name="pcpId">PCP ID</param>
         </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
             <summary>
@@ -4289,12 +4313,6 @@
             <summary>
             Flag, zda se jedná o interního uživatele, či externistu
             </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.Login">
-            <summary>
-            OsCis
-            </summary>
-            <example>614</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Users.SignIn.SignInRequest.IdentityId">
             <summary>

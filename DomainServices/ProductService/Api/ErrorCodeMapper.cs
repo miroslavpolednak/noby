@@ -25,6 +25,7 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int PaymentAccountNotFound = 12022;
     public const int ContractNumberNotFound = 12023;
     public const int NotFound12024 = 12024;
+    public const int PcpIdNotFound = 12025;
     
     public static IErrorCodesDictionary Init()
     {
@@ -50,7 +51,8 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { InvalidArgument12021, "Some customers do not have KB ID." },
             { PaymentAccountNotFound, "Payment account {PropertyValue} not found." },
             { ContractNumberNotFound, "Contract number {PropertyValue} not found." },
-            { NotFound12024, "Covenant not found." }
+            { NotFound12024, "Covenant not found." },
+            { PcpIdNotFound, "PCP ID {PropertyValue} not found." }
         });
         return Messages;
     }

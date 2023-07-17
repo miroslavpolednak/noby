@@ -21,13 +21,9 @@ internal static class Endpoints
             .WithOpenApi();
 
         // logovani auditniho logu
-        app.MapPost("/audit", (LogModel model, [FromServices] IAuditLogger logger) =>
+        app.MapPost("/audit", (AuditLogModel model, [FromServices] IAuditLogger logger) =>
         {
-#pragma warning disable CA2254 // Template should be a static expression
-#pragma warning disable CA1848 // Use the LoggerMessage delegates
-            logger.Log(model.Message ?? "");
-#pragma warning restore CA1848 // Use the LoggerMessage delegates
-#pragma warning restore CA2254 // Template should be a static expression
+            //logger.Log(model.Message ?? "");
         })
             .WithDescription("Logování do auditního logu.")
             .WithTags("Logging")

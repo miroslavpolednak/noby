@@ -17,6 +17,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5A275F67-67AC-4851-8FE9-51F2B685B990"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations")]
+    [AuthorizeCaseOwner]
     [Consumes("application/json")]
     [Produces("text/plain")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
@@ -40,10 +41,10 @@ public sealed class RealEstateValuationController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6525504B-D598-4113-AA2A-846571769C40"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
+    [AuthorizeCaseOwner]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeCaseOwner]
     public async Task<IActionResult> DeleteRealEstateValuation(
         [FromRoute] long caseId, 
         [FromRoute] int realEstateValuationId, 
@@ -62,11 +63,11 @@ public sealed class RealEstateValuationController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7301EE13-E1C2-4795-A5FA-F8A646C4D057"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
+    [AuthorizeCaseOwner]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(typeof(GetRealEstateValuationDetail.GetRealEstateValuationDetailResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeCaseOwner]
     public async Task<GetRealEstateValuationDetail.GetRealEstateValuationDetailResponse> GetRealEstateValuationDetail(
         long caseId, 
         int realEstateValuationId, 
@@ -82,6 +83,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0DCD023D-ACF8-4744-B198-FE4FC2A84223"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("{caseId:long}/real-estate-valuations")]
+    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(typeof(List<Dto.RealEstateValuation.RealEstateValuationListItem>), StatusCodes.Status200OK)]
@@ -100,11 +102,11 @@ public sealed class RealEstateValuationController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=39883A18-AA29-4f7d-9E4E-BC2D5F81B115"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
+    [AuthorizeCaseOwner]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeCaseOwner]
     public async Task<IActionResult> UpdateRealEstateValuationDetail(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
@@ -124,10 +126,10 @@ public sealed class RealEstateValuationController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPatch("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/developer")]
+    [AuthorizeCaseOwner]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeCaseOwner]
     public async Task<IActionResult> PatchDeveloperOnRealEstateValuation(
         [FromRoute] long caseId, 
         [FromRoute] int realEstateValuationId, 

@@ -21,16 +21,9 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         // customer from KB CM
         var (originalModel, identificationMethodId) = await _changedDataService.GetCustomerFromCM<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
 
-        // update nasi detailu instance customera
-        var updateRequest = new __Household.UpdateCustomerDetailRequest
-        {
-            CustomerOnSAId = customerOnSA.CustomerOnSAId,
-            CustomerChangeData = createJsonDelta(originalModel, request),
-            CustomerAdditionalData = await createAdditionalData(customerOnSA, request, identificationMethodId, cancellationToken)
-        };
-        await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
-
-        // update zakladnich udaju nasi instance customera
+        // ----- update zakladnich udaju nasi instance customera
+        // pokud se zmenili zakladni udaje jako jmeno, prijmeni, tak je potreba tuto zmenu
+        // propsat take na CustomerOnSA (jedna se o props primo na entite, nikoliv v JSON datech) a Case
         if (isStoredModelDifferentToRequest(customerOnSA, request))
         {
             var updateBaseRequest = new __Household.UpdateCustomerRequest
@@ -64,8 +57,23 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                 }, cancellationToken);
             }
         }
+
+        // ----- update naseho detailu instance customera
+        // updatujeme CustomerChangeData a CustomerAdditionalData na nasi entite CustomerOnSA
+        var updateRequest = new __Household.UpdateCustomerDetailRequest
+        {
+            CustomerOnSAId = customerOnSA.CustomerOnSAId,
+            CustomerChangeData = createJsonDelta(originalModel, request),
+            CustomerChangeMetadata = createMetadata(originalModel, request),
+            CustomerAdditionalData = await createAdditionalData(customerOnSA, request, identificationMethodId, cancellationToken)
+        };
+        await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
     }
 
+    /// <summary>
+    /// Vraci true, pokud se zmenily zakladni udaje CustomerOnSA instance 
+    /// (tj. pole, ktera jsou primo na entite, nikoliv v JSON datech)
+    /// </summary>
     private static bool isStoredModelDifferentToRequest(__Household.CustomerOnSA customerOnSA, UpdateCustomerDetailWithChangesRequest request)
     {
         return !customerOnSA.Name.Equals(request.NaturalPerson?.LastName, StringComparison.Ordinal)
@@ -74,6 +82,27 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             || customerOnSA.MaritalStatusId != request.NaturalPerson?.MaritalStatusId;
     }
 
+    private static __Household.CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request)
+    {
+        var metadata = new __Household.CustomerChangeMetadata();
+
+        if (originalModel?.IsUSPerson != request.IsUSPerson)
+        {
+            metadata.WasCRSChanged = true;
+        }
+        else
+        {
+
+        }
+
+        metadata.WereClientDataChanged = true;
+
+        return metadata;
+    }
+
+    /// <summary>
+    /// Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
+    /// </summary>
     private static string? createJsonDelta(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request)
     {
         // compare objects
@@ -101,6 +130,10 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         return finalJson;
     }
 
+    /// <summary>
+    /// Vytvori / upravi JSON data v prop CustomerAdditionalData
+    /// Data se upravuji na zaklade toho, co prijde v requestu.
+    /// </summary>
     private async Task<__Household.CustomerAdditionalData> createAdditionalData(
         __Household.CustomerOnSA customerOnSA, 
         UpdateCustomerDetailWithChangesRequest request, 
