@@ -1,5 +1,6 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.Document;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
+using CIS.InternalServices.DataAggregatorService.Api.Configuration.RiskLoanApplication;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
@@ -40,6 +41,19 @@ internal class CachedConfigurationManager : IConfigurationManager
             cacheEntry.SetOptions(_cacheEntryOptions);
 
             return _configurationManager.LoadEasFormConfiguration(easFormKey, cancellationToken);
+        }
+    }
+
+    private static readonly object _riskLoanApplicationKey = new();
+    public Task<RiskLoanApplicationConfiguration> LoadRiskLoanApplicationConfiguration(CancellationToken cancellationToken)
+    {
+        return _memoryCache.GetOrCreateAsync(_riskLoanApplicationKey, LoadConfiguration)!;
+
+        Task<RiskLoanApplicationConfiguration> LoadConfiguration(ICacheEntry cacheEntry)
+        {
+            cacheEntry.SetOptions(_cacheEntryOptions);
+
+            return _configurationManager.LoadRiskLoanApplicationConfiguration(cancellationToken);
         }
     }
 }

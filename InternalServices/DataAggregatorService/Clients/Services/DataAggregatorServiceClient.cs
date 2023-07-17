@@ -16,4 +16,7 @@ internal class DataAggregatorServiceClient : IDataAggregatorServiceClient
 
     public Task<GetEasFormResponse> GetEasForm(GetEasFormRequest request, CancellationToken cancellationToken = default) => 
         _client.GetEasFormAsync(request, cancellationToken: cancellationToken).ResponseAsync;
+
+    public Task<GetRiskLoanApplicationDataResponse> GetRiskLoanApplicationData(GetRiskLoanApplicationDataRequest request, CancellationToken cancellationToken = default) => 
+        _client.GetRiskLoanApplicationDataAsync(request, cancellationToken: cancellationToken).ResponseAsync;
 }

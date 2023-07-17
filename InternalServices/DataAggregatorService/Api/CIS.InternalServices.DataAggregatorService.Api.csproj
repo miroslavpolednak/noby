@@ -21,7 +21,6 @@
 		<Folder Include="Endpoints\GetDocumentData\" />
 		<Folder Include="Endpoints\GetEasForm\" />
 		<Folder Include="Endpoints\GetRiskLoanApplicationData\" />
-		<Folder Include="Generators\RiskLoanApplication\" />
 		<Folder Include="Services\Documents\TemplateData\LoanApplication\" />
 		<Folder Include="Services\Documents\TemplateData\CustomerChange\" />
 		<Folder Include="Services\EasForms\FormData\LoanApplicationData\" />

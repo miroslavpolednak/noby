@@ -28,7 +28,6 @@ internal abstract class EasForm<TFormData> : IEasForm where TFormData : Aggregat
 
         var jsonOptions = new JsonSerializerOptions
         {
-            WriteIndented = true,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
