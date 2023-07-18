@@ -1,4 +1,12 @@
-﻿using CIS.Foms.Types;
+﻿/*
+dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\DocumentOnSAService\Api\DomainServices.DocumentOnSAService.Api.csproj"
+
+grpcurl -insecure -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService / Test1
+
+grpcurl - insecure - d "{\"Id\":3185419}" - H "noby-user-id: 3048" - H "noby-user-ident: KBUID=A09FK3" - H "Authorization: Basic YTph" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService / Test2
+*/
+
+using CIS.Foms.Types;
 using DomainServices.DocumentOnSAService.Contracts.v1;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.Test;

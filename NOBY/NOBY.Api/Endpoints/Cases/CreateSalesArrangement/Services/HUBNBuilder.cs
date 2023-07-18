@@ -25,14 +25,6 @@ internal sealed class HUBNBuilder
             _request.HUBN.LoanAmount.AgreedLoanAmount = (decimal?)mortgageInstance.Mortgage?.LoanAmount ?? 0M;
             _request.HUBN.LoanAmount.AgreedLoanDueDate = (DateTime?)mortgageInstance.Mortgage?.LoanDueDate ?? DateTime.Now;
             _request.HUBN.LoanAmount.AgreedLoanPaymentAmount = (decimal?)mortgageInstance.Mortgage?.LoanPaymentAmount ?? 0M;
-            if (mortgageInstance.Mortgage?.LoanPurposes != null)
-            {
-                _request.HUBN.LoanPurposes.AddRange(mortgageInstance.Mortgage.LoanPurposes.Select(t => new __SA.SalesArrangementParametersHUBN.Types.LoanPurposeItem
-                {
-                    Sum = t.Sum,
-                    LoanPurposeId = t.LoanPurposeId
-                }));
-            }
             _request.HUBN.ExpectedDateOfDrawing.AgreedExpectedDateOfDrawing = (DateTime?)mortgageInstance.Mortgage?.ExpectedDateOfDrawing ?? DateTime.Now;
             _request.HUBN.DrawingDateTo.AgreedDrawingDateTo = (DateTime?)mortgageInstance.Mortgage?.DrawingDateTo ?? DateTime.Now;
         }
