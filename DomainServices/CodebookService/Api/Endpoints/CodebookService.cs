@@ -222,6 +222,12 @@ internal sealed class CodebookService
                     Id = (int)t,
                     Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
                     RdmCode = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.ShortName ?? "",
+                    MaxHouseholdsForSA = t switch
+                    {
+                        CIS.Foms.Enums.HouseholdTypes.Main => 1,
+                        CIS.Foms.Enums.HouseholdTypes.Codebtor => 1,
+                        _ => 0
+                    },
                     DocumentTypeId = t switch
                     {
                         CIS.Foms.Enums.HouseholdTypes.Main => 4,
@@ -341,7 +347,8 @@ internal sealed class CodebookService
                     IsValid = t.IsValid,
                     MandantId = t.MandantId,
                     Name = t.Name,
-                    Order = t.Order
+                    Order = t.Order,
+                    AcvId = t.AcvId
                 };
                 if (!string.IsNullOrEmpty(t.ProductTypeIds))
                 {
@@ -416,7 +423,7 @@ internal sealed class CodebookService
         {
             var items = _db.GetList<ProductTypesResponse.Types.ProductTypeItem>(nameof(ProductTypes), 1);
             var extensions = _db.GetDynamicList(nameof(ProductTypes), 2);
-            var loanKinds = _db.Xxd.GetOrCreateCachedResponse<GenericCodebookResponse, GenericCodebookResponse.Types.GenericCodebookItem>(_db.Sql[nameof(LoanKinds)].Query, nameof(LoanKinds))
+            var loanKinds = _db.Xxdhf.GetOrCreateCachedResponse<GenericCodebookResponse, GenericCodebookResponse.Types.GenericCodebookItem>(_db.Sql[nameof(LoanKinds)].Query, nameof(LoanKinds))
                 .Items
                 .Select(t => t.Id)
                 .ToArray();

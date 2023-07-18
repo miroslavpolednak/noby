@@ -10,11 +10,7 @@ internal sealed class CaseService
     : Contracts.v1.CaseService.CaseServiceBase
 {
     public override async Task<Empty> CompleteTask(CompleteTaskRequest request, ServerCallContext context)
-    {
-        await _mediator.Send(request, context.CancellationToken);
-
-        return new Empty();
-    }
+        => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<ValidateCaseIdResponse> ValidateCaseId(ValidateCaseIdRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
@@ -57,9 +53,6 @@ internal sealed class CaseService
 
     public override Task<GetProcessListResponse> GetProcessList(GetProcessListRequest request, ServerCallContext context) => 
         _mediator.Send(request, context.CancellationToken);
-
-    public override async Task<Empty> UpdateActiveTasks(UpdateActiveTasksRequest request, ServerCallContext context)
-        => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<Empty> NotifyStarbuild(NotifyStarbuildRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);

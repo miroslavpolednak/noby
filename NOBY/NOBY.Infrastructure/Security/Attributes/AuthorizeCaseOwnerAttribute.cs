@@ -11,7 +11,7 @@ namespace NOBY.Infrastructure.Security.Attributes;
 public sealed class AuthorizeCaseOwnerAttribute
     : TypeFilterAttribute
 {
-    public AuthorizeCaseOwnerAttribute(params UserPermissions[] requiredPermissions)
+    public AuthorizeCaseOwnerAttribute()
         : base(typeof(CaseOwnerAuthorizeFilter))
     {
     }
@@ -37,7 +37,7 @@ public sealed class AuthorizeCaseOwnerAttribute
                 throw new ArgumentNullException(nameof(context.HttpContext.Request.RouteValues), $"{_caseIdKey} is missing in route values");
             }
 
-            int caseId = int.Parse(context.HttpContext.Request.RouteValues["caseId"].ToString(), CultureInfo.InvariantCulture);
+            int caseId = int.Parse(context.HttpContext.Request.RouteValues["caseId"]!.ToString()!, CultureInfo.InvariantCulture);
 
             var ownerUserId = (await _caseService.ValidateCaseId(caseId, true)).OwnerUserId;
             

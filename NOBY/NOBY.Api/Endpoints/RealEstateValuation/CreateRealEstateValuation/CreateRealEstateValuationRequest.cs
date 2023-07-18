@@ -7,7 +7,7 @@ namespace NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation;
 /// Atributy k nově zakládanému Ocenění nemovitosti
 /// </summary>
 public sealed class CreateRealEstateValuationRequest
-    : IRequest
+    : IRequest<int>
 {
     [JsonIgnore]
     internal long CaseId;
@@ -22,12 +22,16 @@ public sealed class CreateRealEstateValuationRequest
     /// <summary>
     /// True pokud jde o nemovitost, která je objektem úvěru
     /// </summary>
-    public bool? IsLoanRealEstate { get; set; }
+    /// <example>true</example>
+    [Required]
+    public bool IsLoanRealEstate { get; set; }
 
     /// <summary>
     /// True pokud je aplikované hromadné ocenění z developerského projektu
     /// </summary>
-    public bool? DeveloperApplied { get; set; }
+    /// <example>false</example>
+    [Required]
+    public bool DeveloperApplied { get; set; }
 
     internal CreateRealEstateValuationRequest InfuseId(long caseId)
     {

@@ -46,14 +46,15 @@ internal sealed class CreateProductHandler
         var request = new _Product.CreateMortgageRequest
         {
             CaseId = notification.CaseId,
-            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
+            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value, saInstance.ContractNumber)
         };
+
+        request.Mortgage.ThirdPartyConsultantId = saInstance.Created.UserId;
+
         var result = await _productService.CreateMortgage(request, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
 
         _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
-
-        await _productService.CreateContractRelationship(mpId.Value, result, (int)CustomerRoles.Debtor, cancellationToken);
     }
 
     private readonly Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;

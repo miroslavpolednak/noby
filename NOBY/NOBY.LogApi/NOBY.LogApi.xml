@@ -4,6 +4,16 @@
         <name>NOBY.LogApi</name>
     </assembly>
     <members>
+        <member name="P:NOBY.LogApi.AuditLogModel.Message">
+            <summary>
+            Popis udalosti
+            </summary>
+        </member>
+        <member name="P:NOBY.LogApi.AuditLogModel.AuditEventTypeId">
+            <summary>
+            Typ auditni udalosti
+            </summary>
+        </member>
         <member name="P:NOBY.LogApi.LogModel.Level">
             <summary>
             Level logu

@@ -20,5 +20,13 @@ internal sealed class GetCaseIdRequestValidator : AbstractValidator<Contracts.Ge
                 .NotEmpty()
                 .WithErrorCode(ErrorCodeMapper.PaymentAccountNotFound);
         });
+
+        When(t => t.RequestParametersCase == Contracts.GetCaseIdRequest.RequestParametersOneofCase.PcpId,
+             () =>
+             {
+                 RuleFor(t => t.PcpId.PcpId)
+                     .NotEmpty()
+                     .WithErrorCode(ErrorCodeMapper.PcpIdNotFound);
+             });
     }
 }

@@ -5,8 +5,12 @@ option csharp_namespace = "CIS.InternalServices.DataAggregatorService.Contracts"
 
 message GetRiskLoanApplicationDataRequest {
 	int32 SalesArrangementId = 1;
+
+	int32 OfferId = 2;
+
+	int64 CaseId = 3;
 }
 
 message GetRiskLoanApplicationDataResponse {
-
+	string Json = 1;
 }

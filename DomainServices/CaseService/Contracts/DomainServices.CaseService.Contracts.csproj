@@ -15,8 +15,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.23.3" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.54.0" />
+		<PackageReference Include="Google.Protobuf" Version="3.23.4" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.55.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.56.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -38,7 +38,6 @@
 		<Protobuf Include="Messages/Case.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/CreateCase.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/GetCaseCounts.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="Messages/UpdateActiveTasks.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/GetTaskDetail.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/GetTaskList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages/GetProcessList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />

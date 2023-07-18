@@ -8,11 +8,11 @@ internal static class AppConfigurationExtensions
     public static string GetItChannelFromServiceUser(this AppConfiguration configuration, string? serviceUser)
     {
         if (configuration.ServiceUser2ItChannelBinding is null || !configuration.ServiceUser2ItChannelBinding.Any())
-            throw new CisConfigurationException(17002, "ServiceUser2ItChannelBinding configuration is not set");
+            throw ErrorCodeMapper.CreateConfigurationException(ErrorCodeMapper.ServiceUserIsNull);
 
         if (configuration.ServiceUser2ItChannelBinding.TryGetValue(serviceUser ?? "_default", out string? v))
             return v ?? "";
         else
-            throw new CisConfigurationException(17003, $"ServiceUser '{serviceUser}' not found in ServiceUser2ItChannelBinding configuration and no _default has been set");
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.ServiceUserNotFound, serviceUser);
     }
 }

@@ -13,6 +13,8 @@ internal class CustomerChange3602FormData : LoanApplicationBaseFormData
 
     public bool ChangeProposal => (SalesArrangementTypes)SalesArrangement.SalesArrangementTypeId is SalesArrangementTypes.CustomerChange3602A or SalesArrangementTypes.CustomerChange3602C;
 
+    public int ContractSignatureTypeId => 1;
+
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
         HouseholdData.IsSpouseInDebt = GetIsSpouseIsDebt();

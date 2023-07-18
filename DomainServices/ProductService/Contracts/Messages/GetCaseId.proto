@@ -8,6 +8,7 @@ message GetCaseIdRequest {
     oneof RequestParameters {
         ContractNumberObject ContractNumber = 20;
         PaymentAccountObject PaymentAccount = 21;
+        PcpIdObject PcpId = 22;
     }
 }
 
@@ -18,6 +19,10 @@ message ContractNumberObject {
 message PaymentAccountObject {
     google.protobuf.StringValue Prefix = 1;
     string AccountNumber = 2;
+}
+
+message PcpIdObject {
+    string PcpId = 1;
 }
 
 message GetCaseIdResponse {

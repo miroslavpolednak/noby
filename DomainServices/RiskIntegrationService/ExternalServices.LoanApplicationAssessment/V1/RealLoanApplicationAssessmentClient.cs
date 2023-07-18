@@ -16,7 +16,7 @@ internal sealed class RealLoanApplicationAssessmentClient
             .ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<Identified>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(17001, StartupExtensions.ServiceName, nameof(GetAssessment), nameof(Identified));
+                ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(GetAssessment), nameof(Identified));
 
         return result;
     }

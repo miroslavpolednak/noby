@@ -30,6 +30,7 @@ internal sealed class DocumentHelperService
         {
             DocumentId = s.EArchivId,
             EaCodeMainId = s.EaCodeMainId,
+            FormId = s.FormId,
             FileName = s.Filename,
             UploadStatus = getUploadStatus(s.StatusInQueue),
             CreatedOn = s.CreatedOn,
@@ -43,6 +44,7 @@ internal sealed class DocumentHelperService
         {
             DocumentId = s.DocumentId,
             EaCodeMainId = s.EaCodeMainId,
+            FormId = s.FormId,
             FileName = s.Filename,
             Description = s.Description,
             CreatedOn = s.CreatedOn,

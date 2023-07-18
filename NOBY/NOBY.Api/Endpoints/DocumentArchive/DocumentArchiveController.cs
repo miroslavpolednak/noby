@@ -21,16 +21,16 @@ public class DocumentArchiveController : ControllerBase
     }
 
     /// <summary>
-    /// Načtení dokumentu z e-archivu nebo ze systému ePodpisů
+    /// Načtení dokumentu z archivu
     /// </summary>
     /// <remarks>
-    ///Načtení contentu dokumentu.Vrací se stream binárních dat.<br />
-    ///Pro dokumenty z e-archivu se nenačítají dokumenty s EaCodeMain.IsVisibleForKb=false.<br /><br />
+    /// Načtení contentu dokumentu.Vrací se stream binárních dat.<br />
+    /// Nenačítají se dokumenty s EaCodeMain.IsVisibleForKb=false <br />
+    /// <i>DS:</i> DocumentArchiveService/getDocument
     /// <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9617EAF8-9876-4444-A130-DFCCD597484D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="documentId">ID dokumentu</param>
     /// <param name="contentDisposition">0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default</param>
-    /// <param name="source">Zdroj dokumentu (0 - e-archiv; 1 - fronta do systému ePodpisů; 2 - systém ePodpisů; 0 je default</param>
     [HttpGet("document/{documentId}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
@@ -38,17 +38,16 @@ public class DocumentArchiveController : ControllerBase
     public async Task<IActionResult> GetDocument(
         [FromRoute] string documentId,
         [FromQuery] FileContentDispositions contentDisposition,
-        [FromQuery] DocumentSource source, // added prep. according to HFICH-5628 (without implementation)
         CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetDocumentRequest(documentId), cancellationToken);
         if (contentDisposition == FileContentDispositions.inline)
         {
-            return File(result.Content.BinaryData.ToArrayUnsafe(), result.Content.MineType);
+            return File(result.Content.BinaryData, result.Content.MimeType);
         }
         else
         {
-            return File(result.Content.BinaryData.ToArrayUnsafe(), result.Content.MineType, result.Metadata.Filename);
+            return File(result.Content.BinaryData, result.Content.MimeType, result.Metadata.Filename);
         }
     }
 
@@ -61,13 +60,13 @@ public class DocumentArchiveController : ControllerBase
     /// </remarks> 
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("case/{caseId:long}/documents")]
+    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(typeof(GetDocumentListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeCaseOwner]
-    public async Task<GetDocumentListResponse> GetDocumentList([FromRoute] long caseId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetDocumentListRequest(caseId), cancellationToken);
+    public async Task<GetDocumentListResponse> GetDocumentList([FromRoute] long caseId, [FromQuery] string? formId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetDocumentListRequest(caseId, formId), cancellationToken);
 
     /// <summary>
     /// Nahrání dokumentu
@@ -89,6 +88,7 @@ public class DocumentArchiveController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks> 
     [HttpPost("case/{caseId:long}/documents")]
+    [AuthorizeCaseOwner]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> SaveDocumentsToArchive(

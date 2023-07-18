@@ -50,7 +50,7 @@ internal sealed class CreateRiskBusinessCaseHandler
         var createRBCResponse = await _riskBusinessCaseService.CreateCase(notification.SalesArrangementId, offerInstance.ResourceProcessId, cancellationToken);
 
         // ulozit na SA
-        await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, createRBCResponse.RiskBusinessCaseId, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, saInstance.ContractNumber, createRBCResponse.RiskBusinessCaseId, cancellationToken);
 
         #region local fce
         async Task<string> getRiskSegment()

@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CIS.Core.Configuration;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using System.Reflection;
@@ -37,17 +41,31 @@ public static class LoggingExtensions
         builder.Services.AddSingleton(configuration);
 
         // pridani custom enricheru
-        builder.Services.AddTransient<Enrichers.NobyHeadersEnricher>();
+        builder.Services.AddTransient<Enrichers.CisHeadersEnricher>();
 
         // auditni log
-        builder.Services.AddSingleton<IAuditLogger>(new AuditLogger());
+        if (configuration?.Logging?.Audit is not null)
+        {
+            builder.Services.AddSingleton((serviceProvider) =>
+            {
+                // get server IP
+                var server = serviceProvider.GetRequiredService<IServer>();
+                var addresses = server.Features.Get<IServerAddressesFeature>()!.Addresses;
+                var serverIp = addresses.First()[7..^1];
+
+                var cisConfiguration = serviceProvider.GetRequiredService<ICisEnvironmentConfiguration>();
+                
+                return new AuditLog.AuditLoggerHelper(serverIp, cisConfiguration, configuration.Logging.Audit);
+            });
+            builder.Services.AddScoped<IAuditLogger, AuditLog.AuditLogger>();
+        }
 
         // pridani serilogu
         builder.Host.AddCisLoggingInternal();
 
         // pridani request behaviour mediatru - loguje request a response objekty
         // logovat pouze u gRPC sluzeb
-        if (configuration.Logging?.LogType != LogBehaviourTypes.WebApi)
+        if (configuration?.Logging?.LogType != LogBehaviourTypes.WebApi)
             builder.Services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(CisMediatR.PayloadLoggerBehavior<,>));
 
         return builder;
@@ -61,7 +79,6 @@ public static class LoggingExtensions
         StartupLog.StartupLogger.ApplicationFinished();
 
         Log.CloseAndFlush();
-        AuditLogger.CloseAndFlush();
         StartupLog.StartupLogger.CloseAndFlush();
 
         // kdyz tu neni sleep, tak se obcas nezapsal vsechen output pri ukonceni sluzby
@@ -85,12 +102,6 @@ public static class LoggingExtensions
                 {
                     bootstrapper.EnrichLogger(loggerConfiguration);
                     bootstrapper.AddOutputs(loggerConfiguration, configuration.Logging.Application);
-                }
-
-                // audit log setup
-                if (configuration?.Logging?.Audit is not null)
-                {
-                    AuditLogger.SetupLogger(bootstrapper, configuration.Logging.Audit);
                 }
             }
         });

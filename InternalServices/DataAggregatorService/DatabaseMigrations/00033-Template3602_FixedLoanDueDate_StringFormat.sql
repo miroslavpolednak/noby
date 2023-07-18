@@ -1,0 +1,1 @@
+UPDATE DocumentDataField SET StringFormat = NULL WHERE DocumentId IN (11, 12, 16) AND AcroFieldName = 'Splatnost'

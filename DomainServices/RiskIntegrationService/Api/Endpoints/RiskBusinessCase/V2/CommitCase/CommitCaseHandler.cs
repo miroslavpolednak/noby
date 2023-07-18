@@ -60,7 +60,7 @@ internal sealed class CommitCaseHandler
             if (approverInstance != null)
             {
                 if (Helpers.IsDealerSchema(approverInstance.DealerCompanyId))
-                    throw new CisValidationException(17010, $"Approver can't be dealer.");
+                    throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ApproverEqualDealer);
                 else
                     requestModel.Approver = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(approverInstance, request.Approver);
             }            

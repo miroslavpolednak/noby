@@ -1,0 +1,9 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentOnSAService.SendDocumentPreview;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message SendDocumentPreviewRequest {
+	google.protobuf.Int32Value DocumentOnSAId = 1;
+} 

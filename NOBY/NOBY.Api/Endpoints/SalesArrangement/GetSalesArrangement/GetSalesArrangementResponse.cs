@@ -1,4 +1,7 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement;
+﻿using NOBY.Api.Endpoints.SalesArrangement.Dto;
+using NOBY.Dto.Attributes;
+
+namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement;
 
 public sealed class GetSalesArrangementResponse
 {
@@ -54,5 +57,11 @@ public sealed class GetSalesArrangementResponse
     /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersCustomerChange3602
     /// )
     /// </remarks>
+    [SwaggerOneOf(typeof(ParametersMortgage),
+                  typeof(ParametersDrawing),
+                  typeof(Dto.HUBNDetail),
+                  typeof(Dto.GeneralChangeDetail),
+                  typeof(Dto.CustomerChangeDetail),
+                  typeof(Dto.CustomerChange3602Detail))]
     public object? Parameters { get; set; }
 }

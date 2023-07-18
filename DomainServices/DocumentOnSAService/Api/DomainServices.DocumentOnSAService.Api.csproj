@@ -15,8 +15,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.54.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.8">
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.55.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -28,6 +28,7 @@
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
+    <ProjectReference Include="..\..\..\ExternalServices\ESignatures\ExternalServices.ESignatures.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\Sulm\ExternalServices.Sulm.csproj" />
     <ProjectReference Include="..\..\..\InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj" />
     <ProjectReference Include="..\..\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />

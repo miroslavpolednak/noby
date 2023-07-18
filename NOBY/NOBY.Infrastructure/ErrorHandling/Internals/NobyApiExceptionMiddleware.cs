@@ -13,6 +13,8 @@ public sealed class NobyApiExceptionMiddleware
     private readonly RequestDelegate _next;
     private readonly ILoggerFactory _loggerFactory;
 
+    private const string _defaultErrorMessage = "Nastala neočekávaná chyba, opakujte akci později prosím.";
+
     public NobyApiExceptionMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
     {
         _loggerFactory = loggerFactory;
@@ -69,19 +71,10 @@ public sealed class NobyApiExceptionMiddleware
         {
             await Results.Json(singleErrorResult(ex), statusCode: 404).ExecuteAsync(context);
         }
-        // conflict 409
-        catch (CisConflictException ex)
-        {
-            await Results.Json(singleErrorResult(ex), statusCode: 409).ExecuteAsync(context);
-        }
         // osetrena validace na urovni FE API
         catch (NobyValidationException ex)
         {
-            await Results.Json(ex.Errors, statusCode: 400).ExecuteAsync(context);
-        }
-        catch (NobyServerException ex)
-        {
-            await Results.Json(singleErrorResult(ex.Error.ErrorCode, ex.Error.Message), statusCode: 500).ExecuteAsync(context);
+            await Results.Json(ex.Errors, statusCode: ex.HttpStatusCode).ExecuteAsync(context);
         }
         // osetrena validace na urovni api call
         catch (CisValidationException ex)
@@ -94,7 +87,7 @@ public sealed class NobyApiExceptionMiddleware
             logger.WebApiUncoughtException(ex);
             var jsonError = new List<ApiErrorItem> 
             { 
-                new() { ErrorCode = 90001, Message = "Nastala neočekávaná chyba, opakujte akci později prosím.", Severity = ApiErrorItemServerity.Error }
+                new(90001, _defaultErrorMessage, ApiErrorItemServerity.Error)
             };
             await Results.Json(jsonError, statusCode: 500).ExecuteAsync(context);
         }

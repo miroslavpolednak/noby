@@ -221,7 +221,7 @@ namespace DomainServices.CustomerService.ExternalServices.Kyc.V1.Contracts
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.MinLength(1)]
-        public System.Collections.Generic.ICollection<TaxResidenceCountry> ResidenceCountries { get; set; } = new System.Collections.ObjectModel.Collection<TaxResidenceCountry>();
+        public ICollection<TaxResidenceCountry>? ResidenceCountries { get; set; } = new System.Collections.ObjectModel.Collection<TaxResidenceCountry>();
 
         /// <summary>
         /// Legal entity type for CRS purposes. Filled only for Legal Person. RDM codebook CB_CmTrLegalEntityType
@@ -266,7 +266,7 @@ namespace DomainServices.CustomerService.ExternalServices.Kyc.V1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.ComponentModel.DataAnnotations.StringLength(50, MinimumLength = 1)]
-        public string Tin { get; set; } = default!;
+        public string? Tin { get; set; } = default!;
 
         /// <summary>
         /// Reason why TIN was not filled out
@@ -276,7 +276,7 @@ namespace DomainServices.CustomerService.ExternalServices.Kyc.V1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.ComponentModel.DataAnnotations.StringLength(200, MinimumLength = 1)]
-        public string TinMissingReasonDescription { get; set; } = default!;
+        public string? TinMissingReasonDescription { get; set; } = default!;
 
         private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
 
@@ -327,7 +327,7 @@ namespace DomainServices.CustomerService.ExternalServices.Kyc.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("naturalPersonKyc")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public NaturalPersonKyc NaturalPersonKyc { get; set; } = default!;
+        public NaturalPersonKyc? NaturalPersonKyc { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("taxResidence")]
 

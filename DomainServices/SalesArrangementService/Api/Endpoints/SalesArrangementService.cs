@@ -59,4 +59,7 @@ internal sealed class SalesArrangementService : Contracts.v1.SalesArrangementSer
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> SetFlowSwitches(SetFlowSwitchesRequest request, ServerCallContext context)
        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<SetContractNumberResponse> SetContractNumber(SetContractNumberRequest request, ServerCallContext context) => 
+        await _mediator.Send(request, context.CancellationToken);
 }

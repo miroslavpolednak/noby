@@ -13,7 +13,7 @@ internal sealed class DeleteHouseholdHandler
             .Households
             .AsNoTracking()
             .Where(t => t.HouseholdId == request.HouseholdId)
-            .Select(t => new { t.CustomerOnSAId1, t.CustomerOnSAId2, t.HouseholdTypeId })
+            .Select(t => new { t.SalesArrangementId, t.CustomerOnSAId1, t.CustomerOnSAId2, t.HouseholdTypeId })
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.HouseholdNotFound, request.HouseholdId);
 
@@ -45,15 +45,30 @@ internal sealed class DeleteHouseholdHandler
                 HardDelete = request.HardDelete
             }, cancellationToken);
         }
+        
+        // pokud se jedna o spoludluznickou, smazat flowswitch
+        if (household.HouseholdTypeId == HouseholdTypes.Codebtor)
+        {
+            await _salesArrangementService.SetFlowSwitches(household.SalesArrangementId, new List<SalesArrangementService.Contracts.EditableFlowSwitch>
+            {
+                new()
+                {
+                    FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnCodebtorHousehold,
+                    Value = null
+                }
+            }, cancellationToken);
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly IMediator _mediator;
     private readonly HouseholdServiceDbContext _dbContext;
 
-    public DeleteHouseholdHandler(HouseholdServiceDbContext dbContext, IMediator mediator)
+    public DeleteHouseholdHandler(HouseholdServiceDbContext dbContext, IMediator mediator, SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
+        _salesArrangementService = salesArrangementService;
         _dbContext = dbContext;
         _mediator = mediator;
     }

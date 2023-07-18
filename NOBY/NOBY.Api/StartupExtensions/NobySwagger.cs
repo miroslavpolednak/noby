@@ -1,8 +1,9 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
-using NOBY.Api.Endpoints.Workflow.GetTaskDetail;
+using NOBY.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.StartupExtensions;
@@ -33,7 +34,8 @@ internal static class NobySwagger
             //x.UseOneOfForPolymorphism();
 
             x.SupportNonNullableReferenceTypes();
-            
+            x.UseAllOfToExtendReferenceSchemas();
+
             // všechny parametry budou camel case
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();
@@ -48,14 +50,11 @@ internal static class NobySwagger
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "NOBY.Dto.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
             
-            x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
-            x.SchemaFilter<Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementSwaggerSchema> ();
-            x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.UpdateParametersSwaggerSchema>();
-            x.SchemaFilter<GetTaskDetailSwaggerSchema>();
+            x.SchemaFilter<SwaggerOneOfSchemaFilter>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
 
-            x.OperationFilter<Infrastructure.Swagger.ApplySwaggerNobyAttributes>();
+            x.OperationFilter<ApplySwaggerNobyAttributes>();
         });
 
         return builder;
@@ -88,18 +87,23 @@ internal static class NobySwagger
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
-            if (!context.Type.IsEnum)
+            var requestedType = Nullable.GetUnderlyingType(context.Type) ?? context.Type;
+
+            if (!requestedType.IsEnum)
                 return;
 
             var sb = new StringBuilder(schema.Description ?? string.Empty);
 
-            sb.Append("\n\n<small>Enum Values</small>");
+            if (sb.Length > 0)
+                sb.Append("\n\n");
+
+            sb.Append("<small>Enum Values</small>");
 
             sb.Append("<ul>");
 
-            foreach (var enumValue in Enum.GetValues(context.Type))
+            foreach (var enumValue in Enum.GetValues(requestedType))
             {
-                sb.Append($"<li>{Convert.ToInt32(enumValue)} - {enumValue}</li>");
+                sb.Append(CultureInfo.InvariantCulture, $"<li>{Convert.ToInt32(enumValue, CultureInfo.InvariantCulture)} - {enumValue}</li>");
             }
 
             sb.Append("</ul>");

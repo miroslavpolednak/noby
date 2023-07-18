@@ -1,4 +1,4 @@
-syntax = "proto3";
+﻿syntax = "proto3";
 package DomainServices.DocumentArchiveService.SetDocumentStatusInQueue;
 option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts";
 
@@ -9,7 +9,7 @@ message SetDocumentStatusInQueueRequest {
 	// ID dokumentu v eArchiv-u
     string EArchivId = 1;
 	
-	// Stav dokument ve front�
+	// Stav dokument ve frontě
 	google.protobuf.Int32Value StatusInQueue = 2;
 }
 

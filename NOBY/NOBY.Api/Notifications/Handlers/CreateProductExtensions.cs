@@ -5,10 +5,11 @@ namespace NOBY.Api.Notifications.Handlers;
 
 internal static class CreateProductExtensions
 {
-    public static MortgageData ToDomainServiceRequest(this GetMortgageOfferResponse offerData, long partnerId)
+    public static MortgageData ToDomainServiceRequest(this GetMortgageOfferResponse offerData, long partnerId, string contractNumber)
     {
         var model = new MortgageData
         {
+            ContractNumber = contractNumber,
             PaymentDay = offerData.SimulationInputs.PaymentDay,
             ExpectedDateOfDrawing = offerData.SimulationInputs.ExpectedDateOfDrawing,
             FixedRatePeriod = offerData.SimulationInputs.FixedRatePeriod,
@@ -17,7 +18,9 @@ internal static class CreateProductExtensions
             ProductTypeId = offerData.SimulationInputs.ProductTypeId,
             LoanPaymentAmount = offerData.SimulationResults.LoanPaymentAmount,
             LoanKindId= offerData.SimulationInputs.LoanKindId,
-            PartnerId = partnerId
+            PartnerId = partnerId,
+            LoanDueDate = offerData.SimulationResults.LoanDueDate,
+            FirstAnnuityPaymentDate = offerData.SimulationResults.AnnuityPaymentsDateFrom
         };
 
         if (offerData.SimulationInputs.LoanPurposes is not null)

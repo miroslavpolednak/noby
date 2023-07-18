@@ -22,7 +22,6 @@ internal class LoanApplicationCustomer
         CustomerDetail = customerDetail;
 
         PermanentAddress = GetPermanentAddress();
-        Obligations = GetObligations();
         Incomes = new LoanApplicationCustomerIncomes(customerOnSA, incomes);
     }
 
@@ -30,13 +29,21 @@ internal class LoanApplicationCustomer
 
     public GrpcAddress? PermanentAddress { get; }
 
-    public List<LoanApplicationObligation> Obligations { get; }
+    public List<LoanApplicationObligation> Obligations { get; private init; } = null!;
 
     public LoanApplicationCustomerIncomes Incomes { get; }
 
     public required bool IsPartner { get; init; }
 
-    public required IReadOnlyDictionary<string, List<int>> ObligationTypes { get; init; }
+    public required IReadOnlyDictionary<string, List<int>> ObligationTypes
+    {
+        init
+        {
+            Obligations = _customerOnSA.Obligations.Where(o => o.Creditor?.IsExternal == true)
+                                       .Select(o => new LoanApplicationObligation(o, value.GetValueOrDefault("amount") ?? new List<int>()))
+                                       .ToList();
+        }
+    }
 
     public int InternalCustomerId => _customerOnSA.CustomerOnSAId;
 
@@ -76,12 +83,5 @@ internal class LoanApplicationCustomer
         address.Postcode = address.Postcode.Replace(" ", "");
 
         return address;
-    }
-
-    private List<LoanApplicationObligation> GetObligations()
-    {
-        return _customerOnSA.Obligations.Where(o => o.Creditor?.IsExternal == true)
-                            .Select(o => new LoanApplicationObligation(o, ObligationTypes.GetValueOrDefault("amount") ?? new List<int>()))
-                            .ToList();
     }
 }

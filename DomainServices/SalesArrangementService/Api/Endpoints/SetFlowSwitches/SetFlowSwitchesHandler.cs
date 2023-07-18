@@ -20,19 +20,24 @@ internal sealed class SetFlowSwitchesHandler
             var dbSwitch = flowSwitches.FirstOrDefault(t => t.FlowSwitchId == requestSwitch.FlowSwitchId);
 
             // pridani noveho switche
-            if (dbSwitch is null)
+            if (dbSwitch is null && requestSwitch.Value.HasValue)
             {
                 _dbContext.FlowSwitches.Add(new Database.Entities.FlowSwitch
                 {
                     SalesArrangementId = request.SalesArrangementId,
                     FlowSwitchId = requestSwitch.FlowSwitchId,
-                    Value = requestSwitch.Value
+                    Value = requestSwitch.Value.Value
                 });
+            }
+            // kompletne smazat klapku
+            else if (dbSwitch is not null && !requestSwitch.Value.HasValue)
+            {
+                _dbContext.FlowSwitches.Remove(dbSwitch);
             }
             // update Value
             else if (dbSwitch is not null && requestSwitch.Value != dbSwitch.Value)
             {
-                dbSwitch.Value = requestSwitch.Value;
+                dbSwitch.Value = requestSwitch.Value!.Value;
             }
         }
 

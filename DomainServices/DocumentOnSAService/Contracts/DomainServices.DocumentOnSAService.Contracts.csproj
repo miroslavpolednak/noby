@@ -11,8 +11,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.23.3" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.54.0" />
+		<PackageReference Include="Google.Protobuf" Version="3.23.4" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.55.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.56.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,6 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Protobuf Include="./Enums.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="./DocumentOnSAService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="./GenerateFormId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="./DocumentOnSA.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
@@ -40,5 +41,6 @@
 		<Protobuf Include="./GetElectronicDocumentFromQueue.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="./GetElectronicDocumentPreview.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="./SetDocumentOnSAArchived.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="./SendDocumentPreview.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 	</ItemGroup>
 </Project>

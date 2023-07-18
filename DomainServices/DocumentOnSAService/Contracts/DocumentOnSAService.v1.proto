@@ -15,6 +15,7 @@ import "LinkEArchivIdToDocumentOnSA.proto";
 import "GetElectronicDocumentFromQueue.proto";
 import "GetElectronicDocumentPreview.proto";
 import "SetDocumentOnSAArchived.proto";
+import "SendDocumentPreview.proto";
 
 //DocumentOnSAService
 service DocumentOnSAService{
@@ -30,4 +31,13 @@ service DocumentOnSAService{
 	rpc GetElectronicDocumentFromQueue(DomainServices.DocumentOnSAService.GetElectronicDocumentFromQueue.GetElectronicDocumentFromQueueRequest) returns(DomainServices.DocumentOnSAService.GetElectronicDocumentFromQueue.GetElectronicDocumentFromQueueResponse);
 	rpc GetElectronicDocumentPreview(DomainServices.DocumentOnSAService.GetElectronicDocumentPreview.GetElectronicDocumentPreviewRequest) returns(DomainServices.DocumentOnSAService.GetElectronicDocumentPreview.GetElectronicDocumentPreviewResponse);
 	rpc SetDocumentOnSAArchived(DomainServices.DocumentOnSAService.SetDocumentOnSAArchived.SetDocumentOnSAArchivedRequest) returns(google.protobuf.Empty);
+	rpc SendDocumentPreview(DomainServices.DocumentOnSAService.SendDocumentPreview.SendDocumentPreviewRequest) returns(google.protobuf.Empty);
+
+	rpc Test1(Test1Request) returns (Test1Response);
+	rpc Test2(Test2Request) returns (Test2Response);
 }
+
+message Test1Request{}
+message Test2Request{ int64 Id = 1; }
+message Test1Response { int64 Id = 1; }
+message Test2Response { string Id = 1; }

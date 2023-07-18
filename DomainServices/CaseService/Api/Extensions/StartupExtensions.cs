@@ -34,10 +34,13 @@ internal static class StartupExtensions
 
         // kafka messaging
         builder.AddCisMessaging()
-            .AddKafka()
+            .AddKafka(typeof(StartupExtensions).Assembly)
             .AddConsumer<Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer>()
-            .AddConsumer<Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer>()
+            .AddConsumer<Messaging.CollateralValuationProcessChanged.CollateralValuationProcessChangedConsumer>()
+            .AddConsumer<Messaging.ConsultationRequestProcessChanged.ConsultationRequestProcessChangedConsumer>()
             .AddConsumer<Messaging.IndividualPricingProcessChanged.IndividualPricingProcessChangedConsumer>()
+            .AddConsumer<Messaging.InformationRequestProcessChanged.InformationRequestProcessChangedConsumer>()
+            .AddConsumer<Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer>()
             .AddConsumer<Messaging.WithdrawalProcessChanged.WithdrawalProcessChangedConsumer>()
             .AddConsumerTopicAvro<ISbWorkflowProcessEvent>(appConfiguration.SbWorkflowProcessTopic!)
             .AddConsumerTopicAvro<ISbWorkflowInputProcessingEvent>(appConfiguration.SbWorkflowInputProcessingTopic!)

@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentOnSAService.Enums;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+enum Source {
+	Unknown = 0;
+	Noby = 1;
+    Workflow = 2;
+}

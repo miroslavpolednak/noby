@@ -569,6 +569,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.Types.HouseholdTypeItem.DocumentTypeIdFieldNumber">
             <summary>Field number for the "DocumentTypeId" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.Types.HouseholdTypeItem.MaxHouseholdsForSAFieldNumber">
+            <summary>Field number for the "MaxHouseholdsForSA" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.HousingConditionsResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
@@ -638,6 +641,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem.MpDigiApiCodeFieldNumber">
             <summary>Field number for the "MpDigiApiCode" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem.PersonTypeFieldNumber">
+            <summary>Field number for the "PersonType" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
@@ -685,6 +691,9 @@
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.ProductTypeIdsFieldNumber">
             <summary>Field number for the "ProductTypeIds" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.AcvIdFieldNumber">
+            <summary>Field number for the "AcvId" field.</summary>
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>

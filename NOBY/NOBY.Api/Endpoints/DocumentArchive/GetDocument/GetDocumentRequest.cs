@@ -1,6 +1,4 @@
-﻿using DomainServices.DocumentArchiveService.Contracts;
-
-namespace NOBY.Api.Endpoints.DocumentArchive.GetDocument;
+﻿namespace NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 
 public class GetDocumentRequest : IRequest<GetDocumentResponse>
 {
@@ -10,12 +8,4 @@ public class GetDocumentRequest : IRequest<GetDocumentResponse>
     }
 
     public string DocumentId { get; }
-}
-
-
-public enum DocumentSource
-{
-    EArchive = 0,
-    QueueEPodpisy = 1,
-    SystemEPodpisy = 2
 }

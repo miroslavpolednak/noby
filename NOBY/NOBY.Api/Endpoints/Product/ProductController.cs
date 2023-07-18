@@ -1,4 +1,5 @@
-﻿using NOBY.Api.Endpoints.Product.GetProductObligationList.Dto;
+﻿using System.Net.Mime;
+using NOBY.Api.Endpoints.Product.GetProductObligationList.Dto;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Product;
@@ -18,6 +19,7 @@ public sealed class ProductController : ControllerBase
     /// </remarks>
     /// <returns>Seznam klientů na produktu</returns>
     [HttpGet("{caseId:long}/customers")]
+    [AuthorizeCaseOwner]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
@@ -35,17 +37,30 @@ public sealed class ProductController : ControllerBase
     /// </remarks>
     /// <returns>Seznam závazků na produktu</returns>
     [HttpGet("{caseId:long}/obligations")]
+    [AuthorizeCaseOwner]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
     [ProducesResponseType(typeof(List<ProductObligation>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeCaseOwner]
     public async Task<IActionResult> GetProductObligations([FromRoute] long caseId, CancellationToken cancellationToken)
     {
         var items = await _mediator.Send(new GetProductObligationList.GetProductObligationListRequest(caseId), cancellationToken);
 
         return items.Any() ? Ok(items) : NoContent();
     }
+
+    /// <summary>
+    /// Vrátí Case ID podle zadaného PCP ID
+    /// </summary>
+    /// <remarks>Vyhledá Case ID podle PCP ID v KonsDB</remarks>
+    /// <param name="pcpId">PCP ID</param>
+    [HttpGet("caseid-by-pcpid/{pcpId:required}")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(Tags = new[] { "Produkt" })]
+    [ProducesResponseType(typeof(GetCaseIdByPcpId.GetCaseIdByPcpIdResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetCaseIdByPcpId.GetCaseIdByPcpIdResponse> GetCaseIdByPcpId([FromRoute] string pcpId, CancellationToken cancellationToken) => 
+        await _mediator.Send(new GetCaseIdByPcpId.GetCaseIdByPcpIdRequest(pcpId), cancellationToken);
 }

@@ -63,9 +63,6 @@ internal sealed class CreateMortgageCaseHandler
         var createCustomerResult = await _customerOnSAService.CreateCustomer(createCustomerRequest, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyCustomerOnSAId, createCustomerResult.CustomerOnSAId);
 
-        //Contract Number
-        await _salesArrangementService.SetContractNumber(salesArrangementId, createCustomerResult.CustomerOnSAId, cancellationToken);
-
         // updatovat Agent v SA parameters, vytvarime prazdny objekt Parameters pouze s agentem
         await updateSalesArrangementParameters(salesArrangementId, createCustomerResult.CustomerOnSAId, cancellationToken);
 
@@ -83,13 +80,13 @@ internal sealed class CreateMortgageCaseHandler
         var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers);
         await _mediator.Publish(notification, cancellationToken);
 
-        var identifiedFlowSwitch = new FlowSwitch
+        var identifiedFlowSwitch = new EditableFlowSwitch
         {
             FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnMainHousehold,
-            Value = true
+            Value = request.Identity is not null
         };
 
-        await _salesArrangementService.SetFlowSwitches(notification.SalesArrangementId, new List<FlowSwitch> { identifiedFlowSwitch }, cancellationToken);
+        await _salesArrangementService.SetFlowSwitches(notification.SalesArrangementId, new List<EditableFlowSwitch> { identifiedFlowSwitch }, cancellationToken);
 
         return new CreateMortgageCaseResponse
         {

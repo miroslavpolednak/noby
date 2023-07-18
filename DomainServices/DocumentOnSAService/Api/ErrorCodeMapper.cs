@@ -5,7 +5,7 @@ namespace DomainServices.DocumentOnSAService.Api;
 public sealed class ErrorCodeMapper : ErrorCodeMapperBase
 {
     public const int SalesArrangementNotExist = 19000;
-    public const int SignatureMethodNotExist = 19002;
+    public const int SignatureTypeNotExist = 19002;
     public const int DocumentOnSANotExist = 19003;
     public const int UnableToSignDocumentOnSA = 19005;
     public const int EasAddFirstSignatureDateReturnedErrorState = 19006; // Without Desc
@@ -18,6 +18,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int DocumentTypeIdNotSupportedForProductRequest = 19016;
     public const int UnableToStartSigningOrSignInvalidSalesArrangementState = 19018;
     public const int UnableToStartSigningOrSignInvalidDocument = 19019;
+    public const int UnableToSendDocumentPreviewForPaperSignedDocuments = 19020;
     public const int UnsupportedStatusReturnedFromESignature = 19021;
 
     // Non BL validation
@@ -40,7 +41,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
         SetMessages(new Dictionary<int, string>()
         {
             { SalesArrangementNotExist, "SalesArrangement {PropertyValue} does not exist" },
-            { SignatureMethodNotExist, "SignatureMethod {PropertyValue} does not exist." },
+            { SignatureTypeNotExist, "SignatureType {PropertyValue} does not exist." },
             { DocumentOnSANotExist, "DocumentOnSA {PropertyValue} does not exist."},
             { UnableToSignDocumentOnSA, "Unable to sign DocumentOnSA {PropertyValue}. Document is for electronic signature only or is already signed."},
             { CombinationOfParametersNotSupported, "Combination of parameters not supported"},

@@ -21,10 +21,10 @@ internal sealed class SaveRequestMapper
         request.Product.Ltv ??= 0;
 
         // produkt
-        var riskApplicationType = await getRiskApplicationType(request.Product, cancellation) ?? throw new CisValidationException(17009, $"Can't find RiskApplicationType item");
+        var riskApplicationType = await getRiskApplicationType(request.Product, cancellation) ?? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.RiskApplicationTypeNotFound);
 
         bool verification = riskApplicationType.MandantId == (int)CIS.Foms.Enums.Mandants.Kb
-            && request.Product.RequiredAmount <= 9000000
+            && request.Product.RequiredAmount <= 25000000M
             && (request.Product.Purposes?.All(p => p.LoanPurposeId == 201 || p.LoanPurposeId == 202) ?? false)
             && request.Households.Count == 1
             && request.Households.All(t => t.Customers?.All(c => c.IdentificationDocument?.IdentificationDocumentTypeId == 1) ?? false)

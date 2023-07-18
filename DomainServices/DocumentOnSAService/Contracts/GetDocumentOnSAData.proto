@@ -3,6 +3,7 @@ package DomainServices.DocumentOnSAService.GetDocumentOnSAData;
 option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
 
 import "google/protobuf/wrappers.proto";
+import "Enums.proto";
 
 message GetDocumentOnSADataRequest{
 
@@ -21,17 +22,11 @@ message GetDocumentOnSADataResponse{
 
 	google.protobuf.StringValue ExternalId = 5;
 
-	Source Source = 6;
+	DomainServices.DocumentOnSAService.Enums.Source Source = 6;
 
 	bool IsValid = 7;
 
 	bool IsSigned = 8;
 
 	google.protobuf.StringValue Data = 9;
-}
-
-enum Source {
-	Unknown = 0;
-	Noby = 1;
-    Workflow = 2;
 }

@@ -1,6 +1,7 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.Data;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.Document;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
+using CIS.InternalServices.DataAggregatorService.Api.Configuration.RiskLoanApplication;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
@@ -52,6 +53,23 @@ internal class ConfigurationManager : IConfigurationManager
             {
                 DataSources = GetDataSources(fields.Select(f => f.DataSource)),
                 DynamicInputParameters = await repository.LoadEasFormDynamicInputFields(easFormKey.RequestTypeId, easFormKey.EasFormTypes.Cast<int>(), cancellationToken)
+            },
+            SourceFields = fields
+        };
+    }
+
+    public async Task<RiskLoanApplicationConfiguration> LoadRiskLoanApplicationConfiguration(CancellationToken cancellationToken)
+    {
+        var repository = _repositoryFactory.CreateRiskLoanApplicationRepository();
+
+        var fields = await repository.LoadSourceFields(cancellationToken);
+
+        return new RiskLoanApplicationConfiguration
+        {
+            InputConfig = new InputConfig
+            {
+                DataSources = GetDataSources(fields.Select(f => f.DataSource)),
+                DynamicInputParameters = Enumerable.Empty<DynamicInputParameter>()
             },
             SourceFields = fields
         };

@@ -8,6 +8,9 @@ internal sealed class CreateRealEstateValuationHandler
 {
     public async Task<CreateRealEstateValuationResponse> Handle(CreateRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
+        // kontrola CaseId
+        await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
+
         var entity = new Database.Entities.RealEstateValuation
         {
             CaseId = request.CaseId,
@@ -29,10 +32,12 @@ internal sealed class CreateRealEstateValuationHandler
         };
     }
 
+    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
     private readonly RealEstateValuationServiceDbContext _dbContext;
 
-    public CreateRealEstateValuationHandler(RealEstateValuationServiceDbContext dbContext)
+    public CreateRealEstateValuationHandler(RealEstateValuationServiceDbContext dbContext, CaseService.Clients.ICaseServiceClient caseService)
     {
         _dbContext = dbContext;
+        _caseService = caseService;
     }
 }
