@@ -16,19 +16,33 @@ public class GetElectronicDocumentFromQueueHandler : IRequestHandler<GetElectron
 
     public async Task<GetElectronicDocumentFromQueueResponse> Handle(GetElectronicDocumentFromQueueRequest request, CancellationToken cancellationToken)
     {
-        var externalId = await _dbContext.DocumentOnSa.Where(r => r.DocumentOnSAId == request.DocumentOnSAId)
-                                                .Select(r => r.ExternalId)
-                                                .FirstOrDefaultAsync(cancellationToken)
-                                                ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
-        //ToDo connect to real service
         return request.EDocumentCase switch
         {
-            GetElectronicDocumentFromQueueRequest.EDocumentOneofCase.Attachment => CreateMockResponse(),
-            GetElectronicDocumentFromQueueRequest.EDocumentOneofCase.MainDocument => CreateMockResponse(),
+            GetElectronicDocumentFromQueueRequest.EDocumentOneofCase.MainDocument => await HandleMainDocument(request.MainDocument?.DocumentOnSAId ?? 0, cancellationToken),
+            GetElectronicDocumentFromQueueRequest.EDocumentOneofCase.Attachment => await HandleAttachment(request.Attachment?.AttachmentId ?? string.Empty, cancellationToken),
             _ => throw new NotSupportedException(),
         };
     }
 
+    private async Task<GetElectronicDocumentFromQueueResponse> HandleMainDocument(int documentOnSAId, CancellationToken cancellationToken)
+    {
+        var externalId = await _dbContext.DocumentOnSa
+            .Where(r => r.DocumentOnSAId == documentOnSAId)
+            .Select(r => r.ExternalId)
+            .FirstOrDefaultAsync(cancellationToken)
+        ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, documentOnSAId);
+
+        // todo:
+        return CreateMockResponse();
+    }
+
+    private async Task<GetElectronicDocumentFromQueueResponse> HandleAttachment(string attachmentId, CancellationToken cancellationToken)
+    {
+        // todo:
+        await Task.Delay(0, cancellationToken);
+        return CreateMockResponse();
+    }
+    
     private static GetElectronicDocumentFromQueueResponse CreateMockResponse()
     {
         return new GetElectronicDocumentFromQueueResponse

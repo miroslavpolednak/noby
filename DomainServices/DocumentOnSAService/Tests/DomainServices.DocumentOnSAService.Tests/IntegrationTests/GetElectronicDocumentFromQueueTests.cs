@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.Testing;
 using DomainServices.DocumentOnSAService.Api.Database;
+using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,10 +23,9 @@ public class GetElectronicDocumentFromQueueTests : IntegrationTestBase
            {
                await client.GetElectronicDocumentFromQueueAsync(new()
                {
-                   DocumentOnSAId = 10000,
-                   Attachment = new Contracts.Attachment
+                   MainDocument = new MainDocument
                    {
-                       AttachmentId = 1
+                       DocumentOnSAId = 10000  
                    }
                });
            };
@@ -47,10 +47,9 @@ public class GetElectronicDocumentFromQueueTests : IntegrationTestBase
         var client = CreateGrpcClient();
         var response = await client.GetElectronicDocumentFromQueueAsync(new()
         {
-            DocumentOnSAId = docOnSaEntity.DocumentOnSAId,
-            Attachment = new Contracts.Attachment
+            MainDocument = new MainDocument
             {
-                AttachmentId = 1
+                DocumentOnSAId = docOnSaEntity.DocumentOnSAId  
             }
         });
 
