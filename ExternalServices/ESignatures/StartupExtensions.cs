@@ -8,7 +8,7 @@ namespace ExternalServices;
 public static class StartupExtensions
 {
     internal const string ServiceName = "ESignatures";
-    public const string TenantCode = "kb";
+    internal static string TenantCode = "";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
         where TClient : class, ESignatures.V1.IESignaturesClient
@@ -17,7 +17,8 @@ public static class StartupExtensions
     static WebApplicationBuilder AddESingatures<TClient>(this WebApplicationBuilder builder, string version)
         where TClient : class, IExternalServiceClient
     {
-        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
+        var configuration = builder.AddExternalServiceConfigurationOfType<TClient, ESignatures.Configuration.ESignaturesConfiguration<TClient>>(ServiceName, version);
+        TenantCode = configuration.Tenant;
 
         switch (version, configuration.ImplementationType)
         {

@@ -215,6 +215,23 @@
             <exception cref="T:CIS.Core.Exceptions.CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
             <exception cref="T:CIS.Core.Exceptions.CisConfigurationNotFound">Konfigurace pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
         </member>
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfigurationOfType``2(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,System.String)">
+            <summary>
+            Načtení konfigurace externí služby a její vložení do DI.
+            Přetížení se používá pro případ, že externí služba má vlastní konfigurační třídu.
+            </summary>
+            <typeparam name="TClient">Typ klienta - interface pro danou verzi proxy nad API třetí strany</typeparam>
+            <typeparam name="TConfiguration">Typ konfiguracni tridy</typeparam>
+            <param name="serviceName">Název konzumované služby třetí strany</param>
+            <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
+            <exception cref="T:CIS.Core.Exceptions.CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
+            <exception cref="T:CIS.Core.Exceptions.CisConfigurationNotFound">Konfigurace pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
+        </member>
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.validateConfiguration``1(CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration{``0},System.String@,System.String@)">
+            <summary>
+            Validace konfigurace
+            </summary>
+        </member>
         <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesErrorHandling(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
             <summary>
             Přidá do HttpClient try-catch tak, aby se nevraceli výchozí vyjímky, ale jejich CIS ekvivalenty.

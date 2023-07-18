@@ -36,11 +36,18 @@ service DocumentOnSAService{
 	rpc Test1(Test1Request) returns (Test1Response);
 	rpc Test2(Test2Request) returns (Test2Response);
 	rpc Test3(Test3Request) returns (Test3Response);
+	rpc Test4(Test4Request) returns (Test4Response);
+	rpc Test5(Test5Request) returns (google.protobuf.Empty);
+	rpc Test6(Test6Request) returns (google.protobuf.Empty);
 }
 
 message Test1Request{}
+message Test5Request{ string Id = 1; }
+message Test6Request{ string Id = 1; }
 message Test3Request{ string Id = 1; }
 message Test2Request{ int64 Id = 1; }
+message Test4Request{ string Id = 1; }
 message Test1Response { int64 Id = 1; }
 message Test2Response { string Id = 1; }
 message Test3Response { string Status = 1; }
+message Test4Response { int32 Length = 1; }
