@@ -1,4 +1,4 @@
-﻿using ExternalServices.ESignatures.V1.Contracts;
+﻿using CIS.Foms.Types.Enums;
 
 namespace ExternalServices.ESignatures.V1;
 
@@ -10,9 +10,9 @@ internal sealed class MockESignaturesClient
         throw new NotImplementedException();
     }
 
-    public Task<string> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default)
+    public Task<EDocumentStatuses> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(EDocumentStatuses.NEW);
     }
 
     public Task<long> PrepareDocument(Dto.PrepareDocumentRequest request, CancellationToken cancellationToken = default)

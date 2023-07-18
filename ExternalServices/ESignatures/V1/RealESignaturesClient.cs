@@ -1,9 +1,12 @@
-﻿namespace ExternalServices.ESignatures.V1;
+﻿using CIS.Foms.Types.Enums;
+using FastEnumUtility;
+
+namespace ExternalServices.ESignatures.V1;
 
 internal sealed class RealESignaturesClient
     : IESignaturesClient
 {
-    public async Task<string> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default)
+    public async Task<EDocumentStatuses> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
             .GetAsync(_httpClient.BaseAddress + $"/{StartupExtensions.TenantCode}/REST/v2/DocumentService/GetDocumentStatus?id={documentId}", cancellationToken)
@@ -12,16 +15,21 @@ internal sealed class RealESignaturesClient
         var result = await response.Content.ReadFromJsonAsync<Contracts.ResponseStatus>(cancellationToken: cancellationToken)
             ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(GetDocumentStatus), nameof(Contracts.ResponseStatus));
 
-        //TODO osetrit chybove stavy vracet enum EDocumentStatuses???
         if ((result.Result?.Code ?? 0) == 0)
         {
-            return result.Status!;
+            if (FastEnum.TryParse<EDocumentStatuses>(result.Status!, true, out EDocumentStatuses status))
+            { 
+                return status;
+            }
+            else
+            {
+                throw new CisExtServiceValidationException($"Returned status '{result.Status}' is unknown");
+            }
         }
         else 
         {
-            throw new CisExtServiceValidationException(result.Result!.Message ?? "");
+            throw new CisExtServiceValidationException(result.Result!.Code.GetValueOrDefault(), result.Result.Message ?? "");
         }
-        
     }
 
     public Task DownloadDocumentPreview(string externalId, CancellationToken cancellationToken = default)

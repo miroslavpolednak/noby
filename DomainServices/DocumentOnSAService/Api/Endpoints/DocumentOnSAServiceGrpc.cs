@@ -56,4 +56,6 @@ internal sealed class DocumentOnSAServiceGrpc : Contracts.v1.DocumentOnSAService
         => await _mediator.Send(new DomainServices.DocumentOnSAService.Api.Endpoints.Test.Test1MediatrRequest(), context.CancellationToken);
     public override async Task<DomainServices.DocumentOnSAService.Contracts.v1.Test2Response> Test2(DomainServices.DocumentOnSAService.Contracts.v1.Test2Request request, ServerCallContext context)
         => await _mediator.Send(new DomainServices.DocumentOnSAService.Api.Endpoints.Test.Test2MediatrRequest() { Id = request.Id }, context.CancellationToken);
+    public override async Task<DomainServices.DocumentOnSAService.Contracts.v1.Test3Response> Test3(DomainServices.DocumentOnSAService.Contracts.v1.Test3Request request, ServerCallContext context)
+        => await _mediator.Send(new DomainServices.DocumentOnSAService.Api.Endpoints.Test.Test3MediatrRequest() { Id = request.Id }, context.CancellationToken);
 }

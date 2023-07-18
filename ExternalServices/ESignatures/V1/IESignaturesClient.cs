@@ -1,11 +1,12 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers;
+﻿using CIS.Foms.Types.Enums;
+using CIS.Infrastructure.ExternalServicesHelpers;
 
 namespace ExternalServices.ESignatures.V1;
 
 public interface IESignaturesClient
     : IExternalServiceClient
 {
-    Task<string> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default);
+    Task<EDocumentStatuses> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default);
 
     Task DownloadDocumentPreview(string externalId, CancellationToken cancellationToken = default);
 
