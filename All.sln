@@ -431,6 +431,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00032-HFICH-6859_ContractSignatureTypeId.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00032-HFICH-6859_ContractSignatureTypeId.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00033-Template3602_FixedLoanDueDate_StringFormat.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00033-Template3602_FixedLoanDueDate_StringFormat.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00034-LoanApplication_config_fix.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00034-LoanApplication_config_fix.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00035-LoanApplication_DefaultValueWhneNull.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00035-LoanApplication_DefaultValueWhneNull.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
