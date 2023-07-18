@@ -8,6 +8,7 @@ namespace ExternalServices;
 public static class StartupExtensions
 {
     internal const string ServiceName = "ESignatures";
+    public const string TenantCode = "kb";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
         where TClient : class, ESignatures.V1.IESignaturesClient

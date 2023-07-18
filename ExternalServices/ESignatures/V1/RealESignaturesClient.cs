@@ -6,7 +6,7 @@ internal sealed class RealESignaturesClient
     public async Task<string> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .GetAsync(_httpClient.BaseAddress + $"/{_organization}/REST/v2/DocumentService/GetDocumentStatus?id={documentId}", cancellationToken)
+            .GetAsync(_httpClient.BaseAddress + $"/{StartupExtensions.TenantCode}/REST/v2/DocumentService/GetDocumentStatus?id={documentId}", cancellationToken)
             .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<Contracts.ResponseStatus>(cancellationToken: cancellationToken)
@@ -37,7 +37,7 @@ internal sealed class RealESignaturesClient
     public async Task<(int? Code, string? Message)> SendDocumentPreview(string externalId, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .PostAsync(_httpClient.BaseAddress + $"/{_organization}/REST/v2/DocumentService/SendDocumentPreview?externalId={externalId}", null, cancellationToken)
+            .PostAsync(_httpClient.BaseAddress + $"/{StartupExtensions.TenantCode}/REST/v2/DocumentService/SendDocumentPreview?externalId={externalId}", null, cancellationToken)
             .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<Contracts.ProcessingResult>(cancellationToken: cancellationToken)
@@ -84,7 +84,7 @@ internal sealed class RealESignaturesClient
             },
             DocumentData = new()
             {
-                TypeCode = formType.Type.ToString(),
+                TypeCode = docType.ShortName,
                 TemplateVersion = formType.Version,
                 Name = request.DocumentData.FileName,
                 FormId = request.DocumentData.FormId,
@@ -133,7 +133,7 @@ internal sealed class RealESignaturesClient
         }
 
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + $"/{_organization}/REST/v2/DocumentService/PrepareDocument", svcRequest, cancellationToken)
+            .PostAsJsonAsync(_httpClient.BaseAddress + $"/{StartupExtensions.TenantCode}/REST/v2/DocumentService/PrepareDocument", svcRequest, cancellationToken)
             .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<Contracts.UploadReference>(cancellationToken: cancellationToken)
@@ -165,7 +165,7 @@ internal sealed class RealESignaturesClient
         content.Add(contentFile, "file", filename);
         
         var response = await _httpClient
-            .PostAsync(_httpClient.BaseAddress + $"/{_organization}/REST/v2/DocumentService/UploadDocument?referenceId={referenceId}&filename={Uri.EscapeDataString(filename)}&creationDate={creationDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture)}", content, cancellationToken)
+            .PostAsync(_httpClient.BaseAddress + $"/{StartupExtensions.TenantCode}/REST/v2/DocumentService/UploadDocument?referenceId={referenceId}&filename={Uri.EscapeDataString(filename)}&creationDate={creationDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture)}", content, cancellationToken)
             .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<Contracts.ResponseUrl2>(cancellationToken: cancellationToken)
@@ -178,8 +178,6 @@ internal sealed class RealESignaturesClient
 
         return (result.ExternalId!, result.TargetUrl);
     }
-
-    private const string _organization = "mpss";
 
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly HttpClient _httpClient;
