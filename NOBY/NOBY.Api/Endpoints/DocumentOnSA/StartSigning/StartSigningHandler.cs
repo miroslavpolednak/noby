@@ -43,12 +43,11 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
     {
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
 
-        // ToDo uncomment
-        //if (salesArrangement.SalesArrangementTypeId is 1 or 6 or 10 or 11 or 12)
-        //{
-        //    // CheckForm
-        //    await ValidateSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
-        //}
+        if (salesArrangement.SalesArrangementTypeId is 1 or 6 or 10 or 11 or 12)
+        {
+            // CheckForm
+            await ValidateSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
+        }
 
         var result = await _client.StartSigning(new()
         {
