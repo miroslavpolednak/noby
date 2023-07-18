@@ -1,8 +1,13 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
+using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer;
 using NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
+using NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Unicode;
 using _DocOnSA = DomainServices.DocumentOnSAService.Contracts;
 namespace NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 
@@ -15,21 +20,36 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
     private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
     private readonly CustomerWithChangedDataService _changedDataService;
+    private readonly IMediator _mediator;
+    private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
 
     public StartSigningHandler(
         IDocumentOnSAServiceClient client,
         ICodebookServiceClient codebookServiceClient,
         ICustomerOnSAServiceClient customerOnSAServiceClient,
-        CustomerWithChangedDataService changedDataService)
+        CustomerWithChangedDataService changedDataService,
+        IMediator mediator,
+        ISalesArrangementServiceClient salesArrangementServiceClient)
     {
         _client = client;
         _codebookServiceClient = codebookServiceClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
         _changedDataService = changedDataService;
+        _mediator = mediator;
+        _salesArrangementServiceClient = salesArrangementServiceClient;
     }
 
     public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
     {
+        var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
+
+        // ToDo uncomment
+        //if (salesArrangement.SalesArrangementTypeId is 1 or 6 or 10 or 11 or 12)
+        //{
+        //    // CheckForm
+        //    await ValidateSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
+        //}
+
         var result = await _client.StartSigning(new()
         {
             DocumentTypeId = request.DocumentTypeId,
@@ -45,15 +65,32 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         return await MapToResponse(result, cancellationToken);
     }
 
+    /// <summary>
+    /// Checkform 
+    /// </summary>
+    private async Task ValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var validationResult = await _mediator.Send(new ValidateSalesArrangementRequest(salesArrangementId), cancellationToken);
+
+        if (validationResult is not null && validationResult.Categories is not null && validationResult.Categories.Any())
+        {
+            var options = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                WriteIndented = true
+            };
+
+            var errors = validationResult.Categories.Select(s => new CisExceptionItem(90009, JsonSerializer.Serialize(s, options)));
+            throw new CisValidationException(errors);
+        }
+    }
+
     private async Task<_DocOnSA.SigningIdentity> MapCustomerOnSAIdentity(int customerOnSAId, string signatureAnchor, CancellationToken cancellationToken)
     {
         var customerOnSa = await _customerOnSAServiceClient.GetCustomer(customerOnSAId, cancellationToken);
         var (detailWithChangedData, _) = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
 
         var signingIdentity = new _DocOnSA.SigningIdentity();
-
-        // Service without household from SalesArrangement SalesArrangement object.Parameters.Applicant 
-        // ToDo ask how map service request without household from SalesArrangement object.Parameters.Applicant
 
         // Product, CRS and Service with household mapping
         signingIdentity.CustomerIdentifiers.AddRange(customerOnSa.CustomerIdentifiers.Select(s => new CIS.Infrastructure.gRPC.CisTypes.Identity

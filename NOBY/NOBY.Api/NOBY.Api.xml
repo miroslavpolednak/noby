@@ -1679,6 +1679,11 @@
             Timestamp, kdy došlo k podpisu celého dokumentu.
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningHandler.ValidateSalesArrangement(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Checkform 
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningRequest.DocumentTypeId">
             <summary>
             Typ dokumentu. Číselník DocumentType.

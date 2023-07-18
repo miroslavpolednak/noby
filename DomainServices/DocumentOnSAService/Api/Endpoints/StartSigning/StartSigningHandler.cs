@@ -18,7 +18,7 @@ namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
 public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSigningResponse>
 {
-    private const int _crsDocumentType = 14;
+    private const int _crsDocumentType = 13;
    
 
     private readonly DocumentOnSAServiceDbContext _dbContext;
@@ -75,6 +75,12 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             documentOnSaEntity = await ProcessServiceRequest(request, salesArrangement, cancellationToken);
         else
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedKindOfSigningRequest);
+
+        //Not call this only when workflow request
+        if (documentOnSaEntity.TaskId is null && documentOnSaEntity.SignatureTypeId is not null && documentOnSaEntity.SignatureTypeId == (int)SignatureTypes.Electronic)
+        {
+            //ToDo call ePodpisy
+        }
 
         await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);

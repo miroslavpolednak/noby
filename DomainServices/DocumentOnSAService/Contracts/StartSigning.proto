@@ -10,7 +10,7 @@ message StartSigningRequest {
 
 	google.protobuf.Int32Value SalesArrangementId = 1;
 	google.protobuf.Int32Value DocumentTypeId = 2;
-	string SignatureMethodCode = 3;
+	google.protobuf.StringValue SignatureMethodCode = 3;
 
 	google.protobuf.Int32Value DocumentTemplateVersionId = 4;
 	google.protobuf.Int32Value DocumentTemplateVariantId = 5;
