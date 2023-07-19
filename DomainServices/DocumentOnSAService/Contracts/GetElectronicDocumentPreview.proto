@@ -12,4 +12,6 @@ message GetElectronicDocumentPreviewRequest{
 message GetElectronicDocumentPreviewResponse{
 	  
 	bytes BinaryData = 1;
+    string MimeType = 2;
+    string Filename = 3;
 }

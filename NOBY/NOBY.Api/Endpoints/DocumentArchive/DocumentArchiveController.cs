@@ -30,7 +30,7 @@ public class DocumentArchiveController : ControllerBase
     /// <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9617EAF8-9876-4444-A130-DFCCD597484D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="contentDisposition">0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default</param>
-    /// <param name="source">"Zdroj dokumentu (0 - e-archiv; 1 - ePodpisy; 0 je default"</param>
+    /// <param name="source">Zdroj dokumentu (0 - e-archiv; 1 - ePodpisy; 0 je default</param>
     /// <param name="documentId">Id dokumentu eArchivu</param>
     /// <param name="externalId">Externí ID ePodpisů</param>
     [HttpGet("document")]

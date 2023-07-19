@@ -15,7 +15,8 @@ message GetElectronicDocumentFromQueueRequest{
 message GetElectronicDocumentFromQueueResponse{
 
 	bytes BinaryData = 1;
-
+    string MimeType = 2;
+    string Filename = 3;
 }
 
 message MainDocument{
