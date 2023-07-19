@@ -33,3 +33,7 @@ public partial class UpdateRealEstateValuationDetailRequest
 public partial class SetACVRealEstateTypeByRealEstateValuationRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class UpdateStateByRealEstateValuationRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+{ }

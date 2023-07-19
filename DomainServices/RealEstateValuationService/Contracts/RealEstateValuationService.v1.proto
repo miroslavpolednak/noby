@@ -12,6 +12,7 @@ import "Messages/GetRealEstateValuationDetail.proto";
 import "Messages/GetRealEstateValuationDetailByOrderId.proto";
 import "Messages/UpdateRealEstateValuationDetail.proto";
 import "Messages/SetACVRealEstateTypeByRealEstateValuation.proto";
+import "Messages/UpdateStateByRealEstateValuation.proto";
 
 service RealEstateValuationService {
    rpc CreateRealEstateValuation (CreateRealEstateValuationRequest) returns (CreateRealEstateValuationResponse);
@@ -29,4 +30,6 @@ service RealEstateValuationService {
    rpc UpdateRealEstateValuationDetail (UpdateRealEstateValuationDetailRequest) returns (google.protobuf.Empty);
 
    rpc SetACVRealEstateTypeByRealEstateValuation (SetACVRealEstateTypeByRealEstateValuationRequest) returns (google.protobuf.Empty);
+
+   rpc UpdateStateByRealEstateValuation (UpdateStateByRealEstateValuationRequest) returns (google.protobuf.Empty);
 }
