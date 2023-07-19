@@ -21,7 +21,7 @@ internal static class MapperHelper
 
         if (memberNames.Length == 1)
         {
-            return ObjectAccessor.Create(obj)[memberNames.First()];
+            return string.IsNullOrWhiteSpace(memberNames.First()) ? obj : ObjectAccessor.Create(obj)[memberNames.First()];
         }
 
         var currentObject = obj;
@@ -46,6 +46,9 @@ internal static class MapperHelper
 
         if (memberNames.Length == 1)
         {
+            if (string.IsNullOrWhiteSpace(memberNames.First()))
+                return currentType;
+
             return TypeAccessor.Create(currentType).GetMembers().First(m => m.Name == memberNames.First()).Type;
         }
 
