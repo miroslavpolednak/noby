@@ -1,6 +1,3 @@
-ALTER TABLE [dbo].[RealEstateValuation] ADD ACVRealEstateTypeId varchar(2) NULL;
-ALTER TABLE [dbo].[RealEstateValuationHistory] ADD ACVRealEstateTypeId varchar(2) NULL;
-
 DROP TABLE [dbo].[AcvRealEstateType]
 GO
 /****** Object:  Table [dbo].[AcvRealEstateType]    Script Date: 19.07.2023 9:54:39 ******/

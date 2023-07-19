@@ -14,7 +14,7 @@ internal sealed class RealEstateValuationServiceClient
 
     public async Task DeleteRealEstateValuation(long caseId, int realEstateValuationId, CancellationToken cancellationToken = default)
     {
-        await _service.DeleteRealEstateValuationAsync(new DeleteRealEstateValuationRequest
+        await _service.DeleteRealEstateValuationAsync(new()
         {
             CaseId = caseId,
             RealEstateValuationId = realEstateValuationId
@@ -23,7 +23,7 @@ internal sealed class RealEstateValuationServiceClient
 
     public async Task<List<RealEstateValuationListItem>> GetRealEstateValuationList(long caseId, CancellationToken cancellationToken = default)
     {
-        var result = await _service.GetRealEstateValuationListAsync(new GetRealEstateValuationListRequest
+        var result = await _service.GetRealEstateValuationListAsync(new()
         {
             CaseId = caseId
         }, cancellationToken: cancellationToken);
@@ -32,7 +32,7 @@ internal sealed class RealEstateValuationServiceClient
 
     public async Task PatchDeveloperOnRealEstateValuation(int realEstateValuationId, int valuationStateId, bool developerApplied, CancellationToken cancellationToken = default)
     {
-        await _service.PatchDeveloperOnRealEstateValuationAsync(new PatchDeveloperOnRealEstateValuationRequest
+        await _service.PatchDeveloperOnRealEstateValuationAsync(new()
         {
             RealEstateValuationId = realEstateValuationId,
             ValuationStateId = valuationStateId,
@@ -42,7 +42,7 @@ internal sealed class RealEstateValuationServiceClient
 
     public async Task<RealEstateValuationDetail> GetRealEstateValuationDetail(int realEstateValuationId, CancellationToken cancellationToken = default)
     {
-        return await _service.GetRealEstateValuationDetailAsync(new GetRealEstateValuationDetailRequest
+        return await _service.GetRealEstateValuationDetailAsync(new()
         {
             RealEstateValuationId = realEstateValuationId
         }, cancellationToken: cancellationToken);
@@ -63,19 +63,45 @@ internal sealed class RealEstateValuationServiceClient
 
     public async Task SetACVRealEstateTypeByRealEstateValuation(int realEstateValuationId, string ACVRealEstateTypeId, CancellationToken cancellationToken = default)
     {
-        await _service.SetACVRealEstateTypeByRealEstateValuationAsync(new SetACVRealEstateTypeByRealEstateValuationRequest
+        await _service.SetACVRealEstateTypeByRealEstateValuationAsync(new()
         {
             RealEstateValuationId = realEstateValuationId,
-            ACVRealEstateType = ACVRealEstateTypeId,
+            ACVRealEstateType = ACVRealEstateTypeId
         }, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateStateByRealEstateValuation(int realEstateValuationId, int valuationStateId, CancellationToken cancellationToken = default)
     {
-        await _service.UpdateStateByRealEstateValuationAsync(new UpdateStateByRealEstateValuationRequest
+        await _service.UpdateStateByRealEstateValuationAsync(new()
         {
             RealEstateValuationId = realEstateValuationId,
-            ValuationStateId = valuationStateId,
+            ValuationStateId = valuationStateId
+        }, cancellationToken: cancellationToken);
+    }
+
+    public async Task<int> AddDeedOfOwnershipDocument(AddDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken = default)
+    {
+        return (await _service.AddDeedOfOwnershipDocumentAsync(request, cancellationToken: cancellationToken)).DeedOfOwnershipDocumentId;
+    }
+
+    public async Task DeleteDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, CancellationToken cancellationToken = default)
+    {
+        await _service.DeleteDeedOfOwnershipDocumentAsync(new()
+        {
+            DeedOfOwnershipDocumentId = deedOfOwnershipDocumentId
+        }, cancellationToken: cancellationToken);
+    }
+
+    public async Task<int> CreateRealEstateValuationAttachment(CreateRealEstateValuationAttachmentRequest request, CancellationToken cancellationToken = default)
+    {
+        return (await _service.CreateRealEstateValuationAttachmentAsync(request, cancellationToken: cancellationToken)).RealEstateValuationAttachmentId;
+    }
+
+    public async Task DeleteRealEstateValuationAttachment(int realEstateValuationAttachmentId, CancellationToken cancellationToken = default)
+    {
+        await _service.DeleteRealEstateValuationAttachmentAsync(new()
+        {
+            RealEstateValuationAttachmentId = realEstateValuationAttachmentId
         }, cancellationToken: cancellationToken);
     }
 

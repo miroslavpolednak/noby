@@ -35,6 +35,7 @@
 		<ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
 		<ProjectReference Include="..\..\UserService\Clients\DomainServices.UserService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.RealEstateValuationService.Contracts.csproj" />
+		<ProjectReference Include="..\ExternalServices.PreorderService\DomainServices.RealEstateValuationService.ExternalServices.PreorderService.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -39,7 +39,7 @@ public class Test1Handler : IRequestHandler<Test1MediatrRequest, Test1Response>
                 DocumentTypeId = 4,
                 FileName = "soubor_1.pdf",
                 FormId = "999",
-                ContractNumber = "1234567890"
+                ContractNumber = "HF00000003190"
             },
             ClientData = new ExternalServices.ESignatures.Dto.PrepareDocumentRequest.ClientInfo
             {

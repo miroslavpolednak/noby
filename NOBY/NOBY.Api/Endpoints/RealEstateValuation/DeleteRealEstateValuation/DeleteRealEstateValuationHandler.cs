@@ -1,5 +1,4 @@
-﻿using CIS.Core.Exceptions;
-using DomainServices.RealEstateValuationService.Clients;
+﻿using DomainServices.RealEstateValuationService.Clients;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.DeleteRealEstateValuation;
 

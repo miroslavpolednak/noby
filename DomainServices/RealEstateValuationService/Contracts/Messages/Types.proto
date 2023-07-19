@@ -28,3 +28,10 @@ message SpecificDetailFinishedHouseAndFlatDetails {
 message SpecificDetailParcelObject {
     google.protobuf.Int32Value ParcelNumber = 1;
 }
+
+message RealEstateValuationAttachment {
+    int32 RealEstateValuationAttachmentId = 1;
+    google.protobuf.StringValue Title = 2;
+    string FileName = 3;
+    int64 ExternalId = 4;
+}

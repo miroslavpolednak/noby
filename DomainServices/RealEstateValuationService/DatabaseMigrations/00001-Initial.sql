@@ -14,6 +14,14 @@ GO
 DROP TABLE IF EXISTS [dbo].[RealEstateValuationDetailHistory]
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RealEstateValuationAttachment]') AND type in (N'U'))
+ALTER TABLE [dbo].[RealEstateValuationAttachment] SET ( SYSTEM_VERSIONING = OFF  )
+GO
+DROP TABLE IF EXISTS [dbo].[RealEstateValuationAttachment]
+GO
+DROP TABLE IF EXISTS [dbo].[RealEstateValuationAttachmentHistory]
+GO
+
 CREATE TABLE [dbo].[RealEstateValuation](
 	[RealEstateValuationId] [int] IDENTITY(1,1) NOT NULL,
 	[CaseId] [bigint] NOT NULL,
@@ -30,6 +38,7 @@ CREATE TABLE [dbo].[RealEstateValuation](
 	[OrderId] [int] NULL,
 	[ValuationResultCurrentPrice] [int] NULL,
 	[ValuationResultFuturePrice] [int] NULL,
+	[ACVRealEstateTypeId] varchar(2) NULL,
 	[CreatedUserName] [nvarchar](100) NOT NULL,
 	[CreatedUserId] [int] NOT NULL,
 	[CreatedTime] [datetime] NOT NULL,
@@ -74,4 +83,29 @@ WITH
 SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[RealEstateValuationDetailHistory])
 )
 GO
+
+
+CREATE TABLE [dbo].[RealEstateValuationAttachment](
+	[RealEstateValuationAttachmentId] [int] NOT NULL,
+	[RealEstateValuationId] [int] NOT NULL,
+	[ExternalId] [bigint] NOT NULL,
+	[Title] [nvarchar](500) NULL,
+	[FileName] [nvarchar](500) NOT NULL,
+	[CreatedUserName] [nvarchar](100) NOT NULL,
+	[CreatedUserId] [int] NOT NULL,
+	[CreatedTime] [datetime] NOT NULL,
+	[ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
+	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
+ CONSTRAINT [PK_RealEstateValuationAttachment] PRIMARY KEY CLUSTERED 
+(
+	[RealEstateValuationAttachmentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+	PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
+) ON [PRIMARY]
+WITH
+(
+	SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[RealEstateValuationAttachmentHistory])
+)
+GO
+
 
