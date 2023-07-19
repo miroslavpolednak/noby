@@ -10,6 +10,7 @@ internal sealed class RealEstateValuationAttachment
     [Key]
     public int RealEstateValuationAttachmentId { get; set; }
 
+    public int RealEstateValuationId { get; set; }
     public long ExternalId { get; set; }
     public string? Title { get; set; }
     public string FileName { get; set; } = string.Empty;

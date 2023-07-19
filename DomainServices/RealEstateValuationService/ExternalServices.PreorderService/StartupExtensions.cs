@@ -28,6 +28,8 @@ public static class StartupExtensions
             case (PreorderService.V1.IPreorderServiceClient.Version, ServiceImplementationTypes.Real):
                 builder
                     .AddExternalServiceRestClient<PreorderService.V1.IPreorderServiceClient, PreorderService.V1.RealPreorderServiceClient>()
+                    .AddExternalServicesKbHeaders()
+                    .AddExternalServicesKbPartyHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 

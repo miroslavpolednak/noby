@@ -96,7 +96,7 @@ internal sealed class RealSulmClient
     {
         return identities
             .FirstOrDefault(t => t.Scheme == CIS.Foms.Enums.UserIdentitySchemes.KbUid)
-            ?? throw new CisExtServiceValidationException(0, "SULM integration: KB Identity not found");
+            ?? throw new CisExtServiceValidationException(0, "SULM integration: User's KB Identity not found");
     }
 
     private const string _apiBasePath = "api/customers/sulm/v1/client/purpose/";

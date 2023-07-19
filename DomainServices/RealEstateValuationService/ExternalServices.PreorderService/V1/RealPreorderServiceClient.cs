@@ -18,7 +18,7 @@ internal sealed class RealPreorderServiceClient
         content.Add(contentFile, "FromFile", fileName);
 
         var response = await _httpClient
-            .PostAsync(_httpClient.BaseAddress + $"/", content, cancellationToken)
+            .PostAsync(_httpClient.BaseAddress + "/attachment", content, cancellationToken)
             .ConfigureAwait(false);
 
         var result = await response.EnsureSuccessStatusAndReadJson<List<Contracts.AttachmentDTO>>(StartupExtensions.ServiceName, cancellationToken);
