@@ -12,11 +12,13 @@ internal sealed class RealEstateValuationServiceDbContext
     public DbSet<RealEstateValuation> RealEstateValuations { get; set; }
     public DbSet<RealEstateValuationDetail> RealEstateValuationDetails { get; set; }
     public DbSet<DeedOfOwnershipDocument> DeedOfOwnershipDocuments { get; set; }
+    public DbSet<RealEstateValuationAttachment> Attachments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.RegisterCisTemporalTable<RealEstateValuation>();
         modelBuilder.RegisterCisTemporalTable<RealEstateValuationDetail>();
         modelBuilder.RegisterCisTemporalTable<DeedOfOwnershipDocument>();
+        modelBuilder.RegisterCisTemporalTable<RealEstateValuationAttachment>();
     }
 }

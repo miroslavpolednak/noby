@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message CreateRealEstateValuationAttachmentRequest {
+    int32 RealEstateValuationId = 1;
+    google.protobuf.StringValue Title = 2;
+    string FileName = 3;
+    bytes FileData = 4;
+    string MimeType = 5;
+}
+
+message CreateRealEstateValuationAttachmentResponse {
+    int32 RealEstateValuationAttachmentId = 1;
+}

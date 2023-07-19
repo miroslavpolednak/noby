@@ -16,7 +16,7 @@
         </member>
         <member name="P:NOBY.LogApi.LogModel.Level">
             <summary>
-            Level logu
+            Level logu. 1=Trace,2=Debug,3=Information,4=Warning,5=Error
             </summary>
         </member>
         <member name="P:NOBY.LogApi.LogModel.Message">
