@@ -177,7 +177,7 @@ public sealed class RealEstateValuationController : ControllerBase
     public async Task<int> CreateRealEstateValuationAttachment(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromBody] CreateRealEstateValuationAttachment.CreateRealEstateValuationAttachmentRequest request,
+        [FromForm] CreateRealEstateValuationAttachment.CreateRealEstateValuationAttachmentRequest request,
         CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
 

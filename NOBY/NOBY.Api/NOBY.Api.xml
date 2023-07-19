@@ -2832,6 +2832,7 @@
             Vytvoření přílohy ocenění nemovitosti
             </summary>
             <remarks>
+            Vytvoření přílohy ocenění nemovitosti - soubor je nahrán do ACV.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteRealEstateValuationAttachment(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
@@ -2839,6 +2840,7 @@
             Smazání přílohy ocenění nemovitosti
             </summary>
             <remarks>
+            Smazání již nahrané přílohy ocenění z databáze NOBY a ACV.
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.IsLoanRealEstate">

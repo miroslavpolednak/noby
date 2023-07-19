@@ -15,9 +15,9 @@ internal sealed class CreateRealEstateValuationAttachmentHandler
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.RealEstateValuationId);
         }
 
-        var data = System.IO.File.ReadAllBytes("d:/ova_report.sql");
         // upload do ACV
-        var result = await _preorderService.UploadAttachment(request.Title, request.FileName, request.MimeType, request.FileData.ToArray(), cancellationToken);
+        //var result = await _preorderService.UploadAttachment(request.Title, request.FileName, request.MimeType, request.FileData.ToArray(), cancellationToken);
+        var result = (new Random()).Next(1, 1000);
 
         // ulozeni u nas
         var entity = new Database.Entities.RealEstateValuationAttachment
