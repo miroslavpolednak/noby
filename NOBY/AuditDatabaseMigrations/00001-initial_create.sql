@@ -36,3 +36,11 @@ UPDATE dbo.AuditEvent SET [ModifiedBy]=SYSTEM_USER, [ModifiedTime]=GETDATE() FRO
 GO
 
 
+CREATE SEQUENCE dbo.NobyLoggerSequence
+AS bigint
+START WITH 1
+INCREMENT BY 1
+NO MAXVALUE
+NO CYCLE
+CACHE 15
+GO

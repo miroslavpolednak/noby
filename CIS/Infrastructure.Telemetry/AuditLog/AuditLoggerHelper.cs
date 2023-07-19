@@ -23,7 +23,10 @@ internal sealed class AuditLoggerHelper
         }
     }
 
-    public AuditLoggerHelper(string serverIp, ICisEnvironmentConfiguration environmentConfiguration, AuditLogConfiguration auditConfiguration)
+    public AuditLoggerHelper(
+        string serverIp, 
+        ICisEnvironmentConfiguration environmentConfiguration, 
+        AuditLogConfiguration auditConfiguration)
     {
         _databaseWriter = new Database.DatabaseWriter(auditConfiguration.ConnectionString);
         _loggerDefaults = new AuditLoggerDefaults(serverIp, environmentConfiguration.DefaultApplicationKey!, auditConfiguration.EamApplication, auditConfiguration.EamVersion, environmentConfiguration.EnvironmentName!);
@@ -45,8 +48,11 @@ internal sealed class AuditLoggerHelper
             throw new InvalidOperationException($"Audit log result '{context.Result}' is not valid for event of type '{context.EventType}'");
         }
 
+        // next seq no
+        var seqId = _databaseWriter.GetSequenceId();
+
         StringWriter json = new();
-        AuditLoggerJsonWriter.CreateJson(json, ref _loggerDefaults, context, eventDescriptor.Code.AsSpan(), eventDescriptor.Version);
+        AuditLoggerJsonWriter.CreateJson(json, ref seqId, ref _loggerDefaults, context, eventDescriptor.Code.AsSpan(), eventDescriptor.Version);
 
         var eventObject = new Database.AuditEvent(context.AuditEventIdent, eventDescriptor.Code, json.ToString());
         _databaseWriter.Write(ref eventObject);
@@ -59,6 +65,7 @@ internal static class AuditLoggerJsonWriter
 
     public static void CreateJson(
         StringWriter output,
+        ref long sequenceId,
         ref AuditLoggerDefaults loggerDefaults, 
         AuditEventContext context,
         ReadOnlySpan<char> eventTypeId,
@@ -74,8 +81,11 @@ internal static class AuditLoggerJsonWriter
         output.Write("\"@meta\":{");
 
         // logger
-        output.Write("\"logger\":");
-        write(output, loggerDefaults.CisAppKey.AsSpan());
+        output.Write("\"logger\":\"NOBY\"");
+
+        // seqno
+        output.Write(",\"seqNo\":");
+        write(output, sequenceId.ToString(CultureInfo.InvariantCulture));
 
         // timestamp
         output.Write(",\"timestamp\":");

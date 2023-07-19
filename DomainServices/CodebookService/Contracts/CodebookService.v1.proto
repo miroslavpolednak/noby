@@ -423,7 +423,7 @@ service CodebookService {
 		};
    }
 
-   rpc RealEstateTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+   rpc RealEstateTypes (google.protobuf.Empty) returns (RealEstateTypesResponse) {
 	   option (google.api.http) = {
 			get: "/v1/real-estate-types"
 		};

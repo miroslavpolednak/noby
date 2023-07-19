@@ -1,4 +1,5 @@
-﻿using CIS.Foms.Enums;
+﻿using System.Runtime.InteropServices.JavaScript;
+using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
@@ -74,7 +75,9 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
 
         return new GetDocumentOnSAPreviewResponse
         {
-            FileData = previewResponse.BinaryData.ToArrayUnsafe()
+            FileData = previewResponse.BinaryData.ToArrayUnsafe(),
+            Filename = previewResponse.Filename,
+            ContentType = previewResponse.MimeType
         };
     }
     

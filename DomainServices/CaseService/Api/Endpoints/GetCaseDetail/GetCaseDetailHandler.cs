@@ -1,7 +1,6 @@
-﻿using DomainServices.CaseService.Api.Database;
-using DomainServices.CaseService.Api.Messaging;
+﻿using CIS.Foms.Enums;
+using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
-using MassTransit;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetCaseDetail;
 
@@ -14,13 +13,25 @@ internal sealed class GetCaseDetailHandler
     public async Task<Case> Handle(GetCaseDetailRequest request, CancellationToken cancellation)
     {
         // vytahnout Case z DB
-        return await _dbContext.Cases
+        var model = await _dbContext.Cases
             .Where(t => t.CaseId == request.CaseId)
             .AsNoTracking()
             .Select(CaseServiceDatabaseExpressions.CaseDetail())
             .FirstOrDefaultAsync(cancellation) 
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
+
+        if (_disallowedStates.Contains(model.State))
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseCancelled);
+        }
+
+        return model;
     }
+
+    private static int[] _disallowedStates = new[]
+    {
+        (int)CaseStates.ToBeCancelledConfirmed
+    };
 
     private readonly CaseServiceDbContext _dbContext;
 

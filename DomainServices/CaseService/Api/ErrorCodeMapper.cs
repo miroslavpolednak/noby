@@ -28,6 +28,8 @@ internal sealed class ErrorCodeMapper
     public const int TaskIdSBIsEmpty = 13030;
     public const int ContractNumberNotFound = 13032;
     public const int TaskPriceExceptionIsEmpty = 13034;
+    public const int CaseCancelled = 13035;
+    public const int UnableToCancelCase = 13036;
 
     public static IErrorCodesDictionary Init()
     {
@@ -55,7 +57,9 @@ internal sealed class ErrorCodeMapper
             { ProcessIdIsEmpty, "ProcessId must be > 0" },
             { TaskTypeIdNotAllowed, "TaskTypeId is not allowed" },
             { TaskIdNotFound, "TaskId {PropertyValue} not found" },
-            { TaskPriceExceptionIsEmpty, "Task PriceException must not be null for task type ID 2" }
+            { TaskPriceExceptionIsEmpty, "Task PriceException must not be null for task type ID 2" },
+            { CaseCancelled, "Case state is one of cancelled" },
+            { UnableToCancelCase, "Unable to cancel Case {PropertyValue}" }
         });
 
         return Messages;
