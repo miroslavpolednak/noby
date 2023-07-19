@@ -115,7 +115,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         }
         else // zmena pouze CRS
         {
-            var crsDoc = documentsToSign.FirstOrDefault(t => t.DocumentTypeId == 13);
+            var crsDoc = documentsToSign.FirstOrDefault(t => t.DocumentTypeId == 13 && t.CustomerOnSAId == customerOnSAId);//HH rikal, ze 14 neni spravne, ze to ma byt 13
             if (crsDoc != null)
             {
                 await _documentOnSAService.StopSigning(crsDoc.DocumentOnSAId!.Value, cancellationToken);
