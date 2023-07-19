@@ -16,8 +16,7 @@ internal sealed class CreateRealEstateValuationAttachmentHandler
         }
 
         // upload do ACV
-        //var result = await _preorderService.UploadAttachment(request.Title, request.FileName, request.MimeType, request.FileData.ToArray(), cancellationToken);
-        var result = (new Random()).Next(1, 1000);
+        var result = await _preorderService.UploadAttachment(request.Title, request.FileName, request.MimeType, request.FileData.ToArray(), cancellationToken);
 
         // ulozeni u nas
         var entity = new Database.Entities.RealEstateValuationAttachment

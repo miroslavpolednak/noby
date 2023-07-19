@@ -5,11 +5,11 @@ internal sealed class MockPreorderServiceClient
 {
     public Task DeleteAttachment(long externalId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 
     public Task<long> UploadAttachment(string title, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return Task.FromResult<long>((new Random()).Next(1, 1000));
     }
 }
