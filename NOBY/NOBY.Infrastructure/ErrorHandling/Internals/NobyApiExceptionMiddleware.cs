@@ -77,39 +77,37 @@ public sealed class NobyApiExceptionMiddleware
         // osetrena validace na urovni api call
         catch (CisValidationException ex)
         {
-            await Results.Json(ex.Errors!.Select(t => createErrorItem(parseExceptionCode(t.ExceptionCode), t.Message.AsSpan())), statusCode: 400).ExecuteAsync(context);
+            await Results.Json(ex.Errors!.Select(t => createErrorItem(parseExceptionCode(t.ExceptionCode), t.Message)), statusCode: 400).ExecuteAsync(context);
         }
         // jakakoliv jina chyba
         catch (Exception ex)
         {
             logger.WebApiUncoughtException(ex);
-            await Results.Json(singleErrorResult(NobyValidationException.DefaultExceptionCode, ErrorCodeMapper.Messages[NobyValidationException.DefaultExceptionCode].Message.AsSpan()), statusCode: 500).ExecuteAsync(context);
+            await Results.Json(singleErrorResult(NobyValidationException.DefaultExceptionCode, ErrorCodeMapper.Messages[NobyValidationException.DefaultExceptionCode].Message), statusCode: 500).ExecuteAsync(context);
         }
     }
 
     private static IEnumerable<ApiErrorItem> singleErrorResult(BaseCisException exception)
-        => singleErrorResult(parseExceptionCode(exception.ExceptionCode), exception.Message.AsSpan());
+        => singleErrorResult(parseExceptionCode(exception.ExceptionCode), exception.Message);
 
-    private static IEnumerable<ApiErrorItem> singleErrorResult(string message)
-        => singleErrorResult(NobyValidationException.DefaultExceptionCode, message.AsSpan());
+    private static IEnumerable<ApiErrorItem> singleErrorResult(in string message)
+        => singleErrorResult(NobyValidationException.DefaultExceptionCode, message);
 
-    private static IEnumerable<ApiErrorItem> singleErrorResult(int errorCode, ReadOnlySpan<char> message)
+    private static IEnumerable<ApiErrorItem> singleErrorResult(in int errorCode, in string message)
         => new List<ApiErrorItem>
         {
             createErrorItem(errorCode, message)
         };
 
-    private static ApiErrorItem createErrorItem(int errorCode, ReadOnlySpan<char> message)
+    private static ApiErrorItem createErrorItem(in int errorCode, in string message)
     {
-        if (errorCode != NobyValidationException.DefaultExceptionCode && ErrorCodeMapper.Messages.ContainsKey(errorCode))
+        if (ErrorCodeMapper.DsToApiCodeMapper.ContainsKey(errorCode))
         {
-            return new()
-            {
-                Severity = ErrorCodeMapper.Messages[errorCode].Severity,
-                ErrorCode = errorCode,
-                Message = ErrorCodeMapper.Messages[errorCode].Message,
-                Description = ErrorCodeMapper.Messages[errorCode].Description
-            };
+            return createItem(ErrorCodeMapper.DsToApiCodeMapper[errorCode]);
+        }
+        else if (errorCode != NobyValidationException.DefaultExceptionCode && ErrorCodeMapper.Messages.ContainsKey(errorCode))
+        {
+            return createItem(errorCode);
         }
         else
         {
@@ -120,8 +118,19 @@ public sealed class NobyApiExceptionMiddleware
                 Message = message.ToString()
             };
         }
+
+        ApiErrorItem createItem(int errorCode)
+        {
+            return new()
+            {
+                Severity = ErrorCodeMapper.Messages[errorCode].Severity,
+                ErrorCode = errorCode,
+                Message = ErrorCodeMapper.Messages[errorCode].Message,
+                Description = ErrorCodeMapper.Messages[errorCode].Description
+            };
+        }
     }
 
-    private static int parseExceptionCode(ReadOnlySpan<char> exceptionCode)
+    private static int parseExceptionCode(in string exceptionCode)
         => int.TryParse(exceptionCode, out int code) ? code : NobyValidationException.DefaultExceptionCode;
 }
