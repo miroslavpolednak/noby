@@ -96,10 +96,10 @@ public sealed class NobyApiExceptionMiddleware
     private static IEnumerable<ApiErrorItem> singleErrorResult(BaseCisException exception)
         => singleErrorResult(parseExceptionCode(exception.ExceptionCode), exception.Message);
 
-    private static IEnumerable<ApiErrorItem> singleErrorResult(string message)
+    private static IEnumerable<ApiErrorItem> singleErrorResult(in string message)
         => singleErrorResult(NobyValidationException.DefaultExceptionCode, message);
 
-    private static IEnumerable<ApiErrorItem> singleErrorResult(int errorCode, string message)
+    private static IEnumerable<ApiErrorItem> singleErrorResult(in int errorCode, in string message)
     {
         return new List<ApiErrorItem>
         {
@@ -122,6 +122,6 @@ public sealed class NobyApiExceptionMiddleware
         });
     }
 
-    private static int parseExceptionCode(ReadOnlySpan<char> exceptionCode)
+    private static int parseExceptionCode(in string exceptionCode)
         => int.TryParse(exceptionCode, out int code) ? code : NobyValidationException.DefaultExceptionCode;
 }

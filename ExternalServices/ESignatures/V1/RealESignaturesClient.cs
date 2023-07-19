@@ -22,10 +22,10 @@ internal sealed class RealESignaturesClient
         }
     }
 
-    public async Task<EDocumentStatuses> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default)
+    public async Task<EDocumentStatuses> GetDocumentStatus(string externalId, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .GetAsync(_httpClient.BaseAddress + $"/{StartupExtensions.TenantCode}{_urlPrefix}GetDocumentStatus?id={documentId}", cancellationToken)
+            .GetAsync(_httpClient.BaseAddress + $"/{StartupExtensions.TenantCode}{_urlPrefix}GetDocumentStatus?id={externalId}", cancellationToken)
             .ConfigureAwait(false);
 
         var result = await response.EnsureSuccessStatusAndReadJson<Contracts.ResponseStatus>(StartupExtensions.ServiceName, cancellationToken);

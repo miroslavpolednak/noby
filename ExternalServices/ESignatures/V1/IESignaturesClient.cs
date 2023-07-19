@@ -16,7 +16,7 @@ public interface IESignaturesClient
     /// <exception cref="CisExtServiceResponseDeserializationException">Nepodařilo se deserializovat JSON response služby do očekávaného objektu</exception>
     /// <exception cref="CisExtServiceValidationException">Code=50001; Služba vrátila korektní result, nicméně Status není v našem enumu.</exception>
     /// <exception cref="CisExtServiceValidationException">Code=?; Služba vrátila chybový stav indikovaný vlastností Code. Exception má v tomto případě Code takový, jaký se vrátil z API, stejně tak jako Message.</exception>
-    Task<EDocumentStatuses> GetDocumentStatus(string documentId, CancellationToken cancellationToken = default);
+    Task<EDocumentStatuses> GetDocumentStatus(string externalId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Stažení náhledu úvodní verze dokumentu
@@ -31,6 +31,7 @@ public interface IESignaturesClient
     /// <param name="documentsValid">Potvrzení, že zaslané dokumenty jsou čitelné</param>
     /// <param name="documents">Seznam externích ID dokumentů pro průvodku</param>
     /// <param name="newControllerRequest">Informace o změně kontrolera</param>
+    /// <exception cref="CisExtServiceValidationException">Code=?; Služba vrátila chybový stav indikovaný vlastností Code. Exception má v tomto případě Code takový, jaký se vrátil z API, stejně tak jako Message.</exception>
     Task SubmitDispatchForm(bool documentsValid, List<Dto.DispatchFormClientDocument> documents, CancellationToken cancellationToken = default);
 
     Task<(int? Code, string? Message)> SendDocumentPreview(string externalId, CancellationToken cancellationToken = default);
