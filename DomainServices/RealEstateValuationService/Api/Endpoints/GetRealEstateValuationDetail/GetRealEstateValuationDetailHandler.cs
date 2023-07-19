@@ -27,6 +27,19 @@ internal sealed class GetRealEstateValuationDetailHandler
             })
             .FirstOrDefaultAsync(cancellationToken);
 
+        // attachments
+        var attachments = await _dbContext.Attachments
+            .AsNoTracking()
+            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
+            .Select(t => new Contracts.RealEstateValuationAttachment
+            {
+                RealEstateValuationAttachmentId = t.RealEstateValuationAttachmentId,
+                Title = t.Title,
+                FileName = t.FileName,
+                ExternalId = t.ExternalId
+            })
+            .ToListAsync(cancellationToken);
+
         var response = new RealEstateValuationDetail
         {
             RealEstateSubtypeId = details?.RealEstateSubtypeId,
@@ -34,6 +47,7 @@ internal sealed class GetRealEstateValuationDetailHandler
             RealEstateValuationGeneralDetails = realEstate,
             LoanPurposeDetails = details?.LoanPurposeDetailsBin is null ? null : LoanPurposeDetailsObject.Parser.ParseFrom(details.LoanPurposeDetailsBin)
         };
+        response.Attachments.AddRange(attachments);
 
         if (details?.SpecificDetailBin is not null)
         {

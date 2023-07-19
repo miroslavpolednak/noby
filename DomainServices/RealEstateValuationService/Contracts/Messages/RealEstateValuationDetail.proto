@@ -11,6 +11,7 @@ message RealEstateValuationDetail {
     google.protobuf.Int32Value RealEstateSubtypeId = 2;
     LoanPurposeDetailsObject LoanPurposeDetails = 3;
     google.protobuf.StringValue ACVRealEstateTypeId = 4;
+    repeated RealEstateValuationAttachment Attachments = 5;
 
     oneof SpecificDetail {
         SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 20;

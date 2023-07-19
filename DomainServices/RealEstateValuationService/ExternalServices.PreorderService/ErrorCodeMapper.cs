@@ -5,7 +5,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
 internal sealed class ErrorCodeMapper
     : ErrorCodeMapperBase
 {
-    public const int PreorderSvcUploadAttachmentNoFile = 1;
+    public const int PreorderSvcUploadAttachmentNoFile = 22100;
 
     public static IErrorCodesDictionary Init()
     {

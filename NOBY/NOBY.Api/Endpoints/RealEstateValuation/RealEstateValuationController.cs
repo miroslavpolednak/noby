@@ -1,5 +1,4 @@
-﻿using NOBY.Api.Endpoints.RealEstateValuation.DeleteDeedOfOwnershipDocument;
-using Swashbuckle.AspNetCore.Annotations;
+﻿using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 
@@ -160,7 +159,46 @@ public sealed class RealEstateValuationController : ControllerBase
         [FromRoute] int deedOfOwnershipDocumentId,
         CancellationToken cancellationToken)
     {
-        await _mediator.Send(new DeleteDeedOfOwnershipDocumentRequest(caseId, realEstateValuationId, deedOfOwnershipDocumentId), cancellationToken);
+        await _mediator.Send(new DeleteDeedOfOwnershipDocument.DeleteDeedOfOwnershipDocumentRequest(caseId, realEstateValuationId, deedOfOwnershipDocumentId), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Vytvoření přílohy ocenění nemovitosti
+    /// </summary>
+    /// <remarks>
+    /// Vytvoření přílohy ocenění nemovitosti - soubor je nahrán do ACV.
+    /// </remarks>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments")]
+    [AuthorizeCaseOwner]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<int> CreateRealEstateValuationAttachment(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] CreateRealEstateValuationAttachment.CreateRealEstateValuationAttachmentRequest request,
+        CancellationToken cancellationToken)
+        => await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+
+    /// <summary>
+    /// Smazání přílohy ocenění nemovitosti
+    /// </summary>
+    /// <remarks>
+    /// Smazání již nahrané přílohy ocenění z databáze NOBY a ACV.
+    /// </remarks>
+    [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments/{realEstateValuationAttachmentId:int}")]
+    [AuthorizeCaseOwner]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteRealEstateValuationAttachment(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromRoute] int realEstateValuationAttachmentId,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new DeleteRealEstateValuationAttachment.DeleteRealEstateValuationAttachmentRequest(caseId, realEstateValuationId, realEstateValuationAttachmentId), cancellationToken);
         return NoContent();
     }
 

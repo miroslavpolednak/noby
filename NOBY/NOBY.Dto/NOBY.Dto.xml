@@ -236,6 +236,26 @@
             </summary>
             <example>[204]</example>
         </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment">
+            <summary>
+            Příloha k ocenění nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment.RealEstateValuationAttachmentId">
+            <summary>
+            ID přílohy v NOBY
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment.Title">
+            <summary>
+            Uživatelský popis souboru
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment.FileName">
+            <summary>
+            Název souboru
+            </summary>
+        </member>
         <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail">
             <summary>
             Detail Ocenění nemovitosti

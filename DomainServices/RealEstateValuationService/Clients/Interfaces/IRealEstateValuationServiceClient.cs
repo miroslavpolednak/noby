@@ -27,4 +27,6 @@ public interface IRealEstateValuationServiceClient
     Task DeleteDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, CancellationToken cancellationToken = default);
 
     Task<int> CreateRealEstateValuationAttachment(CreateRealEstateValuationAttachmentRequest request, CancellationToken cancellationToken = default);
+
+    Task DeleteRealEstateValuationAttachment(int realEstateValuationAttachmentId, CancellationToken cancellationToken = default);
 }

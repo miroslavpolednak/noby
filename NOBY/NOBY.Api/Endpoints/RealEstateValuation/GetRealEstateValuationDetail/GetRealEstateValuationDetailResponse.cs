@@ -8,5 +8,7 @@ public sealed class GetRealEstateValuationDetailResponse
 
     public required RealEstateValuationDetail RealEstateValuationDetail { get; init; }
 
-    public List<NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument>? DeedOfOwnershipDocuments { get; set; }
+    public List<RealEstateValuationAttachment>? Attachments { get; set; }
+
+    public List<DeedOfOwnershipDocument>? DeedOfOwnershipDocuments { get; set; }
 }

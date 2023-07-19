@@ -1,11 +1,12 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
+using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 
 internal sealed class RealPreorderServiceClient
     : IPreorderServiceClient
 {
-    public async Task<long> UploadAttachment(string title, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken)
+    public async Task<long> UploadAttachment(string title, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default)
     {
         using var content = new MultipartFormDataContent();
 
@@ -29,6 +30,15 @@ internal sealed class RealPreorderServiceClient
         }
 
         return result[0].Id;
+    }
+
+    public async Task DeleteAttachment(long externalId, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient
+            .DeleteAsync(_httpClient.BaseAddress + $"/attachment/{externalId}", cancellationToken)
+            .ConfigureAwait(false);
+
+        await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
 
     private readonly HttpClient _httpClient;
