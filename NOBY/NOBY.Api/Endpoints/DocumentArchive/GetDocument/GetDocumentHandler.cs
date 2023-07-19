@@ -88,9 +88,14 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
 
         return new GetDocumentResponse
         {
-            Content = new FileInfo
+            Content = new ()
             {
-                BinaryData = response.BinaryData.ToArrayUnsafe()
+                BinaryData = response.BinaryData.ToArrayUnsafe(),
+                MimeType = response.MimeType
+            },
+            Metadata = new ()
+            {
+                Filename = response.Filename
             }
         };
     }
