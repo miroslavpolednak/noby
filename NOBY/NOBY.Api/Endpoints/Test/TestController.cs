@@ -44,13 +44,9 @@ public class TestController : ControllerBase
     [HttpGet("t3")]
     public async Task T3()
     {
-        var list = new List<CIS.Infrastructure.gRPC.CisTypes.Identity>
-        {
-            new CIS.Infrastructure.gRPC.CisTypes.Identity(951061749, CIS.Foms.Enums.IdentitySchemes.Kb),
-            new CIS.Infrastructure.gRPC.CisTypes.Identity(300522530, CIS.Foms.Enums.IdentitySchemes.Mp)
-        };
-        var notification = new Notifications.MainCustomerUpdatedNotification(2987188, 45, 60, list);
-        await _mediator.Publish(notification);
+        var client = _context.HttpContext.RequestServices.GetRequiredService<DomainServices.CaseService.Clients.ICaseServiceClient>();
+        var c = await client.GetCaseDetail(1);
+         
     }
 
     private readonly IHttpContextAccessor _context;

@@ -13,8 +13,6 @@ public sealed class NobyApiExceptionMiddleware
     private readonly RequestDelegate _next;
     private readonly ILoggerFactory _loggerFactory;
 
-    private const string _defaultErrorMessage = "Nastala neočekávaná chyba, opakujte akci později prosím.";
-
     public NobyApiExceptionMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
     {
         _loggerFactory = loggerFactory;
@@ -79,49 +77,51 @@ public sealed class NobyApiExceptionMiddleware
         // osetrena validace na urovni api call
         catch (CisValidationException ex)
         {
-            await Results.Json(castErrors(ex), statusCode: 400).ExecuteAsync(context);
+            await Results.Json(ex.Errors!.Select(t => createErrorItem(parseExceptionCode(t.ExceptionCode), t.Message.AsSpan())), statusCode: 400).ExecuteAsync(context);
         }
         // jakakoliv jina chyba
         catch (Exception ex)
         {
             logger.WebApiUncoughtException(ex);
-            var jsonError = new List<ApiErrorItem> 
-            { 
-                new(90001, _defaultErrorMessage, ApiErrorItemServerity.Error)
-            };
-            await Results.Json(jsonError, statusCode: 500).ExecuteAsync(context);
+            await Results.Json(singleErrorResult(NobyValidationException.DefaultExceptionCode, ErrorCodeMapper.Messages[NobyValidationException.DefaultExceptionCode].Message.AsSpan()), statusCode: 500).ExecuteAsync(context);
         }
     }
 
     private static IEnumerable<ApiErrorItem> singleErrorResult(BaseCisException exception)
-        => singleErrorResult(parseExceptionCode(exception.ExceptionCode), exception.Message);
+        => singleErrorResult(parseExceptionCode(exception.ExceptionCode), exception.Message.AsSpan());
 
-    private static IEnumerable<ApiErrorItem> singleErrorResult(in string message)
-        => singleErrorResult(NobyValidationException.DefaultExceptionCode, message);
+    private static IEnumerable<ApiErrorItem> singleErrorResult(string message)
+        => singleErrorResult(NobyValidationException.DefaultExceptionCode, message.AsSpan());
 
-    private static IEnumerable<ApiErrorItem> singleErrorResult(in int errorCode, in string message)
-    {
-        return new List<ApiErrorItem>
+    private static IEnumerable<ApiErrorItem> singleErrorResult(int errorCode, ReadOnlySpan<char> message)
+        => new List<ApiErrorItem>
         {
-            new()
+            createErrorItem(errorCode, message)
+        };
+
+    private static ApiErrorItem createErrorItem(int errorCode, ReadOnlySpan<char> message)
+    {
+        if (errorCode != NobyValidationException.DefaultExceptionCode && ErrorCodeMapper.Messages.ContainsKey(errorCode))
+        {
+            return new()
+            {
+                Severity = ErrorCodeMapper.Messages[errorCode].Severity,
+                ErrorCode = errorCode,
+                Message = ErrorCodeMapper.Messages[errorCode].Message,
+                Description = ErrorCodeMapper.Messages[errorCode].Description
+            };
+        }
+        else
+        {
+            return new ApiErrorItem
             {
                 Severity = ApiErrorItemServerity.Error,
                 ErrorCode = errorCode,
-                Message = message
-            }
-        };
+                Message = message.ToString()
+            };
+        }
     }
 
-    private static IEnumerable<ApiErrorItem> castErrors(CisValidationException ex)
-    {
-        return ex.Errors!.Select(t => new ApiErrorItem
-        {
-            Severity = ApiErrorItemServerity.Error,
-            ErrorCode = parseExceptionCode(t.ExceptionCode),
-            Message = t.Message
-        });
-    }
-
-    private static int parseExceptionCode(in string exceptionCode)
+    private static int parseExceptionCode(ReadOnlySpan<char> exceptionCode)
         => int.TryParse(exceptionCode, out int code) ? code : NobyValidationException.DefaultExceptionCode;
 }
