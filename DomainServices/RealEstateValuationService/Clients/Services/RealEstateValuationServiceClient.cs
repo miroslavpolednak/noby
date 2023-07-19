@@ -61,6 +61,15 @@ internal sealed class RealEstateValuationServiceClient
         await _service.UpdateRealEstateValuationDetailAsync(request, cancellationToken: cancellationToken);
     }
 
+    public async Task SetACVRealEstateTypeByRealEstateValuation(int realEstateValuationId, string ACVRealEstateTypeId, CancellationToken cancellationToken = default)
+    {
+        await _service.SetACVRealEstateTypeByRealEstateValuationAsync(new SetACVRealEstateTypeByRealEstateValuationRequest
+        {
+            RealEstateValuationId = realEstateValuationId,
+            ACVRealEstateType = ACVRealEstateTypeId,
+        }, cancellationToken: cancellationToken);
+    }
+
     private readonly Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient _service;
     public RealEstateValuationServiceClient(Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient service)
         => _service = service;

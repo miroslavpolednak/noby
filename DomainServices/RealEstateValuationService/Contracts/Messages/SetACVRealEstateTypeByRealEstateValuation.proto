@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Messages/Types.proto";
+
+message SetACVRealEstateTypeByRealEstateValuationRequest {
+    int32 RealEstateValuationId = 1;
+    string ACVRealEstateType = 2;
+}

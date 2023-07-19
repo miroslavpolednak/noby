@@ -11,6 +11,7 @@ internal sealed class ErrorCodeMapper
     public const int OrderIdEmpty = 22003;
     public const int RealEstateTypeIdNotFound = 22004;
     public const int ValuationStateIdNotFound = 22005;
+    public const int ACVRealEstateTypeIsEmpty = 22006;
 
     public static IErrorCodesDictionary Init()
     {
@@ -21,7 +22,8 @@ internal sealed class ErrorCodeMapper
             { OrderIdEmpty, "OrderId is empty" },
             { RealEstateValuationNotFound, "RealEstateValuation {PropertyValue} not found" },
             { RealEstateTypeIdNotFound, "RealEstateTypeId {PropertyValue} not found" },
-            { ValuationStateIdNotFound, "ValuationStateId {PropertyValue} not found" }
+            { ValuationStateIdNotFound, "ValuationStateId {PropertyValue} not found" },
+            { ACVRealEstateTypeIsEmpty, "ACVRealEstateType is empty" }
         });
 
         return Messages;
