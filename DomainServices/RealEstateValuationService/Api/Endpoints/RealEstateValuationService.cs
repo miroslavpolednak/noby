@@ -42,6 +42,9 @@ internal sealed class RealEstateValuationService
     public override async Task<Empty> DeleteRealEstateValuationAttachment(DeleteRealEstateValuationAttachmentRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    public override async Task<ValidateRealEstateValuationIdResponse> ValidateRealEstateValuationId(ValidateRealEstateValuationIdRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     private readonly IMediator _mediator;
     public RealEstateValuationService(IMediator mediator)
         => _mediator = mediator;

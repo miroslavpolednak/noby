@@ -7,24 +7,10 @@ internal sealed class CreateRealEstateValuationAttachmentHandler
 {
     public async Task<int> Handle(CreateRealEstateValuationAttachmentRequest request, CancellationToken cancellationToken)
     {
-        var instance = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
-
-        // podvrhnute caseId
-        if (instance.RealEstateValuationGeneralDetails.CaseId != request.CaseId)
-        {
-            throw new CisAuthorizationException();
-        }
-
-        // spatny stav REV
-        if (instance.RealEstateValuationGeneralDetails.ValuationStateId != 7)
-        {
-            throw new CisAuthorizationException();
-        }
-
         var dsRequest = new DomainServices.RealEstateValuationService.Contracts.CreateRealEstateValuationAttachmentRequest
         {
             RealEstateValuationId = request.RealEstateValuationId,
-            FileName = request.File!.Name,
+            FileName = request.File!.FileName,
             MimeType = request.File.ContentType,
             Title = request.Title,
             FileData = Google.Protobuf.ByteString.FromStream(request.File.OpenReadStream())

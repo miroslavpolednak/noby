@@ -105,6 +105,15 @@ internal sealed class RealEstateValuationServiceClient
         }, cancellationToken: cancellationToken);
     }
 
+    public async Task<ValidateRealEstateValuationIdResponse> ValidateRealEstateValuationId(int realEstateValuationId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
+    {
+        return await _service.ValidateRealEstateValuationIdAsync(new()
+        {
+            ThrowExceptionIfNotFound = throwExceptionIfNotFound,
+            RealEstateValuationId = realEstateValuationId
+        }, cancellationToken: cancellationToken);
+    }
+
     private readonly Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient _service;
     public RealEstateValuationServiceClient(Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient service)
         => _service = service;

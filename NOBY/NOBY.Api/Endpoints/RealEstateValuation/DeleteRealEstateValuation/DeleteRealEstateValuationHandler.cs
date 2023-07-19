@@ -7,20 +7,6 @@ internal sealed class DeleteRealEstateValuationHandler
 {
     public async Task Handle(DeleteRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
-        var instance = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
-
-        // podvrhnute caseId
-        if (instance.RealEstateValuationGeneralDetails.CaseId != request.CaseId)
-        {
-            throw new CisAuthorizationException();
-        }
-
-        // spatny stav REV
-        if (instance.RealEstateValuationGeneralDetails.ValuationStateId != 7)
-        {
-            throw new CisAuthorizationException();
-        }
-
         await _realEstateValuationService.DeleteRealEstateValuation(request.CaseId, request.RealEstateValuationId, cancellationToken);
     }
 

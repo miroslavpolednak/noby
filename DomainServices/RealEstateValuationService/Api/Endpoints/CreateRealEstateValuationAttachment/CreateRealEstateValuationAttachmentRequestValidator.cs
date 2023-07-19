@@ -11,5 +11,9 @@ internal sealed class CreateRealEstateValuationAttachmentRequestValidator
         RuleFor(t => t.RealEstateValuationId)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.RealEstateValuationIdEmpty);
+
+        RuleFor(t => t.FileData)
+            .NotNull()
+            .Must(t => t.Length > 0);
     }
 }

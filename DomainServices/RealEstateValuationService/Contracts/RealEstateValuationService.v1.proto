@@ -17,6 +17,7 @@ import "Messages/AddDeedOfOwnershipDocument.proto";
 import "Messages/DeleteDeedOfOwnershipDocument.proto";
 import "Messages/CreateRealEstateValuationAttachment.proto";
 import "Messages/DeleteRealEstateValuationAttachment.proto";
+import "Messages/ValidateRealEstateValuationId.proto";
 
 service RealEstateValuationService {
    rpc CreateRealEstateValuation (CreateRealEstateValuationRequest) returns (CreateRealEstateValuationResponse);
@@ -44,4 +45,6 @@ service RealEstateValuationService {
    rpc CreateRealEstateValuationAttachment (CreateRealEstateValuationAttachmentRequest) returns (CreateRealEstateValuationAttachmentResponse);
 
    rpc DeleteRealEstateValuationAttachment (DeleteRealEstateValuationAttachmentRequest) returns (google.protobuf.Empty);
+
+   rpc ValidateRealEstateValuationId (ValidateRealEstateValuationIdRequest) returns (ValidateRealEstateValuationIdResponse);
 } 
