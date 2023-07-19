@@ -1,7 +1,11 @@
-﻿using System.Runtime.InteropServices.JavaScript;
+﻿using System.Globalization;
+using System.Net.Mime;
+using System.Runtime.InteropServices.JavaScript;
+using CIS.Core;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
+using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
 
@@ -51,9 +55,14 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
         var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSA, documentOnSAData);
         var document = await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
 
+        var templates = await _codebookService.DocumentTypes(cancellationToken);
+        var fileName = templates.First(t => t.Id == (int)documentOnSA.DocumentTypeId!).FileName;
+        
         return new GetDocumentOnSAPreviewResponse
         {
-            FileData = document.Data.ToByteArray()
+            FileData = document.Data.ToByteArray(),
+            Filename = $"{fileName}_{documentOnSA.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
+            ContentType = MediaTypeNames.Application.Pdf
         };
     }
     
@@ -81,13 +90,20 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
         };
     }
     
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly IDateTime _dateTime;
     private readonly IDocumentOnSAServiceClient _documentOnSaService;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorService;
+    
 
     public GetDocumentOnSAPreviewHandler(
+        ICodebookServiceClient codebookService,
+        IDateTime dateTime,
         IDocumentOnSAServiceClient documentOnSaService,
         IDocumentGeneratorServiceClient documentGeneratorService)
     {
+        _codebookService = codebookService;
+        _dateTime = dateTime;
         _documentOnSaService = documentOnSaService;
         _documentGeneratorService = documentGeneratorService;
     }
