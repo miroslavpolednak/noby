@@ -6,27 +6,26 @@ import "google/protobuf/wrappers.proto";
 
 message GetElectronicDocumentFromQueueRequest{
 
-	int32 DocumentOnSAId = 1;
-
 	oneof EDocument {
-		MainDocument MainDocument = 2;
-		Attachment Attachment = 3;
+		MainDocument MainDocument = 1;
+		Attachment Attachment = 2;
 	}
 } 
 
 message GetElectronicDocumentFromQueueResponse{
-	  
+
 	bytes BinaryData = 1;
+
 }
 
 message MainDocument{
 
-	google.protobuf.Int32Value DocumentId = 1;
+	google.protobuf.Int32Value DocumentOnSAId = 1;
 
-	google.protobuf.StringValue ExternalId = 2;
 }
 
 message Attachment{
- 
-	google.protobuf.Int32Value AttachmentId = 1;
+
+	string AttachmentId = 1;
+
 }
