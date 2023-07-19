@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using NOBY.Api.Endpoints.RealEstateValuation.DeleteDeedOfOwnershipDocument;
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 
@@ -137,6 +138,29 @@ public sealed class RealEstateValuationController : ControllerBase
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Smazání již připojeného dokumentu LV
+    /// </summary>
+    /// <remarks>
+    /// Smazání/odpojení již připojeného dokumentu listu vlastnictví (LV) od existujícího Ocenění nemovitosti.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=33180E91-2CB3-4d2f-B6AD-5841EC8A836F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents/{deedOfOwnershipDocumentId:int}")]
+    [AuthorizeCaseOwner]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteDeedOfOwnershipDocument(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromRoute] int deedOfOwnershipDocumentId,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new DeleteDeedOfOwnershipDocumentRequest(caseId, realEstateValuationId, deedOfOwnershipDocumentId), cancellationToken);
         return NoContent();
     }
 

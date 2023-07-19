@@ -13,6 +13,8 @@ import "Messages/GetRealEstateValuationDetailByOrderId.proto";
 import "Messages/UpdateRealEstateValuationDetail.proto";
 import "Messages/SetACVRealEstateTypeByRealEstateValuation.proto";
 import "Messages/UpdateStateByRealEstateValuation.proto";
+import "Messages/AddDeedOfOwnershipDocument.proto";
+import "Messages/DeleteDeedOfOwnershipDocument.proto";
 
 service RealEstateValuationService {
    rpc CreateRealEstateValuation (CreateRealEstateValuationRequest) returns (CreateRealEstateValuationResponse);
@@ -32,4 +34,8 @@ service RealEstateValuationService {
    rpc SetACVRealEstateTypeByRealEstateValuation (SetACVRealEstateTypeByRealEstateValuationRequest) returns (google.protobuf.Empty);
 
    rpc UpdateStateByRealEstateValuation (UpdateStateByRealEstateValuationRequest) returns (google.protobuf.Empty);
+
+   rpc AddDeedOfOwnershipDocument (AddDeedOfOwnershipDocumentRequest) returns (AddDeedOfOwnershipDocumentResponse);
+
+   rpc DeleteDeedOfOwnershipDocument (DeleteDeedOfOwnershipDocumentRequest) returns (google.protobuf.Empty);
 }

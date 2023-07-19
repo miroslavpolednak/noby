@@ -12,6 +12,8 @@ internal sealed class ErrorCodeMapper
     public const int RealEstateTypeIdNotFound = 22004;
     public const int ValuationStateIdNotFound = 22005;
     public const int ACVRealEstateTypeIsEmpty = 22006;
+    public const int DeedOfOwnershipDocumentIdIsEmpty = 22007;
+    public const int DeedOfOwnershipDocumentNotFound = 22008;
 
     public static IErrorCodesDictionary Init()
     {
@@ -23,7 +25,9 @@ internal sealed class ErrorCodeMapper
             { RealEstateValuationNotFound, "RealEstateValuation {PropertyValue} not found" },
             { RealEstateTypeIdNotFound, "RealEstateTypeId {PropertyValue} not found" },
             { ValuationStateIdNotFound, "ValuationStateId {PropertyValue} not found" },
-            { ACVRealEstateTypeIsEmpty, "ACVRealEstateType is empty" }
+            { ACVRealEstateTypeIsEmpty, "ACVRealEstateType is empty" },
+            { DeedOfOwnershipDocumentIdIsEmpty, "DeedOfOwnershipDocumentId is empty" },
+            { DeedOfOwnershipDocumentNotFound, "DeedOfOwnershipDocumentId {PropertyValue} not found" }
         });
 
         return Messages;

@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message AddDeedOfOwnershipDocumentRequest {
+    int32 RealEstateValuationId = 1;
+    int64 ExternalDeedOfOwnershipDocumentId = 2;
+    int32 KatuzId = 3;
+    google.protobuf.StringValue KatuzTitle = 4;
+    int64 DeedOfOwnershipId = 5;
+    int32 DeedOfOwnershipNumber = 6;
+    google.protobuf.StringValue Address = 7;
+    repeated int64 RealEstateIds = 8;
+}
+
+message AddDeedOfOwnershipDocumentResponse {
+    int32 DeedOfOwnershipDocumentId = 1;
+}

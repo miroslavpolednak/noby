@@ -2807,6 +2807,16 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteDeedOfOwnershipDocument(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazání již připojeného dokumentu LV
+            </summary>
+            <remarks>
+            Smazání/odpojení již připojeného dokumentu listu vlastnictví (LV) od existujícího Ocenění nemovitosti.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=33180E91-2CB3-4d2f-B6AD-5841EC8A836F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.IsLoanRealEstate">
             <summary>
             True pokud jde o nemovitost, která je objektem úvěru. Default: false

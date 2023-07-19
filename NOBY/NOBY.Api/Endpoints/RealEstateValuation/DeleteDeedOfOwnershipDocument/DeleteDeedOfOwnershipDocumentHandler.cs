@@ -1,11 +1,11 @@
 ﻿using DomainServices.RealEstateValuationService.Clients;
 
-namespace NOBY.Api.Endpoints.RealEstateValuation.DeleteRealEstateValuation;
+namespace NOBY.Api.Endpoints.RealEstateValuation.DeleteDeedOfOwnershipDocument;
 
-internal sealed class DeleteRealEstateValuationHandler
-    : IRequestHandler<DeleteRealEstateValuationRequest>
+internal sealed class DeleteDeedOfOwnershipDocumentHandler
+    : IRequestHandler<DeleteDeedOfOwnershipDocumentRequest>
 {
-    public async Task Handle(DeleteRealEstateValuationRequest request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken)
     {
         var instance = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
@@ -21,12 +21,12 @@ internal sealed class DeleteRealEstateValuationHandler
             throw new CisAuthorizationException();
         }
 
-        await _realEstateValuationService.DeleteRealEstateValuation(request.CaseId, request.RealEstateValuationId, cancellationToken);
+        await _realEstateValuationService.DeleteDeedOfOwnershipDocument(request.DeedOfOwnershipDocumentId, cancellationToken);
     }
 
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
-    public DeleteRealEstateValuationHandler(IRealEstateValuationServiceClient realEstateValuationService)
+    public DeleteDeedOfOwnershipDocumentHandler(IRealEstateValuationServiceClient realEstateValuationService)
     {
         _realEstateValuationService = realEstateValuationService;
     }
