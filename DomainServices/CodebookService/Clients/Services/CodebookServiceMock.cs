@@ -1,4 +1,5 @@
-﻿using DomainServices.CodebookService.Contracts.v1;
+﻿using CIS.Foms.Types.Enums;
+using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.CodebookService.Clients.Services;
 
@@ -188,9 +189,9 @@ public class CodebookServiceMock
         });
     }
 
-    public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> RealEstateTypes(CancellationToken cancellationToken = default)
+    public override Task<List<RealEstateTypesResponse.Types.RealEstateTypesResponseItem>> RealEstateTypes(CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(new List<GenericCodebookResponse.Types.GenericCodebookItem>
+        return Task.FromResult(new List<RealEstateTypesResponse.Types.RealEstateTypesResponseItem>
         {
             new() { Id = 0, Name = "Unknown", IsValid = true }
         });

@@ -533,6 +533,20 @@ message RelationshipCustomerProductTypesResponse {
 	}
 }
 
+message RealEstateTypesResponse {
+	repeated RealEstateTypesResponseItem Items = 1;
+
+	message RealEstateTypesResponseItem {
+		int32 Id = 1;
+		string Name = 2;
+		google.protobuf.Int32Value MandantId = 3;
+		int32 Order = 4;
+		bool IsValid = 5;
+		bool IsDefault = 6;
+		bool Collateral = 7;
+	}
+}
+
 message RealEstateSubtypesResponse {
 	repeated RealEstateSubtypesResponseItem Items = 1;
 

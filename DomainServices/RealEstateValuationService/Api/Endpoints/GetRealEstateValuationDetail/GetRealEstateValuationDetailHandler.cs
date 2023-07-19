@@ -18,12 +18,19 @@ internal sealed class GetRealEstateValuationDetailHandler
         var details = await _dbContext.RealEstateValuationDetails
             .AsNoTracking()
             .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
-            .Select(t => new { t.RealEstateSubtypeId, t.LoanPurposeDetailsBin, t.SpecificDetailBin })
+            .Select(t => new 
+            { 
+                t.RealEstateSubtypeId, 
+                t.LoanPurposeDetailsBin, 
+                t.SpecificDetailBin, 
+                t.ACVRealEstateTypeId 
+            })
             .FirstOrDefaultAsync(cancellationToken);
 
         var response = new RealEstateValuationDetail
         {
             RealEstateSubtypeId = details?.RealEstateSubtypeId,
+            ACVRealEstateTypeId = details?.ACVRealEstateTypeId,
             RealEstateValuationGeneralDetails = realEstate,
             LoanPurposeDetails = details?.LoanPurposeDetailsBin is null ? null : LoanPurposeDetailsObject.Parser.ParseFrom(details.LoanPurposeDetailsBin)
         };

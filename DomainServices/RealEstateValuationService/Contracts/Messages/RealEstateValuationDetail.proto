@@ -10,6 +10,8 @@ message RealEstateValuationDetail {
     RealEstateValuationListItem RealEstateValuationGeneralDetails = 1;
     google.protobuf.Int32Value RealEstateSubtypeId = 2;
     LoanPurposeDetailsObject LoanPurposeDetails = 3;
+    google.protobuf.StringValue ACVRealEstateTypeId = 4;
+
     oneof SpecificDetail {
         SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 20;
         SpecificDetailParcelObject ParcelDetails = 21;

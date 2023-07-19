@@ -11,5 +11,5 @@ message GetAcvRealEstateTypeRequest {
 }
 
 message GetAcvRealEstateTypeResponse {
-	int32 AcvRealEstateTypeId = 1;
+	string AcvRealEstateTypeId = 1;
 }

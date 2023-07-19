@@ -1223,6 +1223,33 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem.RealEstateTypeIdFieldNumber">
             <summary>Field number for the "RealEstateTypeId" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types">
+            <summary>Container for nested types declared in the RealEstateTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.OrderFieldNumber">
+            <summary>Field number for the "Order" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.CollateralFieldNumber">
+            <summary>Field number for the "Collateral" field.</summary>
+        </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.CodebookServiceV1Reflection">
             <summary>Holder for reflection information generated from CodebookService.v1.proto</summary>
         </member>
