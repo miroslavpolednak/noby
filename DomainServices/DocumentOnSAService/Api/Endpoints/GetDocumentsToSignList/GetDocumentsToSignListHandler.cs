@@ -49,6 +49,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         }
         else if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ServiceRequest)
         {
+            // Když existuje docSa provést marge
             await ComposeResultForServiceRequest(request, salesArrangement, response, cancellationToken);
         }
         else
@@ -56,13 +57,19 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SalesArrangementCategoryNotSupported, salesArrangementType.SalesArrangementCategory);
         }
 
+        // ToDo pro každý doc s ExternalId vyhodnotit (servisní i produktová) await EvaluateElectronicDocumentStatus(documentsOnSaRealEntity, cancellationToken);
+
         return response;
     }
 
     private async Task ComposeResultForServiceRequest(GetDocumentsToSignListRequest request, SalesArrangement salesArrangement, GetDocumentsToSignListResponse response, CancellationToken cancellationToken)
     {
+
         var documentTypes = await _codebookServiceClients.DocumentTypes(cancellationToken);
         var documentType = documentTypes.Single(d => d.SalesArrangementTypeId == salesArrangement.SalesArrangementTypeId);
+        // Když typ 11, 12, 16 tak getHouseholdlist a získat customer 12
+
+
         var documentsOnSaToSignVirtual = CreateDocumentOnSaToSign(documentType, request.SalesArrangementId!.Value);
         response.DocumentsOnSAToSign.Add(documentsOnSaToSignVirtual);
     }

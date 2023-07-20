@@ -11,6 +11,17 @@ using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.SalesArrangementService.Contracts;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Clients;
+using ExternalServices.ESignatures.Dto;
+using CIS.Core.Security;
+using DomainServices.UserService.Clients;
+using CIS.Core;
+using DomainServices.CodebookService.Clients;
+using System.Globalization;
+using DomainServices.CaseService.Clients;
+using static ExternalServices.ESignatures.Dto.PrepareDocumentRequest;
+using CIS.Foms.Types;
+using CIS.InternalServices.DocumentGeneratorService.Clients;
+using CIS.Infrastructure.gRPC;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
@@ -18,16 +29,121 @@ namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 public class StartSigningMapper
 {
     private const string _signatureAnchorTemplate = "X_SIG_";
-
+    private readonly IDateTime _dateTime;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly ICustomerServiceClient _customerServiceClient;
+    private readonly ICurrentUserAccessor _currentUser;
+    private readonly IUserServiceClient _userServiceClient;
+    private readonly ICodebookServiceClient _codebookServiceClient;
+    private readonly ICaseServiceClient _caseServiceClient;
+    private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
 
     public StartSigningMapper(
+        IDateTime dateTime,
         IDocumentArchiveServiceClient documentArchiveServiceClient,
-        ICustomerServiceClient customerServiceClient)
+        ICustomerServiceClient customerServiceClient,
+        ICurrentUserAccessor currentUser,
+        IUserServiceClient userServiceClient,
+        ICodebookServiceClient codebookServiceClient,
+        ICaseServiceClient caseServiceClient,
+        IDocumentGeneratorServiceClient documentGeneratorServiceClient)
     {
+        _dateTime = dateTime;
         _documentArchiveServiceClient = documentArchiveServiceClient;
         _customerServiceClient = customerServiceClient;
+        _currentUser = currentUser;
+        _userServiceClient = userServiceClient;
+        _codebookServiceClient = codebookServiceClient;
+        _caseServiceClient = caseServiceClient;
+        _documentGeneratorServiceClient = documentGeneratorServiceClient;
+    }
+
+    public async Task<UploadDocumentRequest> MapUploadDocumentRequest(long referenceId, string filename, DocumentOnSa documentOnSa, CancellationToken cancellationToken)
+    {
+        var docGenRequest = GenerateDocumentRequestMapper.CreateGenerateDocumentRequest(documentOnSa);
+        var docGenResponse = await _documentGeneratorServiceClient.GenerateDocument(docGenRequest, cancellationToken);
+
+        return new()
+        {
+            ReferenceId = referenceId,
+            Filename = filename,
+            CreationDate = _dateTime.Now,
+            FileData = docGenResponse.Data.ToArrayUnsafe()
+        };
+    }
+
+    public async Task<PrepareDocumentRequest> MapPrepareDocumentRequest(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
+        var currentUser = await _userServiceClient.GetUser(_currentUser.User!.Id, cancellationToken);
+        var saUser = await _userServiceClient.GetUser(salesArrangement.Created.UserId!.Value, cancellationToken);
+        var documentType = (await _codebookServiceClient.DocumentTypes(cancellationToken)).Single(s => s.Id == documentOnSa.DocumentTypeId);
+        var caseObj = await _caseServiceClient.GetCaseDetail(salesArrangement.CaseId, cancellationToken);
+
+        var request = new PrepareDocumentRequest
+        {
+            CurrentUserInfo = new()
+            {
+                Cpm = currentUser.UserInfo.Cpm,
+                Icp = currentUser.UserInfo.Icp,
+                FullName = $"{currentUser.UserInfo.FirstName} {currentUser.UserInfo.LastName}"
+            },
+            CreatorInfo = new()
+            {
+                Cpm = saUser.UserInfo.Cpm,
+                Icp = saUser.UserInfo.Icp,
+                FullName = $"{saUser.UserInfo.FirstName} {saUser.UserInfo.LastName}"
+            },
+            DocumentData = new()
+            {
+                DocumentTypeId = documentOnSa.DocumentTypeId!.Value,
+                DocumentTemplateVersionId = documentOnSa.DocumentTemplateVersionId!.Value,
+                FileName = $"{documentType.FileName}_{salesArrangement.CaseId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
+                FormId = documentOnSa.FormId,
+                ContractNumber = caseObj.Data.ContractNumber
+            },
+
+            ClientData = new()
+        };
+        // Have CustomerOnSA 
+        if (documentOnSa.CustomerOnSAId1 is not null)
+        {
+            var signingIdentity = documentOnSa.SigningIdentities.Single(s => s.SigningIdentityJson.CustomerOnSAId == documentOnSa.CustomerOnSAId1).SigningIdentityJson;
+            MapClientData(request.ClientData, signingIdentity);
+        }
+        else // SigningIdentity from SA it is according to order in collection
+        {
+            var signingIdentity = documentOnSa.SigningIdentities.First();
+            MapClientData(request.ClientData, signingIdentity.SigningIdentityJson);
+        }
+
+        request.OtherClients = new();
+        if (documentOnSa.SigningIdentities.Count > 1)
+        {
+            var counter = 1;
+            foreach (var item in documentOnSa.SigningIdentities.Skip(1))
+            {
+                var otherClient = new OtherClient
+                {
+                    Identities = item.SigningIdentityJson.CustomerIdentifiers.Select(p => new CustomerIdentity(p.IdentityId, p.IdentityScheme)),
+                    CodeIndex = ++counter,
+                    FullName = $"{item.SigningIdentityJson.FirstName} {item.SigningIdentityJson.LastName}",
+                    Phone = item.SigningIdentityJson.MobilePhone?.PhoneNumber,
+                    Email = item.SigningIdentityJson.EmailAddress
+                };
+                request.OtherClients.Add(otherClient);
+            };
+        }
+
+        return request;
+    }
+
+    private static void MapClientData(ClientInfo clientData, SigningIdentityJson signingIdentity)
+    {
+        clientData.FullName = $"{signingIdentity.FirstName} {signingIdentity.LastName}";
+        clientData.BirthNumber = signingIdentity.BirthNumber;
+        clientData.Phone = signingIdentity.MobilePhone?.PhoneNumber;
+        clientData.Email = signingIdentity.EmailAddress;
+        clientData.Identities = signingIdentity.CustomerIdentifiers.Select(s => new CustomerIdentity(s.IdentityId, s.IdentityScheme));
     }
 
     public async Task<__Entity.DocumentOnSa> WorkflowMapToEntity(StartSigningRequest request, GetTaskDetailResponse taskDetail, CancellationToken cancellationToken)
@@ -71,7 +187,6 @@ public class StartSigningMapper
         entity.Data = JsonSerializer.Serialize(documentDataResponse.DocumentData);
         entity.Source = __DbEnum.Source.Noby;
         entity.SignatureTypeId = request.SignatureTypeId;
-        //entity.ExternalId = ToDo startSigning uloží ExternalId při elektronickém podpisu
         if (request.CustomerOnSAId1 is null && request.CustomerOnSAId2 is null)// Service request without household
         {
             // For service request without household (CustomerOnSA), we have to get SigningIdentities from SalesArrangement object.Parameters.Applicant 
@@ -106,7 +221,6 @@ public class StartSigningMapper
         entity.SignatureTypeId = request.SignatureTypeId;
         entity.CustomerOnSAId1 = request.CustomerOnSAId1;
         entity.CustomerOnSAId2 = request.CustomerOnSAId2;
-        //entity.ExternalId = ToDo startSigning uloží ExternalId při elektronickém podpisu
         MapSigningIdentities(request, entity);
         entity.CaseId = request.CaseId;
         entity.IsValid = true;
@@ -242,6 +356,7 @@ public class StartSigningMapper
         entity.SigningIdentityJson.SignatureDataCode = signingIdentity.SignatureDataCode;
         entity.SigningIdentityJson.FirstName = signingIdentity.FirstName;
         entity.SigningIdentityJson.LastName = signingIdentity.LastName;
+        entity.SigningIdentityJson.BirthNumber = signingIdentity.BirthNumber;
         entity.SigningIdentityJson.MobilePhone = new __Entity.MobilePhone
         {
             PhoneNumber = signingIdentity.MobilePhone?.PhoneNumber,

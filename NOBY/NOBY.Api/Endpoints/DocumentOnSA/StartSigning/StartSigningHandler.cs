@@ -108,6 +108,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
             PhoneIDC = detailWithChangedData.MobilePhone?.PhoneIDC
         };
         signingIdentity.EmailAddress = detailWithChangedData.EmailAddress?.EmailAddress;
+        signingIdentity.BirthNumber = detailWithChangedData.NaturalPerson?.BirthNumber;
         return signingIdentity;
     }
 
