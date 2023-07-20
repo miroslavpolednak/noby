@@ -32,7 +32,8 @@ public sealed class ErrorCodeMapper
             { 90022, new("Nelze stáhnout dokument ze systému ePodpisy", "Dokument již není k nalezení v systému ePodpisy (pravděpodobně byl smazán).") },
             { 90023, new("Chyba propisu dat o novém klientovi", "Prosím vyčkejte, než bude záznam o novém klientovi vytvořen v databázi C4M. Za okamžik opakujte akci znovu") },
             { 90024, new("Chyba - pro klienta již existuje rozpracovaný obchodní případ", "Klient je účastníkem jiného obchodního případu čekajícího na schválení nebo zamítnutí. Pro více informací prosím kontaktujte tým zpracovatelů") },
-            { 90025, new("Obchodní případ byl stornován.", "") }
+            { 90025, new("Obchodní případ byl stornován.", "") },
+            { 90026, new("Vámi hledaný obchodní případ byl vytvořen v jiném systému a není možné zde zobrazit jeho detail") }
         };
 
         Messages = messages.AsReadOnly();
