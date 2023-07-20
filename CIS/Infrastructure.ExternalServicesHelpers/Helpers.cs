@@ -12,7 +12,19 @@ public static class Helpers
     public static async Task EnsureSuccessStatusCode(this HttpResponseMessage? response, string serviceName, CancellationToken cancellationToken = default)
     {
         if (!response?.IsSuccessStatusCode ?? true)
-            throw new CisExtServiceValidationException($"{serviceName} unknown error {response!.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+        {
+            switch (response?.StatusCode)
+            {
+                case System.Net.HttpStatusCode.NotFound:
+                    throw new CisExtServiceValidationException($"{serviceName} Not found: {await response.SafeReadAsStringAsync(cancellationToken)}");
+
+                case System.Net.HttpStatusCode.BadRequest:
+                    throw new CisExtServiceValidationException($"{serviceName} Bad request: {await response.SafeReadAsStringAsync(cancellationToken)}");
+
+                default:
+                    throw new CisExtServiceValidationException($"{serviceName} unknown error {response!.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+            }
+        }
     }
 
     public static async Task<TResponse> EnsureSuccessStatusAndReadJson<TResponse>(this HttpResponseMessage? response, string serviceName, CancellationToken cancellationToken = default, [CallerMemberName] string callerName = "")

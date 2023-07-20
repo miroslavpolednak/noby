@@ -1,0 +1,2015 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Deed of Ownership Service",
+    "description": "DeedOfOwnership document management API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/v1/deed-of-ownership/api",
+      "variables": {
+
+      }
+    },
+    {
+      "url": "/v1/deed-of-ownership/api",
+      "variables": {
+
+      }
+    },
+    {
+      "url": "/v1/deed-of-ownership/api",
+      "variables": {
+
+      }
+    },
+    {
+      "url": "/v1/deed-of-ownership/api",
+      "variables": {
+
+      }
+    },
+    {
+      "url": "/v1/deed-of-ownership/api",
+      "variables": {
+
+      }
+    }
+  ],
+  "paths": {
+    "/deed-of-ownership-document": {
+      "get": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "returns document records found using filter. Result limited to 100 records by default, sorted by validityDate desc.",
+        "operationId": "getDocuments",
+        "parameters": [
+          {
+            "name": "territoryNumber",
+            "in": "query",
+            "description": "cadastral territory number",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "deedOfOwnershipNumber",
+            "in": "query",
+            "description": "deed of ownership number",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "validityDate",
+            "in": "query",
+            "description": "document validity date",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "nullable": true
+            }
+          },
+          {
+            "name": "createdBy",
+            "in": "query",
+            "description": "name or id of document creator user (full text search for more than first two characters)",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "district",
+            "in": "query",
+            "description": "district name or code or part of it (full text search for more than first two characters)",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "town",
+            "in": "query",
+            "description": "town name or code or part of it (full text search for more than first two characters)",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "documentId",
+            "in": "query",
+            "description": "deed of ownership document id",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "deedOfOwnershipIsknId",
+            "in": "query",
+            "description": "unique deed of ownership ISKN id",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "realEstateId",
+            "in": "query",
+            "description": "document containing the given real estate id (crem id)",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "addressId",
+            "in": "query",
+            "description": "address id from RUIAN service Address",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "isknSiteId",
+            "in": "query",
+            "description": "iskn site id specified in deed of ownership document",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "isknBuildingId",
+            "in": "query",
+            "description": "iskn building id specified in deed of ownership document",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "isknFlatId",
+            "in": "query",
+            "description": "iskn flat id specified in deed of ownership document",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "isknBuildingRightId",
+            "in": "query",
+            "description": "iskn building right id specified in deed of ownership document",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "territory",
+            "in": "query",
+            "description": "cadastral territory name or number (full text search for more than first two characters)",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "paging - page number (min=1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit of output, max. value = 100",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true,
+              "default": 100
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "sorting by multiple columns using response attribute names starting with +/- for ascending/descending. Example: sort_by=-validityDate,-documentId",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSearchDeedOfOwnershipDocuments"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "requests downloading of the new document from CUZK",
+        "operationId": "requestNewDocument",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestDownloadDeedOfOwnership"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeedOfOwnershipDocument"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deed of Ownership not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deed-of-ownership-document/addresses/{addressId}/flats": {
+      "get": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "finds a building for given address id with a list of existing flats if any exist",
+        "operationId": "getFlatsForAddress",
+        "parameters": [
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "addressId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseGetFlatsForAddressDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Address or building not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deed-of-ownership-document/health": {
+      "get": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "advanced health check including WSDP call check",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "General error."
+          }
+        }
+      }
+    },
+    "/deed-of-ownership-document/real-estate/{realEstateId}": {
+      "get": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "returns single real estate record for given id",
+        "operationId": "getRealEstate",
+        "parameters": [
+          {
+            "name": "realEstateId",
+            "in": "path",
+            "description": "realEstateId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeedOfOwnershipRealEstate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Real Estate not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deed-of-ownership-document/upload": {
+      "post": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "maintenance operation to bypass downloading the deed of ownership xml (or pdf with xml inside) file using local copy",
+        "operationId": "upload",
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "array",
+                "format": "binary",
+                "items": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseUploadDocumentDTO"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deed-of-ownership-document/{documentId}": {
+      "get": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "returns single document record",
+        "operationId": "getDocument",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "documentId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeedOfOwnershipDocument"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deed of Ownership not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "confirms paying the document price and downloading the new document from CUZK",
+        "operationId": "confirmDownload",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "documentId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deed of Ownership not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deed-of-ownership-document/{documentId}/content": {
+      "get": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "returns binary content of the document",
+        "operationId": "getContent",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "documentId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "anonymized",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "description": "anonymized version of the document without any personal data",
+              "nullable": true
+            }
+          },
+          {
+            "name": "noWatermark",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "description": "document without watermark layer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "company-code",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "description": "anonymized document content specific for selected company",
+              "nullable": true,
+              "enum": [
+                "KB",
+                "MPSS"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/octet-stream": {
+
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deed of Ownership not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deed-of-ownership-document/{documentId}/legal-relations": {
+      "get": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "returns legal relations from the document",
+        "operationId": "getLegalRelations",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "CREM unique document Id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "paging - page number",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit of output, max. value = 100 ",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "section",
+            "in": "query",
+            "description": "only specified deed of ownership section(s)",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "The list of deed of ownership sections for legal relations",
+                "enum": [
+                  "B1",
+                  "C",
+                  "D"
+                ]
+              }
+            }
+          },
+          {
+            "name": "isknRealEstateId",
+            "in": "query",
+            "description": "only specified real estate(s)",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseGetLegalRelations"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deed of Ownership not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deed-of-ownership-document/{documentId}/owners": {
+      "get": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "returns owners from the document",
+        "operationId": "getOwners",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "CREM unique document Id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "paging - page number",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit of output, max. value = 100 ",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseGetOwners"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deed of Ownership not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deed-of-ownership-document/{documentId}/real-estates": {
+      "get": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "returns real estate objects from the document",
+        "operationId": "getRealEstates",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "documentId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "description": "paging - page number",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "description": "limit of output, max. value = 100 ",
+              "format": "int32",
+              "nullable": true,
+              "default": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseGetRealEstates"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deed of Ownership not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deed-of-ownership-document/{documentId}/rebuild": {
+      "put": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "rebuilds the document record, document content and deed of ownership data",
+        "operationId": "rebuild",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "documentId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeedOfOwnershipDocument"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deed of Ownership not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deed-of-ownership-document/{documentId}/status": {
+      "get": {
+        "tags": [
+          "DeedOfOwnership Service"
+        ],
+        "summary": "returns status of the document",
+        "operationId": "getStatus",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "documentId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentStatus"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deed of Ownership not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "General error.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DeedOfOwnershipDocument": {
+        "type": "object",
+        "properties": {
+          "branch": {
+            "type": "string",
+            "description": "Code of branch of the creator user"
+          },
+          "createdById": {
+            "type": "string",
+            "description": "ID of document creator user"
+          },
+          "createdByName": {
+            "type": "string",
+            "description": "Name of document creator user"
+          },
+          "deedOfOwnershipIsknId": {
+            "type": "integer",
+            "description": "Unique ISKN deed of ownership id",
+            "format": "int64",
+            "example": 123456789
+          },
+          "deedOfOwnershipNumber": {
+            "type": "integer",
+            "description": "Deed of ownership number",
+            "format": "int32",
+            "example": 1234
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of document content"
+          },
+          "districtCode": {
+            "type": "string",
+            "description": "District code",
+            "example": "CZ0714"
+          },
+          "districtName": {
+            "type": "string",
+            "description": "District name",
+            "example": "Přerov"
+          },
+          "documentId": {
+            "type": "integer",
+            "description": "Unique document id in CREM",
+            "format": "int64"
+          },
+          "documentName": {
+            "type": "string",
+            "description": "Document file name",
+            "example": "CUZK_647683_LV_5281_202102011815.pdf"
+          },
+          "documentPrice": {
+            "type": "integer",
+            "description": "Document price paid for obtaining the document",
+            "format": "int32"
+          },
+          "expirationDate": {
+            "type": "string",
+            "description": "Expiration date of the document (to be removed from CREM)",
+            "format": "date"
+          },
+          "isknReportId": {
+            "type": "integer",
+            "description": "ISKN unique report id of the document",
+            "format": "int64"
+          },
+          "onlineValuationPossible": {
+            "type": "boolean",
+            "description": "False=document contains liens of CSC enum ZAST_JPV with attribute Modelové ocenění=N"
+          },
+          "pageCount": {
+            "type": "integer",
+            "description": "Number of pages of the document",
+            "format": "int32"
+          },
+          "partialDocument": {
+            "type": "boolean",
+            "description": "An indication of a document with selected real estates only"
+          },
+          "publicDocument": {
+            "type": "boolean",
+            "description": "An indication of an original version of PDF document created and electronically signed by Cadaster. This document is not machine readable"
+          },
+          "status": {
+            "type": "string",
+            "description": "Description of the document lifecycle",
+            "enum": [
+              "CREATED",
+              "WAITING_FOR_GENERATION",
+              "WAITING_FOR_PRICE_CONFIRMATION",
+              "INVOICED",
+              "ERROR"
+            ]
+          },
+          "territoryName": {
+            "type": "string",
+            "description": "Cadastral territory name"
+          },
+          "territoryNumber": {
+            "type": "integer",
+            "description": "Cadastral territory number",
+            "format": "int32"
+          },
+          "townCode": {
+            "type": "integer",
+            "description": "Town code",
+            "format": "int64",
+            "example": 513750
+          },
+          "townName": {
+            "type": "string",
+            "description": "Town name",
+            "example": "Hranice"
+          },
+          "updatedWhen": {
+            "type": "string",
+            "description": "Date of document last update",
+            "format": "date-time"
+          },
+          "validityDate": {
+            "type": "string",
+            "description": "Validity date of the document (Date of creation)",
+            "format": "date"
+          }
+        },
+        "description": "Represents deed of ownership document"
+      },
+      "DeedOfOwnershipLegalRelation": {
+        "type": "object",
+        "properties": {
+          "htmlText": {
+            "type": "string",
+            "description": "Html description of the legal relation record"
+          },
+          "legalRelationCode": {
+            "type": "string",
+            "description": "Code of legal relation enum (Zástavní právo smluvní,...)",
+            "example": "32"
+          },
+          "legalRelationDesc": {
+            "type": "string",
+            "description": "Name of legal relation enum",
+            "example": "Zástavní právo smluvní"
+          },
+          "orderDateTo": {
+            "type": "string",
+            "description": "Date of legal relation for lien order evaluation",
+            "format": "date-time"
+          },
+          "plainText": {
+            "type": "string",
+            "description": "Plain text description of the legal relation record"
+          },
+          "proceedingDate": {
+            "type": "string",
+            "description": "Proceeding date",
+            "format": "date",
+            "example": "2010-02-20"
+          },
+          "proceedingNumber": {
+            "type": "string",
+            "description": "Proceeding number",
+            "example": "V-2009/2009-101"
+          },
+          "section": {
+            "type": "string",
+            "description": "The list of deed of ownership sections for legal relations",
+            "enum": [
+              "B1",
+              "C",
+              "D"
+            ]
+          },
+          "subjectIdentificationNumber": {
+            "type": "string",
+            "description": "Subject identification number (IČO) in case of lien",
+            "example": "45317054"
+          }
+        },
+        "description": "Legal relation attributes from deed of ownership"
+      },
+      "DeedOfOwnershipOwnerDTO": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Formatted subject description (name + address)"
+          },
+          "isknSubjectId": {
+            "type": "integer",
+            "description": "ISKN unique ID of subject"
+          },
+          "ownershipRatio": {
+            "type": "string",
+            "description": "Ratio of real estate ownership"
+          },
+          "subjectType": {
+            "type": "string",
+            "description": "Common subject types",
+            "enum": [
+              "PERSON",
+              "COMPANY",
+              "MARITAL_COMMON_PROPERTY"
+            ]
+          }
+        },
+        "description": "Deed of ownership owner description"
+      },
+      "DeedOfOwnershipRealEstate": {
+        "type": "object",
+        "properties": {
+          "deedOfOwnershipNumber": {
+            "type": "integer",
+            "description": "Deed of ownership number",
+            "format": "int32",
+            "example": 5281
+          },
+          "districtCode": {
+            "type": "string",
+            "description": "District code",
+            "example": "CZ0714"
+          },
+          "districtName": {
+            "type": "string",
+            "description": "District name",
+            "example": "Přerov"
+          },
+          "documentId": {
+            "type": "integer",
+            "description": "Deed of ownership document id in CREM",
+            "format": "int64",
+            "example": 123456789
+          },
+          "htmlText": {
+            "type": "string",
+            "description": "HTML description of the real estate"
+          },
+          "isknId": {
+            "type": "integer",
+            "description": "Unique ISKN id of real estate (site, building, flat, building right)",
+            "format": "int64",
+            "example": 718588835
+          },
+          "plainText": {
+            "type": "string",
+            "description": "Plain text description of the real estate"
+          },
+          "realEstateId": {
+            "type": "integer",
+            "description": "Unique id of CREM real estate record",
+            "format": "int64"
+          },
+          "realEstateType": {
+            "type": "string",
+            "description": "basic real estate types",
+            "example": "SITE",
+            "enum": [
+              "SITE",
+              "BUILDING",
+              "FLAT",
+              "BUILDING_RIGHT"
+            ]
+          },
+          "realEstates": {
+            "type": "array",
+            "description": "Decomposition of the real estate to all sub-entities if needed (for example flat in multiple buildings on multiple sites",
+            "items": {
+              "$ref": "#/components/schemas/RealEstate"
+            }
+          },
+          "territoryName": {
+            "type": "string",
+            "description": "Territory name",
+            "example": "Hranice"
+          },
+          "territoryNumber": {
+            "type": "integer",
+            "description": "Territory number",
+            "format": "int32",
+            "example": 647683
+          },
+          "townCode": {
+            "type": "integer",
+            "description": "Town code",
+            "format": "int32",
+            "example": 513750
+          },
+          "townName": {
+            "type": "string",
+            "description": "Town code",
+            "example": "Hranice"
+          },
+          "validityDate": {
+            "type": "string",
+            "description": "Deed of ownership validity date",
+            "format": "date"
+          }
+        },
+        "description": "Represents single real estate entity per record specified in deed of ownership with a decomposition to sub entities in a collection of real estates"
+      },
+      "DocumentStatus": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "integer",
+            "description": "document id",
+            "format": "int64"
+          },
+          "documentPrice": {
+            "type": "integer",
+            "description": "document price in case of waiting for document generation+payment",
+            "format": "int32"
+          },
+          "statusCode": {
+            "type": "string",
+            "description": "Description of the document lifecycle",
+            "enum": [
+              "CREATED",
+              "WAITING_FOR_GENERATION",
+              "WAITING_FOR_PRICE_CONFIRMATION",
+              "INVOICED",
+              "ERROR"
+            ]
+          },
+          "statusName": {
+            "type": "string",
+            "description": "document status name"
+          }
+        },
+        "description": "Description of the document status with additional attributes"
+      },
+      "IsknBuildingDTO": {
+        "type": "object",
+        "properties": {
+          "buildingNumber": {
+            "type": "integer",
+            "description": "Building number",
+            "format": "int32"
+          },
+          "buildingType": {
+            "type": "string",
+            "description": "Building type code",
+            "enum": [
+              "C_P",
+              "C_E",
+              "BEZ_CP_CE",
+              "ROZESTAV",
+              "POSCH_GAR",
+              "VOD_DILO",
+              "S_ROZ_JED"
+            ]
+          },
+          "flats": {
+            "type": "array",
+            "description": "The list of flats in the building",
+            "items": {
+              "$ref": "#/components/schemas/IsknFlatDTO"
+            }
+          },
+          "isknBuildingId": {
+            "type": "integer",
+            "description": "ISKN building ID"
+          },
+          "isknDeedOfOwnershipId": {
+            "type": "integer",
+            "description": "ISKN deed of ownership ID"
+          },
+          "townPart": {
+            "$ref": "#/components/schemas/TownPartDTO"
+          }
+        },
+        "description": "ISKN building entity"
+      },
+      "IsknFlatDTO": {
+        "type": "object",
+        "properties": {
+          "flatNumber": {
+            "type": "integer",
+            "description": "flat number including house number",
+            "format": "int32"
+          },
+          "isknDeedOfOwnershipId": {
+            "type": "integer",
+            "description": "Iskn deed of ownership ID (unique identifier of the deed of ownership in CUZK"
+          },
+          "isknFlatId": {
+            "type": "integer",
+            "description": "Iskn flat ID (unique identifier of the flat in CUZK"
+          }
+        },
+        "description": "Iskn flat entity"
+      },
+      "Paging": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Limit of items per page",
+            "format": "int32"
+          },
+          "page": {
+            "type": "integer",
+            "description": "Current page number",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "total pages for selected filter",
+            "format": "int32"
+          },
+          "totalRecords": {
+            "type": "integer",
+            "description": "total record for selected filter",
+            "format": "int64"
+          }
+        },
+        "description": "Paging information"
+      },
+      "PartialDeedOfOwnershipRealEstate": {
+        "required": [
+          "realEstateType"
+        ],
+        "type": "object",
+        "properties": {
+          "buildingNumber": {
+            "pattern": "[0..9,\\w]",
+            "type": "string",
+            "description": "Building number(s)",
+            "nullable": true,
+            "example": "1468, 1469"
+          },
+          "buildingRightDate": {
+            "type": "string",
+            "description": "Building right end date",
+            "format": "date",
+            "nullable": true,
+            "example": "2024-01-23"
+          },
+          "buildingType": {
+            "type": "string",
+            "description": "Code of building type enum (č.p.=1 / č.e.=2, ...)",
+            "nullable": true,
+            "example": "1"
+          },
+          "flatNumber": {
+            "pattern": "\\d{1,10}/\\d{1,4}|\\d{1,4}",
+            "type": "string",
+            "description": "Full flat number including the house before slash number if exists",
+            "nullable": true,
+            "example": "1468/10"
+          },
+          "isHomeSite": {
+            "type": "boolean",
+            "description": "True for \"St.\" prefix of site",
+            "nullable": true,
+            "example": true
+          },
+          "isknRealEstateId": {
+            "type": "integer",
+            "description": "ISKN unique entity id if known",
+            "format": "int64",
+            "nullable": true,
+            "example": 626093410
+          },
+          "realEstateType": {
+            "type": "string",
+            "description": "basic real estate types",
+            "example": "SITE",
+            "enum": [
+              "SITE",
+              "BUILDING",
+              "FLAT",
+              "BUILDING_RIGHT"
+            ]
+          },
+          "setPartialDocument": {
+            "type": "boolean",
+            "description": "by default the document will be generated only for the selected real estates, otherwise the complete document for given set of real estates will be created",
+            "nullable": true,
+            "default": true
+          },
+          "siteKind": {
+            "pattern": "PKN|PZE",
+            "type": "string",
+            "description": "Code of cadaster site enum evidence (PKN/PZE)",
+            "nullable": true,
+            "example": "PKN"
+          },
+          "siteNumber": {
+            "pattern": "\\d{1,}|\\d{1,}/\\d{1,}",
+            "type": "string",
+            "description": "Full Site number including subsite number",
+            "nullable": true,
+            "example": "207/2"
+          },
+          "sitePart": {
+            "type": "integer",
+            "description": "Site number part in case siteKind=PZE",
+            "format": "int32",
+            "nullable": true,
+            "example": 1
+          },
+          "siteSource": {
+            "pattern": "\\d{1,}",
+            "type": "string",
+            "description": "Code of cadaster site source enum in case siteKind=PZE",
+            "nullable": true,
+            "example": "4"
+          },
+          "townPartCode": {
+            "type": "integer",
+            "description": "Town part code",
+            "format": "int32",
+            "nullable": true,
+            "example": 179523
+          }
+        },
+        "description": "Deed of ownership definition by a set of real estates defined by either unique iskn id or set of identification attributes",
+        "nullable": true
+      },
+      "RealEstate": {
+        "required": [
+          "realEstateType"
+        ],
+        "type": "object",
+        "properties": {
+          "bpej": {
+            "type": "integer",
+            "description": "BPEJ number for a site",
+            "format": "int32",
+            "example": 123
+          },
+          "buildingIncluded": {
+            "type": "boolean",
+            "description": "Shared parts of the building included (in case of flatType=Jednotka dle zákona 79)"
+          },
+          "buildingNumber": {
+            "type": "string",
+            "description": "Complete list of building numbers divided by comma",
+            "example": "1468, 1469"
+          },
+          "buildingPartOf": {
+            "type": "string",
+            "description": "Code of building part of enum (parcela součástí práva stavby, budovy, samostatná budova, dočasná budova)",
+            "example": "SITE",
+            "enum": [
+              "BUILDING_RIGHT",
+              "SITE",
+              "STANDALONE_BUILDING",
+              "TEMPORARY_BUILDING"
+            ]
+          },
+          "buildingPartOfSite": {
+            "type": "string",
+            "description": "Building part of site number in case of buildingPartOf=SITE",
+            "example": "1101/5"
+          },
+          "buildingRightDate": {
+            "type": "string",
+            "description": "Building right date",
+            "format": "date",
+            "example": "2064-06-30"
+          },
+          "buildingType": {
+            "type": "string",
+            "description": "Code of building type enum (č.p. / č.e., ...)",
+            "example": "1"
+          },
+          "deedOfOwnBuilding": {
+            "type": "integer",
+            "description": "Deed of ownership of building if it belongs to another owner",
+            "format": "int32",
+            "example": 6
+          },
+          "deedOfOwnSite": {
+            "type": "integer",
+            "description": "Deed of ownership of site if it belongs to another owner",
+            "format": "int32",
+            "example": 1001
+          },
+          "flatNumber": {
+            "pattern": "\\d{1,10}/\\d{1,4}|\\d{1,4}",
+            "type": "string",
+            "description": "Full flat number including the house number if exists",
+            "example": "1468/10"
+          },
+          "flatType": {
+            "type": "string",
+            "description": "Code of flat type enum (Jednotka dle NOZ, ...)",
+            "example": "4"
+          },
+          "gpsLatitude": {
+            "type": "number",
+            "description": "GPS latitude of the site definition point",
+            "format": "float"
+          },
+          "gpsLongitude": {
+            "type": "number",
+            "description": "GPS longitude of the site definition point",
+            "format": "float"
+          },
+          "isHomeSite": {
+            "type": "boolean",
+            "description": "True for \"St.\" prefix of site",
+            "example": true
+          },
+          "isMainBuilding": {
+            "type": "boolean",
+            "description": "True in case of the main building if flat is defined in multiple buildings. Only one building is the main one"
+          },
+          "isknBuildingId": {
+            "type": "integer",
+            "description": "ISKN unique building id",
+            "format": "int64",
+            "example": 99850835
+          },
+          "isknBuildingRightId": {
+            "type": "integer",
+            "description": "ISKN unique building right id)",
+            "format": "int64",
+            "example": 31006
+          },
+          "isknFlatId": {
+            "type": "integer",
+            "description": "ISKN unique flat id",
+            "format": "int64",
+            "example": 19069835
+          },
+          "isknFlatNumber": {
+            "type": "integer",
+            "description": "Specific formatted flat number (always with 4 digits) starting with a house number",
+            "format": "int32",
+            "example": 1230001
+          },
+          "isknSiteId": {
+            "type": "integer",
+            "description": "ISKN unique site id",
+            "format": "int64",
+            "example": 626093410
+          },
+          "landArea": {
+            "type": "integer",
+            "description": "Land area [m2]",
+            "format": "int32",
+            "example": 110
+          },
+          "mannerOfProtection": {
+            "type": "string",
+            "description": "Code of manner of use protection enum",
+            "example": "19"
+          },
+          "mannerOfUseBuilding": {
+            "type": "string",
+            "description": "Code of manner of use building enum",
+            "example": "6"
+          },
+          "mannerOfUseBuildingRight": {
+            "type": "string",
+            "description": "Code of manner of use building right enum",
+            "example": "25"
+          },
+          "mannerOfUseFlat": {
+            "type": "string",
+            "description": "Code of manner of use flat enum",
+            "example": "1"
+          },
+          "mannerOfUseSite": {
+            "type": "string",
+            "description": "Code of manner of use site enum",
+            "example": "19"
+          },
+          "originalTerritory": {
+            "type": "string",
+            "description": "Name of the original cadastral territory",
+            "example": "Kozojedy"
+          },
+          "propertyIncluded": {
+            "type": "boolean",
+            "description": "Shared parts of the real estate property included (in case of flatType=Jednotka dle zákona NOZ)"
+          },
+          "realEstateType": {
+            "type": "string",
+            "description": "basic real estate types",
+            "example": "SITE",
+            "enum": [
+              "SITE",
+              "BUILDING",
+              "FLAT",
+              "BUILDING_RIGHT"
+            ]
+          },
+          "sharedPartsRatio": {
+            "pattern": "\\d{1,}/\\d{1,}",
+            "type": "string",
+            "description": "Shared parts ratio ",
+            "example": "532/22148"
+          },
+          "siteKind": {
+            "type": "string",
+            "description": "Code of cadaster site enum evidence (PKN/PZE)",
+            "example": "PKN"
+          },
+          "siteNumber": {
+            "type": "string",
+            "description": "Site number",
+            "example": "207/2"
+          },
+          "sitePart": {
+            "type": "integer",
+            "description": "Site number part in case siteKind=PZE",
+            "format": "int32",
+            "example": 1
+          },
+          "siteSource": {
+            "type": "string",
+            "description": "Code of cadaster site source enum in case siteKind=PZE",
+            "example": "4"
+          },
+          "siteTypeCode": {
+            "type": "string",
+            "description": "Code of Site type enum",
+            "example": "13"
+          },
+          "sitesIncluded": {
+            "type": "boolean",
+            "description": "Shared parts of the sites included (in case of flatType=Jednotka dle zákona 79)"
+          },
+          "townPart": {
+            "type": "string",
+            "description": "Town part name",
+            "example": "Hranice I-Město"
+          }
+        },
+        "description": "Evidence of all entities(site, building, flat, building right), its attributes and relations. In case of 1:N relations (1 flat in multiple buildings on multiple sites it means N records (usually N=number of sites) of this entity, always with the corresponding attributes for a given record"
+      },
+      "RequestDownloadDeedOfOwnership": {
+        "type": "object",
+        "properties": {
+          "deedOfOwnershipNumber": {
+            "type": "integer",
+            "description": "Deed of ownership number",
+            "format": "int32",
+            "nullable": true,
+            "example": 60000
+          },
+          "isknDeedOfOwnershipId": {
+            "type": "integer",
+            "description": "Deed of ownership ISKN unique ID (an alternative to territoryNumber+deedOfOwnershipNumber)",
+            "nullable": true
+          },
+          "publicDocument": {
+            "type": "boolean",
+            "description": "True for request of public document (PDF for reading purposes only)",
+            "nullable": true,
+            "default": false
+          },
+          "realEstates": {
+            "type": "array",
+            "description": "The collection of real estate entities in case of partial deed of ownership request (single entity type is supported for a document)",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/PartialDeedOfOwnershipRealEstate"
+            }
+          },
+          "territoryNumber": {
+            "type": "integer",
+            "description": "Territory number",
+            "format": "int32",
+            "nullable": true,
+            "example": 608629
+          },
+          "validityDate": {
+            "type": "string",
+            "description": "Validity date of the document (default today or date in history)",
+            "format": "date",
+            "nullable": true,
+            "example": "2021-12-13"
+          }
+        },
+        "description": "A new document download from CUZK request specification"
+      },
+      "ResponseGetFlatsForAddressDTO": {
+        "type": "object",
+        "properties": {
+          "building": {
+            "$ref": "#/components/schemas/IsknBuildingDTO"
+          }
+        },
+        "description": "Response object for search building by address"
+      },
+      "ResponseGetLegalRelations": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "Collection of legal relations in a deed of ownership document",
+            "items": {
+              "$ref": "#/components/schemas/DeedOfOwnershipLegalRelation"
+            }
+          },
+          "paging": {
+            "$ref": "#/components/schemas/Paging"
+          }
+        },
+        "description": "Response object for legal relations import from deed of ownership document"
+      },
+      "ResponseGetOwners": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "Collection of owners in a deed of ownership document",
+            "items": {
+              "$ref": "#/components/schemas/DeedOfOwnershipOwnerDTO"
+            }
+          },
+          "paging": {
+            "$ref": "#/components/schemas/Paging"
+          }
+        },
+        "description": "Response object for owners import from deed of ownership document"
+      },
+      "ResponseGetRealEstates": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "Collection of real estates in a deed of ownership document",
+            "items": {
+              "$ref": "#/components/schemas/DeedOfOwnershipRealEstate"
+            }
+          },
+          "paging": {
+            "$ref": "#/components/schemas/Paging"
+          }
+        },
+        "description": "Response object for real estates import from deed of ownership document"
+      },
+      "ResponseSearchDeedOfOwnershipDocuments": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "Collection of documents",
+            "items": {
+              "$ref": "#/components/schemas/DeedOfOwnershipDocument"
+            }
+          },
+          "paging": {
+            "$ref": "#/components/schemas/Paging"
+          }
+        },
+        "description": "Response object for searching existing deed of ownership documents"
+      },
+      "ResponseUploadDocumentDTO": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "legalRelationItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeedOfOwnershipLegalRelation"
+            }
+          },
+          "realEstateItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeedOfOwnershipRealEstate"
+            }
+          }
+        },
+        "description": "Response object for upload xml/pdf document"
+      },
+      "TownPartDTO": {
+        "type": "object",
+        "properties": {
+          "townPartCode": {
+            "type": "integer",
+            "description": "ISKN code",
+            "format": "int32"
+          },
+          "townPartName": {
+            "type": "string",
+            "description": "Town part name"
+          }
+        },
+        "description": "Town part object"
+      }
+    }
+  }
+}

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.WebApi;
 using NOBY.Infrastructure.Security;
 using NOBY.Infrastructure.Configuration;
+using CIS.Core.Exceptions.ExternalServices;
 
 namespace NOBY.Infrastructure.ErrorHandling.Internals;
 
@@ -73,6 +74,10 @@ public sealed class NobyApiExceptionMiddleware
         catch (NobyValidationException ex)
         {
             await Results.Json(ex.Errors, statusCode: ex.HttpStatusCode).ExecuteAsync(context);
+        }
+        catch (CisExtServiceValidationException ex)
+        {
+            await Results.Json(ex.Errors, statusCode: 400).ExecuteAsync(context);
         }
         // osetrena validace na urovni api call
         catch (CisValidationException ex)

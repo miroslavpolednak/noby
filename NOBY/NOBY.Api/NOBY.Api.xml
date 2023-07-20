@@ -1500,6 +1500,96 @@
             Stupeň vzdělání
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipIds(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Seznam ISKN id listů vlastnictví pro daný adresní bod
+            </summary>
+            <remarks>
+            Provolání CREM pro získání seznamu ISKN id.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D5B309D6-5B0C-4fe3-8CCE-50955423F7E4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipDocumentContent(System.Int32,System.Int32,System.Int64,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Informace z dokumentu listu vlastnictví
+            </summary>
+            <remarks>
+            Integrace na CREM
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B4B2F8E-17B5-48af-A01D-49E60B53E5BA"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponse">
+            <summary>
+            Informace z listu vlastnictví
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseOwners">
+            <summary>
+            Popis vlastníka na listu vlastnictví
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseOwners.OwnerDescription">
+            <summary>
+            Formátovaný popis vlastníka (jméno + adresa)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseOwners.OwnershipRatio">
+            <summary>
+            Podíl vlastnictví nemovitosti
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseLegalRelations">
+            <summary>
+            Omezení vlastnických práv na listu vlastnictví
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseLegalRelations.LegalRelationDescription">
+            <summary>
+            Textový popis omezení vlastnického práva
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseRealEstates">
+            <summary>
+            Nemovitost z listu vlastnictví
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseRealEstates.RealEstateDescription">
+            <summary>
+            Textový popis nemovitosti
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponse">
+            <summary>
+            Id položek z listu vlastnicví
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponse.DeedOfOwnershipId">
+            <summary>
+            ISKN ID listu vlastnictví(LV), technický identifikátor katastru
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat">
+            <summary>
+            Byt
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat.FlatNumber">
+            <summary>
+            Číslo bytu včetně čísla domu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat.DeedOfOwnershipId">
+            <summary>
+            ISKN ID listu vlastnictví (LV), technický identifikátor katastru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat.MannerOfUseFlatShortName">
+            <summary>
+            Způsob využití bytu
+            </summary>
+        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocument(NOBY.Dto.Documents.FileContentDispositions,NOBY.Api.Endpoints.DocumentArchive.GetDocument.Source,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Načtení dokumentu z archivu nebo ePodpisů
