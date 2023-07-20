@@ -6,7 +6,7 @@ CREATE TABLE [dbo].[TempFile](
 	[FileName] [nvarchar](500) NOT NULL,
 	[MimeType] [varchar](500) NOT NULL,
 	[ObjectId] [bigint] NULL,
-	[ObjectType] [varchar](20) NULL,
+	[ObjectType] [varchar](50) NULL,
 	[SessionId] [uniqueidentifier] NULL,
 	[CreatedUserName] [nvarchar](100) NOT NULL,
 	[CreatedUserId] [int] NOT NULL,

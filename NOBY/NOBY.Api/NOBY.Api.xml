@@ -1502,12 +1502,12 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocument(NOBY.Dto.Documents.FileContentDispositions,NOBY.Api.Endpoints.DocumentArchive.GetDocument.Source,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
-            Načtení dokumentu z archivu
+            Načtení dokumentu z archivu nebo ePodpisů
             </summary>
             <remarks>
-            Načtení contentu dokumentu.Vrací se stream binárních dat.<br />
-            Nenačítají se dokumenty s EaCodeMain.IsVisibleForKb=false <br />
-            <i>DS:</i> DocumentArchiveService/getDocument
+            Načtení contentu dokumentu. Vrací se stream binárních dat.<br />
+            Nenačítají se z eArchivu dokumenty s EaCodeMain.IsVisibleForKb=false. <br /><br />
+            DocumentId je povinné v kombinaci se source = 0 (eArchiv) a externalId je povinné v kombinaci se source = 1 (ePodpisy).<br /><br />
             <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9617EAF8-9876-4444-A130-DFCCD597484D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="contentDisposition">0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default</param>
@@ -2829,6 +2829,16 @@
             </remarks>
             <response code="200">GUID dočasného souboru</response>
         </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveRealEstateValuationAttachments(System.Int64,System.Int32,System.Collections.Generic.List{NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem},System.Threading.CancellationToken)">
+            <summary>
+            Vytvoření přílohy ocenění nemovitosti
+            </summary>
+            <remarks>
+            Vytvoření přílohy ocenění nemovitosti - soubor je nahrán do ACV.
+            </remarks>
+            <returns>ID nově vytvořeného souboru v NOBY databázi - realEstateValuationAttachmentId</returns>
+            <response code="200">ID nově vytvořeného souboru v NOBY databázi - realEstateValuationAttachmentId</response>
+        </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteRealEstateValuationAttachment(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Smazání přílohy ocenění nemovitosti
@@ -2836,6 +2846,21 @@
             <remarks>
             Smazání již nahrané přílohy ocenění z databáze NOBY a ACV.
             </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequest.Attachments">
+            <summary>
+            Seznam uploadnutých příloh, které se mají založit k ocenění
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem.TempFileId">
+            <summary>
+            ID uploadovaného souboru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem.Title">
+            <summary>
+            Popis souboru
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.IsLoanRealEstate">
             <summary>

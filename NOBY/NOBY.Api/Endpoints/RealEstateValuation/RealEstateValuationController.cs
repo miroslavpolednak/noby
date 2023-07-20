@@ -173,8 +173,6 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     /// <response code="200">GUID dočasného souboru</response>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments/upload")]
-    [AuthorizeCaseOwner]
-    [RealEstateValuationStateValidation]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<Guid> UploadRealEstateValuationAttachment(
@@ -182,7 +180,7 @@ public sealed class RealEstateValuationController : ControllerBase
         [FromRoute] int realEstateValuationId,
         [Required] IFormFile file,
         CancellationToken cancellationToken)
-        => await _mediator.Send(new CreateRealEstateValuationAttachment.UploadRealEstateValuationAttachmentRequest
+        => await _mediator.Send(new UploadRealEstateValuationAttachment.UploadRealEstateValuationAttachmentRequest
         {
             CaseId = caseId,
             RealEstateValuationId = realEstateValuationId,
@@ -190,25 +188,33 @@ public sealed class RealEstateValuationController : ControllerBase
         }, cancellationToken);
 
     /// <summary>
-    /// Vytvoření přílohy ocenění nemovitosti
+    /// Spojení souboru přílohy s oceněním nemovitosti
     /// </summary>
     /// <remarks>
-    /// Vytvoření přílohy ocenění nemovitosti - soubor je nahrán do ACV.
+    /// Propojí uploadnutý soubor s oceněním a doplní k souboru popisek.
     /// </remarks>
-    /// <returns>ID nově vytvořeného souboru v NOBY databázi - realEstateValuationAttachmentId</returns>
-    /// <response code="200">ID nově vytvořeného souboru v NOBY databázi - realEstateValuationAttachmentId</response>
-    /*[HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments")]
+    /// <param name="attachments">Seznam souborů k propojení</param>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments")]
     [AuthorizeCaseOwner]
     [RealEstateValuationStateValidation]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<int> SaveRealEstateValuationAttachments(
+    public async Task<IActionResult> SaveRealEstateValuationAttachments(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromForm] CreateRealEstateValuationAttachment.UploadRealEstateValuationAttachmentRequest request,
+        [FromBody] List<SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem> attachments,
         CancellationToken cancellationToken)
-        => await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);*/
+    {
+        await _mediator.Send(new SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequest
+        {
+            CaseId = caseId,
+            RealEstateValuationId = realEstateValuationId,
+            Attachments = attachments,
+        }, cancellationToken);
+        
+        return NoContent();
+    }
 
     /// <summary>
     /// Smazání přílohy ocenění nemovitosti

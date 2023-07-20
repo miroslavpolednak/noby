@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using NOBY.Infrastructure.Configuration;
+using System.IO;
 
 namespace NOBY.Infrastructure.Services.TempFileManager;
 
@@ -31,9 +32,11 @@ internal class TempFileManagerService
         };
 
         // zapsat na disk
-        using var stream = new FileStream(getPath(fileInstance.TempFileId), FileMode.Create);
-        await file.CopyToAsync(file.OpenReadStream(), cancellationToken);
-        await stream.FlushAsync(cancellationToken);
+        using (var stream = new FileStream(getPath(fileInstance.TempFileId), FileMode.Create))
+        {
+            await file.CopyToAsync(stream, cancellationToken);
+            await stream.FlushAsync(cancellationToken);
+        }
 
         // ulozit do DB
         var entity = new Database.Entities.TempFile
@@ -51,7 +54,7 @@ internal class TempFileManagerService
         return fileInstance;
     }
 
-    public async Task<TempFile?> GetMetadata(Guid tempFileId, CancellationToken cancellationToken = default)
+    public async Task<TempFile> GetMetadata(Guid tempFileId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.TempFiles
             .AsNoTracking()
@@ -65,7 +68,7 @@ internal class TempFileManagerService
                 ObjectType = t.ObjectType,
                 MimeType = t.MimeType
             })
-            .FirstOrDefaultAsync(cancellationToken);
+            .FirstAsync(cancellationToken);
     }
 
     public async Task<byte[]> GetContent(Guid tempFileId, CancellationToken cancellationToken = default)

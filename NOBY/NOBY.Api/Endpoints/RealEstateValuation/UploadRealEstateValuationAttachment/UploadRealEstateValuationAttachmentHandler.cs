@@ -1,13 +1,13 @@
 ﻿using NOBY.Infrastructure.Services.TempFileManager;
 
-namespace NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationAttachment;
+namespace NOBY.Api.Endpoints.RealEstateValuation.UploadRealEstateValuationAttachment;
 
 internal sealed class UploadRealEstateValuationAttachmentHandler
     : IRequestHandler<UploadRealEstateValuationAttachmentRequest, Guid>
 {
     public async Task<Guid> Handle(UploadRealEstateValuationAttachmentRequest request, CancellationToken cancellationToken)
     {
-        var response = await _tempFileManager.Save(request.File, cancellationToken);
+        var response = await _tempFileManager.Save(request.File, objectId: request.RealEstateValuationId, objectType: nameof(UploadRealEstateValuationAttachmentHandler), cancellationToken: cancellationToken);
         return response.TempFileId;
     }
 

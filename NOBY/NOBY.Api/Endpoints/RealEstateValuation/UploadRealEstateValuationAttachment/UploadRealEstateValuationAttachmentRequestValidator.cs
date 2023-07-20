@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using NOBY.Infrastructure.Configuration;
 
-namespace NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationAttachment;
+namespace NOBY.Api.Endpoints.RealEstateValuation.UploadRealEstateValuationAttachment;
 
 internal sealed class UploadRealEstateValuationAttachmentRequestValidator
     : AbstractValidator<UploadRealEstateValuationAttachmentRequest>
