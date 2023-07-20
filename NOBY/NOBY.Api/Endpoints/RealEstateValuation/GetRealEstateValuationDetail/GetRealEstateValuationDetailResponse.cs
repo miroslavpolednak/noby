@@ -2,9 +2,13 @@
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail;
 
-public class GetRealEstateValuationDetailResponse
+public sealed class GetRealEstateValuationDetailResponse
 {
     public required RealEstateValuationListItem RealEstateValuationListItem { get; init; }
 
     public required RealEstateValuationDetail RealEstateValuationDetail { get; init; }
+
+    public List<RealEstateValuationAttachment>? Attachments { get; set; }
+
+    public List<DeedOfOwnershipDocument>? DeedOfOwnershipDocuments { get; set; }
 }

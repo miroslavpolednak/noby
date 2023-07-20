@@ -89,16 +89,21 @@ internal sealed class RealSulmClient
         {
             throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} error {response.StatusCode}: {result.Code}");
         }
-
     }
 
     private static CIS.Foms.Types.UserIdentity getKbIdentity(IList<CIS.Foms.Types.UserIdentity> identities)
     {
         return identities
-            .FirstOrDefault(t => t.Scheme == CIS.Foms.Enums.UserIdentitySchemes.KbUid)
-            ?? throw new CisExtServiceValidationException(0, "SULM integration: KB Identity not found");
+            .FirstOrDefault(t => _allowedIdentities.Contains(t.Scheme))
+            ?? throw new CisExtServiceValidationException(0, "SULM integration: User does not have supported identity");
     }
 
+    private static CIS.Foms.Enums.UserIdentitySchemes[] _allowedIdentities = new[]
+    {
+        CIS.Foms.Enums.UserIdentitySchemes.KbUid,
+        CIS.Foms.Enums.UserIdentitySchemes.BrokerId,
+        CIS.Foms.Enums.UserIdentitySchemes.Mpad
+    };
     private const string _apiBasePath = "api/customers/sulm/v1/client/purpose/";
 
     private readonly HttpClient _httpClient;

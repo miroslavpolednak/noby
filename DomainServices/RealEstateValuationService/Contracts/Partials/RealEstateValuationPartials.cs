@@ -37,3 +37,23 @@ public partial class SetACVRealEstateTypeByRealEstateValuationRequest
 public partial class UpdateStateByRealEstateValuationRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class AddDeedOfOwnershipDocumentRequest
+    : MediatR.IRequest<AddDeedOfOwnershipDocumentResponse>, CIS.Core.Validation.IValidatableRequest
+{ }
+
+public partial class DeleteDeedOfOwnershipDocumentRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+{ }
+
+public partial class CreateRealEstateValuationAttachmentRequest
+    : MediatR.IRequest<CreateRealEstateValuationAttachmentResponse>, CIS.Core.Validation.IValidatableRequest
+{ }
+
+public partial class DeleteRealEstateValuationAttachmentRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+{ }
+
+public partial class ValidateRealEstateValuationIdRequest
+    : MediatR.IRequest<ValidateRealEstateValuationIdResponse>
+{ }

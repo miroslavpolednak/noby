@@ -37,7 +37,7 @@ public sealed class AuthorizeCaseOwnerAttribute
                 throw new ArgumentNullException(nameof(context.HttpContext.Request.RouteValues), $"{_caseIdKey} is missing in route values");
             }
 
-            int caseId = int.Parse(context.HttpContext.Request.RouteValues["caseId"]!.ToString()!, CultureInfo.InvariantCulture);
+            long caseId = long.Parse(context.HttpContext.Request.RouteValues[_caseIdKey]!.ToString()!, CultureInfo.InvariantCulture);
 
             var ownerUserId = (await _caseService.ValidateCaseId(caseId, true)).OwnerUserId;
             

@@ -2700,8 +2700,21 @@
             <summary>
             Vrátí Case ID podle zadaného PCP ID
             </summary>
-            <remarks>Vyhledá Case ID podle PCP ID v KonsDB</remarks>
+            <remarks>
+            Vyhledá Case ID podle PCP ID v KonsDB.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=951AAF15-BEBB-4e22-8DF4-E9C195F309AC"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
             <param name="pcpId">PCP ID</param>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationAttachment.CreateRealEstateValuationAttachmentRequest.Title">
+            <summary>
+            Popis souboru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationAttachment.CreateRealEstateValuationAttachmentRequest.File">
+            <summary>
+            Soubor přílohy
+            </summary>
         </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
             <summary>
@@ -2805,6 +2818,34 @@
             Patch toggle developera na Ocenění konkrétní nemovitosti ještě před odesláním do ACV.
             
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteDeedOfOwnershipDocument(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazání již připojeného dokumentu LV
+            </summary>
+            <remarks>
+            Smazání/odpojení již připojeného dokumentu listu vlastnictví (LV) od existujícího Ocenění nemovitosti.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=33180E91-2CB3-4d2f-B6AD-5841EC8A836F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.CreateRealEstateValuationAttachment(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationAttachment.CreateRealEstateValuationAttachmentRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vytvoření přílohy ocenění nemovitosti
+            </summary>
+            <remarks>
+            Vytvoření přílohy ocenění nemovitosti - soubor je nahrán do ACV.
+            </remarks>
+            <returns>ID nově vytvořeného souboru v NOBY databázi - realEstateValuationAttachmentId</returns>
+            <response code="200">ID nově vytvořeného souboru v NOBY databázi - realEstateValuationAttachmentId</response>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteRealEstateValuationAttachment(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazání přílohy ocenění nemovitosti
+            </summary>
+            <remarks>
+            Smazání již nahrané přílohy ocenění z databáze NOBY a ACV.
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.IsLoanRealEstate">

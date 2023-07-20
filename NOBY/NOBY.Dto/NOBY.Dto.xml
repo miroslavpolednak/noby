@@ -185,6 +185,46 @@
             Příznak potvrzeného kontaktu
             </summary>
         </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument">
+            <summary>
+            Identifikační údaje nemovitosti k Ocenění (bez Noby ID)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.ExternalDeedOfOwnershipDocumentId">
+            <summary>
+            ID staženého dokumentu listu vlastnictví (LV)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.KatuzId">
+            <summary>
+            KATUZ ID, pětimístné číslo katastrálního území
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.KatuzTitle">
+            <summary>
+            KATUZ, název katastrálního území, RUIAN katastrální území - AddressWhispererBEService|cadastralArea
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.DeedOfOwnershipId">
+            <summary>
+            ISKN ID listu vlastnictví (LV), technický identifikátor katastru
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.DeedOfOwnershipNumber">
+            <summary>
+            Číslo listu vlastnictví (LV)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.Address">
+            <summary>
+            Adresa nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.RealEstateIds">
+            <summary>
+            Unikátní ID nemovitosti ze systému CREM
+            </summary>
+        </member>
         <member name="T:NOBY.Dto.RealEstateValuation.LoanPurposeDetail">
             <summary>
             Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).
@@ -195,6 +235,26 @@
             ID účelu úvěru podle číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413109663">LoanPurpose (CIS_UCEL_UVERU_INT1)</a>
             </summary>
             <example>[204]</example>
+        </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment">
+            <summary>
+            Příloha k ocenění nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment.RealEstateValuationAttachmentId">
+            <summary>
+            ID přílohy v NOBY
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment.Title">
+            <summary>
+            Uživatelský popis souboru
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment.FileName">
+            <summary>
+            Název souboru
+            </summary>
         </member>
         <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail">
             <summary>
