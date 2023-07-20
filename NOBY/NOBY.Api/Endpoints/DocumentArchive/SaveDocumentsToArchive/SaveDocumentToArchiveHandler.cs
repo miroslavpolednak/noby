@@ -24,7 +24,7 @@ public class SaveDocumentToArchiveHandler
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDateTime _dateTime;
-    private readonly Infrastructure.Services.TempFileManager.ITempFileManager _tempFileManager;
+    private readonly Infrastructure.Services.TempFileManager.ITempFileManagerService _tempFileManager;
     private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
     private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
     private readonly IMediator _mediator;
@@ -36,7 +36,7 @@ public class SaveDocumentToArchiveHandler
         IDocumentArchiveServiceClient client,
         ICurrentUserAccessor currentUserAccessor,
         IDateTime dateTime,
-        Infrastructure.Services.TempFileManager.ITempFileManager tempFileManager,
+        Infrastructure.Services.TempFileManager.ITempFileManagerService tempFileManager,
         ISalesArrangementServiceClient salesArrangementServiceClient,
         IDocumentOnSAServiceClient documentOnSAServiceClient,
         IMediator mediator,
@@ -59,7 +59,7 @@ public class SaveDocumentToArchiveHandler
     public async Task Handle(SaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var filePaths = new List<string>();
+        var filePaths = new List<Guid>();
         var filesToUpload = new List<(UploadDocumentRequest uploadRequest, int? documentOnSAId)>();
         var authorUserLogin = await GetAuthorUserLogin(cancellationToken);
 
@@ -73,11 +73,9 @@ public class SaveDocumentToArchiveHandler
             if (!string.IsNullOrWhiteSpace(docInfo.FormId))
                 documentOnSAId = await ValidateFormId(request.CaseId, docInfo, cancellationToken);
 
-            var filePath = _tempFileManager.ComposeFilePath(docInfo.DocumentInformation.Guid!.Value.ToString());
-            _tempFileManager.CheckIfDocumentExist(filePath);
-            filePaths.Add(filePath);
+            filePaths.Add(docInfo.DocumentInformation.Guid!.Value);
 
-            var file = await _tempFileManager.GetDocument(filePath, cancellationToken);
+            var file = await _tempFileManager.GetContent(docInfo.DocumentInformation.Guid!.Value, cancellationToken);
             var documentId = await _client.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken);
 
             filesToUpload.Add(new()
@@ -88,7 +86,7 @@ public class SaveDocumentToArchiveHandler
         }
 
         await Task.WhenAll(filesToUpload.Select(uploadItem => UploadDocument(uploadItem, cancellationToken)));
-        _tempFileManager.BatchDelete(filePaths);
+        await _tempFileManager.Delete(filePaths, cancellationToken);
     }
 
     private async Task UploadDocument((UploadDocumentRequest uploadRequest, int? documentOnSAId) uploadItem, CancellationToken cancellationToken)

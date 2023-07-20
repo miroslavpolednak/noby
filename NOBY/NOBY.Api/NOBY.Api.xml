@@ -2703,16 +2703,6 @@
             <remarks>Vyhledá Case ID podle PCP ID v KonsDB</remarks>
             <param name="pcpId">PCP ID</param>
         </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationAttachment.CreateRealEstateValuationAttachmentRequest.Title">
-            <summary>
-            Popis souboru
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationAttachment.CreateRealEstateValuationAttachmentRequest.File">
-            <summary>
-            Soubor přílohy
-            </summary>
-        </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
             <summary>
             Atributy k nově zakládanému Ocenění nemovitosti
@@ -2827,15 +2817,14 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=33180E91-2CB3-4d2f-B6AD-5841EC8A836F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.CreateRealEstateValuationAttachment(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuationAttachment.CreateRealEstateValuationAttachmentRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.UploadRealEstateValuationAttachment(System.Int64,System.Int32,Microsoft.AspNetCore.Http.IFormFile,System.Threading.CancellationToken)">
             <summary>
-            Vytvoření přílohy ocenění nemovitosti
+            Upload přílohy ocenění nemovitosti
             </summary>
             <remarks>
-            Vytvoření přílohy ocenění nemovitosti - soubor je nahrán do ACV.
+            Dočasný upload souboru přílohy na server. Vrací GUID souboru, který může být následně použit pro spárování dočasného souboru s oceněním pomocí SaveRealEstateValuationAttachments.
             </remarks>
-            <returns>ID nově vytvořeného souboru v NOBY databázi - realEstateValuationAttachmentId</returns>
-            <response code="200">ID nově vytvořeného souboru v NOBY databázi - realEstateValuationAttachmentId</response>
+            <response code="200">GUID dočasného souboru</response>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteRealEstateValuationAttachment(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
