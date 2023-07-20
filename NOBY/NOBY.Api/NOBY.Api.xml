@@ -2831,13 +2831,12 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveRealEstateValuationAttachments(System.Int64,System.Int32,System.Collections.Generic.List{NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem},System.Threading.CancellationToken)">
             <summary>
-            Vytvoření přílohy ocenění nemovitosti
+            Spojení souboru přílohy s oceněním nemovitosti
             </summary>
             <remarks>
-            Vytvoření přílohy ocenění nemovitosti - soubor je nahrán do ACV.
+            Propojí uploadnutý soubor s oceněním a doplní k souboru popisek.
             </remarks>
-            <returns>ID nově vytvořeného souboru v NOBY databázi - realEstateValuationAttachmentId</returns>
-            <response code="200">ID nově vytvořeného souboru v NOBY databázi - realEstateValuationAttachmentId</response>
+            <param name="attachments">Seznam souborů k propojení</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteRealEstateValuationAttachment(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -2856,11 +2855,13 @@
             <summary>
             ID uploadovaného souboru
             </summary>
+            <example>3fa85f64-5717-4562-b3fc-2c963f66afa6</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem.Title">
             <summary>
             Popis souboru
             </summary>
+            <example>Fotka dveří</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.IsLoanRealEstate">
             <summary>
