@@ -23,6 +23,8 @@ internal sealed class SaveRealEstateValuationAttachmentsHandler
             };
 
             await _realEstateValuationService.CreateRealEstateValuationAttachment(dsRequest, cancellationToken);
+
+            await _tempFileManager.Delete(attachment.TempFileId, cancellationToken);
         }
     }
 
