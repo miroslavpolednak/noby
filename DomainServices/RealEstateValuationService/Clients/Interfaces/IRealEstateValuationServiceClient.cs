@@ -28,7 +28,7 @@ public interface IRealEstateValuationServiceClient
 
     Task<int> CreateRealEstateValuationAttachment(CreateRealEstateValuationAttachmentRequest request, CancellationToken cancellationToken = default);
 
-    Task DeleteRealEstateValuationAttachment(int realEstateValuationAttachmentId, CancellationToken cancellationToken = default);
+    Task DeleteRealEstateValuationAttachment(int realEstateValuationAttachmentId, int realEstateValuationId, CancellationToken cancellationToken = default);
 
     Task<ValidateRealEstateValuationIdResponse> ValidateRealEstateValuationId(int realEstateValuationId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
 }

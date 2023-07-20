@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments;
 
 public sealed class SaveRealEstateValuationAttachmentsRequest
-    : IRequest
+    : IRequest<List<SaveRealEstateValuationAttachmentsResponseItem>>
 {
     [Required]
     public long CaseId { get; set; }

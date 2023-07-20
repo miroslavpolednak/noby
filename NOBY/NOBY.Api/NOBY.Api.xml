@@ -2837,6 +2837,7 @@
             Propojí uploadnutý soubor s oceněním a doplní k souboru popisek.
             </remarks>
             <param name="attachments">Seznam souborů k propojení</param>
+            <response code="200">Kolekce ID uploadovaných souborů vs. nových ID příloh</response>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteRealEstateValuationAttachment(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -2862,6 +2863,18 @@
             Popis souboru
             </summary>
             <example>Fotka dveří</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsResponseItem.TempFileId">
+            <summary>
+            ID uploadnutého dočasného souboru
+            </summary>
+            <example>3fa85f64-5717-4562-b3fc-2c963f66afa6</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsResponseItem.RealEstateValuationAttachmentId">
+            <summary>
+            ID nově vytvořené přílohy ocenění
+            </summary>
+            <example>97355</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.IsLoanRealEstate">
             <summary>

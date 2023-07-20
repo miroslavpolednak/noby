@@ -194,27 +194,24 @@ public sealed class RealEstateValuationController : ControllerBase
     /// Propojí uploadnutý soubor s oceněním a doplní k souboru popisek.
     /// </remarks>
     /// <param name="attachments">Seznam souborů k propojení</param>
+    /// <response code="200">Kolekce ID uploadovaných souborů vs. nových ID příloh</response>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments")]
     [AuthorizeCaseOwner]
     [RealEstateValuationStateValidation]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(List<SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsResponseItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> SaveRealEstateValuationAttachments(
+    public async Task<List<SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsResponseItem>> SaveRealEstateValuationAttachments(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
         [FromBody] List<SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem> attachments,
         CancellationToken cancellationToken)
-    {
-        await _mediator.Send(new SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequest
+        => await _mediator.Send(new SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequest
         {
             CaseId = caseId,
             RealEstateValuationId = realEstateValuationId,
             Attachments = attachments,
         }, cancellationToken);
-        
-        return NoContent();
-    }
 
     /// <summary>
     /// Smazání přílohy ocenění nemovitosti
@@ -224,6 +221,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments/{realEstateValuationAttachmentId:int}")]
     [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
