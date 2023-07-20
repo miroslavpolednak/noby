@@ -21,12 +21,12 @@ public class DocumentArchiveController : ControllerBase
     }
 
     /// <summary>
-    /// Načtení dokumentu z archivu
+    /// Načtení dokumentu z archivu nebo ePodpisů
     /// </summary>
     /// <remarks>
-    /// Načtení contentu dokumentu.Vrací se stream binárních dat.<br />
-    /// Nenačítají se dokumenty s EaCodeMain.IsVisibleForKb=false <br />
-    /// <i>DS:</i> DocumentArchiveService/getDocument
+    /// Načtení contentu dokumentu. Vrací se stream binárních dat.<br />
+    /// Nenačítají se z eArchivu dokumenty s EaCodeMain.IsVisibleForKb=false. <br /><br />
+    /// DocumentId je povinné v kombinaci se source = 0 (eArchiv) a externalId je povinné v kombinaci se source = 1 (ePodpisy).<br /><br />
     /// <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9617EAF8-9876-4444-A130-DFCCD597484D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="contentDisposition">0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default</param>
