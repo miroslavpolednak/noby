@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message ValidateRealEstateValuationIdRequest {
+	int32 RealEstateValuationId =  1;
+	bool ThrowExceptionIfNotFound = 2;
+}
+
+message ValidateRealEstateValuationIdResponse {
+	bool Exists = 1;
+	google.protobuf.Int64Value CaseId = 2;
+	google.protobuf.Int32Value ValuationStateId = 3;
+}

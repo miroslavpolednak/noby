@@ -78,9 +78,9 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
     {
         var request = new GetElectronicDocumentFromQueueRequest
         {
-            Attachment = new Attachment
+            DocumentAttachment = new ()
             {
-                AttachmentId = attachmentId
+                DocumentAttachmentId = attachmentId
             }
         };
         

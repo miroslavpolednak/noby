@@ -1,0 +1,4677 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Preorder Service",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "/v1/preorder"
+    }
+  ],
+  "paths": {
+    "/about": {
+      "get": {
+        "tags": [
+          "About"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/about/secure": {
+      "get": {
+        "tags": [
+          "About"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/about/sample": {
+      "get": {
+        "tags": [
+          "About"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/about/secure-acv": {
+      "get": {
+        "tags": [
+          "About"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/attachment": {
+      "post": {
+        "tags": [
+          "Attachment"
+        ],
+        "summary": "Upload souboru pro přílohu",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Description": {
+                    "type": "string"
+                  },
+                  "Category": {
+                    "type": "string"
+                  },
+                  "Date": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "FromFile": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "Description": {
+                  "style": "form"
+                },
+                "Category": {
+                  "style": "form"
+                },
+                "Date": {
+                  "style": "form"
+                },
+                "FromFile": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Attachment"
+        ],
+        "summary": "Vrácení metadat příloh podle seznamu id",
+        "parameters": [
+          {
+            "name": "attachmentIds",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/attachment/{attachmentId}": {
+      "get": {
+        "tags": [
+          "Attachment"
+        ],
+        "summary": "Vrácení metadat přílohy podle id",
+        "parameters": [
+          {
+            "name": "attachmentId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttachmentDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttachmentDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttachmentDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Attachment"
+        ],
+        "summary": "Smazání přílohy podle id",
+        "parameters": [
+          {
+            "name": "attachmentId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/attachment/{attachmentId}/content": {
+      "get": {
+        "tags": [
+          "Attachment"
+        ],
+        "summary": "Stažení obsahu přílohy",
+        "parameters": [
+          {
+            "name": "attachmentId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lookup/valuationtypes": {
+      "post": {
+        "tags": [
+          "Lookup"
+        ],
+        "summary": "Vrácení seznamu povolených typů odhadů na základě parametrů objednávky a nemovitostí",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvailableValuationTypesRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvailableValuationTypesRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvailableValuationTypesRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lookup/revaluationcheck": {
+      "post": {
+        "tags": [
+          "Lookup"
+        ],
+        "summary": "Vrácení příznaku, zda je potřeba objednat kontrolní přecenění pro online ocenění",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnlineRevaluationCheckRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnlineRevaluationCheckRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnlineRevaluationCheckRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevaluationRequiredResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevaluationRequiredResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevaluationRequiredResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Vrácení objednávky dle ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}/realestates": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Seznam nemovitostí objednávky",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RealEstateCompactDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RealEstateCompactDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RealEstateCompactDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Přidání nemovitostí do objednávky",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RealEstateCompactDTO"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RealEstateCompactDTO"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RealEstateCompactDTO"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}/attachments": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Seznam příloh objednávky",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttachmentDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Přidání příloh do objednávky",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}/realestates/fromcrem": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Přidání nemovitostí z CREM do objednávky",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}/localsurvey": {
+      "patch": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Aktualizace informací o místním šetření",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocalSurveyInfoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocalSurveyInfoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocalSurveyInfoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}/realestate/{id}": {
+      "delete": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Odebrání nemovitosti z objednávky",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}/attachment/{id}": {
+      "delete": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Odebrání přílohy z objednávky",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}/send": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Odeslání objednávky k dalšímu zpracování do HF",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}/pickup": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Vyzvednutí objednávky (dokončení procesu zpracování)",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}/cancel": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Storno objednávky",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}/result": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Výsledek objednávky",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}/document/{documentType}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "documentType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/online": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Vytvoření objednávky z požadavku na online ocenění",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnlineMPRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnlineMPRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnlineMPRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/standard": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Vytvoření objednávky standardního ocenění",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StandardOrderRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StandardOrderRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StandardOrderRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/dts/flat": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Vytvoření objednávky DTS bytu",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DtsFlatRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DtsFlatRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DtsFlatRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/dts/house": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Vytvoření objednávky DTS domu",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DtsHouseRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DtsHouseRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DtsHouseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/zov": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Vytvoření objednávky na ZOV",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZovRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZovRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZovRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/revaluation": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Vytvoření objednávky přecenění",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevaluationRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevaluationRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevaluationRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/consultancy": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Vytvoření objednávky konzultace",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultancyRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultancyRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultancyRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/find": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "operationId": "FindOrder",
+        "parameters": [
+          {
+            "name": "valuationNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dealNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "asc",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderInfoDTOPagedResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderInfoDTOPagedResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderInfoDTOPagedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AttachmentDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "extension": {
+            "type": "string",
+            "nullable": true
+          },
+          "documentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "documentStore": {
+            "type": "string",
+            "nullable": true
+          },
+          "documentPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "documentCategory": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryText": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "validityDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdByName": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdWhen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "documentIdCez": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "visibleLevel": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AvailableValuationTypesRequestDTO": {
+        "type": "object",
+        "properties": {
+          "realEstateType": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "isLeased": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isCellarFlat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isNonApartmentBuildingFlat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isNotUsableTechnicalState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "hasOwnershipLimitations": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "purposesLoan": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "realEstateIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          },
+          "dealType": {
+            "type": "string",
+            "nullable": true
+          },
+          "loanAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuildingSpecificationDTO": {
+        "type": "object",
+        "properties": {
+          "flatNumber": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "flatType": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatFloorArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "maisonnette": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "garret": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "flatOccupied": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "leaseType": {
+            "type": "string",
+            "nullable": true
+          },
+          "termOfLease": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsultancyRequestDTO": {
+        "type": "object",
+        "properties": {
+          "previuosValuationNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "requestText": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DtsFlatRequest": {
+        "type": "object",
+        "properties": {
+          "companyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "eFormId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dealNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonTel": {
+            "type": "string",
+            "nullable": true
+          },
+          "cpm": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "icp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "localSurveyPerson": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyFunction": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "bagmanRealEstateTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "realEstateTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationStreet": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalInfo": {
+            "type": "string",
+            "nullable": true
+          },
+          "actualPurchasePrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leased": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "ownershipLimitations": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "budget": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "clientID": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "clientName": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientPassId": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "dealType": {
+            "type": "string",
+            "nullable": true
+          },
+          "productOwner": {
+            "type": "string",
+            "nullable": true
+          },
+          "maturityLoan": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "purposeLoan": {
+            "type": "string",
+            "nullable": true
+          },
+          "loanAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "specialRequest": {
+            "type": "string",
+            "nullable": true
+          },
+          "insuranceRequired": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "valuationFee": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "nonValuationFeeReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "noteMPSS": {
+            "type": "string",
+            "nullable": true
+          },
+          "dts": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "nonDtsArgumentCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nonDtsArgument": {
+            "type": "string",
+            "nullable": true
+          },
+          "completenessDocuments": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isCellarFlat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isNonApartmentBuildingFlat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isNotUsableTechnicalState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cremRealEstateIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          },
+          "localSurveyAttachments": {
+            "$ref": "#/components/schemas/LocalSurveyAttachmentsDTO"
+          },
+          "attachmentIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          },
+          "valuation": {
+            "$ref": "#/components/schemas/FlatValuationDTO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DtsHouseRequest": {
+        "type": "object",
+        "properties": {
+          "companyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "eFormId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dealNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonTel": {
+            "type": "string",
+            "nullable": true
+          },
+          "cpm": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "icp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "localSurveyPerson": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyFunction": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "bagmanRealEstateTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "realEstateTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationStreet": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalInfo": {
+            "type": "string",
+            "nullable": true
+          },
+          "actualPurchasePrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leased": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "ownershipLimitations": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "budget": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "clientID": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "clientName": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientPassId": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "dealType": {
+            "type": "string",
+            "nullable": true
+          },
+          "productOwner": {
+            "type": "string",
+            "nullable": true
+          },
+          "maturityLoan": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "purposeLoan": {
+            "type": "string",
+            "nullable": true
+          },
+          "loanAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "specialRequest": {
+            "type": "string",
+            "nullable": true
+          },
+          "insuranceRequired": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "valuationFee": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "nonValuationFeeReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "noteMPSS": {
+            "type": "string",
+            "nullable": true
+          },
+          "dts": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "nonDtsArgumentCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nonDtsArgument": {
+            "type": "string",
+            "nullable": true
+          },
+          "completenessDocuments": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isCellarFlat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isNonApartmentBuildingFlat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isNotUsableTechnicalState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cremRealEstateIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          },
+          "localSurveyAttachments": {
+            "$ref": "#/components/schemas/LocalSurveyAttachmentsDTO"
+          },
+          "attachmentIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          },
+          "valuation": {
+            "$ref": "#/components/schemas/HouseValuationDTO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FlatLandItemDTO": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "relationToLand": {
+            "type": "string",
+            "nullable": true
+          },
+          "electricalConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "telephoneConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sewerConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "drassTray": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "seweragePlant": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "waterConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "waterWell": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "gasConncetion": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "accessPathType": {
+            "type": "string",
+            "nullable": true
+          },
+          "accessPathOther": {
+            "type": "string",
+            "nullable": true
+          },
+          "accessPathDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecologicalLoad": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecologicalLoadDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FlatMainBuildingDTO": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "buildingSituation": {
+            "type": "string",
+            "nullable": true
+          },
+          "lift": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "permanentUse": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "basementNumber": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "upstairsNumber": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "flatCount": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "centralHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "levelHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "localHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "districtHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "otherHeating": {
+            "type": "string",
+            "nullable": true
+          },
+          "gasHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "electricHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "solidFuelHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "thermodynamicHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "masonryStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "panelStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "woodStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stoneStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "steelStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "armouredStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "otherStructure": {
+            "type": "string",
+            "nullable": true
+          },
+          "ageOfBuilding": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "reconstruction": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "reconstructionYear": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "reconstructionSubject": {
+            "type": "string",
+            "nullable": true
+          },
+          "technicalState": {
+            "type": "string",
+            "nullable": true
+          },
+          "buildingPartSite": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "pledgeBuildingRight": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "buildingRightDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "buildingRightCompensation": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "buildingDuration": {
+            "type": "string",
+            "nullable": true
+          },
+          "durationEndYear": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "flatSpecification": {
+            "$ref": "#/components/schemas/FlatSpecificationDTO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FlatSpecificationDTO": {
+        "type": "object",
+        "properties": {
+          "netFloorArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "flatSchema": {
+            "type": "string",
+            "nullable": true
+          },
+          "maisonnette": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "garret": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "flatOccupied": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "leaseType": {
+            "type": "string",
+            "nullable": true
+          },
+          "termOfLease": {
+            "type": "string",
+            "nullable": true
+          },
+          "floorNumber": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "cellarBox": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cellarBoxArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "roomsOrientation": {
+            "type": "string",
+            "nullable": true
+          },
+          "roomsCount": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "kitchensCount": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "bathroomsCount": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "toiletsCount": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "centralHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "levelHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "localHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "districtHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "otherHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "gasHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "electricHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "solidFuelHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "thermodynamicHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "maintenance": {
+            "type": "string",
+            "nullable": true
+          },
+          "reconstruction": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "reconstructionScale": {
+            "type": "string",
+            "nullable": true
+          },
+          "reconstructionYear": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "dominantFloor": {
+            "type": "string",
+            "nullable": true
+          },
+          "floorOther": {
+            "type": "string",
+            "nullable": true
+          },
+          "garageCount": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "garageBoxCount": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "standaloneGarageUnitNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "garageBoxNoResidentialFlat": {
+            "type": "string",
+            "nullable": true
+          },
+          "garageBoxOwnerRelShipRate": {
+            "type": "string",
+            "nullable": true
+          },
+          "garageBoxNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "outdoorStandingSiteNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "outdoorStandingRate": {
+            "type": "string",
+            "nullable": true
+          },
+          "balcony": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "terrace": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "loggia": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "frontGargen": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FlatValuationDTO": {
+        "type": "object",
+        "properties": {
+          "buildingStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "populationNumber": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "civicAmenties": {
+            "type": "string",
+            "nullable": true
+          },
+          "distanceAdminCenter": {
+            "type": "string",
+            "nullable": true
+          },
+          "estateHouse": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateDwellingHouse": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateMixed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateRecreation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateSpa": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateAdmin": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateTrading": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateIndustrial": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateStore": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "massTransport": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "metro": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "distanceStation": {
+            "type": "string",
+            "nullable": true
+          },
+          "nonNegativeImpact": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "negativeImpactNoise": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "negativeImpactDust": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "negativeImpactExhalation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "negativeImpactFloads": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "negativeImpactOther": {
+            "type": "string",
+            "nullable": true
+          },
+          "otherBuilding": {
+            "$ref": "#/components/schemas/OtherBuildingDTO"
+          },
+          "landItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlatLandItemDTO"
+            },
+            "nullable": true
+          },
+          "mainBuildings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlatMainBuildingDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HouseLandItemDTO": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "relationToLand": {
+            "type": "string",
+            "nullable": true
+          },
+          "electricalConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "telephoneConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sewerConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "drassTray": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "seweragePlant": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "waterConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "waterWell": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "gasConncetion": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "accessPathType": {
+            "type": "string",
+            "nullable": true
+          },
+          "accessPathOther": {
+            "type": "string",
+            "nullable": true
+          },
+          "accessPathDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecologicalLoad": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecologicalLoadDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "area": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "steepland": {
+            "type": "string",
+            "nullable": true
+          },
+          "orientation": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HouseMainBuildingDTO": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "buildingSituation": {
+            "type": "string",
+            "nullable": true
+          },
+          "lift": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "permanentUse": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "basementNumber": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "upstairsNumber": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "flatCount": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "centralHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "levelHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "localHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "districtHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "otherHeating": {
+            "type": "string",
+            "nullable": true
+          },
+          "gasHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "electricHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "solidFuelHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "thermodynamicHeating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "masonryStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "panelStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "woodStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stoneStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "steelStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "armouredStructure": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "otherStructure": {
+            "type": "string",
+            "nullable": true
+          },
+          "ageOfBuilding": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "reconstruction": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "reconstructionYear": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "reconstructionSubject": {
+            "type": "string",
+            "nullable": true
+          },
+          "technicalState": {
+            "type": "string",
+            "nullable": true
+          },
+          "buildingPartSite": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "pledgeBuildingRight": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "buildingRightDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "buildingRightCompensation": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "buildingDuration": {
+            "type": "string",
+            "nullable": true
+          },
+          "durationEndYear": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "buildingVolume": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "floorArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "buildUpArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "garageCount": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "garageBoxCount": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "garageLocSelfStand": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "garageLocAddBuild": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "garageLocBasement": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "garageLoc1Upstairs": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "buildingItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BuildingSpecificationDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HouseValuationDTO": {
+        "type": "object",
+        "properties": {
+          "buildingStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "populationNumber": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "civicAmenties": {
+            "type": "string",
+            "nullable": true
+          },
+          "distanceAdminCenter": {
+            "type": "string",
+            "nullable": true
+          },
+          "estateHouse": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateDwellingHouse": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateMixed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateRecreation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateSpa": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateAdmin": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateTrading": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateIndustrial": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estateStore": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "massTransport": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "metro": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "distanceStation": {
+            "type": "string",
+            "nullable": true
+          },
+          "nonNegativeImpact": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "negativeImpactNoise": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "negativeImpactDust": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "negativeImpactExhalation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "negativeImpactFloads": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "negativeImpactOther": {
+            "type": "string",
+            "nullable": true
+          },
+          "otherBuilding": {
+            "$ref": "#/components/schemas/OtherBuildingDTO"
+          },
+          "landItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HouseLandItemDTO"
+            },
+            "nullable": true
+          },
+          "mainBuildings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HouseMainBuildingDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinkedResource": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LocalSurveyAttachmentsDTO": {
+        "type": "object",
+        "properties": {
+          "proofOfPayment": {
+            "type": "boolean"
+          },
+          "fotoDocumentation": {
+            "type": "boolean"
+          },
+          "leaseContract": {
+            "type": "boolean"
+          },
+          "easmentContract": {
+            "type": "boolean"
+          },
+          "ownReasons": {
+            "type": "boolean"
+          },
+          "previousAppraisement": {
+            "type": "boolean"
+          },
+          "buildingPermit": {
+            "type": "boolean"
+          },
+          "projectDocumentation": {
+            "type": "boolean"
+          },
+          "contractForWork": {
+            "type": "boolean"
+          },
+          "budgeting": {
+            "type": "boolean"
+          },
+          "geometricPlan": {
+            "type": "boolean"
+          },
+          "completionCertificate": {
+            "type": "boolean"
+          },
+          "statementByOwner": {
+            "type": "boolean"
+          },
+          "pledgeBuildingRightContract": {
+            "type": "boolean"
+          },
+          "others": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LocalSurveyInfoDTO": {
+        "type": "object",
+        "properties": {
+          "localSurveyPerson": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyFunction": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyEmail": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OnlineMPRequestDTO": {
+        "type": "object",
+        "properties": {
+          "companyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationRequestId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dealNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientID": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "clientName": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientPassId": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "cremRealEstateIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          },
+          "attachmentIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          },
+          "eFormId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "contactPersonName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonTel": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyPerson": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyFunction": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "cpm": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "icp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OnlineRevaluationCheckRequestDTO": {
+        "type": "object",
+        "properties": {
+          "valuationType": {
+            "type": "string",
+            "nullable": true
+          },
+          "leasibilityRequired": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "realEstateType": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalArea": {
+            "type": "number",
+            "format": "double"
+          },
+          "leased": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "realEstateIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderAdditionalInfoDTO": {
+        "type": "object",
+        "properties": {
+          "localSurveyPerson": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyFunction": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalInfo": {
+            "type": "string",
+            "nullable": true
+          },
+          "actualPurchasePrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leased": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "ownershipLimitations": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "budget": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "maturityLoan": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanType": {
+            "type": "string",
+            "nullable": true
+          },
+          "loanAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "dealType": {
+            "type": "string",
+            "nullable": true
+          },
+          "newDevelopment": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "completnessDocument": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "purposeLoan": {
+            "type": "string",
+            "nullable": true
+          },
+          "specialRequest": {
+            "type": "string",
+            "nullable": true
+          },
+          "insuranceRequired": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "valuationFee": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "nonValuationFeeReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "noteMPSS": {
+            "type": "string",
+            "nullable": true
+          },
+          "dts": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "nonDtsArgumentCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nonDtsArgument": {
+            "type": "string",
+            "nullable": true
+          },
+          "completenessDocuments": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderBasicInfoDTO": {
+        "type": "object",
+        "properties": {
+          "eFormId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dealNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonTel": {
+            "type": "string",
+            "nullable": true
+          },
+          "cpm": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "icp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "orderType": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationType": {
+            "type": "string",
+            "nullable": true
+          },
+          "previousValuationNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "previousValuationId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "realEstateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "realEstateType": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientID": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "clientName": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientPassId": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "dealType": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "companyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productOwner": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "mainRealEstateId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "addressText": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "realEstates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RealEstateCompactDTO"
+            },
+            "nullable": true
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttachmentDTO"
+            },
+            "nullable": true
+          },
+          "basicInfo": {
+            "$ref": "#/components/schemas/OrderBasicInfoDTO"
+          },
+          "additionalInfo": {
+            "$ref": "#/components/schemas/OrderAdditionalInfoDTO"
+          },
+          "statusDetails": {
+            "$ref": "#/components/schemas/OrderInfoDTO"
+          },
+          "deeplinkUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "isCheckRevaluation": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderInfoDTO": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "valuationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "valuationNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "approvalDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "valuationTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationStatusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationTypeText": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationStatusText": {
+            "type": "string",
+            "nullable": true
+          },
+          "isFinished": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "lastTaskId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "lastTaskCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastTaskText": {
+            "type": "string",
+            "nullable": true
+          },
+          "deeplinkUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderInfoDTOPagedResponse": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currentPage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalItems": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderInfoDTO"
+            },
+            "nullable": true
+          },
+          "links": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/LinkedResource"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderResultDTO": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "valuationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "orderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "dealNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationType": {
+            "type": "string",
+            "nullable": true
+          },
+          "realEstateType": {
+            "type": "string",
+            "nullable": true
+          },
+          "realEstateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "resultPrice": {
+            "$ref": "#/components/schemas/ResultPriceDTO"
+          },
+          "resultPrices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResultPriceDTO"
+            },
+            "nullable": true
+          },
+          "orderNote": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "finishedOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttachmentDTO"
+            },
+            "nullable": true
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RiskInfoDTO"
+            },
+            "nullable": true
+          },
+          "resultComments": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "constructionStatus": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "documentTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "deeplinkUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "appraiserType": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OtherBuildingDTO": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "landArea": {
+            "type": "number",
+            "format": "double"
+          },
+          "additionalInfo": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": {
+
+        }
+      },
+      "RealEstateCompactDTO": {
+        "type": "object",
+        "properties": {
+          "realEstateId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "documentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ddocumentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "validityDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "territoryNumber": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "territoryName": {
+            "type": "string",
+            "nullable": true
+          },
+          "districtCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "districtName": {
+            "type": "string",
+            "nullable": true
+          },
+          "townCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "townName": {
+            "type": "string",
+            "nullable": true
+          },
+          "deedOfOwnership": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressText": {
+            "type": "string",
+            "nullable": true
+          },
+          "compactedId": {
+            "type": "string",
+            "nullable": true
+          },
+          "htmlText": {
+            "type": "string",
+            "nullable": true
+          },
+          "plainText": {
+            "type": "string",
+            "nullable": true
+          },
+          "isknId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "realEstates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RealEstateDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RealEstateDTO": {
+        "type": "object",
+        "properties": {
+          "realEstateId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "territoryNumber": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "deedOfOwnership": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "validityDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "siteNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "sitePart": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "siteType": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteKind": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteSource": {
+            "type": "string",
+            "nullable": true
+          },
+          "homesite": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "mannerOfUseSite": {
+            "type": "string",
+            "nullable": true
+          },
+          "deedOfOwnSite": {
+            "type": "string",
+            "nullable": true
+          },
+          "landArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "buildingNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "buildingType": {
+            "type": "string",
+            "nullable": true
+          },
+          "mannerOfUseBuilding": {
+            "type": "string",
+            "nullable": true
+          },
+          "deedOfOwnBuilding": {
+            "type": "string",
+            "nullable": true
+          },
+          "townPart": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatType": {
+            "type": "string",
+            "nullable": true
+          },
+          "mannerOfUseFlat": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatLocationDesc": {
+            "type": "string",
+            "nullable": true
+          },
+          "mannerOfProtection": {
+            "type": "string",
+            "nullable": true
+          },
+          "sharedPartsRatio": {
+            "type": "string",
+            "nullable": true
+          },
+          "originalTerritory": {
+            "type": "string",
+            "nullable": true
+          },
+          "pledgedBuilding": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "pledgedSite": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "pledgedFlat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "localityId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "sitesIncluded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "buildingIncluded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "idHouse": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "realEstateListId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "gpsLatitude": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "gpsLongitude": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "pledgeBuildingRight": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "buildingRightDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "mannerOfUseBuildingRight": {
+            "type": "string",
+            "nullable": true
+          },
+          "buildingPartOf": {
+            "type": "string",
+            "nullable": true
+          },
+          "propertyIncluded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "documentIdCez": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "isknSiteId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "isknBuildingId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "isknFlatId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "isknBuildingRightId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "isknFlatNumber": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "mannerOfUseFlatText": {
+            "type": "string",
+            "nullable": true
+          },
+          "mannerOfUseBuildingText": {
+            "type": "string",
+            "nullable": true
+          },
+          "buildingTypeText": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteTypeText": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteSourceText": {
+            "type": "string",
+            "nullable": true
+          },
+          "mannerOfUseBuildingRightText": {
+            "type": "string",
+            "nullable": true
+          },
+          "mannerOfUseSiteText": {
+            "type": "string",
+            "nullable": true
+          },
+          "cremRealEstateId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "cremDocumentId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "documentSource": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResultPriceDTO": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "priceType": {
+            "type": "string",
+            "nullable": true
+          },
+          "priceSourceType": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RevaluationRequestDTO": {
+        "type": "object",
+        "properties": {
+          "companyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "eFormId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dealNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonTel": {
+            "type": "string",
+            "nullable": true
+          },
+          "cpm": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "icp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "localSurveyPerson": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyFunction": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "bagmanRealEstateTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "realEstateTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationStreet": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalInfo": {
+            "type": "string",
+            "nullable": true
+          },
+          "actualPurchasePrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leased": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "ownershipLimitations": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "budget": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "clientID": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "clientName": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientPassId": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "dealType": {
+            "type": "string",
+            "nullable": true
+          },
+          "productOwner": {
+            "type": "string",
+            "nullable": true
+          },
+          "maturityLoan": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "purposeLoan": {
+            "type": "string",
+            "nullable": true
+          },
+          "loanAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "specialRequest": {
+            "type": "string",
+            "nullable": true
+          },
+          "insuranceRequired": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "valuationFee": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "nonValuationFeeReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "noteMPSS": {
+            "type": "string",
+            "nullable": true
+          },
+          "dts": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "nonDtsArgumentCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nonDtsArgument": {
+            "type": "string",
+            "nullable": true
+          },
+          "completenessDocuments": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isCellarFlat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isNonApartmentBuildingFlat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isNotUsableTechnicalState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cremRealEstateIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          },
+          "localSurveyAttachments": {
+            "$ref": "#/components/schemas/LocalSurveyAttachmentsDTO"
+          },
+          "attachmentIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          },
+          "previuosValuationNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RevaluationRequiredResponse": {
+        "type": "object",
+        "properties": {
+          "revaluationRequired": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RiskInfoDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "riskId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "riskText": {
+            "type": "string",
+            "nullable": true
+          },
+          "commentText": {
+            "type": "string",
+            "nullable": true
+          },
+          "recommendationText": {
+            "type": "string",
+            "nullable": true
+          },
+          "impactToPrice": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StandardOrderRequestDTO": {
+        "type": "object",
+        "properties": {
+          "companyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "eFormId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dealNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactPersonTel": {
+            "type": "string",
+            "nullable": true
+          },
+          "cpm": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "icp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "localSurveyPerson": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyFunction": {
+            "type": "string",
+            "nullable": true
+          },
+          "localSurveyEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "bagmanRealEstateTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "realEstateTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationStreet": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalInfo": {
+            "type": "string",
+            "nullable": true
+          },
+          "actualPurchasePrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leased": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "ownershipLimitations": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "budget": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "clientID": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "clientName": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientPassId": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "dealType": {
+            "type": "string",
+            "nullable": true
+          },
+          "productOwner": {
+            "type": "string",
+            "nullable": true
+          },
+          "maturityLoan": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "purposeLoan": {
+            "type": "string",
+            "nullable": true
+          },
+          "loanAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "specialRequest": {
+            "type": "string",
+            "nullable": true
+          },
+          "insuranceRequired": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "valuationFee": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "nonValuationFeeReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "noteMPSS": {
+            "type": "string",
+            "nullable": true
+          },
+          "dts": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "nonDtsArgumentCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nonDtsArgument": {
+            "type": "string",
+            "nullable": true
+          },
+          "completenessDocuments": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isCellarFlat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isNonApartmentBuildingFlat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isNotUsableTechnicalState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cremRealEstateIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          },
+          "localSurveyAttachments": {
+            "$ref": "#/components/schemas/LocalSurveyAttachmentsDTO"
+          },
+          "attachmentIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ZovRequestDTO": {
+        "type": "object",
+        "properties": {
+          "previuosValuationNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -8,7 +8,7 @@ message GetElectronicDocumentFromQueueRequest{
 
 	oneof EDocument {
 		MainDocument MainDocument = 1;
-		Attachment Attachment = 2;
+		DocumentAttachment DocumentAttachment = 2;
 	}
 } 
 
@@ -25,8 +25,8 @@ message MainDocument{
 
 }
 
-message Attachment{
+message DocumentAttachment{
 
-	string AttachmentId = 1;
+	string DocumentAttachmentId = 1;
 
 }

@@ -41,7 +41,13 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
                 RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId,
                 LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = valuationDetail.LoanPurposeDetails.LoanPurposes.ToList() },
                 SpecificDetails = GetSpecificDetailsObject(valuationDetail)
-            }
+            },
+            Attachments = valuationDetail.Attachments?.Select(t => new RealEstateValuationAttachment
+            {
+                RealEstateValuationAttachmentId = t.RealEstateValuationAttachmentId,
+                Title = t.Title,
+                FileName = t.FileName
+            }).ToList()
         };
     }
 
