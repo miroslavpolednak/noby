@@ -4610,6 +4610,15 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.StartTaskSigning(System.Int64,System.Int64)">
+            <summary>
+            Začít podepisování dokumentu z workflow
+            </summary>
+            <remarks>
+            Spustí podepisovací proces pro zvolený podúkol.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7A23BD1E-668C-4ddc-BB82-550DC6C34C7F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.CreateTask(System.Int64,NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest)">
             <summary>
             Vytvoření nového workflow tasku do SB.
