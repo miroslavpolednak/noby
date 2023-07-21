@@ -40,9 +40,10 @@ internal sealed class CreateCaseHandler
         }
 
         // notify SB about state change
-        _mediator.Send(new Contracts.NotifyStarbuildRequest
+        _mediator.Send(new NotifyStarbuildRequest
         {
-            CaseId = newCaseId
+            CaseId = newCaseId,
+            SkipRiskBusinessCaseId = true
         }, cancellation);
         
         return new CreateCaseResponse()
