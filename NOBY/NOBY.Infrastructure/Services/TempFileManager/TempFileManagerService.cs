@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using NOBY.Database.Entities;
 using NOBY.Infrastructure.Configuration;
 using System.IO;
+using System.Threading;
 
 namespace NOBY.Infrastructure.Services.TempFileManager;
 
@@ -52,6 +54,23 @@ internal class TempFileManagerService
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return fileInstance;
+    }
+
+    public async Task<List<TempFile>> GetSession(Guid sessionId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.TempFiles
+            .AsNoTracking()
+            .Where(t => t.SessionId == sessionId)
+            .Select(t => new TempFile
+            {
+                TempFileId = t.TempFileId,
+                FileName = t.FileName,
+                SessionId = t.SessionId,
+                ObjectId = t.ObjectId,
+                ObjectType = t.ObjectType,
+                MimeType = t.MimeType
+            })
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<TempFile> GetMetadata(Guid tempFileId, CancellationToken cancellationToken = default)
