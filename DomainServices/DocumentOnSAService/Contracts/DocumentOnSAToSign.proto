@@ -48,4 +48,9 @@ message DocumentOnSAToSign {
 	google.protobuf.Int32Value CustomerOnSAId = 19;
 
 	bool IsPreviewSentToCustomer = 20;
+
+	google.protobuf.Int64Value CaseId = 21;
+
+	google.protobuf.Int32Value TaskId = 22;
+
 }

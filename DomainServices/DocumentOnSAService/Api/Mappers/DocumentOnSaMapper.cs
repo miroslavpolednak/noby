@@ -49,7 +49,9 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
                 SignatureTypeId = documentOnSa.SignatureTypeId,
                 Source = (Source)documentOnSa.Source,
                 CustomerOnSAId = documentOnSa.CustomerOnSAId1,
-                IsPreviewSentToCustomer = documentOnSa.IsPreviewSentToCustomer
+                IsPreviewSentToCustomer = documentOnSa.IsPreviewSentToCustomer,
+                TaskId = documentOnSa.TaskId,
+                CaseId = documentOnSa.CaseId
             };
         }
     }
