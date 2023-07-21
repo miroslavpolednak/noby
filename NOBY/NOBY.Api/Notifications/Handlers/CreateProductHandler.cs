@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using DomainServices.ProductService.Clients;
+﻿using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.OfferService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
@@ -40,13 +39,16 @@ internal sealed class CreateProductHandler
         var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken);
 
         // zjistit, zda existuje customer v konsDb
-        await _createOrUpdateCustomerKonsDb.CreateOrUpdate(notification.CustomerIdentifiers, cancellationToken);
+        await _createOrUpdateCustomerKonsDb.CreateOrUpdate(notification.CustomerIdentifiers!, cancellationToken);
+
+        //ContractNumber
+        var contractNumberResponse = await _salesArrangementService.SetContractNumber(notification.SalesArrangementId, notification.CustomerOnSAId, cancellationToken);
 
         // vytovrit produkt - musi se zalozit pred klientem!
         var request = new _Product.CreateMortgageRequest
         {
             CaseId = notification.CaseId,
-            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value, saInstance.ContractNumber)
+            Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value, contractNumberResponse.ContractNumber)
         };
 
         request.Mortgage.ThirdPartyConsultantId = saInstance.Created.UserId;
@@ -59,7 +61,6 @@ internal sealed class CreateProductHandler
 
     private readonly Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
     private readonly IRollbackBag _bag;
-    private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
     private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IProductServiceClient _productService;
@@ -68,7 +69,6 @@ internal sealed class CreateProductHandler
     public CreateProductHandler(
         Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
         IRollbackBag bag,
-        DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
         IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService,
         IProductServiceClient productService,
@@ -76,7 +76,6 @@ internal sealed class CreateProductHandler
     {
         _createOrUpdateCustomerKonsDb = createOrUpdateCustomerKonsDb;
         _bag = bag;
-        _customerService = customerService;
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
         _productService = productService;

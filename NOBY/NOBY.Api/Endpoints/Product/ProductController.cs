@@ -54,7 +54,10 @@ public sealed class ProductController : ControllerBase
     /// <summary>
     /// Vrátí Case ID podle zadaného PCP ID
     /// </summary>
-    /// <remarks>Vyhledá Case ID podle PCP ID v KonsDB</remarks>
+    /// <remarks>
+    /// Vyhledá Case ID podle PCP ID v KonsDB.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=951AAF15-BEBB-4e22-8DF4-E9C195F309AC"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
     /// <param name="pcpId">PCP ID</param>
     [HttpGet("caseid-by-pcpid/{pcpId:required}")]
     [Produces(MediaTypeNames.Application.Json)]

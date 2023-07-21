@@ -1,0 +1,8 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+message DeleteRealEstateValuationAttachmentRequest {
+    int32 RealEstateValuationAttachmentId = 1;
+    int32 RealEstateValuationId = 2;
+}

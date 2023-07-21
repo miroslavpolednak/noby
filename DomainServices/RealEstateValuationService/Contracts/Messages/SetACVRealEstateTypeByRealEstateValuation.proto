@@ -1,0 +1,8 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+message SetACVRealEstateTypeByRealEstateValuationRequest {
+    int32 RealEstateValuationId = 1;
+    string ACVRealEstateType = 2;
+}

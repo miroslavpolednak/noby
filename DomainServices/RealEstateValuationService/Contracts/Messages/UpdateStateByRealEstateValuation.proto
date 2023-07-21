@@ -1,0 +1,8 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+message UpdateStateByRealEstateValuationRequest {
+    int32 RealEstateValuationId = 1;
+    int32 ValuationStateId = 2;
+}

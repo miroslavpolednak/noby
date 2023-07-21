@@ -3,6 +3,7 @@
 public sealed class ErrorCodeMapper
 {
     public static IReadOnlyDictionary<int, ErrorCodeMapperItem> Messages { get; private set; } = null!;
+    public static IReadOnlyDictionary<int, int> DsToApiCodeMapper { get; private set; } = null!;
 
     public static void Init()
     {
@@ -25,10 +26,24 @@ public sealed class ErrorCodeMapper
             { 90016, new("Nabídka nemá platnou garanci.") },
             { 90017, new("Nelze simulovat s garancí.", "Žádost neexistuje nebo neobsahuje platné datum garance.") },
             { 90018, new("Nelze pokračovat bez schválené individuální ceny.") },
-            { 90019, new("Obchod nelze poskytnout.","Převažující měna příjmu nebo měna bydliště není v oboru povolených měn. V žádosti nebude možné dále pokračovat.") }
+            { 90019, new("Obchod nelze poskytnout.","Převažující měna příjmu nebo měna bydliště není v oboru povolených měn. V žádosti nebude možné dále pokračovat.") },
+            { 90020, new("Chyba - služba pro našeptávání adres není aktuálně dostupná.", "Zadejte adresu ručně.") },
+            { 90021, new("Chyba - nastala chyba při předání dat do systému CURE.", "Proto jsme automaticky odeslali úkol typu obecná Konzultace do Zpracovatelského centra na manuální úpravu a doplnění těchto údajů. Do doby zpracování úkolu ve Zpracovatelském centru, budou uloženy neaktuální informace o klientovi.") },
+            { 90022, new("Nelze stáhnout dokument ze systému ePodpisy", "Dokument již není k nalezení v systému ePodpisy (pravděpodobně byl smazán).") },
+            { 90023, new("Chyba propisu dat o novém klientovi", "Prosím vyčkejte, než bude záznam o novém klientovi vytvořen v databázi C4M. Za okamžik opakujte akci znovu") },
+            { 90024, new("Chyba - pro klienta již existuje rozpracovaný obchodní případ", "Klient je účastníkem jiného obchodního případu čekajícího na schválení nebo zamítnutí. Pro více informací prosím kontaktujte tým zpracovatelů") },
+            { 90025, new("Obchodní případ byl stornován.", "") },
+            { 90026, new("Vámi hledaný obchodní případ byl vytvořen v jiném systému a není možné zde zobrazit jeho detail") }
         };
 
         Messages = messages.AsReadOnly();
+
+        var mapper = new Dictionary<int, int>()
+        {
+            { 13035, 90025 }
+        };
+
+        DsToApiCodeMapper = mapper.AsReadOnly();
     }
 
     public sealed record ErrorCodeMapperItem(

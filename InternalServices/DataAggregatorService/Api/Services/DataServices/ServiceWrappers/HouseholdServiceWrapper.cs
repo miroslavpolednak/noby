@@ -5,11 +5,13 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ServiceWrappers;
 
-[TransientService, SelfService]
-internal class HouseholdServiceWrapper : IServiceWrapper
+[ScopedService, SelfService]
+internal class HouseholdServiceWrapper : IServiceWrapper, IDisposable
 {
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
+
+    private readonly SemaphoreSlim _semaphore = new(1);
 
     public HouseholdServiceWrapper(IHouseholdServiceClient householdService, ICustomerOnSAServiceClient customerOnSAService)
     {
@@ -19,17 +21,31 @@ internal class HouseholdServiceWrapper : IServiceWrapper
 
     public DataSource DataSource => DataSource.HouseholdService;
 
+    public void Dispose()
+    {
+        _semaphore.Dispose();
+    }
+
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
         input.ValidateSalesArrangementId();
 
-        if (data.HouseholdMain is not null && data.HouseholdCodebtor is not null)
-            return;
+        await _semaphore.WaitAsync(cancellationToken);
 
-        var householdList = (await _householdService.GetHouseholdList(input.SalesArrangementId!.Value, cancellationToken)).ToLookup(h => (HouseholdTypes)h.HouseholdTypeId);
+        try
+        {
+            if (data.HouseholdMain is not null && data.HouseholdCodebtor is not null)
+                return;
 
-        data.HouseholdMain = new HouseholdInfo { Household = householdList[HouseholdTypes.Main].FirstOrDefault() };
-        data.HouseholdCodebtor = new HouseholdInfo { Household = householdList[HouseholdTypes.Codebtor].FirstOrDefault() };
+            var householdList = (await _householdService.GetHouseholdList(input.SalesArrangementId!.Value, cancellationToken)).ToLookup(h => (HouseholdTypes)h.HouseholdTypeId);
+
+            data.HouseholdMain = new HouseholdInfo { Household = householdList[HouseholdTypes.Main].FirstOrDefault() };
+            data.HouseholdCodebtor = new HouseholdInfo { Household = householdList[HouseholdTypes.Codebtor].FirstOrDefault() };
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
     public async Task LoadMainHouseholdDetail(InputParameters input, AggregatedData data, CancellationToken cancellationToken)

@@ -242,7 +242,6 @@ internal sealed class UpdateCustomersHandler
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IProductServiceClient _productService;
-    private readonly ICustomerServiceClient _customerService;
     private readonly ILogger<UpdateCustomersHandler> _logger;
 
     public UpdateCustomersHandler(
@@ -252,12 +251,10 @@ internal sealed class UpdateCustomersHandler
         ICustomerOnSAServiceClient customerOnSAService,
         IProductServiceClient productService,
         IDocumentOnSAServiceClient documentOnSAService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICustomerServiceClient customerService)
+        ISalesArrangementServiceClient salesArrangementService)
     {
         _logger = logger;
         _codebookService = codebookService;
-        _customerService = customerService;
         _productService = productService;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;

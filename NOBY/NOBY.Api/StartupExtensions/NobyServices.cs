@@ -1,8 +1,7 @@
-﻿using ExternalServices.AddressWhisperer;
-using ExternalServices.AddressWhisperer.V1;
-using NOBY.Infrastructure.ErrorHandling.Internals;
+﻿using NOBY.Infrastructure.ErrorHandling.Internals;
 using CIS.Infrastructure.StartupExtensions;
 using MPSS.Security.Noby;
+using ExternalServices;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -54,7 +53,8 @@ internal static class NobyServices
         builder.AddCisDistributedCache();
 
         // ext services
-        builder.AddExternalService<IAddressWhispererClient>(CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue, CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue);
+        builder.AddExternalService<ExternalServices.Crem.V1.ICremClient>();
+        builder.AddExternalService<ExternalServices.AddressWhisperer.V1.IAddressWhispererClient>(CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue, CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue);
 
         // pridat mpss cookie
         builder.AddMpssSecurityCookie();

@@ -19,6 +19,7 @@ internal sealed class ErrorCodeMapper
     public const int DataObjectIsNotValid = 18015;
     public const int SalesArrangementCantDelete = 18016;
     public const int FlowSwitchesIsEmpty = 18017;
+    public const int ProductSalesArrangementNotFound = 18018;
     public const int RealEstateTypeIdNotFound = 18037;
     public const int SendAndValidateForm1 = 18040;
     public const int SendAndValidateForm2 = 18041;
@@ -46,6 +47,7 @@ internal sealed class ErrorCodeMapper
     {
         SetMessages(new Dictionary<int, string>()
         {
+            { ProductSalesArrangementNotFound, "Product SA for CaseId {PropertyValue} not found" },
             { MortgageAgentIsNotEmpty, "Agent can not be set while creating Mortgage" },
             { CaseIdIsEmpty, "Case Id must be > 0" },
             { SalesArrangementTypeIdIsEmpty, "SalesArrangementTypeId must be > 0" },

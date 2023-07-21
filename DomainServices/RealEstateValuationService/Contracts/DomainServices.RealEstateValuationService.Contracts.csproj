@@ -15,6 +15,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Messages\AddDeedOfOwnershipDocument.proto" />
+	  <None Remove="Messages\CreateRealEstateValuationAttachment.proto" />
+	  <None Remove="Messages\DeleteDeedOfOwnershipDocument.proto" />
+	  <None Remove="Messages\DeleteRealEstateValuationAttachment.proto" />
+	  <None Remove="Messages\SetACVRealEstateTypeByRealEstateValuation.proto" />
+	  <None Remove="Messages\UpdateStateByRealEstateValuation.proto" />
+	  <None Remove="Messages\ValidateRealEstateValuationId.proto" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.23.4" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.55.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.56.0">
@@ -28,7 +38,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Protobuf Include="Messages\DeleteRealEstateValuationAttachment.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\ValidateRealEstateValuationId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\SetACVRealEstateTypeByRealEstateValuation.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\AddDeedOfOwnershipDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\DeleteDeedOfOwnershipDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\CreateRealEstateValuationAttachment.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\UpdateStateByRealEstateValuation.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\UpdateRealEstateValuationDetail.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\GetRealEstateValuationDetailByOrderId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\GetRealEstateValuationDetail.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />

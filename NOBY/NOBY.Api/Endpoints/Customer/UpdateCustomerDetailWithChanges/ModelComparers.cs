@@ -34,6 +34,11 @@ internal static class ModelComparers
         writeDifferencesToDelta(_rootCompareLogic.Compare(original, request), delta);
     }
 
+    public static bool AreObjectsEqual<T>(T? request, T? original)
+    {
+        return _basicCompareLogic.Compare(original, request).AreEqual;
+    }
+
     public static void CompareObjects<T>(T? request, T? original, string propertyName, IDictionary<string, Object> delta)
     {
         if (!_basicCompareLogic.Compare(original, request).AreEqual)

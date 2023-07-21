@@ -21,26 +21,30 @@ public class DocumentArchiveController : ControllerBase
     }
 
     /// <summary>
-    /// Načtení dokumentu z archivu
+    /// Načtení dokumentu z archivu nebo ePodpisů
     /// </summary>
     /// <remarks>
-    /// Načtení contentu dokumentu.Vrací se stream binárních dat.<br />
-    /// Nenačítají se dokumenty s EaCodeMain.IsVisibleForKb=false <br />
-    /// <i>DS:</i> DocumentArchiveService/getDocument
+    /// Načtení contentu dokumentu. Vrací se stream binárních dat.<br />
+    /// Nenačítají se z eArchivu dokumenty s EaCodeMain.IsVisibleForKb=false. <br /><br />
+    /// DocumentId je povinné v kombinaci se source = 0 (eArchiv) a externalId je povinné v kombinaci se source = 1 (ePodpisy).<br /><br />
     /// <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9617EAF8-9876-4444-A130-DFCCD597484D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    /// <param name="documentId">ID dokumentu</param>
     /// <param name="contentDisposition">0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default</param>
-    [HttpGet("document/{documentId}")]
+    /// <param name="source">Zdroj dokumentu (0 - e-archiv; 1 - ePodpisy; 0 je default</param>
+    /// <param name="documentId">Id dokumentu eArchivu</param>
+    /// <param name="externalId">Externí ID ePodpisů</param>
+    [HttpGet("document")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocument(
-        [FromRoute] string documentId,
         [FromQuery] FileContentDispositions contentDisposition,
+        [FromQuery] Source source,
+        [FromQuery] string? documentId,
+        [FromQuery] string? externalId,
         CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetDocumentRequest(documentId), cancellationToken);
+        var result = await _mediator.Send(new GetDocumentRequest(source, documentId, externalId), cancellationToken);
         if (contentDisposition == FileContentDispositions.inline)
         {
             return File(result.Content.BinaryData, result.Content.MimeType);

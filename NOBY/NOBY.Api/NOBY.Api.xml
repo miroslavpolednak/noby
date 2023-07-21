@@ -1406,7 +1406,12 @@
             (tj. pole, ktera jsou primo na entite, nikoliv v JSON datech)
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createJsonDelta(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createMetadata(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,System.Object)">
+            <summary>
+            Vytvori metadata CustomerOnSA
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createDelta(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
             <summary>
             Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
             </summary>
@@ -1495,18 +1500,110 @@
             Stupeň vzdělání
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocument(System.String,NOBY.Dto.Documents.FileContentDispositions,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipIds(System.Int64,System.Threading.CancellationToken)">
             <summary>
-            Načtení dokumentu z archivu
+            Seznam ISKN id listů vlastnictví pro daný adresní bod
             </summary>
             <remarks>
-            Načtení contentu dokumentu.Vrací se stream binárních dat.<br />
-            Nenačítají se dokumenty s EaCodeMain.IsVisibleForKb=false <br />
-            <i>DS:</i> DocumentArchiveService/getDocument
+            Provolání CREM pro získání seznamu ISKN id.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D5B309D6-5B0C-4fe3-8CCE-50955423F7E4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipDocumentContent(System.Int32,System.Int32,System.Int64,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Informace z dokumentu listu vlastnictví
+            </summary>
+            <remarks>
+            Integrace na CREM
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B4B2F8E-17B5-48af-A01D-49E60B53E5BA"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponse">
+            <summary>
+            Informace z listu vlastnictví
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseOwners">
+            <summary>
+            Popis vlastníka na listu vlastnictví
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseOwners.OwnerDescription">
+            <summary>
+            Formátovaný popis vlastníka (jméno + adresa)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseOwners.OwnershipRatio">
+            <summary>
+            Podíl vlastnictví nemovitosti
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseLegalRelations">
+            <summary>
+            Omezení vlastnických práv na listu vlastnictví
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseLegalRelations.LegalRelationDescription">
+            <summary>
+            Textový popis omezení vlastnického práva
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseRealEstates">
+            <summary>
+            Nemovitost z listu vlastnictví
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseRealEstates.RealEstateDescription">
+            <summary>
+            Textový popis nemovitosti
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponse">
+            <summary>
+            Id položek z listu vlastnicví
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponse.DeedOfOwnershipId">
+            <summary>
+            ISKN ID listu vlastnictví(LV), technický identifikátor katastru
+            </summary>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat">
+            <summary>
+            Byt
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat.FlatNumber">
+            <summary>
+            Číslo bytu včetně čísla domu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat.DeedOfOwnershipId">
+            <summary>
+            ISKN ID listu vlastnictví (LV), technický identifikátor katastru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat.MannerOfUseFlatShortName">
+            <summary>
+            Způsob využití bytu
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocument(NOBY.Dto.Documents.FileContentDispositions,NOBY.Api.Endpoints.DocumentArchive.GetDocument.Source,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Načtení dokumentu z archivu nebo ePodpisů
+            </summary>
+            <remarks>
+            Načtení contentu dokumentu. Vrací se stream binárních dat.<br />
+            Nenačítají se z eArchivu dokumenty s EaCodeMain.IsVisibleForKb=false. <br /><br />
+            DocumentId je povinné v kombinaci se source = 0 (eArchiv) a externalId je povinné v kombinaci se source = 1 (ePodpisy).<br /><br />
             <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9617EAF8-9876-4444-A130-DFCCD597484D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
-            <param name="documentId">ID dokumentu</param>
             <param name="contentDisposition">0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default</param>
+            <param name="source">Zdroj dokumentu (0 - e-archiv; 1 - ePodpisy; 0 je default</param>
+            <param name="documentId">Id dokumentu eArchivu</param>
+            <param name="externalId">Externí ID ePodpisů</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocumentList(System.Int64,System.String,System.Threading.CancellationToken)">
             <summary>
@@ -2703,7 +2800,10 @@
             <summary>
             Vrátí Case ID podle zadaného PCP ID
             </summary>
-            <remarks>Vyhledá Case ID podle PCP ID v KonsDB</remarks>
+            <remarks>
+            Vyhledá Case ID podle PCP ID v KonsDB.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=951AAF15-BEBB-4e22-8DF4-E9C195F309AC"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
             <param name="pcpId">PCP ID</param>
         </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
@@ -2809,6 +2909,72 @@
             
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteDeedOfOwnershipDocument(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazání již připojeného dokumentu LV
+            </summary>
+            <remarks>
+            Smazání/odpojení již připojeného dokumentu listu vlastnictví (LV) od existujícího Ocenění nemovitosti.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=33180E91-2CB3-4d2f-B6AD-5841EC8A836F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.UploadRealEstateValuationAttachment(System.Int64,System.Int32,Microsoft.AspNetCore.Http.IFormFile,System.Threading.CancellationToken)">
+            <summary>
+            Upload přílohy ocenění nemovitosti
+            </summary>
+            <remarks>
+            Dočasný upload souboru přílohy na server. Vrací GUID souboru, který může být následně použit pro spárování dočasného souboru s oceněním pomocí SaveRealEstateValuationAttachments.
+            </remarks>
+            <response code="200">GUID dočasného souboru</response>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveRealEstateValuationAttachments(System.Int64,System.Int32,System.Collections.Generic.List{NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem},System.Threading.CancellationToken)">
+            <summary>
+            Spojení souboru přílohy s oceněním nemovitosti
+            </summary>
+            <remarks>
+            Propojí uploadnutý soubor s oceněním a doplní k souboru popisek.
+            </remarks>
+            <param name="attachments">Seznam souborů k propojení</param>
+            <response code="200">Kolekce ID uploadovaných souborů vs. nových ID příloh</response>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteRealEstateValuationAttachment(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazání přílohy ocenění nemovitosti
+            </summary>
+            <remarks>
+            Smazání již nahrané přílohy ocenění z databáze NOBY a ACV.
+            </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequest.Attachments">
+            <summary>
+            Seznam uploadnutých příloh, které se mají založit k ocenění
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem.TempFileId">
+            <summary>
+            ID uploadovaného souboru
+            </summary>
+            <example>3fa85f64-5717-4562-b3fc-2c963f66afa6</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem.Title">
+            <summary>
+            Popis souboru
+            </summary>
+            <example>Fotka dveří</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsResponseItem.TempFileId">
+            <summary>
+            ID uploadnutého dočasného souboru
+            </summary>
+            <example>3fa85f64-5717-4562-b3fc-2c963f66afa6</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsResponseItem.RealEstateValuationAttachmentId">
+            <summary>
+            ID nově vytvořené přílohy ocenění
+            </summary>
+            <example>97355</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.IsLoanRealEstate">
             <summary>
@@ -4452,6 +4618,15 @@
             <remarks>
             Stornování úkolu ve SB. <br /><br />
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.StartTaskSigning(System.Int64,System.Int64)">
+            <summary>
+            Začít podepisování dokumentu z workflow
+            </summary>
+            <remarks>
+            Spustí podepisovací proces pro zvolený podúkol.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7A23BD1E-668C-4ddc-BB82-550DC6C34C7F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.CreateTask(System.Int64,NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskRequest)">
