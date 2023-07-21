@@ -23,7 +23,8 @@ await _tempFileManager.Delete(id, cancellationToken);
 ```
 
 K metadatům ukládaného temp souboru se dají připojit další informace ke kterému objektu byl daný soubor nahráván, případně session identifikátor.
-K tomu slouží složitější přetížení metody Save.
+K tomu slouží složitější přetížení metody Save.  
+Tyto informace je následně možné použít např. ke kontrole, že daný GUID byl opravdu nahrán k dané entitě nebo třeba pro získání list všech temp souborů nahraných v dané session.
 
 ```csharp
 Task<TempFile> Save(

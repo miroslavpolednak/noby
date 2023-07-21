@@ -7,7 +7,11 @@ internal sealed class UploadRealEstateValuationAttachmentHandler
 {
     public async Task<Guid> Handle(UploadRealEstateValuationAttachmentRequest request, CancellationToken cancellationToken)
     {
-        var response = await _tempFileManager.Save(request.File, objectId: request.RealEstateValuationId, objectType: nameof(UploadRealEstateValuationAttachmentHandler), cancellationToken: cancellationToken);
+        var response = await _tempFileManager.Save(
+            request.File, 
+            objectId: request.RealEstateValuationId, 
+            objectType: "RealEstateValuationAttachment", 
+            cancellationToken: cancellationToken);
         return response.TempFileId;
     }
 
