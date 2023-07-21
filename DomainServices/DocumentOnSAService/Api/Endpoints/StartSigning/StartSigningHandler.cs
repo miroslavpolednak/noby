@@ -67,7 +67,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
 
         DocumentOnSa documentOnSaEntity;
-        if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)
+        if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ProductRequest.ToByte())
         {
             if (request.TaskId is not null) // workflow
                 documentOnSaEntity = await ProcessWorkflowRequest(request, cancellationToken);
@@ -76,7 +76,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             else // Product request
                 documentOnSaEntity = await ProcessProductRequest(request, salesArrangement, cancellationToken);
         }
-        else if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ServiceRequest)
+        else if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ServiceRequest.ToByte())
         {
             if (request.DocumentTypeId == _crsDocumentType) // CRS request can be service request too
                 documentOnSaEntity = await ProcessCrsRequest(request, salesArrangement, cancellationToken);
@@ -87,7 +87,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedKindOfSigningRequest);
 
         // For CRS, Product and Service request  
-        if (documentOnSaEntity.TaskId is null && documentOnSaEntity.SignatureTypeId is not null && documentOnSaEntity.SignatureTypeId == (int)SignatureTypes.Electronic)
+        if (documentOnSaEntity.TaskId is null && documentOnSaEntity.SignatureTypeId is not null && documentOnSaEntity.SignatureTypeId == SignatureTypes.Electronic.ToByte())
         {
             var prepareDocumentRequest = await _startSigningMapper.MapPrepareDocumentRequest(documentOnSaEntity, salesArrangement, cancellationToken);
             var referenceId = await _eSignaturesClient.PrepareDocument(prepareDocumentRequest, cancellationToken);
