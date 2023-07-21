@@ -165,6 +165,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
             {
                 case EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT:
                     docOnSa.IsSigned = true;
+                    // ToDo zavolat SignDocument(SignDocumentManually)
                     break;
                 case EDocumentStatuses.DELETED:
                     docOnSa.IsValid = false;

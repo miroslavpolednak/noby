@@ -16,10 +16,10 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int HouseholdTypeIdNotExist = 19014;
     public const int ForSpecifiedDocumentTypeIdCannotFindHousehold = 19015;
     public const int DocumentTypeIdNotSupportedForProductRequest = 19016;
+    public const int UnsupportedStatusReturnedFromESignature = 19017;
     public const int UnableToStartSigningOrSignInvalidSalesArrangementState = 19018;
     public const int UnableToStartSigningOrSignInvalidDocument = 19019;
     public const int UnableToSendDocumentPreviewForPaperSignedDocuments = 19020;
-    public const int UnsupportedStatusReturnedFromESignature = 19021;
 
     // Non BL validation
     public const int SalesArrangementIdIsRequired = 19030;

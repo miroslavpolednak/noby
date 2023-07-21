@@ -48,7 +48,8 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
                 IsFinal = documentOnSa.IsFinal,
                 SignatureTypeId = documentOnSa.SignatureTypeId,
                 Source = (Source)documentOnSa.Source,
-                CustomerOnSAId = documentOnSa.CustomerOnSAId1
+                CustomerOnSAId = documentOnSa.CustomerOnSAId1,
+                IsPreviewSentToCustomer = documentOnSa.IsPreviewSentToCustomer
             };
         }
     }
