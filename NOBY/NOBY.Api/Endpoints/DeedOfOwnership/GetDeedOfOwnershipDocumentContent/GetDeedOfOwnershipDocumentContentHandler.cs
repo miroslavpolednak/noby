@@ -7,6 +7,10 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
 {
     public async Task<GetDeedOfOwnershipDocumentContentResponse> Handle(GetDeedOfOwnershipDocumentContentRequest request, CancellationToken cancellationToken)
     {
+        if (!request.NobyDeedOfOwnershipDocumentId.HasValue)
+        {
+
+        }
         return null;
     }
 

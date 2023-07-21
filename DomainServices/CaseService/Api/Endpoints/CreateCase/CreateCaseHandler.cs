@@ -40,6 +40,7 @@ internal sealed class CreateCaseHandler
         }
 
         // notify SB about state change
+        // schvalne bez await, aby to spoklo pripadnou exception
         _mediator.Send(new NotifyStarbuildRequest
         {
             CaseId = newCaseId,
