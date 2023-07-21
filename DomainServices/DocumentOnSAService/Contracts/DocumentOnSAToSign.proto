@@ -45,5 +45,5 @@ message DocumentOnSAToSign {
 	
 	DomainServices.DocumentOnSAService.Enums.Source Source = 18;
 
-	google.protobuf.Int32Value CustomerOnSAId = 99;
+	google.protobuf.Int32Value CustomerOnSAId = 19;
 }

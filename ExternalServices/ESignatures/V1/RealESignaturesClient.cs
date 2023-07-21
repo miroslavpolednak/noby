@@ -183,7 +183,7 @@ internal sealed class RealESignaturesClient
                 {
                     new()
                     {
-                        Code = $"X_SIG_{request.ClientData.CodeIndex}",
+                        Code = $"X_SIG_{t.CodeIndex}",
                         Info1 = t.FullName,
                         Info2 = t.Phone,
                         Info3 = t.Email

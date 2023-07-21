@@ -7,7 +7,7 @@ public class DocumentOnSa : ICreated
 {
     public int DocumentOnSAId { get; set; }
 
-    public int DocumentTypeId { get; set; }
+    public int? DocumentTypeId { get; set; }
 
     public int? DocumentTemplateVersionId { get; set; }
 

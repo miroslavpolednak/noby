@@ -2,31 +2,37 @@
 using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
+using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
-using DomainServices.DocumentArchiveService.Clients;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
+using ExternalServices.ESignatures.V1;
+using FastEnumUtility;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
-using __Entity = DomainServices.DocumentOnSAService.Api.Database.Entities;
 using __Household = DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
 public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSigningResponse>
 {
+    private const int _crsDocumentType = 13;
+
+
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IMediator _mediator;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
     private readonly IDataAggregatorServiceClient _dataAggregatorServiceClient;
     private readonly ICodebookServiceClient _codebookServiceClient;
-    private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
+    private readonly StartSigningMapper _startSigningMapper;
     private readonly ICurrentUserAccessor _currentUser;
+    private readonly ICaseServiceClient _caseServiceClient;
+    private readonly IESignaturesClient _eSignaturesClient;
 
     public StartSigningHandler(
         DocumentOnSAServiceDbContext dbContext,
@@ -35,8 +41,10 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         ISalesArrangementServiceClient arrangementServiceClient,
         IDataAggregatorServiceClient dataAggregatorServiceClient,
         ICodebookServiceClient codebookServiceClient,
-        IDocumentArchiveServiceClient documentArchiveServiceClient,
-        ICurrentUserAccessor currentUser)
+        StartSigningMapper startSigningMapper,
+        ICurrentUserAccessor currentUser,
+        ICaseServiceClient caseServiceClient,
+        IESignaturesClient eSignaturesClient)
     {
         _dbContext = dbContext;
         _mediator = mediator;
@@ -44,26 +52,99 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         _arrangementServiceClient = arrangementServiceClient;
         _dataAggregatorServiceClient = dataAggregatorServiceClient;
         _codebookServiceClient = codebookServiceClient;
-        _documentArchiveServiceClient = documentArchiveServiceClient;
+        _startSigningMapper = startSigningMapper;
         _currentUser = currentUser;
+        _caseServiceClient = caseServiceClient;
+        _eSignaturesClient = eSignaturesClient;
     }
 
     public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(nameof(request));
 
-        await ValidateRequest(request, cancellationToken);
-
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
 
-        var houseHold = await GetHouseholdId(request.DocumentTypeId!.Value, request.SalesArrangementId!.Value, cancellationToken);
+        var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
 
+        DocumentOnSa documentOnSaEntity;
+        if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)
+        {
+            if (request.TaskId is not null) // workflow
+                documentOnSaEntity = await ProcessWorkflowRequest(request, cancellationToken);
+            else if (request.DocumentTypeId == _crsDocumentType) //CRS request
+                documentOnSaEntity = await ProcessCrsRequest(request, salesArrangement, cancellationToken);
+            else // Product request
+                documentOnSaEntity = await ProcessProductRequest(request, salesArrangement, cancellationToken);
+        }
+        else if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ServiceRequest)
+        {
+            if (request.DocumentTypeId == _crsDocumentType) // CRS request can be service request too
+                documentOnSaEntity = await ProcessCrsRequest(request, salesArrangement, cancellationToken);
+            else
+                documentOnSaEntity = await ProcessServiceRequest(request, salesArrangement, cancellationToken);
+        }
+        else
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedKindOfSigningRequest);
+
+        // For CRS, Product and Service request  
+        if (documentOnSaEntity.TaskId is null && documentOnSaEntity.SignatureTypeId is not null && documentOnSaEntity.SignatureTypeId == (int)SignatureTypes.Electronic)
+        {
+            var prepareDocumentRequest = await _startSigningMapper.MapPrepareDocumentRequest(documentOnSaEntity, salesArrangement, cancellationToken);
+            var referenceId = await _eSignaturesClient.PrepareDocument(prepareDocumentRequest, cancellationToken);
+            var uploadDocumentRequest = await _startSigningMapper.MapUploadDocumentRequest(referenceId, prepareDocumentRequest.DocumentData.FileName, documentOnSaEntity, cancellationToken);
+            var (externalId, _) = await _eSignaturesClient.UploadDocument(uploadDocumentRequest.ReferenceId, uploadDocumentRequest.Filename, uploadDocumentRequest.CreationDate, uploadDocumentRequest.FileData, cancellationToken);
+            documentOnSaEntity.ExternalId = externalId;
+        }
+
+        await UpdateSalesArrangementStateIfNeeded(salesArrangement, cancellationToken);
+
+        await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return _startSigningMapper.MapToResponse(documentOnSaEntity);
+    }
+
+    private async Task<DocumentOnSa> ProcessServiceRequest(StartSigningRequest request, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
+        StartSigningBlValidator.ValidateServiceRequest(request);
+        await ServiceRequestInvalidateExistingSigningProcessesIfExist(request, cancellationToken);
+        var formIdResponse = await _mediator.Send(new GenerateFormIdRequest(), cancellationToken); // Not versioned formId (in future we have to implement support for versioning of SalesArrangementId)
+        var documentData = await GetDocumentData(request, salesArrangement, null, cancellationToken);
+        return await _startSigningMapper.ServiceRequestMapToEntity(request, formIdResponse.FormId, documentData, salesArrangement, cancellationToken);
+    }
+
+    private async Task<DocumentOnSa> ProcessProductRequest(StartSigningRequest request, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
+        StartSigningBlValidator.ValidateProductRequest(request);
+        var houseHold = await GetHousehold(request.DocumentTypeId!.Value, request.SalesArrangementId!.Value, cancellationToken);
         // Check, if signing process has been already started. If started we have to invalidate exist signing processes
-        await InvalidateExistingSigningProcessesIfExist(request, houseHold);
-
+        await ProductRequestInvalidateExistingSigningProcessesIfExist(request, houseHold, cancellationToken);
         var formIdResponse = await _mediator.Send(new GenerateFormIdRequest { HouseholdId = houseHold.HouseholdId }, cancellationToken);
+        var documentData = await GetDocumentData(request, salesArrangement, null, cancellationToken);
+        return await _startSigningMapper.ProductRequestMapToEntity(request, houseHold, formIdResponse.FormId, documentData, cancellationToken);
+    }
 
-        var documentData = await _dataAggregatorServiceClient.GetDocumentData(new()
+    private async Task<DocumentOnSa> ProcessCrsRequest(StartSigningRequest request, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
+        StartSigningBlValidator.ValidateCrsRequest(request);
+        await CrsInvalidateExistingSigningProcessesIfExist(request, cancellationToken);
+        var formIdResponse = await _mediator.Send(new GenerateFormIdRequest(), cancellationToken); // Not versioned formId
+        // Only CRS has to send CustomerOnSAId1
+        var documentData = await GetDocumentData(request, salesArrangement, request.CustomerOnSAId1, cancellationToken);
+        return await _startSigningMapper.CrsMapToEntity(request, formIdResponse.FormId, documentData, cancellationToken);
+    }
+
+    private async Task<DocumentOnSa> ProcessWorkflowRequest(StartSigningRequest request, CancellationToken cancellationToken)
+    {
+        StartSigningBlValidator.ValidateWorkflowRequest(request);
+        await WorkflowInvalidateExistingSigningProcessesIfExist(request, cancellationToken);
+        var taskDetail = await _caseServiceClient.GetTaskDetail(request.TaskId!.Value, cancellationToken);
+        return await _startSigningMapper.WorkflowMapToEntity(request, taskDetail, cancellationToken);
+    }
+
+    private async Task<GetDocumentDataResponse> GetDocumentData(StartSigningRequest request, SalesArrangement salesArrangement, int? customerOnSAId1, CancellationToken cancellationToken)
+    {
+        return await _dataAggregatorServiceClient.GetDocumentData(new()
         {
             DocumentTypeId = request.DocumentTypeId!.Value,
             DocumentTemplateVersionId = request.DocumentTemplateVersionId,
@@ -73,17 +154,9 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
                 SalesArrangementId = request.SalesArrangementId!.Value,
                 CaseId = salesArrangement.CaseId,
                 UserId = _currentUser.User?.Id,
-
+                CustomerOnSaId = customerOnSAId1
             }
         }, cancellationToken);
-
-        var documentOnSaEntity = await MapToEntity(request, houseHold, formIdResponse.FormId, documentData, cancellationToken);
-        await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        await UpdateSalesArrangementStateIfNeeded(salesArrangement, cancellationToken);
-
-        return MapToResponse(documentOnSaEntity);
     }
 
     private async Task UpdateSalesArrangementStateIfNeeded(SalesArrangement salesArrangement, CancellationToken cancellationToken)
@@ -100,72 +173,47 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         }
     }
 
-    private async Task ValidateRequest(StartSigningRequest request, CancellationToken cancellationToken)
+    private async Task ProductRequestInvalidateExistingSigningProcessesIfExist(StartSigningRequest request, __Household.Household houseHold, CancellationToken cancellationToken)
     {
-        var signatureTypes = await _codebookServiceClient.SignatureTypes(cancellationToken);
-
-        if (signatureTypes.All(signatureType => request.SignatureTypeId != signatureType.Id))
-        {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SignatureTypeNotExist, request.SignatureTypeId);
-        }
-    }
-
-    private async Task InvalidateExistingSigningProcessesIfExist(StartSigningRequest request, __Household.Household houseHold)
-    {
-        var existSigningProcesses = await _dbContext.DocumentOnSa
-                                                        .Where(e => e.SalesArrangementId == request.SalesArrangementId
+        var existSigningProcesses = await _dbContext.DocumentOnSa.Where(e => e.SalesArrangementId == request.SalesArrangementId
                                                          && e.HouseholdId == houseHold.HouseholdId && e.IsValid)
-                                                        .ToListAsync();
+                                                        .ToListAsync(cancellationToken);
 
-        if (existSigningProcesses.Any())
-        {
-            // Invalidate exist signing processes on DocumentOnSa
-            existSigningProcesses.ForEach(s => s.IsValid = false);
-        }
+        existSigningProcesses.ForEach(s => s.IsValid = false);
     }
 
-    private static StartSigningResponse MapToResponse(DocumentOnSa documentOnSaEntity)
+    private async Task CrsInvalidateExistingSigningProcessesIfExist(StartSigningRequest request, CancellationToken cancellationToken)
     {
-        return new StartSigningResponse
-        {
-            DocumentOnSa = new DocumentOnSA
-            {
-                DocumentOnSAId = documentOnSaEntity.DocumentOnSAId,
-                DocumentTypeId = documentOnSaEntity.DocumentTypeId,
-                FormId = documentOnSaEntity.FormId ?? string.Empty,
-                HouseholdId = documentOnSaEntity.HouseholdId,
-                IsValid = documentOnSaEntity.IsValid,
-                IsSigned = documentOnSaEntity.IsSigned,
-                IsArchived = documentOnSaEntity.IsArchived,
-                SignatureMethodCode = documentOnSaEntity.SignatureMethodCode ?? string.Empty,
-                EArchivId = documentOnSaEntity.EArchivId,
-                SignatureTypeId = documentOnSaEntity.SignatureTypeId,
-            }
-        };
+        var existSigningProcesses = await _dbContext.DocumentOnSa.Where(e => e.SalesArrangementId == request.SalesArrangementId
+                                                        && e.DocumentTypeId == request.DocumentTypeId && e.CustomerOnSAId1 == request.CustomerOnSAId1 && e.IsValid)
+                                                       .ToListAsync(cancellationToken);
+
+        existSigningProcesses.ForEach(s => s.IsValid = false);
     }
 
-    private async Task<__Entity.DocumentOnSa> MapToEntity(StartSigningRequest request, __Household.Household houseHold, string formId, GetDocumentDataResponse getDocumentDataResponse, CancellationToken cancellationToken)
+    private async Task WorkflowInvalidateExistingSigningProcessesIfExist(StartSigningRequest request, CancellationToken cancellationToken)
     {
-        var entity = new __Entity.DocumentOnSa();
-        entity.DocumentTypeId = request.DocumentTypeId!.Value;
-        entity.DocumentTemplateVersionId = getDocumentDataResponse.DocumentTemplateVersionId;
-        entity.DocumentTemplateVariantId = getDocumentDataResponse.DocumentTemplateVariantId;
-        entity.FormId = formId;
-        entity.EArchivId = await _documentArchiveServiceClient.GenerateDocumentId(new(), cancellationToken);
-        entity.SalesArrangementId = request.SalesArrangementId!.Value;
-        entity.HouseholdId = houseHold.HouseholdId;
-        entity.SignatureMethodCode = request.SignatureMethodCode;
-        entity.SignatureTypeId = request.SignatureTypeId;
-        entity.Data = JsonSerializer.Serialize(getDocumentDataResponse.DocumentData);
-        entity.IsValid = true;
-        entity.IsSigned = false;
-        entity.IsArchived = false;
-        return entity;
+        var existSigningProcesses = await _dbContext.DocumentOnSa.Where(e => e.SalesArrangementId == request.SalesArrangementId
+                                                        && e.TaskId == request.TaskId && e.IsValid)
+                                                       .ToListAsync(cancellationToken);
+
+        existSigningProcesses.ForEach(s => s.IsValid = false);
     }
 
-    private async Task<__Household.Household> GetHouseholdId(int documentTypeId, int salesArrangementId, CancellationToken cancellationToken)
+    private async Task ServiceRequestInvalidateExistingSigningProcessesIfExist(StartSigningRequest request, CancellationToken cancellationToken)
     {
-        var householdTypeId = GetHouseholdTypeId(documentTypeId);
+        // SalesArragmentId is unique for service request
+        var existSigningProcesses = await _dbContext.DocumentOnSa.Where(e => e.SalesArrangementId == request.SalesArrangementId
+                                                                        && e.DocumentTypeId == request.DocumentTypeId
+                                                                        && e.IsValid)
+                                                     .ToListAsync(cancellationToken);
+
+        existSigningProcesses.ForEach(s => s.IsValid = false);
+    }
+
+    private async Task<__Household.Household> GetHousehold(int documentTypeId, int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var householdTypeId = GetHouseholdTypeId((DocumentTypes)documentTypeId);
 
         var houseHolds = await _householdClient.GetHouseholdList(salesArrangementId, cancellationToken);
         var houseHold = houseHolds.SingleOrDefault(r => r.HouseholdTypeId == householdTypeId);
@@ -175,10 +223,18 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             : houseHold;
     }
 
-    private static int GetHouseholdTypeId(int documentTypeId) => documentTypeId switch
+    private async Task<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem> GetSalesArrangementType(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
-        4 => 1,
-        5 => 2,
-        _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.DocumentTypeIdNotExist, documentTypeId)
+        var salesArrangementTypes = await _codebookServiceClient.SalesArrangementTypes(cancellationToken);
+        return salesArrangementTypes.Single(r => r.Id == salesArrangement.SalesArrangementTypeId);
+    }
+
+    private static int GetHouseholdTypeId(DocumentTypes documentType) => documentType switch
+    {
+        // 4 
+        DocumentTypes.ZADOSTHU => HouseholdTypes.Main.ToByte(),// 1,
+        // 5 
+        DocumentTypes.ZADOSTHD => HouseholdTypes.Codebtor.ToByte(),// 2
+        _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.DocumentTypeIdNotSupportedForProductRequest, documentType.ToByte())
     };
 }

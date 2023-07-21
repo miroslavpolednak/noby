@@ -31,12 +31,16 @@
     <ProjectReference Include="..\..\..\ExternalServices\ESignatures\ExternalServices.ESignatures.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\Sulm\ExternalServices.Sulm.csproj" />
     <ProjectReference Include="..\..\..\InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj" />
+    <ProjectReference Include="..\..\..\InternalServices\DocumentGeneratorService\Clients\CIS.InternalServices.DocumentGeneratorService.Clients.csproj" />
+    <ProjectReference Include="..\..\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
     <ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
+    <ProjectReference Include="..\..\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
     <ProjectReference Include="..\..\DocumentArchiveService\Clients\DomainServices.DocumentArchiveService.Clients.csproj" />
     <ProjectReference Include="..\..\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
     <ProjectReference Include="..\..\ProductService\Clients\DomainServices.ProductService.Clients.csproj" />
     <ProjectReference Include="..\..\ProductService\Contracts\DomainServices.ProductService.Contracts.csproj" />
     <ProjectReference Include="..\..\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
+    <ProjectReference Include="..\..\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.DocumentOnSAService.Contracts.csproj" />
   </ItemGroup>
 

@@ -15,7 +15,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int SalesArrangementCategoryNotSupported = 19013;
     public const int HouseholdTypeIdNotExist = 19014;
     public const int ForSpecifiedDocumentTypeIdCannotFindHousehold = 19015;
-    public const int DocumentTypeIdNotExist = 19016;
+    public const int DocumentTypeIdNotSupportedForProductRequest = 19016;
     public const int UnableToStartSigningOrSignInvalidSalesArrangementState = 19018;
     public const int UnableToStartSigningOrSignInvalidDocument = 19019;
     public const int UnableToSendDocumentPreviewForPaperSignedDocuments = 19020;
@@ -27,6 +27,14 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int FormIdIsRequired = 19032;
     public const int EArchivIdIsRequired = 19033;
     public const int SignatureMethodCodeIsRequired = 19034;
+    public const int UnsupportedSbSignatureType = 19035;
+    public const int AmendmentHasToBeOfTypeSigning = 19036;
+    public const int OnlyElectronicOrPaperSignatureSupported = 19037;
+    public const int CustomerOnSAIdRequired = 19038;
+    public const int UnsupportedDocumentTypeIdForServiceRequest = 19039;
+    public const int WorkflowRequestCaseIdRequired = 19040;
+    public const int UnsupportedKindOfSigningRequest = 19041;
+
 
     public static IErrorCodesDictionary Init()
     {
@@ -42,7 +50,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { SalesArrangementCategoryNotSupported, "This kind of SalesArrangementCategories {PropertyValue} is not supported" },
             { HouseholdTypeIdNotExist, "HouseholdTypeId {PropertyValue} does not exist"},
             { ForSpecifiedDocumentTypeIdCannotFindHousehold, "For specified documentTypeId {PropertyValue} cannot find Household"},
-            { DocumentTypeIdNotExist, "DocumentTypeId {PropertyValue} does not exist"},
+            { DocumentTypeIdNotSupportedForProductRequest, "DocumentTypeId {PropertyValue} not supported for ProductRequest"},
             { SalesArrangementIdIsRequired, "SalesArrangementId is required"},
             { DocumentTypeIdIsRequired, " DocumentTypeId is required"},
             { FormIdIsRequired, "FormId is required"},
@@ -50,8 +58,14 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { SignatureMethodCodeIsRequired, "SignatureMethodCode is required"},
             { UnableToStartSigningOrSignInvalidSalesArrangementState, "Unable to start signing or sign (SalesArrangement is not in correct state)."},
             { UnableToStartSigningOrSignInvalidDocument, "Unable to start signing or sign (DocumentOnSA is invalid or already signed)."},
-            { UnableToSendDocumentPreviewForPaperSignedDocuments, "Unable to send electronic document preview for paper signed documents."},
-            { UnsupportedStatusReturnedFromESignature, "Unsupported status returned from ESignature: {PropertyValue}"}
+            { UnsupportedStatusReturnedFromESignature, "Unsupported status returned from ESignature: {PropertyValue}"},
+            { UnsupportedSbSignatureType, "Unsupported sb SignatureType TaskId: {PropertyValue}"},
+            { AmendmentHasToBeOfTypeSigning, "Amendment has to be of type signing" },
+            { OnlyElectronicOrPaperSignatureSupported, "Only electronic(3) or paper(1) signatures are supported" },
+            { CustomerOnSAIdRequired,"CustomerOnSAId is required" },
+            { UnsupportedDocumentTypeIdForServiceRequest, "Unsupported DocumentTypeId for ServiceRequest, supported DocumentTypeId (9,10,11,12)" },
+            { WorkflowRequestCaseIdRequired, "For processing workflow request CaseId is required" },
+            { UnsupportedKindOfSigningRequest, "Unsupported kind of signing request" }
         });
 
         return Messages;
