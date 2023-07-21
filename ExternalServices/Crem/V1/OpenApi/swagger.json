@@ -1484,6 +1484,7 @@
           },
           "isknDeedOfOwnershipId": {
             "type": "integer",
+            "format": "int64",
             "description": "ISKN deed of ownership ID"
           },
           "townPart": {
@@ -1502,6 +1503,7 @@
           },
           "isknDeedOfOwnershipId": {
             "type": "integer",
+            "format": "int64",
             "description": "Iskn deed of ownership ID (unique identifier of the deed of ownership in CUZK"
           },
           "isknFlatId": {

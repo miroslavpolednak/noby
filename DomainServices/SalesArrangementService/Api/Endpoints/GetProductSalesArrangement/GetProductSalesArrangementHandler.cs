@@ -19,7 +19,7 @@ internal sealed class GetProductSalesArrangementHandler
             .Where(t => t.CaseId == request.CaseId && saTypes.Contains(t.SalesArrangementTypeId))
             .Select(t => new { t.SalesArrangementId, t.OfferId })
             .FirstOrDefaultAsync(cancellationToken)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ProductSalesArrangementNotFound, request.CaseId);
 
         return new __SA.GetProductSalesArrangementResponse
         {

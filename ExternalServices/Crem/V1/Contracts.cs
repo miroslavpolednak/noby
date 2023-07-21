@@ -671,7 +671,7 @@ namespace ExternalServices.Crem.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("isknDeedOfOwnershipId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int IsknDeedOfOwnershipId { get; set; } = default!;
+        public long IsknDeedOfOwnershipId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("townPart")]
 
@@ -711,7 +711,7 @@ namespace ExternalServices.Crem.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("isknDeedOfOwnershipId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int IsknDeedOfOwnershipId { get; set; } = default!;
+        public long IsknDeedOfOwnershipId { get; set; } = default!;
 
         /// <summary>
         /// Iskn flat ID (unique identifier of the flat in CUZK

@@ -11,7 +11,7 @@ public sealed class GetDeedOfOwnershipIdsResponse
     /// <summary>
     /// ISKN ID listu vlastnictví(LV), technický identifikátor katastru
     /// </summary>
-    public int DeedOfOwnershipId { get; set; }
+    public long DeedOfOwnershipId { get; set; }
 }
 
 /// <summary>
@@ -27,7 +27,7 @@ public sealed class GetDeedOfOwnershipIdsResponseFlat
     /// <summary>
     /// ISKN ID listu vlastnictví (LV), technický identifikátor katastru
     /// </summary>
-    public int DeedOfOwnershipId { get; set; }
+    public long DeedOfOwnershipId { get; set; }
 
     /// <summary>
     /// Způsob využití bytu

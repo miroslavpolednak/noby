@@ -13,6 +13,7 @@ internal sealed class SaveRealEstateValuationAttachmentsHandler
         foreach (var attachment in request.Attachments)
         {
             var content = await _tempFileManager.GetContent(attachment.TempFileId, cancellationToken);
+            // docitam to jednotlive, neni to nijak efektivni, ale vetsinou se budou stejne uploadovat jeden souboru...
             var metadata = await _tempFileManager.GetMetadata(attachment.TempFileId, cancellationToken);
             
             var dsRequest = new DomainServices.RealEstateValuationService.Contracts.CreateRealEstateValuationAttachmentRequest

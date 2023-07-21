@@ -40,7 +40,7 @@ internal sealed class CreateCaseHandler
         }
 
         // notify SB about state change
-        await _mediator.Send(new Contracts.NotifyStarbuildRequest
+        _mediator.Send(new Contracts.NotifyStarbuildRequest
         {
             CaseId = newCaseId
         }, cancellation);

@@ -189,7 +189,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{7790592F-1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E99-AE46-4B08-A830-1587E93A950E}"
 	ProjectSection(SolutionItems) = preProject
+		Docs\topics\authentication-feapi.md = Docs\topics\authentication-feapi.md
 		Docs\topics\authentication.md = Docs\topics\authentication.md
+		Docs\topics\background-service-job.md = Docs\topics\background-service-job.md
 		Docs\topics\background-services.md = Docs\topics\background-services.md
 		Docs\topics\configuration.md = Docs\topics\configuration.md
 		Docs\topics\dataAggregator.md = Docs\topics\dataAggregator.md
@@ -200,15 +202,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\external-services-rest.md = Docs\topics\external-services-rest.md
 		Docs\topics\external-services-soap.md = Docs\topics\external-services-soap.md
 		Docs\topics\external-services.md = Docs\topics\external-services.md
+		Docs\topics\feapi-authorization.md = Docs\topics\feapi-authorization.md
 		Docs\topics\feapi-error-handling.md = Docs\topics\feapi-error-handling.md
 		Docs\topics\grpc-service-startup.md = Docs\topics\grpc-service-startup.md
 		Docs\topics\grpc-services-api.md = Docs\topics\grpc-services-api.md
 		Docs\topics\grpc-services-clients.md = Docs\topics\grpc-services-clients.md
 		Docs\topics\grpc-services-contracts.md = Docs\topics\grpc-services-contracts.md
 		Docs\topics\grpc-services.md = Docs\topics\grpc-services.md
+		Docs\topics\healthcheck.md = Docs\topics\healthcheck.md
 		Docs\topics\logging.md = Docs\topics\logging.md
 		Docs\topics\service-discovery.md = Docs\topics\service-discovery.md
 		Docs\topics\soap-client.md = Docs\topics\soap-client.md
+		Docs\topics\tempfilemanager.md = Docs\topics\tempfilemanager.md
 		Docs\topics\test.md = Docs\topics\test.md
 		Docs\topics\validation-feapi.md = Docs\topics\validation-feapi.md
 		Docs\topics\validation-grpc.md = Docs\topics\validation-grpc.md
@@ -506,7 +511,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuditDatabaseMigrations", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.ExternalServices.PreorderService", "DomainServices\RealEstateValuationService\ExternalServices.PreorderService\DomainServices.RealEstateValuationService.ExternalServices.PreorderService.csproj", "{4912264E-A0CC-472B-AB5A-88AF8846D7B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalServices.Crem", "ExternalServices\Crem\ExternalServices.Crem.csproj", "{8240FF9F-9DFE-4C53-87FE-C94753F9EC5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Crem", "ExternalServices\Crem\ExternalServices.Crem.csproj", "{8240FF9F-9DFE-4C53-87FE-C94753F9EC5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
