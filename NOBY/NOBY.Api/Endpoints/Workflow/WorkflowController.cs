@@ -49,6 +49,22 @@ public class WorkflowController : ControllerBase
     }
 
     /// <summary>
+    /// Začít podepisování dokumentu z workflow
+    /// </summary>
+    /// <remarks>
+    /// Spustí podepisovací proces pro zvolený podúkol.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7A23BD1E-668C-4ddc-BB82-550DC6C34C7F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("{caseId:long}/tasks/{taskId:long}/signing/start")]
+    [AuthorizeCaseOwner]
+    [Consumes("application/json")]
+    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task StartTaskSigning([FromRoute] long caseId, [FromRoute] long taskId)
+        => await _mediator.Send(new StartTaskSigning.StartTaskSigningRequest(caseId, taskId));
+    
+    /// <summary>
     /// Vytvoření nového workflow tasku do SB.
     /// </summary>
     /// <remarks>
