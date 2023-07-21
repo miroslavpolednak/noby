@@ -159,7 +159,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
             if (docOnSa.SignatureTypeId is null or not ((int)SignatureTypes.Electronic))
                 continue;
 
-            var elDocumentStatus = GetElDocumentStatusMock(docOnSa.ExternalId);
+            var elDocumentStatus = await _eSignaturesClient.GetDocumentStatus(docOnSa.ExternalId!, cancellationToken); 
 
             switch (elDocumentStatus)
             {
@@ -180,12 +180,6 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
 
         if (_dbContext.ChangeTracker.HasChanges())
             await _dbContext.SaveChangesAsync(cancellationToken);
-    }
-
-    private static EDocumentStatuses GetElDocumentStatusMock(string? externalId)
-    {
-        //Call real service
-        return EDocumentStatuses.SIGNED;
     }
 
     private async Task<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem> GetSalesArrangementType(SalesArrangement salesArrangement, CancellationToken cancellationToken)
