@@ -178,7 +178,7 @@ public class StartSigningMapper
     public async Task<DocumentOnSa> ServiceRequestMapToEntity(StartSigningRequest request, string formId, GetDocumentDataResponse documentDataResponse, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var entity = new DocumentOnSa();
-        entity.DocumentTypeId = request.DocumentTypeId!.Value; // resolved in handler
+        entity.DocumentTypeId = request.DocumentTypeId!.Value; 
         entity.DocumentTemplateVersionId = documentDataResponse.DocumentTemplateVersionId;
         entity.DocumentTemplateVariantId = documentDataResponse.DocumentTemplateVariantId;
         entity.FormId = formId;
@@ -290,7 +290,8 @@ public class StartSigningMapper
             entitySigningIdentity.SigningIdentityJson.SignatureDataCode = $"{_signatureAnchorTemplate}{++index}";
             entitySigningIdentity.SigningIdentityJson.FirstName = customer.NaturalPerson.FirstName;
             entitySigningIdentity.SigningIdentityJson.LastName = customer.NaturalPerson.LastName;
-
+            entitySigningIdentity.SigningIdentityJson.BirthNumber = customer.NaturalPerson.BirthNumber;
+            
             foreach (var contact in customer.Contacts)
             {
                 switch (contact.DataCase)

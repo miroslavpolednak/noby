@@ -37,14 +37,6 @@ public static class StartSigningBlValidator
     public static void ValidateServiceRequest(StartSigningRequest request)
     {
         ValidateSignatureType(request);
-        //Check validity of service request with household 
-        if (request.DocumentTypeId is not null)
-        {
-            if (request.DocumentTypeId is not 11 and not 12 and not 16)
-                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnsupportedDocumentTypeIdForServiceRequest);
-
-            ValidateCustomerOnSa(request);
-        }
     }
 
     private static void ValidateCustomerOnSa(StartSigningRequest request)

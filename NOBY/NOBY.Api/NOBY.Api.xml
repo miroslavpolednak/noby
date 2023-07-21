@@ -1819,6 +1819,11 @@
             Metoda podpisu (manuální/elektronický). Číselník SignatureType.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningRequest.CustomerOnSAId">
+            <summary>
+            For CRS only
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.DocumentOnSAId">
             <summary>
             Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.
