@@ -85,6 +85,11 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
                 customerOnSAId1 = houseHold.CustomerOnSAId1;
                 customerOnSAId2 = houseHold.CustomerOnSAId2;
             }
+            else // Service request without households
+            {
+                if (houseHolds.Any())
+                    throw new NobyValidationException($"Households should by empty for service request without household (DocumentTypeId: {request.DocumentTypeId})");
+            }
         }
 
         var result = await _client.StartSigning(new()
