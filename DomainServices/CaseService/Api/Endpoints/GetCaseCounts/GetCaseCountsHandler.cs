@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using DomainServices.CaseService.Api.Database;
+﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetCaseCounts;
@@ -11,7 +10,7 @@ internal sealed class GetCaseCountsHandler
     {
         // vytahnout data z DB
         var model = (await _dbContext.Cases
-            .Where(t => t.OwnerUserId == request.CaseOwnerUserId && !_disallowedStates.Contains(t.State))
+            .Where(t => t.OwnerUserId == request.CaseOwnerUserId && !Helpers.DisallowedStates.Contains(t.State))
             .GroupBy(t => t.State)
             .AsNoTracking()
             .Select(t => new { State = t.Key, Count = t.Count() })
@@ -27,11 +26,6 @@ internal sealed class GetCaseCountsHandler
 
         return result;
     }
-
-    private static int[] _disallowedStates = new[]
-    {
-        (int)CaseStates.ToBeCancelledConfirmed
-    };
 
     private readonly CaseServiceDbContext _dbContext;
 
