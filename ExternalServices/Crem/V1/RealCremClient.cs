@@ -5,23 +5,75 @@ namespace ExternalServices.Crem.V1;
 internal sealed class RealCremClient
     : ICremClient
 {
-    public async Task<Dto.FlatsForAddress> GetFlatsForAddress(long addressPointId, CancellationToken cancellationToken = default)
+    public async Task<Contracts.ResponseGetFlatsForAddressDTO> GetFlatsForAddress(long addressPointId, CancellationToken cancellationToken = default)
     {
-        var response = await _httpClient
+        return await (await _httpClient
             .GetAsync(_httpClient.BaseAddress + $"/deed-of-ownership-document/addresses/{addressPointId}/flats", cancellationToken)
-            .ConfigureAwait(false);
+            .ConfigureAwait(false))
+            .EnsureSuccessStatusAndReadJson<Contracts.ResponseGetFlatsForAddressDTO>(StartupExtensions.ServiceName, cancellationToken);
+    }
 
-        var result = await response.EnsureSuccessStatusAndReadJson<Contracts.ResponseGetFlatsForAddressDTO>(StartupExtensions.ServiceName, cancellationToken);
+    public async Task<ICollection<Contracts.DeedOfOwnershipDocument>> GetDocuments(int? katuzId, int? deedOfOwnershipNumber, long? deedOfOwnershipId, CancellationToken cancellationToken = default)
+    {
+        var result = await (await _httpClient
+            .GetAsync(_httpClient.BaseAddress + $"/deed-of-ownership-document?territoryNumber={katuzId}&deedOfOwnershipNumber={deedOfOwnershipNumber}&deedOfOwnershipIsknId={deedOfOwnershipId}", cancellationToken)
+            .ConfigureAwait(false))
+            .EnsureSuccessStatusAndReadJson<Contracts.ResponseSearchDeedOfOwnershipDocuments>(StartupExtensions.ServiceName, cancellationToken);
+        return result.Items;
+    }
 
-        return new Dto.FlatsForAddress
+    public async Task<long> RequestNewDocumentId(int? katuzId, int? deedOfOwnershipNumber, long? deedOfOwnershipId, CancellationToken cancellationToken = default)
+    {
+        var request1 = new Contracts.RequestDownloadDeedOfOwnership
         {
-            DeedOfOwnershipId = result.Building.IsknDeedOfOwnershipId,
-            Flats = result.Building.Flats.Select(t => new Dto.FlatsForAddress.Flat
-            {
-                DeedOfOwnershipId = t.IsknDeedOfOwnershipId,
-                FlatNumber = t.FlatNumber
-            }).ToList()
+            DeedOfOwnershipNumber = deedOfOwnershipNumber,
+            IsknDeedOfOwnershipId = deedOfOwnershipId,
+            TerritoryNumber = katuzId
         };
+
+        var result1 = await (await _httpClient
+            .PostAsJsonAsync(_httpClient.BaseAddress + "/deed-of-ownership-document", request1, cancellationToken)
+            .ConfigureAwait(false))
+            .EnsureSuccessStatusAndReadJson<Contracts.DeedOfOwnershipDocument>(StartupExtensions.ServiceName, cancellationToken);
+
+        var result2 = await (await _httpClient
+            .GetAsync(_httpClient.BaseAddress + $"/deed-of-ownership-document/{result1.DocumentId}/status", cancellationToken)
+            .ConfigureAwait(false))
+            .EnsureSuccessStatusAndReadJson<Contracts.DocumentStatus>(StartupExtensions.ServiceName, cancellationToken);
+
+        await (await _httpClient
+            .PutAsync(_httpClient.BaseAddress + $"/deed-of-ownership-document/{result1.DocumentId}", null, cancellationToken)
+            .ConfigureAwait(false))
+            .EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+
+        return result1.DocumentId;
+    }
+
+    public async Task<ICollection<Contracts.DeedOfOwnershipOwnerDTO>> GetOwners(long documentId, CancellationToken cancellationToken = default)
+    {
+        var result = await (await _httpClient
+            .GetAsync(_httpClient.BaseAddress + $"/deed-of-ownership-document/{documentId}/owners", cancellationToken)
+            .ConfigureAwait(false))
+            .EnsureSuccessStatusAndReadJson<Contracts.ResponseGetOwners>(StartupExtensions.ServiceName, cancellationToken);
+        return result.Items;
+    }
+
+    public async Task<ICollection<Contracts.DeedOfOwnershipLegalRelation>> GetLegalRelations(long documentId, CancellationToken cancellationToken = default)
+    {
+        var result = await (await _httpClient
+            .GetAsync(_httpClient.BaseAddress + $"/deed-of-ownership-document/{documentId}/legal-relations", cancellationToken)
+            .ConfigureAwait(false))
+            .EnsureSuccessStatusAndReadJson<Contracts.ResponseGetLegalRelations>(StartupExtensions.ServiceName, cancellationToken);
+        return result.Items;
+    }
+
+    public async Task<ICollection<Contracts.DeedOfOwnershipRealEstate>> GetRealEstates(long documentId, CancellationToken cancellationToken = default)
+    {
+        var result = await (await _httpClient
+            .GetAsync(_httpClient.BaseAddress + $"/deed-of-ownership-document/{documentId}/real-estates", cancellationToken)
+            .ConfigureAwait(false))
+            .EnsureSuccessStatusAndReadJson<Contracts.ResponseGetRealEstates>(StartupExtensions.ServiceName, cancellationToken);
+        return result.Items;
     }
 
     private readonly HttpClient _httpClient;

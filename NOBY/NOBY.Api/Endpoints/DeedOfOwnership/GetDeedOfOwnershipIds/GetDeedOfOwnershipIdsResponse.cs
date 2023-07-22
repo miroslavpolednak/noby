@@ -22,7 +22,7 @@ public sealed class GetDeedOfOwnershipIdsResponseFlat
     /// <summary>
     /// Číslo bytu včetně čísla domu
     /// </summary>
-    public int FlatNumber { get; set; }
+    public long FlatNumber { get; set; }
 
     /// <summary>
     /// ISKN ID listu vlastnictví (LV), technický identifikátor katastru
