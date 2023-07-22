@@ -36,10 +36,28 @@ internal sealed class RealCremClient
             .ConfigureAwait(false))
             .EnsureSuccessStatusAndReadJson<Contracts.DeedOfOwnershipDocument>(StartupExtensions.ServiceName, cancellationToken);
 
-        var result2 = await (await _httpClient
-            .GetAsync(_httpClient.BaseAddress + $"/deed-of-ownership-document/{result1.DocumentId}/status", cancellationToken)
-            .ConfigureAwait(false))
-            .EnsureSuccessStatusAndReadJson<Contracts.DocumentStatus>(StartupExtensions.ServiceName, cancellationToken);
+        for (int i = 1; i <= _requestNewDocumentIterations; i++)
+        {
+            var result2 = await (await _httpClient
+                .GetAsync(_httpClient.BaseAddress + $"/deed-of-ownership-document/{result1.DocumentId}/status", cancellationToken)
+                .ConfigureAwait(false))
+                .EnsureSuccessStatusAndReadJson<Contracts.DocumentStatus>(StartupExtensions.ServiceName, cancellationToken);
+
+            // pokud je dokument v pozadovanem statusu, muzeme pokracovat dale
+            if (result2.StatusCode == Contracts.DocumentStatusStatusCode.WAITING_FOR_PRICE_CONFIRMATION)
+            {
+                break;
+            }
+
+            // jestlize ani v posledni iteraci neprisel pozadovany status, je to maler
+            if (i == _requestNewDocumentIterations)
+            {
+                throw new CisExtServiceValidationException("Can not obtaion WAITING_FOR_PRICE_CONFIRMATION document status");
+            }
+
+            Thread.Sleep(_requestNewDocumentTimeout * i);
+        }
+        
 
         await (await _httpClient
             .PutAsync(_httpClient.BaseAddress + $"/deed-of-ownership-document/{result1.DocumentId}", null, cancellationToken)
@@ -76,6 +94,8 @@ internal sealed class RealCremClient
         return result.Items;
     }
 
+    private const int _requestNewDocumentIterations = 10;
+    private const int _requestNewDocumentTimeout = 1000;
     private readonly HttpClient _httpClient;
 
     public RealCremClient(HttpClient httpClient)
