@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Types;
+using CIS.Foms.Enums;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Clients.Services;
@@ -95,7 +96,7 @@ internal sealed class CaseServiceClient
             {
                 CaseId = caseId,
                 State = state
-            },  cancellationToken: cancellationToken);
+            }, cancellationToken: cancellationToken);
     }
 
     public async Task DeleteCase(long caseId, CancellationToken cancellationToken = default(CancellationToken))
@@ -156,10 +157,20 @@ internal sealed class CaseServiceClient
             TaskIdSB = taskIdSB
         }, cancellationToken: cancellationToken);
     }
-    
+
     public async Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         return await _service.CreateTaskAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task<CaseStates> CancelCase(long caseId, bool isUserInvoked = false, CancellationToken cancellationToken = default)
+    {
+        return (CaseStates)(await _service.CancelCaseAsync(new CancelCaseRequest
+        {
+            CaseId = caseId,
+            IsUserInvoked = isUserInvoked,
+        }, cancellationToken: cancellationToken))
+        .CaseState;
     }
 
     private readonly Contracts.v1.CaseService.CaseServiceClient _service;

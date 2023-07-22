@@ -44,6 +44,7 @@ var log = builder.CreateStartupLogger();
             .AddSalesArrangementService()
             .AddDocumentOnSAService()
             .AddCodebookService()
+            .AddHouseholdService()
             .AddUserService()
             .AddCisServiceDiscovery()
             // add rollback

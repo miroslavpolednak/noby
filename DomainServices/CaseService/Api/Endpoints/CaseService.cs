@@ -63,6 +63,9 @@ internal sealed class CaseService
     public override async Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    public override async Task<CancelCaseResponse> CancelCase(CancelCaseRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     private readonly IMediator _mediator;
     public CaseService(IMediator mediator)
         => _mediator = mediator;
