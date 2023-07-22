@@ -82,7 +82,7 @@ internal sealed class SendToCmpHandler
             await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
 
             // odeslat do SB
-            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
 
             // update case state
             await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
@@ -92,7 +92,7 @@ internal sealed class SendToCmpHandler
             await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
 
             // odeslat do SB
-            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
         }
     }
 

@@ -75,7 +75,7 @@ public interface ISalesArrangementServiceClient
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement unavailable</exception>
-    Task SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+    Task SendToCmp(int salesArrangementId, bool isCancelled, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Validace žádosti (CheckForm).

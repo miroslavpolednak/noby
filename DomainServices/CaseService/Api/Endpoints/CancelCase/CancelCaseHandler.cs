@@ -44,7 +44,7 @@ internal sealed class CancelCaseHandler
         if (newCaseState == CaseStates.ToBeCancelled) // pokud mame datum prvniho podpisu
         {
             // odeslat do SB
-            await _salesArrangementService.SendToCmp(salesArrangementId, cancellation);
+            await _salesArrangementService.SendToCmp(salesArrangementId, true, cancellation);
         }
         else // pokud nezname datum prvniho podpisu
         {
