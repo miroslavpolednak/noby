@@ -17,6 +17,9 @@ internal sealed class CodebookService
     public override Task<GenericCodebookResponse> AddressTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<CIS.Foms.Enums.AddressTypes>(true);
 
+    public override Task<GenericCodebookResponse> AcvAttachmentCategories(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetGenericItems();
+
     public override Task<BankCodesResponse> BankCodes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<BankCodesResponse, BankCodesResponse.Types.BankCodeItem>();
 

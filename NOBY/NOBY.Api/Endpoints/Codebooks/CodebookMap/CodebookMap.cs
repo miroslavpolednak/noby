@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
-using CIS.Foms.Types.Enums;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 
@@ -34,6 +33,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.AcademicDegreesAfter(ct));
         AddCodebook((s, ct) => s.AcademicDegreesBefore(ct));
         AddCodebook((s, ct) => s.AddressTypes(ct));
+        AddCodebook((s, ct) => s.AcvAttachmentCategories(ct));
         AddCodebook((s, ct) => s.BankCodes(ct));
         AddCodebook((s, ct) => s.CaseStates(ct));
         AddCodebook((s, ct) => s.ClassificationOfEconomicActivities(ct));

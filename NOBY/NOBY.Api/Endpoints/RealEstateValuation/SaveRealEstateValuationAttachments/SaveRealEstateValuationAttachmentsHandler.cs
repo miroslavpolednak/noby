@@ -8,6 +8,7 @@ internal sealed class SaveRealEstateValuationAttachmentsHandler
 {
     public async Task<List<SaveRealEstateValuationAttachmentsResponseItem>> Handle(SaveRealEstateValuationAttachmentsRequest request, CancellationToken cancellationToken)
     {
+
         List<SaveRealEstateValuationAttachmentsResponseItem> newIds = new(request.Attachments!.Count);
 
         foreach (var attachment in request.Attachments)

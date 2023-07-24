@@ -27,6 +27,12 @@ service CodebookService {
 		};
    }
 
+   rpc AcvAttachmentCategories (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/acv-attachment-categories"
+		};
+   }
+
    rpc BankCodes (google.protobuf.Empty) returns (BankCodesResponse) {
 	   option (google.api.http) = {
 			get: "/v1/bank-codes"
