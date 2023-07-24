@@ -61,5 +61,14 @@ public class MockUserService : IUserServiceClient
         return user;
     }
 
+    public Task<UserRIPAttributes> GetUserRIPAttributes(string identity, string identityScheme, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        return Task.FromResult(new UserRIPAttributes()
+        {
+            PersonId = 1,
+            PersonSurname = "Surname"
+        });
+    }
+
     public const int DefaultUserId = 3048;
 }

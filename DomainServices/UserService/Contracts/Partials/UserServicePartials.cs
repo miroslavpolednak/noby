@@ -7,3 +7,7 @@ public partial class GetUserRequest
 public partial class GetUserPermissionsRequest
     : MediatR.IRequest<GetUserPermissionsResponse>
 { }
+
+public partial class GetUserRIPAttributesRequest
+    : MediatR.IRequest<UserRIPAttributes>
+{ }

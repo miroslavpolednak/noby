@@ -1,4 +1,7 @@
-﻿namespace DomainServices.UserService.Clients.Services;
+﻿using DomainServices.UserService.Contracts;
+using System.Threading;
+
+namespace DomainServices.UserService.Clients.Services;
 
 internal class UserService 
     : IUserServiceClient
@@ -64,6 +67,11 @@ internal class UserService
                 UserId = userId,
             }, cancellationToken: cancellationToken);
         return response.UserPermissions.ToArray();
+    }
+
+    public async Task<UserRIPAttributes> GetUserRIPAttributes(string identity, string identityScheme, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        return await _service.GetUserRIPAttributesAsync(new GetUserRIPAttributesRequest { Identity = identity, IdentityScheme = identityScheme }, cancellationToken: cancellationToken);
     }
 
     private readonly Contracts.v1.UserService.UserServiceClient _service;
