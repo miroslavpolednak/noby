@@ -1,4 +1,5 @@
 ﻿using CIS.Core.ErrorCodes;
+using System.Security.Policy;
 
 namespace DomainServices.DocumentOnSAService.Api;
 
@@ -7,7 +8,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int SalesArrangementNotExist = 19000;
     public const int SignatureTypeNotExist = 19002;
     public const int DocumentOnSANotExist = 19003;
-    public const int UnableToSignDocumentOnSA = 19005;
+    public const int AlreadySignedDocumentOnSA = 19005;
     public const int EasAddFirstSignatureDateReturnedErrorState = 19006; // Without Desc
     public const int CombinationOfParametersNotSupported = 19010;
     public const int VersionHaveToBeLowerThanMaxVersion = 19011;
@@ -20,6 +21,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int UnableToStartSigningOrSignInvalidSalesArrangementState = 19018;
     public const int UnableToStartSigningOrSignInvalidDocument = 19019;
     public const int UnableToSendDocumentPreviewForPaperSignedDocuments = 19020;
+    public const int SignatureTypeIdHasToBeSame = 19021;
 
     // Non BL validation
     public const int SalesArrangementIdIsRequired = 19030;
@@ -43,7 +45,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { SalesArrangementNotExist, "SalesArrangement {PropertyValue} does not exist" },
             { SignatureTypeNotExist, "SignatureType {PropertyValue} does not exist." },
             { DocumentOnSANotExist, "DocumentOnSA {PropertyValue} does not exist."},
-            { UnableToSignDocumentOnSA, "Unable to sign DocumentOnSA {PropertyValue}. Document is for electronic signature only or is already signed."},
+            { AlreadySignedDocumentOnSA, "Unable to sign DocumentOnSA {PropertyValue}. Document has been already signed."},
             { CombinationOfParametersNotSupported, "Combination of parameters not supported"},
             { VersionHaveToBeLowerThanMaxVersion, "Version have to be lower than {PropertyValue}" },
             { SetVersionDirectlyError, "If you want set version directly, you have to set increaseVersion to false and version have to be {PropertyValue}" },
@@ -52,6 +54,8 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { ForSpecifiedDocumentTypeIdCannotFindHousehold, "For specified documentTypeId {PropertyValue} cannot find Household"},
             { DocumentTypeIdNotSupportedForProductRequest, "DocumentTypeId {PropertyValue} not supported for ProductRequest"},
             { SalesArrangementIdIsRequired, "SalesArrangementId is required"},
+            { UnableToSendDocumentPreviewForPaperSignedDocuments, "Unable to send document preview for paper signed documents"},
+            { SignatureTypeIdHasToBeSame, "SignatureTypeId has to be same (cannot sign electronic document manually and contrary)"},
             { DocumentTypeIdIsRequired, " DocumentTypeId is required"},
             { FormIdIsRequired, "FormId is required"},
             { EArchivIdIsRequired, "EArchivId is required"},

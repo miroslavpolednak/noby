@@ -23,6 +23,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
     private readonly IESignaturesClient _eSignaturesClient;
+    private readonly IMediator _mediator;
 
     public GetDocumentsToSignListHandler(
         DocumentOnSAServiceDbContext dbContext,
@@ -31,7 +32,8 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         IDocumentOnSaMapper documentOnSaMapper,
         IHouseholdServiceClient householdClient,
         ICustomerOnSAServiceClient customerOnSAServiceClient,
-        IESignaturesClient eSignaturesClient)
+        IESignaturesClient eSignaturesClient,
+        IMediator mediator)
     {
         _dbContext = dbContext;
         _arrangementServiceClient = arrangementServiceClient;
@@ -40,6 +42,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         _householdClient = householdClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
         _eSignaturesClient = eSignaturesClient;
+        _mediator = mediator;
     }
 
     public async Task<GetDocumentsToSignListResponse> Handle(GetDocumentsToSignListRequest request, CancellationToken cancellationToken)
@@ -152,20 +155,19 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         return mergedVirtualDocumentsOnSa;
     }
 
-    private async Task EvaluateElectronicDocumentStatus(List<Database.Entities.DocumentOnSa> documentsOnSaRealEntity, CancellationToken cancellationToken)
+    private async Task EvaluateElectronicDocumentStatus(List<DocumentOnSa> documentsOnSaRealEntity, CancellationToken cancellationToken)
     {
         foreach (var docOnSa in documentsOnSaRealEntity)
         {
             if (docOnSa.SignatureTypeId is null or not ((int)SignatureTypes.Electronic))
                 continue;
 
-            var elDocumentStatus = await _eSignaturesClient.GetDocumentStatus(docOnSa.ExternalId!, cancellationToken); 
+            var elDocumentStatus = await _eSignaturesClient.GetDocumentStatus(docOnSa.ExternalId!, cancellationToken);
 
             switch (elDocumentStatus)
             {
                 case EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT:
-                    docOnSa.IsSigned = true;
-                    // ToDo zavolat SignDocument(SignDocumentManually)
+                    await _mediator.Send(new SignDocumentRequest { DocumentOnSAId = docOnSa.DocumentOnSAId, SignatureTypeId = docOnSa.SignatureTypeId }, cancellationToken);
                     break;
                 case EDocumentStatuses.DELETED:
                     docOnSa.IsValid = false;

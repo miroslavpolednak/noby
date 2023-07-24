@@ -8,7 +8,7 @@ import "StartSigning.proto";
 import "StopSigning.proto";
 import "GetDocumentsToSignList.proto";
 import "GetDocumentOnSAData.proto";
-import "SignDocumentManually.proto";
+import "SignDocument.proto";
 import "GetDocumentsOnSAList.proto";
 import "CreateDocumentOnSA.proto";
 import "LinkEArchivIdToDocumentOnSA.proto";
@@ -24,7 +24,7 @@ service DocumentOnSAService{
 	rpc StopSigning(DomainServices.DocumentOnSAService.StopSigning.StopSigningRequest) returns(google.protobuf.Empty);
 	rpc GetDocumentsToSignList(DomainServices.DocumentOnSAService.GetDocumentsToSignList.GetDocumentsToSignListRequest) returns(DomainServices.DocumentOnSAService.GetDocumentsToSignList.GetDocumentsToSignListResponse);
 	rpc GetDocumentOnSAData(DomainServices.DocumentOnSAService.GetDocumentOnSAData.GetDocumentOnSADataRequest) returns (DomainServices.DocumentOnSAService.GetDocumentOnSAData.GetDocumentOnSADataResponse);
-	rpc SignDocumentManually(DomainServices.DocumentOnSAService.SignDocumentManually.SignDocumentManuallyRequest) returns (google.protobuf.Empty);
+	rpc SignDocument(DomainServices.DocumentOnSAService.SignDocument.SignDocumentRequest) returns (google.protobuf.Empty);
 	rpc GetDocumentsOnSAList(DomainServices.DocumentOnSAService.GetDocumentsOnSAList.GetDocumentsOnSAListRequest) returns (DomainServices.DocumentOnSAService.GetDocumentsOnSAList.GetDocumentsOnSAListResponse);
 	rpc CreateDocumentOnSA(DomainServices.DocumentOnSAService.CreateDocumentOnSA.CreateDocumentOnSARequest) returns (DomainServices.DocumentOnSAService.CreateDocumentOnSA.CreateDocumentOnSAResponse);
 	rpc LinkEArchivIdToDocumentOnSA(DomainServices.DocumentOnSAService.LinkEArchivIdToDocumentOnSA.LinkEArchivIdToDocumentOnSARequest) returns(google.protobuf.Empty);
