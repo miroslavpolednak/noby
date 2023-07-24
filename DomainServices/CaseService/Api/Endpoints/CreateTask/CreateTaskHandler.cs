@@ -75,6 +75,7 @@ internal sealed class CreateTaskHandler
     {
         if (priceException is null)
             return;
+
         metadata.Add("ukol_overeni_ic_sazba_dat_do", ((DateOnly)priceException.Expiration).ToSbFormat());
         metadata.Add("ukol_overeni_ic_sazba_nabid", priceException.LoanInterestRate.LoanInterestRate.ToSbFormat());
         metadata.Add("ukol_overeni_ic_sazba_vysled", priceException.LoanInterestRate.LoanInterestRateProvided.ToSbFormat());
@@ -86,7 +87,7 @@ internal sealed class CreateTaskHandler
         metadata.Add("ukol_overeni_ic_uver_ltv", priceException.LoanToValue.ToString(CultureInfo.InvariantCulture));
         metadata.Add("ukol_overeni_ic_fixace_uveru_poc_mes", priceException.FixedRatePeriod.ToString(CultureInfo.InvariantCulture));
 
-        for (var i = 0; i < (priceException.Fees?.Count ?? 0); i++)
+        for (var i = 0; i < priceException.Fees.Count; i++)
         {
             metadata.Add($"ukol_overeni_ic_popl_kodsb{i + 1}", priceException.Fees![i].FeeId);
             metadata.Add($"ukol_overeni_ic_popl_sazeb{i + 1}", priceException.Fees![i].TariffSum.ToSbFormat());
@@ -94,18 +95,18 @@ internal sealed class CreateTaskHandler
             metadata.Add($"ukol_overeni_ic_popl_sleva_perc{i + 1}", priceException.Fees![i].DiscountPercentage.ToSbFormat());
         }
 
-        for (var i = 0; i < (priceException.AppliedMarketingActionsCodes?.Count ?? 0); i++)
+        foreach (var item in priceException.AppliedMarketingActionsCodes.Select(GetMarketingActionValue).Where(value => value.HasValue).Select((value, index) => new { value = (int)value!, index }))
         {
-            metadata.Add($"ukol_overeni_ic_skladacka_ma{i + 1}", GetMarketingActionValue(priceException.AppliedMarketingActionsCodes![i]).ToString(CultureInfo.InvariantCulture));
+            metadata.Add($"ukol_overeni_ic_skladacka_ma{item.index + 1}", item.value.ToString(CultureInfo.InvariantCulture));
         }
 
-        static int GetMarketingActionValue(string key) => key switch
+        static int? GetMarketingActionValue(string key) => key switch
         {
             "DOMICILACE" => 1,
             "RZP" => 2,
             "VYSE_PRIJMU_UVERU" => 3,
             "POJIST_NEM" => 4,
-            _ => throw new NotImplementedException()
+            _ => default
         };
     }
 
