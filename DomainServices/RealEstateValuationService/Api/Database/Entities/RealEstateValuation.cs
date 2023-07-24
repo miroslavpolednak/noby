@@ -24,4 +24,6 @@ internal sealed class RealEstateValuation
     public int RealEstateStateId { get; set; }
     public string? Address { get; set; }
     public DateTime? ValuationSentDate { get; set; }
+
+    public RealEstateValuationDetail? Detail { get; set; }
 }

@@ -1,5 +1,10 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+using Google.Api;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.Extensions.Http;
+using Polly.Timeout;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers;
 
@@ -20,10 +25,6 @@ public static class StartupRestExtensions
             .AddHttpClient<TClient, TImplementation>((services, client) =>
             {
                 var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
-
-                // timeout requestu
-                if (configuration.RequestTimeout.GetValueOrDefault() > 0)
-                    client.Timeout = TimeSpan.FromSeconds(configuration.RequestTimeout!.Value);
 
                 // service url
                 client.BaseAddress = configuration.ServiceUrl;
@@ -55,5 +56,35 @@ public static class StartupRestExtensions
                 }
                 else
                     return clientHandler;
+            })
+            // set retry policy
+            .AddPolicyHandler((services, req) =>
+            {
+                var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
+                var logger = services.GetRequiredService<ILogger<TClient>>();
+
+                if (configuration.RequestRetryCount.GetValueOrDefault() == 0)
+                {
+                    return Policy.NoOpAsync<HttpResponseMessage>();
+                }
+                else
+                {
+                    return HttpPolicyExtensions
+                        .HandleTransientHttpError()
+                        .Or<TimeoutRejectedException>()
+                        .WaitAndRetryAsync(configuration.RequestRetryCount!.Value, (c) => TimeSpan.FromSeconds(configuration.RequestRetryTimeout ?? _defaultRetryTimeout), (res, timeSpan, count, context) =>
+                        {
+                            logger.LogWarning($"{typeof(TClient).Name}: #{count} Retry HttpRequest");
+                        });
+                }
+            })
+            // set timeout requestu
+            .AddPolicyHandler((services, req) =>
+            {
+                var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
+                return Policy.TimeoutAsync<HttpResponseMessage>(configuration.RequestTimeout.GetValueOrDefault() > 0 ? configuration.RequestTimeout!.Value : _defaultRequestTimeout);
             });
+
+    private const int _defaultRequestTimeout = 5;
+    private const int _defaultRetryTimeout = 2;
 }

@@ -86,8 +86,8 @@ internal sealed class CodebookService
         var developersAndProjectsQuery = _db.Sql["DeveloperSearchWithProjects"].Query.Replace("<terms>", termsValues);
         var developersQuery = _db.Sql[nameof(DeveloperSearch)].Query.Replace("<terms>", termsValues);
 
-        var developersAndProjects = await _db.Xxd.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersAndProjectsQuery);
-        var developers = await _db.Xxd.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersQuery);
+        var developersAndProjects = await _db.Xxdhf.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersAndProjectsQuery);
+        var developers = await _db.Xxdhf.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersQuery);
 
         return (new DeveloperSearchResponse()).AddItems(developersAndProjects.Concat(developers));
     }

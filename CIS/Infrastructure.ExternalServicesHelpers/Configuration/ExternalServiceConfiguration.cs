@@ -31,6 +31,10 @@ public class ExternalServiceConfiguration<TClient>
     /// <remarks>Default is set to 10 seconds</remarks>
     public int? RequestTimeout { get; set; } = 10;
 
+    public int? RequestRetryCount { get; set; } = 3;
+
+    public int? RequestRetryTimeout { get; set; } = 5;
+
     /// <summary>
     /// Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.
     /// </summary>

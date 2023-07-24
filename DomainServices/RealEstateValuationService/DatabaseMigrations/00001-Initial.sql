@@ -67,7 +67,7 @@ SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[RealEstateValuationHistory])
 GO
 
 CREATE TABLE [dbo].[RealEstateValuationDetail](
-	[RealEstateValuationId] [int] IDENTITY(1,1) NOT NULL,
+	[RealEstateValuationId] [int] NOT NULL,
 	[RealEstateSubtypeId] [int] NULL,
 	[ACVRealEstateTypeId] varchar(2) NULL,
 	[LoanPurposeDetails] [nvarchar](max) NULL,

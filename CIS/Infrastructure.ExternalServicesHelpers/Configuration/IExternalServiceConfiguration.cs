@@ -28,8 +28,20 @@ public interface IExternalServiceConfiguration
     /// <summary>
     /// Default request timeout in seconds
     /// </summary>
-    /// <remarks>Default is set to 10 seconds</remarks>
+    /// <remarks>Default is set to 5 seconds</remarks>
     int? RequestTimeout { get; set; }
+
+    /// <summary>
+    /// Apply retry policy on HttpRequest with supplied retry count
+    /// </summary>
+    /// <remarks>Default is set to 3</remarks>
+    int? RequestRetryCount { get; set; }
+
+    /// <summary>
+    /// Time between consequent retry requests in seconds
+    /// </summary>
+    /// <remarks>Default is set to 5s</remarks>
+    int? RequestRetryTimeout { get; set; }
 
     /// <summary>
     /// Pokud =true, ignoruje HttpClient problem s SSL certifikatem remote serveru.

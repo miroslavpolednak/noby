@@ -24,7 +24,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class AttachmentDTO
+    public partial class AttachmentDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
@@ -110,7 +110,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class AvailableValuationTypesRequestDTO
+    public partial class AvailableValuationTypesRequestDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("realEstateType")]
@@ -166,12 +166,12 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
         [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public double? LoanAmount { get; set; } = default!;
+        public decimal? LoanAmount { get; set; } = default!;
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class BuildingSpecificationDTO
+    public partial class BuildingSpecificationDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("flatNumber")]
@@ -217,7 +217,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ConsultancyRequestDTO
+    public partial class ConsultancyRequestDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("previuosValuationNumber")]
@@ -233,7 +233,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DtsFlatRequest
+    public partial class DtsFlatRequest
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("companyCode")]
@@ -474,7 +474,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DtsHouseRequest
+    public partial class DtsHouseRequest
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("companyCode")]
@@ -715,7 +715,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class FlatLandItemDTO
+    public partial class FlatLandItemDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("note")]
@@ -796,7 +796,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class FlatMainBuildingDTO
+    public partial class FlatMainBuildingDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("note")]
@@ -977,7 +977,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class FlatSpecificationDTO
+    public partial class FlatSpecificationDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("netFloorArea")]
@@ -1193,7 +1193,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class FlatValuationDTO
+    public partial class FlatValuationDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("buildingStatus")]
@@ -1329,7 +1329,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class HouseLandItemDTO
+    public partial class HouseLandItemDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("note")]
@@ -1425,7 +1425,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class HouseMainBuildingDTO
+    public partial class HouseMainBuildingDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("note")]
@@ -1651,7 +1651,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class HouseValuationDTO
+    public partial class HouseValuationDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("buildingStatus")]
@@ -1787,7 +1787,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LinkedResource
+    public partial class LinkedResource
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("href")]
@@ -1798,7 +1798,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LocalSurveyAttachmentsDTO
+    public partial class LocalSurveyAttachmentsDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("proofOfPayment")]
@@ -1879,7 +1879,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LocalSurveyInfoDTO
+    public partial class LocalSurveyInfoDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("localSurveyPerson")]
@@ -1905,7 +1905,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class OnlineMPRequestDTO
+    public partial class OnlineMPRequestDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("companyCode")]
@@ -2011,7 +2011,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class OnlineRevaluationCheckRequestDTO
+    public partial class OnlineRevaluationCheckRequestDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("valuationType")]
@@ -2047,7 +2047,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class OrderAdditionalInfoDTO
+    public partial class OrderAdditionalInfoDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("localSurveyPerson")]
@@ -2183,7 +2183,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class OrderBasicInfoDTO
+    public partial class OrderBasicInfoDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("eFormId")]
@@ -2279,7 +2279,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class OrderDTO
+    public partial class OrderDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
@@ -2350,7 +2350,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class OrderInfoDTO
+    public partial class OrderInfoDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("orderId")]
@@ -2426,7 +2426,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class OrderInfoDTOPagedResponse
+    public partial class OrderInfoDTOPagedResponse
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("pageSize")]
@@ -2462,7 +2462,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class OrderResultDTO
+    public partial class OrderResultDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("orderId")]
@@ -2578,7 +2578,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class OtherBuildingDTO
+    public partial class OtherBuildingDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
@@ -2599,7 +2599,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ProblemDetails
+    public partial class ProblemDetails
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("type")]
@@ -2639,7 +2639,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RealEstateCompactDTO
+    public partial class RealEstateCompactDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("realEstateId")]
@@ -2735,7 +2735,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RealEstateDTO
+    public partial class RealEstateDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("realEstateId")]
@@ -3026,7 +3026,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResultPriceDTO
+    public partial class ResultPriceDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("price")]
@@ -3047,7 +3047,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RevaluationRequestDTO
+    public partial class RevaluationRequestDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("companyCode")]
@@ -3288,7 +3288,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RevaluationRequiredResponse
+    public partial class RevaluationRequiredResponse
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("revaluationRequired")]
@@ -3299,7 +3299,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RiskInfoDTO
+    public partial class RiskInfoDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
@@ -3335,7 +3335,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class StandardOrderRequestDTO
+    public partial class StandardOrderRequestDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("companyCode")]
@@ -3571,7 +3571,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ZovRequestDTO
+    public partial class ZovRequestDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("previuosValuationNumber")]

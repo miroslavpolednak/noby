@@ -5,6 +5,25 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
 internal sealed class RealPreorderServiceClient
     : IPreorderServiceClient
 {
+    public async Task<List<CIS.Foms.Enums.RealEstateValuationTypes>> GetValuationTypes(Contracts.AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient
+            .PostAsJsonAsync(_httpClient.BaseAddress + "/lookup/valuationtypes", request, cancellationToken)
+            .ConfigureAwait(false);
+
+        var acvResponse = await response.EnsureSuccessStatusAndReadJson<List<string>>(StartupExtensions.ServiceName, cancellationToken);
+        return acvResponse.Select(t => getEnum(t.AsSpan())).ToList();
+
+        CIS.Foms.Enums.RealEstateValuationTypes getEnum(ReadOnlySpan<char> s)
+            => s switch
+            {
+                "MODEL" => CIS.Foms.Enums.RealEstateValuationTypes.Online,
+                "DTS" => CIS.Foms.Enums.RealEstateValuationTypes.Dts,
+                "STANDARD" => CIS.Foms.Enums.RealEstateValuationTypes.Standard,
+                _ => throw new CisExtServiceValidationException(0, $"Unknown result '{s}'")
+            };
+    }
+
     public async Task<long> UploadAttachment(string title, string category, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default)
     {
         using var content = new MultipartFormDataContent();

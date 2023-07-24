@@ -1,5 +1,4 @@
 ﻿using DomainServices.RealEstateValuationService.Contracts;
-using StackExchange.Redis;
 
 namespace DomainServices.RealEstateValuationService.Clients.Services;
 
@@ -101,6 +100,12 @@ internal sealed class RealEstateValuationServiceClient
             RealEstateValuationId = realEstateValuationId
         }, cancellationToken: cancellationToken);
     }
+
+    public async Task<List<CIS.Foms.Enums.RealEstateValuationTypes>> GetRealEstateValuationTypes(GetRealEstateValuationTypesRequest request, CancellationToken cancellationToken = default)
+        => (await _service.GetRealEstateValuationTypesAsync(request, cancellationToken: cancellationToken))
+            .ValuationTypeId
+            .Select(t => (CIS.Foms.Enums.RealEstateValuationTypes)t)
+            .ToList();
 
     // DeedOfOwnershipDocument
     public async Task<int> AddDeedOfOwnershipDocument(AddDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken = default)

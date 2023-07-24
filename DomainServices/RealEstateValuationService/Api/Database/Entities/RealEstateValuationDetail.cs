@@ -15,9 +15,9 @@ public class RealEstateValuationDetail
     public string? ACVRealEstateTypeId { get; set; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public string LoanPurposeDetails { get; set; }
-    public byte[] LoanPurposeDetailsBin { get; set; }
+    public string? LoanPurposeDetails { get; set; }
+    public byte[]? LoanPurposeDetailsBin { get; set; }
 
-    public string SpecificDetail { get; set; }
-    public byte[] SpecificDetailBin { get; set; }
+    public string? SpecificDetail { get; set; }
+    public byte[]? SpecificDetailBin { get; set; }
 }

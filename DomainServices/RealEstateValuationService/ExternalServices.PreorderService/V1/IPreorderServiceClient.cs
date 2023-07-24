@@ -7,6 +7,8 @@ public interface IPreorderServiceClient
 {
     const string Version = "V1";
 
+    Task<List<CIS.Foms.Enums.RealEstateValuationTypes>> GetValuationTypes(Contracts.AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Upload souboru s prilohou
     /// </summary>

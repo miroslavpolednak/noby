@@ -20,5 +20,7 @@ internal sealed class RealEstateValuationServiceDbContext
         modelBuilder.RegisterCisTemporalTable<RealEstateValuationDetail>();
         modelBuilder.RegisterCisTemporalTable<DeedOfOwnershipDocument>();
         modelBuilder.RegisterCisTemporalTable<RealEstateValuationAttachment>();
+
+        modelBuilder.Entity<RealEstateValuation>().HasOne(t => t.Detail).WithOne();
     }
 }
