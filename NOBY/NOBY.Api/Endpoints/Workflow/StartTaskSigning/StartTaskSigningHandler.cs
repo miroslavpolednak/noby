@@ -4,6 +4,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using FastEnumUtility;
 
 namespace NOBY.Api.Endpoints.Workflow.StartTaskSigning;
 
@@ -28,8 +29,15 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
         
         if (documentOnSa is not null)
         {
-            // return documentOnSa
-            return new StartTaskSigningResponse();
+            return new StartTaskSigningResponse
+            {
+                DocumentOnSAId = documentOnSa.DocumentOnSAId,
+                DocumentTypeId = documentOnSa.DocumentTypeId,
+                FormId = documentOnSa.FormId,
+                IsSigned = documentOnSa.IsSigned,
+                SignatureTypeId = documentOnSa.SignatureTypeId
+                // todo:
+            };
         }
         
         var workflowTasks = await _caseService.GetTaskList(caseId, cancellationToken);
@@ -49,15 +57,23 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
             SalesArrangementId = salesArrangementId,
             SignatureTypeId = workflowTask.SignatureType switch
             {
-                "paper" => 1,
-                "digital" => 2,
+                "paper" => SignatureTypes.Paper.ToByte(),
+                "digital" => SignatureTypes.Biometric.ToByte(),
                 _ => throw new NobyValidationException(90001)
             }
         };
 
         var signingResponse = await _documentOnSaService.StartSigning(signingRequest, cancellationToken);
         
-        return new StartTaskSigningResponse();
+        return new StartTaskSigningResponse
+        {
+            DocumentOnSAId = signingResponse.DocumentOnSa.DocumentOnSAId,
+            DocumentTypeId = signingResponse.DocumentOnSa.DocumentTypeId,
+            FormId = signingResponse.DocumentOnSa.FormId,
+            IsSigned = signingResponse.DocumentOnSa.IsSigned,
+            SignatureTypeId = signingResponse.DocumentOnSa.SignatureTypeId
+            // todo:
+        };
     }
 
     private readonly ICodebookServiceClient _codebookService;
