@@ -3,13 +3,13 @@
 /// <summary>
 /// Identifikační údaje nemovitosti k Ocenění (bez Noby ID)
 /// </summary>
-public class DeedOfOwnershipDocument
+public abstract class DeedOfOwnershipDocument
 {
     /// <summary>
     /// ID staženého dokumentu listu vlastnictví (LV)
     /// </summary>
     [Required]
-    public long ExternalDeedOfOwnershipDocumentId { get; set; }
+    public long CremDeedOfOwnershipDocumentId { get; set; }
 
     /// <summary>
     /// KATUZ ID, pětimístné číslo katastrálního území
