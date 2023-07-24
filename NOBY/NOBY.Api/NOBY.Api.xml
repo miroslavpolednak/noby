@@ -82,11 +82,6 @@
             Stát - AddressWhispererBEService|country
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Admin.AdminController.GetDiscoveryServices(System.Threading.CancellationToken)">
-            <summary>
-            Seznam URL služeb zaregistrovaných v ServiceDiscovery
-            </summary>
-        </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateSalesArrangement(System.Int64,NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest)">
             <summary>
             Vytvoření servisního SalesArrangement-u
@@ -2919,15 +2914,6 @@
             
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=33180E91-2CB3-4d2f-B6AD-5841EC8A836F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.UploadRealEstateValuationAttachment(System.Int64,System.Int32,Microsoft.AspNetCore.Http.IFormFile,System.Threading.CancellationToken)">
-            <summary>
-            Upload přílohy ocenění nemovitosti
-            </summary>
-            <remarks>
-            Dočasný upload souboru přílohy na server. Vrací GUID souboru, který může být následně použit pro spárování dočasného souboru s oceněním pomocí SaveRealEstateValuationAttachments.
-            </remarks>
-            <response code="200">GUID dočasného souboru</response>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveRealEstateValuationAttachments(System.Int64,System.Int32,System.Collections.Generic.List{NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem},System.Threading.CancellationToken)">
             <summary>
