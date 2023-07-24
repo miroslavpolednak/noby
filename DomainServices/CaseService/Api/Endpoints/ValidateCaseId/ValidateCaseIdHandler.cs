@@ -18,23 +18,19 @@ internal sealed class ValidateCaseIdHandler
         {
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
         }
-        else if (instance is not null && _disallowedStates.Contains(instance!.State))
+        Helpers.ThrowIfCaseIsCancelled(instance?.State);
+        
+        return new ValidateCaseIdResponse
         {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseCancelled);
-        }
-        else
-        {
-            return new ValidateCaseIdResponse
-            {
-                Exists = instance is not null,
-                OwnerUserId = instance?.OwnerUserId
-            };
-        }
+            Exists = instance is not null,
+            OwnerUserId = instance?.OwnerUserId
+        };
     }
 
     private static int[] _disallowedStates = new[]
     {
-        (int)CaseStates.ToBeCancelledConfirmed
+        (int)CaseStates.ToBeCancelledConfirmed,
+        (int)CaseStates.Cancelled
     };
 
     private readonly CaseServiceDbContext _dbContext;

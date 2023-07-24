@@ -27,7 +27,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Represents deed of ownership document
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DeedOfOwnershipDocument
+    public partial class DeedOfOwnershipDocument
     {
         /// <summary>
         /// Code of branch of the creator user
@@ -263,7 +263,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Legal relation attributes from deed of ownership
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DeedOfOwnershipLegalRelation
+    public partial class DeedOfOwnershipLegalRelation
     {
         /// <summary>
         /// Html description of the legal relation record
@@ -363,7 +363,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Deed of ownership owner description
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DeedOfOwnershipOwnerDTO
+    public partial class DeedOfOwnershipOwnerDTO
     {
         /// <summary>
         /// Formatted subject description (name + address)
@@ -417,7 +417,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Represents single real estate entity per record specified in deed of ownership with a decomposition to sub entities in a collection of real estates
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DeedOfOwnershipRealEstate
+    public partial class DeedOfOwnershipRealEstate
     {
         /// <summary>
         /// Deed of ownership number
@@ -571,7 +571,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Description of the document status with additional attributes
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class DocumentStatus
+    public partial class DocumentStatus
     {
         /// <summary>
         /// document id
@@ -625,7 +625,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// ISKN building entity
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class IsknBuildingDTO
+    public partial class IsknBuildingDTO
     {
         /// <summary>
         /// Building number
@@ -693,7 +693,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Iskn flat entity
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class IsknFlatDTO
+    public partial class IsknFlatDTO
     {
         /// <summary>
         /// flat number including house number
@@ -720,7 +720,7 @@ namespace ExternalServices.Crem.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("isknFlatId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int IsknFlatId { get; set; } = default!;
+        public long IsknFlatId { get; set; } = default!;
 
         private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
 
@@ -737,7 +737,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Paging information
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Paging
+    public partial class Paging
     {
         /// <summary>
         /// Limit of items per page
@@ -790,7 +790,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Deed of ownership definition by a set of real estates defined by either unique iskn id or set of identification attributes
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class PartialDeedOfOwnershipRealEstate
+    public partial class PartialDeedOfOwnershipRealEstate
     {
         /// <summary>
         /// Building number(s)
@@ -926,7 +926,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Evidence of all entities(site, building, flat, building right), its attributes and relations. In case of 1:N relations (1 flat in multiple buildings on multiple sites it means N records (usually N=number of sites) of this entity, always with the corresponding attributes for a given record
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RealEstate
+    public partial class RealEstate
     {
         /// <summary>
         /// BPEJ number for a site
@@ -1279,7 +1279,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// A new document download from CUZK request specification
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RequestDownloadDeedOfOwnership
+    public partial class RequestDownloadDeedOfOwnership
     {
         /// <summary>
         /// Deed of ownership number
@@ -1297,7 +1297,7 @@ namespace ExternalServices.Crem.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("isknDeedOfOwnershipId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int? IsknDeedOfOwnershipId { get; set; } = default!;
+        public long? IsknDeedOfOwnershipId { get; set; } = default!;
 
         /// <summary>
         /// True for request of public document (PDF for reading purposes only)
@@ -1351,7 +1351,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Response object for search building by address
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResponseGetFlatsForAddressDTO
+    public partial class ResponseGetFlatsForAddressDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("building")]
@@ -1374,7 +1374,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Response object for legal relations import from deed of ownership document
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResponseGetLegalRelations
+    public partial class ResponseGetLegalRelations
     {
         /// <summary>
         /// Collection of legal relations in a deed of ownership document
@@ -1405,7 +1405,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Response object for owners import from deed of ownership document
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResponseGetOwners
+    public partial class ResponseGetOwners
     {
         /// <summary>
         /// Collection of owners in a deed of ownership document
@@ -1436,7 +1436,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Response object for real estates import from deed of ownership document
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResponseGetRealEstates
+    public partial class ResponseGetRealEstates
     {
         /// <summary>
         /// Collection of real estates in a deed of ownership document
@@ -1467,7 +1467,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Response object for searching existing deed of ownership documents
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResponseSearchDeedOfOwnershipDocuments
+    public partial class ResponseSearchDeedOfOwnershipDocuments
     {
         /// <summary>
         /// Collection of documents
@@ -1498,7 +1498,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Response object for upload xml/pdf document
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ResponseUploadDocumentDTO
+    public partial class ResponseUploadDocumentDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("documentId")]
@@ -1531,7 +1531,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// Town part object
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class TownPartDTO
+    public partial class TownPartDTO
     {
         /// <summary>
         /// ISKN code
@@ -1566,7 +1566,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// anonymized document content specific for selected company
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum CompanyCode
+    public enum CompanyCode
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"KB")]
@@ -1581,7 +1581,7 @@ namespace ExternalServices.Crem.V1.Contracts
     /// The list of deed of ownership sections for legal relations
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Anonymous
+    public enum Anonymous
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"B1")]
@@ -1596,7 +1596,7 @@ namespace ExternalServices.Crem.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum DeedOfOwnershipDocumentStatus
+    public enum DeedOfOwnershipDocumentStatus
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CREATED")]
@@ -1617,7 +1617,7 @@ namespace ExternalServices.Crem.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum DeedOfOwnershipLegalRelationSection
+    public enum DeedOfOwnershipLegalRelationSection
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"B1")]
@@ -1632,7 +1632,7 @@ namespace ExternalServices.Crem.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum DeedOfOwnershipOwnerDTOSubjectType
+    public enum DeedOfOwnershipOwnerDTOSubjectType
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"PERSON")]
@@ -1647,7 +1647,7 @@ namespace ExternalServices.Crem.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum DeedOfOwnershipRealEstateRealEstateType
+    public enum DeedOfOwnershipRealEstateRealEstateType
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"SITE")]
@@ -1665,7 +1665,7 @@ namespace ExternalServices.Crem.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum DocumentStatusStatusCode
+    public enum DocumentStatusStatusCode
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CREATED")]
@@ -1686,7 +1686,7 @@ namespace ExternalServices.Crem.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum IsknBuildingDTOBuildingType
+    public enum IsknBuildingDTOBuildingType
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"C_P")]
@@ -1713,7 +1713,7 @@ namespace ExternalServices.Crem.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum PartialDeedOfOwnershipRealEstateRealEstateType
+    public enum PartialDeedOfOwnershipRealEstateRealEstateType
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"SITE")]
@@ -1731,7 +1731,7 @@ namespace ExternalServices.Crem.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum RealEstateBuildingPartOf
+    public enum RealEstateBuildingPartOf
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"BUILDING_RIGHT")]
@@ -1749,7 +1749,7 @@ namespace ExternalServices.Crem.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum RealEstateType
+    public enum RealEstateType
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"SITE")]

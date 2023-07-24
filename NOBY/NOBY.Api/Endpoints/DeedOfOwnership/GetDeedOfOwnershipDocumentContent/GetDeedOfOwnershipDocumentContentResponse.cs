@@ -6,11 +6,11 @@
 public sealed class GetDeedOfOwnershipDocumentContentResponse
 {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public GetDeedOfOwnershipDocumentContentResponseOwners Owners { get; set; }
+    public List<GetDeedOfOwnershipDocumentContentResponseOwners>? Owners { get; set; }
 
-    public GetDeedOfOwnershipDocumentContentResponseLegalRelations LegalRelations { get; set; }
+    public List<GetDeedOfOwnershipDocumentContentResponseLegalRelations>? LegalRelations { get; set; }
 
-    public GetDeedOfOwnershipDocumentContentResponseRealEstates RealEstates { get; set; }
+    public List<GetDeedOfOwnershipDocumentContentResponseRealEstates>? RealEstates { get; set; }
 }
 
 /// <summary>

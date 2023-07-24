@@ -113,7 +113,7 @@ internal sealed class WorkflowMapperService
             .Select(t => new _Dto.Fee()
             {
                 DiscountPercentage = t.DiscountPercentage,
-                FeeName = fees.FirstOrDefault(f => f.ShortName == t.FeeId)?.Name ?? string.Empty,
+                FeeName = fees.FirstOrDefault(f => f.Id == Convert.ToInt32(t.FeeId))?.ShortName ?? string.Empty,
                 FinalSum = t.FinalSum,
                 TariffSum = t.TariffSum
             })

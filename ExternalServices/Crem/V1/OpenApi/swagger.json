@@ -1508,6 +1508,7 @@
           },
           "isknFlatId": {
             "type": "integer",
+            "format": "int64",
             "description": "Iskn flat ID (unique identifier of the flat in CUZK"
           }
         },
@@ -1868,6 +1869,7 @@
           },
           "isknDeedOfOwnershipId": {
             "type": "integer",
+            "format": "int64",
             "description": "Deed of ownership ISKN unique ID (an alternative to territoryNumber+deedOfOwnershipNumber)",
             "nullable": true
           },

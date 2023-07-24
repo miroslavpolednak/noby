@@ -33,7 +33,10 @@ public static class MapAuthenticationEndpoints
 
             // Odhlášení přihlášeného uživatele
             t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint,
-                ([FromServices] IHttpContextAccessor context, [FromServices] AppConfiguration configuration, [FromQuery] string? redirect) =>
+                ([FromServices] IHttpContextAccessor context, 
+                [FromServices] AppConfiguration configuration,
+                [FromServices] IAuditLogger logger,
+                [FromQuery] string? redirect) =>
                 {
                     string redirectUrl = Uri.TryCreate(redirect, UriKind.Absolute, out var uri) ? uri.ToString() : "/";
 
@@ -43,6 +46,8 @@ public static class MapAuthenticationEndpoints
                     {
                         context.HttpContext!.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
                     }
+
+                    logger.Log(CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby003, "User logged out");
 
                     // redirect to root?
                     context.HttpContext!.Response.Redirect(redirectUrl);

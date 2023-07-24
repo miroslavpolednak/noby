@@ -30,7 +30,7 @@
       "generatePrepareRequestAndProcessResponseAsAsyncMethods": false,
       "exposeJsonSerializerSettings": false,
       "clientClassAccessModifier": "public",
-      "typeAccessModifier": "internal",
+      "typeAccessModifier": "public",
       "generateContractsOutput": true,
       "contractsNamespace": "ExternalServices.Crem.V1.Contracts",
       "contractsOutputFilePath": "../Contracts.cs",

@@ -11,13 +11,13 @@ internal sealed class GetDeedOfOwnershipIdsHandler
 
         return new GetDeedOfOwnershipIdsResponse
         {
-            DeedOfOwnershipId = response.DeedOfOwnershipId,
+            DeedOfOwnershipId = response.Building.IsknDeedOfOwnershipId,
             Flats = response
-                .Flats!
+                .Building
+                .Flats
                 .Select(t => new GetDeedOfOwnershipIdsResponseFlat
                 {
-                    DeedOfOwnershipId = t.DeedOfOwnershipId,
-                    MannerOfUseFlatShortName = t.MannerOfUseFlatShortName,
+                    DeedOfOwnershipId = t.IsknDeedOfOwnershipId,
                     FlatNumber = t.FlatNumber
                 })
                 .ToList()

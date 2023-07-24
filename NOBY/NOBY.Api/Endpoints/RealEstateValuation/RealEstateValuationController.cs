@@ -166,28 +166,6 @@ public sealed class RealEstateValuationController : ControllerBase
     }
 
     /// <summary>
-    /// Upload přílohy ocenění nemovitosti
-    /// </summary>
-    /// <remarks>
-    /// Dočasný upload souboru přílohy na server. Vrací GUID souboru, který může být následně použit pro spárování dočasného souboru s oceněním pomocí SaveRealEstateValuationAttachments.
-    /// </remarks>
-    /// <response code="200">GUID dočasného souboru</response>
-    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments/upload")]
-    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<Guid> UploadRealEstateValuationAttachment(
-        [FromRoute] long caseId,
-        [FromRoute] int realEstateValuationId,
-        [Required] IFormFile file,
-        CancellationToken cancellationToken)
-        => await _mediator.Send(new UploadRealEstateValuationAttachment.UploadRealEstateValuationAttachmentRequest
-        {
-            CaseId = caseId,
-            RealEstateValuationId = realEstateValuationId,
-            File = file,
-        }, cancellationToken);
-
-    /// <summary>
     /// Spojení souboru přílohy s oceněním nemovitosti
     /// </summary>
     /// <remarks>

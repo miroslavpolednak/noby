@@ -116,12 +116,13 @@ internal sealed class SalesArrangementService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default)
+    public async Task SendToCmp(int salesArrangementId, bool isCancelled, CancellationToken cancellationToken = default)
     {
          await _service.SendToCmpAsync(
             new()
             {
-                SalesArrangementId = salesArrangementId
+                SalesArrangementId = salesArrangementId,
+                IsCancelled = isCancelled
             }, cancellationToken: cancellationToken);
     }
 

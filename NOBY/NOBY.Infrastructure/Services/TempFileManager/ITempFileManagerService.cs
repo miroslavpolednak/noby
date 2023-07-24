@@ -15,6 +15,8 @@ public interface ITempFileManagerService
         IFormFile file,
         CancellationToken cancellationToken = default);
 
+    Task<List<TempFile>> GetSession(Guid sessionId, CancellationToken cancellationToken = default);
+
     Task<TempFile> GetMetadata(Guid tempFileId, CancellationToken cancellationToken = default);
 
     Task<byte[]> GetContent(Guid tempFileId, CancellationToken cancellationToken = default);

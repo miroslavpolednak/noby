@@ -20,17 +20,15 @@ internal sealed class GetCaseDetailHandler
             .FirstOrDefaultAsync(cancellation) 
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
-        if (_disallowedStates.Contains(model.State))
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseCancelled);
-        }
+        Helpers.ThrowIfCaseIsCancelled(model.State);
 
         return model;
     }
 
     private static int[] _disallowedStates = new[]
     {
-        (int)CaseStates.ToBeCancelledConfirmed
+        (int)CaseStates.ToBeCancelledConfirmed,
+        (int)CaseStates.Cancelled
     };
 
     private readonly CaseServiceDbContext _dbContext;
