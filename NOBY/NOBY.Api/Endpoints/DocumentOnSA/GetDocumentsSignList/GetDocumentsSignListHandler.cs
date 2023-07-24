@@ -21,7 +21,6 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
     public async Task<GetDocumentsSignListResponse> Handle(GetDocumentsSignListRequest request, CancellationToken cancellationToken)
     {
         var result = await _client.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
-
         return await MapToResponseAndFilter(result, cancellationToken);
     }
 
