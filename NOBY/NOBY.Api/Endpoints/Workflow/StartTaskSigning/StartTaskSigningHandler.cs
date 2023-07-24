@@ -36,12 +36,23 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
         var workflowTask = workflowTasks.FirstOrDefault(t => t.TaskId == taskId)
             ?? throw new CisNotFoundException(90001, $"TaskId '{taskId}' is not present in workflow task list.");
 
+        // todo: workflowTask should have SignatureTypeId instead of hardcoded SignatureType "paper", "digital", see CaseExtensions.cs
+        // var signatureTypes = await _codebookService.SignatureTypes(cancellationToken);
+        // var signatureType = signatureTypes
+        //     .FirstOrDefault(t => t.Code == workflowTask.SignatureType)
+        //     ?? throw new NobyValidationException(90014);
+        
         var signingRequest = new StartSigningRequest
         {
             CaseId = caseId,
             TaskId = (int)taskId,
             SalesArrangementId = salesArrangementId,
-            // SignatureTypeId = workflowTask.SignatureType todo: HH
+            SignatureTypeId = workflowTask.SignatureType switch
+            {
+                "paper" => 1,
+                "digital" => 2,
+                _ => throw new NobyValidationException(90001)
+            }
         };
 
         var signingResponse = await _documentOnSaService.StartSigning(signingRequest, cancellationToken);
