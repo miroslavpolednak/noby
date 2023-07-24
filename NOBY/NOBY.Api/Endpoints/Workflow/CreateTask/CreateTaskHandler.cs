@@ -28,19 +28,20 @@ internal sealed class CreateTaskHandler
         }
 
         List<string>? documentIds = new();
-        var attachments = request.Attachments?
-            .Select(t => new Infrastructure.Services.TempFileManager.TempDocumentInformation
+        var attachments = request
+            .Attachments?
+            .Select(t => new Infrastructure.Services.UploadDocumentToArchive.DocumentMetadata
             {
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
                 FileName = t.FileName,
-                TempGuid = t.Guid!.Value
+                TempFileId = t.Guid!.Value
             })
             .ToList();
 
         if (attachments?.Any() ?? false)
         {
-            documentIds.AddRange(await _tempFileManager.UploadToArchive(caseInstance.CaseId, caseInstance.Data?.ContractNumber, attachments, cancellationToken));
+            documentIds.AddRange(await _uploadDocumentToArchive.Upload(caseInstance.CaseId, caseInstance.Data?.ContractNumber, attachments, cancellationToken));
         }
 
         var dsRequest = new DomainServices.CaseService.Contracts.CreateTaskRequest
@@ -67,7 +68,10 @@ internal sealed class CreateTaskHandler
         var result = await _caseService.CreateTask(dsRequest, cancellationToken);
 
         // smazat prilohy z tempu
-        _tempFileManager.BatchDelete(attachments);
+        if (attachments?.Any() ?? false)
+        {
+            await _tempFileManager.Delete(attachments.Select(t => t.TempFileId), cancellationToken);
+        }
 
         return result.TaskId;
     }
@@ -134,17 +138,20 @@ internal sealed class CreateTaskHandler
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
-    private readonly Infrastructure.Services.TempFileManager.ITempFileManager _tempFileManager;
+    private readonly Infrastructure.Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
+    private readonly Infrastructure.Services.TempFileManager.ITempFileManagerService _tempFileManager;
 
     public CreateTaskHandler(
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
-        Infrastructure.Services.TempFileManager.ITempFileManager tempFileManager)
+        Infrastructure.Services.TempFileManager.ITempFileManagerService tempFileManager,
+        Infrastructure.Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive)
     {
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
         _caseService = caseService;
         _tempFileManager = tempFileManager;
+        _uploadDocumentToArchive = uploadDocumentToArchive;
     }
 }

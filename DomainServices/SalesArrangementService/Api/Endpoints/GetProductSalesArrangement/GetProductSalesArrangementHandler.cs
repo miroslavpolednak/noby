@@ -10,16 +10,16 @@ internal sealed class GetProductSalesArrangementHandler
     public async Task<__SA.GetProductSalesArrangementResponse> Handle(__SA.GetProductSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         var saTypes = (await _codebookService.SalesArrangementTypes(cancellationToken))
-            .Where(t => t.SalesArrangementCategory == 1)
+            .Where(t => t.SalesArrangementCategory == (int)SalesArrangementTypes.Mortgage)
             .Select(t => t.Id)
             .ToList();
 
         var sa = await _dbContext.SalesArrangements
             .AsNoTracking()
-            .Where(t => saTypes.Contains(t.SalesArrangementTypeId))
+            .Where(t => t.CaseId == request.CaseId && saTypes.Contains(t.SalesArrangementTypeId))
             .Select(t => new { t.SalesArrangementId, t.OfferId })
             .FirstOrDefaultAsync(cancellationToken)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ProductSalesArrangementNotFound, request.CaseId);
 
         return new __SA.GetProductSalesArrangementResponse
         {

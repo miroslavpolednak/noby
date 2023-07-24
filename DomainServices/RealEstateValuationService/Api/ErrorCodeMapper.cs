@@ -16,6 +16,7 @@ internal sealed class ErrorCodeMapper
     public const int DeedOfOwnershipDocumentNotFound = 22008;
     public const int RealEstateValuationAttachmentIdIsEmpty = 22009;
     public const int RealEstateValuationAttachmentNotFound = 22010;
+    public const int RealEstateValuationAttachmentIsEmpty = 22011;
 
     public static IErrorCodesDictionary Init()
     {
@@ -31,7 +32,8 @@ internal sealed class ErrorCodeMapper
             { DeedOfOwnershipDocumentIdIsEmpty, "DeedOfOwnershipDocumentId is empty" },
             { DeedOfOwnershipDocumentNotFound, "DeedOfOwnershipDocumentId {PropertyValue} not found" },
             { RealEstateValuationAttachmentIdIsEmpty, "RealEstateValuationAttachmentId is empty" },
-            { RealEstateValuationAttachmentNotFound, "RealEstateValuationAttachmentId {PropertyValue} not found" }
+            { RealEstateValuationAttachmentNotFound, "RealEstateValuationAttachmentId {PropertyValue} not found" },
+            { RealEstateValuationAttachmentIsEmpty, "RealEstateValuationAttachment is empty" }
         });
 
         return Messages;

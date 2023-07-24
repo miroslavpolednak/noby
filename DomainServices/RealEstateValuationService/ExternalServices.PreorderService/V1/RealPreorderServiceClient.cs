@@ -1,5 +1,4 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
-using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 
@@ -11,8 +10,7 @@ internal sealed class RealPreorderServiceClient
         using var content = new MultipartFormDataContent();
 
         content.Add(new StringContent(title), "Description");
-        content.Add(new StringContent("xxxxx"), "Category");
-        content.Add(new StringContent(DateTime.Now.ToString("s", System.Globalization.CultureInfo.InvariantCulture)), "Date");
+        content.Add(new StringContent("NOBY"), "Category");
 
         var contentFile = new ByteArrayContent(fileData);
         contentFile.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(mimeType);

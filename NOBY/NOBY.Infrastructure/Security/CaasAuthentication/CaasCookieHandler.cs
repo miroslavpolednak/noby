@@ -64,8 +64,8 @@ internal sealed class CaasCookieHandler
                 // zalogovat prihlaseni uzivatele
                 var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
                 logger.Log(
-                    CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby002, 
-                    "Uživatel user se přihlásil do aplikace.",
+                    CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby002,
+                    $"Uživatel {currentLogin} se přihlásil do aplikace.",
                     bodyAfter: new Dictionary<string, string>() { { "login", currentLogin } });
             },
             OnSignedIn = context =>

@@ -64,9 +64,6 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
 
         var documentOnSa = documentOnSas.DocumentsOnSAToSign.Single(r => r.DocumentOnSAId == request.DocumentOnSAId);
 
-        // CheckForm
-        await ValidateSalesArrangement(request, cancellationToken);
-
         await _documentOnSaClient.SignDocumentManually(request.DocumentOnSAId, cancellationToken);
 
         if (documentOnSa.HouseholdId is null)
@@ -148,7 +145,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
             updateRequest.Contacts.Add(MapEmailContact(detailWithChangedData.EmailAddress));
         if (detailWithChangedData.MobilePhone is not null)
             updateRequest.Contacts.Add(MapPhoneContact(detailWithChangedData.MobilePhone));
-        
+
         if ((customerOnSA.CustomerAdditionalData?.CustomerIdentification?.IdentificationMethodId ?? 0) > 0)
         {
             updateRequest.CustomerIdentification = new CustomerIdentification
@@ -291,22 +288,5 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         }
 
         return (houseHold, customers);
-    }
-
-    private async Task ValidateSalesArrangement(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
-    {
-        var validationResult = await _mediator.Send(new ValidateSalesArrangementRequest(request.SalesArrangementId), cancellationToken);
-
-        if (validationResult is not null && validationResult.Categories is not null && validationResult.Categories.Any())
-        {
-            var options = new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-                WriteIndented = true
-            };
-
-            var errors = validationResult.Categories.Select(s => new CisExceptionItem(90009, JsonSerializer.Serialize(s, options)));
-            throw new CisValidationException(errors);
-        }
     }
 }

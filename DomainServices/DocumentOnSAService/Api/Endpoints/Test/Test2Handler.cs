@@ -8,7 +8,7 @@ public class Test2Handler : IRequestHandler<Test2MediatrRequest, Test2Response>
 {
     public async Task<Test2Response> Handle(Test2MediatrRequest request, CancellationToken cancellationToken)
     {
-        var bytes = System.IO.File.ReadAllBytes("d:/ova_report.sql");
+        var bytes = System.IO.File.ReadAllBytes("d:/9064b886-62de-4096-b89c-9c1993d4d4fc.pdf");
         var result = await _eSignaturesClient.UploadDocument(request.Id, "soubor_1.pdf", DateTime.Now, bytes, cancellationToken);
 
         return new Test2Response

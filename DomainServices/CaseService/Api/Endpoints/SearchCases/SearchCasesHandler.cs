@@ -1,9 +1,7 @@
 ﻿using CIS.Core.Types;
-using CIS.Foms.Enums;
 using CIS.Infrastructure.Data;
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.CaseService.Api.Endpoints.SearchCases;
 
@@ -75,7 +73,7 @@ internal sealed class SearchCasesHandler
         // base query
         var query = _dbContext.Cases
             .AsNoTracking()
-            .Where(t => t.OwnerUserId == request.CaseOwnerUserId && !_disallowedStates.Contains(t.State));
+            .Where(t => t.OwnerUserId == request.CaseOwnerUserId && !Helpers.DisallowedStates.Contains(t.State));
 
         // omezeni na state
         if (request.State?.Any() ?? false)
@@ -106,11 +104,6 @@ internal sealed class SearchCasesHandler
     private static List<Paginable.MapperField> sortingMapper = new()
     {
         new("StateUpdatedOn", "StateUpdateTime")
-    };
-
-    private static int[] _disallowedStates = new[]
-    {
-        (int)CaseStates.ToBeCancelledConfirmed
     };
 
     private readonly CaseServiceDbContext _dbContext;

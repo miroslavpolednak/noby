@@ -35,6 +35,8 @@
 
 [Unit a integrační testy](./topics/test.md)
 
+[Práce s dočasnými soubory na FE API](./topics/tempfilemanager.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

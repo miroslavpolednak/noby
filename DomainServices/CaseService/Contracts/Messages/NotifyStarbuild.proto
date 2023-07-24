@@ -8,4 +8,6 @@ message NotifyStarbuildRequest {
 	int64 CaseId = 1;
 
 	google.protobuf.StringValue RiskBusinessCaseId = 2;
+
+	bool SkipRiskBusinessCaseId = 3;
 }

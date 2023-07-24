@@ -60,7 +60,7 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                     b.Property<int?>("DocumentTemplateVersionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DocumentTypeId")
+                    b.Property<int?>("DocumentTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("EArchivId")

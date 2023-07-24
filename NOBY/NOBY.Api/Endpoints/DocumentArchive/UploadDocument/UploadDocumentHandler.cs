@@ -1,28 +1,19 @@
-﻿using NOBY.Infrastructure.Configuration;
-using NOBY.Infrastructure.Services.TempFileManager;
+﻿using NOBY.Infrastructure.Services.TempFileManager;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.UploadDocument;
 
 public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest, Guid>
 {
-    private readonly AppConfiguration _configuration;
-    private readonly ITempFileManager _tempFileManager;
+    private readonly ITempFileManagerService _tempFileManager;
 
-    public UploadDocumentHandler(AppConfiguration configuration, ITempFileManager tempFileManager)
+    public UploadDocumentHandler(ITempFileManagerService tempFileManager)
     {
-        _configuration = configuration;
         _tempFileManager = tempFileManager;
     }
 
     public async Task<Guid> Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
     {
-        _tempFileManager.CreateDirectoryIfNotExist(_configuration.FileTempFolderLocation);
-
-        var tempFilename = Guid.NewGuid();
-        var fullPath = Path.Combine(_configuration.FileTempFolderLocation, tempFilename.ToString());
-
-        await _tempFileManager.SaveFileToTempStorage(fullPath, request.File, cancellationToken);
-
-        return tempFilename;
+        var result = await _tempFileManager.Save(request.File, cancellationToken);
+        return result.TempFileId;
     }
 }

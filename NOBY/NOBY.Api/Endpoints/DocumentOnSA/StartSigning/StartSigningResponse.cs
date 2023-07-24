@@ -25,6 +25,7 @@ public class StartSigningResponse
     /// <summary>
     /// Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
     /// </summary>
+    [Obsolete("Replaced with SignatureTypeId")]
     public string? SignatureMethodCode { get; set; }
 
     /// <summary>

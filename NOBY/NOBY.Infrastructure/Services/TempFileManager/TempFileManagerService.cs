@@ -1,126 +1,147 @@
-﻿using CIS.Core;
-using CIS.Core.Attributes;
-using CIS.Core.Exceptions;
-using CIS.Core.Security;
-using DomainServices.DocumentArchiveService.Clients;
-using DomainServices.UserService.Clients;
-using Google.Protobuf;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using NOBY.Database.Entities;
 using NOBY.Infrastructure.Configuration;
-using System.Globalization;
+using System.IO;
+using System.Threading;
 
 namespace NOBY.Infrastructure.Services.TempFileManager;
 
 [TransientService, AsImplementedInterfacesService]
-internal sealed class TempFileManagerService
-    : ITempFileManager
+internal class TempFileManagerService
+    : ITempFileManagerService
 {
-    public void BatchDelete(List<TempDocumentInformation>? attachments)
-    {
-        if (attachments is null || !attachments.Any()) return;
+    public async Task<TempFile> Save(
+        IFormFile file,
+        CancellationToken cancellationToken = default)
+        => await Save(file, null, null, null, cancellationToken);
 
-        BatchDelete(attachments.Select(t => ComposeFilePath(t.TempGuid)).ToList());
-    }
-
-    public void BatchDelete(List<string> filePaths)
+    public async Task<TempFile> Save(
+        IFormFile file,
+        long? objectId = null,
+        string? objectType = null,
+        Guid? sessionId = null,
+        CancellationToken cancellationToken = default)
     {
-        filePaths.ForEach(File.Delete);
-    }
-
-    public void CreateDirectoryIfNotExist(string directoryPath)
-    {
-        if (!Directory.Exists(_configuration.FileTempFolderLocation))
-            Directory.CreateDirectory(_configuration.FileTempFolderLocation);
-    }
-
-    public void CheckIfDocumentExist(string filePath)
-    {
-        if (!File.Exists(filePath))
+        var fileInstance = new TempFile
         {
-            throw new CisNotFoundException(250, $"Document not found on temp storage");
+            TempFileId = Guid.NewGuid(),
+            FileName = file.FileName,
+            MimeType = file.ContentType,
+            SessionId = sessionId,
+            ObjectId = objectId,
+            ObjectType = objectType
+        };
+
+        // zapsat na disk
+        using (var stream = new FileStream(getPath(fileInstance.TempFileId), FileMode.Create))
+        {
+            await file.CopyToAsync(stream, cancellationToken);
+            await stream.FlushAsync(cancellationToken);
         }
-    }
 
-    public string ComposeFilePath(string fileName)
-    {
-        return Path.Combine(_configuration.FileTempFolderLocation, fileName);
-    }
-
-    public string ComposeFilePath(Guid tempGuid)
-    {
-        return Path.Combine(_configuration.FileTempFolderLocation, tempGuid.ToString());
-    }
-
-    public async Task<byte[]> GetDocument(string filePath, CancellationToken cancellationToken)
-    {
-        return await File.ReadAllBytesAsync(filePath, cancellationToken);
-    }
-
-    public async Task SaveFileToTempStorage(string path, IFormFile file, CancellationToken cancellationToken)
-    {
-        using var stream = new FileStream(path, FileMode.Create);
-        await file.CopyToAsync(stream, cancellationToken);
-        await stream.FlushAsync(cancellationToken);
-    }
-
-    public async Task<List<string>> UploadToArchive(long caseId, string? contractNumber, List<TempDocumentInformation> attachments, CancellationToken cancellationToken)
-    {
-        // instance uzivatele
-        var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
-        
-        var documentIds = new List<string>();
-
-        foreach (var attachment in attachments)
+        // ulozit do DB
+        var entity = new Database.Entities.TempFile
         {
-            var documentId = await _documentArchiveService.GenerateDocumentId(new(), cancellationToken);
+            TempFileId = fileInstance.TempFileId,
+            FileName = file.FileName,
+            MimeType = file.ContentType,
+            SessionId = sessionId,
+            ObjectId = objectId,
+            ObjectType = objectType
+        };
+        _dbContext.TempFiles.Add(entity);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
-            var filePath = ComposeFilePath(attachment.TempGuid);
-            CheckIfDocumentExist(filePath);
+        return fileInstance;
+    }
 
-            var file = await GetDocument(filePath, cancellationToken);
-
-            await _documentArchiveService.UploadDocument(new()
+    public async Task<List<TempFile>> GetSession(Guid sessionId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.TempFiles
+            .AsNoTracking()
+            .Where(t => t.SessionId == sessionId)
+            .Select(t => new TempFile
             {
-                BinaryData = ByteString.CopyFrom(file),
-                Metadata = new()
-                {
-                    CaseId = caseId,
-                    DocumentId = documentId,
-                    ContractNumber = contractNumber ?? "HF00111111125",
-                    CreatedOn = _dateTime.Now.Date,
-                    AuthorUserLogin = user.UserInfo.Cpm ?? user.UserId.ToString(CultureInfo.InvariantCulture),
-                    Description = attachment.Description ?? string.Empty,
-                    EaCodeMainId = attachment.EaCodeMainId,
-                    Filename = attachment.FileName,
-                    FormId = attachment.FormId ?? string.Empty
-                },
-                NotifyStarBuild = false
-            }, cancellationToken);
-
-            documentIds.Add(documentId);
-        }
-
-        return documentIds;
+                TempFileId = t.TempFileId,
+                FileName = t.FileName,
+                SessionId = t.SessionId,
+                ObjectId = t.ObjectId,
+                ObjectType = t.ObjectType,
+                MimeType = t.MimeType
+            })
+            .ToListAsync(cancellationToken);
     }
 
-    private readonly AppConfiguration _configuration;
-    private readonly IDateTime _dateTime;
-    private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly IUserServiceClient _userServiceClient;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-
-    public TempFileManagerService(
-        AppConfiguration configuration,
-        IDateTime dateTime,
-        IDocumentArchiveServiceClient documentArchiveService,
-        IUserServiceClient userServiceClient,
-        ICurrentUserAccessor currentUserAccessor)
+    public async Task<TempFile> GetMetadata(Guid tempFileId, CancellationToken cancellationToken = default)
     {
-        _configuration = configuration;
-        _dateTime = dateTime;
-        _documentArchiveService = documentArchiveService;
-        _userServiceClient = userServiceClient;
-        _currentUserAccessor = currentUserAccessor;
+        return await _dbContext.TempFiles
+            .AsNoTracking()
+            .Where(t => t.TempFileId == tempFileId)
+            .Select(t => new TempFile
+            {
+                TempFileId = tempFileId,
+                FileName = t.FileName,
+                SessionId = t.SessionId,
+                ObjectId = t.ObjectId,
+                ObjectType = t.ObjectType,
+                MimeType = t.MimeType
+            })
+            .FirstAsync(cancellationToken);
+    }
+
+    public async Task<byte[]> GetContent(Guid tempFileId, CancellationToken cancellationToken = default)
+    {
+        string path = getPath(tempFileId);
+        if (!File.Exists(path))
+        {
+            throw new CisNotFoundException(0, $"TempFileManager: temp file '{path}' not found");
+        }
+
+        return await File.ReadAllBytesAsync(path, cancellationToken);
+    }
+
+    public async Task Delete(Guid tempFileId, CancellationToken cancellationToken = default)
+    {
+        await _dbContext.TempFiles
+            .Where(t => t.TempFileId == tempFileId)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        // v celku nas nezajima, jestli je soubor smazany nebo ne
+        try
+        {
+            File.Delete(getPath(tempFileId));
+        }
+        catch { }
+    }
+
+    public async Task Delete(IEnumerable<Guid> tempFileId, CancellationToken cancellationToken = default)
+    {
+        await _dbContext.TempFiles
+            .Where(t => tempFileId.Contains(t.TempFileId))
+            .ExecuteDeleteAsync(cancellationToken);
+
+        // v celku nas nezajima, jestli je soubor smazany nebo ne
+        try
+        {
+            foreach (var id in tempFileId)
+            {
+                File.Delete(getPath(id));
+            }
+        }
+        catch { }
+    }
+
+    private string getPath(Guid fileTempId)
+        => Path.Combine(_appConfiguration.FileTempFolderLocation, fileTempId.ToString());
+
+    private readonly AppConfiguration _appConfiguration;
+    private readonly Database.FeApiDbContext _dbContext;
+
+    public TempFileManagerService(Database.FeApiDbContext dbContext, AppConfiguration appConfiguration)
+    {
+        _appConfiguration = appConfiguration;
+        _dbContext = dbContext;
     }
 }
 

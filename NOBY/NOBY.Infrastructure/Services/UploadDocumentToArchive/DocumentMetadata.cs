@@ -1,16 +1,16 @@
-﻿namespace NOBY.Infrastructure.Services.TempFileManager;
+﻿namespace NOBY.Infrastructure.Services.UploadDocumentToArchive;
 
-public sealed class TempDocumentInformation
+public struct DocumentMetadata
 {
     /// <summary>
     /// GUID dokumentu v dočasném úložišti
     /// </summary>
-    public Guid TempGuid { get; set; }
+    public Guid TempFileId { get; set; }
 
     /// <summary>
     /// Jméno souboru
     /// </summary>
-    public string FileName { get; set; } = null!;
+    public string FileName { get; set; }
 
     /// <summary>
     /// Id EA kódu

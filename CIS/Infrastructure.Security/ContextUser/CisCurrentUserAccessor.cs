@@ -61,6 +61,11 @@ public sealed class CisCurrentContextUserAccessor
 
         return _userDetails;
     }
+    
+    public CIS.Foms.Types.UserIdentity? GetMainIdentity()
+    {
+        return CurrentUserAccessorHelpers.GetUserIdentityFromHeaders(_httpContext!.HttpContext!.Request);
+    }
 
     public async Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default(CancellationToken)) 
         where TDetails : ICurrentUserDetails

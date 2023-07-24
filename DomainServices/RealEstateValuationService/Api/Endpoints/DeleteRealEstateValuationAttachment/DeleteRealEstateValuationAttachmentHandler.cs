@@ -13,6 +13,11 @@ internal sealed class DeleteRealEstateValuationAttachmentHandler
             .FirstOrDefaultAsync(t => t.RealEstateValuationAttachmentId == request.RealEstateValuationAttachmentId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationAttachmentNotFound, request.RealEstateValuationAttachmentId);
 
+        if (entity.RealEstateValuationId != request.RealEstateValuationId)
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationAttachmentNotFound, request.RealEstateValuationAttachmentId);
+        }
+
         _dbContext.Attachments.Remove(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
 

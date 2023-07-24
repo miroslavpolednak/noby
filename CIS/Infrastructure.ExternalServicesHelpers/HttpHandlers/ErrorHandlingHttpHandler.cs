@@ -22,9 +22,7 @@ public sealed class ErrorHandlingHttpHandler
         {
             var response = await base.SendAsync(request, cancellationToken);
 
-            if (response!.IsSuccessStatusCode)
-                return response!;
-            else if (response!.StatusCode == HttpStatusCode.BadRequest)
+            if (response!.IsSuccessStatusCode || response!.StatusCode == HttpStatusCode.BadRequest || response!.StatusCode == HttpStatusCode.NotFound)
                 return response!;
 
             // mame ambici rozlisovat jednotlive status kody na ruzne vyjimky?
