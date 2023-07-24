@@ -1,4 +1,6 @@
-﻿using DomainServices.CaseService.Contracts;
+﻿using CIS.Foms.Enums;
+using DomainServices.CaseService.Contracts;
+using FastEnumUtility;
 
 namespace DomainServices.CaseService.Api;
 
@@ -22,7 +24,7 @@ internal static class CaseExtensions
         };
 
         task.PhaseTypeId = getPhaseTypeId(task.TaskTypeId, taskData);
-        task.SignatureType = getSignatureType(task.TaskTypeId, taskData);
+        task.SignatureTypeId = getSignatureTypeId(task.TaskTypeId, taskData);
 
         return task;
     }
@@ -167,19 +169,11 @@ internal static class CaseExtensions
         };
     }
 
-    private static string getSignatureType(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
+    private static int getSignatureTypeId(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
     {
-        if (taskTypeId != 6)
-            return "unknown";
-
-        var signatureTypeId = taskData.GetInteger("ukol_podpis_dokument_metoda");
-
-        return signatureTypeId switch
-        {
-            1 => "paper",
-            2 => "digital",
-            _ => "unknown"
-        };
+        return taskTypeId == 6
+            ? taskData.GetInteger("ukol_podpis_dokument_metoda")
+            : SignatureTypes.Unknown.ToByte();
     }
 
     private static string getStateName(IReadOnlyDictionary<string, string> taskData)

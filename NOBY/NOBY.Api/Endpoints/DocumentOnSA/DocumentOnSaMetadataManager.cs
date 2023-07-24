@@ -5,9 +5,9 @@ namespace NOBY.Api.Endpoints.DocumentOnSA;
 
 public static class DocumentOnSaMetadataManager
 {
-    public static EACodeMainItem GetEaCodeMainItem(int DocumentTypeId, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypeItems, List<EaCodesMainResponse.Types.EaCodesMainItem> eaCodeMainItems)
+    public static EACodeMainItem GetEaCodeMainItem(int documentTypeId, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypeItems, List<EaCodesMainResponse.Types.EaCodesMainItem> eaCodeMainItems)
     {
-        var docType = documentTypeItems.Single(d => d.Id == DocumentTypeId);
+        var docType = documentTypeItems.Single(d => d.Id == documentTypeId);
         var eaCodeMain = eaCodeMainItems.Single(e => e.Id == docType.EACodeMainId);
         return new EACodeMainItem { Id = docType.EACodeMainId!.Value, DocumentType = eaCodeMain.Name, Category = eaCodeMain.Category };
     }
