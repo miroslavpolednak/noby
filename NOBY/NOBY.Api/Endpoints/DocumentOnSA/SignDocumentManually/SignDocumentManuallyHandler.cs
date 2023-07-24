@@ -8,13 +8,10 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using FastEnumUtility;
 using NOBY.Api.Endpoints.Customer;
 using NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
-using NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement;
 using NOBY.Dto;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Unicode;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 
@@ -29,18 +26,16 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
     private readonly ICustomerServiceClient _customerServiceClient;
     private readonly CustomerWithChangedDataService _changedDataService;
     private readonly ICaseServiceClient _caseServiceClient;
-    private readonly IMediator _mediator;
 
     public SignDocumentManuallyHandler(
-        IDocumentOnSAServiceClient documentOnSaClient,
-        ISalesArrangementServiceClient arrangementServiceClient,
-        ICodebookServiceClient codebookServiceClients,
-        IHouseholdServiceClient householdClient,
-        ICustomerOnSAServiceClient customerOnSAServiceClient,
-        ICustomerServiceClient customerServiceClient,
-        CustomerWithChangedDataService changedDataService,
-        ICaseServiceClient caseServiceClient,
-        IMediator mediator)
+            IDocumentOnSAServiceClient documentOnSaClient,
+            ISalesArrangementServiceClient arrangementServiceClient,
+            ICodebookServiceClient codebookServiceClients,
+            IHouseholdServiceClient householdClient,
+            ICustomerOnSAServiceClient customerOnSAServiceClient,
+            ICustomerServiceClient customerServiceClient,
+            CustomerWithChangedDataService changedDataService,
+            ICaseServiceClient caseServiceClient)
     {
         _documentOnSaClient = documentOnSaClient;
         _arrangementServiceClient = arrangementServiceClient;
@@ -50,7 +45,6 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         _customerServiceClient = customerServiceClient;
         _changedDataService = changedDataService;
         _caseServiceClient = caseServiceClient;
-        _mediator = mediator;
     }
 
     public async Task Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
@@ -64,7 +58,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
 
         var documentOnSa = documentOnSas.DocumentsOnSAToSign.Single(r => r.DocumentOnSAId == request.DocumentOnSAId);
 
-        await _documentOnSaClient.SignDocumentManually(request.DocumentOnSAId, cancellationToken);
+        await _documentOnSaClient.SignDocument(request.DocumentOnSAId, SignatureTypes.Paper.ToByte(), cancellationToken);
 
         if (documentOnSa.HouseholdId is null)
         {

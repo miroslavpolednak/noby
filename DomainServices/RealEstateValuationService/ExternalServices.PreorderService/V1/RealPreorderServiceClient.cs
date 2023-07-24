@@ -5,12 +5,12 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
 internal sealed class RealPreorderServiceClient
     : IPreorderServiceClient
 {
-    public async Task<long> UploadAttachment(string title, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default)
+    public async Task<long> UploadAttachment(string title, string category, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default)
     {
         using var content = new MultipartFormDataContent();
 
         content.Add(new StringContent(title), "Description");
-        content.Add(new StringContent("NOBY"), "Category");
+        content.Add(new StringContent(category), "Category");
 
         var contentFile = new ByteArrayContent(fileData);
         contentFile.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(mimeType);

@@ -18,33 +18,27 @@ import "Messages/DeleteDeedOfOwnershipDocument.proto";
 import "Messages/CreateRealEstateValuationAttachment.proto";
 import "Messages/DeleteRealEstateValuationAttachment.proto";
 import "Messages/ValidateRealEstateValuationId.proto";
+import "Messages/GetDeedOfOwnershipDocuments.proto";
+import "Messages/GetDeedOfOwnershipDocument.proto";
+import "Messages/DeedOfOwnershipDocument.proto";
 
 service RealEstateValuationService {
-   rpc CreateRealEstateValuation (CreateRealEstateValuationRequest) returns (CreateRealEstateValuationResponse);
-   
-   rpc DeleteRealEstateValuation (DeleteRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc CreateRealEstateValuation (CreateRealEstateValuationRequest) returns (CreateRealEstateValuationResponse);
+	rpc DeleteRealEstateValuation (DeleteRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc GetRealEstateValuationList (GetRealEstateValuationListRequest) returns (GetRealEstateValuationListResponse);
+	rpc PatchDeveloperOnRealEstateValuation (PatchDeveloperOnRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc GetRealEstateValuationDetail (GetRealEstateValuationDetailRequest) returns (RealEstateValuationDetail);
+	rpc GetRealEstateValuationDetailByOrderId (GetRealEstateValuationDetailByOrderIdRequest) returns (RealEstateValuationDetail);
+	rpc UpdateRealEstateValuationDetail (UpdateRealEstateValuationDetailRequest) returns (google.protobuf.Empty);
+	rpc SetACVRealEstateTypeByRealEstateValuation (SetACVRealEstateTypeByRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc UpdateStateByRealEstateValuation (UpdateStateByRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc CreateRealEstateValuationAttachment (CreateRealEstateValuationAttachmentRequest) returns (CreateRealEstateValuationAttachmentResponse);
+	rpc DeleteRealEstateValuationAttachment (DeleteRealEstateValuationAttachmentRequest) returns (google.protobuf.Empty);
+	rpc ValidateRealEstateValuationId (ValidateRealEstateValuationIdRequest) returns (ValidateRealEstateValuationIdResponse);
 
-   rpc GetRealEstateValuationList (GetRealEstateValuationListRequest) returns (GetRealEstateValuationListResponse);
-
-   rpc PatchDeveloperOnRealEstateValuation (PatchDeveloperOnRealEstateValuationRequest) returns (google.protobuf.Empty);
-
-   rpc GetRealEstateValuationDetail (GetRealEstateValuationDetailRequest) returns (RealEstateValuationDetail);
-
-   rpc GetRealEstateValuationDetailByOrderId (GetRealEstateValuationDetailByOrderIdRequest) returns (RealEstateValuationDetail);
-
-   rpc UpdateRealEstateValuationDetail (UpdateRealEstateValuationDetailRequest) returns (google.protobuf.Empty);
-
-   rpc SetACVRealEstateTypeByRealEstateValuation (SetACVRealEstateTypeByRealEstateValuationRequest) returns (google.protobuf.Empty);
-
-   rpc UpdateStateByRealEstateValuation (UpdateStateByRealEstateValuationRequest) returns (google.protobuf.Empty);
-
-   rpc AddDeedOfOwnershipDocument (AddDeedOfOwnershipDocumentRequest) returns (AddDeedOfOwnershipDocumentResponse);
-
-   rpc DeleteDeedOfOwnershipDocument (DeleteDeedOfOwnershipDocumentRequest) returns (google.protobuf.Empty);
-
-   rpc CreateRealEstateValuationAttachment (CreateRealEstateValuationAttachmentRequest) returns (CreateRealEstateValuationAttachmentResponse);
-
-   rpc DeleteRealEstateValuationAttachment (DeleteRealEstateValuationAttachmentRequest) returns (google.protobuf.Empty);
-
-   rpc ValidateRealEstateValuationId (ValidateRealEstateValuationIdRequest) returns (ValidateRealEstateValuationIdResponse);
+	// DeedOfOwnershipDocument
+	rpc AddDeedOfOwnershipDocument (AddDeedOfOwnershipDocumentRequest) returns (AddDeedOfOwnershipDocumentResponse);
+	rpc DeleteDeedOfOwnershipDocument (DeleteDeedOfOwnershipDocumentRequest) returns (google.protobuf.Empty);
+	rpc GetDeedOfOwnershipDocuments (GetDeedOfOwnershipDocumentsRequest) returns (GetDeedOfOwnershipDocumentsResponse);
+	rpc GetDeedOfOwnershipDocument (GetDeedOfOwnershipDocumentRequest) returns (DeedOfOwnershipDocument);
 } 

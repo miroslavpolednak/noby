@@ -190,7 +190,7 @@
             Identifikační údaje nemovitosti k Ocenění (bez Noby ID)
             </summary>
         </member>
-        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.ExternalDeedOfOwnershipDocumentId">
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.CremDeedOfOwnershipDocumentId">
             <summary>
             ID staženého dokumentu listu vlastnictví (LV)
             </summary>

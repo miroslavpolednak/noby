@@ -31,7 +31,7 @@ public interface IDocumentOnSAServiceClient
     /// <summary>
     /// Metoda slouží k zahájení podepisovacího procesu
     /// </summary>
-    Task SignDocumentManually(int documentOnSAId, CancellationToken cancellationToken = default);
+    Task SignDocument(int documentOnSAId, int signatureTypeId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Metoda slouží k poskytnutí seznamu všechn dokumentů.
@@ -62,7 +62,7 @@ public interface IDocumentOnSAServiceClient
     /// Metoda vrací náhled elektronického dokumentu
     /// </summary>
     Task<GetElectronicDocumentPreviewResponse> GetElectronicDocumentPreview(int documentOnSAId, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Metoda slouží k odeslání náhledu dokumentu klientovi v případě elektronického podpisu
     /// </summary>

@@ -22,7 +22,8 @@ internal sealed class SaveRealEstateValuationAttachmentsHandler
                 FileName = metadata!.FileName,
                 MimeType = metadata.MimeType,
                 Title = attachment.Title,
-                FileData = Google.Protobuf.ByteString.CopyFrom(content)
+                FileData = Google.Protobuf.ByteString.CopyFrom(content),
+                AcvAttachmentCategoryId = attachment.AcvAttachmentCategoryId
             };
 
             var id = await _realEstateValuationService.CreateRealEstateValuationAttachment(dsRequest, cancellationToken);

@@ -715,6 +715,7 @@
             
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421388420">AcademicDegreesAfter</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421388414">AcademicDegreesBefore</a>
+             - <a href="https://wiki.kb.cz/display/HT/AcvAttachmentCategory">AcvAttachmentCategories</a>
              - ActionCodesSavings - obsolete
              - ActionCodesSavingsLoan - obsolete
              - <a href="https://wiki.kb.cz/confluence/display/HT/CaseState">CaseStates</a>
@@ -2801,6 +2802,11 @@
             </remarks>
             <param name="pcpId">PCP ID</param>
         </member>
+        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.AddDeedOfOwnershipDocument.AddDeedOfOwnershipDocumentRequest">
+            <summary>
+            Identifikační údaje nemovitosti k Ocenění (bez Noby ID)
+            </summary>
+        </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
             <summary>
             Atributy k nově zakládanému Ocenění nemovitosti
@@ -2933,6 +2939,17 @@
             Smazání již nahrané přílohy ocenění z databáze NOBY a ACV.
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.AddDeedOfOwnershipDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.AddDeedOfOwnershipDocument.AddDeedOfOwnershipDocumentRequest,System.Threading.CancellationToken)">
+            <summary>
+            Uložení údajů identifikace nemovitosti k danému Ocenění nemovitosti
+            </summary>
+            <remarks>
+            Uložení údajů identifikace nemovitosti k danému Ocenění nemovitosti.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=536CD827-3140-4a41-8AC2-AF6BB6700539"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <response code="200">NobyDeedOfOwnershipDocumentId: Noby ID daného záznamu.Určuje jednoznačnou kombinaci DeedOfOwnershipDocumentId (z CREMu) a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</response>
+        </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequest.Attachments">
             <summary>
             Seznam uploadnutých příloh, které se mají založit k ocenění
@@ -2949,6 +2966,11 @@
             Popis souboru
             </summary>
             <example>Fotka dveří</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem.AcvAttachmentCategoryId">
+            <summary>
+            ID kategorie přílohy
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsResponseItem.TempFileId">
             <summary>
@@ -4562,6 +4584,31 @@
             Název typu konzultace
             </summary>
             <example>Dotaz (obecný)</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.DocumentOnSAId">
+            <summary>
+            Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.DocumentTypeId">
+            <summary>
+            Typ dokumentu. Číselník DocumentOnSAType.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.FormId">
+            <summary>
+            Businessové modré ID
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.IsSigned">
+            <summary>
+            Příznak, zda byl dokument již podepsán.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.SignatureTypeId">
+            <summary>
+            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest.TaskIdSB">
             <summary>

@@ -148,7 +148,6 @@ internal sealed class RealESignaturesClient
                 TemplateVersion = formType.Version,
                 Name = request.DocumentData.FileName,
                 FormId = request.DocumentData.FormId,
-                EaCodeMain = docType.EACodeMainId.ToString(),
                 ContractNumber = request.DocumentData.ContractNumber
             },
             ClientData = new()

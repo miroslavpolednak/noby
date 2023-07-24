@@ -34,4 +34,5 @@ message RealEstateValuationAttachment {
     google.protobuf.StringValue Title = 2;
     string FileName = 3;
     int64 ExternalId = 4;
+    int32 AcvAttachmentCategoryId = 5;
 }

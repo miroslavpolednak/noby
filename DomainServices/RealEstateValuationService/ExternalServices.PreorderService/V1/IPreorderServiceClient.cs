@@ -14,7 +14,7 @@ public interface IPreorderServiceClient
     /// <param name="fileName">Název souboru</param>
     /// <param name="mimeType">MIME type</param>
     /// <param name="fileData">Obsah souboru</param>
-    Task<long> UploadAttachment(string title, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default);
+    Task<long> UploadAttachment(string title, string category, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default);
 
     Task DeleteAttachment(long externalId, CancellationToken cancellationToken = default);
 }

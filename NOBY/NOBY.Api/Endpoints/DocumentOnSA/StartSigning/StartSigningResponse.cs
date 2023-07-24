@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
+﻿using NOBY.Dto.Signing;
+
+namespace NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 
 public class StartSigningResponse
 {
@@ -36,39 +38,4 @@ public class StartSigningResponse
     public SignatureState SignatureState { get; set; } = null!;
 
     public EACodeMainItem EACodeMainItem { get; set; } = null!;
-}
-
-public class SignatureState
-{
-    public int Id { get; set; }
-
-    public string Name { get; set; } = null!;
-
-    public static implicit operator SignatureState(SignatureStateDto signatureStateDto)
-    {
-        return new SignatureState
-        {
-            Id = signatureStateDto.Id,
-            Name = signatureStateDto.Name,
-        };
-    }
-}
-
-public class EACodeMainItem
-{
-    public int Id { get; set; }
-
-    public string DocumentType { get; set; } = null!;
-
-    public string Category { get; set; } = null!;
-
-    public static implicit operator EACodeMainItem(EACodeMainItemDto eACode)
-    {
-        return new EACodeMainItem
-        {
-            Id = eACode.Id,
-            DocumentType = eACode.DocumentType,
-            Category = eACode.Category
-        };
-    }
 }

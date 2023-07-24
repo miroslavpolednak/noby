@@ -30,12 +30,6 @@ internal sealed class RealEstateValuationService
     public override async Task<Empty> SetACVRealEstateTypeByRealEstateValuation(SetACVRealEstateTypeByRealEstateValuationRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<AddDeedOfOwnershipDocumentResponse> AddDeedOfOwnershipDocument(AddDeedOfOwnershipDocumentRequest request, ServerCallContext context)
-        => await _mediator.Send(request, context.CancellationToken);
-
-    public override async Task<Empty> DeleteDeedOfOwnershipDocument(DeleteDeedOfOwnershipDocumentRequest request, ServerCallContext context)
-        => await _mediator.Send(request, context.CancellationToken);
-
     public override async Task<CreateRealEstateValuationAttachmentResponse> CreateRealEstateValuationAttachment(CreateRealEstateValuationAttachmentRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
@@ -43,6 +37,19 @@ internal sealed class RealEstateValuationService
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<ValidateRealEstateValuationIdResponse> ValidateRealEstateValuationId(ValidateRealEstateValuationIdRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    // DeedOfOwnershipDocument
+    public override async Task<AddDeedOfOwnershipDocumentResponse> AddDeedOfOwnershipDocument(AddDeedOfOwnershipDocumentRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Empty> DeleteDeedOfOwnershipDocument(DeleteDeedOfOwnershipDocumentRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<GetDeedOfOwnershipDocumentsResponse> GetDeedOfOwnershipDocuments(GetDeedOfOwnershipDocumentsRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<DeedOfOwnershipDocument> GetDeedOfOwnershipDocument(GetDeedOfOwnershipDocumentRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     private readonly IMediator _mediator;

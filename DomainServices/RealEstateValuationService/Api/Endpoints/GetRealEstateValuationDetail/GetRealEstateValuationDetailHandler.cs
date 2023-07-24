@@ -36,7 +36,8 @@ internal sealed class GetRealEstateValuationDetailHandler
                 RealEstateValuationAttachmentId = t.RealEstateValuationAttachmentId,
                 Title = t.Title,
                 FileName = t.FileName,
-                ExternalId = t.ExternalId
+                ExternalId = t.ExternalId,
+                AcvAttachmentCategoryId = t.AcvAttachmentCategoryId
             })
             .ToListAsync(cancellationToken);
 
