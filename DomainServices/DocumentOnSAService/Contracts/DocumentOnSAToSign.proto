@@ -53,4 +53,6 @@ message DocumentOnSAToSign {
 
 	google.protobuf.Int32Value TaskId = 22;
 
+	google.protobuf.StringValue ExternalId = 23;
+
 }

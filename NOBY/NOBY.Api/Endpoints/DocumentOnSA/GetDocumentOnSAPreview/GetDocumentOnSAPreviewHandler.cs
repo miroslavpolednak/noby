@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Net.Mime;
-using System.Runtime.InteropServices.JavaScript;
 using CIS.Core;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC;
@@ -8,6 +7,7 @@ using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
+using _Domain = DomainServices.DocumentOnSAService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
 
@@ -25,8 +25,8 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
 
         return documentOnSA.Source switch
         {
-            Source.Noby => await HandleSourceNoby(documentOnSA, cancellationToken),
-            Source.Workflow => await HandleSourceWorkflow(documentOnSA, cancellationToken),
+            _Domain.Source.Noby => await HandleSourceNoby(documentOnSA, cancellationToken),
+            _Domain.Source.Workflow => await HandleSourceWorkflow(documentOnSA, cancellationToken),
             _ => throw new NobyValidationException("Unsupported kind of document source")
         };
     }

@@ -303,9 +303,11 @@ public class DocumentController : ControllerBase
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview")]
-    public Task<IActionResult> GenerateDocumentPreview(int salesArrangementId, int documentTypeId, CancellationToken cancellationToken)
+    public Task<IActionResult> GenerateDocumentPreview(int salesArrangementId, int documentTypeId, [FromQuery] int? customerOnSaId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
+
+        input.CustomerOnSaId = customerOnSaId;
 
         return GenerateGeneralDocument((DocumentTypes)documentTypeId, input, cancellationToken);
     }
