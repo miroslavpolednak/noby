@@ -2,6 +2,8 @@
 using _Case = DomainServices.CaseService.Contracts;
 using _Dto = NOBY.Dto.Workflow;
 using CIS.Core.Security;
+using CIS.Foms.Enums;
+using FastEnumUtility;
 using NOBY.Infrastructure.Security;
 
 namespace NOBY.Infrastructure.Services.WorkflowMapper;
@@ -165,18 +167,18 @@ internal sealed class WorkflowMapperService
         };
 
     private static _Dto.SignatureType getSignatureType(_Case.WorkflowTask task) =>
-        task.SignatureType switch
+        (SignatureTypes)task.SignatureTypeId switch
         {
-            "paper" => _Dto.SignatureType.Paper,
-            "digital" => _Dto.SignatureType.Digital,
+            SignatureTypes.Paper => _Dto.SignatureType.Paper,
+            SignatureTypes.Biometric => _Dto.SignatureType.Digital,
             _ => throw new ArgumentOutOfRangeException()
         };
 
     private static _Dto.WorkflowTaskStates getSignatureState(_Case.WorkflowTask task) =>
-        task.SignatureType switch
+        (SignatureTypes)task.SignatureTypeId switch
         {
-            "paper" => getPaperSignatureState(task),
-            "digital" => getDigitalSignatureState(task),
+            SignatureTypes.Paper => getPaperSignatureState(task),
+            SignatureTypes.Biometric => getDigitalSignatureState(task),
             _ => throw new ArgumentOutOfRangeException()
         };
 

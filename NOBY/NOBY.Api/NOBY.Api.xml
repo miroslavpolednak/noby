@@ -4579,6 +4579,31 @@
             </summary>
             <example>Dotaz (obecný)</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.DocumentOnSAId">
+            <summary>
+            Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.DocumentTypeId">
+            <summary>
+            Typ dokumentu. Číselník DocumentOnSAType.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.FormId">
+            <summary>
+            Businessové modré ID
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.IsSigned">
+            <summary>
+            Příznak, zda byl dokument již podepsán.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.SignatureTypeId">
+            <summary>
+            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest.TaskIdSB">
             <summary>
             SB ID úkolu, není zobrazeno na FE UI

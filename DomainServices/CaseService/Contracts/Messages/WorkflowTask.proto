@@ -20,7 +20,7 @@ message WorkflowTask {
 
 	int32 PhaseTypeId = 7;
 
-	string SignatureType = 8;
+	int32 SignatureTypeId = 8;
 
 	string TaskSubtypeName = 9;
 

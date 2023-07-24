@@ -4,7 +4,6 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using FastEnumUtility;
 using NOBY.Api.Endpoints.DocumentOnSA;
 
 namespace NOBY.Api.Endpoints.Workflow.StartTaskSigning;
@@ -56,24 +55,13 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
         var workflowTasks = await _caseService.GetTaskList(caseId, cancellationToken);
         var workflowTask = workflowTasks.FirstOrDefault(t => t.TaskId == taskId)
             ?? throw new CisNotFoundException(90001, $"TaskId '{taskId}' is not present in workflow task list.");
-
-        // todo: workflowTask should have SignatureTypeId instead of hardcoded SignatureType "paper", "digital", see CaseExtensions.cs
-        // var signatureTypes = await _codebookService.SignatureTypes(cancellationToken);
-        // var signatureType = signatureTypes
-        //     .FirstOrDefault(t => t.Code == workflowTask.SignatureType)
-        //     ?? throw new NobyValidationException(90014);
         
         var signingRequest = new StartSigningRequest
         {
             CaseId = caseId,
             TaskId = (int)taskId,
             SalesArrangementId = salesArrangementId,
-            SignatureTypeId = workflowTask.SignatureType switch
-            {
-                "paper" => SignatureTypes.Paper.ToByte(),
-                "digital" => SignatureTypes.Biometric.ToByte(),
-                _ => throw new NobyValidationException(90001)
-            }
+            SignatureTypeId = workflowTask.SignatureTypeId
         };
 
         var signingResponse = await _documentOnSaService.StartSigning(signingRequest, cancellationToken);
