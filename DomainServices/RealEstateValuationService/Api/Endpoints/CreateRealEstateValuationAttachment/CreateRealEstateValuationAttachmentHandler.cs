@@ -28,7 +28,8 @@ internal sealed class CreateRealEstateValuationAttachmentHandler
             RealEstateValuationId = request.RealEstateValuationId,
             FileName = request.FileName,
             ExternalId = result,
-            Title = request.Title
+            Title = request.Title,
+            AcvAttachmentCategoryId = request.AcvAttachmentCategoryId
         };
         _dbContext.Attachments.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
