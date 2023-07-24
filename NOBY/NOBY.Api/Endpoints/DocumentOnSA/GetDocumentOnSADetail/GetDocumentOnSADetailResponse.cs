@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
+﻿using CIS.Foms.Enums;
+
+namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 
 public class GetDocumentOnSADetailResponse
 {
@@ -30,6 +32,14 @@ public class GetDocumentOnSADetailResponse
     public SignatureState SignatureState { get; set; } = null!;
 
     public EACodeMainItem EACodeMainItem { get; set; } = null!;
+
+    public int? CustomerOnSAId { get; set; }
+
+    public bool IsPreviewSentToCustomer { get; set; }
+
+    public string? ExternalId { get; set; }
+
+    public Source Source { get; set; }
 }
 
 public class SignatureState

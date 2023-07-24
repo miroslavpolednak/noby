@@ -1,6 +1,7 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
+using _CisEnum = CIS.Foms.Enums;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;
 
@@ -42,7 +43,16 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                 SignatureTypeId = s.SignatureTypeId,
                 SignatureDateTime = s.SignatureDateTime is not null ? s.SignatureDateTime.ToDateTime() : null,
                 SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new() { DocumentOnSAId = s.DocumentOnSAId, EArchivId = s.EArchivId, IsSigned = s.IsSigned }, signatureStates),
-                EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(s.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains)
+                EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(s.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains),
+                CustomerOnSAId = s.CustomerOnSAId,
+                IsPreviewSentToCustomer = s.IsPreviewSentToCustomer,
+                ExternalId = s.ExternalId,
+                Source = s.Source switch
+                {
+                    Source.Noby => _CisEnum.Source.Noby,
+                    Source.Workflow => _CisEnum.Source.Workflow,
+                    _ => _CisEnum.Source.Unknown
+                }
             }).ToList();
 
         return response;
