@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Workflow.StartTaskSigning;
+﻿using NOBY.Dto.Signing;
+
+namespace NOBY.Api.Endpoints.Workflow.StartTaskSigning;
 
 public sealed class StartTaskSigningResponse
 {
@@ -27,5 +29,7 @@ public sealed class StartTaskSigningResponse
     /// </summary>
     public int? SignatureTypeId { get; set; }
     
-    
+    public SignatureState SignatureState { get; set; } = null!;
+
+    public EACodeMainItem EACodeMainItem { get; set; } = null!;
 }

@@ -5,6 +5,7 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using FastEnumUtility;
+using NOBY.Api.Endpoints.DocumentOnSA;
 
 namespace NOBY.Api.Endpoints.Workflow.StartTaskSigning;
 
@@ -27,6 +28,10 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
         var documentsOnSaListResponse = await _documentOnSaService.GetDocumentsOnSAList(salesArrangement.SalesArrangementId, cancellationToken);
         var documentOnSa = documentsOnSaListResponse.DocumentsOnSA.FirstOrDefault(d => d.TaskId == taskId && d.IsValid);
         
+        var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
+        var eACodeMains = await _codebookService.EaCodesMain(cancellationToken);
+        var signatureStates = await _codebookService.SignatureStatesNoby(cancellationToken);
+        
         if (documentOnSa is not null)
         {
             return new StartTaskSigningResponse
@@ -35,8 +40,16 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
                 DocumentTypeId = documentOnSa.DocumentTypeId,
                 FormId = documentOnSa.FormId,
                 IsSigned = documentOnSa.IsSigned,
-                SignatureTypeId = documentOnSa.SignatureTypeId
-                // todo:
+                SignatureTypeId = documentOnSa.SignatureTypeId,
+                SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
+                    {
+                        DocumentOnSAId = documentOnSa.DocumentOnSAId,
+                        EArchivId = documentOnSa.EArchivId,
+                        IsSigned = documentOnSa.IsSigned
+                    },
+                    signatureStates
+                ),
+                EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(documentOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains)
             };
         }
         
@@ -71,8 +84,16 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
             DocumentTypeId = signingResponse.DocumentOnSa.DocumentTypeId,
             FormId = signingResponse.DocumentOnSa.FormId,
             IsSigned = signingResponse.DocumentOnSa.IsSigned,
-            SignatureTypeId = signingResponse.DocumentOnSa.SignatureTypeId
-            // todo:
+            SignatureTypeId = signingResponse.DocumentOnSa.SignatureTypeId,
+            SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
+                {
+                    DocumentOnSAId = signingResponse.DocumentOnSa.DocumentOnSAId,
+                    EArchivId = signingResponse.DocumentOnSa.EArchivId,
+                    IsSigned = signingResponse.DocumentOnSa.IsSigned
+                },
+                signatureStates
+            ),
+            EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(signingResponse.DocumentOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains)
         };
     }
 
