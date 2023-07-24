@@ -30,6 +30,7 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
             throw new CisAuthorizationException("The requested RealEstateValuation is not assigned to the requested Case");
 
         var states = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
+        var categories = await _codebookService.AcvAttachmentCategories(cancellationToken);
 
         return new GetRealEstateValuationDetailResponse
         {
@@ -46,7 +47,9 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
             {
                 RealEstateValuationAttachmentId = t.RealEstateValuationAttachmentId,
                 Title = t.Title,
-                FileName = t.FileName
+                FileName = t.FileName,
+                AcvAttachmentCategoryId = t.AcvAttachmentCategoryId,
+                AcvAttachmentCategoryName = categories.FirstOrDefault(x => x.Id == t.AcvAttachmentCategoryId)?.Name ?? ""
             }).ToList()
         };
     }

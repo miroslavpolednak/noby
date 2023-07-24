@@ -21,4 +21,8 @@ public sealed class RealEstateValuationAttachment
     /// </summary>
     [Required]
     public string FileName { get; set; } = string.Empty;
+
+    public int AcvAttachmentCategoryId { get; set; }
+
+    public string AcvAttachmentCategoryName { get; set; } = string.Empty;
 }

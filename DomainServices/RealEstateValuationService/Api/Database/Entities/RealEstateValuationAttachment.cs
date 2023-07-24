@@ -14,4 +14,5 @@ internal sealed class RealEstateValuationAttachment
     public long ExternalId { get; set; }
     public string? Title { get; set; }
     public string FileName { get; set; } = string.Empty;
+    public int AcvAttachmentCategoryId { get; set; }
 }

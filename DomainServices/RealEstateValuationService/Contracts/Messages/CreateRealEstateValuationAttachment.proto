@@ -10,6 +10,7 @@ message CreateRealEstateValuationAttachmentRequest {
     string FileName = 3;
     bytes FileData = 4;
     string MimeType = 5;
+    int32 AcvAttachmentCategoryId = 6;
 }
 
 message CreateRealEstateValuationAttachmentResponse {

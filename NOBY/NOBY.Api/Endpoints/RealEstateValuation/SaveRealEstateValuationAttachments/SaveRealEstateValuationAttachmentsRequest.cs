@@ -31,4 +31,9 @@ public sealed class SaveRealEstateValuationAttachmentsRequestItem
     /// </summary>
     /// <example>Fotka dveří</example>
     public string? Title { get; set; }
+
+    /// <summary>
+    /// ID kategorie přílohy
+    /// </summary>
+    public int AcvAttachmentCategoryId { get; set; }
 }

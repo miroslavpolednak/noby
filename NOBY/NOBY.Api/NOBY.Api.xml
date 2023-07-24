@@ -2966,6 +2966,11 @@
             </summary>
             <example>Fotka dveří</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem.AcvAttachmentCategoryId">
+            <summary>
+            ID kategorie přílohy
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsResponseItem.TempFileId">
             <summary>
             ID uploadnutého dočasného souboru

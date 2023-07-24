@@ -99,6 +99,7 @@ CREATE TABLE [dbo].[RealEstateValuationAttachment](
 	[RealEstateValuationId] [int] NOT NULL,
 	[ExternalId] [bigint] NOT NULL,
 	[Title] [nvarchar](500) NULL,
+	AcvAttachmentCategoryId int NOT NULL,
 	[FileName] [nvarchar](500) NOT NULL,
 	[CreatedUserName] [nvarchar](100) NOT NULL,
 	[CreatedUserId] [int] NOT NULL,

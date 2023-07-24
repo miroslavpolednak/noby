@@ -8,7 +8,6 @@ internal sealed class SaveRealEstateValuationAttachmentsHandler
 {
     public async Task<List<SaveRealEstateValuationAttachmentsResponseItem>> Handle(SaveRealEstateValuationAttachmentsRequest request, CancellationToken cancellationToken)
     {
-
         List<SaveRealEstateValuationAttachmentsResponseItem> newIds = new(request.Attachments!.Count);
 
         foreach (var attachment in request.Attachments)
@@ -23,7 +22,8 @@ internal sealed class SaveRealEstateValuationAttachmentsHandler
                 FileName = metadata!.FileName,
                 MimeType = metadata.MimeType,
                 Title = attachment.Title,
-                FileData = Google.Protobuf.ByteString.CopyFrom(content)
+                FileData = Google.Protobuf.ByteString.CopyFrom(content),
+                AcvAttachmentCategoryId = attachment.AcvAttachmentCategoryId
             };
 
             var id = await _realEstateValuationService.CreateRealEstateValuationAttachment(dsRequest, cancellationToken);
