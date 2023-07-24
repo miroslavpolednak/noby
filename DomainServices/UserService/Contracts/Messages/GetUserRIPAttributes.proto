@@ -1,0 +1,26 @@
+﻿syntax = "proto3";
+package DomainServices.UserService;
+option csharp_namespace = "DomainServices.UserService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "UserIdentity.proto";
+
+message GetUserRIPAttributesRequest {
+	string Identity = 1;
+
+	string IdentityScheme = 2;
+}
+
+message UserRIPAttributes {
+	int64 PersonId = 1;
+
+	string PersonSurname = 2;
+
+	google.protobuf.Int64Value PersonOrgUnitId = 3;
+
+	string PersonOrgUnitName = 4;
+
+	string PersonJobPostId = 5;
+	
+	google.protobuf.Int32Value DealerCompanyId = 6;
+}
