@@ -1,0 +1,15 @@
+UPDATE SqlQuery SET SqlQueryText='WITH terms AS (SELECT * FROM (VALUES <terms>) T(term))
+        SELECT DEVELOPER_ID ''DeveloperId'', NAZEV ''DeveloperName'', ICO_RC ''DeveloperCIN'', DEVELOPER_PROJEKT_ID ''DeveloperProjectId'', PROJEKT ''DeveloperProjectName''
+        FROM (
+	        SELECT A.DEVELOPER_ID, A.NAZEV, A.ICO_RC, B.DEVELOPER_PROJEKT_ID, B.PROJEKT,
+	        (
+		        SELECT SUM(rate) FROM(
+			        SELECT CAST(CAST(CHARINDEX(term, ISNULL(A.NAZEV,'''')) AS BIT) AS INT)*1.01 + CAST(CAST(CHARINDEX(term, ISNULL(B.PROJEKT,'''')) AS BIT) AS INT) + CAST(CAST(CHARINDEX(term, ISNULL(A.ICO_RC,'''')) AS BIT) AS INT) AS rate FROM terms
+		        )r
+	        ) AS RATE
+	        FROM [SBR].[HTEDM_CIS_DEVELOPER] A
+	        INNER JOIN [SBR].[HTEDM_CIS_DEV_PROJEKTY_SPV] B ON A.DEVELOPER_ID=B.DEVELOPER_ID
+	        WHERE GETDATE() BETWEEN A.[PLATNOST_OD] AND ISNULL(A.[PLATNOST_DO], ''9999-12-31'') AND GETDATE() BETWEEN B.[PLATNOST_OD] AND ISNULL(B.[PLATNOST_DO], ''9999-12-31'')
+        )s
+        WHERE RATE > 0 
+        ORDER BY RATE DESC, NAZEV ASC, PROJEKT ASC' WHERE SqlQueryId='DeveloperSearchWithProjects'
