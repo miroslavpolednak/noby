@@ -12,14 +12,13 @@ using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
+using FastEnumUtility;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using System.Globalization;
 
-namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocumentManually;
+namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocument;
 
-public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest, Empty>
+public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, Empty>
 {
     /// <summary>
     /// Form 3601
@@ -37,7 +36,7 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
     private readonly IProductServiceClient _productServiceClient;
 
-    public SignDocumentManuallyHandler(
+    public SignDocumentHandler(
         DocumentOnSAServiceDbContext dbContext,
         IDateTime dateTime,
         ICurrentUserAccessor currentUser,
@@ -61,31 +60,35 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         _productServiceClient = productServiceClient;
     }
 
-    public async Task<Empty> Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
+    public async Task<Empty> Handle(SignDocumentRequest request, CancellationToken cancellationToken)
     {
         var documentOnSa = await _dbContext.DocumentOnSa.FirstOrDefaultAsync(r => r.DocumentOnSAId == request.DocumentOnSAId!.Value, cancellationToken);
 
         if (documentOnSa is null)
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId!.Value);
 
-        if (documentOnSa.SignatureTypeId != (int)SignatureTypes.Paper || documentOnSa.IsSigned)
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToSignDocumentOnSA, request.DocumentOnSAId!.Value);
-        
+        if (documentOnSa.IsSigned)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AlreadySignedDocumentOnSA, request.DocumentOnSAId!.Value);
+
+        if (request.SignatureTypeId != documentOnSa.SignatureTypeId)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SignatureTypeIdHasToBeSame);
+
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
-        
-        //ToDo temporary disabled, until DM will do change in SA validation
-        //if (salesArrangement.State != (int)SalesArrangementStates.InSigning)
-        //    throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidSalesArrangementState);
 
-        //if (documentOnSa.IsValid == false || documentOnSa.IsSigned || documentOnSa.IsFinal)
-        //    throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidDocument); 
+        if (salesArrangement.State != SalesArrangementStates.InSigning.ToByte())
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidSalesArrangementState);
 
-        UpdateDocumentOnSa(documentOnSa);
+        if (documentOnSa.IsValid == false || documentOnSa.IsSigned || documentOnSa.IsFinal)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidDocument);
 
-        await AddSignatureIfNotSetYet(documentOnSa, salesArrangement, cancellationToken);
+        var signatureDate = _dateTime.Now;
+
+        UpdateDocumentOnSa(documentOnSa, signatureDate);
+
+        await AddSignatureIfNotSetYet(documentOnSa, salesArrangement, signatureDate, cancellationToken);
 
         // Update Mortgage.FirstSignatureDate
-        await UpdateMortgageFirstSignatureDate(documentOnSa, salesArrangement, cancellationToken);
+        await UpdateMortgageFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
 
         // SUML call
         await SumlCall(documentOnSa, cancellationToken);
@@ -95,10 +98,10 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         return new Empty();
     }
 
-    private async Task UpdateMortgageFirstSignatureDate(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task UpdateMortgageFirstSignatureDate(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var mortgageResponse = await _productServiceClient.GetMortgage(salesArrangement.CaseId, cancellationToken);
-        mortgageResponse.Mortgage.FirstSignatureDate = _dateTime.Now;
+        mortgageResponse.Mortgage.FirstSignatureDate = signatureDate;
         await _productServiceClient.UpdateMortgage(new() { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
     }
 
@@ -127,12 +130,12 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         await _sulmClientHelper.StartUse(kbIdentity.IdentityId, ISulmClient.PurposeMLAP, cancellationToken);
     }
 
-    private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, DateTime signatureDate, CancellationToken cancellationToken)
     {
         if (documentOnSa.DocumentTypeId == DocumentType
             && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => r.IsSigned == false, cancellationToken))
         {
-            var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, _dateTime.Now.Date, cancellationToken);
+            var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, signatureDate, cancellationToken);
 
             if (result is not null && result.CommonValue != 0)
             {
@@ -141,10 +144,10 @@ public sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentMa
         }
     }
 
-    private void UpdateDocumentOnSa(DocumentOnSa documentOnSa)
+    private void UpdateDocumentOnSa(DocumentOnSa documentOnSa, DateTime signatureDate)
     {
         documentOnSa.IsSigned = true;
-        documentOnSa.SignatureDateTime = _dateTime.Now;
+        documentOnSa.SignatureDateTime = signatureDate;
         documentOnSa.SignatureConfirmedBy = _currentUser.User?.Id;
     }
 }

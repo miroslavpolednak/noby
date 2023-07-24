@@ -1,8 +1,10 @@
-﻿using CIS.Testing;
+﻿using CIS.Foms.Enums;
+using CIS.Testing;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
+using FastEnumUtility;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,9 +13,9 @@ using Xunit;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests;
 
-public class SignDocumentManuallyTests : IntegrationTestBase
+public class SignDocumentTests : IntegrationTestBase
 {
-    public SignDocumentManuallyTests(WebApplicationFactoryFixture<Program> fixture) : base(fixture)
+    public SignDocumentTests(WebApplicationFactoryFixture<Program> fixture) : base(fixture)
     {
         // Service request No Saml call
         ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>())
@@ -23,7 +25,7 @@ public class SignDocumentManuallyTests : IntegrationTestBase
         {
             Mortgage = new MortgageData
             {
-                ProductTypeId=4
+                ProductTypeId = 4
             }
         });
     }
@@ -41,7 +43,7 @@ public class SignDocumentManuallyTests : IntegrationTestBase
 
         var client = CreateGrpcClient();
 
-        await client.SignDocumentManuallyAsync(new() { DocumentOnSAId = docOnSaEntity.DocumentOnSAId });
+        await client.SignDocumentAsync(new() { DocumentOnSAId = docOnSaEntity.DocumentOnSAId, SignatureTypeId = SignatureTypes.Paper.ToByte() });
 
         // Check
         var signEntity = await dbContext.DocumentOnSa.SingleAsync(r => r.DocumentOnSAId == docOnSaEntity.DocumentOnSAId);
