@@ -187,13 +187,13 @@ internal static class UpdateParametersExtensions
             ExpectedDateOfDrawing = new()
             {
                 IsActive = parameters.ExpectedDateOfDrawing?.IsActive ?? false,
-                AgreedExpectedDateOfDrawing = originalParameter.ExpectedDateOfDrawing?.AgreedExpectedDateOfDrawing,
+                AgreedExpectedDateOfDrawing = originalParameter?.ExpectedDateOfDrawing?.AgreedExpectedDateOfDrawing,
                 NewExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing?.NewExpectedDateOfDrawing
             },
             DrawingDateTo = new()
             {
                 IsActive = parameters.DrawingDateTo?.IsActive ?? false,
-                AgreedDrawingDateTo = originalParameter.DrawingDateTo?.AgreedDrawingDateTo,
+                AgreedDrawingDateTo = originalParameter?.DrawingDateTo?.AgreedDrawingDateTo,
                 ExtensionDrawingDateToByMonths = parameters.DrawingDateTo?.ExtensionDrawingDateToByMonths
             },
             CommentToChangeRequest = new()
