@@ -22,13 +22,18 @@ public interface IRealEstateValuationServiceClient
 
     Task UpdateStateByRealEstateValuation(int realEstateValuationId, int valuationStateId, CancellationToken cancellationToken = default);
 
-    Task<int> AddDeedOfOwnershipDocument(AddDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken = default);
-
-    Task DeleteDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, CancellationToken cancellationToken = default);
-
     Task<int> CreateRealEstateValuationAttachment(CreateRealEstateValuationAttachmentRequest request, CancellationToken cancellationToken = default);
 
     Task DeleteRealEstateValuationAttachment(int realEstateValuationAttachmentId, int realEstateValuationId, CancellationToken cancellationToken = default);
 
     Task<ValidateRealEstateValuationIdResponse> ValidateRealEstateValuationId(int realEstateValuationId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
+
+    // DeedOfOwnershipDocument
+    Task<int> AddDeedOfOwnershipDocument(AddDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken = default);
+
+    Task DeleteDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, CancellationToken cancellationToken = default);
+
+    Task<List<Contracts.DeedOfOwnershipDocument>> GetDeedOfOwnershipDocuments(int realEstateValuationId, CancellationToken cancellationToken = default);
+
+    Task<Contracts.DeedOfOwnershipDocument> GetDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, CancellationToken cancellationToken = default);
 }

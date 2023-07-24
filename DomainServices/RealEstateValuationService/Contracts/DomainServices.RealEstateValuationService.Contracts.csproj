@@ -15,13 +15,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Messages\AddDeedOfOwnershipDocument.proto" />
-	  <None Remove="Messages\CreateRealEstateValuationAttachment.proto" />
-	  <None Remove="Messages\DeleteDeedOfOwnershipDocument.proto" />
-	  <None Remove="Messages\DeleteRealEstateValuationAttachment.proto" />
-	  <None Remove="Messages\SetACVRealEstateTypeByRealEstateValuation.proto" />
-	  <None Remove="Messages\UpdateStateByRealEstateValuation.proto" />
-	  <None Remove="Messages\ValidateRealEstateValuationId.proto" />
+	  <None Remove="Messages\GetDeedOfOwnershipDocument.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -38,6 +32,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Protobuf Include="Messages\DeedOfOwnershipDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\GetDeedOfOwnershipDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Messages\GetDeedOfOwnershipDocuments.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\DeleteRealEstateValuationAttachment.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\ValidateRealEstateValuationId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Messages\Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />

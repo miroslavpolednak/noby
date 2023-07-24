@@ -79,19 +79,6 @@ internal sealed class RealEstateValuationServiceClient
         }, cancellationToken: cancellationToken);
     }
 
-    public async Task<int> AddDeedOfOwnershipDocument(AddDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken = default)
-    {
-        return (await _service.AddDeedOfOwnershipDocumentAsync(request, cancellationToken: cancellationToken)).DeedOfOwnershipDocumentId;
-    }
-
-    public async Task DeleteDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, CancellationToken cancellationToken = default)
-    {
-        await _service.DeleteDeedOfOwnershipDocumentAsync(new()
-        {
-            DeedOfOwnershipDocumentId = deedOfOwnershipDocumentId
-        }, cancellationToken: cancellationToken);
-    }
-
     public async Task<int> CreateRealEstateValuationAttachment(CreateRealEstateValuationAttachmentRequest request, CancellationToken cancellationToken = default)
     {
         return (await _service.CreateRealEstateValuationAttachmentAsync(request, cancellationToken: cancellationToken)).RealEstateValuationAttachmentId;
@@ -113,6 +100,38 @@ internal sealed class RealEstateValuationServiceClient
             ThrowExceptionIfNotFound = throwExceptionIfNotFound,
             RealEstateValuationId = realEstateValuationId
         }, cancellationToken: cancellationToken);
+    }
+
+    // DeedOfOwnershipDocument
+    public async Task<int> AddDeedOfOwnershipDocument(AddDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken = default)
+    {
+        return (await _service.AddDeedOfOwnershipDocumentAsync(request, cancellationToken: cancellationToken)).DeedOfOwnershipDocumentId;
+    }
+
+    public async Task<Contracts.DeedOfOwnershipDocument> GetDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, CancellationToken cancellationToken = default)
+    {
+        return await _service.GetDeedOfOwnershipDocumentAsync(new()
+        {
+            DeedOfOwnershipDocumentId = deedOfOwnershipDocumentId
+        }, cancellationToken: cancellationToken);
+    }
+
+    public async Task DeleteDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, CancellationToken cancellationToken = default)
+    {
+        await _service.DeleteDeedOfOwnershipDocumentAsync(new()
+        {
+            DeedOfOwnershipDocumentId = deedOfOwnershipDocumentId
+        }, cancellationToken: cancellationToken);
+    }
+
+    public async Task<List<DeedOfOwnershipDocument>> GetDeedOfOwnershipDocuments(int realEstateValuationId, CancellationToken cancellationToken = default)
+    {
+        return (await _service.GetDeedOfOwnershipDocumentsAsync(new()
+        {
+            RealEstateValuationId = realEstateValuationId,
+        }, cancellationToken: cancellationToken))
+        .Documents
+        .ToList();
     }
 
     private readonly Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient _service;

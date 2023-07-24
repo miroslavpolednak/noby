@@ -213,6 +213,27 @@ public sealed class RealEstateValuationController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Uložení údajů identifikace nemovitosti k danému Ocenění nemovitosti
+    /// </summary>
+    /// <remarks>
+    /// Uložení údajů identifikace nemovitosti k danému Ocenění nemovitosti.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=536CD827-3140-4a41-8AC2-AF6BB6700539"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <response code="200">NobyDeedOfOwnershipDocumentId: Noby ID daného záznamu.Určuje jednoznačnou kombinaci DeedOfOwnershipDocumentId (z CREMu) a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</response>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents")]
+    [AuthorizeCaseOwner]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<int> AddDeedOfOwnershipDocument(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] AddDeedOfOwnershipDocument.AddDeedOfOwnershipDocumentRequest request,
+        CancellationToken cancellationToken)
+        => await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+
     private readonly IMediator _mediator;
     public RealEstateValuationController(IMediator mediator) => _mediator = mediator;
 }

@@ -41,7 +41,7 @@ internal sealed class RealEstateValuationStateValidationAttribute
             long caseId = long.Parse(context.HttpContext.Request.RouteValues[_caseIdKey]!.ToString()!, CultureInfo.InvariantCulture);
             int realEstateValuationId = int.Parse(context.HttpContext.Request.RouteValues[_realEstateValuationIdKey]!.ToString()!, CultureInfo.InvariantCulture);
 
-            //TODO udedlat endpoint, ktery vraci jen zakladni udaje
+            //TODO udedlat endpoint, ktery vraci jen zakladni udaje?
             var instance = await _realEstateValuationService.ValidateRealEstateValuationId(realEstateValuationId, true);
 
             // podvrhnute caseId

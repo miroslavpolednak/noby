@@ -21,7 +21,7 @@ internal sealed class AddDeedOfOwnershipDocumentHandler
             DeedOfOwnershipId = request.DeedOfOwnershipId,
             Address = request.Address,
             DeedOfOwnershipNumber = request.DeedOfOwnershipNumber,
-            ExternalDeedOfOwnershipDocumentId = request.ExternalDeedOfOwnershipDocumentId,
+            CremDeedOfOwnershipDocumentId = request.CremDeedOfOwnershipDocumentId,
             KatuzId = request.KatuzId,
             KatuzTitle = request.KatuzTitle
         };

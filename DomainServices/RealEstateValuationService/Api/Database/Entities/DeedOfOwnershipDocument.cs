@@ -10,7 +10,7 @@ internal class DeedOfOwnershipDocument
     [Key]
     public int DeedOfOwnershipDocumentId { get; set; }
 
-    public long ExternalDeedOfOwnershipDocumentId { get; set; }
+    public long CremDeedOfOwnershipDocumentId { get; set; }
     public int RealEstateValuationId { get; set; }
     public int KatuzId { get; set; }
     public string? KatuzTitle { get; set; }
