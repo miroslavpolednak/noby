@@ -225,6 +225,11 @@
             Unikátní ID nemovitosti ze systému CREM
             </summary>
         </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.AddressPointId">
+            <summary>
+            ID adresního bodu z našeptávače adres
+            </summary>
+        </member>
         <member name="T:NOBY.Dto.RealEstateValuation.LoanPurposeDetail">
             <summary>
             Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).

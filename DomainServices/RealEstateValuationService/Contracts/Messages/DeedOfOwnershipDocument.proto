@@ -5,7 +5,7 @@ option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 import "google/protobuf/wrappers.proto";
 
 message DeedOfOwnershipDocument {
-    int32 DeedOfOwnershipDocumentId = 9;
+    int32 DeedOfOwnershipDocumentId = 10;
     int32 RealEstateValuationId = 1;
     int64 CremDeedOfOwnershipDocumentId = 2;
     int32 KatuzId = 3;
@@ -14,4 +14,5 @@ message DeedOfOwnershipDocument {
     int32 DeedOfOwnershipNumber = 6;
     google.protobuf.StringValue Address = 7;
     repeated int64 RealEstateIds = 8;
+    google.protobuf.Int64Value AddressId = 9;
 }

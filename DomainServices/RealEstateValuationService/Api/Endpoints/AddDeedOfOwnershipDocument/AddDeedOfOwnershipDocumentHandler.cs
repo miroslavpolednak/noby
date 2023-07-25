@@ -1,6 +1,5 @@
 ﻿using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
-using Google.Protobuf;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.AddDeedOfOwnershipDocument;
 
@@ -24,7 +23,8 @@ internal sealed class AddDeedOfOwnershipDocumentHandler
             DeedOfOwnershipNumber = request.DeedOfOwnershipNumber,
             CremDeedOfOwnershipDocumentId = request.CremDeedOfOwnershipDocumentId,
             KatuzId = request.KatuzId,
-            KatuzTitle = request.KatuzTitle
+            KatuzTitle = request.KatuzTitle,
+            AddressId = request.AddressId
         };
         if (request.RealEstateIds is not null && request.RealEstateIds.Any())
         {
