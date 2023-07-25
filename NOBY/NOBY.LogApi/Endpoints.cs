@@ -16,6 +16,7 @@ internal static class Endpoints
 #pragma warning restore CA1848 // Use the LoggerMessage delegates
 #pragma warning restore CA2254 // Template should be a static expression
         })
+            .RequireCors("__DefaultCorsPolicy")
             .WithDescription("Logování do standardního aplikačního logu.")
             .WithTags("Logging")
             .WithOpenApi();
@@ -25,6 +26,7 @@ internal static class Endpoints
         {
             //logger.Log(model.Message ?? "");
         })
+            .RequireCors("__DefaultCorsPolicy")
             .WithDescription("Logování do auditního logu.")
             .WithTags("Logging")
             .WithOpenApi();
