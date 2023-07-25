@@ -10,5 +10,18 @@ public sealed class GetRealEstateValuationDetailResponse
 
     public List<RealEstateValuationAttachment>? Attachments { get; set; }
 
-    public List<DeedOfOwnershipDocument>? DeedOfOwnershipDocuments { get; set; }
+    public List<GetRealEstateValuationDetailResponseDeed>? DeedOfOwnershipDocuments { get; set; }
+}
+
+public sealed class GetRealEstateValuationDetailResponseDeed
+{
+    /// <summary>
+    /// Noby ID daného záznamu.Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.
+    /// </summary>
+    public int DeedOfOwnershipDocumentId { get; set; }
+
+    /// <summary>
+    /// Identifikační údaje nemovitosti k Ocenění(bez Noby ID)
+    /// </summary>
+    public DeedOfOwnershipDocument? DeedOfOwnershipDocument { get; set; }
 }

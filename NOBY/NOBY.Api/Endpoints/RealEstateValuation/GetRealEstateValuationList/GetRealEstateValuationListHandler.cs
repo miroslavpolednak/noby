@@ -53,6 +53,11 @@ internal sealed class GetRealEstateValuationListHandler
         var saId = (await _salesArrangementService.GetProductSalesArrangement(caseId, cancellationToken)).SalesArrangementId;
         var saInstance = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
 
+        if (saInstance.Mortgage is null)
+        {
+            throw new NobyValidationException("SA.Mortgage object is null");
+        }
+
         var developer = await _offerService.GetOfferDeveloper(saInstance.OfferId!.Value, cancellationToken);
 
         var state = (await _codebookService.WorkflowTaskStatesNoby(cancellationToken))

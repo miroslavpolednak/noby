@@ -25,6 +25,7 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         var valuationDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
+        var deeds = await _realEstateValuationService.GetDeedOfOwnershipDocuments(request.RealEstateValuationId, cancellationToken);
 
         if (valuationDetail.RealEstateValuationGeneralDetails.CaseId != request.CaseId)
             throw new CisAuthorizationException("The requested RealEstateValuation is not assigned to the requested Case");
@@ -50,6 +51,21 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
                 FileName = t.FileName,
                 AcvAttachmentCategoryId = t.AcvAttachmentCategoryId,
                 AcvAttachmentCategoryName = categories.FirstOrDefault(x => x.Id == t.AcvAttachmentCategoryId)?.Name ?? ""
+            }).ToList(),
+            DeedOfOwnershipDocuments = deeds?.Select(t => new GetRealEstateValuationDetailResponseDeed
+            {
+                DeedOfOwnershipDocumentId = t.DeedOfOwnershipDocumentId,
+                DeedOfOwnershipDocument = new()
+                {
+                    Address = t.Address,
+                    CremDeedOfOwnershipDocumentId = t.CremDeedOfOwnershipDocumentId,
+                    DeedOfOwnershipId = t.DeedOfOwnershipId,
+                    DeedOfOwnershipNumber = t.DeedOfOwnershipNumber,
+                    KatuzId = t.KatuzId,
+                    KatuzTitle = t.KatuzTitle,
+                    AddressPointId = t.AddressId,
+                    RealEstateIds = t.RealEstateIds?.Select(t => t).ToList()
+                }
             }).ToList()
         };
     }
