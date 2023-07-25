@@ -1857,6 +1857,16 @@
             Timestamp, kdy došlo k podpisu celého dokumentu.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.IsPreviewSentToCustomer">
+            <summary>
+            Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.ExternalId">
+            <summary>
+            Id elektronicky podepisovaného dokumentu nahraného v ePodpisech
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.DocumentOnSAId">
             <summary>
             Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.
@@ -1890,6 +1900,16 @@
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.SignatureDateTime">
             <summary>
             Timestamp, kdy došlo k podpisu celého dokumentu.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.IsPreviewSentToCustomer">
+            <summary>
+            Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.ExternalId">
+            <summary>
+            Id elektronicky podepisovaného dokumentu nahraného v ePodpisech
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningHandler.ValidateSalesArrangement(System.Int32,System.Threading.CancellationToken)">
