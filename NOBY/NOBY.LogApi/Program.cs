@@ -20,6 +20,24 @@ try
     var appConfiguration = new AppConfiguration();
     builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
 
+    var corsConfiguration = builder.Configuration
+        .GetSection(CIS.Infrastructure.WebApi.Configuration.CorsConfiguration.AppsettingsConfigurationKey)
+        .Get<CIS.Infrastructure.WebApi.Configuration.CorsConfiguration>();
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: "_cors",
+            policy =>
+            {
+                if (corsConfiguration?.AllowedOrigins is not null && corsConfiguration.AllowedOrigins.Any())
+                    policy.WithOrigins(corsConfiguration.AllowedOrigins);
+
+                policy
+                    .AllowCredentials()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+    });
+
     // pridat swagger
     builder.Services.AddLogApiSwagger();
     
@@ -29,7 +47,7 @@ try
     log.ApplicationBuilt();
 
     app.UseHttpsRedirection();
-    app.UseCisWebApiCors();
+    app.UseCors();
 
     if (appConfiguration.EnableSwaggerUi)
     {

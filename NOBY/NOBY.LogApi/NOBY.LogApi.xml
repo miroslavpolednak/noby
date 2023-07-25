@@ -24,10 +24,5 @@
             Popis udalosti
             </summary>
         </member>
-        <member name="P:NOBY.LogApi.LogModel.UserId">
-            <summary>
-            ID uzivatele vracene z FE API
-            </summary>
-        </member>
     </members>
 </doc>
