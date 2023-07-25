@@ -52,8 +52,14 @@ public class GetDocumentsSignListData
 
     public int? CustomerOnSAId { get; set; }
 
+    /// <summary>
+    /// Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
+    /// </summary>
     public bool IsPreviewSentToCustomer { get; set; }
 
+    /// <summary>
+    /// Id elektronicky podepisovaného dokumentu nahraného v ePodpisech
+    /// </summary>
     public string? ExternalId { get; set; }
 
     public Source Source { get; set; }
