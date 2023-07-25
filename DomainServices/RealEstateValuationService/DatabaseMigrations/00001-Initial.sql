@@ -127,7 +127,7 @@ CREATE TABLE [dbo].[DeedOfOwnershipDocument](
 	[DeedOfOwnershipId] [bigint] NOT NULL,
 	[DeedOfOwnershipNumber] [int] NOT NULL,
 	[Address] [nvarchar](250) NULL,
-	[RealEstateIds] [nvarchar](500) NULL,
+	[RealEstateIds] [varchar](500) NULL,
 	[CreatedUserName] [nvarchar](100) NOT NULL,
 	[CreatedUserId] [int] NOT NULL,
 	[CreatedTime] [datetime] NOT NULL,

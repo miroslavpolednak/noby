@@ -1,5 +1,6 @@
 ﻿using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
+using Google.Protobuf;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.AddDeedOfOwnershipDocument;
 
