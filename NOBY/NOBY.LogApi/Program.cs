@@ -38,7 +38,7 @@ try
         app
             .UseRouting()
             .UseCisSecurityHeaders()
-            // nevim proc ten posranej .NET middleware pro cors nefunguje...
+            // nevim proc ten posranej .NET middleware pro cors nefunguje... mozna potrebuje autentizaci?
             .Use(async (context, next) => {
                 context.Response.OnStarting(() => {
                     context.Response.Headers.Add("Access-Control-Allow-Origin", corsConfiguration!.AllowedOrigins![0]);

@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using DomainServices.CaseService.Api.Database;
+﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.ValidateCaseId;
@@ -23,15 +22,10 @@ internal sealed class ValidateCaseIdHandler
         return new ValidateCaseIdResponse
         {
             Exists = instance is not null,
-            OwnerUserId = instance?.OwnerUserId
+            OwnerUserId = instance?.OwnerUserId,
+            State = instance?.State
         };
     }
-
-    private static int[] _disallowedStates = new[]
-    {
-        (int)CaseStates.ToBeCancelledConfirmed,
-        (int)CaseStates.Cancelled
-    };
 
     private readonly CaseServiceDbContext _dbContext;
 
