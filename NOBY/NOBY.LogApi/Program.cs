@@ -20,6 +20,9 @@ try
     // nahrat dokumentaci
     var appConfiguration = new AppConfiguration();
     builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
+    var corsConfiguration = builder.Configuration
+        .GetSection(CIS.Infrastructure.WebApi.Configuration.CorsConfiguration.AppsettingsConfigurationKey)
+        .Get<CIS.Infrastructure.WebApi.Configuration.CorsConfiguration>();
 
     // pridat swagger
     builder.Services.AddLogApiSwagger();
@@ -35,6 +38,16 @@ try
         app
             .UseRouting()
             .UseCisSecurityHeaders()
+            // nevim proc ten posranej .NET middleware pro cors nefunguje...
+            .Use(async (context, next) => {
+                context.Response.OnStarting(() => {
+                    context.Response.Headers.Add("Access-Control-Allow-Origin", corsConfiguration!.AllowedOrigins![0]);
+                    context.Response.Headers.Add("Access-Control-Allow-Methods", "POST, OPTIONS");
+                    return Task.CompletedTask;
+                });
+
+                await next();
+            })
             .UseEndpoints(e => e.RegisterLoggerEndpoints());
     });
 
