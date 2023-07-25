@@ -45,7 +45,7 @@ public class SendDocumentPreviewTests : IntegrationTestBase
         });
     }
     
-    [Fact]
+    /*[Fact]
     public async Task SendDocumentPreview_ShouldNotSendPreview_IfDocumentIsNotElectronic()
     {
         var docOnSaEntity = CreateDocOnSaEntity(signatureTypeId: (int)SignatureTypes.Biometric);
@@ -62,5 +62,5 @@ public class SendDocumentPreviewTests : IntegrationTestBase
         {
             await client.SendDocumentPreviewAsync(new() { DocumentOnSAId = docOnSaEntity.DocumentOnSAId });
         });
-    }
+    }*/
 }

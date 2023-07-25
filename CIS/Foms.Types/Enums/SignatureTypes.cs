@@ -15,9 +15,9 @@ public enum SignatureTypes : byte
     [Display(Name = "Fyzicky")]
     Paper = 1,
         
-    [EnumMember]
+    /*[EnumMember]
     [Display(Name = "Biometricky")]
-    Biometric = 2,
+    Biometric = 2,*/
         
     [EnumMember]
     [CisDefaultValue]
