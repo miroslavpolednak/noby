@@ -13,7 +13,7 @@ internal sealed class CancelTaskHandler
         await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
 
         var task = await _caseService.GetTaskDetail(request.TaskIdSB, cancellationToken);
-        if (_allowedTypeIds.Contains(task.TaskObject?.TaskTypeId ?? 0) || task.TaskObject?.TaskIdSb == 30)
+        if (!_allowedTypeIds.Contains(task.TaskObject?.TaskTypeId ?? 0) || task.TaskObject?.TaskIdSb == 30)
         {
             throw new CisAuthorizationException();
         }
