@@ -27,6 +27,11 @@ internal sealed class GetRealEstateValuationTypesHandler
         }, cancellationToken);
 
         // get revids
+        await _dbContext.DeedOfOwnershipDocuments
+            .AsNoTracking()
+            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
+            .Select(t => t.RealEstateIds)
+            .ToListAsync(cancellationToken);
         
         var purposes = await _codebookService.LoanPurposes(cancellationToken);
         var acvRequest = new ExternalServices.PreorderService.V1.Contracts.AvailableValuationTypesRequestDTO

@@ -89,7 +89,7 @@ internal sealed class CreateTaskHandler
 
         for (var i = 0; i < priceException.Fees.Count; i++)
         {
-            metadata.Add($"ukol_overeni_ic_popl_kodsb{i + 1}", priceException.Fees![i].FeeId);
+            metadata.Add($"ukol_overeni_ic_popl_kodsb{i + 1}", priceException.Fees![i].FeeId.ToString(CultureInfo.InvariantCulture));
             metadata.Add($"ukol_overeni_ic_popl_sazeb{i + 1}", priceException.Fees![i].TariffSum.ToSbFormat());
             metadata.Add($"ukol_overeni_ic_popl_vysl{i + 1}", priceException.Fees![i].FinalSum.ToSbFormat());
             metadata.Add($"ukol_overeni_ic_popl_sleva_perc{i + 1}", priceException.Fees![i].DiscountPercentage.ToSbFormat());
