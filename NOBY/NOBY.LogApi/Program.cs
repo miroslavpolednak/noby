@@ -3,6 +3,7 @@ using CIS.Infrastructure.WebApi;
 using CIS.Infrastructure.Telemetry;
 using NOBY.LogApi;
 using CIS.Core.Security;
+using System.Reflection.PortableExecutable;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,14 +49,16 @@ try
 
     app.UseHttpsRedirection();
     app.UseCors();
+    app.UseCisSecurityHeaders();
 
     if (appConfiguration.EnableSwaggerUi)
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-    
+
     // mapovani endpointu
+    app.UseRouting();
     app.RegisterLoggerEndpoints();
 
     log.ApplicationRun();
