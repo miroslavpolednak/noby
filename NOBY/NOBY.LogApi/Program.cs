@@ -3,7 +3,6 @@ using CIS.Infrastructure.WebApi;
 using CIS.Infrastructure.Telemetry;
 using NOBY.LogApi;
 using CIS.Core.Security;
-using System.Reflection.PortableExecutable;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,28 +15,11 @@ try
         .AddCisCoreFeatures()
         .AddCisWebApiCors()
         .AddCisLogging();
+    builder.Services.AddCisSecurityHeaders();
 
     // nahrat dokumentaci
     var appConfiguration = new AppConfiguration();
     builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
-
-    var corsConfiguration = builder.Configuration
-        .GetSection(CIS.Infrastructure.WebApi.Configuration.CorsConfiguration.AppsettingsConfigurationKey)
-        .Get<CIS.Infrastructure.WebApi.Configuration.CorsConfiguration>();
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy(name: "_cors",
-            policy =>
-            {
-                if (corsConfiguration?.AllowedOrigins is not null && corsConfiguration.AllowedOrigins.Any())
-                    policy.WithOrigins(corsConfiguration.AllowedOrigins);
-
-                policy
-                    .AllowCredentials()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
-    });
 
     // pridat swagger
     builder.Services.AddLogApiSwagger();
@@ -47,19 +29,20 @@ try
     var app = builder.Build();
     log.ApplicationBuilt();
 
-    app.UseHttpsRedirection();
-    app.UseCors();
-    app.UseCisSecurityHeaders();
+    // mapovani endpointu
+    app.MapWhen(context => !context.Request.Path.StartsWithSegments("/swagger"), app =>
+    {
+        app
+            .UseRouting()
+            .UseCisSecurityHeaders()
+            .UseEndpoints(e => e.RegisterLoggerEndpoints());
+    });
 
     if (appConfiguration.EnableSwaggerUi)
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-
-    // mapovani endpointu
-    app.UseRouting();
-    app.RegisterLoggerEndpoints();
 
     log.ApplicationRun();
     app.Run();
@@ -72,4 +55,3 @@ finally
 {
     LoggingExtensions.CloseAndFlush();
 }
-

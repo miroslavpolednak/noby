@@ -5,7 +5,7 @@ namespace NOBY.LogApi;
 
 internal static class Endpoints
 {
-    public static WebApplication RegisterLoggerEndpoints(this WebApplication app)
+    public static IEndpointRouteBuilder RegisterLoggerEndpoints(this IEndpointRouteBuilder app)
     {
         // logovani standardniho logu
         app.MapPost("/log", (LogModel model, [FromServices] ILogger<Program> logger) =>
@@ -16,7 +16,7 @@ internal static class Endpoints
 #pragma warning restore CA1848 // Use the LoggerMessage delegates
 #pragma warning restore CA2254 // Template should be a static expression
         })
-            .RequireCors("_cors")
+            .RequireCors("__DefaultCorsPolicy")
             .WithDescription("Logování do standardního aplikačního logu.")
             .WithTags("Logging")
             .WithOpenApi();
@@ -26,7 +26,7 @@ internal static class Endpoints
         {
             //logger.Log(model.Message ?? "");
         })
-            .RequireCors("_cors")
+            .RequireCors("__DefaultCorsPolicy")
             .WithDescription("Logování do auditního logu.")
             .WithTags("Logging")
             .WithOpenApi();
