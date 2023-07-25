@@ -4,6 +4,7 @@ using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
@@ -71,6 +72,12 @@ internal sealed class CaasCookieHandler
             OnSignedIn = context =>
             {
                 context.Properties.RedirectUri = context.HttpContext.Items["noby_redirect_uri"]!.ToString();
+                return Task.CompletedTask;
+            },
+            OnSigningOut = context =>
+            {
+                var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
+                logger.Log(CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby003, "User logged out xxxxx");
                 return Task.CompletedTask;
             }
         };
