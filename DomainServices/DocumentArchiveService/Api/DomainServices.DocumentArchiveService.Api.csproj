@@ -37,7 +37,6 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
-		<ProjectReference Include="..\..\DocumentOnSAService\ExternalServices.ESignatures\DomainServices.DocumentOnSAService.ExternalServices.ESignatures.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.DocumentArchiveService.Contracts.csproj" />
 		<ProjectReference Include="..\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj" />
 		<ProjectReference Include="..\ExternalServices.Tcp\DomainServices.DocumentArchiveService.ExternalServices.Tcp.csproj" />

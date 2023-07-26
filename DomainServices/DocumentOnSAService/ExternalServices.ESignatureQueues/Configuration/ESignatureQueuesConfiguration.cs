@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CIS.Foms.Enums;
 
-namespace ExternalServices.ESignatures.Configuration;
+namespace ExternalServices.ESignatureQueues.Configuration;
 
-public class ESignaturesConfiguration
+public class ESignatureQueuesConfiguration
 {
     [Required]
     public string ConnectionString { get; set; } = null!;

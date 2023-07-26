@@ -513,7 +513,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateVa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Crem", "ExternalServices\Crem\ExternalServices.Crem.csproj", "{8240FF9F-9DFE-4C53-87FE-C94753F9EC5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.DocumentOnSAService.ExternalServices.ESignatures", "DomainServices\DocumentOnSAService\ExternalServices.ESignatures\DomainServices.DocumentOnSAService.ExternalServices.ESignatures.csproj", "{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.DocumentOnSAService.ExternalServices.ESignatureQueues", "DomainServices\DocumentOnSAService\ExternalServices.ESignatureQueues\DomainServices.DocumentOnSAService.ExternalServices.ESignatureQueues.csproj", "{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
