@@ -52,7 +52,7 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
                 AcvAttachmentCategoryId = t.AcvAttachmentCategoryId,
                 AcvAttachmentCategoryName = categories.FirstOrDefault(x => x.Id == t.AcvAttachmentCategoryId)?.Name ?? ""
             }).ToList(),
-            DeedOfOwnershipDocuments = deeds?.Select(t => new GetRealEstateValuationDetailResponseDeed
+            DeedOfOwnershipDocuments = deeds?.Select(t => new Dto.RealEstateValuation.DeedOfOwnershipDocumentWithId
             {
                 DeedOfOwnershipDocumentId = t.DeedOfOwnershipDocumentId,
                 DeedOfOwnershipDocument = new()

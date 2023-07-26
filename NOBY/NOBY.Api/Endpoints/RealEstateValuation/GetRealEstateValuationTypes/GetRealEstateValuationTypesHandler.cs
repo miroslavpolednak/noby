@@ -1,5 +1,9 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.CaseService.Clients;
+using DomainServices.OfferService.Clients;
+using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
+using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationTypes;
 
@@ -8,26 +12,57 @@ internal sealed class GetRealEstateValuationTypesHandler
 {
     public async Task<List<int>> Handle(GetRealEstateValuationTypesRequest request, CancellationToken cancellationToken)
     {
-        var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
-
         var dsRequest = new DomainServices.RealEstateValuationService.Contracts.GetRealEstateValuationTypesRequest
         {
-            LoanAmount = 1,
             DealType = "HYPO",
             RealEstateValuationId = request.RealEstateValuationId
         };
-        //dsRequest.LoanPurposes.AddRange();
+
+        var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
+        if (caseInstance.State!.Value == (int)CaseStates.InProgress)
+        {
+            var productSA = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+            var offerInstance = await _offerService.GetMortgageOfferDetail(productSA.OfferId!.Value, cancellationToken);
+
+            dsRequest.LoanAmount = offerInstance.SimulationResults.LoanAmount;
+            if (offerInstance.SimulationInputs.LoanPurposes?.Any() ?? false)
+            {
+                dsRequest.LoanPurposes.AddRange(offerInstance.SimulationInputs.LoanPurposes.Select(t => t.LoanPurposeId));
+            }
+        }
+        else
+        {
+            var product = await _productService.GetMortgage(request.CaseId, cancellationToken);
+            if (product.Mortgage is null)
+            {
+                throw new NobyValidationException("Product.Mortgage object is null");
+            }
+
+            dsRequest.LoanAmount = product.Mortgage.CurrentAmount;
+
+        }
 
         var result = await _realEstateValuationService.GetRealEstateValuationTypes(dsRequest, cancellationToken);
 
         return result.Select(t => (int)t).ToList();
     }
 
+    private readonly IProductServiceClient _productService;
+    private readonly IOfferServiceClient _offerService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICaseServiceClient _caseService;
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
-    public GetRealEstateValuationTypesHandler(IRealEstateValuationServiceClient realEstateValuationService, ICaseServiceClient caseService)
+    public GetRealEstateValuationTypesHandler(
+        IOfferServiceClient offerService,
+        IProductServiceClient productService,
+        IRealEstateValuationServiceClient realEstateValuationService, 
+        ICaseServiceClient caseService, 
+        ISalesArrangementServiceClient salesArrangementService)
     {
+        _productService = productService;
+        _offerService = offerService;
+        _salesArrangementService = salesArrangementService;
         _caseService = caseService;
         _realEstateValuationService = realEstateValuationService;
     }

@@ -2850,16 +2850,6 @@
             </summary>
             <example>false</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail.GetRealEstateValuationDetailResponseDeed.DeedOfOwnershipDocumentId">
-            <summary>
-            Noby ID daného záznamu.Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail.GetRealEstateValuationDetailResponseDeed.DeedOfOwnershipDocument">
-            <summary>
-            Identifikační údaje nemovitosti k Ocenění(bez Noby ID)
-            </summary>
-        </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationList.GetRealEstateValuationListHandler.getComputedValuations(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Ziskat dopocitane nemovitosti - tj. ty, ktere jsou zadane na Offer pro dany SA
