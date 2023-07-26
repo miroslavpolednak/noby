@@ -1,6 +1,7 @@
 ﻿using System.Net.Mime;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
+using ExternalServices.ESignatureQueues.V1;
 using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +10,14 @@ namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetElectronicDocument
 public class GetElectronicDocumentFromQueueHandler : IRequestHandler<GetElectronicDocumentFromQueueRequest, GetElectronicDocumentFromQueueResponse>
 {
     private readonly DocumentOnSAServiceDbContext _dbContext;
+    private readonly IESignatureQueuesRepository _signatureQueues;
 
-    public GetElectronicDocumentFromQueueHandler(DocumentOnSAServiceDbContext dbContext)
+    public GetElectronicDocumentFromQueueHandler(
+        DocumentOnSAServiceDbContext dbContext,
+        IESignatureQueuesRepository signatureQueues)
     {
         _dbContext = dbContext;
+        _signatureQueues = signatureQueues;
     }
 
     public async Task<GetElectronicDocumentFromQueueResponse> Handle(GetElectronicDocumentFromQueueRequest request, CancellationToken cancellationToken)
@@ -42,7 +47,7 @@ public class GetElectronicDocumentFromQueueHandler : IRequestHandler<GetElectron
     private async Task<GetElectronicDocumentFromQueueResponse> HandleDocumentAttachment(string documentAttachmentId, CancellationToken cancellationToken)
     {
         // todo:
-        await Task.Delay(0, cancellationToken);
+        await _signatureQueues.GetAttachmentExternalId(documentAttachmentId, cancellationToken);
         return CreateMockResponse();
     }
     

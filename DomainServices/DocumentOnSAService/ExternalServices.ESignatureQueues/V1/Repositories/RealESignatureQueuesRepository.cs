@@ -13,8 +13,10 @@ public class RealESignatureQueuesRepository : IESignatureQueuesRepository
         _connectionProvider = connectionProvider;
     }
 
-    public Task<string> GetAttachmentExternalId(string attachmentId, CancellationToken cancellationToken)
+    public async Task<string> GetAttachmentExternalId(string attachmentId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        // todo:
+        await Task.Delay(0, cancellationToken);
+        return Guid.NewGuid().ToString();
     }
 }
