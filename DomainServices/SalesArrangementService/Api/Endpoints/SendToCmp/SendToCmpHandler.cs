@@ -29,7 +29,11 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
         var salesArrangement = await _formsService.LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
         var category = await _formsService.LoadSalesArrangementCategory(salesArrangement, cancellationToken);
 
-        await ProcessEasForm(salesArrangement, category, cancellationToken);
+        //TODO: Mock - what to do when a service SA does not have DV
+        if (salesArrangement.SalesArrangementTypeId is not (7 or 8 or 9))
+        {
+            await ProcessEasForm(salesArrangement, category, cancellationToken);
+        }
 
         //https://jira.kb.cz/browse/HFICH-4684 
         await _mediator.Send(new UpdateSalesArrangementStateRequest
