@@ -54,7 +54,6 @@ internal sealed class WorkflowMapperService
             TaskIdSB = task.TaskIdSb,
             PerformerCode = taskDetailItem.PerformerCode,
             PerformerName = taskDetailItem.PerformanName,
-            PerformerLogin = task.PerformerLogin,
             ProcessNameLong = taskDetailItem.ProcessNameLong ?? string.Empty,
             TaskCommunication = taskDetailItem.TaskCommunication?.Select(t => new _Dto.TaskCommunicationItem
             {
