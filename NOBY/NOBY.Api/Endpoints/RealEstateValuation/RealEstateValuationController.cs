@@ -221,7 +221,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=536CD827-3140-4a41-8AC2-AF6BB6700539"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    /// <response code="200">NobyDeedOfOwnershipDocumentId: Noby ID daného záznamu.Určuje jednoznačnou kombinaci DeedOfOwnershipDocumentId (z CREMu) a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</response>
+    /// <response code="200">DeedOfOwnershipDocumentId: Noby ID daného záznamu. Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</response>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents")]
     [AuthorizeCaseOwner]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
@@ -230,7 +230,7 @@ public sealed class RealEstateValuationController : ControllerBase
     public async Task<int> AddDeedOfOwnershipDocument(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromBody] AddDeedOfOwnershipDocument.AddDeedOfOwnershipDocumentRequest request,
+        [FromBody] [Required] AddDeedOfOwnershipDocument.AddDeedOfOwnershipDocumentRequest request,
         CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
 

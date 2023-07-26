@@ -2822,11 +2822,6 @@
             </remarks>
             <param name="pcpId">PCP ID</param>
         </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.AddDeedOfOwnershipDocument.AddDeedOfOwnershipDocumentRequest">
-            <summary>
-            Identifikační údaje nemovitosti k Ocenění (bez Noby ID)
-            </summary>
-        </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
             <summary>
             Atributy k nově zakládanému Ocenění nemovitosti
@@ -2968,7 +2963,7 @@
             
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=536CD827-3140-4a41-8AC2-AF6BB6700539"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
-            <response code="200">NobyDeedOfOwnershipDocumentId: Noby ID daného záznamu.Určuje jednoznačnou kombinaci DeedOfOwnershipDocumentId (z CREMu) a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</response>
+            <response code="200">DeedOfOwnershipDocumentId: Noby ID daného záznamu. Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</response>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.GetRealEstateValuationTypes(System.Int64,System.Int32,System.Threading.CancellationToken)">
             <summary>
