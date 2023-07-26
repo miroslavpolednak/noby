@@ -28,6 +28,7 @@ try
         .AddCisLogging()
         .AddCisTracing()
         .AddCisHealthChecks();
+    builder.Services.AddCisSecurityHeaders();
 
     // add .NET logging
     builder.Services.AddHttpLogging(logging =>

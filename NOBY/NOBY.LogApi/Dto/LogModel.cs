@@ -11,9 +11,4 @@ public sealed class LogModel
     /// Popis udalosti
     /// </summary>
     public string? Message { get; set; }
-
-    /// <summary>
-    /// ID uzivatele vracene z FE API
-    /// </summary>
-    public int? UserId { get; set; }
 }

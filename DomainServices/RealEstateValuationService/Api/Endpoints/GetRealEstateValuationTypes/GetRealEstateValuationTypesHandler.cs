@@ -27,11 +27,15 @@ internal sealed class GetRealEstateValuationTypesHandler
         }, cancellationToken);
 
         // get revids
-        await _dbContext.DeedOfOwnershipDocuments
+        var deedsRealEstateIds = await _dbContext.DeedOfOwnershipDocuments
             .AsNoTracking()
-            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
+            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId && !string.IsNullOrEmpty(t.RealEstateIds))
             .Select(t => t.RealEstateIds)
             .ToListAsync(cancellationToken);
+        var realEstateIds = deedsRealEstateIds.SelectMany(t =>
+        {
+            return System.Text.Json.JsonSerializer.Deserialize<long[]>(t!)!;
+        }).ToArray();
         
         var purposes = await _codebookService.LoanPurposes(cancellationToken);
         var acvRequest = new ExternalServices.PreorderService.V1.Contracts.AvailableValuationTypesRequestDTO
@@ -42,7 +46,7 @@ internal sealed class GetRealEstateValuationTypesHandler
             IsNonApartmentBuildingFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails.SpecialPlacement,
             IsNotUsableTechnicalState = revInstance.HouseAndFlatDetails?.PoorCondition,
             PurposesLoan = request.LoanPurposes?.Select(t => purposes.First(x => t == x.Id).AcvId).ToList(),
-            RealEstateIds = new long[] { 161914 },
+            RealEstateIds = realEstateIds,
             DealType = request.DealType ?? "",
             LoanAmount = request.LoanAmount
         };

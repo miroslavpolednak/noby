@@ -12,4 +12,6 @@ message ValidateCaseIdRequest {
 message ValidateCaseIdResponse {
 	bool Exists = 1;
 	google.protobuf.Int32Value OwnerUserId = 2;
+	// Stav Case
+	google.protobuf.Int32Value State = 3;
 }

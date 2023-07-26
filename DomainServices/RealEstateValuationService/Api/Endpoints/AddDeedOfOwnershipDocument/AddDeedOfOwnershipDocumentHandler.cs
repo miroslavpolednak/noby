@@ -23,7 +23,8 @@ internal sealed class AddDeedOfOwnershipDocumentHandler
             DeedOfOwnershipNumber = request.DeedOfOwnershipNumber,
             CremDeedOfOwnershipDocumentId = request.CremDeedOfOwnershipDocumentId,
             KatuzId = request.KatuzId,
-            KatuzTitle = request.KatuzTitle
+            KatuzTitle = request.KatuzTitle,
+            AddressPointId = request.AddressPointId
         };
         if (request.RealEstateIds is not null && request.RealEstateIds.Any())
         {

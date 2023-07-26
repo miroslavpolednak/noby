@@ -10,5 +10,6 @@ public sealed class GetRealEstateValuationDetailResponse
 
     public List<RealEstateValuationAttachment>? Attachments { get; set; }
 
-    public List<DeedOfOwnershipDocument>? DeedOfOwnershipDocuments { get; set; }
+    public List<DeedOfOwnershipDocumentWithId>? DeedOfOwnershipDocuments { get; set; }
 }
+

@@ -3,7 +3,6 @@ using DomainServices.CaseService.Clients;
 using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Globalization;
 
 namespace NOBY.Infrastructure.Security.Attributes;
 

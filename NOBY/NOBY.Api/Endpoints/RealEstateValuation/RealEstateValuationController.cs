@@ -234,6 +234,26 @@ public sealed class RealEstateValuationController : ControllerBase
         CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
 
+    /// <summary>
+    /// Získání typu Ocenění
+    /// </summary>
+    /// <remarks>
+    /// Získání typu Ocenění provoláním systému ACV.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0FE0440C-1614-47b0-8136-42BF508CE369"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/valuation-types")]
+    [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<List<int>> GetRealEstateValuationTypes(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        CancellationToken cancellationToken)
+        => await _mediator.Send(new GetRealEstateValuationTypes.GetRealEstateValuationTypesRequest(caseId, realEstateValuationId), cancellationToken);
+
     private readonly IMediator _mediator;
     public RealEstateValuationController(IMediator mediator) => _mediator = mediator;
 }
