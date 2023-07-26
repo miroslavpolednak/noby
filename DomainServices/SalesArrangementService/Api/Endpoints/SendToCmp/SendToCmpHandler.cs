@@ -72,7 +72,7 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
 
         var finalDocumentOnSa = await _formsDocumentService.CreateFinalDocumentOnSa(salesArrangement.SalesArrangementId, dynamicValues, cancellationToken);
 
-        var easFormResponse = await _formsService.LoadServiceForm(salesArrangement.SalesArrangementId, new[] { dynamicValues }, cancellationToken);
+        var easFormResponse = await _formsService.LoadServiceForm(salesArrangement, new[] { dynamicValues }, cancellationToken);
 
         await _formsDocumentService.SaveEasForms(easFormResponse, salesArrangement, new[] { finalDocumentOnSa }, cancellationToken);
     }
