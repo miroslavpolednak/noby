@@ -28,6 +28,10 @@ internal sealed class ValidateSalesArrangementHandler
         var salesArrangement = await _formsService.LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
         var category = await _formsService.LoadSalesArrangementCategory(salesArrangement, cancellationToken);
 
+        //TODO: Mock - what to do when a service SA does not have DV
+        if (salesArrangement.SalesArrangementTypeId is 7 or 8 or 9)
+            return new ValidateSalesArrangementResponse();
+
         var easFormResponse = await GetEasForm(salesArrangement, category, cancellationToken);
 
         return await CheckForms(easFormResponse,cancellationToken);
@@ -54,7 +58,7 @@ internal sealed class ValidateSalesArrangementHandler
     {
         var dynamicFormValues = await _formsService.CreateServiceDynamicFormValues(salesArrangement, cancellationToken);
 
-        return await _formsService.LoadServiceForm(salesArrangement.SalesArrangementId, new[] { dynamicFormValues }, cancellationToken);
+        return await _formsService.LoadServiceForm(salesArrangement, new[] { dynamicFormValues }, cancellationToken);
     }
 
     private async Task<ValidateSalesArrangementResponse> CheckForms(GetEasFormResponse easForm, CancellationToken cancellationToken)

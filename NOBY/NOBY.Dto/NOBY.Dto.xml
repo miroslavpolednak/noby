@@ -726,12 +726,6 @@
             </summary>
             <example>22456</example>
         </member>
-        <member name="P:NOBY.Dto.Workflow.WorkflowTaskDetail.PerformerLogin">
-            <summary>
-            Login zadavatele/zpracovatele
-            </summary>
-            <example>14</example>
-        </member>
         <member name="P:NOBY.Dto.Workflow.WorkflowTaskDetail.PerformerName">
             <summary>
             Jméno a příjmení zadavatele/zpracovatele
