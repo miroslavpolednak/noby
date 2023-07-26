@@ -14,5 +14,5 @@ message DeedOfOwnershipDocument {
     int32 DeedOfOwnershipNumber = 6;
     google.protobuf.StringValue Address = 7;
     repeated int64 RealEstateIds = 8;
-    google.protobuf.Int64Value AddressId = 9;
+    google.protobuf.Int64Value AddressPointId = 9;
 }

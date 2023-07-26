@@ -21,7 +21,7 @@ internal sealed class AddDeedOfOwnershipDocumentHandler
             KatuzId = request.DeedOfOwnershipDocument.KatuzId,
             KatuzTitle = request.DeedOfOwnershipDocument.KatuzTitle,
             RealEstateValuationId = request.RealEstateValuationId,
-            AddressId = request.DeedOfOwnershipDocument.AddressPointId
+            AddressPointId = request.DeedOfOwnershipDocument.AddressPointId
         };
         if (request.DeedOfOwnershipDocument.RealEstateIds is not null)
         {

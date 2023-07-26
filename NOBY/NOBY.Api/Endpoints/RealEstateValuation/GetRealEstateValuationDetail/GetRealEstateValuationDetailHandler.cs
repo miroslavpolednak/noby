@@ -63,7 +63,7 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
                     DeedOfOwnershipNumber = t.DeedOfOwnershipNumber,
                     KatuzId = t.KatuzId,
                     KatuzTitle = t.KatuzTitle,
-                    AddressPointId = t.AddressId,
+                    AddressPointId = t.AddressPointId,
                     RealEstateIds = t.RealEstateIds?.Select(t => t).ToList()
                 }
             }).ToList()

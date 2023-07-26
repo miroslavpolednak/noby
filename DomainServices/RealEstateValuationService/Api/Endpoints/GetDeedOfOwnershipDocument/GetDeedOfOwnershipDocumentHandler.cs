@@ -22,7 +22,7 @@ internal sealed class GetDeedOfOwnershipDocumentHandler
             Address = entity.Address,
             KatuzTitle = entity.KatuzTitle,
             KatuzId = entity.KatuzId,
-            AddressId = entity.AddressId,
+            AddressPointId = entity.AddressPointId,
             DeedOfOwnershipNumber = entity.DeedOfOwnershipNumber
         };
 
