@@ -37,9 +37,13 @@ internal sealed class GetRealEstateValuationTypesHandler
             {
                 throw new NobyValidationException("Product.Mortgage object is null");
             }
+            var detail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
             dsRequest.LoanAmount = product.Mortgage.CurrentAmount;
-
+            if (detail.LoanPurposeDetails?.LoanPurposes?.Any() ?? false)
+            {
+                dsRequest.LoanPurposes.AddRange(detail.LoanPurposeDetails.LoanPurposes);
+            }
         }
 
         var result = await _realEstateValuationService.GetRealEstateValuationTypes(dsRequest, cancellationToken);
