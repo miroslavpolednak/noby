@@ -175,7 +175,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// <response code="200">Kolekce ID uploadovaných souborů vs. nových ID příloh</response>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments")]
     [AuthorizeCaseOwner]
-    [RealEstateValuationStateValidation]
+    [RealEstateValuationStateValidation(7, 10)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(typeof(List<SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsResponseItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
