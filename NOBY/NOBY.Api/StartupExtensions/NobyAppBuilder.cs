@@ -1,6 +1,7 @@
 ﻿using NOBY.Infrastructure.Security.Endpoints;
 using NOBY.Infrastructure.Configuration;
 using CIS.Infrastructure.WebApi;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -80,8 +81,23 @@ internal static class NobyAppBuilder
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "NOBY FRONTEND API");
         });
 
+    public static IApplicationBuilder UseRedirectStrategy(this IApplicationBuilder app)
+        => app
+        .UseWhen(_isRedirectCall, (appBuilder) =>
+        {
+            appBuilder.Run(async context =>
+            {
+                var url = context.Request.GetEncodedUrl();
+                var idx = url.IndexOf('/', 10);
+                context.Response.Redirect(string.Concat(url[..idx], "/#", url[idx..]));
+            });
+        });
+
     private static readonly Func<HttpContext, bool> _isApiCall = (HttpContext context) 
         => context.Request.Path.StartsWithSegments("/api");
+
+    private static readonly Func<HttpContext, bool> _isRedirectCall = (HttpContext context)
+        => context.Request.Path.StartsWithSegments("/redirect");
 
     private static readonly Func<HttpContext, bool> _isAuthCall = (HttpContext context)
         => context.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment);
