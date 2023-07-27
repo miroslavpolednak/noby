@@ -9,9 +9,8 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using FastEnumUtility;
-using NOBY.Api.Endpoints.Customer;
-using NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
-using NOBY.Dto;
+using static DomainServices.HouseholdService.Contracts.GetCustomerChangeMetadataResponse.Types;
+using _CustomerService = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 
@@ -24,8 +23,8 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
     private readonly ICustomerServiceClient _customerServiceClient;
-    private readonly CustomerWithChangedDataService _changedDataService;
     private readonly ICaseServiceClient _caseServiceClient;
+    private readonly ICustomerChangeDataMerger _customerChangeDataMerger;
 
     public SignDocumentManuallyHandler(
             IDocumentOnSAServiceClient documentOnSaClient,
@@ -34,8 +33,8 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
             IHouseholdServiceClient householdClient,
             ICustomerOnSAServiceClient customerOnSAServiceClient,
             ICustomerServiceClient customerServiceClient,
-            CustomerWithChangedDataService changedDataService,
-            ICaseServiceClient caseServiceClient)
+            ICaseServiceClient caseServiceClient,
+            ICustomerChangeDataMerger customerChangeDataMerger)
     {
         _documentOnSaClient = documentOnSaClient;
         _arrangementServiceClient = arrangementServiceClient;
@@ -43,8 +42,8 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         _householdClient = householdClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
         _customerServiceClient = customerServiceClient;
-        _changedDataService = changedDataService;
         _caseServiceClient = caseServiceClient;
+        _customerChangeDataMerger = customerChangeDataMerger;
     }
 
     public async Task Handle(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
@@ -62,9 +61,39 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
 
         if (documentOnSa.HouseholdId is null)
         {
-            return;
+            // CRS
+            if (documentOnSa.DocumentTypeId == DocumentTypes.DANRESID.ToByte()) // 13
+            {
+                await ProcessCrsDocumentOnSa(documentOnSa, cancellationToken);
+            }
         }
+        else
+        {
+            await ProcessDocumentOnSaWithHousehold(request, documentOnSa, cancellationToken);
+        }
+    }
 
+    private async Task ProcessCrsDocumentOnSa(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
+    {
+        var customerOnSa = await _customerOnSAServiceClient.GetCustomer(documentOnSa.CustomerOnSAId!.Value, cancellationToken);
+
+        var customerChangeMetadata = await GetCustomerOnSaMetadata(documentOnSa, customerOnSa, cancellationToken);
+
+        if (customerChangeMetadata.CustomerChangeMetadata.WasCRSChanged)
+        {
+            var customerDetail = await _customerServiceClient.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+            _customerChangeDataMerger.MergeTaxResidence(customerDetail?.NaturalPerson?.TaxResidence, customerOnSa);
+            var updateCustomerRequest = MapUpdateCustomerRequest((int)CIS.Foms.Enums.Mandants.Kb, customerDetail!);
+            await _customerServiceClient.UpdateCustomer(updateCustomerRequest, cancellationToken);
+            // Throw away locally stored CRS data (keep client changes) 
+            var jsonCustomerChangeDataWithoutCrs = _customerChangeDataMerger.TrowAwayLocallyStoredCrsData(customerOnSa);
+            await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithoutCrs), cancellationToken);
+        }
+    }
+
+
+    private async Task ProcessDocumentOnSaWithHousehold(SignDocumentManuallyRequest request, DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
+    {
         var mandantId = await GetMandantId(request, cancellationToken);
 
         if (mandantId != (int)CIS.Foms.Enums.Mandants.Kb)
@@ -75,12 +104,16 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         var (household, customersOnSa) = await GetCustomersOnSa(documentOnSa, cancellationToken);
         foreach (var customerOnSa in customersOnSa)
         {
-            if (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
+            var customerChangeMetadata = await GetCustomerOnSaMetadata(documentOnSa, customerOnSa, cancellationToken);
+            if (customerChangeMetadata.CustomerChangeMetadata.WereClientDataChanged)
             {
-                var (detailWithChangedData, _) = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
-                await _customerServiceClient.UpdateCustomer(MapUpdateCustomerRequest(detailWithChangedData, mandantId.Value, customerOnSa), cancellationToken);
-                //Throw away locally stored data(update CustomerChangeData with null)
-                await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa), cancellationToken);
+                var customerDetail = await _customerServiceClient.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+                _customerChangeDataMerger.MergeClientData(customerDetail, customerOnSa);
+                var updateCustomerRequest = MapUpdateCustomerRequest(mandantId.Value, customerDetail);
+                await _customerServiceClient.UpdateCustomer(updateCustomerRequest, cancellationToken);
+                //Throw away locally stored Client data (keep CRS changes) 
+                var jsonCustomerChangeDataWithCrs = _customerChangeDataMerger.TrowAwayLocallyStoredClientData(customerOnSa);
+                await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithCrs), cancellationToken);
             }
         }
 
@@ -93,9 +126,23 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         };
 
         await _arrangementServiceClient.SetFlowSwitches(household.SalesArrangementId, new()
+                    {
+                        new() { FlowSwitchId = flowSwitchId, Value = false }
+                    }, cancellationToken);
+    }
+
+    private static _CustomerService.UpdateCustomerRequest MapUpdateCustomerRequest(int mandantId, CustomerDetailResponse customerDetail)
+    {
+        return new _CustomerService.UpdateCustomerRequest
         {
-            new() { FlowSwitchId = flowSwitchId, Value = false }
-        }, cancellationToken);
+            Addresses = { customerDetail.Addresses },
+            Contacts = { customerDetail.Contacts },
+            CustomerIdentification = customerDetail.CustomerIdentification,
+            IdentificationDocument = customerDetail.IdentificationDocument,
+            Identities = { customerDetail.Identities },
+            Mandant = (CIS.Infrastructure.gRPC.CisTypes.Mandants)mandantId,
+            NaturalPerson = customerDetail.NaturalPerson
+        };
     }
 
     private async Task<int?> GetMandantId(SignDocumentManuallyRequest request, CancellationToken cancellationToken)
@@ -112,159 +159,14 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         return productTypes.Single(r => r.Id == caseDetail.Data.ProductTypeId).MandantId;
     }
 
-    private static UpdateCustomerDetailRequest MapUpdateCustomerOnSaRequest(CustomerOnSA customerOnSa)
+    private static UpdateCustomerDetailRequest MapUpdateCustomerOnSaRequest(CustomerOnSA customerOnSa, string? customerChangeDataJson)
     {
         return new UpdateCustomerDetailRequest
         {
             CustomerOnSAId = customerOnSa.CustomerOnSAId,
             CustomerAdditionalData = customerOnSa.CustomerAdditionalData,
-            //Throw away locally stored data(update CustomerChangeData with null)
-            CustomerChangeData = null
+            CustomerChangeData = customerChangeDataJson
         };
-    }
-
-    private static DomainServices.CustomerService.Contracts.UpdateCustomerRequest MapUpdateCustomerRequest(GetCustomerDetailWithChangesResponse detailWithChangedData, int mandant, CustomerOnSA customerOnSA)
-    {
-        var updateRequest = new DomainServices.CustomerService.Contracts.UpdateCustomerRequest();
-        updateRequest.Mandant = (CIS.Infrastructure.gRPC.CisTypes.Mandants)mandant;
-        updateRequest.Identities.AddRange(customerOnSA.CustomerIdentifiers);
-
-        if (detailWithChangedData.NaturalPerson is not null)
-            updateRequest.NaturalPerson = MapNaturalPerson(detailWithChangedData.NaturalPerson);
-        if (detailWithChangedData.IdentificationDocument is not null)
-            updateRequest.IdentificationDocument = MapIdentificationDocument(detailWithChangedData.IdentificationDocument);
-        if (detailWithChangedData.Addresses is not null && detailWithChangedData.Addresses.Any())
-            updateRequest.Addresses.AddRange(MapAddresses(detailWithChangedData.Addresses));
-        if (detailWithChangedData.EmailAddress is not null)
-            updateRequest.Contacts.Add(MapEmailContact(detailWithChangedData.EmailAddress));
-        if (detailWithChangedData.MobilePhone is not null)
-            updateRequest.Contacts.Add(MapPhoneContact(detailWithChangedData.MobilePhone));
-
-        if ((customerOnSA.CustomerAdditionalData?.CustomerIdentification?.IdentificationMethodId ?? 0) > 0)
-        {
-            updateRequest.CustomerIdentification = new CustomerIdentification
-            {
-                IdentificationMethodId = customerOnSA.CustomerAdditionalData!.CustomerIdentification.IdentificationMethodId!.Value,
-                CzechIdentificationNumber = customerOnSA.CustomerAdditionalData.CustomerIdentification.CzechIdentificationNumber
-            };
-        }
-        return updateRequest;
-    }
-
-    private static Contact MapEmailContact(EmailAddressConfirmedDto emailAddress)
-    {
-        return new Contact
-        {
-            IsPrimary = true,
-            ContactTypeId = (int)ContactTypes.Email,
-            Email = new EmailAddressItem
-            {
-                EmailAddress = emailAddress.EmailAddress,
-                IsEmailConfirmed = emailAddress.IsConfirmed
-            }
-        };
-    }
-
-    private static Contact MapPhoneContact(PhoneNumberConfirmedDto phoneNumber)
-    {
-        return new Contact
-        {
-            IsPrimary = true,
-            ContactTypeId = (int)ContactTypes.Mobil,
-            Mobile = new MobilePhoneItem
-            {
-                PhoneIDC = phoneNumber.PhoneIDC,
-                PhoneNumber = phoneNumber.PhoneNumber,
-                IsPhoneConfirmed = phoneNumber.IsConfirmed
-            }
-        };
-    }
-
-    private static IEnumerable<GrpcAddress> MapAddresses(List<CIS.Foms.Types.Address> addresses)
-    {
-        return addresses.Select(address => new GrpcAddress
-        {
-            Street = address.Street ?? string.Empty,
-            StreetNumber = address.StreetNumber ?? string.Empty,
-            HouseNumber = address.HouseNumber ?? string.Empty,
-            Postcode = address.Postcode ?? string.Empty,
-            City = address.City ?? string.Empty,
-            CountryId = address.CountryId,
-            AddressTypeId = address.AddressTypeId,
-            EvidenceNumber = address.EvidenceNumber ?? string.Empty,
-            IsPrimary = address.IsPrimary,
-            DeliveryDetails = address.DeliveryDetails ?? string.Empty,
-            CityDistrict = address.CityDistrict ?? string.Empty,
-            PragueDistrict = address.PragueDistrict ?? string.Empty,
-            CountrySubdivision = address.CountrySubdivision ?? string.Empty,
-            AddressPointId = address.AddressPointId ?? string.Empty
-        });
-    }
-
-    private static IdentificationDocument MapIdentificationDocument(IdentificationDocumentFull identificationDocument)
-    {
-        return new IdentificationDocument
-        {
-            IdentificationDocumentTypeId = identificationDocument.IdentificationDocumentTypeId.GetValueOrDefault(),
-            IssuingCountryId = identificationDocument.IssuingCountryId,
-            Number = identificationDocument.Number ?? string.Empty,
-            ValidTo = identificationDocument.ValidTo,
-            IssuedOn = identificationDocument.IssuedOn,
-            IssuedBy = identificationDocument.IssuedBy ?? string.Empty,
-            RegisterPlace = identificationDocument.RegisterPlace
-        };
-    }
-
-    private static NaturalPerson MapNaturalPerson(Customer.Shared.NaturalPerson naturalPerson)
-    {
-        var result = new NaturalPerson
-        {
-            FirstName = naturalPerson.FirstName ?? string.Empty,
-            LastName = naturalPerson.LastName ?? string.Empty,
-            DateOfBirth = naturalPerson.DateOfBirth,
-            BirthNumber = naturalPerson.BirthNumber ?? string.Empty,
-            GenderId = (int)naturalPerson.Gender,
-            BirthName = naturalPerson.BirthName ?? string.Empty,
-            PlaceOfBirth = naturalPerson.PlaceOfBirth ?? string.Empty,
-            BirthCountryId = naturalPerson.BirthCountryId,
-            // CitizenshipCountriesId bottom 
-            MaritalStatusStateId = naturalPerson.MaritalStatusId ?? 0,
-            DegreeBeforeId = naturalPerson.DegreeBeforeId,
-            DegreeAfterId = naturalPerson.DegreeAfterId,
-            // IsPoliticallyExposed this prop won't by updated
-            EducationLevelId = naturalPerson.EducationLevelId ?? 0,
-            // IsBrSubscribed this prop won't by updated 
-            // KbRelationshipCode this prop won't by updated
-            // Segment this prop won't by updated
-            // IsUSPerson this prop won't by updated
-            LegalCapacity = naturalPerson.LegalCapacity != null ? new NaturalPersonLegalCapacity
-            {
-                RestrictionTypeId = naturalPerson.LegalCapacity.RestrictionTypeId,
-                RestrictionUntil = naturalPerson.LegalCapacity.RestrictionUntil ?? null
-            } : null,
-            // TaxResidence bottom 
-            ProfessionCategoryId = naturalPerson.ProfessionCategoryId,
-            ProfessionId = naturalPerson.ProfessionId,
-            NetMonthEarningAmountId = naturalPerson.NetMonthEarningAmountId,
-            NetMonthEarningTypeId = naturalPerson.NetMonthEarningTypeId
-        };
-
-        result.CitizenshipCountriesId.AddRange(naturalPerson.CitizenshipCountriesId);
-        result.TaxResidence = naturalPerson.TaxResidences != null ? new NaturalPersonTaxResidence() : null;
-        if (result.TaxResidence is not null)
-        {
-            result.TaxResidence.ValidFrom = naturalPerson.TaxResidences?.validFrom;
-            if (naturalPerson.TaxResidences!.ResidenceCountries is not null && naturalPerson.TaxResidences.ResidenceCountries.Any())
-            {
-                result.TaxResidence.ResidenceCountries.AddRange(naturalPerson.TaxResidences.ResidenceCountries.Select(r => new NaturalPersonResidenceCountry
-                {
-                    CountryId = r.CountryId,
-                    Tin = r.Tin ?? string.Empty
-                }));
-            }
-        }
-
-        return result;
     }
 
     private async Task<(DomainServices.HouseholdService.Contracts.Household Household, List<CustomerOnSA> Customers)> GetCustomersOnSa(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
@@ -282,5 +184,11 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         }
 
         return (houseHold, customers);
+    }
+
+    private async Task<GetCustomerChangeMetadataResponseItem> GetCustomerOnSaMetadata(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CustomerOnSA customerOnSa, CancellationToken cancellationToken)
+    {
+        var customersChangeMetadata = await _customerOnSAServiceClient.GetCustomerChangeMetadata(documentOnSa.SalesArrangementId, cancellationToken);
+        return customersChangeMetadata!.Single(r => r.CustomerOnSAId == customerOnSa.CustomerOnSAId);
     }
 }
