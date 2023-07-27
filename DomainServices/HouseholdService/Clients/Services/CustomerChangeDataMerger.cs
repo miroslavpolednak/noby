@@ -6,7 +6,6 @@ using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.HouseholdService.Contracts.Dto;
 using Google.Protobuf.Collections;
-using UpdateCustomerRequest = DomainServices.CustomerService.Contracts.UpdateCustomerRequest;
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
@@ -20,8 +19,8 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
             return;
 
         MergeClientData(delta, customer.NaturalPerson, customer.Addresses, customer.Contacts);
-        RewriteWithDelta(customer.NaturalPerson?.TaxResidence, delta.NaturalPerson?.TaxResidences);
 
+        customer.NaturalPerson.TaxResidence = MapDeltaToTaxResidence(delta.NaturalPerson?.TaxResidences) ?? customer.NaturalPerson.TaxResidence;
         customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
     }
 
@@ -37,26 +36,11 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
         customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
     }
 
-    public void MergeClientData(UpdateCustomerRequest customer, CustomerOnSA customerOnSA)
+    public void MergeTaxResidence(NaturalPerson naturalPerson, CustomerOnSA customerOnSA)
     {
-        var delta = GetCustomerChangeDataDelta(customerOnSA);
-
-        if (delta is null)
-            return;
-
-        MergeClientData(delta, customer.NaturalPerson, customer.Addresses, customer.Contacts);
-
-        customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
-    }
-
-    public void MergeTaxResidence(NaturalPersonTaxResidence? taxResidence, CustomerOnSA customerOnSA)
-    {
-        if (taxResidence is null)
-            return;
-
         var delta = GetCustomerChangeDataDelta(customerOnSA)?.NaturalPerson?.TaxResidences;
 
-        RewriteWithDelta(taxResidence, delta);
+        naturalPerson.TaxResidence = MapDeltaToTaxResidence(delta) ?? naturalPerson.TaxResidence;
     }
 
     private static CustomerChangeDataDelta? GetCustomerChangeDataDelta(CustomerOnSA customerOnSA)
@@ -153,13 +137,15 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
             contacts.Add(emailAddress);
     }
 
-    private static void RewriteWithDelta(NaturalPersonTaxResidence? taxResidence, NaturalPersonDelta.TaxResidenceDelta? delta)
+    private static NaturalPersonTaxResidence? MapDeltaToTaxResidence(NaturalPersonDelta.TaxResidenceDelta? delta)
     {
-        if (taxResidence is null || delta is null)
-            return;
+        if (delta is null)
+            return default;
 
-        taxResidence.ValidFrom = delta.ValidFrom;
-        taxResidence.ResidenceCountries.Clear();
+        var taxResidence = new NaturalPersonTaxResidence
+        {
+            ValidFrom = delta.ValidFrom
+        };
 
         if (delta.ResidenceCountries is not null)
         {
@@ -170,6 +156,8 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
                 TinMissingReasonDescription = r.TinMissingReasonDescription
             }).OrderByDescending(t => t.CountryId == 16));
         }
+
+        return taxResidence;
     }
 
     private static IdentificationDocument? MapDeltaToIdentificationDocument(IdentificationDocumentDelta? delta)

@@ -56,4 +56,14 @@ public class AddressDetail
     /// Id RUIAN adresního bodu - AddressWhispererBEService|id
     /// </summary>
     public string? AddressPointId { get; set; }
+
+    /// <summary>
+    /// KATUZ ID, pětimístné číslo katastrálního území, Id RUIAN katastrálního území - AddressWhispererBEService|cadastralAreaId
+    /// </summary>
+    public int? KatuzId { get; set; }
+
+    /// <summary>
+    /// KATUZ, název katastrálního území, RUIAN katastrální území - AddressWhispererBEService|cadastralArea
+    /// </summary>
+    public string? KatuzTitle { get; set; }
 }
