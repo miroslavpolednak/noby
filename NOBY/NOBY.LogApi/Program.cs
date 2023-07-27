@@ -44,9 +44,9 @@ try
         }
 
         app
-            .UseCisSecurityHeaders()
             .UseAuthentication()
             .UseRouting()
+            .UseCisSecurityHeaders()
             .UseAuthorization()
             // nevim proc ten posranej .NET middleware pro cors nefunguje... mozna potrebuje autentizaci?
             /*.Use(async (context, next) => {
