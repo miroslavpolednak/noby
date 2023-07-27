@@ -1,16 +1,73 @@
-﻿using System.Text.Json;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using CIS.Foms.Types;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.HouseholdService.Contracts.Dto;
 using Google.Protobuf.Collections;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using UpdateCustomerRequest = DomainServices.CustomerService.Contracts.UpdateCustomerRequest;
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
 public class CustomerChangeDataMerger : ICustomerChangeDataMerger
 {
+
+    public JsonSerializerOptions JsonSerializationOptions { get; set; } = new()
+    {
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
+    };
+
+    /// <summary>
+    /// Throw away locally stored CRS (TaxResidences) data and keep client changes
+    /// </summary>
+    /// <returns>json string</returns>
+    public string? TrowAwayLocallyStoredCrsData(CustomerOnSA customerOnSA)
+    {
+        var currentDelta = GetCustomerChangeDataDelta(customerOnSA);
+        var taxResidences = currentDelta?.NaturalPerson?.TaxResidences;
+        if (taxResidences is not null)
+        {
+            currentDelta!.NaturalPerson!.TaxResidences = null;
+        }
+
+        return JsonSerializer.Serialize(currentDelta, JsonSerializationOptions);
+    }
+
+    /// <summary>
+    /// Throw away locally stored Client data (keep CRS changes)
+    /// </summary>
+    /// <returns>json string</returns>
+    public string? TrowAwayLocallyStoredClientData(CustomerOnSA customerOnSA)
+    {
+        var currentDelta = GetCustomerChangeDataDelta(customerOnSA);
+        var currentDeltaTaxResidences = currentDelta?.NaturalPerson?.TaxResidences;
+
+        if (currentDeltaTaxResidences is not null)
+        {
+            var deltaWithCrsOnly = new CustomerChangeDataDelta
+            {
+                NaturalPerson = new()
+                {
+                    TaxResidences = new()
+                    {
+                        ValidFrom = currentDeltaTaxResidences.ValidFrom,
+                        ResidenceCountries = currentDeltaTaxResidences.ResidenceCountries is not null && currentDeltaTaxResidences.ResidenceCountries.Any()
+                            ? new(currentDeltaTaxResidences.ResidenceCountries!)
+                            : new()
+                    }
+                }
+            };
+
+            return JsonSerializer.Serialize(deltaWithCrsOnly, JsonSerializationOptions);
+        }
+        else
+        {
+            return default;
+        }
+    }
+
     public void MergeAll(CustomerDetailResponse customer, CustomerOnSA customerOnSA)
     {
         var delta = GetCustomerChangeDataDelta(customerOnSA);
@@ -48,7 +105,12 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
         if (string.IsNullOrWhiteSpace(customerOnSA.CustomerChangeData))
             return default;
 
-        return JsonSerializer.Deserialize<CustomerChangeDataDelta>(customerOnSA.CustomerChangeData);
+        JsonSerializerOptions options = new()
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+        return JsonSerializer.Deserialize<CustomerChangeDataDelta>(customerOnSA.CustomerChangeData, options);
     }
 
     private static void MergeClientData(CustomerChangeDataDelta delta, NaturalPerson naturalPerson, RepeatedField<GrpcAddress> addresses, RepeatedField<Contact> contacts)

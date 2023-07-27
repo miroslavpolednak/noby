@@ -108,9 +108,11 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     {
         StartSigningBlValidator.ValidateServiceRequest(request);
         await ServiceRequestInvalidateExistingSigningProcessesIfExist(request, cancellationToken);
-        var formIdResponse = await _mediator.Send(new GenerateFormIdRequest(), cancellationToken); // Not versioned formId (in future we have to implement support for versioning of SalesArrangementId)
+        var household = await GetHouseholdForCodeptor(request.SalesArrangementId!.Value, cancellationToken);
+        // Not versioned formId for service request without household (in future we have to implement support for versioning of SalesArrangementId)
+        var formIdResponse = await _mediator.Send(new GenerateFormIdRequest { HouseholdId = household?.HouseholdId }, cancellationToken);
         var documentData = await GetDocumentData(request, salesArrangement, null, cancellationToken);
-        return await _startSigningMapper.ServiceRequestMapToEntity(request, formIdResponse.FormId, documentData, salesArrangement, cancellationToken);
+        return await _startSigningMapper.ServiceRequestMapToEntity(request, household, formIdResponse.FormId, documentData, salesArrangement, cancellationToken);
     }
 
     private async Task<DocumentOnSa> ProcessProductRequest(StartSigningRequest request, SalesArrangement salesArrangement, CancellationToken cancellationToken)
@@ -209,6 +211,12 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
                                                      .ToListAsync(cancellationToken);
 
         existSigningProcesses.ForEach(s => s.IsValid = false);
+    }
+
+    private async Task<__Household.Household?> GetHouseholdForCodeptor(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        var houseHolds = await _householdClient.GetHouseholdList(salesArrangementId, cancellationToken);
+        return houseHolds.SingleOrDefault(r => r.HouseholdTypeId == HouseholdTypes.Codebtor.ToByte());
     }
 
     private async Task<__Household.Household> GetHousehold(int documentTypeId, int salesArrangementId, CancellationToken cancellationToken)
