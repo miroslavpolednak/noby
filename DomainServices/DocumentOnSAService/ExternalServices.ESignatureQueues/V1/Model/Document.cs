@@ -12,5 +12,5 @@ public class Document
     
     public string ContentType { get; set; } = null!;
     
-    public byte[] Content { get; set; } = null!;
+    public byte[]? Content { get; set; }
 }

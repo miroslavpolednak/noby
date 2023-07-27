@@ -39,9 +39,11 @@ public class GetElectronicDocumentFromQueueHandler : IRequestHandler<GetElectron
             .FirstOrDefaultAsync(cancellationToken)
         ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, documentOnSAId);
         
-        // todo: IT ANA - error handling
-        var documentFile = await _signatureQueues.GetDocumentByExternalId(externalId, cancellationToken)
-        ?? throw ErrorCodeMapper.CreateNotFoundException(0);
+        var documentFile = await _signatureQueues.GetDocumentByExternalId(externalId, cancellationToken);
+        if (documentFile?.Content == null || !documentFile.Content.Any())
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentFileNotExist);
+        }
         
         return new()
         {
@@ -53,11 +55,18 @@ public class GetElectronicDocumentFromQueueHandler : IRequestHandler<GetElectron
 
     private async Task<GetElectronicDocumentFromQueueResponse> HandleDocumentAttachment(string documentAttachmentId, CancellationToken cancellationToken)
     {
-        // todo: IT ANA - attachmentId is long, maybe it should be GetAttachmentByExternalId (string)
-        // todo: IT ANA - error handling
-        var attachmentFile = await _signatureQueues.GetAttachmentById(long.Parse(documentAttachmentId), cancellationToken)
-                             ?? throw ErrorCodeMapper.CreateNotFoundException(0);
+        // confirmed with IT ANA
+        if (!long.TryParse(documentAttachmentId, out var attachmentId))
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(0);
+        }
         
+        var attachmentFile = await _signatureQueues.GetAttachmentById(attachmentId, cancellationToken);
+        if (attachmentFile?.Content == null || !attachmentFile.Content.Any())
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AttachmentFileNotExist);
+        }
+
         return new()
         {
             Filename = attachmentFile.Name,
