@@ -56,7 +56,7 @@ internal static class StartupExtensions
 
             // simple login
             case AuthenticationConstants.SimpleLoginAuthScheme:
-                return builder.Services.AddFomsSimpleLoginAuthentication();
+                return builder.Services.AddFomsSimpleLoginAuthentication(configuration.Security);
 
             // not existing auth scheme
             default:

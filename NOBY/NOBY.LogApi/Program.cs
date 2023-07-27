@@ -25,6 +25,7 @@ try
 
     // authentication
     builder.AddNobyAuthentication(appConfiguration);
+    builder.Services.AddAuthorization();
 
     // pridat swagger
     if (appConfiguration.EnableSwaggerUi)
@@ -45,8 +46,8 @@ try
         app
             .UseCisSecurityHeaders()
             .UseAuthentication()
-            .UseAuthorization()
             .UseRouting()
+            .UseAuthorization()
             // nevim proc ten posranej .NET middleware pro cors nefunguje... mozna potrebuje autentizaci?
             /*.Use(async (context, next) => {
                 context.Response.OnStarting(() => {
