@@ -38,13 +38,13 @@ public class GetElectronicDocumentFromQueueHandler : IRequestHandler<GetElectron
             .Select(r => r.ExternalId)
             .FirstOrDefaultAsync(cancellationToken)
         ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, documentOnSAId);
-        
+
         var documentFile = await _signatureQueues.GetDocumentByExternalId(externalId, cancellationToken);
         if (documentFile?.Content == null || !documentFile.Content.Any())
         {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentFileNotExist);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentFileNotExist, externalId);
         }
-        
+
         return new()
         {
             Filename = documentFile.Name,
@@ -58,13 +58,13 @@ public class GetElectronicDocumentFromQueueHandler : IRequestHandler<GetElectron
         // confirmed with IT ANA
         if (!long.TryParse(documentAttachmentId, out var attachmentId))
         {
-            throw ErrorCodeMapper.CreateNotFoundException(0);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AttachmentFileNotExist, documentAttachmentId);
         }
-        
+
         var attachmentFile = await _signatureQueues.GetAttachmentById(attachmentId, cancellationToken);
         if (attachmentFile?.Content == null || !attachmentFile.Content.Any())
         {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AttachmentFileNotExist);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AttachmentFileNotExist, documentAttachmentId);
         }
 
         return new()
