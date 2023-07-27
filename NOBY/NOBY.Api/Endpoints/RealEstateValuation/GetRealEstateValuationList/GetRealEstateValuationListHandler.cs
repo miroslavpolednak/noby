@@ -86,10 +86,35 @@ internal sealed class GetRealEstateValuationListHandler
     private async Task<List<RealEstateValuationListItem>> getExistingValuations(long caseId, CancellationToken cancellationToken)
     {
         var revList = await _realEstateValuationService.GetRealEstateValuationList(caseId, cancellationToken);
-
         var states = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
 
-        return revList.Select(item => item.MapToApiResponse(states)).ToList();
+        return revList.Select(t => {
+            var state = states.First(x => x.Id == t.ValuationStateId);
+
+            var model = new RealEstateValuationListItem
+            {
+                RealEstateValuationId = t.RealEstateValuationId,
+                OrderId = t.OrderId,
+                CaseId = t.CaseId,
+                RealEstateTypeId = t.RealEstateTypeId,
+                RealEstateTypeIcon = Helpers.GetRealEstateTypeIcon(t.RealEstateTypeId),
+                ValuationStateId = t.ValuationStateId,
+                ValuationStateIndicator = (ValuationStateIndicators)state.Indicator,
+                ValuationStateName = state.Name,
+                IsLoanRealEstate = t.IsLoanRealEstate,
+                RealEstateStateId = t.RealEstateStateId,
+                ValuationTypeId = t.ValuationTypeId,
+                Address = t.Address,
+                ValuationSentDate = t.ValuationSentDate,
+                ValuationResultCurrentPrice = t.ValuationResultCurrentPrice,
+                ValuationResultFuturePrice = t.ValuationResultFuturePrice,
+                IsRevaluationRequired = t.IsRevaluationRequired,
+                DeveloperAllowed = t.DeveloperAllowed,
+                DeveloperApplied = t.DeveloperApplied
+            };
+
+            return model;
+        }).ToList();
     }
 
     private readonly IOfferServiceClient _offerService;
