@@ -3,6 +3,7 @@ using CIS.Infrastructure.WebApi;
 using CIS.Infrastructure.Telemetry;
 using NOBY.LogApi;
 using CIS.Core.Security;
+using NOBY.Infrastructure.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,9 @@ var log = builder.CreateStartupLogger();
 
 try
 {
+    // konfigurace aplikace
+    var appConfiguration = builder.AddNobyConfig();
+
     builder.AddCisEnvironmentConfiguration();
     builder
         .AddCisCoreFeatures()
@@ -17,17 +21,14 @@ try
         .AddCisLogging();
     builder.Services.AddCisSecurityHeaders();
 
-    // nahrat dokumentaci
-    var appConfiguration = new AppConfiguration();
-    builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
-    var corsConfiguration = builder.Configuration
-        .GetSection(CIS.Infrastructure.WebApi.Configuration.CorsConfiguration.AppsettingsConfigurationKey)
-        .Get<CIS.Infrastructure.WebApi.Configuration.CorsConfiguration>();
+    builder.Services.AddTransient<ICurrentUserAccessor, CurrentUserAccessor>();
+
+    // authentication
+    builder.AddNobyAuthentication(appConfiguration);
 
     // pridat swagger
-    builder.Services.AddLogApiSwagger();
-    
-    builder.Services.AddTransient<ICurrentUserAccessor, CurrentUserAccessor>();
+    if (appConfiguration.EnableSwaggerUi)
+        builder.Services.AddLogApiSwagger();
 
     var app = builder.Build();
     log.ApplicationBuilt();
@@ -35,11 +36,19 @@ try
     // mapovani endpointu
     app.MapWhen(context => !context.Request.Path.StartsWithSegments("/swagger"), app =>
     {
+        // detailed error page
+        if (appConfiguration.UseDeveloperExceptionPage)
+        {
+            app.UseDeveloperExceptionPage();
+        }
+
         app
-            .UseRouting()
             .UseCisSecurityHeaders()
+            .UseAuthentication()
+            .UseAuthorization()
+            .UseRouting()
             // nevim proc ten posranej .NET middleware pro cors nefunguje... mozna potrebuje autentizaci?
-            .Use(async (context, next) => {
+            /*.Use(async (context, next) => {
                 context.Response.OnStarting(() => {
                     context.Response.Headers.Add("Access-Control-Allow-Origin", corsConfiguration!.AllowedOrigins![0]);
                     context.Response.Headers.Add("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -47,7 +56,7 @@ try
                 });
 
                 await next();
-            })
+            })*/
             .UseEndpoints(e => e.RegisterLoggerEndpoints());
     });
 

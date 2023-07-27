@@ -6,6 +6,7 @@ using DomainServices;
 using CIS.InternalServices;
 using Microsoft.AspNetCore.HttpLogging;
 using CIS.Infrastructure.WebApi;
+using NOBY.Infrastructure.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,7 +58,7 @@ try
         .AddDataAggregatorService()
         .AddDocumentGeneratorService();
 
-    // FOMS services
+    // NOBY services
     builder.AddNobyServices();
 
     // init validacnich zprav
