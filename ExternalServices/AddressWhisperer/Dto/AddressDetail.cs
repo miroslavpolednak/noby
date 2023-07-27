@@ -63,7 +63,7 @@ public class AddressDetail
     public int? KatuzId { get; set; }
 
     /// <summary>
-    /// KATUZ ID, pětimístné číslo katastrálního území, Id RUIAN katastrálního území - AddressWhispererBEService|cadastralAreaId
+    /// KATUZ, název katastrálního území, RUIAN katastrální území - AddressWhispererBEService|cadastralArea
     /// </summary>
     public string? KatuzTitle { get; set; }
 }
