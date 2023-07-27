@@ -2,6 +2,7 @@
 using NOBY.Infrastructure.Configuration;
 using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -10,6 +11,9 @@ internal static class NobyAppBuilder
     public static IApplicationBuilder UseNobySpa(this IApplicationBuilder app)
         => app.MapWhen(_isSpaCall, appBuilder => 
         {
+            var corsService = appBuilder.ApplicationServices.GetRequiredService<ICorsService>();
+            var corsPolicyProvider = appBuilder.ApplicationServices.GetRequiredService<ICorsPolicyProvider>();
+            
             appBuilder.UseSpaStaticFiles();
             appBuilder.UseSpa(spa =>
             {
