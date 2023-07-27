@@ -15,7 +15,7 @@ static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation>
 
 **Flow akcí v AddExternalServiceRestClient:**
 1. přidání nového typed *HttpClient* do *Services*
-    * nastavení `Timeout` requestu z konfigurace
+    * nastavení Polly policies requestu z konfigurace -> timeout, retry
     * nastavení `BaseAddress` HttpClient-a
     * nastavení autentizace (pokud je vyžadována)
 2. pokud je v konfiguraci *IgnoreServerCertificateErrors=true*, přidání HttpHandleru který ignoruje SSL certificate chyby
@@ -30,6 +30,16 @@ builder
     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
 ```
 Zde ze založí výchozí *HttpClient* a zároveň se do něj vloží middleware pro forwardování CorrelationId a middleware pro zachytávání vyjímek.
+
+## Výchozí timeout / retry policy
+Timeout HttpRequestu a retry policy nastavujeme pomocí **Polly**.
+V konfiguraci je možné nastavit timeout requestu (*RequestTimeout*) v sekundách,
+počet retry pokusů (*RequestRetryCount*) a timeout retry pokusů (*RequestRetryTimeout*) - tj. počet sekund mezi jednotlivými retry pokusy.
+
+Výchozí nastavení je:
+- RequestTimeout = 10s
+- RequestRetryCount = 3
+- RequestRetryTimeout = 10s
 
 ## Připravené HttpHandlery
 V `CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers` jsou již připravené tyto *HttpHandler*-y, které je možné připojit do výchozí HttpClientFactory.
