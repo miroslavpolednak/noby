@@ -88,7 +88,8 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await AddSignatureIfNotSetYet(documentOnSa, salesArrangement, signatureDate, cancellationToken);
 
         // Update Mortgage.FirstSignatureDate
-        await UpdateMortgageFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
+        if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()) // 4
+            await UpdateMortgageFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
 
         // SUML call
         await SumlCall(documentOnSa, cancellationToken);
