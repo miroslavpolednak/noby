@@ -14,7 +14,7 @@ internal sealed class GetRealEstateValuationTypesHandler
         }, cancellationToken);
 
         var revType = await _codebookService.GetAcvRealEstateType(
-            revInstance.RealEstateValuationGeneralDetails.RealEstateStateId.GetValueOrDefault(), 
+            revInstance.RealEstateValuationGeneralDetails.RealEstateStateId, 
             revInstance.RealEstateSubtypeId.GetValueOrDefault(), 
             revInstance.RealEstateValuationGeneralDetails.RealEstateTypeId, 
             cancellationToken);

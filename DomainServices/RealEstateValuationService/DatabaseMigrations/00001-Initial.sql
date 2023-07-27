@@ -43,7 +43,7 @@ CREATE TABLE [dbo].[RealEstateValuation](
 	[DeveloperApplied] [bit] NOT NULL,
 	[ValuationSentDate] [date] NULL,
 	[Address] [nvarchar](500) NULL,
-	[RealEstateStateId] [int] NOT NULL,
+	[RealEstateStateId] [int] NULL,
 	[OrderId] [int] NULL,
 	[ValuationResultCurrentPrice] [int] NULL,
 	[ValuationResultFuturePrice] [int] NULL,

@@ -69,11 +69,10 @@ public sealed class RealEstateValuationListItem
     public bool IsLoanRealEstate { get; set; }
 
     /// <summary>
-    /// ID stavu nemovitosti. 0 - Unknown, 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
+    /// ID stavu nemovitosti. 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
     /// </summary>
     /// <example>2</example>
-    [Required]
-    public RealEstateStateIds RealEstateStateId { get; set; }
+    public int? RealEstateStateId { get; set; }
 
     /// <summary>
     /// Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
@@ -125,16 +124,6 @@ public sealed class RealEstateValuationListItem
     /// <example>false</example>
     [Required]
     public bool DeveloperApplied { get; set; }
-}
-
-//ITA chce enumy - me to neprijde dobre, fakticky se i na DS pouzivaji jen id, ale...
-public enum RealEstateStateIds
-{
-    Unknown = 0,
-    Finished = 1,
-    Reconstruction = 2,
-    Project = 3,
-    Construction = 4
 }
 
 //ITA chce enumy - me to neprijde dobre, fakticky se i na DS pouzivaji jen id, ale...

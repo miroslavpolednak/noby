@@ -170,7 +170,7 @@ public class StartSigningMapper
         return entity;
     }
 
-    public async Task<DocumentOnSa> ServiceRequestMapToEntity(StartSigningRequest request, string formId, GetDocumentDataResponse documentDataResponse, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    public async Task<DocumentOnSa> ServiceRequestMapToEntity(StartSigningRequest request, __Household.Household? houseHold, string formId, GetDocumentDataResponse documentDataResponse, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var entity = new DocumentOnSa();
         entity.DocumentTypeId = request.DocumentTypeId!.Value; 
@@ -179,6 +179,7 @@ public class StartSigningMapper
         entity.FormId = formId;
         entity.EArchivId = await _documentArchiveServiceClient.GenerateDocumentId(new(), cancellationToken);
         entity.SalesArrangementId = request.SalesArrangementId!.Value;
+        entity.HouseholdId = houseHold?.HouseholdId;
         entity.Data = JsonSerializer.Serialize(documentDataResponse.DocumentData);
         entity.Source = __DbEnum.Source.Noby;
         entity.SignatureTypeId = request.SignatureTypeId;

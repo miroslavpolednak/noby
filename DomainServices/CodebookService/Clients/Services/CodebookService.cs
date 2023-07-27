@@ -30,7 +30,7 @@ internal partial class CodebookService
             Term = term
         }, cancellationToken: cancellationToken)).Items.ToList();
 
-    public async Task<string> GetAcvRealEstateType(int realEstateStateId, int realEstateSubtypeId, int realEstateTypeId, CancellationToken cancellationToken = default)
+    public async Task<string> GetAcvRealEstateType(int? realEstateStateId, int realEstateSubtypeId, int realEstateTypeId, CancellationToken cancellationToken = default)
         => (await _service.GetAcvRealEstateTypeAsync(new GetAcvRealEstateTypeRequest
         {
             RealEstateTypeId = realEstateTypeId,
