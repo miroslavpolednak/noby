@@ -96,7 +96,7 @@ internal static class CaseExtensions
 
                         taskDetail.PriceException.Fees.Add(new PriceExceptionFeesItem
                         {
-                            FeeId = taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}"),
+                            FeeId = taskData.GetInteger($"ukol_overeni_ic_popl_kodsb{i}"),
                             TariffSum = taskData.GetInteger($"ukol_overeni_ic_popl_sazeb{i}"),
                             FinalSum = taskData.GetInteger($"ukol_overeni_ic_popl_vysl{i}"),
                             DiscountPercentage = taskData.GetInteger($"ukol_overeni_ic_popl_sleva_perc{i}")

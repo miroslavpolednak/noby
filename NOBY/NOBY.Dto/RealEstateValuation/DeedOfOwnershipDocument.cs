@@ -3,7 +3,7 @@
 /// <summary>
 /// Identifikační údaje nemovitosti k Ocenění (bez Noby ID)
 /// </summary>
-public abstract class DeedOfOwnershipDocument
+public sealed class DeedOfOwnershipDocument
 {
     /// <summary>
     /// ID staženého dokumentu listu vlastnictví (LV)
@@ -44,4 +44,9 @@ public abstract class DeedOfOwnershipDocument
     /// </summary>
     [Required]
     public List<long>? RealEstateIds { get; set; }
+
+    /// <summary>
+    /// ID adresního bodu z našeptávače adres
+    /// </summary>
+    public long? AddressPointId { get; set; }
 }

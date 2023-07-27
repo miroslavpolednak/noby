@@ -9,12 +9,12 @@ namespace NOBY.Api.Endpoints.DocumentOnSA;
 
 public static class DocumentOnSAExtensions
 {
-    public static __Contracts.GenerateDocumentRequest CreateGenerateDocumentRequest(DocumentOnSAToSign documentOnSA, GetDocumentOnSADataResponse documentOnSAData) => new ()
+    public static __Contracts.GenerateDocumentRequest CreateGenerateDocumentRequest(DocumentOnSAToSign documentOnSA, GetDocumentOnSADataResponse documentOnSAData, bool forPreview = true) => new ()
     {
         DocumentTypeId = documentOnSA.DocumentTypeId!.Value,
         DocumentTemplateVersionId = documentOnSA.DocumentTemplateVersionId!.Value,
         DocumentTemplateVariantId = documentOnSA.DocumentTemplateVariantId,
-        ForPreview = true,
+        ForPreview = forPreview,
         OutputType = __Contracts.OutputFileType.Pdfa,
         Parts = { documentOnSAData.CreateDocPart() },
         DocumentFooter = documentOnSA.CreateFooter()

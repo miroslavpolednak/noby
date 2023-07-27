@@ -82,7 +82,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         if (customerChangeMetadata.CustomerChangeMetadata.WasCRSChanged)
         {
             var customerDetail = await _customerServiceClient.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
-            _customerChangeDataMerger.MergeTaxResidence(customerDetail?.NaturalPerson?.TaxResidence, customerOnSa);
+            _customerChangeDataMerger.MergeTaxResidence(customerDetail?.NaturalPerson!, customerOnSa);
             var updateCustomerRequest = MapUpdateCustomerRequest((int)CIS.Foms.Enums.Mandants.Kb, customerDetail!);
             await _customerServiceClient.UpdateCustomer(updateCustomerRequest, cancellationToken);
             // Throw away locally stored CRS data (keep client changes) 

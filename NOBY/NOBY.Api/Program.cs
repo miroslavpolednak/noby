@@ -28,6 +28,7 @@ try
         .AddCisLogging()
         .AddCisTracing()
         .AddCisHealthChecks();
+    builder.Services.AddCisSecurityHeaders();
 
     // add .NET logging
     builder.Services.AddHttpLogging(logging =>
@@ -92,6 +93,8 @@ try
         .UseNobyApi(appConfiguration)
         // include authentication endpoints
         .UseNobyAuthStrategy()
+        // redirect from ZOOM
+        .UseRedirectStrategy()
         // jedna se o SPA call, pust jen tyhle middlewares
         .UseNobySpa()
         // health check call - neni treba poustet celou pipeline

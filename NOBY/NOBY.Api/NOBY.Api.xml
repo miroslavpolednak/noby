@@ -1750,7 +1750,7 @@
             Začít podepisování dokumentu
             </summary>
             <remarks>
-            Spustí podepisovací proces pro zvolený typ dokumentu.<br /><br />
+            Provede checkform pro vybrané žádosti a spustí podepisovací proces pro zvolený typ dokumentu.<br /><br />
             <i>DS:DocumentOnSAService/startSigning</i>
             </remarks>
             <param name="salesArrangementId"> ID Sales Arrangement </param>
@@ -1790,7 +1790,7 @@
             Manuální podpis DocumentOnSA
             </summary>
             <remarks>
-            Provede Checkform, označí daný DocumentOnSA jako manuálně podepsaný a provede aktualizaci dat v KB CM (pokud možno)<br /><br />
+            Označí daný DocumentOnSA jako manuálně podepsaný a provede aktualizaci dat v KB CM.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
@@ -1857,6 +1857,16 @@
             Timestamp, kdy došlo k podpisu celého dokumentu.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.IsPreviewSentToCustomer">
+            <summary>
+            Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.ExternalId">
+            <summary>
+            Id elektronicky podepisovaného dokumentu nahraného v ePodpisech
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.DocumentOnSAId">
             <summary>
             Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.
@@ -1890,6 +1900,16 @@
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.SignatureDateTime">
             <summary>
             Timestamp, kdy došlo k podpisu celého dokumentu.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.IsPreviewSentToCustomer">
+            <summary>
+            Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.ExternalId">
+            <summary>
+            Id elektronicky podepisovaného dokumentu nahraného v ePodpisech
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningHandler.ValidateSalesArrangement(System.Int32,System.Threading.CancellationToken)">
@@ -2802,11 +2822,6 @@
             </remarks>
             <param name="pcpId">PCP ID</param>
         </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.AddDeedOfOwnershipDocument.AddDeedOfOwnershipDocumentRequest">
-            <summary>
-            Identifikační údaje nemovitosti k Ocenění (bez Noby ID)
-            </summary>
-        </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
             <summary>
             Atributy k nově zakládanému Ocenění nemovitosti
@@ -2948,7 +2963,17 @@
             
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=536CD827-3140-4a41-8AC2-AF6BB6700539"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
-            <response code="200">NobyDeedOfOwnershipDocumentId: Noby ID daného záznamu.Určuje jednoznačnou kombinaci DeedOfOwnershipDocumentId (z CREMu) a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</response>
+            <response code="200">DeedOfOwnershipDocumentId: Noby ID daného záznamu. Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</response>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.GetRealEstateValuationTypes(System.Int64,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Získání typu Ocenění
+            </summary>
+            <remarks>
+            Získání typu Ocenění provoláním systému ACV.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0FE0440C-1614-47b0-8136-42BF508CE369"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequest.Attachments">
             <summary>

@@ -31,7 +31,7 @@ internal sealed class CustomerChange3602CValidator
         var salesArrangementsForCase = await salesArrangementService.GetSalesArrangementList(_request.CaseId, cancellationToken);
         if (!salesArrangementsForCase.SalesArrangements.Any(t => t.SalesArrangementTypeId == (int)SalesArrangementTypes.CustomerChange))
         {
-            throw new NobyValidationException(90014);
+            throw new NobyValidationException(90015);
         }
 
         return new CustomerChange3602CBuilder(_logger, _request, _httpContextAccessor);

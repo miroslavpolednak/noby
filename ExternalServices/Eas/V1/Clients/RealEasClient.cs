@@ -32,7 +32,7 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
         return await callMethod<CommonResponse?>(async () =>
         {
 
-            var response = await Client.Add_FirstSignatureDateAsync(caseId, caseId, firstSignatureDate)
+            var response = await Client.Add_FirstSignatureDateAsync(caseId, caseId, firstSignatureDate.Date)
             .WithCancellation(cancellationToken);
 
             return new CommonResponse(response.commonResult);

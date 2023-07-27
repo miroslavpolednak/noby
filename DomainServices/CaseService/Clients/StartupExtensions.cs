@@ -18,14 +18,14 @@ public static class StartupExtensions
     public static IServiceCollection AddCaseService(this IServiceCollection services)
     {
         services.AddCisServiceDiscovery();
-        services.TryAddTransient<ICaseServiceClient, __Services.CaseServiceClient>();
+        services.TryAddScoped<ICaseServiceClient, __Services.CaseServiceClient>();
         services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.CaseService.CaseServiceClient>(ServiceName);
         return services;
     }
 
     public static IServiceCollection AddCaseService(this IServiceCollection services, string serviceUrl)
     {
-        services.TryAddTransient<ICaseServiceClient, __Services.CaseServiceClient>();
+        services.TryAddScoped<ICaseServiceClient, __Services.CaseServiceClient>();
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.CaseService.CaseServiceClient>(serviceUrl);
         return services;
     }

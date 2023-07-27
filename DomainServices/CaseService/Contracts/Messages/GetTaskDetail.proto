@@ -70,7 +70,7 @@ message PriceExceptionLoanInterestRateItem {
 }
 
 message PriceExceptionFeesItem {
-	string FeeId = 1;
+	int32 FeeId = 1;
 	cis.types.GrpcDecimal TariffSum = 2;
 	cis.types.GrpcDecimal FinalSum = 3;
 	cis.types.GrpcDecimal DiscountPercentage = 4;

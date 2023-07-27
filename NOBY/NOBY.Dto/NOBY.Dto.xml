@@ -225,6 +225,21 @@
             Unikátní ID nemovitosti ze systému CREM
             </summary>
         </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.AddressPointId">
+            <summary>
+            ID adresního bodu z našeptávače adres
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocumentWithId.DeedOfOwnershipDocumentId">
+            <summary>
+            Noby ID daného záznamu.Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocumentWithId.DeedOfOwnershipDocument">
+            <summary>
+            Identifikační údaje nemovitosti k Ocenění(bez Noby ID)
+            </summary>
+        </member>
         <member name="T:NOBY.Dto.RealEstateValuation.LoanPurposeDetail">
             <summary>
             Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).
@@ -710,12 +725,6 @@
             SB ID úkolu, není zobrazeno na FE UI
             </summary>
             <example>22456</example>
-        </member>
-        <member name="P:NOBY.Dto.Workflow.WorkflowTaskDetail.PerformerLogin">
-            <summary>
-            Login zadavatele/zpracovatele
-            </summary>
-            <example>14</example>
         </member>
         <member name="P:NOBY.Dto.Workflow.WorkflowTaskDetail.PerformerName">
             <summary>

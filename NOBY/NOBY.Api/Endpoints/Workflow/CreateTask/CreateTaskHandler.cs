@@ -110,7 +110,7 @@ internal sealed class CreateTaskHandler
                 FinalSum = (decimal?)t.FinalSum ?? 0,
                 TariffSum = (decimal?)t.TariffSum ?? 0,
                 DiscountPercentage = t.DiscountPercentage,
-                FeeId = t.FeeId.ToString(CultureInfo.InvariantCulture)
+                FeeId = t.FeeId
             }));
         }
 

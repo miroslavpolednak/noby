@@ -31,6 +31,7 @@ internal sealed class GetDeedOfOwnershipDocumentsHandler
                 Address = t.Address,
                 KatuzTitle = t.KatuzTitle,
                 KatuzId = t.KatuzId,
+                AddressPointId = t.AddressPointId,
                 DeedOfOwnershipNumber = t.DeedOfOwnershipNumber
             };
             if (!string.IsNullOrEmpty(t.RealEstateIds))

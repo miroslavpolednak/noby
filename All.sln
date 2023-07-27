@@ -441,6 +441,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00033-Template3602_FixedLoanDueDate_StringFormat.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00033-Template3602_FixedLoanDueDate_StringFormat.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00034-LoanApplication_config_fix.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00034-LoanApplication_config_fix.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00035-LoanApplication_DefaultValueWhneNull.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00035-LoanApplication_DefaultValueWhneNull.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00036-HFICH-7170_Fixed_MpIdentity.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00036-HFICH-7170_Fixed_MpIdentity.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -512,6 +513,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.ExternalServices.PreorderService", "DomainServices\RealEstateValuationService\ExternalServices.PreorderService\DomainServices.RealEstateValuationService.ExternalServices.PreorderService.csproj", "{4912264E-A0CC-472B-AB5A-88AF8846D7B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Crem", "ExternalServices\Crem\ExternalServices.Crem.csproj", "{8240FF9F-9DFE-4C53-87FE-C94753F9EC5E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSAService.ExternalServices.ESignatures", "DomainServices\DocumentOnSAService\ExternalServices.ESignatures\DomainServices.DocumentOnSAService.ExternalServices.ESignatures.csproj", "{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1401,6 +1404,14 @@ Global
 		{8240FF9F-9DFE-4C53-87FE-C94753F9EC5E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8240FF9F-9DFE-4C53-87FE-C94753F9EC5E}.Release|x64.ActiveCfg = Release|Any CPU
 		{8240FF9F-9DFE-4C53-87FE-C94753F9EC5E}.Release|x64.Build.0 = Release|Any CPU
+		{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}.Debug|x64.Build.0 = Debug|Any CPU
+		{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}.Release|x64.ActiveCfg = Release|Any CPU
+		{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1554,6 +1565,7 @@ Global
 		{3DA6733C-DF12-4DCB-8665-3945A2EF8185} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 		{4912264E-A0CC-472B-AB5A-88AF8846D7B0} = {332FCD7A-C97A-4FE0-9E95-51E050CFC3F9}
 		{8240FF9F-9DFE-4C53-87FE-C94753F9EC5E} = {024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}
+		{5EC8BE89-B0B5-4A09-B94B-86B1039F390D} = {234188C5-FF3F-4C38-831C-FB404B56A5C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

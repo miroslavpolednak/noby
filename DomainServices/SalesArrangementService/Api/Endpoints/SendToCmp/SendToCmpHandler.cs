@@ -29,7 +29,11 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
         var salesArrangement = await _formsService.LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
         var category = await _formsService.LoadSalesArrangementCategory(salesArrangement, cancellationToken);
 
-        await ProcessEasForm(salesArrangement, category, cancellationToken);
+        //TODO: Mock - what to do when a service SA does not have DV
+        if (salesArrangement.SalesArrangementTypeId is not (7 or 8 or 9))
+        {
+            await ProcessEasForm(salesArrangement, category, cancellationToken);
+        }
 
         //https://jira.kb.cz/browse/HFICH-4684 
         await _mediator.Send(new UpdateSalesArrangementStateRequest
@@ -68,9 +72,7 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
 
         var finalDocumentOnSa = await _formsDocumentService.CreateFinalDocumentOnSa(salesArrangement.SalesArrangementId, dynamicValues, cancellationToken);
 
-        dynamicValues.PerformerUserId = await _performerProvider.LoadPerformerUserId(salesArrangement.CaseId, cancellationToken);
-
-        var easFormResponse = await _formsService.LoadServiceForm(salesArrangement.SalesArrangementId, new[] { dynamicValues }, cancellationToken);
+        var easFormResponse = await _formsService.LoadServiceForm(salesArrangement, new[] { dynamicValues }, cancellationToken);
 
         await _formsDocumentService.SaveEasForms(easFormResponse, salesArrangement, new[] { finalDocumentOnSa }, cancellationToken);
     }

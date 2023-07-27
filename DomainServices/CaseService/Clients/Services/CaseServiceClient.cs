@@ -7,13 +7,20 @@ namespace DomainServices.CaseService.Clients.Services;
 internal sealed class CaseServiceClient
     : ICaseServiceClient
 {
+    // kesovani vysledku validateCase
+    private ValidateCaseIdResponse? _cacheValidateCaseIdResponse;
+
     public async Task<ValidateCaseIdResponse> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default(CancellationToken))
     {
-        return await _service.ValidateCaseIdAsync(new ValidateCaseIdRequest
+        if (_cacheValidateCaseIdResponse is null)
         {
-            CaseId = caseId,
-            ThrowExceptionIfNotFound = throwExceptionIfNotFound
-        }, cancellationToken: cancellationToken);
+            _cacheValidateCaseIdResponse = await _service.ValidateCaseIdAsync(new ValidateCaseIdRequest
+            {
+                CaseId = caseId,
+                ThrowExceptionIfNotFound = throwExceptionIfNotFound
+            }, cancellationToken: cancellationToken);
+        }
+        return _cacheValidateCaseIdResponse;
     }
 
     public async Task<long> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken))

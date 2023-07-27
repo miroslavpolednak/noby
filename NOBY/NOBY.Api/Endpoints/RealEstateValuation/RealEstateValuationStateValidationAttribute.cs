@@ -8,9 +8,13 @@ namespace NOBY.Api.Endpoints.RealEstateValuation;
 internal sealed class RealEstateValuationStateValidationAttribute
     : TypeFilterAttribute
 {
-    public RealEstateValuationStateValidationAttribute()
+    public int[] ValuationStateId { get; init; }
+
+    public RealEstateValuationStateValidationAttribute(params int[] valuationStateId)
         : base(typeof(RealEstateValuationStateValidationFilter))
     {
+        ValuationStateId = valuationStateId.Length == 0 ? new[] { 7 } : valuationStateId;
+        Arguments = new object[] { ValuationStateId };
     }
 
     private sealed class RealEstateValuationStateValidationFilter
@@ -18,11 +22,13 @@ internal sealed class RealEstateValuationStateValidationAttribute
     {
         const string _caseIdKey = "caseId";
         const string _realEstateValuationIdKey = "realEstateValuationId";
+        private readonly int[] _valuationStateId;
 
         private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
-        public RealEstateValuationStateValidationFilter(IRealEstateValuationServiceClient realEstateValuationService)
+        public RealEstateValuationStateValidationFilter(IRealEstateValuationServiceClient realEstateValuationService, int[] valuationStateId)
         {
+            _valuationStateId = valuationStateId;
             _realEstateValuationService = realEstateValuationService;
         }
 
@@ -51,7 +57,7 @@ internal sealed class RealEstateValuationStateValidationAttribute
             }
 
             // spatny stav REV
-            if (instance.ValuationStateId != 7)
+            if (!_valuationStateId.Contains(instance.ValuationStateId.GetValueOrDefault()))
             {
                 throw new CisAuthorizationException();
             }

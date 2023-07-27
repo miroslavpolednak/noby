@@ -17,5 +17,6 @@ internal class DeedOfOwnershipDocument
     public long DeedOfOwnershipId { get; set; }
     public int DeedOfOwnershipNumber { get; set; }
     public string? Address { get; set; }
+    public long? AddressPointId { get; set; }
     public string? RealEstateIds { get; set; }
 }

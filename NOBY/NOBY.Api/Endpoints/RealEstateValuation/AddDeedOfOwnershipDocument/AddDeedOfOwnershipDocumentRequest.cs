@@ -2,17 +2,16 @@
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.AddDeedOfOwnershipDocument;
 
-/// <summary>
-/// Identifikační údaje nemovitosti k Ocenění (bez Noby ID)
-/// </summary>
 public sealed class AddDeedOfOwnershipDocumentRequest
-    : Dto.RealEstateValuation.DeedOfOwnershipDocument, IRequest<int>
+    : IRequest<int>
 {
     [JsonIgnore]
     internal long CaseId;
 
     [JsonIgnore]
     internal int RealEstateValuationId;
+
+    public Dto.RealEstateValuation.DeedOfOwnershipDocument DeedOfOwnershipDocument { get; set; } = null!;
 
     internal AddDeedOfOwnershipDocumentRequest InfuseId(long caseId, int realEstateValuationId)
     {
