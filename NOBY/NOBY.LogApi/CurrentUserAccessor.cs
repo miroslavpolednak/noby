@@ -6,29 +6,36 @@ namespace NOBY.LogApi;
 internal sealed class CurrentUserAccessor
     : ICurrentUserAccessor
 {
-    public IEnumerable<Claim> Claims => new List<Claim>();
+    private readonly IHttpContextAccessor _httpContext;
+
+    public CurrentUserAccessor(IHttpContextAccessor httpContext)
+    {
+        _httpContext = httpContext;
+    }
+
+    public IEnumerable<Claim> Claims => _httpContext.HttpContext!.User.Claims;
 
     public bool IsAuthenticated => true;
 
-    public ICurrentUser? User => new CurrentUser();
+    public ICurrentUser? User => new CurrentUser(
+        Convert.ToInt32(_httpContext.HttpContext!.User.Claims.First(t => t.Type == SecurityConstants.ClaimTypeId).Value, System.Globalization.CultureInfo.InvariantCulture),
+        _httpContext.HttpContext.User.Claims.First(t => t.Type == SecurityConstants.ClaimTypeIdent).Value
+    );
 
     public ICurrentUserDetails? UserDetails => throw new NotImplementedException();
-
-    public Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default) where TDetails : ICurrentUserDetails
-    {
-        throw new NotImplementedException();
-    }
+    public Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken = default) => throw new NotImplementedException();
+    public Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default) where TDetails : ICurrentUserDetails => throw new NotImplementedException();
 }
 
 internal sealed class CurrentUser
     : ICurrentUser
 {
-    public int Id => 1;
+    public CurrentUser(int id, string login)
+    {
+        Id = id;
+        Login = login;
+    }
 
-    public string? Login => "FeApiLogger";
+    public int Id { get; private set; }
+    public string? Login { get; private set; }
 }

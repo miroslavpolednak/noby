@@ -48,7 +48,6 @@ public class NobySecurityMiddleware
 
     private static string[] _anonymousUrl = new[]
     {
-        "/api/users/signin",
-        "/api/admin/discovery-service"
+        "/api/users/signin"
     };
 }
