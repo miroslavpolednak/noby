@@ -363,7 +363,7 @@
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.RealEstateStateId">
             <summary>
-            ID stavu nemovitosti. 0 - Unknown, 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
+            ID stavu nemovitosti. 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
             </summary>
             <example>2</example>
         </member>

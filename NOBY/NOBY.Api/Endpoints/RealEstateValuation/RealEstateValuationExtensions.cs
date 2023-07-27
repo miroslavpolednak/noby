@@ -22,7 +22,7 @@ public static class RealEstateValuationExtensions
             ValuationStateIndicator = (ValuationStateIndicators)state.Indicator,
             ValuationStateName = state.Name,
             IsLoanRealEstate = dsValuationListItem.IsLoanRealEstate,
-            RealEstateStateId = (RealEstateStateIds)dsValuationListItem.RealEstateStateId.GetValueOrDefault(),
+            RealEstateStateId = dsValuationListItem.RealEstateStateId,
             ValuationTypeId = dsValuationListItem.ValuationTypeId,
             Address = dsValuationListItem.Address,
             ValuationSentDate = dsValuationListItem.ValuationSentDate,
