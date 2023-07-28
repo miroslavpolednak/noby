@@ -19,18 +19,13 @@ internal sealed class DeleteRealEstateValuationHandler
             .Select(t => new { t.RealEstateValuationAttachmentId, t.ExternalId })
             .ToListAsync(cancellationToken);
 
-        await _dbContext
-            .RealEstateValuationDetails
+        // smazat prilohy
+        await _dbContext.Attachments
             .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
             .ExecuteDeleteAsync(cancellationToken);
 
         // smazat DEEDs
         await _dbContext.DeedOfOwnershipDocuments
-            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
-            .ExecuteDeleteAsync(cancellationToken);
-
-        // smazat prilohy
-        await _dbContext.Attachments
             .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
             .ExecuteDeleteAsync(cancellationToken);
 

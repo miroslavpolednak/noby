@@ -4,7 +4,7 @@ namespace DomainServices.RealEstateValuationService.Contracts;
 
 public static class Helpers
 {
-    public static RealEstateTypes GetRealEstateType(RealEstateValuationListItem realEstateDetail)
+    public static RealEstateTypes GetRealEstateType(IRealEstateValuationDetail realEstateDetail)
         => realEstateDetail.RealEstateTypeId switch
         {
             1 or 5 or 6 => RealEstateTypes.Hf,

@@ -99,7 +99,9 @@ internal sealed class LinkModelationToSalesArrangementHandler
         //  Pokud parametry původně nalinkované Offer (konkrétně parametr Offer.BasicParameters.GuranteeDateTo, všechny DiscountPercentage z kolekce SimulationInputs.Fees a parametr SimulationInputs.InterestRateDiscount), nejsou stejné jako  odpovídající parametry na nové offer
         if (offerInstanceOld is not null)
         {
-            bool isSwitch8On = await _dbContext.FlowSwitches.AnyAsync(t => t.SalesArrangementId == salesArrangementId && t.FlowSwitchId == 8 && t.Value, cancellation);
+            bool isSwitch8On = await _dbContext
+                .FlowSwitches
+                .AnyAsync(t => t.SalesArrangementId == salesArrangementId && t.FlowSwitchId == (int)FlowSwitches.DoesWflTaskForIPExist && t.Value, cancellation);
             var fee1 = offerInstance.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
             var fee2 = offerInstanceOld.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
 

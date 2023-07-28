@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.RealEstateValuationService.Api.Database.Entities;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 [Table("RealEstateValuation", Schema = "dbo")]
 internal sealed class RealEstateValuation
@@ -25,5 +26,10 @@ internal sealed class RealEstateValuation
     public string? Address { get; set; }
     public DateTime? ValuationSentDate { get; set; }
 
-    public RealEstateValuationDetail? Detail { get; set; }
+    public int? RealEstateSubtypeId { get; set; }
+    public string? ACVRealEstateTypeId { get; set; }
+    public string? LoanPurposeDetails { get; set; }
+    public byte[]? LoanPurposeDetailsBin { get; set; }
+    public string? SpecificDetail { get; set; }
+    public byte[]? SpecificDetailBin { get; set; }
 }

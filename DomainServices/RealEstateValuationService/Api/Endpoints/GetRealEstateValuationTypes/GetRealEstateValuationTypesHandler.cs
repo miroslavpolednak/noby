@@ -14,9 +14,9 @@ internal sealed class GetRealEstateValuationTypesHandler
         }, cancellationToken);
 
         var revType = await _codebookService.GetAcvRealEstateType(
-            revInstance.RealEstateValuationGeneralDetails.RealEstateStateId, 
+            revInstance.RealEstateStateId, 
             revInstance.RealEstateSubtypeId.GetValueOrDefault(), 
-            revInstance.RealEstateValuationGeneralDetails.RealEstateTypeId, 
+            revInstance.RealEstateTypeId, 
             cancellationToken);
 
         // ulozit revType
@@ -60,9 +60,13 @@ internal sealed class GetRealEstateValuationTypesHandler
     private readonly IMediator _mediator;
     private readonly ExternalServices.PreorderService.V1.IPreorderServiceClient _preorderService;
     private readonly RealEstateValuationServiceDbContext _dbContext;
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
 
-    public GetRealEstateValuationTypesHandler(RealEstateValuationServiceDbContext dbContext, CodebookService.Clients.ICodebookServiceClient codebookService, ExternalServices.PreorderService.V1.IPreorderServiceClient preorderService, IMediator mediator)
+    public GetRealEstateValuationTypesHandler(
+        RealEstateValuationServiceDbContext dbContext, 
+        CodebookService.Clients.ICodebookServiceClient codebookService, 
+        ExternalServices.PreorderService.V1.IPreorderServiceClient preorderService, 
+        IMediator mediator)
     {
         _mediator = mediator;
         _dbContext = dbContext;

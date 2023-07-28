@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.Telemetry;
+using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NOBY.LogApi;
@@ -16,7 +17,8 @@ internal static class Endpoints
 #pragma warning restore CA1848 // Use the LoggerMessage delegates
 #pragma warning restore CA2254 // Template should be a static expression
         })
-            .RequireCors("__DefaultCorsPolicy")
+            .RequireCors(CisWebApiCors.NobyCorsPolicyName)
+            .RequireAuthorization()
             .WithDescription("Logování do standardního aplikačního logu.")
             .WithTags("Logging")
             .WithOpenApi();
@@ -26,7 +28,8 @@ internal static class Endpoints
         {
             //logger.Log(model.Message ?? "");
         })
-            .RequireCors("__DefaultCorsPolicy")
+            .RequireCors(CisWebApiCors.NobyCorsPolicyName)
+            .RequireAuthorization()
             .WithDescription("Logování do auditního logu.")
             .WithTags("Logging")
             .WithOpenApi();

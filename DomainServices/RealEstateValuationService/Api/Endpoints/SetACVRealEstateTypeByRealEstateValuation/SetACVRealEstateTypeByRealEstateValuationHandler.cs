@@ -9,7 +9,7 @@ internal sealed class SetACVRealEstateTypeByRealEstateValuationHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(SetACVRealEstateTypeByRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext
-            .RealEstateValuationDetails
+            .RealEstateValuations
             .FirstOrDefaultAsync(t => t.RealEstateValuationId == request.RealEstateValuationId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.RealEstateValuationId);
 

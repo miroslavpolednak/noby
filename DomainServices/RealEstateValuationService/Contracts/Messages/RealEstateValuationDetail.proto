@@ -3,18 +3,33 @@ package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 import "google/protobuf/wrappers.proto";
-import "Messages/RealEstateValuationListItem.proto";
 import "Messages/Types.proto";
+import "NullableGrpcDate.proto";
+import "Messages/ValuationTypes.proto";
 
 message RealEstateValuationDetail {
-    RealEstateValuationListItem RealEstateValuationGeneralDetails = 1;
-    google.protobuf.Int32Value RealEstateSubtypeId = 2;
-    LoanPurposeDetailsObject LoanPurposeDetails = 3;
-    google.protobuf.StringValue ACVRealEstateTypeId = 4;
-    repeated RealEstateValuationAttachment Attachments = 5;
+    int32 RealEstateValuationId = 1;
+    google.protobuf.Int32Value OrderId = 2;
+    int64 CaseId = 3;
+    int32 RealEstateTypeId = 4;
+    int32 ValuationStateId = 5;
+    bool IsLoanRealEstate = 6;
+    google.protobuf.Int32Value RealEstateStateId = 7;
+    ValuationTypes ValuationTypeId = 8;
+    google.protobuf.StringValue Address = 9;
+    cis.types.NullableGrpcDate ValuationSentDate = 10;
+    google.protobuf.Int32Value ValuationResultCurrentPrice = 11;
+    google.protobuf.Int32Value ValuationResultFuturePrice = 12;
+    bool IsRevaluationRequired = 13;
+    bool DeveloperAllowed = 14;
+    bool DeveloperApplied = 15;
+    google.protobuf.Int32Value RealEstateSubtypeId = 16;
+    LoanPurposeDetailsObject LoanPurposeDetails = 17;
+    google.protobuf.StringValue ACVRealEstateTypeId = 18;
+    repeated RealEstateValuationAttachment Attachments = 19;
 
     oneof SpecificDetail {
-        SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 20;
-        SpecificDetailParcelObject ParcelDetails = 21;
+        SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 50;
+        SpecificDetailParcelObject ParcelDetails = 51;
     }
 }
