@@ -1,5 +1,4 @@
-﻿using DomainServices.CodebookService.Contracts.v1;
-using DomainServices.DocumentOnSAService.Contracts;
+﻿using DomainServices.DocumentOnSAService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
 
