@@ -1,5 +1,8 @@
-﻿using DomainServices.HouseholdService.Api.Services;
+﻿using CIS.Infrastructure.Telemetry;
+using CIS.Infrastructure.Telemetry.AuditLog;
+using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateCustomer;
 
@@ -67,18 +70,44 @@ internal sealed class UpdateCustomerHandler
             IdentityId = t.IdentityId
         }).ToList());
 
+        // auditni log
+        if (!alreadyKbUpdatedCustomer && kbIdentity is not null)
+        {
+            var caseId = (await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellationToken)).CaseId;
+
+            _auditLogger.LogWithCurrentUser(
+                AuditEventTypes.Noby006,
+                "Identifikovaný klient byl přiřazen k žádosti",
+                identities: new List<AuditLoggerHeaderItem>
+                {
+                    new(kbIdentity.IdentityScheme.ToString(), kbIdentity.IdentityId)
+                },
+                products: new List<AuditLoggerHeaderItem>
+                {
+                    new("case", caseId),
+                    new("salesArrangement", entity.SalesArrangementId)
+                }
+            );
+        }
+
         return model;
     }
 
+    private readonly IAuditLogger _auditLogger;
     private readonly SulmService.ISulmClientHelper _sulmClient;
     private readonly UpdateCustomerService _updateService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
+    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
 
     public UpdateCustomerHandler(
+        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
+        IAuditLogger auditLogger,
         SulmService.ISulmClientHelper sulmClient,
         UpdateCustomerService updateService,
         Database.HouseholdServiceDbContext dbContext)
     {
+        _salesArrangementService = salesArrangementService;
+        _auditLogger = auditLogger;
         _sulmClient = sulmClient;
         _updateService = updateService;
         _dbContext = dbContext;

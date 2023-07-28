@@ -9,6 +9,7 @@ using NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
+using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using _DocOnSA = DomainServices.DocumentOnSAService.Contracts;
 using ValidateSalesArrangementRequest = NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement.ValidateSalesArrangementRequest;
 
@@ -114,7 +115,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
     {
         var validationResult = await _mediator.Send(new ValidateSalesArrangementRequest(salesArrangementId), cancellationToken);
 
-        if (validationResult is not null && validationResult.Categories is not null && validationResult.Categories.Any())
+        if (validationResult.Categories?.Any(HasCategoryAnyError) ?? false)
         {
             var options = new JsonSerializerOptions
             {
@@ -127,6 +128,10 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         }
     }
 
+    private static bool HasCategoryAnyError(ValidateCategory category) => category.ValidationMessages.Any(HasMessageError);
+    
+    private static bool HasMessageError(ValidateMessage message) => message.Severity == MessageSeverity.Error;
+    
     private async Task<_DocOnSA.SigningIdentity> MapCustomerOnSAIdentity(int customerOnSAId, string signatureAnchor, CancellationToken cancellationToken)
     {
         var customerOnSa = await _customerOnSAServiceClient.GetCustomer(customerOnSAId, cancellationToken);

@@ -27,7 +27,7 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         {
             RealEstateValuationId = request.RealEstateValuationId,
             IsLoanRealEstate = request.IsLoanRealEstate,
-            RealEstateStateId = (int?)request.RealEstateStateId,
+            RealEstateStateId = request.RealEstateStateId,
             Address = request.Address,
             RealEstateSubtypeId = request.RealEstateSubtypeId,
             LoanPurposeDetails = request.LoanPurposeDetails is null ? null : new __Contracts.LoanPurposeDetailsObject
@@ -72,16 +72,16 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         var valuationDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
-        if (valuationDetail.RealEstateValuationGeneralDetails.CaseId != request.CaseId)
+        if (valuationDetail.CaseId != request.CaseId)
             throw new CisAuthorizationException("The requested RealEstateValuation is not assigned to the requested Case");
 
-        if (valuationDetail.RealEstateValuationGeneralDetails.ValuationStateId != 7)
+        if (valuationDetail.ValuationStateId != 7)
             throw new CisAuthorizationException("The valuation is not in progress");
 
         if (caseInstance.State == (int)CaseStates.InProgress && request.LoanPurposeDetails is not null)
             throw new CisAuthorizationException("The LoanPurposeDetails has to be null when the case is in progress");
 
-        var variant = RealEstateVariantHelper.GetRealEstateVariant(valuationDetail.RealEstateValuationGeneralDetails.RealEstateTypeId);
+        var variant = RealEstateVariantHelper.GetRealEstateVariant(valuationDetail.RealEstateTypeId);
 
         ParseAndSetSpecificDetails(request, variant);
 
@@ -123,13 +123,12 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
 
         if (houseAndFlatDetails.FinishedHouseAndFlatDetails is null)
         {
-            if (request.RealEstateStateId is RealEstateStateIds.Finished)
+            if (request.RealEstateStateId == (int)RealEstateStateId.Finished)
                 throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
         }
-        else
+        else if (request.RealEstateStateId != (int)RealEstateStateId.Finished)
         {
-            if (request.RealEstateStateId is not RealEstateStateIds.Finished)
-                throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
+            throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
         }
     }
 

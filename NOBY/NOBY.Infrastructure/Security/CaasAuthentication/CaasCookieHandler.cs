@@ -4,7 +4,6 @@ using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
@@ -15,6 +14,10 @@ internal sealed class CaasCookieHandler
 {
     public void Configure(string? name, CookieAuthenticationOptions options)
     {
+        if (!string.IsNullOrEmpty(_configuration.AuthenticationScheme))
+        {
+            options.Cookie.Domain = _configuration.AuthenticationCookieDomain;
+        }
         options.Cookie.Path = "/";
         options.Cookie.IsEssential = true;
         //options.Cookie.SameSite = SameSiteMode.Strict;

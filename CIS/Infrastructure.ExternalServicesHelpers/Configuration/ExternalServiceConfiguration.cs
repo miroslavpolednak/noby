@@ -33,7 +33,7 @@ public class ExternalServiceConfiguration<TClient>
 
     public int? RequestRetryCount { get; set; } = 3;
 
-    public int? RequestRetryTimeout { get; set; } = 5;
+    public int? RequestRetryTimeout { get; set; } = 10;
 
     /// <summary>
     /// Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.

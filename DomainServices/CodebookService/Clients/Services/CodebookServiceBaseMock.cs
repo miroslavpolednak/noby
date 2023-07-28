@@ -16,6 +16,6 @@ public abstract partial class CodebookServiceBaseMock
     public virtual Task<GetOperatorResponse> GetOperator(string performerLogin, CancellationToken cancellationToken = default)
         => throw new NotImplementedException();
 
-    public virtual Task<string> GetAcvRealEstateType(int realEstateStateId, int realEstateSubtypeId, int realEstateTypeId, CancellationToken cancellationToken = default)
+    public virtual Task<string> GetAcvRealEstateType(int? realEstateStateId, int realEstateSubtypeId, int realEstateTypeId, CancellationToken cancellationToken = default)
         => throw new NotImplementedException();
 }

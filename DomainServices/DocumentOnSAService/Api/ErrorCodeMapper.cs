@@ -22,7 +22,9 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int UnableToStartSigningOrSignInvalidDocument = 19019;
     public const int UnableToSendDocumentPreviewForPaperSignedDocuments = 19020;
     public const int SignatureTypeIdHasToBeSame = 19021;
-
+    public const int DocumentFileNotExist = 19022;
+    public const int AttachmentFileNotExist = 19023;
+    
     // Non BL validation
     public const int SalesArrangementIdIsRequired = 19030;
     public const int DocumentTypeIdIsRequired = 19031;
@@ -56,6 +58,9 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { SalesArrangementIdIsRequired, "SalesArrangementId is required"},
             { UnableToSendDocumentPreviewForPaperSignedDocuments, "Unable to send document preview for paper signed documents"},
             { SignatureTypeIdHasToBeSame, "SignatureTypeId has to be same (cannot sign electronic document manually and contrary)"},
+            { DocumentFileNotExist, "Document file {PropertyValue} doest not exist."},
+            { AttachmentFileNotExist, "Attachment file {PropertyValue} doest not exist."},
+
             { DocumentTypeIdIsRequired, " DocumentTypeId is required"},
             { FormIdIsRequired, "FormId is required"},
             { EArchivIdIsRequired, "EArchivId is required"},

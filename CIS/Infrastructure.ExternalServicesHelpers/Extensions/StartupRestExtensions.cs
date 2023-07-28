@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
 using Polly.Timeout;
+using System.Configuration;
+using System.Net.Sockets;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers;
 
@@ -28,6 +30,11 @@ public static class StartupRestExtensions
 
                 // service url
                 client.BaseAddress = configuration.ServiceUrl;
+                // musi byt nastaveny, jinak je default na 100
+                client.Timeout = TimeSpan.FromSeconds(
+                    (getRequestTimeout(configuration) * (configuration.RequestRetryCount.GetValueOrDefault() + 1)) 
+                    + (configuration.RequestRetryCount.GetValueOrDefault() * getRequestRetryTimeout(configuration)) 
+                    + 10);
 
                 // authentication
                 switch (configuration.Authentication)
@@ -72,9 +79,9 @@ public static class StartupRestExtensions
                     return HttpPolicyExtensions
                         .HandleTransientHttpError()
                         .Or<TimeoutRejectedException>()
-                        .WaitAndRetryAsync(configuration.RequestRetryCount!.Value, (c) => TimeSpan.FromSeconds(configuration.RequestRetryTimeout ?? _defaultRetryTimeout), (res, timeSpan, count, context) =>
+                        .WaitAndRetryAsync(configuration.RequestRetryCount!.Value, (c) => TimeSpan.FromSeconds(getRequestRetryTimeout(configuration)), (res, timeSpan, count, context) =>
                         {
-                            logger.LogWarning($"{typeof(TClient).Name}: #{count} Retry HttpRequest");
+                            logger.HttpRequestRetry(typeof(TClient).Name, count);
                         });
                 }
             })
@@ -82,9 +89,17 @@ public static class StartupRestExtensions
             .AddPolicyHandler((services, req) =>
             {
                 var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
-                return Policy.TimeoutAsync<HttpResponseMessage>(configuration.RequestTimeout.GetValueOrDefault() > 0 ? configuration.RequestTimeout!.Value : _defaultRequestTimeout);
+                return Policy.TimeoutAsync<HttpResponseMessage>(getRequestTimeout(configuration));
             });
 
-    private const int _defaultRequestTimeout = 5;
-    private const int _defaultRetryTimeout = 2;
+    private static int getRequestRetryTimeout<TClient>(IExternalServiceConfiguration<TClient> configuration)
+        where TClient : class, IExternalServiceClient
+        => configuration.RequestRetryTimeout ?? _defaultRetryTimeout;
+
+    private static int getRequestTimeout<TClient>(IExternalServiceConfiguration<TClient> configuration)
+        where TClient : class, IExternalServiceClient
+        => configuration.RequestTimeout.GetValueOrDefault() > 0 ? configuration.RequestTimeout!.Value : _defaultRequestTimeout;
+
+    private const int _defaultRequestTimeout = 10;
+    private const int _defaultRetryTimeout = 10;
 }

@@ -3,6 +3,7 @@ using CIS.InternalServices;
 using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 using DomainServices.DocumentOnSAService.Api.Configuration;
 using ExternalServices;
+using ExternalServices.ESignatureQueues;
 
 namespace DomainServices.DocumentOnSAService.Api.Extensions;
 
@@ -38,6 +39,9 @@ internal static class StartupExtensions
 
         // ePodpisy
         builder.AddExternalService<ExternalServices.ESignatures.V1.IESignaturesClient>();
+        
+        // ePodpisy fronta
+        builder.AddExternalService<ExternalServices.ESignatureQueues.V1.IESignatureQueuesRepository>();
         
         // registrace background jobu
         builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();

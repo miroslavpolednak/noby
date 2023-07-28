@@ -2,6 +2,7 @@
 using CIS.Infrastructure.ExternalServicesHelpers;
 using FastEnumUtility;
 using System.Globalization;
+using System.Net.Http.Headers;
 
 namespace ExternalServices.ESignatures.V1;
 
@@ -217,14 +218,11 @@ internal sealed class RealESignaturesClient
         byte[] fileData, 
         CancellationToken cancellationToken = default)
     {
-        using var content = new MultipartFormDataContent();
+        using var content = new ByteArrayContent(fileData);
+        content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
-        var contentFile = new ByteArrayContent(fileData);
-        contentFile.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/pdf");
-        content.Add(contentFile, "file", filename);
-        
         var response = await _httpClient
-            .PostAsync(_httpClient.BaseAddress + $"/{StartupExtensions.TenantCode}{_urlPrefix}UploadDocument?referenceId={referenceId}&filename={Uri.EscapeDataString(filename)}&creationDate={creationDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture)}", content, cancellationToken)
+            .PostAsync(_httpClient.BaseAddress + $"/{StartupExtensions.TenantCode}{_urlPrefix}UploadDocument?referenceId={referenceId}&filename={Uri.EscapeDataString(filename)}&creationDate={creationDate.ToString("s", CultureInfo.InvariantCulture)}", content, cancellationToken)
             .ConfigureAwait(false);
         
         var result = await response.EnsureSuccessStatusAndReadJson<Contracts.ResponseUrl2>(StartupExtensions.ServiceName, cancellationToken);

@@ -52,7 +52,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\Foms.Types\CIS.Foms.Types.csproj" />
     <ProjectReference Include="..\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />
+    <ProjectReference Include="..\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
   </ItemGroup>
 
 </Project>

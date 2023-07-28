@@ -2,6 +2,7 @@
 using NOBY.Infrastructure.Configuration;
 using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -10,6 +11,9 @@ internal static class NobyAppBuilder
     public static IApplicationBuilder UseNobySpa(this IApplicationBuilder app)
         => app.MapWhen(_isSpaCall, appBuilder => 
         {
+            var corsService = appBuilder.ApplicationServices.GetRequiredService<ICorsService>();
+            var corsPolicyProvider = appBuilder.ApplicationServices.GetRequiredService<ICorsPolicyProvider>();
+            
             appBuilder.UseSpaStaticFiles();
             appBuilder.UseSpa(spa =>
             {
@@ -44,14 +48,16 @@ internal static class NobyAppBuilder
                 appBuilder.UseMiddleware<Infrastructure.ErrorHandling.Internals.NobyApiExceptionMiddleware>();
             }
 
-            // autentizace a autorizace
-            appBuilder.UseAuthentication();
-            appBuilder.UseMiddleware<NobySecurityMiddleware>();
-            appBuilder.UseAuthorization();
-            
-            // namapovani API modulu
+            // namapovani API modulu - !poradi je dulezite
             appBuilder
+                // autentizace
+                .UseAuthentication()
+                // routing
                 .UseRouting()
+                // autorizace
+                .UseMiddleware<NobySecurityMiddleware>()
+                .UseAuthorization()
+                // endpointy
                 .UseEndpoints(t =>
                 {
                     t.MapControllers();

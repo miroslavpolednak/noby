@@ -85,7 +85,6 @@
     <Folder Include="Endpoints\Document\Shared\DocumentIdManager\" />
     <Folder Include="Endpoints\Product\GetCaseIdByPcpId\" />
     <Folder Include="Endpoints\RealEstateValuation\GetRealEstateValuationDetail\" />
-    <Folder Include="Endpoints\RealEstateValuation\UpdateRealEstateValuationDetail\" />
     <Folder Include="Endpoints\SalesArrangement\SendToCmp\Dto\" />
   </ItemGroup>
 
