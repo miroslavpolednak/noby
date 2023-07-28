@@ -34,9 +34,9 @@ public class TestController : ControllerBase
             CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby001,
             "Nejaka fajn zprava",
             result: "OK",
-            identities: new List<AuditLoggerHeaderItem> { new() { Id = "aaa", Type = "bbb" } },
-            products: new List<AuditLoggerHeaderItem> { new() { Id = "111", Type = "Uver" } },
-            operation: new() { Id = "111", Type = "CreateCase" },
+            identities: new List<AuditLoggerHeaderItem> { new("aaa", "bbb") },
+            products: new List<AuditLoggerHeaderItem> { new("111", "Uver") },
+            operation: new("111", "CreateCase"),
             bodyBefore: new Dictionary<string, string> { { "aaa", "bbb" }, { "ccc", "dddd" } }
         );
     }

@@ -1,7 +1,10 @@
 ﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.Telemetry;
+using CIS.Infrastructure.Telemetry.AuditLog;
 using DomainServices.SalesArrangementService.Api.Services.Forms;
 using DomainServices.SalesArrangementService.Contracts;
 using Google.Protobuf.WellKnownTypes;
+using System.Globalization;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.SendToCmp;
 
@@ -11,13 +14,16 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
     private readonly FormsDocumentService _formsDocumentService;
     private readonly PerformerProvider _performerProvider;
     private readonly IMediator _mediator;
+    private readonly IAuditLogger _auditLogger;
 
     public SendToCmpHandler(
+        IAuditLogger auditLogger,
         IMediator mediator,
         FormsService formsService,
         FormsDocumentService formsDocumentService,
         PerformerProvider performerProvider)
     {
+        _auditLogger = auditLogger;
         _mediator = mediator;
         _formsService = formsService;
         _formsDocumentService = formsDocumentService;
@@ -42,9 +48,19 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
             State = (int)SalesArrangementStates.InApproval
         }, cancellationToken);
 
+        // auditni log
+        _auditLogger.LogWithCurrentUser(
+            AuditEventTypes.Noby005,
+            "Žádost byla dokončena",
+            products: new List<AuditLoggerHeaderItem>()
+            {
+                new("case", salesArrangement.CaseId),
+                new("salesArrangement", request.SalesArrangementId)
+            }
+        );
+
         return new Empty();
     }
-
     private Task ProcessEasForm(SalesArrangement salesArrangement, SalesArrangementCategories category, CancellationToken cancellationToken) =>
         category switch
         {

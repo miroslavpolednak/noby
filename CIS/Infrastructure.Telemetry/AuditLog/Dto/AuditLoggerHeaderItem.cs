@@ -1,8 +1,10 @@
 ﻿namespace CIS.Infrastructure.Telemetry.AuditLog;
 
-public sealed class AuditLoggerHeaderItem
+public sealed record AuditLoggerHeaderItem(string Type, string? Id = null)
 {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public string? Id { get; set; }
-    public string Type { get; set; }
+    public AuditLoggerHeaderItem(string type, int id)
+        : this(type, id.ToString(System.Globalization.CultureInfo.InvariantCulture)) { }
+
+    public AuditLoggerHeaderItem(string type, long id)
+        : this(type, id.ToString(System.Globalization.CultureInfo.InvariantCulture)) { }
 }
