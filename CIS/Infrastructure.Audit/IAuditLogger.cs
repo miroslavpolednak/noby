@@ -1,6 +1,6 @@
-﻿using CIS.Infrastructure.Telemetry.AuditLog;
+﻿using CIS.Infrastructure.Audit;
 
-namespace CIS.Infrastructure.Telemetry;
+namespace CIS.Infrastructure.Audit;
 
 public interface IAuditLogger
 {

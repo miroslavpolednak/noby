@@ -1,10 +1,8 @@
 ﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Telemetry.AuditLog;
+using CIS.Infrastructure.Audit;
 using DomainServices.SalesArrangementService.Api.Services.Forms;
 using DomainServices.SalesArrangementService.Contracts;
 using Google.Protobuf.WellKnownTypes;
-using System.Globalization;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.SendToCmp;
 

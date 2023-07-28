@@ -1,8 +1,6 @@
-﻿using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Telemetry.AuditLog;
+﻿using CIS.Infrastructure.Audit;
 using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
-using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateCustomer;
 

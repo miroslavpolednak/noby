@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.Infrastructure.Audit</name>
+    </assembly>
+    <members>
+        <member name="P:CIS.Infrastructure.Audit.Configuration.AuditLogConfiguration.ConnectionString">
+            <summary>
+            CS na databazi auditniho logu
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Audit.Configuration.AuditLogConfiguration.EamApplication">
+            <summary>
+            Kod pro ukladani v Logmanu
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Audit.Configuration.AuditLogConfiguration.EamVersion">
+            <summary>
+            Verze logovaciho schematu
+            </summary>
+        </member>
+    </members>
+</doc>

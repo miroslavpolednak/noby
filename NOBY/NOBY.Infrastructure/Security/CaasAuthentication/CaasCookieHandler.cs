@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Telemetry;
+﻿using CIS.Infrastructure.Audit;
 using DomainServices.UserService.Clients;
 using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -68,7 +68,7 @@ internal sealed class CaasCookieHandler
                 // zalogovat prihlaseni uzivatele
                 var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
                 logger.Log(
-                    CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby002,
+                    CIS.Infrastructure.Audit.AuditEventTypes.Noby002,
                     $"Uživatel {currentLogin} se přihlásil do aplikace.",
                     bodyAfter: new Dictionary<string, string>() { { "login", currentLogin } });
             },
@@ -80,7 +80,7 @@ internal sealed class CaasCookieHandler
             OnSigningOut = context =>
             {
                 var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
-                logger.Log(CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby003, "User logged out xxxxx");
+                logger.Log(CIS.Infrastructure.Audit.AuditEventTypes.Noby003, "User logged out xxxxx");
                 return Task.CompletedTask;
             }
         };

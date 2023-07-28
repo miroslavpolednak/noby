@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Telemetry;
+﻿using CIS.Infrastructure.Audit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -47,7 +47,7 @@ public static class MapAuthenticationEndpoints
                         context.HttpContext!.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
                     }
 
-                    logger.Log(CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby003, "User logged out");
+                    logger.Log(AuditEventTypes.Noby003, "User logged out");
 
                     // redirect to root?
                     context.HttpContext!.Response.Redirect(redirectUrl);

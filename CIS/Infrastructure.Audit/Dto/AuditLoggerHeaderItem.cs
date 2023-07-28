@@ -1,4 +1,4 @@
-﻿namespace CIS.Infrastructure.Telemetry.AuditLog;
+﻿namespace CIS.Infrastructure.Audit;
 
 public sealed record AuditLoggerHeaderItem(string Type, string? Id = null)
 {

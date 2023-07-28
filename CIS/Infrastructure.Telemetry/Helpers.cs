@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CIS.Infrastructure.Telemetry;
 
-internal static class Helpers
+public static class Helpers
 {
     const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] [{Level:u}] [{TraceId}] [{SpanId}] [{ParentId}] [{CisAppKey}] [{Version}] [{Assembly}] [{SourceContext}] [{MachineName}] [{ClientIp}] [{CisUserId}] [{CisUserIdent}] [{RequestId}] [{RequestPath}] [{ConnectionId}] [{Message}] [{Exception}]{NewLine}";
 
@@ -49,7 +49,7 @@ internal static class Helpers
         }
     }
 
-    public static void AddOutputs(
+    internal static void AddOutputs(
         LoggerConfiguration loggerConfiguration, 
         LogConfiguration configuration,
         TelemetryConfiguration? telemetryConfiguration)

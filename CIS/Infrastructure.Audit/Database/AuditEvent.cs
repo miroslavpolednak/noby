@@ -1,4 +1,4 @@
-﻿namespace CIS.Infrastructure.Telemetry.AuditLog.Database;
+﻿namespace CIS.Infrastructure.Audit.Database;
 
 internal sealed record AuditEvent(Guid EventID, string AuditEventTypeId, string Detail)
 {

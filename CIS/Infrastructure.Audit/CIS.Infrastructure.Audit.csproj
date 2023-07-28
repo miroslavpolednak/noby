@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net7.0</TargetFramework>
+	  <OutputType>Library</OutputType>
+	  <Product>Common Infrastructure Solution</Product>
+	  <Authors>Filip Tuma</Authors>
+	  <Nullable>enable</Nullable>
+	  <Platforms>AnyCPU;x64</Platforms>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<Title>Audit logging</Title>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>CIS.Infrastructure.Audit.xml</DocumentationFile>
+		<OutputType>Library</OutputType>
+		<DisableDefaultDocumentation Condition=" '$(Configuration)' != 'Debug' ">true</DisableDefaultDocumentation>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.0.143" />
+		<PackageReference Include="FastEnum" Version="1.8.0" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\Foms.Types\CIS.Foms.Types.csproj" />
+    <ProjectReference Include="..\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
+    <ProjectReference Include="..\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
+    <ProjectReference Include="..\Infrastructure\CIS.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

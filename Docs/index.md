@@ -37,6 +37,8 @@
 
 [Práce s dočasnými soubory na FE API](./topics/tempfilemanager.md)
 
+[Auditní logování](./topics/audit.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

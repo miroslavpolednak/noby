@@ -1,4 +1,4 @@
-﻿namespace CIS.Infrastructure.Telemetry.Configuration;
+﻿namespace CIS.Infrastructure.Audit.Configuration;
 
 public sealed class AuditLogConfiguration
 {

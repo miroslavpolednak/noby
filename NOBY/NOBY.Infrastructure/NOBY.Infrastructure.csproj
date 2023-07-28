@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj" />
     <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />

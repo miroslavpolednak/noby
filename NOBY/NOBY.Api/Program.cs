@@ -7,6 +7,7 @@ using CIS.InternalServices;
 using Microsoft.AspNetCore.HttpLogging;
 using CIS.Infrastructure.WebApi;
 using NOBY.Infrastructure.Configuration;
+using CIS.Infrastructure.Audit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ try
         .AddCisCoreFeatures()
         .AddCisWebApiCors()
         .AddCisLogging()
+        .AddCisAudit()
         .AddCisTracing()
         .AddCisHealthChecks();
     builder.Services.AddCisSecurityHeaders();

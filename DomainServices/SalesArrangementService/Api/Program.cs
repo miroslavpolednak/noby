@@ -6,6 +6,7 @@ using DomainServices;
 using CIS.InternalServices;
 using DomainServices.SalesArrangementService.Api.Endpoints;
 using Serilog;
+using CIS.Infrastructure.Audit;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -33,6 +34,7 @@ try
         // logging 
         .AddCisLogging()
         .AddCisTracing()
+        .AddCisAudit()
         // authentication
         .AddCisServiceAuthentication()
         // add self

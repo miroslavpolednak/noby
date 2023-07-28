@@ -1,11 +1,12 @@
 ﻿using CIS.Core;
 using CIS.Core.Configuration;
-using CIS.Infrastructure.Telemetry.AuditLog.Attributes;
-using CIS.Infrastructure.Telemetry.AuditLog.Dto;
+using CIS.Infrastructure.Audit.Attributes;
+using CIS.Infrastructure.Audit.Configuration;
+using CIS.Infrastructure.Audit.Dto;
 using FastEnumUtility;
 using System.Globalization;
 
-namespace CIS.Infrastructure.Telemetry.AuditLog;
+namespace CIS.Infrastructure.Audit;
 
 internal sealed class AuditLoggerHelper
 {
@@ -28,6 +29,11 @@ internal sealed class AuditLoggerHelper
         ICisEnvironmentConfiguration environmentConfiguration, 
         AuditLogConfiguration auditConfiguration)
     {
+        if (auditConfiguration is null)
+        {
+            throw new ArgumentNullException(nameof(auditConfiguration));
+        }
+
         _databaseWriter = new Database.DatabaseWriter(auditConfiguration.ConnectionString);
         _loggerDefaults = new AuditLoggerDefaults(serverIp, environmentConfiguration.DefaultApplicationKey!, auditConfiguration.EamApplication, auditConfiguration.EamVersion, environmentConfiguration.EnvironmentName!);
     }

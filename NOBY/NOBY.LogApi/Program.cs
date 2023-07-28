@@ -4,6 +4,7 @@ using CIS.Infrastructure.Telemetry;
 using NOBY.LogApi;
 using CIS.Core.Security;
 using NOBY.Infrastructure.Configuration;
+using CIS.Infrastructure.Audit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,8 @@ try
     builder
         .AddCisCoreFeatures()
         .AddCisWebApiCors()
-        .AddCisLogging();
+        .AddCisLogging()
+        .AddCisAudit();
     builder.Services.AddCisSecurityHeaders();
 
     builder.Services.AddTransient<ICurrentUserAccessor, CurrentUserAccessor>();

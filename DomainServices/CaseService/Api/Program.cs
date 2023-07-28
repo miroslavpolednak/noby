@@ -7,6 +7,7 @@ using CIS.Infrastructure.Security;
 using CIS.InternalServices;
 using DomainServices.CaseService.Api.Endpoints;
 using CIS.Infrastructure.CisMediatR;
+using CIS.Infrastructure.Audit;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -33,6 +34,7 @@ var log = builder.CreateStartupLogger();
     builder
         // logging
         .AddCisLogging()
+        .AddCisAudit()
         .AddCisTracing()
         // authentication
         .AddCisServiceAuthentication()

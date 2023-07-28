@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Telemetry.AuditLog;
+﻿using CIS.Infrastructure.Audit;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Api.Database.Entities;
