@@ -48,14 +48,16 @@ internal static class NobyAppBuilder
                 appBuilder.UseMiddleware<Infrastructure.ErrorHandling.Internals.NobyApiExceptionMiddleware>();
             }
 
-            // autentizace a autorizace
-            appBuilder.UseAuthentication();
-            appBuilder.UseMiddleware<NobySecurityMiddleware>();
-            appBuilder.UseAuthorization();
-            
-            // namapovani API modulu
+            // namapovani API modulu - !poradi je dulezite
             appBuilder
+                // autentizace
+                .UseAuthentication()
+                // routing
                 .UseRouting()
+                // autorizace
+                .UseMiddleware<NobySecurityMiddleware>()
+                .UseAuthorization()
+                // endpointy
                 .UseEndpoints(t =>
                 {
                     t.MapControllers();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 namespace NOBY.Infrastructure.Security;
@@ -15,15 +16,7 @@ public class NobySecurityMiddleware
         DomainServices.UserService.Clients.IUserServiceClient userService, 
         Configuration.AppConfiguration configuration)
     {
-        bool authenticateUser = true;
-
-        if (configuration.Security!.AuthenticationScheme != AuthenticationConstants.CaasAuthScheme)
-        {
-            //TODO v net5 nefunguje context.GetEndpoint(). Jak tohle vyresit lepe?
-            authenticateUser = !_anonymousUrl.Contains(context.Request.Path.ToString());
-        }
-
-        if (authenticateUser)
+        if (authenticateUser())
         {
             if (context.User?.Identity is null || !context.User.Identity.IsAuthenticated)
                 throw new System.Security.Authentication.AuthenticationException("User Identity not found in HttpContext");
@@ -44,10 +37,12 @@ public class NobySecurityMiddleware
         }
 
         await _next.Invoke(context);
-    }
 
-    private static string[] _anonymousUrl = new[]
-    {
-        "/api/users/signin"
-    };
+        bool authenticateUser()
+        {
+            var endpoint = context.GetEndpoint();
+            if (endpoint is null) return true;
+            return !endpoint.Metadata.OfType<AllowAnonymousAttribute>().Any();
+        }
+    }
 }
