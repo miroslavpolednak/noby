@@ -10,17 +10,16 @@ message StartSigningRequest {
 
 	google.protobuf.Int32Value SalesArrangementId = 1;
 	google.protobuf.Int32Value DocumentTypeId = 2;
-	google.protobuf.StringValue SignatureMethodCode = 3;
+	google.protobuf.Int32Value SignatureTypeId = 3;
 
 	google.protobuf.Int32Value DocumentTemplateVersionId = 4;
 	google.protobuf.Int32Value DocumentTemplateVariantId = 5;
-	google.protobuf.Int32Value SignatureTypeId = 6;
-	google.protobuf.Int64Value CaseId = 7;
-	google.protobuf.Int32Value TaskId = 8;
-	google.protobuf.Int32Value CustomerOnSAId1 = 9;
-	google.protobuf.Int32Value CustomerOnSAId2 = 10;
-	SigningIdentity CustomerOnSAId1SigningIdentity = 11;
-	SigningIdentity CustomerOnSAId2SigningIdentity = 12;
+	google.protobuf.Int64Value CaseId = 6;
+	google.protobuf.Int32Value TaskId = 7;
+	google.protobuf.Int32Value CustomerOnSAId1 = 8;
+	google.protobuf.Int32Value CustomerOnSAId2 = 9;
+	SigningIdentity CustomerOnSAId1SigningIdentity = 10;
+	SigningIdentity CustomerOnSAId2SigningIdentity = 11;
 }
 
 message StartSigningResponse {

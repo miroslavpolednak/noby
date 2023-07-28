@@ -25,9 +25,6 @@ public class DocumentOnSaConfiguration : IEntityTypeConfiguration<DocumentOnSa>
         builder.Property(e => e.CreatedUserName)
            .HasColumnType("nvarchar(50)");
 
-        builder.Property(e => e.SignatureMethodCode)
-         .HasColumnType("nvarchar(15)");
-
         builder.Property(e => e.IsValid)
            .HasDefaultValue(true);
 

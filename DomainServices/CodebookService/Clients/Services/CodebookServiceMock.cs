@@ -124,19 +124,6 @@ public class CodebookServiceMock
         });
     }
 
-    public override Task<List<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>> SigningMethodsForNaturalPerson(CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(new List<Contracts.v1.SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>
-        {
-            new() { Code = "OFFERED", Order = 4, Name = "Delegovaná metoda podpisu", Description = "deprecated", IsValid = true, StarbuildEnumId = 2 },
-            new() { Code = "PHYSICAL", Order = 1, Name = "Ruční podpis", Description = "Fyzický/ruční podpis dokumentu.", IsValid = true, StarbuildEnumId = 1 },
-            new() { Code = "DELEGATE", Order = 1, Name = "Přímé bankovnictví", Description = "Přímé bankovnictví - Delegovaná metoda podpisu", IsValid = true, StarbuildEnumId = 2 },
-            new() { Code = "PAAT", Order = 1, Name = "KB klíč", Description = null, IsValid = true, StarbuildEnumId = 2 },
-            new() { Code = "INT_CERT_FILE", Order = 2, Name = "Interní certifikát v souboru", Description = null, IsValid = true, StarbuildEnumId = 2 },
-            new() { Code = "APOC", Order = 3, Name = "Automatizovaný Podpis Osobním Certifikátem", Description = null, IsValid = true, StarbuildEnumId = 2 },
-        });
-    }
-
     public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> SignatureTypes(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(new List<GenericCodebookResponse.Types.GenericCodebookItem>

@@ -23,7 +23,7 @@ public class GetDocumentOnSADetailResponse
     /// <summary>
     /// Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
     /// </summary>
-    public string? SignatureMethodCode { get; set; }
+    public int? SignatureTypeId { get; set; }
 
     /// <summary>
     /// Timestamp, kdy došlo k podpisu celého dokumentu.

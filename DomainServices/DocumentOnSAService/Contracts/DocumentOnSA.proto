@@ -23,10 +23,7 @@ message DocumentOnSA {
 	
 	bool IsArchived = 7;
 
-	string SignatureMethodCode = 8;
+	google.protobuf.Int32Value SignatureTypeId = 8;
 
 	google.protobuf.StringValue EArchivId  = 9;
-
-	google.protobuf.Int32Value SignatureTypeId = 10;
-
 }

@@ -477,12 +477,6 @@ service CodebookService {
 		};
    }
 
-   rpc SigningMethodsForNaturalPerson (google.protobuf.Empty) returns (SigningMethodsForNaturalPersonResponse) {
-	   option (google.api.http) = {
-			get: "/v1/signing-methods-for-natural-person"
-		};
-   }
-
    rpc SmsNotificationTypes (google.protobuf.Empty) returns (SmsNotificationTypesResponse) {
 	   option (google.api.http) = {
 			get: "/v1/sms-notification-types"

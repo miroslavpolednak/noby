@@ -31,7 +31,7 @@ message DocumentOnSAToSign {
 	
 	bool IsArchived = 11;
 
-	google.protobuf.StringValue SignatureMethodCode = 12;
+	google.protobuf.Int32Value SignatureTypeId = 12;
 	
 	google.protobuf.Timestamp SignatureDateTime = 13;
 
@@ -40,19 +40,17 @@ message DocumentOnSAToSign {
 	bool IsFinal = 15;
 
 	google.protobuf.Int32Value DocumentTemplateVariantId = 16;
-
-	google.protobuf.Int32Value SignatureTypeId = 17;
 	
-	DomainServices.DocumentOnSAService.Enums.Source Source = 18;
+	DomainServices.DocumentOnSAService.Enums.Source Source = 17;
 
-	google.protobuf.Int32Value CustomerOnSAId = 19;
+	google.protobuf.Int32Value CustomerOnSAId = 18;
 
-	bool IsPreviewSentToCustomer = 20;
+	bool IsPreviewSentToCustomer = 19;
 
-	google.protobuf.Int64Value CaseId = 21;
+	google.protobuf.Int64Value CaseId = 20;
 
-	google.protobuf.Int32Value TaskId = 22;
+	google.protobuf.Int32Value TaskId = 21;
 
-	google.protobuf.StringValue ExternalId = 23;
+	google.protobuf.StringValue ExternalId = 22;
 
 }

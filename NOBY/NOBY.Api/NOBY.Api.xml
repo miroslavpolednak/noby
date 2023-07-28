@@ -1847,7 +1847,7 @@
             Businessové modré ID
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.SignatureMethodCode">
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.SignatureTypeId">
             <summary>
             Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
             </summary>
@@ -1887,11 +1887,6 @@
             Příznak, zda byl dokument již podepsán.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.SignatureMethodCode">
-            <summary>
-            Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.SignatureTypeId">
             <summary>
             Metoda podpisu (manuální/elektronický). Číselník SignatureType.
@@ -1922,11 +1917,6 @@
             Typ dokumentu. Číselník DocumentType.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningRequest.SignatureMethodCode">
-            <summary>
-            Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningRequest.SignatureTypeId">
             <summary>
             Metoda podpisu (manuální/elektronický). Číselník SignatureType.
@@ -1955,11 +1945,6 @@
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.IsSigned">
             <summary>
             Příznak, zda byl dokument již podepsán.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.SignatureMethodCode">
-            <summary>
-            Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.SignatureTypeId">

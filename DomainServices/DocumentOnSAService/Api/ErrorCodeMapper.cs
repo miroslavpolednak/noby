@@ -30,7 +30,6 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int DocumentTypeIdIsRequired = 19031;
     public const int FormIdIsRequired = 19032;
     public const int EArchivIdIsRequired = 19033;
-    public const int SignatureMethodCodeIsRequired = 19034;
     public const int UnsupportedSbSignatureType = 19035;
     public const int AmendmentHasToBeOfTypeSigning = 19036;
     public const int OnlyElectronicOrPaperSignatureSupported = 19037;
@@ -64,7 +63,6 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { DocumentTypeIdIsRequired, " DocumentTypeId is required"},
             { FormIdIsRequired, "FormId is required"},
             { EArchivIdIsRequired, "EArchivId is required"},
-            { SignatureMethodCodeIsRequired, "SignatureMethodCode is required"},
             { UnableToStartSigningOrSignInvalidSalesArrangementState, "Unable to start signing or sign (SalesArrangement is not in correct state)."},
             { UnableToStartSigningOrSignInvalidDocument, "Unable to start signing or sign (DocumentOnSA is invalid or already signed)."},
             { UnsupportedStatusReturnedFromESignature, "Unsupported status returned from ESignature: {PropertyValue}"},

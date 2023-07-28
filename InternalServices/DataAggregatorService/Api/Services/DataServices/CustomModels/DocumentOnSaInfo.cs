@@ -6,13 +6,10 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.C
 internal class DocumentOnSaInfo
 {
     private readonly ICollection<DocumentOnSAToSign> _documentsOnSa;
-    private readonly List<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem> _signingMethods;
 
-    public DocumentOnSaInfo(ICollection<DocumentOnSAToSign> documentsOnSa, List<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem> signingMethods)
+    public DocumentOnSaInfo(ICollection<DocumentOnSAToSign> documentsOnSa)
     {
         _documentsOnSa = documentsOnSa;
-        _signingMethods = signingMethods;
-
         Configure();
     }
 
@@ -29,7 +26,7 @@ internal class DocumentOnSaInfo
         var documentsOnSa = GetDocumentsOnSa(documentTypeId).ToList();
 
         FinalDocument = documentsOnSa.FirstOrDefault(d => d.IsFinal);
-        SignatureMethodId = GetSignatureMethodId(documentsOnSa);
+        SignatureMethodId = GetSignatureTypeId(documentsOnSa);
         FirstSignatureDate = GetFirstSignatureDate(documentsOnSa);
         FormIdList = GetFormIdList(documentsOnSa);
     }
@@ -37,13 +34,10 @@ internal class DocumentOnSaInfo
     private IEnumerable<DocumentOnSAToSign> GetDocumentsOnSa(int? documentTypeId = default) => 
         documentTypeId.HasValue ? _documentsOnSa.Where(d => d.DocumentTypeId == documentTypeId) : _documentsOnSa;
 
-    private int GetSignatureMethodId(IEnumerable<DocumentOnSAToSign> documentsOnSa)
+    private static int GetSignatureTypeId(IEnumerable<DocumentOnSAToSign> documentsOnSa)
     {
         const int DefaultSignatureMethodId = 1;
-
-        var signatureMethodCode = documentsOnSa.LastOrDefault(d => d.IsValid && d.IsSigned)?.SignatureMethodCode;
-
-        return _signingMethods.Where(s => s.Code == signatureMethodCode).Select(s => s.StarbuildEnumId).FirstOrDefault(DefaultSignatureMethodId);
+        return documentsOnSa.LastOrDefault(d => d.IsValid && d.IsSigned)?.SignatureTypeId ?? DefaultSignatureMethodId;
     }
 
     private static DateTime? GetFirstSignatureDate(IEnumerable<DocumentOnSAToSign> documentsOnSa) =>
