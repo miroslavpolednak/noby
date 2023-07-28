@@ -32,7 +32,6 @@ public class TestController : ControllerBase
         logger.Log(
             CIS.Infrastructure.Audit.AuditEventTypes.Noby001,
             "Nejaka fajn zprava",
-            result: "OK",
             identities: new List<AuditLoggerHeaderItem> { new("aaa", "bbb") },
             products: new List<AuditLoggerHeaderItem> { new("111", "Uver") },
             operation: new("111", "CreateCase"),
