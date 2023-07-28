@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
 using CIS.Infrastructure.Security;
+using CIS.Core;
 
 namespace CIS.Infrastructure.Telemetry.AuditLog;
 
@@ -48,6 +49,12 @@ internal sealed class AuditLogger
         IDictionary<string, string>? bodyAfter = null)
     {
         var user = Helpers.GetCurrentUser(_currentUser, _contextAccessor);
+
+        // default operation
+        if (operation is null)
+        {
+            operation = new(eventType.GetAttribute<Attributes.AuditEventTypeDescriptorAttribute>()!.Name);
+        }
 
         var context = new Dto.AuditEventContext()
         {

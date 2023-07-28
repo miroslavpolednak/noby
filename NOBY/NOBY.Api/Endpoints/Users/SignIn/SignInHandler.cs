@@ -12,7 +12,7 @@ internal sealed class SignInHandler
     {
         _auditLogger.Log(CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
 
-        if (_configuration.Security!.AuthenticationScheme != NOBY.Infrastructure.Security.AuthenticationConstants.SimpleLoginAuthScheme)
+        if (_configuration.Security!.AuthenticationScheme != AuthenticationConstants.SimpleLoginAuthScheme)
         {
             throw new NobyValidationException($"SignIn endpoint call is not enabled for scheme {_configuration.Security!.AuthenticationScheme}");
         }

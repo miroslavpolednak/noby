@@ -56,8 +56,7 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
             {
                 new("case", salesArrangement.CaseId),
                 new("salesArrangement", request.SalesArrangementId)
-            },
-            operation: new("SalesArrangementSubmittedForProcessing")
+            }
         );
 
         return new Empty();

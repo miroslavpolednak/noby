@@ -88,8 +88,7 @@ internal sealed class CancelCaseHandler
             products: new List<AuditLoggerHeaderItem>
             {
                 new("case", request.CaseId)
-            },
-            operation: new("CaseCancelled")
+            }
         );
 
         return new CancelCaseResponse

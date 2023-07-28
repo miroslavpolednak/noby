@@ -1,4 +1,5 @@
-﻿using CIS.Foms.Enums;
+﻿using CIS.Infrastructure.Telemetry;
+using CIS.Infrastructure.Telemetry.AuditLog;
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 
@@ -22,19 +23,25 @@ internal sealed class GetCaseDetailHandler
 
         Helpers.ThrowIfCaseIsCancelled(model.State);
 
+        // auditni log
+        _auditLogger.LogWithCurrentUser(
+            AuditEventTypes.Noby006,
+            "Přístup na případ, kde přistupující není majitelem případu",
+            products: new List<AuditLoggerHeaderItem>
+            { 
+                new("case", request.CaseId)
+            }
+        );
+
         return model;
     }
 
-    private static int[] _disallowedStates = new[]
-    {
-        (int)CaseStates.ToBeCancelledConfirmed,
-        (int)CaseStates.Cancelled
-    };
-
+    private readonly IAuditLogger _auditLogger;
     private readonly CaseServiceDbContext _dbContext;
 
-    public GetCaseDetailHandler(CaseServiceDbContext dbContext)
+    public GetCaseDetailHandler(CaseServiceDbContext dbContext, IAuditLogger auditLogger)
     {
+        _auditLogger = auditLogger;
         _dbContext = dbContext;
     }
 }

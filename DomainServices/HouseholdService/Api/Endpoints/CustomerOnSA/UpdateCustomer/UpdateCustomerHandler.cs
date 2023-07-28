@@ -86,8 +86,7 @@ internal sealed class UpdateCustomerHandler
                 {
                     new("case", caseId),
                     new("salesArrangement", entity.SalesArrangementId)
-                },
-                operation: new("IdentifiedClientAssignedToSalesArrangement")
+                }
             );
         }
 

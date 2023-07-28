@@ -23,4 +23,7 @@ public enum AuditEventTypes
 
     [AuditEventTypeDescriptor("IdentifiedClientAssignedToSalesArrangement", "NOBY_006")]
     Noby006 = 6,
+
+    [AuditEventTypeDescriptor("AccessToUnownedCase", "NOBY_007")]
+    Noby007 = 7,
 }

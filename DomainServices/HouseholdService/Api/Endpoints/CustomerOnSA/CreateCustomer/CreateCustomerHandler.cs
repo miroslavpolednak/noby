@@ -117,8 +117,7 @@ internal sealed class CreateCustomerHandler
                 {
                     new("case", salesArrangement.CaseId),
                     new("salesArrangement", salesArrangement.SalesArrangementId)
-                },
-                operation: new("IdentifiedClientAssignedToSalesArrangement")
+                }
             );
         }
 
