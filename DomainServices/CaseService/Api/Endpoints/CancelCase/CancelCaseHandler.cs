@@ -1,6 +1,8 @@
 ﻿using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.Security;
+using CIS.Infrastructure.Telemetry;
+using CIS.Infrastructure.Telemetry.AuditLog;
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -61,10 +63,10 @@ internal sealed class CancelCaseHandler
                     ProductTypeId = entity.ProductTypeId,
                     RiskBusinessCaseId = saInstance.RiskBusinessCaseId,
                     FinalResult = request.IsUserInvoked ? RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseFinalResults.CANCELLED_BY_CLIENT : RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseFinalResults.TIMEOUT_BY_EXT_SYS,
-                    UserIdentity = new RiskIntegrationService.Contracts.Shared.Identity
+                    UserIdentity = identity is null ? null : new RiskIntegrationService.Contracts.Shared.Identity
                     {
-                        IdentityScheme = identity?.Scheme.ToString(),
-                        IdentityId = identity?.Identity
+                        IdentityScheme = identity.Scheme.ToString(),
+                        IdentityId = identity.Identity
                     }
                 }, cancellation);
             }
@@ -78,6 +80,17 @@ internal sealed class CancelCaseHandler
 
         // nastavit stav na SA
         await _salesArrangementService.UpdateSalesArrangementState(salesArrangementId, (int)SalesArrangementStates.Cancelled, cancellation);
+
+        // auditni log
+        _auditLogger.LogWithCurrentUser(
+            AuditEventTypes.Noby004,
+            "Případ byl stornován",
+            products: new List<AuditLoggerHeaderItem>
+            {
+                new("case", request.CaseId)
+            },
+            operation: new("CaseCancelled")
+        );
 
         return new CancelCaseResponse
         {
@@ -130,6 +143,7 @@ internal sealed class CancelCaseHandler
         return documents.Any(t => t.IsSigned && t.HouseholdId == householdId);
     }
 
+    private readonly IAuditLogger _auditLogger;
     private readonly IMediator _mediator;
     private readonly CaseServiceDbContext _dbContext;
     private readonly ICurrentUserAccessor _currentUser;
@@ -140,6 +154,7 @@ internal sealed class CancelCaseHandler
     private readonly DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSAService;
 
     public CancelCaseHandler(
+        IAuditLogger auditLogger,
         IMediator mediator,
         ICurrentUserAccessor currentUser,
         DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
@@ -149,6 +164,7 @@ internal sealed class CancelCaseHandler
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         CaseServiceDbContext dbContext)
     {
+        _auditLogger = auditLogger;
         _currentUser = currentUser;
         _riskBusinessCaseService = riskBusinessCaseService;
         _customerOnSAService = customerOnSAService;

@@ -1,4 +1,6 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Infrastructure.Telemetry;
+using CIS.Infrastructure.Telemetry.AuditLog;
+using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;
@@ -101,6 +103,25 @@ internal sealed class CreateCustomerHandler
             }).ToList());
         }
 
+        // auditni log
+        if (kbIdentity is not null)
+        {
+            _auditLogger.LogWithCurrentUser(
+                AuditEventTypes.Noby006,
+                "Identifikovaný klient byl přiřazen k žádosti",
+                identities: new List<AuditLoggerHeaderItem>
+                {
+                    new(kbIdentity.IdentityScheme.ToString(), kbIdentity.IdentityId)
+                },
+                products: new List<AuditLoggerHeaderItem>
+                {
+                    new("case", salesArrangement.CaseId),
+                    new("salesArrangement", salesArrangement.SalesArrangementId)
+                },
+                operation: new("IdentifiedClientAssignedToSalesArrangement")
+            );
+        }
+
         return model;
     }
 
@@ -116,6 +137,7 @@ internal sealed class CreateCustomerHandler
         }, cancellationToken);
     }
 
+    private readonly IAuditLogger _auditLogger;
     private readonly ICaseServiceClient _caseService;
     private readonly SulmService.ISulmClientHelper _sulmClient;
     private readonly ICustomerServiceClient _customerService;
@@ -125,6 +147,7 @@ internal sealed class CreateCustomerHandler
     private readonly ILogger<CreateCustomerHandler> _logger;
 
     public CreateCustomerHandler(
+        IAuditLogger auditLogger,
         ICustomerServiceClient customerService,
         ISalesArrangementServiceClient salesArrangementService,
         SulmService.ISulmClientHelper sulmClient,
@@ -133,6 +156,7 @@ internal sealed class CreateCustomerHandler
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateCustomerHandler> logger)
     {
+        _auditLogger = auditLogger;
         _caseService = caseService;
         _customerService = customerService;
         _salesArrangementService = salesArrangementService;

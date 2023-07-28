@@ -1,13 +1,42 @@
 ﻿using CIS.Core.Security;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
-using static CIS.Infrastructure.Telemetry.AuditLog.AuditLogger;
+using CIS.Infrastructure.Security;
 
 namespace CIS.Infrastructure.Telemetry.AuditLog;
 
 internal sealed class AuditLogger
     : IAuditLogger
 {
+    public void LogWithCurrentUser(
+        AuditEventTypes eventType,
+        string message,
+        ICollection<AuditLoggerHeaderItem>? identities = null,
+        ICollection<AuditLoggerHeaderItem>? products = null,
+        AuditLoggerHeaderItem? operation = null,
+        string? result = null,
+        IDictionary<string, string>? bodyBefore = null,
+        IDictionary<string, string>? bodyAfter = null)
+    {
+        var identity = _currentUser.GetUserIdentityFromHeaders();
+        if (identity is not null)
+        {
+            if (identities is null)
+            {
+                identities = new List<AuditLoggerHeaderItem>
+                {
+                    new(identity.Scheme.ToString(), identity.Identity)
+                };
+            }
+            else
+            {
+                identities.Add(new(identity.Scheme.ToString(), identity.Identity));
+            }
+        }
+
+        Log(eventType, message, identities, products, operation, result, bodyBefore, bodyAfter);
+    }
+
     public void Log(
         AuditEventTypes eventType,
         string message,

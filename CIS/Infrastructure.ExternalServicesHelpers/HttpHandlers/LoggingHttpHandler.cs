@@ -29,20 +29,29 @@ public sealed class LoggingHttpHandler
         _logger = loggerFactory.CreateLogger<LoggingHttpHandler>();
     }
 
+#pragma warning disable CS8604 // Possible null reference argument.
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         if (request.Content is not null && _logRequestPayload)
         {
-#pragma warning disable CS8604 // Possible null reference argument.
-            using (_logger.BeginScope(new Dictionary<string, object>
+            var payloadData = new Dictionary<string, object>
             {
-                { "Payload", await request.Content!.ReadAsStringAsync(cancellationToken) },
                 { "Headers", request.Headers?.ToDictionary(x => x.Key, v => string.Join(';', v.Value)) }
-            }))
+            };
+            // streamy nelogujeme
+            if (request.Content is ByteArrayContent || request.Content is StreamContent)
+            {
+                payloadData.Add("Payload", "[binary data]");
+            }
+            else
+            {
+                payloadData.Add("Payload", await request.Content!.ReadAsStringAsync(cancellationToken));
+            }
+
+            using (_logger.BeginScope(payloadData))
             {
                 _logger.HttpRequestPayload(request);
             }
-#pragma warning restore CS8604 // Possible null reference argument.
         }
         else if (request.Headers is not null)
         {
@@ -62,7 +71,6 @@ public sealed class LoggingHttpHandler
         // logovat vsechen response
         if (response?.Content is not null && _logResponsePayload)
         {
-#pragma warning disable CS8604 // Possible null reference argument.
             using (_logger.BeginScope(new Dictionary<string, object>
             {
                 { "Payload", await getRawResponse() },
@@ -71,7 +79,6 @@ public sealed class LoggingHttpHandler
             {
                 _logger.HttpResponsePayload(request, statusCode);
             }
-#pragma warning restore CS8604 // Possible null reference argument.
         }
         else
         {
