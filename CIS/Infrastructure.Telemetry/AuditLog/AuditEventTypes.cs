@@ -1,5 +1,4 @@
 ﻿using CIS.Infrastructure.Telemetry.AuditLog.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 namespace CIS.Infrastructure.Telemetry.AuditLog;
 
@@ -24,6 +23,6 @@ public enum AuditEventTypes
     [AuditEventTypeDescriptor("IdentifiedClientAssignedToSalesArrangement", "NOBY_006")]
     Noby006 = 6,
 
-    [AuditEventTypeDescriptor("AccessToUnownedCase", "NOBY_007")]
-    Noby007 = 7,
+    [AuditEventTypeDescriptor("AccessToUnownedCase", "NOBY_009")]
+    Noby009 = 9,
 }
