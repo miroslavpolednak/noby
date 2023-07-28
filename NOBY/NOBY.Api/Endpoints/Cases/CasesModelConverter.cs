@@ -52,7 +52,7 @@ internal sealed class CasesModelConverter
         if (model.Tasks is not null && model.Tasks.Any())
 		{
 			converted.ActiveTasks = model.Tasks
-				.Join(_taskTypes, i => i.TaskTypeId, o => o.CategoryId, (task, i) => i.CategoryId)
+				.Join(_taskTypes, i => i.TaskTypeId, o => o.Id, (task, i) => i.Id)
 				.GroupBy(k => k)
 				.Select(t => new Dto.TaskModel
 				{
@@ -74,7 +74,7 @@ internal sealed class CasesModelConverter
 
 	private List<ProductTypesResponse.Types.ProductTypeItem> _productTypes;
 	private List<GenericCodebookResponse.Types.GenericCodebookItem> _caseStates;
-	private List<WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem> _taskTypes;
+	private List<GenericCodebookResponse.Types.GenericCodebookItem> _taskTypes;
 
 	private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
 

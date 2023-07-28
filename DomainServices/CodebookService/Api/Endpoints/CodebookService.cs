@@ -712,18 +712,8 @@ internal sealed class CodebookService
     public override Task<WorkflowTaskStatesNobyResponse> WorkflowTaskStatesNoby(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<WorkflowTaskStatesNobyResponse, WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem>();
 
-    public override Task<WorkflowTaskTypesResponse> WorkflowTaskTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(() =>
-        {
-            var items = _db.GetList<WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem>(nameof(WorkflowTaskTypes), 1);
-            var extensions = _db.GetDynamicList(nameof(WorkflowTaskTypes), 2);
-
-            items.ForEach(item =>
-            {
-                item.CategoryId = extensions.FirstOrDefault(t => t.WorkflowTaskTypeId == item.Id)?.CategoryId;
-            });
-            return (new WorkflowTaskTypesResponse()).AddItems(items);
-        });
+    public override Task<GenericCodebookResponse> WorkflowTaskTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> WorkSectors(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();

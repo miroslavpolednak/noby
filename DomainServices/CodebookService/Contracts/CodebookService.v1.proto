@@ -567,7 +567,7 @@ service CodebookService {
 		};
    }
 
-   rpc WorkflowTaskTypes (google.protobuf.Empty) returns (WorkflowTaskTypesResponse) {
+   rpc WorkflowTaskTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/workflow-task-types"
 		};
