@@ -146,13 +146,24 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         var customersOnSaIdsWithCRSChange = customersChangeMetadata!.Where(r => r.CustomerChangeMetadata.WasCRSChanged).Select(r => r.CustomerOnSAId);
         var virtualDocumentsOnSaCrs = _documentOnSaMapper.CreateDocumentOnSaToSign(customersOnSaIdsWithCRSChange, request.SalesArrangementId!.Value);
 
-        // Get only virtual CRS DocOnSa without existing DocOnSa (real) in DB 
-        var mergedVirtualDocumentsOnSa = virtualDocumentsOnSaCrs.Where(m =>
-                    !documentOnSaEntities.Select(s => s.SalesArrangementId).Contains(m.SalesArrangementId) &&
-                    !documentOnSaEntities.Select(s => s.DocumentTypeId).Contains(m.DocumentTypeId) &&
-                    !documentOnSaEntities.Select(s => s.CustomerOnSAId1).Contains(m.CustomerOnSAId));
+        return MergeVirtualWithExistCrs(virtualDocumentsOnSaCrs, documentOnSaEntities);
+    }
 
-        return mergedVirtualDocumentsOnSa;
+    /// <summary>
+    /// Get only virtual CRS DocOnSa without existing DocOnSa (real) in DB 
+    /// </summary>
+    private static IEnumerable<DocumentOnSAToSign> MergeVirtualWithExistCrs(IEnumerable<DocumentOnSAToSign> virtualDocumentsOnSaCrs, List<DocumentOnSa> documentOnSaEntities)
+    {
+        foreach (var virtualCrs in virtualDocumentsOnSaCrs)
+        {
+            var docOnSaEntity = documentOnSaEntities.SingleOrDefault(r => r.SalesArrangementId == virtualCrs.SalesArrangementId
+                                                                     && r.DocumentTypeId == virtualCrs.DocumentTypeId
+                                                                     && r.CustomerOnSAId1 == virtualCrs.CustomerOnSAId);
+            if (docOnSaEntity is null)
+            {
+                yield return virtualCrs;
+            }
+        }
     }
 
     private async Task EvaluateElectronicDocumentStatus(List<DocumentOnSa> documentsOnSaRealEntity, CancellationToken cancellationToken)
