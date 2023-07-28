@@ -1190,21 +1190,6 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem.IndicatorFieldNumber">
             <summary>Field number for the "Indicator" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.ItemsFieldNumber">
-            <summary>Field number for the "Items" field.</summary>
-        </member>
-        <member name="T:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types">
-            <summary>Container for nested types declared in the WorkflowTaskTypesResponse message type.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem.IdFieldNumber">
-            <summary>Field number for the "Id" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem.NameFieldNumber">
-            <summary>Field number for the "Name" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem.CategoryIdFieldNumber">
-            <summary>Field number for the "CategoryId" field.</summary>
-        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>

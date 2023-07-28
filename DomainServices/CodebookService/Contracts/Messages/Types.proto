@@ -713,13 +713,3 @@ message WorkflowTaskStatesNobyResponse {
 		int32 Indicator = 4;
 	}
 }
-
-message WorkflowTaskTypesResponse {
-	repeated WorkflowTaskTypesItem Items = 1;
-
-	message WorkflowTaskTypesItem {
-		int32 Id = 1;
-		string Name = 2;
-		google.protobuf.Int32Value CategoryId = 3;
-	}
-}
