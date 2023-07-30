@@ -45,7 +45,7 @@ internal sealed class SignInHandler
 
         _auditLogger.Log(
             CIS.Infrastructure.Audit.AuditEventTypes.Noby002,
-            "Uživatel user se přihlásil do aplikace.",
+            $"Uživatel {request.IdentityScheme}={request.IdentityId} se přihlásil do aplikace.",
             bodyAfter: new Dictionary<string, string>() { 
                 { "login", $"{request.IdentityScheme}={request.IdentityId}" },
                 { "type", AuthenticationConstants.SimpleLoginAuthScheme }

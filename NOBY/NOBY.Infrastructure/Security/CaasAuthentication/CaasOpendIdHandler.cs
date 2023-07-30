@@ -50,7 +50,7 @@ internal sealed class CaasOpendIdHandler
                 if (context.HttpContext.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment))
                 {
                     var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
-                    logger.Log(CIS.Infrastructure.Audit.AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
+                    logger.Log(AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
 
                     context.ProtocolMessage.State = getRedirectUri(context.HttpContext.Request);
                     return Task.CompletedTask;
@@ -58,7 +58,7 @@ internal sealed class CaasOpendIdHandler
                 else // vsechny standardni requesty
                 {
                     var url = context.ProtocolMessage.CreateAuthenticationRequestUrl();
-                    throw new CIS.Core.Exceptions.CisAuthenticationException(url);
+                    throw new CisAuthenticationException(url);
                 }
             },
             OnTokenValidated = context =>
