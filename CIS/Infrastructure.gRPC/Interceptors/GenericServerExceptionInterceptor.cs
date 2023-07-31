@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
 using CIS.Core.Exceptions;
+using CIS.Core.Exceptions.ExternalServices;
 
 namespace CIS.Infrastructure.gRPC;
 
@@ -66,6 +67,12 @@ public sealed class GenericServerExceptionInterceptor
             setHttpStatus(StatusCodes.Status400BadRequest);
             _logger.LogValidationResults(e);
             throw GrpcExceptionHelpers.CreateRpcException(e);
+        }
+        catch (CisExtServiceUnavailableException ex)
+        {
+            setHttpStatus(StatusCodes.Status500InternalServerError);
+            _logger.ExtServiceUnavailable(ex.ServiceName, ex);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Unknown, ex);
         }
         catch (BaseCisException e)
         {
