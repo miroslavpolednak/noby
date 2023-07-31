@@ -31,6 +31,13 @@ internal sealed class IdentifyByIdentityHandler
             customerDetails.Add(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId, cancellationToken));
         }
 
+        //Debtor has to be identified first
+        if (customerOnSaInstance.CustomerRoleId is not (int)CustomerRoles.Debtor && 
+            !customerDetails.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)))
+        {
+            throw new NobyValidationException("Main customer has to be identified first.");
+        }
+
         // validate two same identities on household
         if (customerDetails.Any(x => x.CustomerIdentifiers?.Any(t => (int)t.IdentityScheme == (int)request.CustomerIdentity!.Scheme && t.IdentityId == request.CustomerIdentity.Id) ?? false))
         {
