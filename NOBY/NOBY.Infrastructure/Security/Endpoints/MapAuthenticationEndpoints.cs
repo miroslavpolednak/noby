@@ -36,13 +36,13 @@ public static class MapAuthenticationEndpoints
             // Odhlášení přihlášeného uživatele
             t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint,
                 ([FromServices] IHttpContextAccessor context,
-                [FromServices] ICurrentUserAccessor currentUser,
                 [FromServices] AppConfiguration configuration,
                 [FromServices] IAuditLogger logger,
                 [FromQuery] string? redirect) =>
                 {
                     string redirectUrl = Uri.TryCreate(redirect, UriKind.Absolute, out var uri) ? uri.ToString() : "/";
-                    
+                    string userLogin = context.HttpContext!.User.Claims.First(t => t.Type == SecurityConstants.ClaimTypeIdent).Value;
+
                     context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
                     if (configuration.Security!.AuthenticationScheme == AuthenticationConstants.CaasAuthScheme)
@@ -50,9 +50,9 @@ public static class MapAuthenticationEndpoints
                         context.HttpContext!.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
                     }
 
-                    logger.Log(AuditEventTypes.Noby003, $"Uživatel {currentUser.User!.Login} se odhlásil z aplikace", bodyBefore: new Dictionary<string, string>
+                    logger.Log(AuditEventTypes.Noby003, $"Uživatel {userLogin} se odhlásil z aplikace", bodyBefore: new Dictionary<string, string>
                     {
-                        { "Login", currentUser.User!.Login! },
+                        { "Login", userLogin },
                         { "Method", "manually" }
                     });
 
