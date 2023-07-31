@@ -76,7 +76,7 @@ internal sealed class FormsService
         }, cancellationToken);
     }
 
-    public async Task<GetEasFormResponse> LoadProductForm(SalesArrangement salesArrangement, IEnumerable<DynamicFormValues> dynamicFormValues, CancellationToken cancellationToken)
+    public async Task<GetEasFormResponse> LoadProductForm(SalesArrangement salesArrangement, IEnumerable<DynamicFormValues> dynamicFormValues, bool isCancelled, CancellationToken cancellationToken)
     {
         FormValidations.CheckArrangement(salesArrangement);
 
@@ -85,7 +85,8 @@ internal sealed class FormsService
             SalesArrangementId = salesArrangement.SalesArrangementId,
             UserId = salesArrangement.Created.UserId!.Value,
             EasFormRequestType = EasFormRequestType.Product,
-            DynamicFormValues = { dynamicFormValues }
+            DynamicFormValues = { dynamicFormValues },
+            IsCancelled = isCancelled
         }, cancellationToken);
 
         FormValidations.CheckFormData(response.Product);

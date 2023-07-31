@@ -36,7 +36,7 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
         //TODO: Mock - what to do when a service SA does not have DV
         if (salesArrangement.SalesArrangementTypeId is not (7 or 8 or 9))
         {
-            await ProcessEasForm(salesArrangement, category, cancellationToken);
+            await ProcessEasForm(salesArrangement, category, request.IsCancelled, cancellationToken);
         }
 
         //https://jira.kb.cz/browse/HFICH-4684 
@@ -59,15 +59,15 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
 
         return new Empty();
     }
-    private Task ProcessEasForm(SalesArrangement salesArrangement, SalesArrangementCategories category, CancellationToken cancellationToken) =>
+    private Task ProcessEasForm(SalesArrangement salesArrangement, SalesArrangementCategories category, bool isCancelled, CancellationToken cancellationToken) =>
         category switch
         {
-            SalesArrangementCategories.ProductRequest => ProcessProductRequest(salesArrangement, cancellationToken),
+            SalesArrangementCategories.ProductRequest => ProcessProductRequest(salesArrangement, isCancelled, cancellationToken),
             SalesArrangementCategories.ServiceRequest => ProcessServiceRequest(salesArrangement, cancellationToken),
             _ => throw new NotImplementedException()
         };
 
-    private async Task ProcessProductRequest(SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task ProcessProductRequest(SalesArrangement salesArrangement, bool isCancelled, CancellationToken cancellationToken)
     {
         var dynamicValues = await _formsService.CreateProductDynamicFormValues(salesArrangement, cancellationToken).ToListAsync(cancellationToken);
 
@@ -75,7 +75,7 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
 
         dynamicValues.First(v => v.DocumentTypeId == (int)DocumentTypes.ZADOSTHU).PerformerUserId = await _performerProvider.LoadPerformerUserId(salesArrangement.CaseId, cancellationToken);
 
-        var easFormResponse = await _formsService.LoadProductForm(salesArrangement, dynamicValues, cancellationToken);
+        var easFormResponse = await _formsService.LoadProductForm(salesArrangement, dynamicValues, isCancelled, cancellationToken);
 
         await _formsDocumentService.SaveEasForms(easFormResponse, salesArrangement, finalDocumentsOnSa, cancellationToken);
     }
