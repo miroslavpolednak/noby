@@ -36,7 +36,14 @@ internal class DocumentOnSaInfo
     private static int GetSignatureTypeId(IEnumerable<DocumentOnSAToSign> documentsOnSa)
     {
         const int DefaultSignatureMethodId = 1;
-        return documentsOnSa.LastOrDefault(d => d.IsValid && d.IsSigned)?.SignatureTypeId ?? DefaultSignatureMethodId;
+
+        var signatureTypeId = documentsOnSa.LastOrDefault(d => d.IsValid && d.IsSigned)?.SignatureTypeId ?? DefaultSignatureMethodId;
+
+        return signatureTypeId switch
+        {
+            1 => 1,
+            _ => 2
+        };
     }
 
     private static DateTime? GetFirstSignatureDate(IEnumerable<DocumentOnSAToSign> documentsOnSa) =>
