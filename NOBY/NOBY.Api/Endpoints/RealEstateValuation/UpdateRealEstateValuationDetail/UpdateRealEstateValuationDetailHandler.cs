@@ -21,7 +21,12 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
 
     public async Task Handle(UpdateRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
     {
-        await CheckIfRequestIsValid(request, cancellationToken);
+        var valuationDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
+
+        await CheckIfRequestIsValid(request, valuationDetail, cancellationToken);
+
+        if (valuationDetail.ValuationStateId is not 7)
+            await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, 7, cancellationToken);
 
         var dsRequest = new __Contracts.UpdateRealEstateValuationDetailRequest
         {
@@ -67,16 +72,15 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         await _realEstateValuationService.UpdateRealEstateValuationDetail(dsRequest, cancellationToken);
     }
 
-    private async Task CheckIfRequestIsValid(UpdateRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
+    private async Task CheckIfRequestIsValid(UpdateRealEstateValuationDetailRequest request, __Contracts.RealEstateValuationDetail valuationDetail, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
-        var valuationDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
         if (valuationDetail.CaseId != request.CaseId)
             throw new CisAuthorizationException("The requested RealEstateValuation is not assigned to the requested Case");
 
-        if (valuationDetail.ValuationStateId != 7)
-            throw new CisAuthorizationException("The valuation is not in progress");
+        if (valuationDetail.ValuationStateId is not (6 or 7))
+            throw new CisAuthorizationException("The valuation has bad state");
 
         if (caseInstance.State == (int)CaseStates.InProgress && request.LoanPurposeDetails is not null)
             throw new CisAuthorizationException("The LoanPurposeDetails has to be null when the case is in progress");
