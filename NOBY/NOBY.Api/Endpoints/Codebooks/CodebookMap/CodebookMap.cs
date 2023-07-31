@@ -99,6 +99,10 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.IncomeMainTypesAML(ct));
         AddCodebook((s, ct) => s.StatementSubscriptionTypes(ct));
         AddCodebook((s, ct) => s.StatementFrequencies(ct));
+        AddCodebook((s, ct) => s.RealEstateValuationFlatSchemas(ct));
+        AddCodebook((s, ct) => s.RealEstateValuationBuildingMaterialStructures(ct));
+        AddCodebook((s, ct) => s.RealEstateValuationBuildingAges(ct));
+        AddCodebook((s, ct) => s.RealEstateValuationBuildingTechnicalStates(ct));
     }
 
     private void AddCodebook<TReturn>(Expression<Func<ICodebookServiceClient, CancellationToken, TReturn>> expression, Func<IEnumerable<object>, IEnumerable<object>> customizeResult = default!) where TReturn : Task
