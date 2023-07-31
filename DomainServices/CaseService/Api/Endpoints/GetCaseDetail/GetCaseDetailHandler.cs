@@ -1,6 +1,5 @@
 ﻿using CIS.Core.Security;
-using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Telemetry.AuditLog;
+using CIS.Infrastructure.Audit;
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 

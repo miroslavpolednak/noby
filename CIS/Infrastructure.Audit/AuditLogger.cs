@@ -4,7 +4,7 @@ using System.Diagnostics;
 using CIS.Infrastructure.Security;
 using CIS.Core;
 
-namespace CIS.Infrastructure.Telemetry.AuditLog;
+namespace CIS.Infrastructure.Audit;
 
 internal sealed class AuditLogger
     : IAuditLogger
@@ -48,7 +48,7 @@ internal sealed class AuditLogger
         IDictionary<string, string>? bodyBefore = null,
         IDictionary<string, string>? bodyAfter = null)
     {
-        var user = Helpers.GetCurrentUser(_currentUser, _contextAccessor);
+        var user = Telemetry.Helpers.GetCurrentUser(_currentUser, _contextAccessor);
 
         // default operation
         if (operation is null)

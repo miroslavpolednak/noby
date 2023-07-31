@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 
-namespace CIS.Infrastructure.Telemetry.AuditLog.Database;
+namespace CIS.Infrastructure.Audit.Database;
 
 internal sealed class DatabaseWriter
 {

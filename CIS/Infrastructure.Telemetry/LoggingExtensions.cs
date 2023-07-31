@@ -1,12 +1,7 @@
-﻿using CIS.Core.Configuration;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.AspNetCore.Hosting.Server.Features;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System.Reflection;
 
 namespace CIS.Infrastructure.Telemetry;
 
@@ -42,23 +37,6 @@ public static class LoggingExtensions
 
         // pridani custom enricheru
         builder.Services.AddTransient<Enrichers.CisHeadersEnricher>();
-
-        // auditni log
-        if (configuration?.Logging?.Audit is not null)
-        {
-            builder.Services.AddSingleton((serviceProvider) =>
-            {
-                // get server IP
-                var server = serviceProvider.GetRequiredService<IServer>();
-                var addresses = server.Features.Get<IServerAddressesFeature>()!.Addresses;
-                var serverIp = addresses.First()[7..^1];
-
-                var cisConfiguration = serviceProvider.GetRequiredService<ICisEnvironmentConfiguration>();
-                
-                return new AuditLog.AuditLoggerHelper(serverIp, cisConfiguration, configuration.Logging.Audit);
-            });
-            builder.Services.AddScoped<IAuditLogger, AuditLog.AuditLogger>();
-        }
 
         // pridani serilogu
         builder.Host.AddCisLoggingInternal();

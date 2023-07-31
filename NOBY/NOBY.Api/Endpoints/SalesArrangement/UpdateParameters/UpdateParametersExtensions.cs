@@ -1,4 +1,5 @@
-﻿using NOBY.Api.Endpoints.SalesArrangement.Dto;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
@@ -43,7 +44,7 @@ internal static class UpdateParametersExtensions
         {
             DrawingDate = parameters.DrawingDate,
             IsImmediateDrawing = parameters.IsImmediateDrawing,
-            Applicant = parameters.Applicant,
+            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             RepaymentAccount = parameters.RepaymentAccount is null ? null : new()
             {
                 BankCode = parameters.RepaymentAccount.BankCode,
@@ -87,7 +88,7 @@ internal static class UpdateParametersExtensions
     {
         var model = new _SA.SalesArrangementParametersGeneralChange()
         {
-            Applicant = parameters.Applicant,
+            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             Collateral = new()
             {
                 IsActive = parameters.Collateral.IsActive,
@@ -169,7 +170,7 @@ internal static class UpdateParametersExtensions
     {
         var model = new _SA.SalesArrangementParametersHUBN()
         {
-            Applicant = parameters.Applicant,
+            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             CollateralIdentification = new()
             {
                 RealEstateIdentification = parameters.CollateralIdentification?.RealEstateIdentification ?? ""

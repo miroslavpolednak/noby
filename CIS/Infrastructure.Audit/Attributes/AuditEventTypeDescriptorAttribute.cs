@@ -1,4 +1,4 @@
-﻿namespace CIS.Infrastructure.Telemetry.AuditLog.Attributes;
+﻿namespace CIS.Infrastructure.Audit.Attributes;
 
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
 internal sealed class AuditEventTypeDescriptorAttribute

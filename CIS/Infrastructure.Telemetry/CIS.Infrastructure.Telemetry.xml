@@ -19,21 +19,6 @@
             Konfigurace logování a telemerie
             </summary>
         </member>
-        <member name="P:CIS.Infrastructure.Telemetry.Configuration.AuditLogConfiguration.ConnectionString">
-            <summary>
-            CS na databazi auditniho logu
-            </summary>
-        </member>
-        <member name="P:CIS.Infrastructure.Telemetry.Configuration.AuditLogConfiguration.EamApplication">
-            <summary>
-            Kod pro ukladani v Logmanu
-            </summary>
-        </member>
-        <member name="P:CIS.Infrastructure.Telemetry.Configuration.AuditLogConfiguration.EamVersion">
-            <summary>
-            Verze logovaciho schematu
-            </summary>
-        </member>
         <member name="P:CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.File">
             <summary>
             Logovani do souboru

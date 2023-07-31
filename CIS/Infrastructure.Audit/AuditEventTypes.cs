@@ -1,6 +1,6 @@
-﻿using CIS.Infrastructure.Telemetry.AuditLog.Attributes;
+﻿using CIS.Infrastructure.Audit.Attributes;
 
-namespace CIS.Infrastructure.Telemetry.AuditLog;
+namespace CIS.Infrastructure.Audit;
 
 public enum AuditEventTypes 
     : int

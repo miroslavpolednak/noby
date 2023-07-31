@@ -1,4 +1,4 @@
-﻿namespace CIS.Infrastructure.Telemetry.AuditLog.Dto;
+﻿namespace CIS.Infrastructure.Audit.Dto;
 
 internal sealed record AuditLoggerDefaults(
     string ServerIp,

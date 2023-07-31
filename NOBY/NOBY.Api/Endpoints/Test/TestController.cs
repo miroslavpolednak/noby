@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Telemetry.AuditLog;
+﻿using CIS.Infrastructure.Audit;
 using Microsoft.AspNetCore.Authorization;
 using NOBY.Api.Endpoints.Test.Rollback;
 
@@ -31,9 +30,8 @@ public class TestController : ControllerBase
     {
         var logger = _context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
         logger.Log(
-            CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby001,
+            CIS.Infrastructure.Audit.AuditEventTypes.Noby001,
             "Nejaka fajn zprava",
-            result: "OK",
             identities: new List<AuditLoggerHeaderItem> { new("aaa", "bbb") },
             products: new List<AuditLoggerHeaderItem> { new("111", "Uver") },
             operation: new("111", "CreateCase"),

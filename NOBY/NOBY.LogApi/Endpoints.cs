@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Telemetry;
+﻿using CIS.Infrastructure.Audit;
 using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Mvc;
 

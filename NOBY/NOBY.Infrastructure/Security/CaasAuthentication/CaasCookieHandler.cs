@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Telemetry;
+﻿using CIS.Infrastructure.Audit;
 using DomainServices.UserService.Clients;
 using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -55,7 +55,7 @@ internal sealed class CaasCookieHandler
                 // vytvorit claimy
                 var claims = new List<Claim>();
                 claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, currentLogin));
-                claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+                claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(CultureInfo.InvariantCulture)));
                 // doplnit prava uzivatele do claims
                 claims.AddRange(permissions.Select(t => new Claim(AuthenticationConstants.NobyPermissionClaimType, $"{t}")));
 
@@ -68,19 +68,13 @@ internal sealed class CaasCookieHandler
                 // zalogovat prihlaseni uzivatele
                 var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
                 logger.Log(
-                    CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby002,
+                    AuditEventTypes.Noby002,
                     $"Uživatel {currentLogin} se přihlásil do aplikace.",
                     bodyAfter: new Dictionary<string, string>() { { "login", currentLogin } });
             },
             OnSignedIn = context =>
             {
                 context.Properties.RedirectUri = context.HttpContext.Items["noby_redirect_uri"]!.ToString();
-                return Task.CompletedTask;
-            },
-            OnSigningOut = context =>
-            {
-                var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
-                logger.Log(CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby003, "User logged out xxxxx");
                 return Task.CompletedTask;
             }
         };

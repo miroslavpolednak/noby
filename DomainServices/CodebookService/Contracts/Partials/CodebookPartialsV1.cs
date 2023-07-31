@@ -69,6 +69,5 @@ public partial class TinNoFillReasonsByCountryResponse : IItemsResponse<TinNoFil
 public partial class WorkflowConsultationMatrixResponse : IItemsResponse<WorkflowConsultationMatrixResponse.Types.WorkflowConsultationMatrixItem> { }
 public partial class WorkflowTaskStatesResponse : IItemsResponse<WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem> { }
 public partial class WorkflowTaskStatesNobyResponse : IItemsResponse<WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem> { }
-public partial class WorkflowTaskTypesResponse : IItemsResponse<WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem> { }
 public partial class RealEstateSubtypesResponse : IItemsResponse<RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem> { }
 public partial class RealEstateTypesResponse : IItemsResponse<RealEstateTypesResponse.Types.RealEstateTypesResponseItem> { }

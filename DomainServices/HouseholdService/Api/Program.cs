@@ -1,3 +1,4 @@
+using CIS.Infrastructure.Audit;
 using CIS.Infrastructure.Security;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
@@ -32,6 +33,7 @@ try
         // logging
         .AddCisLogging()
         .AddCisTracing()
+        .AddCisAudit()
         // authentication
         .AddCisServiceAuthentication()
         // add self

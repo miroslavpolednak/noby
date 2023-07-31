@@ -13,7 +13,7 @@ public static class CisWebApiCors
             .GetSection(Configuration.CorsConfiguration.AppsettingsConfigurationKey)
             .Get<Configuration.CorsConfiguration>()!;
 
-        if (cisConfiguration.EnableCors)
+        if (cisConfiguration?.EnableCors ?? false)
         {
             builder.Services.AddCors(x =>
             {
