@@ -1,8 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
-using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
-using CommunityToolkit.HighPerformance.Helpers;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.S3;
 
