@@ -27,7 +27,7 @@ public static class StartupRestExtensions
             .AddHttpClient<TClient, TImplementation>((services, client) =>
             {
                 var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
-
+                
                 // service url
                 client.BaseAddress = configuration.ServiceUrl;
                 // musi byt nastaveny, jinak je default na 100
@@ -54,6 +54,14 @@ public static class StartupRestExtensions
                     {
                         ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
                     } : new HttpClientHandler();
+
+                // pouzij proxy
+                if (configuration.UseDefaultProxy)
+                {
+                    clientHandler.Proxy = null;
+                    clientHandler.UseProxy = true;
+                    clientHandler.DefaultProxyCredentials = System.Net.CredentialCache.DefaultNetworkCredentials;
+                }
 
                 // logovat payload a hlavicku
                 if (configuration.UseLogging)

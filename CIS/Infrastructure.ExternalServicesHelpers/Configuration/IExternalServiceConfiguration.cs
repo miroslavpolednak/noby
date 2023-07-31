@@ -10,6 +10,11 @@ public interface IExternalServiceConfiguration
     : CIS.Core.IIsServiceDiscoverable
 {
     /// <summary>
+    /// Pokud je true, pouzije pro HttpClient systemovou proxy
+    /// </summary>
+    bool UseDefaultProxy { get; set; }
+
+    /// <summary>
     /// Zapne logovani request a response payloadu a hlavicek. Default: true
     /// </summary>
     /// <remarks>Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.</remarks>
