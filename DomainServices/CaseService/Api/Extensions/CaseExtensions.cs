@@ -169,11 +169,15 @@ internal static class CaseExtensions
         };
     }
 
-    private static int getSignatureTypeId(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
+    private static int? getSignatureTypeId(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
     {
-        return taskTypeId == 6
-            ? taskData.GetInteger("ukol_podpis_dokument_metoda")
-            : SignatureTypes.Unknown.ToByte();
+        return (taskTypeId, taskData.GetInteger("ukol_podpis_dokument_metoda")) switch
+        {
+            (6, _) => null,
+            (_, 1) => SignatureTypes.Paper.ToByte(),
+            (_, 2) => SignatureTypes.Electronic.ToByte(),
+            _ => null
+        };
     }
 
     private static string getStateName(IReadOnlyDictionary<string, string> taskData)
