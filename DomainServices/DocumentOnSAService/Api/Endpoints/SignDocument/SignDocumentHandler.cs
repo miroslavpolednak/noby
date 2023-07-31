@@ -8,6 +8,7 @@ using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
+using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using ExternalServices.Eas.V1;
@@ -89,7 +90,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
         // Update Mortgage.FirstSignatureDate
         if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()) // 4
-            await UpdateMortgageFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
+            await UpdateFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
 
         // SUML call
         await SumlCall(documentOnSa, cancellationToken);
@@ -99,11 +100,22 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         return new Empty();
     }
 
-    private async Task UpdateMortgageFirstSignatureDate(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task UpdateFirstSignatureDate(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
+        //SalesArrangement parameters
+        salesArrangement.Mortgage.FirstSignatureDate = signatureDate;
+        await _arrangementServiceClient.UpdateSalesArrangementParameters(new UpdateSalesArrangementParametersRequest
+                                                                         {
+                                                                             SalesArrangementId = salesArrangement.SalesArrangementId,
+                                                                             Mortgage = salesArrangement.Mortgage
+                                                                         },
+                                                                         cancellationToken);
+
+        //KonsDb 
         var mortgageResponse = await _productServiceClient.GetMortgage(salesArrangement.CaseId, cancellationToken);
         mortgageResponse.Mortgage.FirstSignatureDate = signatureDate;
-        await _productServiceClient.UpdateMortgage(new() { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
+
+        await _productServiceClient.UpdateMortgage(new UpdateMortgageRequest { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
     }
 
     private async Task SumlCall(DocumentOnSa documentOnSa, CancellationToken cancellationToken)

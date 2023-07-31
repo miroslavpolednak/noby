@@ -445,6 +445,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00034-LoanApplication_config_fix.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00034-LoanApplication_config_fix.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00035-LoanApplication_DefaultValueWhneNull.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00035-LoanApplication_DefaultValueWhneNull.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00036-HFICH-7170_Fixed_MpIdentity.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00036-HFICH-7170_Fixed_MpIdentity.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00037-HFICH-7088_FirstSignatureDate.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00037-HFICH-7088_FirstSignatureDate.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -519,7 +520,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Crem", "Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSAService.ExternalServices.ESignatureQueues", "DomainServices\DocumentOnSAService\ExternalServices.ESignatureQueues\DomainServices.DocumentOnSAService.ExternalServices.ESignatureQueues.csproj", "{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.Infrastructure.Audit", "CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj", "{30E36973-F4AF-4241-969E-67E2DCEE190B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.Audit", "CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj", "{30E36973-F4AF-4241-969E-67E2DCEE190B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
