@@ -97,7 +97,6 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         {
             DocumentTypeId = request.DocumentTypeId,
             SalesArrangementId = request.SalesArrangementId,
-            SignatureMethodCode = request.SignatureMethodCode,
             SignatureTypeId = request.SignatureTypeId,
             CustomerOnSAId1 = customerOnSAId1,
             CustomerOnSAId2 = customerOnSAId2,
@@ -174,7 +173,6 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
             DocumentTypeId = result.DocumentOnSa.DocumentTypeId,
             FormId = result.DocumentOnSa.FormId,
             IsSigned = result.DocumentOnSa.IsSigned,
-            SignatureMethodCode = result.DocumentOnSa.SignatureMethodCode,
             SignatureTypeId = result.DocumentOnSa.SignatureTypeId,
             SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
             {

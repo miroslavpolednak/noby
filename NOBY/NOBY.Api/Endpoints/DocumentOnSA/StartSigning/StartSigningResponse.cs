@@ -23,13 +23,7 @@ public class StartSigningResponse
     /// Příznak, zda byl dokument již podepsán.
     /// </summary>
     public bool IsSigned { get; set; }
-
-    /// <summary>
-    /// Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
-    /// </summary>
-    [Obsolete("Replaced with SignatureTypeId")]
-    public string? SignatureMethodCode { get; set; }
-
+    
     /// <summary>
     /// Metoda podpisu (manuální/elektronický). Číselník SignatureType.
     /// </summary>

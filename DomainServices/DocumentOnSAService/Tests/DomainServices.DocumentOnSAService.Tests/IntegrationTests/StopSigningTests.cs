@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.DataAggregatorService.Contracts;
+﻿using CIS.Foms.Enums;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.Testing;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
@@ -47,13 +48,13 @@ public class StopSigningTests : IntegrationTestBase
 
         var salesArrangementId = 1;
         var documentTypeId = 4;
-        var signatureMethodCode = "PHYSICAL";
+        var signatureTypeId = (int)SignatureTypes.Paper;
 
         var response = await client.StartSigningAsync(new()
         {
             SalesArrangementId = salesArrangementId,
             DocumentTypeId = documentTypeId,
-            SignatureMethodCode = signatureMethodCode
+            SignatureTypeId = signatureTypeId
         });
 
         await client.StopSigningAsync(new() { DocumentOnSAId = response.DocumentOnSa.DocumentOnSAId });

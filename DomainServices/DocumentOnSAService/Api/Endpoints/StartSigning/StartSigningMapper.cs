@@ -259,7 +259,6 @@ public class StartSigningMapper
                 IsValid = documentOnSaEntity.IsValid,
                 IsSigned = documentOnSaEntity.IsSigned,
                 IsArchived = documentOnSaEntity.IsArchived,
-                SignatureMethodCode = documentOnSaEntity.SignatureMethodCode ?? string.Empty,
                 EArchivId = documentOnSaEntity.EArchivId,
                 SignatureTypeId = documentOnSaEntity.SignatureTypeId,
             }

@@ -622,19 +622,6 @@ internal sealed class CodebookService
     public override Task<GenericCodebookResponse> SignatureTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<CIS.Foms.Enums.SignatureTypes>(true);
 
-    public override Task<SigningMethodsForNaturalPersonResponse> SigningMethodsForNaturalPerson(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(() => (new SigningMethodsForNaturalPersonResponse()).AddItems(
-            new List<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>
-            {
-                new() { Code = "OFFERED", Order = 4, Name = "Delegovaná metoda podpisu", Description = "deprecated", IsValid = true, StarbuildEnumId = 2 },
-                new() { Code = "PHYSICAL", Order = 1, Name = "Ruční podpis", Description = "Fyzický/ruční podpis dokumentu.", IsValid = true, StarbuildEnumId = 1 },
-                new() { Code = "DELEGATE", Order = 1, Name = "Přímé bankovnictví", Description = "Přímé bankovnictví - Delegovaná metoda podpisu", IsValid = true, StarbuildEnumId = 2 },
-                new() { Code = "PAAT", Order = 1, Name = "KB klíč", IsValid = true, StarbuildEnumId = 2 },
-                new() { Code = "INT_CERT_FILE", Order = 2, Name = "Interní certifikát v souboru", IsValid = true, StarbuildEnumId = 2 },
-                new() { Code = "APOC", Order = 3, Name = "Automatizovaný Podpis Osobním Certifikátem", IsValid = true, StarbuildEnumId = 2 },
-            }
-        ));
-
     public override Task<SmsNotificationTypesResponse> SmsNotificationTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<SmsNotificationTypesResponse, SmsNotificationTypesResponse.Types.SmsNotificationTypeItem>();
 

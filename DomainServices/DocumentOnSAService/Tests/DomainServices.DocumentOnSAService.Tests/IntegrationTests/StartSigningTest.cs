@@ -50,21 +50,20 @@ public class StartSigningTest : IntegrationTestBase
 
         var salesArrangementId = 1;
         var documentTypeId = 4;
-        var signatureMethodCode = "PHYSICAL";
+        var signatureTypeId = (int)SignatureTypes.Paper;
 
         var response = await client.StartSigningAsync(new()
         {
             SalesArrangementId = salesArrangementId,
             DocumentTypeId = documentTypeId,
-            SignatureMethodCode = signatureMethodCode,
-            SignatureTypeId = (int)SignatureTypes.Paper,
+            SignatureTypeId = signatureTypeId,
         });
 
         // response check
         response.Should().NotBeNull();
         response.DocumentOnSa.HouseholdId.Should().Be(1);
         response.DocumentOnSa.DocumentOnSAId.Should().Be(1);
-        response.DocumentOnSa.SignatureMethodCode.Should().Be(signatureMethodCode);
+        response.DocumentOnSa.SignatureTypeId.Should().Be(signatureTypeId);
         response.DocumentOnSa.DocumentTypeId.Should().Be(documentTypeId);
         response.DocumentOnSa.EArchivId.Should().Be(eArchiveId);
         response.DocumentOnSa.FormId.Should().Be("N00000000000101");
@@ -78,7 +77,7 @@ public class StartSigningTest : IntegrationTestBase
         docOnSaEntity.Should().NotBeNull();
         docOnSaEntity!.HouseholdId.Should().Be(1);
         docOnSaEntity!.DocumentOnSAId.Should().Be(1);
-        docOnSaEntity!.SignatureMethodCode.Should().Be(signatureMethodCode);
+        docOnSaEntity!.SignatureTypeId.Should().Be(signatureTypeId);
         docOnSaEntity!.DocumentTypeId.Should().Be(documentTypeId);
         docOnSaEntity!.EArchivId.Should().Be(eArchiveId);
         docOnSaEntity!.FormId.Should().Be("N00000000000101");
@@ -95,7 +94,6 @@ public class StartSigningTest : IntegrationTestBase
         var salesArrangementId = 1;
         var documentTypeId = 4;
         var signatureTypeId = 5;
-        var signatureMethodCode = "NotExistMethod";
 
         Func<Task> act = async () =>
                 {
@@ -103,7 +101,6 @@ public class StartSigningTest : IntegrationTestBase
                     {
                         SalesArrangementId = salesArrangementId,
                         DocumentTypeId = documentTypeId,
-                        SignatureMethodCode = signatureMethodCode,
                         SignatureTypeId = signatureTypeId
                     });
                 };
@@ -119,14 +116,12 @@ public class StartSigningTest : IntegrationTestBase
 
         var documentTypeId = 4;
         var signatureTypeId = 5;
-        var signatureMethodCode = "NotExistMethod";
 
         Func<Task> act = async () =>
         {
             var response = await client.StartSigningAsync(new()
             {
                 DocumentTypeId = documentTypeId,
-                SignatureMethodCode = signatureMethodCode,
                 SignatureTypeId = signatureTypeId
             });
         };
