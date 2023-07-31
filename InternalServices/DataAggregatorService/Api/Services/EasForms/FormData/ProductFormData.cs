@@ -25,7 +25,9 @@ internal class ProductFormData : LoanApplicationBaseFormData
 
     public User? PerformerUser { get; private set; }
 
-    public int? SalesArrangementStateId => _codebookManager.SalesArrangementStates.First(x => x.Id == SalesArrangement.State).StarbuildId;
+    public bool IsCancelled { get; set; }
+
+    public int? SalesArrangementStateId => IsCancelled ? 2 : _codebookManager.SalesArrangementStates.Where(x => x.Id == SalesArrangement.State).Select(x => x.StarbuildId).FirstOrDefault(1);
 
     public decimal? InterestRateDiscount => (decimal?)Offer.SimulationInputs.InterestRateDiscount * -1;
 

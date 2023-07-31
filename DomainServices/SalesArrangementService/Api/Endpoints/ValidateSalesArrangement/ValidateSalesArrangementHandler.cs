@@ -51,7 +51,7 @@ internal sealed class ValidateSalesArrangementHandler
     {
         var dynamicFormValues = _formsService.CreateProductDynamicFormValues(salesArrangement, cancellationToken);
 
-        return await _formsService.LoadProductForm(salesArrangement, await dynamicFormValues.ToListAsync(cancellationToken), cancellationToken);
+        return await _formsService.LoadProductForm(salesArrangement, await dynamicFormValues.ToListAsync(cancellationToken), isCancelled: false, cancellationToken);
     }
 
     private async Task<GetEasFormResponse> ProcessServiceRequest(SalesArrangement salesArrangement, CancellationToken cancellationToken)

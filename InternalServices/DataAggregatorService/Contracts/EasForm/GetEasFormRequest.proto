@@ -19,4 +19,6 @@ message GetEasFormRequest {
 	repeated DynamicFormValues DynamicFormValues = 3;
 
 	int32 UserId = 4;
+
+	bool IsCancelled = 5;
 }
