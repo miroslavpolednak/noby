@@ -1,6 +1,8 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
+using CommunityToolkit.HighPerformance.Helpers;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.S3;
 
@@ -43,5 +45,38 @@ public class S3AdapterService : IS3AdapterService
         await response.ResponseStream.CopyToAsync(memoryStream, token);
 
         return memoryStream.ToArray();
+    }
+
+    public async Task ClearFiles(DateTime startDate, DateTime endDate, string bucketName, CancellationToken token = default)
+    {
+        if (startDate >= endDate)
+        {
+            throw new ArgumentException("StartDate must be before EndDate.", nameof(startDate));
+        }
+        
+        var objectKeyVersionsToDelete = await ListObjectKeyVersions(startDate, endDate, bucketName, token);
+        var deleteRequest = new DeleteObjectsRequest { BucketName = bucketName, Objects = objectKeyVersionsToDelete };
+        await _s3Client.DeleteObjectsAsync(deleteRequest, token);
+    }
+
+    private async Task<List<KeyVersion>> ListObjectKeyVersions(DateTime startDate, DateTime endDate, string bucketName, CancellationToken token = default)
+    { 
+        ListObjectsV2Response? response;
+        var listRequest = new ListObjectsV2Request { BucketName = bucketName };
+        var keyVersions = new List<KeyVersion>();
+        
+        do
+        {
+            response = await _s3Client.ListObjectsV2Async(listRequest, token);
+            
+            keyVersions.AddRange(response.S3Objects
+                .Where(s => s.LastModified >= startDate && s.LastModified <= endDate)
+                .Select(s => new KeyVersion{ Key = s.Key })
+                .ToList());
+            
+            listRequest.ContinuationToken = response.NextContinuationToken;
+        } while (response.IsTruncated);
+
+        return keyVersions;
     }
 }
