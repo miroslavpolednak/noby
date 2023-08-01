@@ -10,6 +10,11 @@ public class ExternalServiceConfiguration<TClient>
     where TClient : class, IExternalServiceClient
 {
     /// <summary>
+    /// Pokud je true, pouzije pro HttpClient systemovou proxy
+    /// </summary>
+    public bool UseDefaultProxy { get; set; }
+
+    /// <summary>
     /// Zapne logovani request a response payloadu a hlavicek. Default: true
     /// </summary>
     /// <remarks>Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.</remarks>
