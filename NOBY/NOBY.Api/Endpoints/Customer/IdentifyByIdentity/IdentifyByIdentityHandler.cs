@@ -20,7 +20,9 @@ internal sealed class IdentifyByIdentityHandler
         var customerOnSaInstance = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
 
         if (customerOnSaInstance.CustomerIdentifiers is not null && customerOnSaInstance.CustomerIdentifiers.Any())
+        {
             throw new NobyValidationException("CustomerOnSA has been already identified");
+        }
 
         var (customersInSA, household, saInstance) = await fetchEntities(customerOnSaInstance.SalesArrangementId, request.CustomerOnSAId, cancellationToken);
 
@@ -32,8 +34,9 @@ internal sealed class IdentifyByIdentityHandler
         }
 
         //Debtor has to be identified first
-        if (customerOnSaInstance.CustomerRoleId is not (int)CustomerRoles.Debtor && 
-            !customerDetails.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)))
+        if (household.HouseholdTypeId == (int)HouseholdTypes.Main
+            && customerOnSaInstance.CustomerRoleId is not (int)CustomerRoles.Debtor 
+            && !customerDetails.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)))
         {
             throw new NobyValidationException("Main customer has to be identified first.");
         }

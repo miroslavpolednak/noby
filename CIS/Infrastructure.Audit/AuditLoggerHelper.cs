@@ -4,7 +4,6 @@ using CIS.Infrastructure.Audit.Attributes;
 using CIS.Infrastructure.Audit.Configuration;
 using CIS.Infrastructure.Audit.Dto;
 using FastEnumUtility;
-using Microsoft.AspNetCore.DataProtection;
 using System.Globalization;
 using System.Text;
 
@@ -14,8 +13,10 @@ internal sealed class AuditLoggerHelper
 {
     private readonly Database.DatabaseWriter _databaseWriter;
     private AuditLoggerDefaults _loggerDefaults;
-    static Dictionary<AuditEventTypes, AuditEventTypeDescriptorAttribute> _eventTypeDescriptors = new();
     private readonly byte[] _hashSecretKey;
+    
+    static Dictionary<AuditEventTypes, AuditEventTypeDescriptorAttribute> _eventTypeDescriptors = new();
+    private static CultureInfo _culture = CultureInfo.InvariantCulture;
 
     // cache event types
     static AuditLoggerHelper()
@@ -61,16 +62,17 @@ internal sealed class AuditLoggerHelper
         // next seq no
         var seqId = _databaseWriter.GetSequenceId();
         string? hashId = null;
+        var time = DateTime.Now.ToString("o", _culture);
 
         // vytvorit json je proto, aby se spocital hash
         StringWriter jsonBeforeHash = new();
-        AuditLoggerJsonWriter.CreateJson(jsonBeforeHash, ref hashId, ref seqId, ref _loggerDefaults, context, eventDescriptor.Code.AsSpan(), eventDescriptor.Version);
+        AuditLoggerJsonWriter.CreateJson(jsonBeforeHash, ref time, ref hashId, ref seqId, ref _loggerDefaults, context, eventDescriptor.Code.AsSpan(), eventDescriptor.Version);
         hashId = HashHelper.HashMessage(jsonBeforeHash.ToString(), _hashSecretKey);
 
         // vytvorit json znova s hashem
         // seru na to ze je to takhle pomale, kdyz to soudruzi chteji...
         StringWriter jsonAfterHash = new();
-        AuditLoggerJsonWriter.CreateJson(jsonAfterHash, ref hashId, ref seqId, ref _loggerDefaults, context, eventDescriptor.Code.AsSpan(), eventDescriptor.Version);
+        AuditLoggerJsonWriter.CreateJson(jsonAfterHash, ref time, ref hashId, ref seqId, ref _loggerDefaults, context, eventDescriptor.Code.AsSpan(), eventDescriptor.Version);
 
         var eventObject = new Database.AuditEvent(hashId!, eventDescriptor.Code, jsonAfterHash.ToString());
         _databaseWriter.Write(ref eventObject);
@@ -79,10 +81,9 @@ internal sealed class AuditLoggerHelper
 
 internal static class AuditLoggerJsonWriter
 {
-    private static CultureInfo _culture = CultureInfo.InvariantCulture;
-
     public static void CreateJson(
         StringWriter output,
+        ref string time,
         ref string? hashId,
         ref long sequenceId,
         ref AuditLoggerDefaults loggerDefaults, 
@@ -90,8 +91,6 @@ internal static class AuditLoggerJsonWriter
         ReadOnlySpan<char> eventTypeId,
         int eventTypeVersion)
     {
-        var time = DateTime.Now.ToString("o", _culture).AsSpan();
-
         output.Write("{\"id\":\"");
         if (!string.IsNullOrEmpty(hashId))
             output.Write(hashId);
