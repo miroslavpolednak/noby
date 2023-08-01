@@ -7,6 +7,7 @@ using CIS.Foms.Enums;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.ProductService.Clients;
+using CIS.Foms.Types.Enums;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
@@ -34,7 +35,7 @@ internal sealed class IdentifyByIdentityHandler
         }
 
         //Debtor has to be identified first
-        if (household.HouseholdTypeId == (int)HouseholdTypes.Main
+        if (saInstance.SalesArrangementTypeId == (int)SalesArrangementTypes.Mortgage
             && customerOnSaInstance.CustomerRoleId is not (int)CustomerRoles.Debtor 
             && !customerDetails.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)))
         {
