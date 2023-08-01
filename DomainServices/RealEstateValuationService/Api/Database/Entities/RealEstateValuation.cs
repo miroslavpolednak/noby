@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DomainServices.RealEstateValuationService.Contracts;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.RealEstateValuationService.Api.Database.Entities;
@@ -6,7 +7,7 @@ namespace DomainServices.RealEstateValuationService.Api.Database.Entities;
 
 [Table("RealEstateValuation", Schema = "dbo")]
 internal sealed class RealEstateValuation
-    : CIS.Core.Data.BaseCreatedWithModifiedUserId
+    : CIS.Core.Data.BaseCreatedWithModifiedUserId, IRealEstateValuationDetail
 {
     [Key]
     public int RealEstateValuationId { get; set; }
@@ -25,7 +26,7 @@ internal sealed class RealEstateValuation
     public int? RealEstateStateId { get; set; }
     public string? Address { get; set; }
     public DateTime? ValuationSentDate { get; set; }
-
+    public int? PreorderId { get; set; }
     public int? RealEstateSubtypeId { get; set; }
     public string? ACVRealEstateTypeId { get; set; }
     public string? LoanPurposeDetails { get; set; }

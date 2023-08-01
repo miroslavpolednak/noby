@@ -44,6 +44,7 @@ internal sealed class GetRealEstateValuationDetailHandler
             RealEstateStateId = realEstate.RealEstateStateId,
             Address = realEstate.Address,
             OrderId = realEstate.OrderId,
+            PreorderId = realEstate.PreorderId,
             ValuationResultCurrentPrice = realEstate.ValuationResultCurrentPrice,
             ValuationResultFuturePrice = realEstate.ValuationResultFuturePrice,
             RealEstateSubtypeId = realEstate.RealEstateSubtypeId,

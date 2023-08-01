@@ -27,6 +27,7 @@ internal sealed class GetRealEstateValuationListHandler
                 RealEstateStateId = t.RealEstateStateId,
                 Address = t.Address,
                 OrderId = t.OrderId,
+                PreorderId = t.PreorderId,
                 ValuationResultCurrentPrice = t.ValuationResultCurrentPrice,
                 ValuationResultFuturePrice = t.ValuationResultFuturePrice
             })

@@ -1,12 +1,8 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
-using Google.Api;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
 using Polly.Timeout;
-using System.Configuration;
-using System.Net.Sockets;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers;
 
@@ -23,17 +19,24 @@ public static class StartupRestExtensions
     public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation>(this WebApplicationBuilder builder)
         where TClient : class, IExternalServiceClient
         where TImplementation : class, TClient
-        => builder.Services
+        => builder.AddExternalServiceRestClient<TClient, TImplementation, IExternalServiceConfiguration<TClient>>();
+
+    public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation, TConfiguration>(this WebApplicationBuilder builder)
+        where TClient : class, IExternalServiceClient
+        where TImplementation : class, TClient
+        where TConfiguration : IExternalServiceConfiguration
+        => builder
+            .Services
             .AddHttpClient<TClient, TImplementation>((services, client) =>
             {
-                var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
-                
+                var configuration = services.GetRequiredService<TConfiguration>();
+
                 // service url
                 client.BaseAddress = configuration.ServiceUrl;
                 // musi byt nastaveny, jinak je default na 100
                 client.Timeout = TimeSpan.FromSeconds(
-                    (getRequestTimeout(configuration) * (configuration.RequestRetryCount.GetValueOrDefault() + 1)) 
-                    + (configuration.RequestRetryCount.GetValueOrDefault() * getRequestRetryTimeout(configuration)) 
+                    (getRequestTimeout(configuration) * (configuration.RequestRetryCount.GetValueOrDefault() + 1))
+                    + (configuration.RequestRetryCount.GetValueOrDefault() * getRequestRetryTimeout(configuration))
                     + 10);
 
                 // authentication
@@ -48,12 +51,12 @@ public static class StartupRestExtensions
             .ConfigurePrimaryHttpMessageHandler(services =>
             {
                 var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
-                
+
                 // ignorovat vadny ssl certifikat
                 var clientHandler = configuration.IgnoreServerCertificateErrors ? new HttpClientHandler
-                    {
-                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-                    } : new HttpClientHandler();
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
+                } : new HttpClientHandler();
 
                 // pouzij proxy
                 if (configuration.UseDefaultProxy)
@@ -75,7 +78,7 @@ public static class StartupRestExtensions
             // set retry policy
             .AddPolicyHandler((services, req) =>
             {
-                var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
+                var configuration = services.GetRequiredService<TConfiguration>();
                 var logger = services.GetRequiredService<ILogger<TClient>>();
 
                 if (configuration.RequestRetryCount.GetValueOrDefault() == 0)
@@ -96,16 +99,14 @@ public static class StartupRestExtensions
             // set timeout requestu
             .AddPolicyHandler((services, req) =>
             {
-                var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
+                var configuration = services.GetRequiredService<TConfiguration>();
                 return Policy.TimeoutAsync<HttpResponseMessage>(getRequestTimeout(configuration));
             });
 
-    private static int getRequestRetryTimeout<TClient>(IExternalServiceConfiguration<TClient> configuration)
-        where TClient : class, IExternalServiceClient
+    private static int getRequestRetryTimeout(IExternalServiceConfiguration configuration)
         => configuration.RequestRetryTimeout ?? _defaultRetryTimeout;
 
-    private static int getRequestTimeout<TClient>(IExternalServiceConfiguration<TClient> configuration)
-        where TClient : class, IExternalServiceClient
+    private static int getRequestTimeout(IExternalServiceConfiguration configuration)
         => configuration.RequestTimeout.GetValueOrDefault() > 0 ? configuration.RequestTimeout!.Value : _defaultRequestTimeout;
 
     private const int _defaultRequestTimeout = 10;

@@ -16,6 +16,11 @@ internal sealed class MockPreorderServiceClient
         throw new NotImplementedException();
     }
 
+    public Task<bool> RevaluationCheck(OnlineRevaluationCheckRequestDTO request, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<long> UploadAttachment(string title, string category, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default)
     {
         return Task.FromResult<long>((new Random()).Next(1, 1000));
