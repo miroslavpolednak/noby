@@ -14,7 +14,7 @@ internal sealed class GetDeedOfOwnershipIdsHandler
             DeedOfOwnershipId = response.Building.IsknDeedOfOwnershipId,
             Flats = response
                 .Building
-                .Flats
+                .Flats?
                 .Select(t => new GetDeedOfOwnershipIdsResponseFlat
                 {
                     DeedOfOwnershipId = t.IsknDeedOfOwnershipId,
