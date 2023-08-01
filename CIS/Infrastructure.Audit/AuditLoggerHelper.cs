@@ -4,7 +4,9 @@ using CIS.Infrastructure.Audit.Attributes;
 using CIS.Infrastructure.Audit.Configuration;
 using CIS.Infrastructure.Audit.Dto;
 using FastEnumUtility;
+using Microsoft.AspNetCore.DataProtection;
 using System.Globalization;
+using System.Text;
 
 namespace CIS.Infrastructure.Audit;
 
@@ -13,6 +15,7 @@ internal sealed class AuditLoggerHelper
     private readonly Database.DatabaseWriter _databaseWriter;
     private AuditLoggerDefaults _loggerDefaults;
     static Dictionary<AuditEventTypes, AuditEventTypeDescriptorAttribute> _eventTypeDescriptors = new();
+    private readonly byte[] _hashSecretKey;
 
     // cache event types
     static AuditLoggerHelper()
@@ -36,6 +39,7 @@ internal sealed class AuditLoggerHelper
 
         _databaseWriter = new Database.DatabaseWriter(auditConfiguration.ConnectionString);
         _loggerDefaults = new AuditLoggerDefaults(serverIp, environmentConfiguration.DefaultApplicationKey!, auditConfiguration.EamApplication, auditConfiguration.EamVersion, environmentConfiguration.EnvironmentName!);
+        _hashSecretKey = Encoding.UTF8.GetBytes(auditConfiguration.HashSecretKey);
     }
 
     public void Log(AuditEventContext context)
@@ -56,11 +60,19 @@ internal sealed class AuditLoggerHelper
 
         // next seq no
         var seqId = _databaseWriter.GetSequenceId();
+        string? hashId = null;
 
-        StringWriter json = new();
-        AuditLoggerJsonWriter.CreateJson(json, ref seqId, ref _loggerDefaults, context, eventDescriptor.Code.AsSpan(), eventDescriptor.Version);
+        // vytvorit json je proto, aby se spocital hash
+        StringWriter jsonBeforeHash = new();
+        AuditLoggerJsonWriter.CreateJson(jsonBeforeHash, ref hashId, ref seqId, ref _loggerDefaults, context, eventDescriptor.Code.AsSpan(), eventDescriptor.Version);
+        hashId = HashHelper.HashMessage(jsonBeforeHash.ToString(), _hashSecretKey);
 
-        var eventObject = new Database.AuditEvent(context.AuditEventIdent, eventDescriptor.Code, json.ToString());
+        // vytvorit json znova s hashem
+        // seru na to ze je to takhle pomale, kdyz to soudruzi chteji...
+        StringWriter jsonAfterHash = new();
+        AuditLoggerJsonWriter.CreateJson(jsonAfterHash, ref hashId, ref seqId, ref _loggerDefaults, context, eventDescriptor.Code.AsSpan(), eventDescriptor.Version);
+
+        var eventObject = new Database.AuditEvent(hashId!, eventDescriptor.Code, jsonAfterHash.ToString());
         _databaseWriter.Write(ref eventObject);
     }
 }
@@ -71,6 +83,7 @@ internal static class AuditLoggerJsonWriter
 
     public static void CreateJson(
         StringWriter output,
+        ref string? hashId,
         ref long sequenceId,
         ref AuditLoggerDefaults loggerDefaults, 
         AuditEventContext context,
@@ -80,7 +93,8 @@ internal static class AuditLoggerJsonWriter
         var time = DateTime.Now.ToString("o", _culture).AsSpan();
 
         output.Write("{\"id\":\"");
-        output.Write(context.AuditEventIdent.ToString());
+        if (!string.IsNullOrEmpty(hashId))
+            output.Write(hashId);
         output.Write("\",");
 
         #region meta
