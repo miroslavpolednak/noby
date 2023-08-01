@@ -31,12 +31,11 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
     public async Task<Empty> Handle(SendToCmpRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _formsService.LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
-        var category = await _formsService.LoadSalesArrangementCategory(salesArrangement, cancellationToken);
+        var saType = await _formsService.LoadSalesArrangementType(salesArrangement.SalesArrangementTypeId, cancellationToken);
 
-        //TODO: Mock - what to do when a service SA does not have DV
-        if (salesArrangement.SalesArrangementTypeId is not (7 or 8 or 9))
+        if (saType.IsFormSentToCmp)
         {
-            await ProcessEasForm(salesArrangement, category, request.IsCancelled, cancellationToken);
+            await ProcessEasForm(salesArrangement, (SalesArrangementCategories)saType.SalesArrangementCategory, request.IsCancelled, cancellationToken);
         }
 
         //https://jira.kb.cz/browse/HFICH-4684 
