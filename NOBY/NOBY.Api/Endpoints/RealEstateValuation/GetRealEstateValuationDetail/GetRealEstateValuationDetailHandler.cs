@@ -64,14 +64,19 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
                 LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = valuationDetail.LoanPurposeDetails.LoanPurposes.ToList() },
                 SpecificDetails = GetSpecificDetailsObject(valuationDetail)
             },
-            Attachments = valuationDetail.Attachments?.Select(t => new RealEstateValuationAttachment
-            {
-                RealEstateValuationAttachmentId = t.RealEstateValuationAttachmentId,
-                Title = t.Title,
-                FileName = t.FileName,
-                AcvAttachmentCategoryId = t.AcvAttachmentCategoryId,
-                AcvAttachmentCategoryName = categories.FirstOrDefault(x => x.Id == t.AcvAttachmentCategoryId)?.Name ?? ""
-            }).ToList(),
+            Attachments = valuationDetail
+                .Attachments?
+                .OrderByDescending(t => t.CreatedOn)
+                .Select(t => new RealEstateValuationAttachment
+                {
+                    CreatedOn = t.CreatedOn,
+                    RealEstateValuationAttachmentId = t.RealEstateValuationAttachmentId,
+                    Title = t.Title,
+                    FileName = t.FileName,
+                    AcvAttachmentCategoryId = t.AcvAttachmentCategoryId,
+                    AcvAttachmentCategoryName = categories.FirstOrDefault(x => x.Id == t.AcvAttachmentCategoryId)?.Name ?? ""
+                })
+                .ToList(),
             DeedOfOwnershipDocuments = deeds?.Select(t => new Dto.RealEstateValuation.DeedOfOwnershipDocumentWithId
             {
                 DeedOfOwnershipDocumentId = t.DeedOfOwnershipDocumentId,

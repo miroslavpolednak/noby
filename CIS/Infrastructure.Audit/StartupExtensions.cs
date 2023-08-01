@@ -18,6 +18,11 @@ public static class StartupExtensions
 
         if (configuration is not null)
         {
+            if (string.IsNullOrEmpty(configuration.HashSecretKey))
+            {
+                throw new CIS.Core.Exceptions.CisConfigurationException(0, "HashSecretKey is not set for audit logging");
+            }
+
             builder.Services.AddSingleton((serviceProvider) =>
             {
                 // get server IP

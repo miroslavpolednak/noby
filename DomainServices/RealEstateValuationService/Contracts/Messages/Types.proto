@@ -3,6 +3,7 @@ package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 import "google/protobuf/wrappers.proto";
+import "GrpcDateTime.proto";
 
 message LoanPurposeDetailsObject {
     repeated int32 LoanPurposes = 1;
@@ -35,4 +36,5 @@ message RealEstateValuationAttachment {
     string FileName = 3;
     int64 ExternalId = 4;
     int32 AcvAttachmentCategoryId = 5;
+    cis.types.GrpcDateTime CreatedOn = 6;
 }
