@@ -32,7 +32,7 @@ internal sealed class UpdateParametersHandler
                         {
                             throw new NobyValidationException(90019);
                         }
-                        updateRequest.Mortgage = o1.ToDomainService();
+                        updateRequest.Mortgage = o1.ToDomainService(saInstance.Mortgage);
                     }
                     break;
 

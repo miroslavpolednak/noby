@@ -29,13 +29,7 @@ public class GetDocumentsSignListData
     /// Příznak, zda byl dokument již podepsán.
     /// </summary>
     public bool IsSigned { get; set; }
-
-    /// <summary>
-    /// Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
-    /// </summary>
-    [Obsolete("Replaced with SignatureTypeId:  HFICH-6026")]
-    public string? SignatureMethodCode { get; set; }
-
+    
     /// <summary>
     /// Metoda podpisu (manuální/elektronický). Číselník SignatureType.
     /// </summary>

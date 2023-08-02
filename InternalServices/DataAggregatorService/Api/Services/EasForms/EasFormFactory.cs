@@ -30,7 +30,7 @@ internal class EasFormFactory
         var easForm = config.EasFormKey.RequestType switch
         {
             EasFormRequestType.Service => CreateServiceEasForm(config.EasFormKey, documentTypes),
-            EasFormRequestType.Product => CreateProductEasForm(dynamicFormValues, documentTypes),
+            EasFormRequestType.Product => CreateProductEasForm(dynamicFormValues, documentTypes, config.IsCancelled),
             _ => throw new InvalidEnumArgumentException(nameof(config.EasFormKey.RequestType), config.EasFormKey.RequestTypeId, typeof(EasFormRequestType))
         };
 
@@ -39,10 +39,12 @@ internal class EasFormFactory
         return easForm;
     }
 
-    private IEasForm CreateProductEasForm(IEnumerable<DynamicFormValues> dynamicFormValues, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes)
+    private IEasForm CreateProductEasForm(IEnumerable<DynamicFormValues> dynamicFormValues, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes, bool isCancelled)
     {
         var productData = CreateData<ProductFormData>();
+
         productData.MainDynamicFormValues = dynamicFormValues.First(d => d.DocumentTypeId == (int)DocumentTypes.ZADOSTHU);
+        productData.IsCancelled = isCancelled;
 
         return new EasProductForm(productData, documentTypes);
     }

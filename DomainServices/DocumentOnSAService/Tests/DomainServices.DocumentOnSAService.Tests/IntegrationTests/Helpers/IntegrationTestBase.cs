@@ -1,4 +1,5 @@
-﻿using CIS.Testing;
+﻿using CIS.Foms.Enums;
+using CIS.Testing;
 using CIS.Testing.Database;
 using DomainServices.UserService.Clients.Services;
 using DomainServices.UserService.Clients;
@@ -141,7 +142,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         string eArchivId = "KBHXXD00000000000000000000351",
         int salesArrangementId = 1,
         int? householdId = 1,
-        int signatureTypeId = 1,
+        int signatureTypeId = (int)SignatureTypes.Paper,
         int documentTypeId = 1,
         int customerOnSAId1 = 1,
         int customerOnSAId2 = 2
@@ -157,7 +158,6 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
             HouseholdId = householdId,
             IsValid = true,
             IsSigned = false,
-            SignatureMethodCode = "PHYSICAL",
             CreatedUserName = "MPSSRootTest",
             CreatedUserId = 1,
             CreatedTime = DateTime.Now,

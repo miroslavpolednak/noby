@@ -10,6 +10,19 @@ namespace DomainServices.CodebookService.Api;
 
 internal static class Helpers
 {
+    public static GenericCodebookResponse GetItems(this ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient client, ExternalServices.AcvEnumService.V1.Categories category, [CallerMemberName] string method = "")
+    {
+        return CodebookMemoryCache.GetOrCreate(method.ToString(), () =>
+        {
+            var items = client.GetCategory(category).GetAwaiter().GetResult();
+            return (new GenericCodebookResponse()).AddItems(items.Select(t => new GenericCodebookResponse.Types.GenericCodebookItem
+            {
+                Code = t.Code,
+                Name = t.Text
+            }));
+        });
+    }
+
     /// <summary>
     /// Converts string with separated integers into list.
     /// </summary>

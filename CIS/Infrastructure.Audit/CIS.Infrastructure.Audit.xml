@@ -19,5 +19,10 @@
             Verze logovaciho schematu
             </summary>
         </member>
+        <member name="P:CIS.Infrastructure.Audit.Configuration.AuditLogConfiguration.HashSecretKey">
+            <summary>
+            Klic pro sifrovani zpravy
+            </summary>
+        </member>
     </members>
 </doc>

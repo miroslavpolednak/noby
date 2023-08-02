@@ -23,8 +23,7 @@ internal class DocumentOnSaServiceWrapper : IServiceWrapper
         input.ValidateSalesArrangementId();
 
         var response = await _documentOnSAService.GetDocumentsOnSAList(input.SalesArrangementId!.Value, cancellationToken);
-        var signingMethods = await _codebookService.SigningMethodsForNaturalPerson(cancellationToken);
 
-        data.Custom.DocumentOnSa = new DocumentOnSaInfo(response.DocumentsOnSA, signingMethods);
+        data.Custom.DocumentOnSa = new DocumentOnSaInfo(response.DocumentsOnSA);
     }
 }

@@ -357,14 +357,12 @@ public class StartSigningProductsRequestsTests : IntegrationTestBase
 
         var documentTypeId = 4;
         var signatureTypeId = 5;
-        var signatureMethodCode = "NotExistMethod";
 
         Func<Task> act = async () =>
         {
             var response = await client.StartSigningAsync(new()
             {
                 DocumentTypeId = documentTypeId,
-                SignatureMethodCode = signatureMethodCode,
                 SignatureTypeId = signatureTypeId
             });
         };

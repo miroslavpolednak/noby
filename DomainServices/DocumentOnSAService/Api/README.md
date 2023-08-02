@@ -10,7 +10,7 @@ grpcurl -insecure -d "{\"HouseholdId\":1}" -H "Authorization: Basic WFhfTk9CWV9S
 ```
 ### StartSigning
 ```
-grpcurl -insecure -d "{\"SalesArrangementId\":6,\"DocumentTypeId\":4,\"SignatureMethodCode\":\"PHYSICAL\"}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "noby-user-id: 1" -H "noby-user-ident: 990614w" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/StartSigning
+grpcurl -insecure -d "{\"SalesArrangementId\":6,\"DocumentTypeId\":4,\"SignatureTypeId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "noby-user-id: 1" -H "noby-user-ident: 990614w" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/StartSigning
 ```
 ### StopSigning: if you want call this method, it is necessary call start signing first to get DocumentOnSaId 
 ```

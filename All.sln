@@ -330,6 +330,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00041-HFICH-6514.sql = DomainServices\CodebookService\DatabaseMigrations\00041-HFICH-6514.sql
 		DomainServices\CodebookService\DatabaseMigrations\00042-HFICH-6766.sql = DomainServices\CodebookService\DatabaseMigrations\00042-HFICH-6766.sql
 		DomainServices\CodebookService\DatabaseMigrations\00043-HFICH-7140-GeneralDocumentList.sql = DomainServices\CodebookService\DatabaseMigrations\00043-HFICH-7140-GeneralDocumentList.sql
+		DomainServices\CodebookService\DatabaseMigrations\00051-HFICH-7236.sql = DomainServices\CodebookService\DatabaseMigrations\00051-HFICH-7236.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -380,6 +381,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00005-HFICH-6530_SignatureTypeId_Paper.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00005-HFICH-6530_SignatureTypeId_Paper.sql
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00006-HFICH-3917_DocOnSa_JsonMap.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00006-HFICH-3917_DocOnSa_JsonMap.sql
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00007-HFICH-3917_DocumentTypeIdNull.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00007-HFICH-3917_DocumentTypeIdNull.sql
+		DomainServices\DocumentOnSAService\DatabaseMigrations\00008-HFICH-6947_Drop_SignatureMethodCode.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00008-HFICH-6947_Drop_SignatureMethodCode.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness", "DomainServices\RiskIntegrationService\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj", "{FF60B12F-B083-46BE-B8DA-FD91ABE2D831}"
@@ -444,6 +446,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00034-LoanApplication_config_fix.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00034-LoanApplication_config_fix.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00035-LoanApplication_DefaultValueWhneNull.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00035-LoanApplication_DefaultValueWhneNull.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00036-HFICH-7170_Fixed_MpIdentity.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00036-HFICH-7170_Fixed_MpIdentity.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00037-HFICH-7088_FirstSignatureDate.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00037-HFICH-7088_FirstSignatureDate.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -518,7 +521,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Crem", "Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSAService.ExternalServices.ESignatureQueues", "DomainServices\DocumentOnSAService\ExternalServices.ESignatureQueues\DomainServices.DocumentOnSAService.ExternalServices.ESignatureQueues.csproj", "{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.Infrastructure.Audit", "CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj", "{30E36973-F4AF-4241-969E-67E2DCEE190B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.Audit", "CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj", "{30E36973-F4AF-4241-969E-67E2DCEE190B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.CodebookService.ExternalServices.AcvEnumService", "DomainServices\CodebookService\ExternalServices.AcvEnumService\DomainServices.CodebookService.ExternalServices.AcvEnumService.csproj", "{01D3090B-36DD-48E7-BC2B-A3B69B6E1CC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1424,6 +1429,14 @@ Global
 		{30E36973-F4AF-4241-969E-67E2DCEE190B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{30E36973-F4AF-4241-969E-67E2DCEE190B}.Release|x64.ActiveCfg = Release|Any CPU
 		{30E36973-F4AF-4241-969E-67E2DCEE190B}.Release|x64.Build.0 = Release|Any CPU
+		{01D3090B-36DD-48E7-BC2B-A3B69B6E1CC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01D3090B-36DD-48E7-BC2B-A3B69B6E1CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01D3090B-36DD-48E7-BC2B-A3B69B6E1CC6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{01D3090B-36DD-48E7-BC2B-A3B69B6E1CC6}.Debug|x64.Build.0 = Debug|Any CPU
+		{01D3090B-36DD-48E7-BC2B-A3B69B6E1CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01D3090B-36DD-48E7-BC2B-A3B69B6E1CC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01D3090B-36DD-48E7-BC2B-A3B69B6E1CC6}.Release|x64.ActiveCfg = Release|Any CPU
+		{01D3090B-36DD-48E7-BC2B-A3B69B6E1CC6}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1579,6 +1592,7 @@ Global
 		{8240FF9F-9DFE-4C53-87FE-C94753F9EC5E} = {024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}
 		{5EC8BE89-B0B5-4A09-B94B-86B1039F390D} = {234188C5-FF3F-4C38-831C-FB404B56A5C1}
 		{30E36973-F4AF-4241-969E-67E2DCEE190B} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
+		{01D3090B-36DD-48E7-BC2B-A3B69B6E1CC6} = {6C60ADF4-04DA-46C0-91BE-054BDC00A89E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

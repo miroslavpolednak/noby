@@ -57,12 +57,7 @@ internal sealed class SendToCmpHandler
         var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
 
         // check flow switches
-        var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
-        if (saCategory.SalesArrangementCategory == 1
-            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed && t.Value))
-        {
-            throw new NobyValidationException(90016);
-        }
+        await validateFlowSwitches(saInstance.SalesArrangementId, saCategory.SalesArrangementCategory, cancellationToken);
 
         await ValidateSalesArrangement(saInstance.SalesArrangementId, request.IgnoreWarnings, cancellationToken);
 
@@ -115,7 +110,7 @@ internal sealed class SendToCmpHandler
         }
 
         // HFICH-5191
-        if (isSet(FlowSwitches.IsOfferWithDiscount) && isSet(FlowSwitches.IsWflTaskForIPApproved, false))
+        if (salesArrangementCategory == 1 && isSet(FlowSwitches.IsOfferWithDiscount) && isSet(FlowSwitches.IsWflTaskForIPApproved, false))
         {
             throw new NobyValidationException(90018);
         }

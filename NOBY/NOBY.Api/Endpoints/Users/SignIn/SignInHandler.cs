@@ -10,7 +10,7 @@ internal sealed class SignInHandler
 {
     public async Task Handle(SignInRequest request, CancellationToken cancellationToken)
     {
-        _auditLogger.Log(CIS.Infrastructure.Audit.AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
+        _auditLogger.Log(AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
 
         if (_configuration.Security!.AuthenticationScheme != AuthenticationConstants.SimpleLoginAuthScheme)
         {
@@ -44,7 +44,7 @@ internal sealed class SignInHandler
         await _httpContext.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
         _auditLogger.Log(
-            CIS.Infrastructure.Audit.AuditEventTypes.Noby002,
+            AuditEventTypes.Noby002,
             $"Uživatel {request.IdentityScheme}={request.IdentityId} se přihlásil do aplikace.",
             bodyAfter: new Dictionary<string, string>() { 
                 { "login", $"{request.IdentityScheme}={request.IdentityId}" },

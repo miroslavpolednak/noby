@@ -995,6 +995,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.DescriptionFieldNumber">
             <summary>Field number for the "Description" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.IsFormSentToCmpFieldNumber">
+            <summary>Field number for the "IsFormSentToCmp" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsForNaturalPersonResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>

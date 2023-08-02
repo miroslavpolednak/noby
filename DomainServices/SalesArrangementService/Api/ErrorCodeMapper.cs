@@ -42,6 +42,8 @@ internal sealed class ErrorCodeMapper
     public const int SalesArrangementStateIsEmpty = 18079;
     public const int RepaymentAccountCantChange = 18081;
     public const int ContractNumberIsAlreadySet = 18084;
+    public const int NotAllCustomersOnSaAreIdentified = 18085;
+    public const int ApplicantIsNotSet = 18086;
     
     public static IErrorCodesDictionary Init()
     {
@@ -81,7 +83,9 @@ internal sealed class ErrorCodeMapper
             { FormValidation8, "Sales arrangement households contain duplicit customers [{PropertyValue}] on sales arrangement." },
             { FormValidation9, "Income mandatory fields not provided [{PropertyValue}]." },
             { FormValidation10, "Customers [{PropertyValue}] on sales arrangement don't correspond to customers on households." },
-            { ContractNumberIsAlreadySet, "Contract number on SalesArrangement {SalesArrangementId} already exists." }
+            { ContractNumberIsAlreadySet, "Contract number on SalesArrangement {SalesArrangementId} already exists." },
+            { NotAllCustomersOnSaAreIdentified, "Some of the CustomersOnSa are not identified." },
+            { ApplicantIsNotSet, "The Applicant is not set." },
         });
 
         return Messages;

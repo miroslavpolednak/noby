@@ -477,12 +477,6 @@ service CodebookService {
 		};
    }
 
-   rpc SigningMethodsForNaturalPerson (google.protobuf.Empty) returns (SigningMethodsForNaturalPersonResponse) {
-	   option (google.api.http) = {
-			get: "/v1/signing-methods-for-natural-person"
-		};
-   }
-
    rpc SmsNotificationTypes (google.protobuf.Empty) returns (SmsNotificationTypesResponse) {
 	   option (google.api.http) = {
 			get: "/v1/sms-notification-types"
@@ -577,5 +571,29 @@ service CodebookService {
 	   option (google.api.http) = {
 			get: "/v1/work-sectors"
 		};
-   }  
+   }
+
+   rpc RealEstateValuationFlatSchemas (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/realestate-valuation-flat-schemas"
+		};
+   }
+
+   rpc RealEstateValuationBuildingMaterialStructures (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/realestate-valuation-building-material-structures"
+		};
+   }
+
+   rpc RealEstateValuationBuildingAges (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/realestate-valuation-building-ages"
+		};
+   }
+
+   rpc RealEstateValuationBuildingTechnicalStates (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/realestate-valuation-building-technical-states"
+		};
+   }
 }

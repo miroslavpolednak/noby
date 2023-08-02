@@ -595,6 +595,7 @@ message SalesArrangementTypesResponse {
 	   string Name = 2;
 	   int32 SalesArrangementCategory = 3;
 	   google.protobuf.StringValue Description = 4;
+	   bool IsFormSentToCmp = 5;
 	}
 }
 

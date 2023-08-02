@@ -6,7 +6,6 @@ internal sealed class AuditEventContext
 {
     public AuditEventTypes EventType { get; init; }
     public string Message { get; init; } = null!;
-    public Guid AuditEventIdent { get; init; }
 
     public ICollection<AuditLoggerHeaderItem>? Identities { get; init; }
     public ICollection<AuditLoggerHeaderItem>? Products { get; init; }

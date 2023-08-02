@@ -43,7 +43,7 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
             DocumentOnSAId = documentOnSa.DocumentOnSAId,
             DocumentTypeId = documentOnSa.DocumentTypeId,
             FormId = documentOnSa.FormId,
-            SignatureMethodCode = documentOnSa.SignatureMethodCode,
+            SignatureTypeId = documentOnSa.SignatureTypeId,
             SignatureDateTime = documentOnSa.SignatureDateTime is not null ? documentOnSa.SignatureDateTime.ToDateTime() : null,
             SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new() { DocumentOnSAId = documentOnSa.DocumentOnSAId, EArchivId = documentOnSa.EArchivId, IsSigned = documentOnSa.IsSigned }, signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(documentOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains),

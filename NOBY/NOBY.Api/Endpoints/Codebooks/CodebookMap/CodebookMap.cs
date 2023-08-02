@@ -82,7 +82,6 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.SalesArrangementStates(ct), c => c.Cast<SalesArrangementStatesResponse.Types.SalesArrangementStateItem>().Where(t => t.Id > 0));
         AddCodebook((s, ct) => s.SalesArrangementTypes(ct));
         AddCodebook((s, ct) => s.SignatureTypes(ct), c => c.Cast<GenericCodebookResponse.Types.GenericCodebookItem>().Where(t => t.Id > 0));
-        AddCodebook((s, ct) => s.SigningMethodsForNaturalPerson(ct), c => c.Cast<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>());
         AddCodebook((s, ct) => s.StatementTypes(ct));
         AddCodebook((s, ct) => s.TinFormatsByCountry(ct));
         AddCodebook((s, ct) => s.TinNoFillReasonsByCountry(ct));
@@ -100,6 +99,10 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.IncomeMainTypesAML(ct));
         AddCodebook((s, ct) => s.StatementSubscriptionTypes(ct));
         AddCodebook((s, ct) => s.StatementFrequencies(ct));
+        AddCodebook((s, ct) => s.RealEstateValuationFlatSchemas(ct));
+        AddCodebook((s, ct) => s.RealEstateValuationBuildingMaterialStructures(ct));
+        AddCodebook((s, ct) => s.RealEstateValuationBuildingAges(ct));
+        AddCodebook((s, ct) => s.RealEstateValuationBuildingTechnicalStates(ct));
     }
 
     private void AddCodebook<TReturn>(Expression<Func<ICodebookServiceClient, CancellationToken, TReturn>> expression, Func<IEnumerable<object>, IEnumerable<object>> customizeResult = default!) where TReturn : Task
