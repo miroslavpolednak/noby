@@ -19,6 +19,17 @@ internal sealed class PreorderOnlineValuationHandler
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.RealEstateValuationId);
 
+        // deed of ownership
+        var deedOfOwnerships = await _dbContext.DeedOfOwnershipDocuments
+            .AsNoTracking()
+            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId && !string.IsNullOrEmpty(t.RealEstateIds))
+            .Select(t => t.RealEstateIds!)
+            .ToListAsync(cancellationToken);
+        var realEstateIds = deedOfOwnerships.SelectMany(t =>
+        {
+            return System.Text.Json.JsonSerializer.Deserialize<long[]>(t!)!;
+        }).ToArray();
+
         SpecificDetailHouseAndFlatObject? houseAndFlat = null;
         if (realEstate.SpecificDetailBin is not null)
         {
@@ -51,6 +62,12 @@ internal sealed class PreorderOnlineValuationHandler
         // revaluation check
         var revaluationRequest = new ExternalServices.PreorderService.V1.Contracts.OnlineRevaluationCheckRequestDTO
         {
+            ValuationType = "OCENENI",
+            LeasibilityRequired = houseAndFlat?.FinishedHouseAndFlatDetails?.LeaseApplicable,
+            RealEstateType = realEstate.ACVRealEstateTypeId,
+            TotalArea = request.Data.FlatArea,
+            Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
+            RealEstateIds = realEstateIds
         };
         var revaluationResponse = await _preorderService.RevaluationCheck(revaluationRequest, cancellationToken);
 
