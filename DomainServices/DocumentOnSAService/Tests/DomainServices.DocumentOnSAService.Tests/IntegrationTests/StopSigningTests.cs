@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.DataAggregatorService.Contracts;
+﻿using CIS.Foms.Enums;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.Testing;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
@@ -17,7 +18,7 @@ public class StopSigningTests : IntegrationTestBase
     public StopSigningTests(WebApplicationFactoryFixture<Program> fixture) : base(fixture)
     {
         //Mocks default
-        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = 1, CaseId = 2, State = 7 });
+        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = 1, CaseId = 2, State = 7, SalesArrangementTypeId = 1 });
 
         var resp = new GetDocumentDataResponse
         {
@@ -47,13 +48,17 @@ public class StopSigningTests : IntegrationTestBase
 
         var salesArrangementId = 1;
         var documentTypeId = 4;
-        var signatureMethodCode = "PHYSICAL";
-
+        var customerOnSaId = 4522;
+        var customerOnSaId2 = 5555;
         var response = await client.StartSigningAsync(new()
         {
             SalesArrangementId = salesArrangementId,
             DocumentTypeId = documentTypeId,
-            SignatureMethodCode = signatureMethodCode
+            CustomerOnSAId1 = customerOnSaId,
+            SignatureTypeId = (int)SignatureTypes.Paper,
+            CustomerOnSAId1SigningIdentity = CreateSigningIdentity(customerOnSaId: customerOnSaId),
+            CustomerOnSAId2 = customerOnSaId2,
+            CustomerOnSAId2SigningIdentity = CreateSigningIdentity(customerOnSaId: customerOnSaId2)
         });
 
         await client.StopSigningAsync(new() { DocumentOnSAId = response.DocumentOnSa.DocumentOnSAId });
