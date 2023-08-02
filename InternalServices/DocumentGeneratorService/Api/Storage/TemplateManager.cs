@@ -46,7 +46,7 @@ public class TemplateManager : IDisposable
         _documentStreams.ForEach(stream =>
         {
             var pdfDocument = new PdfDocument(stream);
-
+            
             document.Append(pdfDocument);
             finalDocument.PdfDocumentParts.Add(pdfDocument);
         });
@@ -103,7 +103,8 @@ public class TemplateManager : IDisposable
         {
             Title = $"{typeName}_{versionName}{variantName}",
             Author = nameof(DocumentGeneratorService),
-            Form = { Output = FormOutput.Flatten }
+            Form = { Output = FormOutput.Flatten },
+            PdfVersion = PdfVersion.v1_7
         };
     }
 }

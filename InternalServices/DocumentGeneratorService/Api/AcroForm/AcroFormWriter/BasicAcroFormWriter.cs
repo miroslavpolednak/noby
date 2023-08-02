@@ -18,7 +18,10 @@ public class BasicAcroFormWriter : IAcroFormWriter
 
     public MergeDocument Write(PdfDocument pdfDocument, string? templateNameModifier = default)
     {
-        var document = new MergeDocument(pdfDocument);
+        var document = new MergeDocument(pdfDocument)
+        {
+            PdfVersion = PdfVersion.v1_7
+        };
 
         foreach (var value in _values)
         {
@@ -46,7 +49,7 @@ public class BasicAcroFormWriter : IAcroFormWriter
         var pdfFormField = pdfDocument.Form.Fields[data.Key];
         var page = document.Pages[pdfFormField.GetOriginalPageNumber() - 1];
 
-        var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), Font.LoadSystemFont(pdfFormField.Font.Name), pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
+        var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), Font.Helvetica, pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
         label.Width -= 2;
     }
 
