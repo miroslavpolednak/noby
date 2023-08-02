@@ -104,6 +104,13 @@ internal static class CaseExtensions
                     }
                     break;
 
+                case 4:
+                    taskDetail.RealEstateValuation = new()
+                    {
+                        OrderId = taskData.GetInteger("ukol_odhad_order_id")
+                    };
+                    break;
+
                 case 6:
                     taskDetail.Signing = new()
                     {
