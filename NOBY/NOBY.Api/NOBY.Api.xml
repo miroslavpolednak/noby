@@ -2960,6 +2960,16 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0FE0440C-1614-47b0-8136-42BF508CE369"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.UpdateDeedOfOwnershipDocument(System.Int64,System.Int32,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.UpdateDeedOfOwnershipDocument.UpdateDeedOfOwnershipDocumentRequest,System.Threading.CancellationToken)">
+            <summary>
+            Aktualizace připojeného dokumentu LV
+            </summary>
+            <remarks>
+            Operace edituje RealEstateIds na již připojeném dokumentu LV
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=22C309A5-60C5-4ca2-96DE-129CA8178977"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequest.Attachments">
             <summary>
             Seznam uploadnutých příloh, které se mají založit k ocenění
@@ -2993,6 +3003,16 @@
             ID nově vytvořené přílohy ocenění
             </summary>
             <example>97355</example>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.UpdateDeedOfOwnershipDocument.UpdateDeedOfOwnershipDocumentRequest">
+            <summary>
+            RealEstateIds, které uživatel vybral k Ocenění
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateDeedOfOwnershipDocument.UpdateDeedOfOwnershipDocumentRequest.RealEstateIds">
+            <summary>
+            Unikátní ID nemovitosti ze systému CREM
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest.IsLoanRealEstate">
             <summary>

@@ -55,6 +55,7 @@ internal static class NobySwagger
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
 
             x.OperationFilter<ApplySwaggerNobyAttributes>();
+            x.OperationFilter<Endpoints.RealEstateValuation.ApplySwaggerRealEstateValuationAttributes> ();
         });
 
         return builder;
