@@ -476,11 +476,6 @@
             Objekt je použit pouze v případě, že jde o variantu nemovitosti P (Pozemek)
             </summary>
         </member>
-        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelDetails.ParcelNumbers">
-            <summary>
-            Objekt je použit pouze v případě, že jde o variantu nemovitosti P (Pozemek)
-            </summary>
-        </member>
         <member name="T:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelNumber">
             <summary>
             Číslo parcely

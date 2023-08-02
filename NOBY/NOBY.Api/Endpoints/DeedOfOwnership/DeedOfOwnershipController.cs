@@ -41,10 +41,10 @@ public sealed class DeedOfOwnershipController : ControllerBase
     public async Task<GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponse> GetDeedOfOwnershipDocumentContent(
         int katuzId,
         int deedOfOwnershipNumber,
-        long deedOfOwnershipId,
-        int nobyDeedOfOwnershipDocumentId,
+        long cremDeedOfOwnershipDocumentId,
+        int deedOfOwnershipDocumentId,
         CancellationToken cancellationToken)
-        => await _mediator.Send(new GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentRequest(katuzId, deedOfOwnershipNumber, deedOfOwnershipId, nobyDeedOfOwnershipDocumentId), cancellationToken);
+        => await _mediator.Send(new GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentRequest(katuzId, deedOfOwnershipNumber, cremDeedOfOwnershipDocumentId, deedOfOwnershipDocumentId), cancellationToken);
 
     private readonly IMediator _mediator;
     public DeedOfOwnershipController(IMediator mediator) => _mediator = mediator;
