@@ -27,7 +27,12 @@ message SpecificDetailFinishedHouseAndFlatDetails {
 }
 
 message SpecificDetailParcelObject {
-    google.protobuf.Int32Value ParcelNumber = 1;
+    repeated SpecificDetailParcelNumber ParcelNumbers = 1;
+}
+
+message SpecificDetailParcelNumber {
+    google.protobuf.Int32Value Prefix = 1;
+    google.protobuf.Int32Value Number = 2;
 }
 
 message RealEstateValuationAttachment {

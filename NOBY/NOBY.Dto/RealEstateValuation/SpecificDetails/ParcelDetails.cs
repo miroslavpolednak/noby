@@ -5,9 +5,21 @@
 /// </summary>
 public sealed class ParcelDetails
 {
+    public List<ParcelNumber>? ParcelNumbers { get; set; }
+}
+
+/// <summary>
+/// Číslo parcely
+/// </summary>
+public sealed class ParcelNumber
+{
+    /// <summary>
+    /// Předčíslí čísla parcely
+    /// </summary>
+    public int? Prefix { get; set; }
+
     /// <summary>
     /// Číslo parcely
     /// </summary>
-    /// <example>1</example>
-    public int? ParcelNumber { get; init; }
+    public int? Number { get; set; }
 }

@@ -145,7 +145,11 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
     {
         return new ParcelDetails
         {
-            ParcelNumber = parcel.ParcelNumber
+            ParcelNumbers = parcel?.ParcelNumbers?.Select(t => new ParcelNumber
+            {
+                Number = t.Number,
+                Prefix = t.Prefix
+            }).ToList()
         };
     }
 }

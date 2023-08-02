@@ -476,11 +476,25 @@
             Objekt je použit pouze v případě, že jde o variantu nemovitosti P (Pozemek)
             </summary>
         </member>
-        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelDetails.ParcelNumber">
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelDetails.ParcelNumbers">
+            <summary>
+            Objekt je použit pouze v případě, že jde o variantu nemovitosti P (Pozemek)
+            </summary>
+        </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelNumber">
             <summary>
             Číslo parcely
             </summary>
-            <example>1</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelNumber.Prefix">
+            <summary>
+            Předčíslí čísla parcely
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelNumber.Number">
+            <summary>
+            Číslo parcely
+            </summary>
         </member>
         <member name="T:NOBY.Dto.Workflow.AmendmentsConsultationData">
             <summary>
