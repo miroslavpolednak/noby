@@ -54,6 +54,10 @@ public partial class DeleteRealEstateValuationAttachmentRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 
+public partial class UpdateDeedOfOwnershipDocumentRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+{ }
+
 public partial class ValidateRealEstateValuationIdRequest
     : MediatR.IRequest<ValidateRealEstateValuationIdResponse>
 { }

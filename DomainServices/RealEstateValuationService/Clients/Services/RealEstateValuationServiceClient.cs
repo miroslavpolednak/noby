@@ -39,6 +39,20 @@ internal sealed class RealEstateValuationServiceClient
         }, cancellationToken: cancellationToken);
     }
 
+    public async Task UpdateDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, List<long>? realEstateIds, CancellationToken cancellationToken = default)
+    {
+        var request = new Contracts.UpdateDeedOfOwnershipDocumentRequest
+        {
+            DeedOfOwnershipDocumentId = deedOfOwnershipDocumentId
+        };
+        if (realEstateIds != null )
+        {
+            request.RealEstateIds.AddRange(realEstateIds);
+        }
+
+        await _service.UpdateDeedOfOwnershipDocumentAsync(request, cancellationToken: cancellationToken);
+    }
+
     public async Task<RealEstateValuationDetail> GetRealEstateValuationDetail(int realEstateValuationId, CancellationToken cancellationToken = default)
     {
         return await _service.GetRealEstateValuationDetailAsync(new()

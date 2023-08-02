@@ -31,6 +31,8 @@ public interface IRealEstateValuationServiceClient
     Task<List<CIS.Foms.Enums.RealEstateValuationTypes>> GetRealEstateValuationTypes(GetRealEstateValuationTypesRequest request, CancellationToken cancellationToken = default);
 
     // DeedOfOwnershipDocument
+    Task UpdateDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, List<long>? realEstateIds, CancellationToken cancellationToken = default);
+
     Task<int> AddDeedOfOwnershipDocument(AddDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken = default);
 
     Task DeleteDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, CancellationToken cancellationToken = default);
