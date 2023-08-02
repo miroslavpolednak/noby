@@ -5,7 +5,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest.ConditionalValues;
 using DomainServices.OfferService.Contracts;
 using DomainServices.UserService.Clients;
-using DomainServices.UserService.Contracts;
+using UserInfo = CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels.UserInfo;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
@@ -23,7 +23,7 @@ internal class ProductFormData : LoanApplicationBaseFormData
 
     public ConditionalFormValues ConditionalFormValues { get; private set; } = null!;
 
-    public User? PerformerUser { get; private set; }
+    public UserInfo? PerformerUser { get; private set; }
 
     public bool IsCancelled { get; set; }
 
@@ -64,7 +64,9 @@ internal class ProductFormData : LoanApplicationBaseFormData
         if (MainDynamicFormValues.PerformerUserId is null)
             return;
 
-        PerformerUser = await _userService.GetUser(MainDynamicFormValues.PerformerUserId.Value, cancellationToken);
+        var user = await _userService.GetUser(MainDynamicFormValues.PerformerUserId.Value, cancellationToken);
+
+        PerformerUser = new UserInfo(user);
     }
 
     private long? GetMpIdentityId()
