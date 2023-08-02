@@ -47,7 +47,12 @@ public sealed class UpdateDocumentStatusJob
 
             if (status == EDocumentStatuses.DELETED)
             {
-                documentOnSa.IsValid = false;
+                var stopSignRequest = new StopSigningRequest
+                {
+                    DocumentOnSAId = documentOnSa.DocumentOnSAId
+                };
+
+                await _mediator.Send(stopSignRequest, cancellationToken);
             }
         }
 
