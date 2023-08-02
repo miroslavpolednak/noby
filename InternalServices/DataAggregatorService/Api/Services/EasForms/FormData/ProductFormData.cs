@@ -66,6 +66,9 @@ internal class ProductFormData : LoanApplicationBaseFormData
 
         var user = await _userService.GetUser(MainDynamicFormValues.PerformerUserId.Value, cancellationToken);
 
+        if (string.IsNullOrWhiteSpace(user.UserInfo?.Cpm) || string.IsNullOrWhiteSpace(user.UserInfo?.Icp))
+            return;
+
         PerformerUser = new UserInfo(user);
     }
 
