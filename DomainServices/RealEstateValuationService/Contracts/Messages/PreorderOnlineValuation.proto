@@ -2,16 +2,14 @@
 package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
+import "Messages/Types.proto";
 import "google/protobuf/wrappers.proto";
 
 message PreorderOnlineValuationRequest {
     int32 RealEstateValuationId = 1;
-    google.protobuf.StringValue BuildingTechnicalStateCode = 2;
-    google.protobuf.StringValue BuildingMaterialStructureCode = 3;
-    google.protobuf.StringValue FlatSchemaCode = 4;
-    int32 FlatArea = 5;
-    google.protobuf.StringValue ContractNumber = 6;
-    google.protobuf.Int32Value BuildingAgeCode = 7;
-    google.protobuf.Int32Value CollateralAmount = 8;
-    google.protobuf.Int32Value LoanAmount = 9;
+    google.protobuf.StringValue ContractNumber = 2;
+    google.protobuf.Int32Value CollateralAmount = 3;
+    google.protobuf.Int32Value LoanAmount = 4;
+
+    OrdersOnlinePreorder Data = 5;
 }

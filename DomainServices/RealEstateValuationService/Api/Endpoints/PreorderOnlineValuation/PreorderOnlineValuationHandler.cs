@@ -3,6 +3,7 @@ using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.V1;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
+using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.PreorderOnlineValuation;
@@ -33,13 +34,14 @@ internal sealed class PreorderOnlineValuationHandler
         // KBModel
         var kbmodelRequest = new ExternalServices.LuxpiService.V1.Contracts.KBModelRequest
         {
-            TechnicalState = request.BuildingTechnicalStateCode,
-            MaterialStructure = request.BuildingMaterialStructureCode,
-            FlatSchema = request.FlatSchemaCode,
-            FlatArea = request.FlatArea,
+            TechnicalState = request.Data.BuildingTechnicalStateCode,
+            MaterialStructure = request.Data.BuildingMaterialStructureCode,
+            FlatSchema = request.Data.FlatSchemaCode,
+            FlatArea = request.Data.FlatArea,
+            AgeOfBuilding = request.Data.BuildingAgeCode,
+
             DealNumber = request.ContractNumber,
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
-            AgeOfBuilding = request.BuildingAgeCode,
             ActualPurchasePrice = request.CollateralAmount,
             IsDealSubject = realEstate.IsLoanRealEstate,
             LoanAmount = request.LoanAmount
@@ -58,6 +60,15 @@ internal sealed class PreorderOnlineValuationHandler
         realEstate.ValuationTypeId = 1;
         realEstate.IsRevaluationRequired = true;
         realEstate.ValuationStateId = (int)RealEstateValuationStates.DoplneniDokumentu;
+
+        // vlozeni nove order
+        var order = new Database.Entities.RealEstateValuationOrder
+        {
+            RealEstateValuationId = realEstate.RealEstateValuationId,
+            RealEstateValuationOrderType = RealEstateValuationOrderTypes.OnlinePreorder,
+            Data = Newtonsoft.Json.JsonConvert.SerializeObject(request.Data),
+            DataBin = request.Data.ToByteArray()
+        };
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

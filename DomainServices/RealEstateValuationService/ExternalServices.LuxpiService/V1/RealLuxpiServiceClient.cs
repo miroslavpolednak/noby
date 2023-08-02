@@ -15,14 +15,24 @@ internal sealed class RealLuxpiServiceClient
 
         return model.Status switch
         {
-            "OK" => new Dto.CreateKbmodelFlatResponse
-            {
-                ResultPrice = Convert.ToInt32(model.ResultPrice ?? 0),
-                ValuationId = model.ValuationId
-            },
+            "OK" => createResponse(),
             "KNOCKED_OUT" => throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelStatusFailed),
             _ => throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelUnknownStatus, model.Status)
         };
+
+        Dto.CreateKbmodelFlatResponse createResponse()
+        {
+            if (!model!.ResultPrice.HasValue || !model.ValuationId.HasValue)
+            {
+                ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelIncorrectResult);
+            }
+
+            return new Dto.CreateKbmodelFlatResponse
+            {
+                ResultPrice = Convert.ToInt32(model.ResultPrice!.Value),
+                ValuationId = model.ValuationId!.Value
+            };
+        }
     }
 
     private readonly HttpClient _httpClient;
