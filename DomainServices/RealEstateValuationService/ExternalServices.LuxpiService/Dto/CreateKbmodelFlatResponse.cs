@@ -2,6 +2,6 @@
 
 public sealed class CreateKbmodelFlatResponse
 {
-    public decimal? ResultPrice { get; set; }
+    public int? ResultPrice { get; set; }
     public long? ValuationId { get; set; }
 }

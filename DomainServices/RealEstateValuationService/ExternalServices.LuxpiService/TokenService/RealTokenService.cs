@@ -7,7 +7,7 @@ internal sealed class RealTokenService
 {
     public async Task<string> GetToken(string apiKey, CancellationToken cancellationToken)
     {
-        var content = new StringContent(apiKey);
+        var content = new StringContent("\"" + apiKey + "\"", new System.Net.Http.Headers.MediaTypeHeaderValue("application/json-patch+json"));
         var response = await _httpClient
             .PostAsync(_httpClient.BaseAddress + "/api/Authetication/request-by-apikey", content, cancellationToken)
             .ConfigureAwait(false);

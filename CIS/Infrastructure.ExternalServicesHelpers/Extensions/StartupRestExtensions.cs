@@ -50,7 +50,7 @@ public static class StartupRestExtensions
             })
             .ConfigurePrimaryHttpMessageHandler(services =>
             {
-                var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
+                var configuration = services.GetRequiredService<TConfiguration>();
 
                 // ignorovat vadny ssl certifikat
                 var clientHandler = configuration.IgnoreServerCertificateErrors ? new HttpClientHandler

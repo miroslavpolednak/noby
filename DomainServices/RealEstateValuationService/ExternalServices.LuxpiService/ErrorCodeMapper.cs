@@ -12,8 +12,8 @@ internal sealed class ErrorCodeMapper
     {
         SetMessages(new Dictionary<int, string>()
         {
-            { LuxpiKbModelUnknownStatus, "KB Model Status not known" },
-            { LuxpiKbModelStatusFailed, "KB Model Status Koncked Out" }
+            { LuxpiKbModelUnknownStatus, "KB Model Status unknown: '{PropertyValue}'" },
+            { LuxpiKbModelStatusFailed, "KB Model Status Knocked Out" }
         });
 
         return Messages;

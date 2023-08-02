@@ -14,7 +14,7 @@ internal sealed class TokenHttpHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var token = _tokenService.GetToken(_apiKey, cancellationToken);
+        var token = await _tokenService.GetToken(_apiKey, cancellationToken);
 
         request.Headers.Add("Authorization", $"Bearer {token}");
 

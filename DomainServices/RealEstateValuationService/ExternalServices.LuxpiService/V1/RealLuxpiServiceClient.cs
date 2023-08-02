@@ -17,11 +17,11 @@ internal sealed class RealLuxpiServiceClient
         {
             "OK" => new Dto.CreateKbmodelFlatResponse
             {
-                ResultPrice = (decimal?)model.ResultPrice,
+                ResultPrice = Convert.ToInt32(model.ResultPrice ?? 0),
                 ValuationId = model.ValuationId
             },
             "KNOCKED_OUT" => throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelStatusFailed),
-            _ => throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelUnknownStatus)
+            _ => throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelUnknownStatus, model.Status)
         };
     }
 

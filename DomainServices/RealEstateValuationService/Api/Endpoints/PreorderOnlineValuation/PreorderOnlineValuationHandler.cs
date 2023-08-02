@@ -1,4 +1,5 @@
-﻿using DomainServices.RealEstateValuationService.Api.Database;
+﻿using CIS.Foms.Enums;
+using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.V1;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
@@ -29,7 +30,8 @@ internal sealed class PreorderOnlineValuationHandler
             }
         }
 
-        var kbmodelReponse = await _luxpiServiceClient.CreateKbmodelFlat(new ExternalServices.LuxpiService.V1.Contracts.KBModelRequest
+        // KBModel
+        var kbmodelRequest = new ExternalServices.LuxpiService.V1.Contracts.KBModelRequest
         {
             TechnicalState = request.BuildingTechnicalStateCode,
             MaterialStructure = request.BuildingMaterialStructureCode,
@@ -41,7 +43,23 @@ internal sealed class PreorderOnlineValuationHandler
             ActualPurchasePrice = request.CollateralAmount,
             IsDealSubject = realEstate.IsLoanRealEstate,
             LoanAmount = request.LoanAmount
-        }, request.RealEstateValuationId, cancellationToken);
+        };
+        var kbmodelReponse = await _luxpiServiceClient.CreateKbmodelFlat(kbmodelRequest, 11010525, cancellationToken);
+
+        // revaluation check
+        var revaluationRequest = new ExternalServices.PreorderService.V1.Contracts.OnlineRevaluationCheckRequestDTO
+        {
+        };
+        var revaluationResponse = await _preorderService.RevaluationCheck(revaluationRequest, cancellationToken);
+
+        // update databaze hlavni entity
+        realEstate.ValuationResultCurrentPrice = kbmodelReponse.ResultPrice;
+        realEstate.PreorderId = kbmodelReponse.ValuationId;
+        realEstate.ValuationTypeId = 1;
+        realEstate.IsRevaluationRequired = true;
+        realEstate.ValuationStateId = (int)RealEstateValuationStates.DoplneniDokumentu;
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Empty();
     }
