@@ -20,6 +20,14 @@ using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using ExternalServices.Eas.V1;
 using DomainServices.ProductService.Clients;
 using ExternalServices.ESignatures.V1;
+using _Domain = DomainServices.DocumentOnSAService.Contracts;
+using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CaseService.Clients;
+using static DomainServices.CaseService.Contracts.v1.CaseService;
+using DomainServices.CustomerService.Clients;
+using static DomainServices.CustomerService.Contracts.V1.CustomerService;
+using CIS.InternalServices.DocumentGeneratorService.Clients;
+using static CIS.InternalServices.DocumentGeneratorService.Contracts.V1.DocumentGeneratorService;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 
@@ -33,8 +41,10 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
     internal IEasClient EasClient { get; }
     internal IESignaturesClient ESignaturesClient { get; }
     internal ICustomerOnSAServiceClient CustomerOnSAServiceClient { get; }
-
     internal IProductServiceClient ProductServiceClient { get; }
+    internal ICaseServiceClient CaseServiceClient { get; }
+    internal ICustomerServiceClient CustomerServiceClient { get; }
+    internal IDocumentGeneratorServiceClient DocumentGeneratorServiceClient { get; }
 
     public IntegrationTestBase(WebApplicationFactoryFixture<Program> fixture)
     {
@@ -48,6 +58,9 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         ESignaturesClient = Substitute.For<IESignaturesClient>();
         CustomerOnSAServiceClient = Substitute.For<ICustomerOnSAServiceClient>();
         ProductServiceClient = Substitute.For<IProductServiceClient>();
+        CaseServiceClient = Substitute.For<ICaseServiceClient>();
+        CustomerServiceClient = Substitute.For<ICustomerServiceClient>();
+        DocumentGeneratorServiceClient = Substitute.For <IDocumentGeneratorServiceClient>();
 
         ConfigureWebHost();
 
@@ -84,7 +97,10 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
             services.RemoveAll<IEasClient>().AddTransient(r => EasClient);
             services.RemoveAll<IESignaturesClient>().AddTransient(r => ESignaturesClient);
             services.RemoveAll<ICustomerOnSAServiceClient>().AddTransient(r => CustomerOnSAServiceClient);
-            services.RemoveAll<IProductServiceClient>().AddTransient(r=> ProductServiceClient);
+            services.RemoveAll<IProductServiceClient>().AddTransient(r => ProductServiceClient);
+            services.RemoveAll<ICaseServiceClient>().AddTransient(r => CaseServiceClient);
+            services.RemoveAll<ICustomerServiceClient>().AddTransient(r => CustomerServiceClient);
+            services.RemoveAll<IDocumentGeneratorServiceClient>().AddTransient(r => DocumentGeneratorServiceClient);
         });
     }
 
@@ -98,6 +114,26 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         var scope = Fixture.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<DocumentOnSAServiceDbContext>();
         context.Database.EnsureCreated();
+    }
+
+
+    protected _Domain.SigningIdentity CreateSigningIdentity(
+        int customerOnSaId = 4522
+        )
+    {
+        var identities = new List<Identity> { new Identity { IdentityId = 1, IdentityScheme = Identity.Types.IdentitySchemes.Kb } };
+
+        return new _Domain.SigningIdentity
+        {
+            BirthNumber = "8808221117",
+            FirstName = "Pavel",
+            LastName = "Novák",
+            CustomerIdentifiers = { identities },
+            EmailAddress = "test@gmail.com",
+            MobilePhone = new() { PhoneIDC = "+420", PhoneNumber = "725966844" },
+            CustomerOnSAId = customerOnSaId,
+            SignatureDataCode = "SIG_X_1"
+        };
     }
 
     protected DocumentOnSa CreateDocOnSaEntity(
@@ -126,7 +162,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
             CreatedUserId = 1,
             CreatedTime = DateTime.Now,
             DocumentTemplateVariantId = 1,
-            ExternalId="SomeExternalId",
+            ExternalId = "SomeExternalId",
             Source = Api.Database.Enums.Source.Noby,
             SignatureTypeId = signatureTypeId,
             CustomerOnSAId1 = customerOnSAId1,
