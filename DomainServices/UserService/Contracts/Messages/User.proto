@@ -45,5 +45,9 @@ message UserInfoObject {
 	// VIP flag uživatele
 	bool IsUserVIP = 9;
 
-	bool isInternal = 10;
+	// Flag musí být držen na uživateli. Je počítaný z identitního schématu (kde je BrokerID prázdné).
+	bool IsInternal = 10;
+
+	// Id distribučního kanálu
+	int32 ChannelId = 11;
 }

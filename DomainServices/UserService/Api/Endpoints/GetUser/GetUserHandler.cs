@@ -51,7 +51,8 @@ internal class GetUserHandler
                 DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}",
                 Email = dbAttributes?.email,
                 PhoneNumber = dbAttributes?.phone,
-                IsUserVIP = !string.IsNullOrEmpty(dbAttributes?.VIPFlag)
+                IsUserVIP = !string.IsNullOrEmpty(dbAttributes?.VIPFlag),
+                ChannelId = dbAttributes?.distributionChannelId ?? 0,
             }
         };
 
