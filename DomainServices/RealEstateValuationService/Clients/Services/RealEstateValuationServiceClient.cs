@@ -83,6 +83,11 @@ internal sealed class RealEstateValuationServiceClient
         }, cancellationToken: cancellationToken);
     }
 
+    public async Task PreorderOnlineValuation(PreorderOnlineValuationRequest request, CancellationToken cancellationToken = default)
+    {
+        await _service.PreorderOnlineValuationAsync(request, cancellationToken: cancellationToken);
+    }
+
     public async Task UpdateStateByRealEstateValuation(int realEstateValuationId, int valuationStateId, CancellationToken cancellationToken = default)
     {
         await _service.UpdateStateByRealEstateValuationAsync(new()

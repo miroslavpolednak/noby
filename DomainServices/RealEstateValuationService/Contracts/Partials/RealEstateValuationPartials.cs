@@ -73,3 +73,7 @@ public partial class GetDeedOfOwnershipDocumentRequest
 public partial class GetRealEstateValuationTypesRequest
     : MediatR.IRequest<GetRealEstateValuationTypesReponse>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class PreorderOnlineValuationRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+{ }
