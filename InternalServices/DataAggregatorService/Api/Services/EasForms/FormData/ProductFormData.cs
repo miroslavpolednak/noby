@@ -5,7 +5,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest.ConditionalValues;
 using DomainServices.OfferService.Contracts;
 using DomainServices.UserService.Clients;
-using DomainServices.UserService.Contracts;
+using UserInfo = CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels.UserInfo;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 
@@ -23,9 +23,11 @@ internal class ProductFormData : LoanApplicationBaseFormData
 
     public ConditionalFormValues ConditionalFormValues { get; private set; } = null!;
 
-    public User? PerformerUser { get; private set; }
+    public UserInfo? PerformerUser { get; private set; }
 
-    public int? SalesArrangementStateId => _codebookManager.SalesArrangementStates.First(x => x.Id == SalesArrangement.State).StarbuildId;
+    public bool IsCancelled { get; set; }
+
+    public int? SalesArrangementStateId => IsCancelled ? 2 : _codebookManager.SalesArrangementStates.Where(x => x.Id == SalesArrangement.State).Select(x => x.StarbuildId).FirstOrDefault(1);
 
     public decimal? InterestRateDiscount => (decimal?)Offer.SimulationInputs.InterestRateDiscount * -1;
 
@@ -62,7 +64,12 @@ internal class ProductFormData : LoanApplicationBaseFormData
         if (MainDynamicFormValues.PerformerUserId is null)
             return;
 
-        PerformerUser = await _userService.GetUser(MainDynamicFormValues.PerformerUserId.Value, cancellationToken);
+        var user = await _userService.GetUser(MainDynamicFormValues.PerformerUserId.Value, cancellationToken);
+
+        if (string.IsNullOrWhiteSpace(user.UserInfo?.Cpm) || string.IsNullOrWhiteSpace(user.UserInfo?.Icp))
+            return;
+
+        PerformerUser = new UserInfo(user);
     }
 
     private long? GetMpIdentityId()

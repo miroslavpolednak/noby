@@ -103,7 +103,8 @@ public class PdfTable
 
     private void CreateColumns(Table2 table)
     {
-        var row = table.Rows.Add(20, Font.LoadSystemFont(new System.Drawing.Font(table.CellDefault.Font.Name, 9, FontStyle.Bold)), table.CellDefault.FontSize, RgbColor.Black, RgbColor.LightGrey);
+        
+        var row = table.Rows.Add(20, Font.HelveticaBold, table.CellDefault.FontSize, RgbColor.Black, RgbColor.LightGrey);
         
         foreach (var column in _tableData.Columns)
         {
@@ -154,7 +155,7 @@ public class PdfTable
 
         return new TextArea(_tableData.ConcludingParagraph, table.X, table.Y + visibleHeight + textTopMargin, table.Width, remainingHeight - textTopMargin)
         {
-            Font = Font.LoadSystemFont(new System.Drawing.Font(table.CellDefault.Font.Name, 9)),
+            Font = Font.HelveticaBold,
             FontSize = table.CellDefault.FontSize ?? 10,
             Align = Pdf.TextAlign.Justify
         };

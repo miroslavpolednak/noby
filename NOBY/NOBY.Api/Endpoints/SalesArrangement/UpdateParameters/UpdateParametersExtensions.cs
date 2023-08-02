@@ -15,7 +15,7 @@ internal static class UpdateParametersExtensions
         };
     }
 
-    public static _SA.SalesArrangementParametersMortgage ToDomainService(this ParametersMortgage parameters)
+    public static _SA.SalesArrangementParametersMortgage ToDomainService(this ParametersMortgage parameters, _SA.SalesArrangementParametersMortgage originalParameter)
     {
         var model = new _SA.SalesArrangementParametersMortgage
         {
@@ -25,6 +25,8 @@ internal static class UpdateParametersExtensions
             ResidencyCurrencyCode = parameters.ResidencyCurrencyCode,
             Agent = parameters.Agent,
             AgentConsentWithElCom = parameters.AgentConsentWithElCom,
+            Comment = originalParameter.Comment,
+            FirstSignatureDate = originalParameter.FirstSignatureDate
         };
 
         if (parameters.LoanRealEstates is not null)

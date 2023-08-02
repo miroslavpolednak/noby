@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using CIS.Core.Attributes;
-using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
@@ -33,11 +33,11 @@ internal sealed class FormsService
         return _mediator.Send(new GetSalesArrangementRequest { SalesArrangementId = salesArrangementId }, cancellationToken);
     }
 
-    public async Task<SalesArrangementCategories> LoadSalesArrangementCategory(SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    public async Task<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem> LoadSalesArrangementType(int salesArrangementTypeId, CancellationToken cancellationToken)
     {
         var types = await _codebookService.SalesArrangementTypes(cancellationToken);
 
-        return (SalesArrangementCategories)types.First(t => t.Id == salesArrangement.SalesArrangementTypeId).SalesArrangementCategory;
+        return types.First(t => t.Id == salesArrangementTypeId);
     }
 
     public async IAsyncEnumerable<DynamicFormValues> CreateProductDynamicFormValues(SalesArrangement salesArrangement, [EnumeratorCancellation] CancellationToken cancellationToken)
@@ -76,7 +76,7 @@ internal sealed class FormsService
         }, cancellationToken);
     }
 
-    public async Task<GetEasFormResponse> LoadProductForm(SalesArrangement salesArrangement, IEnumerable<DynamicFormValues> dynamicFormValues, CancellationToken cancellationToken)
+    public async Task<GetEasFormResponse> LoadProductForm(SalesArrangement salesArrangement, IEnumerable<DynamicFormValues> dynamicFormValues, bool isCancelled, CancellationToken cancellationToken)
     {
         FormValidations.CheckArrangement(salesArrangement);
 
@@ -85,7 +85,8 @@ internal sealed class FormsService
             SalesArrangementId = salesArrangement.SalesArrangementId,
             UserId = salesArrangement.Created.UserId!.Value,
             EasFormRequestType = EasFormRequestType.Product,
-            DynamicFormValues = { dynamicFormValues }
+            DynamicFormValues = { dynamicFormValues },
+            IsCancelled = isCancelled
         }, cancellationToken);
 
         FormValidations.CheckFormData(response.Product);

@@ -60,7 +60,6 @@ internal sealed class AuditLogger
         {
             EventType = eventType,
             Message = message,
-            AuditEventIdent = Guid.NewGuid(),
             Result = result,
             Identities = identities,
             Products = products,

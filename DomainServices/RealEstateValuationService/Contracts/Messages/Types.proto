@@ -3,6 +3,7 @@ package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 import "google/protobuf/wrappers.proto";
+import "GrpcDateTime.proto";
 
 message LoanPurposeDetailsObject {
     repeated int32 LoanPurposes = 1;
@@ -26,7 +27,12 @@ message SpecificDetailFinishedHouseAndFlatDetails {
 }
 
 message SpecificDetailParcelObject {
-    google.protobuf.Int32Value ParcelNumber = 1;
+    repeated SpecificDetailParcelNumber ParcelNumbers = 1;
+}
+
+message SpecificDetailParcelNumber {
+    google.protobuf.Int32Value Prefix = 1;
+    google.protobuf.Int32Value Number = 2;
 }
 
 message RealEstateValuationAttachment {
@@ -35,4 +41,5 @@ message RealEstateValuationAttachment {
     string FileName = 3;
     int64 ExternalId = 4;
     int32 AcvAttachmentCategoryId = 5;
+    cis.types.GrpcDateTime CreatedOn = 6;
 }

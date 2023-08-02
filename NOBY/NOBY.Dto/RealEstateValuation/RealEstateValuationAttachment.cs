@@ -24,5 +24,10 @@ public sealed class RealEstateValuationAttachment
 
     public int AcvAttachmentCategoryId { get; set; }
 
+    /// <summary>
+    /// Datum vytvoření přílohy
+    /// </summary>
+    public DateTime CreatedOn { get; set; }
+
     public string AcvAttachmentCategoryName { get; set; } = string.Empty;
 }

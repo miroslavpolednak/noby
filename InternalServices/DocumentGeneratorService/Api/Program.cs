@@ -60,6 +60,8 @@ try
     app.MapGrpcService<DocumentGeneratorService>();
     app.MapGrpcReflectionService();
 
+    Document.AddLicense("DPS10NEDLDCHHBkifnavglbvMUnz6cOsK3rihyH8moPETXqm86GidIy9yKvju+7UztxVoPJRLgKM5MmmDgsKwmDSRjs5hznpB2Lw");
+
     log.ApplicationRun();
     app.Run();
 }

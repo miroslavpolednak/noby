@@ -7,6 +7,7 @@ using CIS.Foms.Enums;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.ProductService.Clients;
+using CIS.Foms.Types.Enums;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
@@ -20,7 +21,9 @@ internal sealed class IdentifyByIdentityHandler
         var customerOnSaInstance = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
 
         if (customerOnSaInstance.CustomerIdentifiers is not null && customerOnSaInstance.CustomerIdentifiers.Any())
+        {
             throw new NobyValidationException("CustomerOnSA has been already identified");
+        }
 
         var (customersInSA, household, saInstance) = await fetchEntities(customerOnSaInstance.SalesArrangementId, request.CustomerOnSAId, cancellationToken);
 
@@ -29,6 +32,14 @@ internal sealed class IdentifyByIdentityHandler
         foreach (var customer in customersInSA.Where(t => t.CustomerOnSAId != customerOnSaInstance.CustomerOnSAId))
         {
             customerDetails.Add(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId, cancellationToken));
+        }
+
+        //Debtor has to be identified first
+        if (saInstance.SalesArrangementTypeId == (int)SalesArrangementTypes.Mortgage
+            && customerOnSaInstance.CustomerRoleId is not (int)CustomerRoles.Debtor 
+            && !customerDetails.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)))
+        {
+            throw new NobyValidationException("Main customer has to be identified first.");
         }
 
         // validate two same identities on household

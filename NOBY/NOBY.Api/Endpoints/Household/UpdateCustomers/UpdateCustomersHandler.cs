@@ -4,7 +4,6 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using __HO = DomainServices.HouseholdService.Contracts;
-using DomainServices.CustomerService.Clients;
 using DomainServices.CodebookService.Clients;
 
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
@@ -41,7 +40,7 @@ internal sealed class UpdateCustomersHandler
             var documentsToSign = await _documentOnSAService.GetDocumentsToSignList(householdInstance.SalesArrangementId, cancellationToken);
             bool onlyNotSigned = (c1.CancelSigning && !c1.OnHouseholdCustomerOnSAId.HasValue) || (c2.CancelSigning && !c2.OnHouseholdCustomerOnSAId.HasValue);
 
-            foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && (!t.IsSigned || !onlyNotSigned)))
+            foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && t.HouseholdId == request.HouseholdId && (!t.IsSigned || !onlyNotSigned)))
             {
                 await _documentOnSAService.StopSigning(document.DocumentOnSAId!.Value, cancellationToken);
             }
