@@ -42,6 +42,9 @@ internal sealed class PreorderOnlineValuationHandler
             }
         }
 
+        // kontrola dat
+        dataValidation(realEstate);
+
         // KBModel
         var kbmodelRequest = new ExternalServices.LuxpiService.V1.Contracts.KBModelRequest
         {
@@ -86,10 +89,19 @@ internal sealed class PreorderOnlineValuationHandler
             Data = Newtonsoft.Json.JsonConvert.SerializeObject(request.Data),
             DataBin = request.Data.ToByteArray()
         };
+        _dbContext.RealEstateValuationOrders.Add(order);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Empty();
+    }
+
+    private static void dataValidation(Database.Entities.RealEstateValuation realEstate)
+    {
+        if (string.IsNullOrEmpty(realEstate.ACVRealEstateTypeId))
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.PreorderOnlineDataValidation, nameof(realEstate.ACVRealEstateTypeId));
+        }
     }
 
     private readonly RealEstateValuationServiceDbContext _dbContext;

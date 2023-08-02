@@ -22,6 +22,13 @@ GO
 DROP TABLE IF EXISTS [dbo].[DeedOfOwnershipDocumentHistory]
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RealEstateValuationOrder]') AND type in (N'U'))
+ALTER TABLE [dbo].[RealEstateValuationOrder] SET ( SYSTEM_VERSIONING = OFF  )
+GO
+DROP TABLE IF EXISTS [dbo].[RealEstateValuationOrder]
+GO
+DROP TABLE IF EXISTS [dbo].[RealEstateValuationOrderHistory]
+GO
 
 CREATE TABLE [dbo].[RealEstateValuation](
 	[RealEstateValuationId] [int] IDENTITY(1,1) NOT NULL,
@@ -115,5 +122,30 @@ CREATE TABLE [dbo].[DeedOfOwnershipDocument](
 WITH
 (
 SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[DeedOfOwnershipDocumentHistory])
+)
+GO
+
+CREATE TABLE [dbo].[RealEstateValuationOrder](
+	[RealEstateValuationOrderId] [int] IDENTITY(1,1) NOT NULL,
+	[RealEstateValuationId] [int] NOT NULL,
+	[RealEstateValuationOrderType] [tinyint] NULL,
+	[DataBin] [varbinary](max) NULL,
+	[Data] [varchar](max) NULL,
+	[CreatedUserName] [nvarchar](100) NOT NULL,
+	[CreatedUserId] [int] NOT NULL,
+	[CreatedTime] [datetime] NOT NULL,
+	[ModifiedUserId] [int] NULL,
+	[ModifiedUserName] [nvarchar](100) NULL,
+	[ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
+	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
+ CONSTRAINT [PK_RealEstateValuationOrder] PRIMARY KEY CLUSTERED 
+(
+	[RealEstateValuationOrderId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+	PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+WITH
+(
+SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[RealEstateValuationOrderHistory])
 )
 GO

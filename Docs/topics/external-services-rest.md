@@ -41,6 +41,20 @@ Výchozí nastavení je:
 - RequestRetryCount = 3
 - RequestRetryTimeout = 10s
 
+### Ukázka nastavení retry / timeout policy v konfiguraci služby
+```json
+"ExternalServices": {
+    "SomeKbService": {
+        "V1": {
+            ...
+            "RequestTimeout": 30, // timeout každého requestu nastav na 30s
+            "RequestRetryCount": 2, // pokud první request timeoutuje, zkus ještě 2x opakovat
+            "RequestRetryTimeout": 5 // mezi jednotlivými opakováními počkej 5s
+        }
+    }
+}
+```
+
 ## Připravené HttpHandlery
 V `CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers` jsou již připravené tyto *HttpHandler*-y, které je možné připojit do výchozí HttpClientFactory.
 
@@ -69,7 +83,7 @@ Přidává logování request a response (volitelně payloadu a hlavičky).
 Nastavení logování se řeší v konfiguraci *appsettings.json*.
 ```json
 "ExternalServices": {
-  "AddressWhisperer": {
+  "SomeKbService": {
     "V1": {
       ...
       "UseLogging": true,           // zapnutí a vypnutí HTTP logování
@@ -80,30 +94,44 @@ Nastavení logování se řeší v konfiguraci *appsettings.json*.
 }
 ```
 
+## Přidání vlastních HttpHandlerů
+V případě potřeby je možné do registrační pipeline přidat i vlastní *HttpHandler* standardní cestou fluent builderu.
+
+```csharp
+builder
+    .AddExternalServiceRestClient<LuxpiService.V1.ILuxpiServiceClient, LuxpiService.V1.RealLuxpiServiceClient>()
+    // vložení vlastního handleru
+    .AddHttpMessageHandler(services => new LuxpiService.TokenService.TokenHttpHandler(configuration.Password, services.GetRequiredService<LuxpiService.TokenService.ITokenService>()));
+```
+
 ## Příklad implementace
 Ukázka nastavení služby v `StartupExtensions.cs`
 ```csharp
 public static class StartupExtensions
 {
-    internal const string ServiceName = "Eas";
+    internal const string ServiceName = "PreorderService";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, PreorderService.V1.IPreorderServiceClient
+        => builder.AddPreorderService<TClient>(PreorderService.V1.IPreorderServiceClient.Version);
+
+    static WebApplicationBuilder AddPreorderService<TClient>(this WebApplicationBuilder builder, string version)
         where TClient : class, IExternalServiceClient
     {
         // ziskat konfigurace pro danou verzi sluzby
-        string version = getVersion<TClient>();
         var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
 
         switch (version, configuration.ImplementationType)
         {
-            case (V1.IEasClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<V1.IEasClient, V1.MockEasClient>();
+            case (PreorderService.V1.IPreorderServiceClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<PreorderService.V1.IPreorderServiceClient, PreorderService.V1.MockPreorderServiceClient>();
                 break;
 
-            case (V1.IEasClient.Version, ServiceImplementationTypes.Real):
+            case (PreorderService.V1.IPreorderServiceClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<V1.IEasClient, V1.RealEasClient>()
-                    .AddExternalServicesCorrelationIdForwarding()
+                    .AddExternalServiceRestClient<PreorderService.V1.IPreorderServiceClient, PreorderService.V1.RealPreorderServiceClient>()
+                    .AddExternalServicesKbHeaders()
+                    .AddExternalServicesKbPartyHeaders()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
@@ -111,19 +139,14 @@ public static class StartupExtensions
                 throw new NotImplementedException($"{ServiceName} version {typeof(TClient)} client not implemented");
         }
 
+        PreorderService.ErrorCodeMapper.Init();
+
         return builder;
     }
-
-    static string getVersion<TClient>()
-        => typeof(TClient) switch
-        {
-            Type t when t.IsAssignableFrom(typeof(V1.IEasClient)) => V1.IEasClient.Version,
-            _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
-        };
 }
 ```
 
 A následně registrace proxy projektu, např. v doménové službě:
 ```csharp
-builder.AddExternalService<IEasClient>();
+builder.AddExternalService<IPreorderService>();
 ```

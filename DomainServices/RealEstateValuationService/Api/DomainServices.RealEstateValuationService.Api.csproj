@@ -38,5 +38,4 @@
 		<ProjectReference Include="..\ExternalServices.LuxpiService\DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.csproj" />
 		<ProjectReference Include="..\ExternalServices.PreorderService\DomainServices.RealEstateValuationService.ExternalServices.PreorderService.csproj" />
 	</ItemGroup>
-
 </Project>

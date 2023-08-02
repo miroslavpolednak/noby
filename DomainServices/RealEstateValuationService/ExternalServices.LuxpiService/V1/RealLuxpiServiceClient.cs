@@ -24,9 +24,9 @@ internal sealed class RealLuxpiServiceClient
         {
             if (!model!.ResultPrice.HasValue || !model.ValuationId.HasValue)
             {
-                ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelIncorrectResult);
+                throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelIncorrectResult);
             }
-
+        
             return new Dto.CreateKbmodelFlatResponse
             {
                 ResultPrice = Convert.ToInt32(model.ResultPrice!.Value),
