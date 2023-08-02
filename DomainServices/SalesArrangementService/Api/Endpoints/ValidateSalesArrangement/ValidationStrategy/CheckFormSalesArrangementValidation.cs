@@ -1,9 +1,11 @@
-﻿using CIS.Foms.Enums;
+﻿using CIS.Core.Attributes;
+using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement.ValidationStrategy;
 
+[ScopedService, SelfService]
 internal class CheckFormSalesArrangementValidation : ISalesArrangementValidationStrategy
 {
     private static readonly int[] ValidCommonValues = { 0, 6 };

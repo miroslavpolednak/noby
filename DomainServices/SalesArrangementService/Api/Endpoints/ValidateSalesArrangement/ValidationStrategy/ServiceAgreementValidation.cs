@@ -1,9 +1,11 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using CIS.Core.Attributes;
+using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement.ValidationStrategy;
 
+[ScopedService, SelfService]
 internal class ServiceAgreementValidation : ISalesArrangementValidationStrategy
 {
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
