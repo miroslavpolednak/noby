@@ -76,7 +76,7 @@ internal class PdfDocumentManager
 
     private static void AddWatermark(Document document)
     {
-        var textWatermark = new TextWatermark("Pouze pro informaci", GeneratorVariables.Helvetica, 68)
+        var textWatermark = new TextWatermark("Pouze pro informaci", GeneratorVariables.Arial, 68)
         {
             TextColor = new RgbColor(192, 192, 192),
             Angle = -45,

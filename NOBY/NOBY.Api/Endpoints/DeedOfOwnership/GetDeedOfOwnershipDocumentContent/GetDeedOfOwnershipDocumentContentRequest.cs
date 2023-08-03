@@ -3,7 +3,7 @@
 internal sealed record GetDeedOfOwnershipDocumentContentRequest(
     int? KatuzId,
     int? DeedOfOwnershipNumber,
-    long? CremDeedOfOwnershipDocumentId,
+    long? DeedOfOwnershipId,
     int? DeedOfOwnershipDocumentId)
     : IRequest<GetDeedOfOwnershipDocumentContentResponse>
 {
