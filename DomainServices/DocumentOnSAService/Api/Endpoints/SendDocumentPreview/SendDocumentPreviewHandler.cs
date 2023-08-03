@@ -30,7 +30,7 @@ public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewReq
         
         _auditLogger.LogWithCurrentUser(
             AuditEventTypes.Noby011,
-            "Náhled dokumentu byl odeslán klientovi.",
+            "Dokument byl odeslán klientovi k náhledu",
             products: new List<AuditLoggerHeaderItem>
             {
                 new("documentOnSA", documentOnSa.DocumentOnSAId)

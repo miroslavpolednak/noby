@@ -38,7 +38,7 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
 
         _auditLogger.LogWithCurrentUser(
             AuditEventTypes.Noby008,
-            "Podepsaný dokument byl stornován.",
+            "Podepsaný dokument byl stornován",
             products: new List<AuditLoggerHeaderItem>
             {
                 new("documentOnSA", documentOnSa.DocumentOnSAId),

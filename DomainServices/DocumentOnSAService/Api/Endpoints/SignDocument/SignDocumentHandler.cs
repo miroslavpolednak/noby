@@ -103,7 +103,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
         _auditLogger.LogWithCurrentUser(
             AuditEventTypes.Noby007,
-            "Dokument byl označen za podepsaný.",
+            "Dokument byl označen za podepsaný",
             products: new List<AuditLoggerHeaderItem>
             {
                 new("documentOnSA", documentOnSa.DocumentOnSAId),

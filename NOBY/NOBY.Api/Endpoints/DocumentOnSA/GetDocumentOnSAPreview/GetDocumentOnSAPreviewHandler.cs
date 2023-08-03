@@ -33,7 +33,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
         
         _auditLogger.LogWithCurrentUser(
             AuditEventTypes.Noby010,
-            "Náhled dokumentu byl odeslán ke stažení.",
+            "Dokument byl zobrazen v aplikaci",
             products: new List<AuditLoggerHeaderItem>
             {
                 new("documentOnSA", documentOnSA.DocumentOnSAId!.Value)
