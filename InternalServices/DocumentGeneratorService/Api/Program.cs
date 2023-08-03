@@ -20,7 +20,9 @@ var log = builder.CreateStartupLogger();
 
 try
 {
-    var config = builder.Configuration.GetRequiredSection("GeneratorConfiguration").Get<GeneratorConfiguration>();
+    var config = builder.Configuration.GetRequiredSection("GeneratorConfiguration").Get<GeneratorConfiguration>()!;
+
+    GeneratorVariables.Init(config);
 
     builder.AddCisEnvironmentConfiguration(); // globalni nastaveni prostredi
     builder.AddCisCoreFeatures()
