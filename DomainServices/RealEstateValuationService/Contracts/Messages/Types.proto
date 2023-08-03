@@ -27,7 +27,12 @@ message SpecificDetailFinishedHouseAndFlatDetails {
 }
 
 message SpecificDetailParcelObject {
-    google.protobuf.Int32Value ParcelNumber = 1;
+    repeated SpecificDetailParcelNumber ParcelNumbers = 1;
+}
+
+message SpecificDetailParcelNumber {
+    google.protobuf.Int32Value Prefix = 1;
+    google.protobuf.Int32Value Number = 2;
 }
 
 message RealEstateValuationAttachment {
@@ -37,4 +42,12 @@ message RealEstateValuationAttachment {
     int64 ExternalId = 4;
     int32 AcvAttachmentCategoryId = 5;
     cis.types.GrpcDateTime CreatedOn = 6;
+}
+
+message OrdersOnlinePreorder {
+    google.protobuf.StringValue BuildingTechnicalStateCode = 1;
+    google.protobuf.StringValue BuildingMaterialStructureCode = 2;
+    google.protobuf.StringValue FlatSchemaCode = 3;
+    int32 FlatArea = 4;
+    google.protobuf.Int32Value BuildingAgeCode = 5;
 }

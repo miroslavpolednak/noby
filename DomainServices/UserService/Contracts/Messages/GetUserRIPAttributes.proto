@@ -12,7 +12,7 @@ message GetUserRIPAttributesRequest {
 }
 
 message UserRIPAttributes {
-	int64 PersonId = 1;
+	google.protobuf.Int64Value PersonId = 1;
 
 	string PersonSurname = 2;
 
@@ -21,6 +21,10 @@ message UserRIPAttributes {
 	string PersonOrgUnitName = 4;
 
 	string PersonJobPostId = 5;
+
+	string Company = 6;
 	
-	google.protobuf.Int32Value DealerCompanyId = 6;
+	google.protobuf.Int32Value DealerCompanyId = 7;
+
+	google.protobuf.Int64Value BrokerId = 8;
 }

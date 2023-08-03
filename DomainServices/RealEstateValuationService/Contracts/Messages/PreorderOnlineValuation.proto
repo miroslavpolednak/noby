@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+import "Messages/Types.proto";
+import "google/protobuf/wrappers.proto";
+
+message PreorderOnlineValuationRequest {
+    int32 RealEstateValuationId = 1;
+    google.protobuf.StringValue ContractNumber = 2;
+    google.protobuf.Int32Value CollateralAmount = 3;
+    google.protobuf.Int32Value LoanAmount = 4;
+
+    OrdersOnlinePreorder Data = 5;
+}

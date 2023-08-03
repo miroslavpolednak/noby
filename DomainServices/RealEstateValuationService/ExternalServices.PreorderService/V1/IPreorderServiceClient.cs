@@ -7,6 +7,8 @@ public interface IPreorderServiceClient
 {
     const string Version = "V1";
 
+    Task<bool> RevaluationCheck(Contracts.OnlineRevaluationCheckRequestDTO request, CancellationToken cancellationToken = default);
+
     Task<List<CIS.Foms.Enums.RealEstateValuationTypes>> GetValuationTypes(Contracts.AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default);
 
     /// <summary>

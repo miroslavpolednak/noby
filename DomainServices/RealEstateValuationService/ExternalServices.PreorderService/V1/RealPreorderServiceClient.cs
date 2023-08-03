@@ -5,6 +5,16 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
 internal sealed class RealPreorderServiceClient
     : IPreorderServiceClient
 {
+    public async Task<bool> RevaluationCheck(Contracts.OnlineRevaluationCheckRequestDTO request, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient
+            .PostAsJsonAsync(_httpClient.BaseAddress + "/lookup/revaluationcheck", request, cancellationToken)
+            .ConfigureAwait(false);
+
+        var model = await response.EnsureSuccessStatusAndReadJson<Contracts.RevaluationRequiredResponse>(StartupExtensions.ServiceName, cancellationToken);
+        return model.RevaluationRequired;
+    }
+
     public async Task<List<CIS.Foms.Enums.RealEstateValuationTypes>> GetValuationTypes(Contracts.AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient

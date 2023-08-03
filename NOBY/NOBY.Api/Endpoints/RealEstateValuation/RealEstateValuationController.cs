@@ -254,6 +254,31 @@ public sealed class RealEstateValuationController : ControllerBase
         CancellationToken cancellationToken)
         => await _mediator.Send(new GetRealEstateValuationTypes.GetRealEstateValuationTypesRequest(caseId, realEstateValuationId), cancellationToken);
 
+    /// <summary>
+    /// Aktualizace připojeného dokumentu LV
+    /// </summary>
+    /// <remarks>
+    /// Operace edituje RealEstateIds na již připojeném dokumentu LV
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=22C309A5-60C5-4ca2-96DE-129CA8178977"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents/{deedOfOwnershipDocumentId:int}")]
+    [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateDeedOfOwnershipDocument(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromRoute] int deedOfOwnershipDocumentId,
+        [FromBody] UpdateDeedOfOwnershipDocument.UpdateDeedOfOwnershipDocumentRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request.InfuseId(caseId, realEstateValuationId, deedOfOwnershipDocumentId), cancellationToken);
+        return NoContent();
+    }
+
     private readonly IMediator _mediator;
     public RealEstateValuationController(IMediator mediator) => _mediator = mediator;
 }

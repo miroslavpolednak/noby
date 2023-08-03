@@ -62,10 +62,15 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
                 };
                 break;
             case ParcelDetails parcelDetails:
-                dsRequest.ParcelDetails = new __Contracts.SpecificDetailParcelObject
+                dsRequest.ParcelDetails = new __Contracts.SpecificDetailParcelObject();
+                if (parcelDetails?.ParcelNumbers is not null)
                 {
-                    ParcelNumber = parcelDetails.ParcelNumber
-                };
+                    dsRequest.ParcelDetails.ParcelNumbers.AddRange(parcelDetails.ParcelNumbers.Select(t => new __Contracts.SpecificDetailParcelNumber
+                    {
+                        Number = t.Number,
+                        Prefix = t.Prefix
+                    }));
+                }
                 break;
         }
 

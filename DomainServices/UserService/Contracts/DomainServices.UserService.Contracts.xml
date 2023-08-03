@@ -198,8 +198,14 @@
         <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.PersonJobPostIdFieldNumber">
             <summary>Field number for the "PersonJobPostId" field.</summary>
         </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.CompanyFieldNumber">
+            <summary>Field number for the "Company" field.</summary>
+        </member>
         <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.DealerCompanyIdFieldNumber">
             <summary>Field number for the "DealerCompanyId" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.BrokerIdFieldNumber">
+            <summary>Field number for the "BrokerId" field.</summary>
         </member>
     </members>
 </doc>

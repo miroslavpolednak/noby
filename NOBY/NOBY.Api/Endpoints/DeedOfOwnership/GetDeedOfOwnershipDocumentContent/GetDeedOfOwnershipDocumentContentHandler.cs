@@ -10,13 +10,13 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
     {
         long documentId;
 
-        if (request.NobyDeedOfOwnershipDocumentId.HasValue)
+        if (request.DeedOfOwnershipDocumentId.HasValue)
         {
-            documentId = request.NobyDeedOfOwnershipDocumentId.Value;
+            documentId = request.DeedOfOwnershipDocumentId.Value;
         }
         else
         {
-            var foundDocuments = await _cremClient.GetDocuments(request.KatuzId, request.DeedOfOwnershipNumber, request.DeedOfOwnershipId, cancellationToken);
+            var foundDocuments = await _cremClient.GetDocuments(request.KatuzId, request.DeedOfOwnershipNumber, request.CremDeedOfOwnershipDocumentId, cancellationToken);
 
             if (foundDocuments is null || !foundDocuments.Any())
             {
@@ -29,11 +29,11 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
 
             if (!foundDocuments.First().PublicDocument && DateTime.Now.Subtract(foundDocuments.First().ValidityDate).TotalDays <= 30)
             {
-                documentId = request.DeedOfOwnershipId.GetValueOrDefault();
+                documentId = request.CremDeedOfOwnershipDocumentId.GetValueOrDefault();
             }
             else
             {
-                documentId = await _cremClient.RequestNewDocumentId(request.KatuzId, request.DeedOfOwnershipNumber, request.DeedOfOwnershipId, cancellationToken);
+                documentId = await _cremClient.RequestNewDocumentId(request.KatuzId, request.DeedOfOwnershipNumber, request.CremDeedOfOwnershipDocumentId, cancellationToken);
             }
         }
 

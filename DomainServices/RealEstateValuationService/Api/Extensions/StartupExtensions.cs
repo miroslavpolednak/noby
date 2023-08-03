@@ -12,6 +12,7 @@ internal static class StartupExtensions
         builder.AddEntityFramework<RealEstateValuationServiceDbContext>();
 
         builder.AddExternalService<ExternalServices.PreorderService.V1.IPreorderServiceClient>();
+        builder.AddExternalService<ExternalServices.LuxpiService.V1.ILuxpiServiceClient>();
 
         return builder;
     }
