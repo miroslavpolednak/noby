@@ -292,10 +292,10 @@ public class DocumentController : ControllerBase
     /// <summary>
     /// Vygenerování dokumentu ukončení žádosti o úvěr
     /// </summary>
-    /// <returns>
+    /// <remarks>
     /// Vygenerování dokumentu ukončení žádosti o úvěr ze šablony podle CustomerOnSAId na vstupu. <br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91D71957-A737-4ee8-9EFC-A3B62878153C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-    /// </returns>
+    /// </remarks>
     [HttpGet("document/template/cancel-confirmation/customer-on-sa/{customerOnSAId}")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
