@@ -18,13 +18,14 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int ForSpecifiedDocumentTypeIdCannotFindHousehold = 19015;
     public const int DocumentTypeIdNotSupportedForProductRequest = 19016;
     public const int UnsupportedStatusReturnedFromESignature = 19017;
-    public const int UnableToStartSigningOrSignInvalidSalesArrangementState = 19018;
+    public const int SigningInvalidSalesArrangementState = 19018;
     public const int UnableToStartSigningOrSignInvalidDocument = 19019;
     public const int UnableToSendDocumentPreviewForPaperSignedDocuments = 19020;
     public const int SignatureTypeIdHasToBeSame = 19021;
     public const int DocumentFileNotExist = 19022;
     public const int AttachmentFileNotExist = 19023;
-    
+    public const int NoDocumentsToSignForSa = 19024;
+
     // Non BL validation
     public const int SalesArrangementIdIsRequired = 19030;
     public const int DocumentTypeIdIsRequired = 19031;
@@ -57,13 +58,14 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { SalesArrangementIdIsRequired, "SalesArrangementId is required"},
             { UnableToSendDocumentPreviewForPaperSignedDocuments, "Unable to send document preview for paper signed documents"},
             { SignatureTypeIdHasToBeSame, "SignatureTypeId has to be same (cannot sign electronic document manually and contrary)"},
-            { DocumentFileNotExist, "Document file {PropertyValue} doest not exist."},
-            { AttachmentFileNotExist, "Attachment file {PropertyValue} doest not exist."},
+            { DocumentFileNotExist,"Document file {PropertyValue} doest not exist."},
+            { AttachmentFileNotExist,"Attachment file {PropertyValue} doest not exist."},
+            { NoDocumentsToSignForSa,"For SalesArrangementId {PropertyValue} there isn't document to sign"},
 
             { DocumentTypeIdIsRequired, " DocumentTypeId is required"},
             { FormIdIsRequired, "FormId is required"},
             { EArchivIdIsRequired, "EArchivId is required"},
-            { UnableToStartSigningOrSignInvalidSalesArrangementState, "Unable to start signing or sign (SalesArrangement is not in correct state)."},
+            { SigningInvalidSalesArrangementState, "Unable to set SalesArrangementState (SalesArrangement is not in correct state)."},
             { UnableToStartSigningOrSignInvalidDocument, "Unable to start signing or sign (DocumentOnSA is invalid or already signed)."},
             { UnsupportedStatusReturnedFromESignature, "Unsupported status returned from ESignature: {PropertyValue}"},
             { UnsupportedSbSignatureType, "Unsupported sb SignatureType TaskId: {PropertyValue}"},
