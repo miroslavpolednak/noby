@@ -1,4 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
+using DomainServices.UserService.Clients;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.CreateSalesArrangement;
 
@@ -11,6 +12,8 @@ internal sealed class CreateSalesArrangementHandler
         //TODO je nejaka spojitost mezi ProductTypeId a SalesArrangementTypeId, ktera by se dala zkontrolovat?
         await _caseService.ValidateCaseId(request.CaseId, true, cancellation);
 
+        var user = await _userService.GetCurrentUser(cancellation);
+
         // vytvorit entitu
         var saEntity = new Database.Entities.SalesArrangement
         {
@@ -18,7 +21,7 @@ internal sealed class CreateSalesArrangementHandler
             SalesArrangementTypeId = request.SalesArrangementTypeId,
             StateUpdateTime = _dbContext.CisDateTime.Now,
             ContractNumber = request.ContractNumber,
-            ChannelId = 4 //TODO jak ziskat ChannelId? Z instance uzivatele? Az bude pripravena xxvvss asi...
+            ChannelId = user.UserInfo.ChannelId
         };
 
         // get default SA state
@@ -105,8 +108,10 @@ internal sealed class CreateSalesArrangementHandler
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly ILogger<CreateSalesArrangementHandler> _logger;
     private readonly IMediator _mediator;
+    private readonly IUserServiceClient _userService;
 
     public CreateSalesArrangementHandler(
+        IUserServiceClient userService,
         IMediator mediator,
         OfferService.Clients.IOfferServiceClient offerService,
         CaseService.Clients.ICaseServiceClient caseService,
@@ -114,6 +119,7 @@ internal sealed class CreateSalesArrangementHandler
         Database.SalesArrangementServiceDbContext dbContext,
         ILogger<CreateSalesArrangementHandler> logger)
     {
+        _userService = userService;
         _mediator = mediator;
         _offerService = offerService;
         _caseService = caseService;

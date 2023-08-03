@@ -175,7 +175,20 @@
             </summary>
         </member>
         <member name="F:DomainServices.UserService.Contracts.UserInfoObject.IsInternalFieldNumber">
-            <summary>Field number for the "isInternal" field.</summary>
+            <summary>Field number for the "IsInternal" field.</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.IsInternal">
+            <summary>
+            Flag musí být držen na uživateli. Je počítaný z identitního schématu (kde je BrokerID prázdné).
+            </summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserInfoObject.ChannelIdFieldNumber">
+            <summary>Field number for the "ChannelId" field.</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.ChannelId">
+            <summary>
+            Id distribučního kanálu
+            </summary>
         </member>
         <member name="T:DomainServices.UserService.Contracts.GetUserRIPAttributesReflection">
             <summary>Holder for reflection information generated from Messages/GetUserRIPAttributes.proto</summary>

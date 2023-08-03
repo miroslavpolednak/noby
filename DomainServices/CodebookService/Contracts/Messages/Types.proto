@@ -395,7 +395,6 @@ message IdentitySchemesResponse {
 		string Code = 3;
 		string Category = 4;
 		google.protobuf.Int32Value MandantId = 5;
-		google.protobuf.Int32Value ChannelId = 6;
 	}
 }
 

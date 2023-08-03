@@ -665,9 +665,6 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types.IdentitySchemeItem.MandantIdFieldNumber">
             <summary>Field number for the "MandantId" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types.IdentitySchemeItem.ChannelIdFieldNumber">
-            <summary>Field number for the "ChannelId" field.</summary>
-        </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types">
             <summary>Container for nested types declared in the LoanPurposesResponse message type.</summary>
         </member>
